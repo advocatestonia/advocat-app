@@ -9,35 +9,35 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Advocat — Professional Legal Defense';
+  String get appTitle => 'Advocat — Legal Information Tool';
 
   @override
-  String get onboardingTitle1 => 'Team of Professional Legal Agents';
+  String get onboardingTitle1 => 'AI-Powered Legal Information';
 
   @override
   String get onboardingDesc1 =>
-      'Not a chatbot — a full team of specialized AI lawyers. Immigration experts, criminal defense analysts, EU law researchers, and document specialists working on your case across the European Union 24/7.';
+      'Advocat helps you understand your legal situation. AI tools analyze documents, identify potential issues, and prepare draft documents for your review. Not a law firm — a technology tool to support your case.';
 
   @override
-  String get onboardingTitle2 => 'Scan — We Analyze Everything';
+  String get onboardingTitle2 => 'Scan and Analyze Documents';
 
   @override
   String get onboardingDesc2 =>
-      'Photograph any legal document. Our agents read it in any language, extract every detail, and cross-reference with EU directives and national laws.';
+      'Photograph any legal document. AI reads it in multiple languages, extracts key details, and checks against EU directives and national laws for potential issues.';
 
   @override
-  String get onboardingTitle3 => 'Errors Police & Courts Miss';
+  String get onboardingTitle3 => 'AI Checks for Potential Issues';
 
   @override
   String get onboardingDesc3 =>
-      'Our legal agents check 40+ types of procedural violations. In a real case, we found 3 critical errors that even lawyers missed — wrong language, forged signature, false nationality.';
+      'Our AI tools check 40+ types of procedural requirements. AI analysis may identify issues that require attention — such as language of service, procedural steps, and legal deadlines. Always verify with a qualified lawyer.';
 
   @override
-  String get onboardingTitle4 => 'Court-Ready Documents in Minutes';
+  String get onboardingTitle4 => 'Draft Documents for Your Review';
 
   @override
   String get onboardingDesc4 =>
-      'Professional appeals, complaints, and legal letters drafted by specialized agents. Cited laws, EU directives, and court precedents. Ready to file.';
+      'AI prepares draft appeals, complaints, and letters with legal references for your review. You decide what to submit. Every document should be reviewed by a qualified legal professional before filing.';
 
   @override
   String get onboardingNext => 'Next';

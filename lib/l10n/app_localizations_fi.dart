@@ -9,36 +9,35 @@ class AppLocalizationsFi extends AppLocalizations {
   AppLocalizationsFi([String locale = 'fi']) : super(locale);
 
   @override
-  String get appTitle => 'Advocat — Ammattimainen oikeudellinen puolustus';
+  String get appTitle => 'Advocat — Oikeudellinen tietotyökalu';
 
   @override
-  String get onboardingTitle1 => 'Ammattimaisten oikeusagenttien tiimi';
+  String get onboardingTitle1 => 'Tekoälypohjainen oikeudellinen tieto';
 
   @override
   String get onboardingDesc1 =>
-      'Ei chatbot — kokonainen erikoistuneiden tekoälyjuristien tiimi. Maahanmuuttoasiantuntijat, rikosoikeuden analyytikot, EU-oikeuden tutkijat ja asiakirja-asiantuntijat työskentelevät asiasi parissa 24/7.';
+      'Advocat auttaa sinua ymmärtämään oikeudellista tilannettasi. Tekoälytyökalut analysoivat asiakirjoja, tunnistavat mahdollisia ongelmia ja valmistelevat asiakirjaluonnoksia tarkistettavaksesi. Ei lakitoimisto — teknologiatyökalu asiasi tueksi.';
 
   @override
-  String get onboardingTitle2 => 'Skannaa — Analysoimme kaiken';
+  String get onboardingTitle2 => 'Skannaa ja analysoi asiakirjoja';
 
   @override
   String get onboardingDesc2 =>
-      'Kuvaa mikä tahansa oikeudellinen asiakirja. Agenttimme lukevat sen millä tahansa kielellä, poimivat jokaisen yksityiskohdan ja ristiinviittaavat maasi lainsäädäntöön.';
+      'Kuvaa mikä tahansa oikeudellinen asiakirja. Tekoäly lukee sen useilla kielillä, poimii keskeiset tiedot ja vertaa EU-direktiiveihin ja kansallisiin lakeihin mahdollisten ongelmien varalta.';
 
   @override
-  String get onboardingTitle3 =>
-      'Virheet, jotka poliisi ja tuomioistuimet ohittavat';
+  String get onboardingTitle3 => 'Tekoäly tarkistaa mahdolliset ongelmat';
 
   @override
   String get onboardingDesc3 =>
-      'Oikeusagenttimme tarkistavat yli 40 menettelyvirheen tyyppiä. Todellisessa tapauksessa löysimme 3 kriittistä virhettä, jotka jopa lakimiehet ohittivat — väärä kieli, väärennetty allekirjoitus, virheellinen kansalaisuus.';
+      'Tekoälytyökalumme tarkistavat yli 40 menettelyvaatimusta. Tekoälyanalyysi voi tunnistaa huomiota vaativia asioita — kuten tiedoksiantokielen, menettelyvaiheet ja oikeudelliset määräajat. Tarkista aina pätevän asianajajan kanssa.';
 
   @override
-  String get onboardingTitle4 => 'Tuomioistuinkelpoiset asiakirjat minuuteissa';
+  String get onboardingTitle4 => 'Asiakirjaluonnokset tarkistettavaksesi';
 
   @override
   String get onboardingDesc4 =>
-      'Erikoistuneiden agenttien laatimat ammattimaiset valitukset, kantelut ja oikeudelliset kirjeet. Viitatut lait, EU-direktiivit ja oikeuskäytäntö. Valmiit jätettäväksi.';
+      'Tekoäly valmistelee valitus-, kantelu- ja kirjeluonnoksia lakiviittauksineen tarkistettavaksesi. Sinä päätät, mitä lähetetään. Jokainen asiakirja tulisi tarkistuttaa pätevällä oikeudellisella ammattilaisella ennen jättämistä.';
 
   @override
   String get onboardingNext => 'Seuraava';

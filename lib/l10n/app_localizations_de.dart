@@ -9,35 +9,35 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get appTitle => 'Advocat — Professionelle Rechtsverteidigung';
+  String get appTitle => 'Advocat — Rechtsinformationswerkzeug';
 
   @override
-  String get onboardingTitle1 => 'Team professioneller Rechtsagenten';
+  String get onboardingTitle1 => 'KI-gestützte Rechtsinformation';
 
   @override
   String get onboardingDesc1 =>
-      'Kein Chatbot — ein komplettes Team spezialisierter KI-Anwälte. Migrationsrechtsexperten, Strafrechtsanalytiker, EU-Rechtsforscher und Dokumentenspezialisten arbeiten rund um die Uhr an Ihrem Fall.';
+      'Advocat hilft Ihnen, Ihre rechtliche Situation zu verstehen. KI-Werkzeuge analysieren Dokumente, identifizieren mögliche Probleme und erstellen Dokumententwürfe zur Ihrer Überprüfung. Keine Anwaltskanzlei — ein Technologiewerkzeug zur Unterstützung Ihres Falls.';
 
   @override
-  String get onboardingTitle2 => 'Scannen — Wir analysieren alles';
+  String get onboardingTitle2 => 'Dokumente scannen und analysieren';
 
   @override
   String get onboardingDesc2 =>
-      'Fotografieren Sie jedes Rechtsdokument. Unsere Agenten lesen es in jeder Sprache, erfassen jedes Detail und gleichen es mit den Gesetzen Ihres Landes ab.';
+      'Fotografieren Sie jedes Rechtsdokument. Die KI liest es in mehreren Sprachen, extrahiert wichtige Details und prüft anhand von EU-Richtlinien und nationalen Gesetzen auf mögliche Probleme.';
 
   @override
-  String get onboardingTitle3 => 'Fehler, die Polizei und Gerichte übersehen';
+  String get onboardingTitle3 => 'KI prüft auf mögliche Probleme';
 
   @override
   String get onboardingDesc3 =>
-      'Unsere Rechtsagenten prüfen über 40 Arten von Verfahrensverstößen. In einem realen Fall fanden wir 3 kritische Fehler, die selbst Anwälte übersahen — falsche Sprache, gefälschte Unterschrift, falsche Staatsangehörigkeit.';
+      'Unsere KI-Werkzeuge prüfen über 40 Arten von Verfahrensanforderungen. Die KI-Analyse kann Punkte identifizieren, die Aufmerksamkeit erfordern — wie Zustellungssprache, Verfahrensschritte und rechtliche Fristen. Überprüfen Sie immer mit einem qualifizierten Anwalt.';
 
   @override
-  String get onboardingTitle4 => 'Gerichtsfähige Dokumente in Minuten';
+  String get onboardingTitle4 => 'Dokumententwürfe zur Ihrer Überprüfung';
 
   @override
   String get onboardingDesc4 =>
-      'Professionelle Widersprüche, Beschwerden und Rechtsschreiben, erstellt von spezialisierten Agenten. Zitierte Gesetze, EU-Richtlinien und Gerichtspräzedenzfälle. Bereit zur Einreichung.';
+      'Die KI erstellt Entwürfe für Widersprüche, Beschwerden und Schreiben mit Rechtsverweisen zur Ihrer Überprüfung. Sie entscheiden, was eingereicht wird. Jedes Dokument sollte vor der Einreichung von einem qualifizierten Rechtsexperten geprüft werden.';
 
   @override
   String get onboardingNext => 'Weiter';

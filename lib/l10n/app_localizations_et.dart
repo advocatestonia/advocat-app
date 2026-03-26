@@ -9,37 +9,36 @@ class AppLocalizationsEt extends AppLocalizations {
   AppLocalizationsEt([String locale = 'et']) : super(locale);
 
   @override
-  String get appTitle => 'Advocat — Professionaalne õiguskaitse';
+  String get appTitle => 'Advocat — Õigusalane teabetööriist';
 
   @override
-  String get onboardingTitle1 => 'Professionaalsete õigusagentide meeskond';
+  String get onboardingTitle1 => 'Tehisintellektil põhinev õigusalane teave';
 
   @override
   String get onboardingDesc1 =>
-      'Mitte vestlusrobot — terve spetsialiseeritud tehisintellekt-juristide meeskond. Immigratsiooniõiguse eksperdid, kriminaalõiguse analüütikud, EL-i õiguse uurijad ja dokumendispetsialistid töötavad teie asjaga ööpäev läbi.';
+      'Advocat aitab teil mõista oma õiguslikku olukorda. Tehisintellekti tööriistad analüüsivad dokumente, tuvastavad võimalikke probleeme ja valmistavad ette dokumendikavandeid teie ülevaatamiseks. Mitte advokaadibüroo — tehnoloogiatööriist teie asja toetamiseks.';
 
   @override
-  String get onboardingTitle2 => 'Skaneerige — Analüüsime kõike';
+  String get onboardingTitle2 => 'Skannige ja analüüsige dokumente';
 
   @override
   String get onboardingDesc2 =>
-      'Pildistage mis tahes õigusdokument. Meie agendid loevad seda mis tahes keeles, eraldavad iga detaili ja ristkontrollivad teie riigi seadustega.';
+      'Pildistage mis tahes õigusdokument. Tehisintellekt loeb seda mitmes keeles, eraldab põhiandmed ja kontrollib EL-i direktiivide ja riigisiseste seaduste alusel võimalikke probleeme.';
 
   @override
   String get onboardingTitle3 =>
-      'Vead, mis politseilt ja kohtutelt märkamata jäävad';
+      'Tehisintellekt kontrollib võimalikke probleeme';
 
   @override
   String get onboardingDesc3 =>
-      'Meie õigusagendid kontrollivad üle 40 menetlusrikkumise tüübi. Reaalses asjas leidsime 3 kriitilist viga, mis jäid isegi juristidelt märkamata — vale keel, võltsitud allkiri, vale kodakondsus.';
+      'Meie tehisintellekti tööriistad kontrollivad üle 40 menetlusnõude tüübi. Tehisintellekti analüüs võib tuvastada tähelepanu vajavaid küsimusi — nagu teeninduskeel, menetlusetapid ja õiguslikud tähtajad. Kontrollige alati kvalifitseeritud juristiga.';
 
   @override
-  String get onboardingTitle4 =>
-      'Kohtusse esitamiskõlblikud dokumendid minutitega';
+  String get onboardingTitle4 => 'Dokumendikavandid teie ülevaatamiseks';
 
   @override
   String get onboardingDesc4 =>
-      'Spetsialiseeritud agentide koostatud professionaalsed kaebused, avaldused ja õiguskirjad. Viidatud seadused, EL-i direktiivid ja kohtupraktika. Esitamiseks valmis.';
+      'Tehisintellekt valmistab ette kaebuste, avalduste ja kirjade kavandeid koos õiguslike viidetega teie ülevaatamiseks. Teie otsustate, mida esitada. Iga dokument tuleks enne esitamist lasta üle vaadata kvalifitseeritud õigusspetsialistil.';
 
   @override
   String get onboardingNext => 'Järgmine';

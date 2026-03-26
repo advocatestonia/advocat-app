@@ -9,35 +9,35 @@ class AppLocalizationsSv extends AppLocalizations {
   AppLocalizationsSv([String locale = 'sv']) : super(locale);
 
   @override
-  String get appTitle => 'Advocat — Professionellt juridiskt försvar';
+  String get appTitle => 'Advocat — Juridiskt informationsverktyg';
 
   @override
-  String get onboardingTitle1 => 'Team av professionella juridiska agenter';
+  String get onboardingTitle1 => 'AI-driven juridisk information';
 
   @override
   String get onboardingDesc1 =>
-      'Inte en chatbot — ett komplett team av specialiserade AI-jurister. Immigrationsexperter, straffrättsanalytiker, EU-rättsforskare och dokumentspecialister arbetar med ditt ärende dygnet runt.';
+      'Advocat hjälper dig att förstå din juridiska situation. AI-verktyg analyserar dokument, identifierar potentiella problem och förbereder dokumentutkast för din granskning. Inte en advokatbyrå — ett teknikverktyg som stöd för ditt ärende.';
 
   @override
-  String get onboardingTitle2 => 'Skanna — Vi analyserar allt';
+  String get onboardingTitle2 => 'Skanna och analysera dokument';
 
   @override
   String get onboardingDesc2 =>
-      'Fotografera vilket juridiskt dokument som helst. Våra agenter läser det på alla språk, extraherar varje detalj och korsrefererar mot ditt lands lagar.';
+      'Fotografera valfritt juridiskt dokument. AI läser det på flera språk, extraherar viktiga detaljer och kontrollerar mot EU-direktiv och nationell lagstiftning för potentiella problem.';
 
   @override
-  String get onboardingTitle3 => 'Fel som polis och domstolar missar';
+  String get onboardingTitle3 => 'AI kontrollerar potentiella problem';
 
   @override
   String get onboardingDesc3 =>
-      'Våra juridiska agenter granskar över 40 typer av procedurfel. I ett verkligt fall hittade vi 3 kritiska fel som även jurister missade — fel språk, förfalskad underskrift, felaktig nationalitet.';
+      'Våra AI-verktyg kontrollerar över 40 typer av procedurkrav. AI-analysen kan identifiera frågor som kräver uppmärksamhet — såsom delgivningsspråk, procedursteg och juridiska tidsfrister. Verifiera alltid med en kvalificerad jurist.';
 
   @override
-  String get onboardingTitle4 => 'Domstolsfärdiga dokument på minuter';
+  String get onboardingTitle4 => 'Dokumentutkast för din granskning';
 
   @override
   String get onboardingDesc4 =>
-      'Professionella överklaganden, klagomål och juridiska brev utarbetade av specialiserade agenter. Hänvisningar till lagar, EU-direktiv och domstolspraxis. Redo att lämna in.';
+      'AI förbereder utkast till överklaganden, klagomål och brev med juridiska hänvisningar för din granskning. Du bestämmer vad som ska lämnas in. Varje dokument bör granskas av en kvalificerad jurist innan det lämnas in.';
 
   @override
   String get onboardingNext => 'Nästa';
