@@ -1,0 +1,167 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import '../features/auth/screens/login_screen.dart';
+import '../features/auth/screens/register_screen.dart';
+import '../features/onboarding/screens/onboarding_screen.dart';
+import '../features/home/screens/home_screen.dart';
+import '../features/cases/screens/cases_list_screen.dart';
+import '../features/cases/screens/case_detail_screen.dart';
+import '../features/cases/screens/case_documents_screen.dart';
+import '../features/cases/screens/case_timeline_screen.dart';
+import '../features/cases/screens/case_create_screen.dart';
+import '../features/deadlines/screens/deadlines_screen.dart';
+import '../features/documents/screens/document_scan_screen.dart';
+import '../features/chat/screens/chat_screen.dart';
+import '../features/settings/screens/settings_screen.dart';
+import '../features/settings/screens/subscription_screen.dart';
+import '../features/email/screens/email_screen.dart';
+import '../shared/widgets/main_shell.dart';
+
+/// Named route constants to avoid magic strings.
+abstract final class AppRoutes {
+  static const String onboarding = '/onboarding';
+  static const String login = '/login';
+  static const String register = '/register';
+  static const String home = '/home';
+  static const String cases = '/cases';
+  static const String caseDetail = '/cases/:id';
+  static const String caseDocuments = '/cases/:id/documents';
+  static const String caseTimeline = '/cases/:id/timeline';
+  static const String caseCreate = '/cases/new';
+  static const String scan = '/scan';
+  static const String chat = '/chat/:caseId';
+  static const String deadlines = '/deadlines';
+  static const String settings = '/settings';
+  static const String subscription = '/subscription';
+  static const String email = '/email';
+}
+
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final _shellNavigatorKey = GlobalKey<NavigatorState>();
+
+final routerProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: AppRoutes.onboarding,
+    debugLogDiagnostics: true,
+    // NOTE: Auth redirect disabled for demo. Enable when Supabase is configured.
+    // redirect: (context, state) { ... },
+    routes: [
+      // ── Auth routes (no shell) ──────────────────────────────────────
+      GoRoute(
+        path: AppRoutes.onboarding,
+        name: 'onboarding',
+        builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        name: 'register',
+        builder: (context, state) => const RegisterScreen(),
+      ),
+
+      // ── Main app shell with bottom navigation ──────────────────────
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) => MainShell(child: child),
+        routes: [
+          GoRoute(
+            path: AppRoutes.home,
+            name: 'home',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: HomeScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.cases,
+            name: 'cases',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: CasesListScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.deadlines,
+            name: 'deadlines',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: DeadlinesScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.settings,
+            name: 'settings',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: SettingsScreen(),
+            ),
+          ),
+        ],
+      ),
+
+      // ── Full-screen routes (outside shell) ─────────────────────────
+      GoRoute(
+        path: AppRoutes.caseCreate,
+        name: 'caseCreate',
+        builder: (context, state) => const CaseCreateScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.caseDetail,
+        name: 'caseDetail',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return CaseDetailScreen(caseId: id);
+        },
+        routes: [
+          GoRoute(
+            path: 'documents',
+            name: 'caseDocuments',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return CaseDocumentsScreen(caseId: id);
+            },
+          ),
+          GoRoute(
+            path: 'timeline',
+            name: 'caseTimeline',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return CaseTimelineScreen(caseId: id);
+            },
+          ),
+        ],
+      ),
+      GoRoute(
+        path: AppRoutes.scan,
+        name: 'scan',
+        builder: (context, state) => const DocumentScanScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.chat,
+        name: 'chat',
+        builder: (context, state) {
+          final caseId = state.pathParameters['caseId']!;
+          return ChatScreen(caseId: caseId);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.subscription,
+        name: 'subscription',
+        builder: (context, state) => const SubscriptionScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.email,
+        name: 'email',
+        builder: (context, state) => const EmailScreen(),
+      ),
+    ],
+    errorBuilder: (context, state) => Scaffold(
+      body: Center(
+        child: Text('Page not found: ${state.matchedLocation}'),
+      ),
+    ),
+  );
+});

@@ -1,0 +1,853 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:timeago/timeago.dart' as timeago;
+
+import '../../../config/router.dart';
+import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
+import '../../../models/case_model.dart';
+import '../../../models/deadline.dart';
+import '../../../models/document.dart';
+import '../../../shared/utils/date_utils.dart';
+import '../providers/cases_provider.dart';
+import '../../deadlines/providers/deadlines_provider.dart';
+import '../../documents/providers/documents_provider.dart';
+
+// ---------------------------------------------------------------------------
+// Case Detail Screen
+// ---------------------------------------------------------------------------
+
+class CaseDetailScreen extends ConsumerWidget {
+  const CaseDetailScreen({super.key, required this.caseId});
+
+  final String caseId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final caseAsync = ref.watch(caseByIdProvider(caseId));
+    final docsAsync = ref.watch(documentsProvider(caseId));
+    final deadlinesAsync = ref.watch(caseDeadlinesProvider(caseId));
+
+    return caseAsync.when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, _) => Scaffold(
+        appBar: AppBar(),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+              const SizedBox(height: AppSpacing.md),
+              Text('Could not load case details',
+                  style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: AppSpacing.sm),
+              TextButton(
+                onPressed: () => ref.invalidate(caseByIdProvider(caseId)),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      ),
+      data: (legalCase) => Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            // ── Sliver app bar ─────────────────────────────────────────
+            SliverAppBar(
+              expandedHeight: 120,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                title: Text(
+                  legalCase.title,
+                  style: const TextStyle(fontSize: 16),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                background: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [AppColors.primary, AppColors.primaryDark],
+                    ),
+                  ),
+                ),
+              ),
+              actions: [
+                _StatusChip(status: legalCase.status),
+                const SizedBox(width: AppSpacing.sm),
+              ],
+            ),
+
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // ── Case info card ──────────────────────────────────
+                    _CaseInfoCard(legalCase: legalCase),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // ── Action tiles (horizontal scroll) ────────────────
+                    _ActionTilesRow(caseId: caseId),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // ── Documents section ───────────────────────────────
+                    docsAsync.when(
+                      loading: () => const _SectionShimmer(),
+                      error: (_, __) => const SizedBox.shrink(),
+                      data: (docs) => _DocumentsSection(
+                        documents: docs,
+                        caseId: caseId,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+
+                    // ── Deadlines section ───────────────────────────────
+                    deadlinesAsync.when(
+                      loading: () => const _SectionShimmer(),
+                      error: (_, __) => const SizedBox.shrink(),
+                      data: (deadlines) => _DeadlinesSection(
+                        deadlines: deadlines,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+
+                    // ── Timeline section ────────────────────────────────
+                    _TimelineSection(
+                      legalCase: legalCase,
+                      caseId: caseId,
+                    ),
+
+                    const SizedBox(height: AppSpacing.xxl),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Status Chip
+// ---------------------------------------------------------------------------
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({required this.status});
+
+  final CaseStatus status;
+
+  Color get _color => switch (status) {
+        CaseStatus.active => AppColors.accent,
+        CaseStatus.pendingDecision => AppColors.warning,
+        CaseStatus.appealFiled => AppColors.info,
+        CaseStatus.inCourt => AppColors.primary,
+        CaseStatus.resolved => AppColors.success,
+        CaseStatus.closed => AppColors.textTertiary,
+      };
+
+  String get _label => switch (status) {
+        CaseStatus.active => 'Active',
+        CaseStatus.pendingDecision => 'Pending',
+        CaseStatus.appealFiled => 'Appeal',
+        CaseStatus.inCourt => 'In Court',
+        CaseStatus.resolved => 'Won',
+        CaseStatus.closed => 'Closed',
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(right: AppSpacing.sm),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(AppRadius.full),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: _color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            _label,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Case Info Card
+// ---------------------------------------------------------------------------
+
+class _CaseInfoCard extends StatelessWidget {
+  const _CaseInfoCard({required this.legalCase});
+
+  final LegalCase legalCase;
+
+  String _typeLabel(CaseType type) => switch (type) {
+        CaseType.deportation => 'Deportation',
+        CaseType.asylum => 'Asylum',
+        CaseType.residencePermit => 'Residence Permit',
+        CaseType.familyReunification => 'Family Reunification',
+        CaseType.citizenship => 'Citizenship',
+        CaseType.workPermit => 'Work Permit',
+        CaseType.other => 'Other',
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          children: [
+            _InfoRow(
+              label: 'Type',
+              value: _typeLabel(legalCase.type),
+              icon: Icons.category_outlined,
+            ),
+            const Divider(height: AppSpacing.lg),
+            if (legalCase.nationality != null) ...[
+              _InfoRow(
+                label: 'Nationality',
+                value: legalCase.nationality!,
+                icon: Icons.flag_outlined,
+              ),
+              const Divider(height: AppSpacing.lg),
+            ],
+            if (legalCase.migriReferenceNumber != null) ...[
+              _InfoRow(
+                label: 'Migri Reference',
+                value: legalCase.migriReferenceNumber!,
+                icon: Icons.tag,
+              ),
+              const Divider(height: AppSpacing.lg),
+            ],
+            if (legalCase.courtCaseNumber != null) ...[
+              _InfoRow(
+                label: 'Court Case No.',
+                value: legalCase.courtCaseNumber!,
+                icon: Icons.gavel_outlined,
+              ),
+              const Divider(height: AppSpacing.lg),
+            ],
+            _InfoRow(
+              label: 'Created',
+              value: AppDateUtils.formatDate(legalCase.createdAt),
+              icon: Icons.calendar_today_outlined,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.label,
+    required this.value,
+    required this.icon,
+  });
+
+  final String label;
+  final String value;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: AppColors.textTertiary),
+        const SizedBox(width: AppSpacing.sm),
+        Expanded(
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.textSecondary,
+            ),
+          ),
+        ),
+        Flexible(
+          child: Text(
+            value,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Action Tiles Row
+// ---------------------------------------------------------------------------
+
+class _ActionTilesRow extends StatelessWidget {
+  const _ActionTilesRow({required this.caseId});
+
+  final String caseId;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return SizedBox(
+      height: 100,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+        children: [
+          _ActionTile(
+            icon: Icons.document_scanner_outlined,
+            label: l.scanDocument,
+            color: AppColors.accent,
+            onTap: () => context.push(AppRoutes.scan),
+          ),
+          _ActionTile(
+            icon: Icons.psychology_outlined,
+            label: l.aiAnalysis,
+            color: AppColors.info,
+            onTap: () => context.push('/chat/$caseId'),
+          ),
+          _ActionTile(
+            icon: Icons.description_outlined,
+            label: l.draftAppeal,
+            color: AppColors.primary,
+            onTap: () => context.push('/chat/$caseId'),
+          ),
+          _ActionTile(
+            icon: Icons.smart_toy_outlined,
+            label: l.aiChat,
+            color: AppColors.accentDark,
+            onTap: () => context.push('/chat/$caseId'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ActionTile extends StatelessWidget {
+  const _ActionTile({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 88,
+          padding: const EdgeInsets.all(AppSpacing.sm),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(color: color.withValues(alpha: 0.15)),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: color, size: 28),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: color,
+                  height: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Documents Section
+// ---------------------------------------------------------------------------
+
+class _DocumentsSection extends StatelessWidget {
+  const _DocumentsSection({required this.documents, required this.caseId});
+
+  final List<CaseDocument> documents;
+  final String caseId;
+
+  @override
+  Widget build(BuildContext context) {
+    return _SectionCard(
+      title: AppLocalizations.of(context)?.documents ?? 'Documents',
+      trailing: documents.length > 3
+          ? TextButton(
+              onPressed: () => context.push('/cases/$caseId/documents'),
+              child: const Text('View All'),
+            )
+          : null,
+      isEmpty: documents.isEmpty,
+      emptyMessage: 'No documents uploaded yet',
+      emptyIcon: Icons.description_outlined,
+      child: Column(
+        children: documents.take(3).map((doc) {
+          return ListTile(
+            dense: true,
+            contentPadding: EdgeInsets.zero,
+            leading: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+              ),
+              child: const Icon(
+                Icons.insert_drive_file_outlined,
+                color: AppColors.textTertiary,
+                size: 20,
+              ),
+            ),
+            title: Text(
+              doc.fileName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            subtitle: Text(
+              timeago.format(doc.createdAt),
+              style: const TextStyle(fontSize: 12),
+            ),
+            trailing: _ProcessingBadge(status: doc.processingStatus),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class _ProcessingBadge extends StatelessWidget {
+  const _ProcessingBadge({required this.status});
+
+  final DocumentProcessingStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final (label, color) = switch (status) {
+      DocumentProcessingStatus.pending => ('Pending', AppColors.textTertiary),
+      DocumentProcessingStatus.processing => ('Processing', AppColors.warning),
+      DocumentProcessingStatus.completed => ('Ready', AppColors.success),
+      DocumentProcessingStatus.failed => ('Failed', AppColors.error),
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AppRadius.full),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          color: color,
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Deadlines Section
+// ---------------------------------------------------------------------------
+
+class _DeadlinesSection extends StatelessWidget {
+  const _DeadlinesSection({required this.deadlines});
+
+  final List<Deadline> deadlines;
+
+  @override
+  Widget build(BuildContext context) {
+    final upcoming = deadlines
+        .where((d) =>
+            d.status == DeadlineStatus.upcoming ||
+            d.status == DeadlineStatus.overdue)
+        .toList();
+
+    return _SectionCard(
+      title: AppLocalizations.of(context)?.deadlines ?? 'Deadlines',
+      isEmpty: upcoming.isEmpty,
+      emptyMessage: 'No upcoming deadlines',
+      emptyIcon: Icons.event_available_outlined,
+      child: Column(
+        children: upcoming.take(3).map((deadline) {
+          final days = AppDateUtils.daysUntil(deadline.dueDate);
+          final isUrgent = days <= 3;
+          final isOverdue = days < 0;
+          final urgencyColor = isOverdue
+              ? AppColors.error
+              : isUrgent
+                  ? AppColors.warning
+                  : AppColors.success;
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: Row(
+              children: [
+                // Days countdown
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: urgencyColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        isOverdue ? '${-days}' : '$days',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          color: urgencyColor,
+                        ),
+                      ),
+                      Text(
+                        isOverdue ? 'late' : 'days',
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: urgencyColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        deadline.title,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        AppDateUtils.formatDate(deadline.dueDate),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Timeline Section (summary, links to full timeline)
+// ---------------------------------------------------------------------------
+
+class _TimelineSection extends StatelessWidget {
+  const _TimelineSection({required this.legalCase, required this.caseId});
+
+  final LegalCase legalCase;
+  final String caseId;
+
+  @override
+  Widget build(BuildContext context) {
+    return _SectionCard(
+      title: AppLocalizations.of(context)?.timeline ?? 'Timeline',
+      trailing: TextButton(
+        onPressed: () => context.push('/cases/$caseId/timeline'),
+        child: const Text('View All'),
+      ),
+      isEmpty: false,
+      emptyMessage: '',
+      emptyIcon: Icons.timeline,
+      child: Column(
+        children: [
+          _TimelineEntry(
+            title: 'Case created',
+            date: legalCase.createdAt,
+            icon: Icons.add_circle_outline,
+            color: AppColors.accent,
+          ),
+          if (legalCase.decisionDate != null)
+            _TimelineEntry(
+              title: 'Decision received',
+              date: legalCase.decisionDate!,
+              icon: Icons.gavel_outlined,
+              color: AppColors.warning,
+            ),
+          if (legalCase.appealDeadline != null)
+            _TimelineEntry(
+              title: 'Appeal deadline',
+              date: legalCase.appealDeadline!,
+              icon: Icons.schedule,
+              color: AppColors.error,
+              isLast: legalCase.hearingDate == null,
+            ),
+          if (legalCase.hearingDate != null)
+            _TimelineEntry(
+              title: 'Hearing scheduled',
+              date: legalCase.hearingDate!,
+              icon: Icons.event_outlined,
+              color: AppColors.info,
+              isLast: true,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TimelineEntry extends StatelessWidget {
+  const _TimelineEntry({
+    required this.title,
+    required this.date,
+    required this.icon,
+    required this.color,
+    this.isLast = false,
+  });
+
+  final String title;
+  final DateTime date;
+  final IconData icon;
+  final Color color;
+  final bool isLast;
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          SizedBox(
+            width: 32,
+            child: Column(
+              children: [
+                Icon(icon, size: 18, color: color),
+                if (!isLast)
+                  Expanded(
+                    child: Container(
+                      width: 2,
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      color: AppColors.border,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(bottom: isLast ? 0 : AppSpacing.md),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    AppDateUtils.formatShort(date),
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Reusable Section Card
+// ---------------------------------------------------------------------------
+
+class _SectionCard extends StatelessWidget {
+  const _SectionCard({
+    required this.title,
+    this.trailing,
+    required this.isEmpty,
+    required this.emptyMessage,
+    required this.emptyIcon,
+    required this.child,
+  });
+
+  final String title;
+  final Widget? trailing;
+  final bool isEmpty;
+  final String emptyMessage;
+  final IconData emptyIcon;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        side: const BorderSide(color: AppColors.border),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                ),
+                if (trailing != null) trailing!,
+              ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            if (isEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(emptyIcon, size: 20, color: AppColors.textTertiary),
+                    const SizedBox(width: AppSpacing.sm),
+                    Text(
+                      emptyMessage,
+                      style: const TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              child,
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Shimmer placeholder for loading sections
+// ---------------------------------------------------------------------------
+
+class _SectionShimmer extends StatelessWidget {
+  const _SectionShimmer();
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 100,
+              height: 16,
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Container(
+              width: double.infinity,
+              height: 12,
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Container(
+              width: 200,
+              height: 12,
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'config/theme.dart';
+import 'config/router.dart';
+import 'l10n/app_localizations.dart';
+
+/// Language data used across the app (onboarding, home, settings).
+class LanguageOption {
+  final String code;
+  final String name;
+  final String flag;
+
+  const LanguageOption(this.code, this.name, this.flag);
+}
+
+const List<LanguageOption> supportedLanguages = [
+  LanguageOption('en', 'English', '\u{1F1EC}\u{1F1E7}'),
+  LanguageOption('ru', '\u0420\u0443\u0441\u0441\u043A\u0438\u0439', '\u{1F1F7}\u{1F1FA}'),
+  LanguageOption('fi', 'Suomi', '\u{1F1EB}\u{1F1EE}'),
+  LanguageOption('et', 'Eesti', '\u{1F1EA}\u{1F1EA}'),
+  LanguageOption('sv', 'Svenska', '\u{1F1F8}\u{1F1EA}'),
+  LanguageOption('de', 'Deutsch', '\u{1F1E9}\u{1F1EA}'),
+  LanguageOption('ar', '\u0627\u0644\u0639\u0631\u0628\u064A\u0629', '\u{1F1F8}\u{1F1E6}'),
+];
+
+const String _localeKey = 'app_locale';
+
+/// SharedPreferences instance, initialised before runApp.
+late final SharedPreferences _prefs;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  _prefs = await SharedPreferences.getInstance();
+
+  // NOTE: Firebase, Supabase, and Stripe initialization disabled for demo.
+  // Enable when backend is configured:
+  // await Firebase.initializeApp();
+  // await Supabase.initialize(url: ..., anonKey: ...);
+  // Stripe.publishableKey = ...;
+
+  runApp(
+    const ProviderScope(
+      child: AdvocatApp(),
+    ),
+  );
+}
+
+class AdvocatApp extends ConsumerWidget {
+  const AdvocatApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+    final locale = ref.watch(localeProvider);
+
+    return MaterialApp.router(
+      title: 'Advocat \u2014 AI Legal Defense',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.light,
+      locale: locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      routerConfig: router,
+    );
+  }
+}
+
+/// Provider for the current locale, persisted via SharedPreferences.
+final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
+  return LocaleNotifier();
+});
+
+class LocaleNotifier extends StateNotifier<Locale> {
+  LocaleNotifier() : super(_loadSavedLocale());
+
+  static Locale _loadSavedLocale() {
+    final saved = _prefs.getString(_localeKey);
+    if (saved != null && saved.isNotEmpty) {
+      return Locale(saved);
+    }
+    return const Locale('en');
+  }
+
+  void setLocale(Locale locale) {
+    state = locale;
+    _prefs.setString(_localeKey, locale.languageCode);
+  }
+}
