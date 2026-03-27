@@ -309,6 +309,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String get familyReunification => 'Familienzusammenführung';
 
   @override
+  String get laborDispute => 'Arbeitsstreitigkeiten';
+
+  @override
+  String get tenantRights => 'Mieterrechte';
+
+  @override
+  String get debtCollection => 'Inkasso';
+
+  @override
+  String get discrimination => 'Diskriminierung';
+
+  @override
+  String get policeMisconduct => 'Polizeiverhalten';
+
+  @override
+  String get socialBenefits => 'Sozialleistungen';
+
+  @override
   String get other => 'Sonstiges';
 
   @override

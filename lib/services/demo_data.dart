@@ -74,6 +74,39 @@ abstract final class DemoData {
       documentCount: 3,
       unreadMessages: 0,
     ),
+    LegalCase(
+      id: 'case-germany-003',
+      userId: 'demo-user-001',
+      title: 'Unfair Dismissal — Germany',
+      description:
+          'Wrongful termination from employment without proper notice period. '
+          'Employer failed to follow Kündigungsschutzgesetz (Employment Protection Act) '
+          'requirements. No prior warning was given and the works council was not consulted.',
+      type: CaseType.laborDispute,
+      status: CaseStatus.active,
+      nationality: 'Estonian',
+      createdAt: DateTime(2025, 4, 1),
+      updatedAt: DateTime.now().subtract(const Duration(days: 1)),
+      documentCount: 2,
+      unreadMessages: 1,
+    ),
+    LegalCase(
+      id: 'case-finland-004',
+      userId: 'demo-user-001',
+      title: 'Illegal Eviction Notice — Finland',
+      description:
+          'Landlord issued an eviction notice without valid legal grounds '
+          'and with insufficient notice period. The notice violates the Finnish '
+          'Act on Residential Leases (Laki asuinhuoneiston vuokrauksesta) '
+          'regarding tenant protections and required notice periods.',
+      type: CaseType.tenantRights,
+      status: CaseStatus.active,
+      nationality: 'Estonian',
+      createdAt: DateTime(2025, 4, 10),
+      updatedAt: DateTime.now().subtract(const Duration(hours: 12)),
+      documentCount: 1,
+      unreadMessages: 1,
+    ),
   ];
 
   // ── Documents ─────────────────────────────────────────────────────────

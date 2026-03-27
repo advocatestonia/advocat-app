@@ -32,6 +32,12 @@ class CaseCard extends StatelessWidget {
       CaseType.familyReunification => AppColors.warning,
       CaseType.citizenship => AppColors.success,
       CaseType.workPermit => AppColors.primaryLight,
+      CaseType.laborDispute => const Color(0xFF8B5CF6),
+      CaseType.tenantRights => const Color(0xFF10B981),
+      CaseType.debtCollection => const Color(0xFFF59E0B),
+      CaseType.discrimination => const Color(0xFFEC4899),
+      CaseType.policeMisconduct => const Color(0xFF6366F1),
+      CaseType.socialBenefits => const Color(0xFF14B8A6),
       CaseType.other => AppColors.textTertiary,
     };
   }
@@ -66,6 +72,12 @@ class CaseCard extends StatelessWidget {
       CaseType.familyReunification => 'Family Reunion',
       CaseType.citizenship => 'Citizenship',
       CaseType.workPermit => 'Work Permit',
+      CaseType.laborDispute => 'Labor Dispute',
+      CaseType.tenantRights => 'Tenant Rights',
+      CaseType.debtCollection => 'Debt Collection',
+      CaseType.discrimination => 'Discrimination',
+      CaseType.policeMisconduct => 'Police Misconduct',
+      CaseType.socialBenefits => 'Social Benefits',
       CaseType.other => 'Other',
     };
   }

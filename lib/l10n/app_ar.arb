@@ -101,6 +101,12 @@
   "residencePermit": "تصريح إقامة",
   "victimSupport": "دعم الضحايا",
   "familyReunification": "لمّ شمل الأسرة",
+  "laborDispute": "نزاع عمالي",
+  "tenantRights": "حقوق المستأجر",
+  "debtCollection": "تحصيل الديون",
+  "discrimination": "تمييز",
+  "policeMisconduct": "سوء سلوك الشرطة",
+  "socialBenefits": "المزايا الاجتماعية",
   "other": "أخرى",
 
   "caseDetail": "تفاصيل القضية",

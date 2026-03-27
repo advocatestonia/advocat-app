@@ -266,6 +266,12 @@ String _caseTypeLabel(CaseType type) {
     CaseType.familyReunification => 'Family Reunification',
     CaseType.citizenship => 'Citizenship',
     CaseType.workPermit => 'Work Permit',
+    CaseType.laborDispute => 'Labor Dispute',
+    CaseType.tenantRights => 'Tenant Rights',
+    CaseType.debtCollection => 'Debt Collection',
+    CaseType.discrimination => 'Discrimination',
+    CaseType.policeMisconduct => 'Police Misconduct',
+    CaseType.socialBenefits => 'Social Benefits',
     CaseType.other => 'Other',
   };
 }

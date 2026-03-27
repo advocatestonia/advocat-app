@@ -304,6 +304,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get familyReunification => 'Family Reunification';
 
   @override
+  String get laborDispute => 'Labor Dispute';
+
+  @override
+  String get tenantRights => 'Tenant Rights';
+
+  @override
+  String get debtCollection => 'Debt Collection';
+
+  @override
+  String get discrimination => 'Discrimination';
+
+  @override
+  String get policeMisconduct => 'Police Misconduct';
+
+  @override
+  String get socialBenefits => 'Social Benefits';
+
+  @override
   String get other => 'Other';
 
   @override

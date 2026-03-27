@@ -306,6 +306,24 @@ class AppLocalizationsRu extends AppLocalizations {
   String get familyReunification => 'Воссоединение семьи';
 
   @override
+  String get laborDispute => 'Трудовой спор';
+
+  @override
+  String get tenantRights => 'Права арендатора';
+
+  @override
+  String get debtCollection => 'Долги и взыскание';
+
+  @override
+  String get discrimination => 'Дискриминация';
+
+  @override
+  String get policeMisconduct => 'Действия полиции';
+
+  @override
+  String get socialBenefits => 'Социальные пособия';
+
+  @override
   String get other => 'Другое';
 
   @override

@@ -131,6 +131,12 @@ class LegalCase {
       case 'family_reunification': return CaseType.familyReunification;
       case 'citizenship': return CaseType.citizenship;
       case 'work_permit': return CaseType.workPermit;
+      case 'labor_dispute': return CaseType.laborDispute;
+      case 'tenant_rights': return CaseType.tenantRights;
+      case 'debt_collection': return CaseType.debtCollection;
+      case 'discrimination': return CaseType.discrimination;
+      case 'police_misconduct': return CaseType.policeMisconduct;
+      case 'social_benefits': return CaseType.socialBenefits;
       case 'other': return CaseType.other;
       default: return CaseType.deportation;
     }
@@ -144,6 +150,12 @@ class LegalCase {
       case CaseType.familyReunification: return 'family_reunification';
       case CaseType.citizenship: return 'citizenship';
       case CaseType.workPermit: return 'work_permit';
+      case CaseType.laborDispute: return 'labor_dispute';
+      case CaseType.tenantRights: return 'tenant_rights';
+      case CaseType.debtCollection: return 'debt_collection';
+      case CaseType.discrimination: return 'discrimination';
+      case CaseType.policeMisconduct: return 'police_misconduct';
+      case CaseType.socialBenefits: return 'social_benefits';
       case CaseType.other: return 'other';
     }
   }
@@ -179,6 +191,12 @@ enum CaseType {
   familyReunification,
   citizenship,
   workPermit,
+  laborDispute,
+  tenantRights,
+  debtCollection,
+  discrimination,
+  policeMisconduct,
+  socialBenefits,
   other,
 }
 

@@ -306,6 +306,24 @@ class AppLocalizationsEt extends AppLocalizations {
   String get familyReunification => 'Perekonna taasühendamine';
 
   @override
+  String get laborDispute => 'Töövaidlus';
+
+  @override
+  String get tenantRights => 'Üürniku õigused';
+
+  @override
+  String get debtCollection => 'Võlgade sissenõudmine';
+
+  @override
+  String get discrimination => 'Diskrimineerimine';
+
+  @override
+  String get policeMisconduct => 'Politsei tegevus';
+
+  @override
+  String get socialBenefits => 'Sotsiaaltoetused';
+
+  @override
   String get other => 'Muu';
 
   @override

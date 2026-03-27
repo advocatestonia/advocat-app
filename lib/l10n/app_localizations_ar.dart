@@ -306,6 +306,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get familyReunification => 'لمّ شمل الأسرة';
 
   @override
+  String get laborDispute => 'نزاع عمالي';
+
+  @override
+  String get tenantRights => 'حقوق المستأجر';
+
+  @override
+  String get debtCollection => 'تحصيل الديون';
+
+  @override
+  String get discrimination => 'تمييز';
+
+  @override
+  String get policeMisconduct => 'سوء سلوك الشرطة';
+
+  @override
+  String get socialBenefits => 'المزايا الاجتماعية';
+
+  @override
   String get other => 'أخرى';
 
   @override

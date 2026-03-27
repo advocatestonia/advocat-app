@@ -100,6 +100,12 @@
   "residencePermit": "Elamisluba",
   "victimSupport": "Ohvriabi",
   "familyReunification": "Perekonna taasühendamine",
+  "laborDispute": "Töövaidlus",
+  "tenantRights": "Üürniku õigused",
+  "debtCollection": "Võlgade sissenõudmine",
+  "discrimination": "Diskrimineerimine",
+  "policeMisconduct": "Politsei tegevus",
+  "socialBenefits": "Sotsiaaltoetused",
   "other": "Muu",
 
   "caseDetail": "Asja üksikasjad",

@@ -100,6 +100,12 @@
   "residencePermit": "Oleskelulupa",
   "victimSupport": "Uhrien tuki",
   "familyReunification": "Perheen yhdistäminen",
+  "laborDispute": "Työriidat",
+  "tenantRights": "Vuokralaisen oikeudet",
+  "debtCollection": "Perintä",
+  "discrimination": "Syrjintä",
+  "policeMisconduct": "Poliisin toiminta",
+  "socialBenefits": "Sosiaalietuudet",
   "other": "Muu",
 
   "caseDetail": "Asian tiedot",

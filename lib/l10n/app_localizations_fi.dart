@@ -306,6 +306,24 @@ class AppLocalizationsFi extends AppLocalizations {
   String get familyReunification => 'Perheen yhdistäminen';
 
   @override
+  String get laborDispute => 'Työriidat';
+
+  @override
+  String get tenantRights => 'Vuokralaisen oikeudet';
+
+  @override
+  String get debtCollection => 'Perintä';
+
+  @override
+  String get discrimination => 'Syrjintä';
+
+  @override
+  String get policeMisconduct => 'Poliisin toiminta';
+
+  @override
+  String get socialBenefits => 'Sosiaalietuudet';
+
+  @override
   String get other => 'Muu';
 
   @override

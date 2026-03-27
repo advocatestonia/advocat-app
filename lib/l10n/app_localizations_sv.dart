@@ -305,6 +305,24 @@ class AppLocalizationsSv extends AppLocalizations {
   String get familyReunification => 'Familjeåterförening';
 
   @override
+  String get laborDispute => 'Arbetsrättsliga tvister';
+
+  @override
+  String get tenantRights => 'Hyresgästens rättigheter';
+
+  @override
+  String get debtCollection => 'Inkasso';
+
+  @override
+  String get discrimination => 'Diskriminering';
+
+  @override
+  String get policeMisconduct => 'Polisens agerande';
+
+  @override
+  String get socialBenefits => 'Sociala förmåner';
+
+  @override
   String get other => 'Övrigt';
 
   @override

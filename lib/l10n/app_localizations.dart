@@ -666,6 +666,42 @@ abstract class AppLocalizations {
   /// **'Family Reunification'**
   String get familyReunification;
 
+  /// No description provided for @laborDispute.
+  ///
+  /// In en, this message translates to:
+  /// **'Labor Dispute'**
+  String get laborDispute;
+
+  /// No description provided for @tenantRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Tenant Rights'**
+  String get tenantRights;
+
+  /// No description provided for @debtCollection.
+  ///
+  /// In en, this message translates to:
+  /// **'Debt Collection'**
+  String get debtCollection;
+
+  /// No description provided for @discrimination.
+  ///
+  /// In en, this message translates to:
+  /// **'Discrimination'**
+  String get discrimination;
+
+  /// No description provided for @policeMisconduct.
+  ///
+  /// In en, this message translates to:
+  /// **'Police Misconduct'**
+  String get policeMisconduct;
+
+  /// No description provided for @socialBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'Social Benefits'**
+  String get socialBenefits;
+
   /// No description provided for @other.
   ///
   /// In en, this message translates to:
