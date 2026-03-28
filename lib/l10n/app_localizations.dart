@@ -8,10 +8,19 @@ import 'package:intl/intl.dart' as intl;
 import 'app_localizations_ar.dart';
 import 'app_localizations_de.dart';
 import 'app_localizations_en.dart';
+import 'app_localizations_es.dart';
 import 'app_localizations_et.dart';
+import 'app_localizations_fa.dart';
 import 'app_localizations_fi.dart';
+import 'app_localizations_fr.dart';
+import 'app_localizations_it.dart';
+import 'app_localizations_lt.dart';
+import 'app_localizations_lv.dart';
+import 'app_localizations_pl.dart';
+import 'app_localizations_ro.dart';
 import 'app_localizations_ru.dart';
 import 'app_localizations_sv.dart';
+import 'app_localizations_tr.dart';
 
 // ignore_for_file: type=lint
 
@@ -102,10 +111,19 @@ abstract class AppLocalizations {
     Locale('ar'),
     Locale('de'),
     Locale('en'),
+    Locale('es'),
     Locale('et'),
+    Locale('fa'),
     Locale('fi'),
+    Locale('fr'),
+    Locale('it'),
+    Locale('lt'),
+    Locale('lv'),
+    Locale('pl'),
+    Locale('ro'),
     Locale('ru'),
-    Locale('sv')
+    Locale('sv'),
+    Locale('tr')
   ];
 
   /// No description provided for @appTitle.
@@ -1365,10 +1383,19 @@ class _AppLocalizationsDelegate
         'ar',
         'de',
         'en',
+        'es',
         'et',
+        'fa',
         'fi',
+        'fr',
+        'it',
+        'lt',
+        'lv',
+        'pl',
+        'ro',
         'ru',
-        'sv'
+        'sv',
+        'tr'
       ].contains(locale.languageCode);
 
   @override
@@ -1384,14 +1411,32 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsDe();
     case 'en':
       return AppLocalizationsEn();
+    case 'es':
+      return AppLocalizationsEs();
     case 'et':
       return AppLocalizationsEt();
+    case 'fa':
+      return AppLocalizationsFa();
     case 'fi':
       return AppLocalizationsFi();
+    case 'fr':
+      return AppLocalizationsFr();
+    case 'it':
+      return AppLocalizationsIt();
+    case 'lt':
+      return AppLocalizationsLt();
+    case 'lv':
+      return AppLocalizationsLv();
+    case 'pl':
+      return AppLocalizationsPl();
+    case 'ro':
+      return AppLocalizationsRo();
     case 'ru':
       return AppLocalizationsRu();
     case 'sv':
       return AppLocalizationsSv();
+    case 'tr':
+      return AppLocalizationsTr();
   }
 
   throw FlutterError(

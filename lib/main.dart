@@ -25,6 +25,15 @@ const List<LanguageOption> supportedLanguages = [
   LanguageOption('sv', 'Svenska', '\u{1F1F8}\u{1F1EA}'),
   LanguageOption('de', 'Deutsch', '\u{1F1E9}\u{1F1EA}'),
   LanguageOption('ar', '\u0627\u0644\u0639\u0631\u0628\u064A\u0629', '\u{1F1F8}\u{1F1E6}'),
+  LanguageOption('lv', 'Latvie\u0161u', '\u{1F1F1}\u{1F1FB}'),
+  LanguageOption('lt', 'Lietuvi\u0173', '\u{1F1F1}\u{1F1F9}'),
+  LanguageOption('es', 'Espa\u00f1ol', '\u{1F1EA}\u{1F1F8}'),
+  LanguageOption('it', 'Italiano', '\u{1F1EE}\u{1F1F9}'),
+  LanguageOption('ro', 'Rom\u00e2n\u0103', '\u{1F1F7}\u{1F1F4}'),
+  LanguageOption('pl', 'Polski', '\u{1F1F5}\u{1F1F1}'),
+  LanguageOption('fr', 'Fran\u00e7ais', '\u{1F1EB}\u{1F1F7}'),
+  LanguageOption('fa', '\u0641\u0627\u0631\u0633\u06cc', '\u{1F1EE}\u{1F1F7}'),
+  LanguageOption('tr', 'T\u00fcrk\u00e7e', '\u{1F1F9}\u{1F1F7}'),
 ];
 
 const String _localeKey = 'app_locale';
