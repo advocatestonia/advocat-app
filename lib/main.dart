@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,11 +85,39 @@ final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
 class LocaleNotifier extends StateNotifier<Locale> {
   LocaleNotifier() : super(_loadSavedLocale());
 
+  /// Valid language codes the app supports.
+  static final Set<String> _supportedCodes =
+      supportedLanguages.map((l) => l.code).toSet();
+
+  /// Priority: URL ?lang= param > SharedPreferences > device locale > 'en'.
   static Locale _loadSavedLocale() {
+    // 1. Check URL query parameter (works on web; empty map on other platforms).
+    if (kIsWeb) {
+      final urlLang = Uri.base.queryParameters['lang'];
+      if (urlLang != null && _supportedCodes.contains(urlLang)) {
+        // Persist so subsequent visits (without ?lang) keep the choice.
+        _prefs.setString(_localeKey, urlLang);
+        return Locale(urlLang);
+      }
+    }
+
+    // 2. Check SharedPreferences (covers returning users & localStorage bridge).
     final saved = _prefs.getString(_localeKey);
-    if (saved != null && saved.isNotEmpty) {
+    if (saved != null && _supportedCodes.contains(saved)) {
       return Locale(saved);
     }
+
+    // 3. Try device locale.
+    if (kIsWeb) {
+      final deviceLang = Uri.base.toString().isNotEmpty
+          ? WidgetsBinding.instance.platformDispatcher.locale.languageCode
+          : 'en';
+      if (_supportedCodes.contains(deviceLang)) {
+        return Locale(deviceLang);
+      }
+    }
+
+    // 4. Fallback.
     return const Locale('en');
   }
 
