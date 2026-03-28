@@ -193,7 +193,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     onPressed: _handleForgotPassword,
                     child: Text(
                       l.forgotPassword,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.accent,
                         fontWeight: FontWeight.w500,
                       ),

@@ -34,6 +34,7 @@ const List<LanguageOption> supportedLanguages = [
   LanguageOption('fr', 'Fran\u00e7ais', '\u{1F1EB}\u{1F1F7}'),
   LanguageOption('fa', '\u0641\u0627\u0631\u0633\u06cc', '\u{1F1EE}\u{1F1F7}'),
   LanguageOption('tr', 'T\u00fcrk\u00e7e', '\u{1F1F9}\u{1F1F7}'),
+  LanguageOption('uk', '\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430', '\u{1F1FA}\u{1F1E6}'),
 ];
 
 const String _localeKey = 'app_locale';
