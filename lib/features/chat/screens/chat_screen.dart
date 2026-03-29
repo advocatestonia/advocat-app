@@ -72,8 +72,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _isSending = false;
   bool _isTyping = false;
   bool _disclaimerExpanded = true;
-  // ignore: unused_field
-  String? _errorMessage;
 
   // ── Voice state ──────────────────────────────────────────────────────────
   VoiceButtonState _voiceState = VoiceButtonState.idle;
@@ -230,7 +228,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         setState(() {
           _isLoading = false;
           _messages = [];
-          _errorMessage = null; // Graceful fallback
+          // Graceful fallback – show empty state
         });
       }
     }

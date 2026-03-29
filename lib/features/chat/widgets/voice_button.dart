@@ -103,9 +103,9 @@ class _VoiceButtonState extends State<VoiceButton>
 
   // ── Colors ──────────────────────────────────────────────────────────────
 
-  static const _navy = Color(0xFF1A2B4A);
-  static const _teal = Color(0xFF0D9488);
-  static const _red = Color(0xFFDC2626);
+  static const _navy = AppColors.primaryDark;
+  static const _teal = AppColors.accent;
+  static const _red = AppColors.error;
 
   Color get _buttonColor {
     switch (widget.state) {

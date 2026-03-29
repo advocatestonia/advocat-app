@@ -43,7 +43,7 @@ class CheckerHomeScreen extends StatelessWidget {
                 icon: Icons.business_center_rounded,
                 title: 'Check a Company',
                 subtitle: 'Before you work with them',
-                gradient: const [Color(0xFF0D9488), Color(0xFF0A7069)],
+                gradient: const [AppColors.accent, AppColors.accentDark],
                 onTap: () => context.push(AppRoutes.checkerCompany),
               ),
 
@@ -54,15 +54,8 @@ class CheckerHomeScreen extends StatelessWidget {
                 icon: Icons.directions_car_rounded,
                 title: 'Check a Vehicle',
                 subtitle: 'Before you buy',
-                gradient: const [Color(0xFF2563EB), Color(0xFF1D4ED8)],
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Vehicle checker coming soon'),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
+                gradient: const [AppColors.info, AppColors.infoDark],
+                onTap: () => context.push(AppRoutes.checkerVehicle),
               ),
 
               const Spacer(),

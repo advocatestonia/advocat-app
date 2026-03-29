@@ -61,8 +61,6 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
   final List<_ScannedPage> _pages = [];
   bool _isProcessingOcr = false;
   double _uploadProgress = 0;
-  // ignore: unused_field
-  String? _errorMessage;
 
   @override
   void initState() {
@@ -130,7 +128,6 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
       if (mounted) {
         setState(() {
           _isCameraInitialized = true;
-          _errorMessage = 'Could not initialize camera';
         });
       }
     }
@@ -181,7 +178,6 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
     setState(() {
       _currentCapture = null;
       _phase = _ScanPhase.camera;
-      _errorMessage = null;
     });
   }
 
