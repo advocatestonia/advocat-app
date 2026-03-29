@@ -162,12 +162,12 @@ class ChatNotifier extends StateNotifier<ChatState> {
       );
 
       String responseText;
-      if (isDemo) {
-        // Simulate AI thinking delay
+      if (isDemo && !aiService.isUsingRealAI) {
+        // Pure demo mode — mock responses
         await Future.delayed(const Duration(milliseconds: 800));
         responseText = _getDemoResponse(trimmed);
       } else {
-        // Call AI
+        // Real AI (direct Claude API) or backend proxy
         final response = await aiService.sendChatMessage(
           caseId: caseId,
           message: trimmed,

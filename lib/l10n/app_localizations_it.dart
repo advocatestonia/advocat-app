@@ -661,4 +661,100 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get viewAll => 'Vedi tutti';
+
+  @override
+  String get checkCompany => 'Check Company';
+
+  @override
+  String get checkVehicle => 'Check Vehicle';
+
+  @override
+  String get companyName => 'Company name or reg. number';
+
+  @override
+  String get selectCountry => 'Select country';
+
+  @override
+  String get riskLow => 'Safe to work with';
+
+  @override
+  String get riskMedium => 'Proceed with caution';
+
+  @override
+  String get riskHigh => 'High risk — avoid';
+
+  @override
+  String get perCheck => 'per check';
+
+  @override
+  String get checkerTitle => 'Checker';
+
+  @override
+  String get beforeYouWork => 'Before you work with them';
+
+  @override
+  String get beforeYouBuy => 'Before you buy';
+
+  @override
+  String get vehicleChecker => 'Vehicle Checker';
+
+  @override
+  String get licensePlate => 'License plate';
+
+  @override
+  String get vinNumber => 'VIN number';
+
+  @override
+  String get vehicleMake => 'Make';
+
+  @override
+  String get vehicleModel => 'Model';
+
+  @override
+  String get vehicleYear => 'Year';
+
+  @override
+  String get vehicleColor => 'Color';
+
+  @override
+  String get vehicleChecks => 'Status Checks';
+
+  @override
+  String get mileage => 'Mileage';
+
+  @override
+  String get accidents => 'Accidents';
+
+  @override
+  String get owners => 'Previous owners';
+
+  @override
+  String get insurance => 'Insurance';
+
+  @override
+  String get inspection => 'Technical inspection';
+
+  @override
+  String get stolen => 'Stolen check';
+
+  @override
+  String get safeToBuy => 'Safe to buy';
+
+  @override
+  String get someConcerns => 'Some concerns';
+
+  @override
+  String get doNotBuy => 'Do not buy';
+
+  @override
+  String get pricePerCheck => '€4.99 per check';
+
+  @override
+  String get demoHint => 'Demo: try plate \"908FBT\"';
+
+  @override
+  String get reportFraud => 'Report Fraud';
+
+  @override
+  String get openACase => 'Open a Case';
 }

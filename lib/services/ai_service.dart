@@ -3,17 +3,24 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 import '../config/app_config.dart';
+import '../models/case_model.dart';
+import 'claude_service.dart';
+import 'system_prompts.dart';
 
 final aiServiceProvider = Provider<AIService>((ref) {
-  return AIService();
+  final claudeService = ref.watch(claudeServiceProvider);
+  return AIService(claudeService: claudeService);
 });
 
-/// Service that communicates with the backend AI endpoint (which proxies
-/// requests to Claude). The mobile app never holds raw AI API keys -- all
-/// requests go through our authenticated Supabase Edge Function.
+/// Service that communicates with the AI backend.
+///
+/// When [AppConfig.useRealAI] is true **and** a Claude API key is configured,
+/// requests are sent directly to the Claude Messages API via [ClaudeService].
+/// Otherwise, requests go through the backend proxy endpoint (original flow).
 class AIService {
-  AIService()
-      : _dio = Dio(
+  AIService({ClaudeService? claudeService})
+      : _claudeService = claudeService ?? ClaudeService(),
+        _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
             connectTimeout: const Duration(seconds: 30),
@@ -25,20 +32,85 @@ class AIService {
         ),
         _log = Logger(printer: PrettyPrinter(methodCount: 0));
 
+  final ClaudeService _claudeService;
   final Dio _dio;
   final Logger _log;
 
-  /// Set the Supabase access token for authenticated requests.
+  /// Whether this service instance is using the real Claude API.
+  bool get isUsingRealAI => AppConfig.useRealAI && ClaudeService.isAvailable;
+
+  /// Set the Supabase access token for authenticated proxy requests.
   void setAuthToken(String token) {
     _dio.options.headers['Authorization'] = 'Bearer $token';
   }
+
+  // ── Conversation history for real AI mode ──────────────────────────────
+
+  /// Per-case conversation history for Claude context.
+  final Map<String, List<Map<String, String>>> _conversationHistory = {};
+
+  /// Maximum messages to keep in conversation history per case.
+  static const int _maxHistoryMessages = 40;
+
+  void _addToHistory(String caseId, String role, String content) {
+    _conversationHistory.putIfAbsent(caseId, () => []);
+    _conversationHistory[caseId]!.add({'role': role, 'content': content});
+    // Trim old messages, keeping system-level context fresh
+    if (_conversationHistory[caseId]!.length > _maxHistoryMessages) {
+      _conversationHistory[caseId] = _conversationHistory[caseId]!
+          .sublist(_conversationHistory[caseId]!.length - _maxHistoryMessages);
+    }
+  }
+
+  /// Clear conversation history for a case (e.g., on new session).
+  void clearHistory(String caseId) {
+    _conversationHistory.remove(caseId);
+  }
+
+  // ── Document analysis ──────────────────────────────────────────────────
 
   /// Analyze an uploaded document: extract text, summarize, find deadlines.
   Future<DocumentAnalysis> analyzeDocument({
     required String caseId,
     required String documentId,
     String? ocrText,
+    CaseType? caseType,
+    String? country,
   }) async {
+    if (isUsingRealAI && ocrText != null && ocrText.isNotEmpty) {
+      _log.i('Using Claude API for document analysis');
+      try {
+        final result = await _claudeService.analyzeDocument(
+          text: ocrText,
+          language: 'auto',
+          caseContext: 'Case ID: $caseId, Document ID: $documentId',
+        );
+        return DocumentAnalysis(
+          summary: result.summary,
+          language: result.detectedLanguage,
+          keyPoints: result.keyPoints,
+          deadlines: result.actionItems
+              .where((item) =>
+                  item.toLowerCase().contains('deadline') ||
+                  item.toLowerCase().contains('date') ||
+                  item.toLowerCase().contains('days'))
+              .map((item) => ExtractedDeadline(
+                    title: item,
+                    date: '', // Claude doesn't extract exact dates in this mode
+                  ))
+              .toList(),
+          entities: {
+            'legal_references': result.legalReferences,
+            'action_items': result.actionItems,
+          },
+        );
+      } on ClaudeServiceException catch (e) {
+        _log.e('Claude document analysis failed, falling back to proxy', error: e);
+        // Fall through to proxy
+      }
+    }
+
+    // Proxy fallback
     try {
       final response = await _dio.post(
         '/ai/analyze-document',
@@ -55,12 +127,64 @@ class AIService {
     }
   }
 
+  // ── Chat ───────────────────────────────────────────────────────────────
+
   /// Send a message in the AI legal assistant chat.
+  ///
+  /// When using real AI, [caseType], [country], [nationality], and
+  /// [caseDescription] are used to build the system prompt with relevant
+  /// legal knowledge.
   Future<ChatResponse> sendChatMessage({
     required String caseId,
     required String message,
     List<String>? attachmentIds,
+    CaseType? caseType,
+    String? country,
+    String? nationality,
+    String? caseDescription,
+    String? userLanguage,
   }) async {
+    if (isUsingRealAI) {
+      _log.i('Using Claude API for chat');
+      try {
+        // Add user message to history
+        _addToHistory(caseId, 'user', message);
+
+        // Build system prompt with relevant knowledge
+        final systemPrompt = SystemPrompts.buildChatPrompt(
+          caseType: caseType,
+          country: country,
+          nationality: nationality,
+          caseContext: caseDescription,
+          userLanguage: userLanguage,
+        );
+
+        // Send to Claude with full conversation history
+        final responseText = await _claudeService.sendMessage(
+          messages: _conversationHistory[caseId] ?? [
+            {'role': 'user', 'content': message},
+          ],
+          systemPrompt: systemPrompt,
+        );
+
+        // Add assistant response to history
+        _addToHistory(caseId, 'assistant', responseText);
+
+        return ChatResponse(
+          message: responseText,
+          disclaimer:
+              'This is AI-generated legal information, not legal advice. '
+              'Please consult a qualified attorney for advice specific to your situation.',
+        );
+      } on ClaudeServiceException catch (e) {
+        _log.e('Claude chat failed, falling back to proxy', error: e);
+        // Remove the message we added to history since it failed
+        _conversationHistory[caseId]?.removeLast();
+        // Fall through to proxy
+      }
+    }
+
+    // Proxy fallback
     try {
       final response = await _dio.post(
         '/ai/chat',
@@ -77,12 +201,57 @@ class AIService {
     }
   }
 
+  // ── Draft generation ───────────────────────────────────────────────────
+
   /// Generate a draft appeal or response document based on the case context.
   Future<DraftResponse> generateDraft({
     required String caseId,
     required String draftType,
     Map<String, dynamic>? parameters,
+    CaseType? caseType,
+    String? country,
+    String? nationality,
+    String language = 'en',
   }) async {
+    if (isUsingRealAI) {
+      _log.i('Using Claude API for draft generation');
+      try {
+        final systemPrompt = SystemPrompts.buildDraftPrompt(
+          documentType: draftType,
+          language: language,
+          caseType: caseType,
+          country: country,
+          nationality: nationality,
+        );
+
+        final caseData = {
+          'case_id': caseId,
+          'draft_type': draftType,
+          if (parameters != null) ...parameters,
+        };
+
+        final content = await _claudeService.generateDraft(
+          caseData: caseData,
+          documentType: draftType,
+          language: language,
+          systemPrompt: systemPrompt,
+        );
+
+        return DraftResponse(
+          title: '$draftType Draft',
+          content: content,
+          language: language,
+          disclaimer:
+              'This is an AI-generated draft. It must be reviewed and approved '
+              'by a qualified attorney before submission to any court or authority.',
+        );
+      } on ClaudeServiceException catch (e) {
+        _log.e('Claude draft generation failed, falling back to proxy', error: e);
+        // Fall through to proxy
+      }
+    }
+
+    // Proxy fallback
     try {
       final response = await _dio.post(
         '/ai/generate-draft',
@@ -99,11 +268,36 @@ class AIService {
     }
   }
 
+  // ── Deadline extraction ────────────────────────────────────────────────
+
   /// Extract deadlines and key dates from correspondence text.
   Future<List<ExtractedDeadline>> extractDeadlines({
     required String caseId,
     required String text,
   }) async {
+    if (isUsingRealAI) {
+      _log.i('Using Claude API for deadline extraction');
+      try {
+        final result = await _claudeService.analyzeDocument(
+          text: text,
+          language: 'auto',
+          caseContext: 'Extract all deadlines, dates, and time-sensitive items.',
+        );
+        return result.actionItems
+            .map((item) => ExtractedDeadline(
+                  title: item,
+                  date: '',
+                  type: 'extracted',
+                  description: item,
+                ))
+            .toList();
+      } on ClaudeServiceException catch (e) {
+        _log.e('Claude deadline extraction failed, falling back to proxy', error: e);
+        // Fall through to proxy
+      }
+    }
+
+    // Proxy fallback
     try {
       final response = await _dio.post(
         '/ai/extract-deadlines',

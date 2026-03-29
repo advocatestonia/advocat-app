@@ -17,6 +17,9 @@ import '../features/chat/screens/chat_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/settings/screens/subscription_screen.dart';
 import '../features/email/screens/email_screen.dart';
+import '../features/checker/screens/checker_home_screen.dart';
+import '../features/checker/screens/company_checker_screen.dart';
+import '../features/checker/screens/vehicle_checker_screen.dart';
 import '../shared/widgets/main_shell.dart';
 
 /// Named route constants to avoid magic strings.
@@ -36,6 +39,9 @@ abstract final class AppRoutes {
   static const String settings = '/settings';
   static const String subscription = '/subscription';
   static const String email = '/email';
+  static const String checker = '/checker';
+  static const String checkerCompany = '/checker/company';
+  static const String checkerVehicle = '/checker/vehicle';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -156,6 +162,21 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.email,
         name: 'email',
         builder: (context, state) => const EmailScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.checker,
+        name: 'checker',
+        builder: (context, state) => const CheckerHomeScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.checkerCompany,
+        name: 'checkerCompany',
+        builder: (context, state) => const CompanyCheckerScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.checkerVehicle,
+        name: 'checkerVehicle',
+        builder: (context, state) => const VehicleCheckerScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

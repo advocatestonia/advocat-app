@@ -9,6 +9,8 @@ import '../../../config/theme.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
+import '../../../services/voice_service.dart';
+import '../widgets/voice_button.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -73,10 +75,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // ignore: unused_field
   String? _errorMessage;
 
+  // ── Voice state ──────────────────────────────────────────────────────────
+  VoiceButtonState _voiceState = VoiceButtonState.idle;
+  String _partialSpeech = '';
+  bool _ttsEnabled = true;
+  bool _voiceInitialized = false;
+  StreamSubscription<String>? _speechSub;
+
   @override
   void initState() {
     super.initState();
     _loadMessages();
+    _initVoice();
   }
 
   @override
@@ -84,7 +94,121 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _messageController.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
+    _speechSub?.cancel();
     super.dispose();
+  }
+
+  // ── Voice initialization ─────────────────────────────────────────────────
+
+  Future<void> _initVoice() async {
+    final voice = ref.read(voiceServiceProvider);
+    final sttOk = await voice.initSpeech();
+    await voice.initTTS();
+    if (mounted) {
+      setState(() => _voiceInitialized = sttOk);
+    }
+  }
+
+  // ── Voice actions ────────────────────────────────────────────────────────
+
+  void _onVoiceTap() {
+    final voice = ref.read(voiceServiceProvider);
+
+    switch (_voiceState) {
+      case VoiceButtonState.idle:
+        _startVoiceInput();
+        break;
+      case VoiceButtonState.listening:
+        _stopVoiceInput();
+        break;
+      case VoiceButtonState.speaking:
+        voice.stopSpeaking();
+        setState(() => _voiceState = VoiceButtonState.idle);
+        break;
+      case VoiceButtonState.processing:
+        // Do nothing while processing
+        break;
+    }
+  }
+
+  void _startVoiceInput() {
+    final voice = ref.read(voiceServiceProvider);
+    if (!voice.isSttAvailable) return;
+
+    // Determine language from current locale
+    final langCode = Localizations.localeOf(context).languageCode;
+
+    setState(() {
+      _voiceState = VoiceButtonState.listening;
+      _partialSpeech = '';
+    });
+
+    final stream = voice.startListening(langCode: langCode);
+    _speechSub?.cancel();
+    _speechSub = stream.listen(
+      (partial) {
+        if (mounted) {
+          setState(() => _partialSpeech = partial);
+        }
+      },
+      onDone: () {
+        // Auto-stop after silence timeout
+        if (mounted && _voiceState == VoiceButtonState.listening) {
+          _stopVoiceInput();
+        }
+      },
+    );
+  }
+
+  Future<void> _stopVoiceInput() async {
+    _speechSub?.cancel();
+    final voice = ref.read(voiceServiceProvider);
+    final finalText = await voice.stopListening();
+
+    if (!mounted) return;
+
+    if (finalText.trim().isEmpty) {
+      setState(() {
+        _voiceState = VoiceButtonState.idle;
+        _partialSpeech = '';
+      });
+      return;
+    }
+
+    setState(() {
+      _voiceState = VoiceButtonState.processing;
+      _partialSpeech = '';
+    });
+
+    await _sendMessage(finalText);
+
+    if (mounted) {
+      setState(() {
+        _voiceState = VoiceButtonState.idle;
+      });
+    }
+  }
+
+  /// Speak AI response via TTS and show speaking animation.
+  Future<void> _speakResponse(String text) async {
+    if (!_ttsEnabled) return;
+
+    final voice = ref.read(voiceServiceProvider);
+    final langCode = Localizations.localeOf(context).languageCode;
+
+    setState(() => _voiceState = VoiceButtonState.speaking);
+    await voice.speak(text, langCode: langCode);
+
+    // Wait for TTS to finish
+    // Poll briefly since FlutterTts callbacks update the service internally
+    while (voice.isSpeaking) {
+      await Future.delayed(const Duration(milliseconds: 200));
+      if (!mounted) return;
+    }
+
+    if (mounted) {
+      setState(() => _voiceState = VoiceButtonState.idle);
+    }
   }
 
   // ── Data loading ────────────────────────────────────────────────────────
@@ -146,11 +270,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       );
 
       String responseText;
-      if (isDemo) {
+      final ai = ref.read(aiServiceProvider);
+      if (isDemo && !ai.isUsingRealAI) {
+        // Pure demo mode — mock responses
         await Future.delayed(const Duration(milliseconds: 800));
         responseText = _getDemoResponse(text);
       } else {
-        final ai = ref.read(aiServiceProvider);
+        // Real AI (direct Claude API) or backend proxy
         final response = await ai.sendChatMessage(
           caseId: widget.caseId,
           message: text,
@@ -176,6 +302,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _messages.add(aiMessage);
         });
         _scrollToBottom();
+
+        // Auto-read AI response if TTS is enabled
+        if (_ttsEnabled) {
+          _speakResponse(responseText);
+        }
       }
     } catch (e) {
       if (mounted) {
@@ -246,7 +377,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           if (!_isSending && _messages.length < 3)
             _buildQuickActions(),
 
-          // Input bar
+          // Input bar with voice button
           _buildInputBar(),
         ],
       ),
@@ -320,6 +451,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ],
       ),
       actions: [
+        // TTS mute/unmute toggle
+        IconButton(
+          icon: Icon(
+            _ttsEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
+            color: _ttsEnabled ? AppColors.accent : AppColors.textTertiary,
+          ),
+          tooltip: _ttsEnabled ? 'Mute voice' : 'Unmute voice',
+          onPressed: () {
+            setState(() => _ttsEnabled = !_ttsEnabled);
+            if (!_ttsEnabled) {
+              final voice = ref.read(voiceServiceProvider);
+              voice.stopSpeaking();
+              if (_voiceState == VoiceButtonState.speaking) {
+                setState(() => _voiceState = VoiceButtonState.idle);
+              }
+            }
+            HapticFeedback.selectionClick();
+          },
+        ),
         IconButton(
           icon: const Icon(Icons.attach_file_rounded),
           tooltip: 'Attach document',
@@ -475,6 +625,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             )
                 .animate()
                 .fadeIn(delay: 350.ms, duration: 400.ms),
+            if (_voiceInitialized) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                'Tap the microphone to speak',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textTertiary,
+                    ),
+              )
+                  .animate()
+                  .fadeIn(delay: 500.ms, duration: 400.ms),
+            ],
           ],
         ),
       ),
@@ -779,69 +940,100 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Attach button
-          IconButton(
-            icon: const Icon(Icons.add_circle_outline_rounded),
-            color: AppColors.textTertiary,
-            onPressed: () {
-              context.push('/scan?caseId=${widget.caseId}');
-            },
-          ),
+          // Voice partial text + button (shown when listening)
+          if (_voiceState == VoiceButtonState.listening ||
+              _voiceState == VoiceButtonState.speaking)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: VoiceButton(
+                state: _voiceState,
+                partialText: _voiceState == VoiceButtonState.listening
+                    ? _partialSpeech
+                    : null,
+                onTap: _onVoiceTap,
+              ),
+            ),
 
-          // Text field
-          Expanded(
-            child: Container(
-              constraints: const BoxConstraints(maxHeight: 120),
-              child: TextField(
-                controller: _messageController,
-                focusNode: _focusNode,
-                maxLines: 5,
-                minLines: 1,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.newline,
-                decoration: InputDecoration(
-                  hintText: 'Ask about your case...',
-                  hintStyle: const TextStyle(color: AppColors.textTertiary),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
-                    borderSide: BorderSide.none,
-                  ),
-                  filled: true,
-                  fillColor: AppColors.surfaceVariant,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.sm + 2,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // Attach button
+              IconButton(
+                icon: const Icon(Icons.add_circle_outline_rounded),
+                color: AppColors.textTertiary,
+                onPressed: () {
+                  context.push('/scan?caseId=${widget.caseId}');
+                },
+              ),
+
+              // Text field
+              Expanded(
+                child: Container(
+                  constraints: const BoxConstraints(maxHeight: 120),
+                  child: TextField(
+                    controller: _messageController,
+                    focusNode: _focusNode,
+                    maxLines: 5,
+                    minLines: 1,
+                    textCapitalization: TextCapitalization.sentences,
+                    textInputAction: TextInputAction.newline,
+                    decoration: InputDecoration(
+                      hintText: 'Ask about your case...',
+                      hintStyle: const TextStyle(color: AppColors.textTertiary),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: AppColors.surfaceVariant,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                        vertical: AppSpacing.sm + 2,
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(width: 4),
+              const SizedBox(width: 4),
 
-          // Send button
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            child: IconButton(
-              onPressed: _isSending ? null : () => _sendMessage(),
-              icon: _isSending
-                  ? const SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: AppColors.accent,
-                      ),
-                    )
-                  : const Icon(Icons.send_rounded),
-              style: IconButton.styleFrom(
-                backgroundColor: AppColors.accent,
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: AppColors.accent.withValues(alpha: 0.5),
+              // Voice button (compact, next to send)
+              if (_voiceInitialized &&
+                  _voiceState != VoiceButtonState.listening &&
+                  _voiceState != VoiceButtonState.speaking)
+                VoiceButton(
+                  state: _voiceState,
+                  size: 40,
+                  onTap: _onVoiceTap,
+                ),
+
+              if (_voiceInitialized) const SizedBox(width: 4),
+
+              // Send button
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                child: IconButton(
+                  onPressed: _isSending ? null : () => _sendMessage(),
+                  icon: _isSending
+                      ? const SizedBox(
+                          width: 22,
+                          height: 22,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.accent,
+                          ),
+                        )
+                      : const Icon(Icons.send_rounded),
+                  style: IconButton.styleFrom(
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: Colors.white,
+                    disabledBackgroundColor: AppColors.accent.withValues(alpha: 0.5),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),

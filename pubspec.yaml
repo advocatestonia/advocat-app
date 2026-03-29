@@ -52,6 +52,10 @@ dependencies:
   shimmer: ^3.0.0
   flutter_animate: ^4.5.0
 
+  # Voice
+  speech_to_text: ^6.6.0
+  flutter_tts: ^4.0.2
+
   # Utilities
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1

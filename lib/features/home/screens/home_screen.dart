@@ -389,6 +389,12 @@ class _QuickActions extends StatelessWidget {
             onTap: () => context.push(AppRoutes.scan),
           ),
           _QuickActionButton(
+            icon: Icons.verified_user_outlined,
+            label: l.checkerTitle,
+            color: AppColors.accent,
+            onTap: () => context.push(AppRoutes.checker),
+          ),
+          _QuickActionButton(
             icon: Icons.smart_toy_outlined,
             label: l.aiChat,
             color: AppColors.info,

@@ -38,6 +38,28 @@ class AppConfig {
     defaultValue: '',
   );
 
+  // ── Claude Direct API (MVP — will move to server-side proxy) ────────
+  static const String claudeApiKey = String.fromEnvironment(
+    'CLAUDE_API_KEY',
+    defaultValue: '',
+  );
+
+  /// AI mode: 'real' to use Claude API directly, 'demo' for mock responses.
+  /// Auto-detected: if CLAUDE_API_KEY is set, defaults to 'real'.
+  static const String _aiModeRaw = String.fromEnvironment(
+    'AI_MODE',
+    defaultValue: 'auto',
+  );
+
+  /// Resolved AI mode. When set to 'auto', uses real AI if a Claude API key
+  /// is available, otherwise falls back to demo mode.
+  static bool get useRealAI {
+    if (_aiModeRaw == 'real') return true;
+    if (_aiModeRaw == 'demo') return false;
+    // 'auto': use real AI if API key is configured
+    return claudeApiKey.isNotEmpty;
+  }
+
   // ── Email Integration ─────────────────────────────────────────────────
   static const String emailApiBaseUrl = String.fromEnvironment(
     'EMAIL_API_BASE_URL',

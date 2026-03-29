@@ -664,4 +664,100 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get viewAll => 'Все';
+
+  @override
+  String get checkCompany => 'Проверить компанию';
+
+  @override
+  String get checkVehicle => 'Проверить автомобиль';
+
+  @override
+  String get companyName => 'Название или рег. номер';
+
+  @override
+  String get selectCountry => 'Выберите страну';
+
+  @override
+  String get riskLow => 'Безопасно для работы';
+
+  @override
+  String get riskMedium => 'Будьте осторожны';
+
+  @override
+  String get riskHigh => 'Высокий риск — избегайте';
+
+  @override
+  String get perCheck => 'за проверку';
+
+  @override
+  String get checkerTitle => 'Проверка';
+
+  @override
+  String get beforeYouWork => 'Прежде чем работать с ними';
+
+  @override
+  String get beforeYouBuy => 'Прежде чем покупать';
+
+  @override
+  String get vehicleChecker => 'Проверка авто';
+
+  @override
+  String get licensePlate => 'Номерной знак';
+
+  @override
+  String get vinNumber => 'VIN номер';
+
+  @override
+  String get vehicleMake => 'Марка';
+
+  @override
+  String get vehicleModel => 'Модель';
+
+  @override
+  String get vehicleYear => 'Год выпуска';
+
+  @override
+  String get vehicleColor => 'Цвет';
+
+  @override
+  String get vehicleChecks => 'Проверки';
+
+  @override
+  String get mileage => 'Пробег';
+
+  @override
+  String get accidents => 'ДТП';
+
+  @override
+  String get owners => 'Предыдущие владельцы';
+
+  @override
+  String get insurance => 'Страховка';
+
+  @override
+  String get inspection => 'Техосмотр';
+
+  @override
+  String get stolen => 'Проверка на угон';
+
+  @override
+  String get safeToBuy => 'Безопасно покупать';
+
+  @override
+  String get someConcerns => 'Есть замечания';
+
+  @override
+  String get doNotBuy => 'Не покупать';
+
+  @override
+  String get pricePerCheck => '€4,99 за проверку';
+
+  @override
+  String get demoHint => 'Демо: введите номер \"908FBT\"';
+
+  @override
+  String get reportFraud => 'Сообщить о мошенничестве';
+
+  @override
+  String get openACase => 'Открыть дело';
 }

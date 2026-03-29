@@ -1369,6 +1369,198 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View All'**
   String get viewAll;
+
+  /// No description provided for @checkCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Company'**
+  String get checkCompany;
+
+  /// No description provided for @checkVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check Vehicle'**
+  String get checkVehicle;
+
+  /// No description provided for @companyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Company name or reg. number'**
+  String get companyName;
+
+  /// No description provided for @selectCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Select country'**
+  String get selectCountry;
+
+  /// No description provided for @riskLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe to work with'**
+  String get riskLow;
+
+  /// No description provided for @riskMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed with caution'**
+  String get riskMedium;
+
+  /// No description provided for @riskHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'High risk — avoid'**
+  String get riskHigh;
+
+  /// No description provided for @perCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'per check'**
+  String get perCheck;
+
+  /// No description provided for @checkerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Checker'**
+  String get checkerTitle;
+
+  /// No description provided for @beforeYouWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you work with them'**
+  String get beforeYouWork;
+
+  /// No description provided for @beforeYouBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you buy'**
+  String get beforeYouBuy;
+
+  /// No description provided for @vehicleChecker.
+  ///
+  /// In en, this message translates to:
+  /// **'Vehicle Checker'**
+  String get vehicleChecker;
+
+  /// No description provided for @licensePlate.
+  ///
+  /// In en, this message translates to:
+  /// **'License plate'**
+  String get licensePlate;
+
+  /// No description provided for @vinNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'VIN number'**
+  String get vinNumber;
+
+  /// No description provided for @vehicleMake.
+  ///
+  /// In en, this message translates to:
+  /// **'Make'**
+  String get vehicleMake;
+
+  /// No description provided for @vehicleModel.
+  ///
+  /// In en, this message translates to:
+  /// **'Model'**
+  String get vehicleModel;
+
+  /// No description provided for @vehicleYear.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get vehicleYear;
+
+  /// No description provided for @vehicleColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Color'**
+  String get vehicleColor;
+
+  /// No description provided for @vehicleChecks.
+  ///
+  /// In en, this message translates to:
+  /// **'Status Checks'**
+  String get vehicleChecks;
+
+  /// No description provided for @mileage.
+  ///
+  /// In en, this message translates to:
+  /// **'Mileage'**
+  String get mileage;
+
+  /// No description provided for @accidents.
+  ///
+  /// In en, this message translates to:
+  /// **'Accidents'**
+  String get accidents;
+
+  /// No description provided for @owners.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous owners'**
+  String get owners;
+
+  /// No description provided for @insurance.
+  ///
+  /// In en, this message translates to:
+  /// **'Insurance'**
+  String get insurance;
+
+  /// No description provided for @inspection.
+  ///
+  /// In en, this message translates to:
+  /// **'Technical inspection'**
+  String get inspection;
+
+  /// No description provided for @stolen.
+  ///
+  /// In en, this message translates to:
+  /// **'Stolen check'**
+  String get stolen;
+
+  /// No description provided for @safeToBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe to buy'**
+  String get safeToBuy;
+
+  /// No description provided for @someConcerns.
+  ///
+  /// In en, this message translates to:
+  /// **'Some concerns'**
+  String get someConcerns;
+
+  /// No description provided for @doNotBuy.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not buy'**
+  String get doNotBuy;
+
+  /// No description provided for @pricePerCheck.
+  ///
+  /// In en, this message translates to:
+  /// **'€4.99 per check'**
+  String get pricePerCheck;
+
+  /// No description provided for @demoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo: try plate \"908FBT\"'**
+  String get demoHint;
+
+  /// No description provided for @reportFraud.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Fraud'**
+  String get reportFraud;
+
+  /// No description provided for @openACase.
+  ///
+  /// In en, this message translates to:
+  /// **'Open a Case'**
+  String get openACase;
 }
 
 class _AppLocalizationsDelegate
