@@ -27,6 +27,7 @@ class ChatMessage {
   final DateTime timestamp;
   final MessageContentType contentType;
   final Map<String, dynamic>? metadata;
+  final bool hasAttachment;
 
   const ChatMessage({
     required this.id,
@@ -35,6 +36,7 @@ class ChatMessage {
     required this.timestamp,
     this.contentType = MessageContentType.text,
     this.metadata,
+    this.hasAttachment = false,
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -44,9 +46,16 @@ class ChatMessage {
       content: json['content'] as String? ?? '',
       timestamp: DateTime.tryParse(json['created_at'] as String? ?? '') ??
           DateTime.now(),
+      hasAttachment: json['has_attachment'] as bool? ?? false,
     );
   }
 }
+
+// ---------------------------------------------------------------------------
+// Chat context phase — determines which quick action chips to show
+// ---------------------------------------------------------------------------
+
+enum _ChatPhase { newCase, afterScan, afterAnalysis }
 
 // ---------------------------------------------------------------------------
 // Screen
@@ -72,8 +81,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _isSending = false;
   bool _isTyping = false;
   bool _disclaimerExpanded = true;
+  _ChatPhase _chatPhase = _ChatPhase.newCase;
+  int _issuesFound = 0;
 
-  // ── Voice state ──────────────────────────────────────────────────────────
+  // -- Voice state --
   VoiceButtonState _voiceState = VoiceButtonState.idle;
   String _partialSpeech = '';
   bool _ttsEnabled = true;
@@ -96,7 +107,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     super.dispose();
   }
 
-  // ── Voice initialization ─────────────────────────────────────────────────
+  // -- Voice initialization --
 
   Future<void> _initVoice() async {
     final voice = ref.read(voiceServiceProvider);
@@ -107,7 +118,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  // ── Voice actions ────────────────────────────────────────────────────────
+  // -- Voice actions --
 
   void _onVoiceTap() {
     final voice = ref.read(voiceServiceProvider);
@@ -124,7 +135,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         setState(() => _voiceState = VoiceButtonState.idle);
         break;
       case VoiceButtonState.processing:
-        // Do nothing while processing
         break;
     }
   }
@@ -133,7 +143,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final voice = ref.read(voiceServiceProvider);
     if (!voice.isSttAvailable) return;
 
-    // Determine language from current locale
     final langCode = Localizations.localeOf(context).languageCode;
 
     setState(() {
@@ -150,7 +159,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       },
       onDone: () {
-        // Auto-stop after silence timeout
         if (mounted && _voiceState == VoiceButtonState.listening) {
           _stopVoiceInput();
         }
@@ -187,7 +195,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  /// Speak AI response via TTS and show speaking animation.
   Future<void> _speakResponse(String text) async {
     if (!_ttsEnabled) return;
 
@@ -197,8 +204,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     setState(() => _voiceState = VoiceButtonState.speaking);
     await voice.speak(text, langCode: langCode);
 
-    // Wait for TTS to finish
-    // Poll briefly since FlutterTts callbacks update the service internally
     while (voice.isSpeaking) {
       await Future.delayed(const Duration(milliseconds: 200));
       if (!mounted) return;
@@ -209,7 +214,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  // ── Data loading ────────────────────────────────────────────────────────
+  // -- Data loading --
 
   Future<void> _loadMessages() async {
     try {
@@ -218,9 +223,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
       if (mounted) {
         setState(() {
-          _messages = rawMessages.map((m) => ChatMessage.fromJson(m)).toList();
+          _messages =
+              rawMessages.map((m) => ChatMessage.fromJson(m)).toList();
           _isLoading = false;
         });
+
+        // If no messages exist, this is a new case -- send welcome
+        if (_messages.isEmpty) {
+          _sendWelcomeMessage();
+        } else {
+          _updateChatPhase();
+        }
+
         _scrollToBottom(animated: false);
       }
     } catch (e) {
@@ -228,13 +242,54 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         setState(() {
           _isLoading = false;
           _messages = [];
-          // Graceful fallback – show empty state
         });
+        _sendWelcomeMessage();
       }
     }
   }
 
-  // ── Sending ─────────────────────────────────────────────────────────────
+  void _sendWelcomeMessage() {
+    final welcome = ChatMessage(
+      id: 'welcome_${DateTime.now().millisecondsSinceEpoch}',
+      role: MessageRole.assistant,
+      content:
+          'Привет! Я ваш юридический помощник. Расскажите, что у вас '
+          'случилось — я проанализирую ситуацию и подскажу что делать.',
+      timestamp: DateTime.now(),
+    );
+    setState(() {
+      _messages.add(welcome);
+      _chatPhase = _ChatPhase.newCase;
+    });
+    _scrollToBottom();
+  }
+
+  void _updateChatPhase() {
+    final allText =
+        _messages.map((m) => m.content.toLowerCase()).join(' ');
+
+    if (allText.contains('ошибк') ||
+        allText.contains('нарушен') ||
+        allText.contains('error') ||
+        allText.contains('issue') ||
+        allText.contains('found')) {
+      _chatPhase = _ChatPhase.afterAnalysis;
+      // Count issues heuristic
+      final issueMatches =
+          RegExp(r'[🔴🟡🔵]|critical|важн|ошибк').allMatches(allText);
+      _issuesFound = issueMatches.length.clamp(0, 10);
+    } else if (allText.contains('документ') ||
+        allText.contains('сканир') ||
+        allText.contains('решение') ||
+        allText.contains('document') ||
+        allText.contains('scan')) {
+      _chatPhase = _ChatPhase.afterScan;
+    } else {
+      _chatPhase = _ChatPhase.newCase;
+    }
+  }
+
+  // -- Sending --
 
   Future<void> _sendMessage([String? overrideText]) async {
     final text = (overrideText ?? _messageController.text).trim();
@@ -270,11 +325,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       String responseText;
       final ai = ref.read(aiServiceProvider);
       if (isDemo && !ai.isUsingRealAI) {
-        // Pure demo mode — mock responses
         await Future.delayed(const Duration(milliseconds: 800));
         responseText = _getDemoResponse(text);
       } else {
-        // Real AI (direct Claude API) or backend proxy
         final response = await ai.sendChatMessage(
           caseId: widget.caseId,
           message: text,
@@ -299,9 +352,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _isTyping = false;
           _messages.add(aiMessage);
         });
+        _updateChatPhase();
         _scrollToBottom();
 
-        // Auto-read AI response if TTS is enabled
         if (_ttsEnabled) {
           _speakResponse(responseText);
         }
@@ -325,17 +378,46 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   String _getDemoResponse(String message) {
     final lower = message.toLowerCase();
+    if (lower.contains('депортир') ||
+        lower.contains('украл') ||
+        lower.contains('полиц') ||
+        lower.contains('магазин')) {
+      return DemoData.chatResponses['situation']!;
+    }
+    if (lower.contains('вот решение') ||
+        lower.contains('документ') ||
+        lower.contains('фото')) {
+      return DemoData.chatResponses['document_analysis']!;
+    }
     if (lower.contains('analyze') || lower.contains('analysis')) {
       return DemoData.chatResponses['analyze']!;
     }
     if (lower.contains('option') || lower.contains('what can')) {
       return DemoData.chatResponses['options']!;
     }
-    if (lower.contains('appeal') || lower.contains('draft')) {
+    if (lower.contains('appeal') ||
+        lower.contains('draft') ||
+        lower.contains('жалоб')) {
       return DemoData.chatResponses['appeal']!;
     }
-    if (lower.contains('deadline') || lower.contains('date')) {
+    if (lower.contains('deadline') ||
+        lower.contains('date') ||
+        lower.contains('срок')) {
       return DemoData.chatResponses['deadlines']!;
+    }
+    if (lower.contains('ошибк') || lower.contains('найти')) {
+      return DemoData.chatResponses['analyze']!;
+    }
+    if (lower.contains('что у меня') ||
+        lower.contains('ситуаци') ||
+        lower.contains('что случ')) {
+      return DemoData.chatResponses['situation']!;
+    }
+    if (lower.contains('прав') || lower.contains('right')) {
+      return DemoData.chatResponses['options']!;
+    }
+    if (lower.contains('что делать') || lower.contains('первым')) {
+      return DemoData.chatResponses['default']!;
     }
     return DemoData.chatResponses['default']!;
   }
@@ -356,7 +438,53 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  // ── Build ────────────────────────────────────────────────────────────────
+  void _copyMessage(String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Copied to clipboard'),
+        backgroundColor: AppColors.accent,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _shareCaseSummary() {
+    final buffer = StringBuffer();
+    buffer.writeln('=== CASE SUMMARY ===');
+    buffer.writeln('Case: ${widget.caseName ?? widget.caseId}');
+    buffer.writeln('Generated: ${DateTime.now().toLocal()}');
+    buffer.writeln();
+
+    for (final msg in _messages) {
+      if (msg.role == MessageRole.system) continue;
+      final prefix = msg.role == MessageRole.user ? 'USER' : 'AI';
+      buffer.writeln('[$prefix ${_formatTime(msg.timestamp)}]');
+      buffer.writeln(msg.content);
+      buffer.writeln();
+    }
+
+    Clipboard.setData(ClipboardData(text: buffer.toString()));
+    HapticFeedback.mediumImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Case summary copied to clipboard'),
+        backgroundColor: AppColors.accent,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  // -- Build --
 
   @override
   Widget build(BuildContext context) {
@@ -365,6 +493,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       appBar: _buildAppBar(),
       body: Column(
         children: [
+          // Status bar
+          _buildStatusBar(),
+
           // Disclaimer banner
           _buildDisclaimerBanner(),
 
@@ -372,8 +503,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           Expanded(child: _buildMessageList()),
 
           // Quick action chips
-          if (!_isSending && _messages.length < 3)
-            _buildQuickActions(),
+          if (!_isSending) _buildQuickActions(),
 
           // Input bar with voice button
           _buildInputBar(),
@@ -382,7 +512,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  // ── App bar ─────────────────────────────────────────────────────────────
+  // -- App bar --
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
@@ -419,7 +549,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               children: [
                 Text(
                   widget.caseName ?? 'AI Legal Assistant',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
                 ),
                 Row(
@@ -427,17 +558,21 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     Container(
                       width: 7,
                       height: 7,
-                      decoration: const BoxDecoration(
-                        color: AppColors.success,
+                      decoration: BoxDecoration(
+                        color: _isTyping
+                            ? AppColors.warning
+                            : AppColors.success,
                         shape: BoxShape.circle,
                       ),
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      'Online',
+                    Text(
+                      _isTyping ? 'Печатает...' : 'Онлайн',
                       style: TextStyle(
                         fontSize: 12,
-                        color: AppColors.textTertiary,
+                        color: _isTyping
+                            ? AppColors.warning
+                            : AppColors.textTertiary,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -449,7 +584,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ],
       ),
       actions: [
-        // TTS mute/unmute toggle
+        // Share case summary
+        IconButton(
+          icon: const Icon(Icons.summarize_outlined, size: 22),
+          tooltip: 'Share case summary',
+          onPressed: _shareCaseSummary,
+        ),
+        // TTS toggle
         IconButton(
           icon: Icon(
             _ttsEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
@@ -479,7 +620,148 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  // ── Disclaimer banner ───────────────────────────────────────────────────
+  // -- Status bar --
+
+  Widget _buildStatusBar() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(
+          bottom: BorderSide(
+            color: AppColors.border.withValues(alpha: 0.5),
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          // Case type icon
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: AppColors.accent.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: const Icon(
+              Icons.gavel_rounded,
+              size: 16,
+              color: AppColors.accent,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+
+          // Case name
+          Expanded(
+            child: Text(
+              widget.caseName ?? 'New Case',
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+
+          // Country flag
+          Container(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceVariant,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('🇫🇮', style: TextStyle(fontSize: 14)),
+                SizedBox(width: 4),
+                Text(
+                  'FI',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Issues badge
+          if (_issuesFound > 0) ...[
+            const SizedBox(width: AppSpacing.sm),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: AppColors.error.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(AppRadius.full),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.error_outline,
+                      size: 14, color: AppColors.error),
+                  const SizedBox(width: 4),
+                  Text(
+                    '$_issuesFound',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.error,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
+          // Processing indicator
+          if (_isTyping) ...[
+            const SizedBox(width: AppSpacing.sm),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: AppColors.accent.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(AppRadius.full),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: 12,
+                    height: 12,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 1.5,
+                      color: AppColors.accent.withValues(alpha: 0.8),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text(
+                    'AI...',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.accent,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  // -- Disclaimer banner --
 
   Widget _buildDisclaimerBanner() {
     return AnimatedContainer(
@@ -531,7 +813,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  // ── Message list ────────────────────────────────────────────────────────
+  // -- Message list --
 
   Widget _buildMessageList() {
     if (_isLoading) {
@@ -550,7 +832,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
       itemCount: _messages.length + (_isTyping ? 1 : 0),
       itemBuilder: (context, index) {
-        // Typing indicator as last item
         if (index == _messages.length && _isTyping) {
           return _buildTypingIndicator();
         }
@@ -602,10 +883,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             )
                 .animate()
-                .scaleXY(begin: 0.8, end: 1, duration: 500.ms, curve: Curves.elasticOut),
+                .scaleXY(
+                    begin: 0.8,
+                    end: 1,
+                    duration: 500.ms,
+                    curve: Curves.elasticOut),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'How can I help with your case?',
+              'Расскажите, что у вас случилось',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -615,7 +900,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 .fadeIn(delay: 200.ms, duration: 400.ms),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'I can analyze documents, check deadlines, find legal errors, and help draft appeals.',
+              'Я проанализирую ситуацию, проверю документы, найду ошибки и подскажу что делать.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -640,7 +925,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  // ── Message bubble ──────────────────────────────────────────────────────
+  // -- Message bubble --
 
   Widget _buildMessageBubble(ChatMessage message, int index) {
     final isUser = message.role == MessageRole.user;
@@ -651,7 +936,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
         child: Center(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: AppColors.error.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
@@ -692,10 +978,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(AppRadius.lg),
                   topRight: const Radius.circular(AppRadius.lg),
-                  bottomLeft:
-                      isUser ? const Radius.circular(AppRadius.lg) : const Radius.circular(4),
-                  bottomRight:
-                      isUser ? const Radius.circular(4) : const Radius.circular(AppRadius.lg),
+                  bottomLeft: isUser
+                      ? const Radius.circular(AppRadius.lg)
+                      : const Radius.circular(4),
+                  bottomRight: isUser
+                      ? const Radius.circular(4)
+                      : const Radius.circular(AppRadius.lg),
                 ),
                 border: isUser
                     ? null
@@ -708,18 +996,79 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ),
                 ],
               ),
-              child: _buildMessageContent(message, isUser),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildMessageContent(message, isUser),
+                  // Attachment indicator
+                  if (message.hasAttachment) ...[
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: (isUser
+                                ? Colors.white
+                                : AppColors.accent)
+                            .withValues(alpha: 0.1),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.sm),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.description_outlined,
+                            size: 16,
+                            color: isUser
+                                ? Colors.white70
+                                : AppColors.accent,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Document attached',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isUser
+                                  ? Colors.white70
+                                  : AppColors.accent,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ),
 
-            // Timestamp
+            // Timestamp + action buttons row
             Padding(
               padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
-              child: Text(
-                _formatTime(message.timestamp),
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: AppColors.textTertiary,
-                ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _formatTime(message.timestamp),
+                    style: const TextStyle(
+                      fontSize: 11,
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                  // Copy button for AI messages
+                  if (!isUser) ...[
+                    const SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () => _copyMessage(message.content),
+                      child: const Icon(
+                        Icons.copy_rounded,
+                        size: 14,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           ],
@@ -739,8 +1088,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget _buildMessageContent(ChatMessage message, bool isUser) {
     final textColor = isUser ? Colors.white : AppColors.textPrimary;
 
-    // Check if AI message contains legal citations (pattern: section symbol or "laki")
-    if (!isUser && _containsLegalCitation(message.content)) {
+    if (!isUser) {
       return _buildRichAIContent(message.content, textColor);
     }
 
@@ -754,72 +1102,308 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  bool _containsLegalCitation(String text) {
-    return text.contains('\u00A7') ||
-        text.contains('laki') ||
-        text.contains('Act') ||
-        text.contains('Section');
-  }
-
   Widget _buildRichAIContent(String content, Color textColor) {
-    // Simple parsing: split on newlines for bullet points
     final lines = content.split('\n');
+    final widgets = <Widget>[];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: lines.map((line) {
-        final trimmed = line.trim();
-        if (trimmed.isEmpty) return const SizedBox(height: 4);
+    for (final line in lines) {
+      final trimmed = line.trim();
+      if (trimmed.isEmpty) {
+        widgets.add(const SizedBox(height: 6));
+        continue;
+      }
 
-        // Bullet point
-        if (trimmed.startsWith('- ') || trimmed.startsWith('\u2022 ')) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 4),
+      // Clickable action buttons (lines starting with specific patterns)
+      if (trimmed.startsWith('[ACTION:') && trimmed.endsWith(']')) {
+        final actionText =
+            trimmed.substring(8, trimmed.length - 1).trim();
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: _buildActionButton(actionText),
+        ));
+        continue;
+      }
+
+      // Severity indicators
+      if (trimmed.startsWith('🔴') ||
+          trimmed.startsWith('🟡') ||
+          trimmed.startsWith('🔵')) {
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 6),
+          child: _buildSeverityLine(trimmed, textColor),
+        ));
+        continue;
+      }
+
+      // Bullet point lines
+      if (trimmed.startsWith('- ') ||
+          trimmed.startsWith('\u2022 ') ||
+          trimmed.startsWith('* ')) {
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 4, left: 4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 7, right: 8),
+                child: Container(
+                  width: 5,
+                  height: 5,
+                  decoration: const BoxDecoration(
+                    color: AppColors.accent,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _buildStyledText(
+                  trimmed.replaceFirst(RegExp(r'^[-\u2022\*]\s*'), ''),
+                  textColor,
+                ),
+              ),
+            ],
+          ),
+        ));
+        continue;
+      }
+
+      // Numbered list
+      if (RegExp(r'^\d+[\.\)]\s').hasMatch(trimmed)) {
+        final match = RegExp(r'^(\d+[\.\)])\s(.*)').firstMatch(trimmed);
+        if (match != null) {
+          widgets.add(Padding(
+            padding: const EdgeInsets.only(bottom: 4, left: 4),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 6, right: 8),
-                  child: Container(
-                    width: 5,
-                    height: 5,
-                    decoration: const BoxDecoration(
+                SizedBox(
+                  width: 24,
+                  child: Text(
+                    match.group(1)!,
+                    style: const TextStyle(
                       color: AppColors.accent,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: SelectableText(
-                    trimmed.replaceFirst(RegExp(r'^[-\u2022]\s*'), ''),
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 15,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w700,
                       height: 1.45,
                     ),
                   ),
                 ),
+                Expanded(
+                  child:
+                      _buildStyledText(match.group(2)!, textColor),
+                ),
               ],
             ),
-          );
+          ));
+          continue;
         }
+      }
 
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 4),
-          child: SelectableText(
-            trimmed,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 15,
-              height: 1.45,
-            ),
+      // Checkbox lines
+      if (trimmed.startsWith('[ ]') || trimmed.startsWith('[x]') ||
+          trimmed.startsWith('[\u2713]')) {
+        final checked =
+            trimmed.startsWith('[x]') || trimmed.startsWith('[\u2713]');
+        final checkText =
+            trimmed.replaceFirst(RegExp(r'^\[.\]\s*'), '');
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 4, left: 4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 2, right: 8),
+                child: Icon(
+                  checked
+                      ? Icons.check_box_rounded
+                      : Icons.check_box_outline_blank_rounded,
+                  size: 18,
+                  color: checked ? AppColors.success : AppColors.textTertiary,
+                ),
+              ),
+              Expanded(
+                child: _buildStyledText(checkText, textColor),
+              ),
+            ],
           ),
-        );
-      }).toList(),
+        ));
+        continue;
+      }
+
+      // Status indicator lines (emoji prefix)
+      if (trimmed.startsWith('\u2705') ||
+          trimmed.startsWith('\u274C') ||
+          trimmed.startsWith('\u26A0\uFE0F') ||
+          trimmed.startsWith('\u26A0')) {
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: _buildStyledText(trimmed, textColor),
+        ));
+        continue;
+      }
+
+      // Regular text line
+      widgets.add(Padding(
+        padding: const EdgeInsets.only(bottom: 4),
+        child: _buildStyledText(trimmed, textColor),
+      ));
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: widgets,
     );
   }
 
-  // ── Typing indicator ────────────────────────────────────────────────────
+  /// Render text with inline **bold** support.
+  Widget _buildStyledText(String text, Color baseColor) {
+    final spans = <InlineSpan>[];
+    final boldRegex = RegExp(r'\*\*(.+?)\*\*');
+    int lastEnd = 0;
+
+    for (final match in boldRegex.allMatches(text)) {
+      if (match.start > lastEnd) {
+        spans.add(TextSpan(
+          text: text.substring(lastEnd, match.start),
+          style: TextStyle(color: baseColor, fontSize: 15, height: 1.45),
+        ));
+      }
+      spans.add(TextSpan(
+        text: match.group(1),
+        style: TextStyle(
+          color: baseColor,
+          fontSize: 15,
+          height: 1.45,
+          fontWeight: FontWeight.w700,
+        ),
+      ));
+      lastEnd = match.end;
+    }
+
+    if (lastEnd < text.length) {
+      spans.add(TextSpan(
+        text: text.substring(lastEnd),
+        style: TextStyle(color: baseColor, fontSize: 15, height: 1.45),
+      ));
+    }
+
+    if (spans.isEmpty) {
+      return SelectableText(
+        text,
+        style: TextStyle(color: baseColor, fontSize: 15, height: 1.45),
+      );
+    }
+
+    return SelectableText.rich(
+      TextSpan(children: spans),
+    );
+  }
+
+  Widget _buildSeverityLine(String text, Color textColor) {
+    Color badgeColor;
+    String label;
+
+    if (text.startsWith('🔴')) {
+      badgeColor = AppColors.error;
+      label = 'Critical';
+    } else if (text.startsWith('🟡')) {
+      badgeColor = AppColors.warning;
+      label = 'Important';
+    } else {
+      badgeColor = AppColors.info;
+      label = 'Info';
+    }
+
+    final content = text.replaceFirst(RegExp(r'^[🔴🟡🔵]\s*'), '');
+
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: badgeColor.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(AppRadius.sm),
+        border: Border(
+          left: BorderSide(color: badgeColor, width: 3),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: badgeColor.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: badgeColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          _buildStyledText(content, textColor),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton(String actionText) {
+    IconData icon = Icons.arrow_forward_rounded;
+    if (actionText.contains('Сканировать') ||
+        actionText.contains('сканировать')) {
+      icon = Icons.document_scanner_outlined;
+    } else if (actionText.contains('жалобу') ||
+        actionText.contains('Жалобу')) {
+      icon = Icons.description_outlined;
+    } else if (actionText.contains('дедлайн') ||
+        actionText.contains('срок')) {
+      icon = Icons.schedule_rounded;
+    }
+
+    return InkWell(
+      onTap: () => _sendMessage(actionText),
+      borderRadius: BorderRadius.circular(AppRadius.sm),
+      child: Container(
+        padding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.accent.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(AppRadius.sm),
+          border: Border.all(
+            color: AppColors.accent.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: AppColors.accent),
+            const SizedBox(width: 8),
+            Text(
+              actionText,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.accent,
+              ),
+            ),
+            const SizedBox(width: 4),
+            const Icon(Icons.arrow_forward_ios_rounded,
+                size: 12, color: AppColors.accent),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // -- Typing indicator --
 
   Widget _buildTypingIndicator() {
     return Align(
@@ -842,60 +1426,95 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(3, (i) {
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: 8,
-              height: 8,
-              decoration: const BoxDecoration(
+          children: [
+            const Text(
+              'AI анализирует',
+              style: TextStyle(
+                fontSize: 12,
                 color: AppColors.textTertiary,
-                shape: BoxShape.circle,
+                fontWeight: FontWeight.w500,
               ),
-            )
-                .animate(
-                  onPlay: (c) => c.repeat(),
-                )
-                .scaleXY(
-                  begin: 0.6,
-                  end: 1.0,
-                  delay: Duration(milliseconds: 200 * i),
-                  duration: 600.ms,
-                  curve: Curves.easeInOut,
-                )
-                .then()
-                .scaleXY(
-                  begin: 1.0,
-                  end: 0.6,
-                  duration: 600.ms,
-                  curve: Curves.easeInOut,
-                );
-          }),
+            ),
+            const SizedBox(width: 8),
+            ...List.generate(3, (i) {
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 2),
+                width: 7,
+                height: 7,
+                decoration: const BoxDecoration(
+                  color: AppColors.accent,
+                  shape: BoxShape.circle,
+                ),
+              )
+                  .animate(
+                    onPlay: (c) => c.repeat(),
+                  )
+                  .scaleXY(
+                    begin: 0.5,
+                    end: 1.0,
+                    delay: Duration(milliseconds: 200 * i),
+                    duration: 600.ms,
+                    curve: Curves.easeInOut,
+                  )
+                  .then()
+                  .scaleXY(
+                    begin: 1.0,
+                    end: 0.5,
+                    duration: 600.ms,
+                    curve: Curves.easeInOut,
+                  );
+            }),
+          ],
         ),
       ),
     ).animate().fadeIn(duration: 200.ms);
   }
 
-  // ── Quick action chips ──────────────────────────────────────────────────
+  // -- Quick action chips --
 
   Widget _buildQuickActions() {
-    final actions = [
-      ('Analyze my case', Icons.analytics_outlined),
-      ('What are my options?', Icons.help_outline_rounded),
-      ('Draft an appeal', Icons.description_outlined),
-      ('Check deadlines', Icons.schedule_rounded),
-    ];
+    final List<(String, IconData)> actions;
+
+    switch (_chatPhase) {
+      case _ChatPhase.newCase:
+        actions = [
+          ('Что у меня за ситуация?', Icons.help_outline_rounded),
+          ('Какие у меня права?', Icons.shield_outlined),
+          ('Что делать первым?', Icons.flag_outlined),
+          ('Сканировать документ', Icons.document_scanner_outlined),
+        ];
+        break;
+      case _ChatPhase.afterScan:
+        actions = [
+          ('Найти ошибки', Icons.search_rounded),
+          ('Составить жалобу', Icons.description_outlined),
+          ('Проверить сроки', Icons.schedule_rounded),
+          ('Объяснить простыми словами', Icons.translate_rounded),
+        ];
+        break;
+      case _ChatPhase.afterAnalysis:
+        actions = [
+          ('Составить жалобу', Icons.description_outlined),
+          ('Найти адвоката', Icons.person_search_outlined),
+          ('Объяснить простыми словами', Icons.translate_rounded),
+          ('Проверить дедлайны', Icons.schedule_rounded),
+        ];
+        break;
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        padding:
+            const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         child: Row(
           children: actions.map((action) {
             return Padding(
               padding: const EdgeInsets.only(right: AppSpacing.sm),
               child: ActionChip(
-                avatar: Icon(action.$2, size: 16, color: AppColors.accent),
+                avatar:
+                    Icon(action.$2, size: 16, color: AppColors.accent),
                 label: Text(
                   action.$1,
                   style: const TextStyle(
@@ -907,7 +1526,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 backgroundColor: AppColors.surface,
                 side: const BorderSide(color: AppColors.border),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.full),
+                  borderRadius:
+                      BorderRadius.circular(AppRadius.full),
                 ),
                 onPressed: () => _sendMessage(action.$1),
               ),
@@ -918,7 +1538,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  // ── Input bar ───────────────────────────────────────────────────────────
+  // -- Input bar --
 
   Widget _buildInputBar() {
     return Container(
@@ -926,7 +1546,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         left: AppSpacing.sm,
         right: AppSpacing.sm,
         top: AppSpacing.sm,
-        bottom: MediaQuery.of(context).padding.bottom + AppSpacing.sm,
+        bottom:
+            MediaQuery.of(context).padding.bottom + AppSpacing.sm,
       ),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -941,16 +1562,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Voice partial text + button (shown when listening)
+          // Voice partial text + button
           if (_voiceState == VoiceButtonState.listening ||
               _voiceState == VoiceButtonState.speaking)
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: VoiceButton(
                 state: _voiceState,
-                partialText: _voiceState == VoiceButtonState.listening
-                    ? _partialSpeech
-                    : null,
+                partialText:
+                    _voiceState == VoiceButtonState.listening
+                        ? _partialSpeech
+                        : null,
                 onTap: _onVoiceTap,
               ),
             ),
@@ -960,34 +1582,41 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             children: [
               // Attach button
               IconButton(
-                icon: const Icon(Icons.add_circle_outline_rounded),
+                icon:
+                    const Icon(Icons.add_circle_outline_rounded),
                 color: AppColors.textTertiary,
                 onPressed: () {
-                  context.push('/scan?caseId=${widget.caseId}');
+                  context
+                      .push('/scan?caseId=${widget.caseId}');
                 },
               ),
 
               // Text field
               Expanded(
                 child: Container(
-                  constraints: const BoxConstraints(maxHeight: 120),
+                  constraints:
+                      const BoxConstraints(maxHeight: 120),
                   child: TextField(
                     controller: _messageController,
                     focusNode: _focusNode,
                     maxLines: 5,
                     minLines: 1,
-                    textCapitalization: TextCapitalization.sentences,
+                    textCapitalization:
+                        TextCapitalization.sentences,
                     textInputAction: TextInputAction.newline,
                     decoration: InputDecoration(
-                      hintText: 'Ask about your case...',
-                      hintStyle: const TextStyle(color: AppColors.textTertiary),
+                      hintText: 'Опишите вашу ситуацию...',
+                      hintStyle: const TextStyle(
+                          color: AppColors.textTertiary),
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.xl),
+                        borderRadius: BorderRadius.circular(
+                            AppRadius.xl),
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
                       fillColor: AppColors.surfaceVariant,
-                      contentPadding: const EdgeInsets.symmetric(
+                      contentPadding:
+                          const EdgeInsets.symmetric(
                         horizontal: AppSpacing.md,
                         vertical: AppSpacing.sm + 2,
                       ),
@@ -1013,7 +1642,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 child: IconButton(
-                  onPressed: _isSending ? null : () => _sendMessage(),
+                  onPressed:
+                      _isSending ? null : () => _sendMessage(),
                   icon: _isSending
                       ? const SizedBox(
                           width: 22,
@@ -1027,7 +1657,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   style: IconButton.styleFrom(
                     backgroundColor: AppColors.accent,
                     foregroundColor: Colors.white,
-                    disabledBackgroundColor: AppColors.accent.withValues(alpha: 0.5),
+                    disabledBackgroundColor:
+                        AppColors.accent.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -1038,16 +1669,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  // ── Date separator ──────────────────────────────────────────────────────
+  // -- Date separator --
 
   Widget _buildDateSeparator(DateTime date) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+      padding:
+          const EdgeInsets.symmetric(vertical: AppSpacing.md),
       child: Row(
         children: [
-          const Expanded(child: Divider(color: AppColors.border)),
+          const Expanded(
+              child: Divider(color: AppColors.border)),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.sm),
             child: Text(
               _formatDate(date),
               style: const TextStyle(
@@ -1057,25 +1691,44 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
           ),
-          const Expanded(child: Divider(color: AppColors.border)),
+          const Expanded(
+              child: Divider(color: AppColors.border)),
         ],
       ),
     );
   }
 
-  // ── Helpers ─────────────────────────────────────────────────────────────
+  // -- Helpers --
 
   bool _isSameDay(DateTime a, DateTime b) {
-    return a.year == b.year && a.month == b.month && a.day == b.day;
+    return a.year == b.year &&
+        a.month == b.month &&
+        a.day == b.day;
   }
 
   String _formatDate(DateTime date) {
     final now = DateTime.now();
-    if (_isSameDay(date, now)) return 'Today';
-    if (_isSameDay(date, now.subtract(const Duration(days: 1)))) {
-      return 'Yesterday';
+    if (_isSameDay(date, now)) return 'Сегодня';
+    if (_isSameDay(
+        date, now.subtract(const Duration(days: 1)))) {
+      return 'Вчера';
     }
-    return '${date.day}.${date.month}.${date.year}';
+    const months = [
+      '',
+      'января',
+      'февраля',
+      'марта',
+      'апреля',
+      'мая',
+      'июня',
+      'июля',
+      'августа',
+      'сентября',
+      'октября',
+      'ноября',
+      'декабря',
+    ];
+    return '${date.day} ${months[date.month]}';
   }
 
   String _formatTime(DateTime date) {
