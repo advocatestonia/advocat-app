@@ -1,0 +1,141 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+
+import '../../../config/theme.dart';
+import '../screens/chat_screen.dart';
+import 'rich_message.dart';
+
+/// A single chat message bubble with copy and action support.
+class ChatMessageBubble extends StatelessWidget {
+  const ChatMessageBubble({
+    super.key,
+    required this.message,
+    this.onCopy,
+    this.onAction,
+  });
+
+  final ChatMessage message;
+  final ValueChanged<String>? onCopy;
+  final ValueChanged<String>? onAction;
+
+  bool get _isUser => message.role == MessageRole.user;
+  bool get _isSystem => message.role == MessageRole.system;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isSystem) return _buildSystemMessage(context);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: Align(
+        alignment: _isUser ? Alignment.centerRight : Alignment.centerLeft,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.82,
+          ),
+          child: GestureDetector(
+            onLongPress: () {
+              HapticFeedback.mediumImpact();
+              onCopy?.call(message.content);
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm + 2,
+              ),
+              decoration: BoxDecoration(
+                color: _isUser
+                    ? AppColors.primary
+                    : AppColors.surface,
+                borderRadius: BorderRadius.only(
+                  topLeft: const Radius.circular(AppRadius.lg),
+                  topRight: const Radius.circular(AppRadius.lg),
+                  bottomLeft: Radius.circular(
+                    _isUser ? AppRadius.lg : AppRadius.sm,
+                  ),
+                  bottomRight: Radius.circular(
+                    _isUser ? AppRadius.sm : AppRadius.lg,
+                  ),
+                ),
+                border: _isUser
+                    ? null
+                    : Border.all(color: AppColors.border),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (_isUser)
+                    Text(
+                      message.content,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                        height: 1.4,
+                      ),
+                    )
+                  else
+                    RichMessage(
+                      text: message.content,
+                      onActionTap: (label) => onAction?.call(label),
+                    ),
+                  const SizedBox(height: 4),
+                  Text(
+                    _formatTime(message.timestamp),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: _isUser
+                          ? Colors.white.withValues(alpha: 0.6)
+                          : AppColors.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ).animate().fadeIn(duration: 250.ms).slideY(
+          begin: 0.1,
+          end: 0,
+          duration: 250.ms,
+          curve: Curves.easeOutCubic,
+        );
+  }
+
+  Widget _buildSystemMessage(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: AppColors.error.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(AppRadius.full),
+          ),
+          child: Text(
+            message.content,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.error,
+              fontWeight: FontWeight.w500,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+
+  String _formatTime(DateTime dt) {
+    return '${dt.hour.toString().padLeft(2, '0')}:'
+        '${dt.minute.toString().padLeft(2, '0')}';
+  }
+}

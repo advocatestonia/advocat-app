@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADVOCAT — Call Assistant Setup</title>
+    <style>
+/* ============================================
+   Setup Wizard — Warm, reassuring design
+   ============================================ */
+:root {
+    --bg-deep: #0F1923;
+    --bg-primary: #1A2332;
+    --bg-card: #1E2A3A;
+    --bg-card-hover: #243044;
+    --bg-input: #15202E;
+    --text-primary: #E8ECF1;
+    --text-secondary: #8899AA;
+    --text-muted: #5A6B7C;
+    --accent-blue: #4A9EFF;
+    --accent-cyan: #00D4FF;
+    --accent-green: #4ADE80;
+    --accent-red: #EF4444;
+    --accent-orange: #F59E0B;
+    --accent-purple: #A78BFA;
+    --accent-warm: #FF8C42;
+    --border-color: #2D3B50;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Background gradient overlay */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(74, 158, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(0, 212, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(167, 139, 250, 0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============================================
+   Wizard Container
+   ============================================ */
+.wizard {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 640px;
+    height: 100dvh;
+    max-height: 820px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+@media (min-height: 840px) {
+    .wizard {
+        height: auto;
+        max-height: 820px;
+    }
+}
+
+/* ============================================
+   Steps
+   ============================================ */
+.steps-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.step {
+    position: absolute;
+    inset: 0;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateX(60px);
+    pointer-events: none;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    -webkit-overflow-scrolling: touch;
+}
+
+.step.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.step.exit-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    pointer-events: none;
+}
+
+/* ============================================
+   Step 1: Welcome
+   ============================================ */
+.hero-illustration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 8px 0 24px;
+    position: relative;
+    height: 140px;
+    flex-shrink: 0;
+}
+
+.hero-phone {
+    width: 64px;
+    height: 108px;
+    border: 3px solid var(--accent-cyan);
+    border-radius: 16px;
+    position: relative;
+    background: rgba(0, 212, 255, 0.06);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
+}
+
+.hero-phone::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--accent-cyan);
+    opacity: 0.5;
+}
+
+.hero-phone::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-cyan);
+    opacity: 0.4;
+}
+
+.hero-headphones {
+    position: absolute;
+    width: 96px;
+    height: 56px;
+    top: 16px;
+    left: calc(50% - 4px);
+    transform: translateX(-50%);
+}
+
+.hero-headphones::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10px;
+    right: 10px;
+    height: 32px;
+    border: 3px solid var(--accent-blue);
+    border-bottom: none;
+    border-radius: 40px 40px 0 0;
+}
+
+.hero-headphones .ear {
+    position: absolute;
+    bottom: 0;
+    width: 20px;
+    height: 28px;
+    border-radius: 6px;
+    background: var(--accent-blue);
+    opacity: 0.7;
+}
+
+.hero-headphones .ear.left { left: 0; }
+.hero-headphones .ear.right { right: 0; }
+
+.hero-sparkles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.sparkle {
+    position: absolute;
+    font-size: 18px;
+    animation: sparkle-float 3s ease-in-out infinite;
+    opacity: 0.7;
+}
+
+.sparkle:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+.sparkle:nth-child(2) { top: 5%; right: 18%; animation-delay: 0.8s; }
+.sparkle:nth-child(3) { bottom: 15%; left: 10%; animation-delay: 1.6s; }
+.sparkle:nth-child(4) { bottom: 10%; right: 12%; animation-delay: 0.4s; }
+.sparkle:nth-child(5) { top: 40%; right: 8%; animation-delay: 1.2s; font-size: 14px; }
+
+@keyframes sparkle-float {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-8px) scale(1.2); opacity: 1; }
+}
+
+.hero-title {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #E8ECF1, var(--accent-cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin-top: 8px;
+    max-width: 380px;
+    align-self: center;
+}
+
+.features-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.feature-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px 12px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.feature-card:hover {
+    border-color: var(--accent-cyan);
+    transform: translateY(-2px);
+}
+
+.feature-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.feature-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+/* ============================================
+   Step 2: Language Selection
+   ============================================ */
+.step-title {
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.step-desc {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+.lang-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.lang-btn {
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 14px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.lang-btn .flag {
+    font-size: 28px;
+    line-height: 1;
+}
+
+.lang-btn:hover {
+    border-color: var(--accent-blue);
+    background: var(--bg-card-hover);
+}
+
+.lang-btn.selected {
+    border-color: var(--accent-cyan);
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+    animation: lang-pop 0.3s ease;
+}
+
+@keyframes lang-pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+
+/* ============================================
+   Step 3: API Setup
+   ============================================ */
+.api-toggle {
+    display: flex;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+}
+
+.api-toggle-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.api-toggle-btn.active {
+    background: var(--accent-blue);
+    color: white;
+    box-shadow: 0 2px 8px rgba(74, 158, 255, 0.3);
+}
+
+.api-panel {
+    display: none;
+    animation: fade-in 0.3s ease;
+}
+
+.api-panel.active {
+    display: block;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.api-free-info {
+    background: rgba(74, 222, 128, 0.08);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+}
+
+.api-free-info .badge {
+    display: inline-block;
+    background: var(--accent-green);
+    color: #0F1923;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.api-free-info p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+.api-free-info .note {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    transition: var(--transition);
+    outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.12);
+}
+
+.input-group small {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.input-group small a {
+    color: var(--accent-cyan);
+    text-decoration: none;
+}
+
+.input-group small a:hover {
+    text-decoration: underline;
+}
+
+.mic-test-area {
+    margin-top: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+}
+
+.mic-test-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: 2px solid var(--accent-blue);
+    border-radius: 50px;
+    background: transparent;
+    color: var(--accent-blue);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.mic-test-btn:hover {
+    background: rgba(74, 158, 255, 0.1);
+}
+
+.mic-test-btn.listening {
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+    animation: pulse-border 1.5s ease infinite;
+}
+
+@keyframes pulse-border {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+}
+
+.volume-meter {
+    margin-top: 14px;
+    height: 6px;
+    background: var(--bg-input);
+    border-radius: 3px;
+    overflow: hidden;
+    display: none;
+}
+
+.volume-meter.active {
+    display: block;
+}
+
+.volume-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan));
+    border-radius: 3px;
+    transition: width 0.1s ease;
+}
+
+.mic-status {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    min-height: 20px;
+}
+
+/* ============================================
+   Step 4: Pre-call Context
+   ============================================ */
+.context-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.input-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.optional-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.context-hint {
+    background: rgba(167, 139, 250, 0.08);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.context-hint .hint-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   Step 5: Ready
+   ============================================ */
+.ready-checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 8px 0 20px;
+}
+
+.checkmark-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.15), rgba(0, 212, 255, 0.1));
+    border: 3px solid var(--accent-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    animation: check-pop 0.5s ease;
+}
+
+@keyframes check-pop {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.ready-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.ready-step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    animation: step-slide 0.4s ease backwards;
+}
+
+.ready-step:nth-child(1) { animation-delay: 0.1s; }
+.ready-step:nth-child(2) { animation-delay: 0.25s; }
+.ready-step:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes step-slide {
+    from { opacity: 0; transform: translateX(-20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.ready-step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+
+.ready-step-text {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.ready-step-text small {
+    display: block;
+    font-weight: 400;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+/* ============================================
+   Navigation
+   ============================================ */
+.wizard-nav {
+    padding: 16px 28px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.btn {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    flex: 1;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    color: white;
+    box-shadow: 0 4px 16px rgba(74, 158, 255, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(74, 158, 255, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    padding: 14px 20px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-card-hover);
+    color: var(--text-primary);
+}
+
+.btn-green {
+    flex: 1;
+    background: linear-gradient(135deg, var(--accent-green), #34D399);
+    color: #0F1923;
+    font-size: 18px;
+    padding: 18px 28px;
+    box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+}
+
+.btn-green:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(74, 222, 128, 0.45);
+}
+
+.btn-skip {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px 16px;
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.btn-skip:hover {
+    color: var(--text-secondary);
+}
+
+/* Progress dots */
+.progress-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-color);
+    transition: var(--transition);
+}
+
+.dot.active {
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
+}
+
+.dot.done {
+    background: var(--accent-green);
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 420px) {
+    .step { padding: 24px 20px; }
+    .wizard-nav { padding: 12px 20px 20px; }
+    .hero-title { font-size: 26px; }
+    .features-row { gap: 8px; }
+    .feature-card { padding: 12px 8px; }
+    .feature-icon { font-size: 22px; }
+    .feature-label { font-size: 12px; }
+    .lang-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .lang-btn { padding: 10px 6px; font-size: 12px; }
+    .lang-btn .flag { font-size: 24px; }
+}
+
+@media (min-width: 768px) {
+    .lang-grid { grid-template-columns: repeat(4, 1fr); }
+}
+    </style>
+</head>
+<body>
+
+<div class="wizard">
+    <div class="steps-wrapper">
+
+        <!-- Step 1: Welcome -->
+        <div class="step active" data-step="1">
+            <div class="hero-illustration">
+                <div class="hero-phone"></div>
+                <div class="hero-headphones">
+                    <div class="ear left"></div>
+                    <div class="ear right"></div>
+                </div>
+                <div class="hero-sparkles">
+                    <span class="sparkle">&#10024;</span>
+                    <span class="sparkle">&#9733;</span>
+                    <span class="sparkle">&#10024;</span>
+                    <span class="sparkle">&#9733;</span>
+                    <span class="sparkle">&#10024;</span>
+                </div>
+            </div>
+
+            <h1 class="hero-title">Live Call Assistant</h1>
+            <p class="hero-subtitle">AI that listens to your legal calls and helps you in real-time</p>
+
+            <div class="features-row">
+                <div class="feature-card">
+                    <span class="feature-icon">&#127908;</span>
+                    <span class="feature-label">Real-time transcription</span>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#9878;</span>
+                    <span class="feature-label">AI legal advice</span>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">&#127760;</span>
+                    <span class="feature-label">17 languages</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Language -->
+        <div class="step" data-step="2">
+            <h2 class="step-title">What language do YOU speak?</h2>
+            <p class="step-desc">AI answers and suggestions will be shown in this language</p>
+
+            <div class="lang-grid" id="lang-grid">
+                <button class="lang-btn" data-lang="ru"><span class="flag">&#127479;&#127482;</span>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</button>
+                <button class="lang-btn" data-lang="en"><span class="flag">&#127468;&#127463;</span>English</button>
+                <button class="lang-btn" data-lang="fi"><span class="flag">&#127467;&#127470;</span>Suomi</button>
+                <button class="lang-btn" data-lang="et"><span class="flag">&#127466;&#127466;</span>Eesti</button>
+                <button class="lang-btn" data-lang="uk"><span class="flag">&#127482;&#127462;</span>&#1059;&#1082;&#1088;&#1072;&#1111;&#1085;&#1089;&#1100;&#1082;&#1072;</button>
+                <button class="lang-btn" data-lang="de"><span class="flag">&#127465;&#127466;</span>Deutsch</button>
+                <button class="lang-btn" data-lang="sv"><span class="flag">&#127480;&#127466;</span>Svenska</button>
+                <button class="lang-btn" data-lang="ar"><span class="flag">&#127480;&#127462;</span>&#1575;&#1604;&#1593;&#1585;&#1576;&#1610;&#1577;</button>
+                <button class="lang-btn" data-lang="fr"><span class="flag">&#127467;&#127479;</span>Fran&#231;ais</button>
+                <button class="lang-btn" data-lang="tr"><span class="flag">&#127481;&#127479;</span>T&#252;rk&#231;e</button>
+                <button class="lang-btn" data-lang="fa"><span class="flag">&#127470;&#127479;</span>&#1601;&#1575;&#1585;&#1587;&#1740;</button>
+                <button class="lang-btn" data-lang="es"><span class="flag">&#127466;&#127480;</span>Espa&#241;ol</button>
+                <button class="lang-btn" data-lang="pl"><span class="flag">&#127477;&#127473;</span>Polski</button>
+                <button class="lang-btn" data-lang="lt"><span class="flag">&#127473;&#127481;</span>Lietuvi&#371;</button>
+                <button class="lang-btn" data-lang="lv"><span class="flag">&#127473;&#127483;</span>Latvie&#353;u</button>
+                <button class="lang-btn" data-lang="it"><span class="flag">&#127470;&#127481;</span>Italiano</button>
+                <button class="lang-btn" data-lang="ro"><span class="flag">&#127479;&#127476;</span>Rom&#226;n&#259;</button>
+            </div>
+        </div>
+
+        <!-- Step 3: API Setup -->
+        <div class="step" data-step="3">
+            <h2 class="step-title">How should AI listen?</h2>
+            <p class="step-desc">Choose your speech recognition engine</p>
+
+            <div class="api-toggle">
+                <button class="api-toggle-btn active" data-panel="free">Quick Start (Free)</button>
+                <button class="api-toggle-btn" data-panel="full">Full Power</button>
+            </div>
+
+            <div class="api-panel active" id="panel-free">
+                <div class="api-free-info">
+                    <span class="badge">No setup needed</span>
+                    <p>Uses your browser's built-in speech recognition.<br>Works immediately, no API keys required.</p>
+                    <p class="note">Best for English. Other languages may have lower accuracy.</p>
+                </div>
+            </div>
+
+            <div class="api-panel" id="panel-full">
+                <div class="input-group">
+                    <label for="setup-deepgram-key">Deepgram API Key</label>
+                    <input type="password" id="setup-deepgram-key" placeholder="paste your Deepgram key here">
+                    <small>Best accuracy for all languages. <a href="https://console.deepgram.com/signup" target="_blank">Free signup &#8594;</a></small>
+                </div>
+                <div class="input-group">
+                    <label for="setup-claude-key">Claude API Key <span class="optional-badge">optional</span></label>
+                    <input type="password" id="setup-claude-key" placeholder="paste your Anthropic key here">
+                    <small>Enables AI legal suggestions. <a href="https://console.anthropic.com" target="_blank">Get a key &#8594;</a></small>
+                </div>
+            </div>
+
+            <div class="mic-test-area">
+                <button class="mic-test-btn" id="mic-test-btn">
+                    <span>&#127908;</span> Test Microphone
+                </button>
+                <div class="volume-meter" id="volume-meter">
+                    <div class="volume-bar" id="volume-bar"></div>
+                </div>
+                <div class="mic-status" id="mic-status"></div>
+            </div>
+        </div>
+
+        <!-- Step 4: Pre-call Context -->
+        <div class="step" data-step="4">
+            <h2 class="step-title">Tell us about your call</h2>
+            <p class="step-desc">This helps AI give better suggestions <span class="optional-badge">optional</span></p>
+
+            <div class="context-form">
+                <div class="input-group">
+                    <label for="call-topic">What is this call about?</label>
+                    <textarea id="call-topic" rows="3" placeholder="e.g. Appealing my deportation decision, case number ABC-123..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="case-type">Case type</label>
+                    <select id="case-type">
+                        <option value="">Select if applicable...</option>
+                        <option value="deportation">Deportation appeal</option>
+                        <option value="labor">Labor dispute</option>
+                        <option value="residence">Residence permit</option>
+                        <option value="asylum">Asylum application</option>
+                        <option value="family">Family reunification</option>
+                        <option value="citizenship">Citizenship application</option>
+                        <option value="criminal">Criminal matter</option>
+                        <option value="administrative">Administrative complaint</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="caller-type">Who are you calling / who is calling you?</label>
+                    <select id="caller-type">
+                        <option value="">Select if known...</option>
+                        <option value="lawyer">Lawyer</option>
+                        <option value="court">Court clerk</option>
+                        <option value="police">Police</option>
+                        <option value="immigration">Immigration officer (Migri)</option>
+                        <option value="social">Social worker</option>
+                        <option value="employer">Employer</option>
+                        <option value="government">Government agency</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="context-hint">
+                    <span class="hint-icon">&#128161;</span>
+                    <span>The more context you provide, the better AI can help. For example: key dates, names, document numbers, or specific questions you want to ask.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 5: Ready -->
+        <div class="step" data-step="5">
+            <div class="ready-checkmark">
+                <div class="checkmark-circle">&#10003;</div>
+            </div>
+
+            <h2 class="step-title">Everything is set up!</h2>
+            <p class="step-desc">When the call comes, here's what to do:</p>
+
+            <div class="ready-steps">
+                <div class="ready-step">
+                    <div class="ready-step-num">1</div>
+                    <div class="ready-step-text">
+                        Answer your phone on speaker
+                        <small>Place the phone near your device's microphone</small>
+                    </div>
+                </div>
+                <div class="ready-step">
+                    <div class="ready-step-num">2</div>
+                    <div class="ready-step-text">
+                        Press Start in the assistant
+                        <small>AI begins listening and transcribing immediately</small>
+                    </div>
+                </div>
+                <div class="ready-step">
+                    <div class="ready-step-num">3</div>
+                    <div class="ready-step-text">
+                        AI helps you in real-time
+                        <small>Legal advice, translations, and suggestions appear as you talk</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="wizard-nav">
+        <div class="nav-buttons" id="nav-buttons">
+            <button class="btn btn-primary" id="btn-next">Get Started</button>
+        </div>
+        <div class="progress-dots" id="progress-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+        </div>
+    </nav>
+</div>
+
+<script>
+/* ============================================
+   Setup Wizard Logic
+   ============================================ */
+(function() {
+    'use strict';
+
+    const TOTAL_STEPS = 5;
+    let currentStep = 1;
+    let selectedLang = null;
+    let apiMode = 'free'; // 'free' or 'full'
+    let micStream = null;
+    let micAnimFrame = null;
+
+    const stepsEl = document.querySelectorAll('.step');
+    const dotsEl = document.querySelectorAll('.dot');
+    const navButtons = document.getElementById('nav-buttons');
+
+    // ---- Step Navigation ----
+
+    function goToStep(n) {
+        if (n < 1 || n > TOTAL_STEPS) return;
+
+        const prev = document.querySelector('.step.active');
+        const next = document.querySelector(`.step[data-step="${n}"]`);
+
+        if (prev) {
+            prev.classList.remove('active');
+            prev.classList.add('exit-left');
+            setTimeout(() => prev.classList.remove('exit-left'), 500);
+        }
+
+        // Small delay so exit animation starts first
+        setTimeout(() => {
+            next.classList.add('active');
+        }, n > currentStep ? 80 : 0);
+
+        currentStep = n;
+        updateDots();
+        updateButtons();
+        stopMicTest();
+    }
+
+    function updateDots() {
+        dotsEl.forEach((dot, i) => {
+            dot.classList.remove('active', 'done');
+            if (i + 1 === currentStep) dot.classList.add('active');
+            else if (i + 1 < currentStep) dot.classList.add('done');
+        });
+    }
+
+    function updateButtons() {
+        let html = '';
+
+        if (currentStep === 1) {
+            html = '<button class="btn btn-primary" id="btn-next">Get Started</button>';
+        } else if (currentStep === 5) {
+            html = '<button class="btn btn-green" id="btn-launch">Open Call Assistant &#8594;</button>';
+        } else {
+            html = '<button class="btn btn-secondary" id="btn-back">Back</button>';
+            if (currentStep === 4) {
+                html += '<button class="btn btn-primary" id="btn-next">Finish Setup</button>';
+            } else {
+                html += '<button class="btn btn-primary" id="btn-next">Continue</button>';
+            }
+        }
+
+        if (currentStep === 4) {
+            html += '<button class="btn-skip" id="btn-skip">Skip for now</button>';
+        }
+
+        navButtons.innerHTML = html;
+        bindNavEvents();
+    }
+
+    function bindNavEvents() {
+        const btnNext = document.getElementById('btn-next');
+        const btnBack = document.getElementById('btn-back');
+        const btnSkip = document.getElementById('btn-skip');
+        const btnLaunch = document.getElementById('btn-launch');
+
+        if (btnNext) btnNext.addEventListener('click', () => {
+            if (currentStep === 2 && !selectedLang) {
+                // Highlight grid briefly
+                document.getElementById('lang-grid').style.animation = 'none';
+                requestAnimationFrame(() => {
+                    document.getElementById('lang-grid').style.animation = '';
+                });
+                return;
+            }
+            goToStep(currentStep + 1);
+        });
+
+        if (btnBack) btnBack.addEventListener('click', () => goToStep(currentStep - 1));
+        if (btnSkip) btnSkip.addEventListener('click', () => goToStep(currentStep + 1));
+        if (btnLaunch) btnLaunch.addEventListener('click', launchAssistant);
+    }
+
+    // ---- Language Selection ----
+
+    document.getElementById('lang-grid').addEventListener('click', (e) => {
+        const btn = e.target.closest('.lang-btn');
+        if (!btn) return;
+
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedLang = btn.dataset.lang;
+    });
+
+    // ---- API Toggle ----
+
+    document.querySelector('.api-toggle').addEventListener('click', (e) => {
+        const btn = e.target.closest('.api-toggle-btn');
+        if (!btn) return;
+
+        document.querySelectorAll('.api-toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        apiMode = btn.dataset.panel;
+
+        document.querySelectorAll('.api-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById('panel-' + apiMode).classList.add('active');
+    });
+
+    // ---- Microphone Test ----
+
+    const micTestBtn = document.getElementById('mic-test-btn');
+    const volumeMeter = document.getElementById('volume-meter');
+    const volumeBar = document.getElementById('volume-bar');
+    const micStatus = document.getElementById('mic-status');
+
+    micTestBtn.addEventListener('click', toggleMicTest);
+
+    function toggleMicTest() {
+        if (micStream) {
+            stopMicTest();
+        } else {
+            startMicTest();
+        }
+    }
+
+    async function startMicTest() {
+        try {
+            micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            micTestBtn.classList.add('listening');
+            micTestBtn.innerHTML = '<span>&#9632;</span> Stop Test';
+            volumeMeter.classList.add('active');
+            micStatus.textContent = 'Speak to see the volume level...';
+            micStatus.style.color = 'var(--accent-green)';
+
+            const audioCtx = new AudioContext();
+            const source = audioCtx.createMediaStreamSource(micStream);
+            const analyser = audioCtx.createAnalyser();
+            analyser.fftSize = 256;
+            source.connect(analyser);
+
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+            function draw() {
+                micAnimFrame = requestAnimationFrame(draw);
+                analyser.getByteFrequencyData(dataArray);
+                const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+                const pct = Math.min(100, (avg / 128) * 100);
+                volumeBar.style.width = pct + '%';
+
+                if (pct > 10) {
+                    micStatus.textContent = 'Microphone is working! Volume looks good.';
+                }
+            }
+            draw();
+
+            // Store audioCtx to close later
+            micTestBtn._audioCtx = audioCtx;
+        } catch (err) {
+            micStatus.textContent = 'Microphone access denied. Please allow in browser settings.';
+            micStatus.style.color = 'var(--accent-red)';
+        }
+    }
+
+    function stopMicTest() {
+        if (micStream) {
+            micStream.getTracks().forEach(t => t.stop());
+            micStream = null;
+        }
+        if (micAnimFrame) {
+            cancelAnimationFrame(micAnimFrame);
+            micAnimFrame = null;
+        }
+        if (micTestBtn._audioCtx) {
+            micTestBtn._audioCtx.close();
+            micTestBtn._audioCtx = null;
+        }
+        micTestBtn.classList.remove('listening');
+        micTestBtn.innerHTML = '<span>&#127908;</span> Test Microphone';
+        volumeMeter.classList.remove('active');
+        volumeBar.style.width = '0%';
+    }
+
+    // ---- Launch Assistant ----
+
+    function launchAssistant() {
+        // Save settings to localStorage
+        const settings = {
+            userLanguage: selectedLang || 'en',
+            apiMode: apiMode,
+            setupComplete: true,
+            timestamp: Date.now()
+        };
+
+        if (apiMode === 'full') {
+            const dgKey = document.getElementById('setup-deepgram-key').value.trim();
+            const clKey = document.getElementById('setup-claude-key').value.trim();
+            if (dgKey) settings.deepgramKey = dgKey;
+            if (clKey) settings.claudeKey = clKey;
+        }
+
+        const callTopic = document.getElementById('call-topic').value.trim();
+        const caseType = document.getElementById('case-type').value;
+        const callerType = document.getElementById('caller-type').value;
+
+        if (callTopic) settings.callTopic = callTopic;
+        if (caseType) settings.caseType = caseType;
+        if (callerType) settings.callerType = callerType;
+
+        localStorage.setItem('advocat_setup', JSON.stringify(settings));
+
+        // Also store individual keys for compatibility with main app
+        if (settings.deepgramKey) localStorage.setItem('deepgram_key', settings.deepgramKey);
+        if (settings.claudeKey) localStorage.setItem('claude_key', settings.claudeKey);
+        localStorage.setItem('user_language', settings.userLanguage);
+
+        // Build URL params for the main app
+        const params = new URLSearchParams();
+        params.set('lang', settings.userLanguage);
+        if (apiMode === 'free') params.set('mode', 'webspeech');
+        if (callTopic) params.set('topic', callTopic);
+        if (caseType) params.set('case', caseType);
+        if (callerType) params.set('caller', callerType);
+
+        window.location.href = 'index.html?' + params.toString();
+    }
+
+    // ---- Init ----
+
+    // Check if already set up — allow re-setup
+    const existing = localStorage.getItem('advocat_setup');
+    if (existing) {
+        try {
+            const s = JSON.parse(existing);
+            if (s.userLanguage) {
+                selectedLang = s.userLanguage;
+                const langBtn = document.querySelector(`.lang-btn[data-lang="${s.userLanguage}"]`);
+                if (langBtn) langBtn.classList.add('selected');
+            }
+            if (s.deepgramKey) {
+                document.getElementById('setup-deepgram-key').value = s.deepgramKey;
+            }
+            if (s.claudeKey) {
+                document.getElementById('setup-claude-key').value = s.claudeKey;
+            }
+            if (s.callTopic) document.getElementById('call-topic').value = s.callTopic;
+            if (s.caseType) document.getElementById('case-type').value = s.caseType;
+            if (s.callerType) document.getElementById('caller-type').value = s.callerType;
+            if (s.apiMode === 'full') {
+                apiMode = 'full';
+                document.querySelectorAll('.api-toggle-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector('.api-toggle-btn[data-panel="full"]').classList.add('active');
+                document.querySelectorAll('.api-panel').forEach(p => p.classList.remove('active'));
+                document.getElementById('panel-full').classList.add('active');
+            }
+        } catch(e) {}
+    }
+
+    updateButtons();
+})();
+</script>
+
+</body>
+</html>
