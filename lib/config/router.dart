@@ -21,6 +21,11 @@ import '../features/checker/screens/checker_home_screen.dart';
 import '../features/checker/screens/company_checker_screen.dart';
 import '../features/checker/screens/vehicle_checker_screen.dart';
 import '../shared/widgets/main_shell.dart';
+import '../features/vault/screens/document_vault_screen.dart';
+import '../features/vault/screens/add_vault_document_screen.dart';
+import '../features/rights/screens/rights_guide_screen.dart';
+import '../features/rights/screens/rights_detail_screen.dart';
+import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -42,6 +47,11 @@ abstract final class AppRoutes {
   static const String checker = '/checker';
   static const String checkerCompany = '/checker/company';
   static const String checkerVehicle = '/checker/vehicle';
+  static const String vault = '/vault';
+  static const String vaultAdd = '/vault/add';
+  static const String rights = '/rights';
+  static const String rightsDetail = '/rights/:id';
+  static const String legalAid = '/legal-aid';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -177,6 +187,34 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.checkerVehicle,
         name: 'checkerVehicle',
         builder: (context, state) => const VehicleCheckerScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.vault,
+        name: 'vault',
+        builder: (context, state) => const DocumentVaultScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.vaultAdd,
+        name: 'vaultAdd',
+        builder: (context, state) => const AddVaultDocumentScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.rights,
+        name: 'rights',
+        builder: (context, state) => const RightsGuideScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.rightsDetail,
+        name: 'rightsDetail',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return RightsDetailScreen(scenarioId: id);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.legalAid,
+        name: 'legalAid',
+        builder: (context, state) => const LegalAidCalculatorScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

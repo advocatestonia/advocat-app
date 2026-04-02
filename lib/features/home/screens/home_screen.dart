@@ -10,6 +10,7 @@ import '../../../main.dart';
 import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
+import '../../../shared/utils/call_assistant_launcher.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../cases/providers/cases_provider.dart';
 import '../../cases/widgets/case_card.dart';
@@ -373,39 +374,66 @@ class _QuickActions extends StatelessWidget {
         horizontal: AppSpacing.md,
         vertical: AppSpacing.md,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Column(
         children: [
-          _QuickActionButton(
-            icon: Icons.add_circle_outline,
-            label: l.newCase,
-            color: AppColors.primary,
-            onTap: () => context.push(AppRoutes.caseCreate),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _QuickActionButton(
+                icon: Icons.document_scanner_outlined,
+                label: l.scanDocument,
+                color: AppColors.accent,
+                onTap: () => context.push(AppRoutes.scan),
+              ),
+              _QuickActionButton(
+                icon: Icons.smart_toy_outlined,
+                label: l.aiChat,
+                color: AppColors.info,
+                onTap: () => context.push('/chat/general'),
+              ),
+              _QuickActionButton(
+                icon: Icons.gavel_outlined,
+                label: l.legalSection,
+                color: AppColors.primary,
+                onTap: () => context.push(AppRoutes.rights),
+              ),
+              _QuickActionButton(
+                icon: Icons.calculate_outlined,
+                label: l.legalFighter,
+                color: AppColors.warning,
+                onTap: () => context.push(AppRoutes.legalAid),
+              ),
+            ],
           ),
-          _QuickActionButton(
-            icon: Icons.document_scanner_outlined,
-            label: l.scanDocument,
-            color: AppColors.accent,
-            onTap: () => context.push(AppRoutes.scan),
-          ),
-          _QuickActionButton(
-            icon: Icons.verified_user_outlined,
-            label: l.checkerTitle,
-            color: AppColors.accent,
-            onTap: () => context.push(AppRoutes.checker),
-          ),
-          _QuickActionButton(
-            icon: Icons.smart_toy_outlined,
-            label: l.aiChat,
-            color: AppColors.info,
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l.myCases),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
-            },
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _QuickActionButton(
+                icon: Icons.lock_outlined,
+                label: l.documents,
+                color: AppColors.accent,
+                onTap: () => context.push(AppRoutes.vault),
+              ),
+              _QuickActionButton(
+                icon: Icons.email_outlined,
+                label: 'Email',
+                color: AppColors.info,
+                onTap: () => context.push(AppRoutes.email),
+              ),
+              _QuickActionButton(
+                icon: Icons.phone_in_talk_outlined,
+                label: 'Call AI',
+                color: AppColors.success,
+                onTap: () => launchCallAssistant(),
+              ),
+              _QuickActionButton(
+                icon: Icons.add_circle_outline,
+                label: l.newCase,
+                color: AppColors.primary,
+                onTap: () => context.push(AppRoutes.caseCreate),
+              ),
+            ],
           ),
         ],
       ),
