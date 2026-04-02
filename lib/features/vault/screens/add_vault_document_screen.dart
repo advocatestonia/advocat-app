@@ -1,46 +1,48 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 class AddVaultDocumentScreen extends StatelessWidget {
   const AddVaultDocumentScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Document')),
+      appBar: AppBar(title: Text(l10n.addDocument)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text('Choose how to add your document',
-                  style: TextStyle(
+              Text(l10n.chooseHowToAdd,
+                  style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary)),
               const SizedBox(height: AppSpacing.xl),
               _OptionCard(
                 icon: Icons.camera_alt_outlined,
-                title: 'Scan Document',
-                subtitle: 'Take a photo of your document',
+                title: l10n.scanDocument,
+                subtitle: l10n.scanDocumentDesc,
                 color: AppColors.accent,
                 onTap: () => Navigator.pop(context),
               ),
               const SizedBox(height: AppSpacing.md),
               _OptionCard(
                 icon: Icons.upload_file_outlined,
-                title: 'Upload File',
-                subtitle: 'Choose a PDF or image from your device',
+                title: l10n.uploadFile,
+                subtitle: l10n.uploadFileDesc,
                 color: AppColors.info,
                 onTap: () => Navigator.pop(context),
               ),
               const SizedBox(height: AppSpacing.md),
               _OptionCard(
                 icon: Icons.edit_document,
-                title: 'Create Note',
-                subtitle: 'Write a note or record important details',
+                title: l10n.createNote,
+                subtitle: l10n.createNoteDesc,
                 color: AppColors.warning,
                 onTap: () => Navigator.pop(context),
               ),

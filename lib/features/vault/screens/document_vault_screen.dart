@@ -3,14 +3,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 class DocumentVaultScreen extends StatelessWidget {
   const DocumentVaultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Document Vault')),
+      appBar: AppBar(title: Text(l10n.documentVault)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.xl),
@@ -28,17 +30,16 @@ class DocumentVaultScreen extends StatelessWidget {
                     size: 36, color: AppColors.accent),
               ),
               const SizedBox(height: AppSpacing.lg),
-              Text('Secure Document Storage',
+              Text(l10n.secureDocumentStorage,
                   style: Theme.of(context)
                       .textTheme
                       .titleLarge
                       ?.copyWith(fontWeight: FontWeight.w700)),
               const SizedBox(height: AppSpacing.sm),
-              const Text(
-                'Store your important legal documents securely. '
-                'All files are encrypted end-to-end.',
+              Text(
+                l10n.secureDocumentStorageDesc,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 14,
                     color: AppColors.textSecondary,
                     height: 1.5),
@@ -47,7 +48,7 @@ class DocumentVaultScreen extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () => context.push(AppRoutes.vaultAdd),
                 icon: const Icon(Icons.add),
-                label: const Text('Add Document'),
+                label: Text(l10n.addDocument),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
                   foregroundColor: Colors.white,

@@ -304,5 +304,268 @@
     "vinNumber": "VIN-numero",
     "welcomeBack": "Tervetuloa takaisin",
     "whatAreMyOptions": "Mitkä ovat vaihtoehtoni?",
-    "won": "Voitettu"
+    "won": "Voitettu",
+    "documentVault": "Asiakirjaholvi",
+    "secureDocumentStorage": "Turvallinen asiakirjatallennus",
+    "secureDocumentStorageDesc": "Tallenna tärkeät oikeudelliset asiakirjat turvallisesti. Kaikki tiedostot on salattu.",
+    "addDocument": "Lisää asiakirja",
+    "chooseHowToAdd": "Valitse lisäystapa",
+    "uploadFile": "Lataa tiedosto",
+    "uploadFileDesc": "Valitse PDF tai kuva laitteeltasi",
+    "scanDocumentDesc": "Ota valokuva asiakirjasta",
+    "createNote": "Luo muistiinpano",
+    "createNoteDesc": "Kirjoita muistiinpano tai tallenna tärkeitä tietoja",
+    "knowYourRights": "Tunne oikeutesi",
+    "stoppedByPolice": "Poliisi pysäyttää",
+    "stoppedByPoliceDesc": "Oikeutesi poliisikohtaamisessa",
+    "deportationNotice": "Käännyttämispäätös",
+    "deportationNoticeDesc": "Vaiheet käännyttämispäätöksen valittamiseksi",
+    "workplaceRights": "Työoikeudet",
+    "workplaceRightsDesc": "Työlainsäädännön suoja Suomessa",
+    "tenantRightsDesc": "Asumisen ja vuokrauksen suoja",
+    "immigrationDetention": "Maahanmuuttosäilö",
+    "immigrationDetentionDesc": "Oikeudet viranomaisten pidättäessä",
+    "discriminationDesc": "Miten ilmoittaa syrjinnästä ja taistella sitä vastaan",
+    "scenarioNotFound": "Skenaariota ei löytynyt",
+    "youHaveRightTo": "Sinulla on oikeus:",
+    "youMust": "Sinun täytyy:",
+    "immediateSteps": "Välittömät toimet:",
+    "yourRights": "Oikeutesi:",
+    "basicRights": "Perusoikeudet:",
+    "yourRightsAsTenant": "Oikeutesi vuokralaisena:",
+    "yourRightsInDetention": "Oikeutesi säilössä:",
+    "howToAct": "Miten toimia:",
+    "rightKnowWhyStopped": "Tietää miksi sinut pysäytettiin",
+    "rightRemainSilent": "Pysyä hiljaa (sinun on tunnistauduttava)",
+    "rightAskInterpreter": "Pyytää tulkkia",
+    "rightContactLawyer": "Ottaa yhteyttä lakimieheen ennen kuulustelua",
+    "rightRecordEncounter": "Tallentaa kohtaaminen (julkisilla paikoilla)",
+    "mustProvideName": "Ilmoittaa nimesi ja syntymäaikasi",
+    "mustShowId": "Näyttää henkilöllisyystodistus jos sinulla on",
+    "mustNotResist": "Olla vastustamatta fyysisesti",
+    "doNotIgnoreNotice": "ÄLÄ jätä ilmoitusta huomiotta — määräajat ovat tiukkoja",
+    "noteAppealDeadline": "Merkitse muistiin valitusaika (yleensä 30 päivää)",
+    "contactLawyerImmediately": "Ota välittömästi yhteyttä lakimieheen",
+    "applyLegalAid": "Hae oikeusapua tarvittaessa",
+    "rightAppealAdmin": "Oikeus valittaa hallinto-oikeuteen",
+    "rightLegalRep": "Oikeus oikeudelliseen edustukseen",
+    "rightInterpreter": "Oikeus tulkkiin",
+    "rightStayDuringAppeal": "Oikeus jäädä valituksen ajaksi (useimmissa tapauksissa)",
+    "minimumWage": "Vähimmäispalkka työehtosopimuksen mukaan",
+    "workingTimeLimits": "Työaikarajat (max 8h/päivä, 40h/viikko)",
+    "annualLeave": "Vuosiloma (vähintään 2 päivää työskentelykuukaudelta)",
+    "sickLeave": "Sairausajan palkka",
+    "safeWorkingConditions": "Turvalliset työolosuhteet",
+    "writtenRentalAgreement": "Kirjallinen vuokrasopimus vaaditaan",
+    "securityDeposit": "Vuokravakuus enintään 3 kuukauden vuokra",
+    "landlordNotice": "Vuokranantajan on annettava irtisanomisilmoitus (3-6 kuukautta)",
+    "rightHabitableDwelling": "Oikeus asuttavaan asuntoon",
+    "protectionUnjustEviction": "Suoja perusteettomalta häädöltä",
+    "rightKnowDetentionReason": "Oikeus tietää pidätyksen syy",
+    "rightContactLawyerDetention": "Oikeus ottaa yhteyttä lakimieheen",
+    "rightContactEmbassy": "Oikeus ottaa yhteyttä suurlähetystöösi",
+    "rightChallengeDetention": "Oikeus riitauttaa pidätys oikeudessa",
+    "rightHumaneTreatment": "Oikeus inhimilliseen kohteluun ja sairaanhoitoon",
+    "documentIncident": "Dokumentoi tapahtuma (päivämäärä, aika, todistajat)",
+    "fileComplaintOmbudsman": "Tee valitus yhdenvertaisuusvaltuutetulle",
+    "contactLegalAidOffice": "Ota yhteyttä oikeusaputoimistoon",
+    "reportToPolice": "Ilmoita poliisille jos rikos (uhkaus, pahoinpitely)",
+    "legalAidCalculator": "Oikeusapulaskuri",
+    "checkEligibility": "Tarkista oikeutesi Suomen oikeusapuun",
+    "estimateDisclaimer": "Tämä on vain arvio. Todellisen kelpoisuuden määrittää oikeusaputoimisto.",
+    "monthlyIncome": "Kuukausitulot (EUR)",
+    "totalAssets": "Varallisuus yhteensä (EUR)",
+    "numberOfDependents": "Huollettavien määrä",
+    "calculateEligibility": "Laske kelpoisuus",
+    "likelyEligible": "Todennäköisesti oikeutettu",
+    "mayNotQualify": "Ei ehkä oikeutettu",
+    "fullFreeLegalAid": "Olet todennäköisesti oikeutettu täyteen ilmaiseen oikeusapuun (ei omavastuuta).",
+    "legalAidWithCopay": "Saatat olla oikeutettu oikeusapuun {percent}% omavastuulla.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "mayNotQualifyDesc": "Tämän arvion perusteella et ehkä ole oikeutettu valtion oikeusapuun. Harkitse yksityisen lakimiehen tai oikeusklinikan konsultointia.",
+    "couldNotLoadDeadlines": "Määräaikojen lataus epäonnistui",
+    "noUpcomingDeadlines": "Ei tulevia määräaikoja",
+    "allClearDeadlines": "Kaikki kunnossa! Uudet määräajat näkyvät täällä kun ne asetetaan.",
+    "nothingOverdue": "Ei myöhässä olevia",
+    "greatJobDeadlines": "Hienoa työtä määräaikojen noudattamisessa.",
+    "noCompletedDeadlines": "Ei valmiita määräaikoja",
+    "completedDeadlinesDesc": "Valmiit määräajat näkyvät täällä.",
+    "daysLate": "päivää myöhässä",
+    "days": "päivää",
+    "fromDocument": "Asiakirjasta",
+    "couldNotLoadCase": "Asian tietojen lataus epäonnistui",
+    "typeLabel": "Tyyppi",
+    "nationality": "Kansalaisuus",
+    "migriReference": "Migri-viite",
+    "courtCaseNo": "Oikeusasian nro",
+    "created": "Luotu",
+    "citizenship": "Kansalaisuus",
+    "workPermit": "Työlupa",
+    "noDocumentsYet": "Ei vielä asiakirjoja",
+    "noUpcomingDeadlinesShort": "Ei tulevia määräaikoja",
+    "caseCreated": "Asia luotu",
+    "decisionReceived": "Päätös vastaanotettu",
+    "appealDeadline": "Valitusmääräaika",
+    "hearingScheduled": "Istunto sovittu",
+    "late": "myöhässä",
+    "pending": "Odottaa",
+    "processing": "Käsittelyssä",
+    "ready": "Valmis",
+    "failed": "Epäonnistui",
+    "analyzed": "Analysoitu",
+    "noDocumentsScanHint": "Ei vielä asiakirjoja. Skannaa tai lataa.",
+    "inCourt": "Oikeudessa",
+    "appeal": "Valitus",
+    "caseTimeline": "Asian aikajana",
+    "couldNotLoadTimeline": "Aikajanan lataus epäonnistui",
+    "noEventsYet": "Ei vielä tapahtumia",
+    "activityWillAppear": "Toiminta näkyy täällä asian edetessä.",
+    "caseCreatedDesc": "Asia \"{title}\" luotiin.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "decisionReceivedDesc": "Virallinen päätös vastaanotettiin tässä asiassa.",
+    "appealDeadlineSet": "Valitusmääräaika asetettu",
+    "appealDeadlineDesc": "Valitus on jätettävä viimeistään {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "hearingScheduledDesc": "Oikeudenkäynti sovittu {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "caseInfoUpdated": "Asian tiedot päivitettiin viimeksi.",
+    "documentAnalysis": "Asiakirja-analyysi",
+    "exportAsPdf": "Vie PDF-tiedostona",
+    "pdfExportComingSoon": "PDF-vienti tulossa pian",
+    "analysisFailedRetry": "Analyysi epäonnistui. Yritä uudelleen.",
+    "somethingWentWrong": "Jokin meni pieleen",
+    "retryAnalysis": "Yritä analyysia uudelleen",
+    "issuesFoundInDocument": "Löydettiin {count} ongelmaa asiakirjasta",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "severityOverview": "Vakavuusyhteenveto",
+    "issuesFoundHeader": "Löydetyt ongelmat",
+    "generateAppealWithIssues": "Luo valitus ({count} ongelmaa)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "analyzingContent": "Analysoidaan sisältöä...",
+    "documentProcessedOk": "Asiakirja käsitelty onnistuneesti",
+    "noSignificantIssues": "Tässä asiakirjassa ei havaittu merkittäviä ongelmia.",
+    "cameraPermissionRequired": "Kameralupa vaaditaan",
+    "cameraPermissionDesc": "Myönnä kameran käyttöoikeus asiakirjojen skannaamiseen tai käytä galleriaa.",
+    "openSettings": "Avaa asetukset",
+    "alignDocument": "Kohdista asiakirja kehykseen",
+    "pageCount": "{count} sivua",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "preview": "Esikatselu",
+    "pageNumber": "Sivu {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "done": "Valmis",
+    "retake": "Ota uudelleen",
+    "useThisPhoto": "Käytä tätä kuvaa",
+    "addPage": "Lisää sivu",
+    "uploadingPercent": "Ladataan... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
+    "preparingUpload": "Valmistellaan latausta...",
+    "documentUploadedSuccess": "Asiakirja ladattu onnistuneesti",
+    "pagesUploadedSuccess": "{count} sivua ladattu onnistuneesti",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "uploadFailed": "Lataus epäonnistui. Tarkista yhteys ja yritä uudelleen.",
+    "capturePhotoFailed": "Kuvan ottaminen epäonnistui. Yritä uudelleen.",
+    "readingText": "Luetaan tekstiä...",
+    "draftDocument": "Asiakirjaluonnos",
+    "saveChanges": "Tallenna muutokset",
+    "editDocument": "Muokkaa asiakirjaa",
+    "generatingDraft": "Luodaan luonnosta...",
+    "generatingDraftDesc": "Tekoäly valmistelee oikeudellista asiakirjaa asiasi tietojen ja valittujen ongelmien perusteella.",
+    "failedToGenerateDraft": "Luonnoksen luominen epäonnistui. Yritä uudelleen.",
+    "changesSaved": "Muutokset tallennettu",
+    "copiedToClipboard": "Kopioitu leikepöydälle",
+    "emailComingSoon": "Sähköpostilähetys tulossa pian",
+    "reviewBeforeSending": "Tarkista huolellisesti ennen lähettämistä. Olet vastuussa asiakirjan sisällöstä.",
+    "noContentAvailable": "Sisältöä ei saatavilla",
+    "save": "Tallenna",
+    "edit": "Muokkaa",
+    "pdf": "PDF",
+    "copy": "Kopioi",
+    "appealDraft": "Valitusluonnos",
+    "selected": "{count} valittu",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deleteSelected": "Poista valitut",
+    "deleteDocumentsConfirm": "Poistetaanko {count} asiakirjaa?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "delete": "Poista",
+    "analyzeSelected": "Analysoi valitut",
+    "batchAnalysisStarting": "Eräanalyysi alkaa...",
+    "switchToList": "Vaihda listanäkymään",
+    "switchToGrid": "Vaihda ruudukkonäkymään",
+    "scanNew": "Skannaa uusi",
+    "noDocumentsYetScan": "Ei vielä asiakirjoja",
+    "scanFirstDocumentHint": "Skannaa ensimmäinen asiakirja, jotta tekoäly voi analysoida sen virheiden varalta ja luoda valituksia.",
+    "failedToLoadDocuments": "Asiakirjojen lataus epäonnistui"
 }

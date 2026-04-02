@@ -2,65 +2,68 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 class RightsGuideScreen extends StatelessWidget {
   const RightsGuideScreen({super.key});
 
-  static const _scenarios = <_RightsScenario>[
-    _RightsScenario(
-      id: 'police-stop',
-      title: 'Stopped by Police',
-      subtitle: 'Your rights during a police encounter',
-      icon: Icons.local_police_outlined,
-      color: AppColors.info,
-    ),
-    _RightsScenario(
-      id: 'deportation',
-      title: 'Deportation Notice',
-      subtitle: 'Steps to challenge a removal order',
-      icon: Icons.flight_takeoff_outlined,
-      color: AppColors.error,
-    ),
-    _RightsScenario(
-      id: 'workplace',
-      title: 'Workplace Rights',
-      subtitle: 'Employment law protections in Finland',
-      icon: Icons.work_outline,
-      color: AppColors.accent,
-    ),
-    _RightsScenario(
-      id: 'tenant',
-      title: 'Tenant Rights',
-      subtitle: 'Housing and rental protections',
-      icon: Icons.home_outlined,
-      color: AppColors.warning,
-    ),
-    _RightsScenario(
-      id: 'detention',
-      title: 'Immigration Detention',
-      subtitle: 'Rights if detained by authorities',
-      icon: Icons.lock_outline,
-      color: AppColors.error,
-    ),
-    _RightsScenario(
-      id: 'discrimination',
-      title: 'Discrimination',
-      subtitle: 'How to report and fight discrimination',
-      icon: Icons.balance_outlined,
-      color: AppColors.primary,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final scenarios = <_RightsScenario>[
+      _RightsScenario(
+        id: 'police-stop',
+        title: l10n.stoppedByPolice,
+        subtitle: l10n.stoppedByPoliceDesc,
+        icon: Icons.local_police_outlined,
+        color: AppColors.info,
+      ),
+      _RightsScenario(
+        id: 'deportation',
+        title: l10n.deportationNotice,
+        subtitle: l10n.deportationNoticeDesc,
+        icon: Icons.flight_takeoff_outlined,
+        color: AppColors.error,
+      ),
+      _RightsScenario(
+        id: 'workplace',
+        title: l10n.workplaceRights,
+        subtitle: l10n.workplaceRightsDesc,
+        icon: Icons.work_outline,
+        color: AppColors.accent,
+      ),
+      _RightsScenario(
+        id: 'tenant',
+        title: l10n.tenantRights,
+        subtitle: l10n.tenantRightsDesc,
+        icon: Icons.home_outlined,
+        color: AppColors.warning,
+      ),
+      _RightsScenario(
+        id: 'detention',
+        title: l10n.immigrationDetention,
+        subtitle: l10n.immigrationDetentionDesc,
+        icon: Icons.lock_outline,
+        color: AppColors.error,
+      ),
+      _RightsScenario(
+        id: 'discrimination',
+        title: l10n.discrimination,
+        subtitle: l10n.discriminationDesc,
+        icon: Icons.balance_outlined,
+        color: AppColors.primary,
+      ),
+    ];
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Know Your Rights')),
+      appBar: AppBar(title: Text(l10n.knowYourRights)),
       body: ListView.separated(
         padding: const EdgeInsets.all(AppSpacing.md),
-        itemCount: _scenarios.length,
+        itemCount: scenarios.length,
         separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
         itemBuilder: (context, index) {
-          final s = _scenarios[index];
+          final s = scenarios[index];
           return Card(
             child: ListTile(
               leading: Container(

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Landing screen for the Checker feature with two main options.
 class CheckerHomeScreen extends StatelessWidget {
@@ -10,9 +11,10 @@ class CheckerHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Checker'),
+        title: Text(l10n.checkerTitle),
       ),
       body: SafeArea(
         child: Padding(
@@ -20,20 +22,12 @@ class CheckerHomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'What would you like to check?',
-                style: TextStyle(
+              Text(
+                l10n.checkerTitle,
+                style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              const Text(
-                'Get a full report before you commit',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: AppColors.textSecondary,
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
@@ -41,8 +35,8 @@ class CheckerHomeScreen extends StatelessWidget {
               // Check a Company card
               _CheckerCard(
                 icon: Icons.business_center_rounded,
-                title: 'Check a Company',
-                subtitle: 'Before you work with them',
+                title: l10n.checkCompany,
+                subtitle: l10n.beforeYouWork,
                 gradient: const [AppColors.accent, AppColors.accentDark],
                 onTap: () => context.push(AppRoutes.checkerCompany),
               ),
@@ -52,45 +46,14 @@ class CheckerHomeScreen extends StatelessWidget {
               // Check a Vehicle card
               _CheckerCard(
                 icon: Icons.directions_car_rounded,
-                title: 'Check a Vehicle',
-                subtitle: 'Before you buy',
+                title: l10n.checkVehicle,
+                subtitle: l10n.beforeYouBuy,
                 gradient: const [AppColors.info, AppColors.infoDark],
                 onTap: () => context.push(AppRoutes.checkerVehicle),
               ),
 
               const Spacer(),
 
-              // Bottom info
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceVariant,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.info_outline_rounded,
-                        size: 16,
-                        color: AppColors.textTertiary,
-                      ),
-                      SizedBox(width: AppSpacing.sm),
-                      Text(
-                        'Data from official registries',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textTertiary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
               const SizedBox(height: AppSpacing.md),
             ],
           ),

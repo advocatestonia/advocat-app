@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
 import '../providers/deadlines_provider.dart';
@@ -21,23 +22,24 @@ class DeadlinesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final deadlinesAsync = ref.watch(allDeadlinesProvider);
     final segment = ref.watch(_deadlineSegmentProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.calendar_today_outlined, size: 20),
-            SizedBox(width: AppSpacing.sm),
-            Text('Deadlines'),
+            const Icon(Icons.calendar_today_outlined, size: 20),
+            const SizedBox(width: AppSpacing.sm),
+            Text(l10n.deadlines),
           ],
         ),
       ),
       body: Column(
         children: [
-          // ── Segmented control ──────────────────────────────────────
+          // -- Segmented control --
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: AppSpacing.md,
@@ -46,18 +48,18 @@ class DeadlinesScreen extends ConsumerWidget {
             child: SizedBox(
               width: double.infinity,
               child: SegmentedButton<_DeadlineSegment>(
-                segments: const [
+                segments: [
                   ButtonSegment(
                     value: _DeadlineSegment.upcoming,
-                    label: Text('Upcoming'),
+                    label: Text(l10n.upcoming),
                   ),
                   ButtonSegment(
                     value: _DeadlineSegment.overdue,
-                    label: Text('Overdue'),
+                    label: Text(l10n.overdue),
                   ),
                   ButtonSegment(
                     value: _DeadlineSegment.completed,
-                    label: Text('Completed'),
+                    label: Text(l10n.completed),
                   ),
                 ],
                 selected: {segment},
@@ -72,7 +74,7 @@ class DeadlinesScreen extends ConsumerWidget {
             ),
           ),
 
-          // ── Deadlines list ─────────────────────────────────────────
+          // -- Deadlines list --
           Expanded(
             child: deadlinesAsync.when(
               loading: () =>
@@ -84,13 +86,13 @@ class DeadlinesScreen extends ConsumerWidget {
                     const Icon(Icons.error_outline,
                         size: 48, color: AppColors.error),
                     const SizedBox(height: AppSpacing.md),
-                    Text('Could not load deadlines',
+                    Text(l10n.couldNotLoadDeadlines,
                         style: Theme.of(context).textTheme.titleMedium),
                     const SizedBox(height: AppSpacing.sm),
                     TextButton(
                       onPressed: () =>
                           ref.invalidate(allDeadlinesProvider),
-                      child: const Text('Retry'),
+                      child: Text(l10n.retry),
                     ),
                   ],
                 ),
@@ -172,6 +174,7 @@ class _DeadlineCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final days = AppDateUtils.daysUntil(deadline.dueDate);
     final isOverdue = days < 0;
     final isCompleted = deadline.status == DeadlineStatus.completed;
@@ -195,7 +198,7 @@ class _DeadlineCard extends StatelessWidget {
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Row(
           children: [
-            // ── Days remaining (big number) ──────────────────────────
+            // -- Days remaining (big number) --
             Container(
               width: 64,
               height: 64,
@@ -220,7 +223,7 @@ class _DeadlineCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      isOverdue ? 'days late' : 'days',
+                      isOverdue ? l10n.daysLate : l10n.days,
                       style: TextStyle(
                         fontSize: 11,
                         color: urgencyColor,
@@ -233,7 +236,7 @@ class _DeadlineCard extends StatelessWidget {
             ),
             const SizedBox(width: AppSpacing.md),
 
-            // ── Deadline info ────────────────────────────────────────
+            // -- Deadline info --
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -262,17 +265,17 @@ class _DeadlineCard extends StatelessWidget {
                   ),
                   if (deadline.sourceDocumentId != null) ...[
                     const SizedBox(height: 2),
-                    const Row(
+                    Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.link,
                           size: 12,
                           color: AppColors.textTertiary,
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
-                          'From document',
-                          style: TextStyle(
+                          l10n.fromDocument,
+                          style: const TextStyle(
                             fontSize: 11,
                             color: AppColors.textTertiary,
                           ),
@@ -284,11 +287,11 @@ class _DeadlineCard extends StatelessWidget {
               ),
             ),
 
-            // ── Mark complete ────────────────────────────────────────
+            // -- Mark complete --
             if (!isCompleted)
               IconButton(
                 onPressed: onMarkComplete,
-                tooltip: 'Mark complete',
+                tooltip: l10n.markComplete,
                 icon: Container(
                   width: 36,
                   height: 36,
@@ -321,21 +324,22 @@ class _EmptyDeadlines extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final (icon, title, subtitle) = switch (segment) {
       _DeadlineSegment.upcoming => (
           Icons.event_available_outlined,
-          'No upcoming deadlines',
-          'You are all clear! New deadlines will appear here when they are set.',
+          l10n.noUpcomingDeadlines,
+          l10n.allClearDeadlines,
         ),
       _DeadlineSegment.overdue => (
           Icons.check_circle_outline,
-          'Nothing overdue',
-          'Great job staying on top of your deadlines.',
+          l10n.nothingOverdue,
+          l10n.greatJobDeadlines,
         ),
       _DeadlineSegment.completed => (
           Icons.history_outlined,
-          'No completed deadlines',
-          'Deadlines you complete will be shown here.',
+          l10n.noCompletedDeadlines,
+          l10n.completedDeadlinesDesc,
         ),
     };
 

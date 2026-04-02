@@ -3,14 +3,16 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../services/ai_service.dart';
+import '../../../services/assistant_tools.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
+import '../../../services/tool_executor.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model for provider state
 // ---------------------------------------------------------------------------
 
-enum ChatMessageRole { user, assistant }
+enum ChatMessageRole { user, assistant, toolResult }
 
 class ChatMessageData {
   final String id;
@@ -19,12 +21,20 @@ class ChatMessageData {
   final DateTime timestamp;
   final bool isStreaming;
 
+  /// Structured tool result data for rendering rich cards.
+  final ToolResult? toolResult;
+
+  /// Deferred navigation to perform after displaying the tool result.
+  final ToolNavigation? navigation;
+
   const ChatMessageData({
     required this.id,
     required this.role,
     required this.content,
     required this.timestamp,
     this.isStreaming = false,
+    this.toolResult,
+    this.navigation,
   });
 
   ChatMessageData copyWith({String? content, bool? isStreaming}) {
@@ -34,6 +44,8 @@ class ChatMessageData {
       content: content ?? this.content,
       timestamp: timestamp,
       isStreaming: isStreaming ?? this.isStreaming,
+      toolResult: toolResult,
+      navigation: navigation,
     );
   }
 
@@ -230,6 +242,29 @@ class ChatNotifier extends StateNotifier<ChatState> {
   Future<void> draftAppeal() => sendMessage('Help me draft an appeal for my case.');
 
   Future<void> checkDeadlines() => sendMessage('What are the important deadlines for my case?');
+
+  // ── Tool result insertion ─────────────────────────────────────────────
+
+  /// Add a tool result message to the chat.
+  ///
+  /// Called by the chat screen after the [ChatToolBridge] executes a tool.
+  void addToolResultMessage({
+    required ToolResult toolResult,
+    ToolNavigation? navigation,
+  }) {
+    final message = ChatMessageData(
+      id: 'tool_${DateTime.now().millisecondsSinceEpoch}',
+      role: ChatMessageRole.toolResult,
+      content: toolResult.displayText,
+      timestamp: DateTime.now(),
+      toolResult: toolResult,
+      navigation: navigation,
+    );
+
+    state = state.copyWith(
+      messages: [...state.messages, message],
+    );
+  }
 
   /// Clear any transient error.
   void clearError() {

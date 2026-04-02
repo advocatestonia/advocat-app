@@ -760,4 +760,591 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get won => 'Выиграно';
+
+  @override
+  String get documentVault => 'Хранилище документов';
+
+  @override
+  String get secureDocumentStorage => 'Безопасное хранилище документов';
+
+  @override
+  String get secureDocumentStorageDesc =>
+      'Храните важные юридические документы в безопасности. Все файлы зашифрованы.';
+
+  @override
+  String get addDocument => 'Добавить документ';
+
+  @override
+  String get chooseHowToAdd => 'Выберите способ добавления документа';
+
+  @override
+  String get uploadFile => 'Загрузить файл';
+
+  @override
+  String get uploadFileDesc => 'Выберите PDF или изображение с устройства';
+
+  @override
+  String get scanDocumentDesc => 'Сфотографировать документ';
+
+  @override
+  String get createNote => 'Создать заметку';
+
+  @override
+  String get createNoteDesc => 'Записать заметку или важные детали';
+
+  @override
+  String get knowYourRights => 'Знайте свои права';
+
+  @override
+  String get stoppedByPolice => 'Остановила полиция';
+
+  @override
+  String get stoppedByPoliceDesc => 'Ваши права при встрече с полицией';
+
+  @override
+  String get deportationNotice => 'Уведомление о депортации';
+
+  @override
+  String get deportationNoticeDesc => 'Как обжаловать решение о выдворении';
+
+  @override
+  String get workplaceRights => 'Трудовые права';
+
+  @override
+  String get workplaceRightsDesc => 'Защита трудовых прав в Финляндии';
+
+  @override
+  String get tenantRightsDesc => 'Жилищные права и защита арендаторов';
+
+  @override
+  String get immigrationDetention => 'Задержание мигрантов';
+
+  @override
+  String get immigrationDetentionDesc => 'Права при задержании властями';
+
+  @override
+  String get discriminationDesc =>
+      'Как сообщить о дискриминации и бороться с ней';
+
+  @override
+  String get scenarioNotFound => 'Сценарий не найден';
+
+  @override
+  String get youHaveRightTo => 'Вы имеете право:';
+
+  @override
+  String get youMust => 'Вы обязаны:';
+
+  @override
+  String get immediateSteps => 'Немедленные действия:';
+
+  @override
+  String get yourRights => 'Ваши права:';
+
+  @override
+  String get basicRights => 'Основные права:';
+
+  @override
+  String get yourRightsAsTenant => 'Ваши права как арендатора:';
+
+  @override
+  String get yourRightsInDetention => 'Ваши права при задержании:';
+
+  @override
+  String get howToAct => 'Что делать:';
+
+  @override
+  String get rightKnowWhyStopped => 'Узнать причину остановки';
+
+  @override
+  String get rightRemainSilent => 'Хранить молчание (но назвать себя обязаны)';
+
+  @override
+  String get rightAskInterpreter => 'Попросить переводчика';
+
+  @override
+  String get rightContactLawyer => 'Связаться с адвокатом до допроса';
+
+  @override
+  String get rightRecordEncounter =>
+      'Записывать встречу (в общественных местах)';
+
+  @override
+  String get mustProvideName => 'Назвать имя и дату рождения';
+
+  @override
+  String get mustShowId => 'Показать удостоверение личности, если есть';
+
+  @override
+  String get mustNotResist => 'Не оказывать физического сопротивления';
+
+  @override
+  String get doNotIgnoreNotice => 'НЕ игнорируйте уведомление — сроки строгие';
+
+  @override
+  String get noteAppealDeadline => 'Запишите срок обжалования (обычно 30 дней)';
+
+  @override
+  String get contactLawyerImmediately => 'Немедленно свяжитесь с адвокатом';
+
+  @override
+  String get applyLegalAid => 'Подайте заявление на юридическую помощь';
+
+  @override
+  String get rightAppealAdmin => 'Право обжаловать в Административном суде';
+
+  @override
+  String get rightLegalRep => 'Право на юридическое представительство';
+
+  @override
+  String get rightInterpreter => 'Право на переводчика';
+
+  @override
+  String get rightStayDuringAppeal =>
+      'Право оставаться на время обжалования (в большинстве случаев)';
+
+  @override
+  String get minimumWage => 'Минимальная зарплата по коллективному договору';
+
+  @override
+  String get workingTimeLimits =>
+      'Ограничения рабочего времени (макс. 8ч/день, 40ч/неделя)';
+
+  @override
+  String get annualLeave =>
+      'Ежегодный отпуск (минимум 2 дня за отработанный месяц)';
+
+  @override
+  String get sickLeave => 'Оплата больничного';
+
+  @override
+  String get safeWorkingConditions => 'Безопасные условия труда';
+
+  @override
+  String get writtenRentalAgreement => 'Требуется письменный договор аренды';
+
+  @override
+  String get securityDeposit => 'Залог — максимум 3 месяца аренды';
+
+  @override
+  String get landlordNotice => 'Арендодатель обязан уведомить за 3-6 месяцев';
+
+  @override
+  String get rightHabitableDwelling => 'Право на пригодное для жизни жильё';
+
+  @override
+  String get protectionUnjustEviction => 'Защита от незаконного выселения';
+
+  @override
+  String get rightKnowDetentionReason => 'Право знать причину задержания';
+
+  @override
+  String get rightContactLawyerDetention => 'Право связаться с адвокатом';
+
+  @override
+  String get rightContactEmbassy => 'Право связаться с посольством';
+
+  @override
+  String get rightChallengeDetention => 'Право обжаловать задержание в суде';
+
+  @override
+  String get rightHumaneTreatment =>
+      'Право на гуманное обращение и медицинскую помощь';
+
+  @override
+  String get documentIncident =>
+      'Задокументируйте инцидент (дата, время, свидетели)';
+
+  @override
+  String get fileComplaintOmbudsman =>
+      'Подайте жалобу Уполномоченному по вопросам дискриминации';
+
+  @override
+  String get contactLegalAidOffice => 'Обратитесь в бюро юридической помощи';
+
+  @override
+  String get reportToPolice =>
+      'Обратитесь в полицию при преступлении (угроза, нападение)';
+
+  @override
+  String get legalAidCalculator => 'Калькулятор юридической помощи';
+
+  @override
+  String get checkEligibility =>
+      'Проверьте право на юридическую помощь в Финляндии';
+
+  @override
+  String get estimateDisclaimer =>
+      'Это приблизительная оценка. Решение принимает Бюро юридической помощи.';
+
+  @override
+  String get monthlyIncome => 'Ежемесячный доход (EUR)';
+
+  @override
+  String get totalAssets => 'Общая сумма активов (EUR)';
+
+  @override
+  String get numberOfDependents => 'Количество иждивенцев';
+
+  @override
+  String get calculateEligibility => 'Рассчитать право на помощь';
+
+  @override
+  String get likelyEligible => 'Вероятно, имеете право';
+
+  @override
+  String get mayNotQualify => 'Возможно, не подходите';
+
+  @override
+  String get fullFreeLegalAid =>
+      'Вы, вероятно, имеете право на полную бесплатную юридическую помощь (без доплаты).';
+
+  @override
+  String legalAidWithCopay(String percent) {
+    return 'Вы можете получить юридическую помощь с доплатой $percent%.';
+  }
+
+  @override
+  String get mayNotQualifyDesc =>
+      'По предварительной оценке, вы можете не иметь права на государственную юридическую помощь. Рассмотрите обращение к частному адвокату или юридической клинике.';
+
+  @override
+  String get couldNotLoadDeadlines => 'Не удалось загрузить сроки';
+
+  @override
+  String get noUpcomingDeadlines => 'Нет предстоящих сроков';
+
+  @override
+  String get allClearDeadlines =>
+      'Всё в порядке! Новые сроки появятся здесь, когда будут установлены.';
+
+  @override
+  String get nothingOverdue => 'Нет просроченных';
+
+  @override
+  String get greatJobDeadlines => 'Отлично! Вы не пропускаете сроки.';
+
+  @override
+  String get noCompletedDeadlines => 'Нет завершённых сроков';
+
+  @override
+  String get completedDeadlinesDesc =>
+      'Завершённые сроки будут отображаться здесь.';
+
+  @override
+  String get daysLate => 'дн. просрочки';
+
+  @override
+  String get days => 'дн.';
+
+  @override
+  String get fromDocument => 'Из документа';
+
+  @override
+  String get couldNotLoadCase => 'Не удалось загрузить данные дела';
+
+  @override
+  String get typeLabel => 'Тип';
+
+  @override
+  String get nationality => 'Гражданство';
+
+  @override
+  String get migriReference => 'Номер Migri';
+
+  @override
+  String get courtCaseNo => 'Номер дела в суде';
+
+  @override
+  String get created => 'Создано';
+
+  @override
+  String get citizenship => 'Гражданство';
+
+  @override
+  String get workPermit => 'Разрешение на работу';
+
+  @override
+  String get noDocumentsYet => 'Документы ещё не загружены';
+
+  @override
+  String get noUpcomingDeadlinesShort => 'Нет предстоящих сроков';
+
+  @override
+  String get caseCreated => 'Дело создано';
+
+  @override
+  String get decisionReceived => 'Решение получено';
+
+  @override
+  String get appealDeadline => 'Срок обжалования';
+
+  @override
+  String get hearingScheduled => 'Назначено слушание';
+
+  @override
+  String get late => 'просрочено';
+
+  @override
+  String get pending => 'Ожидание';
+
+  @override
+  String get processing => 'Обработка';
+
+  @override
+  String get ready => 'Готово';
+
+  @override
+  String get failed => 'Ошибка';
+
+  @override
+  String get analyzed => 'Проанализировано';
+
+  @override
+  String get noDocumentsScanHint =>
+      'Документов пока нет. Отсканируйте или загрузите.';
+
+  @override
+  String get inCourt => 'В суде';
+
+  @override
+  String get appeal => 'Жалоба';
+
+  @override
+  String get caseTimeline => 'Хронология дела';
+
+  @override
+  String get couldNotLoadTimeline => 'Не удалось загрузить хронологию';
+
+  @override
+  String get noEventsYet => 'Событий пока нет';
+
+  @override
+  String get activityWillAppear =>
+      'Активность будет отображаться здесь по мере развития дела.';
+
+  @override
+  String caseCreatedDesc(String title) {
+    return 'Дело «$title» создано.';
+  }
+
+  @override
+  String get decisionReceivedDesc =>
+      'Получено официальное решение по данному делу.';
+
+  @override
+  String get appealDeadlineSet => 'Установлен срок обжалования';
+
+  @override
+  String appealDeadlineDesc(String date) {
+    return 'Жалоба должна быть подана до $date.';
+  }
+
+  @override
+  String hearingScheduledDesc(String date) {
+    return 'Слушание в суде назначено на $date.';
+  }
+
+  @override
+  String get caseInfoUpdated => 'Информация по делу обновлена.';
+
+  @override
+  String get documentAnalysis => 'Анализ документа';
+
+  @override
+  String get exportAsPdf => 'Экспорт в PDF';
+
+  @override
+  String get pdfExportComingSoon => 'Экспорт в PDF скоро будет доступен';
+
+  @override
+  String get analysisFailedRetry => 'Анализ не удался. Попробуйте снова.';
+
+  @override
+  String get somethingWentWrong => 'Что-то пошло не так';
+
+  @override
+  String get retryAnalysis => 'Повторить анализ';
+
+  @override
+  String issuesFoundInDocument(int count) {
+    return 'Найдено проблем в документе: $count';
+  }
+
+  @override
+  String get severityOverview => 'Обзор критичности';
+
+  @override
+  String get issuesFoundHeader => 'Найденные проблемы';
+
+  @override
+  String generateAppealWithIssues(int count) {
+    return 'Сформировать жалобу ($count проблем)';
+  }
+
+  @override
+  String get analyzingContent => 'Анализируем содержание...';
+
+  @override
+  String get documentProcessedOk => 'Документ обработан успешно';
+
+  @override
+  String get noSignificantIssues =>
+      'В этом документе не обнаружено существенных проблем.';
+
+  @override
+  String get cameraPermissionRequired => 'Требуется разрешение камеры';
+
+  @override
+  String get cameraPermissionDesc =>
+      'Предоставьте доступ к камере для сканирования документов или используйте галерею.';
+
+  @override
+  String get openSettings => 'Открыть настройки';
+
+  @override
+  String get alignDocument => 'Расположите документ в рамке';
+
+  @override
+  String pageCount(int count) {
+    return '$count стр.';
+  }
+
+  @override
+  String get preview => 'Предпросмотр';
+
+  @override
+  String pageNumber(int number) {
+    return 'Страница $number';
+  }
+
+  @override
+  String get done => 'Готово';
+
+  @override
+  String get retake => 'Переснять';
+
+  @override
+  String get useThisPhoto => 'Использовать фото';
+
+  @override
+  String get addPage => 'Добавить страницу';
+
+  @override
+  String uploadingPercent(int percent) {
+    return 'Загрузка... $percent%';
+  }
+
+  @override
+  String get preparingUpload => 'Подготовка загрузки...';
+
+  @override
+  String get documentUploadedSuccess => 'Документ успешно загружен';
+
+  @override
+  String pagesUploadedSuccess(int count) {
+    return 'Загружено страниц: $count';
+  }
+
+  @override
+  String get uploadFailed =>
+      'Загрузка не удалась. Проверьте подключение и попробуйте снова.';
+
+  @override
+  String get capturePhotoFailed => 'Не удалось сделать фото. Попробуйте снова.';
+
+  @override
+  String get readingText => 'Распознаём текст...';
+
+  @override
+  String get draftDocument => 'Черновик документа';
+
+  @override
+  String get saveChanges => 'Сохранить изменения';
+
+  @override
+  String get editDocument => 'Редактировать документ';
+
+  @override
+  String get generatingDraft => 'Генерируем черновик...';
+
+  @override
+  String get generatingDraftDesc =>
+      'Система готовит юридический документ на основе вашего дела и выбранных проблем.';
+
+  @override
+  String get failedToGenerateDraft =>
+      'Не удалось сгенерировать черновик. Попробуйте снова.';
+
+  @override
+  String get changesSaved => 'Изменения сохранены';
+
+  @override
+  String get copiedToClipboard => 'Скопировано в буфер обмена';
+
+  @override
+  String get emailComingSoon => 'Отправка по почте скоро будет доступна';
+
+  @override
+  String get reviewBeforeSending =>
+      'Внимательно проверьте перед отправкой. Вы несёте ответственность за содержание документа.';
+
+  @override
+  String get noContentAvailable => 'Содержание недоступно';
+
+  @override
+  String get save => 'Сохранить';
+
+  @override
+  String get edit => 'Редактировать';
+
+  @override
+  String get pdf => 'PDF';
+
+  @override
+  String get copy => 'Копировать';
+
+  @override
+  String get appealDraft => 'Черновик жалобы';
+
+  @override
+  String selected(int count) {
+    return 'Выбрано: $count';
+  }
+
+  @override
+  String get deleteSelected => 'Удалить выбранные';
+
+  @override
+  String deleteDocumentsConfirm(int count) {
+    return 'Удалить документов: $count?';
+  }
+
+  @override
+  String get delete => 'Удалить';
+
+  @override
+  String get analyzeSelected => 'Анализировать выбранные';
+
+  @override
+  String get batchAnalysisStarting => 'Начинаем пакетный анализ...';
+
+  @override
+  String get switchToList => 'Переключить на список';
+
+  @override
+  String get switchToGrid => 'Переключить на сетку';
+
+  @override
+  String get scanNew => 'Сканировать';
+
+  @override
+  String get noDocumentsYetScan => 'Документов пока нет';
+
+  @override
+  String get scanFirstDocumentHint =>
+      'Отсканируйте первый документ, чтобы система проанализировала его на ошибки и подготовила жалобу.';
+
+  @override
+  String get failedToLoadDocuments => 'Не удалось загрузить документы';
 }

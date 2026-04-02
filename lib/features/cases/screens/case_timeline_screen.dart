@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/utils/date_utils.dart';
 import '../providers/cases_provider.dart';
 
@@ -112,8 +113,9 @@ class CaseTimelineScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final timelineAsync = ref.watch(caseTimelineProvider(caseId));
 
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Case Timeline')),
+      appBar: AppBar(title: Text(l10n.caseTimeline)),
       body: timelineAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(
@@ -122,13 +124,13 @@ class CaseTimelineScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, size: 48, color: AppColors.error),
               const SizedBox(height: AppSpacing.md),
-              Text('Could not load timeline',
+              Text(l10n.couldNotLoadTimeline,
                   style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: AppSpacing.sm),
               TextButton(
                 onPressed: () =>
                     ref.invalidate(caseTimelineProvider(caseId)),
-                child: const Text('Retry'),
+                child: Text(l10n.retry),
               ),
             ],
           ),
@@ -142,15 +144,15 @@ class CaseTimelineScreen extends ConsumerWidget {
                   const Icon(Icons.timeline, size: 56, color: AppColors.textTertiary),
                   const SizedBox(height: AppSpacing.md),
                   Text(
-                    'No events yet',
+                    l10n.noEventsYet,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
-                  const Text(
-                    'Activity will appear here as your case progresses.',
-                    style: TextStyle(color: AppColors.textTertiary),
+                  Text(
+                    l10n.activityWillAppear,
+                    style: const TextStyle(color: AppColors.textTertiary),
                   ),
                 ],
               ),

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/document.dart';
 import '../providers/documents_provider.dart';
 
@@ -87,8 +88,8 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: _isSelecting
-            ? Text('${_selectedIds.length} selected')
-            : const Text('Documents'),
+            ? Text(AppLocalizations.of(context)!.selected(_selectedIds.length))
+            : Text(AppLocalizations.of(context)!.documents),
         leading: _isSelecting
             ? IconButton(
                 icon: const Icon(Icons.close),
@@ -99,15 +100,15 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
           if (_isSelecting) ...[
             IconButton(
               icon: const Icon(Icons.delete_outline),
-              tooltip: 'Delete selected',
+              tooltip: AppLocalizations.of(context)!.deleteSelected,
               onPressed: () {
                 // Bulk delete action
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content:
-                        Text('Delete ${_selectedIds.length} documents?'),
+                        Text(AppLocalizations.of(context)!.deleteDocumentsConfirm(_selectedIds.length)),
                     action: SnackBarAction(
-                      label: 'Delete',
+                      label: AppLocalizations.of(context)!.delete,
                       onPressed: () {
                         // Implement delete
                         _clearSelection();
@@ -119,11 +120,11 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.analytics_outlined),
-              tooltip: 'Analyze selected',
+              tooltip: AppLocalizations.of(context)!.analyzeSelected,
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Batch analysis starting...'),
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.batchAnalysisStarting),
                     backgroundColor: AppColors.accent,
                   ),
                 );
@@ -138,8 +139,8 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
                     : Icons.grid_view_rounded,
               ),
               tooltip: _viewMode == _ViewMode.grid
-                  ? 'Switch to list'
-                  : 'Switch to grid',
+                  ? AppLocalizations.of(context)!.switchToList
+                  : AppLocalizations.of(context)!.switchToGrid,
               onPressed: _toggleViewMode,
             ),
           ],
@@ -160,7 +161,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
         backgroundColor: AppColors.accent,
         foregroundColor: Colors.white,
         icon: const Icon(Icons.document_scanner_rounded),
-        label: const Text('Scan New'),
+        label: Text(AppLocalizations.of(context)!.scanNew),
       ),
     );
   }
@@ -260,7 +261,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'No documents yet',
+              AppLocalizations.of(context)!.noDocumentsYetScan,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
@@ -268,7 +269,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'Scan your first document to let AI analyze it for errors and generate appeals.',
+              AppLocalizations.of(context)!.scanFirstDocumentHint,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
               ),
@@ -279,7 +280,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
               onPressed: () =>
                   context.push('/scan?caseId=${widget.caseId}'),
               icon: const Icon(Icons.document_scanner_rounded),
-              label: const Text('Scan Document'),
+              label: Text(AppLocalizations.of(context)!.scanDocument),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.accent,
                 foregroundColor: Colors.white,
@@ -303,13 +304,13 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
             const Icon(Icons.error_outline_rounded,
                 size: 48, color: AppColors.error),
             const SizedBox(height: AppSpacing.md),
-            Text('Failed to load documents',
+            Text(AppLocalizations.of(context)!.failedToLoadDocuments,
                 style: theme.textTheme.titleMedium),
             const SizedBox(height: AppSpacing.sm),
             TextButton(
               onPressed: () =>
                   ref.invalidate(documentsProvider(widget.caseId)),
-              child: const Text('Retry'),
+              child: Text(AppLocalizations.of(context)!.retry),
             ),
           ],
         ),
@@ -609,6 +610,7 @@ class _StatusChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     Color color;
     Color bgColor;
     String label;
@@ -617,19 +619,19 @@ class _StatusChip extends StatelessWidget {
       case DocumentProcessingStatus.completed:
         color = AppColors.success;
         bgColor = const Color(0xFFDCFCE7);
-        label = 'Analyzed';
+        label = l10n.analyzed;
       case DocumentProcessingStatus.processing:
         color = AppColors.warning;
         bgColor = const Color(0xFFFEF3C7);
-        label = 'Processing';
+        label = l10n.processing;
       case DocumentProcessingStatus.failed:
         color = AppColors.error;
         bgColor = const Color(0xFFFEE2E2);
-        label = 'Failed';
+        label = l10n.failed;
       case DocumentProcessingStatus.pending:
         color = AppColors.textTertiary;
         bgColor = AppColors.surfaceVariant;
-        label = 'Pending';
+        label = l10n.pending;
     }
 
     return Container(

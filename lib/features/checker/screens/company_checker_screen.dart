@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/company_checker_provider.dart';
 import '../widgets/company_report_card.dart';
 
@@ -30,7 +31,7 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Check Company'),
+        title: Text(AppLocalizations.of(context)!.checkCompany),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -95,7 +96,7 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('Check Company'),
+                    : Text(AppLocalizations.of(context)!.checkCompany),
               ),
             ),
 

@@ -1561,6 +1561,1080 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Won'**
   String get won;
+
+  /// No description provided for @documentVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Vault'**
+  String get documentVault;
+
+  /// No description provided for @secureDocumentStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure Document Storage'**
+  String get secureDocumentStorage;
+
+  /// No description provided for @secureDocumentStorageDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Store your important legal documents securely. All files are encrypted end-to-end.'**
+  String get secureDocumentStorageDesc;
+
+  /// No description provided for @addDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Document'**
+  String get addDocument;
+
+  /// No description provided for @chooseHowToAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to add your document'**
+  String get chooseHowToAdd;
+
+  /// No description provided for @uploadFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload File'**
+  String get uploadFile;
+
+  /// No description provided for @uploadFileDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a PDF or image from your device'**
+  String get uploadFileDesc;
+
+  /// No description provided for @scanDocumentDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo of your document'**
+  String get scanDocumentDesc;
+
+  /// No description provided for @createNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Note'**
+  String get createNote;
+
+  /// No description provided for @createNoteDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Write a note or record important details'**
+  String get createNoteDesc;
+
+  /// No description provided for @knowYourRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Know Your Rights'**
+  String get knowYourRights;
+
+  /// No description provided for @stoppedByPolice.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped by Police'**
+  String get stoppedByPolice;
+
+  /// No description provided for @stoppedByPoliceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rights during a police encounter'**
+  String get stoppedByPoliceDesc;
+
+  /// No description provided for @deportationNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Deportation Notice'**
+  String get deportationNotice;
+
+  /// No description provided for @deportationNoticeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps to challenge a removal order'**
+  String get deportationNoticeDesc;
+
+  /// No description provided for @workplaceRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Workplace Rights'**
+  String get workplaceRights;
+
+  /// No description provided for @workplaceRightsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Employment law protections in Finland'**
+  String get workplaceRightsDesc;
+
+  /// No description provided for @tenantRightsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing and rental protections'**
+  String get tenantRightsDesc;
+
+  /// No description provided for @immigrationDetention.
+  ///
+  /// In en, this message translates to:
+  /// **'Immigration Detention'**
+  String get immigrationDetention;
+
+  /// No description provided for @immigrationDetentionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Rights if detained by authorities'**
+  String get immigrationDetentionDesc;
+
+  /// No description provided for @discriminationDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'How to report and fight discrimination'**
+  String get discriminationDesc;
+
+  /// No description provided for @scenarioNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Scenario not found'**
+  String get scenarioNotFound;
+
+  /// No description provided for @youHaveRightTo.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to:'**
+  String get youHaveRightTo;
+
+  /// No description provided for @youMust.
+  ///
+  /// In en, this message translates to:
+  /// **'You must:'**
+  String get youMust;
+
+  /// No description provided for @immediateSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediate steps:'**
+  String get immediateSteps;
+
+  /// No description provided for @yourRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rights:'**
+  String get yourRights;
+
+  /// No description provided for @basicRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic rights:'**
+  String get basicRights;
+
+  /// No description provided for @yourRightsAsTenant.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rights as a tenant:'**
+  String get yourRightsAsTenant;
+
+  /// No description provided for @yourRightsInDetention.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rights in detention:'**
+  String get yourRightsInDetention;
+
+  /// No description provided for @howToAct.
+  ///
+  /// In en, this message translates to:
+  /// **'How to act:'**
+  String get howToAct;
+
+  /// No description provided for @rightKnowWhyStopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Know why you are being stopped'**
+  String get rightKnowWhyStopped;
+
+  /// No description provided for @rightRemainSilent.
+  ///
+  /// In en, this message translates to:
+  /// **'Remain silent (you must identify yourself)'**
+  String get rightRemainSilent;
+
+  /// No description provided for @rightAskInterpreter.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for an interpreter'**
+  String get rightAskInterpreter;
+
+  /// No description provided for @rightContactLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact a lawyer before questioning'**
+  String get rightContactLawyer;
+
+  /// No description provided for @rightRecordEncounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Record the encounter (in public places)'**
+  String get rightRecordEncounter;
+
+  /// No description provided for @mustProvideName.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide your name and date of birth'**
+  String get mustProvideName;
+
+  /// No description provided for @mustShowId.
+  ///
+  /// In en, this message translates to:
+  /// **'Show ID if you have one'**
+  String get mustShowId;
+
+  /// No description provided for @mustNotResist.
+  ///
+  /// In en, this message translates to:
+  /// **'Not physically resist'**
+  String get mustNotResist;
+
+  /// No description provided for @doNotIgnoreNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Do NOT ignore the notice - deadlines are strict'**
+  String get doNotIgnoreNotice;
+
+  /// No description provided for @noteAppealDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Note the appeal deadline (usually 30 days)'**
+  String get noteAppealDeadline;
+
+  /// No description provided for @contactLawyerImmediately.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact a lawyer immediately'**
+  String get contactLawyerImmediately;
+
+  /// No description provided for @applyLegalAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply for legal aid if needed'**
+  String get applyLegalAid;
+
+  /// No description provided for @rightAppealAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to appeal to the Administrative Court'**
+  String get rightAppealAdmin;
+
+  /// No description provided for @rightLegalRep.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to legal representation'**
+  String get rightLegalRep;
+
+  /// No description provided for @rightInterpreter.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to an interpreter'**
+  String get rightInterpreter;
+
+  /// No description provided for @rightStayDuringAppeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to stay during appeal (in most cases)'**
+  String get rightStayDuringAppeal;
+
+  /// No description provided for @minimumWage.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum wage as per collective agreement'**
+  String get minimumWage;
+
+  /// No description provided for @workingTimeLimits.
+  ///
+  /// In en, this message translates to:
+  /// **'Working time limits (max 8h/day, 40h/week)'**
+  String get workingTimeLimits;
+
+  /// No description provided for @annualLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual leave (minimum 2 days per month worked)'**
+  String get annualLeave;
+
+  /// No description provided for @sickLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'Sick leave compensation'**
+  String get sickLeave;
+
+  /// No description provided for @safeWorkingConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe working conditions'**
+  String get safeWorkingConditions;
+
+  /// No description provided for @writtenRentalAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Written rental agreement required'**
+  String get writtenRentalAgreement;
+
+  /// No description provided for @securityDeposit.
+  ///
+  /// In en, this message translates to:
+  /// **'Security deposit max 3 months rent'**
+  String get securityDeposit;
+
+  /// No description provided for @landlordNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord must give notice (3-6 months)'**
+  String get landlordNotice;
+
+  /// No description provided for @rightHabitableDwelling.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to a habitable dwelling'**
+  String get rightHabitableDwelling;
+
+  /// No description provided for @protectionUnjustEviction.
+  ///
+  /// In en, this message translates to:
+  /// **'Protection from unjust eviction'**
+  String get protectionUnjustEviction;
+
+  /// No description provided for @rightKnowDetentionReason.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to know the reason for detention'**
+  String get rightKnowDetentionReason;
+
+  /// No description provided for @rightContactLawyerDetention.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to contact a lawyer'**
+  String get rightContactLawyerDetention;
+
+  /// No description provided for @rightContactEmbassy.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to contact your embassy'**
+  String get rightContactEmbassy;
+
+  /// No description provided for @rightChallengeDetention.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to challenge detention in court'**
+  String get rightChallengeDetention;
+
+  /// No description provided for @rightHumaneTreatment.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to humane treatment and medical care'**
+  String get rightHumaneTreatment;
+
+  /// No description provided for @documentIncident.
+  ///
+  /// In en, this message translates to:
+  /// **'Document the incident (date, time, witnesses)'**
+  String get documentIncident;
+
+  /// No description provided for @fileComplaintOmbudsman.
+  ///
+  /// In en, this message translates to:
+  /// **'File a complaint with the Non-Discrimination Ombudsman'**
+  String get fileComplaintOmbudsman;
+
+  /// No description provided for @contactLegalAidOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact a legal aid office'**
+  String get contactLegalAidOffice;
+
+  /// No description provided for @reportToPolice.
+  ///
+  /// In en, this message translates to:
+  /// **'Report to police if criminal (threat, assault)'**
+  String get reportToPolice;
+
+  /// No description provided for @legalAidCalculator.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Aid Calculator'**
+  String get legalAidCalculator;
+
+  /// No description provided for @checkEligibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your eligibility for Finnish legal aid'**
+  String get checkEligibility;
+
+  /// No description provided for @estimateDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This is an estimate only. Actual eligibility is determined by the Legal Aid Office.'**
+  String get estimateDisclaimer;
+
+  /// No description provided for @monthlyIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly income (EUR)'**
+  String get monthlyIncome;
+
+  /// No description provided for @totalAssets.
+  ///
+  /// In en, this message translates to:
+  /// **'Total assets (EUR)'**
+  String get totalAssets;
+
+  /// No description provided for @numberOfDependents.
+  ///
+  /// In en, this message translates to:
+  /// **'Number of dependents'**
+  String get numberOfDependents;
+
+  /// No description provided for @calculateEligibility.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculate Eligibility'**
+  String get calculateEligibility;
+
+  /// No description provided for @likelyEligible.
+  ///
+  /// In en, this message translates to:
+  /// **'Likely Eligible'**
+  String get likelyEligible;
+
+  /// No description provided for @mayNotQualify.
+  ///
+  /// In en, this message translates to:
+  /// **'May Not Qualify'**
+  String get mayNotQualify;
+
+  /// No description provided for @fullFreeLegalAid.
+  ///
+  /// In en, this message translates to:
+  /// **'You likely qualify for full free legal aid (no co-payment).'**
+  String get fullFreeLegalAid;
+
+  /// No description provided for @legalAidWithCopay.
+  ///
+  /// In en, this message translates to:
+  /// **'You may qualify for legal aid with a co-payment of {percent}%.'**
+  String legalAidWithCopay(String percent);
+
+  /// No description provided for @mayNotQualifyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on this estimate, you may not qualify for state legal aid. Consider consulting a private lawyer or legal clinic.'**
+  String get mayNotQualifyDesc;
+
+  /// No description provided for @couldNotLoadDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load deadlines'**
+  String get couldNotLoadDeadlines;
+
+  /// No description provided for @noUpcomingDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming deadlines'**
+  String get noUpcomingDeadlines;
+
+  /// No description provided for @allClearDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'You are all clear! New deadlines will appear here when they are set.'**
+  String get allClearDeadlines;
+
+  /// No description provided for @nothingOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing overdue'**
+  String get nothingOverdue;
+
+  /// No description provided for @greatJobDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'Great job staying on top of your deadlines.'**
+  String get greatJobDeadlines;
+
+  /// No description provided for @noCompletedDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'No completed deadlines'**
+  String get noCompletedDeadlines;
+
+  /// No description provided for @completedDeadlinesDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadlines you complete will be shown here.'**
+  String get completedDeadlinesDesc;
+
+  /// No description provided for @daysLate.
+  ///
+  /// In en, this message translates to:
+  /// **'days late'**
+  String get daysLate;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @fromDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'From document'**
+  String get fromDocument;
+
+  /// No description provided for @couldNotLoadCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load case details'**
+  String get couldNotLoadCase;
+
+  /// No description provided for @typeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get typeLabel;
+
+  /// No description provided for @nationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality'**
+  String get nationality;
+
+  /// No description provided for @migriReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Migri Reference'**
+  String get migriReference;
+
+  /// No description provided for @courtCaseNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Court Case No.'**
+  String get courtCaseNo;
+
+  /// No description provided for @created.
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get created;
+
+  /// No description provided for @citizenship.
+  ///
+  /// In en, this message translates to:
+  /// **'Citizenship'**
+  String get citizenship;
+
+  /// No description provided for @workPermit.
+  ///
+  /// In en, this message translates to:
+  /// **'Work Permit'**
+  String get workPermit;
+
+  /// No description provided for @noDocumentsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents uploaded yet'**
+  String get noDocumentsYet;
+
+  /// No description provided for @noUpcomingDeadlinesShort.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming deadlines'**
+  String get noUpcomingDeadlinesShort;
+
+  /// No description provided for @caseCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Case created'**
+  String get caseCreated;
+
+  /// No description provided for @decisionReceived.
+  ///
+  /// In en, this message translates to:
+  /// **'Decision received'**
+  String get decisionReceived;
+
+  /// No description provided for @appealDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal deadline'**
+  String get appealDeadline;
+
+  /// No description provided for @hearingScheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Hearing scheduled'**
+  String get hearingScheduled;
+
+  /// No description provided for @late.
+  ///
+  /// In en, this message translates to:
+  /// **'late'**
+  String get late;
+
+  /// No description provided for @pending.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// No description provided for @processing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing'**
+  String get processing;
+
+  /// No description provided for @ready.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get ready;
+
+  /// No description provided for @failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get failed;
+
+  /// No description provided for @analyzed.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzed'**
+  String get analyzed;
+
+  /// No description provided for @noDocumentsScanHint.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet. Scan or upload one.'**
+  String get noDocumentsScanHint;
+
+  /// No description provided for @inCourt.
+  ///
+  /// In en, this message translates to:
+  /// **'In Court'**
+  String get inCourt;
+
+  /// No description provided for @appeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal'**
+  String get appeal;
+
+  /// No description provided for @caseTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Case Timeline'**
+  String get caseTimeline;
+
+  /// No description provided for @couldNotLoadTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load timeline'**
+  String get couldNotLoadTimeline;
+
+  /// No description provided for @noEventsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No events yet'**
+  String get noEventsYet;
+
+  /// No description provided for @activityWillAppear.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity will appear here as your case progresses.'**
+  String get activityWillAppear;
+
+  /// No description provided for @caseCreatedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Case \"{title}\" was created.'**
+  String caseCreatedDesc(String title);
+
+  /// No description provided for @decisionReceivedDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'An official decision was received for this case.'**
+  String get decisionReceivedDesc;
+
+  /// No description provided for @appealDeadlineSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal deadline set'**
+  String get appealDeadlineSet;
+
+  /// No description provided for @appealDeadlineDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal must be filed by {date}.'**
+  String appealDeadlineDesc(String date);
+
+  /// No description provided for @hearingScheduledDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Court hearing scheduled for {date}.'**
+  String hearingScheduledDesc(String date);
+
+  /// No description provided for @caseInfoUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Case information was last updated.'**
+  String get caseInfoUpdated;
+
+  /// No description provided for @documentAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Document Analysis'**
+  String get documentAnalysis;
+
+  /// No description provided for @exportAsPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Export as PDF'**
+  String get exportAsPdf;
+
+  /// No description provided for @pdfExportComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF export coming soon'**
+  String get pdfExportComingSoon;
+
+  /// No description provided for @analysisFailedRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis failed. Please try again.'**
+  String get analysisFailedRetry;
+
+  /// No description provided for @somethingWentWrong.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong'**
+  String get somethingWentWrong;
+
+  /// No description provided for @retryAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry Analysis'**
+  String get retryAnalysis;
+
+  /// No description provided for @issuesFoundInDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Found {count} issue(s) in your document'**
+  String issuesFoundInDocument(int count);
+
+  /// No description provided for @severityOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Severity Overview'**
+  String get severityOverview;
+
+  /// No description provided for @issuesFoundHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Issues Found'**
+  String get issuesFoundHeader;
+
+  /// No description provided for @generateAppealWithIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate Appeal ({count} issues)'**
+  String generateAppealWithIssues(int count);
+
+  /// No description provided for @analyzingContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing content...'**
+  String get analyzingContent;
+
+  /// No description provided for @documentProcessedOk.
+  ///
+  /// In en, this message translates to:
+  /// **'Document processed successfully'**
+  String get documentProcessedOk;
+
+  /// No description provided for @noSignificantIssues.
+  ///
+  /// In en, this message translates to:
+  /// **'No significant issues were detected in this document.'**
+  String get noSignificantIssues;
+
+  /// No description provided for @cameraPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission required'**
+  String get cameraPermissionRequired;
+
+  /// No description provided for @cameraPermissionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Grant camera access to scan documents, or use the gallery.'**
+  String get cameraPermissionDesc;
+
+  /// No description provided for @openSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get openSettings;
+
+  /// No description provided for @alignDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Align document within the frame'**
+  String get alignDocument;
+
+  /// No description provided for @pageCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} page(s)'**
+  String pageCount(int count);
+
+  /// No description provided for @preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview'**
+  String get preview;
+
+  /// No description provided for @pageNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Page {number}'**
+  String pageNumber(int number);
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @retake.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake'**
+  String get retake;
+
+  /// No description provided for @useThisPhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Use This Photo'**
+  String get useThisPhoto;
+
+  /// No description provided for @addPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Page'**
+  String get addPage;
+
+  /// No description provided for @uploadingPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading... {percent}%'**
+  String uploadingPercent(int percent);
+
+  /// No description provided for @preparingUpload.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing upload...'**
+  String get preparingUpload;
+
+  /// No description provided for @documentUploadedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Document uploaded successfully'**
+  String get documentUploadedSuccess;
+
+  /// No description provided for @pagesUploadedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} pages uploaded successfully'**
+  String pagesUploadedSuccess(int count);
+
+  /// No description provided for @uploadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed. Please check your connection and try again.'**
+  String get uploadFailed;
+
+  /// No description provided for @capturePhotoFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to capture photo. Please try again.'**
+  String get capturePhotoFailed;
+
+  /// No description provided for @readingText.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading text...'**
+  String get readingText;
+
+  /// No description provided for @draftDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft Document'**
+  String get draftDocument;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Save changes'**
+  String get saveChanges;
+
+  /// No description provided for @editDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit document'**
+  String get editDocument;
+
+  /// No description provided for @generatingDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating your draft...'**
+  String get generatingDraft;
+
+  /// No description provided for @generatingDraftDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is preparing a legal document based on your case details and selected issues.'**
+  String get generatingDraftDesc;
+
+  /// No description provided for @failedToGenerateDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate draft. Please try again.'**
+  String get failedToGenerateDraft;
+
+  /// No description provided for @changesSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved'**
+  String get changesSaved;
+
+  /// No description provided for @copiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied to clipboard'**
+  String get copiedToClipboard;
+
+  /// No description provided for @emailComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Email sending coming soon'**
+  String get emailComingSoon;
+
+  /// No description provided for @reviewBeforeSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Review carefully before sending. You are responsible for the content of this document.'**
+  String get reviewBeforeSending;
+
+  /// No description provided for @noContentAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No content available'**
+  String get noContentAvailable;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @pdf.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF'**
+  String get pdf;
+
+  /// No description provided for @copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy'**
+  String get copy;
+
+  /// No description provided for @appealDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal Draft'**
+  String get appealDraft;
+
+  /// No description provided for @selected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String selected(int count);
+
+  /// No description provided for @deleteSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected'**
+  String get deleteSelected;
+
+  /// No description provided for @deleteDocumentsConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {count} documents?'**
+  String deleteDocumentsConfirm(int count);
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @analyzeSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze selected'**
+  String get analyzeSelected;
+
+  /// No description provided for @batchAnalysisStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch analysis starting...'**
+  String get batchAnalysisStarting;
+
+  /// No description provided for @switchToList.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to list'**
+  String get switchToList;
+
+  /// No description provided for @switchToGrid.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to grid'**
+  String get switchToGrid;
+
+  /// No description provided for @scanNew.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan New'**
+  String get scanNew;
+
+  /// No description provided for @noDocumentsYetScan.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet'**
+  String get noDocumentsYetScan;
+
+  /// No description provided for @scanFirstDocumentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan your first document to let AI analyze it for errors and generate appeals.'**
+  String get scanFirstDocumentHint;
+
+  /// No description provided for @failedToLoadDocuments.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load documents'**
+  String get failedToLoadDocuments;
 }
 
 class _AppLocalizationsDelegate

@@ -41,12 +41,12 @@ class CaseDetailScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, size: 48, color: AppColors.error),
               const SizedBox(height: AppSpacing.md),
-              Text('Could not load case details',
+              Text(AppLocalizations.of(context)?.couldNotLoadCase ?? 'Could not load case details',
                   style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: AppSpacing.sm),
               TextButton(
                 onPressed: () => ref.invalidate(caseByIdProvider(caseId)),
-                child: const Text('Retry'),
+                child: Text(AppLocalizations.of(context)?.retry ?? 'Retry'),
               ),
             ],
           ),
@@ -153,13 +153,13 @@ class _StatusChip extends StatelessWidget {
         CaseStatus.closed => AppColors.textTertiary,
       };
 
-  String get _label => switch (status) {
-        CaseStatus.active => 'Active',
-        CaseStatus.pendingDecision => 'Pending',
-        CaseStatus.appealFiled => 'Appeal',
-        CaseStatus.inCourt => 'In Court',
-        CaseStatus.resolved => 'Won',
-        CaseStatus.closed => 'Closed',
+  String _label(AppLocalizations l10n) => switch (status) {
+        CaseStatus.active => l10n.active,
+        CaseStatus.pendingDecision => l10n.pendingDecision,
+        CaseStatus.appealFiled => l10n.appeal,
+        CaseStatus.inCourt => l10n.inCourt,
+        CaseStatus.resolved => l10n.won,
+        CaseStatus.closed => l10n.closed,
       };
 
   @override
@@ -185,7 +185,7 @@ class _StatusChip extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Text(
-            _label,
+            _label(AppLocalizations.of(context)!),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 13,
@@ -207,38 +207,39 @@ class _CaseInfoCard extends StatelessWidget {
 
   final LegalCase legalCase;
 
-  String _typeLabel(CaseType type) => switch (type) {
-        CaseType.deportation => 'Deportation',
-        CaseType.asylum => 'Asylum',
-        CaseType.residencePermit => 'Residence Permit',
-        CaseType.familyReunification => 'Family Reunification',
-        CaseType.citizenship => 'Citizenship',
-        CaseType.workPermit => 'Work Permit',
-        CaseType.laborDispute => 'Labor Dispute',
-        CaseType.tenantRights => 'Tenant Rights',
-        CaseType.debtCollection => 'Debt Collection',
-        CaseType.discrimination => 'Discrimination',
-        CaseType.policeMisconduct => 'Police Misconduct',
-        CaseType.socialBenefits => 'Social Benefits',
-        CaseType.other => 'Other',
+  String _typeLabel(CaseType type, AppLocalizations l10n) => switch (type) {
+        CaseType.deportation => l10n.deportation,
+        CaseType.asylum => l10n.asylum,
+        CaseType.residencePermit => l10n.residencePermit,
+        CaseType.familyReunification => l10n.familyReunification,
+        CaseType.citizenship => l10n.citizenship,
+        CaseType.workPermit => l10n.workPermit,
+        CaseType.laborDispute => l10n.laborDispute,
+        CaseType.tenantRights => l10n.tenantRights,
+        CaseType.debtCollection => l10n.debtCollection,
+        CaseType.discrimination => l10n.discrimination,
+        CaseType.policeMisconduct => l10n.policeMisconduct,
+        CaseType.socialBenefits => l10n.socialBenefits,
+        CaseType.other => l10n.other,
       };
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(
           children: [
             _InfoRow(
-              label: 'Type',
-              value: _typeLabel(legalCase.type),
+              label: l10n.typeLabel,
+              value: _typeLabel(legalCase.type, l10n),
               icon: Icons.category_outlined,
             ),
             const Divider(height: AppSpacing.lg),
             if (legalCase.nationality != null) ...[
               _InfoRow(
-                label: 'Nationality',
+                label: l10n.nationality,
                 value: legalCase.nationality!,
                 icon: Icons.flag_outlined,
               ),
@@ -246,7 +247,7 @@ class _CaseInfoCard extends StatelessWidget {
             ],
             if (legalCase.migriReferenceNumber != null) ...[
               _InfoRow(
-                label: 'Migri Reference',
+                label: l10n.migriReference,
                 value: legalCase.migriReferenceNumber!,
                 icon: Icons.tag,
               ),
@@ -254,14 +255,14 @@ class _CaseInfoCard extends StatelessWidget {
             ],
             if (legalCase.courtCaseNumber != null) ...[
               _InfoRow(
-                label: 'Court Case No.',
+                label: l10n.courtCaseNo,
                 value: legalCase.courtCaseNumber!,
                 icon: Icons.gavel_outlined,
               ),
               const Divider(height: AppSpacing.lg),
             ],
             _InfoRow(
-              label: 'Created',
+              label: l10n.created,
               value: AppDateUtils.formatDate(legalCase.createdAt),
               icon: Icons.calendar_today_outlined,
             ),
@@ -424,16 +425,17 @@ class _DocumentsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return _SectionCard(
-      title: AppLocalizations.of(context)?.documents ?? 'Documents',
+      title: l10n.documents,
       trailing: documents.length > 3
           ? TextButton(
               onPressed: () => context.push('/cases/$caseId/documents'),
-              child: const Text('View All'),
+              child: Text(l10n.viewAll),
             )
           : null,
       isEmpty: documents.isEmpty,
-      emptyMessage: 'No documents uploaded yet',
+      emptyMessage: l10n.noDocumentsYet,
       emptyIcon: Icons.description_outlined,
       child: Column(
         children: documents.take(3).map((doc) {
@@ -481,11 +483,12 @@ class _ProcessingBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final (label, color) = switch (status) {
-      DocumentProcessingStatus.pending => ('Pending', AppColors.textTertiary),
-      DocumentProcessingStatus.processing => ('Processing', AppColors.warning),
-      DocumentProcessingStatus.completed => ('Ready', AppColors.success),
-      DocumentProcessingStatus.failed => ('Failed', AppColors.error),
+      DocumentProcessingStatus.pending => (l10n.pending, AppColors.textTertiary),
+      DocumentProcessingStatus.processing => (l10n.processing, AppColors.warning),
+      DocumentProcessingStatus.completed => (l10n.ready, AppColors.success),
+      DocumentProcessingStatus.failed => (l10n.failed, AppColors.error),
     };
 
     return Container(
@@ -523,10 +526,11 @@ class _DeadlinesSection extends StatelessWidget {
             d.status == DeadlineStatus.overdue)
         .toList();
 
+    final l10n = AppLocalizations.of(context)!;
     return _SectionCard(
-      title: AppLocalizations.of(context)?.deadlines ?? 'Deadlines',
+      title: l10n.deadlines,
       isEmpty: upcoming.isEmpty,
-      emptyMessage: 'No upcoming deadlines',
+      emptyMessage: l10n.noUpcomingDeadlinesShort,
       emptyIcon: Icons.event_available_outlined,
       child: Column(
         children: upcoming.take(3).map((deadline) {
@@ -563,7 +567,7 @@ class _DeadlinesSection extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        isOverdue ? 'late' : 'days',
+                        isOverdue ? l10n.late : l10n.days,
                         style: TextStyle(
                           fontSize: 10,
                           color: urgencyColor,
@@ -620,11 +624,12 @@ class _TimelineSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return _SectionCard(
-      title: AppLocalizations.of(context)?.timeline ?? 'Timeline',
+      title: l10n.timeline,
       trailing: TextButton(
         onPressed: () => context.push('/cases/$caseId/timeline'),
-        child: const Text('View All'),
+        child: Text(l10n.viewAll),
       ),
       isEmpty: false,
       emptyMessage: '',
@@ -632,21 +637,21 @@ class _TimelineSection extends StatelessWidget {
       child: Column(
         children: [
           _TimelineEntry(
-            title: 'Case created',
+            title: l10n.caseCreated,
             date: legalCase.createdAt,
             icon: Icons.add_circle_outline,
             color: AppColors.accent,
           ),
           if (legalCase.decisionDate != null)
             _TimelineEntry(
-              title: 'Decision received',
+              title: l10n.decisionReceived,
               date: legalCase.decisionDate!,
               icon: Icons.gavel_outlined,
               color: AppColors.warning,
             ),
           if (legalCase.appealDeadline != null)
             _TimelineEntry(
-              title: 'Appeal deadline',
+              title: l10n.appealDeadline,
               date: legalCase.appealDeadline!,
               icon: Icons.schedule,
               color: AppColors.error,
@@ -654,7 +659,7 @@ class _TimelineSection extends StatelessWidget {
             ),
           if (legalCase.hearingDate != null)
             _TimelineEntry(
-              title: 'Hearing scheduled',
+              title: l10n.hearingScheduled,
               date: legalCase.hearingDate!,
               icon: Icons.event_outlined,
               color: AppColors.info,

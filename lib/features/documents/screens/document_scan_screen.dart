@@ -11,6 +11,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
 
 // ---------------------------------------------------------------------------
@@ -148,7 +149,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
         _phase = _ScanPhase.preview;
       });
     } catch (_) {
-      _showError('Failed to capture photo. Please try again.');
+      _showError(AppLocalizations.of(context)!.capturePhotoFailed);
     }
   }
 
@@ -240,12 +241,13 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
       }
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
               _pages.length == 1
-                  ? 'Document uploaded successfully'
-                  : '${_pages.length} pages uploaded successfully',
+                  ? l10n.documentUploadedSuccess
+                  : l10n.pagesUploadedSuccess(_pages.length),
             ),
             backgroundColor: AppColors.success,
           ),
@@ -253,7 +255,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
         context.pop(true);
       }
     } catch (e) {
-      _showError('Upload failed. Please check your connection and try again.');
+      _showError(AppLocalizations.of(context)!.uploadFailed);
       setState(() => _phase = _ScanPhase.camera);
     }
   }
@@ -317,15 +319,15 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               const Icon(Icons.camera_alt_outlined,
                   size: 64, color: Colors.white54),
               const SizedBox(height: AppSpacing.md),
-              const Text(
-                'Camera permission required',
-                style: TextStyle(color: Colors.white, fontSize: 18),
+              Text(
+                AppLocalizations.of(context)!.cameraPermissionRequired,
+                style: const TextStyle(color: Colors.white, fontSize: 18),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.sm),
-              const Text(
-                'Grant camera access to scan documents, or use the gallery.',
-                style: TextStyle(color: Colors.white54, fontSize: 14),
+              Text(
+                AppLocalizations.of(context)!.cameraPermissionDesc,
+                style: const TextStyle(color: Colors.white54, fontSize: 14),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.lg),
@@ -335,7 +337,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                   foregroundColor: Colors.white,
                   side: const BorderSide(color: Colors.white54),
                 ),
-                child: const Text('Open Settings'),
+                child: Text(AppLocalizations.of(context)!.openSettings),
               ),
             ],
           ),
@@ -378,9 +380,9 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                 color: Colors.black54,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Text(
-                'Align document within the frame',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.alignDocument,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 13,
                   fontWeight: FontWeight.w500,
@@ -406,7 +408,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
-                '${_pages.length} page${_pages.length > 1 ? 's' : ''}',
+                AppLocalizations.of(context)!.pageCount(_pages.length),
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 13,
@@ -452,8 +454,8 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               const SizedBox(height: AppSpacing.lg),
               Text(
                 _uploadProgress > 0
-                    ? 'Uploading... ${(_uploadProgress * 100).toInt()}%'
-                    : 'Preparing upload...',
+                    ? AppLocalizations.of(context)!.uploadingPercent((_uploadProgress * 100).toInt())
+                    : AppLocalizations.of(context)!.preparingUpload,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,
@@ -462,7 +464,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                '${_pages.length} page${_pages.length > 1 ? 's' : ''}',
+                AppLocalizations.of(context)!.pageCount(_pages.length),
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
             ],
@@ -477,15 +479,15 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
   Widget _buildProcessingOverlay() {
     return Container(
       color: Colors.black54,
-      child: const Center(
+      child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(color: Colors.white),
-            SizedBox(height: AppSpacing.md),
+            const CircularProgressIndicator(color: Colors.white),
+            const SizedBox(height: AppSpacing.md),
             Text(
-              'Reading text...',
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              AppLocalizations.of(context)!.readingText,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ],
         ),
@@ -519,10 +521,10 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
           const Spacer(),
           Text(
             _phase == _ScanPhase.preview
-                ? 'Preview'
+                ? AppLocalizations.of(context)!.preview
                 : _pages.isEmpty
-                    ? 'Scan Document'
-                    : 'Page ${_pages.length + 1}',
+                    ? AppLocalizations.of(context)!.scanDocument
+                    : AppLocalizations.of(context)!.pageNumber(_pages.length + 1),
             style: const TextStyle(
               color: Colors.white,
               fontSize: 17,
@@ -534,8 +536,8 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
           if (_pages.isNotEmpty && _phase == _ScanPhase.camera)
             TextButton(
               onPressed: _finishAndUpload,
-              child: const Text(
-                'Done',
+              child: Text(
+                AppLocalizations.of(context)!.done,
                 style: TextStyle(
                   color: AppColors.accentLight,
                   fontSize: 16,
@@ -650,7 +652,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                     borderRadius: BorderRadius.circular(AppRadius.sm),
                   ),
                 ),
-                child: const Text('Retake', style: TextStyle(fontSize: 16)),
+                child: Text(AppLocalizations.of(context)!.retake, style: const TextStyle(fontSize: 16)),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -667,7 +669,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                   ),
                 ),
                 child: Text(
-                  _pages.isEmpty ? 'Use This Photo' : 'Add Page',
+                  _pages.isEmpty ? AppLocalizations.of(context)!.useThisPhoto : AppLocalizations.of(context)!.addPage,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600),
                 ),

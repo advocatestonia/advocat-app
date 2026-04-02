@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Calculator screen to determine eligibility for legal aid in Finland.
 class LegalAidCalculatorScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
   _AidResult? _result;
 
   void _calculate() {
+    final l10n = AppLocalizations.of(context)!;
     final disposable = _monthlyIncome - (_dependents * 300);
     final bool eligible;
     final String description;
@@ -27,20 +29,15 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
     if (disposable <= 600 && _assets < 10000) {
       eligible = true;
       coPayPercent = 0;
-      description =
-          'You likely qualify for full free legal aid (no co-payment).';
+      description = l10n.fullFreeLegalAid;
     } else if (disposable <= 1300 && _assets < 30000) {
       eligible = true;
       coPayPercent = ((disposable - 600) / 700 * 75).clamp(0, 75);
-      description =
-          'You may qualify for legal aid with a co-payment of '
-          '${coPayPercent.toStringAsFixed(0)}%.';
+      description = l10n.legalAidWithCopay(coPayPercent.toStringAsFixed(0));
     } else {
       eligible = false;
       coPayPercent = 100;
-      description =
-          'Based on this estimate, you may not qualify for state legal aid. '
-          'Consider consulting a private lawyer or legal clinic.';
+      description = l10n.mayNotQualifyDesc;
     }
 
     setState(() {
@@ -55,26 +52,26 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Legal Aid Calculator')),
+      appBar: AppBar(title: Text(l10n.legalAidCalculator)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Check your eligibility for Finnish legal aid',
-              style: TextStyle(
+            Text(
+              l10n.checkEligibility,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: AppSpacing.sm),
-            const Text(
-              'This is an estimate only. Actual eligibility is determined by '
-              'the Legal Aid Office.',
-              style: TextStyle(
+            Text(
+              l10n.estimateDisclaimer,
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.textSecondary,
                 height: 1.4,
@@ -82,7 +79,7 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
             ),
             const SizedBox(height: AppSpacing.xl),
             _SliderField(
-              label: 'Monthly income (EUR)',
+              label: l10n.monthlyIncome,
               value: _monthlyIncome,
               min: 0,
               max: 5000,
@@ -94,7 +91,7 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
             ),
             const SizedBox(height: AppSpacing.lg),
             _SliderField(
-              label: 'Total assets (EUR)',
+              label: l10n.totalAssets,
               value: _assets,
               min: 0,
               max: 100000,
@@ -107,9 +104,9 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
             const SizedBox(height: AppSpacing.lg),
             Row(
               children: [
-                const Text(
-                  'Number of dependents',
-                  style: TextStyle(
+                Text(
+                  l10n.numberOfDependents,
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -151,7 +148,7 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text('Calculate Eligibility'),
+                child: Text(l10n.calculateEligibility),
               ),
             ),
             if (_calculated && _result != null) ...[
@@ -234,6 +231,7 @@ class _ResultCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final color = result.eligible ? AppColors.success : AppColors.warning;
     return Card(
       child: Padding(
@@ -251,7 +249,7 @@ class _ResultCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  result.eligible ? 'Likely Eligible' : 'May Not Qualify',
+                  result.eligible ? l10n.likelyEligible : l10n.mayNotQualify,
                   style: TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w700, color: color),
                 ),

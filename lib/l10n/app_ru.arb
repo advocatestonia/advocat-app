@@ -304,5 +304,268 @@
     "vinNumber": "VIN номер",
     "welcomeBack": "С возвращением",
     "whatAreMyOptions": "Какие у меня варианты?",
-    "won": "Выиграно"
+    "won": "Выиграно",
+    "documentVault": "Хранилище документов",
+    "secureDocumentStorage": "Безопасное хранилище документов",
+    "secureDocumentStorageDesc": "Храните важные юридические документы в безопасности. Все файлы зашифрованы.",
+    "addDocument": "Добавить документ",
+    "chooseHowToAdd": "Выберите способ добавления документа",
+    "uploadFile": "Загрузить файл",
+    "uploadFileDesc": "Выберите PDF или изображение с устройства",
+    "scanDocumentDesc": "Сфотографировать документ",
+    "createNote": "Создать заметку",
+    "createNoteDesc": "Записать заметку или важные детали",
+    "knowYourRights": "Знайте свои права",
+    "stoppedByPolice": "Остановила полиция",
+    "stoppedByPoliceDesc": "Ваши права при встрече с полицией",
+    "deportationNotice": "Уведомление о депортации",
+    "deportationNoticeDesc": "Как обжаловать решение о выдворении",
+    "workplaceRights": "Трудовые права",
+    "workplaceRightsDesc": "Защита трудовых прав в Финляндии",
+    "tenantRightsDesc": "Жилищные права и защита арендаторов",
+    "immigrationDetention": "Задержание мигрантов",
+    "immigrationDetentionDesc": "Права при задержании властями",
+    "discriminationDesc": "Как сообщить о дискриминации и бороться с ней",
+    "scenarioNotFound": "Сценарий не найден",
+    "youHaveRightTo": "Вы имеете право:",
+    "youMust": "Вы обязаны:",
+    "immediateSteps": "Немедленные действия:",
+    "yourRights": "Ваши права:",
+    "basicRights": "Основные права:",
+    "yourRightsAsTenant": "Ваши права как арендатора:",
+    "yourRightsInDetention": "Ваши права при задержании:",
+    "howToAct": "Что делать:",
+    "rightKnowWhyStopped": "Узнать причину остановки",
+    "rightRemainSilent": "Хранить молчание (но назвать себя обязаны)",
+    "rightAskInterpreter": "Попросить переводчика",
+    "rightContactLawyer": "Связаться с адвокатом до допроса",
+    "rightRecordEncounter": "Записывать встречу (в общественных местах)",
+    "mustProvideName": "Назвать имя и дату рождения",
+    "mustShowId": "Показать удостоверение личности, если есть",
+    "mustNotResist": "Не оказывать физического сопротивления",
+    "doNotIgnoreNotice": "НЕ игнорируйте уведомление — сроки строгие",
+    "noteAppealDeadline": "Запишите срок обжалования (обычно 30 дней)",
+    "contactLawyerImmediately": "Немедленно свяжитесь с адвокатом",
+    "applyLegalAid": "Подайте заявление на юридическую помощь",
+    "rightAppealAdmin": "Право обжаловать в Административном суде",
+    "rightLegalRep": "Право на юридическое представительство",
+    "rightInterpreter": "Право на переводчика",
+    "rightStayDuringAppeal": "Право оставаться на время обжалования (в большинстве случаев)",
+    "minimumWage": "Минимальная зарплата по коллективному договору",
+    "workingTimeLimits": "Ограничения рабочего времени (макс. 8ч/день, 40ч/неделя)",
+    "annualLeave": "Ежегодный отпуск (минимум 2 дня за отработанный месяц)",
+    "sickLeave": "Оплата больничного",
+    "safeWorkingConditions": "Безопасные условия труда",
+    "writtenRentalAgreement": "Требуется письменный договор аренды",
+    "securityDeposit": "Залог — максимум 3 месяца аренды",
+    "landlordNotice": "Арендодатель обязан уведомить за 3-6 месяцев",
+    "rightHabitableDwelling": "Право на пригодное для жизни жильё",
+    "protectionUnjustEviction": "Защита от незаконного выселения",
+    "rightKnowDetentionReason": "Право знать причину задержания",
+    "rightContactLawyerDetention": "Право связаться с адвокатом",
+    "rightContactEmbassy": "Право связаться с посольством",
+    "rightChallengeDetention": "Право обжаловать задержание в суде",
+    "rightHumaneTreatment": "Право на гуманное обращение и медицинскую помощь",
+    "documentIncident": "Задокументируйте инцидент (дата, время, свидетели)",
+    "fileComplaintOmbudsman": "Подайте жалобу Уполномоченному по вопросам дискриминации",
+    "contactLegalAidOffice": "Обратитесь в бюро юридической помощи",
+    "reportToPolice": "Обратитесь в полицию при преступлении (угроза, нападение)",
+    "legalAidCalculator": "Калькулятор юридической помощи",
+    "checkEligibility": "Проверьте право на юридическую помощь в Финляндии",
+    "estimateDisclaimer": "Это приблизительная оценка. Решение принимает Бюро юридической помощи.",
+    "monthlyIncome": "Ежемесячный доход (EUR)",
+    "totalAssets": "Общая сумма активов (EUR)",
+    "numberOfDependents": "Количество иждивенцев",
+    "calculateEligibility": "Рассчитать право на помощь",
+    "likelyEligible": "Вероятно, имеете право",
+    "mayNotQualify": "Возможно, не подходите",
+    "fullFreeLegalAid": "Вы, вероятно, имеете право на полную бесплатную юридическую помощь (без доплаты).",
+    "legalAidWithCopay": "Вы можете получить юридическую помощь с доплатой {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "mayNotQualifyDesc": "По предварительной оценке, вы можете не иметь права на государственную юридическую помощь. Рассмотрите обращение к частному адвокату или юридической клинике.",
+    "couldNotLoadDeadlines": "Не удалось загрузить сроки",
+    "noUpcomingDeadlines": "Нет предстоящих сроков",
+    "allClearDeadlines": "Всё в порядке! Новые сроки появятся здесь, когда будут установлены.",
+    "nothingOverdue": "Нет просроченных",
+    "greatJobDeadlines": "Отлично! Вы не пропускаете сроки.",
+    "noCompletedDeadlines": "Нет завершённых сроков",
+    "completedDeadlinesDesc": "Завершённые сроки будут отображаться здесь.",
+    "daysLate": "дн. просрочки",
+    "days": "дн.",
+    "fromDocument": "Из документа",
+    "couldNotLoadCase": "Не удалось загрузить данные дела",
+    "typeLabel": "Тип",
+    "nationality": "Гражданство",
+    "migriReference": "Номер Migri",
+    "courtCaseNo": "Номер дела в суде",
+    "created": "Создано",
+    "citizenship": "Гражданство",
+    "workPermit": "Разрешение на работу",
+    "noDocumentsYet": "Документы ещё не загружены",
+    "noUpcomingDeadlinesShort": "Нет предстоящих сроков",
+    "caseCreated": "Дело создано",
+    "decisionReceived": "Решение получено",
+    "appealDeadline": "Срок обжалования",
+    "hearingScheduled": "Назначено слушание",
+    "late": "просрочено",
+    "pending": "Ожидание",
+    "processing": "Обработка",
+    "ready": "Готово",
+    "failed": "Ошибка",
+    "analyzed": "Проанализировано",
+    "noDocumentsScanHint": "Документов пока нет. Отсканируйте или загрузите.",
+    "inCourt": "В суде",
+    "appeal": "Жалоба",
+    "caseTimeline": "Хронология дела",
+    "couldNotLoadTimeline": "Не удалось загрузить хронологию",
+    "noEventsYet": "Событий пока нет",
+    "activityWillAppear": "Активность будет отображаться здесь по мере развития дела.",
+    "caseCreatedDesc": "Дело «{title}» создано.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "decisionReceivedDesc": "Получено официальное решение по данному делу.",
+    "appealDeadlineSet": "Установлен срок обжалования",
+    "appealDeadlineDesc": "Жалоба должна быть подана до {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "hearingScheduledDesc": "Слушание в суде назначено на {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "caseInfoUpdated": "Информация по делу обновлена.",
+    "documentAnalysis": "Анализ документа",
+    "exportAsPdf": "Экспорт в PDF",
+    "pdfExportComingSoon": "Экспорт в PDF скоро будет доступен",
+    "analysisFailedRetry": "Анализ не удался. Попробуйте снова.",
+    "somethingWentWrong": "Что-то пошло не так",
+    "retryAnalysis": "Повторить анализ",
+    "issuesFoundInDocument": "Найдено проблем в документе: {count}",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "severityOverview": "Обзор критичности",
+    "issuesFoundHeader": "Найденные проблемы",
+    "generateAppealWithIssues": "Сформировать жалобу ({count} проблем)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "analyzingContent": "Анализируем содержание...",
+    "documentProcessedOk": "Документ обработан успешно",
+    "noSignificantIssues": "В этом документе не обнаружено существенных проблем.",
+    "cameraPermissionRequired": "Требуется разрешение камеры",
+    "cameraPermissionDesc": "Предоставьте доступ к камере для сканирования документов или используйте галерею.",
+    "openSettings": "Открыть настройки",
+    "alignDocument": "Расположите документ в рамке",
+    "pageCount": "{count} стр.",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "preview": "Предпросмотр",
+    "pageNumber": "Страница {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "done": "Готово",
+    "retake": "Переснять",
+    "useThisPhoto": "Использовать фото",
+    "addPage": "Добавить страницу",
+    "uploadingPercent": "Загрузка... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
+    "preparingUpload": "Подготовка загрузки...",
+    "documentUploadedSuccess": "Документ успешно загружен",
+    "pagesUploadedSuccess": "Загружено страниц: {count}",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "uploadFailed": "Загрузка не удалась. Проверьте подключение и попробуйте снова.",
+    "capturePhotoFailed": "Не удалось сделать фото. Попробуйте снова.",
+    "readingText": "Распознаём текст...",
+    "draftDocument": "Черновик документа",
+    "saveChanges": "Сохранить изменения",
+    "editDocument": "Редактировать документ",
+    "generatingDraft": "Генерируем черновик...",
+    "generatingDraftDesc": "Система готовит юридический документ на основе вашего дела и выбранных проблем.",
+    "failedToGenerateDraft": "Не удалось сгенерировать черновик. Попробуйте снова.",
+    "changesSaved": "Изменения сохранены",
+    "copiedToClipboard": "Скопировано в буфер обмена",
+    "emailComingSoon": "Отправка по почте скоро будет доступна",
+    "reviewBeforeSending": "Внимательно проверьте перед отправкой. Вы несёте ответственность за содержание документа.",
+    "noContentAvailable": "Содержание недоступно",
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "pdf": "PDF",
+    "copy": "Копировать",
+    "appealDraft": "Черновик жалобы",
+    "selected": "Выбрано: {count}",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deleteSelected": "Удалить выбранные",
+    "deleteDocumentsConfirm": "Удалить документов: {count}?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "delete": "Удалить",
+    "analyzeSelected": "Анализировать выбранные",
+    "batchAnalysisStarting": "Начинаем пакетный анализ...",
+    "switchToList": "Переключить на список",
+    "switchToGrid": "Переключить на сетку",
+    "scanNew": "Сканировать",
+    "noDocumentsYetScan": "Документов пока нет",
+    "scanFirstDocumentHint": "Отсканируйте первый документ, чтобы система проанализировала его на ошибки и подготовила жалобу.",
+    "failedToLoadDocuments": "Не удалось загрузить документы"
 }

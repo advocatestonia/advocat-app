@@ -7,18 +7,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
 import '../../../services/ai_service.dart';
+import '../../../services/assistant_tools.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
+import '../../../services/tool_executor.dart';
 import '../../../services/voice_service.dart';
+import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
 // ---------------------------------------------------------------------------
 
-enum MessageRole { user, assistant, system }
+enum MessageRole { user, assistant, system, toolResult }
 
-enum MessageContentType { text, issueCard, draftCard }
+enum MessageContentType { text, issueCard, draftCard, toolCard }
 
 class ChatMessage {
   final String id;
@@ -29,6 +32,12 @@ class ChatMessage {
   final Map<String, dynamic>? metadata;
   final bool hasAttachment;
 
+  /// Structured tool result for rendering rich cards in the chat.
+  final ToolResult? toolResult;
+
+  /// Deferred navigation to perform after showing this message.
+  final ToolNavigation? navigation;
+
   const ChatMessage({
     required this.id,
     required this.role,
@@ -37,6 +46,8 @@ class ChatMessage {
     this.contentType = MessageContentType.text,
     this.metadata,
     this.hasAttachment = false,
+    this.toolResult,
+    this.navigation,
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -322,41 +333,50 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         content: text,
       );
 
-      String responseText;
-      final ai = ref.read(aiServiceProvider);
-      if (isDemo && !ai.isUsingRealAI) {
-        await Future.delayed(const Duration(milliseconds: 800));
-        responseText = _getDemoResponse(text);
+      // Check if the message maps to a tool call (intent detection)
+      final toolCall = _detectToolIntent(text);
+
+      if (toolCall != null) {
+        // Execute tool directly and show rich result
+        await _executeToolCall(toolCall.$1, toolCall.$2, supabase);
       } else {
-        final response = await ai.sendChatMessage(
+        // Normal AI response flow
+        String responseText;
+        final ai = ref.read(aiServiceProvider);
+        if (isDemo && !ai.isUsingRealAI) {
+          await Future.delayed(const Duration(milliseconds: 800));
+          responseText = _getDemoResponse(text);
+        } else {
+          final response = await ai.sendChatMessage(
+            caseId: widget.caseId,
+            message: text,
+          );
+          responseText = response.message;
+        }
+
+        await supabase.saveChatMessage(
           caseId: widget.caseId,
-          message: text,
-        );
-        responseText = response.message;
-      }
-
-      await supabase.saveChatMessage(
-        caseId: widget.caseId,
-        role: 'assistant',
-        content: responseText,
-      );
-
-      if (mounted) {
-        final aiMessage = ChatMessage(
-          id: 'ai_${DateTime.now().millisecondsSinceEpoch}',
-          role: MessageRole.assistant,
+          role: 'assistant',
           content: responseText,
-          timestamp: DateTime.now(),
         );
-        setState(() {
-          _isTyping = false;
-          _messages.add(aiMessage);
-        });
-        _updateChatPhase();
-        _scrollToBottom();
 
-        if (_ttsEnabled) {
-          _speakResponse(responseText);
+        if (mounted) {
+          final aiMessage = ChatMessage(
+            id: 'ai_${DateTime.now().millisecondsSinceEpoch}',
+            role: MessageRole.assistant,
+            content: responseText,
+            timestamp: DateTime.now(),
+          );
+          setState(() {
+            _isTyping = false;
+            _messages.add(aiMessage);
+          });
+          _updateChatPhase();
+          _scrollToBottom();
+
+          if (_ttsEnabled) {
+            _speakResponse(responseText);
+          }
         }
       }
     } catch (e) {
@@ -373,6 +393,151 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       }
     } finally {
       if (mounted) setState(() => _isSending = false);
+    }
+  }
+
+  // -- Tool intent detection --
+
+  /// Detect if the user message maps to a known tool call.
+  ///
+  /// Returns a tuple of (toolName, params) or null if no tool matches.
+  (String, Map<String, dynamic>)? _detectToolIntent(String message) {
+    final lower = message.toLowerCase();
+
+    // Check company: "check company X", "check firm X", "проверь фирму X"
+    final companyMatch = RegExp(
+      r'(?:check|проверь?|проверить|проверка|найти|узнай)\s+(?:company|firm|фирму?|компанию?|работодател[яь]?|employer)\s+(.+)',
+      caseSensitive: false,
+    ).firstMatch(lower);
+    if (companyMatch != null) {
+      return ('check_company', {'company_name': companyMatch.group(1)!.trim()});
+    }
+
+    // Check vehicle: "check plate ABC123", "проверь авто ABC123"
+    final vehicleMatch = RegExp(
+      r'(?:check|проверь?|проверить|проверка)\s+(?:vehicle|car|plate|авто|машину?|номер)\s+([A-Za-z0-9\- ]+)',
+      caseSensitive: false,
+    ).firstMatch(lower);
+    if (vehicleMatch != null) {
+      return ('check_vehicle', {'plate_number': vehicleMatch.group(1)!.trim().toUpperCase()});
+    }
+
+    // Create case: "create case", "создай дело", "new case"
+    if (RegExp(r'(?:create|open|new|создай|открой|новое)\s+(?:case|дело|кейс)', caseSensitive: false).hasMatch(lower)) {
+      final titleMatch = RegExp(r'(?:titled?|named?|с названием)\s+(.+)', caseSensitive: false).firstMatch(lower);
+      return ('create_case', {
+        'title': titleMatch?.group(1)?.trim() ?? 'New Case',
+        'case_type': 'other',
+      });
+    }
+
+    // Get deadlines: "show deadlines", "мои дедлайны", "сроки"
+    if (RegExp(r'(?:show|get|check|list|мои|покажи|проверь)\s*(?:deadline|дедлайн|срок|дат)', caseSensitive: false).hasMatch(lower) ||
+        lower == 'deadlines' || lower == 'дедлайны' || lower == 'сроки') {
+      return ('get_deadlines', {'case_id': widget.caseId});
+    }
+
+    // Find lawyer: "find lawyer", "найти адвоката"
+    if (RegExp(r'(?:find|search|найти|ищу|подскажи)\s*(?:lawyer|attorney|адвокат|юрист)', caseSensitive: false).hasMatch(lower)) {
+      return ('find_lawyer', {'country': 'finland'});
+    }
+
+    // Change language: "switch to english", "переключи на финский"
+    final langMatch = RegExp(
+      r'(?:change|switch|set|переключи|смени|язык)\s+(?:to|на|language)?\s*(english|finnish|russian|german|estonian|suomi|русский|немецкий|эстонский)',
+      caseSensitive: false,
+    ).firstMatch(lower);
+    if (langMatch != null) {
+      final langMap = {
+        'english': 'en', 'finnish': 'fi', 'suomi': 'fi',
+        'russian': 'ru', 'русский': 'ru',
+        'german': 'de', 'немецкий': 'de',
+        'estonian': 'et', 'эстонский': 'et',
+      };
+      final lang = langMap[langMatch.group(1)!.toLowerCase()] ?? 'en';
+      return ('change_language', {'language': lang});
+    }
+
+    // Case status: "case status", "статус дела"
+    if (RegExp(r'(?:case|дело)\s*(?:status|статус)', caseSensitive: false).hasMatch(lower) ||
+        RegExp(r'(?:status|статус)\s*(?:case|дело|кейс)', caseSensitive: false).hasMatch(lower)) {
+      return ('get_case_status', {'case_id': widget.caseId});
+    }
+
+    // Translate: "translate ... to ..."
+    final translateMatch = RegExp(
+      r'(?:translate|переведи|перевод)\s+(.+?)\s+(?:to|на)\s+(english|finnish|russian|german|en|fi|ru|de)',
+      caseSensitive: false,
+    ).firstMatch(lower);
+    if (translateMatch != null) {
+      final langMap = {
+        'english': 'en', 'finnish': 'fi', 'russian': 'ru', 'german': 'de',
+        'en': 'en', 'fi': 'fi', 'ru': 'ru', 'de': 'de',
+      };
+      return ('translate_text', {
+        'text': translateMatch.group(1)!.trim(),
+        'target_language': langMap[translateMatch.group(2)!.toLowerCase()] ?? 'en',
+      });
+    }
+
+    return null;
+  }
+
+  // -- Tool execution --
+
+  Future<void> _executeToolCall(
+    String toolName,
+    Map<String, dynamic> params,
+    dynamic supabase,
+  ) async {
+    // Create executor before any async gap
+    final executor = ToolExecutor(context: context, ref: ref);
+
+    try {
+      final execResult = await executor.execute(toolName, params);
+      final result = execResult.toolResult;
+
+      // Persist the tool result as an assistant message
+      await supabase.saveChatMessage(
+        caseId: widget.caseId,
+        role: 'assistant',
+        content: result.displayText,
+      );
+
+      if (mounted) {
+        final toolMessage = ChatMessage(
+          id: 'tool_${DateTime.now().millisecondsSinceEpoch}',
+          role: MessageRole.toolResult,
+          content: result.displayText,
+          timestamp: DateTime.now(),
+          contentType: MessageContentType.toolCard,
+          toolResult: result,
+          navigation: execResult.navigation,
+        );
+        setState(() {
+          _isTyping = false;
+          _messages.add(toolMessage);
+        });
+        _updateChatPhase();
+        _scrollToBottom();
+
+        // Perform navigation if the tool result doesn't require approval
+        if (execResult.navigation != null && !result.requiresApproval) {
+          await executor.performNavigation(execResult.navigation!);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isTyping = false;
+          _messages.add(ChatMessage(
+            id: 'error_${DateTime.now().millisecondsSinceEpoch}',
+            role: MessageRole.system,
+            content: 'Tool execution failed. Please try again.',
+            timestamp: DateTime.now(),
+          ));
+        });
+      }
     }
   }
 
@@ -930,6 +1095,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget _buildMessageBubble(ChatMessage message, int index) {
     final isUser = message.role == MessageRole.user;
     final isSystem = message.role == MessageRole.system;
+    final isToolResult = message.role == MessageRole.toolResult;
 
     if (isSystem) {
       return Padding(
@@ -961,13 +1127,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         margin: EdgeInsets.only(
           bottom: AppSpacing.sm,
           left: isUser ? 48 : 0,
-          right: isUser ? 0 : 48,
+          right: isUser ? 0 : (isToolResult ? 16 : 48),
         ),
         child: Column(
           crossAxisAlignment:
               isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            // Message bubble
+            // Message bubble — tool results get no wrapper, others get styled bubble
+            if (isToolResult) ...[
+              _buildMessageContent(message, false),
+            ] else ...[
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.md,
@@ -1042,6 +1211,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ],
               ),
             ),
+            ], // end of else (non-tool-result bubble)
 
             // Timestamp + action buttons row
             Padding(
@@ -1087,6 +1257,30 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Widget _buildMessageContent(ChatMessage message, bool isUser) {
     final textColor = isUser ? Colors.white : AppColors.textPrimary;
+
+    // Tool result messages get a rich card
+    if (message.role == MessageRole.toolResult && message.toolResult != null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ToolResultCard(
+            result: message.toolResult!,
+            onAction: (action) => _sendMessage(action),
+            onApprove: () {
+              // Handle approval -- navigate if there's a pending navigation
+              if (message.navigation != null) {
+                final executor = ToolExecutor(context: context, ref: ref);
+                executor.performNavigation(message.navigation!);
+              }
+            },
+            onReject: () {
+              // Cancelled -- just acknowledge in chat
+              _sendMessage('Cancel the action.');
+            },
+          ),
+        ],
+      );
+    }
 
     if (!isUser) {
       return _buildRichAIContent(message.content, textColor);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/user.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
@@ -27,7 +28,7 @@ class SubscriptionScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Subscription'),
+        title: Text(AppLocalizations.of(context)!.subscription),
         backgroundColor: AppColors.surface,
       ),
       body: SingleChildScrollView(

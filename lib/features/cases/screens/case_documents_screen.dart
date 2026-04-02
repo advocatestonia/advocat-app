@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/document.dart';
 import '../../documents/providers/documents_provider.dart';
 
@@ -12,17 +13,18 @@ class CaseDocumentsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final docsAsync = ref.watch(documentsProvider(caseId));
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Documents')),
+      appBar: AppBar(title: Text(l10n.documents)),
       body: docsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
+        error: (e, _) => Center(child: Text('${l10n.error}: $e')),
         data: (docs) {
           if (docs.isEmpty) {
-            return const Center(
-              child: Text('No documents yet. Scan or upload one.'),
+            return Center(
+              child: Text(l10n.noDocumentsScanHint),
             );
           }
           return ListView.separated(
@@ -40,7 +42,7 @@ class CaseDocumentsScreen extends ConsumerWidget {
                 ),
                 title: Text(doc.fileName, maxLines: 1, overflow: TextOverflow.ellipsis),
                 subtitle: Text(doc.category.name),
-                trailing: _processingBadge(doc.processingStatus),
+                trailing: _processingBadge(context, doc.processingStatus),
               );
             },
           );
@@ -49,12 +51,13 @@ class CaseDocumentsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _processingBadge(DocumentProcessingStatus status) {
+  Widget _processingBadge(BuildContext context, DocumentProcessingStatus status) {
+    final l10n = AppLocalizations.of(context)!;
     final (color, label) = switch (status) {
-      DocumentProcessingStatus.pending => (AppColors.textTertiary, 'Pending'),
-      DocumentProcessingStatus.processing => (AppColors.warning, 'Processing'),
-      DocumentProcessingStatus.completed => (AppColors.success, 'Analyzed'),
-      DocumentProcessingStatus.failed => (AppColors.error, 'Failed'),
+      DocumentProcessingStatus.pending => (AppColors.textTertiary, l10n.pending),
+      DocumentProcessingStatus.processing => (AppColors.warning, l10n.processing),
+      DocumentProcessingStatus.completed => (AppColors.success, l10n.analyzed),
+      DocumentProcessingStatus.failed => (AppColors.error, l10n.failed),
     };
 
     return Container(

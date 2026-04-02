@@ -304,5 +304,268 @@
     "vinNumber": "VIN number",
     "welcomeBack": "Welcome Back",
     "whatAreMyOptions": "What are my options?",
-    "won": "Won"
+    "won": "Won",
+    "documentVault": "Document Vault",
+    "secureDocumentStorage": "Secure Document Storage",
+    "secureDocumentStorageDesc": "Store your important legal documents securely. All files are encrypted end-to-end.",
+    "addDocument": "Add Document",
+    "chooseHowToAdd": "Choose how to add your document",
+    "uploadFile": "Upload File",
+    "uploadFileDesc": "Choose a PDF or image from your device",
+    "scanDocumentDesc": "Take a photo of your document",
+    "createNote": "Create Note",
+    "createNoteDesc": "Write a note or record important details",
+    "knowYourRights": "Know Your Rights",
+    "stoppedByPolice": "Stopped by Police",
+    "stoppedByPoliceDesc": "Your rights during a police encounter",
+    "deportationNotice": "Deportation Notice",
+    "deportationNoticeDesc": "Steps to challenge a removal order",
+    "workplaceRights": "Workplace Rights",
+    "workplaceRightsDesc": "Employment law protections in Finland",
+    "tenantRightsDesc": "Housing and rental protections",
+    "immigrationDetention": "Immigration Detention",
+    "immigrationDetentionDesc": "Rights if detained by authorities",
+    "discriminationDesc": "How to report and fight discrimination",
+    "scenarioNotFound": "Scenario not found",
+    "youHaveRightTo": "You have the right to:",
+    "youMust": "You must:",
+    "immediateSteps": "Immediate steps:",
+    "yourRights": "Your rights:",
+    "basicRights": "Basic rights:",
+    "yourRightsAsTenant": "Your rights as a tenant:",
+    "yourRightsInDetention": "Your rights in detention:",
+    "howToAct": "How to act:",
+    "rightKnowWhyStopped": "Know why you are being stopped",
+    "rightRemainSilent": "Remain silent (you must identify yourself)",
+    "rightAskInterpreter": "Ask for an interpreter",
+    "rightContactLawyer": "Contact a lawyer before questioning",
+    "rightRecordEncounter": "Record the encounter (in public places)",
+    "mustProvideName": "Provide your name and date of birth",
+    "mustShowId": "Show ID if you have one",
+    "mustNotResist": "Not physically resist",
+    "doNotIgnoreNotice": "Do NOT ignore the notice - deadlines are strict",
+    "noteAppealDeadline": "Note the appeal deadline (usually 30 days)",
+    "contactLawyerImmediately": "Contact a lawyer immediately",
+    "applyLegalAid": "Apply for legal aid if needed",
+    "rightAppealAdmin": "Right to appeal to the Administrative Court",
+    "rightLegalRep": "Right to legal representation",
+    "rightInterpreter": "Right to an interpreter",
+    "rightStayDuringAppeal": "Right to stay during appeal (in most cases)",
+    "minimumWage": "Minimum wage as per collective agreement",
+    "workingTimeLimits": "Working time limits (max 8h/day, 40h/week)",
+    "annualLeave": "Annual leave (minimum 2 days per month worked)",
+    "sickLeave": "Sick leave compensation",
+    "safeWorkingConditions": "Safe working conditions",
+    "writtenRentalAgreement": "Written rental agreement required",
+    "securityDeposit": "Security deposit max 3 months rent",
+    "landlordNotice": "Landlord must give notice (3-6 months)",
+    "rightHabitableDwelling": "Right to a habitable dwelling",
+    "protectionUnjustEviction": "Protection from unjust eviction",
+    "rightKnowDetentionReason": "Right to know the reason for detention",
+    "rightContactLawyerDetention": "Right to contact a lawyer",
+    "rightContactEmbassy": "Right to contact your embassy",
+    "rightChallengeDetention": "Right to challenge detention in court",
+    "rightHumaneTreatment": "Right to humane treatment and medical care",
+    "documentIncident": "Document the incident (date, time, witnesses)",
+    "fileComplaintOmbudsman": "File a complaint with the Non-Discrimination Ombudsman",
+    "contactLegalAidOffice": "Contact a legal aid office",
+    "reportToPolice": "Report to police if criminal (threat, assault)",
+    "legalAidCalculator": "Legal Aid Calculator",
+    "checkEligibility": "Check your eligibility for Finnish legal aid",
+    "estimateDisclaimer": "This is an estimate only. Actual eligibility is determined by the Legal Aid Office.",
+    "monthlyIncome": "Monthly income (EUR)",
+    "totalAssets": "Total assets (EUR)",
+    "numberOfDependents": "Number of dependents",
+    "calculateEligibility": "Calculate Eligibility",
+    "likelyEligible": "Likely Eligible",
+    "mayNotQualify": "May Not Qualify",
+    "fullFreeLegalAid": "You likely qualify for full free legal aid (no co-payment).",
+    "legalAidWithCopay": "You may qualify for legal aid with a co-payment of {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "mayNotQualifyDesc": "Based on this estimate, you may not qualify for state legal aid. Consider consulting a private lawyer or legal clinic.",
+    "couldNotLoadDeadlines": "Could not load deadlines",
+    "noUpcomingDeadlines": "No upcoming deadlines",
+    "allClearDeadlines": "You are all clear! New deadlines will appear here when they are set.",
+    "nothingOverdue": "Nothing overdue",
+    "greatJobDeadlines": "Great job staying on top of your deadlines.",
+    "noCompletedDeadlines": "No completed deadlines",
+    "completedDeadlinesDesc": "Deadlines you complete will be shown here.",
+    "daysLate": "days late",
+    "days": "days",
+    "fromDocument": "From document",
+    "couldNotLoadCase": "Could not load case details",
+    "typeLabel": "Type",
+    "nationality": "Nationality",
+    "migriReference": "Migri Reference",
+    "courtCaseNo": "Court Case No.",
+    "created": "Created",
+    "citizenship": "Citizenship",
+    "workPermit": "Work Permit",
+    "noDocumentsYet": "No documents uploaded yet",
+    "noUpcomingDeadlinesShort": "No upcoming deadlines",
+    "caseCreated": "Case created",
+    "decisionReceived": "Decision received",
+    "appealDeadline": "Appeal deadline",
+    "hearingScheduled": "Hearing scheduled",
+    "late": "late",
+    "pending": "Pending",
+    "processing": "Processing",
+    "ready": "Ready",
+    "failed": "Failed",
+    "analyzed": "Analyzed",
+    "noDocumentsScanHint": "No documents yet. Scan or upload one.",
+    "inCourt": "In Court",
+    "appeal": "Appeal",
+    "caseTimeline": "Case Timeline",
+    "couldNotLoadTimeline": "Could not load timeline",
+    "noEventsYet": "No events yet",
+    "activityWillAppear": "Activity will appear here as your case progresses.",
+    "caseCreatedDesc": "Case \"{title}\" was created.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "decisionReceivedDesc": "An official decision was received for this case.",
+    "appealDeadlineSet": "Appeal deadline set",
+    "appealDeadlineDesc": "Appeal must be filed by {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "hearingScheduledDesc": "Court hearing scheduled for {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "caseInfoUpdated": "Case information was last updated.",
+    "documentAnalysis": "Document Analysis",
+    "exportAsPdf": "Export as PDF",
+    "pdfExportComingSoon": "PDF export coming soon",
+    "analysisFailedRetry": "Analysis failed. Please try again.",
+    "somethingWentWrong": "Something went wrong",
+    "retryAnalysis": "Retry Analysis",
+    "issuesFoundInDocument": "Found {count} issue(s) in your document",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "severityOverview": "Severity Overview",
+    "issuesFoundHeader": "Issues Found",
+    "generateAppealWithIssues": "Generate Appeal ({count} issues)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "analyzingContent": "Analyzing content...",
+    "documentProcessedOk": "Document processed successfully",
+    "noSignificantIssues": "No significant issues were detected in this document.",
+    "cameraPermissionRequired": "Camera permission required",
+    "cameraPermissionDesc": "Grant camera access to scan documents, or use the gallery.",
+    "openSettings": "Open Settings",
+    "alignDocument": "Align document within the frame",
+    "pageCount": "{count} page(s)",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "preview": "Preview",
+    "pageNumber": "Page {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "done": "Done",
+    "retake": "Retake",
+    "useThisPhoto": "Use This Photo",
+    "addPage": "Add Page",
+    "uploadingPercent": "Uploading... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
+    "preparingUpload": "Preparing upload...",
+    "documentUploadedSuccess": "Document uploaded successfully",
+    "pagesUploadedSuccess": "{count} pages uploaded successfully",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "uploadFailed": "Upload failed. Please check your connection and try again.",
+    "capturePhotoFailed": "Failed to capture photo. Please try again.",
+    "readingText": "Reading text...",
+    "draftDocument": "Draft Document",
+    "saveChanges": "Save changes",
+    "editDocument": "Edit document",
+    "generatingDraft": "Generating your draft...",
+    "generatingDraftDesc": "AI is preparing a legal document based on your case details and selected issues.",
+    "failedToGenerateDraft": "Failed to generate draft. Please try again.",
+    "changesSaved": "Changes saved",
+    "copiedToClipboard": "Copied to clipboard",
+    "emailComingSoon": "Email sending coming soon",
+    "reviewBeforeSending": "Review carefully before sending. You are responsible for the content of this document.",
+    "noContentAvailable": "No content available",
+    "save": "Save",
+    "edit": "Edit",
+    "pdf": "PDF",
+    "copy": "Copy",
+    "appealDraft": "Appeal Draft",
+    "selected": "{count} selected",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deleteSelected": "Delete selected",
+    "deleteDocumentsConfirm": "Delete {count} documents?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "delete": "Delete",
+    "analyzeSelected": "Analyze selected",
+    "batchAnalysisStarting": "Batch analysis starting...",
+    "switchToList": "Switch to list",
+    "switchToGrid": "Switch to grid",
+    "scanNew": "Scan New",
+    "noDocumentsYetScan": "No documents yet",
+    "scanFirstDocumentHint": "Scan your first document to let AI analyze it for errors and generate appeals.",
+    "failedToLoadDocuments": "Failed to load documents"
 }

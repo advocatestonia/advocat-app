@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/demo_data.dart';
 import '../widgets/issue_card.dart';
@@ -144,7 +145,7 @@ class _DocumentAnalysisScreenState
       if (!mounted) return;
       setState(() {
         _step = _AnalysisStep.error;
-        _errorMessage = 'Analysis failed. Please try again.';
+        _errorMessage = null;
       });
     }
   }
@@ -239,17 +240,17 @@ class _DocumentAnalysisScreenState
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(widget.documentName ?? 'Document Analysis'),
+        title: Text(widget.documentName ?? AppLocalizations.of(context)!.documentAnalysis),
         actions: [
           if (_step == _AnalysisStep.done)
             IconButton(
               icon: const Icon(Icons.share_outlined),
-              tooltip: 'Export as PDF',
+              tooltip: AppLocalizations.of(context)!.exportAsPdf,
               onPressed: () {
                 HapticFeedback.lightImpact();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('PDF export coming soon'),
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)!.pdfExportComingSoon),
                     backgroundColor: AppColors.info,
                   ),
                 );
@@ -323,24 +324,25 @@ class _DocumentAnalysisScreenState
   }
 
   Widget _buildProgressSteps() {
+    final l10n = AppLocalizations.of(context)!;
     final steps = [
-      const _StepInfo(
-        label: 'Reading document...',
+      _StepInfo(
+        label: l10n.readingDocument,
         icon: Icons.description_outlined,
         step: _AnalysisStep.ocr,
       ),
-      const _StepInfo(
-        label: 'Analyzing content...',
+      _StepInfo(
+        label: l10n.analyzingContent,
         icon: Icons.search_rounded,
         step: _AnalysisStep.analyzing,
       ),
-      const _StepInfo(
-        label: 'Checking for errors...',
+      _StepInfo(
+        label: l10n.checkingErrors,
         icon: Icons.checklist_rounded,
         step: _AnalysisStep.checking,
       ),
-      const _StepInfo(
-        label: 'Researching applicable law...',
+      _StepInfo(
+        label: l10n.researchingLaw,
         icon: Icons.menu_book_rounded,
         step: _AnalysisStep.researching,
       ),
@@ -422,7 +424,7 @@ class _DocumentAnalysisScreenState
                   size: 64, color: AppColors.error),
               const SizedBox(height: AppSpacing.md),
               Text(
-                _errorMessage ?? 'Something went wrong',
+                _errorMessage ?? AppLocalizations.of(context)!.analysisFailedRetry,
                 style: Theme.of(context).textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
@@ -436,7 +438,7 @@ class _DocumentAnalysisScreenState
                   _runAnalysis();
                 },
                 icon: const Icon(Icons.refresh_rounded),
-                label: const Text('Retry Analysis'),
+                label: Text(AppLocalizations.of(context)!.retryAnalysis),
               ),
             ],
           ),
@@ -465,7 +467,7 @@ class _DocumentAnalysisScreenState
               Padding(
                 padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                 child: Text(
-                  'Issues Found',
+                  AppLocalizations.of(context)!.issuesFoundHeader,
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -550,7 +552,7 @@ class _DocumentAnalysisScreenState
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Found $totalIssues issue${totalIssues == 1 ? '' : 's'} in your document',
+                  AppLocalizations.of(context)!.issuesFoundInDocument(totalIssues),
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -592,7 +594,7 @@ class _DocumentAnalysisScreenState
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Severity Overview',
+            AppLocalizations.of(context)!.severityOverview,
             style: theme.textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: AppColors.textSecondary,
@@ -629,25 +631,28 @@ class _DocumentAnalysisScreenState
           const SizedBox(height: AppSpacing.sm + 4),
 
           // Legend
-          Row(
-            children: [
-              if (result.criticalCount > 0)
-                _SeverityLegendItem(
-                  color: AppColors.error,
-                  label: '${result.criticalCount} Critical',
-                ),
-              if (result.importantCount > 0)
-                _SeverityLegendItem(
-                  color: AppColors.warning,
-                  label: '${result.importantCount} Important',
-                ),
-              if (result.infoCount > 0)
-                _SeverityLegendItem(
-                  color: AppColors.info,
-                  label: '${result.infoCount} Info',
-                ),
-            ],
-          ),
+          Builder(builder: (context) {
+            final l10n = AppLocalizations.of(context)!;
+            return Row(
+              children: [
+                if (result.criticalCount > 0)
+                  _SeverityLegendItem(
+                    color: AppColors.error,
+                    label: '${result.criticalCount} ${l10n.critical}',
+                  ),
+                if (result.importantCount > 0)
+                  _SeverityLegendItem(
+                    color: AppColors.warning,
+                    label: '${result.importantCount} ${l10n.important}',
+                  ),
+                if (result.infoCount > 0)
+                  _SeverityLegendItem(
+                    color: AppColors.info,
+                    label: '${result.infoCount} ${l10n.informational}',
+                  ),
+              ],
+            );
+          }),
         ],
       ),
     )
@@ -681,8 +686,8 @@ class _DocumentAnalysisScreenState
           icon: const Icon(Icons.description_outlined),
           label: Text(
             _selectedIssueIds.isEmpty
-                ? 'Generate Appeal'
-                : 'Generate Appeal (${_selectedIssueIds.length} issues)',
+                ? AppLocalizations.of(context)!.generateAppeal
+                : AppLocalizations.of(context)!.generateAppealWithIssues(_selectedIssueIds.length),
           ),
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.accent,
@@ -711,7 +716,7 @@ class _StepInfo {
   final IconData icon;
   final _AnalysisStep step;
 
-  const _StepInfo({
+  _StepInfo({
     required this.label,
     required this.icon,
     required this.step,

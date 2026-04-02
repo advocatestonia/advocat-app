@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/ai_service.dart';
 
 // ---------------------------------------------------------------------------
@@ -41,7 +42,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
   @override
   void initState() {
     super.initState();
-    _title = widget.draftTitle ?? 'Appeal Draft';
+    _title = widget.draftTitle ?? '';
     _content = widget.draftContent ?? '';
     _targetInstitution = widget.targetInstitution;
     _contentController = TextEditingController(text: _content);
@@ -81,8 +82,8 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
       if (mounted) {
         setState(() => _isGenerating = false);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to generate draft. Please try again.'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.failedToGenerateDraft),
             backgroundColor: AppColors.error,
           ),
         );
@@ -98,10 +99,10 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
         _isEditing = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Changes saved'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.changesSaved),
           backgroundColor: AppColors.success,
-          duration: Duration(seconds: 1),
+          duration: const Duration(seconds: 1),
         ),
       );
     } else {
@@ -113,10 +114,10 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
     Clipboard.setData(ClipboardData(text: _content));
     HapticFeedback.lightImpact();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Copied to clipboard'),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.copiedToClipboard),
         backgroundColor: AppColors.accent,
-        duration: Duration(seconds: 1),
+        duration: const Duration(seconds: 1),
       ),
     );
   }
@@ -124,8 +125,8 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
   void _exportPdf() {
     HapticFeedback.lightImpact();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('PDF export coming soon'),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.pdfExportComingSoon),
         backgroundColor: AppColors.info,
       ),
     );
@@ -134,8 +135,8 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
   void _sendViaEmail() {
     HapticFeedback.lightImpact();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Email sending coming soon'),
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.emailComingSoon),
         backgroundColor: AppColors.info,
       ),
     );
@@ -150,12 +151,12 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Draft Document'),
+        title: Text(AppLocalizations.of(context)!.draftDocument),
         actions: [
           if (!_isGenerating)
             IconButton(
               icon: Icon(_isEditing ? Icons.check_rounded : Icons.edit_outlined),
-              tooltip: _isEditing ? 'Save changes' : 'Edit document',
+              tooltip: _isEditing ? AppLocalizations.of(context)!.saveChanges : AppLocalizations.of(context)!.editDocument,
               onPressed: _toggleEdit,
             ),
         ],
@@ -186,7 +187,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
                 .scaleXY(begin: 0.95, end: 1.05, duration: 1200.ms),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'Generating your draft...',
+              AppLocalizations.of(context)!.generatingDraft,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -194,7 +195,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'AI is preparing a legal document based on your case details and selected issues.',
+              AppLocalizations.of(context)!.generatingDraftDesc,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -261,7 +262,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
-              'Review carefully before sending. You are responsible for the content of this document.',
+              AppLocalizations.of(context)!.reviewBeforeSending,
               style: TextStyle(
                 fontSize: 12,
                 color: AppColors.warning.withValues(alpha: 0.9),
@@ -326,7 +327,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
     if (_content.isEmpty) {
       return Center(
         child: Text(
-          'No content available',
+          AppLocalizations.of(context)!.noContentAvailable,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: AppColors.textTertiary,
           ),
@@ -415,7 +416,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
           // Edit
           _ActionButton(
             icon: _isEditing ? Icons.check_rounded : Icons.edit_outlined,
-            label: _isEditing ? 'Save' : 'Edit',
+            label: _isEditing ? AppLocalizations.of(context)!.save : AppLocalizations.of(context)!.edit,
             onPressed: _toggleEdit,
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -423,7 +424,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
           // Export PDF
           _ActionButton(
             icon: Icons.picture_as_pdf_outlined,
-            label: 'PDF',
+            label: AppLocalizations.of(context)!.pdf,
             onPressed: _exportPdf,
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -431,7 +432,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
           // Email
           _ActionButton(
             icon: Icons.email_outlined,
-            label: 'Email',
+            label: AppLocalizations.of(context)!.email,
             onPressed: _sendViaEmail,
           ),
           const SizedBox(width: AppSpacing.sm),
@@ -439,7 +440,7 @@ class _DraftViewerScreenState extends ConsumerState<DraftViewerScreen> {
           // Copy
           _ActionButton(
             icon: Icons.copy_outlined,
-            label: 'Copy',
+            label: AppLocalizations.of(context)!.copy,
             onPressed: _copyToClipboard,
           ),
         ],

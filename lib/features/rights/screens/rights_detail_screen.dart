@@ -1,113 +1,33 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 class RightsDetailScreen extends StatelessWidget {
   const RightsDetailScreen({super.key, required this.scenarioId});
 
   final String scenarioId;
 
-  static const _data = <String, _ScenarioData>{
-    'police-stop': _ScenarioData(
-      title: 'Stopped by Police',
-      sections: [
-        _Section(heading: 'You have the right to:', items: [
-          'Know why you are being stopped',
-          'Remain silent (you must identify yourself)',
-          'Ask for an interpreter',
-          'Contact a lawyer before questioning',
-          'Record the encounter (in public places)',
-        ]),
-        _Section(heading: 'You must:', items: [
-          'Provide your name and date of birth',
-          'Show ID if you have one',
-          'Not physically resist',
-        ]),
-      ],
-    ),
-    'deportation': _ScenarioData(
-      title: 'Deportation Notice',
-      sections: [
-        _Section(heading: 'Immediate steps:', items: [
-          'Do NOT ignore the notice - deadlines are strict',
-          'Note the appeal deadline (usually 30 days)',
-          'Contact a lawyer immediately',
-          'Apply for legal aid if needed',
-        ]),
-        _Section(heading: 'Your rights:', items: [
-          'Right to appeal to the Administrative Court',
-          'Right to legal representation',
-          'Right to an interpreter',
-          'Right to stay during appeal (in most cases)',
-        ]),
-      ],
-    ),
-    'workplace': _ScenarioData(
-      title: 'Workplace Rights',
-      sections: [
-        _Section(heading: 'Basic rights:', items: [
-          'Minimum wage as per collective agreement',
-          'Working time limits (max 8h/day, 40h/week)',
-          'Annual leave (minimum 2 days per month worked)',
-          'Sick leave compensation',
-          'Safe working conditions',
-        ]),
-      ],
-    ),
-    'tenant': _ScenarioData(
-      title: 'Tenant Rights',
-      sections: [
-        _Section(heading: 'Your rights as a tenant:', items: [
-          'Written rental agreement required',
-          'Security deposit max 3 months rent',
-          'Landlord must give notice (3-6 months)',
-          'Right to a habitable dwelling',
-          'Protection from unjust eviction',
-        ]),
-      ],
-    ),
-    'detention': _ScenarioData(
-      title: 'Immigration Detention',
-      sections: [
-        _Section(heading: 'Your rights in detention:', items: [
-          'Right to know the reason for detention',
-          'Right to contact a lawyer',
-          'Right to contact your embassy',
-          'Right to challenge detention in court',
-          'Right to humane treatment and medical care',
-        ]),
-      ],
-    ),
-    'discrimination': _ScenarioData(
-      title: 'Discrimination',
-      sections: [
-        _Section(heading: 'How to act:', items: [
-          'Document the incident (date, time, witnesses)',
-          'File a complaint with the Non-Discrimination Ombudsman',
-          'Contact a legal aid office',
-          'Report to police if criminal (threat, assault)',
-        ]),
-      ],
-    ),
-  };
-
   @override
   Widget build(BuildContext context) {
-    final data = _data[scenarioId];
-    if (data == null) {
+    final l10n = AppLocalizations.of(context)!;
+    final data = _buildData(l10n);
+    final scenarioData = data[scenarioId];
+
+    if (scenarioData == null) {
       return Scaffold(
         appBar: AppBar(),
-        body: const Center(child: Text('Scenario not found')),
+        body: Center(child: Text(l10n.scenarioNotFound)),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(data.title)),
+      appBar: AppBar(title: Text(scenarioData.title)),
       body: ListView.builder(
         padding: const EdgeInsets.all(AppSpacing.lg),
-        itemCount: data.sections.length,
+        itemCount: scenarioData.sections.length,
         itemBuilder: (context, index) {
-          final section = data.sections[index];
+          final section = scenarioData.sections[index];
           return Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.lg),
             child: Column(
@@ -145,6 +65,92 @@ class RightsDetailScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Map<String, _ScenarioData> _buildData(AppLocalizations l10n) {
+    return {
+      'police-stop': _ScenarioData(
+        title: l10n.stoppedByPolice,
+        sections: [
+          _Section(heading: l10n.youHaveRightTo, items: [
+            l10n.rightKnowWhyStopped,
+            l10n.rightRemainSilent,
+            l10n.rightAskInterpreter,
+            l10n.rightContactLawyer,
+            l10n.rightRecordEncounter,
+          ]),
+          _Section(heading: l10n.youMust, items: [
+            l10n.mustProvideName,
+            l10n.mustShowId,
+            l10n.mustNotResist,
+          ]),
+        ],
+      ),
+      'deportation': _ScenarioData(
+        title: l10n.deportationNotice,
+        sections: [
+          _Section(heading: l10n.immediateSteps, items: [
+            l10n.doNotIgnoreNotice,
+            l10n.noteAppealDeadline,
+            l10n.contactLawyerImmediately,
+            l10n.applyLegalAid,
+          ]),
+          _Section(heading: l10n.yourRights, items: [
+            l10n.rightAppealAdmin,
+            l10n.rightLegalRep,
+            l10n.rightInterpreter,
+            l10n.rightStayDuringAppeal,
+          ]),
+        ],
+      ),
+      'workplace': _ScenarioData(
+        title: l10n.workplaceRights,
+        sections: [
+          _Section(heading: l10n.basicRights, items: [
+            l10n.minimumWage,
+            l10n.workingTimeLimits,
+            l10n.annualLeave,
+            l10n.sickLeave,
+            l10n.safeWorkingConditions,
+          ]),
+        ],
+      ),
+      'tenant': _ScenarioData(
+        title: l10n.tenantRights,
+        sections: [
+          _Section(heading: l10n.yourRightsAsTenant, items: [
+            l10n.writtenRentalAgreement,
+            l10n.securityDeposit,
+            l10n.landlordNotice,
+            l10n.rightHabitableDwelling,
+            l10n.protectionUnjustEviction,
+          ]),
+        ],
+      ),
+      'detention': _ScenarioData(
+        title: l10n.immigrationDetention,
+        sections: [
+          _Section(heading: l10n.yourRightsInDetention, items: [
+            l10n.rightKnowDetentionReason,
+            l10n.rightContactLawyerDetention,
+            l10n.rightContactEmbassy,
+            l10n.rightChallengeDetention,
+            l10n.rightHumaneTreatment,
+          ]),
+        ],
+      ),
+      'discrimination': _ScenarioData(
+        title: l10n.discrimination,
+        sections: [
+          _Section(heading: l10n.howToAct, items: [
+            l10n.documentIncident,
+            l10n.fileComplaintOmbudsman,
+            l10n.contactLegalAidOffice,
+            l10n.reportToPolice,
+          ]),
+        ],
+      ),
+    };
   }
 }
 
