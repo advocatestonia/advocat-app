@@ -385,10 +385,10 @@ class _QuickActions extends StatelessWidget {
                 color: AppColors.accent,
                 onTap: () => context.push(AppRoutes.scan),
               ),
-              _QuickActionButton(
-                icon: Icons.smart_toy_outlined,
+              _PulsingQuickActionButton(
+                icon: Icons.support_agent_rounded,
                 label: l.aiChat,
-                color: AppColors.info,
+                color: AppColors.accent,
                 onTap: () => context.push('/chat/general'),
               ),
               _QuickActionButton(
@@ -434,6 +434,89 @@ class _QuickActions extends StatelessWidget {
                 onTap: () => context.push(AppRoutes.caseCreate),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PulsingQuickActionButton extends StatefulWidget {
+  const _PulsingQuickActionButton({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  State<_PulsingQuickActionButton> createState() => _PulsingQuickActionButtonState();
+}
+
+class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          AnimatedBuilder(
+            animation: _pulseAnimation,
+            builder: (context, child) {
+              return Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  color: widget.color.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: widget.color.withValues(alpha: 0.15 + _pulseAnimation.value * 0.2),
+                      blurRadius: 8 + _pulseAnimation.value * 8,
+                      spreadRadius: _pulseAnimation.value * 3,
+                    ),
+                  ],
+                ),
+                child: Icon(widget.icon, color: widget.color, size: 28),
+              );
+            },
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            widget.label,
+            style: TextStyle(
+              color: widget.color,
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ],
       ),
