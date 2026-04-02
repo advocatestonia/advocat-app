@@ -12,11 +12,11 @@ abstract final class AppColors {
   static const Color accentLight = Color(0xFF14B8A6);
   static const Color accentDark = Color(0xFF0A7069);
 
-  // Neutrals
-  static const Color background = Color(0xFFF8FAFC);
-  static const Color surface = Color(0xFFFFFFFF);
-  static const Color surfaceVariant = Color(0xFFF1F5F9);
-  static const Color border = Color(0xFFE2E8F0);
+  // Neutrals — warm tones matching landing page (#F0EEEB)
+  static const Color background = Color(0xFFF0EEEB);
+  static const Color surface = Color(0xFFF7F6F4);
+  static const Color surfaceVariant = Color(0xFFEAE8E5);
+  static const Color border = Color(0xFFDCD9D5);
 
   // Text
   static const Color textPrimary = Color(0xFF0F172A);
