@@ -488,29 +488,52 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          AnimatedBuilder(
-            animation: _pulseAnimation,
-            builder: (context, child) {
-              return Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColors.accent, AppColors.accentLight],
-                  ),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.2 + _pulseAnimation.value * 0.25),
-                      blurRadius: 8 + _pulseAnimation.value * 10,
-                      spreadRadius: _pulseAnimation.value * 4,
-                      offset: const Offset(0, 2),
+          SizedBox(
+            width: 64,
+            height: 64,
+            child: AnimatedBuilder(
+              animation: _pulseAnimation,
+              builder: (context, child) {
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Пульсирующее кольцо снаружи
+                    Container(
+                      width: 56 + _pulseAnimation.value * 12,
+                      height: 56 + _pulseAnimation.value * 12,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.accent.withValues(alpha: 0.4 - _pulseAnimation.value * 0.35),
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                    // Основная кнопка — чёткая, не размытая
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [AppColors.accent, AppColors.accentLight],
+                        ),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.accent.withValues(alpha: 0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: const Icon(Icons.balance_rounded, color: Colors.white, size: 26),
                     ),
                   ],
-                ),
-                child: const Icon(Icons.balance_rounded, color: Colors.white, size: 26),
-              );
-            },
+                );
+              },
+            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
