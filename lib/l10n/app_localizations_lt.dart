@@ -762,584 +762,595 @@ class AppLocalizationsLt extends AppLocalizations {
   String get won => 'Laimėta';
 
   @override
-  String get documentVault => 'Document Vault';
+  String get documentVault => 'Dokumentų saugykla';
 
   @override
-  String get secureDocumentStorage => 'Secure Document Storage';
+  String get secureDocumentStorage => 'Saugi dokumentų saugykla';
 
   @override
   String get secureDocumentStorageDesc =>
-      'Store your important legal documents securely. All files are encrypted end-to-end.';
+      'Saugiai laikykite svarbius teisinius dokumentus. Visi failai yra pilnai užšifruoti.';
 
   @override
-  String get addDocument => 'Add Document';
+  String get addDocument => 'Pridėti dokumentą';
 
   @override
-  String get chooseHowToAdd => 'Choose how to add your document';
+  String get chooseHowToAdd => 'Pasirinkite, kaip pridėti dokumentą';
 
   @override
-  String get uploadFile => 'Upload File';
+  String get uploadFile => 'Įkelti failą';
 
   @override
-  String get uploadFileDesc => 'Choose a PDF or image from your device';
+  String get uploadFileDesc =>
+      'Pasirinkite PDF arba nuotrauką iš savo įrenginio';
 
   @override
-  String get scanDocumentDesc => 'Take a photo of your document';
+  String get scanDocumentDesc => 'Nufotografuokite savo dokumentą';
 
   @override
-  String get createNote => 'Create Note';
+  String get createNote => 'Sukurti pastabą';
 
   @override
-  String get createNoteDesc => 'Write a note or record important details';
+  String get createNoteDesc =>
+      'Parašykite pastabą arba užfiksuokite svarbias detales';
 
   @override
-  String get knowYourRights => 'Know Your Rights';
+  String get knowYourRights => 'Žinok savo teises';
 
   @override
-  String get stoppedByPolice => 'Stopped by Police';
+  String get stoppedByPolice => 'Sustabdė policija';
 
   @override
-  String get stoppedByPoliceDesc => 'Your rights during a police encounter';
+  String get stoppedByPoliceDesc => 'Jūsų teisės policijos patikrinimo metu';
 
   @override
-  String get deportationNotice => 'Deportation Notice';
+  String get deportationNotice => 'Deportacijos pranešimas';
 
   @override
-  String get deportationNoticeDesc => 'Steps to challenge a removal order';
+  String get deportationNoticeDesc =>
+      'Žingsniai ginčijant išsiuntimo sprendimą';
 
   @override
-  String get workplaceRights => 'Workplace Rights';
+  String get workplaceRights => 'Darbo teisės';
 
   @override
-  String get workplaceRightsDesc => 'Employment law protections in Finland';
+  String get workplaceRightsDesc => 'Darbo teisės apsauga Suomijoje';
 
   @override
-  String get tenantRightsDesc => 'Housing and rental protections';
+  String get tenantRightsDesc => 'Būsto ir nuomos apsauga';
 
   @override
-  String get immigrationDetention => 'Immigration Detention';
+  String get immigrationDetention => 'Imigracijos sulaikymas';
 
   @override
-  String get immigrationDetentionDesc => 'Rights if detained by authorities';
+  String get immigrationDetentionDesc =>
+      'Jūsų teisės, jei esate sulaikytas valdžios institucijų';
 
   @override
-  String get discriminationDesc => 'How to report and fight discrimination';
+  String get discriminationDesc =>
+      'Kaip pranešti apie diskriminaciją ir kovoti su ja';
 
   @override
-  String get scenarioNotFound => 'Scenario not found';
+  String get scenarioNotFound => 'Scenarijus nerastas';
 
   @override
-  String get youHaveRightTo => 'You have the right to:';
+  String get youHaveRightTo => 'Jūs turite teisę:';
 
   @override
-  String get youMust => 'You must:';
+  String get youMust => 'Jūs privalote:';
 
   @override
-  String get immediateSteps => 'Immediate steps:';
+  String get immediateSteps => 'Neatidėliotini žingsniai:';
 
   @override
-  String get yourRights => 'Your rights:';
+  String get yourRights => 'Jūsų teisės:';
 
   @override
-  String get basicRights => 'Basic rights:';
+  String get basicRights => 'Pagrindinės teisės:';
 
   @override
-  String get yourRightsAsTenant => 'Your rights as a tenant:';
+  String get yourRightsAsTenant => 'Jūsų teisės kaip nuomininko:';
 
   @override
-  String get yourRightsInDetention => 'Your rights in detention:';
+  String get yourRightsInDetention => 'Jūsų teisės sulaikymo metu:';
 
   @override
-  String get howToAct => 'How to act:';
+  String get howToAct => 'Kaip elgtis:';
 
   @override
-  String get rightKnowWhyStopped => 'Know why you are being stopped';
+  String get rightKnowWhyStopped => 'Žinoti, kodėl esate sustabdytas';
 
   @override
-  String get rightRemainSilent => 'Remain silent (you must identify yourself)';
+  String get rightRemainSilent => 'Tylėti (privalote pasakyti savo tapatybę)';
 
   @override
-  String get rightAskInterpreter => 'Ask for an interpreter';
+  String get rightAskInterpreter => 'Prašyti vertėjo';
 
   @override
-  String get rightContactLawyer => 'Contact a lawyer before questioning';
+  String get rightContactLawyer => 'Susisiekti su advokatu prieš apklausą';
 
   @override
-  String get rightRecordEncounter => 'Record the encounter (in public places)';
+  String get rightRecordEncounter => 'Įrašyti susitikimą (viešose vietose)';
 
   @override
-  String get mustProvideName => 'Provide your name and date of birth';
+  String get mustProvideName => 'Nurodyti savo vardą ir gimimo datą';
 
   @override
-  String get mustShowId => 'Show ID if you have one';
+  String get mustShowId => 'Parodyti asmens dokumentą, jei turite';
 
   @override
-  String get mustNotResist => 'Not physically resist';
+  String get mustNotResist => 'Fiziškai nesipriešinti';
 
   @override
   String get doNotIgnoreNotice =>
-      'Do NOT ignore the notice - deadlines are strict';
+      'NEIGNORUOKITE pranešimo — terminai yra griežti';
 
   @override
-  String get noteAppealDeadline => 'Note the appeal deadline (usually 30 days)';
+  String get noteAppealDeadline =>
+      'Pasižymėkite apeliacijos terminą (paprastai 30 dienų)';
 
   @override
-  String get contactLawyerImmediately => 'Contact a lawyer immediately';
+  String get contactLawyerImmediately => 'Nedelsdami susisiekite su advokatu';
 
   @override
-  String get applyLegalAid => 'Apply for legal aid if needed';
+  String get applyLegalAid => 'Kreipkitės dėl teisinės pagalbos, jei reikia';
 
   @override
-  String get rightAppealAdmin => 'Right to appeal to the Administrative Court';
+  String get rightAppealAdmin => 'Teisė apskųsti Administraciniam teismui';
 
   @override
-  String get rightLegalRep => 'Right to legal representation';
+  String get rightLegalRep => 'Teisė į teisinį atstovavimą';
 
   @override
-  String get rightInterpreter => 'Right to an interpreter';
+  String get rightInterpreter => 'Teisė į vertėją';
 
   @override
   String get rightStayDuringAppeal =>
-      'Right to stay during appeal (in most cases)';
+      'Teisė likti apeliacijos metu (daugeliu atvejų)';
 
   @override
-  String get minimumWage => 'Minimum wage as per collective agreement';
+  String get minimumWage =>
+      'Minimalus darbo užmokestis pagal kolektyvinę sutartį';
 
   @override
-  String get workingTimeLimits => 'Working time limits (max 8h/day, 40h/week)';
+  String get workingTimeLimits =>
+      'Darbo laiko ribos (maks. 8 val./dieną, 40 val./savaitę)';
 
   @override
-  String get annualLeave => 'Annual leave (minimum 2 days per month worked)';
+  String get annualLeave =>
+      'Kasmetinės atostogos (mažiausiai 2 dienos už kiekvieną dirbtą mėnesį)';
 
   @override
-  String get sickLeave => 'Sick leave compensation';
+  String get sickLeave => 'Ligos pašalpa';
 
   @override
-  String get safeWorkingConditions => 'Safe working conditions';
+  String get safeWorkingConditions => 'Saugios darbo sąlygos';
 
   @override
-  String get writtenRentalAgreement => 'Written rental agreement required';
+  String get writtenRentalAgreement => 'Būtina rašytinė nuomos sutartis';
 
   @override
-  String get securityDeposit => 'Security deposit max 3 months rent';
+  String get securityDeposit => 'Užstatas — ne daugiau nei 3 mėnesių nuoma';
 
   @override
-  String get landlordNotice => 'Landlord must give notice (3-6 months)';
+  String get landlordNotice => 'Nuomotojas turi įspėti (3–6 mėnesiai)';
 
   @override
-  String get rightHabitableDwelling => 'Right to a habitable dwelling';
+  String get rightHabitableDwelling => 'Teisė į tinkamą gyventi būstą';
 
   @override
-  String get protectionUnjustEviction => 'Protection from unjust eviction';
+  String get protectionUnjustEviction => 'Apsauga nuo nepagrįsto iškeldinimo';
 
   @override
-  String get rightKnowDetentionReason =>
-      'Right to know the reason for detention';
+  String get rightKnowDetentionReason => 'Teisė žinoti sulaikymo priežastį';
 
   @override
-  String get rightContactLawyerDetention => 'Right to contact a lawyer';
+  String get rightContactLawyerDetention => 'Teisė susisiekti su advokatu';
 
   @override
-  String get rightContactEmbassy => 'Right to contact your embassy';
+  String get rightContactEmbassy => 'Teisė susisiekti su savo ambasada';
 
   @override
-  String get rightChallengeDetention => 'Right to challenge detention in court';
+  String get rightChallengeDetention => 'Teisė ginčyti sulaikymą teisme';
 
   @override
   String get rightHumaneTreatment =>
-      'Right to humane treatment and medical care';
+      'Teisė į humanišką elgesį ir medicininę priežiūrą';
 
   @override
   String get documentIncident =>
-      'Document the incident (date, time, witnesses)';
+      'Užfiksuokite incidentą (data, laikas, liudytojai)';
 
   @override
   String get fileComplaintOmbudsman =>
-      'File a complaint with the Non-Discrimination Ombudsman';
+      'Pateikite skundą Nediskriminavimo ombudsmenui';
 
   @override
-  String get contactLegalAidOffice => 'Contact a legal aid office';
+  String get contactLegalAidOffice =>
+      'Susisiekite su teisinės pagalbos tarnyba';
 
   @override
-  String get reportToPolice => 'Report to police if criminal (threat, assault)';
+  String get reportToPolice =>
+      'Praneškite policijai, jei tai nusikaltimas (grasinimas, užpuolimas)';
 
   @override
-  String get legalAidCalculator => 'Legal Aid Calculator';
+  String get legalAidCalculator => 'Teisinės pagalbos skaičiuoklė';
 
   @override
-  String get checkEligibility => 'Check your eligibility for Finnish legal aid';
+  String get checkEligibility =>
+      'Patikrinkite savo teisę į Suomijos teisinę pagalbą';
 
   @override
   String get estimateDisclaimer =>
-      'This is an estimate only. Actual eligibility is determined by the Legal Aid Office.';
+      'Tai tik preliminarus įvertinimas. Tikrąją teisę nustato Teisinės pagalbos tarnyba.';
 
   @override
-  String get monthlyIncome => 'Monthly income (EUR)';
+  String get monthlyIncome => 'Mėnesinės pajamos (EUR)';
 
   @override
-  String get totalAssets => 'Total assets (EUR)';
+  String get totalAssets => 'Bendras turtas (EUR)';
 
   @override
-  String get numberOfDependents => 'Number of dependents';
+  String get numberOfDependents => 'Išlaikytinių skaičius';
 
   @override
-  String get calculateEligibility => 'Calculate Eligibility';
+  String get calculateEligibility => 'Apskaičiuoti teisę';
 
   @override
-  String get likelyEligible => 'Likely Eligible';
+  String get likelyEligible => 'Tikriausiai atitinkate';
 
   @override
-  String get mayNotQualify => 'May Not Qualify';
+  String get mayNotQualify => 'Gali neatitikti';
 
   @override
   String get fullFreeLegalAid =>
-      'You likely qualify for full free legal aid (no co-payment).';
+      'Tikriausiai atitinkate visiškai nemokamos teisinės pagalbos reikalavimus (be dalinio mokėjimo).';
 
   @override
   String legalAidWithCopay(String percent) {
-    return 'You may qualify for legal aid with a co-payment of $percent%.';
+    return 'Galite atitikti teisinės pagalbos reikalavimus su daliniu mokėjimu $percent%.';
   }
 
   @override
   String get mayNotQualifyDesc =>
-      'Based on this estimate, you may not qualify for state legal aid. Consider consulting a private lawyer or legal clinic.';
+      'Pagal šį įvertinimą galite neatitikti valstybinės teisinės pagalbos reikalavimų. Apsvarstykite konsultaciją su privačiu advokatu arba teisine klinika.';
 
   @override
-  String get couldNotLoadDeadlines => 'Could not load deadlines';
+  String get couldNotLoadDeadlines => 'Nepavyko įkelti terminų';
 
   @override
-  String get noUpcomingDeadlines => 'No upcoming deadlines';
+  String get noUpcomingDeadlines => 'Nėra artėjančių terminų';
 
   @override
   String get allClearDeadlines =>
-      'You are all clear! New deadlines will appear here when they are set.';
+      'Viskas gerai! Nauji terminai bus rodomi čia, kai bus nustatyti.';
 
   @override
-  String get nothingOverdue => 'Nothing overdue';
+  String get nothingOverdue => 'Nieko nepavėluota';
 
   @override
-  String get greatJobDeadlines => 'Great job staying on top of your deadlines.';
+  String get greatJobDeadlines => 'Puikus darbas laikantis terminų.';
 
   @override
-  String get noCompletedDeadlines => 'No completed deadlines';
+  String get noCompletedDeadlines => 'Nėra užbaigtų terminų';
 
   @override
-  String get completedDeadlinesDesc =>
-      'Deadlines you complete will be shown here.';
+  String get completedDeadlinesDesc => 'Užbaigti terminai bus rodomi čia.';
 
   @override
-  String get daysLate => 'days late';
+  String get daysLate => 'dienų vėlavimas';
 
   @override
-  String get days => 'days';
+  String get days => 'dienų';
 
   @override
-  String get fromDocument => 'From document';
+  String get fromDocument => 'Iš dokumento';
 
   @override
-  String get couldNotLoadCase => 'Could not load case details';
+  String get couldNotLoadCase => 'Nepavyko įkelti bylos detalių';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'Tipas';
 
   @override
-  String get nationality => 'Nationality';
+  String get nationality => 'Tautybė';
 
   @override
-  String get migriReference => 'Migri Reference';
+  String get migriReference => 'Migri nuoroda';
 
   @override
-  String get courtCaseNo => 'Court Case No.';
+  String get courtCaseNo => 'Teismo bylos Nr.';
 
   @override
-  String get created => 'Created';
+  String get created => 'Sukurta';
 
   @override
-  String get citizenship => 'Citizenship';
+  String get citizenship => 'Pilietybė';
 
   @override
-  String get workPermit => 'Work Permit';
+  String get workPermit => 'Darbo leidimas';
 
   @override
-  String get noDocumentsYet => 'No documents uploaded yet';
+  String get noDocumentsYet => 'Dar nėra įkeltų dokumentų';
 
   @override
-  String get noUpcomingDeadlinesShort => 'No upcoming deadlines';
+  String get noUpcomingDeadlinesShort => 'Nėra artėjančių terminų';
 
   @override
-  String get caseCreated => 'Case created';
+  String get caseCreated => 'Byla sukurta';
 
   @override
-  String get decisionReceived => 'Decision received';
+  String get decisionReceived => 'Sprendimas gautas';
 
   @override
-  String get appealDeadline => 'Appeal deadline';
+  String get appealDeadline => 'Apeliacijos terminas';
 
   @override
-  String get hearingScheduled => 'Hearing scheduled';
+  String get hearingScheduled => 'Teismo posėdis suplanuotas';
 
   @override
-  String get late => 'late';
+  String get late => 'vėluojama';
 
   @override
-  String get pending => 'Pending';
+  String get pending => 'Laukiama';
 
   @override
-  String get processing => 'Processing';
+  String get processing => 'Apdorojama';
 
   @override
-  String get ready => 'Ready';
+  String get ready => 'Paruošta';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Nepavyko';
 
   @override
-  String get analyzed => 'Analyzed';
+  String get analyzed => 'Išanalizuota';
 
   @override
-  String get noDocumentsScanHint => 'No documents yet. Scan or upload one.';
+  String get noDocumentsScanHint =>
+      'Dar nėra dokumentų. Nuskaitykite arba įkelkite.';
 
   @override
-  String get inCourt => 'In Court';
+  String get inCourt => 'Teisme';
 
   @override
-  String get appeal => 'Appeal';
+  String get appeal => 'Apeliacija';
 
   @override
-  String get caseTimeline => 'Case Timeline';
+  String get caseTimeline => 'Bylos laiko juosta';
 
   @override
-  String get couldNotLoadTimeline => 'Could not load timeline';
+  String get couldNotLoadTimeline => 'Nepavyko įkelti laiko juostos';
 
   @override
-  String get noEventsYet => 'No events yet';
+  String get noEventsYet => 'Dar nėra įvykių';
 
   @override
   String get activityWillAppear =>
-      'Activity will appear here as your case progresses.';
+      'Veikla bus rodoma čia, bylai progresuojant.';
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Case \"$title\" was created.';
+    return 'Byla \"$title\" buvo sukurta.';
   }
 
   @override
-  String get decisionReceivedDesc =>
-      'An official decision was received for this case.';
+  String get decisionReceivedDesc => 'Gautas oficialus sprendimas šiai bylai.';
 
   @override
-  String get appealDeadlineSet => 'Appeal deadline set';
+  String get appealDeadlineSet => 'Apeliacijos terminas nustatytas';
 
   @override
   String appealDeadlineDesc(String date) {
-    return 'Appeal must be filed by $date.';
+    return 'Apeliacija turi būti pateikta iki $date.';
   }
 
   @override
   String hearingScheduledDesc(String date) {
-    return 'Court hearing scheduled for $date.';
+    return 'Teismo posėdis suplanuotas $date.';
   }
 
   @override
-  String get caseInfoUpdated => 'Case information was last updated.';
+  String get caseInfoUpdated => 'Bylos informacija paskutinį kartą atnaujinta.';
 
   @override
-  String get documentAnalysis => 'Document Analysis';
+  String get documentAnalysis => 'Dokumento analizė';
 
   @override
-  String get exportAsPdf => 'Export as PDF';
+  String get exportAsPdf => 'Eksportuoti kaip PDF';
 
   @override
-  String get pdfExportComingSoon => 'PDF export coming soon';
+  String get pdfExportComingSoon => 'PDF eksportas netrukus';
 
   @override
-  String get analysisFailedRetry => 'Analysis failed. Please try again.';
+  String get analysisFailedRetry => 'Analizė nepavyko. Bandykite dar kartą.';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Kažkas nutiko ne taip';
 
   @override
-  String get retryAnalysis => 'Retry Analysis';
+  String get retryAnalysis => 'Pakartoti analizę';
 
   @override
   String issuesFoundInDocument(int count) {
-    return 'Found $count issue(s) in your document';
+    return 'Jūsų dokumente rasta $count problema(-ų)';
   }
 
   @override
-  String get severityOverview => 'Severity Overview';
+  String get severityOverview => 'Rimtumo apžvalga';
 
   @override
-  String get issuesFoundHeader => 'Issues Found';
+  String get issuesFoundHeader => 'Rastos problemos';
 
   @override
   String generateAppealWithIssues(int count) {
-    return 'Generate Appeal ($count issues)';
+    return 'Generuoti apeliaciją ($count problemų)';
   }
 
   @override
-  String get analyzingContent => 'Analyzing content...';
+  String get analyzingContent => 'Analizuojamas turinys...';
 
   @override
-  String get documentProcessedOk => 'Document processed successfully';
+  String get documentProcessedOk => 'Dokumentas sėkmingai apdorotas';
 
   @override
   String get noSignificantIssues =>
-      'No significant issues were detected in this document.';
+      'Šiame dokumente reikšmingų problemų nerasta.';
 
   @override
-  String get cameraPermissionRequired => 'Camera permission required';
+  String get cameraPermissionRequired => 'Reikalingas kameros leidimas';
 
   @override
   String get cameraPermissionDesc =>
-      'Grant camera access to scan documents, or use the gallery.';
+      'Suteikite prieigą prie kameros, kad galėtumėte nuskaityti dokumentus, arba naudokite galeriją.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'Atidaryti nustatymus';
 
   @override
-  String get alignDocument => 'Align document within the frame';
+  String get alignDocument => 'Sulygiuokite dokumentą rėmelyje';
 
   @override
   String pageCount(int count) {
-    return '$count page(s)';
+    return '$count puslapis(-iai)';
   }
 
   @override
-  String get preview => 'Preview';
+  String get preview => 'Peržiūra';
 
   @override
   String pageNumber(int number) {
-    return 'Page $number';
+    return '$number puslapis';
   }
 
   @override
-  String get done => 'Done';
+  String get done => 'Atlikta';
 
   @override
-  String get retake => 'Retake';
+  String get retake => 'Fotografuoti iš naujo';
 
   @override
-  String get useThisPhoto => 'Use This Photo';
+  String get useThisPhoto => 'Naudoti šią nuotrauką';
 
   @override
-  String get addPage => 'Add Page';
+  String get addPage => 'Pridėti puslapį';
 
   @override
   String uploadingPercent(int percent) {
-    return 'Uploading... $percent%';
+    return 'Įkeliama... $percent%';
   }
 
   @override
-  String get preparingUpload => 'Preparing upload...';
+  String get preparingUpload => 'Ruošiamas įkėlimas...';
 
   @override
-  String get documentUploadedSuccess => 'Document uploaded successfully';
+  String get documentUploadedSuccess => 'Dokumentas sėkmingai įkeltas';
 
   @override
   String pagesUploadedSuccess(int count) {
-    return '$count pages uploaded successfully';
+    return '$count puslapiai sėkmingai įkelti';
   }
 
   @override
   String get uploadFailed =>
-      'Upload failed. Please check your connection and try again.';
+      'Įkėlimas nepavyko. Patikrinkite ryšį ir bandykite dar kartą.';
 
   @override
-  String get capturePhotoFailed => 'Failed to capture photo. Please try again.';
+  String get capturePhotoFailed =>
+      'Nepavyko nufotografuoti. Bandykite dar kartą.';
 
   @override
-  String get readingText => 'Reading text...';
+  String get readingText => 'Skaitomas tekstas...';
 
   @override
-  String get draftDocument => 'Draft Document';
+  String get draftDocument => 'Dokumento projektas';
 
   @override
-  String get saveChanges => 'Save changes';
+  String get saveChanges => 'Išsaugoti pakeitimus';
 
   @override
-  String get editDocument => 'Edit document';
+  String get editDocument => 'Redaguoti dokumentą';
 
   @override
-  String get generatingDraft => 'Generating your draft...';
+  String get generatingDraft => 'Generuojamas jūsų projektas...';
 
   @override
   String get generatingDraftDesc =>
-      'AI is preparing a legal document based on your case details and selected issues.';
+      'AI rengia teisinį dokumentą pagal jūsų bylos duomenis ir pasirinktas problemas.';
 
   @override
   String get failedToGenerateDraft =>
-      'Failed to generate draft. Please try again.';
+      'Nepavyko sugeneruoti projekto. Bandykite dar kartą.';
 
   @override
-  String get changesSaved => 'Changes saved';
+  String get changesSaved => 'Pakeitimai išsaugoti';
 
   @override
-  String get copiedToClipboard => 'Copied to clipboard';
+  String get copiedToClipboard => 'Nukopijuota į iškarpinę';
 
   @override
-  String get emailComingSoon => 'Email sending coming soon';
+  String get emailComingSoon => 'El. laiškų siuntimas netrukus';
 
   @override
   String get reviewBeforeSending =>
-      'Review carefully before sending. You are responsible for the content of this document.';
+      'Atidžiai peržiūrėkite prieš siųsdami. Jūs esate atsakingas už šio dokumento turinį.';
 
   @override
-  String get noContentAvailable => 'No content available';
+  String get noContentAvailable => 'Turinio nėra';
 
   @override
-  String get save => 'Save';
+  String get save => 'Išsaugoti';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Redaguoti';
 
   @override
   String get pdf => 'PDF';
 
   @override
-  String get copy => 'Copy';
+  String get copy => 'Kopijuoti';
 
   @override
-  String get appealDraft => 'Appeal Draft';
+  String get appealDraft => 'Apeliacijos projektas';
 
   @override
   String selected(int count) {
-    return '$count selected';
+    return '$count pasirinkta';
   }
 
   @override
-  String get deleteSelected => 'Delete selected';
+  String get deleteSelected => 'Ištrinti pasirinktus';
 
   @override
   String deleteDocumentsConfirm(int count) {
-    return 'Delete $count documents?';
+    return 'Ištrinti $count dokumentą(-us)?';
   }
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Ištrinti';
 
   @override
-  String get analyzeSelected => 'Analyze selected';
+  String get analyzeSelected => 'Analizuoti pasirinktus';
 
   @override
-  String get batchAnalysisStarting => 'Batch analysis starting...';
+  String get batchAnalysisStarting => 'Pradedama paketinė analizė...';
 
   @override
-  String get switchToList => 'Switch to list';
+  String get switchToList => 'Perjungti į sąrašą';
 
   @override
-  String get switchToGrid => 'Switch to grid';
+  String get switchToGrid => 'Perjungti į tinklelį';
 
   @override
-  String get scanNew => 'Scan New';
+  String get scanNew => 'Nuskaityti naują';
 
   @override
-  String get noDocumentsYetScan => 'No documents yet';
+  String get noDocumentsYetScan => 'Dar nėra dokumentų';
 
   @override
   String get scanFirstDocumentHint =>
-      'Scan your first document to let AI analyze it for errors and generate appeals.';
+      'Nuskaitykite pirmą dokumentą, kad AI jį išanalizuotų klaidų paieškai ir apeliacijų generavimui.';
 
   @override
-  String get failedToLoadDocuments => 'Failed to load documents';
+  String get failedToLoadDocuments => 'Nepavyko įkelti dokumentų';
 }

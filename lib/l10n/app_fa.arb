@@ -304,5 +304,268 @@
   "vinNumber": "شماره شناسایی خودرو (VIN)",
   "welcomeBack": "خوش آمدید",
   "whatAreMyOptions": "گزینه‌های من چیست؟",
-  "won": "برنده"
+  "won": "برنده",
+  "documentVault": "صندوق اسناد",
+  "secureDocumentStorage": "ذخیره‌سازی امن اسناد",
+  "secureDocumentStorageDesc": "اسناد حقوقی مهم خود را به صورت امن ذخیره کنید. تمام فایل‌ها به صورت سرتاسری رمزنگاری شده‌اند.",
+  "addDocument": "افزودن سند",
+  "chooseHowToAdd": "نحوه افزودن سند خود را انتخاب کنید",
+  "uploadFile": "بارگذاری فایل",
+  "uploadFileDesc": "یک فایل PDF یا تصویر از دستگاه خود انتخاب کنید",
+  "scanDocumentDesc": "از سند خود عکس بگیرید",
+  "createNote": "ایجاد یادداشت",
+  "createNoteDesc": "یادداشتی بنویسید یا جزئیات مهم را ثبت کنید",
+  "knowYourRights": "حقوق خود را بشناسید",
+  "stoppedByPolice": "توقف توسط پلیس",
+  "stoppedByPoliceDesc": "حقوق شما در هنگام مواجهه با پلیس",
+  "deportationNotice": "اخطار اخراج",
+  "deportationNoticeDesc": "مراحل اعتراض به حکم اخراج",
+  "workplaceRights": "حقوق محل کار",
+  "workplaceRightsDesc": "حمایت‌های قانون کار در فنلاند",
+  "tenantRightsDesc": "حمایت‌های مسکن و اجاره",
+  "immigrationDetention": "بازداشت مهاجرتی",
+  "immigrationDetentionDesc": "حقوق شما در صورت بازداشت توسط مقامات",
+  "discriminationDesc": "نحوه گزارش و مبارزه با تبعیض",
+  "scenarioNotFound": "سناریو یافت نشد",
+  "youHaveRightTo": "شما حق دارید:",
+  "youMust": "شما باید:",
+  "immediateSteps": "اقدامات فوری:",
+  "yourRights": "حقوق شما:",
+  "basicRights": "حقوق اساسی:",
+  "yourRightsAsTenant": "حقوق شما به عنوان مستأجر:",
+  "yourRightsInDetention": "حقوق شما در بازداشت:",
+  "howToAct": "نحوه عمل:",
+  "rightKnowWhyStopped": "دانستن دلیل توقف",
+  "rightRemainSilent": "سکوت کردن (باید هویت خود را اعلام کنید)",
+  "rightAskInterpreter": "درخواست مترجم",
+  "rightContactLawyer": "تماس با وکیل قبل از بازجویی",
+  "rightRecordEncounter": "ضبط مواجهه (در اماکن عمومی)",
+  "mustProvideName": "ارائه نام و تاریخ تولد",
+  "mustShowId": "نشان دادن کارت شناسایی در صورت داشتن",
+  "mustNotResist": "مقاومت فیزیکی نکردن",
+  "doNotIgnoreNotice": "اخطار را نادیده نگیرید - مهلت‌ها سختگیرانه هستند",
+  "noteAppealDeadline": "مهلت تجدیدنظر را یادداشت کنید (معمولاً ۳۰ روز)",
+  "contactLawyerImmediately": "فوراً با وکیل تماس بگیرید",
+  "applyLegalAid": "در صورت نیاز درخواست کمک حقوقی دهید",
+  "rightAppealAdmin": "حق تجدیدنظر در دادگاه اداری",
+  "rightLegalRep": "حق داشتن نماینده حقوقی",
+  "rightInterpreter": "حق داشتن مترجم",
+  "rightStayDuringAppeal": "حق ماندن در طول تجدیدنظر (در اکثر موارد)",
+  "minimumWage": "حداقل دستمزد طبق قرارداد جمعی",
+  "workingTimeLimits": "محدودیت ساعت کار (حداکثر ۸ ساعت/روز، ۴۰ ساعت/هفته)",
+  "annualLeave": "مرخصی سالانه (حداقل ۲ روز به ازای هر ماه کار)",
+  "sickLeave": "غرامت مرخصی استعلاجی",
+  "safeWorkingConditions": "شرایط کاری ایمن",
+  "writtenRentalAgreement": "قرارداد اجاره کتبی الزامی است",
+  "securityDeposit": "ودیعه حداکثر ۳ ماه اجاره",
+  "landlordNotice": "موجر باید اخطار دهد (۳ تا ۶ ماه)",
+  "rightHabitableDwelling": "حق داشتن مسکن مناسب",
+  "protectionUnjustEviction": "حمایت در برابر تخلیه ناعادلانه",
+  "rightKnowDetentionReason": "حق دانستن دلیل بازداشت",
+  "rightContactLawyerDetention": "حق تماس با وکیل",
+  "rightContactEmbassy": "حق تماس با سفارت خود",
+  "rightChallengeDetention": "حق اعتراض به بازداشت در دادگاه",
+  "rightHumaneTreatment": "حق برخورد انسانی و مراقبت پزشکی",
+  "documentIncident": "حادثه را مستند کنید (تاریخ، زمان، شاهدان)",
+  "fileComplaintOmbudsman": "شکایت نزد آمبودزمان عدم تبعیض تسلیم کنید",
+  "contactLegalAidOffice": "با دفتر کمک حقوقی تماس بگیرید",
+  "reportToPolice": "در صورت جنایی بودن به پلیس گزارش دهید (تهدید، حمله)",
+  "legalAidCalculator": "محاسبه‌گر کمک حقوقی",
+  "checkEligibility": "واجد شرایط بودن خود برای کمک حقوقی فنلاند را بررسی کنید",
+  "estimateDisclaimer": "این فقط یک تخمین است. واجد شرایط بودن واقعی توسط دفتر کمک حقوقی تعیین می‌شود.",
+  "monthlyIncome": "درآمد ماهانه (یورو)",
+  "totalAssets": "کل دارایی‌ها (یورو)",
+  "numberOfDependents": "تعداد افراد تحت تکفل",
+  "calculateEligibility": "محاسبه واجد شرایط بودن",
+  "likelyEligible": "احتمالاً واجد شرایط",
+  "mayNotQualify": "ممکن است واجد شرایط نباشید",
+  "fullFreeLegalAid": "شما احتمالاً واجد شرایط کمک حقوقی رایگان کامل هستید (بدون پرداخت سهم).",
+  "legalAidWithCopay": "ممکن است واجد شرایط کمک حقوقی با پرداخت سهم {percent}% باشید.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mayNotQualifyDesc": "بر اساس این تخمین، ممکن است واجد شرایط کمک حقوقی دولتی نباشید. با یک وکیل خصوصی یا کلینیک حقوقی مشورت کنید.",
+  "couldNotLoadDeadlines": "بارگذاری مهلت‌ها ممکن نشد",
+  "noUpcomingDeadlines": "مهلت آینده‌ای نیست",
+  "allClearDeadlines": "همه چیز مرتب است! مهلت‌های جدید در اینجا نمایش داده می‌شوند.",
+  "nothingOverdue": "چیزی عقب نیفتاده",
+  "greatJobDeadlines": "کار عالی در پیگیری مهلت‌هایتان.",
+  "noCompletedDeadlines": "مهلت تکمیل شده‌ای نیست",
+  "completedDeadlinesDesc": "مهلت‌هایی که تکمیل می‌کنید در اینجا نمایش داده می‌شوند.",
+  "daysLate": "روز تأخیر",
+  "days": "روز",
+  "fromDocument": "از سند",
+  "couldNotLoadCase": "بارگذاری جزئیات پرونده ممکن نشد",
+  "typeLabel": "نوع",
+  "nationality": "ملیت",
+  "migriReference": "شماره مرجع Migri",
+  "courtCaseNo": "شماره پرونده دادگاه",
+  "created": "ایجاد شده",
+  "citizenship": "تابعیت",
+  "workPermit": "مجوز کار",
+  "noDocumentsYet": "هنوز سندی بارگذاری نشده",
+  "noUpcomingDeadlinesShort": "مهلت آینده‌ای نیست",
+  "caseCreated": "پرونده ایجاد شد",
+  "decisionReceived": "تصمیم دریافت شد",
+  "appealDeadline": "مهلت تجدیدنظر",
+  "hearingScheduled": "جلسه دادرسی تعیین شد",
+  "late": "دیرکرد",
+  "pending": "در انتظار",
+  "processing": "در حال پردازش",
+  "ready": "آماده",
+  "failed": "ناموفق",
+  "analyzed": "تحلیل شده",
+  "noDocumentsScanHint": "هنوز سندی نیست. اسکن کنید یا بارگذاری کنید.",
+  "inCourt": "در دادگاه",
+  "appeal": "تجدیدنظر",
+  "caseTimeline": "جدول زمانی پرونده",
+  "couldNotLoadTimeline": "بارگذاری جدول زمانی ممکن نشد",
+  "noEventsYet": "هنوز رویدادی نیست",
+  "activityWillAppear": "فعالیت‌ها با پیشرفت پرونده شما در اینجا نمایش داده می‌شوند.",
+  "caseCreatedDesc": "پرونده \"{title}\" ایجاد شد.",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "decisionReceivedDesc": "یک تصمیم رسمی برای این پرونده دریافت شد.",
+  "appealDeadlineSet": "مهلت تجدیدنظر تعیین شد",
+  "appealDeadlineDesc": "تجدیدنظر باید تا {date} تسلیم شود.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hearingScheduledDesc": "جلسه دادگاه برای {date} تعیین شده است.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "caseInfoUpdated": "اطلاعات پرونده آخرین بار به‌روزرسانی شد.",
+  "documentAnalysis": "تحلیل سند",
+  "exportAsPdf": "خروجی به صورت PDF",
+  "pdfExportComingSoon": "خروجی PDF به زودی",
+  "analysisFailedRetry": "تحلیل ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "somethingWentWrong": "مشکلی پیش آمد",
+  "retryAnalysis": "تلاش مجدد تحلیل",
+  "issuesFoundInDocument": "{count} مشکل در سند شما یافت شد",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "نمای کلی شدت",
+  "issuesFoundHeader": "مشکلات یافت شده",
+  "generateAppealWithIssues": "تولید تجدیدنظر ({count} مشکل)",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "analyzingContent": "در حال تحلیل محتوا...",
+  "documentProcessedOk": "سند با موفقیت پردازش شد",
+  "noSignificantIssues": "مشکل قابل توجهی در این سند شناسایی نشد.",
+  "cameraPermissionRequired": "مجوز دوربین لازم است",
+  "cameraPermissionDesc": "برای اسکن اسناد دسترسی دوربین را اعطا کنید، یا از گالری استفاده کنید.",
+  "openSettings": "باز کردن تنظیمات",
+  "alignDocument": "سند را در کادر تنظیم کنید",
+  "pageCount": "{count} صفحه",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "preview": "پیش‌نمایش",
+  "pageNumber": "صفحه {number}",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "done": "انجام شد",
+  "retake": "عکس مجدد",
+  "useThisPhoto": "استفاده از این عکس",
+  "addPage": "افزودن صفحه",
+  "uploadingPercent": "در حال بارگذاری... {percent}%",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "preparingUpload": "آماده‌سازی بارگذاری...",
+  "documentUploadedSuccess": "سند با موفقیت بارگذاری شد",
+  "pagesUploadedSuccess": "{count} صفحه با موفقیت بارگذاری شد",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadFailed": "بارگذاری ناموفق بود. لطفاً اتصال خود را بررسی کنید و دوباره تلاش کنید.",
+  "capturePhotoFailed": "گرفتن عکس ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "readingText": "در حال خواندن متن...",
+  "draftDocument": "پیش‌نویس سند",
+  "saveChanges": "ذخیره تغییرات",
+  "editDocument": "ویرایش سند",
+  "generatingDraft": "در حال تولید پیش‌نویس شما...",
+  "generatingDraftDesc": "هوش مصنوعی در حال تهیه یک سند حقوقی بر اساس جزئیات پرونده و مشکلات انتخاب شده شماست.",
+  "failedToGenerateDraft": "تولید پیش‌نویس ناموفق بود. لطفاً دوباره تلاش کنید.",
+  "changesSaved": "تغییرات ذخیره شد",
+  "copiedToClipboard": "در کلیپ‌بورد کپی شد",
+  "emailComingSoon": "ارسال ایمیل به زودی",
+  "reviewBeforeSending": "قبل از ارسال با دقت بررسی کنید. شما مسئول محتوای این سند هستید.",
+  "noContentAvailable": "محتوایی در دسترس نیست",
+  "save": "ذخیره",
+  "edit": "ویرایش",
+  "pdf": "PDF",
+  "copy": "کپی",
+  "appealDraft": "پیش‌نویس تجدیدنظر",
+  "selected": "{count} انتخاب شده",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "حذف انتخاب شده‌ها",
+  "deleteDocumentsConfirm": "{count} سند حذف شود؟",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delete": "حذف",
+  "analyzeSelected": "تحلیل انتخاب شده‌ها",
+  "batchAnalysisStarting": "شروع تحلیل دسته‌ای...",
+  "switchToList": "تغییر به فهرست",
+  "switchToGrid": "تغییر به شبکه",
+  "scanNew": "اسکن جدید",
+  "noDocumentsYetScan": "هنوز سندی نیست",
+  "scanFirstDocumentHint": "اولین سند خود را اسکن کنید تا هوش مصنوعی آن را برای خطاها تحلیل کند و تجدیدنظر تولید کند.",
+  "failedToLoadDocuments": "بارگذاری اسناد ناموفق بود"
 }

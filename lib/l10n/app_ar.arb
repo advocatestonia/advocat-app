@@ -304,5 +304,268 @@
     "vinNumber": "رقم الهيكل",
     "welcomeBack": "مرحباً بعودتك",
     "whatAreMyOptions": "ما هي خياراتي؟",
-    "won": "ربح"
+    "won": "ربح",
+    "documentVault": "خزنة المستندات",
+    "secureDocumentStorage": "تخزين آمن للمستندات",
+    "secureDocumentStorageDesc": "قم بتخزين مستنداتك القانونية المهمة بأمان. جميع الملفات مشفرة من طرف إلى طرف.",
+    "addDocument": "إضافة مستند",
+    "chooseHowToAdd": "اختر طريقة إضافة مستندك",
+    "uploadFile": "رفع ملف",
+    "uploadFileDesc": "اختر ملف PDF أو صورة من جهازك",
+    "scanDocumentDesc": "التقط صورة لمستندك",
+    "createNote": "إنشاء ملاحظة",
+    "createNoteDesc": "اكتب ملاحظة أو سجّل تفاصيل مهمة",
+    "knowYourRights": "اعرف حقوقك",
+    "stoppedByPolice": "أوقفتك الشرطة",
+    "stoppedByPoliceDesc": "حقوقك أثناء مواجهة مع الشرطة",
+    "deportationNotice": "إشعار ترحيل",
+    "deportationNoticeDesc": "خطوات الطعن في قرار الإبعاد",
+    "workplaceRights": "حقوق العمل",
+    "workplaceRightsDesc": "حماية قانون العمل في فنلندا",
+    "tenantRightsDesc": "حماية حقوق السكن والإيجار",
+    "immigrationDetention": "الاحتجاز المتعلق بالهجرة",
+    "immigrationDetentionDesc": "حقوقك في حال احتجازك من قبل السلطات",
+    "discriminationDesc": "كيفية الإبلاغ عن التمييز ومكافحته",
+    "scenarioNotFound": "السيناريو غير موجود",
+    "youHaveRightTo": "لديك الحق في:",
+    "youMust": "يجب عليك:",
+    "immediateSteps": "الخطوات الفورية:",
+    "yourRights": "حقوقك:",
+    "basicRights": "الحقوق الأساسية:",
+    "yourRightsAsTenant": "حقوقك كمستأجر:",
+    "yourRightsInDetention": "حقوقك أثناء الاحتجاز:",
+    "howToAct": "كيف تتصرف:",
+    "rightKnowWhyStopped": "معرفة سبب إيقافك",
+    "rightRemainSilent": "التزام الصمت (يجب عليك تعريف هويتك)",
+    "rightAskInterpreter": "طلب مترجم فوري",
+    "rightContactLawyer": "الاتصال بمحامٍ قبل الاستجواب",
+    "rightRecordEncounter": "تسجيل المواجهة (في الأماكن العامة)",
+    "mustProvideName": "تقديم اسمك وتاريخ ميلادك",
+    "mustShowId": "إبراز هويتك إن كانت لديك",
+    "mustNotResist": "عدم المقاومة الجسدية",
+    "doNotIgnoreNotice": "لا تتجاهل الإشعار - المواعيد النهائية صارمة",
+    "noteAppealDeadline": "لاحظ موعد الاستئناف (عادة ٣٠ يوماً)",
+    "contactLawyerImmediately": "اتصل بمحامٍ فوراً",
+    "applyLegalAid": "قدّم طلب مساعدة قانونية إذا لزم الأمر",
+    "rightAppealAdmin": "الحق في الاستئناف أمام المحكمة الإدارية",
+    "rightLegalRep": "الحق في التمثيل القانوني",
+    "rightInterpreter": "الحق في مترجم فوري",
+    "rightStayDuringAppeal": "الحق في البقاء أثناء الاستئناف (في معظم الحالات)",
+    "minimumWage": "الحد الأدنى للأجور وفقاً للاتفاقية الجماعية",
+    "workingTimeLimits": "حدود ساعات العمل (بحد أقصى ٨ ساعات/يوم، ٤٠ ساعة/أسبوع)",
+    "annualLeave": "إجازة سنوية (بحد أدنى يومان عن كل شهر عمل)",
+    "sickLeave": "تعويض الإجازة المرضية",
+    "safeWorkingConditions": "ظروف عمل آمنة",
+    "writtenRentalAgreement": "يجب أن يكون عقد الإيجار مكتوباً",
+    "securityDeposit": "مبلغ التأمين بحد أقصى ٣ أشهر إيجار",
+    "landlordNotice": "يجب على المالك إعطاء إشعار (٣-٦ أشهر)",
+    "rightHabitableDwelling": "الحق في مسكن صالح للسكن",
+    "protectionUnjustEviction": "الحماية من الإخلاء غير العادل",
+    "rightKnowDetentionReason": "الحق في معرفة سبب الاحتجاز",
+    "rightContactLawyerDetention": "الحق في الاتصال بمحامٍ",
+    "rightContactEmbassy": "الحق في الاتصال بسفارتك",
+    "rightChallengeDetention": "الحق في الطعن في الاحتجاز أمام المحكمة",
+    "rightHumaneTreatment": "الحق في معاملة إنسانية ورعاية طبية",
+    "documentIncident": "وثّق الحادثة (التاريخ، الوقت، الشهود)",
+    "fileComplaintOmbudsman": "قدّم شكوى لدى أمين المظالم لعدم التمييز",
+    "contactLegalAidOffice": "اتصل بمكتب المساعدة القانونية",
+    "reportToPolice": "أبلغ الشرطة إذا كان الأمر جنائياً (تهديد، اعتداء)",
+    "legalAidCalculator": "حاسبة المساعدة القانونية",
+    "checkEligibility": "تحقق من أهليتك للمساعدة القانونية الفنلندية",
+    "estimateDisclaimer": "هذا تقدير فقط. يتم تحديد الأهلية الفعلية من قبل مكتب المساعدة القانونية.",
+    "monthlyIncome": "الدخل الشهري (يورو)",
+    "totalAssets": "إجمالي الأصول (يورو)",
+    "numberOfDependents": "عدد المعالين",
+    "calculateEligibility": "حساب الأهلية",
+    "likelyEligible": "مؤهل على الأرجح",
+    "mayNotQualify": "قد لا تكون مؤهلاً",
+    "fullFreeLegalAid": "من المرجح أنك مؤهل للمساعدة القانونية المجانية الكاملة (بدون مساهمة مالية).",
+    "legalAidWithCopay": "قد تكون مؤهلاً للمساعدة القانونية مع مساهمة مالية بنسبة {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
+    "mayNotQualifyDesc": "بناءً على هذا التقدير، قد لا تكون مؤهلاً للمساعدة القانونية الحكومية. فكّر في استشارة محامٍ خاص أو عيادة قانونية.",
+    "couldNotLoadDeadlines": "تعذر تحميل المواعيد النهائية",
+    "noUpcomingDeadlines": "لا توجد مواعيد نهائية قادمة",
+    "allClearDeadlines": "كل شيء على ما يرام! ستظهر المواعيد النهائية الجديدة هنا عند تحديدها.",
+    "nothingOverdue": "لا يوجد شيء متأخر",
+    "greatJobDeadlines": "عمل رائع في متابعة مواعيدك النهائية.",
+    "noCompletedDeadlines": "لا توجد مواعيد نهائية مكتملة",
+    "completedDeadlinesDesc": "ستظهر المواعيد النهائية المكتملة هنا.",
+    "daysLate": "أيام تأخير",
+    "days": "أيام",
+    "fromDocument": "من المستند",
+    "couldNotLoadCase": "تعذر تحميل تفاصيل القضية",
+    "typeLabel": "النوع",
+    "nationality": "الجنسية",
+    "migriReference": "مرجع Migri",
+    "courtCaseNo": "رقم القضية في المحكمة",
+    "created": "تاريخ الإنشاء",
+    "citizenship": "المواطنة",
+    "workPermit": "تصريح العمل",
+    "noDocumentsYet": "لم يتم رفع أي مستندات بعد",
+    "noUpcomingDeadlinesShort": "لا توجد مواعيد نهائية قادمة",
+    "caseCreated": "تم إنشاء القضية",
+    "decisionReceived": "تم استلام القرار",
+    "appealDeadline": "موعد الاستئناف النهائي",
+    "hearingScheduled": "تم تحديد موعد الجلسة",
+    "late": "متأخر",
+    "pending": "قيد الانتظار",
+    "processing": "قيد المعالجة",
+    "ready": "جاهز",
+    "failed": "فشل",
+    "analyzed": "تم التحليل",
+    "noDocumentsScanHint": "لا توجد مستندات بعد. امسح ضوئياً أو ارفع مستنداً.",
+    "inCourt": "في المحكمة",
+    "appeal": "استئناف",
+    "caseTimeline": "الجدول الزمني للقضية",
+    "couldNotLoadTimeline": "تعذر تحميل الجدول الزمني",
+    "noEventsYet": "لا توجد أحداث بعد",
+    "activityWillAppear": "سيظهر النشاط هنا مع تقدم قضيتك.",
+    "caseCreatedDesc": "تم إنشاء القضية \"{title}\".",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
+    "decisionReceivedDesc": "تم استلام قرار رسمي لهذه القضية.",
+    "appealDeadlineSet": "تم تحديد موعد الاستئناف النهائي",
+    "appealDeadlineDesc": "يجب تقديم الاستئناف بحلول {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "hearingScheduledDesc": "تم تحديد جلسة المحكمة في {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
+    "caseInfoUpdated": "تم تحديث معلومات القضية آخر مرة.",
+    "documentAnalysis": "تحليل المستند",
+    "exportAsPdf": "تصدير كـ PDF",
+    "pdfExportComingSoon": "تصدير PDF قريباً",
+    "analysisFailedRetry": "فشل التحليل. يرجى المحاولة مرة أخرى.",
+    "somethingWentWrong": "حدث خطأ ما",
+    "retryAnalysis": "إعادة التحليل",
+    "issuesFoundInDocument": "تم العثور على {count} مشكلة في مستندك",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "severityOverview": "نظرة عامة على الخطورة",
+    "issuesFoundHeader": "المشكلات المكتشفة",
+    "generateAppealWithIssues": "إنشاء استئناف ({count} مشكلة)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "analyzingContent": "جارٍ تحليل المحتوى...",
+    "documentProcessedOk": "تمت معالجة المستند بنجاح",
+    "noSignificantIssues": "لم يتم اكتشاف مشكلات جوهرية في هذا المستند.",
+    "cameraPermissionRequired": "مطلوب إذن الكاميرا",
+    "cameraPermissionDesc": "امنح إذن الوصول إلى الكاميرا لمسح المستندات ضوئياً، أو استخدم المعرض.",
+    "openSettings": "فتح الإعدادات",
+    "alignDocument": "قم بمحاذاة المستند داخل الإطار",
+    "pageCount": "{count} صفحة",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "preview": "معاينة",
+    "pageNumber": "صفحة {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
+    "done": "تم",
+    "retake": "إعادة الالتقاط",
+    "useThisPhoto": "استخدم هذه الصورة",
+    "addPage": "إضافة صفحة",
+    "uploadingPercent": "جارٍ الرفع... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
+    "preparingUpload": "جارٍ تحضير الرفع...",
+    "documentUploadedSuccess": "تم رفع المستند بنجاح",
+    "pagesUploadedSuccess": "تم رفع {count} صفحة بنجاح",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "uploadFailed": "فشل الرفع. يرجى التحقق من اتصالك والمحاولة مرة أخرى.",
+    "capturePhotoFailed": "فشل التقاط الصورة. يرجى المحاولة مرة أخرى.",
+    "readingText": "جارٍ قراءة النص...",
+    "draftDocument": "مسودة المستند",
+    "saveChanges": "حفظ التغييرات",
+    "editDocument": "تعديل المستند",
+    "generatingDraft": "جارٍ إنشاء مسودتك...",
+    "generatingDraftDesc": "يقوم الذكاء الاصطناعي بإعداد مستند قانوني بناءً على تفاصيل قضيتك والمشكلات المحددة.",
+    "failedToGenerateDraft": "فشل إنشاء المسودة. يرجى المحاولة مرة أخرى.",
+    "changesSaved": "تم حفظ التغييرات",
+    "copiedToClipboard": "تم النسخ إلى الحافظة",
+    "emailComingSoon": "إرسال البريد الإلكتروني قريباً",
+    "reviewBeforeSending": "راجع بعناية قبل الإرسال. أنت مسؤول عن محتوى هذا المستند.",
+    "noContentAvailable": "لا يوجد محتوى متاح",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "pdf": "PDF",
+    "copy": "نسخ",
+    "appealDraft": "مسودة الاستئناف",
+    "selected": "{count} محدد",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deleteSelected": "حذف المحدد",
+    "deleteDocumentsConfirm": "حذف {count} مستند؟",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "delete": "حذف",
+    "analyzeSelected": "تحليل المحدد",
+    "batchAnalysisStarting": "بدء التحليل الدُفعي...",
+    "switchToList": "التبديل إلى القائمة",
+    "switchToGrid": "التبديل إلى الشبكة",
+    "scanNew": "مسح جديد",
+    "noDocumentsYetScan": "لا توجد مستندات بعد",
+    "scanFirstDocumentHint": "امسح أول مستند ضوئياً ليقوم الذكاء الاصطناعي بتحليله بحثاً عن أخطاء وإنشاء استئنافات.",
+    "failedToLoadDocuments": "فشل تحميل المستندات"
 }

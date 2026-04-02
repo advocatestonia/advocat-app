@@ -304,5 +304,268 @@
   "vinNumber": "VIN numeris",
   "welcomeBack": "Sveiki sugrįžę",
   "whatAreMyOptions": "Kokios mano galimybės?",
-  "won": "Laimėta"
+  "won": "Laimėta",
+  "documentVault": "Dokumentų saugykla",
+  "secureDocumentStorage": "Saugi dokumentų saugykla",
+  "secureDocumentStorageDesc": "Saugiai laikykite svarbius teisinius dokumentus. Visi failai yra pilnai užšifruoti.",
+  "addDocument": "Pridėti dokumentą",
+  "chooseHowToAdd": "Pasirinkite, kaip pridėti dokumentą",
+  "uploadFile": "Įkelti failą",
+  "uploadFileDesc": "Pasirinkite PDF arba nuotrauką iš savo įrenginio",
+  "scanDocumentDesc": "Nufotografuokite savo dokumentą",
+  "createNote": "Sukurti pastabą",
+  "createNoteDesc": "Parašykite pastabą arba užfiksuokite svarbias detales",
+  "knowYourRights": "Žinok savo teises",
+  "stoppedByPolice": "Sustabdė policija",
+  "stoppedByPoliceDesc": "Jūsų teisės policijos patikrinimo metu",
+  "deportationNotice": "Deportacijos pranešimas",
+  "deportationNoticeDesc": "Žingsniai ginčijant išsiuntimo sprendimą",
+  "workplaceRights": "Darbo teisės",
+  "workplaceRightsDesc": "Darbo teisės apsauga Suomijoje",
+  "tenantRightsDesc": "Būsto ir nuomos apsauga",
+  "immigrationDetention": "Imigracijos sulaikymas",
+  "immigrationDetentionDesc": "Jūsų teisės, jei esate sulaikytas valdžios institucijų",
+  "discriminationDesc": "Kaip pranešti apie diskriminaciją ir kovoti su ja",
+  "scenarioNotFound": "Scenarijus nerastas",
+  "youHaveRightTo": "Jūs turite teisę:",
+  "youMust": "Jūs privalote:",
+  "immediateSteps": "Neatidėliotini žingsniai:",
+  "yourRights": "Jūsų teisės:",
+  "basicRights": "Pagrindinės teisės:",
+  "yourRightsAsTenant": "Jūsų teisės kaip nuomininko:",
+  "yourRightsInDetention": "Jūsų teisės sulaikymo metu:",
+  "howToAct": "Kaip elgtis:",
+  "rightKnowWhyStopped": "Žinoti, kodėl esate sustabdytas",
+  "rightRemainSilent": "Tylėti (privalote pasakyti savo tapatybę)",
+  "rightAskInterpreter": "Prašyti vertėjo",
+  "rightContactLawyer": "Susisiekti su advokatu prieš apklausą",
+  "rightRecordEncounter": "Įrašyti susitikimą (viešose vietose)",
+  "mustProvideName": "Nurodyti savo vardą ir gimimo datą",
+  "mustShowId": "Parodyti asmens dokumentą, jei turite",
+  "mustNotResist": "Fiziškai nesipriešinti",
+  "doNotIgnoreNotice": "NEIGNORUOKITE pranešimo — terminai yra griežti",
+  "noteAppealDeadline": "Pasižymėkite apeliacijos terminą (paprastai 30 dienų)",
+  "contactLawyerImmediately": "Nedelsdami susisiekite su advokatu",
+  "applyLegalAid": "Kreipkitės dėl teisinės pagalbos, jei reikia",
+  "rightAppealAdmin": "Teisė apskųsti Administraciniam teismui",
+  "rightLegalRep": "Teisė į teisinį atstovavimą",
+  "rightInterpreter": "Teisė į vertėją",
+  "rightStayDuringAppeal": "Teisė likti apeliacijos metu (daugeliu atvejų)",
+  "minimumWage": "Minimalus darbo užmokestis pagal kolektyvinę sutartį",
+  "workingTimeLimits": "Darbo laiko ribos (maks. 8 val./dieną, 40 val./savaitę)",
+  "annualLeave": "Kasmetinės atostogos (mažiausiai 2 dienos už kiekvieną dirbtą mėnesį)",
+  "sickLeave": "Ligos pašalpa",
+  "safeWorkingConditions": "Saugios darbo sąlygos",
+  "writtenRentalAgreement": "Būtina rašytinė nuomos sutartis",
+  "securityDeposit": "Užstatas — ne daugiau nei 3 mėnesių nuoma",
+  "landlordNotice": "Nuomotojas turi įspėti (3–6 mėnesiai)",
+  "rightHabitableDwelling": "Teisė į tinkamą gyventi būstą",
+  "protectionUnjustEviction": "Apsauga nuo nepagrįsto iškeldinimo",
+  "rightKnowDetentionReason": "Teisė žinoti sulaikymo priežastį",
+  "rightContactLawyerDetention": "Teisė susisiekti su advokatu",
+  "rightContactEmbassy": "Teisė susisiekti su savo ambasada",
+  "rightChallengeDetention": "Teisė ginčyti sulaikymą teisme",
+  "rightHumaneTreatment": "Teisė į humanišką elgesį ir medicininę priežiūrą",
+  "documentIncident": "Užfiksuokite incidentą (data, laikas, liudytojai)",
+  "fileComplaintOmbudsman": "Pateikite skundą Nediskriminavimo ombudsmenui",
+  "contactLegalAidOffice": "Susisiekite su teisinės pagalbos tarnyba",
+  "reportToPolice": "Praneškite policijai, jei tai nusikaltimas (grasinimas, užpuolimas)",
+  "legalAidCalculator": "Teisinės pagalbos skaičiuoklė",
+  "checkEligibility": "Patikrinkite savo teisę į Suomijos teisinę pagalbą",
+  "estimateDisclaimer": "Tai tik preliminarus įvertinimas. Tikrąją teisę nustato Teisinės pagalbos tarnyba.",
+  "monthlyIncome": "Mėnesinės pajamos (EUR)",
+  "totalAssets": "Bendras turtas (EUR)",
+  "numberOfDependents": "Išlaikytinių skaičius",
+  "calculateEligibility": "Apskaičiuoti teisę",
+  "likelyEligible": "Tikriausiai atitinkate",
+  "mayNotQualify": "Gali neatitikti",
+  "fullFreeLegalAid": "Tikriausiai atitinkate visiškai nemokamos teisinės pagalbos reikalavimus (be dalinio mokėjimo).",
+  "legalAidWithCopay": "Galite atitikti teisinės pagalbos reikalavimus su daliniu mokėjimu {percent}%.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mayNotQualifyDesc": "Pagal šį įvertinimą galite neatitikti valstybinės teisinės pagalbos reikalavimų. Apsvarstykite konsultaciją su privačiu advokatu arba teisine klinika.",
+  "couldNotLoadDeadlines": "Nepavyko įkelti terminų",
+  "noUpcomingDeadlines": "Nėra artėjančių terminų",
+  "allClearDeadlines": "Viskas gerai! Nauji terminai bus rodomi čia, kai bus nustatyti.",
+  "nothingOverdue": "Nieko nepavėluota",
+  "greatJobDeadlines": "Puikus darbas laikantis terminų.",
+  "noCompletedDeadlines": "Nėra užbaigtų terminų",
+  "completedDeadlinesDesc": "Užbaigti terminai bus rodomi čia.",
+  "daysLate": "dienų vėlavimas",
+  "days": "dienų",
+  "fromDocument": "Iš dokumento",
+  "couldNotLoadCase": "Nepavyko įkelti bylos detalių",
+  "typeLabel": "Tipas",
+  "nationality": "Tautybė",
+  "migriReference": "Migri nuoroda",
+  "courtCaseNo": "Teismo bylos Nr.",
+  "created": "Sukurta",
+  "citizenship": "Pilietybė",
+  "workPermit": "Darbo leidimas",
+  "noDocumentsYet": "Dar nėra įkeltų dokumentų",
+  "noUpcomingDeadlinesShort": "Nėra artėjančių terminų",
+  "caseCreated": "Byla sukurta",
+  "decisionReceived": "Sprendimas gautas",
+  "appealDeadline": "Apeliacijos terminas",
+  "hearingScheduled": "Teismo posėdis suplanuotas",
+  "late": "vėluojama",
+  "pending": "Laukiama",
+  "processing": "Apdorojama",
+  "ready": "Paruošta",
+  "failed": "Nepavyko",
+  "analyzed": "Išanalizuota",
+  "noDocumentsScanHint": "Dar nėra dokumentų. Nuskaitykite arba įkelkite.",
+  "inCourt": "Teisme",
+  "appeal": "Apeliacija",
+  "caseTimeline": "Bylos laiko juosta",
+  "couldNotLoadTimeline": "Nepavyko įkelti laiko juostos",
+  "noEventsYet": "Dar nėra įvykių",
+  "activityWillAppear": "Veikla bus rodoma čia, bylai progresuojant.",
+  "caseCreatedDesc": "Byla \"{title}\" buvo sukurta.",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "decisionReceivedDesc": "Gautas oficialus sprendimas šiai bylai.",
+  "appealDeadlineSet": "Apeliacijos terminas nustatytas",
+  "appealDeadlineDesc": "Apeliacija turi būti pateikta iki {date}.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hearingScheduledDesc": "Teismo posėdis suplanuotas {date}.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "caseInfoUpdated": "Bylos informacija paskutinį kartą atnaujinta.",
+  "documentAnalysis": "Dokumento analizė",
+  "exportAsPdf": "Eksportuoti kaip PDF",
+  "pdfExportComingSoon": "PDF eksportas netrukus",
+  "analysisFailedRetry": "Analizė nepavyko. Bandykite dar kartą.",
+  "somethingWentWrong": "Kažkas nutiko ne taip",
+  "retryAnalysis": "Pakartoti analizę",
+  "issuesFoundInDocument": "Jūsų dokumente rasta {count} problema(-ų)",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "Rimtumo apžvalga",
+  "issuesFoundHeader": "Rastos problemos",
+  "generateAppealWithIssues": "Generuoti apeliaciją ({count} problemų)",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "analyzingContent": "Analizuojamas turinys...",
+  "documentProcessedOk": "Dokumentas sėkmingai apdorotas",
+  "noSignificantIssues": "Šiame dokumente reikšmingų problemų nerasta.",
+  "cameraPermissionRequired": "Reikalingas kameros leidimas",
+  "cameraPermissionDesc": "Suteikite prieigą prie kameros, kad galėtumėte nuskaityti dokumentus, arba naudokite galeriją.",
+  "openSettings": "Atidaryti nustatymus",
+  "alignDocument": "Sulygiuokite dokumentą rėmelyje",
+  "pageCount": "{count} puslapis(-iai)",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "preview": "Peržiūra",
+  "pageNumber": "{number} puslapis",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "done": "Atlikta",
+  "retake": "Fotografuoti iš naujo",
+  "useThisPhoto": "Naudoti šią nuotrauką",
+  "addPage": "Pridėti puslapį",
+  "uploadingPercent": "Įkeliama... {percent}%",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "preparingUpload": "Ruošiamas įkėlimas...",
+  "documentUploadedSuccess": "Dokumentas sėkmingai įkeltas",
+  "pagesUploadedSuccess": "{count} puslapiai sėkmingai įkelti",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadFailed": "Įkėlimas nepavyko. Patikrinkite ryšį ir bandykite dar kartą.",
+  "capturePhotoFailed": "Nepavyko nufotografuoti. Bandykite dar kartą.",
+  "readingText": "Skaitomas tekstas...",
+  "draftDocument": "Dokumento projektas",
+  "saveChanges": "Išsaugoti pakeitimus",
+  "editDocument": "Redaguoti dokumentą",
+  "generatingDraft": "Generuojamas jūsų projektas...",
+  "generatingDraftDesc": "AI rengia teisinį dokumentą pagal jūsų bylos duomenis ir pasirinktas problemas.",
+  "failedToGenerateDraft": "Nepavyko sugeneruoti projekto. Bandykite dar kartą.",
+  "changesSaved": "Pakeitimai išsaugoti",
+  "copiedToClipboard": "Nukopijuota į iškarpinę",
+  "emailComingSoon": "El. laiškų siuntimas netrukus",
+  "reviewBeforeSending": "Atidžiai peržiūrėkite prieš siųsdami. Jūs esate atsakingas už šio dokumento turinį.",
+  "noContentAvailable": "Turinio nėra",
+  "save": "Išsaugoti",
+  "edit": "Redaguoti",
+  "pdf": "PDF",
+  "copy": "Kopijuoti",
+  "appealDraft": "Apeliacijos projektas",
+  "selected": "{count} pasirinkta",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "Ištrinti pasirinktus",
+  "deleteDocumentsConfirm": "Ištrinti {count} dokumentą(-us)?",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delete": "Ištrinti",
+  "analyzeSelected": "Analizuoti pasirinktus",
+  "batchAnalysisStarting": "Pradedama paketinė analizė...",
+  "switchToList": "Perjungti į sąrašą",
+  "switchToGrid": "Perjungti į tinklelį",
+  "scanNew": "Nuskaityti naują",
+  "noDocumentsYetScan": "Dar nėra dokumentų",
+  "scanFirstDocumentHint": "Nuskaitykite pirmą dokumentą, kad AI jį išanalizuotų klaidų paieškai ir apeliacijų generavimui.",
+  "failedToLoadDocuments": "Nepavyko įkelti dokumentų"
 }

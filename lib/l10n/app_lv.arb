@@ -304,5 +304,268 @@
   "vinNumber": "VIN numurs",
   "welcomeBack": "Laipni lūdzam atpakaļ",
   "whatAreMyOptions": "Kādas ir manas iespējas?",
-  "won": "Uzvarēts"
+  "won": "Uzvarēts",
+  "documentVault": "Dokumentu glabātuve",
+  "secureDocumentStorage": "Droša dokumentu glabāšana",
+  "secureDocumentStorageDesc": "Droši glabājiet savus svarīgos juridiskos dokumentus. Visi faili ir pilnībā šifrēti.",
+  "addDocument": "Pievienot dokumentu",
+  "chooseHowToAdd": "Izvēlieties, kā pievienot dokumentu",
+  "uploadFile": "Augšupielādēt failu",
+  "uploadFileDesc": "Izvēlieties PDF vai attēlu no savas ierīces",
+  "scanDocumentDesc": "Nofotografējiet savu dokumentu",
+  "createNote": "Izveidot piezīmi",
+  "createNoteDesc": "Uzrakstiet piezīmi vai pierakstiet svarīgas detaļas",
+  "knowYourRights": "Zini savas tiesības",
+  "stoppedByPolice": "Apturēts policija",
+  "stoppedByPoliceDesc": "Jūsu tiesības policijas kontroles laikā",
+  "deportationNotice": "Deportācijas paziņojums",
+  "deportationNoticeDesc": "Soļi, lai apstrīdētu izraidīšanas rīkojumu",
+  "workplaceRights": "Darba tiesības",
+  "workplaceRightsDesc": "Darba tiesību aizsardzība Somijā",
+  "tenantRightsDesc": "Mājokļa un īres aizsardzība",
+  "immigrationDetention": "Imigrācijas aizturēšana",
+  "immigrationDetentionDesc": "Jūsu tiesības, ja esat aizturēts",
+  "discriminationDesc": "Kā ziņot par diskrimināciju un cīnīties pret to",
+  "scenarioNotFound": "Scenārijs nav atrasts",
+  "youHaveRightTo": "Jums ir tiesības:",
+  "youMust": "Jums jā:",
+  "immediateSteps": "Tūlītēji soļi:",
+  "yourRights": "Jūsu tiesības:",
+  "basicRights": "Pamattiesības:",
+  "yourRightsAsTenant": "Jūsu tiesības kā īrniekam:",
+  "yourRightsInDetention": "Jūsu tiesības aizturēšanas laikā:",
+  "howToAct": "Kā rīkoties:",
+  "rightKnowWhyStopped": "Zināt, kāpēc esat apturēts",
+  "rightRemainSilent": "Klusēt (jums jāidentificē sevi)",
+  "rightAskInterpreter": "Lūgt tulku",
+  "rightContactLawyer": "Sazināties ar advokātu pirms nopratināšanas",
+  "rightRecordEncounter": "Ierakstīt notikumu (publiskās vietās)",
+  "mustProvideName": "Norādīt savu vārdu un dzimšanas datumu",
+  "mustShowId": "Uzrādīt personas apliecību, ja tāda ir",
+  "mustNotResist": "Fiziski nepretoties",
+  "doNotIgnoreNotice": "NEIGNORĒJIET paziņojumu — termiņi ir strikti",
+  "noteAppealDeadline": "Atzīmējiet apelācijas termiņu (parasti 30 dienas)",
+  "contactLawyerImmediately": "Nekavējoties sazinieties ar advokātu",
+  "applyLegalAid": "Pieteikties juridiskajai palīdzībai, ja nepieciešams",
+  "rightAppealAdmin": "Tiesības pārsūdzēt Administratīvajā tiesā",
+  "rightLegalRep": "Tiesības uz juridisko pārstāvību",
+  "rightInterpreter": "Tiesības uz tulku",
+  "rightStayDuringAppeal": "Tiesības palikt apelācijas laikā (vairumā gadījumu)",
+  "minimumWage": "Minimālā alga saskaņā ar koplīgumu",
+  "workingTimeLimits": "Darba laika ierobežojumi (maks. 8 st./dienā, 40 st./nedēļā)",
+  "annualLeave": "Ikgadējais atvaļinājums (vismaz 2 dienas par katru nostrādāto mēnesi)",
+  "sickLeave": "Slimības pabalsts",
+  "safeWorkingConditions": "Droši darba apstākļi",
+  "writtenRentalAgreement": "Nepieciešams rakstisks īres līgums",
+  "securityDeposit": "Drošības nauda — maks. 3 mēnešu īre",
+  "landlordNotice": "Izīrētājam jābrīdina (3–6 mēneši)",
+  "rightHabitableDwelling": "Tiesības uz apdzīvojamu mājokli",
+  "protectionUnjustEviction": "Aizsardzība pret nepamatotu izlikšanu",
+  "rightKnowDetentionReason": "Tiesības zināt aizturēšanas iemeslu",
+  "rightContactLawyerDetention": "Tiesības sazināties ar advokātu",
+  "rightContactEmbassy": "Tiesības sazināties ar savu vēstniecību",
+  "rightChallengeDetention": "Tiesības apstrīdēt aizturēšanu tiesā",
+  "rightHumaneTreatment": "Tiesības uz humānu izturēšanos un medicīnisko aprūpi",
+  "documentIncident": "Dokumentējiet incidentu (datums, laiks, liecinieki)",
+  "fileComplaintOmbudsman": "Iesniedziet sūdzību Nediskriminācijas ombudam",
+  "contactLegalAidOffice": "Sazinieties ar juridiskās palīdzības biroju",
+  "reportToPolice": "Ziņojiet policijai, ja tas ir krimināli (draudi, uzbrukums)",
+  "legalAidCalculator": "Juridiskās palīdzības kalkulators",
+  "checkEligibility": "Pārbaudiet savu tiesību uz Somijas juridisko palīdzību",
+  "estimateDisclaimer": "Šis ir tikai novērtējums. Faktisko tiesību nosaka Juridiskās palīdzības birojs.",
+  "monthlyIncome": "Ikmēneša ienākumi (EUR)",
+  "totalAssets": "Kopējie aktīvi (EUR)",
+  "numberOfDependents": "Apgādājamo skaits",
+  "calculateEligibility": "Aprēķināt tiesības",
+  "likelyEligible": "Visticamāk atbilstošs",
+  "mayNotQualify": "Iespējams, neatbilst",
+  "fullFreeLegalAid": "Jūs, visticamāk, atbilstat pilnīgi bezmaksas juridiskajai palīdzībai (bez līdzmaksājuma).",
+  "legalAidWithCopay": "Jūs, iespējams, atbilstat juridiskajai palīdzībai ar līdzmaksājumu {percent}%.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "mayNotQualifyDesc": "Saskaņā ar šo novērtējumu jūs, iespējams, neatbilstat valsts juridiskajai palīdzībai. Apsveriet konsultāciju ar privātu advokātu vai juridisko klīniku.",
+  "couldNotLoadDeadlines": "Nevarēja ielādēt termiņus",
+  "noUpcomingDeadlines": "Nav gaidāmu termiņu",
+  "allClearDeadlines": "Viss kārtībā! Jauni termiņi parādīsies šeit, kad tie tiks noteikti.",
+  "nothingOverdue": "Nekas nav kavēts",
+  "greatJobDeadlines": "Lielisks darbs, sekojot saviem termiņiem.",
+  "noCompletedDeadlines": "Nav pabeigtu termiņu",
+  "completedDeadlinesDesc": "Pabeigti termiņi tiks parādīti šeit.",
+  "daysLate": "dienas kavēts",
+  "days": "dienas",
+  "fromDocument": "No dokumenta",
+  "couldNotLoadCase": "Nevarēja ielādēt lietas detaļas",
+  "typeLabel": "Veids",
+  "nationality": "Tautība",
+  "migriReference": "Migri atsauce",
+  "courtCaseNo": "Tiesas lietas Nr.",
+  "created": "Izveidots",
+  "citizenship": "Pilsonība",
+  "workPermit": "Darba atļauja",
+  "noDocumentsYet": "Vēl nav augšupielādētu dokumentu",
+  "noUpcomingDeadlinesShort": "Nav gaidāmu termiņu",
+  "caseCreated": "Lieta izveidota",
+  "decisionReceived": "Lēmums saņemts",
+  "appealDeadline": "Apelācijas termiņš",
+  "hearingScheduled": "Tiesas sēde ieplānota",
+  "late": "kavēts",
+  "pending": "Gaida",
+  "processing": "Apstrādā",
+  "ready": "Gatavs",
+  "failed": "Neizdevās",
+  "analyzed": "Analizēts",
+  "noDocumentsScanHint": "Vēl nav dokumentu. Skenējiet vai augšupielādējiet.",
+  "inCourt": "Tiesā",
+  "appeal": "Apelācija",
+  "caseTimeline": "Lietas laika līnija",
+  "couldNotLoadTimeline": "Nevarēja ielādēt laika līniju",
+  "noEventsYet": "Vēl nav notikumu",
+  "activityWillAppear": "Darbība parādīsies šeit, lietai progresējot.",
+  "caseCreatedDesc": "Lieta \"{title}\" tika izveidota.",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "decisionReceivedDesc": "Šai lietai saņemts oficiāls lēmums.",
+  "appealDeadlineSet": "Apelācijas termiņš noteikts",
+  "appealDeadlineDesc": "Apelācija jāiesniedz līdz {date}.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "hearingScheduledDesc": "Tiesas sēde ieplānota {date}.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "caseInfoUpdated": "Lietas informācija pēdējo reizi atjaunināta.",
+  "documentAnalysis": "Dokumenta analīze",
+  "exportAsPdf": "Eksportēt kā PDF",
+  "pdfExportComingSoon": "PDF eksports drīzumā",
+  "analysisFailedRetry": "Analīze neizdevās. Lūdzu, mēģiniet vēlreiz.",
+  "somethingWentWrong": "Kaut kas nogāja greizi",
+  "retryAnalysis": "Atkārtot analīzi",
+  "issuesFoundInDocument": "Jūsu dokumentā atrastas {count} problēma(s)",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "Nopietnības pārskats",
+  "issuesFoundHeader": "Atrastās problēmas",
+  "generateAppealWithIssues": "Ģenerēt apelāciju ({count} problēmas)",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "analyzingContent": "Analizē saturu...",
+  "documentProcessedOk": "Dokuments veiksmīgi apstrādāts",
+  "noSignificantIssues": "Šajā dokumentā netika konstatētas būtiskas problēmas.",
+  "cameraPermissionRequired": "Nepieciešama kameras atļauja",
+  "cameraPermissionDesc": "Piešķiriet kameras piekļuvi, lai skenētu dokumentus, vai izmantojiet galeriju.",
+  "openSettings": "Atvērt iestatījumus",
+  "alignDocument": "Novietojiet dokumentu rāmī",
+  "pageCount": "{count} lapa(s)",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "preview": "Priekšskatījums",
+  "pageNumber": "{number}. lapa",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "done": "Gatavs",
+  "retake": "Uzņemt vēlreiz",
+  "useThisPhoto": "Izmantot šo fotoattēlu",
+  "addPage": "Pievienot lapu",
+  "uploadingPercent": "Augšupielādē... {percent}%",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "preparingUpload": "Gatavo augšupielādi...",
+  "documentUploadedSuccess": "Dokuments veiksmīgi augšupielādēts",
+  "pagesUploadedSuccess": "{count} lapas veiksmīgi augšupielādētas",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "uploadFailed": "Augšupielāde neizdevās. Lūdzu, pārbaudiet savienojumu un mēģiniet vēlreiz.",
+  "capturePhotoFailed": "Neizdevās uzņemt fotoattēlu. Lūdzu, mēģiniet vēlreiz.",
+  "readingText": "Lasa tekstu...",
+  "draftDocument": "Dokumenta projekts",
+  "saveChanges": "Saglabāt izmaiņas",
+  "editDocument": "Rediģēt dokumentu",
+  "generatingDraft": "Ģenerē jūsu projektu...",
+  "generatingDraftDesc": "AI gatavo juridisku dokumentu, pamatojoties uz jūsu lietas datiem un atlasītajām problēmām.",
+  "failedToGenerateDraft": "Neizdevās ģenerēt projektu. Lūdzu, mēģiniet vēlreiz.",
+  "changesSaved": "Izmaiņas saglabātas",
+  "copiedToClipboard": "Nokopēts starpliktuvē",
+  "emailComingSoon": "E-pasta sūtīšana drīzumā",
+  "reviewBeforeSending": "Rūpīgi pārskatiet pirms nosūtīšanas. Jūs esat atbildīgs par šī dokumenta saturu.",
+  "noContentAvailable": "Saturs nav pieejams",
+  "save": "Saglabāt",
+  "edit": "Rediģēt",
+  "pdf": "PDF",
+  "copy": "Kopēt",
+  "appealDraft": "Apelācijas projekts",
+  "selected": "{count} atlasīts",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "Dzēst atlasītos",
+  "deleteDocumentsConfirm": "Dzēst {count} dokumentu(s)?",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "delete": "Dzēst",
+  "analyzeSelected": "Analizēt atlasītos",
+  "batchAnalysisStarting": "Sākas pakešu analīze...",
+  "switchToList": "Pārslēgt uz sarakstu",
+  "switchToGrid": "Pārslēgt uz režģi",
+  "scanNew": "Skenēt jaunu",
+  "noDocumentsYetScan": "Vēl nav dokumentu",
+  "scanFirstDocumentHint": "Noskenējiet savu pirmo dokumentu, lai AI to analizētu kļūdu meklēšanai un apelāciju ģenerēšanai.",
+  "failedToLoadDocuments": "Neizdevās ielādēt dokumentus"
 }

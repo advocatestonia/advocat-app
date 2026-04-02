@@ -761,584 +761,585 @@ class AppLocalizationsFa extends AppLocalizations {
   String get won => 'برنده';
 
   @override
-  String get documentVault => 'Document Vault';
+  String get documentVault => 'صندوق اسناد';
 
   @override
-  String get secureDocumentStorage => 'Secure Document Storage';
+  String get secureDocumentStorage => 'ذخیره‌سازی امن اسناد';
 
   @override
   String get secureDocumentStorageDesc =>
-      'Store your important legal documents securely. All files are encrypted end-to-end.';
+      'اسناد حقوقی مهم خود را به صورت امن ذخیره کنید. تمام فایل‌ها به صورت سرتاسری رمزنگاری شده‌اند.';
 
   @override
-  String get addDocument => 'Add Document';
+  String get addDocument => 'افزودن سند';
 
   @override
-  String get chooseHowToAdd => 'Choose how to add your document';
+  String get chooseHowToAdd => 'نحوه افزودن سند خود را انتخاب کنید';
 
   @override
-  String get uploadFile => 'Upload File';
+  String get uploadFile => 'بارگذاری فایل';
 
   @override
-  String get uploadFileDesc => 'Choose a PDF or image from your device';
+  String get uploadFileDesc => 'یک فایل PDF یا تصویر از دستگاه خود انتخاب کنید';
 
   @override
-  String get scanDocumentDesc => 'Take a photo of your document';
+  String get scanDocumentDesc => 'از سند خود عکس بگیرید';
 
   @override
-  String get createNote => 'Create Note';
+  String get createNote => 'ایجاد یادداشت';
 
   @override
-  String get createNoteDesc => 'Write a note or record important details';
+  String get createNoteDesc => 'یادداشتی بنویسید یا جزئیات مهم را ثبت کنید';
 
   @override
-  String get knowYourRights => 'Know Your Rights';
+  String get knowYourRights => 'حقوق خود را بشناسید';
 
   @override
-  String get stoppedByPolice => 'Stopped by Police';
+  String get stoppedByPolice => 'توقف توسط پلیس';
 
   @override
-  String get stoppedByPoliceDesc => 'Your rights during a police encounter';
+  String get stoppedByPoliceDesc => 'حقوق شما در هنگام مواجهه با پلیس';
 
   @override
-  String get deportationNotice => 'Deportation Notice';
+  String get deportationNotice => 'اخطار اخراج';
 
   @override
-  String get deportationNoticeDesc => 'Steps to challenge a removal order';
+  String get deportationNoticeDesc => 'مراحل اعتراض به حکم اخراج';
 
   @override
-  String get workplaceRights => 'Workplace Rights';
+  String get workplaceRights => 'حقوق محل کار';
 
   @override
-  String get workplaceRightsDesc => 'Employment law protections in Finland';
+  String get workplaceRightsDesc => 'حمایت‌های قانون کار در فنلاند';
 
   @override
-  String get tenantRightsDesc => 'Housing and rental protections';
+  String get tenantRightsDesc => 'حمایت‌های مسکن و اجاره';
 
   @override
-  String get immigrationDetention => 'Immigration Detention';
+  String get immigrationDetention => 'بازداشت مهاجرتی';
 
   @override
-  String get immigrationDetentionDesc => 'Rights if detained by authorities';
+  String get immigrationDetentionDesc => 'حقوق شما در صورت بازداشت توسط مقامات';
 
   @override
-  String get discriminationDesc => 'How to report and fight discrimination';
+  String get discriminationDesc => 'نحوه گزارش و مبارزه با تبعیض';
 
   @override
-  String get scenarioNotFound => 'Scenario not found';
+  String get scenarioNotFound => 'سناریو یافت نشد';
 
   @override
-  String get youHaveRightTo => 'You have the right to:';
+  String get youHaveRightTo => 'شما حق دارید:';
 
   @override
-  String get youMust => 'You must:';
+  String get youMust => 'شما باید:';
 
   @override
-  String get immediateSteps => 'Immediate steps:';
+  String get immediateSteps => 'اقدامات فوری:';
 
   @override
-  String get yourRights => 'Your rights:';
+  String get yourRights => 'حقوق شما:';
 
   @override
-  String get basicRights => 'Basic rights:';
+  String get basicRights => 'حقوق اساسی:';
 
   @override
-  String get yourRightsAsTenant => 'Your rights as a tenant:';
+  String get yourRightsAsTenant => 'حقوق شما به عنوان مستأجر:';
 
   @override
-  String get yourRightsInDetention => 'Your rights in detention:';
+  String get yourRightsInDetention => 'حقوق شما در بازداشت:';
 
   @override
-  String get howToAct => 'How to act:';
+  String get howToAct => 'نحوه عمل:';
 
   @override
-  String get rightKnowWhyStopped => 'Know why you are being stopped';
+  String get rightKnowWhyStopped => 'دانستن دلیل توقف';
 
   @override
-  String get rightRemainSilent => 'Remain silent (you must identify yourself)';
+  String get rightRemainSilent => 'سکوت کردن (باید هویت خود را اعلام کنید)';
 
   @override
-  String get rightAskInterpreter => 'Ask for an interpreter';
+  String get rightAskInterpreter => 'درخواست مترجم';
 
   @override
-  String get rightContactLawyer => 'Contact a lawyer before questioning';
+  String get rightContactLawyer => 'تماس با وکیل قبل از بازجویی';
 
   @override
-  String get rightRecordEncounter => 'Record the encounter (in public places)';
+  String get rightRecordEncounter => 'ضبط مواجهه (در اماکن عمومی)';
 
   @override
-  String get mustProvideName => 'Provide your name and date of birth';
+  String get mustProvideName => 'ارائه نام و تاریخ تولد';
 
   @override
-  String get mustShowId => 'Show ID if you have one';
+  String get mustShowId => 'نشان دادن کارت شناسایی در صورت داشتن';
 
   @override
-  String get mustNotResist => 'Not physically resist';
+  String get mustNotResist => 'مقاومت فیزیکی نکردن';
 
   @override
   String get doNotIgnoreNotice =>
-      'Do NOT ignore the notice - deadlines are strict';
+      'اخطار را نادیده نگیرید - مهلت‌ها سختگیرانه هستند';
 
   @override
-  String get noteAppealDeadline => 'Note the appeal deadline (usually 30 days)';
+  String get noteAppealDeadline =>
+      'مهلت تجدیدنظر را یادداشت کنید (معمولاً ۳۰ روز)';
 
   @override
-  String get contactLawyerImmediately => 'Contact a lawyer immediately';
+  String get contactLawyerImmediately => 'فوراً با وکیل تماس بگیرید';
 
   @override
-  String get applyLegalAid => 'Apply for legal aid if needed';
+  String get applyLegalAid => 'در صورت نیاز درخواست کمک حقوقی دهید';
 
   @override
-  String get rightAppealAdmin => 'Right to appeal to the Administrative Court';
+  String get rightAppealAdmin => 'حق تجدیدنظر در دادگاه اداری';
 
   @override
-  String get rightLegalRep => 'Right to legal representation';
+  String get rightLegalRep => 'حق داشتن نماینده حقوقی';
 
   @override
-  String get rightInterpreter => 'Right to an interpreter';
+  String get rightInterpreter => 'حق داشتن مترجم';
 
   @override
   String get rightStayDuringAppeal =>
-      'Right to stay during appeal (in most cases)';
+      'حق ماندن در طول تجدیدنظر (در اکثر موارد)';
 
   @override
-  String get minimumWage => 'Minimum wage as per collective agreement';
+  String get minimumWage => 'حداقل دستمزد طبق قرارداد جمعی';
 
   @override
-  String get workingTimeLimits => 'Working time limits (max 8h/day, 40h/week)';
+  String get workingTimeLimits =>
+      'محدودیت ساعت کار (حداکثر ۸ ساعت/روز، ۴۰ ساعت/هفته)';
 
   @override
-  String get annualLeave => 'Annual leave (minimum 2 days per month worked)';
+  String get annualLeave => 'مرخصی سالانه (حداقل ۲ روز به ازای هر ماه کار)';
 
   @override
-  String get sickLeave => 'Sick leave compensation';
+  String get sickLeave => 'غرامت مرخصی استعلاجی';
 
   @override
-  String get safeWorkingConditions => 'Safe working conditions';
+  String get safeWorkingConditions => 'شرایط کاری ایمن';
 
   @override
-  String get writtenRentalAgreement => 'Written rental agreement required';
+  String get writtenRentalAgreement => 'قرارداد اجاره کتبی الزامی است';
 
   @override
-  String get securityDeposit => 'Security deposit max 3 months rent';
+  String get securityDeposit => 'ودیعه حداکثر ۳ ماه اجاره';
 
   @override
-  String get landlordNotice => 'Landlord must give notice (3-6 months)';
+  String get landlordNotice => 'موجر باید اخطار دهد (۳ تا ۶ ماه)';
 
   @override
-  String get rightHabitableDwelling => 'Right to a habitable dwelling';
+  String get rightHabitableDwelling => 'حق داشتن مسکن مناسب';
 
   @override
-  String get protectionUnjustEviction => 'Protection from unjust eviction';
+  String get protectionUnjustEviction => 'حمایت در برابر تخلیه ناعادلانه';
 
   @override
-  String get rightKnowDetentionReason =>
-      'Right to know the reason for detention';
+  String get rightKnowDetentionReason => 'حق دانستن دلیل بازداشت';
 
   @override
-  String get rightContactLawyerDetention => 'Right to contact a lawyer';
+  String get rightContactLawyerDetention => 'حق تماس با وکیل';
 
   @override
-  String get rightContactEmbassy => 'Right to contact your embassy';
+  String get rightContactEmbassy => 'حق تماس با سفارت خود';
 
   @override
-  String get rightChallengeDetention => 'Right to challenge detention in court';
+  String get rightChallengeDetention => 'حق اعتراض به بازداشت در دادگاه';
 
   @override
-  String get rightHumaneTreatment =>
-      'Right to humane treatment and medical care';
+  String get rightHumaneTreatment => 'حق برخورد انسانی و مراقبت پزشکی';
 
   @override
-  String get documentIncident =>
-      'Document the incident (date, time, witnesses)';
+  String get documentIncident => 'حادثه را مستند کنید (تاریخ، زمان، شاهدان)';
 
   @override
   String get fileComplaintOmbudsman =>
-      'File a complaint with the Non-Discrimination Ombudsman';
+      'شکایت نزد آمبودزمان عدم تبعیض تسلیم کنید';
 
   @override
-  String get contactLegalAidOffice => 'Contact a legal aid office';
+  String get contactLegalAidOffice => 'با دفتر کمک حقوقی تماس بگیرید';
 
   @override
-  String get reportToPolice => 'Report to police if criminal (threat, assault)';
+  String get reportToPolice =>
+      'در صورت جنایی بودن به پلیس گزارش دهید (تهدید، حمله)';
 
   @override
-  String get legalAidCalculator => 'Legal Aid Calculator';
+  String get legalAidCalculator => 'محاسبه‌گر کمک حقوقی';
 
   @override
-  String get checkEligibility => 'Check your eligibility for Finnish legal aid';
+  String get checkEligibility =>
+      'واجد شرایط بودن خود برای کمک حقوقی فنلاند را بررسی کنید';
 
   @override
   String get estimateDisclaimer =>
-      'This is an estimate only. Actual eligibility is determined by the Legal Aid Office.';
+      'این فقط یک تخمین است. واجد شرایط بودن واقعی توسط دفتر کمک حقوقی تعیین می‌شود.';
 
   @override
-  String get monthlyIncome => 'Monthly income (EUR)';
+  String get monthlyIncome => 'درآمد ماهانه (یورو)';
 
   @override
-  String get totalAssets => 'Total assets (EUR)';
+  String get totalAssets => 'کل دارایی‌ها (یورو)';
 
   @override
-  String get numberOfDependents => 'Number of dependents';
+  String get numberOfDependents => 'تعداد افراد تحت تکفل';
 
   @override
-  String get calculateEligibility => 'Calculate Eligibility';
+  String get calculateEligibility => 'محاسبه واجد شرایط بودن';
 
   @override
-  String get likelyEligible => 'Likely Eligible';
+  String get likelyEligible => 'احتمالاً واجد شرایط';
 
   @override
-  String get mayNotQualify => 'May Not Qualify';
+  String get mayNotQualify => 'ممکن است واجد شرایط نباشید';
 
   @override
   String get fullFreeLegalAid =>
-      'You likely qualify for full free legal aid (no co-payment).';
+      'شما احتمالاً واجد شرایط کمک حقوقی رایگان کامل هستید (بدون پرداخت سهم).';
 
   @override
   String legalAidWithCopay(String percent) {
-    return 'You may qualify for legal aid with a co-payment of $percent%.';
+    return 'ممکن است واجد شرایط کمک حقوقی با پرداخت سهم $percent% باشید.';
   }
 
   @override
   String get mayNotQualifyDesc =>
-      'Based on this estimate, you may not qualify for state legal aid. Consider consulting a private lawyer or legal clinic.';
+      'بر اساس این تخمین، ممکن است واجد شرایط کمک حقوقی دولتی نباشید. با یک وکیل خصوصی یا کلینیک حقوقی مشورت کنید.';
 
   @override
-  String get couldNotLoadDeadlines => 'Could not load deadlines';
+  String get couldNotLoadDeadlines => 'بارگذاری مهلت‌ها ممکن نشد';
 
   @override
-  String get noUpcomingDeadlines => 'No upcoming deadlines';
+  String get noUpcomingDeadlines => 'مهلت آینده‌ای نیست';
 
   @override
   String get allClearDeadlines =>
-      'You are all clear! New deadlines will appear here when they are set.';
+      'همه چیز مرتب است! مهلت‌های جدید در اینجا نمایش داده می‌شوند.';
 
   @override
-  String get nothingOverdue => 'Nothing overdue';
+  String get nothingOverdue => 'چیزی عقب نیفتاده';
 
   @override
-  String get greatJobDeadlines => 'Great job staying on top of your deadlines.';
+  String get greatJobDeadlines => 'کار عالی در پیگیری مهلت‌هایتان.';
 
   @override
-  String get noCompletedDeadlines => 'No completed deadlines';
+  String get noCompletedDeadlines => 'مهلت تکمیل شده‌ای نیست';
 
   @override
   String get completedDeadlinesDesc =>
-      'Deadlines you complete will be shown here.';
+      'مهلت‌هایی که تکمیل می‌کنید در اینجا نمایش داده می‌شوند.';
 
   @override
-  String get daysLate => 'days late';
+  String get daysLate => 'روز تأخیر';
 
   @override
-  String get days => 'days';
+  String get days => 'روز';
 
   @override
-  String get fromDocument => 'From document';
+  String get fromDocument => 'از سند';
 
   @override
-  String get couldNotLoadCase => 'Could not load case details';
+  String get couldNotLoadCase => 'بارگذاری جزئیات پرونده ممکن نشد';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'نوع';
 
   @override
-  String get nationality => 'Nationality';
+  String get nationality => 'ملیت';
 
   @override
-  String get migriReference => 'Migri Reference';
+  String get migriReference => 'شماره مرجع Migri';
 
   @override
-  String get courtCaseNo => 'Court Case No.';
+  String get courtCaseNo => 'شماره پرونده دادگاه';
 
   @override
-  String get created => 'Created';
+  String get created => 'ایجاد شده';
 
   @override
-  String get citizenship => 'Citizenship';
+  String get citizenship => 'تابعیت';
 
   @override
-  String get workPermit => 'Work Permit';
+  String get workPermit => 'مجوز کار';
 
   @override
-  String get noDocumentsYet => 'No documents uploaded yet';
+  String get noDocumentsYet => 'هنوز سندی بارگذاری نشده';
 
   @override
-  String get noUpcomingDeadlinesShort => 'No upcoming deadlines';
+  String get noUpcomingDeadlinesShort => 'مهلت آینده‌ای نیست';
 
   @override
-  String get caseCreated => 'Case created';
+  String get caseCreated => 'پرونده ایجاد شد';
 
   @override
-  String get decisionReceived => 'Decision received';
+  String get decisionReceived => 'تصمیم دریافت شد';
 
   @override
-  String get appealDeadline => 'Appeal deadline';
+  String get appealDeadline => 'مهلت تجدیدنظر';
 
   @override
-  String get hearingScheduled => 'Hearing scheduled';
+  String get hearingScheduled => 'جلسه دادرسی تعیین شد';
 
   @override
-  String get late => 'late';
+  String get late => 'دیرکرد';
 
   @override
-  String get pending => 'Pending';
+  String get pending => 'در انتظار';
 
   @override
-  String get processing => 'Processing';
+  String get processing => 'در حال پردازش';
 
   @override
-  String get ready => 'Ready';
+  String get ready => 'آماده';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'ناموفق';
 
   @override
-  String get analyzed => 'Analyzed';
+  String get analyzed => 'تحلیل شده';
 
   @override
-  String get noDocumentsScanHint => 'No documents yet. Scan or upload one.';
+  String get noDocumentsScanHint =>
+      'هنوز سندی نیست. اسکن کنید یا بارگذاری کنید.';
 
   @override
-  String get inCourt => 'In Court';
+  String get inCourt => 'در دادگاه';
 
   @override
-  String get appeal => 'Appeal';
+  String get appeal => 'تجدیدنظر';
 
   @override
-  String get caseTimeline => 'Case Timeline';
+  String get caseTimeline => 'جدول زمانی پرونده';
 
   @override
-  String get couldNotLoadTimeline => 'Could not load timeline';
+  String get couldNotLoadTimeline => 'بارگذاری جدول زمانی ممکن نشد';
 
   @override
-  String get noEventsYet => 'No events yet';
+  String get noEventsYet => 'هنوز رویدادی نیست';
 
   @override
   String get activityWillAppear =>
-      'Activity will appear here as your case progresses.';
+      'فعالیت‌ها با پیشرفت پرونده شما در اینجا نمایش داده می‌شوند.';
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Case \"$title\" was created.';
+    return 'پرونده \"$title\" ایجاد شد.';
   }
 
   @override
-  String get decisionReceivedDesc =>
-      'An official decision was received for this case.';
+  String get decisionReceivedDesc => 'یک تصمیم رسمی برای این پرونده دریافت شد.';
 
   @override
-  String get appealDeadlineSet => 'Appeal deadline set';
+  String get appealDeadlineSet => 'مهلت تجدیدنظر تعیین شد';
 
   @override
   String appealDeadlineDesc(String date) {
-    return 'Appeal must be filed by $date.';
+    return 'تجدیدنظر باید تا $date تسلیم شود.';
   }
 
   @override
   String hearingScheduledDesc(String date) {
-    return 'Court hearing scheduled for $date.';
+    return 'جلسه دادگاه برای $date تعیین شده است.';
   }
 
   @override
-  String get caseInfoUpdated => 'Case information was last updated.';
+  String get caseInfoUpdated => 'اطلاعات پرونده آخرین بار به‌روزرسانی شد.';
 
   @override
-  String get documentAnalysis => 'Document Analysis';
+  String get documentAnalysis => 'تحلیل سند';
 
   @override
-  String get exportAsPdf => 'Export as PDF';
+  String get exportAsPdf => 'خروجی به صورت PDF';
 
   @override
-  String get pdfExportComingSoon => 'PDF export coming soon';
+  String get pdfExportComingSoon => 'خروجی PDF به زودی';
 
   @override
-  String get analysisFailedRetry => 'Analysis failed. Please try again.';
+  String get analysisFailedRetry => 'تحلیل ناموفق بود. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'مشکلی پیش آمد';
 
   @override
-  String get retryAnalysis => 'Retry Analysis';
+  String get retryAnalysis => 'تلاش مجدد تحلیل';
 
   @override
   String issuesFoundInDocument(int count) {
-    return 'Found $count issue(s) in your document';
+    return '$count مشکل در سند شما یافت شد';
   }
 
   @override
-  String get severityOverview => 'Severity Overview';
+  String get severityOverview => 'نمای کلی شدت';
 
   @override
-  String get issuesFoundHeader => 'Issues Found';
+  String get issuesFoundHeader => 'مشکلات یافت شده';
 
   @override
   String generateAppealWithIssues(int count) {
-    return 'Generate Appeal ($count issues)';
+    return 'تولید تجدیدنظر ($count مشکل)';
   }
 
   @override
-  String get analyzingContent => 'Analyzing content...';
+  String get analyzingContent => 'در حال تحلیل محتوا...';
 
   @override
-  String get documentProcessedOk => 'Document processed successfully';
+  String get documentProcessedOk => 'سند با موفقیت پردازش شد';
 
   @override
-  String get noSignificantIssues =>
-      'No significant issues were detected in this document.';
+  String get noSignificantIssues => 'مشکل قابل توجهی در این سند شناسایی نشد.';
 
   @override
-  String get cameraPermissionRequired => 'Camera permission required';
+  String get cameraPermissionRequired => 'مجوز دوربین لازم است';
 
   @override
   String get cameraPermissionDesc =>
-      'Grant camera access to scan documents, or use the gallery.';
+      'برای اسکن اسناد دسترسی دوربین را اعطا کنید، یا از گالری استفاده کنید.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'باز کردن تنظیمات';
 
   @override
-  String get alignDocument => 'Align document within the frame';
+  String get alignDocument => 'سند را در کادر تنظیم کنید';
 
   @override
   String pageCount(int count) {
-    return '$count page(s)';
+    return '$count صفحه';
   }
 
   @override
-  String get preview => 'Preview';
+  String get preview => 'پیش‌نمایش';
 
   @override
   String pageNumber(int number) {
-    return 'Page $number';
+    return 'صفحه $number';
   }
 
   @override
-  String get done => 'Done';
+  String get done => 'انجام شد';
 
   @override
-  String get retake => 'Retake';
+  String get retake => 'عکس مجدد';
 
   @override
-  String get useThisPhoto => 'Use This Photo';
+  String get useThisPhoto => 'استفاده از این عکس';
 
   @override
-  String get addPage => 'Add Page';
+  String get addPage => 'افزودن صفحه';
 
   @override
   String uploadingPercent(int percent) {
-    return 'Uploading... $percent%';
+    return 'در حال بارگذاری... $percent%';
   }
 
   @override
-  String get preparingUpload => 'Preparing upload...';
+  String get preparingUpload => 'آماده‌سازی بارگذاری...';
 
   @override
-  String get documentUploadedSuccess => 'Document uploaded successfully';
+  String get documentUploadedSuccess => 'سند با موفقیت بارگذاری شد';
 
   @override
   String pagesUploadedSuccess(int count) {
-    return '$count pages uploaded successfully';
+    return '$count صفحه با موفقیت بارگذاری شد';
   }
 
   @override
   String get uploadFailed =>
-      'Upload failed. Please check your connection and try again.';
+      'بارگذاری ناموفق بود. لطفاً اتصال خود را بررسی کنید و دوباره تلاش کنید.';
 
   @override
-  String get capturePhotoFailed => 'Failed to capture photo. Please try again.';
+  String get capturePhotoFailed =>
+      'گرفتن عکس ناموفق بود. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get readingText => 'Reading text...';
+  String get readingText => 'در حال خواندن متن...';
 
   @override
-  String get draftDocument => 'Draft Document';
+  String get draftDocument => 'پیش‌نویس سند';
 
   @override
-  String get saveChanges => 'Save changes';
+  String get saveChanges => 'ذخیره تغییرات';
 
   @override
-  String get editDocument => 'Edit document';
+  String get editDocument => 'ویرایش سند';
 
   @override
-  String get generatingDraft => 'Generating your draft...';
+  String get generatingDraft => 'در حال تولید پیش‌نویس شما...';
 
   @override
   String get generatingDraftDesc =>
-      'AI is preparing a legal document based on your case details and selected issues.';
+      'هوش مصنوعی در حال تهیه یک سند حقوقی بر اساس جزئیات پرونده و مشکلات انتخاب شده شماست.';
 
   @override
   String get failedToGenerateDraft =>
-      'Failed to generate draft. Please try again.';
+      'تولید پیش‌نویس ناموفق بود. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get changesSaved => 'Changes saved';
+  String get changesSaved => 'تغییرات ذخیره شد';
 
   @override
-  String get copiedToClipboard => 'Copied to clipboard';
+  String get copiedToClipboard => 'در کلیپ‌بورد کپی شد';
 
   @override
-  String get emailComingSoon => 'Email sending coming soon';
+  String get emailComingSoon => 'ارسال ایمیل به زودی';
 
   @override
   String get reviewBeforeSending =>
-      'Review carefully before sending. You are responsible for the content of this document.';
+      'قبل از ارسال با دقت بررسی کنید. شما مسئول محتوای این سند هستید.';
 
   @override
-  String get noContentAvailable => 'No content available';
+  String get noContentAvailable => 'محتوایی در دسترس نیست';
 
   @override
-  String get save => 'Save';
+  String get save => 'ذخیره';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'ویرایش';
 
   @override
   String get pdf => 'PDF';
 
   @override
-  String get copy => 'Copy';
+  String get copy => 'کپی';
 
   @override
-  String get appealDraft => 'Appeal Draft';
+  String get appealDraft => 'پیش‌نویس تجدیدنظر';
 
   @override
   String selected(int count) {
-    return '$count selected';
+    return '$count انتخاب شده';
   }
 
   @override
-  String get deleteSelected => 'Delete selected';
+  String get deleteSelected => 'حذف انتخاب شده‌ها';
 
   @override
   String deleteDocumentsConfirm(int count) {
-    return 'Delete $count documents?';
+    return '$count سند حذف شود؟';
   }
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'حذف';
 
   @override
-  String get analyzeSelected => 'Analyze selected';
+  String get analyzeSelected => 'تحلیل انتخاب شده‌ها';
 
   @override
-  String get batchAnalysisStarting => 'Batch analysis starting...';
+  String get batchAnalysisStarting => 'شروع تحلیل دسته‌ای...';
 
   @override
-  String get switchToList => 'Switch to list';
+  String get switchToList => 'تغییر به فهرست';
 
   @override
-  String get switchToGrid => 'Switch to grid';
+  String get switchToGrid => 'تغییر به شبکه';
 
   @override
-  String get scanNew => 'Scan New';
+  String get scanNew => 'اسکن جدید';
 
   @override
-  String get noDocumentsYetScan => 'No documents yet';
+  String get noDocumentsYetScan => 'هنوز سندی نیست';
 
   @override
   String get scanFirstDocumentHint =>
-      'Scan your first document to let AI analyze it for errors and generate appeals.';
+      'اولین سند خود را اسکن کنید تا هوش مصنوعی آن را برای خطاها تحلیل کند و تجدیدنظر تولید کند.';
 
   @override
-  String get failedToLoadDocuments => 'Failed to load documents';
+  String get failedToLoadDocuments => 'بارگذاری اسناد ناموفق بود';
 }
