@@ -495,17 +495,20 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
                 width: 56,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: widget.color.withValues(alpha: 0.1),
+                  gradient: const LinearGradient(
+                    colors: [AppColors.accent, AppColors.accentLight],
+                  ),
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: widget.color.withValues(alpha: 0.15 + _pulseAnimation.value * 0.2),
-                      blurRadius: 8 + _pulseAnimation.value * 8,
-                      spreadRadius: _pulseAnimation.value * 3,
+                      color: AppColors.accent.withValues(alpha: 0.2 + _pulseAnimation.value * 0.25),
+                      blurRadius: 8 + _pulseAnimation.value * 10,
+                      spreadRadius: _pulseAnimation.value * 4,
+                      offset: const Offset(0, 2),
                     ),
                   ],
                 ),
-                child: Icon(widget.icon, color: widget.color, size: 28),
+                child: const Icon(Icons.balance_rounded, color: Colors.white, size: 26),
               );
             },
           ),
