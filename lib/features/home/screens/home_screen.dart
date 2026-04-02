@@ -85,7 +85,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               data: (cases) {
                 if (cases.isEmpty) {
-                  return const SliverFillRemaining(child: _EmptyState());
+                  return const SliverToBoxAdapter(child: _EmptyState());
                 }
 
                 final activeCases = cases
@@ -689,52 +689,137 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xxl),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Friendly illustration placeholder
-            Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                color: AppColors.accent.withValues(alpha: 0.08),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.shield_outlined,
-                size: 56,
-                color: AppColors.accent.withValues(alpha: 0.6),
-              ),
+    final l = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: AppSpacing.lg),
+          // Shield icon
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppColors.accent.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
             ),
-            const SizedBox(height: AppSpacing.lg),
-            Text(
-              AppLocalizations.of(context)?.noCasesYet ?? 'No cases yet',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                  ),
+            child: Icon(
+              Icons.shield_outlined,
+              size: 40,
+              color: AppColors.accent.withValues(alpha: 0.7),
             ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              AppLocalizations.of(context)?.startFirstCase ?? 'Start your first case',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    height: 1.5,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-            ElevatedButton.icon(
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Text(
+            l.noCasesYet,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            l.startFirstCase,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          // Create case button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
               onPressed: () => context.push(AppRoutes.caseCreate),
-              icon: const Icon(Icons.add),
-              label: Text(AppLocalizations.of(context)?.createCase ?? 'Create Case'),
+              icon: const Icon(Icons.add, size: 20),
+              label: Text(l.createCase),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accent,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          // Or chat with AI
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => context.push('/chat/general'),
+              icon: const Icon(Icons.smart_toy_outlined, size: 20),
+              label: Text(l.aiChat),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          // Tips
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(AppSpacing.md),
+            decoration: BoxDecoration(
+              color: AppColors.info.withValues(alpha: 0.06),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: AppColors.info.withValues(alpha: 0.15),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.lightbulb_outline, size: 16, color: AppColors.info),
+                    const SizedBox(width: 6),
+                    Text(
+                      l.getStarted,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.info,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                _TipItem(icon: Icons.document_scanner_outlined, text: l.scanDocument),
+                const SizedBox(height: 4),
+                _TipItem(icon: Icons.gavel_outlined, text: l.legalSection),
+                const SizedBox(height: 4),
+                _TipItem(icon: Icons.calculate_outlined, text: l.legalFighter),
+              ],
+            ),
+          ),
+        ],
       ),
+    );
+  }
+}
+
+class _TipItem extends StatelessWidget {
+  const _TipItem({required this.icon, required this.text});
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 14, color: AppColors.textSecondary),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+        ),
+      ],
     );
   }
 }
