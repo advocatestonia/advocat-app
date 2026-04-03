@@ -843,8 +843,8 @@ class _EmptyState extends StatelessWidget {
           // Advocat shield logo
           Image.asset(
             'assets/images/logo_shield.png',
-            width: 140,
-            height: 140,
+            width: 220,
+            height: 220,
             filterQuality: FilterQuality.high,
           ),
           const SizedBox(height: AppSpacing.md),
