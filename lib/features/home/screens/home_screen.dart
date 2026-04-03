@@ -839,7 +839,6 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: AppSpacing.sm),
           // Advocat shield logo
           Image.asset(
             'assets/images/logo_shield.png',
@@ -847,7 +846,6 @@ class _EmptyState extends StatelessWidget {
             height: 200,
             filterQuality: FilterQuality.high,
           ),
-          const SizedBox(height: 4),
           Text(
             l.noCasesYet,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -855,7 +853,6 @@ class _EmptyState extends StatelessWidget {
                   color: AppColors.textPrimary,
                 ),
           ),
-          const SizedBox(height: 2),
           Text(
             l.startFirstCase,
             textAlign: TextAlign.center,
@@ -863,7 +860,7 @@ class _EmptyState extends StatelessWidget {
                   color: AppColors.textSecondary,
                 ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
           // Create case button
           SizedBox(
             width: double.infinity,
