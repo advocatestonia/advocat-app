@@ -160,6 +160,24 @@ class _GreetingHeader extends ConsumerWidget {
     return l.goodEvening(name.isEmpty ? '' : name);
   }
 
+  IconData get _timeIcon {
+    final hour = DateTime.now().hour;
+    if (hour < 6) return Icons.dark_mode_outlined;
+    if (hour < 12) return Icons.wb_sunny_outlined;
+    if (hour < 17) return Icons.wb_cloudy_outlined;
+    if (hour < 21) return Icons.wb_twilight_outlined;
+    return Icons.dark_mode_outlined;
+  }
+
+  Color get _timeColor {
+    final hour = DateTime.now().hour;
+    if (hour < 6) return const Color(0xFF6366F1);
+    if (hour < 12) return const Color(0xFFF59E0B);
+    if (hour < 17) return AppColors.accent;
+    if (hour < 21) return const Color(0xFFF97316);
+    return const Color(0xFF6366F1);
+  }
+
   String get _firstName {
     if (userName == null || userName!.isEmpty) return '';
     return userName!.split(' ').first;
@@ -253,13 +271,29 @@ class _GreetingHeader extends ConsumerWidget {
           children: [
             Row(
               children: [
+                // Time-of-day icon
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: _timeColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(_timeIcon, color: _timeColor, size: 22),
+                ),
+                const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    _greeting(l),
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
+                  child: ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      colors: [AppColors.primary, _timeColor],
+                    ).createShader(bounds),
+                    child: Text(
+                      _greeting(l),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                          ),
+                    ),
                   ),
                 ),
                 // Globe icon for quick language switching
@@ -272,11 +306,12 @@ class _GreetingHeader extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: AppSpacing.xs),
+            const SizedBox(height: 6),
             Text(
               l.caseOverview,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w500,
                   ),
             ),
           ],
