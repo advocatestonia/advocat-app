@@ -534,7 +534,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get popular => 'POPULĀRS';
 
   @override
-  String get preferences => 'PREFERENCES';
+  String get preferences => 'IESTATĪJUMI';
 
   @override
   String get preferredLanguage => 'Vēlamā valoda';

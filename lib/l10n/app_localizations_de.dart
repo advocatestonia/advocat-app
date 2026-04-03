@@ -450,7 +450,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get onboardingDesc1 =>
-      'Advocat hilft Ihnen, Ihre rechtliche Situation zu verstehen. KI-Werkzeuge analysieren Dokumente, identifizieren mögliche Probleme und erstellen Dokumententwürfe zur Ihrer Überprüfung. Keine Anwaltskanzlei — ein Technologiewerkzeug zur Unterstützung Ihres Falls.';
+      'Advocat hilft Ihnen, Ihre rechtliche Situation zu verstehen. KI-Werkzeuge analysieren Dokumente, identifizieren mögliche Probleme und erstellen Dokumententwürfe zu Ihrer Überprüfung. Keine Anwaltskanzlei — ein Technologiewerkzeug zur Unterstützung Ihres Falls.';
 
   @override
   String get onboardingDesc2 =>
@@ -462,7 +462,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get onboardingDesc4 =>
-      'Die KI erstellt Entwürfe für Widersprüche, Beschwerden und Schreiben mit Rechtsverweisen zur Ihrer Überprüfung. Sie entscheiden, was eingereicht wird. Jedes Dokument sollte vor der Einreichung von einem qualifizierten Rechtsexperten geprüft werden.';
+      'Die KI erstellt Entwürfe für Widersprüche, Beschwerden und Schreiben mit Rechtsverweisen zu Ihrer Überprüfung. Sie entscheiden, was eingereicht wird. Jedes Dokument sollte vor der Einreichung von einem qualifizierten Rechtsexperten geprüft werden.';
 
   @override
   String get onboardingNext => 'Weiter';
@@ -480,7 +480,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get onboardingTitle3 => 'KI prüft auf mögliche Probleme';
 
   @override
-  String get onboardingTitle4 => 'Dokumententwürfe zur Ihrer Überprüfung';
+  String get onboardingTitle4 => 'Dokumententwürfe zu Ihrer Überprüfung';
 
   @override
   String get openACase => 'Fall eröffnen';
