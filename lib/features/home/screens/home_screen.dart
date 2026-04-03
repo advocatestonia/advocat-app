@@ -839,15 +839,15 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: AppSpacing.xl),
+          const SizedBox(height: AppSpacing.sm),
           // Advocat shield logo
           Image.asset(
             'assets/images/logo_shield.png',
-            width: 220,
-            height: 220,
+            width: 200,
+            height: 200,
             filterQuality: FilterQuality.high,
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: AppSpacing.sm),
           Text(
             l.noCasesYet,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
