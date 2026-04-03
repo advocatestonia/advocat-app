@@ -847,7 +847,7 @@ class _EmptyState extends StatelessWidget {
             height: 200,
             filterQuality: FilterQuality.high,
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: 4),
           Text(
             l.noCasesYet,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
