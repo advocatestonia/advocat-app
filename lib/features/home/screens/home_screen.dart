@@ -125,19 +125,13 @@ class HomeScreen extends ConsumerWidget {
                     const SizedBox(height: AppSpacing.md),
                     _SectionHeader(title: AppLocalizations.of(context)?.recentActivity ?? 'Recent Activity'),
                     _RecentActivity(cases: cases),
-                    const SizedBox(height: 100), // FAB clearance
+                    const SizedBox(height: AppSpacing.lg),
                   ]),
                 );
               },
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(AppRoutes.caseCreate),
-        backgroundColor: AppColors.accent,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.add),
       ),
     );
   }
