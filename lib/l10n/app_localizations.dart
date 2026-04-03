@@ -1577,7 +1577,7 @@ abstract class AppLocalizations {
   /// No description provided for @secureDocumentStorageDesc.
   ///
   /// In en, this message translates to:
-  /// **'Store your important legal documents securely. All files are encrypted end-to-end.'**
+  /// **'Store your important legal documents in one place for easy access.'**
   String get secureDocumentStorageDesc;
 
   /// No description provided for @addDocument.

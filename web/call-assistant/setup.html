@@ -1254,9 +1254,18 @@ body::before {
         localStorage.setItem('advocat_setup', JSON.stringify(settings));
 
         // Also store individual keys for compatibility with main app
-        if (settings.deepgramKey) localStorage.setItem('deepgram_key', settings.deepgramKey);
-        if (settings.claudeKey) localStorage.setItem('claude_key', settings.claudeKey);
+        if (settings.deepgramKey) {
+            localStorage.setItem('deepgram_key', settings.deepgramKey);
+            localStorage.setItem('advocat_dg_key', settings.deepgramKey);
+        }
+        if (settings.claudeKey) {
+            localStorage.setItem('claude_key', settings.claudeKey);
+            localStorage.setItem('advocat_claude_key', settings.claudeKey);
+        }
         localStorage.setItem('user_language', settings.userLanguage);
+        localStorage.setItem('advocat_user_language', settings.userLanguage);
+        // Store mode in app.js format: 'deepgram' or 'demo'
+        localStorage.setItem('advocat_mode', apiMode === 'full' ? 'deepgram' : 'demo');
 
         // Build URL params for the main app
         const params = new URLSearchParams();

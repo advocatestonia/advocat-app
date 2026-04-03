@@ -72,6 +72,582 @@ const state = {
 };
 
 // ============================================
+// UI Translations — full interface localization
+// ============================================
+const UI_TRANSLATIONS = {
+    en: {
+        startListening: 'Start Listening',
+        stopListening: 'Stop Listening',
+        testMic: 'Test Mic',
+        export: 'Export',
+        liveTranscript: 'Live Transcript',
+        aiAssistant: 'AI Legal Assistant',
+        aiAssistantShort: 'AI Assistant',
+        keyPoints: 'Key Points',
+        ready: 'Ready',
+        listening: 'Listening...',
+        settings: 'Settings',
+        analyzeNow: 'Analyze Now',
+        clear: 'Clear',
+        transcript: 'Transcript',
+        listen: 'Listen',
+        aiReply: 'AI Reply',
+        engine: 'Engine',
+        readyToListen: 'Ready to listen',
+        pressSpaceHint: 'Press <kbd>Space</kbd> or the <strong>Start Listening</strong> button to begin',
+        aiStandingBy: 'AI assistant standing by',
+        aiHint: 'Claude analyzes the transcript every 15s and provides legal advice',
+        keypointsHint: 'Important points will be collected here throughout the call',
+        swipeToSeeAI: 'Swipe to see AI',
+        stopped: 'Stopped',
+        connecting: 'Connecting...',
+        reconnecting: 'Reconnecting...',
+        summary: 'Summary',
+        quickPhrases: 'Quick phrases:',
+        contextLabel: 'Call context (optional):',
+    },
+    ru: {
+        startListening: 'Начать слушать',
+        stopListening: 'Остановить',
+        testMic: 'Тест микрофона',
+        export: 'Экспорт',
+        liveTranscript: 'Транскрипция',
+        aiAssistant: 'AI Юрист',
+        aiAssistantShort: 'AI Юрист',
+        keyPoints: 'Ключевые моменты',
+        ready: 'Готов',
+        listening: 'Слушаю...',
+        settings: 'Настройки',
+        analyzeNow: 'Анализировать',
+        clear: 'Очистить',
+        transcript: 'Транскрипция',
+        listen: 'Слушать',
+        aiReply: 'Ответ AI',
+        engine: 'Движок',
+        readyToListen: 'Готов к записи',
+        pressSpaceHint: 'Нажмите <kbd>Пробел</kbd> или кнопку <strong>Начать слушать</strong>',
+        aiStandingBy: 'AI помощник готов',
+        aiHint: 'Claude анализирует транскрипцию каждые 15 сек и даёт юридические советы',
+        keypointsHint: 'Важные моменты будут собираться здесь во время звонка',
+        swipeToSeeAI: 'Свайп для AI',
+        stopped: 'Остановлен',
+        connecting: 'Подключение...',
+        reconnecting: 'Переподключение...',
+        summary: 'Итоги',
+        quickPhrases: 'Быстрые фразы:',
+        contextLabel: 'Контекст звонка (необязательно):',
+    },
+    fi: {
+        startListening: 'Aloita kuuntelu',
+        stopListening: 'Lopeta',
+        testMic: 'Testaa mikrofoni',
+        export: 'Vie',
+        liveTranscript: 'Tekstitys',
+        aiAssistant: 'AI Lakineuvoja',
+        aiAssistantShort: 'AI Neuvoja',
+        keyPoints: 'Avainpisteet',
+        ready: 'Valmis',
+        listening: 'Kuuntelee...',
+        settings: 'Asetukset',
+        analyzeNow: 'Analysoi nyt',
+        clear: 'Tyhjennä',
+        transcript: 'Tekstitys',
+        listen: 'Kuuntele',
+        aiReply: 'AI Vastaus',
+        engine: 'Moottori',
+        readyToListen: 'Valmis kuuntelemaan',
+        pressSpaceHint: 'Paina <kbd>Välilyönti</kbd> tai <strong>Aloita kuuntelu</strong> -painiketta',
+        aiStandingBy: 'AI-avustaja valmiina',
+        aiHint: 'Claude analysoi keskustelun 15 sekunnin välein ja antaa oikeudellisia neuvoja',
+        keypointsHint: 'Tärkeät kohdat kerätään tähän puhelun aikana',
+        swipeToSeeAI: 'Pyyhkäise AI:lle',
+        stopped: 'Pysäytetty',
+        connecting: 'Yhdistetään...',
+        reconnecting: 'Yhdistetään uudelleen...',
+        summary: 'Yhteenveto',
+        quickPhrases: 'Pikafraasit:',
+        contextLabel: 'Puhelun konteksti (valinnainen):',
+    },
+    et: {
+        startListening: 'Alusta kuulamist',
+        stopListening: 'Peata',
+        testMic: 'Testi mikrofoni',
+        export: 'Ekspordi',
+        liveTranscript: 'Transkriptsioon',
+        aiAssistant: 'AI Jurist',
+        aiAssistantShort: 'AI Jurist',
+        keyPoints: 'Olulised punktid',
+        ready: 'Valmis',
+        listening: 'Kuulan...',
+        settings: 'Seaded',
+        analyzeNow: 'Analüüsi',
+        clear: 'Tühjenda',
+        transcript: 'Transkriptsioon',
+        listen: 'Kuula',
+        aiReply: 'AI Vastus',
+        engine: 'Mootor',
+        readyToListen: 'Valmis kuulama',
+        pressSpaceHint: 'Vajuta <kbd>Tühik</kbd> või nuppu <strong>Alusta kuulamist</strong>',
+        aiStandingBy: 'AI assistent valmis',
+        aiHint: 'Claude analüüsib transkriptsiooni iga 15 sek ja annab juriidilist nõu',
+        keypointsHint: 'Olulised punktid kogutakse siia kõne ajal',
+        swipeToSeeAI: 'Swipe AI jaoks',
+        stopped: 'Peatatud',
+        connecting: 'Ühendamine...',
+        reconnecting: 'Taasühendamine...',
+        summary: 'Kokkuvõte',
+        quickPhrases: 'Kiirfraasid:',
+        contextLabel: 'Kõne kontekst (valikuline):',
+    },
+    de: {
+        startListening: 'Aufnahme starten',
+        stopListening: 'Stoppen',
+        testMic: 'Mikrofon testen',
+        export: 'Exportieren',
+        liveTranscript: 'Transkription',
+        aiAssistant: 'AI Rechtsberater',
+        aiAssistantShort: 'AI Berater',
+        keyPoints: 'Wichtige Punkte',
+        ready: 'Bereit',
+        listening: 'Höre zu...',
+        settings: 'Einstellungen',
+        analyzeNow: 'Jetzt analysieren',
+        clear: 'Löschen',
+        transcript: 'Transkription',
+        listen: 'Hören',
+        aiReply: 'AI Antwort',
+        engine: 'Engine',
+        readyToListen: 'Bereit zum Zuhören',
+        pressSpaceHint: 'Drücken Sie <kbd>Leertaste</kbd> oder <strong>Aufnahme starten</strong>',
+        aiStandingBy: 'AI-Assistent bereit',
+        aiHint: 'Claude analysiert das Transkript alle 15 Sek. und gibt Rechtsberatung',
+        keypointsHint: 'Wichtige Punkte werden hier während des Anrufs gesammelt',
+        swipeToSeeAI: 'Wischen für AI',
+        stopped: 'Gestoppt',
+        connecting: 'Verbinde...',
+        reconnecting: 'Erneut verbinden...',
+        summary: 'Zusammenfassung',
+        quickPhrases: 'Schnellphrasen:',
+        contextLabel: 'Anrufkontext (optional):',
+    },
+    sv: {
+        startListening: 'Börja lyssna',
+        stopListening: 'Stoppa',
+        testMic: 'Testa mikrofon',
+        export: 'Exportera',
+        liveTranscript: 'Transkription',
+        aiAssistant: 'AI Juridisk rådgivare',
+        aiAssistantShort: 'AI Rådgivare',
+        keyPoints: 'Nyckelpunkter',
+        ready: 'Redo',
+        listening: 'Lyssnar...',
+        settings: 'Inställningar',
+        analyzeNow: 'Analysera nu',
+        clear: 'Rensa',
+        transcript: 'Transkription',
+        listen: 'Lyssna',
+        aiReply: 'AI Svar',
+        engine: 'Motor',
+        readyToListen: 'Redo att lyssna',
+        pressSpaceHint: 'Tryck <kbd>Mellanslag</kbd> eller knappen <strong>Börja lyssna</strong>',
+        aiStandingBy: 'AI-assistent standby',
+        aiHint: 'Claude analyserar transkriptionen var 15:e sekund och ger juridisk rådgivning',
+        keypointsHint: 'Viktiga punkter samlas här under samtalet',
+        swipeToSeeAI: 'Svep för AI',
+        stopped: 'Stoppad',
+        connecting: 'Ansluter...',
+        reconnecting: 'Återansluter...',
+        summary: 'Sammanfattning',
+        quickPhrases: 'Snabbfraser:',
+        contextLabel: 'Samtalskontext (valfritt):',
+    },
+    uk: {
+        startListening: 'Почати слухати',
+        stopListening: 'Зупинити',
+        testMic: 'Тест мікрофона',
+        export: 'Експорт',
+        liveTranscript: 'Транскрипція',
+        aiAssistant: 'AI Юрист',
+        aiAssistantShort: 'AI Юрист',
+        keyPoints: 'Ключові моменти',
+        ready: 'Готовий',
+        listening: 'Слухаю...',
+        settings: 'Налаштування',
+        analyzeNow: 'Аналізувати',
+        clear: 'Очистити',
+        transcript: 'Транскрипція',
+        listen: 'Слухати',
+        aiReply: 'Відповідь AI',
+        engine: 'Рушій',
+        readyToListen: 'Готовий слухати',
+        pressSpaceHint: 'Натисніть <kbd>Пробіл</kbd> або кнопку <strong>Почати слухати</strong>',
+        aiStandingBy: 'AI помічник готовий',
+        aiHint: 'Claude аналізує транскрипцію кожні 15 сек і дає юридичні поради',
+        keypointsHint: 'Важливі моменти будуть збиратися тут під час дзвінка',
+        swipeToSeeAI: 'Свайп для AI',
+        stopped: 'Зупинено',
+        connecting: 'Підключення...',
+        reconnecting: 'Перепідключення...',
+        summary: 'Підсумок',
+        quickPhrases: 'Швидкі фрази:',
+        contextLabel: 'Контекст дзвінка (необов\'язково):',
+    },
+    ar: {
+        startListening: 'بدء الاستماع',
+        stopListening: 'إيقاف',
+        testMic: 'اختبار الميكروفون',
+        export: 'تصدير',
+        liveTranscript: 'النص المباشر',
+        aiAssistant: 'مستشار قانوني AI',
+        aiAssistantShort: 'مستشار AI',
+        keyPoints: 'النقاط الرئيسية',
+        ready: 'جاهز',
+        listening: 'يستمع...',
+        settings: 'الإعدادات',
+        analyzeNow: 'تحليل الآن',
+        clear: 'مسح',
+        transcript: 'النص',
+        listen: 'استماع',
+        aiReply: 'رد AI',
+        engine: 'المحرك',
+        readyToListen: 'جاهز للاستماع',
+        pressSpaceHint: 'اضغط <kbd>مسافة</kbd> أو زر <strong>بدء الاستماع</strong>',
+        aiStandingBy: 'مساعد AI جاهز',
+        aiHint: 'يحلل Claude النص كل 15 ثانية ويقدم استشارة قانونية',
+        keypointsHint: 'سيتم جمع النقاط المهمة هنا أثناء المكالمة',
+        swipeToSeeAI: 'اسحب لرؤية AI',
+        stopped: 'متوقف',
+        connecting: 'جاري الاتصال...',
+        reconnecting: 'إعادة الاتصال...',
+        summary: 'ملخص',
+        quickPhrases: 'عبارات سريعة:',
+        contextLabel: 'سياق المكالمة (اختياري):',
+    },
+    fr: {
+        startListening: 'Commencer l\'écoute',
+        stopListening: 'Arrêter',
+        testMic: 'Tester le micro',
+        export: 'Exporter',
+        liveTranscript: 'Transcription',
+        aiAssistant: 'AI Conseiller juridique',
+        aiAssistantShort: 'AI Conseiller',
+        keyPoints: 'Points clés',
+        ready: 'Prêt',
+        listening: 'Écoute...',
+        settings: 'Paramètres',
+        analyzeNow: 'Analyser',
+        clear: 'Effacer',
+        transcript: 'Transcription',
+        listen: 'Écouter',
+        aiReply: 'Réponse AI',
+        engine: 'Moteur',
+        readyToListen: 'Prêt à écouter',
+        pressSpaceHint: 'Appuyez sur <kbd>Espace</kbd> ou le bouton <strong>Commencer l\'écoute</strong>',
+        aiStandingBy: 'Assistant AI en attente',
+        aiHint: 'Claude analyse la transcription toutes les 15 sec et donne des conseils juridiques',
+        keypointsHint: 'Les points importants seront collectés ici pendant l\'appel',
+        swipeToSeeAI: 'Glisser pour AI',
+        stopped: 'Arrêté',
+        connecting: 'Connexion...',
+        reconnecting: 'Reconnexion...',
+        summary: 'Résumé',
+        quickPhrases: 'Phrases rapides :',
+        contextLabel: 'Contexte de l\'appel (optionnel) :',
+    },
+    tr: {
+        startListening: 'Dinlemeye Başla',
+        stopListening: 'Durdur',
+        testMic: 'Mikrofon Testi',
+        export: 'Dışa Aktar',
+        liveTranscript: 'Transkripsiyon',
+        aiAssistant: 'AI Hukuk Danışmanı',
+        aiAssistantShort: 'AI Danışman',
+        keyPoints: 'Önemli Noktalar',
+        ready: 'Hazır',
+        listening: 'Dinliyor...',
+        settings: 'Ayarlar',
+        analyzeNow: 'Şimdi Analiz Et',
+        clear: 'Temizle',
+        transcript: 'Transkripsiyon',
+        listen: 'Dinle',
+        aiReply: 'AI Yanıt',
+        engine: 'Motor',
+        readyToListen: 'Dinlemeye hazır',
+        pressSpaceHint: '<kbd>Boşluk</kbd> veya <strong>Dinlemeye Başla</strong> düğmesine basın',
+        aiStandingBy: 'AI asistan hazır',
+        aiHint: 'Claude transkripti her 15 saniyede analiz eder ve hukuki tavsiye verir',
+        keypointsHint: 'Önemli noktalar arama sırasında burada toplanacak',
+        swipeToSeeAI: 'AI için kaydır',
+        stopped: 'Durduruldu',
+        connecting: 'Bağlanıyor...',
+        reconnecting: 'Yeniden bağlanıyor...',
+        summary: 'Özet',
+        quickPhrases: 'Hızlı ifadeler:',
+        contextLabel: 'Arama bağlamı (isteğe bağlı):',
+    },
+    es: {
+        startListening: 'Empezar a escuchar',
+        stopListening: 'Detener',
+        testMic: 'Probar micrófono',
+        export: 'Exportar',
+        liveTranscript: 'Transcripción',
+        aiAssistant: 'AI Asesor Legal',
+        aiAssistantShort: 'AI Asesor',
+        keyPoints: 'Puntos clave',
+        ready: 'Listo',
+        listening: 'Escuchando...',
+        settings: 'Configuración',
+        analyzeNow: 'Analizar ahora',
+        clear: 'Limpiar',
+        transcript: 'Transcripción',
+        listen: 'Escuchar',
+        aiReply: 'Respuesta AI',
+        engine: 'Motor',
+        readyToListen: 'Listo para escuchar',
+        pressSpaceHint: 'Pulse <kbd>Espacio</kbd> o el botón <strong>Empezar a escuchar</strong>',
+        aiStandingBy: 'Asistente AI listo',
+        aiHint: 'Claude analiza la transcripción cada 15 seg y ofrece asesoría legal',
+        keypointsHint: 'Los puntos importantes se recopilarán aquí durante la llamada',
+        swipeToSeeAI: 'Desliza para AI',
+        stopped: 'Detenido',
+        connecting: 'Conectando...',
+        reconnecting: 'Reconectando...',
+        summary: 'Resumen',
+        quickPhrases: 'Frases rápidas:',
+        contextLabel: 'Contexto de la llamada (opcional):',
+    },
+    pl: {
+        startListening: 'Zacznij słuchać',
+        stopListening: 'Zatrzymaj',
+        testMic: 'Test mikrofonu',
+        export: 'Eksportuj',
+        liveTranscript: 'Transkrypcja',
+        aiAssistant: 'AI Doradca prawny',
+        aiAssistantShort: 'AI Doradca',
+        keyPoints: 'Kluczowe punkty',
+        ready: 'Gotowy',
+        listening: 'Słucham...',
+        settings: 'Ustawienia',
+        analyzeNow: 'Analizuj teraz',
+        clear: 'Wyczyść',
+        transcript: 'Transkrypcja',
+        listen: 'Słuchaj',
+        aiReply: 'Odpowiedź AI',
+        engine: 'Silnik',
+        readyToListen: 'Gotowy do słuchania',
+        pressSpaceHint: 'Naciśnij <kbd>Spację</kbd> lub przycisk <strong>Zacznij słuchać</strong>',
+        aiStandingBy: 'Asystent AI gotowy',
+        aiHint: 'Claude analizuje transkrypcję co 15 sek i udziela porad prawnych',
+        keypointsHint: 'Ważne punkty będą zbierane tutaj podczas rozmowy',
+        swipeToSeeAI: 'Przesuń do AI',
+        stopped: 'Zatrzymano',
+        connecting: 'Łączenie...',
+        reconnecting: 'Ponowne łączenie...',
+        summary: 'Podsumowanie',
+        quickPhrases: 'Szybkie frazy:',
+        contextLabel: 'Kontekst rozmowy (opcjonalnie):',
+    },
+    fa: {
+        startListening: 'شروع گوش دادن',
+        stopListening: 'توقف',
+        testMic: 'تست میکروفن',
+        export: 'خروجی',
+        liveTranscript: 'رونوشت زنده',
+        aiAssistant: 'مشاور حقوقی AI',
+        aiAssistantShort: 'مشاور AI',
+        keyPoints: 'نکات کلیدی',
+        ready: 'آماده',
+        listening: 'در حال گوش دادن...',
+        settings: 'تنظیمات',
+        analyzeNow: 'تحلیل کن',
+        clear: 'پاک کردن',
+        transcript: 'رونوشت',
+        listen: 'گوش دادن',
+        aiReply: 'پاسخ AI',
+        engine: 'موتور',
+        readyToListen: 'آماده برای گوش دادن',
+        pressSpaceHint: '<kbd>فاصله</kbd> یا دکمه <strong>شروع گوش دادن</strong> را فشار دهید',
+        aiStandingBy: 'دستیار AI آماده',
+        aiHint: 'Claude هر ۱۵ ثانیه رونوشت را تحلیل می‌کند و مشاوره حقوقی ارائه می‌دهد',
+        keypointsHint: 'نکات مهم در طول تماس اینجا جمع‌آوری می‌شوند',
+        swipeToSeeAI: 'بکشید برای AI',
+        stopped: 'متوقف شد',
+        connecting: 'در حال اتصال...',
+        reconnecting: 'اتصال مجدد...',
+        summary: 'خلاصه',
+        quickPhrases: 'عبارات سریع:',
+        contextLabel: 'زمینه تماس (اختیاری):',
+    },
+    lt: {
+        startListening: 'Pradėti klausyti',
+        stopListening: 'Sustabdyti',
+        testMic: 'Testuoti mikrofoną',
+        export: 'Eksportuoti',
+        liveTranscript: 'Transkripcija',
+        aiAssistant: 'AI Teisinis patarėjas',
+        aiAssistantShort: 'AI Patarėjas',
+        keyPoints: 'Pagrindiniai punktai',
+        ready: 'Paruošta',
+        listening: 'Klausau...',
+        settings: 'Nustatymai',
+        analyzeNow: 'Analizuoti dabar',
+        clear: 'Išvalyti',
+        transcript: 'Transkripcija',
+        listen: 'Klausyti',
+        aiReply: 'AI Atsakymas',
+        engine: 'Variklis',
+        readyToListen: 'Paruošta klausyti',
+        pressSpaceHint: 'Paspauskite <kbd>Tarpą</kbd> arba mygtuką <strong>Pradėti klausyti</strong>',
+        aiStandingBy: 'AI asistentas paruoštas',
+        aiHint: 'Claude analizuoja transkripciją kas 15 sek. ir teikia teisinę konsultaciją',
+        keypointsHint: 'Svarbūs punktai bus renkami čia pokalbio metu',
+        swipeToSeeAI: 'Braukite AI',
+        stopped: 'Sustabdyta',
+        connecting: 'Jungiamasi...',
+        reconnecting: 'Jungiantis iš naujo...',
+        summary: 'Santrauka',
+        quickPhrases: 'Greitos frazės:',
+        contextLabel: 'Skambučio kontekstas (nebūtina):',
+    },
+    lv: {
+        startListening: 'Sākt klausīties',
+        stopListening: 'Apturēt',
+        testMic: 'Testēt mikrofonu',
+        export: 'Eksportēt',
+        liveTranscript: 'Transkripcija',
+        aiAssistant: 'AI Juridiskais padomnieks',
+        aiAssistantShort: 'AI Padomnieks',
+        keyPoints: 'Galvenie punkti',
+        ready: 'Gatavs',
+        listening: 'Klausos...',
+        settings: 'Iestatījumi',
+        analyzeNow: 'Analizēt tagad',
+        clear: 'Notīrīt',
+        transcript: 'Transkripcija',
+        listen: 'Klausīties',
+        aiReply: 'AI Atbilde',
+        engine: 'Dzinējs',
+        readyToListen: 'Gatavs klausīties',
+        pressSpaceHint: 'Nospiediet <kbd>Atstarpi</kbd> vai pogu <strong>Sākt klausīties</strong>',
+        aiStandingBy: 'AI asistents gatavs',
+        aiHint: 'Claude analizē transkripciju ik 15 sek. un sniedz juridiskas konsultācijas',
+        keypointsHint: 'Svarīgi punkti tiks apkopoti šeit zvana laikā',
+        swipeToSeeAI: 'Velciet AI',
+        stopped: 'Apturēts',
+        connecting: 'Savienojas...',
+        reconnecting: 'Atkārtoti savienojas...',
+        summary: 'Kopsavilkums',
+        quickPhrases: 'Ātrās frāzes:',
+        contextLabel: 'Zvana konteksts (neobligāti):',
+    },
+    it: {
+        startListening: 'Inizia ascolto',
+        stopListening: 'Ferma',
+        testMic: 'Testa microfono',
+        export: 'Esporta',
+        liveTranscript: 'Trascrizione',
+        aiAssistant: 'AI Consulente legale',
+        aiAssistantShort: 'AI Consulente',
+        keyPoints: 'Punti chiave',
+        ready: 'Pronto',
+        listening: 'In ascolto...',
+        settings: 'Impostazioni',
+        analyzeNow: 'Analizza ora',
+        clear: 'Cancella',
+        transcript: 'Trascrizione',
+        listen: 'Ascolta',
+        aiReply: 'Risposta AI',
+        engine: 'Motore',
+        readyToListen: 'Pronto ad ascoltare',
+        pressSpaceHint: 'Premi <kbd>Spazio</kbd> o il pulsante <strong>Inizia ascolto</strong>',
+        aiStandingBy: 'Assistente AI in attesa',
+        aiHint: 'Claude analizza la trascrizione ogni 15 sec e fornisce consulenza legale',
+        keypointsHint: 'I punti importanti verranno raccolti qui durante la chiamata',
+        swipeToSeeAI: 'Scorri per AI',
+        stopped: 'Fermato',
+        connecting: 'Connessione...',
+        reconnecting: 'Riconnessione...',
+        summary: 'Riepilogo',
+        quickPhrases: 'Frasi rapide:',
+        contextLabel: 'Contesto della chiamata (opzionale):',
+    },
+    ro: {
+        startListening: 'Începe ascultarea',
+        stopListening: 'Oprește',
+        testMic: 'Testează microfonul',
+        export: 'Exportă',
+        liveTranscript: 'Transcriere',
+        aiAssistant: 'AI Consilier juridic',
+        aiAssistantShort: 'AI Consilier',
+        keyPoints: 'Puncte cheie',
+        ready: 'Pregătit',
+        listening: 'Ascult...',
+        settings: 'Setări',
+        analyzeNow: 'Analizează',
+        clear: 'Șterge',
+        transcript: 'Transcriere',
+        listen: 'Ascultă',
+        aiReply: 'Răspuns AI',
+        engine: 'Motor',
+        readyToListen: 'Pregătit să asculte',
+        pressSpaceHint: 'Apăsați <kbd>Spațiu</kbd> sau butonul <strong>Începe ascultarea</strong>',
+        aiStandingBy: 'Asistent AI pregătit',
+        aiHint: 'Claude analizează transcrierea la fiecare 15 sec și oferă consiliere juridică',
+        keypointsHint: 'Punctele importante vor fi colectate aici în timpul apelului',
+        swipeToSeeAI: 'Glisați pentru AI',
+        stopped: 'Oprit',
+        connecting: 'Se conectează...',
+        reconnecting: 'Reconectare...',
+        summary: 'Rezumat',
+        quickPhrases: 'Fraze rapide:',
+        contextLabel: 'Contextul apelului (opțional):',
+    },
+};
+
+/**
+ * Applies UI translations based on the selected user language.
+ * Looks for elements with data-i18n attributes and updates their text.
+ * Also updates dynamic elements created by JavaScript.
+ */
+function applyUITranslations(lang) {
+    const t = UI_TRANSLATIONS[lang] || UI_TRANSLATIONS['en'];
+
+    // Update all elements with data-i18n attribute
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+            // Some keys contain HTML (like pressSpaceHint), use innerHTML for those
+            if (key === 'pressSpaceHint') {
+                el.innerHTML = t[key];
+            } else {
+                el.textContent = t[key];
+            }
+        }
+    });
+
+    // Update dynamic/injected elements
+    const contextLabel = document.querySelector('.context-label');
+    if (contextLabel) contextLabel.textContent = t.contextLabel || t.contextLabel;
+
+    const quickLabel = document.querySelector('.quick-label');
+    if (quickLabel) quickLabel.textContent = t.quickPhrases || 'Quick phrases:';
+
+    // Update Summary button text if it exists
+    if (dom.summaryBtn) {
+        const icon = dom.summaryBtn.querySelector('.btn-icon-text');
+        const iconHTML = icon ? icon.outerHTML + ' ' : '';
+        dom.summaryBtn.innerHTML = iconHTML + (t.summary || 'Summary');
+    }
+
+    // Update the "Hearing:" label in interim area
+    const interimLabel = document.querySelector('.interim-label');
+    if (interimLabel) {
+        const hearingText = { ru: 'Слышу:', fi: 'Kuulee:', et: 'Kuulen:', de: 'Höre:', sv: 'Hör:', fr: 'Entend :', es: 'Escuchando:', ar: 'يسمع:', tr: 'Duyuyor:', uk: 'Чую:', pl: 'Słyszę:', fa: 'می‌شنوم:', lt: 'Girdžiu:', lv: 'Dzirdu:', it: 'Sento:', ro: 'Aud:' };
+        interimLabel.textContent = hearingText[lang] || 'Hearing:';
+    }
+}
+
+// ============================================
 // Legal Term Glossary — Finnish legal terms
 // ============================================
 const LEGAL_GLOSSARY = {
@@ -1252,7 +1828,8 @@ function startDeepgram() {
         return false;
     }
 
-    setStatus('connecting', 'Connecting to Deepgram...');
+    const _t = UI_TRANSLATIONS[state.userLanguage] || UI_TRANSLATIONS['en'];
+    setStatus('connecting', _t.connecting);
 
     const lang = state.language === 'multi' ? 'multi' : state.language;
     const params = new URLSearchParams({
@@ -1280,7 +1857,7 @@ function startDeepgram() {
     }
 
     state.dgSocket.onopen = () => {
-        setStatus('listening', 'Listening (Deepgram)');
+        setStatus('listening', (_t.listening || 'Listening...') + ' (Deepgram)');
         state.reconnectAttempts = 0;
         state.isReconnecting = false;
         hideReconnectFlash();
@@ -1469,7 +2046,8 @@ function startDemoMode() {
     state.recognition.lang = langMap[state.language] || 'fi-FI';
 
     state.recognition.onstart = () => {
-        setStatus('listening', 'Listening (Demo Mode)');
+        const _tDemo = UI_TRANSLATIONS[state.userLanguage] || UI_TRANSLATIONS['en'];
+        setStatus('listening', (_tDemo.listening || 'Listening...') + ' (Demo)');
     };
 
     state.recognition.onresult = (event) => {
@@ -2204,7 +2782,8 @@ async function startListening() {
     dom.startBtn.classList.add('active');
     dom.startBtn.setAttribute('aria-pressed', 'true');
     dom.startBtn.setAttribute('aria-label', 'Stop listening');
-    dom.startBtnText.textContent = 'Stop Listening';
+    const t = UI_TRANSLATIONS[state.userLanguage] || UI_TRANSLATIONS['en'];
+    dom.startBtnText.textContent = t.stopListening;
 
     // Hide context input, show quick responses
     if (dom.callContextArea) dom.callContextArea.classList.add('hidden');
@@ -2240,9 +2819,10 @@ function stopListening() {
     dom.startBtn.classList.remove('active');
     dom.startBtn.setAttribute('aria-pressed', 'false');
     dom.startBtn.setAttribute('aria-label', 'Start listening');
-    dom.startBtnText.textContent = 'Start Listening';
+    const tStop = UI_TRANSLATIONS[state.userLanguage] || UI_TRANSLATIONS['en'];
+    dom.startBtnText.textContent = tStop.startListening;
 
-    setStatus('', 'Stopped');
+    setStatus('', tStop.stopped);
     stopTimer();
     showInterim('');
 
@@ -2387,6 +2967,7 @@ function initEventListeners() {
         dom.userLanguageSelect.addEventListener('change', () => {
             state.userLanguage = dom.userLanguageSelect.value;
             localStorage.setItem('advocat_user_language', state.userLanguage);
+            applyUITranslations(state.userLanguage);
         });
     }
     dom.modeSelect.addEventListener('change', onModeChange);
@@ -2504,6 +3085,9 @@ function init() {
 
     loadSettings();
     initEventListeners();
+
+    // Apply UI translations based on saved user language
+    applyUITranslations(state.userLanguage);
 
     // Load saved context if any
     const savedContext = localStorage.getItem('advocat_call_context') || '';

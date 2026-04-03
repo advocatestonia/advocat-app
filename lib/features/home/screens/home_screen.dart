@@ -428,7 +428,7 @@ class _QuickActions extends StatelessWidget {
               ),
               _QuickActionButton(
                 icon: Icons.calculate_outlined,
-                label: l.legalFighter,
+                label: l.legalAidCalculator,
                 color: AppColors.warning,
                 onTap: () => context.push(AppRoutes.legalAid),
               ),
@@ -514,12 +514,14 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: 64,
-            height: 64,
+      child: SizedBox(
+        width: 72,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 64,
+              height: 64,
             child: AnimatedBuilder(
               animation: _pulseAnimation,
               builder: (context, child) {
@@ -564,16 +566,21 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
               },
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: 6),
           Text(
             widget.label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: widget.color,
-              fontSize: 12,
+              fontSize: 11,
               fontWeight: FontWeight.w600,
+              height: 1.2,
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -596,28 +603,35 @@ class _QuickActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 56,
-            height: 56,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
+      child: SizedBox(
+        width: 72,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 56,
+              height: 56,
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: color, size: 26),
             ),
-            child: Icon(icon, color: color, size: 26),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            label,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
+            const SizedBox(height: 6),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                height: 1.2,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -766,7 +766,7 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get secureDocumentStorageDesc =>
-      'Store your important legal documents securely. All files are encrypted end-to-end.';
+      'Store your important legal documents in one place for easy access.';
 
   @override
   String get addDocument => 'Add Document';

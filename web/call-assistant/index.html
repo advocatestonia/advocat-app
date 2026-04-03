@@ -84,7 +84,7 @@
                 <div class="modal-icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                 </div>
-                <h2>Settings</h2>
+                <h2 data-i18n="settings">Settings</h2>
                 <p class="modal-subtitle">Configure your API keys and preferences</p>
             </div>
             <div class="setting-group">
@@ -154,16 +154,23 @@
         <div class="top-bar-left">
             <div class="logo">
                 <div class="logo-icon-wrap">
-                    <svg class="logo-svg" width="28" height="28" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z" fill="url(#logo-grad)" opacity="0.9"/>
-                        <path d="M2 17l10 5 10-5" stroke="url(#logo-grad)" stroke-width="1.5" fill="none"/>
-                        <path d="M2 12l10 5 10-5" stroke="url(#logo-grad)" stroke-width="1.5" fill="none"/>
+                    <svg class="logo-svg" width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <linearGradient id="logo-grad" x1="2" y1="2" x2="22" y2="22">
-                                <stop offset="0%" stop-color="#00D4FF"/>
-                                <stop offset="100%" stop-color="#A78BFA"/>
+                                <stop offset="0%" stop-color="#06B6D4"/>
+                                <stop offset="100%" stop-color="#8B5CF6"/>
                             </linearGradient>
                         </defs>
+                        <!-- Headset band -->
+                        <path d="M4 13V11a8 8 0 0 1 16 0v2" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" fill="none"/>
+                        <!-- Left earpiece -->
+                        <rect x="2" y="13" width="4" height="6" rx="1.5" fill="url(#logo-grad)" opacity="0.85"/>
+                        <!-- Right earpiece -->
+                        <rect x="18" y="13" width="4" height="6" rx="1.5" fill="url(#logo-grad)" opacity="0.85"/>
+                        <!-- Microphone arm -->
+                        <path d="M6 17v2a2 2 0 0 0 2 2h2" stroke="url(#logo-grad)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+                        <!-- Microphone dot -->
+                        <circle cx="11" cy="21" r="1.2" fill="url(#logo-grad)"/>
                     </svg>
                 </div>
                 <span class="logo-text">ADVOCAT</span>
@@ -173,7 +180,7 @@
         <div class="top-bar-center">
             <div class="status-indicator" id="status-indicator" role="status" aria-live="polite">
                 <span class="status-dot" id="status-dot" aria-hidden="true"></span>
-                <span class="status-text" id="status-text">Ready</span>
+                <span class="status-text" id="status-text" data-i18n="ready">Ready</span>
             </div>
         </div>
         <div class="top-bar-right">
@@ -189,7 +196,7 @@
                     <option value="fr">🇫🇷 Français</option>
                     <option value="multi">🌐 Auto-detect</option>
                 </select>
-                <span class="select-label">Listen</span>
+                <span class="select-label" data-i18n="listen">Listen</span>
             </div>
             <div class="select-wrapper">
                 <select id="user-language-select" class="language-select" title="Your language (AI answers in this language)">
@@ -211,14 +218,14 @@
                     <option value="it">🇮🇹 Italiano</option>
                     <option value="ro">🇷🇴 Română</option>
                 </select>
-                <span class="select-label">AI Reply</span>
+                <span class="select-label" data-i18n="aiReply">AI Reply</span>
             </div>
             <div class="select-wrapper">
                 <select id="mode-select" class="mode-select">
                     <option value="deepgram">Deepgram (Best)</option>
                     <option value="demo">Demo Mode (Free)</option>
                 </select>
-                <span class="select-label">Engine</span>
+                <span class="select-label" data-i18n="engine">Engine</span>
             </div>
             <button id="theme-toggle" class="btn btn-icon" title="Toggle light/dark theme" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'">
                 <svg class="theme-icon-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
@@ -234,22 +241,22 @@
     <nav class="mobile-tabs" id="mobile-tabs">
         <button class="mobile-tab active" data-panel="transcript">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span>Transcript</span>
+            <span data-i18n="transcript">Transcript</span>
         </button>
         <button class="mobile-tab" data-panel="ai">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M20.59 3.41A10 10 0 0 1 22 12"/></svg>
-            <span>AI Assistant</span>
+            <span data-i18n="aiAssistantShort">AI Assistant</span>
         </button>
         <button class="mobile-tab" data-panel="keypoints">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <span>Key Points</span>
+            <span data-i18n="keyPoints">Key Points</span>
             <span class="mobile-tab-badge" id="mobile-kp-badge" style="display:none;">0</span>
         </button>
     </nav>
 
     <!-- Gesture Hint Overlay -->
     <div class="gesture-hint" id="gesture-hint">
-        <span>Swipe to see AI</span>
+        <span data-i18n="swipeToSeeAI">Swipe to see AI</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
     </div>
 
@@ -260,13 +267,13 @@
             <div class="panel-header">
                 <h2>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                    Live Transcript
+                    <span data-i18n="liveTranscript">Live Transcript</span>
                 </h2>
                 <div class="panel-actions">
                     <span id="word-count" class="badge">0 words</span>
                     <button id="clear-transcript" class="btn btn-small btn-secondary" title="Clear transcript">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-                        Clear
+                        <span data-i18n="clear">Clear</span>
                     </button>
                 </div>
             </div>
@@ -275,8 +282,8 @@
                     <div class="placeholder-icon">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
                     </div>
-                    <p class="placeholder-title">Ready to listen</p>
-                    <p class="hint">Press <kbd>Space</kbd> or the <strong>Start Listening</strong> button to begin</p>
+                    <p class="placeholder-title" data-i18n="readyToListen">Ready to listen</p>
+                    <p class="hint" data-i18n="pressSpaceHint">Press <kbd>Space</kbd> or the <strong>Start Listening</strong> button to begin</p>
                 </div>
             </div>
             <!-- Interim result shown at bottom -->
@@ -293,12 +300,12 @@
                 <div class="panel-header">
                     <h2>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M20.59 3.41A10 10 0 0 1 22 12"/></svg>
-                        AI Legal Assistant
+                        <span data-i18n="aiAssistant">AI Legal Assistant</span>
                     </h2>
                     <div class="panel-actions">
                         <button id="ask-ai-now" class="btn btn-small btn-accent" title="Get AI analysis now">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                            Analyze Now
+                            <span data-i18n="analyzeNow">Analyze Now</span>
                         </button>
                     </div>
                 </div>
@@ -307,8 +314,8 @@
                         <div class="placeholder-icon">
                             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M20.59 3.41A10 10 0 0 1 22 12"/></svg>
                         </div>
-                        <p class="placeholder-title">AI assistant standing by</p>
-                        <p class="hint">Claude analyzes the transcript every 15s and provides legal advice</p>
+                        <p class="placeholder-title" data-i18n="aiStandingBy">AI assistant standing by</p>
+                        <p class="hint" data-i18n="aiHint">Claude analyzes the transcript every 15s and provides legal advice</p>
                     </div>
                 </div>
             </div>
@@ -318,13 +325,13 @@
                 <div class="panel-header">
                     <h2>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        Key Points
+                        <span data-i18n="keyPoints">Key Points</span>
                     </h2>
                     <span id="keypoints-count" class="badge badge-accent">0</span>
                 </div>
                 <div class="keypoints-area" id="keypoints-area">
                     <div class="keypoints-placeholder" id="keypoints-placeholder">
-                        <p class="hint">Important points will be collected here throughout the call</p>
+                        <p class="hint" data-i18n="keypointsHint">Important points will be collected here throughout the call</p>
                     </div>
                     <ul class="keypoints-list" id="keypoints-list"></ul>
                 </div>
@@ -337,19 +344,19 @@
         <div class="bottom-left">
             <button id="test-mic-btn" class="btn btn-secondary" title="Test microphone">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-                Test Mic
+                <span data-i18n="testMic">Test Mic</span>
             </button>
             <button id="export-btn" class="btn btn-secondary" title="Export transcript (Ctrl+E)">
                 <svg class="export-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 <svg class="export-check" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                <span class="export-text">Export</span>
+                <span class="export-text" data-i18n="export">Export</span>
                 <kbd class="shortcut-hint">Ctrl+E</kbd>
             </button>
         </div>
         <div class="bottom-center">
             <button id="start-btn" class="btn btn-record" title="Space to toggle" aria-label="Start listening" aria-pressed="false">
                 <span class="record-dot" id="record-dot" aria-hidden="true"></span>
-                <span id="start-btn-text">Start Listening</span>
+                <span id="start-btn-text" data-i18n="startListening">Start Listening</span>
                 <kbd class="shortcut-hint shortcut-hint-light">Space</kbd>
             </button>
         </div>

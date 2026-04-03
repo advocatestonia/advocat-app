@@ -769,7 +769,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get secureDocumentStorageDesc =>
-      'Храните важные юридические документы в безопасности. Все файлы зашифрованы.';
+      'Храните важные юридические документы в одном месте для быстрого доступа.';
 
   @override
   String get addDocument => 'Добавить документ';

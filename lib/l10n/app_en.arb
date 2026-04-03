@@ -307,7 +307,7 @@
     "won": "Won",
     "documentVault": "Document Vault",
     "secureDocumentStorage": "Secure Document Storage",
-    "secureDocumentStorageDesc": "Store your important legal documents securely. All files are encrypted end-to-end.",
+    "secureDocumentStorageDesc": "Store your important legal documents in one place for easy access.",
     "addDocument": "Add Document",
     "chooseHowToAdd": "Choose how to add your document",
     "uploadFile": "Upload File",

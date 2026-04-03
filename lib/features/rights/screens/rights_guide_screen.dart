@@ -4,8 +4,17 @@ import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 
-class RightsGuideScreen extends StatelessWidget {
+class RightsGuideScreen extends StatefulWidget {
   const RightsGuideScreen({super.key});
+
+  @override
+  State<RightsGuideScreen> createState() => _RightsGuideScreenState();
+}
+
+class _RightsGuideScreenState extends State<RightsGuideScreen> {
+  String? _selectedCategory;
+
+  static const _categoryAll = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +27,9 @@ class RightsGuideScreen extends StatelessWidget {
         subtitle: l10n.stoppedByPoliceDesc,
         icon: Icons.local_police_outlined,
         color: AppColors.info,
+        category: 'Police',
+        rightsCount: 5,
+        tag: 'Essential',
       ),
       _RightsScenario(
         id: 'deportation',
@@ -25,6 +37,9 @@ class RightsGuideScreen extends StatelessWidget {
         subtitle: l10n.deportationNoticeDesc,
         icon: Icons.flight_takeoff_outlined,
         color: AppColors.error,
+        category: 'Essential',
+        rightsCount: 4,
+        tag: 'Essential',
       ),
       _RightsScenario(
         id: 'workplace',
@@ -32,6 +47,9 @@ class RightsGuideScreen extends StatelessWidget {
         subtitle: l10n.workplaceRightsDesc,
         icon: Icons.work_outline,
         color: AppColors.accent,
+        category: 'Work',
+        rightsCount: 5,
+        tag: 'Work',
       ),
       _RightsScenario(
         id: 'tenant',
@@ -39,6 +57,9 @@ class RightsGuideScreen extends StatelessWidget {
         subtitle: l10n.tenantRightsDesc,
         icon: Icons.home_outlined,
         color: AppColors.warning,
+        category: 'Housing',
+        rightsCount: 5,
+        tag: 'Housing',
       ),
       _RightsScenario(
         id: 'detention',
@@ -46,6 +67,9 @@ class RightsGuideScreen extends StatelessWidget {
         subtitle: l10n.immigrationDetentionDesc,
         icon: Icons.lock_outline,
         color: AppColors.error,
+        category: 'Essential',
+        rightsCount: 5,
+        tag: 'Essential',
       ),
       _RightsScenario(
         id: 'discrimination',
@@ -53,8 +77,24 @@ class RightsGuideScreen extends StatelessWidget {
         subtitle: l10n.discriminationDesc,
         icon: Icons.balance_outlined,
         color: AppColors.primary,
+        category: 'Essential',
+        rightsCount: 4,
+        tag: 'Essential',
       ),
     ];
+
+    final categories = [
+      _categoryAll,
+      'Essential',
+      'Police',
+      'Work',
+      'Housing',
+    ];
+
+    final filtered = _selectedCategory == null ||
+            _selectedCategory == _categoryAll
+        ? scenarios
+        : scenarios.where((s) => s.category == _selectedCategory).toList();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -62,74 +102,285 @@ class RightsGuideScreen extends StatelessWidget {
         title: Text(l10n.knowYourRights),
         backgroundColor: AppColors.surface,
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        itemCount: scenarios.length,
-        separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
-        itemBuilder: (context, index) {
-          final s = scenarios[index];
-          return Container(
+      body: CustomScrollView(
+        slivers: [
+          // Category filter chips
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 52,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.sm,
+                ),
+                itemCount: categories.length,
+                separatorBuilder: (_, __) =>
+                    const SizedBox(width: AppSpacing.xs),
+                itemBuilder: (context, index) {
+                  final cat = categories[index];
+                  final isSelected =
+                      (_selectedCategory ?? _categoryAll) == cat;
+                  return FilterChip(
+                    label: Text(cat),
+                    selected: isSelected,
+                    onSelected: (_) {
+                      setState(() {
+                        _selectedCategory = cat;
+                      });
+                    },
+                    backgroundColor: AppColors.surface,
+                    selectedColor: AppColors.primary.withValues(alpha: 0.12),
+                    checkmarkColor: AppColors.primary,
+                    labelStyle: TextStyle(
+                      fontSize: 13,
+                      fontWeight:
+                          isSelected ? FontWeight.w600 : FontWeight.w500,
+                      color: isSelected
+                          ? AppColors.primary
+                          : AppColors.textSecondary,
+                    ),
+                    side: BorderSide(
+                      color: isSelected
+                          ? AppColors.primary.withValues(alpha: 0.3)
+                          : AppColors.border,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.full),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+
+          // Scenario cards with staggered fade-in
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+            sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final s = filtered[index];
+                  return _AnimatedScenarioCard(
+                    scenario: s,
+                    index: index,
+                  );
+                },
+                childCount: filtered.length,
+              ),
+            ),
+          ),
+
+          const SliverToBoxAdapter(
+            child: SizedBox(height: AppSpacing.xl),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Animates each card in with a staggered fade + slide on first build.
+class _AnimatedScenarioCard extends StatefulWidget {
+  const _AnimatedScenarioCard({
+    required this.scenario,
+    required this.index,
+  });
+
+  final _RightsScenario scenario;
+  final int index;
+
+  @override
+  State<_AnimatedScenarioCard> createState() => _AnimatedScenarioCardState();
+}
+
+class _AnimatedScenarioCardState extends State<_AnimatedScenarioCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.15),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    ));
+
+    // Stagger: each card starts slightly later
+    Future.delayed(Duration(milliseconds: widget.index * 80), () {
+      if (mounted) _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final s = widget.scenario;
+    return FadeTransition(
+      opacity: _fadeAnimation,
+      child: SlideTransition(
+        position: _slideAnimation,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: AppSpacing.sm + 4),
+          child: Container(
             decoration: BoxDecoration(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppRadius.md),
+              borderRadius: BorderRadius.circular(AppRadius.lg),
               border: Border.all(color: AppColors.border),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
+                  color: s.color.withValues(alpha: 0.06),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderRadius: BorderRadius.circular(AppRadius.lg),
                 onTap: () => context.push('/rights/${s.id}'),
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.md),
                   child: Row(
                     children: [
+                      // Larger icon container
                       Container(
-                        width: 48,
-                        height: 48,
+                        width: 56,
+                        height: 56,
                         decoration: BoxDecoration(
-                          color: s.color.withValues(alpha: 0.1),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              s.color.withValues(alpha: 0.15),
+                              s.color.withValues(alpha: 0.05),
+                            ],
+                          ),
                           borderRadius: BorderRadius.circular(AppRadius.md),
                         ),
-                        child: Icon(s.icon, color: s.color, size: 24),
+                        child: Icon(s.icon, color: s.color, size: 28),
                       ),
                       const SizedBox(width: AppSpacing.md),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(s.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 15,
-                                  color: AppColors.textPrimary,
-                                )),
-                            const SizedBox(height: 2),
-                            Text(s.subtitle,
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  color: AppColors.textSecondary,
-                                  height: 1.3,
-                                )),
+                            // Title row with tag
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    s.title,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 3),
+                            Text(
+                              s.subtitle,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textSecondary,
+                                height: 1.3,
+                              ),
+                            ),
+                            const SizedBox(height: AppSpacing.sm),
+                            // Bottom row: tag + rights count badge
+                            Row(
+                              children: [
+                                _CategoryTag(
+                                  label: s.tag,
+                                  color: s.color,
+                                ),
+                                const SizedBox(width: AppSpacing.sm),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary
+                                        .withValues(alpha: 0.08),
+                                    borderRadius:
+                                        BorderRadius.circular(AppRadius.full),
+                                  ),
+                                  child: Text(
+                                    '${s.rightsCount} rights inside',
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.sm),
-                      const Icon(Icons.chevron_right,
-                          color: AppColors.textTertiary, size: 22),
+                      const SizedBox(width: AppSpacing.xs),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: s.color.withValues(alpha: 0.5),
+                        size: 24,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-          );
-        },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CategoryTag extends StatelessWidget {
+  const _CategoryTag({required this.label, required this.color});
+
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(AppRadius.full),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(
+          fontSize: 11,
+          fontWeight: FontWeight.w600,
+          color: color,
+        ),
       ),
     );
   }
@@ -142,6 +393,9 @@ class _RightsScenario {
     required this.subtitle,
     required this.icon,
     required this.color,
+    required this.category,
+    required this.rightsCount,
+    required this.tag,
   });
 
   final String id;
@@ -149,4 +403,7 @@ class _RightsScenario {
   final String subtitle;
   final IconData icon;
   final Color color;
+  final String category;
+  final int rightsCount;
+  final String tag;
 }

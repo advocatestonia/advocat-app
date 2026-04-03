@@ -87,13 +87,13 @@ class DocumentVaultScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.shield_outlined,
+                    Icon(Icons.lock_outlined,
                         size: 14,
                         color: AppColors.accent.withValues(alpha: 0.6)),
                     const SizedBox(width: 6),
-                    const Text(
-                      'AES-256 encrypted storage',
-                      style: TextStyle(
+                    Text(
+                      l10n.secureDocumentStorageDesc,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: AppColors.textTertiary,
                         fontWeight: FontWeight.w500,
