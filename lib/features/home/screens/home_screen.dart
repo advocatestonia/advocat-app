@@ -840,19 +840,11 @@ class _EmptyState extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: AppSpacing.lg),
-          // Shield icon
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: AppColors.accent.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.shield_outlined,
-              size: 40,
-              color: AppColors.accent.withValues(alpha: 0.7),
-            ),
+          // Advocat shield logo
+          Image.asset(
+            'assets/images/logo_shield.png',
+            width: 100,
+            height: 100,
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
