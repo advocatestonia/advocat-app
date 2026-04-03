@@ -839,12 +839,18 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Advocat shield logo
-          Image.asset(
-            'assets/images/logo_shield.png',
-            width: 200,
-            height: 200,
-            filterQuality: FilterQuality.high,
+          // Advocat shield logo — negative margin to cut white space in PNG
+          ClipRect(
+            child: Align(
+              alignment: Alignment.center,
+              heightFactor: 0.7,
+              child: Image.asset(
+                'assets/images/logo_shield.png',
+                width: 240,
+                height: 240,
+                filterQuality: FilterQuality.high,
+              ),
+            ),
           ),
           Text(
             l.noCasesYet,
