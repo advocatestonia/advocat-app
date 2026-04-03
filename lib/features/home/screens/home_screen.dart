@@ -855,7 +855,7 @@ class _EmptyState extends StatelessWidget {
                   color: AppColors.textPrimary,
                 ),
           ),
-          const SizedBox(height: AppSpacing.xs),
+          const SizedBox(height: 2),
           Text(
             l.startFirstCase,
             textAlign: TextAlign.center,
