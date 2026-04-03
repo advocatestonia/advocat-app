@@ -203,7 +203,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: AppSpacing.lg),
 
                 // -- Log In button --
-                SizedBox(
+                Semantics(
+                  label: 'Login button',
+                  button: true,
+                  child: SizedBox(
                   height: 52,
                   child: ElevatedButton(
                     onPressed: authState.isLoading ? null : _handleLogin,
@@ -232,6 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           )
                         : Text(l.logIn),
                   ),
+                ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
 
@@ -288,7 +292,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: AppSpacing.xxl),
 
                 // -- Demo Mode button --
-                SizedBox(
+                Semantics(
+                  label: 'Try demo mode button',
+                  button: true,
+                  child: SizedBox(
                   height: 52,
                   child: ElevatedButton.icon(
                     onPressed: authState.isLoading
@@ -314,6 +321,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ),
+                ),
                 const SizedBox(height: AppSpacing.lg),
 
                 // -- Sign up link --
@@ -327,14 +335,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         fontSize: 14,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () => context.go(AppRoutes.register),
-                      child: Text(
-                        l.signUpLink,
-                        style: const TextStyle(
-                          color: AppColors.accent,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
+                    Semantics(
+                      label: 'Sign up link',
+                      button: true,
+                      child: GestureDetector(
+                        onTap: () => context.go(AppRoutes.register),
+                        behavior: HitTestBehavior.opaque,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.sm,
+                            vertical: AppSpacing.xs + 8,
+                          ),
+                          child: Text(
+                            l.signUpLink,
+                            style: const TextStyle(
+                              color: AppColors.accent,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 14,
+                            ),
+                          ),
                         ),
                       ),
                     ),

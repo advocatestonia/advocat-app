@@ -320,6 +320,13 @@
     "appeal": "Överklagande",
     "appealDeadline": "Överklagandefrist",
     "appealDeadlineDesc": "Överklagande måste lämnas in senast {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "Överklagandefrist satt",
     "appealDraft": "Utkast till överklagande",
     "applyLegalAid": "Ansök om rättshjälp vid behov",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Kunde inte ta foto. Försök igen.",
     "caseCreated": "Ärende skapat",
     "caseCreatedDesc": "Ärende \"{title}\" har skapats.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Skapa ärende med förifyllda data kommer snart",
     "caseInfoUpdated": "Ärendeinformation senast uppdaterad.",
     "caseSummaryCopied": "Ärendesammanfattning kopierad",
@@ -347,6 +361,13 @@
     "connectYourEmail": "Anslut din e-post",
     "connectYourEmailDesc": "Anslut din e-post för att automatiskt upptäcka och organisera juridisk korrespondens.",
     "connectedTo": "Ansluten till {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Kontakta omedelbart en advokat",
     "contactLegalAidOffice": "Kontakta ett rättshjälpskontor",
     "cookiePolicy": "Cookiepolicy",
@@ -369,7 +390,21 @@
     "delete": "Radera",
     "deleteCase": "Radera ärende",
     "deleteCaseConfirm": "Är du säker på att du vill radera \"{title}\"? Åtgärden kan inte ångras.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "Radera {count} dokument?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Radera valda",
     "deportationNotice": "Utvisningsbeslut",
     "deportationNoticeDesc": "Steg för att överklaga ett utvisningsbeslut",
@@ -412,12 +447,26 @@
     "gdprIntro": "För att tillhandahålla AI-juridisk hjälp behandlar vi dina data i enlighet med GDPR (EU 2016/679). Genom att fortsätta godkänner du:",
     "gdprStorage": "Krypterad lagring av ärendedata",
     "generateAppealWithIssues": "Generera överklagande ({count} problem)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Skapar ditt utkast...",
     "generatingDraftDesc": "AI förbereder ett juridiskt dokument baserat på dina ärendedetaljer.",
     "greatJobDeadlines": "Bra jobbat med att hålla tidsfristerna.",
     "haveQuestionsAi": "Frågor? Fråga AI",
     "hearingScheduled": "Förhandling planerad",
     "hearingScheduledDesc": "Förhandling planerad till {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Hur du ska agera:",
     "iAgree": "Jag godkänner",
     "iAgreeToThe": "Jag godkänner ",
@@ -427,12 +476,33 @@
     "inCourt": "I domstol",
     "issuesFoundHeader": "Problem hittade",
     "issuesFoundInDocument": "Hittade {count} problem i ditt dokument",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Känn dina rättigheter",
     "landlordNotice": "Hyresvärden måste ge uppsägningstid (3-6 månader)",
     "lastSynced": "Senast synkroniserat: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "försenad",
     "legalAidCalculator": "Rättshjälpskalkylator",
     "legalAidWithCopay": "Du kan kvalificera för rättshjälp med en egenavgift på {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Juridiska e-postmeddelanden",
     "legalEmailsWillAppear": "E-post klassificerad som juridisk visas här.",
     "likelyEligible": "Troligen berättigad",
@@ -467,9 +537,37 @@
     "openSettings": "Öppna inställningar",
     "orWord": "eller",
     "pageCount": "{count} sida/or",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Sida {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} sidor uppladdade framgångsrikt",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Betalning misslyckades: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "PDF-export kommer snart",
     "pending": "Väntar",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Förvara dina viktiga juridiska dokument på ett ställe.",
     "securityDeposit": "Deposition max 3 månaders hyra",
     "selected": "{count} valda",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Allvarlighetsöversikt",
     "sickLeave": "Sjukersättning",
     "somethingWentWrong": "Något gick fel",
     "stoppedByPolice": "Stoppad av polisen",
     "stoppedByPoliceDesc": "Dina rättigheter vid poliskontroll",
     "successSubscribed": "Prenumeration på {plan} lyckades!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Växla till rutnät",
     "switchToList": "Växla till lista",
     "takePhotoInstead": "Ta ett foto istället",
@@ -539,6 +651,13 @@
     "uploadFile": "Ladda upp fil",
     "uploadFileDesc": "Välj en PDF eller bild från din enhet",
     "uploadingPercent": "Laddar upp... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Använd detta foto",
     "viewFull": "Visa fullständig",
     "workPermit": "Arbetstillstånd",
@@ -551,7 +670,6 @@
     "yourRights": "Dina rättigheter:",
     "yourRightsAsTenant": "Dina rättigheter som hyresgäst:",
     "yourRightsInDetention": "Dina rättigheter i förvar:",
-
     "whatToDo": "Vad ska du göra",
     "getHelp": "Få hjälp",
     "share": "Dela",
@@ -559,7 +677,6 @@
     "mustKnow": "Måste veta",
     "goodToKnow": "Bra att veta",
     "sentFromAdvocat": "Skickat från Advocat-appen",
-
     "policeActionStayCalm": "Håll dig lugn och håll händerna synliga",
     "policeActionAskWhy": "Fråga polisen varför du stoppas",
     "policeActionProvideName": "Uppge ditt namn och födelsedatum",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "Du kan spela in polisinteraktioner på offentliga platser i Finland. Detta skyddas av yttrandefriheten.",
     "contactFinnishLegalAid": "Finsk rättshjälp",
     "contactNonDiscriminationOmbudsman": "Diskrimineringsombudsmannen",
-
     "deportationDeadlineAppeal": "Överklagande till förvaltningsdomstolen — vanligtvis 30 dagar från delgivning",
     "deportationDeadlineLegalAid": "Ansök om rättshjälp — gör detta OMEDELBART",
     "deportationFactStayDuringAppeal": "I Finland har du vanligtvis rätt att stanna i landet medan ditt överklagande behandlas. Utvisning kan inte verkställas under ett pågående överklagande i de flesta fall.",
     "contactRefugeeAdviceCentre": "Finlands Flyktingrådgivning",
     "contactAdminCourtHelsinki": "Förvaltningsdomstolen i Helsingfors",
-
     "workplaceActionKeepContract": "Spara kopior av ditt anställningsavtal",
     "workplaceActionTrackHours": "Registrera dina arbetstimmar självständigt",
     "workplaceActionReportUnsafe": "Anmäl osäkra förhållanden till arbetarskyddsmyndigheten",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Även utan skriftligt avtal har du fulla anställningsrättigheter i Finland. Ett muntligt avtal är lika bindande enligt lag.",
     "contactOccupationalSafety": "Arbetarskyddsmyndigheten",
     "contactTradeUnionSAK": "Fackföreningsrådgivning (SAK)",
-
     "tenantActionWrittenAgreement": "Ha alltid ett skriftligt hyresavtal",
     "tenantActionDocumentCondition": "Dokumentera lägenhetens skick vid inflyttning (foton)",
     "tenantActionReportMaintenance": "Anmäl underhållsproblem skriftligt",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "En hyresvärd i Finland kan inte vräka dig utan domstolsbeslut, även om ditt hyresavtal har löpt ut. Att byta lås eller stänga av el/vatten är olagligt.",
     "contactTenantsAssociation": "Finlands Hyresgästförbund",
     "contactConsumerDisputesBoard": "Konsumenttvistenämnden",
-
     "detentionActionAskDecision": "Be omedelbart om det skriftliga förvarsbeslutet",
     "detentionActionRequestLawyer": "Begär att få kontakta en advokat",
     "detentionActionContactEmbassy": "Kontakta din ambassad eller konsulat",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Domstolen prövar förlängning varannan vecka",
     "detentionFactCourtReview": "Migrationsförvar i Finland måste prövas av en tingsrätt inom 4 dagar. Om det inte görs blir förvaret olagligt.",
     "contactParliamentaryOmbudsman": "Riksdagens justitieombudsman",
-
     "discriminationActionWriteDown": "Skriv ner exakt vad som hände (datum, tid, plats)",
     "discriminationActionSaveEvidence": "Spara bevis: meddelanden, e-post, vittnen",
     "discriminationActionFileComplaint": "Lämna in ett klagomål till Diskrimineringsombudsmannen",

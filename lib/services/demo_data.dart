@@ -28,7 +28,7 @@ abstract final class DemoData {
     preferredLanguage: 'en',
     subscriptionTier: SubscriptionTier.premium,
     subscriptionExpiresAt: DateTime.now().add(const Duration(days: 365)),
-    createdAt: DateTime(2025, 1, 15),
+    createdAt: DateTime.now().subtract(const Duration(days: 90)),
     updatedAt: DateTime.now(),
   );
 
@@ -51,10 +51,10 @@ abstract final class DemoData {
       migriReferenceNumber: 'UMA/2025/00431',
       courtCaseNumber: 'HAO 2025/1234',
       nationality: 'Estonian',
-      decisionDate: DateTime(2025, 3, 1),
-      appealDeadline: DateTime(2025, 4, 15),
-      hearingDate: DateTime(2025, 5, 20),
-      createdAt: DateTime(2025, 3, 5),
+      decisionDate: DateTime.now().subtract(const Duration(days: 35)),
+      appealDeadline: DateTime.now().add(const Duration(days: 10)),
+      hearingDate: DateTime.now().add(const Duration(days: 45)),
+      createdAt: DateTime.now().subtract(const Duration(days: 30)),
       updatedAt: DateTime.now().subtract(const Duration(hours: 3)),
       documentCount: 5,
       unreadMessages: 2,
@@ -69,7 +69,7 @@ abstract final class DemoData {
       status: CaseStatus.pendingDecision,
       migriReferenceNumber: 'UMA/2025/00589',
       nationality: 'Estonian',
-      createdAt: DateTime(2025, 2, 10),
+      createdAt: DateTime.now().subtract(const Duration(days: 55)),
       updatedAt: DateTime.now().subtract(const Duration(days: 2)),
       documentCount: 3,
       unreadMessages: 0,
@@ -85,7 +85,7 @@ abstract final class DemoData {
       type: CaseType.laborDispute,
       status: CaseStatus.active,
       nationality: 'Estonian',
-      createdAt: DateTime(2025, 4, 1),
+      createdAt: DateTime.now().subtract(const Duration(days: 5)),
       updatedAt: DateTime.now().subtract(const Duration(days: 1)),
       documentCount: 2,
       unreadMessages: 1,
@@ -102,7 +102,7 @@ abstract final class DemoData {
       type: CaseType.tenantRights,
       status: CaseStatus.active,
       nationality: 'Estonian',
-      createdAt: DateTime(2025, 4, 10),
+      createdAt: DateTime.now().subtract(const Duration(days: 2)),
       updatedAt: DateTime.now().subtract(const Duration(hours: 12)),
       documentCount: 1,
       unreadMessages: 1,
@@ -134,7 +134,7 @@ abstract final class DemoData {
         'appeal_deadline': '2025-04-15',
       },
       processingStatus: DocumentProcessingStatus.completed,
-      createdAt: DateTime(2025, 3, 5),
+      createdAt: DateTime.now().subtract(const Duration(days: 30)),
     ),
     CaseDocument(
       id: 'doc-002',
@@ -151,7 +151,7 @@ abstract final class DemoData {
           'found in the police decision. References Hallintolaki and '
           'Ulkomaalaislaki.',
       processingStatus: DocumentProcessingStatus.completed,
-      createdAt: DateTime(2025, 3, 8),
+      createdAt: DateTime.now().subtract(const Duration(days: 27)),
     ),
     CaseDocument(
       id: 'doc-003',
@@ -167,7 +167,7 @@ abstract final class DemoData {
           'Medical certificate from Helsinki University Hospital confirming '
           'ongoing medical treatment. Relevant for humanitarian grounds.',
       processingStatus: DocumentProcessingStatus.completed,
-      createdAt: DateTime(2025, 3, 10),
+      createdAt: DateTime.now().subtract(const Duration(days: 25)),
     ),
     CaseDocument(
       id: 'doc-004',
@@ -183,7 +183,7 @@ abstract final class DemoData {
           'Full-time employment contract with a Finnish company. '
           'Supports the case for continued residency.',
       processingStatus: DocumentProcessingStatus.completed,
-      createdAt: DateTime(2025, 3, 12),
+      createdAt: DateTime.now().subtract(const Duration(days: 23)),
     ),
     CaseDocument(
       id: 'doc-005',
@@ -199,7 +199,7 @@ abstract final class DemoData {
           'Support letter from RIKU (Victim Support Finland) confirming '
           'participation in their program.',
       processingStatus: DocumentProcessingStatus.completed,
-      createdAt: DateTime(2025, 3, 14),
+      createdAt: DateTime.now().subtract(const Duration(days: 21)),
     ),
   ];
 
@@ -218,7 +218,7 @@ abstract final class DemoData {
       priority: DeadlinePriority.high,
       status: DeadlineStatus.upcoming,
       source: DeadlineSource.manual,
-      createdAt: DateTime(2025, 3, 20),
+      createdAt: DateTime.now().subtract(const Duration(days: 15)),
     ),
     Deadline(
       id: 'dl-002',
@@ -234,7 +234,7 @@ abstract final class DemoData {
       status: DeadlineStatus.upcoming,
       source: DeadlineSource.aiExtracted,
       sourceDocumentId: 'doc-001',
-      createdAt: DateTime(2025, 3, 5),
+      createdAt: DateTime.now().subtract(const Duration(days: 30)),
     ),
     Deadline(
       id: 'dl-003',
@@ -244,13 +244,13 @@ abstract final class DemoData {
       description:
           'Last day to file the appeal with Helsinki Administrative Court. '
           '30 days from the date of the deportation decision.',
-      dueDate: DateTime(2025, 4, 15),
+      dueDate: DateTime.now().add(const Duration(days: 10)),
       type: DeadlineType.appeal,
       priority: DeadlinePriority.critical,
       status: DeadlineStatus.upcoming,
       source: DeadlineSource.aiExtracted,
       sourceDocumentId: 'doc-001',
-      createdAt: DateTime(2025, 3, 5),
+      createdAt: DateTime.now().subtract(const Duration(days: 30)),
     ),
     Deadline(
       id: 'dl-004',
@@ -260,12 +260,12 @@ abstract final class DemoData {
       description:
           'Oral hearing at Helsinki Administrative Court regarding the '
           'deportation appeal.',
-      dueDate: DateTime(2025, 5, 20),
+      dueDate: DateTime.now().add(const Duration(days: 45)),
       type: DeadlineType.hearing,
       priority: DeadlinePriority.critical,
       status: DeadlineStatus.upcoming,
       source: DeadlineSource.manual,
-      createdAt: DateTime(2025, 3, 15),
+      createdAt: DateTime.now().subtract(const Duration(days: 20)),
     ),
     Deadline(
       id: 'dl-005',
@@ -278,7 +278,7 @@ abstract final class DemoData {
       priority: DeadlinePriority.medium,
       status: DeadlineStatus.upcoming,
       source: DeadlineSource.manual,
-      createdAt: DateTime(2025, 2, 28),
+      createdAt: DateTime.now().subtract(const Duration(days: 37)),
     ),
   ];
 
@@ -306,8 +306,8 @@ abstract final class DemoData {
         'Contact legal aid',
       ],
       isRead: true,
-      sentAt: DateTime(2025, 3, 1),
-      createdAt: DateTime(2025, 3, 1),
+      sentAt: DateTime.now().subtract(const Duration(days: 35)),
+      createdAt: DateTime.now().subtract(const Duration(days: 35)),
     ),
     Correspondence(
       id: 'corr-002',
@@ -324,8 +324,8 @@ abstract final class DemoData {
       channel: CorrespondenceChannel.email,
       aiSummary: 'Appeal filing sent to Helsinki Administrative Court.',
       isRead: true,
-      sentAt: DateTime(2025, 3, 10),
-      createdAt: DateTime(2025, 3, 10),
+      sentAt: DateTime.now().subtract(const Duration(days: 25)),
+      createdAt: DateTime.now().subtract(const Duration(days: 25)),
     ),
     Correspondence(
       id: 'corr-003',
@@ -345,8 +345,8 @@ abstract final class DemoData {
           'Court confirmed receipt of appeal. Case number HAO 2025/1234 assigned.',
       extractedActionItems: ['Wait for hearing date notification'],
       isRead: true,
-      sentAt: DateTime(2025, 3, 15),
-      createdAt: DateTime(2025, 3, 15),
+      sentAt: DateTime.now().subtract(const Duration(days: 20)),
+      createdAt: DateTime.now().subtract(const Duration(days: 20)),
     ),
     Correspondence(
       id: 'corr-004',
@@ -363,8 +363,8 @@ abstract final class DemoData {
       channel: CorrespondenceChannel.email,
       aiSummary: 'RIKU confirms support program participation.',
       isRead: false,
-      sentAt: DateTime(2025, 3, 18),
-      createdAt: DateTime(2025, 3, 18),
+      sentAt: DateTime.now().subtract(const Duration(days: 17)),
+      createdAt: DateTime.now().subtract(const Duration(days: 17)),
     ),
   ];
 
@@ -378,7 +378,7 @@ abstract final class DemoData {
           '\u041F\u0440\u0438\u0432\u0435\u0442! \u042F \u0432\u0430\u0448 \u044E\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u043F\u043E\u043C\u043E\u0449\u043D\u0438\u043A. \u0420\u0430\u0441\u0441\u043A\u0430\u0436\u0438\u0442\u0435, '
           '\u0447\u0442\u043E \u0443 \u0432\u0430\u0441 \u0441\u043B\u0443\u0447\u0438\u043B\u043E\u0441\u044C \u2014 \u044F \u043F\u0440\u043E\u0430\u043D\u0430\u043B\u0438\u0437\u0438\u0440\u0443\u044E \u0441\u0438\u0442\u0443\u0430\u0446\u0438\u044E '
           '\u0438 \u043F\u043E\u0434\u0441\u043A\u0430\u0436\u0443 \u0447\u0442\u043E \u0434\u0435\u043B\u0430\u0442\u044C.',
-      'created_at': DateTime(2025, 3, 5, 10, 0).toIso8601String(),
+      'created_at': DateTime.now().subtract(const Duration(days: 30, hours: 2)).toIso8601String(),
     },
     {
       'id': 'msg-002',
@@ -386,7 +386,7 @@ abstract final class DemoData {
       'content':
           '\u041C\u0435\u043D\u044F \u0434\u0435\u043F\u043E\u0440\u0442\u0438\u0440\u043E\u0432\u0430\u043B\u0438 \u0438\u0437 \u0424\u0438\u043D\u043B\u044F\u043D\u0434\u0438\u0438, '
           '\u043F\u043E\u043B\u0438\u0446\u0438\u044F \u0441\u043A\u0430\u0437\u0430\u043B\u0430 \u0447\u0442\u043E \u044F \u0443\u043A\u0440\u0430\u043B \u0432 \u043C\u0430\u0433\u0430\u0437\u0438\u043D\u0435',
-      'created_at': DateTime(2025, 3, 5, 10, 1).toIso8601String(),
+      'created_at': DateTime.now().subtract(const Duration(days: 30, hours: 1, minutes: 59)).toIso8601String(),
     },
     {
       'id': 'msg-003',
@@ -409,14 +409,14 @@ abstract final class DemoData {
           '\n'
           '\u041C\u043E\u0436\u0435\u0442\u0435 \u0441\u0444\u043E\u0442\u043E\u0433\u0440\u0430\u0444\u0438\u0440\u043E\u0432\u0430\u0442\u044C \u0440\u0435\u0448\u0435\u043D\u0438\u0435 \u043F\u043E\u043B\u0438\u0446\u0438\u0438? '
           '\u042F \u043F\u0440\u043E\u0430\u043D\u0430\u043B\u0438\u0437\u0438\u0440\u0443\u044E \u0435\u0433\u043E \u043D\u0430 \u043E\u0448\u0438\u0431\u043A\u0438.',
-      'created_at': DateTime(2025, 3, 5, 10, 2).toIso8601String(),
+      'created_at': DateTime.now().subtract(const Duration(days: 30, hours: 1, minutes: 58)).toIso8601String(),
     },
     {
       'id': 'msg-004',
       'role': 'user',
       'content':
           '\u0412\u043E\u0442 \u0440\u0435\u0448\u0435\u043D\u0438\u0435',
-      'created_at': DateTime(2025, 3, 5, 10, 5).toIso8601String(),
+      'created_at': DateTime.now().subtract(const Duration(days: 30, hours: 1, minutes: 55)).toIso8601String(),
       'has_attachment': true,
     },
     {
@@ -449,7 +449,7 @@ abstract final class DemoData {
           '3. \u042F \u043C\u043E\u0433\u0443 \u043F\u043E\u0434\u0433\u043E\u0442\u043E\u0432\u0438\u0442\u044C \u0447\u0435\u0440\u043D\u043E\u0432\u0438\u043A \u0436\u0430\u043B\u043E\u0431\u044B \u043F\u0440\u044F\u043C\u043E \u0441\u0435\u0439\u0447\u0430\u0441\n'
           '\n'
           '\u26A0\uFE0F \u042D\u0442\u043E \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F, \u043D\u0435 \u044E\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043A\u0430\u044F \u043A\u043E\u043D\u0441\u0443\u043B\u044C\u0442\u0430\u0446\u0438\u044F. \u041F\u0440\u043E\u0432\u0435\u0440\u044C\u0442\u0435 \u0441 \u0430\u0434\u0432\u043E\u043A\u0430\u0442\u043E\u043C.',
-      'created_at': DateTime(2025, 3, 5, 10, 6).toIso8601String(),
+      'created_at': DateTime.now().subtract(const Duration(days: 30, hours: 1, minutes: 54)).toIso8601String(),
     },
   ];
 

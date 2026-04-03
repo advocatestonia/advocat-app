@@ -93,6 +93,9 @@ class ClaudeService {
   int get sessionOutputTokens => _sessionOutputTokens;
   int get sessionTotalTokens => _sessionInputTokens + _sessionOutputTokens;
 
+  /// Timestamp of the last API request, used for throttling.
+  DateTime? _lastRequestTime;
+
   /// Whether a valid API key is configured.
   static bool get isAvailable => AppConfig.claudeApiKey.isNotEmpty;
 
@@ -116,6 +119,17 @@ class ClaudeService {
     if (!isAvailable) {
       throw const ClaudeServiceException('Claude API key is not configured');
     }
+
+    // Enforce rate limiting: wait if the last request was too recent.
+    if (_lastRequestTime != null) {
+      final elapsed =
+          DateTime.now().difference(_lastRequestTime!).inMilliseconds;
+      final remaining = AppConfig.aiRequestThrottleMs - elapsed;
+      if (remaining > 0) {
+        await Future<void>.delayed(Duration(milliseconds: remaining));
+      }
+    }
+    _lastRequestTime = DateTime.now();
 
     final body = {
       'model': _model,

@@ -320,6 +320,13 @@
     "appeal": "Odwołanie",
     "appealDeadline": "Termin odwołania",
     "appealDeadlineDesc": "Odwołanie musi być złożone do {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "Termin odwołania ustawiony",
     "appealDraft": "Szkic odwołania",
     "applyLegalAid": "Złóż wniosek o pomoc prawną w razie potrzeby",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Nie udało się zrobić zdjęcia. Spróbuj ponownie.",
     "caseCreated": "Sprawa utworzona",
     "caseCreatedDesc": "Sprawa \"{title}\" została utworzona.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Tworzenie sprawy z wypełnionymi danymi wkrótce",
     "caseInfoUpdated": "Informacje o sprawie zostały zaktualizowane.",
     "caseSummaryCopied": "Podsumowanie sprawy skopiowane",
@@ -347,6 +361,13 @@
     "connectYourEmail": "Połącz swój email",
     "connectYourEmailDesc": "Połącz email, aby automatycznie wykrywać i organizować korespondencję prawną.",
     "connectedTo": "Połączono z {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Natychmiast skontaktuj się z prawnikiem",
     "contactLegalAidOffice": "Skontaktuj się z biurem pomocy prawnej",
     "cookiePolicy": "Polityka plików cookie",
@@ -369,7 +390,21 @@
     "delete": "Usuń",
     "deleteCase": "Usuń sprawę",
     "deleteCaseConfirm": "Czy na pewno chcesz usunąć \"{title}\"? Tej czynności nie można cofnąć.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "Usunąć {count} dokumentów?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Usuń wybrane",
     "deportationNotice": "Zawiadomienie o deportacji",
     "deportationNoticeDesc": "Kroki do zakwestionowania nakazu wydalenia",
@@ -412,12 +447,26 @@
     "gdprIntro": "Aby świadczyć pomoc prawną z AI, przetwarzamy Twoje dane zgodnie z RODO (UE 2016/679). Kontynuując zgadzasz się na:",
     "gdprStorage": "Szyfrowane przechowywanie danych spraw",
     "generateAppealWithIssues": "Wygeneruj odwołanie ({count} problemów)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Generowanie szkicu...",
     "generatingDraftDesc": "AI przygotowuje dokument prawny na podstawie szczegółów sprawy.",
     "greatJobDeadlines": "Świetna robota z dotrzymywaniem terminów.",
     "haveQuestionsAi": "Pytania? Zapytaj AI",
     "hearingScheduled": "Rozprawa zaplanowana",
     "hearingScheduledDesc": "Rozprawa sądowa zaplanowana na {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Jak postępować:",
     "iAgree": "Zgadzam się",
     "iAgreeToThe": "Akceptuję ",
@@ -427,12 +476,33 @@
     "inCourt": "W sądzie",
     "issuesFoundHeader": "Znalezione problemy",
     "issuesFoundInDocument": "Znaleziono {count} problem(ów) w dokumencie",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Poznaj swoje prawa",
     "landlordNotice": "Wynajmujący musi dać wypowiedzenie (3-6 miesięcy)",
     "lastSynced": "Ostatnia synchronizacja: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "opóźnione",
     "legalAidCalculator": "Kalkulator pomocy prawnej",
     "legalAidWithCopay": "Możesz kwalifikować się na pomoc prawną ze współpłatnością {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Emaile prawne",
     "legalEmailsWillAppear": "Emaile sklasyfikowane jako prawne pojawią się tutaj.",
     "likelyEligible": "Prawdopodobnie uprawniony",
@@ -467,9 +537,37 @@
     "openSettings": "Otwórz ustawienia",
     "orWord": "lub",
     "pageCount": "{count} stron(a)",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Strona {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} stron przesłano pomyślnie",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Płatność nie powiodła się: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "Eksport PDF wkrótce",
     "pending": "Oczekujące",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Przechowuj ważne dokumenty prawne w jednym miejscu.",
     "securityDeposit": "Kaucja max 3 miesiące czynszu",
     "selected": "{count} wybranych",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Przegląd powagi",
     "sickLeave": "Zasiłek chorobowy",
     "somethingWentWrong": "Coś poszło nie tak",
     "stoppedByPolice": "Zatrzymany przez policję",
     "stoppedByPoliceDesc": "Twoje prawa podczas kontroli policyjnej",
     "successSubscribed": "Subskrypcja {plan} aktywowana!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Widok siatki",
     "switchToList": "Widok listy",
     "takePhotoInstead": "Zrób zdjęcie",
@@ -539,6 +651,13 @@
     "uploadFile": "Prześlij plik",
     "uploadFileDesc": "Wybierz PDF lub obraz z urządzenia",
     "uploadingPercent": "Przesyłanie... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Użyj tego zdjęcia",
     "viewFull": "Zobacz pełny",
     "workPermit": "Pozwolenie na pracę",
@@ -551,7 +670,6 @@
     "yourRights": "Twoje prawa:",
     "yourRightsAsTenant": "Twoje prawa jako najemca:",
     "yourRightsInDetention": "Twoje prawa w zatrzymaniu:",
-
     "whatToDo": "Co robić",
     "getHelp": "Uzyskaj pomoc",
     "share": "Udostępnij",
@@ -559,7 +677,6 @@
     "mustKnow": "Musisz wiedzieć",
     "goodToKnow": "Warto wiedzieć",
     "sentFromAdvocat": "Wysłano z aplikacji Advocat",
-
     "policeActionStayCalm": "Zachowaj spokój i trzymaj ręce na widoku",
     "policeActionAskWhy": "Zapytaj funkcjonariusza, dlaczego zostałeś zatrzymany",
     "policeActionProvideName": "Podaj swoje imię i datę urodzenia",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "W Finlandii możesz nagrywać interakcje z policją w miejscach publicznych. Jest to chronione przez wolność słowa.",
     "contactFinnishLegalAid": "Fińska pomoc prawna",
     "contactNonDiscriminationOmbudsman": "Rzecznik ds. Równości",
-
     "deportationDeadlineAppeal": "Odwołanie do sądu administracyjnego — zwykle 30 dni od doręczenia",
     "deportationDeadlineLegalAid": "Złóż wniosek o pomoc prawną — zrób to NATYCHMIAST",
     "deportationFactStayDuringAppeal": "W Finlandii zwykle masz prawo pozostać w kraju podczas rozpatrywania odwołania. Deportacja nie może być wykonana podczas aktywnego odwołania w większości przypadków.",
     "contactRefugeeAdviceCentre": "Fińskie Centrum Porad dla Uchodźców",
     "contactAdminCourtHelsinki": "Sąd Administracyjny w Helsinkach",
-
     "workplaceActionKeepContract": "Przechowuj kopie umowy o pracę",
     "workplaceActionTrackHours": "Samodzielnie rejestruj godziny pracy",
     "workplaceActionReportUnsafe": "Zgłaszaj niebezpieczne warunki do inspekcji pracy",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Nawet bez pisemnej umowy masz pełne prawa pracownicze w Finlandii. Umowa ustna jest równie wiążąca prawnie.",
     "contactOccupationalSafety": "Urząd Bezpieczeństwa Pracy",
     "contactTradeUnionSAK": "Doradztwo związkowe (SAK)",
-
     "tenantActionWrittenAgreement": "Zawsze miej pisemną umowę najmu",
     "tenantActionDocumentCondition": "Udokumentuj stan mieszkania przy wprowadzeniu (zdjęcia)",
     "tenantActionReportMaintenance": "Zgłaszaj problemy z konserwacją na piśmie",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Wynajmujący w Finlandii nie może cię eksmitować bez nakazu sądowego, nawet jeśli umowa wygasła. Wymiana zamków lub odcięcie mediów jest nielegalne.",
     "contactTenantsAssociation": "Fiński Związek Najemców",
     "contactConsumerDisputesBoard": "Komisja ds. Sporów Konsumenckich",
-
     "detentionActionAskDecision": "Natychmiast zażądaj pisemnej decyzji o zatrzymaniu",
     "detentionActionRequestLawyer": "Zażądaj kontaktu z adwokatem",
     "detentionActionContactEmbassy": "Skontaktuj się z ambasadą lub konsulatem",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Sąd sprawdza przedłużenie co 2 tygodnie",
     "detentionFactCourtReview": "Zatrzymanie imigracyjne w Finlandii musi być rozpatrzone przez sąd rejonowy w ciągu 4 dni. Jeśli tak się nie stanie, zatrzymanie staje się bezprawne.",
     "contactParliamentaryOmbudsman": "Rzecznik Praw Obywatelskich",
-
     "discriminationActionWriteDown": "Zapisz dokładnie, co się wydarzyło (data, godzina, miejsce)",
     "discriminationActionSaveEvidence": "Zachowaj dowody: wiadomości, e-maile, świadkowie",
     "discriminationActionFileComplaint": "Złóż skargę do Rzecznika ds. Równości",

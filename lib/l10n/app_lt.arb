@@ -579,12 +579,26 @@
     "connectYourEmail": "Prijunkite el. paštą",
     "connectYourEmailDesc": "Prijunkite el. paštą, kad automatiškai aptiktumėte ir tvarkytumėte su bylomis susijusią teisinę korespondenciją.",
     "connectedTo": "Prijungta prie {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "cookiePolicy": "Slapukų politika",
     "copySummary": "Kopijuoti santrauką",
     "dataPrivacyConsent": "Duomenų privatumo sutikimas",
     "decline": "Atmesti",
     "deleteCase": "Ištrinti bylą",
     "deleteCaseConfirm": "Ar tikrai norite ištrinti \"{title}\"? Šio veiksmo negalima atšaukti.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "disconnectEmail": "Atjungti el. paštą",
     "disconnectEmailConfirm": "Automatinis el. pašto sinchronizavimas bus sustabdytas. Anksčiau sinchronizuoti laiškai liks bylose.",
     "draftCopiedToClipboard": "Juodraštis nukopijuotas",
@@ -607,6 +621,13 @@
     "iAgree": "Sutinku",
     "iAgreeToThe": "Sutinku su ",
     "lastSynced": "Sinchronizuota: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Teisiniai laiškai",
     "legalEmailsWillAppear": "Čia bus rodomi kaip teisiniai klasifikuoti laiškai.",
     "monthly": "Mėnesinis",
@@ -618,6 +639,13 @@
     "openCase": "Atidaryti bylą",
     "orWord": "arba",
     "paymentFailed": "Mokėjimas nepavyko: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "perMonth": "/mėn.",
     "perYear": "/m.",
     "priorityProcessing": "Prioritetinis apdorojimas",
@@ -627,6 +655,13 @@
     "russian": "Rusų",
     "saveTwentyFivePercent": "Sutaupykite 25%",
     "successSubscribed": "Prenumerata {plan} sėkmingai aktyvuota!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "takePhotoInstead": "Nufotografuoti",
     "threeCasesActive": "3 aktyvios bylos",
     "threeDocScans": "3 dokumentų nuskaitymai",
@@ -635,7 +670,6 @@
     "unlimitedDocScans": "Neribotas dokumentų nuskaitymas",
     "unlinkedEmails": "Nesusieti laiškai",
     "viewFull": "Peržiūrėti visą",
-
     "whatToDo": "Ką daryti",
     "getHelp": "Gauti pagalbą",
     "share": "Dalintis",
@@ -643,7 +677,6 @@
     "mustKnow": "Būtina žinoti",
     "goodToKnow": "Naudinga žinoti",
     "sentFromAdvocat": "Išsiųsta iš Advocat programėlės",
-
     "policeActionStayCalm": "Likite ramūs ir laikykite rankas matomoje vietoje",
     "policeActionAskWhy": "Paklauskite pareigūno, kodėl buvote sustabdytas",
     "policeActionProvideName": "Nurodykite savo vardą ir gimimo datą",
@@ -654,13 +687,11 @@
     "policeFactCanRecord": "Suomijoje galite įrašyti sąveiką su policija viešose vietose. Tai apsaugota žodžio laisvės.",
     "contactFinnishLegalAid": "Suomijos teisinė pagalba",
     "contactNonDiscriminationOmbudsman": "Nediskriminavimo ombudsmenas",
-
     "deportationDeadlineAppeal": "Apeliacija Administraciniam teismui — paprastai 30 dienų nuo pranešimo",
     "deportationDeadlineLegalAid": "Kreipkitės dėl teisinės pagalbos — darykite tai NEDELSIANT",
     "deportationFactStayDuringAppeal": "Suomijoje paprastai turite teisę likti šalyje, kol jūsų apeliacija nagrinėjama. Deportacija negali būti vykdoma aktyvios apeliacijos metu daugeliu atvejų.",
     "contactRefugeeAdviceCentre": "Suomijos pabėgėlių konsultavimo centras",
     "contactAdminCourtHelsinki": "Helsinkio administracinis teismas",
-
     "workplaceActionKeepContract": "Saugokite darbo sutarties kopijas",
     "workplaceActionTrackHours": "Savarankiškai sekite darbo valandas",
     "workplaceActionReportUnsafe": "Praneškite apie nesaugias sąlygas darbo saugos institucijai",
@@ -670,7 +701,6 @@
     "workplaceFactOralContract": "Net ir be rašytinės sutarties Suomijoje turite visas darbuotojo teises. Žodinis susitarimas yra teisiškai vienodai privalomas.",
     "contactOccupationalSafety": "Darbo saugos tarnyba",
     "contactTradeUnionSAK": "Profesinės sąjungos konsultacija (SAK)",
-
     "tenantActionWrittenAgreement": "Visada turėkite rašytinę nuomos sutartį",
     "tenantActionDocumentCondition": "Dokumentuokite buto būklę įsikeliant (nuotraukos)",
     "tenantActionReportMaintenance": "Praneškite apie priežiūros problemas raštu",
@@ -679,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Nuomotojas Suomijoje negali jūsų iškeldinti be teismo sprendimo, net jei nuomos sutartis pasibaigė. Spynų keitimas ar komunalinių paslaugų atjungimas yra neteisėtas.",
     "contactTenantsAssociation": "Suomijos nuomininkų asociacija",
     "contactConsumerDisputesBoard": "Vartotojų ginčų komisija",
-
     "detentionActionAskDecision": "Nedelsdami pareikalaukite rašytinio sulaikymo sprendimo",
     "detentionActionRequestLawyer": "Pareikalaukite susisiekti su advokatu",
     "detentionActionContactEmbassy": "Susisiekite su savo ambasada ar konsulatu",
@@ -689,7 +718,6 @@
     "detentionDeadlineContinuation": "Teismas peržiūri pratęsimą kas 2 savaites",
     "detentionFactCourtReview": "Imigracinis sulaikymas Suomijoje turi būti peržiūrėtas apylinkės teismo per 4 dienas. Jei to nepadaroma, sulaikymas tampa neteisėtu.",
     "contactParliamentaryOmbudsman": "Parlamentinis ombudsmenas",
-
     "discriminationActionWriteDown": "Užrašykite tiksliai, kas atsitiko (data, laikas, vieta)",
     "discriminationActionSaveEvidence": "Išsaugokite įrodymus: žinutes, el. laiškus, liudytojus",
     "discriminationActionFileComplaint": "Pateikite skundą Nediskriminavimo ombudsmenui",

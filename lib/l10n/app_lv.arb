@@ -579,12 +579,26 @@
     "connectYourEmail": "Pievienojiet e-pastu",
     "connectYourEmailDesc": "Pievienojiet e-pastu, lai automātiski noteiktu un sakārtotu ar jūsu lietām saistīto juridisko saraksti.",
     "connectedTo": "Savienots ar {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "cookiePolicy": "Sīkdatņu politika",
     "copySummary": "Kopēt kopsavilkumu",
     "dataPrivacyConsent": "Datu konfidencialitātes piekrišana",
     "decline": "Noraidīt",
     "deleteCase": "Dzēst lietu",
     "deleteCaseConfirm": "Vai tiešām vēlaties dzēst \"{title}\"? Šo darbību nevar atcelt.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "disconnectEmail": "Atvienot e-pastu",
     "disconnectEmailConfirm": "Automātiskā e-pasta sinhronizācija tiks apturēta. Iepriekš sinhronizētie e-pasti paliks jūsu lietās.",
     "draftCopiedToClipboard": "Melnraksts nokopēts",
@@ -607,6 +621,13 @@
     "iAgree": "Piekrītu",
     "iAgreeToThe": "Es piekrītu ",
     "lastSynced": "Sinhronizēts: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Juridiskie e-pasti",
     "legalEmailsWillAppear": "Šeit parādīsies kā juridiski klasificētie e-pasti.",
     "monthly": "Mēneša",
@@ -618,6 +639,13 @@
     "openCase": "Atvērt lietu",
     "orWord": "vai",
     "paymentFailed": "Maksājums neizdevās: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "perMonth": "/mēn.",
     "perYear": "/gadā",
     "priorityProcessing": "Prioritāra apstrāde",
@@ -627,6 +655,13 @@
     "russian": "Krievu",
     "saveTwentyFivePercent": "Ietaupiet 25%",
     "successSubscribed": "Abonements {plan} veiksmīgi aktivizēts!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "takePhotoInstead": "Nofotografēt",
     "threeCasesActive": "3 aktīvas lietas",
     "threeDocScans": "3 dokumentu skenēšanas",
@@ -635,7 +670,6 @@
     "unlimitedDocScans": "Neierobežota dokumentu skenēšana",
     "unlinkedEmails": "Nesaistīti e-pasti",
     "viewFull": "Skatīt pilnībā",
-
     "whatToDo": "Ko darīt",
     "getHelp": "Saņemt palīdzību",
     "share": "Kopīgot",
@@ -643,7 +677,6 @@
     "mustKnow": "Jāzina obligāti",
     "goodToKnow": "Noderīgi zināt",
     "sentFromAdvocat": "Nosūtīts no Advocat lietotnes",
-
     "policeActionStayCalm": "Esiet mierīgs un turiet rokas redzamā vietā",
     "policeActionAskWhy": "Jautājiet ierēdnim, kāpēc jūs apturēja",
     "policeActionProvideName": "Norādiet savu vārdu un dzimšanas datumu",
@@ -654,13 +687,11 @@
     "policeFactCanRecord": "Jūs varat ierakstīt mijiedarbību ar policiju publiskās vietās Somijā. To aizsargā vārda brīvība.",
     "contactFinnishLegalAid": "Somijas juridiskā palīdzība",
     "contactNonDiscriminationOmbudsman": "Nediskriminācijas ombuds",
-
     "deportationDeadlineAppeal": "Apelācija Administratīvajā tiesā — parasti 30 dienas pēc paziņošanas",
     "deportationDeadlineLegalAid": "Piesakieties juridiskajai palīdzībai — dariet to NEKAVĒJOTIES",
     "deportationFactStayDuringAppeal": "Somijā jums parasti ir tiesības palikt valstī, kamēr jūsu apelācija tiek izskatīta. Deportāciju nevar veikt aktīvas apelācijas laikā vairumā gadījumu.",
     "contactRefugeeAdviceCentre": "Somijas Bēgļu konsultāciju centrs",
     "contactAdminCourtHelsinki": "Helsinku Administratīvā tiesa",
-
     "workplaceActionKeepContract": "Saglabājiet darba līguma kopijas",
     "workplaceActionTrackHours": "Patstāvīgi fiksējiet darba stundas",
     "workplaceActionReportUnsafe": "Ziņojiet par nedrošiem apstākļiem darba aizsardzības iestādei",
@@ -670,7 +701,6 @@
     "workplaceFactOralContract": "Pat bez rakstiska līguma jums Somijā ir pilnas darbinieka tiesības. Mutiska vienošanās ir tikpat juridiski saistoša.",
     "contactOccupationalSafety": "Darba aizsardzības iestāde",
     "contactTradeUnionSAK": "Arodbiedrību konsultācijas (SAK)",
-
     "tenantActionWrittenAgreement": "Vienmēr noslēdziet rakstisku īres līgumu",
     "tenantActionDocumentCondition": "Dokumentējiet dzīvokļa stāvokli iebraukšanas brīdī (fotogrāfijas)",
     "tenantActionReportMaintenance": "Ziņojiet par uzturēšanas problēmām rakstiski",
@@ -679,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Izīrētājs Somijā nevar jūs izlikt bez tiesas lēmuma, pat ja īres līgums ir beidzies. Slēdzeņu maiņa vai komunālo pakalpojumu atslēgšana ir nelikumīga.",
     "contactTenantsAssociation": "Somijas Īrnieku apvienība",
     "contactConsumerDisputesBoard": "Patērētāju strīdu komisija",
-
     "detentionActionAskDecision": "Nekavējoties pieprasiet rakstisku aizturēšanas lēmumu",
     "detentionActionRequestLawyer": "Pieprasiet sazināties ar advokātu",
     "detentionActionContactEmbassy": "Sazinieties ar savu vēstniecību vai konsulātu",
@@ -689,7 +718,6 @@
     "detentionDeadlineContinuation": "Tiesa pārskata pagarināšanu ik pēc 2 nedēļām",
     "detentionFactCourtReview": "Imigrācijas aizturēšana Somijā jāpārskata rajona tiesai 4 dienu laikā. Ja tas netiek darīts, aizturēšana kļūst nelikumīga.",
     "contactParliamentaryOmbudsman": "Parlamentārais ombuds",
-
     "discriminationActionWriteDown": "Pierakstiet precīzi, kas notika (datums, laiks, vieta)",
     "discriminationActionSaveEvidence": "Saglabājiet pierādījumus: ziņojumus, e-pastus, lieciniekus",
     "discriminationActionFileComplaint": "Iesniedziet sūdzību Nediskriminācijas ombudam",

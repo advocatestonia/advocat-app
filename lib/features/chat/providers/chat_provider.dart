@@ -146,9 +146,19 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   // ── Send a message ──────────────────────────────────────────────────
 
+  /// Maximum allowed message length in characters.
+  static const int _maxMessageLength = 10000;
+
   Future<void> sendMessage(String text) async {
     final trimmed = text.trim();
     if (trimmed.isEmpty || state.isSending) return;
+
+    if (trimmed.length > _maxMessageLength) {
+      state = state.copyWith(
+        error: 'Message is too long. Maximum length is $_maxMessageLength characters.',
+      );
+      return;
+    }
 
     // Optimistic UI: add user message immediately
     final userMessage = ChatMessageData(

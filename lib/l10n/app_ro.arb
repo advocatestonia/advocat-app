@@ -320,6 +320,13 @@
     "appeal": "Contestație",
     "appealDeadline": "Termen contestație",
     "appealDeadlineDesc": "Contestația trebuie depusă până la {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "Termen contestație setat",
     "appealDraft": "Ciornă contestație",
     "applyLegalAid": "Solicitați asistență juridică dacă este necesar",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Nu s-a putut face fotografia. Încercați din nou.",
     "caseCreated": "Caz creat",
     "caseCreatedDesc": "Cazul \"{title}\" a fost creat.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Crearea cazului cu date precompletate în curând",
     "caseInfoUpdated": "Informațiile cazului au fost actualizate.",
     "caseSummaryCopied": "Rezumatul cazului copiat",
@@ -347,6 +361,13 @@
     "connectYourEmail": "Conectați-vă emailul",
     "connectYourEmailDesc": "Conectați emailul pentru a detecta automat corespondența juridică legată de cazurile dvs.",
     "connectedTo": "Conectat la {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Contactați imediat un avocat",
     "contactLegalAidOffice": "Contactați un birou de asistență juridică",
     "cookiePolicy": "Politica cookie-urilor",
@@ -369,7 +390,21 @@
     "delete": "Șterge",
     "deleteCase": "Șterge cazul",
     "deleteCaseConfirm": "Sigur doriți să ștergeți \"{title}\"? Acțiunea nu poate fi anulată.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "Ștergeți {count} documente?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Șterge selectate",
     "deportationNotice": "Notificare deportare",
     "deportationNoticeDesc": "Pași pentru contestarea unui ordin de expulzare",
@@ -412,12 +447,26 @@
     "gdprIntro": "Pentru a oferi asistență juridică cu IA, procesăm datele dvs. conform GDPR (UE 2016/679). Continuând, acceptați:",
     "gdprStorage": "Stocare criptată a datelor cazurilor",
     "generateAppealWithIssues": "Generează contestație ({count} probleme)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Se generează ciorna...",
     "generatingDraftDesc": "IA pregătește un document juridic bazat pe detaliile cazului dvs.",
     "greatJobDeadlines": "Bravo că respectați termenele.",
     "haveQuestionsAi": "Întrebări? Întrebați IA",
     "hearingScheduled": "Audiență programată",
     "hearingScheduledDesc": "Audiență în instanță programată pentru {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Cum să acționați:",
     "iAgree": "Sunt de acord",
     "iAgreeToThe": "Accept ",
@@ -427,12 +476,33 @@
     "inCourt": "În instanță",
     "issuesFoundHeader": "Probleme găsite",
     "issuesFoundInDocument": "S-au găsit {count} problemă(e) în document",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Cunoaște-ți drepturile",
     "landlordNotice": "Proprietarul trebuie să dea preaviz (3-6 luni)",
     "lastSynced": "Ultima sincronizare: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "întârziat",
     "legalAidCalculator": "Calculator asistență juridică",
     "legalAidWithCopay": "Puteți beneficia de asistență juridică cu o coplată de {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Emailuri juridice",
     "legalEmailsWillAppear": "Emailurile clasificate ca juridice vor apărea aici.",
     "likelyEligible": "Probabil eligibil",
@@ -467,9 +537,37 @@
     "openSettings": "Deschide setările",
     "orWord": "sau",
     "pageCount": "{count} pagină(i)",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Pagina {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} pagini încărcate cu succes",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Plata a eșuat: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "Export PDF în curând",
     "pending": "În așteptare",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Păstrați documentele juridice importante într-un singur loc.",
     "securityDeposit": "Garanție max 3 luni chirie",
     "selected": "{count} selectate",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Rezumat gravitate",
     "sickLeave": "Compensație concediu medical",
     "somethingWentWrong": "Ceva a mers greșit",
     "stoppedByPolice": "Oprit de poliție",
     "stoppedByPoliceDesc": "Drepturile dvs. în timpul unui control de poliție",
     "successSubscribed": "Abonament {plan} activat cu succes!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Comută la grilă",
     "switchToList": "Comută la listă",
     "takePhotoInstead": "Faceți o fotografie",
@@ -539,6 +651,13 @@
     "uploadFile": "Încarcă fișier",
     "uploadFileDesc": "Alegeți un PDF sau o imagine de pe dispozitiv",
     "uploadingPercent": "Se încarcă... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Folosește această fotografie",
     "viewFull": "Vezi complet",
     "workPermit": "Permis de muncă",
@@ -551,7 +670,6 @@
     "yourRights": "Drepturile dvs.:",
     "yourRightsAsTenant": "Drepturile dvs. ca chiriaș:",
     "yourRightsInDetention": "Drepturile dvs. în detenție:",
-
     "whatToDo": "Ce trebuie făcut",
     "getHelp": "Obțineți ajutor",
     "share": "Distribuie",
@@ -559,7 +677,6 @@
     "mustKnow": "Trebuie să știți",
     "goodToKnow": "Bine de știut",
     "sentFromAdvocat": "Trimis din aplicația Advocat",
-
     "policeActionStayCalm": "Rămâneți calm și țineți mâinile la vedere",
     "policeActionAskWhy": "Întrebați agentul de ce ați fost oprit",
     "policeActionProvideName": "Furnizați numele și data nașterii",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "Puteți înregistra interacțiunile cu poliția în locuri publice în Finlanda. Acest lucru este protejat de libertatea de exprimare.",
     "contactFinnishLegalAid": "Asistență juridică finlandeză",
     "contactNonDiscriminationOmbudsman": "Ombudsmanul pentru nediscriminare",
-
     "deportationDeadlineAppeal": "Contestație la Tribunalul Administrativ — de obicei 30 de zile de la notificare",
     "deportationDeadlineLegalAid": "Solicitați asistență juridică — faceți acest lucru IMEDIAT",
     "deportationFactStayDuringAppeal": "În Finlanda, aveți de obicei dreptul de a rămâne în țară în timp ce contestația dvs. este procesată. Deportarea nu poate fi executată în timpul unei contestații active în majoritatea cazurilor.",
     "contactRefugeeAdviceCentre": "Centrul finlandez de consiliere pentru refugiați",
     "contactAdminCourtHelsinki": "Tribunalul Administrativ Helsinki",
-
     "workplaceActionKeepContract": "Păstrați copii ale contractului de muncă",
     "workplaceActionTrackHours": "Urmăriți independent orele de lucru",
     "workplaceActionReportUnsafe": "Raportați condițiile nesigure autorității de protecție a muncii",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Chiar și fără un contract scris, aveți drepturi depline ca angajat în Finlanda. Un acord verbal este la fel de obligatoriu din punct de vedere legal.",
     "contactOccupationalSafety": "Autoritatea de Securitate Ocupațională",
     "contactTradeUnionSAK": "Consiliere sindicală (SAK)",
-
     "tenantActionWrittenAgreement": "Aveți întotdeauna un contract de închiriere scris",
     "tenantActionDocumentCondition": "Documentați starea apartamentului la mutare (fotografii)",
     "tenantActionReportMaintenance": "Raportați problemele de întreținere în scris",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Un proprietar în Finlanda nu vă poate evacua fără o hotărâre judecătorească, chiar dacă contractul a expirat. Schimbarea încuietorilor sau întreruperea utilităților este ilegală.",
     "contactTenantsAssociation": "Asociația finlandeză a chiriașilor",
     "contactConsumerDisputesBoard": "Comisia pentru litigii de consum",
-
     "detentionActionAskDecision": "Cereți imediat decizia scrisă de detenție",
     "detentionActionRequestLawyer": "Solicitați să contactați un avocat",
     "detentionActionContactEmbassy": "Contactați ambasada sau consulatul dvs.",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Instanța revizuiește continuarea la fiecare 2 săptămâni",
     "detentionFactCourtReview": "Detenția pentru imigrare în Finlanda trebuie revizuită de o judecătorie în 4 zile. Dacă nu se face, detenția devine ilegală.",
     "contactParliamentaryOmbudsman": "Ombudsmanul Parlamentar",
-
     "discriminationActionWriteDown": "Scrieți exact ce s-a întâmplat (data, ora, locul)",
     "discriminationActionSaveEvidence": "Salvați dovezile: mesaje, emailuri, martori",
     "discriminationActionFileComplaint": "Depuneți o plângere la Ombudsmanul pentru nediscriminare",

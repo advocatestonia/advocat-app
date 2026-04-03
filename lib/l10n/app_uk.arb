@@ -320,6 +320,13 @@
     "appeal": "Оскарження",
     "appealDeadline": "Термін оскарження",
     "appealDeadlineDesc": "Оскарження має бути подано до {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "Термін оскарження встановлено",
     "appealDraft": "Чернетка оскарження",
     "applyLegalAid": "Подайте заяву на правову допомогу за потреби",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Не вдалося зробити фото. Спробуйте знову.",
     "caseCreated": "Справу створено",
     "caseCreatedDesc": "Справу \"{title}\" створено.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Створення справи з попередньо заповненими даними незабаром",
     "caseInfoUpdated": "Інформація справи оновлена.",
     "caseSummaryCopied": "Зведення справи скопійовано",
@@ -347,6 +361,13 @@
     "connectYourEmail": "Підключіть вашу пошту",
     "connectYourEmailDesc": "Підключіть email для автоматичного виявлення юридичного листування.",
     "connectedTo": "Підключено до {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Негайно зверніться до адвоката",
     "contactLegalAidOffice": "Зверніться до бюро правової допомоги",
     "cookiePolicy": "Політика файлів cookie",
@@ -369,7 +390,21 @@
     "delete": "Видалити",
     "deleteCase": "Видалити справу",
     "deleteCaseConfirm": "Ви впевнені, що хочете видалити \"{title}\"? Цю дію не можна скасувати.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "Видалити {count} документів?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Видалити вибрані",
     "deportationNotice": "Повідомлення про депортацію",
     "deportationNoticeDesc": "Кроки для оскарження наказу про видалення",
@@ -412,12 +447,26 @@
     "gdprIntro": "Для надання правової допомоги з ШІ ми обробляємо ваші дані відповідно до GDPR (ЄС 2016/679). Продовжуючи, ви погоджуєтесь з:",
     "gdprStorage": "Зашифроване зберігання даних справ",
     "generateAppealWithIssues": "Створити оскарження ({count} проблем)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Створення чернетки...",
     "generatingDraftDesc": "ШІ готує юридичний документ на основі деталей справи.",
     "greatJobDeadlines": "Чудова робота з дотриманням термінів.",
     "haveQuestionsAi": "Є питання? Запитайте ШІ",
     "hearingScheduled": "Слухання заплановано",
     "hearingScheduledDesc": "Судове слухання заплановано на {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Як діяти:",
     "iAgree": "Погоджуюсь",
     "iAgreeToThe": "Я приймаю ",
@@ -427,12 +476,33 @@
     "inCourt": "У суді",
     "issuesFoundHeader": "Знайдені проблеми",
     "issuesFoundInDocument": "Знайдено {count} проблем(и) у документі",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Знай свої права",
     "landlordNotice": "Орендодавець має попередити (3-6 місяців)",
     "lastSynced": "Остання синхронізація: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "прострочено",
     "legalAidCalculator": "Калькулятор правової допомоги",
     "legalAidWithCopay": "Ви можете мати право на правову допомогу зі співоплатою {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Юридичні листи",
     "legalEmailsWillAppear": "Листи, класифіковані як юридичні, з'являться тут.",
     "likelyEligible": "Ймовірно має право",
@@ -467,9 +537,37 @@
     "openSettings": "Відкрити налаштування",
     "orWord": "або",
     "pageCount": "{count} сторінок",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Сторінка {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} сторінок успішно завантажено",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Помилка оплати: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "Експорт PDF незабаром",
     "pending": "Очікує",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Зберігайте важливі юридичні документи в одному місці.",
     "securityDeposit": "Застава макс. 3 місяці оренди",
     "selected": "{count} вибрано",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Огляд серйозності",
     "sickLeave": "Компенсація лікарняного",
     "somethingWentWrong": "Щось пішло не так",
     "stoppedByPolice": "Зупинений поліцією",
     "stoppedByPoliceDesc": "Ваші права під час поліцейського контролю",
     "successSubscribed": "Підписка на {plan} успішна!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Перемкнути на сітку",
     "switchToList": "Перемкнути на список",
     "takePhotoInstead": "Зробити фото",
@@ -539,6 +651,13 @@
     "uploadFile": "Завантажити файл",
     "uploadFileDesc": "Виберіть PDF або зображення з пристрою",
     "uploadingPercent": "Завантаження... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Використати це фото",
     "viewFull": "Переглянути повністю",
     "workPermit": "Дозвіл на роботу",
@@ -551,7 +670,6 @@
     "yourRights": "Ваші права:",
     "yourRightsAsTenant": "Ваші права як орендаря:",
     "yourRightsInDetention": "Ваші права при затриманні:",
-
     "whatToDo": "Що робити",
     "getHelp": "Отримати допомогу",
     "share": "Поділитися",
@@ -559,7 +677,6 @@
     "mustKnow": "Обов'язково знати",
     "goodToKnow": "Корисно знати",
     "sentFromAdvocat": "Надіслано з додатку Advocat",
-
     "policeActionStayCalm": "Зберігайте спокій і тримайте руки на виду",
     "policeActionAskWhy": "Запитайте поліцейського, чому вас зупинили",
     "policeActionProvideName": "Назвіть своє ім'я та дату народження",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "У Фінляндії ви можете записувати взаємодію з поліцією в громадських місцях. Це захищено свободою слова.",
     "contactFinnishLegalAid": "Фінська правова допомога",
     "contactNonDiscriminationOmbudsman": "Уповноважений з питань недискримінації",
-
     "deportationDeadlineAppeal": "Оскарження до Адміністративного суду — зазвичай 30 днів з моменту повідомлення",
     "deportationDeadlineLegalAid": "Подайте заявку на правову допомогу — зробіть це НЕГАЙНО",
     "deportationFactStayDuringAppeal": "У Фінляндії ви зазвичай маєте право залишатися в країні під час розгляду вашого оскарження. Депортація не може бути здійснена під час активного оскарження у більшості випадків.",
     "contactRefugeeAdviceCentre": "Фінський центр консультування біженців",
     "contactAdminCourtHelsinki": "Адміністративний суд Гельсінкі",
-
     "workplaceActionKeepContract": "Зберігайте копії трудового договору",
     "workplaceActionTrackHours": "Самостійно відстежуйте робочий час",
     "workplaceActionReportUnsafe": "Повідомляйте про небезпечні умови до інспекції праці",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Навіть без письмового договору ви маєте повні трудові права у Фінляндії. Усна угода є однаково обов'язковою за законом.",
     "contactOccupationalSafety": "Управління з охорони праці",
     "contactTradeUnionSAK": "Профспілкова консультація (SAK)",
-
     "tenantActionWrittenAgreement": "Завжди укладайте письмовий договір оренди",
     "tenantActionDocumentCondition": "Задокументуйте стан квартири при заселенні (фото)",
     "tenantActionReportMaintenance": "Повідомляйте про проблеми з обслуговуванням письмово",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Орендодавець у Фінляндії не може виселити вас без рішення суду, навіть якщо термін оренди закінчився. Заміна замків або відключення комунальних послуг є незаконним.",
     "contactTenantsAssociation": "Фінська асоціація орендарів",
     "contactConsumerDisputesBoard": "Комісія зі споживчих спорів",
-
     "detentionActionAskDecision": "Негайно вимагайте письмове рішення про затримання",
     "detentionActionRequestLawyer": "Вимагайте зв'язку з адвокатом",
     "detentionActionContactEmbassy": "Зв'яжіться зі своїм посольством або консульством",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Суд переглядає продовження кожні 2 тижні",
     "detentionFactCourtReview": "Імміграційне затримання у Фінляндії повинно бути переглянуте районним судом протягом 4 днів. Якщо цього не відбувається, затримання стає незаконним.",
     "contactParliamentaryOmbudsman": "Парламентський омбудсмен",
-
     "discriminationActionWriteDown": "Запишіть точно, що сталося (дата, час, місце)",
     "discriminationActionSaveEvidence": "Збережіть докази: повідомлення, електронні листи, свідків",
     "discriminationActionFileComplaint": "Подайте скаргу Уповноваженому з питань недискримінації",

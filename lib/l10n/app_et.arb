@@ -320,6 +320,13 @@
     "appeal": "Kaebus",
     "appealDeadline": "Kaebuse tähtaeg",
     "appealDeadlineDesc": "Kaebus tuleb esitada hiljemalt {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "Kaebuse tähtaeg määratud",
     "appealDraft": "Kaebuse mustand",
     "applyLegalAid": "Taotlege vajadusel õigusabi",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Foto tegemine ebaõnnestus. Palun proovige uuesti.",
     "caseCreated": "Juhtum loodud",
     "caseCreatedDesc": "Juhtum \"{title}\" on loodud.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Eeltäidetud andmetega juhtumi loomine peagi",
     "caseInfoUpdated": "Juhtumi teave viimati uuendatud.",
     "caseSummaryCopied": "Juhtumi kokkuvõte kopeeritud",
@@ -347,6 +361,13 @@
     "connectYourEmail": "Ühendage oma e-post",
     "connectYourEmailDesc": "Ühendage oma e-post, et automaatselt tuvastada ja korraldada teie juhtumitega seotud õiguskirjavahetust.",
     "connectedTo": "Ühendatud: {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Võtke kohe advokaadiga ühendust",
     "contactLegalAidOffice": "Võtke ühendust õigusabibürooga",
     "cookiePolicy": "Küpsiste poliitika",
@@ -369,7 +390,21 @@
     "delete": "Kustuta",
     "deleteCase": "Kustuta juhtum",
     "deleteCaseConfirm": "Kas olete kindel, et soovite kustutada \"{title}\"? Seda toimingut ei saa tagasi võtta.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "Kustutada {count} dokumenti?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Kustuta valitud",
     "deportationNotice": "Väljasaatmisteade",
     "deportationNoticeDesc": "Sammud väljasaatmiskorralduse vaidlustamiseks",
@@ -412,12 +447,26 @@
     "gdprIntro": "AI õigusabi pakkumiseks töötleme teie andmeid vastavalt GDPR-ile (EL 2016/679). Jätkates nõustute:",
     "gdprStorage": "Juhtumite andmete krüpteeritud salvestamine",
     "generateAppealWithIssues": "Loo kaebus ({count} probleemi)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Teie mustandi loomine...",
     "generatingDraftDesc": "AI valmistab ette õigusdokumendi teie juhtumi üksikasjade ja valitud probleemide põhjal.",
     "greatJobDeadlines": "Hästi tehtud, hoiate oma tähtajad kontrolli all.",
     "haveQuestionsAi": "Küsimusi? Küsige AI-lt",
     "hearingScheduled": "Istung kavandatud",
     "hearingScheduledDesc": "Kohtuistung kavandatud kuupäevale {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Kuidas käituda:",
     "iAgree": "Nõustun",
     "iAgreeToThe": "Nõustun ",
@@ -427,12 +476,33 @@
     "inCourt": "Kohtus",
     "issuesFoundHeader": "Leitud probleemid",
     "issuesFoundInDocument": "Leiti {count} probleem(i) teie dokumendist",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Tunne oma õigusi",
     "landlordNotice": "Üürileandja peab andma teate (3-6 kuud)",
     "lastSynced": "Viimati sünkroonitud: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "hilinenud",
     "legalAidCalculator": "Õigusabi kalkulaator",
     "legalAidWithCopay": "Võite kvalifitseeruda õigusabile omaosalusega {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Õiguslikud e-kirjad",
     "legalEmailsWillAppear": "Õiguslikuks liigitatud e-kirjad kuvatakse siin.",
     "likelyEligible": "Tõenäoliselt sobiv",
@@ -467,9 +537,37 @@
     "openSettings": "Ava seaded",
     "orWord": "või",
     "pageCount": "{count} lehekülg(e)",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Lehekülg {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} lehekülge edukalt üles laetud",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Makse ebaõnnestus: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "PDF eksport peagi",
     "pending": "Ootel",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Hoidke oma olulised õigusdokumendid ühes kohas lihtsaks juurdepääsuks.",
     "securityDeposit": "Tagatisraha max 3 kuu üür",
     "selected": "{count} valitud",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Tõsiduse ülevaade",
     "sickLeave": "Haigushüvitis",
     "somethingWentWrong": "Midagi läks valesti",
     "stoppedByPolice": "Politsei poolt peatatud",
     "stoppedByPoliceDesc": "Teie õigused politseikokkupuutel",
     "successSubscribed": "Tellimus {plan} edukalt aktiveeritud!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Lülitu ruudustikuvaatele",
     "switchToList": "Lülitu loendivaatele",
     "takePhotoInstead": "Tehke foto",
@@ -539,6 +651,13 @@
     "uploadFile": "Laadi fail üles",
     "uploadFileDesc": "Valige oma seadmest PDF või pilt",
     "uploadingPercent": "Üleslaadimine... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Kasuta seda fotot",
     "viewFull": "Vaata tervikuna",
     "workPermit": "Tööluba",
@@ -551,7 +670,6 @@
     "yourRights": "Teie õigused:",
     "yourRightsAsTenant": "Teie õigused üürnikuna:",
     "yourRightsInDetention": "Teie õigused kinnipidamisel:",
-
     "whatToDo": "Mida teha",
     "getHelp": "Abi saamine",
     "share": "Jaga",
@@ -559,7 +677,6 @@
     "mustKnow": "Peate teadma",
     "goodToKnow": "Kasulik teada",
     "sentFromAdvocat": "Saadetud Advocat rakendusest",
-
     "policeActionStayCalm": "Jääge rahulikuks ja hoidke käed nähtaval",
     "policeActionAskWhy": "Küsige ametnikult, miks teid peatati",
     "policeActionProvideName": "Öelge oma nimi ja sünniaeg",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "Soomes võite avalikes kohtades politseikokkupuuteid salvestada. Seda kaitseb sõnavabadus.",
     "contactFinnishLegalAid": "Soome õigusabi",
     "contactNonDiscriminationOmbudsman": "Võrdõigusvolinik",
-
     "deportationDeadlineAppeal": "Kaebus halduskohtule — tavaliselt 30 päeva pärast teatavakstegemist",
     "deportationDeadlineLegalAid": "Taotlege õigusabi — tehke seda KOHE",
     "deportationFactStayDuringAppeal": "Soomes on teil tavaliselt õigus jääda riiki, kuni teie kaebus on menetluses. Väljasaatmist ei saa enamikul juhtudel teostada aktiivse kaebuse ajal.",
     "contactRefugeeAdviceCentre": "Soome Pagulaste Nõustamiskeskus",
     "contactAdminCourtHelsinki": "Helsingi Halduskohus",
-
     "workplaceActionKeepContract": "Hoidke alles töölepingu koopiad",
     "workplaceActionTrackHours": "Jälgige oma tööaegu iseseisvalt",
     "workplaceActionReportUnsafe": "Teavitage ohtlikest tingimustest töötervishoiu ametit",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Isegi ilma kirjaliku lepinguta on teil Soomes täielikud töötaja õigused. Suuline kokkulepe on seaduse järgi sama siduv.",
     "contactOccupationalSafety": "Tööinspektsioon",
     "contactTradeUnionSAK": "Ametiühingu nõustamine (SAK)",
-
     "tenantActionWrittenAgreement": "Sõlmige alati kirjalik üürileping",
     "tenantActionDocumentCondition": "Dokumenteerige korteri seisukord sissekolimisel (fotod)",
     "tenantActionReportMaintenance": "Teavitage hooldusprobleemidest kirjalikult",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Soomes ei saa üürileandja teid välja tõsta ilma kohtumääruseta, isegi kui üürileping on lõppenud. Lukkude vahetamine või kommunaalteenuste katkestamine on ebaseaduslik.",
     "contactTenantsAssociation": "Soome Üürnike Liit",
     "contactConsumerDisputesBoard": "Tarbijavaidluste komisjon",
-
     "detentionActionAskDecision": "Nõudke kohe kirjalikku kinnipidamisotsust",
     "detentionActionRequestLawyer": "Taotlege advokaadiga ühenduse võtmist",
     "detentionActionContactEmbassy": "Võtke ühendust oma saatkonna või konsulaadiga",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Kohus vaatab jätkamise läbi iga 2 nädala järel",
     "detentionFactCourtReview": "Sisserände kinnipidamine Soomes peab olema maakohtu poolt läbi vaadatud 4 päeva jooksul. Kui seda ei tehta, muutub kinnipidamine ebaseaduslikuks.",
     "contactParliamentaryOmbudsman": "Õiguskantsler",
-
     "discriminationActionWriteDown": "Kirjutage täpselt üles, mis juhtus (kuupäev, kellaaeg, koht)",
     "discriminationActionSaveEvidence": "Säilitage tõendid: sõnumid, e-kirjad, tunnistajad",
     "discriminationActionFileComplaint": "Esitage kaebus võrdõigusvolinikule",

@@ -103,7 +103,10 @@ class CaseCard extends StatelessWidget {
         ],
       ),
       clipBehavior: Clip.antiAlias,
-      child: Material(
+      child: Semantics(
+        label: 'Case: ${legalCase.title}, status: ${_statusLabel(legalCase.status)}',
+        button: true,
+        child: Material(
         color: Colors.transparent,
         child: InkWell(
         onTap: onTap,
@@ -258,6 +261,7 @@ class CaseCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
       ),
     );

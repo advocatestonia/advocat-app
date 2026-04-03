@@ -856,8 +856,8 @@ class _RightItemTileState extends State<_RightItemTile> {
                   // Share button
                   GestureDetector(
                     onTap: widget.onShare,
-                    child: Padding(
-                      padding: const EdgeInsets.all(4),
+                    child: const Padding(
+                      padding: EdgeInsets.all(4),
                       child: Icon(
                         Icons.share_outlined,
                         size: 16,

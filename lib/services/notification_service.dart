@@ -1,5 +1,4 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 /// Singleton service managing Firebase Cloud Messaging for push notifications.
@@ -41,7 +40,7 @@ class NotificationService {
   Future<void> _initToken() async {
     try {
       _fcmToken = await _messaging.getToken();
-      _log.i('FCM token obtained: ${_fcmToken?.substring(0, 20)}...');
+      _log.i('FCM token obtained (${_fcmToken?.length ?? 0} chars)');
     } catch (e) {
       _log.e('Failed to get FCM token', error: e);
     }
@@ -124,14 +123,14 @@ class NotificationService {
   // ── Notification handlers ──────────────────────────────────────────
 
   void _onDeadlineReminder(Map<String, dynamic> data) {
-    debugPrint('Deadline reminder: ${data['deadline_title']}');
+    _log.d('Deadline reminder received');
   }
 
   void _onDocumentProcessed(Map<String, dynamic> data) {
-    debugPrint('Document processed: ${data['document_id']}');
+    _log.d('Document processed notification received');
   }
 
   void _onNewCorrespondence(Map<String, dynamic> data) {
-    debugPrint('New correspondence: ${data['subject']}');
+    _log.d('New correspondence notification received');
   }
 }

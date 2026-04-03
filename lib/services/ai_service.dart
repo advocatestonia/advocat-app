@@ -44,6 +44,38 @@ class AIService {
     _dio.options.headers['Authorization'] = 'Bearer $token';
   }
 
+  // ── Input sanitization ──────────────────────────────────────────────────
+
+  /// Patterns that indicate prompt injection attempts.
+  static final List<RegExp> _injectionPatterns = [
+    RegExp(r'ignore\s+(all\s+)?previous\s+instructions', caseSensitive: false),
+    RegExp(r'ignore\s+(all\s+)?prior\s+instructions', caseSensitive: false),
+    RegExp(r'disregard\s+(all\s+)?(previous|prior|above)\s+instructions', caseSensitive: false),
+    RegExp(r'you\s+are\s+now\s+', caseSensitive: false),
+    RegExp(r'new\s+system\s+prompt', caseSensitive: false),
+    RegExp(r'override\s+system\s+prompt', caseSensitive: false),
+    RegExp(r'act\s+as\s+(if\s+)?you\s+(are|were)\s+', caseSensitive: false),
+    RegExp(r'pretend\s+(that\s+)?you\s+(are|were)\s+', caseSensitive: false),
+    RegExp(r'forget\s+(all\s+)?(previous|prior|your)\s+(instructions|rules|constraints)', caseSensitive: false),
+    RegExp(r'system:\s', caseSensitive: false),
+    RegExp(r'<\s*system\s*>', caseSensitive: false),
+    RegExp(r'\[SYSTEM\]', caseSensitive: false),
+    RegExp(r'ENTER\s+(ADMIN|DEBUG|DEV)\s+MODE', caseSensitive: false),
+  ];
+
+  /// Sanitize user input by stripping prompt injection patterns.
+  ///
+  /// Returns the cleaned text. Matched fragments are replaced with
+  /// `[removed]` so the user's intent is still partially preserved
+  /// without the injection payload.
+  static String _sanitizeInput(String text) {
+    var sanitized = text;
+    for (final pattern in _injectionPatterns) {
+      sanitized = sanitized.replaceAll(pattern, '[removed]');
+    }
+    return sanitized;
+  }
+
   // ── Conversation history for real AI mode ──────────────────────────────
 
   /// Per-case conversation history for Claude context.
@@ -144,11 +176,14 @@ class AIService {
     String? caseDescription,
     String? userLanguage,
   }) async {
+    // Sanitize user input before any AI processing
+    final sanitizedMessage = _sanitizeInput(message);
+
     if (isUsingRealAI) {
       _log.i('Using Claude API for chat');
       try {
         // Add user message to history
-        _addToHistory(caseId, 'user', message);
+        _addToHistory(caseId, 'user', sanitizedMessage);
 
         // Build system prompt with relevant knowledge
         final systemPrompt = SystemPrompts.buildChatPrompt(
@@ -190,7 +225,7 @@ class AIService {
         '/ai/chat',
         data: {
           'case_id': caseId,
-          'message': message,
+          'message': sanitizedMessage,
           if (attachmentIds != null) 'attachment_ids': attachmentIds,
         },
       );

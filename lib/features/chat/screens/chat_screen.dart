@@ -714,7 +714,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      _isTyping ? 'Печатает...' : 'Онлайн',
+                      _isTyping ? 'Typing...' : 'Online',
                       style: TextStyle(
                         fontSize: 12,
                         color: _isTyping
@@ -1037,7 +1037,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     curve: Curves.elasticOut),
             const SizedBox(height: AppSpacing.lg),
             Text(
-              'Расскажите, что у вас случилось',
+              AppLocalizations.of(context)?.chatWelcomeMessage ??
+                  'Tell me what happened',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary,
@@ -1047,7 +1048,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 .fadeIn(delay: 200.ms, duration: 400.ms),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'Я проанализирую ситуацию, проверю документы, найду ошибки и подскажу что делать.',
+              'I will analyze the situation, check documents, find errors, and suggest what to do.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),

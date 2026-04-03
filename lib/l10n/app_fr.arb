@@ -320,6 +320,13 @@
     "appeal": "Recours",
     "appealDeadline": "Délai de recours",
     "appealDeadlineDesc": "Le recours doit être déposé avant le {date}.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "Délai de recours défini",
     "appealDraft": "Brouillon de recours",
     "applyLegalAid": "Demandez l'aide juridictionnelle si nécessaire",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Échec de la capture photo. Veuillez réessayer.",
     "caseCreated": "Dossier créé",
     "caseCreatedDesc": "Le dossier \"{title}\" a été créé.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Création de dossier avec données préremplies bientôt disponible",
     "caseInfoUpdated": "Les informations du dossier ont été mises à jour.",
     "caseSummaryCopied": "Résumé du dossier copié",
@@ -347,6 +361,13 @@
     "connectYourEmail": "Connectez votre email",
     "connectYourEmailDesc": "Connectez votre email pour détecter et organiser automatiquement la correspondance juridique liée à vos dossiers.",
     "connectedTo": "Connecté à {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Contactez immédiatement un avocat",
     "contactLegalAidOffice": "Contactez un bureau d'aide juridictionnelle",
     "cookiePolicy": "Politique de cookies",
@@ -369,7 +390,21 @@
     "delete": "Supprimer",
     "deleteCase": "Supprimer le dossier",
     "deleteCaseConfirm": "Êtes-vous sûr de vouloir supprimer \"{title}\" ? Cette action est irréversible.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "Supprimer {count} documents ?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Supprimer la sélection",
     "deportationNotice": "Avis d'expulsion",
     "deportationNoticeDesc": "Étapes pour contester un arrêté d'expulsion",
@@ -412,12 +447,26 @@
     "gdprIntro": "Pour fournir une assistance juridique par IA, nous traitons vos données conformément au RGPD (UE 2016/679). En continuant, vous acceptez :",
     "gdprStorage": "Stockage chiffré des données de dossiers",
     "generateAppealWithIssues": "Générer un recours ({count} problèmes)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Génération de votre brouillon...",
     "generatingDraftDesc": "L'IA prépare un document juridique basé sur les détails de votre dossier et les problèmes sélectionnés.",
     "greatJobDeadlines": "Bravo, vous respectez vos délais.",
     "haveQuestionsAi": "Des questions ? Demandez à l'IA",
     "hearingScheduled": "Audience programmée",
     "hearingScheduledDesc": "Audience prévue le {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Comment agir :",
     "iAgree": "J'accepte",
     "iAgreeToThe": "J'accepte les ",
@@ -427,12 +476,33 @@
     "inCourt": "Au tribunal",
     "issuesFoundHeader": "Problèmes trouvés",
     "issuesFoundInDocument": "{count} problème(s) trouvé(s) dans votre document",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Connaissez vos droits",
     "landlordNotice": "Le propriétaire doit donner un préavis (3-6 mois)",
     "lastSynced": "Dernière synchronisation : {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "en retard",
     "legalAidCalculator": "Calculateur d'aide juridictionnelle",
     "legalAidWithCopay": "Vous pourriez être éligible à l'aide juridictionnelle avec une participation de {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Emails juridiques",
     "legalEmailsWillAppear": "Les emails classés comme juridiques apparaîtront ici.",
     "likelyEligible": "Probablement éligible",
@@ -467,9 +537,37 @@
     "openSettings": "Ouvrir les paramètres",
     "orWord": "ou",
     "pageCount": "{count} page(s)",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Page {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} pages téléchargées avec succès",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Paiement échoué : {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "Export PDF bientôt disponible",
     "pending": "En attente",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Conservez vos documents juridiques importants en un seul endroit pour un accès facile.",
     "securityDeposit": "Dépôt de garantie max. 3 mois de loyer",
     "selected": "{count} sélectionné(s)",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Aperçu de la gravité",
     "sickLeave": "Indemnités maladie",
     "somethingWentWrong": "Une erreur s'est produite",
     "stoppedByPolice": "Contrôle de police",
     "stoppedByPoliceDesc": "Vos droits lors d'un contrôle de police",
     "successSubscribed": "Abonnement à {plan} réussi !",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Affichage en grille",
     "switchToList": "Affichage en liste",
     "takePhotoInstead": "Prendre une photo",
@@ -539,6 +651,13 @@
     "uploadFile": "Télécharger un fichier",
     "uploadFileDesc": "Choisissez un PDF ou une image de votre appareil",
     "uploadingPercent": "Téléchargement... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Utiliser cette photo",
     "viewFull": "Voir en entier",
     "workPermit": "Permis de travail",
@@ -551,7 +670,6 @@
     "yourRights": "Vos droits :",
     "yourRightsAsTenant": "Vos droits en tant que locataire :",
     "yourRightsInDetention": "Vos droits en détention :",
-
     "whatToDo": "Que faire",
     "getHelp": "Obtenir de l'aide",
     "share": "Partager",
@@ -559,7 +677,6 @@
     "mustKnow": "À savoir absolument",
     "goodToKnow": "Bon à savoir",
     "sentFromAdvocat": "Envoyé depuis l'application Advocat",
-
     "policeActionStayCalm": "Restez calme et gardez les mains visibles",
     "policeActionAskWhy": "Demandez à l'agent pourquoi vous êtes arrêté",
     "policeActionProvideName": "Donnez votre nom et date de naissance",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "Vous pouvez enregistrer les interactions avec la police dans les lieux publics en Finlande. C'est protégé par la liberté d'expression.",
     "contactFinnishLegalAid": "Aide juridictionnelle finlandaise",
     "contactNonDiscriminationOmbudsman": "Médiateur contre la discrimination",
-
     "deportationDeadlineAppeal": "Recours devant le tribunal administratif — généralement 30 jours après notification",
     "deportationDeadlineLegalAid": "Demandez l'aide juridictionnelle — faites-le IMMÉDIATEMENT",
     "deportationFactStayDuringAppeal": "En Finlande, vous avez généralement le droit de rester dans le pays pendant le traitement de votre recours. L'expulsion ne peut pas être exécutée pendant un recours actif dans la plupart des cas.",
     "contactRefugeeAdviceCentre": "Centre finlandais de conseil aux réfugiés",
     "contactAdminCourtHelsinki": "Tribunal administratif d'Helsinki",
-
     "workplaceActionKeepContract": "Conservez des copies de votre contrat de travail",
     "workplaceActionTrackHours": "Enregistrez vos heures de travail de manière indépendante",
     "workplaceActionReportUnsafe": "Signalez les conditions dangereuses à l'inspection du travail",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Même sans contrat écrit, vous avez tous les droits d'un salarié en Finlande. Un accord oral est tout aussi contraignant en droit.",
     "contactOccupationalSafety": "Autorité de sécurité au travail",
     "contactTradeUnionSAK": "Conseil syndical (SAK)",
-
     "tenantActionWrittenAgreement": "Ayez toujours un contrat de location écrit",
     "tenantActionDocumentCondition": "Documentez l'état de l'appartement à l'emménagement (photos)",
     "tenantActionReportMaintenance": "Signalez les problèmes d'entretien par écrit",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Un propriétaire en Finlande ne peut pas vous expulser sans décision de justice, même si votre bail a expiré. Changer les serrures ou couper les services est illégal.",
     "contactTenantsAssociation": "Association finlandaise des locataires",
     "contactConsumerDisputesBoard": "Commission des litiges de consommation",
-
     "detentionActionAskDecision": "Demandez immédiatement la décision de rétention écrite",
     "detentionActionRequestLawyer": "Demandez à contacter un avocat",
     "detentionActionContactEmbassy": "Contactez votre ambassade ou consulat",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Le tribunal réexamine la prolongation toutes les 2 semaines",
     "detentionFactCourtReview": "La rétention administrative en Finlande doit être examinée par un tribunal de district dans les 4 jours. Si ce n'est pas fait, la rétention devient illégale.",
     "contactParliamentaryOmbudsman": "Médiateur parlementaire",
-
     "discriminationActionWriteDown": "Notez exactement ce qui s'est passé (date, heure, lieu)",
     "discriminationActionSaveEvidence": "Conservez les preuves : messages, e-mails, témoins",
     "discriminationActionFileComplaint": "Déposez une plainte auprès du Médiateur contre la discrimination",

@@ -609,7 +609,10 @@ class _SettingsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Semantics(
+      label: '$title${subtitle != null ? ", $subtitle" : ""}',
+      button: onTap != null,
+      child: Container(
       color: AppColors.surface,
       child: ListTile(
         leading: Container(
@@ -648,6 +651,7 @@ class _SettingsTile extends StatelessWidget {
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
         minVerticalPadding: AppSpacing.sm,
+      ),
       ),
     );
   }

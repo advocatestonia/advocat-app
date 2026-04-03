@@ -579,12 +579,26 @@
     "connectYourEmail": "Yhdistä sähköpostisi",
     "connectYourEmailDesc": "Yhdistä sähköpostisi tunnistaaksesi ja järjestääksesi automaattisesti tapauksiisi liittyvän oikeudellisen kirjeenvaihdon.",
     "connectedTo": "Yhdistetty: {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "cookiePolicy": "Evästekäytäntö",
     "copySummary": "Kopioi yhteenveto",
     "dataPrivacyConsent": "Tietosuojasuostumus",
     "decline": "Hylkää",
     "deleteCase": "Poista tapaus",
     "deleteCaseConfirm": "Haluatko varmasti poistaa \"{title}\"? Toimintoa ei voi kumota.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "disconnectEmail": "Katkaise sähköposti",
     "disconnectEmailConfirm": "Automaattinen sähköpostisynkronointi lopetetaan. Aiemmin synkronoidut sähköpostit säilyvät tapauksissasi.",
     "draftCopiedToClipboard": "Luonnos kopioitu leikepöydälle",
@@ -607,6 +621,13 @@
     "iAgree": "Hyväksyn",
     "iAgreeToThe": "Hyväksyn ",
     "lastSynced": "Synkronoitu: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Oikeudelliset sähköpostit",
     "legalEmailsWillAppear": "Oikeudellisiksi luokitellut sähköpostit näkyvät täällä.",
     "monthly": "Kuukausittainen",
@@ -618,6 +639,13 @@
     "openCase": "Avaa tapaus",
     "orWord": "tai",
     "paymentFailed": "Maksu epäonnistui: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "perMonth": "/kk",
     "perYear": "/v",
     "priorityProcessing": "Prioriteettikäsittely",
@@ -627,6 +655,13 @@
     "russian": "Venäjä",
     "saveTwentyFivePercent": "Säästä 25%",
     "successSubscribed": "Tilaus {plan} onnistui!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "takePhotoInstead": "Ota kuva",
     "threeCasesActive": "3 aktiivista tapausta",
     "threeDocScans": "3 dokumenttiskannausta",
@@ -635,7 +670,6 @@
     "unlimitedDocScans": "Rajaton dokumenttiskannaus",
     "unlinkedEmails": "Linkittämättömät sähköpostit",
     "viewFull": "Näytä kokonaan",
-
     "whatToDo": "Mitä tehdä",
     "getHelp": "Saa apua",
     "share": "Jaa",
@@ -643,7 +677,6 @@
     "mustKnow": "Tärkeää tietää",
     "goodToKnow": "Hyvä tietää",
     "sentFromAdvocat": "Lähetetty Advocat-sovelluksesta",
-
     "policeActionStayCalm": "Pysy rauhallisena ja pidä kädet näkyvillä",
     "policeActionAskWhy": "Kysy poliisilta, miksi sinut pysäytettiin",
     "policeActionProvideName": "Ilmoita nimesi ja syntymäaikasi",
@@ -654,13 +687,11 @@
     "policeFactCanRecord": "Suomessa voit tallentaa poliisikontaktit julkisilla paikoilla. Tämä on suojattu sananvapauden nojalla.",
     "contactFinnishLegalAid": "Suomen oikeusapu",
     "contactNonDiscriminationOmbudsman": "Yhdenvertaisuusvaltuutettu",
-
     "deportationDeadlineAppeal": "Valitus hallinto-oikeuteen — yleensä 30 päivää tiedoksiannosta",
     "deportationDeadlineLegalAid": "Hae oikeusapua — tee se HETI",
     "deportationFactStayDuringAppeal": "Suomessa sinulla on yleensä oikeus jäädä maahan valituksen käsittelyn ajaksi. Karkotusta ei voida toteuttaa aktiivisen valituksen aikana useimmissa tapauksissa.",
     "contactRefugeeAdviceCentre": "Pakolaisneuvonta ry",
     "contactAdminCourtHelsinki": "Helsingin hallinto-oikeus",
-
     "workplaceActionKeepContract": "Säilytä kopiot työsopimuksestasi",
     "workplaceActionTrackHours": "Seuraa työaikojasi itsenäisesti",
     "workplaceActionReportUnsafe": "Ilmoita vaarallisista olosuhteista työsuojeluun",
@@ -670,7 +701,6 @@
     "workplaceFactOralContract": "Ilman kirjallista sopimusta sinulla on täydet työntekijän oikeudet Suomessa. Suullinen sopimus on lain mukaan yhtä sitova.",
     "contactOccupationalSafety": "Työsuojeluviranomainen",
     "contactTradeUnionSAK": "Ammattiliittoneuvonta (SAK)",
-
     "tenantActionWrittenAgreement": "Tee aina kirjallinen vuokrasopimus",
     "tenantActionDocumentCondition": "Dokumentoi asunnon kunto muuton yhteydessä (kuvat)",
     "tenantActionReportMaintenance": "Ilmoita huoltotarpeista kirjallisesti",
@@ -679,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Vuokranantaja ei voi häätää sinua Suomessa ilman tuomioistuimen päätöstä, vaikka vuokrasopimus olisi päättynyt. Lukkojen vaihtaminen tai palvelujen katkaiseminen on laitonta.",
     "contactTenantsAssociation": "Suomen Vuokranantajat ry",
     "contactConsumerDisputesBoard": "Kuluttajariitalautakunta",
-
     "detentionActionAskDecision": "Pyydä kirjallinen säilöönottopäätös välittömästi",
     "detentionActionRequestLawyer": "Pyydä saada yhteys asianajajaan",
     "detentionActionContactEmbassy": "Ota yhteyttä suurlähetystöösi tai konsulaattiin",
@@ -689,7 +718,6 @@
     "detentionDeadlineContinuation": "Tuomioistuin tarkistaa jatkamisen 2 viikon välein",
     "detentionFactCourtReview": "Maahanmuuttosäilöönotto Suomessa on tarkistettava käräjäoikeudessa 4 päivän kuluessa. Jos näin ei tehdä, säilöönotto muuttuu laittomaksi.",
     "contactParliamentaryOmbudsman": "Eduskunnan oikeusasiamies",
-
     "discriminationActionWriteDown": "Kirjoita tarkasti mitä tapahtui (päivämäärä, aika, paikka)",
     "discriminationActionSaveEvidence": "Tallenna todisteet: viestit, sähköpostit, todistajat",
     "discriminationActionFileComplaint": "Tee valitus yhdenvertaisuusvaltuutetulle",

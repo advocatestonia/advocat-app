@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/case_model.dart';
 import '../models/document.dart';
@@ -10,45 +11,105 @@ import '../models/user.dart';
 import 'demo_data.dart';
 
 final supabaseServiceProvider = Provider<SupabaseService>((ref) {
-  final isDemo = ref.watch(isDemoModeProvider);
-  return SupabaseService(isDemo: isDemo);
+  return SupabaseService();
 });
 
 /// Thin wrapper around the Supabase client providing typed access to
 /// database tables and storage buckets used by the application.
 ///
-/// When [isDemo] is true, all methods return mock data from [DemoData]
-/// without contacting any backend.
+/// When Supabase is not initialised (no credentials at compile time)
+/// all methods fall back to mock data from [DemoData].
 class SupabaseService {
-  SupabaseService({this.isDemo = false});
+  SupabaseService();
 
-  final bool isDemo;
+  // ── Connection check ────────────────────────────────────────────────
 
-  // ── Auth shortcuts (demo stubs) ──────────────────────────────────────
+  /// Whether the Supabase SDK has been initialised with real credentials.
+  bool get _isInitialized {
+    try {
+      Supabase.instance.client;
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
 
-  String? get currentUserId => isDemo ? DemoData.user.id : null;
+  /// `true` when running without a backend (demo / offline mode).
+  bool get isDemo => !_isInitialized;
 
-  Stream<dynamic> get authStateChanges =>
-      isDemo ? const Stream.empty() : const Stream.empty();
+  /// Convenience accessor; only call when [_isInitialized] is `true`.
+  SupabaseClient get _client => Supabase.instance.client;
 
-  Future<void> signOut() async {}
+  // ── Auth shortcuts ──────────────────────────────────────────────────
 
-  Future<void> resetPassword(String email) async {}
+  String? get currentUserId {
+    if (isDemo) return DemoData.user.id;
+    return _client.auth.currentUser?.id;
+  }
+
+  Stream<AuthState> get authStateChanges {
+    if (isDemo) return const Stream.empty();
+    return _client.auth.onAuthStateChange;
+  }
+
+  Future<AuthResponse> signIn({
+    required String email,
+    required String password,
+  }) async {
+    if (isDemo) throw Exception('Sign-in unavailable in demo mode');
+    return _client.auth.signInWithPassword(email: email, password: password);
+  }
+
+  Future<AuthResponse> signUp({
+    required String email,
+    required String password,
+    Map<String, dynamic>? data,
+  }) async {
+    if (isDemo) throw Exception('Sign-up unavailable in demo mode');
+    return _client.auth.signUp(email: email, password: password, data: data);
+  }
+
+  Future<void> signOut() async {
+    if (isDemo) return;
+    await _client.auth.signOut();
+  }
+
+  Future<void> resetPassword(String email) async {
+    if (isDemo) return;
+    await _client.auth.resetPasswordForEmail(email);
+  }
 
   // ── User profile ──────────────────────────────────────────────────────
 
   Future<AppUser?> getUserProfile() async {
     if (isDemo) return DemoData.user;
-    return null;
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return null;
+    final response =
+        await _client.from('profiles').select().eq('id', uid).maybeSingle();
+    if (response == null) return null;
+    return AppUser.fromJson(response);
   }
 
-  Future<void> updateUserProfile(Map<String, dynamic> updates) async {}
+  Future<void> updateUserProfile(Map<String, dynamic> updates) async {
+    if (isDemo) return;
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return;
+    await _client.from('profiles').update(updates).eq('id', uid);
+  }
 
   // ── Cases ─────────────────────────────────────────────────────────────
 
   Future<List<LegalCase>> getCases() async {
     if (isDemo) return DemoData.cases;
-    return [];
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return [];
+    final response = await _client
+        .from('cases')
+        .select()
+        .eq('user_id', uid)
+        .order('updated_at', ascending: false);
+    return (response as List).map((e) => LegalCase.fromJson(e)).toList();
   }
 
   Future<LegalCase> getCaseById(String id) async {
@@ -58,12 +119,13 @@ class SupabaseService {
         orElse: () => DemoData.cases.first,
       );
     }
-    throw Exception('Not connected to backend');
+    final response =
+        await _client.from('cases').select().eq('id', id).single();
+    return LegalCase.fromJson(response);
   }
 
   Future<LegalCase> createCase(Map<String, dynamic> caseData) async {
     if (isDemo) {
-      // Return a new case based on the provided data
       final now = DateTime.now();
       return LegalCase(
         id: 'case-new-${now.millisecondsSinceEpoch}',
@@ -76,10 +138,18 @@ class SupabaseService {
         createdAt: now,
       );
     }
-    throw Exception('Not connected to backend');
+    final uid = _client.auth.currentUser?.id;
+    caseData['user_id'] = uid;
+    final response =
+        await _client.from('cases').insert(caseData).select().single();
+    return LegalCase.fromJson(response);
   }
 
-  Future<void> updateCase(String id, Map<String, dynamic> updates) async {}
+  Future<void> updateCase(String id, Map<String, dynamic> updates) async {
+    if (isDemo) return;
+    updates['updated_at'] = DateTime.now().toIso8601String();
+    await _client.from('cases').update(updates).eq('id', id);
+  }
 
   // ── Documents ─────────────────────────────────────────────────────────
 
@@ -87,7 +157,12 @@ class SupabaseService {
     if (isDemo) {
       return DemoData.documents.where((d) => d.caseId == caseId).toList();
     }
-    return [];
+    final response = await _client
+        .from('documents')
+        .select()
+        .eq('case_id', caseId)
+        .order('created_at', ascending: false);
+    return (response as List).map((e) => CaseDocument.fromJson(e)).toList();
   }
 
   Future<String> uploadDocument({
@@ -97,11 +172,37 @@ class SupabaseService {
     required String mimeType,
   }) async {
     if (isDemo) return 'demo-doc-${DateTime.now().millisecondsSinceEpoch}';
-    throw Exception('Not connected to backend');
+
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) throw Exception('Not authenticated');
+
+    final storagePath = '$uid/$caseId/$fileName';
+    await _client.storage.from('documents').uploadBinary(
+          storagePath,
+          fileBytes,
+          fileOptions: FileOptions(contentType: mimeType),
+        );
+
+    // Insert metadata row
+    final response = await _client
+        .from('documents')
+        .insert({
+          'case_id': caseId,
+          'user_id': uid,
+          'file_name': fileName,
+          'storage_path': storagePath,
+          'mime_type': mimeType,
+          'file_size_bytes': fileBytes.length,
+        })
+        .select()
+        .single();
+
+    return response['id'] as String;
   }
 
   Future<String> getDocumentUrl(String storagePath) async {
-    return '';
+    if (isDemo) return '';
+    return _client.storage.from('documents').getPublicUrl(storagePath);
   }
 
   // ── Correspondence ────────────────────────────────────────────────────
@@ -112,7 +213,12 @@ class SupabaseService {
           .where((c) => c.caseId == caseId)
           .toList();
     }
-    return [];
+    final response = await _client
+        .from('correspondence')
+        .select()
+        .eq('case_id', caseId)
+        .order('sent_at', ascending: false);
+    return (response as List).map((e) => Correspondence.fromJson(e)).toList();
   }
 
   // ── Deadlines ─────────────────────────────────────────────────────────
@@ -125,23 +231,58 @@ class SupabaseService {
       }
       return deadlines;
     }
-    return [];
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return [];
+    var query = _client.from('deadlines').select().eq('user_id', uid);
+    if (caseId != null) {
+      query = query.eq('case_id', caseId);
+    }
+    final response = await query.order('due_date', ascending: true);
+    return (response as List).map((e) => Deadline.fromJson(e)).toList();
   }
 
-  Future<void> createDeadline(Map<String, dynamic> deadlineData) async {}
+  Future<void> createDeadline(Map<String, dynamic> deadlineData) async {
+    if (isDemo) return;
+    final uid = _client.auth.currentUser?.id;
+    deadlineData['user_id'] = uid;
+    await _client.from('deadlines').insert(deadlineData);
+  }
 
-  Future<void> updateDeadline(String id, Map<String, dynamic> updates) async {}
+  Future<void> updateDeadline(
+      String id, Map<String, dynamic> updates) async {
+    if (isDemo) return;
+    updates['updated_at'] = DateTime.now().toIso8601String();
+    await _client.from('deadlines').update(updates).eq('id', id);
+  }
 
   // ── Chat history ──────────────────────────────────────────────────────
 
   Future<List<Map<String, dynamic>>> getChatMessages(String caseId) async {
     if (isDemo) return DemoData.chatMessages;
-    return [];
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return [];
+    final response = await _client
+        .from('chat_messages')
+        .select()
+        .eq('case_id', caseId)
+        .eq('user_id', uid)
+        .order('created_at', ascending: true);
+    return List<Map<String, dynamic>>.from(response as List);
   }
 
   Future<void> saveChatMessage({
     required String caseId,
     required String role,
     required String content,
-  }) async {}
+  }) async {
+    if (isDemo) return;
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return;
+    await _client.from('chat_messages').insert({
+      'case_id': caseId,
+      'user_id': uid,
+      'role': role,
+      'content': content,
+    });
+  }
 }

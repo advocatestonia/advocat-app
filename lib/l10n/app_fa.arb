@@ -579,12 +579,26 @@
     "connectYourEmail": "ایمیل خود را متصل کنید",
     "connectYourEmailDesc": "ایمیل خود را متصل کنید تا مکاتبات حقوقی مرتبط با پرونده‌هایتان به طور خودکار شناسایی شود.",
     "connectedTo": "متصل به {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "cookiePolicy": "سیاست کوکی",
     "copySummary": "کپی خلاصه",
     "dataPrivacyConsent": "رضایت حریم خصوصی",
     "decline": "رد کردن",
     "deleteCase": "حذف پرونده",
     "deleteCaseConfirm": "آیا مطمئنید که می‌خواهید \"{title}\" را حذف کنید؟ این عمل قابل بازگشت نیست.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "disconnectEmail": "قطع ایمیل",
     "disconnectEmailConfirm": "همگام‌سازی خودکار ایمیل متوقف می‌شود. ایمیل‌های قبلاً همگام‌سازی شده باقی می‌مانند.",
     "draftCopiedToClipboard": "پیش‌نویس کپی شد",
@@ -607,6 +621,13 @@
     "iAgree": "موافقم",
     "iAgreeToThe": "موافقت می‌کنم با ",
     "lastSynced": "آخرین همگام‌سازی: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "ایمیل‌های حقوقی",
     "legalEmailsWillAppear": "ایمیل‌های طبقه‌بندی شده به عنوان حقوقی اینجا نمایش داده می‌شوند.",
     "monthly": "ماهانه",
@@ -618,6 +639,13 @@
     "openCase": "باز کردن پرونده",
     "orWord": "یا",
     "paymentFailed": "پرداخت ناموفق: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "perMonth": "/ماه",
     "perYear": "/سال",
     "priorityProcessing": "پردازش اولویت‌دار",
@@ -627,6 +655,13 @@
     "russian": "روسی",
     "saveTwentyFivePercent": "۲۵٪ تخفیف",
     "successSubscribed": "اشتراک {plan} با موفقیت فعال شد!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "takePhotoInstead": "عکس بگیرید",
     "threeCasesActive": "۳ پرونده فعال",
     "threeDocScans": "۳ اسکن سند",
@@ -635,7 +670,6 @@
     "unlimitedDocScans": "اسکن نامحدود اسناد",
     "unlinkedEmails": "ایمیل‌های متصل نشده",
     "viewFull": "نمایش کامل",
-
     "whatToDo": "چه باید کرد",
     "getHelp": "دریافت کمک",
     "share": "اشتراک‌گذاری",
@@ -643,7 +677,6 @@
     "mustKnow": "باید بدانید",
     "goodToKnow": "خوب است بدانید",
     "sentFromAdvocat": "ارسال شده از اپلیکیشن Advocat",
-
     "policeActionStayCalm": "آرام بمانید و دست‌هایتان را قابل مشاهده نگه دارید",
     "policeActionAskWhy": "از مأمور بپرسید چرا متوقف شده‌اید",
     "policeActionProvideName": "نام و تاریخ تولد خود را ارائه دهید",
@@ -654,13 +687,11 @@
     "policeFactCanRecord": "شما می‌توانید تعاملات پلیس را در مکان‌های عمومی در فنلاند ضبط کنید. این تحت آزادی بیان محافظت می‌شود.",
     "contactFinnishLegalAid": "کمک حقوقی فنلاند",
     "contactNonDiscriminationOmbudsman": "بازرس مبارزه با تبعیض",
-
     "deportationDeadlineAppeal": "اعتراض به دادگاه اداری — معمولاً ۳۰ روز پس از ابلاغ",
     "deportationDeadlineLegalAid": "درخواست کمک حقوقی بدهید — فوراً این کار را انجام دهید",
     "deportationFactStayDuringAppeal": "در فنلاند، شما معمولاً حق دارید در حالی که اعتراض شما در حال بررسی است در کشور بمانید. اخراج در اکثر موارد در طول اعتراض فعال امکان‌پذیر نیست.",
     "contactRefugeeAdviceCentre": "مرکز مشاوره پناهندگان فنلاند",
     "contactAdminCourtHelsinki": "دادگاه اداری هلسینکی",
-
     "workplaceActionKeepContract": "نسخه‌هایی از قرارداد کار خود را نگه دارید",
     "workplaceActionTrackHours": "ساعات کاری خود را به طور مستقل پیگیری کنید",
     "workplaceActionReportUnsafe": "شرایط ناامن را به مرجع ایمنی شغلی گزارش دهید",
@@ -670,7 +701,6 @@
     "workplaceFactOralContract": "حتی بدون قرارداد کتبی، در فنلاند حقوق کامل کارمندی دارید. توافق شفاهی به همان اندازه از نظر قانونی الزام‌آور است.",
     "contactOccupationalSafety": "مرجع ایمنی شغلی",
     "contactTradeUnionSAK": "مشاوره اتحادیه کارگری (SAK)",
-
     "tenantActionWrittenAgreement": "همیشه قرارداد اجاره کتبی داشته باشید",
     "tenantActionDocumentCondition": "وضعیت آپارتمان را هنگام نقل مکان مستند کنید (عکس)",
     "tenantActionReportMaintenance": "مشکلات تعمیر و نگهداری را کتباً گزارش دهید",
@@ -679,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "موجر در فنلاند نمی‌تواند بدون حکم دادگاه شما را تخلیه کند، حتی اگر اجاره‌نامه منقضی شده باشد. تعویض قفل یا قطع خدمات غیرقانونی است.",
     "contactTenantsAssociation": "انجمن مستأجران فنلاند",
     "contactConsumerDisputesBoard": "هیئت حل اختلاف مصرف‌کننده",
-
     "detentionActionAskDecision": "فوراً تصمیم کتبی بازداشت را بخواهید",
     "detentionActionRequestLawyer": "درخواست تماس با وکیل کنید",
     "detentionActionContactEmbassy": "با سفارت یا کنسولگری خود تماس بگیرید",
@@ -689,7 +718,6 @@
     "detentionDeadlineContinuation": "دادگاه تمدید را هر ۲ هفته بررسی می‌کند",
     "detentionFactCourtReview": "بازداشت مهاجرتی در فنلاند باید ظرف ۴ روز توسط دادگاه بخش بررسی شود. اگر انجام نشود، بازداشت غیرقانونی می‌شود.",
     "contactParliamentaryOmbudsman": "بازرس پارلمانی",
-
     "discriminationActionWriteDown": "دقیقاً بنویسید چه اتفاقی افتاد (تاریخ، زمان، مکان)",
     "discriminationActionSaveEvidence": "مدارک را نگه دارید: پیام‌ها، ایمیل‌ها، شاهدان",
     "discriminationActionFileComplaint": "شکایت به بازرس مبارزه با تبعیض ارائه دهید",

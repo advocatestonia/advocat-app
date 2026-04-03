@@ -320,6 +320,13 @@
     "appeal": "İtiraz",
     "appealDeadline": "İtiraz süresi",
     "appealDeadlineDesc": "İtiraz en geç {date} tarihine kadar yapılmalıdır.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "İtiraz süresi belirlendi",
     "appealDraft": "İtiraz taslağı",
     "applyLegalAid": "Gerekirse adli yardım başvurusu yapın",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Fotoğraf çekilemedi. Lütfen tekrar deneyin.",
     "caseCreated": "Dava oluşturuldu",
     "caseCreatedDesc": "\"{title}\" davası oluşturuldu.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Önceden doldurulmuş verilerle dava oluşturma yakında",
     "caseInfoUpdated": "Dava bilgileri son güncelleme.",
     "caseSummaryCopied": "Dava özeti kopyalandı",
@@ -347,6 +361,13 @@
     "connectYourEmail": "E-postanızı bağlayın",
     "connectYourEmailDesc": "Davalarınızla ilgili hukuki yazışmaları otomatik olarak tespit etmek için e-postanızı bağlayın.",
     "connectedTo": "{email} bağlı",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Hemen bir avukatla iletişime geçin",
     "contactLegalAidOffice": "Adli yardım bürosuyla iletişime geçin",
     "cookiePolicy": "Çerez Politikası",
@@ -369,7 +390,21 @@
     "delete": "Sil",
     "deleteCase": "Davayı sil",
     "deleteCaseConfirm": "\"{title}\" silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "{count} belge silinsin mi?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Seçilenleri sil",
     "deportationNotice": "Sınır dışı bildirimi",
     "deportationNoticeDesc": "Sınır dışı kararına itiraz adımları",
@@ -412,12 +447,26 @@
     "gdprIntro": "YZ hukuki yardım sağlamak için verilerinizi GDPR (AB 2016/679) uyarınca işliyoruz. Devam ederek kabul ediyorsunuz:",
     "gdprStorage": "Dava verilerinin şifreli depolanması",
     "generateAppealWithIssues": "İtiraz oluştur ({count} sorun)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Taslağınız oluşturuluyor...",
     "generatingDraftDesc": "YZ, dava detaylarınıza dayalı hukuki belge hazırlıyor.",
     "greatJobDeadlines": "Süreleri takip etmekte harika iş çıkarıyorsunuz.",
     "haveQuestionsAi": "Sorularınız mı var? YZ'ye sorun",
     "hearingScheduled": "Duruşma planlandı",
     "hearingScheduledDesc": "Mahkeme duruşması {date} için planlandı.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Nasıl hareket etmeli:",
     "iAgree": "Kabul ediyorum",
     "iAgreeToThe": "Kabul ediyorum ",
@@ -427,12 +476,33 @@
     "inCourt": "Mahkemede",
     "issuesFoundHeader": "Bulunan sorunlar",
     "issuesFoundInDocument": "Belgenizde {count} sorun bulundu",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Haklarınızı bilin",
     "landlordNotice": "Ev sahibi ihbar süresi vermeli (3-6 ay)",
     "lastSynced": "Son senkronizasyon: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "gecikmiş",
     "legalAidCalculator": "Adli yardım hesaplayıcı",
     "legalAidWithCopay": "%{percent} katkı payı ile adli yardıma hak kazanabilirsiniz.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Hukuki e-postalar",
     "legalEmailsWillAppear": "Hukuki olarak sınıflandırılan e-postalar burada görünecek.",
     "likelyEligible": "Muhtemelen uygun",
@@ -467,9 +537,37 @@
     "openSettings": "Ayarları aç",
     "orWord": "veya",
     "pageCount": "{count} sayfa",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Sayfa {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} sayfa başarıyla yüklendi",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Ödeme başarısız: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "PDF dışa aktarma yakında",
     "pending": "Beklemede",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Önemli hukuki belgelerinizi tek bir yerde saklayın.",
     "securityDeposit": "Depozito max 3 aylık kira",
     "selected": "{count} seçili",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Ciddiyet genel bakışı",
     "sickLeave": "Hastalık izni tazminatı",
     "somethingWentWrong": "Bir şeyler yanlış gitti",
     "stoppedByPolice": "Polis tarafından durdurulma",
     "stoppedByPoliceDesc": "Polis kontrolünde haklarınız",
     "successSubscribed": "{plan} aboneliği başarılı!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Izgara görünümüne geç",
     "switchToList": "Liste görünümüne geç",
     "takePhotoInstead": "Fotoğraf çekin",
@@ -539,6 +651,13 @@
     "uploadFile": "Dosya yükle",
     "uploadFileDesc": "Cihazınızdan bir PDF veya resim seçin",
     "uploadingPercent": "Yükleniyor... %{percent}",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Bu fotoğrafı kullan",
     "viewFull": "Tam görüntüle",
     "workPermit": "Çalışma izni",
@@ -551,7 +670,6 @@
     "yourRights": "Haklarınız:",
     "yourRightsAsTenant": "Kiracı olarak haklarınız:",
     "yourRightsInDetention": "Gözaltında haklarınız:",
-
     "whatToDo": "Ne yapmalı",
     "getHelp": "Yardım al",
     "share": "Paylaş",
@@ -559,7 +677,6 @@
     "mustKnow": "Bilmeniz gereken",
     "goodToKnow": "Bilmekte fayda var",
     "sentFromAdvocat": "Advocat uygulamasından gönderildi",
-
     "policeActionStayCalm": "Sakin olun ve ellerinizi görünür tutun",
     "policeActionAskWhy": "Memura neden durdurulduğunuzu sorun",
     "policeActionProvideName": "Adınızı ve doğum tarihinizi bildirin",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "Finlandiya'da kamuya açık yerlerde polis etkileşimlerini kaydedebilirsiniz. Bu, ifade özgürlüğü kapsamında korunmaktadır.",
     "contactFinnishLegalAid": "Finlandiya Adli Yardım",
     "contactNonDiscriminationOmbudsman": "Ayrımcılıkla Mücadele Ombudsmanı",
-
     "deportationDeadlineAppeal": "İdare Mahkemesine itiraz — genellikle tebliğden itibaren 30 gün",
     "deportationDeadlineLegalAid": "Adli yardım başvurusu yapın — bunu DERHAL yapın",
     "deportationFactStayDuringAppeal": "Finlandiya'da itirazınız işlenirken genellikle ülkede kalma hakkınız vardır. Aktif bir itiraz süresince çoğu durumda sınır dışı etme gerçekleştirilemez.",
     "contactRefugeeAdviceCentre": "Finlandiya Mülteci Danışma Merkezi",
     "contactAdminCourtHelsinki": "Helsinki İdare Mahkemesi",
-
     "workplaceActionKeepContract": "İş sözleşmenizin kopyalarını saklayın",
     "workplaceActionTrackHours": "Çalışma saatlerinizi bağımsız olarak takip edin",
     "workplaceActionReportUnsafe": "Güvensiz koşulları iş güvenliği otoritesine bildirin",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Yazılı sözleşme olmasa bile Finlandiya'da tam çalışan haklarına sahipsiniz. Sözlü anlaşma yasal olarak eşit derecede bağlayıcıdır.",
     "contactOccupationalSafety": "İş Güvenliği Otoritesi",
     "contactTradeUnionSAK": "Sendika Danışmanlığı (SAK)",
-
     "tenantActionWrittenAgreement": "Her zaman yazılı kira sözleşmesi yapın",
     "tenantActionDocumentCondition": "Taşınma sırasında dairenin durumunu belgeleyin (fotoğraflar)",
     "tenantActionReportMaintenance": "Bakım sorunlarını yazılı olarak bildirin",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Finlandiya'da ev sahibi, kira sözleşmeniz sona ermiş olsa bile mahkeme kararı olmadan sizi tahliye edemez. Kilit değiştirmek veya hizmetleri kesmek yasadışıdır.",
     "contactTenantsAssociation": "Finlandiya Kiracılar Derneği",
     "contactConsumerDisputesBoard": "Tüketici Uyuşmazlıkları Kurulu",
-
     "detentionActionAskDecision": "Derhal yazılı gözaltı kararını isteyin",
     "detentionActionRequestLawyer": "Avukatla iletişim kurmayı talep edin",
     "detentionActionContactEmbassy": "Büyükelçiliğiniz veya konsolosluğunuzla iletişime geçin",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Mahkeme uzatmayı her 2 haftada bir inceler",
     "detentionFactCourtReview": "Finlandiya'da göç gözaltısı 4 gün içinde bir sulh mahkemesi tarafından incelenmelidir. İncelenmezse gözaltı yasadışı hale gelir.",
     "contactParliamentaryOmbudsman": "Parlamento Ombudsmanı",
-
     "discriminationActionWriteDown": "Ne olduğunu tam olarak yazın (tarih, saat, yer)",
     "discriminationActionSaveEvidence": "Kanıtları saklayın: mesajlar, e-postalar, tanıklar",
     "discriminationActionFileComplaint": "Ayrımcılıkla Mücadele Ombudsmanına şikayette bulunun",

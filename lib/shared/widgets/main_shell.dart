@@ -178,10 +178,16 @@ class _NavBarItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = isActive ? AppColors.accent : AppColors.textTertiary;
 
-    return InkWell(
+    return Semantics(
+      label: '$label tab${isActive ? ", selected" : ""}${badgeCount > 0 ? ", $badgeCount notifications" : ""}',
+      button: true,
+      selected: isActive,
+      child: InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadius.sm),
-      child: Padding(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 48),
+        child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -212,6 +218,8 @@ class _NavBarItem extends StatelessWidget {
           ],
         ),
       ),
+      ),
+      ),
     );
   }
 }
@@ -229,8 +237,13 @@ class _CenterScanButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      label: '$label tab${isActive ? ", selected" : ""}',
+      button: true,
+      selected: isActive,
+      child: GestureDetector(
       onTap: onTap,
+      behavior: HitTestBehavior.opaque,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -269,6 +282,7 @@ class _CenterScanButton extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

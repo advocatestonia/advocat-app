@@ -132,7 +132,7 @@ class AssistantTools {
       );
     }
 
-    _log.i('Executing tool: $toolName with params: $params');
+    _log.i('Executing tool: $toolName');
 
     try {
       final result = await handler(params);

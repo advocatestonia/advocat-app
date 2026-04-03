@@ -189,7 +189,9 @@ class _DeadlineCard extends StatelessWidget {
                 ? AppColors.warning
                 : AppColors.success;
 
-    return Container(
+    return Semantics(
+      label: 'Deadline: ${deadline.title}, ${isCompleted ? "completed" : isOverdue ? "${-days} days overdue" : "$days days remaining"}',
+      child: Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.md),
@@ -297,9 +299,16 @@ class _DeadlineCard extends StatelessWidget {
 
             // -- Mark complete --
             if (!isCompleted)
-              IconButton(
+              Semantics(
+                label: 'Mark deadline complete',
+                button: true,
+                child: IconButton(
                 onPressed: onMarkComplete,
                 tooltip: l10n.markComplete,
+                constraints: const BoxConstraints(
+                  minWidth: 48,
+                  minHeight: 48,
+                ),
                 icon: Container(
                   width: 36,
                   height: 36,
@@ -314,8 +323,10 @@ class _DeadlineCard extends StatelessWidget {
                   ),
                 ),
               ),
+              ),
           ],
         ),
+      ),
       ),
     );
   }

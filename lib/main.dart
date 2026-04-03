@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'config/app_config.dart';
 import 'config/theme.dart';
 import 'config/router.dart';
 import 'l10n/app_localizations.dart';
@@ -52,11 +54,18 @@ Future<void> main() async {
 
   _prefs = await SharedPreferences.getInstance();
 
-  // NOTE: Firebase, Supabase, and Stripe initialization disabled for demo.
+  // Supabase: initialize only when credentials are provided via --dart-define.
+  // Without credentials the app runs in demo mode.
+  const supabaseUrl = AppConfig.supabaseUrl;
+  const supabaseAnonKey = AppConfig.supabaseAnonKey;
+  if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
+    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+  }
+
+  // NOTE: Firebase and Stripe initialization disabled for demo.
   // Enable when backend is configured:
   // await Firebase.initializeApp();
-  // await Supabase.initialize(url: ..., anonKey: ...);
-  // Stripe.publishableKey = ...;
+  // Stripe.publishableKey = AppConfig.stripePublishableKey;
 
   runApp(
     const ProviderScope(

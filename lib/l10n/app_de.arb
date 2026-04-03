@@ -320,6 +320,13 @@
     "appeal": "Einspruch",
     "appealDeadline": "Einspruchsfrist",
     "appealDeadlineDesc": "Einspruch muss bis {date} eingereicht werden.",
+    "@appealDeadlineDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "appealDeadlineSet": "Einspruchsfrist gesetzt",
     "appealDraft": "Einspruchsentwurf",
     "applyLegalAid": "Bei Bedarf Prozesskostenhilfe beantragen",
@@ -333,6 +340,13 @@
     "capturePhotoFailed": "Foto konnte nicht aufgenommen werden. Bitte erneut versuchen.",
     "caseCreated": "Fall erstellt",
     "caseCreatedDesc": "Fall \"{title}\" wurde erstellt.",
+    "@caseCreatedDesc": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "caseCreationComingSoon": "Fallerstellung mit vorausgefüllten Daten kommt bald",
     "caseInfoUpdated": "Fallinformationen wurden zuletzt aktualisiert.",
     "caseSummaryCopied": "Fallzusammenfassung kopiert",
@@ -347,6 +361,13 @@
     "connectYourEmail": "E-Mail verbinden",
     "connectYourEmailDesc": "Verbinden Sie Ihre E-Mail, um rechtliche Korrespondenz zu Ihren Fällen automatisch zu erkennen.",
     "connectedTo": "Verbunden mit {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
     "contactLawyerImmediately": "Sofort einen Anwalt kontaktieren",
     "contactLegalAidOffice": "Rechtsberatungsstelle kontaktieren",
     "cookiePolicy": "Cookie-Richtlinie",
@@ -369,7 +390,21 @@
     "delete": "Löschen",
     "deleteCase": "Fall löschen",
     "deleteCaseConfirm": "Möchten Sie \"{title}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            }
+        }
+    },
     "deleteDocumentsConfirm": "{count} Dokumente löschen?",
+    "@deleteDocumentsConfirm": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "deleteSelected": "Ausgewählte löschen",
     "deportationNotice": "Abschiebungsbescheid",
     "deportationNoticeDesc": "Schritte zur Anfechtung einer Abschiebungsanordnung",
@@ -412,12 +447,26 @@
     "gdprIntro": "Um KI-Rechtsberatung zu bieten, verarbeiten wir Ihre Daten gemäß DSGVO (EU 2016/679). Durch Fortfahren stimmen Sie zu:",
     "gdprStorage": "Verschlüsselte Speicherung von Falldaten",
     "generateAppealWithIssues": "Einspruch erstellen ({count} Probleme)",
+    "@generateAppealWithIssues": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "generatingDraft": "Ihr Entwurf wird erstellt...",
     "generatingDraftDesc": "KI bereitet ein Rechtsdokument basierend auf Ihren Falldetails und ausgewählten Problemen vor.",
     "greatJobDeadlines": "Gut gemacht, Sie behalten Ihre Fristen im Blick.",
     "haveQuestionsAi": "Fragen? Fragen Sie die KI",
     "hearingScheduled": "Anhörung geplant",
     "hearingScheduledDesc": "Gerichtsverhandlung geplant für {date}.",
+    "@hearingScheduledDesc": {
+        "placeholders": {
+            "date": {
+                "type": "String"
+            }
+        }
+    },
     "howToAct": "Wie Sie handeln sollten:",
     "iAgree": "Ich stimme zu",
     "iAgreeToThe": "Ich stimme den ",
@@ -427,12 +476,33 @@
     "inCourt": "Vor Gericht",
     "issuesFoundHeader": "Gefundene Probleme",
     "issuesFoundInDocument": "{count} Problem(e) in Ihrem Dokument gefunden",
+    "@issuesFoundInDocument": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "knowYourRights": "Kennen Sie Ihre Rechte",
     "landlordNotice": "Vermieter muss kündigen (3-6 Monate)",
     "lastSynced": "Zuletzt synchronisiert: {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
     "late": "überfällig",
     "legalAidCalculator": "Prozesskostenhilfe-Rechner",
     "legalAidWithCopay": "Sie qualifizieren sich möglicherweise für Prozesskostenhilfe mit einer Zuzahlung von {percent}%.",
+    "@legalAidWithCopay": {
+        "placeholders": {
+            "percent": {
+                "type": "String"
+            }
+        }
+    },
     "legalEmails": "Rechtliche E-Mails",
     "legalEmailsWillAppear": "Als rechtlich eingestufte E-Mails erscheinen hier.",
     "likelyEligible": "Wahrscheinlich berechtigt",
@@ -467,9 +537,37 @@
     "openSettings": "Einstellungen öffnen",
     "orWord": "oder",
     "pageCount": "{count} Seite(n)",
+    "@pageCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "pageNumber": "Seite {number}",
+    "@pageNumber": {
+        "placeholders": {
+            "number": {
+                "type": "int"
+            }
+        }
+    },
     "pagesUploadedSuccess": "{count} Seiten erfolgreich hochgeladen",
+    "@pagesUploadedSuccess": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "paymentFailed": "Zahlung fehlgeschlagen: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
     "pdf": "PDF",
     "pdfExportComingSoon": "PDF-Export kommt bald",
     "pending": "Ausstehend",
@@ -517,12 +615,26 @@
     "secureDocumentStorageDesc": "Bewahren Sie Ihre wichtigen Rechtsdokumente an einem Ort für einfachen Zugriff auf.",
     "securityDeposit": "Kaution max. 3 Monatsmieten",
     "selected": "{count} ausgewählt",
+    "@selected": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "severityOverview": "Schweregrad-Übersicht",
     "sickLeave": "Lohnfortzahlung im Krankheitsfall",
     "somethingWentWrong": "Etwas ist schiefgelaufen",
     "stoppedByPolice": "Von der Polizei angehalten",
     "stoppedByPoliceDesc": "Ihre Rechte bei einer Polizeikontrolle",
     "successSubscribed": "Erfolgreich für {plan} abonniert!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": {
+                "type": "String"
+            }
+        }
+    },
     "switchToGrid": "Zur Rasteransicht wechseln",
     "switchToList": "Zur Listenansicht wechseln",
     "takePhotoInstead": "Stattdessen Foto aufnehmen",
@@ -539,6 +651,13 @@
     "uploadFile": "Datei hochladen",
     "uploadFileDesc": "Wählen Sie eine PDF- oder Bilddatei von Ihrem Gerät",
     "uploadingPercent": "Hochladen... {percent}%",
+    "@uploadingPercent": {
+        "placeholders": {
+            "percent": {
+                "type": "int"
+            }
+        }
+    },
     "useThisPhoto": "Dieses Foto verwenden",
     "viewFull": "Vollständig anzeigen",
     "workPermit": "Arbeitserlaubnis",
@@ -551,7 +670,6 @@
     "yourRights": "Ihre Rechte:",
     "yourRightsAsTenant": "Ihre Rechte als Mieter:",
     "yourRightsInDetention": "Ihre Rechte in Haft:",
-
     "whatToDo": "Was tun",
     "getHelp": "Hilfe bekommen",
     "share": "Teilen",
@@ -559,7 +677,6 @@
     "mustKnow": "Wichtig zu wissen",
     "goodToKnow": "Gut zu wissen",
     "sentFromAdvocat": "Gesendet von der Advocat-App",
-
     "policeActionStayCalm": "Bleiben Sie ruhig und halten Sie die Hände sichtbar",
     "policeActionAskWhy": "Fragen Sie den Beamten, warum Sie angehalten werden",
     "policeActionProvideName": "Nennen Sie Ihren Namen und Ihr Geburtsdatum",
@@ -570,13 +687,11 @@
     "policeFactCanRecord": "Sie können Polizeikontakte an öffentlichen Orten in Finnland aufnehmen. Dies wird durch die Meinungsfreiheit geschützt.",
     "contactFinnishLegalAid": "Finnische Rechtshilfe",
     "contactNonDiscriminationOmbudsman": "Gleichbehandlungsbeauftragter",
-
     "deportationDeadlineAppeal": "Berufung beim Verwaltungsgericht — in der Regel 30 Tage nach Zustellung",
     "deportationDeadlineLegalAid": "Beantragen Sie Rechtshilfe — tun Sie dies SOFORT",
     "deportationFactStayDuringAppeal": "In Finnland haben Sie in der Regel das Recht, im Land zu bleiben, während Ihre Berufung bearbeitet wird. Die Abschiebung kann in den meisten Fällen während einer laufenden Berufung nicht vollzogen werden.",
     "contactRefugeeAdviceCentre": "Finnisches Flüchtlingsberatungszentrum",
     "contactAdminCourtHelsinki": "Verwaltungsgericht Helsinki",
-
     "workplaceActionKeepContract": "Bewahren Sie Kopien Ihres Arbeitsvertrags auf",
     "workplaceActionTrackHours": "Erfassen Sie Ihre Arbeitszeiten eigenständig",
     "workplaceActionReportUnsafe": "Melden Sie unsichere Bedingungen der Arbeitsschutzbehörde",
@@ -586,7 +701,6 @@
     "workplaceFactOralContract": "Auch ohne schriftlichen Vertrag haben Sie in Finnland volle Arbeitnehmerrechte. Eine mündliche Vereinbarung ist gesetzlich ebenso bindend.",
     "contactOccupationalSafety": "Arbeitsschutzbehörde",
     "contactTradeUnionSAK": "Gewerkschaftsberatung (SAK)",
-
     "tenantActionWrittenAgreement": "Schließen Sie immer einen schriftlichen Mietvertrag ab",
     "tenantActionDocumentCondition": "Dokumentieren Sie den Zustand der Wohnung beim Einzug (Fotos)",
     "tenantActionReportMaintenance": "Melden Sie Instandhaltungsprobleme schriftlich",
@@ -595,7 +709,6 @@
     "tenantFactNoEvictionWithoutCourt": "Ein Vermieter in Finnland kann Sie nicht ohne Gerichtsbeschluss räumen, auch wenn Ihr Mietvertrag abgelaufen ist. Schlösser austauschen oder Versorgungsleistungen kappen ist illegal.",
     "contactTenantsAssociation": "Finnischer Mieterverband",
     "contactConsumerDisputesBoard": "Verbraucherschlichtungsstelle",
-
     "detentionActionAskDecision": "Fordern Sie sofort den schriftlichen Haftbeschluss an",
     "detentionActionRequestLawyer": "Verlangen Sie, einen Anwalt zu kontaktieren",
     "detentionActionContactEmbassy": "Kontaktieren Sie Ihre Botschaft oder Ihr Konsulat",
@@ -605,7 +718,6 @@
     "detentionDeadlineContinuation": "Das Gericht überprüft die Verlängerung alle 2 Wochen",
     "detentionFactCourtReview": "Einwanderungshaft in Finnland muss innerhalb von 4 Tagen von einem Amtsgericht überprüft werden. Geschieht dies nicht, wird die Haft rechtswidrig.",
     "contactParliamentaryOmbudsman": "Parlamentarischer Ombudsmann",
-
     "discriminationActionWriteDown": "Schreiben Sie genau auf, was passiert ist (Datum, Uhrzeit, Ort)",
     "discriminationActionSaveEvidence": "Sichern Sie Beweise: Nachrichten, E-Mails, Zeugen",
     "discriminationActionFileComplaint": "Reichen Sie eine Beschwerde beim Gleichbehandlungsbeauftragten ein",
