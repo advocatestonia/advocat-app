@@ -900,69 +900,14 @@ class _EmptyState extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          // Tips
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(AppSpacing.md),
-            decoration: BoxDecoration(
-              color: AppColors.info.withValues(alpha: 0.06),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: AppColors.info.withValues(alpha: 0.15),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.lightbulb_outline, size: 16, color: AppColors.info),
-                    const SizedBox(width: 6),
-                    Text(
-                      l.getStarted,
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.info,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                _TipItem(icon: Icons.document_scanner_outlined, text: l.scanDocument),
-                const SizedBox(height: 4),
-                _TipItem(icon: Icons.gavel_outlined, text: l.legalSection),
-                const SizedBox(height: 4),
-                _TipItem(icon: Icons.calculate_outlined, text: l.legalFighter),
-              ],
-            ),
-          ),
+          const SizedBox(height: AppSpacing.sm),
         ],
       ),
     );
   }
 }
 
-class _TipItem extends StatelessWidget {
-  const _TipItem({required this.icon, required this.text});
-  final IconData icon;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, size: 14, color: AppColors.textSecondary),
-        const SizedBox(width: 8),
-        Text(
-          text,
-          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-        ),
-      ],
-    );
-  }
-}
+// _TipItem removed — tips block removed from empty state
 
 // ---------------------------------------------------------------------------
 // Error State
