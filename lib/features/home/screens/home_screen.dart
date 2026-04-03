@@ -863,7 +863,7 @@ class _EmptyState extends StatelessWidget {
                   color: AppColors.textSecondary,
                 ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: 10),
           // Create case button
           SizedBox(
             width: double.infinity,
@@ -874,14 +874,14 @@ class _EmptyState extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.accent,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: 8),
           // Or chat with AI
           SizedBox(
             width: double.infinity,
@@ -890,14 +890,14 @@ class _EmptyState extends StatelessWidget {
               icon: const Icon(Icons.smart_toy_outlined, size: 20),
               label: Text(l.aiChat),
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
+                padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: 10),
           // Tips
           Container(
             width: double.infinity,
