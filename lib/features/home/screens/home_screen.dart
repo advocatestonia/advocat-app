@@ -839,12 +839,28 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: AppSpacing.lg),
-          // Advocat shield logo
-          Image.asset(
-            'assets/images/logo_shield.png',
-            width: 100,
-            height: 100,
+          const SizedBox(height: AppSpacing.xl),
+          // Advocat shield logo — large and beautiful
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.accent.withValues(alpha: 0.15),
+                  blurRadius: 20,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Image.asset(
+              'assets/images/logo_shield.png',
+              width: 160,
+              height: 160,
+              filterQuality: FilterQuality.high,
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
