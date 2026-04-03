@@ -218,7 +218,7 @@ class SubscriptionScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Successfully subscribed to ${planId.toUpperCase()}!'),
+            content: Text(AppLocalizations.of(context)?.successSubscribed(planId.toUpperCase()) ?? 'Successfully subscribed to ${planId.toUpperCase()}!'),
             backgroundColor: AppColors.success,
           ),
         );
@@ -227,7 +227,7 @@ class SubscriptionScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Payment failed: $e'),
+            content: Text(AppLocalizations.of(context)?.paymentFailed(e.toString()) ?? 'Payment failed: $e'),
             backgroundColor: AppColors.error,
           ),
         );

@@ -1356,111 +1356,222 @@ class AppLocalizationsLv extends AppLocalizations {
   String get failedToLoadDocuments => 'Neizdevās ielādēt dokumentus';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'E-pasta integrācija';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'Pievienojiet e-pastu';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'Pievienojiet e-pastu, lai automātiski noteiktu un sakārtotu ar jūsu lietām saistīto juridisko saraksti.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'Juridiskie e-pasti';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'Nesaistīti e-pasti';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'Juridisku e-pastu vēl nav';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'Šeit parādīsies kā juridiski klasificētie e-pasti.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'Piesaistīt lietai';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'Atvienot e-pastu';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'Automātiskā e-pasta sinhronizācija tiks apturēta. Iepriekš sinhronizētie e-pasti paliks jūsu lietās.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'Savienots ar $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'Sinhronizēts: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'Filtrēt pēc veida';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'Nav atrastu lietu';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'Neizdevās ielādēt lietas';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Mēneša';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'Gada';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'Ietaupiet 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'POPULĀRĀKAIS';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 aktīva lieta';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 aktīvas lietas';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'Neierobežotas lietas';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 dokumentu skenēšanas';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 dokumentu skenēšanas';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'Neierobežota dokumentu skenēšana';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'Pamata MI analīze';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'Pilna MI analīze';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'Melnrakstu ģenerēšana';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'Prioritāra apstrāde';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'mūžīgi';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/mēn.';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/gadā';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Pārbauda iepriekšējos pirkumus...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'Iepriekšēji pirkumi nav atrasti.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Sveiki! Es esmu jūsu juridiskais palīgs. Pastāstiet, kas notika — es analizēšu situāciju un ieteikšu, ko darīt.';
+
+  @override
+  String get copySummary => 'Kopēt kopsavilkumu';
+
+  @override
+  String get caseSummaryCopied => 'Lietas kopsavilkums nokopēts';
+
+  @override
+  String get openCase => 'Atvērt lietu';
+
+  @override
+  String get viewFull => 'Skatīt pilnībā';
+
+  @override
+  String get draftCopiedToClipboard => 'Melnraksts nokopēts';
+
+  @override
+  String get reportMileageFraud => 'Ziņot par nobraukuma viltošanu';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'Tiks izveidots krāpšanas ziņojums, pamatojoties uz transportlīdzekļa pārbaudes datiem. Varat arī atvērt juridisku lietu.';
+
+  @override
+  String get reportAndOpenCase => 'Ziņot un atvērt lietu';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Lietas izveide ar aizpildītiem datiem drīzumā';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'Neizdevās izveidot lietu. Mēģiniet vēlreiz.';
+
+  @override
+  String get takePhotoInstead => 'Nofotografēt';
+
+  @override
+  String get deleteCase => 'Dzēst lietu';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Vai tiešām vēlaties dzēst \"$title\"? Šo darbību nevar atcelt.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Ir jautājumi? Jautājiet MI';
+
+  @override
+  String get cookiePolicy => 'Sīkdatņu politika';
+
+  @override
+  String get aiDisclaimer => 'MI atruna';
+
+  @override
+  String get dataPrivacyConsent => 'Datu konfidencialitātes piekrišana';
+
+  @override
+  String get gdprIntro =>
+      'Lai sniegtu MI juridisko palīdzību, mēs apstrādājam jūsu datus saskaņā ar GDPR (ES 2016/679). Turpinot jūs piekrītat:';
+
+  @override
+  String get gdprChat => 'Tērzēšanas ziņojumu apstrāde ar MI';
+
+  @override
+  String get gdprDocs => 'Augšupielādēto dokumentu analīze';
+
+  @override
+  String get gdprStorage => 'Šifrēta lietu datu glabāšana';
+
+  @override
+  String get gdprDelete => 'Tiesības jebkurā laikā dzēst savus datus';
+
+  @override
+  String get gdprFooter =>
+      'Jūsu dati ir šifrēti un nekad netiek kopīgoti ar trešajām pusēm. Varat atsaukt piekrišanu un dzēst visus datus Iestatījumos.';
+
+  @override
+  String get decline => 'Noraidīt';
+
+  @override
+  String get iAgree => 'Piekrītu';
+
+  @override
+  String get iAgreeToThe => 'Es piekrītu ';
+
+  @override
+  String get orWord => 'vai';
+
+  @override
+  String get english => 'Angļu';
+
+  @override
+  String get russian => 'Krievu';
+
+  @override
+  String get finnish => 'Somu';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Abonements $plan veiksmīgi aktivizēts!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Maksājums neizdevās: $error';
+  }
 }

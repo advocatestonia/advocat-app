@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../../config/theme.dart';
+import '../../l10n/app_localizations.dart';
 
 const _gdprStorageKey = 'gdpr_consent_accepted';
 
@@ -23,49 +24,49 @@ Future<bool> showGdprConsentDialog(BuildContext context) async {
   final accepted = await showDialog<bool>(
     context: context,
     barrierDismissible: false,
-    builder: (ctx) => AlertDialog(
+    builder: (ctx) {
+      final l10n = AppLocalizations.of(ctx);
+      return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.lg),
       ),
-      title: const Row(
+      title: Row(
         children: [
-          Icon(Icons.shield_outlined, color: AppColors.accent),
-          SizedBox(width: 8),
-          Text('Data Privacy Consent'),
+          const Icon(Icons.shield_outlined, color: AppColors.accent),
+          const SizedBox(width: 8),
+          Flexible(child: Text(l10n?.dataPrivacyConsent ?? 'Data Privacy Consent')),
         ],
       ),
-      content: const SingleChildScrollView(
+      content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'To provide AI legal assistance, we process your data in accordance '
-              'with GDPR (EU 2016/679). By continuing you agree to:',
-              style: TextStyle(fontSize: 14, height: 1.5),
+              l10n?.gdprIntro ?? 'To provide AI legal assistance, we process your data in accordance with GDPR (EU 2016/679). By continuing you agree to:',
+              style: const TextStyle(fontSize: 14, height: 1.5),
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             _ConsentItem(
               icon: Icons.chat_outlined,
-              text: 'Processing of your chat messages by AI',
+              text: l10n?.gdprChat ?? 'Processing of your chat messages by AI',
             ),
             _ConsentItem(
               icon: Icons.description_outlined,
-              text: 'Analysis of uploaded documents',
+              text: l10n?.gdprDocs ?? 'Analysis of uploaded documents',
             ),
             _ConsentItem(
               icon: Icons.storage_outlined,
-              text: 'Encrypted storage of case data',
+              text: l10n?.gdprStorage ?? 'Encrypted storage of case data',
             ),
             _ConsentItem(
               icon: Icons.delete_outline,
-              text: 'Right to delete your data at any time',
+              text: l10n?.gdprDelete ?? 'Right to delete your data at any time',
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             Text(
-              'Your data is encrypted and never shared with third parties. '
-              'You can withdraw consent and delete all data from Settings.',
-              style: TextStyle(
+              l10n?.gdprFooter ?? 'Your data is encrypted and never shared with third parties. You can withdraw consent and delete all data from Settings.',
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textSecondary,
                 height: 1.4,
@@ -77,17 +78,18 @@ Future<bool> showGdprConsentDialog(BuildContext context) async {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          child: const Text('Decline'),
+          child: Text(l10n?.decline ?? 'Decline'),
         ),
         FilledButton(
           onPressed: () => Navigator.pop(ctx, true),
           style: FilledButton.styleFrom(
             backgroundColor: AppColors.accent,
           ),
-          child: const Text('I Agree'),
+          child: Text(l10n?.iAgree ?? 'I Agree'),
         ),
       ],
-    ),
+    );
+    },
   );
 
   if (accepted == true) {

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/router.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../config/theme.dart';
 import '../providers/auth_provider.dart';
 
@@ -226,14 +227,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 // -- Language selector --
                 DropdownButtonFormField<String>(
                   initialValue: _selectedLanguage,
-                  decoration: const InputDecoration(
-                    labelText: 'Preferred Language',
-                    prefixIcon: Icon(Icons.language_outlined),
+                  decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)?.preferredLanguage ?? 'Preferred Language',
+                    prefixIcon: const Icon(Icons.language_outlined),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'en', child: Text('English')),
-                    DropdownMenuItem(value: 'ru', child: Text('Russian')),
-                    DropdownMenuItem(value: 'fi', child: Text('Finnish')),
+                  items: [
+                    DropdownMenuItem(value: 'en', child: Text(AppLocalizations.of(context)?.english ?? 'English')),
+                    DropdownMenuItem(value: 'ru', child: Text(AppLocalizations.of(context)?.russian ?? 'Russian')),
+                    DropdownMenuItem(value: 'fi', child: Text(AppLocalizations.of(context)?.finnish ?? 'Finnish')),
                   ],
                   onChanged: (value) {
                     if (value != null) {
@@ -274,9 +275,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                   height: 1.4,
                                 ),
                             children: [
-                              const TextSpan(text: 'I agree to the '),
+                              TextSpan(text: AppLocalizations.of(context)?.iAgreeToThe ?? 'I agree to the '),
                               TextSpan(
-                                text: 'Terms of Service',
+                                text: AppLocalizations.of(context)?.termsOfService ?? 'Terms of Service',
                                 style: const TextStyle(
                                   color: AppColors.accent,
                                   fontWeight: FontWeight.w600,
@@ -286,9 +287,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                                     // TODO: Open Terms of Service
                                   },
                               ),
-                              const TextSpan(text: ' and '),
+                              TextSpan(text: AppLocalizations.of(context)?.andWord ?? ' and '),
                               TextSpan(
-                                text: 'Privacy Policy',
+                                text: AppLocalizations.of(context)?.privacyPolicy ?? 'Privacy Policy',
                                 style: const TextStyle(
                                   color: AppColors.accent,
                                   fontWeight: FontWeight.w600,
@@ -336,28 +337,28 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               color: Colors.white,
                             ),
                           )
-                        : const Text('Create Account'),
+                        : Text(AppLocalizations.of(context)?.createAccount ?? 'Create Account'),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.lg),
 
                 // -- Divider --
-                const Row(
+                Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                         child: Divider(color: AppColors.border)),
                     Padding(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: AppSpacing.md),
                       child: Text(
-                        'or',
-                        style: TextStyle(
+                        AppLocalizations.of(context)?.orWord ?? 'or',
+                        style: const TextStyle(
                           color: AppColors.textTertiary,
                           fontSize: 14,
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                         child: Divider(color: AppColors.border)),
                   ],
                 ),
@@ -379,7 +380,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         size: 24,
                       ),
                     ),
-                    label: const Text('Continue with Google'),
+                    label: Text(AppLocalizations.of(context)?.continueWithGoogle ?? 'Continue with Google'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.textPrimary,
                       side: const BorderSide(color: AppColors.border),

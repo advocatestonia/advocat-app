@@ -114,8 +114,8 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to create case. Please try again.'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)?.failedToCreateCaseRetry ?? 'Failed to create case. Please try again.'),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -685,7 +685,7 @@ class _Step3Document extends StatelessWidget {
               // TODO: Open camera for document scan
             },
             icon: const Icon(Icons.camera_alt_outlined),
-            label: const Text('Take a Photo Instead'),
+            label: Text(AppLocalizations.of(context)?.takePhotoInstead ?? 'Take a Photo Instead'),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size(double.infinity, 48),
             ),

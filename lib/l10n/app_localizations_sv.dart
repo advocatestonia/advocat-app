@@ -761,693 +761,809 @@ class AppLocalizationsSv extends AppLocalizations {
   String get won => 'Vunnet';
 
   @override
-  String get documentVault => 'Document Vault';
+  String get documentVault => 'Dokumentvalv';
 
   @override
-  String get secureDocumentStorage => 'Secure Document Storage';
+  String get secureDocumentStorage => 'Säker dokumentförvaring';
 
   @override
   String get secureDocumentStorageDesc =>
-      'Store your important legal documents in one place for easy access.';
+      'Förvara dina viktiga juridiska dokument på ett ställe.';
 
   @override
-  String get addDocument => 'Add Document';
+  String get addDocument => 'Lägg till dokument';
 
   @override
-  String get chooseHowToAdd => 'Choose how to add your document';
+  String get chooseHowToAdd => 'Välj hur du vill lägga till ditt dokument';
 
   @override
-  String get uploadFile => 'Upload File';
+  String get uploadFile => 'Ladda upp fil';
 
   @override
-  String get uploadFileDesc => 'Choose a PDF or image from your device';
+  String get uploadFileDesc => 'Välj en PDF eller bild från din enhet';
 
   @override
-  String get scanDocumentDesc => 'Take a photo of your document';
+  String get scanDocumentDesc => 'Ta ett foto av ditt dokument';
 
   @override
-  String get createNote => 'Create Note';
+  String get createNote => 'Skapa anteckning';
 
   @override
-  String get createNoteDesc => 'Write a note or record important details';
+  String get createNoteDesc =>
+      'Skriv en anteckning eller registrera viktiga detaljer';
 
   @override
-  String get knowYourRights => 'Know Your Rights';
+  String get knowYourRights => 'Känn dina rättigheter';
 
   @override
-  String get stoppedByPolice => 'Stopped by Police';
+  String get stoppedByPolice => 'Stoppad av polisen';
 
   @override
-  String get stoppedByPoliceDesc => 'Your rights during a police encounter';
+  String get stoppedByPoliceDesc => 'Dina rättigheter vid poliskontroll';
 
   @override
-  String get deportationNotice => 'Deportation Notice';
+  String get deportationNotice => 'Utvisningsbeslut';
 
   @override
-  String get deportationNoticeDesc => 'Steps to challenge a removal order';
+  String get deportationNoticeDesc =>
+      'Steg för att överklaga ett utvisningsbeslut';
 
   @override
-  String get workplaceRights => 'Workplace Rights';
+  String get workplaceRights => 'Arbetsplatsrättigheter';
 
   @override
-  String get workplaceRightsDesc => 'Employment law protections in Finland';
+  String get workplaceRightsDesc => 'Arbetsrättsligt skydd i Finland';
 
   @override
-  String get tenantRightsDesc => 'Housing and rental protections';
+  String get tenantRightsDesc => 'Bostads- och hyresskydd';
 
   @override
-  String get immigrationDetention => 'Immigration Detention';
+  String get immigrationDetention => 'Migrationsförvar';
 
   @override
-  String get immigrationDetentionDesc => 'Rights if detained by authorities';
+  String get immigrationDetentionDesc =>
+      'Rättigheter vid frihetsberövande av myndigheter';
 
   @override
-  String get discriminationDesc => 'How to report and fight discrimination';
+  String get discriminationDesc =>
+      'Hur man rapporterar och bekämpar diskriminering';
 
   @override
-  String get scenarioNotFound => 'Scenario not found';
+  String get scenarioNotFound => 'Scenario hittades inte';
 
   @override
-  String get youHaveRightTo => 'You have the right to:';
+  String get youHaveRightTo => 'Du har rätt att:';
 
   @override
-  String get youMust => 'You must:';
+  String get youMust => 'Du måste:';
 
   @override
-  String get immediateSteps => 'Immediate steps:';
+  String get immediateSteps => 'Omedelbara steg:';
 
   @override
-  String get yourRights => 'Your rights:';
+  String get yourRights => 'Dina rättigheter:';
 
   @override
-  String get basicRights => 'Basic rights:';
+  String get basicRights => 'Grundläggande rättigheter:';
 
   @override
-  String get yourRightsAsTenant => 'Your rights as a tenant:';
+  String get yourRightsAsTenant => 'Dina rättigheter som hyresgäst:';
 
   @override
-  String get yourRightsInDetention => 'Your rights in detention:';
+  String get yourRightsInDetention => 'Dina rättigheter i förvar:';
 
   @override
-  String get howToAct => 'How to act:';
+  String get howToAct => 'Hur du ska agera:';
 
   @override
-  String get rightKnowWhyStopped => 'Know why you are being stopped';
+  String get rightKnowWhyStopped => 'Veta varför du stoppas';
 
   @override
-  String get rightRemainSilent => 'Remain silent (you must identify yourself)';
+  String get rightRemainSilent => 'Tiga (du måste identifiera dig)';
 
   @override
-  String get rightAskInterpreter => 'Ask for an interpreter';
+  String get rightAskInterpreter => 'Be om tolk';
 
   @override
-  String get rightContactLawyer => 'Contact a lawyer before questioning';
+  String get rightContactLawyer => 'Kontakta advokat innan förhör';
 
   @override
-  String get rightRecordEncounter => 'Record the encounter (in public places)';
+  String get rightRecordEncounter => 'Spela in mötet (på offentliga platser)';
 
   @override
-  String get mustProvideName => 'Provide your name and date of birth';
+  String get mustProvideName => 'Ange ditt namn och födelsedatum';
 
   @override
-  String get mustShowId => 'Show ID if you have one';
+  String get mustShowId => 'Visa legitimation om du har';
 
   @override
-  String get mustNotResist => 'Not physically resist';
+  String get mustNotResist => 'Inte göra fysiskt motstånd';
 
   @override
   String get doNotIgnoreNotice =>
-      'Do NOT ignore the notice - deadlines are strict';
+      'Ignorera INTE beslutet - tidsfristerna är strikta';
 
   @override
-  String get noteAppealDeadline => 'Note the appeal deadline (usually 30 days)';
+  String get noteAppealDeadline =>
+      'Notera överklagandefristen (vanligtvis 30 dagar)';
 
   @override
-  String get contactLawyerImmediately => 'Contact a lawyer immediately';
+  String get contactLawyerImmediately => 'Kontakta omedelbart en advokat';
 
   @override
-  String get applyLegalAid => 'Apply for legal aid if needed';
+  String get applyLegalAid => 'Ansök om rättshjälp vid behov';
 
   @override
-  String get rightAppealAdmin => 'Right to appeal to the Administrative Court';
+  String get rightAppealAdmin =>
+      'Rätt att överklaga till förvaltningsdomstolen';
 
   @override
-  String get rightLegalRep => 'Right to legal representation';
+  String get rightLegalRep => 'Rätt till juridiskt ombud';
 
   @override
-  String get rightInterpreter => 'Right to an interpreter';
+  String get rightInterpreter => 'Rätt till tolk';
 
   @override
   String get rightStayDuringAppeal =>
-      'Right to stay during appeal (in most cases)';
+      'Rätt att stanna under överklagande (i de flesta fall)';
 
   @override
-  String get minimumWage => 'Minimum wage as per collective agreement';
+  String get minimumWage => 'Minimilön enligt kollektivavtal';
 
   @override
-  String get workingTimeLimits => 'Working time limits (max 8h/day, 40h/week)';
+  String get workingTimeLimits => 'Arbetstidsgränser (max 8t/dag, 40t/vecka)';
 
   @override
-  String get annualLeave => 'Annual leave (minimum 2 days per month worked)';
+  String get annualLeave => 'Semester (minst 2 dagar per arbetad månad)';
 
   @override
-  String get sickLeave => 'Sick leave compensation';
+  String get sickLeave => 'Sjukersättning';
 
   @override
-  String get safeWorkingConditions => 'Safe working conditions';
+  String get safeWorkingConditions => 'Säkra arbetsförhållanden';
 
   @override
-  String get writtenRentalAgreement => 'Written rental agreement required';
+  String get writtenRentalAgreement => 'Skriftligt hyresavtal krävs';
 
   @override
-  String get securityDeposit => 'Security deposit max 3 months rent';
+  String get securityDeposit => 'Deposition max 3 månaders hyra';
 
   @override
-  String get landlordNotice => 'Landlord must give notice (3-6 months)';
+  String get landlordNotice =>
+      'Hyresvärden måste ge uppsägningstid (3-6 månader)';
 
   @override
-  String get rightHabitableDwelling => 'Right to a habitable dwelling';
+  String get rightHabitableDwelling => 'Rätt till en beboelig bostad';
 
   @override
-  String get protectionUnjustEviction => 'Protection from unjust eviction';
+  String get protectionUnjustEviction => 'Skydd mot orättvis vräkning';
 
   @override
   String get rightKnowDetentionReason =>
-      'Right to know the reason for detention';
+      'Rätt att veta orsaken till frihetsberövande';
 
   @override
-  String get rightContactLawyerDetention => 'Right to contact a lawyer';
+  String get rightContactLawyerDetention => 'Rätt att kontakta en advokat';
 
   @override
-  String get rightContactEmbassy => 'Right to contact your embassy';
+  String get rightContactEmbassy => 'Rätt att kontakta din ambassad';
 
   @override
-  String get rightChallengeDetention => 'Right to challenge detention in court';
+  String get rightChallengeDetention =>
+      'Rätt att överklaga frihetsberövande i domstol';
 
   @override
-  String get rightHumaneTreatment =>
-      'Right to humane treatment and medical care';
+  String get rightHumaneTreatment => 'Rätt till human behandling och sjukvård';
 
   @override
-  String get documentIncident =>
-      'Document the incident (date, time, witnesses)';
+  String get documentIncident => 'Dokumentera händelsen (datum, tid, vittnen)';
 
   @override
   String get fileComplaintOmbudsman =>
-      'File a complaint with the Non-Discrimination Ombudsman';
+      'Lämna klagomål till Diskrimineringsombudsmannen';
 
   @override
-  String get contactLegalAidOffice => 'Contact a legal aid office';
+  String get contactLegalAidOffice => 'Kontakta ett rättshjälpskontor';
 
   @override
-  String get reportToPolice => 'Report to police if criminal (threat, assault)';
+  String get reportToPolice => 'Anmäl till polisen vid brott (hot, misshandel)';
 
   @override
-  String get legalAidCalculator => 'Legal Aid Calculator';
+  String get legalAidCalculator => 'Rättshjälpskalkylator';
 
   @override
-  String get checkEligibility => 'Check your eligibility for Finnish legal aid';
+  String get checkEligibility =>
+      'Kontrollera din behörighet för finsk rättshjälp';
 
   @override
   String get estimateDisclaimer =>
-      'This is an estimate only. Actual eligibility is determined by the Legal Aid Office.';
+      'Detta är bara en uppskattning. Faktisk behörighet avgörs av Rättshjälpsbyrån.';
 
   @override
-  String get monthlyIncome => 'Monthly income (EUR)';
+  String get monthlyIncome => 'Månadsinkomst (EUR)';
 
   @override
-  String get totalAssets => 'Total assets (EUR)';
+  String get totalAssets => 'Totala tillgångar (EUR)';
 
   @override
-  String get numberOfDependents => 'Number of dependents';
+  String get numberOfDependents => 'Antal beroende';
 
   @override
-  String get calculateEligibility => 'Calculate Eligibility';
+  String get calculateEligibility => 'Beräkna berättigande';
 
   @override
-  String get likelyEligible => 'Likely Eligible';
+  String get likelyEligible => 'Troligen berättigad';
 
   @override
-  String get mayNotQualify => 'May Not Qualify';
+  String get mayNotQualify => 'Kanske inte berättigad';
 
   @override
   String get fullFreeLegalAid =>
-      'You likely qualify for full free legal aid (no co-payment).';
+      'Du kvalificerar troligen för full gratis rättshjälp.';
 
   @override
   String legalAidWithCopay(String percent) {
-    return 'You may qualify for legal aid with a co-payment of $percent%.';
+    return 'Du kan kvalificera för rättshjälp med en egenavgift på $percent%.';
   }
 
   @override
   String get mayNotQualifyDesc =>
-      'Based on this estimate, you may not qualify for state legal aid. Consider consulting a private lawyer or legal clinic.';
+      'Baserat på uppskattningen kanske du inte kvalificerar för statlig rättshjälp.';
 
   @override
-  String get couldNotLoadDeadlines => 'Could not load deadlines';
+  String get couldNotLoadDeadlines => 'Kunde inte ladda tidsfrister';
 
   @override
-  String get noUpcomingDeadlines => 'No upcoming deadlines';
+  String get noUpcomingDeadlines => 'Inga kommande tidsfrister';
 
   @override
   String get allClearDeadlines =>
-      'You are all clear! New deadlines will appear here when they are set.';
+      'Allt klart! Nya tidsfrister visas här när de sätts.';
 
   @override
-  String get nothingOverdue => 'Nothing overdue';
+  String get nothingOverdue => 'Inget förfallet';
 
   @override
-  String get greatJobDeadlines => 'Great job staying on top of your deadlines.';
+  String get greatJobDeadlines => 'Bra jobbat med att hålla tidsfristerna.';
 
   @override
-  String get noCompletedDeadlines => 'No completed deadlines';
+  String get noCompletedDeadlines => 'Inga slutförda tidsfrister';
 
   @override
-  String get completedDeadlinesDesc =>
-      'Deadlines you complete will be shown here.';
+  String get completedDeadlinesDesc => 'Slutförda tidsfrister visas här.';
 
   @override
-  String get daysLate => 'days late';
+  String get daysLate => 'dagar försenad';
 
   @override
-  String get days => 'days';
+  String get days => 'dagar';
 
   @override
-  String get fromDocument => 'From document';
+  String get fromDocument => 'Från dokument';
 
   @override
-  String get couldNotLoadCase => 'Could not load case details';
+  String get couldNotLoadCase => 'Kunde inte ladda ärendedetaljer';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'Typ';
 
   @override
-  String get nationality => 'Nationality';
+  String get nationality => 'Nationalitet';
 
   @override
-  String get migriReference => 'Migri Reference';
+  String get migriReference => 'Migri-referens';
 
   @override
-  String get courtCaseNo => 'Court Case No.';
+  String get courtCaseNo => 'Domstolsärende nr';
 
   @override
-  String get created => 'Created';
+  String get created => 'Skapad';
 
   @override
-  String get citizenship => 'Citizenship';
+  String get citizenship => 'Medborgarskap';
 
   @override
-  String get workPermit => 'Work Permit';
+  String get workPermit => 'Arbetstillstånd';
 
   @override
-  String get noDocumentsYet => 'No documents uploaded yet';
+  String get noDocumentsYet => 'Inga dokument uppladdade ännu';
 
   @override
-  String get noUpcomingDeadlinesShort => 'No upcoming deadlines';
+  String get noUpcomingDeadlinesShort => 'Inga kommande tidsfrister';
 
   @override
-  String get caseCreated => 'Case created';
+  String get caseCreated => 'Ärende skapat';
 
   @override
-  String get decisionReceived => 'Decision received';
+  String get decisionReceived => 'Beslut mottaget';
 
   @override
-  String get appealDeadline => 'Appeal deadline';
+  String get appealDeadline => 'Överklagandefrist';
 
   @override
-  String get hearingScheduled => 'Hearing scheduled';
+  String get hearingScheduled => 'Förhandling planerad';
 
   @override
-  String get late => 'late';
+  String get late => 'försenad';
 
   @override
-  String get pending => 'Pending';
+  String get pending => 'Väntar';
 
   @override
-  String get processing => 'Processing';
+  String get processing => 'Bearbetar';
 
   @override
-  String get ready => 'Ready';
+  String get ready => 'Klar';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Misslyckades';
 
   @override
-  String get analyzed => 'Analyzed';
+  String get analyzed => 'Analyserad';
 
   @override
-  String get noDocumentsScanHint => 'No documents yet. Scan or upload one.';
+  String get noDocumentsScanHint =>
+      'Inga dokument ännu. Skanna eller ladda upp.';
 
   @override
-  String get inCourt => 'In Court';
+  String get inCourt => 'I domstol';
 
   @override
-  String get appeal => 'Appeal';
+  String get appeal => 'Överklagande';
 
   @override
-  String get caseTimeline => 'Case Timeline';
+  String get caseTimeline => 'Ärendetidslinje';
 
   @override
-  String get couldNotLoadTimeline => 'Could not load timeline';
+  String get couldNotLoadTimeline => 'Kunde inte ladda tidslinje';
 
   @override
-  String get noEventsYet => 'No events yet';
+  String get noEventsYet => 'Inga händelser ännu';
 
   @override
   String get activityWillAppear =>
-      'Activity will appear here as your case progresses.';
+      'Aktivitet visas här när ditt ärende fortskrider.';
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Case \"$title\" was created.';
+    return 'Ärende \"$title\" har skapats.';
   }
 
   @override
   String get decisionReceivedDesc =>
-      'An official decision was received for this case.';
+      'Ett officiellt beslut har mottagits för detta ärende.';
 
   @override
-  String get appealDeadlineSet => 'Appeal deadline set';
+  String get appealDeadlineSet => 'Överklagandefrist satt';
 
   @override
   String appealDeadlineDesc(String date) {
-    return 'Appeal must be filed by $date.';
+    return 'Överklagande måste lämnas in senast $date.';
   }
 
   @override
   String hearingScheduledDesc(String date) {
-    return 'Court hearing scheduled for $date.';
+    return 'Förhandling planerad till $date.';
   }
 
   @override
-  String get caseInfoUpdated => 'Case information was last updated.';
+  String get caseInfoUpdated => 'Ärendeinformation senast uppdaterad.';
 
   @override
-  String get documentAnalysis => 'Document Analysis';
+  String get documentAnalysis => 'Dokumentanalys';
 
   @override
-  String get exportAsPdf => 'Export as PDF';
+  String get exportAsPdf => 'Exportera som PDF';
 
   @override
-  String get pdfExportComingSoon => 'PDF export coming soon';
+  String get pdfExportComingSoon => 'PDF-export kommer snart';
 
   @override
-  String get analysisFailedRetry => 'Analysis failed. Please try again.';
+  String get analysisFailedRetry => 'Analysen misslyckades. Försök igen.';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Något gick fel';
 
   @override
-  String get retryAnalysis => 'Retry Analysis';
+  String get retryAnalysis => 'Försök igen';
 
   @override
   String issuesFoundInDocument(int count) {
-    return 'Found $count issue(s) in your document';
+    return 'Hittade $count problem i ditt dokument';
   }
 
   @override
-  String get severityOverview => 'Severity Overview';
+  String get severityOverview => 'Allvarlighetsöversikt';
 
   @override
-  String get issuesFoundHeader => 'Issues Found';
+  String get issuesFoundHeader => 'Problem hittade';
 
   @override
   String generateAppealWithIssues(int count) {
-    return 'Generate Appeal ($count issues)';
+    return 'Generera överklagande ($count problem)';
   }
 
   @override
-  String get analyzingContent => 'Analyzing content...';
+  String get analyzingContent => 'Analyserar innehåll...';
 
   @override
-  String get documentProcessedOk => 'Document processed successfully';
+  String get documentProcessedOk => 'Dokument bearbetat framgångsrikt';
 
   @override
   String get noSignificantIssues =>
-      'No significant issues were detected in this document.';
+      'Inga väsentliga problem hittades i detta dokument.';
 
   @override
-  String get cameraPermissionRequired => 'Camera permission required';
+  String get cameraPermissionRequired => 'Kamerabehörighet krävs';
 
   @override
   String get cameraPermissionDesc =>
-      'Grant camera access to scan documents, or use the gallery.';
+      'Ge kameratillgång för att skanna dokument eller använd galleriet.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'Öppna inställningar';
 
   @override
-  String get alignDocument => 'Align document within the frame';
+  String get alignDocument => 'Justera dokumentet inom ramen';
 
   @override
   String pageCount(int count) {
-    return '$count page(s)';
+    return '$count sida/or';
   }
 
   @override
-  String get preview => 'Preview';
+  String get preview => 'Förhandsvisa';
 
   @override
   String pageNumber(int number) {
-    return 'Page $number';
+    return 'Sida $number';
   }
 
   @override
-  String get done => 'Done';
+  String get done => 'Klart';
 
   @override
-  String get retake => 'Retake';
+  String get retake => 'Ta om';
 
   @override
-  String get useThisPhoto => 'Use This Photo';
+  String get useThisPhoto => 'Använd detta foto';
 
   @override
-  String get addPage => 'Add Page';
+  String get addPage => 'Lägg till sida';
 
   @override
   String uploadingPercent(int percent) {
-    return 'Uploading... $percent%';
+    return 'Laddar upp... $percent%';
   }
 
   @override
-  String get preparingUpload => 'Preparing upload...';
+  String get preparingUpload => 'Förbereder uppladdning...';
 
   @override
-  String get documentUploadedSuccess => 'Document uploaded successfully';
+  String get documentUploadedSuccess => 'Dokument uppladdat framgångsrikt';
 
   @override
   String pagesUploadedSuccess(int count) {
-    return '$count pages uploaded successfully';
+    return '$count sidor uppladdade framgångsrikt';
   }
 
   @override
   String get uploadFailed =>
-      'Upload failed. Please check your connection and try again.';
+      'Uppladdning misslyckades. Kontrollera anslutningen.';
 
   @override
-  String get capturePhotoFailed => 'Failed to capture photo. Please try again.';
+  String get capturePhotoFailed => 'Kunde inte ta foto. Försök igen.';
 
   @override
-  String get readingText => 'Reading text...';
+  String get readingText => 'Läser text...';
 
   @override
-  String get draftDocument => 'Draft Document';
+  String get draftDocument => 'Dokumentutkast';
 
   @override
-  String get saveChanges => 'Save changes';
+  String get saveChanges => 'Spara ändringar';
 
   @override
-  String get editDocument => 'Edit document';
+  String get editDocument => 'Redigera dokument';
 
   @override
-  String get generatingDraft => 'Generating your draft...';
+  String get generatingDraft => 'Skapar ditt utkast...';
 
   @override
   String get generatingDraftDesc =>
-      'AI is preparing a legal document based on your case details and selected issues.';
+      'AI förbereder ett juridiskt dokument baserat på dina ärendedetaljer.';
 
   @override
-  String get failedToGenerateDraft =>
-      'Failed to generate draft. Please try again.';
+  String get failedToGenerateDraft => 'Kunde inte skapa utkast. Försök igen.';
 
   @override
-  String get changesSaved => 'Changes saved';
+  String get changesSaved => 'Ändringar sparade';
 
   @override
-  String get copiedToClipboard => 'Copied to clipboard';
+  String get copiedToClipboard => 'Kopierat till urklipp';
 
   @override
-  String get emailComingSoon => 'Email sending coming soon';
+  String get emailComingSoon => 'E-postutskick kommer snart';
 
   @override
   String get reviewBeforeSending =>
-      'Review carefully before sending. You are responsible for the content of this document.';
+      'Granska noggrant innan du skickar. Du ansvarar för dokumentets innehåll.';
 
   @override
-  String get noContentAvailable => 'No content available';
+  String get noContentAvailable => 'Inget innehåll tillgängligt';
 
   @override
-  String get save => 'Save';
+  String get save => 'Spara';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Redigera';
 
   @override
   String get pdf => 'PDF';
 
   @override
-  String get copy => 'Copy';
+  String get copy => 'Kopiera';
 
   @override
-  String get appealDraft => 'Appeal Draft';
+  String get appealDraft => 'Utkast till överklagande';
 
   @override
   String selected(int count) {
-    return '$count selected';
+    return '$count valda';
   }
 
   @override
-  String get deleteSelected => 'Delete selected';
+  String get deleteSelected => 'Radera valda';
 
   @override
   String deleteDocumentsConfirm(int count) {
-    return 'Delete $count documents?';
+    return 'Radera $count dokument?';
   }
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Radera';
 
   @override
-  String get analyzeSelected => 'Analyze selected';
+  String get analyzeSelected => 'Analysera valda';
 
   @override
-  String get batchAnalysisStarting => 'Batch analysis starting...';
+  String get batchAnalysisStarting => 'Batchanalys startar...';
 
   @override
-  String get switchToList => 'Switch to list';
+  String get switchToList => 'Växla till lista';
 
   @override
-  String get switchToGrid => 'Switch to grid';
+  String get switchToGrid => 'Växla till rutnät';
 
   @override
-  String get scanNew => 'Scan New';
+  String get scanNew => 'Ny skanning';
 
   @override
-  String get noDocumentsYetScan => 'No documents yet';
+  String get noDocumentsYetScan => 'Inga dokument ännu';
 
   @override
   String get scanFirstDocumentHint =>
-      'Scan your first document to let AI analyze it for errors and generate appeals.';
+      'Skanna ditt första dokument så att AI kan analysera det.';
 
   @override
-  String get failedToLoadDocuments => 'Failed to load documents';
+  String get failedToLoadDocuments => 'Kunde inte ladda dokument';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'E-postintegration';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'Anslut din e-post';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'Anslut din e-post för att automatiskt upptäcka och organisera juridisk korrespondens.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'Juridiska e-postmeddelanden';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'Olänkade e-postmeddelanden';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'Inga juridiska e-postmeddelanden ännu';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'E-post klassificerad som juridisk visas här.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'Tilldela ärende';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'Koppla bort e-post';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'Automatisk e-postsynkronisering stoppas. Tidigare synkroniserade e-postmeddelanden finns kvar.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'Ansluten till $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'Senast synkroniserat: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'Filtrera efter typ';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'Inga ärenden matchar sökningen';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'Kunde inte ladda ärenden';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Månadsvis';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'Årlig';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'Spara 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'POPULÄRAST';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 aktivt ärende';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 aktiva ärenden';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'Obegränsade ärenden';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 dokumentskanningar';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 dokumentskanningar';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'Obegränsad dokumentskanning';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'Grundläggande AI-analys';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'Fullständig AI-analys';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'Utkastgenerering';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'Prioriterad bearbetning';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'för alltid';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/månad';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/år';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Kontrollerar tidigare köp...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'Inga tidigare köp hittades.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Hej! Jag är din juridiska assistent. Berätta vad som hänt — jag analyserar situationen och föreslår vad du ska göra.';
+
+  @override
+  String get copySummary => 'Kopiera sammanfattning';
+
+  @override
+  String get caseSummaryCopied => 'Ärendesammanfattning kopierad';
+
+  @override
+  String get openCase => 'Öppna ärende';
+
+  @override
+  String get viewFull => 'Visa fullständig';
+
+  @override
+  String get draftCopiedToClipboard => 'Utkast kopierat till urklipp';
+
+  @override
+  String get reportMileageFraud => 'Rapportera mätarbedrägeri';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'En bedrägerirapport skapas baserat på fordonskontrolldata.';
+
+  @override
+  String get reportAndOpenCase => 'Rapportera och öppna ärende';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Skapa ärende med förifyllda data kommer snart';
+
+  @override
+  String get failedToCreateCaseRetry => 'Kunde inte skapa ärende. Försök igen.';
+
+  @override
+  String get takePhotoInstead => 'Ta ett foto istället';
+
+  @override
+  String get deleteCase => 'Radera ärende';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Är du säker på att du vill radera \"$title\"? Åtgärden kan inte ångras.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Frågor? Fråga AI';
+
+  @override
+  String get cookiePolicy => 'Cookiepolicy';
+
+  @override
+  String get aiDisclaimer => 'AI-ansvarsfriskrivning';
+
+  @override
+  String get dataPrivacyConsent => 'Dataskyddssamtycke';
+
+  @override
+  String get gdprIntro =>
+      'För att tillhandahålla AI-juridisk hjälp behandlar vi dina data i enlighet med GDPR (EU 2016/679). Genom att fortsätta godkänner du:';
+
+  @override
+  String get gdprChat => 'Bearbetning av chattmeddelanden av AI';
+
+  @override
+  String get gdprDocs => 'Analys av uppladdade dokument';
+
+  @override
+  String get gdprStorage => 'Krypterad lagring av ärendedata';
+
+  @override
+  String get gdprDelete => 'Rätt att radera dina data när som helst';
+
+  @override
+  String get gdprFooter =>
+      'Dina data är krypterade och delas aldrig med tredje part. Du kan återkalla samtycke och radera all data i Inställningar.';
+
+  @override
+  String get decline => 'Avböj';
+
+  @override
+  String get iAgree => 'Jag godkänner';
+
+  @override
+  String get iAgreeToThe => 'Jag godkänner ';
+
+  @override
+  String get orWord => 'eller';
+
+  @override
+  String get english => 'Engelska';
+
+  @override
+  String get russian => 'Ryska';
+
+  @override
+  String get finnish => 'Finska';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Prenumeration på $plan lyckades!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Betalning misslyckades: $error';
+  }
 }

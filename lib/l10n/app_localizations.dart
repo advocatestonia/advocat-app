@@ -2839,6 +2839,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No previous purchases found.'**
   String get noPreviousPurchases;
+
+  /// No description provided for @chatWelcomeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello! I am your legal assistant. Tell me what happened — I will analyze the situation and suggest what to do.'**
+  String get chatWelcomeMessage;
+
+  /// No description provided for @copySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy summary'**
+  String get copySummary;
+
+  /// No description provided for @caseSummaryCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Case summary copied to clipboard'**
+  String get caseSummaryCopied;
+
+  /// No description provided for @openCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Case'**
+  String get openCase;
+
+  /// No description provided for @viewFull.
+  ///
+  /// In en, this message translates to:
+  /// **'View Full'**
+  String get viewFull;
+
+  /// No description provided for @draftCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft copied to clipboard'**
+  String get draftCopiedToClipboard;
+
+  /// No description provided for @reportMileageFraud.
+  ///
+  /// In en, this message translates to:
+  /// **'Report Mileage Fraud'**
+  String get reportMileageFraud;
+
+  /// No description provided for @reportMileageFraudDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'This will create a fraud report based on the vehicle check data. You can also open a legal case for further action.'**
+  String get reportMileageFraudDesc;
+
+  /// No description provided for @reportAndOpenCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Report & Open Case'**
+  String get reportAndOpenCase;
+
+  /// No description provided for @caseCreationComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Case creation with pre-filled data coming soon'**
+  String get caseCreationComingSoon;
+
+  /// No description provided for @failedToCreateCaseRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create case. Please try again.'**
+  String get failedToCreateCaseRetry;
+
+  /// No description provided for @takePhotoInstead.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a Photo Instead'**
+  String get takePhotoInstead;
+
+  /// No description provided for @deleteCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Case'**
+  String get deleteCase;
+
+  /// No description provided for @deleteCaseConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{title}\"? This action cannot be undone.'**
+  String deleteCaseConfirm(String title);
+
+  /// No description provided for @haveQuestionsAi.
+  ///
+  /// In en, this message translates to:
+  /// **'Have questions? Talk to AI'**
+  String get haveQuestionsAi;
+
+  /// No description provided for @cookiePolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Cookie Policy'**
+  String get cookiePolicy;
+
+  /// No description provided for @aiDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Disclaimer'**
+  String get aiDisclaimer;
+
+  /// No description provided for @dataPrivacyConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Privacy Consent'**
+  String get dataPrivacyConsent;
+
+  /// No description provided for @gdprIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'To provide AI legal assistance, we process your data in accordance with GDPR (EU 2016/679). By continuing you agree to:'**
+  String get gdprIntro;
+
+  /// No description provided for @gdprChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing of your chat messages by AI'**
+  String get gdprChat;
+
+  /// No description provided for @gdprDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis of uploaded documents'**
+  String get gdprDocs;
+
+  /// No description provided for @gdprStorage.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted storage of case data'**
+  String get gdprStorage;
+
+  /// No description provided for @gdprDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Right to delete your data at any time'**
+  String get gdprDelete;
+
+  /// No description provided for @gdprFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data is encrypted and never shared with third parties. You can withdraw consent and delete all data from Settings.'**
+  String get gdprFooter;
+
+  /// No description provided for @decline.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get decline;
+
+  /// No description provided for @iAgree.
+  ///
+  /// In en, this message translates to:
+  /// **'I Agree'**
+  String get iAgree;
+
+  /// No description provided for @iAgreeToThe.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the '**
+  String get iAgreeToThe;
+
+  /// No description provided for @orWord.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get orWord;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @russian.
+  ///
+  /// In en, this message translates to:
+  /// **'Russian'**
+  String get russian;
+
+  /// No description provided for @finnish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finnish'**
+  String get finnish;
+
+  /// No description provided for @successSubscribed.
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully subscribed to {plan}!'**
+  String successSubscribed(String plan);
+
+  /// No description provided for @paymentFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment failed: {error}'**
+  String paymentFailed(String error);
 }
 
 class _AppLocalizationsDelegate

@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
 import '../../../services/demo_data.dart';
@@ -260,12 +261,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   void _sendWelcomeMessage() {
+    final l10n = AppLocalizations.of(context);
     final welcome = ChatMessage(
       id: 'welcome_${DateTime.now().millisecondsSinceEpoch}',
       role: MessageRole.assistant,
-      content:
-          'Привет! Я ваш юридический помощник. Расскажите, что у вас '
-          'случилось — я проанализирую ситуацию и подскажу что делать.',
+      content: l10n?.chatWelcomeMessage ??
+          'Hello! I am your legal assistant. Tell me what happened — I will analyze the situation and suggest what to do.',
       timestamp: DateTime.now(),
     );
     setState(() {
@@ -606,9 +607,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void _copyMessage(String text) {
     Clipboard.setData(ClipboardData(text: text));
     HapticFeedback.lightImpact();
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Copied to clipboard'),
+        content: Text(l10n?.copiedToClipboard ?? 'Copied to clipboard'),
         backgroundColor: AppColors.accent,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -636,9 +638,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     Clipboard.setData(ClipboardData(text: buffer.toString()));
     HapticFeedback.mediumImpact();
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Case summary copied to clipboard'),
+        content: Text(l10n?.caseSummaryCopied ?? 'Case summary copied to clipboard'),
         backgroundColor: AppColors.accent,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(

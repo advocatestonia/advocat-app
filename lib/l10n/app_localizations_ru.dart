@@ -1349,111 +1349,222 @@ class AppLocalizationsRu extends AppLocalizations {
   String get failedToLoadDocuments => 'Не удалось загрузить документы';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'Интеграция с email';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'Подключите почту';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'Подключите email для автоматического обнаружения и организации юридической переписки по вашим делам.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'Юридические письма';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'Непривязанные письма';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'Юридических писем пока нет';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'Здесь появятся письма, классифицированные как юридические.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'Привязать к делу';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'Отключить email';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'Автоматическая синхронизация email будет остановлена. Ранее синхронизированные письма останутся в делах.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'Подключено к $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'Синхронизировано: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'Фильтр по типу';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'Нет дел по вашему запросу';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'Не удалось загрузить дела';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Ежемесячный';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'Годовой';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'Скидка 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'ПОПУЛЯРНЫЙ';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 активное дело';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 активных дела';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'Безлимитные дела';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 скана документов';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 сканов документов';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'Безлимитное сканирование';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'Базовый анализ ИИ';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'Полный анализ ИИ';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'Генерация черновиков';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'Приоритетная обработка';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'навсегда';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/мес';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/год';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Проверка предыдущих покупок...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'Предыдущие покупки не найдены.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Привет! Я ваш юридический помощник. Расскажите, что у вас случилось — я проанализирую ситуацию и подскажу что делать.';
+
+  @override
+  String get copySummary => 'Скопировать сводку';
+
+  @override
+  String get caseSummaryCopied => 'Сводка дела скопирована';
+
+  @override
+  String get openCase => 'Открыть дело';
+
+  @override
+  String get viewFull => 'Полный вид';
+
+  @override
+  String get draftCopiedToClipboard => 'Черновик скопирован в буфер';
+
+  @override
+  String get reportMileageFraud => 'Сообщить о мошенничестве с пробегом';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'Будет создан отчёт о мошенничестве на основе данных проверки. Вы также можете открыть юридическое дело.';
+
+  @override
+  String get reportAndOpenCase => 'Сообщить и открыть дело';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Создание дела с предзаполнением — скоро';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'Не удалось создать дело. Попробуйте ещё раз.';
+
+  @override
+  String get takePhotoInstead => 'Сделать фото';
+
+  @override
+  String get deleteCase => 'Удалить дело';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Вы уверены, что хотите удалить \"$title\"? Это действие нельзя отменить.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Есть вопросы? Спросите ИИ';
+
+  @override
+  String get cookiePolicy => 'Политика cookie';
+
+  @override
+  String get aiDisclaimer => 'Отказ от ответственности ИИ';
+
+  @override
+  String get dataPrivacyConsent => 'Согласие на обработку данных';
+
+  @override
+  String get gdprIntro =>
+      'Для предоставления юридической помощи с ИИ мы обрабатываем ваши данные в соответствии с GDPR (EU 2016/679). Продолжая, вы соглашаетесь с:';
+
+  @override
+  String get gdprChat => 'Обработка сообщений чата с помощью ИИ';
+
+  @override
+  String get gdprDocs => 'Анализ загруженных документов';
+
+  @override
+  String get gdprStorage => 'Зашифрованное хранение данных дел';
+
+  @override
+  String get gdprDelete => 'Право удалить свои данные в любое время';
+
+  @override
+  String get gdprFooter =>
+      'Ваши данные зашифрованы и никогда не передаются третьим лицам. Вы можете отозвать согласие и удалить все данные в Настройках.';
+
+  @override
+  String get decline => 'Отклонить';
+
+  @override
+  String get iAgree => 'Согласен';
+
+  @override
+  String get iAgreeToThe => 'Я принимаю ';
+
+  @override
+  String get orWord => 'или';
+
+  @override
+  String get english => 'Английский';
+
+  @override
+  String get russian => 'Русский';
+
+  @override
+  String get finnish => 'Финский';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Подписка на $plan оформлена!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Ошибка оплаты: $error';
+  }
 }

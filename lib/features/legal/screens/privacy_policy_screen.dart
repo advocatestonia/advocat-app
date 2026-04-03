@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Full GDPR-compliant Privacy Policy screen for the Advocat application.
 ///
@@ -14,7 +15,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Privacy Policy'),
+        title: Text(AppLocalizations.of(context)?.privacyPolicy ?? 'Privacy Policy'),
         backgroundColor: AppColors.surface,
       ),
       body: SingleChildScrollView(

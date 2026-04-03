@@ -1447,4 +1447,115 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noPreviousPurchases => 'No previous purchases found.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Hello! I am your legal assistant. Tell me what happened — I will analyze the situation and suggest what to do.';
+
+  @override
+  String get copySummary => 'Copy summary';
+
+  @override
+  String get caseSummaryCopied => 'Case summary copied to clipboard';
+
+  @override
+  String get openCase => 'Open Case';
+
+  @override
+  String get viewFull => 'View Full';
+
+  @override
+  String get draftCopiedToClipboard => 'Draft copied to clipboard';
+
+  @override
+  String get reportMileageFraud => 'Report Mileage Fraud';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'This will create a fraud report based on the vehicle check data. You can also open a legal case for further action.';
+
+  @override
+  String get reportAndOpenCase => 'Report & Open Case';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Case creation with pre-filled data coming soon';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'Failed to create case. Please try again.';
+
+  @override
+  String get takePhotoInstead => 'Take a Photo Instead';
+
+  @override
+  String get deleteCase => 'Delete Case';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Are you sure you want to delete \"$title\"? This action cannot be undone.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Have questions? Talk to AI';
+
+  @override
+  String get cookiePolicy => 'Cookie Policy';
+
+  @override
+  String get aiDisclaimer => 'AI Disclaimer';
+
+  @override
+  String get dataPrivacyConsent => 'Data Privacy Consent';
+
+  @override
+  String get gdprIntro =>
+      'To provide AI legal assistance, we process your data in accordance with GDPR (EU 2016/679). By continuing you agree to:';
+
+  @override
+  String get gdprChat => 'Processing of your chat messages by AI';
+
+  @override
+  String get gdprDocs => 'Analysis of uploaded documents';
+
+  @override
+  String get gdprStorage => 'Encrypted storage of case data';
+
+  @override
+  String get gdprDelete => 'Right to delete your data at any time';
+
+  @override
+  String get gdprFooter =>
+      'Your data is encrypted and never shared with third parties. You can withdraw consent and delete all data from Settings.';
+
+  @override
+  String get decline => 'Decline';
+
+  @override
+  String get iAgree => 'I Agree';
+
+  @override
+  String get iAgreeToThe => 'I agree to the ';
+
+  @override
+  String get orWord => 'or';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get russian => 'Russian';
+
+  @override
+  String get finnish => 'Finnish';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Successfully subscribed to $plan!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Payment failed: $error';
+  }
 }

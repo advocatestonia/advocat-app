@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Full Terms of Service screen for the Advocat application.
 ///
@@ -14,7 +15,7 @@ class TermsOfServiceScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Terms of Service'),
+        title: Text(AppLocalizations.of(context)?.termsOfService ?? 'Terms of Service'),
         backgroundColor: AppColors.surface,
       ),
       body: SingleChildScrollView(

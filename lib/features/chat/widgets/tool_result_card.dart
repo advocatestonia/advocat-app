@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/assistant_tools.dart';
 
 // ---------------------------------------------------------------------------
@@ -523,7 +524,7 @@ class _CaseSummaryCard extends StatelessWidget {
                 onAction?.call('open_case');
               },
               icon: const Icon(Icons.open_in_new_rounded, size: 16),
-              label: const Text('Open Case'),
+              label: Text(AppLocalizations.of(context)?.openCase ?? 'Open Case'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.accent,
                 side: const BorderSide(color: AppColors.accent),
@@ -845,7 +846,7 @@ class _DraftPreviewCard extends StatelessWidget {
                 child: OutlinedButton.icon(
                   onPressed: () => onAction?.call('view_full_draft'),
                   icon: const Icon(Icons.fullscreen_rounded, size: 16),
-                  label: const Text('View Full'),
+                  label: Text(AppLocalizations.of(context)?.viewFull ?? 'View Full'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.primary,
                     side: const BorderSide(color: AppColors.primary),
@@ -862,15 +863,15 @@ class _DraftPreviewCard extends StatelessWidget {
                     Clipboard.setData(ClipboardData(text: displayText));
                     HapticFeedback.lightImpact();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Draft copied to clipboard'),
+                      SnackBar(
+                        content: Text(AppLocalizations.of(context)?.draftCopiedToClipboard ?? 'Draft copied to clipboard'),
                         backgroundColor: AppColors.accent,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );
                   },
                   icon: const Icon(Icons.copy_rounded, size: 16),
-                  label: const Text('Copy'),
+                  label: Text(AppLocalizations.of(context)?.copy ?? 'Copy'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.accent,
                     side: const BorderSide(color: AppColors.accent),
@@ -1235,7 +1236,7 @@ class _ApprovalBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
                   ),
-                  child: const Text('Cancel'),
+                  child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
                 ),
               ),
               const SizedBox(width: 8),
@@ -1249,7 +1250,7 @@ class _ApprovalBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppRadius.sm),
                     ),
                   ),
-                  child: const Text('Confirm'),
+                  child: Text(AppLocalizations.of(context)?.confirm ?? 'Confirm'),
                 ),
               ),
             ],

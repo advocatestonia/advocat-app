@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Dedicated AI Disclaimer screen for the Advocat application.
 ///
@@ -14,7 +15,7 @@ class AiDisclaimerScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('AI Disclaimer'),
+        title: Text(AppLocalizations.of(context)?.aiDisclaimer ?? 'AI Disclaimer'),
         backgroundColor: AppColors.surface,
       ),
       body: SingleChildScrollView(

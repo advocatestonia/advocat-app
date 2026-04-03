@@ -760,693 +760,812 @@ class AppLocalizationsEt extends AppLocalizations {
   String get won => 'Võidetud';
 
   @override
-  String get documentVault => 'Document Vault';
+  String get documentVault => 'Dokumendihoidla';
 
   @override
-  String get secureDocumentStorage => 'Secure Document Storage';
+  String get secureDocumentStorage => 'Turvaline dokumendihoidla';
 
   @override
   String get secureDocumentStorageDesc =>
-      'Store your important legal documents in one place for easy access.';
+      'Hoidke oma olulised õigusdokumendid ühes kohas lihtsaks juurdepääsuks.';
 
   @override
-  String get addDocument => 'Add Document';
+  String get addDocument => 'Lisa dokument';
 
   @override
-  String get chooseHowToAdd => 'Choose how to add your document';
+  String get chooseHowToAdd => 'Valige, kuidas dokumenti lisada';
 
   @override
-  String get uploadFile => 'Upload File';
+  String get uploadFile => 'Laadi fail üles';
 
   @override
-  String get uploadFileDesc => 'Choose a PDF or image from your device';
+  String get uploadFileDesc => 'Valige oma seadmest PDF või pilt';
 
   @override
-  String get scanDocumentDesc => 'Take a photo of your document';
+  String get scanDocumentDesc => 'Tehke oma dokumendist foto';
 
   @override
-  String get createNote => 'Create Note';
+  String get createNote => 'Loo märkus';
 
   @override
-  String get createNoteDesc => 'Write a note or record important details';
+  String get createNoteDesc =>
+      'Kirjutage märkus või salvestage olulised üksikasjad';
 
   @override
-  String get knowYourRights => 'Know Your Rights';
+  String get knowYourRights => 'Tunne oma õigusi';
 
   @override
-  String get stoppedByPolice => 'Stopped by Police';
+  String get stoppedByPolice => 'Politsei poolt peatatud';
 
   @override
-  String get stoppedByPoliceDesc => 'Your rights during a police encounter';
+  String get stoppedByPoliceDesc => 'Teie õigused politseikokkupuutel';
 
   @override
-  String get deportationNotice => 'Deportation Notice';
+  String get deportationNotice => 'Väljasaatmisteade';
 
   @override
-  String get deportationNoticeDesc => 'Steps to challenge a removal order';
+  String get deportationNoticeDesc =>
+      'Sammud väljasaatmiskorralduse vaidlustamiseks';
 
   @override
-  String get workplaceRights => 'Workplace Rights';
+  String get workplaceRights => 'Töökoha õigused';
 
   @override
-  String get workplaceRightsDesc => 'Employment law protections in Finland';
+  String get workplaceRightsDesc => 'Tööõiguskaitse Soomes';
 
   @override
-  String get tenantRightsDesc => 'Housing and rental protections';
+  String get tenantRightsDesc => 'Eluaseme- ja üürikaitse';
 
   @override
-  String get immigrationDetention => 'Immigration Detention';
+  String get immigrationDetention => 'Immigratsioonikinnipidamine';
 
   @override
-  String get immigrationDetentionDesc => 'Rights if detained by authorities';
+  String get immigrationDetentionDesc =>
+      'Õigused, kui olete ametiasutuste poolt kinni peetud';
 
   @override
-  String get discriminationDesc => 'How to report and fight discrimination';
+  String get discriminationDesc =>
+      'Kuidas teatada diskrimineerimisest ja selle vastu võidelda';
 
   @override
-  String get scenarioNotFound => 'Scenario not found';
+  String get scenarioNotFound => 'Stsenaariumit ei leitud';
 
   @override
-  String get youHaveRightTo => 'You have the right to:';
+  String get youHaveRightTo => 'Teil on õigus:';
 
   @override
-  String get youMust => 'You must:';
+  String get youMust => 'Peate:';
 
   @override
-  String get immediateSteps => 'Immediate steps:';
+  String get immediateSteps => 'Viivitamatud sammud:';
 
   @override
-  String get yourRights => 'Your rights:';
+  String get yourRights => 'Teie õigused:';
 
   @override
-  String get basicRights => 'Basic rights:';
+  String get basicRights => 'Põhiõigused:';
 
   @override
-  String get yourRightsAsTenant => 'Your rights as a tenant:';
+  String get yourRightsAsTenant => 'Teie õigused üürnikuna:';
 
   @override
-  String get yourRightsInDetention => 'Your rights in detention:';
+  String get yourRightsInDetention => 'Teie õigused kinnipidamisel:';
 
   @override
-  String get howToAct => 'How to act:';
+  String get howToAct => 'Kuidas käituda:';
 
   @override
-  String get rightKnowWhyStopped => 'Know why you are being stopped';
+  String get rightKnowWhyStopped => 'Teadke, miks teid peatati';
 
   @override
-  String get rightRemainSilent => 'Remain silent (you must identify yourself)';
+  String get rightRemainSilent => 'Vaikige (peate end identifitseerima)';
 
   @override
-  String get rightAskInterpreter => 'Ask for an interpreter';
+  String get rightAskInterpreter => 'Paluge tõlki';
 
   @override
-  String get rightContactLawyer => 'Contact a lawyer before questioning';
+  String get rightContactLawyer =>
+      'Võtke enne ülekuulamist advokaadiga ühendust';
 
   @override
-  String get rightRecordEncounter => 'Record the encounter (in public places)';
+  String get rightRecordEncounter => 'Salvestage kohtumist (avalikes kohtades)';
 
   @override
-  String get mustProvideName => 'Provide your name and date of birth';
+  String get mustProvideName => 'Öelge oma nimi ja sünniaeg';
 
   @override
-  String get mustShowId => 'Show ID if you have one';
+  String get mustShowId => 'Näidake isikut tõendavat dokumenti, kui teil on';
 
   @override
-  String get mustNotResist => 'Not physically resist';
+  String get mustNotResist => 'Mitte füüsiliselt vastu hakata';
 
   @override
   String get doNotIgnoreNotice =>
-      'Do NOT ignore the notice - deadlines are strict';
+      'ÄRGE ignoreerige teadet - tähtajad on ranged';
 
   @override
-  String get noteAppealDeadline => 'Note the appeal deadline (usually 30 days)';
+  String get noteAppealDeadline =>
+      'Märkige kaebuse tähtaeg (tavaliselt 30 päeva)';
 
   @override
-  String get contactLawyerImmediately => 'Contact a lawyer immediately';
+  String get contactLawyerImmediately => 'Võtke kohe advokaadiga ühendust';
 
   @override
-  String get applyLegalAid => 'Apply for legal aid if needed';
+  String get applyLegalAid => 'Taotlege vajadusel õigusabi';
 
   @override
-  String get rightAppealAdmin => 'Right to appeal to the Administrative Court';
+  String get rightAppealAdmin => 'Õigus esitada kaebus halduskohtusse';
 
   @override
-  String get rightLegalRep => 'Right to legal representation';
+  String get rightLegalRep => 'Õigus õiguslikule esindusele';
 
   @override
-  String get rightInterpreter => 'Right to an interpreter';
+  String get rightInterpreter => 'Õigus tõlgile';
 
   @override
   String get rightStayDuringAppeal =>
-      'Right to stay during appeal (in most cases)';
+      'Õigus jääda kaebuse menetluse ajaks (enamikul juhtudel)';
 
   @override
-  String get minimumWage => 'Minimum wage as per collective agreement';
+  String get minimumWage => 'Miinimumpalk vastavalt kollektiivlepingule';
 
   @override
-  String get workingTimeLimits => 'Working time limits (max 8h/day, 40h/week)';
+  String get workingTimeLimits => 'Tööaja piirangud (max 8t/päev, 40t/nädal)';
 
   @override
-  String get annualLeave => 'Annual leave (minimum 2 days per month worked)';
+  String get annualLeave => 'Põhipuhkus (vähemalt 2 päeva töötatud kuu kohta)';
 
   @override
-  String get sickLeave => 'Sick leave compensation';
+  String get sickLeave => 'Haigushüvitis';
 
   @override
-  String get safeWorkingConditions => 'Safe working conditions';
+  String get safeWorkingConditions => 'Ohutud töötingimused';
 
   @override
-  String get writtenRentalAgreement => 'Written rental agreement required';
+  String get writtenRentalAgreement => 'Kirjalik üürileping nõutav';
 
   @override
-  String get securityDeposit => 'Security deposit max 3 months rent';
+  String get securityDeposit => 'Tagatisraha max 3 kuu üür';
 
   @override
-  String get landlordNotice => 'Landlord must give notice (3-6 months)';
+  String get landlordNotice => 'Üürileandja peab andma teate (3-6 kuud)';
 
   @override
-  String get rightHabitableDwelling => 'Right to a habitable dwelling';
+  String get rightHabitableDwelling => 'Õigus elamiskõlblikule eluasemele';
 
   @override
-  String get protectionUnjustEviction => 'Protection from unjust eviction';
+  String get protectionUnjustEviction => 'Kaitse ebaõiglase väljatõstmise eest';
 
   @override
-  String get rightKnowDetentionReason =>
-      'Right to know the reason for detention';
+  String get rightKnowDetentionReason => 'Õigus teada kinnipidamise põhjust';
 
   @override
-  String get rightContactLawyerDetention => 'Right to contact a lawyer';
+  String get rightContactLawyerDetention => 'Õigus võtta ühendust advokaadiga';
 
   @override
-  String get rightContactEmbassy => 'Right to contact your embassy';
+  String get rightContactEmbassy => 'Õigus võtta ühendust oma saatkonnaga';
 
   @override
-  String get rightChallengeDetention => 'Right to challenge detention in court';
+  String get rightChallengeDetention =>
+      'Õigus vaidlustada kinnipidamine kohtus';
 
   @override
   String get rightHumaneTreatment =>
-      'Right to humane treatment and medical care';
+      'Õigus inimlikule kohtlemisele ja arstiabile';
 
   @override
   String get documentIncident =>
-      'Document the incident (date, time, witnesses)';
+      'Dokumenteerige juhtum (kuupäev, kellaaeg, tunnistajad)';
 
   @override
-  String get fileComplaintOmbudsman =>
-      'File a complaint with the Non-Discrimination Ombudsman';
+  String get fileComplaintOmbudsman => 'Esitage kaebus võrdõigusvolinikule';
 
   @override
-  String get contactLegalAidOffice => 'Contact a legal aid office';
+  String get contactLegalAidOffice => 'Võtke ühendust õigusabibürooga';
 
   @override
-  String get reportToPolice => 'Report to police if criminal (threat, assault)';
+  String get reportToPolice =>
+      'Teatage politseile, kui tegemist on kuriteoga (ähvardus, kallaletung)';
 
   @override
-  String get legalAidCalculator => 'Legal Aid Calculator';
+  String get legalAidCalculator => 'Õigusabi kalkulaator';
 
   @override
-  String get checkEligibility => 'Check your eligibility for Finnish legal aid';
+  String get checkEligibility => 'Kontrollige oma sobivust Soome õigusabile';
 
   @override
   String get estimateDisclaimer =>
-      'This is an estimate only. Actual eligibility is determined by the Legal Aid Office.';
+      'See on ainult hinnang. Tegeliku sobivuse määrab õigusabibüroo.';
 
   @override
-  String get monthlyIncome => 'Monthly income (EUR)';
+  String get monthlyIncome => 'Igakuine sissetulek (EUR)';
 
   @override
-  String get totalAssets => 'Total assets (EUR)';
+  String get totalAssets => 'Vara kokku (EUR)';
 
   @override
-  String get numberOfDependents => 'Number of dependents';
+  String get numberOfDependents => 'Ülalpeetavate arv';
 
   @override
-  String get calculateEligibility => 'Calculate Eligibility';
+  String get calculateEligibility => 'Arvuta sobivus';
 
   @override
-  String get likelyEligible => 'Likely Eligible';
+  String get likelyEligible => 'Tõenäoliselt sobiv';
 
   @override
-  String get mayNotQualify => 'May Not Qualify';
+  String get mayNotQualify => 'Ei pruugi kvalifitseeruda';
 
   @override
   String get fullFreeLegalAid =>
-      'You likely qualify for full free legal aid (no co-payment).';
+      'Tõenäoliselt kvalifitseerute tasuta õigusabile (ilma omaosaluseta).';
 
   @override
   String legalAidWithCopay(String percent) {
-    return 'You may qualify for legal aid with a co-payment of $percent%.';
+    return 'Võite kvalifitseeruda õigusabile omaosalusega $percent%.';
   }
 
   @override
   String get mayNotQualifyDesc =>
-      'Based on this estimate, you may not qualify for state legal aid. Consider consulting a private lawyer or legal clinic.';
+      'Selle hinnangu põhjal ei pruugi te kvalifitseeruda riiklikule õigusabile. Kaaluge eraadvokaati või õiguskliinikut.';
 
   @override
-  String get couldNotLoadDeadlines => 'Could not load deadlines';
+  String get couldNotLoadDeadlines => 'Tähtaegu ei saanud laadida';
 
   @override
-  String get noUpcomingDeadlines => 'No upcoming deadlines';
+  String get noUpcomingDeadlines => 'Eelseisvaid tähtaegu pole';
 
   @override
   String get allClearDeadlines =>
-      'You are all clear! New deadlines will appear here when they are set.';
+      'Kõik korras! Uued tähtajad ilmuvad siia, kui need määratakse.';
 
   @override
-  String get nothingOverdue => 'Nothing overdue';
+  String get nothingOverdue => 'Midagi pole tähtaja ületanud';
 
   @override
-  String get greatJobDeadlines => 'Great job staying on top of your deadlines.';
+  String get greatJobDeadlines =>
+      'Hästi tehtud, hoiate oma tähtajad kontrolli all.';
 
   @override
-  String get noCompletedDeadlines => 'No completed deadlines';
+  String get noCompletedDeadlines => 'Täidetud tähtaegu pole';
 
   @override
-  String get completedDeadlinesDesc =>
-      'Deadlines you complete will be shown here.';
+  String get completedDeadlinesDesc => 'Täidetud tähtajad kuvatakse siin.';
 
   @override
-  String get daysLate => 'days late';
+  String get daysLate => 'päeva hilinenud';
 
   @override
-  String get days => 'days';
+  String get days => 'päeva';
 
   @override
-  String get fromDocument => 'From document';
+  String get fromDocument => 'Dokumendist';
 
   @override
-  String get couldNotLoadCase => 'Could not load case details';
+  String get couldNotLoadCase => 'Juhtumi üksikasju ei saanud laadida';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'Tüüp';
 
   @override
-  String get nationality => 'Nationality';
+  String get nationality => 'Rahvus';
 
   @override
-  String get migriReference => 'Migri Reference';
+  String get migriReference => 'Migri viide';
 
   @override
-  String get courtCaseNo => 'Court Case No.';
+  String get courtCaseNo => 'Kohtuasja nr';
 
   @override
-  String get created => 'Created';
+  String get created => 'Loodud';
 
   @override
-  String get citizenship => 'Citizenship';
+  String get citizenship => 'Kodakondsus';
 
   @override
-  String get workPermit => 'Work Permit';
+  String get workPermit => 'Tööluba';
 
   @override
-  String get noDocumentsYet => 'No documents uploaded yet';
+  String get noDocumentsYet => 'Dokumente pole veel üles laetud';
 
   @override
-  String get noUpcomingDeadlinesShort => 'No upcoming deadlines';
+  String get noUpcomingDeadlinesShort => 'Eelseisvaid tähtaegu pole';
 
   @override
-  String get caseCreated => 'Case created';
+  String get caseCreated => 'Juhtum loodud';
 
   @override
-  String get decisionReceived => 'Decision received';
+  String get decisionReceived => 'Otsus saadud';
 
   @override
-  String get appealDeadline => 'Appeal deadline';
+  String get appealDeadline => 'Kaebuse tähtaeg';
 
   @override
-  String get hearingScheduled => 'Hearing scheduled';
+  String get hearingScheduled => 'Istung kavandatud';
 
   @override
-  String get late => 'late';
+  String get late => 'hilinenud';
 
   @override
-  String get pending => 'Pending';
+  String get pending => 'Ootel';
 
   @override
-  String get processing => 'Processing';
+  String get processing => 'Töötlemine';
 
   @override
-  String get ready => 'Ready';
+  String get ready => 'Valmis';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Ebaõnnestunud';
 
   @override
-  String get analyzed => 'Analyzed';
+  String get analyzed => 'Analüüsitud';
 
   @override
-  String get noDocumentsScanHint => 'No documents yet. Scan or upload one.';
+  String get noDocumentsScanHint =>
+      'Dokumente pole veel. Skannige või laadige üles.';
 
   @override
-  String get inCourt => 'In Court';
+  String get inCourt => 'Kohtus';
 
   @override
-  String get appeal => 'Appeal';
+  String get appeal => 'Kaebus';
 
   @override
-  String get caseTimeline => 'Case Timeline';
+  String get caseTimeline => 'Juhtumi ajajoon';
 
   @override
-  String get couldNotLoadTimeline => 'Could not load timeline';
+  String get couldNotLoadTimeline => 'Ajajoont ei saanud laadida';
 
   @override
-  String get noEventsYet => 'No events yet';
+  String get noEventsYet => 'Sündmusi pole veel';
 
   @override
   String get activityWillAppear =>
-      'Activity will appear here as your case progresses.';
+      'Tegevused ilmuvad siia, kui teie juhtum edeneb.';
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Case \"$title\" was created.';
+    return 'Juhtum \"$title\" on loodud.';
   }
 
   @override
-  String get decisionReceivedDesc =>
-      'An official decision was received for this case.';
+  String get decisionReceivedDesc => 'Selle juhtumi kohta saadi ametlik otsus.';
 
   @override
-  String get appealDeadlineSet => 'Appeal deadline set';
+  String get appealDeadlineSet => 'Kaebuse tähtaeg määratud';
 
   @override
   String appealDeadlineDesc(String date) {
-    return 'Appeal must be filed by $date.';
+    return 'Kaebus tuleb esitada hiljemalt $date.';
   }
 
   @override
   String hearingScheduledDesc(String date) {
-    return 'Court hearing scheduled for $date.';
+    return 'Kohtuistung kavandatud kuupäevale $date.';
   }
 
   @override
-  String get caseInfoUpdated => 'Case information was last updated.';
+  String get caseInfoUpdated => 'Juhtumi teave viimati uuendatud.';
 
   @override
-  String get documentAnalysis => 'Document Analysis';
+  String get documentAnalysis => 'Dokumendianalüüs';
 
   @override
-  String get exportAsPdf => 'Export as PDF';
+  String get exportAsPdf => 'Ekspordi PDF-ina';
 
   @override
-  String get pdfExportComingSoon => 'PDF export coming soon';
+  String get pdfExportComingSoon => 'PDF eksport peagi';
 
   @override
-  String get analysisFailedRetry => 'Analysis failed. Please try again.';
+  String get analysisFailedRetry =>
+      'Analüüs ebaõnnestus. Palun proovige uuesti.';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Midagi läks valesti';
 
   @override
-  String get retryAnalysis => 'Retry Analysis';
+  String get retryAnalysis => 'Proovi analüüsi uuesti';
 
   @override
   String issuesFoundInDocument(int count) {
-    return 'Found $count issue(s) in your document';
+    return 'Leiti $count probleem(i) teie dokumendist';
   }
 
   @override
-  String get severityOverview => 'Severity Overview';
+  String get severityOverview => 'Tõsiduse ülevaade';
 
   @override
-  String get issuesFoundHeader => 'Issues Found';
+  String get issuesFoundHeader => 'Leitud probleemid';
 
   @override
   String generateAppealWithIssues(int count) {
-    return 'Generate Appeal ($count issues)';
+    return 'Loo kaebus ($count probleemi)';
   }
 
   @override
-  String get analyzingContent => 'Analyzing content...';
+  String get analyzingContent => 'Sisu analüüsimine...';
 
   @override
-  String get documentProcessedOk => 'Document processed successfully';
+  String get documentProcessedOk => 'Dokument edukalt töödeldud';
 
   @override
   String get noSignificantIssues =>
-      'No significant issues were detected in this document.';
+      'Selles dokumendis ei tuvastatud olulisi probleeme.';
 
   @override
-  String get cameraPermissionRequired => 'Camera permission required';
+  String get cameraPermissionRequired => 'Kaamera luba on vajalik';
 
   @override
   String get cameraPermissionDesc =>
-      'Grant camera access to scan documents, or use the gallery.';
+      'Andke kaamerale juurdepääs dokumentide skannimiseks või kasutage galeriid.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'Ava seaded';
 
   @override
-  String get alignDocument => 'Align document within the frame';
+  String get alignDocument => 'Joondage dokument raami sees';
 
   @override
   String pageCount(int count) {
-    return '$count page(s)';
+    return '$count lehekülg(e)';
   }
 
   @override
-  String get preview => 'Preview';
+  String get preview => 'Eelvaade';
 
   @override
   String pageNumber(int number) {
-    return 'Page $number';
+    return 'Lehekülg $number';
   }
 
   @override
-  String get done => 'Done';
+  String get done => 'Valmis';
 
   @override
-  String get retake => 'Retake';
+  String get retake => 'Tee uuesti';
 
   @override
-  String get useThisPhoto => 'Use This Photo';
+  String get useThisPhoto => 'Kasuta seda fotot';
 
   @override
-  String get addPage => 'Add Page';
+  String get addPage => 'Lisa lehekülg';
 
   @override
   String uploadingPercent(int percent) {
-    return 'Uploading... $percent%';
+    return 'Üleslaadimine... $percent%';
   }
 
   @override
-  String get preparingUpload => 'Preparing upload...';
+  String get preparingUpload => 'Üleslaadimise ettevalmistamine...';
 
   @override
-  String get documentUploadedSuccess => 'Document uploaded successfully';
+  String get documentUploadedSuccess => 'Dokument edukalt üles laetud';
 
   @override
   String pagesUploadedSuccess(int count) {
-    return '$count pages uploaded successfully';
+    return '$count lehekülge edukalt üles laetud';
   }
 
   @override
   String get uploadFailed =>
-      'Upload failed. Please check your connection and try again.';
+      'Üleslaadimine ebaõnnestus. Kontrollige ühendust ja proovige uuesti.';
 
   @override
-  String get capturePhotoFailed => 'Failed to capture photo. Please try again.';
+  String get capturePhotoFailed =>
+      'Foto tegemine ebaõnnestus. Palun proovige uuesti.';
 
   @override
-  String get readingText => 'Reading text...';
+  String get readingText => 'Teksti lugemine...';
 
   @override
-  String get draftDocument => 'Draft Document';
+  String get draftDocument => 'Dokumendi mustand';
 
   @override
-  String get saveChanges => 'Save changes';
+  String get saveChanges => 'Salvesta muudatused';
 
   @override
-  String get editDocument => 'Edit document';
+  String get editDocument => 'Muuda dokumenti';
 
   @override
-  String get generatingDraft => 'Generating your draft...';
+  String get generatingDraft => 'Teie mustandi loomine...';
 
   @override
   String get generatingDraftDesc =>
-      'AI is preparing a legal document based on your case details and selected issues.';
+      'AI valmistab ette õigusdokumendi teie juhtumi üksikasjade ja valitud probleemide põhjal.';
 
   @override
   String get failedToGenerateDraft =>
-      'Failed to generate draft. Please try again.';
+      'Mustandi loomine ebaõnnestus. Palun proovige uuesti.';
 
   @override
-  String get changesSaved => 'Changes saved';
+  String get changesSaved => 'Muudatused salvestatud';
 
   @override
-  String get copiedToClipboard => 'Copied to clipboard';
+  String get copiedToClipboard => 'Kopeeritud lõikelauale';
 
   @override
-  String get emailComingSoon => 'Email sending coming soon';
+  String get emailComingSoon => 'E-kirjade saatmine peagi';
 
   @override
   String get reviewBeforeSending =>
-      'Review carefully before sending. You are responsible for the content of this document.';
+      'Vaadake enne saatmist hoolikalt üle. Teie vastutate selle dokumendi sisu eest.';
 
   @override
-  String get noContentAvailable => 'No content available';
+  String get noContentAvailable => 'Sisu pole saadaval';
 
   @override
-  String get save => 'Save';
+  String get save => 'Salvesta';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Muuda';
 
   @override
   String get pdf => 'PDF';
 
   @override
-  String get copy => 'Copy';
+  String get copy => 'Kopeeri';
 
   @override
-  String get appealDraft => 'Appeal Draft';
+  String get appealDraft => 'Kaebuse mustand';
 
   @override
   String selected(int count) {
-    return '$count selected';
+    return '$count valitud';
   }
 
   @override
-  String get deleteSelected => 'Delete selected';
+  String get deleteSelected => 'Kustuta valitud';
 
   @override
   String deleteDocumentsConfirm(int count) {
-    return 'Delete $count documents?';
+    return 'Kustutada $count dokumenti?';
   }
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Kustuta';
 
   @override
-  String get analyzeSelected => 'Analyze selected';
+  String get analyzeSelected => 'Analüüsi valitud';
 
   @override
-  String get batchAnalysisStarting => 'Batch analysis starting...';
+  String get batchAnalysisStarting => 'Pakettanalüüs algab...';
 
   @override
-  String get switchToList => 'Switch to list';
+  String get switchToList => 'Lülitu loendivaatele';
 
   @override
-  String get switchToGrid => 'Switch to grid';
+  String get switchToGrid => 'Lülitu ruudustikuvaatele';
 
   @override
-  String get scanNew => 'Scan New';
+  String get scanNew => 'Uus skannimine';
 
   @override
-  String get noDocumentsYetScan => 'No documents yet';
+  String get noDocumentsYetScan => 'Dokumente pole veel';
 
   @override
   String get scanFirstDocumentHint =>
-      'Scan your first document to let AI analyze it for errors and generate appeals.';
+      'Skannige oma esimene dokument, et AI saaks seda vigade suhtes analüüsida ja kaebusi koostada.';
 
   @override
-  String get failedToLoadDocuments => 'Failed to load documents';
+  String get failedToLoadDocuments => 'Dokumentide laadimine ebaõnnestus';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'E-posti integratsioon';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'Ühendage oma e-post';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'Ühendage oma e-post, et automaatselt tuvastada ja korraldada teie juhtumitega seotud õiguskirjavahetust.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'Õiguslikud e-kirjad';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'Seostamata e-kirjad';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'Õiguslikke e-kirju pole veel';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'Õiguslikuks liigitatud e-kirjad kuvatakse siin.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'Määra juhtumile';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'Katkesta e-posti ühendus';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'Automaatne e-posti sünkroonimine lõpetatakse. Varem sünkroonitud e-kirjad jäävad teie juhtumitesse.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'Ühendatud: $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'Viimati sünkroonitud: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'Filtreeri tüübi järgi';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'Ükski juhtum ei vasta otsingule';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'Juhtumite laadimine ebaõnnestus';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Igakuine';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'Aastane';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'Säästa 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'POPULAARSEIM';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 aktiivne juhtum';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 aktiivset juhtumit';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'Piiramatult juhtumeid';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 dokumendi skannimist';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 dokumendi skannimist';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'Piiramatu dokumendiskannimine';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'AI põhianalüüs';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'Täielik AI analüüs';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'Mustandite loomine';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'Prioriteetne töötlemine';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'igavesti';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/kuu';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/aastas';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Eelmiste ostude kontroll...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'Eelmisi oste ei leitud.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Tere! Olen teie õigusabi assistent. Rääkige, mis juhtus — analüüsin olukorda ja soovitan, mida teha.';
+
+  @override
+  String get copySummary => 'Kopeeri kokkuvõte';
+
+  @override
+  String get caseSummaryCopied => 'Juhtumi kokkuvõte kopeeritud';
+
+  @override
+  String get openCase => 'Ava juhtum';
+
+  @override
+  String get viewFull => 'Vaata tervikuna';
+
+  @override
+  String get draftCopiedToClipboard => 'Mustand kopeeritud lõikelauale';
+
+  @override
+  String get reportMileageFraud => 'Teata läbisõidu pettusest';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'Luuakse pettuseraport sõiduki kontrollimise andmete põhjal. Saate avada ka õigusliku juhtumi.';
+
+  @override
+  String get reportAndOpenCase => 'Teata ja ava juhtum';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Eeltäidetud andmetega juhtumi loomine peagi';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'Juhtumi loomine ebaõnnestus. Palun proovige uuesti.';
+
+  @override
+  String get takePhotoInstead => 'Tehke foto';
+
+  @override
+  String get deleteCase => 'Kustuta juhtum';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Kas olete kindel, et soovite kustutada \"$title\"? Seda toimingut ei saa tagasi võtta.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Küsimusi? Küsige AI-lt';
+
+  @override
+  String get cookiePolicy => 'Küpsiste poliitika';
+
+  @override
+  String get aiDisclaimer => 'AI vastutuse välistamine';
+
+  @override
+  String get dataPrivacyConsent => 'Andmekaitse nõusolek';
+
+  @override
+  String get gdprIntro =>
+      'AI õigusabi pakkumiseks töötleme teie andmeid vastavalt GDPR-ile (EL 2016/679). Jätkates nõustute:';
+
+  @override
+  String get gdprChat => 'Teie vestlussõnumite töötlemine AI poolt';
+
+  @override
+  String get gdprDocs => 'Üleslaaditud dokumentide analüüs';
+
+  @override
+  String get gdprStorage => 'Juhtumite andmete krüpteeritud salvestamine';
+
+  @override
+  String get gdprDelete => 'Õigus kustutada oma andmed igal ajal';
+
+  @override
+  String get gdprFooter =>
+      'Teie andmed on krüpteeritud ega jagata kunagi kolmandatele osapooltele. Saate nõusoleku tagasi võtta ja kõik andmed kustutada Seadetest.';
+
+  @override
+  String get decline => 'Keeldu';
+
+  @override
+  String get iAgree => 'Nõustun';
+
+  @override
+  String get iAgreeToThe => 'Nõustun ';
+
+  @override
+  String get orWord => 'või';
+
+  @override
+  String get english => 'Inglise';
+
+  @override
+  String get russian => 'Vene';
+
+  @override
+  String get finnish => 'Soome';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Tellimus $plan edukalt aktiveeritud!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Makse ebaõnnestus: $error';
+  }
 }

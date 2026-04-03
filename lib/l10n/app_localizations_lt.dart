@@ -1355,111 +1355,222 @@ class AppLocalizationsLt extends AppLocalizations {
   String get failedToLoadDocuments => 'Nepavyko įkelti dokumentų';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'El. pašto integracija';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'Prijunkite el. paštą';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'Prijunkite el. paštą, kad automatiškai aptiktumėte ir tvarkytumėte su bylomis susijusią teisinę korespondenciją.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'Teisiniai laiškai';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'Nesusieti laiškai';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'Teisinių laiškų dar nėra';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'Čia bus rodomi kaip teisiniai klasifikuoti laiškai.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'Priskirti bylai';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'Atjungti el. paštą';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'Automatinis el. pašto sinchronizavimas bus sustabdytas. Anksčiau sinchronizuoti laiškai liks bylose.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'Prijungta prie $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'Sinchronizuota: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'Filtruoti pagal tipą';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'Nerasta bylų pagal paiešką';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'Nepavyko įkelti bylų';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Mėnesinis';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'Metinis';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'Sutaupykite 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'POPULIARIAUSIAS';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 aktyvi byla';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 aktyvios bylos';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'Neribotos bylos';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 dokumentų nuskaitymai';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 dokumentų nuskaitymų';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'Neribotas dokumentų nuskaitymas';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'Pagrindinė DI analizė';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'Pilna DI analizė';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'Juodraščių kūrimas';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'Prioritetinis apdorojimas';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'amžinai';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/mėn.';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/m.';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Tikrinami ankstesni pirkimai...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'Ankstesnių pirkimų nerasta.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Sveiki! Aš jūsų teisinis padėjėjas. Papasakokite, kas nutiko — išanalizuosiu situaciją ir patarsiu, ką daryti.';
+
+  @override
+  String get copySummary => 'Kopijuoti santrauką';
+
+  @override
+  String get caseSummaryCopied => 'Bylos santrauka nukopijuota';
+
+  @override
+  String get openCase => 'Atidaryti bylą';
+
+  @override
+  String get viewFull => 'Peržiūrėti visą';
+
+  @override
+  String get draftCopiedToClipboard => 'Juodraštis nukopijuotas';
+
+  @override
+  String get reportMileageFraud => 'Pranešti apie ridos klastojimą';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'Bus sukurtas sukčiavimo ataskaita pagal transporto priemonės patikrinimo duomenis. Taip pat galite atidaryti teisinę bylą.';
+
+  @override
+  String get reportAndOpenCase => 'Pranešti ir atidaryti bylą';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Bylos kūrimas su iš anksto užpildytais duomenimis netrukus';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'Nepavyko sukurti bylos. Bandykite dar kartą.';
+
+  @override
+  String get takePhotoInstead => 'Nufotografuoti';
+
+  @override
+  String get deleteCase => 'Ištrinti bylą';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Ar tikrai norite ištrinti \"$title\"? Šio veiksmo negalima atšaukti.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Turite klausimų? Klauskite DI';
+
+  @override
+  String get cookiePolicy => 'Slapukų politika';
+
+  @override
+  String get aiDisclaimer => 'DI atsakomybės apribojimas';
+
+  @override
+  String get dataPrivacyConsent => 'Duomenų privatumo sutikimas';
+
+  @override
+  String get gdprIntro =>
+      'Teikdami teisinę pagalbą su DI, tvarkome jūsų duomenis pagal BDAR (ES 2016/679). Tęsdami sutinkate su:';
+
+  @override
+  String get gdprChat => 'Pokalbių pranešimų apdorojimas DI';
+
+  @override
+  String get gdprDocs => 'Įkeltų dokumentų analizė';
+
+  @override
+  String get gdprStorage => 'Šifruotas bylų duomenų saugojimas';
+
+  @override
+  String get gdprDelete => 'Teisė bet kada ištrinti savo duomenis';
+
+  @override
+  String get gdprFooter =>
+      'Jūsų duomenys yra užšifruoti ir niekada nesidalijami su trečiosiomis šalimis. Galite atšaukti sutikimą ir ištrinti visus duomenis Nustatymuose.';
+
+  @override
+  String get decline => 'Atmesti';
+
+  @override
+  String get iAgree => 'Sutinku';
+
+  @override
+  String get iAgreeToThe => 'Sutinku su ';
+
+  @override
+  String get orWord => 'arba';
+
+  @override
+  String get english => 'Anglų';
+
+  @override
+  String get russian => 'Rusų';
+
+  @override
+  String get finnish => 'Suomių';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Prenumerata $plan sėkmingai aktyvuota!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Mokėjimas nepavyko: $error';
+  }
 }

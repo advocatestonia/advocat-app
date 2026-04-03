@@ -324,7 +324,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                       onPressed: () =>
                           context.push('/chat/general'),
                       icon: const Icon(Icons.chat_bubble_outline, size: 20),
-                      label: const Text('Have questions? Talk to AI'),
+                      label: Text(AppLocalizations.of(context)?.haveQuestionsAi ?? 'Have questions? Talk to AI'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
                         foregroundColor: Colors.white,

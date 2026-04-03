@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/case_model.dart';
 
 // ---------------------------------------------------------------------------
@@ -295,15 +296,17 @@ class CaseCard extends StatelessWidget {
   Future<bool> _confirmDelete(BuildContext context) async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Case'),
+      builder: (context) {
+        final l10n = AppLocalizations.of(context);
+        return AlertDialog(
+        title: Text(l10n?.deleteCase ?? 'Delete Case'),
         content: Text(
-          'Are you sure you want to delete "${legalCase.title}"? This action cannot be undone.',
+          l10n?.deleteCaseConfirm(legalCase.title) ?? 'Are you sure you want to delete "${legalCase.title}"? This action cannot be undone.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n?.cancel ?? 'Cancel'),
           ),
           TextButton(
             onPressed: () {
@@ -311,10 +314,11 @@ class CaseCard extends StatelessWidget {
               Navigator.pop(context, true);
             },
             style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Delete'),
+            child: Text(l10n?.delete ?? 'Delete'),
           ),
         ],
-      ),
+      );
+      },
     );
     return confirmed ?? false;
   }

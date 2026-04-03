@@ -1344,111 +1344,222 @@ class AppLocalizationsFa extends AppLocalizations {
   String get failedToLoadDocuments => 'بارگذاری اسناد ناموفق بود';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'یکپارچه‌سازی ایمیل';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'ایمیل خود را متصل کنید';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'ایمیل خود را متصل کنید تا مکاتبات حقوقی مرتبط با پرونده‌هایتان به طور خودکار شناسایی شود.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'ایمیل‌های حقوقی';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'ایمیل‌های متصل نشده';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'هنوز ایمیل حقوقی وجود ندارد';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'ایمیل‌های طبقه‌بندی شده به عنوان حقوقی اینجا نمایش داده می‌شوند.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'اختصاص به پرونده';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'قطع ایمیل';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'همگام‌سازی خودکار ایمیل متوقف می‌شود. ایمیل‌های قبلاً همگام‌سازی شده باقی می‌مانند.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'متصل به $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'آخرین همگام‌سازی: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'فیلتر بر اساس نوع';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'پرونده‌ای مطابق جستجو یافت نشد';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'بارگذاری پرونده‌ها ناموفق بود';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'ماهانه';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'سالانه';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => '۲۵٪ تخفیف';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'محبوب‌ترین';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '۱ پرونده فعال';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '۳ پرونده فعال';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'پرونده‌های نامحدود';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '۳ اسکن سند';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '۲۰ اسکن سند';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'اسکن نامحدود اسناد';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'تحلیل پایه هوش مصنوعی';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'تحلیل کامل هوش مصنوعی';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'تولید پیش‌نویس';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'پردازش اولویت‌دار';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'برای همیشه';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/ماه';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/سال';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'بررسی خریدهای قبلی...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'خرید قبلی یافت نشد.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'سلام! من دستیار حقوقی شما هستم. بگویید چه اتفاقی افتاده — وضعیت را تحلیل می‌کنم و پیشنهاد می‌دهم.';
+
+  @override
+  String get copySummary => 'کپی خلاصه';
+
+  @override
+  String get caseSummaryCopied => 'خلاصه پرونده کپی شد';
+
+  @override
+  String get openCase => 'باز کردن پرونده';
+
+  @override
+  String get viewFull => 'نمایش کامل';
+
+  @override
+  String get draftCopiedToClipboard => 'پیش‌نویس کپی شد';
+
+  @override
+  String get reportMileageFraud => 'گزارش تقلب در کیلومتر';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'گزارش تقلب بر اساس داده‌های بررسی خودرو ایجاد می‌شود. همچنین می‌توانید پرونده حقوقی باز کنید.';
+
+  @override
+  String get reportAndOpenCase => 'گزارش و باز کردن پرونده';
+
+  @override
+  String get caseCreationComingSoon =>
+      'ایجاد پرونده با داده‌های از پیش پر شده به زودی';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'ایجاد پرونده ناموفق بود. دوباره تلاش کنید.';
+
+  @override
+  String get takePhotoInstead => 'عکس بگیرید';
+
+  @override
+  String get deleteCase => 'حذف پرونده';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'آیا مطمئنید که می‌خواهید \"$title\" را حذف کنید؟ این عمل قابل بازگشت نیست.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'سؤالی دارید؟ از هوش مصنوعی بپرسید';
+
+  @override
+  String get cookiePolicy => 'سیاست کوکی';
+
+  @override
+  String get aiDisclaimer => 'سلب مسئولیت هوش مصنوعی';
+
+  @override
+  String get dataPrivacyConsent => 'رضایت حریم خصوصی';
+
+  @override
+  String get gdprIntro =>
+      'برای ارائه کمک حقوقی مبتنی بر هوش مصنوعی، داده‌های شما مطابق GDPR (EU 2016/679) پردازش می‌شود. با ادامه موافقت می‌کنید با:';
+
+  @override
+  String get gdprChat => 'پردازش پیام‌های چت توسط هوش مصنوعی';
+
+  @override
+  String get gdprDocs => 'تحلیل اسناد بارگذاری شده';
+
+  @override
+  String get gdprStorage => 'ذخیره‌سازی رمزگذاری شده داده‌های پرونده';
+
+  @override
+  String get gdprDelete => 'حق حذف داده‌ها در هر زمان';
+
+  @override
+  String get gdprFooter =>
+      'داده‌های شما رمزگذاری شده و هرگز با اشخاص ثالث به اشتراک گذاشته نمی‌شود. می‌توانید رضایت را لغو کرده و تمام داده‌ها را از تنظیمات حذف کنید.';
+
+  @override
+  String get decline => 'رد کردن';
+
+  @override
+  String get iAgree => 'موافقم';
+
+  @override
+  String get iAgreeToThe => 'موافقت می‌کنم با ';
+
+  @override
+  String get orWord => 'یا';
+
+  @override
+  String get english => 'انگلیسی';
+
+  @override
+  String get russian => 'روسی';
+
+  @override
+  String get finnish => 'فنلاندی';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'اشتراک $plan با موفقیت فعال شد!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'پرداخت ناموفق: $error';
+  }
 }

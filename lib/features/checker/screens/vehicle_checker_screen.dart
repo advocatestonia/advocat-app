@@ -226,15 +226,14 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Report Mileage Fraud'),
-        content: const Text(
-          'This will create a fraud report based on the vehicle check data. '
-          'You can also open a legal case for further action.',
+        title: Text(AppLocalizations.of(context)?.reportMileageFraud ?? 'Report Mileage Fraud'),
+        content: Text(
+          AppLocalizations.of(context)?.reportMileageFraudDesc ?? 'This will create a fraud report based on the vehicle check data. You can also open a legal case for further action.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
           ),
           ElevatedButton(
             onPressed: () {
@@ -248,7 +247,7 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                 borderRadius: BorderRadius.circular(AppRadius.md),
               ),
             ),
-            child: const Text('Report & Open Case'),
+            child: Text(AppLocalizations.of(context)?.reportAndOpenCase ?? 'Report & Open Case'),
           ),
         ],
       ),

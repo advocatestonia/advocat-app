@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Custom app bar for the chat screen.
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -69,18 +70,21 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             onSelected: (value) {
               if (value == 'share') onShareSummary?.call();
             },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'share',
-                child: Row(
-                  children: [
-                    Icon(Icons.copy_rounded, size: 18),
-                    SizedBox(width: 8),
-                    Text('Copy summary'),
-                  ],
+            itemBuilder: (context) {
+              final l10n = AppLocalizations.of(context);
+              return [
+                PopupMenuItem(
+                  value: 'share',
+                  child: Row(
+                    children: [
+                      const Icon(Icons.copy_rounded, size: 18),
+                      const SizedBox(width: 8),
+                      Text(l10n?.copySummary ?? 'Copy summary'),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ];
+            },
           ),
       ],
     );

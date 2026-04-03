@@ -1350,111 +1350,222 @@ class AppLocalizationsFi extends AppLocalizations {
   String get failedToLoadDocuments => 'Asiakirjojen lataus epäonnistui';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'Sähköposti-integraatio';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'Yhdistä sähköpostisi';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'Yhdistä sähköpostisi tunnistaaksesi ja järjestääksesi automaattisesti tapauksiisi liittyvän oikeudellisen kirjeenvaihdon.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'Oikeudelliset sähköpostit';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'Linkittämättömät sähköpostit';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'Ei vielä oikeudellisia sähköposteja';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'Oikeudellisiksi luokitellut sähköpostit näkyvät täällä.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'Liitä tapaukseen';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'Katkaise sähköposti';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'Automaattinen sähköpostisynkronointi lopetetaan. Aiemmin synkronoidut sähköpostit säilyvät tapauksissasi.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'Yhdistetty: $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'Synkronoitu: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'Suodata tyypin mukaan';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'Hakuasi vastaavia tapauksia ei löytynyt';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'Tapausten lataus epäonnistui';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Kuukausittainen';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'Vuosittainen';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'Säästä 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'SUOSITUIN';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 aktiivinen tapaus';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 aktiivista tapausta';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'Rajattomat tapaukset';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 dokumenttiskannausta';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 dokumenttiskannausta';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'Rajaton dokumenttiskannaus';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'Perus tekoälyanalyysi';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'Täysi tekoälyanalyysi';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'Luonnosten luonti';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'Prioriteettikäsittely';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'ikuisesti';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/kk';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/v';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Tarkistetaan aiempia ostoksia...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'Aiempia ostoksia ei löytynyt.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Hei! Olen oikeudellinen avustajasi. Kerro mitä tapahtui — analysoin tilanteen ja neuvon mitä tehdä.';
+
+  @override
+  String get copySummary => 'Kopioi yhteenveto';
+
+  @override
+  String get caseSummaryCopied => 'Tapauksen yhteenveto kopioitu';
+
+  @override
+  String get openCase => 'Avaa tapaus';
+
+  @override
+  String get viewFull => 'Näytä kokonaan';
+
+  @override
+  String get draftCopiedToClipboard => 'Luonnos kopioitu leikepöydälle';
+
+  @override
+  String get reportMileageFraud => 'Ilmoita mittarilukemapetoksesta';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'Tämä luo petosraportin ajoneuvon tarkistustietojen perusteella. Voit myös avata oikeudellisen tapauksen.';
+
+  @override
+  String get reportAndOpenCase => 'Ilmoita ja avaa tapaus';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Tapauksen luominen esitäytetyillä tiedoilla tulossa pian';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'Tapauksen luominen epäonnistui. Yritä uudelleen.';
+
+  @override
+  String get takePhotoInstead => 'Ota kuva';
+
+  @override
+  String get deleteCase => 'Poista tapaus';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Haluatko varmasti poistaa \"$title\"? Toimintoa ei voi kumota.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Onko kysyttävää? Kysy tekoälyltä';
+
+  @override
+  String get cookiePolicy => 'Evästekäytäntö';
+
+  @override
+  String get aiDisclaimer => 'Tekoälylauseke';
+
+  @override
+  String get dataPrivacyConsent => 'Tietosuojasuostumus';
+
+  @override
+  String get gdprIntro =>
+      'Tarjotaksemme tekoälypohjaista oikeusapua käsittelemme tietojasi GDPR:n (EU 2016/679) mukaisesti. Jatkamalla hyväksyt:';
+
+  @override
+  String get gdprChat => 'Chattiviestien käsittely tekoälyllä';
+
+  @override
+  String get gdprDocs => 'Ladattujen dokumenttien analysointi';
+
+  @override
+  String get gdprStorage => 'Tapausten salattu tallennus';
+
+  @override
+  String get gdprDelete => 'Oikeus poistaa tietosi milloin tahansa';
+
+  @override
+  String get gdprFooter =>
+      'Tietosi on salattu eikä niitä jaeta kolmansille osapuolille. Voit peruuttaa suostumuksen ja poistaa kaikki tiedot Asetuksista.';
+
+  @override
+  String get decline => 'Hylkää';
+
+  @override
+  String get iAgree => 'Hyväksyn';
+
+  @override
+  String get iAgreeToThe => 'Hyväksyn ';
+
+  @override
+  String get orWord => 'tai';
+
+  @override
+  String get english => 'Englanti';
+
+  @override
+  String get russian => 'Venäjä';
+
+  @override
+  String get finnish => 'Suomi';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Tilaus $plan onnistui!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Maksu epäonnistui: $error';
+  }
 }

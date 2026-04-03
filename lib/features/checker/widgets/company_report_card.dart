@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../providers/company_checker_provider.dart';
 import 'risk_badge.dart';
 
@@ -130,14 +131,14 @@ class CompanyReportCard extends StatelessWidget {
               onPressed: () {
                 // TODO: Navigate to case creation with pre-filled data
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Case creation with pre-filled data coming soon'),
+                  SnackBar(
+                    content: Text(AppLocalizations.of(context)?.caseCreationComingSoon ?? 'Case creation with pre-filled data coming soon'),
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
               },
               icon: const Icon(Icons.folder_open_outlined),
-              label: const Text('Open a Case'),
+              label: Text(AppLocalizations.of(context)?.openACase ?? 'Open a Case'),
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppColors.accent,
                 side: const BorderSide(color: AppColors.accent),

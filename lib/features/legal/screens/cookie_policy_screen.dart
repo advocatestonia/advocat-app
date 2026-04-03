@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Cookie and local storage policy screen for the Advocat application.
 ///
@@ -14,7 +15,7 @@ class CookiePolicyScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Cookie Policy'),
+        title: Text(AppLocalizations.of(context)?.cookiePolicy ?? 'Cookie Policy'),
         backgroundColor: AppColors.surface,
       ),
       body: SingleChildScrollView(

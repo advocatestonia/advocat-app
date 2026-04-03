@@ -762,693 +762,818 @@ class AppLocalizationsPl extends AppLocalizations {
   String get won => 'Wygrana';
 
   @override
-  String get documentVault => 'Document Vault';
+  String get documentVault => 'Sejf dokumentów';
 
   @override
-  String get secureDocumentStorage => 'Secure Document Storage';
+  String get secureDocumentStorage => 'Bezpieczne przechowywanie dokumentów';
 
   @override
   String get secureDocumentStorageDesc =>
-      'Store your important legal documents in one place for easy access.';
+      'Przechowuj ważne dokumenty prawne w jednym miejscu.';
 
   @override
-  String get addDocument => 'Add Document';
+  String get addDocument => 'Dodaj dokument';
 
   @override
-  String get chooseHowToAdd => 'Choose how to add your document';
+  String get chooseHowToAdd => 'Wybierz sposób dodania dokumentu';
 
   @override
-  String get uploadFile => 'Upload File';
+  String get uploadFile => 'Prześlij plik';
 
   @override
-  String get uploadFileDesc => 'Choose a PDF or image from your device';
+  String get uploadFileDesc => 'Wybierz PDF lub obraz z urządzenia';
 
   @override
-  String get scanDocumentDesc => 'Take a photo of your document';
+  String get scanDocumentDesc => 'Zrób zdjęcie dokumentu';
 
   @override
-  String get createNote => 'Create Note';
+  String get createNote => 'Utwórz notatkę';
 
   @override
-  String get createNoteDesc => 'Write a note or record important details';
+  String get createNoteDesc => 'Napisz notatkę lub zapisz ważne szczegóły';
 
   @override
-  String get knowYourRights => 'Know Your Rights';
+  String get knowYourRights => 'Poznaj swoje prawa';
 
   @override
-  String get stoppedByPolice => 'Stopped by Police';
+  String get stoppedByPolice => 'Zatrzymany przez policję';
 
   @override
-  String get stoppedByPoliceDesc => 'Your rights during a police encounter';
+  String get stoppedByPoliceDesc => 'Twoje prawa podczas kontroli policyjnej';
 
   @override
-  String get deportationNotice => 'Deportation Notice';
+  String get deportationNotice => 'Zawiadomienie o deportacji';
 
   @override
-  String get deportationNoticeDesc => 'Steps to challenge a removal order';
+  String get deportationNoticeDesc =>
+      'Kroki do zakwestionowania nakazu wydalenia';
 
   @override
-  String get workplaceRights => 'Workplace Rights';
+  String get workplaceRights => 'Prawa pracownicze';
 
   @override
-  String get workplaceRightsDesc => 'Employment law protections in Finland';
+  String get workplaceRightsDesc => 'Ochrona prawa pracy w Finlandii';
 
   @override
-  String get tenantRightsDesc => 'Housing and rental protections';
+  String get tenantRightsDesc => 'Ochrona mieszkaniowa i najemcy';
 
   @override
-  String get immigrationDetention => 'Immigration Detention';
+  String get immigrationDetention => 'Zatrzymanie imigracyjne';
 
   @override
-  String get immigrationDetentionDesc => 'Rights if detained by authorities';
+  String get immigrationDetentionDesc =>
+      'Prawa w przypadku zatrzymania przez władze';
 
   @override
-  String get discriminationDesc => 'How to report and fight discrimination';
+  String get discriminationDesc => 'Jak zgłaszać i zwalczać dyskryminację';
 
   @override
-  String get scenarioNotFound => 'Scenario not found';
+  String get scenarioNotFound => 'Scenariusz nie znaleziony';
 
   @override
-  String get youHaveRightTo => 'You have the right to:';
+  String get youHaveRightTo => 'Masz prawo do:';
 
   @override
-  String get youMust => 'You must:';
+  String get youMust => 'Musisz:';
 
   @override
-  String get immediateSteps => 'Immediate steps:';
+  String get immediateSteps => 'Natychmiastowe kroki:';
 
   @override
-  String get yourRights => 'Your rights:';
+  String get yourRights => 'Twoje prawa:';
 
   @override
-  String get basicRights => 'Basic rights:';
+  String get basicRights => 'Podstawowe prawa:';
 
   @override
-  String get yourRightsAsTenant => 'Your rights as a tenant:';
+  String get yourRightsAsTenant => 'Twoje prawa jako najemca:';
 
   @override
-  String get yourRightsInDetention => 'Your rights in detention:';
+  String get yourRightsInDetention => 'Twoje prawa w zatrzymaniu:';
 
   @override
-  String get howToAct => 'How to act:';
+  String get howToAct => 'Jak postępować:';
 
   @override
-  String get rightKnowWhyStopped => 'Know why you are being stopped';
+  String get rightKnowWhyStopped => 'Wiedzieć dlaczego zostałeś zatrzymany';
 
   @override
-  String get rightRemainSilent => 'Remain silent (you must identify yourself)';
+  String get rightRemainSilent =>
+      'Zachować milczenie (musisz się zidentyfikować)';
 
   @override
-  String get rightAskInterpreter => 'Ask for an interpreter';
+  String get rightAskInterpreter => 'Poproś o tłumacza';
 
   @override
-  String get rightContactLawyer => 'Contact a lawyer before questioning';
+  String get rightContactLawyer =>
+      'Skontaktuj się z prawnikiem przed przesłuchaniem';
 
   @override
-  String get rightRecordEncounter => 'Record the encounter (in public places)';
+  String get rightRecordEncounter =>
+      'Nagrywaj spotkanie (w miejscach publicznych)';
 
   @override
-  String get mustProvideName => 'Provide your name and date of birth';
+  String get mustProvideName => 'Podaj imię i datę urodzenia';
 
   @override
-  String get mustShowId => 'Show ID if you have one';
+  String get mustShowId => 'Pokaż dowód osobisty, jeśli masz';
 
   @override
-  String get mustNotResist => 'Not physically resist';
+  String get mustNotResist => 'Nie stawiać oporu fizycznego';
 
   @override
   String get doNotIgnoreNotice =>
-      'Do NOT ignore the notice - deadlines are strict';
+      'NIE ignoruj zawiadomienia - terminy są ścisłe';
 
   @override
-  String get noteAppealDeadline => 'Note the appeal deadline (usually 30 days)';
+  String get noteAppealDeadline => 'Zanotuj termin odwołania (zwykle 30 dni)';
 
   @override
-  String get contactLawyerImmediately => 'Contact a lawyer immediately';
+  String get contactLawyerImmediately =>
+      'Natychmiast skontaktuj się z prawnikiem';
 
   @override
-  String get applyLegalAid => 'Apply for legal aid if needed';
+  String get applyLegalAid => 'Złóż wniosek o pomoc prawną w razie potrzeby';
 
   @override
-  String get rightAppealAdmin => 'Right to appeal to the Administrative Court';
+  String get rightAppealAdmin => 'Prawo do odwołania do sądu administracyjnego';
 
   @override
-  String get rightLegalRep => 'Right to legal representation';
+  String get rightLegalRep => 'Prawo do reprezentacji prawnej';
 
   @override
-  String get rightInterpreter => 'Right to an interpreter';
+  String get rightInterpreter => 'Prawo do tłumacza';
 
   @override
   String get rightStayDuringAppeal =>
-      'Right to stay during appeal (in most cases)';
+      'Prawo do pobytu podczas odwołania (w większości przypadków)';
 
   @override
-  String get minimumWage => 'Minimum wage as per collective agreement';
+  String get minimumWage => 'Płaca minimalna wg układu zbiorowego';
 
   @override
-  String get workingTimeLimits => 'Working time limits (max 8h/day, 40h/week)';
+  String get workingTimeLimits =>
+      'Limity czasu pracy (max 8h/dzień, 40h/tydzień)';
 
   @override
-  String get annualLeave => 'Annual leave (minimum 2 days per month worked)';
+  String get annualLeave =>
+      'Urlop roczny (min. 2 dni na przepracowany miesiąc)';
 
   @override
-  String get sickLeave => 'Sick leave compensation';
+  String get sickLeave => 'Zasiłek chorobowy';
 
   @override
-  String get safeWorkingConditions => 'Safe working conditions';
+  String get safeWorkingConditions => 'Bezpieczne warunki pracy';
 
   @override
-  String get writtenRentalAgreement => 'Written rental agreement required';
+  String get writtenRentalAgreement => 'Wymagana pisemna umowa najmu';
 
   @override
-  String get securityDeposit => 'Security deposit max 3 months rent';
+  String get securityDeposit => 'Kaucja max 3 miesiące czynszu';
 
   @override
-  String get landlordNotice => 'Landlord must give notice (3-6 months)';
+  String get landlordNotice =>
+      'Wynajmujący musi dać wypowiedzenie (3-6 miesięcy)';
 
   @override
-  String get rightHabitableDwelling => 'Right to a habitable dwelling';
+  String get rightHabitableDwelling =>
+      'Prawo do mieszkania nadającego się do zamieszkania';
 
   @override
-  String get protectionUnjustEviction => 'Protection from unjust eviction';
+  String get protectionUnjustEviction =>
+      'Ochrona przed nieuzasadnioną eksmisją';
 
   @override
-  String get rightKnowDetentionReason =>
-      'Right to know the reason for detention';
+  String get rightKnowDetentionReason => 'Prawo do poznania powodu zatrzymania';
 
   @override
-  String get rightContactLawyerDetention => 'Right to contact a lawyer';
+  String get rightContactLawyerDetention => 'Prawo do kontaktu z prawnikiem';
 
   @override
-  String get rightContactEmbassy => 'Right to contact your embassy';
+  String get rightContactEmbassy => 'Prawo do kontaktu z ambasadą';
 
   @override
-  String get rightChallengeDetention => 'Right to challenge detention in court';
+  String get rightChallengeDetention =>
+      'Prawo do zaskarżenia zatrzymania w sądzie';
 
   @override
   String get rightHumaneTreatment =>
-      'Right to humane treatment and medical care';
+      'Prawo do humanitarnego traktowania i opieki medycznej';
 
   @override
   String get documentIncident =>
-      'Document the incident (date, time, witnesses)';
+      'Udokumentuj zdarzenie (data, godzina, świadkowie)';
 
   @override
-  String get fileComplaintOmbudsman =>
-      'File a complaint with the Non-Discrimination Ombudsman';
+  String get fileComplaintOmbudsman => 'Złóż skargę do Rzecznika ds. Równości';
 
   @override
-  String get contactLegalAidOffice => 'Contact a legal aid office';
+  String get contactLegalAidOffice => 'Skontaktuj się z biurem pomocy prawnej';
 
   @override
-  String get reportToPolice => 'Report to police if criminal (threat, assault)';
+  String get reportToPolice =>
+      'Zgłoś na policję jeśli przestępstwo (groźba, napaść)';
 
   @override
-  String get legalAidCalculator => 'Legal Aid Calculator';
+  String get legalAidCalculator => 'Kalkulator pomocy prawnej';
 
   @override
-  String get checkEligibility => 'Check your eligibility for Finnish legal aid';
+  String get checkEligibility =>
+      'Sprawdź swoje uprawnienia do fińskiej pomocy prawnej';
 
   @override
   String get estimateDisclaimer =>
-      'This is an estimate only. Actual eligibility is determined by the Legal Aid Office.';
+      'To tylko szacunek. Faktyczne uprawnienia określa Biuro Pomocy Prawnej.';
 
   @override
-  String get monthlyIncome => 'Monthly income (EUR)';
+  String get monthlyIncome => 'Dochód miesięczny (EUR)';
 
   @override
-  String get totalAssets => 'Total assets (EUR)';
+  String get totalAssets => 'Aktywa ogółem (EUR)';
 
   @override
-  String get numberOfDependents => 'Number of dependents';
+  String get numberOfDependents => 'Liczba osób na utrzymaniu';
 
   @override
-  String get calculateEligibility => 'Calculate Eligibility';
+  String get calculateEligibility => 'Oblicz uprawnienia';
 
   @override
-  String get likelyEligible => 'Likely Eligible';
+  String get likelyEligible => 'Prawdopodobnie uprawniony';
 
   @override
-  String get mayNotQualify => 'May Not Qualify';
+  String get mayNotQualify => 'Może nie kwalifikować się';
 
   @override
   String get fullFreeLegalAid =>
-      'You likely qualify for full free legal aid (no co-payment).';
+      'Prawdopodobnie kwalifikujesz się na bezpłatną pomoc prawną.';
 
   @override
   String legalAidWithCopay(String percent) {
-    return 'You may qualify for legal aid with a co-payment of $percent%.';
+    return 'Możesz kwalifikować się na pomoc prawną ze współpłatnością $percent%.';
   }
 
   @override
   String get mayNotQualifyDesc =>
-      'Based on this estimate, you may not qualify for state legal aid. Consider consulting a private lawyer or legal clinic.';
+      'Na podstawie tej oceny możesz nie kwalifikować się na państwową pomoc prawną.';
 
   @override
-  String get couldNotLoadDeadlines => 'Could not load deadlines';
+  String get couldNotLoadDeadlines => 'Nie udało się załadować terminów';
 
   @override
-  String get noUpcomingDeadlines => 'No upcoming deadlines';
+  String get noUpcomingDeadlines => 'Brak nadchodzących terminów';
 
   @override
   String get allClearDeadlines =>
-      'You are all clear! New deadlines will appear here when they are set.';
+      'Wszystko w porządku! Nowe terminy pojawią się tutaj.';
 
   @override
-  String get nothingOverdue => 'Nothing overdue';
+  String get nothingOverdue => 'Nic nie jest przeterminowane';
 
   @override
-  String get greatJobDeadlines => 'Great job staying on top of your deadlines.';
+  String get greatJobDeadlines => 'Świetna robota z dotrzymywaniem terminów.';
 
   @override
-  String get noCompletedDeadlines => 'No completed deadlines';
+  String get noCompletedDeadlines => 'Brak ukończonych terminów';
 
   @override
   String get completedDeadlinesDesc =>
-      'Deadlines you complete will be shown here.';
+      'Ukończone terminy będą wyświetlane tutaj.';
 
   @override
-  String get daysLate => 'days late';
+  String get daysLate => 'dni opóźnienia';
 
   @override
-  String get days => 'days';
+  String get days => 'dni';
 
   @override
-  String get fromDocument => 'From document';
+  String get fromDocument => 'Z dokumentu';
 
   @override
-  String get couldNotLoadCase => 'Could not load case details';
+  String get couldNotLoadCase => 'Nie udało się załadować szczegółów sprawy';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'Typ';
 
   @override
-  String get nationality => 'Nationality';
+  String get nationality => 'Narodowość';
 
   @override
-  String get migriReference => 'Migri Reference';
+  String get migriReference => 'Numer Migri';
 
   @override
-  String get courtCaseNo => 'Court Case No.';
+  String get courtCaseNo => 'Nr sprawy sądowej';
 
   @override
-  String get created => 'Created';
+  String get created => 'Utworzono';
 
   @override
-  String get citizenship => 'Citizenship';
+  String get citizenship => 'Obywatelstwo';
 
   @override
-  String get workPermit => 'Work Permit';
+  String get workPermit => 'Pozwolenie na pracę';
 
   @override
-  String get noDocumentsYet => 'No documents uploaded yet';
+  String get noDocumentsYet => 'Brak przesłanych dokumentów';
 
   @override
-  String get noUpcomingDeadlinesShort => 'No upcoming deadlines';
+  String get noUpcomingDeadlinesShort => 'Brak nadchodzących terminów';
 
   @override
-  String get caseCreated => 'Case created';
+  String get caseCreated => 'Sprawa utworzona';
 
   @override
-  String get decisionReceived => 'Decision received';
+  String get decisionReceived => 'Decyzja otrzymana';
 
   @override
-  String get appealDeadline => 'Appeal deadline';
+  String get appealDeadline => 'Termin odwołania';
 
   @override
-  String get hearingScheduled => 'Hearing scheduled';
+  String get hearingScheduled => 'Rozprawa zaplanowana';
 
   @override
-  String get late => 'late';
+  String get late => 'opóźnione';
 
   @override
-  String get pending => 'Pending';
+  String get pending => 'Oczekujące';
 
   @override
-  String get processing => 'Processing';
+  String get processing => 'Przetwarzanie';
 
   @override
-  String get ready => 'Ready';
+  String get ready => 'Gotowe';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Niepowodzenie';
 
   @override
-  String get analyzed => 'Analyzed';
+  String get analyzed => 'Przeanalizowane';
 
   @override
-  String get noDocumentsScanHint => 'No documents yet. Scan or upload one.';
+  String get noDocumentsScanHint => 'Brak dokumentów. Zeskanuj lub prześlij.';
 
   @override
-  String get inCourt => 'In Court';
+  String get inCourt => 'W sądzie';
 
   @override
-  String get appeal => 'Appeal';
+  String get appeal => 'Odwołanie';
 
   @override
-  String get caseTimeline => 'Case Timeline';
+  String get caseTimeline => 'Oś czasu sprawy';
 
   @override
-  String get couldNotLoadTimeline => 'Could not load timeline';
+  String get couldNotLoadTimeline => 'Nie udało się załadować osi czasu';
 
   @override
-  String get noEventsYet => 'No events yet';
+  String get noEventsYet => 'Brak wydarzeń';
 
   @override
   String get activityWillAppear =>
-      'Activity will appear here as your case progresses.';
+      'Aktywność pojawi się tutaj w miarę postępu sprawy.';
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Case \"$title\" was created.';
+    return 'Sprawa \"$title\" została utworzona.';
   }
 
   @override
   String get decisionReceivedDesc =>
-      'An official decision was received for this case.';
+      'Otrzymano oficjalną decyzję w tej sprawie.';
 
   @override
-  String get appealDeadlineSet => 'Appeal deadline set';
+  String get appealDeadlineSet => 'Termin odwołania ustawiony';
 
   @override
   String appealDeadlineDesc(String date) {
-    return 'Appeal must be filed by $date.';
+    return 'Odwołanie musi być złożone do $date.';
   }
 
   @override
   String hearingScheduledDesc(String date) {
-    return 'Court hearing scheduled for $date.';
+    return 'Rozprawa sądowa zaplanowana na $date.';
   }
 
   @override
-  String get caseInfoUpdated => 'Case information was last updated.';
+  String get caseInfoUpdated => 'Informacje o sprawie zostały zaktualizowane.';
 
   @override
-  String get documentAnalysis => 'Document Analysis';
+  String get documentAnalysis => 'Analiza dokumentu';
 
   @override
-  String get exportAsPdf => 'Export as PDF';
+  String get exportAsPdf => 'Eksportuj jako PDF';
 
   @override
-  String get pdfExportComingSoon => 'PDF export coming soon';
+  String get pdfExportComingSoon => 'Eksport PDF wkrótce';
 
   @override
-  String get analysisFailedRetry => 'Analysis failed. Please try again.';
+  String get analysisFailedRetry =>
+      'Analiza nie powiodła się. Spróbuj ponownie.';
 
   @override
-  String get somethingWentWrong => 'Something went wrong';
+  String get somethingWentWrong => 'Coś poszło nie tak';
 
   @override
-  String get retryAnalysis => 'Retry Analysis';
+  String get retryAnalysis => 'Ponów analizę';
 
   @override
   String issuesFoundInDocument(int count) {
-    return 'Found $count issue(s) in your document';
+    return 'Znaleziono $count problem(ów) w dokumencie';
   }
 
   @override
-  String get severityOverview => 'Severity Overview';
+  String get severityOverview => 'Przegląd powagi';
 
   @override
-  String get issuesFoundHeader => 'Issues Found';
+  String get issuesFoundHeader => 'Znalezione problemy';
 
   @override
   String generateAppealWithIssues(int count) {
-    return 'Generate Appeal ($count issues)';
+    return 'Wygeneruj odwołanie ($count problemów)';
   }
 
   @override
-  String get analyzingContent => 'Analyzing content...';
+  String get analyzingContent => 'Analizowanie treści...';
 
   @override
-  String get documentProcessedOk => 'Document processed successfully';
+  String get documentProcessedOk => 'Dokument przetworzony pomyślnie';
 
   @override
   String get noSignificantIssues =>
-      'No significant issues were detected in this document.';
+      'Nie wykryto istotnych problemów w tym dokumencie.';
 
   @override
-  String get cameraPermissionRequired => 'Camera permission required';
+  String get cameraPermissionRequired => 'Wymagane pozwolenie na aparat';
 
   @override
   String get cameraPermissionDesc =>
-      'Grant camera access to scan documents, or use the gallery.';
+      'Udziel dostępu do aparatu, aby skanować dokumenty, lub użyj galerii.';
 
   @override
-  String get openSettings => 'Open Settings';
+  String get openSettings => 'Otwórz ustawienia';
 
   @override
-  String get alignDocument => 'Align document within the frame';
+  String get alignDocument => 'Wyrównaj dokument w ramce';
 
   @override
   String pageCount(int count) {
-    return '$count page(s)';
+    return '$count stron(a)';
   }
 
   @override
-  String get preview => 'Preview';
+  String get preview => 'Podgląd';
 
   @override
   String pageNumber(int number) {
-    return 'Page $number';
+    return 'Strona $number';
   }
 
   @override
-  String get done => 'Done';
+  String get done => 'Gotowe';
 
   @override
-  String get retake => 'Retake';
+  String get retake => 'Powtórz';
 
   @override
-  String get useThisPhoto => 'Use This Photo';
+  String get useThisPhoto => 'Użyj tego zdjęcia';
 
   @override
-  String get addPage => 'Add Page';
+  String get addPage => 'Dodaj stronę';
 
   @override
   String uploadingPercent(int percent) {
-    return 'Uploading... $percent%';
+    return 'Przesyłanie... $percent%';
   }
 
   @override
-  String get preparingUpload => 'Preparing upload...';
+  String get preparingUpload => 'Przygotowywanie przesyłania...';
 
   @override
-  String get documentUploadedSuccess => 'Document uploaded successfully';
+  String get documentUploadedSuccess => 'Dokument przesłany pomyślnie';
 
   @override
   String pagesUploadedSuccess(int count) {
-    return '$count pages uploaded successfully';
+    return '$count stron przesłano pomyślnie';
   }
 
   @override
   String get uploadFailed =>
-      'Upload failed. Please check your connection and try again.';
+      'Przesyłanie nie powiodło się. Sprawdź połączenie i spróbuj ponownie.';
 
   @override
-  String get capturePhotoFailed => 'Failed to capture photo. Please try again.';
+  String get capturePhotoFailed =>
+      'Nie udało się zrobić zdjęcia. Spróbuj ponownie.';
 
   @override
-  String get readingText => 'Reading text...';
+  String get readingText => 'Czytanie tekstu...';
 
   @override
-  String get draftDocument => 'Draft Document';
+  String get draftDocument => 'Szkic dokumentu';
 
   @override
-  String get saveChanges => 'Save changes';
+  String get saveChanges => 'Zapisz zmiany';
 
   @override
-  String get editDocument => 'Edit document';
+  String get editDocument => 'Edytuj dokument';
 
   @override
-  String get generatingDraft => 'Generating your draft...';
+  String get generatingDraft => 'Generowanie szkicu...';
 
   @override
   String get generatingDraftDesc =>
-      'AI is preparing a legal document based on your case details and selected issues.';
+      'AI przygotowuje dokument prawny na podstawie szczegółów sprawy.';
 
   @override
   String get failedToGenerateDraft =>
-      'Failed to generate draft. Please try again.';
+      'Nie udało się wygenerować szkicu. Spróbuj ponownie.';
 
   @override
-  String get changesSaved => 'Changes saved';
+  String get changesSaved => 'Zmiany zapisane';
 
   @override
-  String get copiedToClipboard => 'Copied to clipboard';
+  String get copiedToClipboard => 'Skopiowano do schowka';
 
   @override
-  String get emailComingSoon => 'Email sending coming soon';
+  String get emailComingSoon => 'Wysyłanie emaili wkrótce';
 
   @override
   String get reviewBeforeSending =>
-      'Review carefully before sending. You are responsible for the content of this document.';
+      'Sprawdź dokładnie przed wysłaniem. Ponosisz odpowiedzialność za treść dokumentu.';
 
   @override
-  String get noContentAvailable => 'No content available';
+  String get noContentAvailable => 'Brak dostępnej treści';
 
   @override
-  String get save => 'Save';
+  String get save => 'Zapisz';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Edytuj';
 
   @override
   String get pdf => 'PDF';
 
   @override
-  String get copy => 'Copy';
+  String get copy => 'Kopiuj';
 
   @override
-  String get appealDraft => 'Appeal Draft';
+  String get appealDraft => 'Szkic odwołania';
 
   @override
   String selected(int count) {
-    return '$count selected';
+    return '$count wybranych';
   }
 
   @override
-  String get deleteSelected => 'Delete selected';
+  String get deleteSelected => 'Usuń wybrane';
 
   @override
   String deleteDocumentsConfirm(int count) {
-    return 'Delete $count documents?';
+    return 'Usunąć $count dokumentów?';
   }
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Usuń';
 
   @override
-  String get analyzeSelected => 'Analyze selected';
+  String get analyzeSelected => 'Analizuj wybrane';
 
   @override
-  String get batchAnalysisStarting => 'Batch analysis starting...';
+  String get batchAnalysisStarting => 'Rozpoczynanie analizy zbiorczej...';
 
   @override
-  String get switchToList => 'Switch to list';
+  String get switchToList => 'Widok listy';
 
   @override
-  String get switchToGrid => 'Switch to grid';
+  String get switchToGrid => 'Widok siatki';
 
   @override
-  String get scanNew => 'Scan New';
+  String get scanNew => 'Nowy skan';
 
   @override
-  String get noDocumentsYetScan => 'No documents yet';
+  String get noDocumentsYetScan => 'Brak dokumentów';
 
   @override
   String get scanFirstDocumentHint =>
-      'Scan your first document to let AI analyze it for errors and generate appeals.';
+      'Zeskanuj pierwszy dokument, aby AI przeanalizowało go pod kątem błędów.';
 
   @override
-  String get failedToLoadDocuments => 'Failed to load documents';
+  String get failedToLoadDocuments => 'Nie udało się załadować dokumentów';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'Integracja email';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'Połącz swój email';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'Połącz email, aby automatycznie wykrywać i organizować korespondencję prawną.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'Emaile prawne';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'Niepowiązane emaile';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'Brak emaili prawnych';
 
   @override
   String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+      'Emaile sklasyfikowane jako prawne pojawią się tutaj.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'Przypisz do sprawy';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'Odłącz email';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'Automatyczna synchronizacja email zostanie zatrzymana. Wcześniej zsynchronizowane emaile pozostaną.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'Połączono z $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'Ostatnia synchronizacja: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'Filtruj według typu';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'Brak spraw pasujących do wyszukiwania';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'Nie udało się załadować spraw';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'Miesięczny';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'Roczny';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'Oszczędź 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'NAJPOPULARNIEJSZY';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 aktywna sprawa';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 aktywne sprawy';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'Nieograniczone sprawy';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 skany dokumentów';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 skanów dokumentów';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'Nieograniczone skanowanie';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'Podstawowa analiza AI';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'Pełna analiza AI';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'Generowanie szkiców';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'Przetwarzanie priorytetowe';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'na zawsze';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/mies.';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/rok';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Sprawdzanie poprzednich zakupów...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'Nie znaleziono poprzednich zakupów.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'Cześć! Jestem Twoim asystentem prawnym. Opowiedz co się stało — przeanalizuję sytuację i zasugeruję co robić.';
+
+  @override
+  String get copySummary => 'Kopiuj podsumowanie';
+
+  @override
+  String get caseSummaryCopied => 'Podsumowanie sprawy skopiowane';
+
+  @override
+  String get openCase => 'Otwórz sprawę';
+
+  @override
+  String get viewFull => 'Zobacz pełny';
+
+  @override
+  String get draftCopiedToClipboard => 'Szkic skopiowany do schowka';
+
+  @override
+  String get reportMileageFraud => 'Zgłoś oszustwo z przebiegiem';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'Zostanie utworzony raport o oszustwie na podstawie danych kontroli pojazdu.';
+
+  @override
+  String get reportAndOpenCase => 'Zgłoś i otwórz sprawę';
+
+  @override
+  String get caseCreationComingSoon =>
+      'Tworzenie sprawy z wypełnionymi danymi wkrótce';
+
+  @override
+  String get failedToCreateCaseRetry =>
+      'Nie udało się utworzyć sprawy. Spróbuj ponownie.';
+
+  @override
+  String get takePhotoInstead => 'Zrób zdjęcie';
+
+  @override
+  String get deleteCase => 'Usuń sprawę';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'Czy na pewno chcesz usunąć \"$title\"? Tej czynności nie można cofnąć.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'Pytania? Zapytaj AI';
+
+  @override
+  String get cookiePolicy => 'Polityka plików cookie';
+
+  @override
+  String get aiDisclaimer => 'Zastrzeżenie dotyczące AI';
+
+  @override
+  String get dataPrivacyConsent => 'Zgoda na przetwarzanie danych';
+
+  @override
+  String get gdprIntro =>
+      'Aby świadczyć pomoc prawną z AI, przetwarzamy Twoje dane zgodnie z RODO (UE 2016/679). Kontynuując zgadzasz się na:';
+
+  @override
+  String get gdprChat => 'Przetwarzanie wiadomości czatu przez AI';
+
+  @override
+  String get gdprDocs => 'Analiza przesłanych dokumentów';
+
+  @override
+  String get gdprStorage => 'Szyfrowane przechowywanie danych spraw';
+
+  @override
+  String get gdprDelete => 'Prawo do usunięcia danych w dowolnym momencie';
+
+  @override
+  String get gdprFooter =>
+      'Twoje dane są szyfrowane i nigdy nie są udostępniane stronom trzecim. Możesz wycofać zgodę i usunąć dane w Ustawieniach.';
+
+  @override
+  String get decline => 'Odrzuć';
+
+  @override
+  String get iAgree => 'Zgadzam się';
+
+  @override
+  String get iAgreeToThe => 'Akceptuję ';
+
+  @override
+  String get orWord => 'lub';
+
+  @override
+  String get english => 'Angielski';
+
+  @override
+  String get russian => 'Rosyjski';
+
+  @override
+  String get finnish => 'Fiński';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'Subskrypcja $plan aktywowana!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'Płatność nie powiodła się: $error';
+  }
 }

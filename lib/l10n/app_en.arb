@@ -615,5 +615,55 @@
     "perMonth": "/month",
     "perYear": "/year",
     "checkingPurchases": "Checking for previous purchases...",
-    "noPreviousPurchases": "No previous purchases found."
+    "noPreviousPurchases": "No previous purchases found.",
+
+    "chatWelcomeMessage": "Hello! I am your legal assistant. Tell me what happened — I will analyze the situation and suggest what to do.",
+    "copySummary": "Copy summary",
+    "caseSummaryCopied": "Case summary copied to clipboard",
+    "openCase": "Open Case",
+    "viewFull": "View Full",
+    "draftCopiedToClipboard": "Draft copied to clipboard",
+    "reportMileageFraud": "Report Mileage Fraud",
+    "reportMileageFraudDesc": "This will create a fraud report based on the vehicle check data. You can also open a legal case for further action.",
+    "reportAndOpenCase": "Report & Open Case",
+    "caseCreationComingSoon": "Case creation with pre-filled data coming soon",
+    "failedToCreateCaseRetry": "Failed to create case. Please try again.",
+    "takePhotoInstead": "Take a Photo Instead",
+    "deleteCase": "Delete Case",
+    "deleteCaseConfirm": "Are you sure you want to delete \"{title}\"? This action cannot be undone.",
+    "@deleteCaseConfirm": {
+        "placeholders": {
+            "title": { "type": "String" }
+        }
+    },
+    "haveQuestionsAi": "Have questions? Talk to AI",
+    "cookiePolicy": "Cookie Policy",
+    "aiDisclaimer": "AI Disclaimer",
+    "dataPrivacyConsent": "Data Privacy Consent",
+    "gdprIntro": "To provide AI legal assistance, we process your data in accordance with GDPR (EU 2016/679). By continuing you agree to:",
+    "gdprChat": "Processing of your chat messages by AI",
+    "gdprDocs": "Analysis of uploaded documents",
+    "gdprStorage": "Encrypted storage of case data",
+    "gdprDelete": "Right to delete your data at any time",
+    "gdprFooter": "Your data is encrypted and never shared with third parties. You can withdraw consent and delete all data from Settings.",
+    "decline": "Decline",
+    "iAgree": "I Agree",
+    "iAgreeToThe": "I agree to the ",
+    "andWord": " and ",
+    "orWord": "or",
+    "english": "English",
+    "russian": "Russian",
+    "finnish": "Finnish",
+    "successSubscribed": "Successfully subscribed to {plan}!",
+    "@successSubscribed": {
+        "placeholders": {
+            "plan": { "type": "String" }
+        }
+    },
+    "paymentFailed": "Payment failed: {error}",
+    "@paymentFailed": {
+        "placeholders": {
+            "error": { "type": "String" }
+        }
+    }
 }

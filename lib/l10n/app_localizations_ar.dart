@@ -1338,111 +1338,220 @@ class AppLocalizationsAr extends AppLocalizations {
   String get failedToLoadDocuments => 'فشل تحميل المستندات';
 
   @override
-  String get emailIntegrationTitle => 'Email Integration';
+  String get emailIntegrationTitle => 'تكامل البريد الإلكتروني';
 
   @override
-  String get connectYourEmail => 'Connect Your Email';
+  String get connectYourEmail => 'اربط بريدك الإلكتروني';
 
   @override
   String get connectYourEmailDesc =>
-      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+      'اربط بريدك الإلكتروني لاكتشاف وتنظيم المراسلات القانونية المتعلقة بقضاياك تلقائياً.';
 
   @override
-  String get legalEmails => 'Legal Emails';
+  String get legalEmails => 'الرسائل القانونية';
 
   @override
-  String get unlinkedEmails => 'Unlinked Emails';
+  String get unlinkedEmails => 'رسائل غير مرتبطة';
 
   @override
-  String get noLegalEmailsYet => 'No legal emails yet';
+  String get noLegalEmailsYet => 'لا توجد رسائل قانونية بعد';
 
   @override
-  String get legalEmailsWillAppear =>
-      'Emails classified as legal-related will appear here.';
+  String get legalEmailsWillAppear => 'ستظهر هنا الرسائل المصنفة كقانونية.';
 
   @override
-  String get assignToCase => 'Assign to case';
+  String get assignToCase => 'تعيين للقضية';
 
   @override
-  String get disconnectEmail => 'Disconnect Email';
+  String get disconnectEmail => 'قطع البريد الإلكتروني';
 
   @override
   String get disconnectEmailConfirm =>
-      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+      'ستتوقف المزامنة التلقائية للبريد. ستبقى الرسائل المزامنة سابقاً في قضاياك.';
 
   @override
   String connectedTo(String email) {
-    return 'Connected to $email';
+    return 'متصل بـ $email';
   }
 
   @override
   String lastSynced(String time) {
-    return 'Last synced $time';
+    return 'آخر مزامنة: $time';
   }
 
   @override
-  String get filterByType => 'Filter by Type';
+  String get filterByType => 'تصفية حسب النوع';
 
   @override
-  String get noCasesMatchSearch => 'No cases match your search';
+  String get noCasesMatchSearch => 'لا توجد قضايا مطابقة';
 
   @override
-  String get failedToLoadCases => 'Failed to load cases';
+  String get failedToLoadCases => 'فشل تحميل القضايا';
 
   @override
-  String get monthly => 'Monthly';
+  String get monthly => 'شهري';
 
   @override
-  String get annual => 'Annual';
+  String get annual => 'سنوي';
 
   @override
-  String get saveTwentyFivePercent => 'Save 25%';
+  String get saveTwentyFivePercent => 'وفر 25%';
 
   @override
-  String get mostPopular => 'MOST POPULAR';
+  String get mostPopular => 'الأكثر شعبية';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => 'قضية واحدة نشطة';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 قضايا نشطة';
 
   @override
-  String get unlimitedCases => 'Unlimited cases';
+  String get unlimitedCases => 'قضايا غير محدودة';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 عمليات مسح';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 عملية مسح';
 
   @override
-  String get unlimitedDocScans => 'Unlimited document scans';
+  String get unlimitedDocScans => 'مسح غير محدود للمستندات';
 
   @override
-  String get basicAiAnalysis => 'Basic AI analysis';
+  String get basicAiAnalysis => 'تحليل أساسي بالذكاء الاصطناعي';
 
   @override
-  String get fullAiAnalysis => 'Full AI analysis';
+  String get fullAiAnalysis => 'تحليل كامل بالذكاء الاصطناعي';
 
   @override
-  String get draftGeneration => 'Draft generation';
+  String get draftGeneration => 'إنشاء المسودات';
 
   @override
-  String get priorityProcessing => 'Priority processing';
+  String get priorityProcessing => 'معالجة ذات أولوية';
 
   @override
-  String get forever => 'forever';
+  String get forever => 'للأبد';
 
   @override
-  String get perMonth => '/month';
+  String get perMonth => '/شهر';
 
   @override
-  String get perYear => '/year';
+  String get perYear => '/سنة';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'جارٍ التحقق من المشتريات السابقة...';
 
   @override
-  String get noPreviousPurchases => 'No previous purchases found.';
+  String get noPreviousPurchases => 'لم يتم العثور على مشتريات سابقة.';
+
+  @override
+  String get chatWelcomeMessage =>
+      'مرحباً! أنا مساعدك القانوني. أخبرني بما حدث — سأحلل الوضع وأقترح ما يجب فعله.';
+
+  @override
+  String get copySummary => 'نسخ الملخص';
+
+  @override
+  String get caseSummaryCopied => 'تم نسخ ملخص القضية';
+
+  @override
+  String get openCase => 'فتح القضية';
+
+  @override
+  String get viewFull => 'عرض كامل';
+
+  @override
+  String get draftCopiedToClipboard => 'تم نسخ المسودة';
+
+  @override
+  String get reportMileageFraud => 'الإبلاغ عن تزوير العداد';
+
+  @override
+  String get reportMileageFraudDesc =>
+      'سيتم إنشاء تقرير احتيال بناءً على بيانات فحص المركبة. يمكنك أيضاً فتح قضية قانونية.';
+
+  @override
+  String get reportAndOpenCase => 'إبلاغ وفتح قضية';
+
+  @override
+  String get caseCreationComingSoon =>
+      'إنشاء القضية بالبيانات المعبأة مسبقاً قريباً';
+
+  @override
+  String get failedToCreateCaseRetry => 'فشل إنشاء القضية. حاول مرة أخرى.';
+
+  @override
+  String get takePhotoInstead => 'التقط صورة بدلاً من ذلك';
+
+  @override
+  String get deleteCase => 'حذف القضية';
+
+  @override
+  String deleteCaseConfirm(String title) {
+    return 'هل أنت متأكد من حذف \"$title\"؟ لا يمكن التراجع عن هذا.';
+  }
+
+  @override
+  String get haveQuestionsAi => 'لديك أسئلة؟ اسأل الذكاء الاصطناعي';
+
+  @override
+  String get cookiePolicy => 'سياسة ملفات تعريف الارتباط';
+
+  @override
+  String get aiDisclaimer => 'إخلاء مسؤولية الذكاء الاصطناعي';
+
+  @override
+  String get dataPrivacyConsent => 'موافقة خصوصية البيانات';
+
+  @override
+  String get gdprIntro =>
+      'لتقديم المساعدة القانونية بالذكاء الاصطناعي، نعالج بياناتك وفقاً لـ GDPR (EU 2016/679). بالمتابعة توافق على:';
+
+  @override
+  String get gdprChat => 'معالجة رسائل المحادثة بالذكاء الاصطناعي';
+
+  @override
+  String get gdprDocs => 'تحليل المستندات المرفوعة';
+
+  @override
+  String get gdprStorage => 'تخزين مشفر لبيانات القضايا';
+
+  @override
+  String get gdprDelete => 'الحق في حذف بياناتك في أي وقت';
+
+  @override
+  String get gdprFooter =>
+      'بياناتك مشفرة ولا تُشارك مع أطراف ثالثة. يمكنك سحب الموافقة وحذف جميع البيانات من الإعدادات.';
+
+  @override
+  String get decline => 'رفض';
+
+  @override
+  String get iAgree => 'أوافق';
+
+  @override
+  String get iAgreeToThe => 'أوافق على ';
+
+  @override
+  String get orWord => 'أو';
+
+  @override
+  String get english => 'الإنجليزية';
+
+  @override
+  String get russian => 'الروسية';
+
+  @override
+  String get finnish => 'الفنلندية';
+
+  @override
+  String successSubscribed(String plan) {
+    return 'تم الاشتراك في $plan بنجاح!';
+  }
+
+  @override
+  String paymentFailed(String error) {
+    return 'فشل الدفع: $error';
+  }
 }

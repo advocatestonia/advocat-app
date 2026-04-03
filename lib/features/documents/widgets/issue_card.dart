@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Severity levels for document analysis issues.
 enum IssueSeverity { critical, important, informational }
@@ -353,7 +354,7 @@ class _IssueCardState extends State<IssueCard>
                     onPressed: () =>
                         widget.onToggleAppeal?.call(false),
                     icon: const Icon(Icons.check_circle_rounded, size: 18),
-                    label: const Text('Added to Appeal'),
+                    label: Text(AppLocalizations.of(context)?.addedToAppeal ?? 'Added to Appeal'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.accent,
                       side: const BorderSide(color: AppColors.accent),
@@ -368,7 +369,7 @@ class _IssueCardState extends State<IssueCard>
                     onPressed: () =>
                         widget.onToggleAppeal?.call(true),
                     icon: const Icon(Icons.add_circle_outline_rounded, size: 18),
-                    label: const Text('Use in Appeal'),
+                    label: Text(AppLocalizations.of(context)?.useInAppeal ?? 'Use in Appeal'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.accent,
                       foregroundColor: Colors.white,
