@@ -1575,4 +1575,208 @@ class AppLocalizationsRo extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Plata a eșuat: $error';
   }
+
+  @override
+  String get whatToDo => 'Ce trebuie făcut';
+
+  @override
+  String get getHelp => 'Obțineți ajutor';
+
+  @override
+  String get share => 'Distribuie';
+
+  @override
+  String get didYouKnow => 'Știați că?';
+
+  @override
+  String get mustKnow => 'Trebuie să știți';
+
+  @override
+  String get goodToKnow => 'Bine de știut';
+
+  @override
+  String get sentFromAdvocat => 'Trimis din aplicația Advocat';
+
+  @override
+  String get policeActionStayCalm =>
+      'Rămâneți calm și țineți mâinile la vedere';
+
+  @override
+  String get policeActionAskWhy => 'Întrebați agentul de ce ați fost oprit';
+
+  @override
+  String get policeActionProvideName => 'Furnizați numele și data nașterii';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Declarați clar: \"Vreau un avocat înainte de orice întrebare\"';
+
+  @override
+  String get policeActionAskInterpreter =>
+      'Solicitați un interpret dacă este necesar';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Notați numele și numărul de insignă al agentului';
+
+  @override
+  String get policeFactMustTellReason =>
+      'În Finlanda, poliția trebuie să vă spună motivul opririi. Dacă nu o fac, puteți întreba — și sunt obligați legal să explice.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Puteți înregistra interacțiunile cu poliția în locuri publice în Finlanda. Acest lucru este protejat de libertatea de exprimare.';
+
+  @override
+  String get contactFinnishLegalAid => 'Asistență juridică finlandeză';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Ombudsmanul pentru nediscriminare';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Contestație la Tribunalul Administrativ — de obicei 30 de zile de la notificare';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Solicitați asistență juridică — faceți acest lucru IMEDIAT';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'În Finlanda, aveți de obicei dreptul de a rămâne în țară în timp ce contestația dvs. este procesată. Deportarea nu poate fi executată în timpul unei contestații active în majoritatea cazurilor.';
+
+  @override
+  String get contactRefugeeAdviceCentre =>
+      'Centrul finlandez de consiliere pentru refugiați';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Tribunalul Administrativ Helsinki';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'Păstrați copii ale contractului de muncă';
+
+  @override
+  String get workplaceActionTrackHours => 'Urmăriți independent orele de lucru';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Raportați condițiile nesigure autorității de protecție a muncii';
+
+  @override
+  String get workplaceActionJoinUnion =>
+      'Alăturați-vă unui sindicat pentru protecție';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Contactați Autoritatea de Securitate Ocupațională dacă este necesar';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'În Finlanda, contractele colective stabilesc salariile minime pe industrie — nu există un salariu minim național unic. Angajatorul dvs. trebuie să respecte contractul colectiv al domeniului dvs.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Chiar și fără un contract scris, aveți drepturi depline ca angajat în Finlanda. Un acord verbal este la fel de obligatoriu din punct de vedere legal.';
+
+  @override
+  String get contactOccupationalSafety =>
+      'Autoritatea de Securitate Ocupațională';
+
+  @override
+  String get contactTradeUnionSAK => 'Consiliere sindicală (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Aveți întotdeauna un contract de închiriere scris';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Documentați starea apartamentului la mutare (fotografii)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Raportați problemele de întreținere în scris';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Nu acceptați niciodată o evacuare ilegală — instanțele trebuie să decidă';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Contactați serviciile de consiliere pentru chiriași în caz de dispute';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Un proprietar în Finlanda nu vă poate evacua fără o hotărâre judecătorească, chiar dacă contractul a expirat. Schimbarea încuietorilor sau întreruperea utilităților este ilegală.';
+
+  @override
+  String get contactTenantsAssociation => 'Asociația finlandeză a chiriașilor';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Comisia pentru litigii de consum';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Cereți imediat decizia scrisă de detenție';
+
+  @override
+  String get detentionActionRequestLawyer =>
+      'Solicitați să contactați un avocat';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Contactați ambasada sau consulatul dvs.';
+
+  @override
+  String get detentionActionAskMedical =>
+      'Solicitați asistență medicală dacă este necesar';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Solicitați un interpret pentru toate procedurile';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Judecătoria trebuie să revizuiască detenția în 4 zile';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Instanța revizuiește continuarea la fiecare 2 săptămâni';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Detenția pentru imigrare în Finlanda trebuie revizuită de o judecătorie în 4 zile. Dacă nu se face, detenția devine ilegală.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Ombudsmanul Parlamentar';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Scrieți exact ce s-a întâmplat (data, ora, locul)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Salvați dovezile: mesaje, emailuri, martori';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Depuneți o plângere la Ombudsmanul pentru nediscriminare';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Contactați un birou de asistență juridică pentru consiliere gratuită';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Raportați la poliție dacă au fost implicate amenințări sau agresiune';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Legea finlandeză privind nediscriminarea acoperă discriminarea bazată pe vârstă, origine, naționalitate, limbă, religie, sănătate, dizabilitate, orientare sexuală și alte caracteristici personale.';
+
+  @override
+  String get contactVictimSupportRIKU =>
+      'Sprijin pentru victime Finlanda (RIKU)';
 }

@@ -1577,4 +1577,213 @@ class AppLocalizationsIt extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Pagamento fallito: $error';
   }
+
+  @override
+  String get whatToDo => 'Cosa fare';
+
+  @override
+  String get getHelp => 'Ottenere aiuto';
+
+  @override
+  String get share => 'Condividi';
+
+  @override
+  String get didYouKnow => 'Lo sapevi?';
+
+  @override
+  String get mustKnow => 'Da sapere';
+
+  @override
+  String get goodToKnow => 'Utile sapere';
+
+  @override
+  String get sentFromAdvocat => 'Inviato dall\'app Advocat';
+
+  @override
+  String get policeActionStayCalm =>
+      'Mantieni la calma e tieni le mani visibili';
+
+  @override
+  String get policeActionAskWhy =>
+      'Chiedi all\'agente perché sei stato fermato';
+
+  @override
+  String get policeActionProvideName =>
+      'Fornisci il tuo nome e data di nascita';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Dichiara chiaramente: \"Voglio un avvocato prima di qualsiasi domanda\"';
+
+  @override
+  String get policeActionAskInterpreter =>
+      'Se necessario, chiedi un interprete';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Annota il nome e il numero di matricola dell\'agente';
+
+  @override
+  String get policeFactMustTellReason =>
+      'In Finlandia, la polizia deve comunicarti il motivo del fermo. Se non lo fanno, puoi chiedere — e sono legalmente obbligati a spiegare.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Puoi registrare le interazioni con la polizia nei luoghi pubblici in Finlandia. Questo è protetto dalla libertà di espressione.';
+
+  @override
+  String get contactFinnishLegalAid => 'Assistenza legale finlandese';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Garante contro la discriminazione';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Ricorso al Tribunale Amministrativo — di solito 30 giorni dalla notifica';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Richiedi il patrocinio a spese dello Stato — fallo IMMEDIATAMENTE';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'In Finlandia, hai generalmente il diritto di restare nel paese durante la trattazione del ricorso. L\'espulsione non può essere eseguita durante un ricorso attivo nella maggior parte dei casi.';
+
+  @override
+  String get contactRefugeeAdviceCentre =>
+      'Centro finlandese di consulenza per rifugiati';
+
+  @override
+  String get contactAdminCourtHelsinki =>
+      'Tribunale Amministrativo di Helsinki';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'Conserva copie del tuo contratto di lavoro';
+
+  @override
+  String get workplaceActionTrackHours =>
+      'Registra le tue ore lavorative in modo indipendente';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Segnala le condizioni non sicure all\'ispettorato del lavoro';
+
+  @override
+  String get workplaceActionJoinUnion =>
+      'Iscriviti a un sindacato per protezione';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Contatta l\'Autorità per la sicurezza sul lavoro se necessario';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'In Finlandia, i contratti collettivi stabiliscono i salari minimi per settore — non esiste un salario minimo nazionale unico. Il tuo datore di lavoro deve rispettare il contratto collettivo del tuo settore.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Anche senza contratto scritto, hai pieni diritti da lavoratore in Finlandia. Un accordo orale è ugualmente vincolante per legge.';
+
+  @override
+  String get contactOccupationalSafety =>
+      'Autorità per la sicurezza sul lavoro';
+
+  @override
+  String get contactTradeUnionSAK => 'Consulenza sindacale (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Avere sempre un contratto di locazione scritto';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Documentare le condizioni dell\'appartamento al momento del trasloco (foto)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Segnalare i problemi di manutenzione per iscritto';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Non accettare mai uno sfratto illegale — i tribunali devono decidere';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Contattare un servizio di consulenza per inquilini in caso di controversie';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Un proprietario in Finlandia non può sfrattarti senza un\'ordinanza del tribunale, anche se il contratto è scaduto. Cambiare le serrature o tagliare le utenze è illegale.';
+
+  @override
+  String get contactTenantsAssociation =>
+      'Associazione finlandese degli inquilini';
+
+  @override
+  String get contactConsumerDisputesBoard =>
+      'Commissione per le controversie dei consumatori';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Chiedi immediatamente la decisione scritta di trattenimento';
+
+  @override
+  String get detentionActionRequestLawyer =>
+      'Richiedi di contattare un avvocato';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Contatta la tua ambasciata o consolato';
+
+  @override
+  String get detentionActionAskMedical =>
+      'Chiedi assistenza medica se necessario';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Richiedi un interprete per tutti i procedimenti';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Il tribunale distrettuale deve esaminare il trattenimento entro 4 giorni';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Il tribunale esamina il rinnovo ogni 2 settimane';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Il trattenimento per immigrazione in Finlandia deve essere esaminato da un tribunale distrettuale entro 4 giorni. Se ciò non avviene, il trattenimento diventa illegale.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Difensore civico parlamentare';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Scrivi esattamente cosa è successo (data, ora, luogo)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Conserva le prove: messaggi, email, testimoni';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Presenta un reclamo al Garante contro la discriminazione';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Contatta un ufficio di assistenza legale per consulenza gratuita';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Denuncia alla polizia in caso di minacce o aggressione';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'La legge finlandese sulla non discriminazione copre la discriminazione basata su età, origine, nazionalità, lingua, religione, salute, disabilità, orientamento sessuale e altre caratteristiche personali.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Supporto vittime Finlandia (RIKU)';
 }

@@ -1563,4 +1563,203 @@ class AppLocalizationsUk extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Помилка оплати: $error';
   }
+
+  @override
+  String get whatToDo => 'Що робити';
+
+  @override
+  String get getHelp => 'Отримати допомогу';
+
+  @override
+  String get share => 'Поділитися';
+
+  @override
+  String get didYouKnow => 'Чи знали ви?';
+
+  @override
+  String get mustKnow => 'Обов\'язково знати';
+
+  @override
+  String get goodToKnow => 'Корисно знати';
+
+  @override
+  String get sentFromAdvocat => 'Надіслано з додатку Advocat';
+
+  @override
+  String get policeActionStayCalm =>
+      'Зберігайте спокій і тримайте руки на виду';
+
+  @override
+  String get policeActionAskWhy => 'Запитайте поліцейського, чому вас зупинили';
+
+  @override
+  String get policeActionProvideName => 'Назвіть своє ім\'я та дату народження';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Чітко заявіть: \"Я хочу адвоката перед будь-якими питаннями\"';
+
+  @override
+  String get policeActionAskInterpreter => 'За потреби попросіть перекладача';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Запишіть ім\'я та номер жетона поліцейського';
+
+  @override
+  String get policeFactMustTellReason =>
+      'У Фінляндії поліція зобов\'язана повідомити причину зупинки. Якщо вони цього не роблять, ви можете запитати — і вони зобов\'язані за законом пояснити.';
+
+  @override
+  String get policeFactCanRecord =>
+      'У Фінляндії ви можете записувати взаємодію з поліцією в громадських місцях. Це захищено свободою слова.';
+
+  @override
+  String get contactFinnishLegalAid => 'Фінська правова допомога';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Уповноважений з питань недискримінації';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Оскарження до Адміністративного суду — зазвичай 30 днів з моменту повідомлення';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Подайте заявку на правову допомогу — зробіть це НЕГАЙНО';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'У Фінляндії ви зазвичай маєте право залишатися в країні під час розгляду вашого оскарження. Депортація не може бути здійснена під час активного оскарження у більшості випадків.';
+
+  @override
+  String get contactRefugeeAdviceCentre =>
+      'Фінський центр консультування біженців';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Адміністративний суд Гельсінкі';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'Зберігайте копії трудового договору';
+
+  @override
+  String get workplaceActionTrackHours => 'Самостійно відстежуйте робочий час';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Повідомляйте про небезпечні умови до інспекції праці';
+
+  @override
+  String get workplaceActionJoinUnion => 'Вступіть до профспілки для захисту';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'За потреби зверніться до Управління з охорони праці';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'У Фінляндії колективні договори встановлюють мінімальну заробітну плату за галузями — єдиної національної мінімальної зарплати не існує. Ваш роботодавець повинен дотримуватися колективного договору вашої галузі.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Навіть без письмового договору ви маєте повні трудові права у Фінляндії. Усна угода є однаково обов\'язковою за законом.';
+
+  @override
+  String get contactOccupationalSafety => 'Управління з охорони праці';
+
+  @override
+  String get contactTradeUnionSAK => 'Профспілкова консультація (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Завжди укладайте письмовий договір оренди';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Задокументуйте стан квартири при заселенні (фото)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Повідомляйте про проблеми з обслуговуванням письмово';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Ніколи не погоджуйтесь на незаконне виселення — рішення приймає суд';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'У разі спорів зверніться до консультаційної служби для орендарів';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Орендодавець у Фінляндії не може виселити вас без рішення суду, навіть якщо термін оренди закінчився. Заміна замків або відключення комунальних послуг є незаконним.';
+
+  @override
+  String get contactTenantsAssociation => 'Фінська асоціація орендарів';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Комісія зі споживчих спорів';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Негайно вимагайте письмове рішення про затримання';
+
+  @override
+  String get detentionActionRequestLawyer => 'Вимагайте зв\'язку з адвокатом';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Зв\'яжіться зі своїм посольством або консульством';
+
+  @override
+  String get detentionActionAskMedical =>
+      'За потреби вимагайте медичну допомогу';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Вимагайте перекладача на всі засідання';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Районний суд повинен переглянути затримання протягом 4 днів';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Суд переглядає продовження кожні 2 тижні';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Імміграційне затримання у Фінляндії повинно бути переглянуте районним судом протягом 4 днів. Якщо цього не відбувається, затримання стає незаконним.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Парламентський омбудсмен';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Запишіть точно, що сталося (дата, час, місце)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Збережіть докази: повідомлення, електронні листи, свідків';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Подайте скаргу Уповноваженому з питань недискримінації';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Зверніться до бюро правової допомоги за безкоштовною консультацією';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Зверніться до поліції, якщо мали місце погрози або напад';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Фінський Закон про недискримінацію охоплює дискримінацію за віком, походженням, громадянством, мовою, релігією, станом здоров\'я, інвалідністю, сексуальною орієнтацією та іншими особистими характеристиками.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Підтримка жертв Фінляндія (RIKU)';
 }

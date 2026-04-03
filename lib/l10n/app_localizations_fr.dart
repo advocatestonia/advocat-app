@@ -1591,4 +1591,209 @@ class AppLocalizationsFr extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Paiement échoué : $error';
   }
+
+  @override
+  String get whatToDo => 'Que faire';
+
+  @override
+  String get getHelp => 'Obtenir de l\'aide';
+
+  @override
+  String get share => 'Partager';
+
+  @override
+  String get didYouKnow => 'Le saviez-vous ?';
+
+  @override
+  String get mustKnow => 'À savoir absolument';
+
+  @override
+  String get goodToKnow => 'Bon à savoir';
+
+  @override
+  String get sentFromAdvocat => 'Envoyé depuis l\'application Advocat';
+
+  @override
+  String get policeActionStayCalm =>
+      'Restez calme et gardez les mains visibles';
+
+  @override
+  String get policeActionAskWhy =>
+      'Demandez à l\'agent pourquoi vous êtes arrêté';
+
+  @override
+  String get policeActionProvideName => 'Donnez votre nom et date de naissance';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Déclarez clairement : \"Je souhaite un avocat avant toute question\"';
+
+  @override
+  String get policeActionAskInterpreter =>
+      'Demandez un interprète si nécessaire';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Notez le nom et le numéro de badge de l\'agent';
+
+  @override
+  String get policeFactMustTellReason =>
+      'En Finlande, la police doit vous donner la raison de l\'interpellation. Si elle ne le fait pas, vous pouvez demander — et elle est légalement tenue d\'expliquer.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Vous pouvez enregistrer les interactions avec la police dans les lieux publics en Finlande. C\'est protégé par la liberté d\'expression.';
+
+  @override
+  String get contactFinnishLegalAid => 'Aide juridictionnelle finlandaise';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Médiateur contre la discrimination';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Recours devant le tribunal administratif — généralement 30 jours après notification';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Demandez l\'aide juridictionnelle — faites-le IMMÉDIATEMENT';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'En Finlande, vous avez généralement le droit de rester dans le pays pendant le traitement de votre recours. L\'expulsion ne peut pas être exécutée pendant un recours actif dans la plupart des cas.';
+
+  @override
+  String get contactRefugeeAdviceCentre =>
+      'Centre finlandais de conseil aux réfugiés';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Tribunal administratif d\'Helsinki';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'Conservez des copies de votre contrat de travail';
+
+  @override
+  String get workplaceActionTrackHours =>
+      'Enregistrez vos heures de travail de manière indépendante';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Signalez les conditions dangereuses à l\'inspection du travail';
+
+  @override
+  String get workplaceActionJoinUnion =>
+      'Adhérez à un syndicat pour vous protéger';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Contactez l\'Autorité de sécurité au travail si nécessaire';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'En Finlande, les conventions collectives fixent les salaires minimums par secteur — il n\'y a pas de salaire minimum national unique. Votre employeur doit respecter la convention collective de votre domaine.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Même sans contrat écrit, vous avez tous les droits d\'un salarié en Finlande. Un accord oral est tout aussi contraignant en droit.';
+
+  @override
+  String get contactOccupationalSafety => 'Autorité de sécurité au travail';
+
+  @override
+  String get contactTradeUnionSAK => 'Conseil syndical (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Ayez toujours un contrat de location écrit';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Documentez l\'état de l\'appartement à l\'emménagement (photos)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Signalez les problèmes d\'entretien par écrit';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'N\'acceptez jamais une expulsion illégale — les tribunaux doivent statuer';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Contactez un service de conseil aux locataires en cas de litige';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Un propriétaire en Finlande ne peut pas vous expulser sans décision de justice, même si votre bail a expiré. Changer les serrures ou couper les services est illégal.';
+
+  @override
+  String get contactTenantsAssociation =>
+      'Association finlandaise des locataires';
+
+  @override
+  String get contactConsumerDisputesBoard =>
+      'Commission des litiges de consommation';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Demandez immédiatement la décision de rétention écrite';
+
+  @override
+  String get detentionActionRequestLawyer => 'Demandez à contacter un avocat';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Contactez votre ambassade ou consulat';
+
+  @override
+  String get detentionActionAskMedical =>
+      'Demandez une assistance médicale si nécessaire';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Demandez un interprète pour toutes les procédures';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Le tribunal de district doit examiner la rétention dans les 4 jours';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Le tribunal réexamine la prolongation toutes les 2 semaines';
+
+  @override
+  String get detentionFactCourtReview =>
+      'La rétention administrative en Finlande doit être examinée par un tribunal de district dans les 4 jours. Si ce n\'est pas fait, la rétention devient illégale.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Médiateur parlementaire';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Notez exactement ce qui s\'est passé (date, heure, lieu)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Conservez les preuves : messages, e-mails, témoins';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Déposez une plainte auprès du Médiateur contre la discrimination';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Contactez un bureau d\'aide juridictionnelle pour des conseils gratuits';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Signalez à la police en cas de menace ou d\'agression';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'La loi finlandaise sur la non-discrimination couvre la discrimination fondée sur l\'âge, l\'origine, la nationalité, la langue, la religion, la santé, le handicap, l\'orientation sexuelle et d\'autres caractéristiques personnelles.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Aide aux victimes Finlande (RIKU)';
 }

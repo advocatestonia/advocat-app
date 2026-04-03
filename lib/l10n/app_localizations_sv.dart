@@ -1566,4 +1566,199 @@ class AppLocalizationsSv extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Betalning misslyckades: $error';
   }
+
+  @override
+  String get whatToDo => 'Vad ska du göra';
+
+  @override
+  String get getHelp => 'Få hjälp';
+
+  @override
+  String get share => 'Dela';
+
+  @override
+  String get didYouKnow => 'Visste du?';
+
+  @override
+  String get mustKnow => 'Måste veta';
+
+  @override
+  String get goodToKnow => 'Bra att veta';
+
+  @override
+  String get sentFromAdvocat => 'Skickat från Advocat-appen';
+
+  @override
+  String get policeActionStayCalm => 'Håll dig lugn och håll händerna synliga';
+
+  @override
+  String get policeActionAskWhy => 'Fråga polisen varför du stoppas';
+
+  @override
+  String get policeActionProvideName => 'Uppge ditt namn och födelsedatum';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Säg tydligt: \"Jag vill ha en advokat innan några frågor\"';
+
+  @override
+  String get policeActionAskInterpreter => 'Be om tolk vid behov';
+
+  @override
+  String get policeActionNoteBadge => 'Notera polisens namn och tjänstenummer';
+
+  @override
+  String get policeFactMustTellReason =>
+      'I Finland måste polisen berätta varför du stoppas. Om de inte gör det kan du fråga — och de är skyldiga enligt lag att förklara.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Du kan spela in polisinteraktioner på offentliga platser i Finland. Detta skyddas av yttrandefriheten.';
+
+  @override
+  String get contactFinnishLegalAid => 'Finsk rättshjälp';
+
+  @override
+  String get contactNonDiscriminationOmbudsman => 'Diskrimineringsombudsmannen';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Överklagande till förvaltningsdomstolen — vanligtvis 30 dagar från delgivning';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Ansök om rättshjälp — gör detta OMEDELBART';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'I Finland har du vanligtvis rätt att stanna i landet medan ditt överklagande behandlas. Utvisning kan inte verkställas under ett pågående överklagande i de flesta fall.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'Finlands Flyktingrådgivning';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Förvaltningsdomstolen i Helsingfors';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'Spara kopior av ditt anställningsavtal';
+
+  @override
+  String get workplaceActionTrackHours =>
+      'Registrera dina arbetstimmar självständigt';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Anmäl osäkra förhållanden till arbetarskyddsmyndigheten';
+
+  @override
+  String get workplaceActionJoinUnion => 'Gå med i ett fackförbund för skydd';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Kontakta Arbetarskyddsmyndigheten vid behov';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'I Finland fastställer kollektivavtal minimilöner per bransch — det finns ingen enskild nationell minimilön. Din arbetsgivare måste följa kollektivavtalet för ditt område.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Även utan skriftligt avtal har du fulla anställningsrättigheter i Finland. Ett muntligt avtal är lika bindande enligt lag.';
+
+  @override
+  String get contactOccupationalSafety => 'Arbetarskyddsmyndigheten';
+
+  @override
+  String get contactTradeUnionSAK => 'Fackföreningsrådgivning (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Ha alltid ett skriftligt hyresavtal';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Dokumentera lägenhetens skick vid inflyttning (foton)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Anmäl underhållsproblem skriftligt';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Gå aldrig med på olaglig vräkning — domstolen måste besluta';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Kontakta hyresgästföreningen vid tvister';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'En hyresvärd i Finland kan inte vräka dig utan domstolsbeslut, även om ditt hyresavtal har löpt ut. Att byta lås eller stänga av el/vatten är olagligt.';
+
+  @override
+  String get contactTenantsAssociation => 'Finlands Hyresgästförbund';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Konsumenttvistenämnden';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Be omedelbart om det skriftliga förvarsbeslutet';
+
+  @override
+  String get detentionActionRequestLawyer => 'Begär att få kontakta en advokat';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Kontakta din ambassad eller konsulat';
+
+  @override
+  String get detentionActionAskMedical => 'Be om sjukvård vid behov';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Begär tolk vid alla förhandlingar';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Tingsrätten måste pröva förvaret inom 4 dagar';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Domstolen prövar förlängning varannan vecka';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Migrationsförvar i Finland måste prövas av en tingsrätt inom 4 dagar. Om det inte görs blir förvaret olagligt.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Riksdagens justitieombudsman';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Skriv ner exakt vad som hände (datum, tid, plats)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Spara bevis: meddelanden, e-post, vittnen';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Lämna in ett klagomål till Diskrimineringsombudsmannen';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Kontakta ett rättshjälpskontor för gratis rådgivning';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Anmäl till polisen om hot eller våld förekom';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Finlands diskrimineringslag omfattar diskriminering på grund av ålder, ursprung, nationalitet, språk, religion, hälsa, funktionsnedsättning, sexuell läggning och andra personliga egenskaper.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Brottsofferjouren Finland (RIKU)';
 }

@@ -1568,4 +1568,199 @@ class AppLocalizationsEt extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Makse ebaõnnestus: $error';
   }
+
+  @override
+  String get whatToDo => 'Mida teha';
+
+  @override
+  String get getHelp => 'Abi saamine';
+
+  @override
+  String get share => 'Jaga';
+
+  @override
+  String get didYouKnow => 'Kas teadsite?';
+
+  @override
+  String get mustKnow => 'Peate teadma';
+
+  @override
+  String get goodToKnow => 'Kasulik teada';
+
+  @override
+  String get sentFromAdvocat => 'Saadetud Advocat rakendusest';
+
+  @override
+  String get policeActionStayCalm => 'Jääge rahulikuks ja hoidke käed nähtaval';
+
+  @override
+  String get policeActionAskWhy => 'Küsige ametnikult, miks teid peatati';
+
+  @override
+  String get policeActionProvideName => 'Öelge oma nimi ja sünniaeg';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Öelge selgelt: \"Ma soovin advokaati enne küsimustele vastamist\"';
+
+  @override
+  String get policeActionAskInterpreter => 'Vajadusel paluge tõlki';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Märkige üles ametniku nimi ja teenistusnumber';
+
+  @override
+  String get policeFactMustTellReason =>
+      'Soomes peab politsei ütlema teile peatamise põhjuse. Kui nad seda ei tee, võite küsida — ja nad on seaduslikult kohustatud selgitama.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Soomes võite avalikes kohtades politseikokkupuuteid salvestada. Seda kaitseb sõnavabadus.';
+
+  @override
+  String get contactFinnishLegalAid => 'Soome õigusabi';
+
+  @override
+  String get contactNonDiscriminationOmbudsman => 'Võrdõigusvolinik';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Kaebus halduskohtule — tavaliselt 30 päeva pärast teatavakstegemist';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Taotlege õigusabi — tehke seda KOHE';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'Soomes on teil tavaliselt õigus jääda riiki, kuni teie kaebus on menetluses. Väljasaatmist ei saa enamikul juhtudel teostada aktiivse kaebuse ajal.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'Soome Pagulaste Nõustamiskeskus';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Helsingi Halduskohus';
+
+  @override
+  String get workplaceActionKeepContract => 'Hoidke alles töölepingu koopiad';
+
+  @override
+  String get workplaceActionTrackHours => 'Jälgige oma tööaegu iseseisvalt';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Teavitage ohtlikest tingimustest töötervishoiu ametit';
+
+  @override
+  String get workplaceActionJoinUnion => 'Liituge ametiühinguga kaitseks';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Vajadusel võtke ühendust Tööinspektsiooniga';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'Soomes kehtestavad kollektiivlepingud miinimumpalga valdkonniti — ühtset riiklikku miinimumpalka ei ole. Teie tööandja peab järgima teie valdkonna kollektiivlepingut.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Isegi ilma kirjaliku lepinguta on teil Soomes täielikud töötaja õigused. Suuline kokkulepe on seaduse järgi sama siduv.';
+
+  @override
+  String get contactOccupationalSafety => 'Tööinspektsioon';
+
+  @override
+  String get contactTradeUnionSAK => 'Ametiühingu nõustamine (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Sõlmige alati kirjalik üürileping';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Dokumenteerige korteri seisukord sissekolimisel (fotod)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Teavitage hooldusprobleemidest kirjalikult';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Ärge kunagi nõustuge ebaseadusliku väljatõstmisega — otsustab kohus';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Vaidluste korral võtke ühendust üürnike nõustamisteenusega';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Soomes ei saa üürileandja teid välja tõsta ilma kohtumääruseta, isegi kui üürileping on lõppenud. Lukkude vahetamine või kommunaalteenuste katkestamine on ebaseaduslik.';
+
+  @override
+  String get contactTenantsAssociation => 'Soome Üürnike Liit';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Tarbijavaidluste komisjon';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Nõudke kohe kirjalikku kinnipidamisotsust';
+
+  @override
+  String get detentionActionRequestLawyer =>
+      'Taotlege advokaadiga ühenduse võtmist';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Võtke ühendust oma saatkonna või konsulaadiga';
+
+  @override
+  String get detentionActionAskMedical => 'Vajadusel taotlege arstiabi';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Nõudke tõlki kõigis menetlustes';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Maakohus peab kinnipidamise läbi vaatama 4 päeva jooksul';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Kohus vaatab jätkamise läbi iga 2 nädala järel';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Sisserände kinnipidamine Soomes peab olema maakohtu poolt läbi vaadatud 4 päeva jooksul. Kui seda ei tehta, muutub kinnipidamine ebaseaduslikuks.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Õiguskantsler';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Kirjutage täpselt üles, mis juhtus (kuupäev, kellaaeg, koht)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Säilitage tõendid: sõnumid, e-kirjad, tunnistajad';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Esitage kaebus võrdõigusvolinikule';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Võtke ühendust õigusabibürooga tasuta nõustamiseks';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Teatage politseile, kui tegemist oli ähvarduse või rünnakuga';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Soome võrdse kohtlemise seadus hõlmab diskrimineerimist vanuse, päritolu, kodakondsuse, keele, usu, tervise, puude, seksuaalse sättumuse ja muude isikuomaduste alusel.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Ohvriabi Soome (RIKU)';
 }

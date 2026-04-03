@@ -1558,4 +1558,201 @@ class AppLocalizationsEn extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Payment failed: $error';
   }
+
+  @override
+  String get whatToDo => 'What To Do';
+
+  @override
+  String get getHelp => 'Get Help';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get didYouKnow => 'Did you know?';
+
+  @override
+  String get mustKnow => 'Must know';
+
+  @override
+  String get goodToKnow => 'Good to know';
+
+  @override
+  String get sentFromAdvocat => 'Sent from Advocat app';
+
+  @override
+  String get policeActionStayCalm => 'Stay calm and keep your hands visible';
+
+  @override
+  String get policeActionAskWhy => 'Ask the officer why you are being stopped';
+
+  @override
+  String get policeActionProvideName => 'Provide your name and date of birth';
+
+  @override
+  String get policeActionWantLawyer =>
+      'State clearly: \"I want a lawyer before any questions\"';
+
+  @override
+  String get policeActionAskInterpreter => 'If needed, ask for an interpreter';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Note the officer\'s name and badge number';
+
+  @override
+  String get policeFactMustTellReason =>
+      'In Finland, police must tell you the reason for stopping you. If they don\'t, you can ask — and they are legally required to explain.';
+
+  @override
+  String get policeFactCanRecord =>
+      'You can record police interactions in public places in Finland. This is protected under freedom of expression.';
+
+  @override
+  String get contactFinnishLegalAid => 'Finnish Legal Aid';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Non-Discrimination Ombudsman';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Appeal to Administrative Court — usually 30 days from notification';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Apply for legal aid — do this IMMEDIATELY';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'In Finland, you usually have the right to stay in the country while your appeal is being processed. Deportation cannot happen during an active appeal in most cases.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'Finnish Refugee Advice Centre';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Administrative Court Helsinki';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'Keep copies of your employment contract';
+
+  @override
+  String get workplaceActionTrackHours =>
+      'Track your working hours independently';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Report unsafe conditions to occupational safety';
+
+  @override
+  String get workplaceActionJoinUnion => 'Join a trade union for protection';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Contact the Occupational Safety Authority if needed';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'In Finland, collective agreements set minimum wages by industry — there is no single national minimum wage. Your employer must follow the collective agreement for your field.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Even without a written contract, you have full employee rights in Finland. An oral agreement is equally binding by law.';
+
+  @override
+  String get contactOccupationalSafety => 'Occupational Safety Authority';
+
+  @override
+  String get contactTradeUnionSAK => 'Trade Union Advice (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Always have a written rental agreement';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Document the apartment condition at move-in (photos)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Report maintenance issues in writing';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Never agree to illegal eviction — courts must decide';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Contact tenant advisory services if disputes arise';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'A landlord in Finland cannot evict you without a court order, even if your lease has expired. Changing locks or cutting utilities is illegal.';
+
+  @override
+  String get contactTenantsAssociation => 'Finnish Tenants Association';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Consumer Disputes Board';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Ask for the written detention decision immediately';
+
+  @override
+  String get detentionActionRequestLawyer => 'Request to contact a lawyer';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Contact your embassy or consulate';
+
+  @override
+  String get detentionActionAskMedical => 'Ask for medical attention if needed';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Request an interpreter for all proceedings';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'District Court must review detention within 4 days';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Court reviews continuation every 2 weeks';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Immigration detention in Finland must be reviewed by a district court within 4 days. If it is not, the detention becomes unlawful.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Parliamentary Ombudsman';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Write down exactly what happened (date, time, place)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Save any evidence: messages, emails, witnesses';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'File a complaint with the Non-Discrimination Ombudsman';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Contact a legal aid office for free advice';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Report to police if threats or assault were involved';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Finland\'s Non-Discrimination Act covers discrimination based on age, origin, nationality, language, religion, health, disability, sexual orientation, and other personal characteristics.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Victim Support Finland (RIKU)';
 }

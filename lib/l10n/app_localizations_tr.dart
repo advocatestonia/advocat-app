@@ -1563,4 +1563,202 @@ class AppLocalizationsTr extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Ödeme başarısız: $error';
   }
+
+  @override
+  String get whatToDo => 'Ne yapmalı';
+
+  @override
+  String get getHelp => 'Yardım al';
+
+  @override
+  String get share => 'Paylaş';
+
+  @override
+  String get didYouKnow => 'Biliyor muydunuz?';
+
+  @override
+  String get mustKnow => 'Bilmeniz gereken';
+
+  @override
+  String get goodToKnow => 'Bilmekte fayda var';
+
+  @override
+  String get sentFromAdvocat => 'Advocat uygulamasından gönderildi';
+
+  @override
+  String get policeActionStayCalm => 'Sakin olun ve ellerinizi görünür tutun';
+
+  @override
+  String get policeActionAskWhy => 'Memura neden durdurulduğunuzu sorun';
+
+  @override
+  String get policeActionProvideName => 'Adınızı ve doğum tarihinizi bildirin';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Açıkça belirtin: \"Sorulardan önce bir avukat istiyorum\"';
+
+  @override
+  String get policeActionAskInterpreter => 'Gerekirse tercüman isteyin';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Memurun adını ve sicil numarasını not edin';
+
+  @override
+  String get policeFactMustTellReason =>
+      'Finlandiya\'da polis, sizi durdurma nedenini söylemek zorundadır. Söylemezlerse sorabilirsiniz — yasal olarak açıklamak zorundadırlar.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Finlandiya\'da kamuya açık yerlerde polis etkileşimlerini kaydedebilirsiniz. Bu, ifade özgürlüğü kapsamında korunmaktadır.';
+
+  @override
+  String get contactFinnishLegalAid => 'Finlandiya Adli Yardım';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Ayrımcılıkla Mücadele Ombudsmanı';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'İdare Mahkemesine itiraz — genellikle tebliğden itibaren 30 gün';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Adli yardım başvurusu yapın — bunu DERHAL yapın';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'Finlandiya\'da itirazınız işlenirken genellikle ülkede kalma hakkınız vardır. Aktif bir itiraz süresince çoğu durumda sınır dışı etme gerçekleştirilemez.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'Finlandiya Mülteci Danışma Merkezi';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Helsinki İdare Mahkemesi';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'İş sözleşmenizin kopyalarını saklayın';
+
+  @override
+  String get workplaceActionTrackHours =>
+      'Çalışma saatlerinizi bağımsız olarak takip edin';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Güvensiz koşulları iş güvenliği otoritesine bildirin';
+
+  @override
+  String get workplaceActionJoinUnion => 'Korunma için bir sendikaya katılın';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Gerekirse İş Güvenliği Otoritesine başvurun';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'Finlandiya\'da toplu iş sözleşmeleri sektöre göre asgari ücretleri belirler — tek bir ulusal asgari ücret yoktur. İşvereniniz alanınızın toplu iş sözleşmesine uymak zorundadır.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Yazılı sözleşme olmasa bile Finlandiya\'da tam çalışan haklarına sahipsiniz. Sözlü anlaşma yasal olarak eşit derecede bağlayıcıdır.';
+
+  @override
+  String get contactOccupationalSafety => 'İş Güvenliği Otoritesi';
+
+  @override
+  String get contactTradeUnionSAK => 'Sendika Danışmanlığı (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Her zaman yazılı kira sözleşmesi yapın';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Taşınma sırasında dairenin durumunu belgeleyin (fotoğraflar)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Bakım sorunlarını yazılı olarak bildirin';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Yasadışı tahliyeyi asla kabul etmeyin — mahkemeler karar vermelidir';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Anlaşmazlık durumunda kiracı danışma hizmetlerine başvurun';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Finlandiya\'da ev sahibi, kira sözleşmeniz sona ermiş olsa bile mahkeme kararı olmadan sizi tahliye edemez. Kilit değiştirmek veya hizmetleri kesmek yasadışıdır.';
+
+  @override
+  String get contactTenantsAssociation => 'Finlandiya Kiracılar Derneği';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Tüketici Uyuşmazlıkları Kurulu';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Derhal yazılı gözaltı kararını isteyin';
+
+  @override
+  String get detentionActionRequestLawyer =>
+      'Avukatla iletişim kurmayı talep edin';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Büyükelçiliğiniz veya konsolosluğunuzla iletişime geçin';
+
+  @override
+  String get detentionActionAskMedical => 'Gerekirse tıbbi yardım isteyin';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Tüm duruşmalar için tercüman talep edin';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Sulh mahkemesi gözaltını 4 gün içinde incelemelidir';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Mahkeme uzatmayı her 2 haftada bir inceler';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Finlandiya\'da göç gözaltısı 4 gün içinde bir sulh mahkemesi tarafından incelenmelidir. İncelenmezse gözaltı yasadışı hale gelir.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Parlamento Ombudsmanı';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Ne olduğunu tam olarak yazın (tarih, saat, yer)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Kanıtları saklayın: mesajlar, e-postalar, tanıklar';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Ayrımcılıkla Mücadele Ombudsmanına şikayette bulunun';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Ücretsiz danışmanlık için adli yardım bürosuna başvurun';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Tehdit veya saldırı varsa polise bildirin';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Finlandiya Ayrımcılık Yasağı Kanunu; yaş, köken, uyruk, dil, din, sağlık, engellilik, cinsel yönelim ve diğer kişisel özelliklere dayalı ayrımcılığı kapsar.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Mağdur Desteği Finlandiya (RIKU)';
 }

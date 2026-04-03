@@ -199,7 +199,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
               IconButton(
                 icon: const Icon(Icons.share_outlined),
                 onPressed: () => _shareScenario(scenario),
-                tooltip: 'Share',
+                tooltip: l10n.share,
               ),
             ],
           ),
@@ -260,7 +260,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                     _ExpandableSection(
                       icon: Icons.bolt_outlined,
                       iconColor: AppColors.accent,
-                      title: 'What To Do',
+                      title: l10n.whatToDo,
                       initiallyExpanded: true,
                       child: Column(
                         children: [
@@ -292,7 +292,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                     _ExpandableSection(
                       icon: Icons.schedule_outlined,
                       iconColor: AppColors.error,
-                      title: 'Deadlines',
+                      title: l10n.deadlines,
                       child: Column(
                         children: [
                           for (final d in scenario.deadlines)
@@ -306,7 +306,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                     _ExpandableSection(
                       icon: Icons.phone_outlined,
                       iconColor: AppColors.success,
-                      title: 'Get Help',
+                      title: l10n.getHelp,
                       child: Column(
                         children: [
                           for (final c in scenario.helpContacts)
@@ -348,15 +348,17 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
   }
 
   void _shareScenario(_ScenarioData scenario) {
+    final l10n = AppLocalizations.of(context)!;
     final allRights =
         scenario.rights.map((r) => '- ${r.text}').join('\n');
     final text =
-        '${scenario.title}\n\n${scenario.tagline}\n\nYour Rights:\n$allRights\n\nSent from Advocat app';
+        '${scenario.title}\n\n${scenario.tagline}\n\n${l10n.yourRights.replaceAll(':', '')}\n$allRights\n\n${l10n.sentFromAdvocat}';
     Share.share(text);
   }
 
   void _shareRight(String rightText) {
-    Share.share('$rightText\n\nSent from Advocat app');
+    final l10n = AppLocalizations.of(context)!;
+    Share.share('$rightText\n\n${l10n.sentFromAdvocat}');
   }
 
   // ── Build scenario data ────────────────────────────────────────────────
@@ -388,31 +390,25 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
           _RightItem(l10n.mustNotResist, severity: _Severity.critical),
         ],
         actions: [
-          _ActionItem('Stay calm and keep your hands visible'),
-          _ActionItem('Ask the officer why you are being stopped'),
-          _ActionItem('Provide your name and date of birth'),
-          _ActionItem('State clearly: "I want a lawyer before any questions"'),
-          _ActionItem('If needed, ask for an interpreter'),
-          _ActionItem('Note the officer\'s name and badge number'),
+          _ActionItem(l10n.policeActionStayCalm),
+          _ActionItem(l10n.policeActionAskWhy),
+          _ActionItem(l10n.policeActionProvideName),
+          _ActionItem(l10n.policeActionWantLawyer),
+          _ActionItem(l10n.policeActionAskInterpreter),
+          _ActionItem(l10n.policeActionNoteBadge),
         ],
         didYouKnow: [
-          _DidYouKnow(
-            'In Finland, police must tell you the reason for stopping you. '
-            'If they don\'t, you can ask — and they are legally required to explain.',
-          ),
-          _DidYouKnow(
-            'You can record police interactions in public places in Finland. '
-            'This is protected under freedom of expression.',
-          ),
+          _DidYouKnow(l10n.policeFactMustTellReason),
+          _DidYouKnow(l10n.policeFactCanRecord),
         ],
         helpContacts: [
           _HelpContact(
-            name: 'Finnish Legal Aid',
+            name: l10n.contactFinnishLegalAid,
             phone: '0295 390 390',
             url: 'https://oikeus.fi/oikeusapu/en/',
           ),
           _HelpContact(
-            name: 'Non-Discrimination Ombudsman',
+            name: l10n.contactNonDiscriminationOmbudsman,
             phone: '0295 666 817',
             email: 'yvv@oikeus.fi',
           ),
@@ -445,34 +441,30 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
         ],
         deadlines: [
           _DeadlineTile.data(
-            'Appeal to Administrative Court — usually 30 days from notification',
+            l10n.deportationDeadlineAppeal,
             isUrgent: true,
           ),
           _DeadlineTile.data(
-            'Apply for legal aid — do this IMMEDIATELY',
+            l10n.deportationDeadlineLegalAid,
             isUrgent: true,
           ),
         ],
         didYouKnow: [
-          _DidYouKnow(
-            'In Finland, you usually have the right to stay in the country '
-            'while your appeal is being processed. Deportation cannot happen '
-            'during an active appeal in most cases.',
-          ),
+          _DidYouKnow(l10n.deportationFactStayDuringAppeal),
         ],
         helpContacts: [
           _HelpContact(
-            name: 'Finnish Refugee Advice Centre',
+            name: l10n.contactRefugeeAdviceCentre,
             phone: '09 2313 9300',
             email: 'info@pakolaisneuvonta.fi',
           ),
           _HelpContact(
-            name: 'Administrative Court Helsinki',
+            name: l10n.contactAdminCourtHelsinki,
             phone: '029 564 2000',
             url: 'https://oikeus.fi/hallintooikeudet/en/',
           ),
           _HelpContact(
-            name: 'Finnish Legal Aid',
+            name: l10n.contactFinnishLegalAid,
             phone: '0295 390 390',
           ),
         ],
@@ -500,31 +492,24 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
               legalRef: 'Occupational Safety and Health Act (738/2002)'),
         ],
         actions: [
-          _ActionItem('Keep copies of your employment contract'),
-          _ActionItem('Track your working hours independently'),
-          _ActionItem('Report unsafe conditions to occupational safety'),
-          _ActionItem('Join a trade union for protection'),
-          _ActionItem('Contact the Occupational Safety Authority if needed'),
+          _ActionItem(l10n.workplaceActionKeepContract),
+          _ActionItem(l10n.workplaceActionTrackHours),
+          _ActionItem(l10n.workplaceActionReportUnsafe),
+          _ActionItem(l10n.workplaceActionJoinUnion),
+          _ActionItem(l10n.workplaceActionContactAuthority),
         ],
         didYouKnow: [
-          _DidYouKnow(
-            'In Finland, collective agreements set minimum wages by industry — '
-            'there is no single national minimum wage. Your employer must follow '
-            'the collective agreement for your field.',
-          ),
-          _DidYouKnow(
-            'Even without a written contract, you have full employee rights '
-            'in Finland. An oral agreement is equally binding by law.',
-          ),
+          _DidYouKnow(l10n.workplaceFactCollectiveWage),
+          _DidYouKnow(l10n.workplaceFactOralContract),
         ],
         helpContacts: [
           _HelpContact(
-            name: 'Occupational Safety Authority',
+            name: l10n.contactOccupationalSafety,
             phone: '0295 016 620',
             url: 'https://www.tyosuojelu.fi/en',
           ),
           _HelpContact(
-            name: 'Trade Union Advice (SAK)',
+            name: l10n.contactTradeUnionSAK,
             phone: '020 774 0100',
           ),
         ],
@@ -557,27 +542,23 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                   'Act on Residential Leases Sections 51-55'),
         ],
         actions: [
-          _ActionItem('Always have a written rental agreement'),
-          _ActionItem('Document the apartment condition at move-in (photos)'),
-          _ActionItem('Report maintenance issues in writing'),
-          _ActionItem('Never agree to illegal eviction — courts must decide'),
-          _ActionItem('Contact tenant advisory services if disputes arise'),
+          _ActionItem(l10n.tenantActionWrittenAgreement),
+          _ActionItem(l10n.tenantActionDocumentCondition),
+          _ActionItem(l10n.tenantActionReportMaintenance),
+          _ActionItem(l10n.tenantActionNoIllegalEviction),
+          _ActionItem(l10n.tenantActionContactAdvisory),
         ],
         didYouKnow: [
-          _DidYouKnow(
-            'A landlord in Finland cannot evict you without a court order, '
-            'even if your lease has expired. Changing locks or cutting utilities '
-            'is illegal.',
-          ),
+          _DidYouKnow(l10n.tenantFactNoEvictionWithoutCourt),
         ],
         helpContacts: [
           _HelpContact(
-            name: 'Finnish Tenants Association',
+            name: l10n.contactTenantsAssociation,
             phone: '09 4767 0100',
             url: 'https://vuokralaiset.fi',
           ),
           _HelpContact(
-            name: 'Consumer Disputes Board',
+            name: l10n.contactConsumerDisputesBoard,
             phone: '029 566 5200',
           ),
         ],
@@ -605,36 +586,33 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
               legalRef: 'ECHR Article 3'),
         ],
         actions: [
-          _ActionItem('Ask for the written detention decision immediately'),
-          _ActionItem('Request to contact a lawyer'),
-          _ActionItem('Contact your embassy or consulate'),
-          _ActionItem('Ask for medical attention if needed'),
-          _ActionItem('Request an interpreter for all proceedings'),
+          _ActionItem(l10n.detentionActionAskDecision),
+          _ActionItem(l10n.detentionActionRequestLawyer),
+          _ActionItem(l10n.detentionActionContactEmbassy),
+          _ActionItem(l10n.detentionActionAskMedical),
+          _ActionItem(l10n.detentionActionRequestInterpreter),
         ],
         deadlines: [
           _DeadlineTile.data(
-            'District Court must review detention within 4 days',
+            l10n.detentionDeadlineCourtReview,
             isUrgent: true,
           ),
           _DeadlineTile.data(
-            'Court reviews continuation every 2 weeks',
+            l10n.detentionDeadlineContinuation,
             isUrgent: false,
           ),
         ],
         didYouKnow: [
-          _DidYouKnow(
-            'Immigration detention in Finland must be reviewed by a district '
-            'court within 4 days. If it is not, the detention becomes unlawful.',
-          ),
+          _DidYouKnow(l10n.detentionFactCourtReview),
         ],
         helpContacts: [
           _HelpContact(
-            name: 'Finnish Refugee Advice Centre',
+            name: l10n.contactRefugeeAdviceCentre,
             phone: '09 2313 9300',
             email: 'info@pakolaisneuvonta.fi',
           ),
           _HelpContact(
-            name: 'Parliamentary Ombudsman',
+            name: l10n.contactParliamentaryOmbudsman,
             phone: '09 4321',
             url: 'https://www.oikeusasiamies.fi/en',
           ),
@@ -658,27 +636,23 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
               legalRef: 'Criminal Code Chapter 11'),
         ],
         actions: [
-          _ActionItem('Write down exactly what happened (date, time, place)'),
-          _ActionItem('Save any evidence: messages, emails, witnesses'),
-          _ActionItem('File a complaint with the Non-Discrimination Ombudsman'),
-          _ActionItem('Contact a legal aid office for free advice'),
-          _ActionItem('Report to police if threats or assault were involved'),
+          _ActionItem(l10n.discriminationActionWriteDown),
+          _ActionItem(l10n.discriminationActionSaveEvidence),
+          _ActionItem(l10n.discriminationActionFileComplaint),
+          _ActionItem(l10n.discriminationActionContactLegalAid),
+          _ActionItem(l10n.discriminationActionReportPolice),
         ],
         didYouKnow: [
-          _DidYouKnow(
-            'Finland\'s Non-Discrimination Act covers discrimination based on '
-            'age, origin, nationality, language, religion, health, disability, '
-            'sexual orientation, and other personal characteristics.',
-          ),
+          _DidYouKnow(l10n.discriminationFactNonDiscriminationAct),
         ],
         helpContacts: [
           _HelpContact(
-            name: 'Non-Discrimination Ombudsman',
+            name: l10n.contactNonDiscriminationOmbudsman,
             phone: '0295 666 817',
             email: 'yvv@oikeus.fi',
           ),
           _HelpContact(
-            name: 'Victim Support Finland (RIKU)',
+            name: l10n.contactVictimSupportRIKU,
             phone: '116 006',
             url: 'https://www.riku.fi/en/',
           ),
@@ -788,14 +762,15 @@ class _RightItemTileState extends State<_RightItemTile> {
     }
   }
 
-  String get _severityLabel {
+  String _severityLabel(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     switch (widget.item.severity) {
       case _Severity.critical:
-        return 'Must know';
+        return l10n.mustKnow;
       case _Severity.important:
-        return 'Important';
+        return l10n.important;
       case _Severity.info:
-        return 'Good to know';
+        return l10n.goodToKnow;
     }
   }
 
@@ -867,7 +842,7 @@ class _RightItemTileState extends State<_RightItemTile> {
                                 BorderRadius.circular(AppRadius.full),
                           ),
                           child: Text(
-                            _severityLabel,
+                            _severityLabel(context),
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
@@ -1125,9 +1100,9 @@ class _DidYouKnowCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Did you know?',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.didYouKnow,
+                    style: const TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                       color: AppColors.accent,

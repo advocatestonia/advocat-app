@@ -1573,4 +1573,205 @@ class AppLocalizationsLt extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Mokėjimas nepavyko: $error';
   }
+
+  @override
+  String get whatToDo => 'Ką daryti';
+
+  @override
+  String get getHelp => 'Gauti pagalbą';
+
+  @override
+  String get share => 'Dalintis';
+
+  @override
+  String get didYouKnow => 'Ar žinojote?';
+
+  @override
+  String get mustKnow => 'Būtina žinoti';
+
+  @override
+  String get goodToKnow => 'Naudinga žinoti';
+
+  @override
+  String get sentFromAdvocat => 'Išsiųsta iš Advocat programėlės';
+
+  @override
+  String get policeActionStayCalm =>
+      'Likite ramūs ir laikykite rankas matomoje vietoje';
+
+  @override
+  String get policeActionAskWhy =>
+      'Paklauskite pareigūno, kodėl buvote sustabdytas';
+
+  @override
+  String get policeActionProvideName => 'Nurodykite savo vardą ir gimimo datą';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Aiškiai pasakykite: \"Noriu advokato prieš bet kokius klausimus\"';
+
+  @override
+  String get policeActionAskInterpreter => 'Jei reikia, paprašykite vertėjo';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Užsirašykite pareigūno vardą ir tarnybinį numerį';
+
+  @override
+  String get policeFactMustTellReason =>
+      'Suomijoje policija privalo pasakyti sustabdymo priežastį. Jei to nepadaro, galite paklausti — ir jie teisiškai įpareigoti paaiškinti.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Suomijoje galite įrašyti sąveiką su policija viešose vietose. Tai apsaugota žodžio laisvės.';
+
+  @override
+  String get contactFinnishLegalAid => 'Suomijos teisinė pagalba';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Nediskriminavimo ombudsmenas';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Apeliacija Administraciniam teismui — paprastai 30 dienų nuo pranešimo';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Kreipkitės dėl teisinės pagalbos — darykite tai NEDELSIANT';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'Suomijoje paprastai turite teisę likti šalyje, kol jūsų apeliacija nagrinėjama. Deportacija negali būti vykdoma aktyvios apeliacijos metu daugeliu atvejų.';
+
+  @override
+  String get contactRefugeeAdviceCentre =>
+      'Suomijos pabėgėlių konsultavimo centras';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Helsinkio administracinis teismas';
+
+  @override
+  String get workplaceActionKeepContract => 'Saugokite darbo sutarties kopijas';
+
+  @override
+  String get workplaceActionTrackHours => 'Savarankiškai sekite darbo valandas';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Praneškite apie nesaugias sąlygas darbo saugos institucijai';
+
+  @override
+  String get workplaceActionJoinUnion =>
+      'Įstokite į profesinę sąjungą apsaugai';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Jei reikia, kreipkitės į Darbo saugos tarnybą';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'Suomijoje kolektyvinės sutartys nustato minimalų atlyginimą pagal pramonės šaką — vieno nacionalinio minimalaus atlyginimo nėra. Jūsų darbdavys privalo laikytis jūsų srities kolektyvinės sutarties.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Net ir be rašytinės sutarties Suomijoje turite visas darbuotojo teises. Žodinis susitarimas yra teisiškai vienodai privalomas.';
+
+  @override
+  String get contactOccupationalSafety => 'Darbo saugos tarnyba';
+
+  @override
+  String get contactTradeUnionSAK => 'Profesinės sąjungos konsultacija (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Visada turėkite rašytinę nuomos sutartį';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Dokumentuokite buto būklę įsikeliant (nuotraukos)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Praneškite apie priežiūros problemas raštu';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Niekada nesutikite su neteisėtu iškeldinimu — sprendžia teismas';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Kilus ginčams, kreipkitės į nuomininkų konsultavimo tarnybą';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Nuomotojas Suomijoje negali jūsų iškeldinti be teismo sprendimo, net jei nuomos sutartis pasibaigė. Spynų keitimas ar komunalinių paslaugų atjungimas yra neteisėtas.';
+
+  @override
+  String get contactTenantsAssociation => 'Suomijos nuomininkų asociacija';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Vartotojų ginčų komisija';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Nedelsdami pareikalaukite rašytinio sulaikymo sprendimo';
+
+  @override
+  String get detentionActionRequestLawyer =>
+      'Pareikalaukite susisiekti su advokatu';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Susisiekite su savo ambasada ar konsulatu';
+
+  @override
+  String get detentionActionAskMedical =>
+      'Jei reikia, pareikalaukite medicininės pagalbos';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Pareikalaukite vertėjo visoms teismo posėdžiams';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Apylinkės teismas turi peržiūrėti sulaikymą per 4 dienas';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Teismas peržiūri pratęsimą kas 2 savaites';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Imigracinis sulaikymas Suomijoje turi būti peržiūrėtas apylinkės teismo per 4 dienas. Jei to nepadaroma, sulaikymas tampa neteisėtu.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Parlamentinis ombudsmenas';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Užrašykite tiksliai, kas atsitiko (data, laikas, vieta)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Išsaugokite įrodymus: žinutes, el. laiškus, liudytojus';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Pateikite skundą Nediskriminavimo ombudsmenui';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Kreipkitės į teisinės pagalbos biurą dėl nemokamos konsultacijos';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Praneškite policijai, jei buvo grasinimų ar užpuolimo';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Suomijos nediskriminavimo įstatymas apima diskriminaciją dėl amžiaus, kilmės, pilietybės, kalbos, religijos, sveikatos, negalios, seksualinės orientacijos ir kitų asmeninių savybių.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Aukų parama Suomija (RIKU)';
 }

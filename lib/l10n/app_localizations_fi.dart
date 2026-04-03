@@ -1568,4 +1568,198 @@ class AppLocalizationsFi extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Maksu epäonnistui: $error';
   }
+
+  @override
+  String get whatToDo => 'Mitä tehdä';
+
+  @override
+  String get getHelp => 'Saa apua';
+
+  @override
+  String get share => 'Jaa';
+
+  @override
+  String get didYouKnow => 'Tiesitkö?';
+
+  @override
+  String get mustKnow => 'Tärkeää tietää';
+
+  @override
+  String get goodToKnow => 'Hyvä tietää';
+
+  @override
+  String get sentFromAdvocat => 'Lähetetty Advocat-sovelluksesta';
+
+  @override
+  String get policeActionStayCalm =>
+      'Pysy rauhallisena ja pidä kädet näkyvillä';
+
+  @override
+  String get policeActionAskWhy => 'Kysy poliisilta, miksi sinut pysäytettiin';
+
+  @override
+  String get policeActionProvideName => 'Ilmoita nimesi ja syntymäaikasi';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Sano selvästi: \"Haluan asianajajan ennen kysymyksiä\"';
+
+  @override
+  String get policeActionAskInterpreter => 'Pyydä tarvittaessa tulkki';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Merkitse muistiin poliisin nimi ja virkamerkki';
+
+  @override
+  String get policeFactMustTellReason =>
+      'Suomessa poliisin on kerrottava pysäytyksen syy. Jos he eivät kerro, voit kysyä — he ovat lain mukaan velvollisia selittämään.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Suomessa voit tallentaa poliisikontaktit julkisilla paikoilla. Tämä on suojattu sananvapauden nojalla.';
+
+  @override
+  String get contactFinnishLegalAid => 'Suomen oikeusapu';
+
+  @override
+  String get contactNonDiscriminationOmbudsman => 'Yhdenvertaisuusvaltuutettu';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Valitus hallinto-oikeuteen — yleensä 30 päivää tiedoksiannosta';
+
+  @override
+  String get deportationDeadlineLegalAid => 'Hae oikeusapua — tee se HETI';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'Suomessa sinulla on yleensä oikeus jäädä maahan valituksen käsittelyn ajaksi. Karkotusta ei voida toteuttaa aktiivisen valituksen aikana useimmissa tapauksissa.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'Pakolaisneuvonta ry';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Helsingin hallinto-oikeus';
+
+  @override
+  String get workplaceActionKeepContract => 'Säilytä kopiot työsopimuksestasi';
+
+  @override
+  String get workplaceActionTrackHours => 'Seuraa työaikojasi itsenäisesti';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Ilmoita vaarallisista olosuhteista työsuojeluun';
+
+  @override
+  String get workplaceActionJoinUnion => 'Liity ammattiliittoon suojaksi';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Ota tarvittaessa yhteyttä työsuojeluviranomaiseen';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'Suomessa työehtosopimukset määrittävät vähimmäispalkat toimialoittain — yhtä kansallista minimipalkkaa ei ole. Työnantajan on noudatettava alasi työehtosopimusta.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Ilman kirjallista sopimusta sinulla on täydet työntekijän oikeudet Suomessa. Suullinen sopimus on lain mukaan yhtä sitova.';
+
+  @override
+  String get contactOccupationalSafety => 'Työsuojeluviranomainen';
+
+  @override
+  String get contactTradeUnionSAK => 'Ammattiliittoneuvonta (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Tee aina kirjallinen vuokrasopimus';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Dokumentoi asunnon kunto muuton yhteydessä (kuvat)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Ilmoita huoltotarpeista kirjallisesti';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Älä koskaan suostu laittomaan häätöön — tuomioistuin päättää';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Ota yhteyttä vuokralaisten neuvontapalveluun riitatilanteissa';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Vuokranantaja ei voi häätää sinua Suomessa ilman tuomioistuimen päätöstä, vaikka vuokrasopimus olisi päättynyt. Lukkojen vaihtaminen tai palvelujen katkaiseminen on laitonta.';
+
+  @override
+  String get contactTenantsAssociation => 'Suomen Vuokranantajat ry';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Kuluttajariitalautakunta';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Pyydä kirjallinen säilöönottopäätös välittömästi';
+
+  @override
+  String get detentionActionRequestLawyer => 'Pyydä saada yhteys asianajajaan';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Ota yhteyttä suurlähetystöösi tai konsulaattiin';
+
+  @override
+  String get detentionActionAskMedical => 'Pyydä tarvittaessa lääkärinhoitoa';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Vaadi tulkki kaikkiin menettelyihin';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Käräjäoikeuden on tarkistettava säilöönotto 4 päivän kuluessa';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Tuomioistuin tarkistaa jatkamisen 2 viikon välein';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Maahanmuuttosäilöönotto Suomessa on tarkistettava käräjäoikeudessa 4 päivän kuluessa. Jos näin ei tehdä, säilöönotto muuttuu laittomaksi.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Eduskunnan oikeusasiamies';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Kirjoita tarkasti mitä tapahtui (päivämäärä, aika, paikka)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Tallenna todisteet: viestit, sähköpostit, todistajat';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Tee valitus yhdenvertaisuusvaltuutetulle';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Ota yhteyttä oikeusaputoimistoon ilmaista neuvontaa varten';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Tee rikosilmoitus, jos kyseessä oli uhkaus tai pahoinpitely';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Suomen yhdenvertaisuuslaki kattaa syrjinnän iän, alkuperän, kansalaisuuden, kielen, uskonnon, terveyden, vammaisuuden, seksuaalisen suuntautumisen ja muiden henkilökohtaisten ominaisuuksien perusteella.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Rikosuhripäivystys (RIKU)';
 }

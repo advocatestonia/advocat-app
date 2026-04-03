@@ -1554,4 +1554,195 @@ class AppLocalizationsAr extends AppLocalizations {
   String paymentFailed(String error) {
     return 'فشل الدفع: $error';
   }
+
+  @override
+  String get whatToDo => 'ماذا تفعل';
+
+  @override
+  String get getHelp => 'احصل على المساعدة';
+
+  @override
+  String get share => 'مشاركة';
+
+  @override
+  String get didYouKnow => 'هل تعلم؟';
+
+  @override
+  String get mustKnow => 'يجب أن تعرف';
+
+  @override
+  String get goodToKnow => 'من الجيد أن تعرف';
+
+  @override
+  String get sentFromAdvocat => 'أُرسل من تطبيق Advocat';
+
+  @override
+  String get policeActionStayCalm => 'ابقَ هادئاً واجعل يديك مرئيتين';
+
+  @override
+  String get policeActionAskWhy => 'اسأل الضابط عن سبب إيقافك';
+
+  @override
+  String get policeActionProvideName => 'قدّم اسمك وتاريخ ميلادك';
+
+  @override
+  String get policeActionWantLawyer =>
+      'صرّح بوضوح: \"أريد محامياً قبل أي أسئلة\"';
+
+  @override
+  String get policeActionAskInterpreter => 'اطلب مترجماً عند الحاجة';
+
+  @override
+  String get policeActionNoteBadge => 'سجّل اسم الضابط ورقم شارته';
+
+  @override
+  String get policeFactMustTellReason =>
+      'في فنلندا، يجب على الشرطة إخبارك بسبب إيقافك. إذا لم يفعلوا، يمكنك السؤال — وهم ملزمون قانونياً بالشرح.';
+
+  @override
+  String get policeFactCanRecord =>
+      'يمكنك تسجيل التفاعلات مع الشرطة في الأماكن العامة في فنلندا. هذا محمي بحرية التعبير.';
+
+  @override
+  String get contactFinnishLegalAid => 'المساعدة القانونية الفنلندية';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'أمين المظالم لمكافحة التمييز';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'الطعن أمام المحكمة الإدارية — عادةً 30 يوماً من الإخطار';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'تقدّم بطلب المساعدة القانونية — افعل ذلك فوراً';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'في فنلندا، لديك عادةً الحق في البقاء في البلاد أثناء معالجة طعنك. لا يمكن تنفيذ الترحيل أثناء طعن نشط في معظم الحالات.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'مركز المشورة الفنلندي للاجئين';
+
+  @override
+  String get contactAdminCourtHelsinki => 'المحكمة الإدارية في هلسنكي';
+
+  @override
+  String get workplaceActionKeepContract => 'احتفظ بنسخ من عقد العمل';
+
+  @override
+  String get workplaceActionTrackHours => 'تتبّع ساعات عملك بشكل مستقل';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'أبلغ عن الظروف غير الآمنة لهيئة السلامة المهنية';
+
+  @override
+  String get workplaceActionJoinUnion => 'انضم إلى نقابة عمالية للحماية';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'تواصل مع هيئة السلامة المهنية عند الحاجة';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'في فنلندا، تحدد الاتفاقيات الجماعية الحد الأدنى للأجور حسب القطاع — لا يوجد حد أدنى وطني واحد للأجور. يجب على صاحب العمل الالتزام بالاتفاقية الجماعية لمجالك.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'حتى بدون عقد مكتوب، لديك حقوق كاملة كموظف في فنلندا. الاتفاق الشفهي ملزم قانونياً بنفس القدر.';
+
+  @override
+  String get contactOccupationalSafety => 'هيئة السلامة المهنية';
+
+  @override
+  String get contactTradeUnionSAK => 'استشارات النقابات العمالية (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'احرص دائماً على وجود عقد إيجار مكتوب';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'وثّق حالة الشقة عند الانتقال (صور)';
+
+  @override
+  String get tenantActionReportMaintenance => 'أبلغ عن مشاكل الصيانة كتابياً';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'لا توافق أبداً على إخلاء غير قانوني — المحاكم هي من تقرر';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'تواصل مع خدمات استشارات المستأجرين في حالة النزاعات';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'لا يمكن للمؤجر في فنلندا إخلائك بدون أمر محكمة، حتى لو انتهى عقد الإيجار. تغيير الأقفال أو قطع المرافق غير قانوني.';
+
+  @override
+  String get contactTenantsAssociation => 'جمعية المستأجرين الفنلندية';
+
+  @override
+  String get contactConsumerDisputesBoard => 'مجلس نزاعات المستهلكين';
+
+  @override
+  String get detentionActionAskDecision => 'اطلب فوراً قرار الاحتجاز المكتوب';
+
+  @override
+  String get detentionActionRequestLawyer => 'اطلب التواصل مع محامٍ';
+
+  @override
+  String get detentionActionContactEmbassy => 'تواصل مع سفارتك أو قنصليتك';
+
+  @override
+  String get detentionActionAskMedical => 'اطلب الرعاية الطبية عند الحاجة';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'اطلب مترجماً لجميع الإجراءات';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'يجب على المحكمة الجزئية مراجعة الاحتجاز خلال 4 أيام';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'تراجع المحكمة التمديد كل أسبوعين';
+
+  @override
+  String get detentionFactCourtReview =>
+      'يجب مراجعة احتجاز المهاجرين في فنلندا من قبل محكمة جزئية خلال 4 أيام. إذا لم يتم ذلك، يصبح الاحتجاز غير قانوني.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'أمين المظالم البرلماني';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'دوّن بالضبط ما حدث (التاريخ، الوقت، المكان)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'احفظ الأدلة: الرسائل، البريد الإلكتروني، الشهود';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'قدّم شكوى لأمين المظالم لمكافحة التمييز';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'تواصل مع مكتب المساعدة القانونية للحصول على استشارة مجانية';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'أبلغ الشرطة إذا كانت هناك تهديدات أو اعتداء';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'يغطي قانون مكافحة التمييز الفنلندي التمييز على أساس العمر والأصل والجنسية واللغة والدين والصحة والإعاقة والتوجه الجنسي وغيرها من الخصائص الشخصية.';
+
+  @override
+  String get contactVictimSupportRIKU => 'دعم الضحايا فنلندا (RIKU)';
 }

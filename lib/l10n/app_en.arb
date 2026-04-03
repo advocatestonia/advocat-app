@@ -665,5 +665,67 @@
         "placeholders": {
             "error": { "type": "String" }
         }
-    }
+    },
+
+    "whatToDo": "What To Do",
+    "getHelp": "Get Help",
+    "share": "Share",
+    "didYouKnow": "Did you know?",
+    "mustKnow": "Must know",
+    "goodToKnow": "Good to know",
+    "sentFromAdvocat": "Sent from Advocat app",
+
+    "policeActionStayCalm": "Stay calm and keep your hands visible",
+    "policeActionAskWhy": "Ask the officer why you are being stopped",
+    "policeActionProvideName": "Provide your name and date of birth",
+    "policeActionWantLawyer": "State clearly: \"I want a lawyer before any questions\"",
+    "policeActionAskInterpreter": "If needed, ask for an interpreter",
+    "policeActionNoteBadge": "Note the officer's name and badge number",
+    "policeFactMustTellReason": "In Finland, police must tell you the reason for stopping you. If they don't, you can ask — and they are legally required to explain.",
+    "policeFactCanRecord": "You can record police interactions in public places in Finland. This is protected under freedom of expression.",
+    "contactFinnishLegalAid": "Finnish Legal Aid",
+    "contactNonDiscriminationOmbudsman": "Non-Discrimination Ombudsman",
+
+    "deportationDeadlineAppeal": "Appeal to Administrative Court — usually 30 days from notification",
+    "deportationDeadlineLegalAid": "Apply for legal aid — do this IMMEDIATELY",
+    "deportationFactStayDuringAppeal": "In Finland, you usually have the right to stay in the country while your appeal is being processed. Deportation cannot happen during an active appeal in most cases.",
+    "contactRefugeeAdviceCentre": "Finnish Refugee Advice Centre",
+    "contactAdminCourtHelsinki": "Administrative Court Helsinki",
+
+    "workplaceActionKeepContract": "Keep copies of your employment contract",
+    "workplaceActionTrackHours": "Track your working hours independently",
+    "workplaceActionReportUnsafe": "Report unsafe conditions to occupational safety",
+    "workplaceActionJoinUnion": "Join a trade union for protection",
+    "workplaceActionContactAuthority": "Contact the Occupational Safety Authority if needed",
+    "workplaceFactCollectiveWage": "In Finland, collective agreements set minimum wages by industry — there is no single national minimum wage. Your employer must follow the collective agreement for your field.",
+    "workplaceFactOralContract": "Even without a written contract, you have full employee rights in Finland. An oral agreement is equally binding by law.",
+    "contactOccupationalSafety": "Occupational Safety Authority",
+    "contactTradeUnionSAK": "Trade Union Advice (SAK)",
+
+    "tenantActionWrittenAgreement": "Always have a written rental agreement",
+    "tenantActionDocumentCondition": "Document the apartment condition at move-in (photos)",
+    "tenantActionReportMaintenance": "Report maintenance issues in writing",
+    "tenantActionNoIllegalEviction": "Never agree to illegal eviction — courts must decide",
+    "tenantActionContactAdvisory": "Contact tenant advisory services if disputes arise",
+    "tenantFactNoEvictionWithoutCourt": "A landlord in Finland cannot evict you without a court order, even if your lease has expired. Changing locks or cutting utilities is illegal.",
+    "contactTenantsAssociation": "Finnish Tenants Association",
+    "contactConsumerDisputesBoard": "Consumer Disputes Board",
+
+    "detentionActionAskDecision": "Ask for the written detention decision immediately",
+    "detentionActionRequestLawyer": "Request to contact a lawyer",
+    "detentionActionContactEmbassy": "Contact your embassy or consulate",
+    "detentionActionAskMedical": "Ask for medical attention if needed",
+    "detentionActionRequestInterpreter": "Request an interpreter for all proceedings",
+    "detentionDeadlineCourtReview": "District Court must review detention within 4 days",
+    "detentionDeadlineContinuation": "Court reviews continuation every 2 weeks",
+    "detentionFactCourtReview": "Immigration detention in Finland must be reviewed by a district court within 4 days. If it is not, the detention becomes unlawful.",
+    "contactParliamentaryOmbudsman": "Parliamentary Ombudsman",
+
+    "discriminationActionWriteDown": "Write down exactly what happened (date, time, place)",
+    "discriminationActionSaveEvidence": "Save any evidence: messages, emails, witnesses",
+    "discriminationActionFileComplaint": "File a complaint with the Non-Discrimination Ombudsman",
+    "discriminationActionContactLegalAid": "Contact a legal aid office for free advice",
+    "discriminationActionReportPolice": "Report to police if threats or assault were involved",
+    "discriminationFactNonDiscriminationAct": "Finland's Non-Discrimination Act covers discrimination based on age, origin, nationality, language, religion, health, disability, sexual orientation, and other personal characteristics.",
+    "contactVictimSupportRIKU": "Victim Support Finland (RIKU)"
 }

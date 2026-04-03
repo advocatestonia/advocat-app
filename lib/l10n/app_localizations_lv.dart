@@ -1574,4 +1574,203 @@ class AppLocalizationsLv extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Maksājums neizdevās: $error';
   }
+
+  @override
+  String get whatToDo => 'Ko darīt';
+
+  @override
+  String get getHelp => 'Saņemt palīdzību';
+
+  @override
+  String get share => 'Kopīgot';
+
+  @override
+  String get didYouKnow => 'Vai zinājāt?';
+
+  @override
+  String get mustKnow => 'Jāzina obligāti';
+
+  @override
+  String get goodToKnow => 'Noderīgi zināt';
+
+  @override
+  String get sentFromAdvocat => 'Nosūtīts no Advocat lietotnes';
+
+  @override
+  String get policeActionStayCalm =>
+      'Esiet mierīgs un turiet rokas redzamā vietā';
+
+  @override
+  String get policeActionAskWhy => 'Jautājiet ierēdnim, kāpēc jūs apturēja';
+
+  @override
+  String get policeActionProvideName =>
+      'Norādiet savu vārdu un dzimšanas datumu';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Skaidri paziņojiet: \"Es vēlos advokātu pirms jebkādiem jautājumiem\"';
+
+  @override
+  String get policeActionAskInterpreter => 'Ja nepieciešams, lūdziet tulku';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Pierakstiet ierēdņa vārdu un dienesta numuru';
+
+  @override
+  String get policeFactMustTellReason =>
+      'Somijā policijai ir jāpasaka iemesls, kāpēc jūs apturēja. Ja viņi to nedara, jūs varat jautāt — un viņiem ir juridisks pienākums paskaidrot.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Jūs varat ierakstīt mijiedarbību ar policiju publiskās vietās Somijā. To aizsargā vārda brīvība.';
+
+  @override
+  String get contactFinnishLegalAid => 'Somijas juridiskā palīdzība';
+
+  @override
+  String get contactNonDiscriminationOmbudsman => 'Nediskriminācijas ombuds';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Apelācija Administratīvajā tiesā — parasti 30 dienas pēc paziņošanas';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Piesakieties juridiskajai palīdzībai — dariet to NEKAVĒJOTIES';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'Somijā jums parasti ir tiesības palikt valstī, kamēr jūsu apelācija tiek izskatīta. Deportāciju nevar veikt aktīvas apelācijas laikā vairumā gadījumu.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'Somijas Bēgļu konsultāciju centrs';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Helsinku Administratīvā tiesa';
+
+  @override
+  String get workplaceActionKeepContract => 'Saglabājiet darba līguma kopijas';
+
+  @override
+  String get workplaceActionTrackHours => 'Patstāvīgi fiksējiet darba stundas';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Ziņojiet par nedrošiem apstākļiem darba aizsardzības iestādei';
+
+  @override
+  String get workplaceActionJoinUnion =>
+      'Iestājieties arodbiedrībā aizsardzībai';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Ja nepieciešams, sazinieties ar Darba aizsardzības iestādi';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'Somijā koplīgumi nosaka minimālās algas pa nozarēm — nav vienas valsts minimālās algas. Jūsu darba devējam jāievēro jūsu nozares koplīgums.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Pat bez rakstiska līguma jums Somijā ir pilnas darbinieka tiesības. Mutiska vienošanās ir tikpat juridiski saistoša.';
+
+  @override
+  String get contactOccupationalSafety => 'Darba aizsardzības iestāde';
+
+  @override
+  String get contactTradeUnionSAK => 'Arodbiedrību konsultācijas (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Vienmēr noslēdziet rakstisku īres līgumu';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Dokumentējiet dzīvokļa stāvokli iebraukšanas brīdī (fotogrāfijas)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Ziņojiet par uzturēšanas problēmām rakstiski';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Nekad nepiekrītiet nelikumīgai izlikšanai — tiesai jālemj';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Strīdu gadījumā sazinieties ar īrnieku konsultāciju dienestu';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Izīrētājs Somijā nevar jūs izlikt bez tiesas lēmuma, pat ja īres līgums ir beidzies. Slēdzeņu maiņa vai komunālo pakalpojumu atslēgšana ir nelikumīga.';
+
+  @override
+  String get contactTenantsAssociation => 'Somijas Īrnieku apvienība';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Patērētāju strīdu komisija';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Nekavējoties pieprasiet rakstisku aizturēšanas lēmumu';
+
+  @override
+  String get detentionActionRequestLawyer =>
+      'Pieprasiet sazināties ar advokātu';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Sazinieties ar savu vēstniecību vai konsulātu';
+
+  @override
+  String get detentionActionAskMedical =>
+      'Ja nepieciešams, pieprasiet medicīnisko palīdzību';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Pieprasiet tulku visās tiesas sēdēs';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Rajona tiesai jāpārskata aizturēšana 4 dienu laikā';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Tiesa pārskata pagarināšanu ik pēc 2 nedēļām';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Imigrācijas aizturēšana Somijā jāpārskata rajona tiesai 4 dienu laikā. Ja tas netiek darīts, aizturēšana kļūst nelikumīga.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Parlamentārais ombuds';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Pierakstiet precīzi, kas notika (datums, laiks, vieta)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Saglabājiet pierādījumus: ziņojumus, e-pastus, lieciniekus';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Iesniedziet sūdzību Nediskriminācijas ombudam';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Sazinieties ar juridiskās palīdzības biroju bezmaksas konsultācijai';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Ziņojiet policijai, ja bija iesaistīti draudi vai uzbrukums';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Somijas Nediskriminācijas likums aptver diskrimināciju pēc vecuma, izcelsmes, pilsonības, valodas, reliģijas, veselības, invaliditātes, seksuālās orientācijas un citām personiskām īpašībām.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Cietušo atbalsts Somija (RIKU)';
 }

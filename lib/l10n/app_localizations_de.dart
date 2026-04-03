@@ -1589,4 +1589,208 @@ class AppLocalizationsDe extends AppLocalizations {
   String paymentFailed(String error) {
     return 'Zahlung fehlgeschlagen: $error';
   }
+
+  @override
+  String get whatToDo => 'Was tun';
+
+  @override
+  String get getHelp => 'Hilfe bekommen';
+
+  @override
+  String get share => 'Teilen';
+
+  @override
+  String get didYouKnow => 'Wussten Sie?';
+
+  @override
+  String get mustKnow => 'Wichtig zu wissen';
+
+  @override
+  String get goodToKnow => 'Gut zu wissen';
+
+  @override
+  String get sentFromAdvocat => 'Gesendet von der Advocat-App';
+
+  @override
+  String get policeActionStayCalm =>
+      'Bleiben Sie ruhig und halten Sie die Hände sichtbar';
+
+  @override
+  String get policeActionAskWhy =>
+      'Fragen Sie den Beamten, warum Sie angehalten werden';
+
+  @override
+  String get policeActionProvideName =>
+      'Nennen Sie Ihren Namen und Ihr Geburtsdatum';
+
+  @override
+  String get policeActionWantLawyer =>
+      'Sagen Sie deutlich: \"Ich möchte einen Anwalt, bevor ich Fragen beantworte\"';
+
+  @override
+  String get policeActionAskInterpreter =>
+      'Bitten Sie bei Bedarf um einen Dolmetscher';
+
+  @override
+  String get policeActionNoteBadge =>
+      'Notieren Sie den Namen und die Dienstnummer des Beamten';
+
+  @override
+  String get policeFactMustTellReason =>
+      'In Finnland muss die Polizei Ihnen den Grund für das Anhalten nennen. Wenn sie es nicht tun, können Sie fragen — und sie sind gesetzlich verpflichtet, es zu erklären.';
+
+  @override
+  String get policeFactCanRecord =>
+      'Sie können Polizeikontakte an öffentlichen Orten in Finnland aufnehmen. Dies wird durch die Meinungsfreiheit geschützt.';
+
+  @override
+  String get contactFinnishLegalAid => 'Finnische Rechtshilfe';
+
+  @override
+  String get contactNonDiscriminationOmbudsman =>
+      'Gleichbehandlungsbeauftragter';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'Berufung beim Verwaltungsgericht — in der Regel 30 Tage nach Zustellung';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'Beantragen Sie Rechtshilfe — tun Sie dies SOFORT';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'In Finnland haben Sie in der Regel das Recht, im Land zu bleiben, während Ihre Berufung bearbeitet wird. Die Abschiebung kann in den meisten Fällen während einer laufenden Berufung nicht vollzogen werden.';
+
+  @override
+  String get contactRefugeeAdviceCentre =>
+      'Finnisches Flüchtlingsberatungszentrum';
+
+  @override
+  String get contactAdminCourtHelsinki => 'Verwaltungsgericht Helsinki';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'Bewahren Sie Kopien Ihres Arbeitsvertrags auf';
+
+  @override
+  String get workplaceActionTrackHours =>
+      'Erfassen Sie Ihre Arbeitszeiten eigenständig';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'Melden Sie unsichere Bedingungen der Arbeitsschutzbehörde';
+
+  @override
+  String get workplaceActionJoinUnion => 'Treten Sie einer Gewerkschaft bei';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'Wenden Sie sich bei Bedarf an die Arbeitsschutzbehörde';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'In Finnland legen Tarifverträge die Mindestlöhne je Branche fest — es gibt keinen einheitlichen nationalen Mindestlohn. Ihr Arbeitgeber muss den Tarifvertrag Ihrer Branche einhalten.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'Auch ohne schriftlichen Vertrag haben Sie in Finnland volle Arbeitnehmerrechte. Eine mündliche Vereinbarung ist gesetzlich ebenso bindend.';
+
+  @override
+  String get contactOccupationalSafety => 'Arbeitsschutzbehörde';
+
+  @override
+  String get contactTradeUnionSAK => 'Gewerkschaftsberatung (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'Schließen Sie immer einen schriftlichen Mietvertrag ab';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'Dokumentieren Sie den Zustand der Wohnung beim Einzug (Fotos)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'Melden Sie Instandhaltungsprobleme schriftlich';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'Stimmen Sie niemals einer rechtswidrigen Räumung zu — Gerichte müssen entscheiden';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'Wenden Sie sich bei Streitigkeiten an eine Mieterberatung';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'Ein Vermieter in Finnland kann Sie nicht ohne Gerichtsbeschluss räumen, auch wenn Ihr Mietvertrag abgelaufen ist. Schlösser austauschen oder Versorgungsleistungen kappen ist illegal.';
+
+  @override
+  String get contactTenantsAssociation => 'Finnischer Mieterverband';
+
+  @override
+  String get contactConsumerDisputesBoard => 'Verbraucherschlichtungsstelle';
+
+  @override
+  String get detentionActionAskDecision =>
+      'Fordern Sie sofort den schriftlichen Haftbeschluss an';
+
+  @override
+  String get detentionActionRequestLawyer =>
+      'Verlangen Sie, einen Anwalt zu kontaktieren';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'Kontaktieren Sie Ihre Botschaft oder Ihr Konsulat';
+
+  @override
+  String get detentionActionAskMedical =>
+      'Bitten Sie bei Bedarf um medizinische Versorgung';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'Verlangen Sie einen Dolmetscher für alle Verfahren';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'Das Amtsgericht muss die Haft innerhalb von 4 Tagen überprüfen';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'Das Gericht überprüft die Verlängerung alle 2 Wochen';
+
+  @override
+  String get detentionFactCourtReview =>
+      'Einwanderungshaft in Finnland muss innerhalb von 4 Tagen von einem Amtsgericht überprüft werden. Geschieht dies nicht, wird die Haft rechtswidrig.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'Parlamentarischer Ombudsmann';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'Schreiben Sie genau auf, was passiert ist (Datum, Uhrzeit, Ort)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'Sichern Sie Beweise: Nachrichten, E-Mails, Zeugen';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'Reichen Sie eine Beschwerde beim Gleichbehandlungsbeauftragten ein';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'Wenden Sie sich an ein Rechtshilfebüro für kostenlose Beratung';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'Erstatten Sie Anzeige bei der Polizei bei Drohung oder Körperverletzung';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'Das finnische Gleichbehandlungsgesetz umfasst Diskriminierung aufgrund von Alter, Herkunft, Staatsangehörigkeit, Sprache, Religion, Gesundheit, Behinderung, sexueller Orientierung und anderen persönlichen Merkmalen.';
+
+  @override
+  String get contactVictimSupportRIKU => 'Opferhilfe Finnland (RIKU)';
 }

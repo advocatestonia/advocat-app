@@ -1562,4 +1562,203 @@ class AppLocalizationsFa extends AppLocalizations {
   String paymentFailed(String error) {
     return 'پرداخت ناموفق: $error';
   }
+
+  @override
+  String get whatToDo => 'چه باید کرد';
+
+  @override
+  String get getHelp => 'دریافت کمک';
+
+  @override
+  String get share => 'اشتراک‌گذاری';
+
+  @override
+  String get didYouKnow => 'آیا می‌دانستید؟';
+
+  @override
+  String get mustKnow => 'باید بدانید';
+
+  @override
+  String get goodToKnow => 'خوب است بدانید';
+
+  @override
+  String get sentFromAdvocat => 'ارسال شده از اپلیکیشن Advocat';
+
+  @override
+  String get policeActionStayCalm =>
+      'آرام بمانید و دست‌هایتان را قابل مشاهده نگه دارید';
+
+  @override
+  String get policeActionAskWhy => 'از مأمور بپرسید چرا متوقف شده‌اید';
+
+  @override
+  String get policeActionProvideName => 'نام و تاریخ تولد خود را ارائه دهید';
+
+  @override
+  String get policeActionWantLawyer =>
+      'واضح بگویید: \"من قبل از هر سؤالی وکیل می‌خواهم\"';
+
+  @override
+  String get policeActionAskInterpreter => 'در صورت نیاز مترجم بخواهید';
+
+  @override
+  String get policeActionNoteBadge =>
+      'نام و شماره شناسایی مأمور را یادداشت کنید';
+
+  @override
+  String get policeFactMustTellReason =>
+      'در فنلاند، پلیس باید دلیل توقف شما را بگوید. اگر نگویند، می‌توانید بپرسید — و قانوناً موظف به توضیح هستند.';
+
+  @override
+  String get policeFactCanRecord =>
+      'شما می‌توانید تعاملات پلیس را در مکان‌های عمومی در فنلاند ضبط کنید. این تحت آزادی بیان محافظت می‌شود.';
+
+  @override
+  String get contactFinnishLegalAid => 'کمک حقوقی فنلاند';
+
+  @override
+  String get contactNonDiscriminationOmbudsman => 'بازرس مبارزه با تبعیض';
+
+  @override
+  String get deportationDeadlineAppeal =>
+      'اعتراض به دادگاه اداری — معمولاً ۳۰ روز پس از ابلاغ';
+
+  @override
+  String get deportationDeadlineLegalAid =>
+      'درخواست کمک حقوقی بدهید — فوراً این کار را انجام دهید';
+
+  @override
+  String get deportationFactStayDuringAppeal =>
+      'در فنلاند، شما معمولاً حق دارید در حالی که اعتراض شما در حال بررسی است در کشور بمانید. اخراج در اکثر موارد در طول اعتراض فعال امکان‌پذیر نیست.';
+
+  @override
+  String get contactRefugeeAdviceCentre => 'مرکز مشاوره پناهندگان فنلاند';
+
+  @override
+  String get contactAdminCourtHelsinki => 'دادگاه اداری هلسینکی';
+
+  @override
+  String get workplaceActionKeepContract =>
+      'نسخه‌هایی از قرارداد کار خود را نگه دارید';
+
+  @override
+  String get workplaceActionTrackHours =>
+      'ساعات کاری خود را به طور مستقل پیگیری کنید';
+
+  @override
+  String get workplaceActionReportUnsafe =>
+      'شرایط ناامن را به مرجع ایمنی شغلی گزارش دهید';
+
+  @override
+  String get workplaceActionJoinUnion =>
+      'برای حمایت به یک اتحادیه کارگری بپیوندید';
+
+  @override
+  String get workplaceActionContactAuthority =>
+      'در صورت نیاز با مرجع ایمنی شغلی تماس بگیرید';
+
+  @override
+  String get workplaceFactCollectiveWage =>
+      'در فنلاند، قراردادهای جمعی حداقل دستمزد را بر اساس صنعت تعیین می‌کنند — حداقل دستمزد ملی واحدی وجود ندارد. کارفرمای شما باید از قرارداد جمعی حوزه شما پیروی کند.';
+
+  @override
+  String get workplaceFactOralContract =>
+      'حتی بدون قرارداد کتبی، در فنلاند حقوق کامل کارمندی دارید. توافق شفاهی به همان اندازه از نظر قانونی الزام‌آور است.';
+
+  @override
+  String get contactOccupationalSafety => 'مرجع ایمنی شغلی';
+
+  @override
+  String get contactTradeUnionSAK => 'مشاوره اتحادیه کارگری (SAK)';
+
+  @override
+  String get tenantActionWrittenAgreement =>
+      'همیشه قرارداد اجاره کتبی داشته باشید';
+
+  @override
+  String get tenantActionDocumentCondition =>
+      'وضعیت آپارتمان را هنگام نقل مکان مستند کنید (عکس)';
+
+  @override
+  String get tenantActionReportMaintenance =>
+      'مشکلات تعمیر و نگهداری را کتباً گزارش دهید';
+
+  @override
+  String get tenantActionNoIllegalEviction =>
+      'هرگز با تخلیه غیرقانونی موافقت نکنید — دادگاه‌ها باید تصمیم بگیرند';
+
+  @override
+  String get tenantActionContactAdvisory =>
+      'در صورت اختلاف با خدمات مشاوره مستأجران تماس بگیرید';
+
+  @override
+  String get tenantFactNoEvictionWithoutCourt =>
+      'موجر در فنلاند نمی‌تواند بدون حکم دادگاه شما را تخلیه کند، حتی اگر اجاره‌نامه منقضی شده باشد. تعویض قفل یا قطع خدمات غیرقانونی است.';
+
+  @override
+  String get contactTenantsAssociation => 'انجمن مستأجران فنلاند';
+
+  @override
+  String get contactConsumerDisputesBoard => 'هیئت حل اختلاف مصرف‌کننده';
+
+  @override
+  String get detentionActionAskDecision =>
+      'فوراً تصمیم کتبی بازداشت را بخواهید';
+
+  @override
+  String get detentionActionRequestLawyer => 'درخواست تماس با وکیل کنید';
+
+  @override
+  String get detentionActionContactEmbassy =>
+      'با سفارت یا کنسولگری خود تماس بگیرید';
+
+  @override
+  String get detentionActionAskMedical =>
+      'در صورت نیاز درخواست مراقبت پزشکی کنید';
+
+  @override
+  String get detentionActionRequestInterpreter =>
+      'برای تمام جلسات مترجم بخواهید';
+
+  @override
+  String get detentionDeadlineCourtReview =>
+      'دادگاه بخش باید بازداشت را ظرف ۴ روز بررسی کند';
+
+  @override
+  String get detentionDeadlineContinuation =>
+      'دادگاه تمدید را هر ۲ هفته بررسی می‌کند';
+
+  @override
+  String get detentionFactCourtReview =>
+      'بازداشت مهاجرتی در فنلاند باید ظرف ۴ روز توسط دادگاه بخش بررسی شود. اگر انجام نشود، بازداشت غیرقانونی می‌شود.';
+
+  @override
+  String get contactParliamentaryOmbudsman => 'بازرس پارلمانی';
+
+  @override
+  String get discriminationActionWriteDown =>
+      'دقیقاً بنویسید چه اتفاقی افتاد (تاریخ، زمان، مکان)';
+
+  @override
+  String get discriminationActionSaveEvidence =>
+      'مدارک را نگه دارید: پیام‌ها، ایمیل‌ها، شاهدان';
+
+  @override
+  String get discriminationActionFileComplaint =>
+      'شکایت به بازرس مبارزه با تبعیض ارائه دهید';
+
+  @override
+  String get discriminationActionContactLegalAid =>
+      'برای مشاوره رایگان با دفتر کمک حقوقی تماس بگیرید';
+
+  @override
+  String get discriminationActionReportPolice =>
+      'اگر تهدید یا حمله بود به پلیس گزارش دهید';
+
+  @override
+  String get discriminationFactNonDiscriminationAct =>
+      'قانون عدم تبعیض فنلاند تبعیض بر اساس سن، خاستگاه، تابعیت، زبان، مذهب، سلامت، معلولیت، گرایش جنسی و سایر ویژگی‌های شخصی را پوشش می‌دهد.';
+
+  @override
+  String get contactVictimSupportRIKU => 'حمایت از قربانیان فنلاند (RIKU)';
 }

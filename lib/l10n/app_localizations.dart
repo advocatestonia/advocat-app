@@ -3037,6 +3037,336 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Payment failed: {error}'**
   String paymentFailed(String error);
+
+  /// No description provided for @whatToDo.
+  ///
+  /// In en, this message translates to:
+  /// **'What To Do'**
+  String get whatToDo;
+
+  /// No description provided for @getHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Help'**
+  String get getHelp;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @didYouKnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you know?'**
+  String get didYouKnow;
+
+  /// No description provided for @mustKnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Must know'**
+  String get mustKnow;
+
+  /// No description provided for @goodToKnow.
+  ///
+  /// In en, this message translates to:
+  /// **'Good to know'**
+  String get goodToKnow;
+
+  /// No description provided for @sentFromAdvocat.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent from Advocat app'**
+  String get sentFromAdvocat;
+
+  /// No description provided for @policeActionStayCalm.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay calm and keep your hands visible'**
+  String get policeActionStayCalm;
+
+  /// No description provided for @policeActionAskWhy.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask the officer why you are being stopped'**
+  String get policeActionAskWhy;
+
+  /// No description provided for @policeActionProvideName.
+  ///
+  /// In en, this message translates to:
+  /// **'Provide your name and date of birth'**
+  String get policeActionProvideName;
+
+  /// No description provided for @policeActionWantLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'State clearly: \"I want a lawyer before any questions\"'**
+  String get policeActionWantLawyer;
+
+  /// No description provided for @policeActionAskInterpreter.
+  ///
+  /// In en, this message translates to:
+  /// **'If needed, ask for an interpreter'**
+  String get policeActionAskInterpreter;
+
+  /// No description provided for @policeActionNoteBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Note the officer\'s name and badge number'**
+  String get policeActionNoteBadge;
+
+  /// No description provided for @policeFactMustTellReason.
+  ///
+  /// In en, this message translates to:
+  /// **'In Finland, police must tell you the reason for stopping you. If they don\'t, you can ask — and they are legally required to explain.'**
+  String get policeFactMustTellReason;
+
+  /// No description provided for @policeFactCanRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'You can record police interactions in public places in Finland. This is protected under freedom of expression.'**
+  String get policeFactCanRecord;
+
+  /// No description provided for @contactFinnishLegalAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Finnish Legal Aid'**
+  String get contactFinnishLegalAid;
+
+  /// No description provided for @contactNonDiscriminationOmbudsman.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-Discrimination Ombudsman'**
+  String get contactNonDiscriminationOmbudsman;
+
+  /// No description provided for @deportationDeadlineAppeal.
+  ///
+  /// In en, this message translates to:
+  /// **'Appeal to Administrative Court — usually 30 days from notification'**
+  String get deportationDeadlineAppeal;
+
+  /// No description provided for @deportationDeadlineLegalAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply for legal aid — do this IMMEDIATELY'**
+  String get deportationDeadlineLegalAid;
+
+  /// No description provided for @deportationFactStayDuringAppeal.
+  ///
+  /// In en, this message translates to:
+  /// **'In Finland, you usually have the right to stay in the country while your appeal is being processed. Deportation cannot happen during an active appeal in most cases.'**
+  String get deportationFactStayDuringAppeal;
+
+  /// No description provided for @contactRefugeeAdviceCentre.
+  ///
+  /// In en, this message translates to:
+  /// **'Finnish Refugee Advice Centre'**
+  String get contactRefugeeAdviceCentre;
+
+  /// No description provided for @contactAdminCourtHelsinki.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrative Court Helsinki'**
+  String get contactAdminCourtHelsinki;
+
+  /// No description provided for @workplaceActionKeepContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep copies of your employment contract'**
+  String get workplaceActionKeepContract;
+
+  /// No description provided for @workplaceActionTrackHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Track your working hours independently'**
+  String get workplaceActionTrackHours;
+
+  /// No description provided for @workplaceActionReportUnsafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Report unsafe conditions to occupational safety'**
+  String get workplaceActionReportUnsafe;
+
+  /// No description provided for @workplaceActionJoinUnion.
+  ///
+  /// In en, this message translates to:
+  /// **'Join a trade union for protection'**
+  String get workplaceActionJoinUnion;
+
+  /// No description provided for @workplaceActionContactAuthority.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the Occupational Safety Authority if needed'**
+  String get workplaceActionContactAuthority;
+
+  /// No description provided for @workplaceFactCollectiveWage.
+  ///
+  /// In en, this message translates to:
+  /// **'In Finland, collective agreements set minimum wages by industry — there is no single national minimum wage. Your employer must follow the collective agreement for your field.'**
+  String get workplaceFactCollectiveWage;
+
+  /// No description provided for @workplaceFactOralContract.
+  ///
+  /// In en, this message translates to:
+  /// **'Even without a written contract, you have full employee rights in Finland. An oral agreement is equally binding by law.'**
+  String get workplaceFactOralContract;
+
+  /// No description provided for @contactOccupationalSafety.
+  ///
+  /// In en, this message translates to:
+  /// **'Occupational Safety Authority'**
+  String get contactOccupationalSafety;
+
+  /// No description provided for @contactTradeUnionSAK.
+  ///
+  /// In en, this message translates to:
+  /// **'Trade Union Advice (SAK)'**
+  String get contactTradeUnionSAK;
+
+  /// No description provided for @tenantActionWrittenAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Always have a written rental agreement'**
+  String get tenantActionWrittenAgreement;
+
+  /// No description provided for @tenantActionDocumentCondition.
+  ///
+  /// In en, this message translates to:
+  /// **'Document the apartment condition at move-in (photos)'**
+  String get tenantActionDocumentCondition;
+
+  /// No description provided for @tenantActionReportMaintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'Report maintenance issues in writing'**
+  String get tenantActionReportMaintenance;
+
+  /// No description provided for @tenantActionNoIllegalEviction.
+  ///
+  /// In en, this message translates to:
+  /// **'Never agree to illegal eviction — courts must decide'**
+  String get tenantActionNoIllegalEviction;
+
+  /// No description provided for @tenantActionContactAdvisory.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact tenant advisory services if disputes arise'**
+  String get tenantActionContactAdvisory;
+
+  /// No description provided for @tenantFactNoEvictionWithoutCourt.
+  ///
+  /// In en, this message translates to:
+  /// **'A landlord in Finland cannot evict you without a court order, even if your lease has expired. Changing locks or cutting utilities is illegal.'**
+  String get tenantFactNoEvictionWithoutCourt;
+
+  /// No description provided for @contactTenantsAssociation.
+  ///
+  /// In en, this message translates to:
+  /// **'Finnish Tenants Association'**
+  String get contactTenantsAssociation;
+
+  /// No description provided for @contactConsumerDisputesBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer Disputes Board'**
+  String get contactConsumerDisputesBoard;
+
+  /// No description provided for @detentionActionAskDecision.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for the written detention decision immediately'**
+  String get detentionActionAskDecision;
+
+  /// No description provided for @detentionActionRequestLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Request to contact a lawyer'**
+  String get detentionActionRequestLawyer;
+
+  /// No description provided for @detentionActionContactEmbassy.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact your embassy or consulate'**
+  String get detentionActionContactEmbassy;
+
+  /// No description provided for @detentionActionAskMedical.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for medical attention if needed'**
+  String get detentionActionAskMedical;
+
+  /// No description provided for @detentionActionRequestInterpreter.
+  ///
+  /// In en, this message translates to:
+  /// **'Request an interpreter for all proceedings'**
+  String get detentionActionRequestInterpreter;
+
+  /// No description provided for @detentionDeadlineCourtReview.
+  ///
+  /// In en, this message translates to:
+  /// **'District Court must review detention within 4 days'**
+  String get detentionDeadlineCourtReview;
+
+  /// No description provided for @detentionDeadlineContinuation.
+  ///
+  /// In en, this message translates to:
+  /// **'Court reviews continuation every 2 weeks'**
+  String get detentionDeadlineContinuation;
+
+  /// No description provided for @detentionFactCourtReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Immigration detention in Finland must be reviewed by a district court within 4 days. If it is not, the detention becomes unlawful.'**
+  String get detentionFactCourtReview;
+
+  /// No description provided for @contactParliamentaryOmbudsman.
+  ///
+  /// In en, this message translates to:
+  /// **'Parliamentary Ombudsman'**
+  String get contactParliamentaryOmbudsman;
+
+  /// No description provided for @discriminationActionWriteDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Write down exactly what happened (date, time, place)'**
+  String get discriminationActionWriteDown;
+
+  /// No description provided for @discriminationActionSaveEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Save any evidence: messages, emails, witnesses'**
+  String get discriminationActionSaveEvidence;
+
+  /// No description provided for @discriminationActionFileComplaint.
+  ///
+  /// In en, this message translates to:
+  /// **'File a complaint with the Non-Discrimination Ombudsman'**
+  String get discriminationActionFileComplaint;
+
+  /// No description provided for @discriminationActionContactLegalAid.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact a legal aid office for free advice'**
+  String get discriminationActionContactLegalAid;
+
+  /// No description provided for @discriminationActionReportPolice.
+  ///
+  /// In en, this message translates to:
+  /// **'Report to police if threats or assault were involved'**
+  String get discriminationActionReportPolice;
+
+  /// No description provided for @discriminationFactNonDiscriminationAct.
+  ///
+  /// In en, this message translates to:
+  /// **'Finland\'s Non-Discrimination Act covers discrimination based on age, origin, nationality, language, religion, health, disability, sexual orientation, and other personal characteristics.'**
+  String get discriminationFactNonDiscriminationAct;
+
+  /// No description provided for @contactVictimSupportRIKU.
+  ///
+  /// In en, this message translates to:
+  /// **'Victim Support Finland (RIKU)'**
+  String get contactVictimSupportRIKU;
 }
 
 class _AppLocalizationsDelegate
