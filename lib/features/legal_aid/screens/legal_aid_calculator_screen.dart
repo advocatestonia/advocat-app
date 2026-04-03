@@ -54,7 +54,11 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.legalAidCalculator)),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: Text(l10n.legalAidCalculator),
+        backgroundColor: AppColors.surface,
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -145,8 +149,11 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen> {
                 onPressed: _calculate,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColors.textOnPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
                 ),
                 child: Text(l10n.calculateEligibility),
               ),
@@ -233,7 +240,19 @@ class _ResultCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final color = result.eligible ? AppColors.success : AppColors.warning;
-    return Card(
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+        boxShadow: [
+          BoxShadow(
+            color: color.withValues(alpha: 0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(

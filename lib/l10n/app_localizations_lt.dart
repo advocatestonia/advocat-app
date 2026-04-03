@@ -1353,4 +1353,113 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get failedToLoadDocuments => 'Nepavyko įkelti dokumentų';
+
+  @override
+  String get emailIntegrationTitle => 'Email Integration';
+
+  @override
+  String get connectYourEmail => 'Connect Your Email';
+
+  @override
+  String get connectYourEmailDesc =>
+      'Connect your email to automatically detect and organize legal correspondence related to your cases.';
+
+  @override
+  String get legalEmails => 'Legal Emails';
+
+  @override
+  String get unlinkedEmails => 'Unlinked Emails';
+
+  @override
+  String get noLegalEmailsYet => 'No legal emails yet';
+
+  @override
+  String get legalEmailsWillAppear =>
+      'Emails classified as legal-related will appear here.';
+
+  @override
+  String get assignToCase => 'Assign to case';
+
+  @override
+  String get disconnectEmail => 'Disconnect Email';
+
+  @override
+  String get disconnectEmailConfirm =>
+      'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
+
+  @override
+  String connectedTo(String email) {
+    return 'Connected to $email';
+  }
+
+  @override
+  String lastSynced(String time) {
+    return 'Last synced $time';
+  }
+
+  @override
+  String get filterByType => 'Filter by Type';
+
+  @override
+  String get noCasesMatchSearch => 'No cases match your search';
+
+  @override
+  String get failedToLoadCases => 'Failed to load cases';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get annual => 'Annual';
+
+  @override
+  String get saveTwentyFivePercent => 'Save 25%';
+
+  @override
+  String get mostPopular => 'MOST POPULAR';
+
+  @override
+  String get oneCaseActive => '1 active case';
+
+  @override
+  String get threeCasesActive => '3 active cases';
+
+  @override
+  String get unlimitedCases => 'Unlimited cases';
+
+  @override
+  String get threeDocScans => '3 document scans';
+
+  @override
+  String get twentyDocScans => '20 document scans';
+
+  @override
+  String get unlimitedDocScans => 'Unlimited document scans';
+
+  @override
+  String get basicAiAnalysis => 'Basic AI analysis';
+
+  @override
+  String get fullAiAnalysis => 'Full AI analysis';
+
+  @override
+  String get draftGeneration => 'Draft generation';
+
+  @override
+  String get priorityProcessing => 'Priority processing';
+
+  @override
+  String get forever => 'forever';
+
+  @override
+  String get perMonth => '/month';
+
+  @override
+  String get perYear => '/year';
+
+  @override
+  String get checkingPurchases => 'Checking for previous purchases...';
+
+  @override
+  String get noPreviousPurchases => 'No previous purchases found.';
 }

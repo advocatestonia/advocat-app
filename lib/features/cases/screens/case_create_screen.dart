@@ -450,6 +450,13 @@ class _CaseTypeCard extends StatelessWidget {
             color: isSelected ? color : AppColors.border,
             width: isSelected ? 2 : 1,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -633,6 +640,13 @@ class _Step3Document extends StatelessWidget {
                   color: AppColors.border,
                   style: BorderStyle.solid,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.03),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,

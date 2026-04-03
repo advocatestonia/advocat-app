@@ -2635,6 +2635,210 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load documents'**
   String get failedToLoadDocuments;
+
+  /// No description provided for @emailIntegrationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Integration'**
+  String get emailIntegrationTitle;
+
+  /// No description provided for @connectYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect Your Email'**
+  String get connectYourEmail;
+
+  /// No description provided for @connectYourEmailDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect your email to automatically detect and organize legal correspondence related to your cases.'**
+  String get connectYourEmailDesc;
+
+  /// No description provided for @legalEmails.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Emails'**
+  String get legalEmails;
+
+  /// No description provided for @unlinkedEmails.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlinked Emails'**
+  String get unlinkedEmails;
+
+  /// No description provided for @noLegalEmailsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No legal emails yet'**
+  String get noLegalEmailsYet;
+
+  /// No description provided for @legalEmailsWillAppear.
+  ///
+  /// In en, this message translates to:
+  /// **'Emails classified as legal-related will appear here.'**
+  String get legalEmailsWillAppear;
+
+  /// No description provided for @assignToCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Assign to case'**
+  String get assignToCase;
+
+  /// No description provided for @disconnectEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Disconnect Email'**
+  String get disconnectEmail;
+
+  /// No description provided for @disconnectEmailConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.'**
+  String get disconnectEmailConfirm;
+
+  /// No description provided for @connectedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to {email}'**
+  String connectedTo(String email);
+
+  /// No description provided for @lastSynced.
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced {time}'**
+  String lastSynced(String time);
+
+  /// No description provided for @filterByType.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by Type'**
+  String get filterByType;
+
+  /// No description provided for @noCasesMatchSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'No cases match your search'**
+  String get noCasesMatchSearch;
+
+  /// No description provided for @failedToLoadCases.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load cases'**
+  String get failedToLoadCases;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @annual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get annual;
+
+  /// No description provided for @saveTwentyFivePercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Save 25%'**
+  String get saveTwentyFivePercent;
+
+  /// No description provided for @mostPopular.
+  ///
+  /// In en, this message translates to:
+  /// **'MOST POPULAR'**
+  String get mostPopular;
+
+  /// No description provided for @oneCaseActive.
+  ///
+  /// In en, this message translates to:
+  /// **'1 active case'**
+  String get oneCaseActive;
+
+  /// No description provided for @threeCasesActive.
+  ///
+  /// In en, this message translates to:
+  /// **'3 active cases'**
+  String get threeCasesActive;
+
+  /// No description provided for @unlimitedCases.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited cases'**
+  String get unlimitedCases;
+
+  /// No description provided for @threeDocScans.
+  ///
+  /// In en, this message translates to:
+  /// **'3 document scans'**
+  String get threeDocScans;
+
+  /// No description provided for @twentyDocScans.
+  ///
+  /// In en, this message translates to:
+  /// **'20 document scans'**
+  String get twentyDocScans;
+
+  /// No description provided for @unlimitedDocScans.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited document scans'**
+  String get unlimitedDocScans;
+
+  /// No description provided for @basicAiAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Basic AI analysis'**
+  String get basicAiAnalysis;
+
+  /// No description provided for @fullAiAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Full AI analysis'**
+  String get fullAiAnalysis;
+
+  /// No description provided for @draftGeneration.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft generation'**
+  String get draftGeneration;
+
+  /// No description provided for @priorityProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority processing'**
+  String get priorityProcessing;
+
+  /// No description provided for @forever.
+  ///
+  /// In en, this message translates to:
+  /// **'forever'**
+  String get forever;
+
+  /// No description provided for @perMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'/month'**
+  String get perMonth;
+
+  /// No description provided for @perYear.
+  ///
+  /// In en, this message translates to:
+  /// **'/year'**
+  String get perYear;
+
+  /// No description provided for @checkingPurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking for previous purchases...'**
+  String get checkingPurchases;
+
+  /// No description provided for @noPreviousPurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'No previous purchases found.'**
+  String get noPreviousPurchases;
 }
 
 class _AppLocalizationsDelegate

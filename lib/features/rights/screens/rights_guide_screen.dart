@@ -57,32 +57,76 @@ class RightsGuideScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.knowYourRights)),
+      backgroundColor: AppColors.background,
+      appBar: AppBar(
+        title: Text(l10n.knowYourRights),
+        backgroundColor: AppColors.surface,
+      ),
       body: ListView.separated(
         padding: const EdgeInsets.all(AppSpacing.md),
         itemCount: scenarios.length,
         separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
         itemBuilder: (context, index) {
           final s = scenarios[index];
-          return Card(
-            child: ListTile(
-              leading: Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  color: s.color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(AppRadius.sm),
+          return Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(color: AppColors.border),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
                 ),
-                child: Icon(s.icon, color: s.color, size: 24),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                onTap: () => context.push('/rights/${s.id}'),
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: s.color.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                        child: Icon(s.icon, color: s.color, size: 24),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(s.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                  color: AppColors.textPrimary,
+                                )),
+                            const SizedBox(height: 2),
+                            Text(s.subtitle,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: AppColors.textSecondary,
+                                  height: 1.3,
+                                )),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      const Icon(Icons.chevron_right,
+                          color: AppColors.textTertiary, size: 22),
+                    ],
+                  ),
+                ),
               ),
-              title: Text(s.title,
-                  style: const TextStyle(fontWeight: FontWeight.w600)),
-              subtitle: Text(s.subtitle,
-                  style: const TextStyle(
-                      fontSize: 13, color: AppColors.textSecondary)),
-              trailing: const Icon(Icons.chevron_right,
-                  color: AppColors.textTertiary),
-              onTap: () => context.push('/rights/${s.id}'),
             ),
           );
         },

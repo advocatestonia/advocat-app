@@ -24,6 +24,7 @@ class SubscriptionScreen extends ConsumerWidget {
             SubscriptionTier.free;
     final isAnnual = ref.watch(_isAnnualProvider);
     final loadingPlan = ref.watch(_isLoadingPlanProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -53,9 +54,9 @@ class SubscriptionScreen extends ConsumerWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'Monthly',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.monthly,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -69,9 +70,9 @@ class SubscriptionScreen extends ConsumerWidget {
                     activeTrackColor: AppColors.accent,
                   ),
                   const SizedBox(width: AppSpacing.sm),
-                  const Text(
-                    'Annual',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!.annual,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -87,9 +88,9 @@ class SubscriptionScreen extends ConsumerWidget {
                       color: AppColors.success,
                       borderRadius: BorderRadius.circular(AppRadius.full),
                     ),
-                    child: const Text(
-                      'Save 25%',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.saveTwentyFivePercent,
+                      style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -106,20 +107,20 @@ class SubscriptionScreen extends ConsumerWidget {
             // ── Plan Cards ───────────────────────────────────────────────
             _PlanCard(
               planId: 'free',
-              title: 'Emergency Shield',
+              title: l10n.emergencyShield,
               tierLabel: 'FREE',
               monthlyPrice: 0,
               annualPrice: 0,
               isAnnual: isAnnual,
               isCurrent: currentTier == SubscriptionTier.free,
               isLoading: loadingPlan == 'free',
-              features: const [
-                _Feature('1 active case', true),
-                _Feature('3 document scans', true),
-                _Feature('Basic AI analysis', true),
-                _Feature('Email integration', false),
-                _Feature('Full analysis & drafts', false),
-                _Feature('Priority processing', false),
+              features: [
+                _Feature(l10n.oneCaseActive, true),
+                _Feature(l10n.threeDocScans, true),
+                _Feature(l10n.basicAiAnalysis, true),
+                _Feature(l10n.emailIntegrationTitle, false),
+                _Feature(l10n.fullAiAnalysis, false),
+                _Feature(l10n.priorityProcessing, false),
               ],
               onSelect: currentTier == SubscriptionTier.free
                   ? null
@@ -130,7 +131,7 @@ class SubscriptionScreen extends ConsumerWidget {
 
             _PlanCard(
               planId: 'basic',
-              title: 'Legal Fighter',
+              title: l10n.legalFighter,
               tierLabel: 'BASIC',
               monthlyPrice: 9.99,
               annualPrice: 89.99,
@@ -138,13 +139,13 @@ class SubscriptionScreen extends ConsumerWidget {
               isCurrent: currentTier == SubscriptionTier.basic,
               isLoading: loadingPlan == 'basic',
               isPopular: true,
-              features: const [
-                _Feature('3 active cases', true),
-                _Feature('20 document scans', true),
-                _Feature('Full AI analysis', true),
-                _Feature('Email integration', true),
-                _Feature('Draft generation', true),
-                _Feature('Priority processing', false),
+              features: [
+                _Feature(l10n.threeCasesActive, true),
+                _Feature(l10n.twentyDocScans, true),
+                _Feature(l10n.fullAiAnalysis, true),
+                _Feature(l10n.emailIntegrationTitle, true),
+                _Feature(l10n.draftGeneration, true),
+                _Feature(l10n.priorityProcessing, false),
               ],
               onSelect: currentTier == SubscriptionTier.basic
                   ? null
@@ -155,7 +156,7 @@ class SubscriptionScreen extends ConsumerWidget {
 
             _PlanCard(
               planId: 'premium',
-              title: 'Full Defense',
+              title: l10n.fullDefense,
               tierLabel: 'PRO',
               monthlyPrice: 29.99,
               annualPrice: 269.99,
@@ -163,13 +164,13 @@ class SubscriptionScreen extends ConsumerWidget {
               isCurrent: currentTier == SubscriptionTier.premium,
               isLoading: loadingPlan == 'premium',
               accentColor: AppColors.primary,
-              features: const [
-                _Feature('Unlimited cases', true),
-                _Feature('Unlimited document scans', true),
-                _Feature('Full AI analysis', true),
-                _Feature('Email integration', true),
-                _Feature('Draft generation', true),
-                _Feature('Priority processing', true),
+              features: [
+                _Feature(l10n.unlimitedCases, true),
+                _Feature(l10n.unlimitedDocScans, true),
+                _Feature(l10n.fullAiAnalysis, true),
+                _Feature(l10n.emailIntegrationTitle, true),
+                _Feature(l10n.draftGeneration, true),
+                _Feature(l10n.priorityProcessing, true),
               ],
               onSelect: currentTier == SubscriptionTier.premium
                   ? null
@@ -181,9 +182,9 @@ class SubscriptionScreen extends ConsumerWidget {
             // ── Restore Purchases ────────────────────────────────────────
             TextButton(
               onPressed: () => _handleRestore(context, ref),
-              child: const Text(
-                'Restore Purchases',
-                style: TextStyle(
+              child: Text(
+                l10n.restorePurchases,
+                style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -237,14 +238,15 @@ class SubscriptionScreen extends ConsumerWidget {
   }
 
   Future<void> _handleRestore(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Checking for previous purchases...')),
+      SnackBar(content: Text(l10n.checkingPurchases)),
     );
     // TODO: Call Stripe or RevenueCat restore
     await Future<void>.delayed(const Duration(seconds: 1));
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('No previous purchases found.')),
+        SnackBar(content: Text(l10n.noPreviousPurchases)),
       );
     }
   }
@@ -256,16 +258,17 @@ class _CurrentPlanBanner extends StatelessWidget {
   const _CurrentPlanBanner({required this.tier});
   final SubscriptionTier tier;
 
-  String get _label => switch (tier) {
-        SubscriptionTier.free => 'Emergency Shield',
-        SubscriptionTier.basic => 'Legal Fighter',
-        SubscriptionTier.premium => 'Full Defense',
+  String _label(AppLocalizations l10n) => switch (tier) {
+        SubscriptionTier.free => l10n.emergencyShield,
+        SubscriptionTier.basic => l10n.legalFighter,
+        SubscriptionTier.premium => l10n.fullDefense,
       };
 
   String get _tierText => tier.name.toUpperCase();
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(AppSpacing.lg),
@@ -282,9 +285,9 @@ class _CurrentPlanBanner extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Text(
-            'Current Plan',
-            style: TextStyle(
+          Text(
+            l10n.currentPlan,
+            style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 13,
               fontWeight: FontWeight.w500,
@@ -304,7 +307,7 @@ class _CurrentPlanBanner extends StatelessWidget {
           ),
           const SizedBox(height: 2),
           Text(
-            _label,
+            _label(l10n),
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 14,
@@ -353,15 +356,15 @@ class _PlanCard extends StatelessWidget {
   final VoidCallback? onSelect;
   final Color? accentColor;
 
-  String get _priceText {
-    if (monthlyPrice == 0) return 'Free';
+  String _priceText(AppLocalizations l10n) {
+    if (monthlyPrice == 0) return l10n.free;
     final price = isAnnual ? annualPrice : monthlyPrice;
     return '\u20AC${price.toStringAsFixed(2)}';
   }
 
-  String get _periodText {
-    if (monthlyPrice == 0) return 'forever';
-    return isAnnual ? '/year' : '/month';
+  String _periodText(AppLocalizations l10n) {
+    if (monthlyPrice == 0) return l10n.forever;
+    return isAnnual ? l10n.perYear : l10n.perMonth;
   }
 
   Color get _borderColor {
@@ -372,6 +375,7 @@ class _PlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -399,7 +403,7 @@ class _PlanCard extends StatelessWidget {
                 ),
               ),
               child: Text(
-                isCurrent ? 'CURRENT PLAN' : 'MOST POPULAR',
+                isCurrent ? l10n.currentPlan.toUpperCase() : l10n.mostPopular,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: 'Inter',
@@ -461,7 +465,7 @@ class _PlanCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      _priceText,
+                      _priceText(l10n),
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 32,
@@ -473,7 +477,7 @@ class _PlanCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(bottom: 6),
                       child: Text(
-                        _periodText,
+                        _periodText(l10n),
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 14,
@@ -529,7 +533,7 @@ class _PlanCard extends StatelessWidget {
 
                 // ── Action button ──────────────────────────────────────
                 AppButton(
-                  label: isCurrent ? 'Current Plan' : 'Choose Plan',
+                  label: isCurrent ? l10n.currentPlan : l10n.choosePlan,
                   variant: isCurrent
                       ? AppButtonVariant.secondary
                       : AppButtonVariant.primary,

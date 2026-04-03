@@ -149,6 +149,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
         _phase = _ScanPhase.preview;
       });
     } catch (_) {
+      if (!mounted) return;
       _showError(AppLocalizations.of(context)!.capturePhotoFailed);
     }
   }
@@ -255,6 +256,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
         context.pop(true);
       }
     } catch (e) {
+      if (!mounted) return;
       _showError(AppLocalizations.of(context)!.uploadFailed);
       setState(() => _phase = _ScanPhase.camera);
     }
@@ -538,7 +540,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               onPressed: _finishAndUpload,
               child: Text(
                 AppLocalizations.of(context)!.done,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.accentLight,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

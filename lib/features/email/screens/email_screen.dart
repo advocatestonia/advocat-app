@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/app_card.dart';
@@ -142,11 +143,12 @@ class EmailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final connection = ref.watch(_emailConnectionProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Email Integration'),
+        title: Text(l10n.emailIntegrationTitle),
         backgroundColor: AppColors.surface,
       ),
       body: connection.isConnected
@@ -163,6 +165,7 @@ class _DisconnectedView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -189,7 +192,7 @@ class _DisconnectedView extends ConsumerWidget {
             const SizedBox(height: AppSpacing.lg),
 
             Text(
-              'Connect Your Email',
+              l10n.connectYourEmail,
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
@@ -199,7 +202,7 @@ class _DisconnectedView extends ConsumerWidget {
             const SizedBox(height: AppSpacing.sm),
 
             Text(
-              'Connect your email to automatically detect and organize legal correspondence related to your cases.',
+              l10n.connectYourEmailDesc,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
@@ -211,10 +214,10 @@ class _DisconnectedView extends ConsumerWidget {
 
             // Gmail button
             _OAuthButton(
-              label: 'Connect Gmail',
+              label: l10n.connectGmail,
               icon: Icons.g_mobiledata_rounded,
               iconColor: const Color(0xFFDB4437),
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.surface,
               foregroundColor: AppColors.textPrimary,
               borderColor: AppColors.border,
               onPressed: () => ref
@@ -226,10 +229,10 @@ class _DisconnectedView extends ConsumerWidget {
 
             // Outlook button
             _OAuthButton(
-              label: 'Connect Outlook',
+              label: l10n.connectOutlook,
               icon: Icons.mail_outline_rounded,
               iconColor: const Color(0xFF0078D4),
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.surface,
               foregroundColor: AppColors.textPrimary,
               borderColor: AppColors.border,
               onPressed: () => ref
@@ -257,7 +260,7 @@ class _DisconnectedView extends ConsumerWidget {
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
-                      'We only read legal-related emails. Your personal emails stay private.',
+                      l10n.emailPrivacyNote,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13,
@@ -287,6 +290,7 @@ class _ConnectedView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final linkedEmails =
         _mockEmails.where((e) => e.isLinked).toList();
     final unlinkedEmails =
@@ -318,7 +322,7 @@ class _ConnectedView extends ConsumerWidget {
                   const SizedBox(width: AppSpacing.sm),
                   Expanded(
                     child: Text(
-                      'Connected to ${connection.email}',
+                      l10n.connectedTo(connection.email ?? ''),
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 14,
@@ -340,7 +344,7 @@ class _ConnectedView extends ConsumerWidget {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      'Last synced ${_formatTimeAgo(connection.lastSyncAt!)}',
+                      l10n.lastSynced(_formatTimeAgo(connection.lastSyncAt!)),
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
@@ -355,7 +359,7 @@ class _ConnectedView extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: AppButton(
-                      label: 'Sync Now',
+                      label: l10n.syncNow,
                       variant: AppButtonVariant.secondary,
                       size: AppButtonSize.small,
                       isLoading: connection.isSyncing,
@@ -374,16 +378,16 @@ class _ConnectedView extends ConsumerWidget {
 
         // ── Linked Legal Emails ───────────────────────────────────────
         _SectionLabel(
-          title: 'Legal Emails',
+          title: l10n.legalEmails,
           count: linkedEmails.length,
         ),
         const SizedBox(height: AppSpacing.sm),
 
         if (linkedEmails.isEmpty)
-          const EmptyState(
+          EmptyState(
             icon: AppIcons.emailOutlined,
-            title: 'No legal emails yet',
-            description: 'Emails classified as legal-related will appear here.',
+            title: l10n.noLegalEmailsYet,
+            description: l10n.legalEmailsWillAppear,
             compact: true,
           )
         else
@@ -399,7 +403,7 @@ class _ConnectedView extends ConsumerWidget {
         // ── Unlinked Emails ───────────────────────────────────────────
         if (unlinkedEmails.isNotEmpty) ...[
           _SectionLabel(
-            title: 'Unlinked Emails',
+            title: l10n.unlinkedEmails,
             count: unlinkedEmails.length,
           ),
           const SizedBox(height: AppSpacing.sm),
@@ -415,7 +419,7 @@ class _ConnectedView extends ConsumerWidget {
         // ── Disconnect button ─────────────────────────────────────────
         Center(
           child: AppButton(
-            label: 'Disconnect Email',
+            label: l10n.disconnectEmail,
             variant: AppButtonVariant.danger,
             size: AppButtonSize.small,
             leadingIcon: Icons.link_off_rounded,
@@ -429,33 +433,31 @@ class _ConnectedView extends ConsumerWidget {
   }
 
   void _showDisconnectDialog(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppRadius.md),
         ),
-        title: const Text('Disconnect Email'),
-        content: const Text(
-          'You will stop receiving automatic email syncing. '
-          'Previously synced emails will remain in your cases.',
-        ),
+        title: Text(l10n.disconnectEmail),
+        content: Text(l10n.disconnectEmailConfirm),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
               ref.read(_emailConnectionProvider.notifier).disconnect();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Email disconnected')),
+                SnackBar(content: Text(l10n.emailDisconnected)),
               );
             },
-            child: const Text(
-              'Disconnect',
-              style: TextStyle(color: AppColors.error),
+            child: Text(
+              l10n.disconnect,
+              style: const TextStyle(color: AppColors.error),
             ),
           ),
         ],
@@ -571,6 +573,7 @@ class _EmailCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AppCard(
       onTap: () {
         // TODO: Navigate to email detail or linked case
@@ -642,14 +645,14 @@ class _EmailCard extends StatelessWidget {
                       border: Border.all(color: AppColors.accent),
                       borderRadius: BorderRadius.circular(AppRadius.full),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(AppIcons.add, size: 14, color: AppColors.accent),
-                        SizedBox(width: 4),
+                        const Icon(AppIcons.add, size: 14, color: AppColors.accent),
+                        const SizedBox(width: 4),
                         Text(
-                          'Assign to case',
-                          style: TextStyle(
+                          l10n.assignToCase,
+                          style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 12,
                             fontWeight: FontWeight.w600,

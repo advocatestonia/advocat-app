@@ -50,8 +50,8 @@ final caseTimelineProvider =
     TimelineEvent(
       id: '${caseId}_created',
       type: TimelineEventType.caseCreated,
-      title: 'Case created',
-      description: 'Case "${legalCase.title}" was created.',
+      title: 'caseCreated',
+      description: 'caseCreatedDesc:${legalCase.title}',
       date: legalCase.createdAt,
     ),
   ];
@@ -60,8 +60,8 @@ final caseTimelineProvider =
     events.add(TimelineEvent(
       id: '${caseId}_decision',
       type: TimelineEventType.statusChanged,
-      title: 'Decision received',
-      description: 'An official decision was received for this case.',
+      title: 'decisionReceived',
+      description: 'decisionReceivedDesc',
       date: legalCase.decisionDate!,
     ));
   }
@@ -70,9 +70,8 @@ final caseTimelineProvider =
     events.add(TimelineEvent(
       id: '${caseId}_appeal_deadline',
       type: TimelineEventType.deadlineSet,
-      title: 'Appeal deadline set',
-      description:
-          'Appeal must be filed by ${AppDateUtils.formatDate(legalCase.appealDeadline!)}.',
+      title: 'appealDeadlineSet',
+      description: 'appealDeadlineDesc:${AppDateUtils.formatDate(legalCase.appealDeadline!)}',
       date: legalCase.appealDeadline!,
     ));
   }
@@ -81,9 +80,8 @@ final caseTimelineProvider =
     events.add(TimelineEvent(
       id: '${caseId}_hearing',
       type: TimelineEventType.deadlineSet,
-      title: 'Hearing scheduled',
-      description:
-          'Court hearing scheduled for ${AppDateUtils.formatDate(legalCase.hearingDate!)}.',
+      title: 'hearingScheduled',
+      description: 'hearingScheduledDesc:${AppDateUtils.formatDate(legalCase.hearingDate!)}',
       date: legalCase.hearingDate!,
     ));
   }
@@ -93,8 +91,8 @@ final caseTimelineProvider =
     events.add(TimelineEvent(
       id: '${caseId}_updated',
       type: TimelineEventType.statusChanged,
-      title: 'Case updated',
-      description: 'Case information was last updated.',
+      title: 'caseUpdated',
+      description: 'caseInfoUpdated',
       date: legalCase.updatedAt!,
     ));
   }
@@ -103,6 +101,36 @@ final caseTimelineProvider =
   events.sort((a, b) => b.date.compareTo(a.date));
   return events;
 });
+
+/// Resolves a timeline event title key to a localized string.
+String localizedEventTitle(AppLocalizations l10n, String titleKey) {
+  return switch (titleKey) {
+    'caseCreated' => l10n.caseCreated,
+    'decisionReceived' => l10n.decisionReceived,
+    'appealDeadlineSet' => l10n.appealDeadlineSet,
+    'hearingScheduled' => l10n.hearingScheduled,
+    'caseUpdated' => l10n.caseUpdated,
+    _ => titleKey,
+  };
+}
+
+/// Resolves a timeline event description key to a localized string.
+String localizedEventDescription(AppLocalizations l10n, String descKey) {
+  if (descKey.startsWith('caseCreatedDesc:')) {
+    return l10n.caseCreatedDesc(descKey.substring('caseCreatedDesc:'.length));
+  }
+  if (descKey.startsWith('appealDeadlineDesc:')) {
+    return l10n.appealDeadlineDesc(descKey.substring('appealDeadlineDesc:'.length));
+  }
+  if (descKey.startsWith('hearingScheduledDesc:')) {
+    return l10n.hearingScheduledDesc(descKey.substring('hearingScheduledDesc:'.length));
+  }
+  return switch (descKey) {
+    'decisionReceivedDesc' => l10n.decisionReceivedDesc,
+    'caseInfoUpdated' => l10n.caseInfoUpdated,
+    _ => descKey,
+  };
+}
 
 class CaseTimelineScreen extends ConsumerWidget {
   const CaseTimelineScreen({super.key, required this.caseId});
@@ -226,9 +254,15 @@ class _TimelineEventTileState extends State<_TimelineEventTile> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final color = _eventColor;
     final hasDescription =
         widget.event.description != null && widget.event.description!.isNotEmpty;
+
+    final displayTitle = localizedEventTitle(l10n, widget.event.title);
+    final displayDescription = widget.event.description != null
+        ? localizedEventDescription(l10n, widget.event.description!)
+        : null;
 
     return IntrinsicHeight(
       child: Row(
@@ -284,7 +318,7 @@ class _TimelineEventTileState extends State<_TimelineEventTile> {
                       children: [
                         Expanded(
                           child: Text(
-                            widget.event.title,
+                            displayTitle,
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -315,7 +349,7 @@ class _TimelineEventTileState extends State<_TimelineEventTile> {
                       const Divider(height: 1),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
-                        widget.event.description!,
+                        displayDescription!,
                         style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.textSecondary,

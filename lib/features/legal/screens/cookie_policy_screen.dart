@@ -219,7 +219,7 @@ class CookiePolicyScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.cookie_outlined,
                   color: AppColors.accent,
                   size: 22,
@@ -274,7 +274,7 @@ class CookiePolicyScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.check_circle_outline,
                   color: AppColors.success,
                   size: 22,

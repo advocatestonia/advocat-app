@@ -228,7 +228,7 @@ class CasesListScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: AppSpacing.lg),
                 Text(
-                  'Filter by Type',
+                  AppLocalizations.of(context)?.filterByType ?? 'Filter by Type',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
@@ -239,7 +239,7 @@ class CasesListScreen extends ConsumerWidget {
                   runSpacing: AppSpacing.sm,
                   children: CaseType.values.map((type) {
                     return FilterChip(
-                      label: Text(_caseTypeLabel(type)),
+                      label: Text(_caseTypeLabel(context, type)),
                       selected: false,
                       onSelected: (_) {
                         // Filter by case type
@@ -258,21 +258,22 @@ class CasesListScreen extends ConsumerWidget {
   }
 }
 
-String _caseTypeLabel(CaseType type) {
+String _caseTypeLabel(BuildContext context, CaseType type) {
+  final l10n = AppLocalizations.of(context);
   return switch (type) {
-    CaseType.deportation => 'Deportation',
-    CaseType.asylum => 'Asylum',
-    CaseType.residencePermit => 'Residence Permit',
-    CaseType.familyReunification => 'Family Reunification',
-    CaseType.citizenship => 'Citizenship',
-    CaseType.workPermit => 'Work Permit',
-    CaseType.laborDispute => 'Labor Dispute',
-    CaseType.tenantRights => 'Tenant Rights',
-    CaseType.debtCollection => 'Debt Collection',
-    CaseType.discrimination => 'Discrimination',
-    CaseType.policeMisconduct => 'Police Misconduct',
-    CaseType.socialBenefits => 'Social Benefits',
-    CaseType.other => 'Other',
+    CaseType.deportation => l10n?.deportation ?? 'Deportation',
+    CaseType.asylum => l10n?.asylum ?? 'Asylum',
+    CaseType.residencePermit => l10n?.residencePermit ?? 'Residence Permit',
+    CaseType.familyReunification => l10n?.familyReunification ?? 'Family Reunification',
+    CaseType.citizenship => l10n?.citizenship ?? 'Citizenship',
+    CaseType.workPermit => l10n?.workPermit ?? 'Work Permit',
+    CaseType.laborDispute => l10n?.laborDispute ?? 'Labor Dispute',
+    CaseType.tenantRights => l10n?.tenantRights ?? 'Tenant Rights',
+    CaseType.debtCollection => l10n?.debtCollection ?? 'Debt Collection',
+    CaseType.discrimination => l10n?.discrimination ?? 'Discrimination',
+    CaseType.policeMisconduct => l10n?.policeMisconduct ?? 'Police Misconduct',
+    CaseType.socialBenefits => l10n?.socialBenefits ?? 'Social Benefits',
+    CaseType.other => l10n?.other ?? 'Other',
   };
 }
 
@@ -303,7 +304,7 @@ class _SegmentEmptyState extends StatelessWidget {
               const Icon(Icons.search_off, size: 48, color: AppColors.textTertiary),
               const SizedBox(height: AppSpacing.md),
               Text(
-                'No cases match your search',
+                AppLocalizations.of(context)?.noCasesMatchSearch ?? 'No cases match your search',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -389,7 +390,7 @@ class _ErrorBody extends StatelessWidget {
           const Icon(Icons.cloud_off_outlined, size: 48, color: AppColors.error),
           const SizedBox(height: AppSpacing.md),
           Text(
-            'Failed to load cases',
+            AppLocalizations.of(context)?.failedToLoadCases ?? 'Failed to load cases',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(height: AppSpacing.sm),

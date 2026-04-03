@@ -567,5 +567,53 @@
     "scanNew": "Scan New",
     "noDocumentsYetScan": "No documents yet",
     "scanFirstDocumentHint": "Scan your first document to let AI analyze it for errors and generate appeals.",
-    "failedToLoadDocuments": "Failed to load documents"
+    "failedToLoadDocuments": "Failed to load documents",
+    "emailIntegrationTitle": "Email Integration",
+    "connectYourEmail": "Connect Your Email",
+    "connectYourEmailDesc": "Connect your email to automatically detect and organize legal correspondence related to your cases.",
+    "legalEmails": "Legal Emails",
+    "unlinkedEmails": "Unlinked Emails",
+    "noLegalEmailsYet": "No legal emails yet",
+    "legalEmailsWillAppear": "Emails classified as legal-related will appear here.",
+    "assignToCase": "Assign to case",
+    "disconnectEmail": "Disconnect Email",
+    "disconnectEmailConfirm": "You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.",
+    "connectedTo": "Connected to {email}",
+    "@connectedTo": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
+    "lastSynced": "Last synced {time}",
+    "@lastSynced": {
+        "placeholders": {
+            "time": {
+                "type": "String"
+            }
+        }
+    },
+    "filterByType": "Filter by Type",
+    "noCasesMatchSearch": "No cases match your search",
+    "failedToLoadCases": "Failed to load cases",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "saveTwentyFivePercent": "Save 25%",
+    "mostPopular": "MOST POPULAR",
+    "oneCaseActive": "1 active case",
+    "threeCasesActive": "3 active cases",
+    "unlimitedCases": "Unlimited cases",
+    "threeDocScans": "3 document scans",
+    "twentyDocScans": "20 document scans",
+    "unlimitedDocScans": "Unlimited document scans",
+    "basicAiAnalysis": "Basic AI analysis",
+    "fullAiAnalysis": "Full AI analysis",
+    "draftGeneration": "Draft generation",
+    "priorityProcessing": "Priority processing",
+    "forever": "forever",
+    "perMonth": "/month",
+    "perYear": "/year",
+    "checkingPurchases": "Checking for previous purchases...",
+    "noPreviousPurchases": "No previous purchases found."
 }

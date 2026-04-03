@@ -303,7 +303,7 @@ class AiDisclaimerScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.warning_rounded,
                   color: AppColors.error,
                   size: 24,
@@ -358,7 +358,7 @@ class AiDisclaimerScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.check_circle_outlined,
                   color: AppColors.accent,
                   size: 22,
@@ -413,7 +413,7 @@ class AiDisclaimerScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.block_rounded,
                   color: AppColors.warning,
                   size: 22,
@@ -468,7 +468,7 @@ class AiDisclaimerScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.gavel_rounded,
                   color: AppColors.info,
                   size: 22,

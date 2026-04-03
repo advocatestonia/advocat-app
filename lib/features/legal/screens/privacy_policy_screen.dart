@@ -388,7 +388,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.shield_outlined,
                   color: AppColors.accent,
                   size: 22,

@@ -88,14 +88,23 @@ class CaseCard extends StatelessWidget {
     final statusColor = _statusColor(legalCase.status);
     final lastActivity = legalCase.updatedAt ?? legalCase.createdAt;
 
-    final card = Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
+    final card = Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.md),
-        side: const BorderSide(color: AppColors.border),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       clipBehavior: Clip.antiAlias,
-      child: InkWell(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.md),
         child: IntrinsicHeight(
@@ -248,6 +257,7 @@ class CaseCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
 
