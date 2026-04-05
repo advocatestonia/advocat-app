@@ -2010,7 +2010,7 @@ class LegalAidDirectory {
   /// Format a contact for display in chat
   static String formatForChat(LegalAidContact contact) {
     final buffer = StringBuffer();
-    buffer.writeln('${contact.name}');
+    buffer.writeln(contact.name);
     buffer.writeln('Country: ${contact.country}');
     if (contact.phone != null) buffer.writeln('Phone: ${contact.phone}');
     if (contact.email != null) buffer.writeln('Email: ${contact.email}');
@@ -2031,7 +2031,7 @@ class LegalAidDirectory {
     final buffer = StringBuffer();
     buffer.writeln('=== ${contacts.first.country} ===\n');
     for (final contact in contacts) {
-      buffer.writeln('${contact.name}');
+      buffer.writeln(contact.name);
       buffer.writeln('  Type: ${contact.type}');
       if (contact.phone != null) buffer.writeln('  Phone: ${contact.phone}');
       if (contact.website != null) buffer.writeln('  Web: ${contact.website}');

@@ -6,7 +6,6 @@
 import 'business_database.dart';
 import 'case_law_database.dart';
 import 'citizenship_database.dart';
-import 'consumer_protection_database.dart';
 import 'digital_rights_database.dart';
 import 'education_database.dart';
 import 'emergency_phrases_database.dart';

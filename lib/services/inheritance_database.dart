@@ -1,17 +1,17 @@
-/// Comprehensive Cross-Border Inheritance Law Database for Immigrants
-/// Covers all 27 EU member states with real legal data.
-///
-/// Sources: EU Succession Regulation 650/2012 (Brussels IV), national civil codes,
-/// national tax authority data, European Commission e-Justice Portal,
-/// European Judicial Network in civil and commercial matters,
-/// Hague Convention on the Conflicts of Laws Relating to the Form of
-/// Testamentary Dispositions (1961), Council of Europe Treaty Series,
-/// national notarial chamber publications, STEP (Society of Trust and
-/// Estate Practitioners) country guides, EY Worldwide Estate and
-/// Inheritance Tax Guide 2025, PwC Worldwide Tax Summaries,
-/// national consular service fee schedules.
-///
-/// Last verified: 2026-Q1
+// Comprehensive Cross-Border Inheritance Law Database for Immigrants
+// Covers all 27 EU member states with real legal data.
+//
+// Sources: EU Succession Regulation 650/2012 (Brussels IV), national civil codes,
+// national tax authority data, European Commission e-Justice Portal,
+// European Judicial Network in civil and commercial matters,
+// Hague Convention on the Conflicts of Laws Relating to the Form of
+// Testamentary Dispositions (1961), Council of Europe Treaty Series,
+// national notarial chamber publications, STEP (Society of Trust and
+// Estate Practitioners) country guides, EY Worldwide Estate and
+// Inheritance Tax Guide 2025, PwC Worldwide Tax Summaries,
+// national consular service fee schedules.
+//
+// Last verified: 2026-Q1
 
 class InheritanceCountryData {
   final String country;
@@ -3546,7 +3546,7 @@ class InheritanceDatabase {
         timeframe: '1-6 months after succession proceedings',
         nonResidentSpecificRules: 'Non-residents can generally inherit property. Tax implications vary. Local legal advice recommended.',
       ),
-      bankAccess: BankAccountAccess(
+      bankAccess: const BankAccountAccess(
         processDescription: 'Banks freeze accounts upon death notification. Succession certificate or court order required to release funds.',
         timeToAccess: '1-6 months depending on country and estate complexity',
         requiredDocuments: ['Succession certificate or court decision', 'Death certificate', 'Identity of heirs', 'European Certificate of Succession (if cross-border)'],
@@ -3578,7 +3578,7 @@ class InheritanceDatabase {
         embassyRole: 'Embassy/consulate assists with: death registration, repatriation, liaison with authorities, document facilitation.',
         timeToObtainDocuments: '1-5 days for local certificate; 2-6 weeks for home country registration',
       ),
-      consularRegistration: ConsularRegistration(
+      consularRegistration: const ConsularRegistration(
         process: 'Consulate registers death and transmits to home country civil registry.',
         fee: 'EUR 20-100 (varies by country)',
         timeframe: '2-6 weeks',
@@ -3590,7 +3590,7 @@ class InheritanceDatabase {
         ],
         consularDeathCertificateValidity: 'Full legal validity in home country for all proceedings.',
       ),
-      repatriation: RepatriationInfo(
+      repatriation: const RepatriationInfo(
         estimatedCost: 'EUR 3,000-8,000 within Europe; EUR 7,000-18,000 intercontinental',
         process: 'Funeral director handles: embalming, zinc coffin, transport permit, customs, airline/road transport.',
         timeframe: '5-14 days within Europe; 7-21 days intercontinental',

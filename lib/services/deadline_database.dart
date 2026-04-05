@@ -1,15 +1,15 @@
-/// Comprehensive EU Legal Deadline Database
-///
-/// Contains verified legal deadlines for all 27 EU member states.
-/// Sources: National procedural codes, EU Directive transpositions,
-/// asylum procedure directives, labor codes, tenancy laws.
-///
-/// CRITICAL: These deadlines represent GENERAL statutory defaults.
-/// Specific cases may have different deadlines based on circumstances.
-/// Always verify with current national legislation before relying
-/// on any deadline in this database.
-///
-/// Last research update: 2026-04-05
+// Comprehensive EU Legal Deadline Database
+//
+// Contains verified legal deadlines for all 27 EU member states.
+// Sources: National procedural codes, EU Directive transpositions,
+// asylum procedure directives, labor codes, tenancy laws.
+//
+// CRITICAL: These deadlines represent GENERAL statutory defaults.
+// Specific cases may have different deadlines based on circumstances.
+// Always verify with current national legislation before relying
+// on any deadline in this database.
+//
+// Last research update: 2026-04-05
 
 class LegalDeadline {
   final String country;
