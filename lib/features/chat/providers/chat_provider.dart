@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../models/case_model.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../../services/tool_executor.dart';
+import '../../cases/providers/cases_provider.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model for provider state
@@ -108,6 +110,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
     required this.supabaseService,
     required this.aiService,
     required this.isDemo,
+    this.caseType,
+    this.country,
+    this.nationality,
   }) : super(const ChatState()) {
     _loadHistory();
   }
@@ -116,6 +121,11 @@ class ChatNotifier extends StateNotifier<ChatState> {
   final SupabaseService supabaseService;
   final AIService aiService;
   final bool isDemo;
+
+  /// Case metadata used to build richer AI context via KnowledgeRouter.
+  final CaseType? caseType;
+  final String? country;
+  final String? nationality;
 
   // ── Load chat history ─────────────────────────────────────────────────
 
@@ -193,6 +203,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
         final response = await aiService.sendChatMessage(
           caseId: caseId,
           message: trimmed,
+          caseType: caseType,
+          country: country,
+          nationality: nationality,
         );
         responseText = response.message;
       }
@@ -295,14 +308,34 @@ final chatMessagesProvider =
 );
 
 /// Full-featured chat state notifier, parameterized by case ID.
+///
+/// Loads the [LegalCase] metadata asynchronously so that [KnowledgeRouter]
+/// can pull data from the relevant specialty databases when the user sends
+/// a message.
 final chatNotifierProvider =
     StateNotifierProvider.family<ChatNotifier, ChatState, String>(
   (ref, caseId) {
+    // Attempt to read case metadata for richer AI context.
+    // The async value may not be available yet on first build — that is fine;
+    // we fall back gracefully when it is null.
+    CaseType? caseType;
+    String? country;
+    String? nationality;
+
+    final caseAsync = ref.watch(caseByIdProvider(caseId));
+    caseAsync.whenData((legalCase) {
+      caseType = legalCase.type;
+      nationality = legalCase.nationality;
+    });
+
     return ChatNotifier(
       caseId: caseId,
       supabaseService: ref.watch(supabaseServiceProvider),
       aiService: ref.watch(aiServiceProvider),
       isDemo: ref.watch(isDemoModeProvider),
+      caseType: caseType,
+      country: country,
+      nationality: nationality,
     );
   },
 );

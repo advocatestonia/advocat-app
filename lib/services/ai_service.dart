@@ -185,13 +185,14 @@ class AIService {
         // Add user message to history
         _addToHistory(caseId, 'user', sanitizedMessage);
 
-        // Build system prompt with relevant knowledge
+        // Build system prompt with relevant knowledge from all 22 databases
         final systemPrompt = SystemPrompts.buildChatPrompt(
           caseType: caseType,
           country: country,
           nationality: nationality,
           caseContext: caseDescription,
           userLanguage: userLanguage,
+          query: sanitizedMessage,
         );
 
         // Send to Claude with full conversation history

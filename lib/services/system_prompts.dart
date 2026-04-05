@@ -19,6 +19,7 @@ abstract final class SystemPrompts {
     String? nationality,
     String? caseContext,
     String? userLanguage,
+    String? query,
   }) {
     final buffer = StringBuffer();
 
@@ -38,11 +39,12 @@ abstract final class SystemPrompts {
     buffer.writeln(_rules);
     buffer.writeln();
 
-    // Knowledge base
+    // Knowledge base (includes specialty database context via KnowledgeRouter)
     final knowledge = KnowledgeBase.buildContext(
       caseType: caseType,
       country: country,
       nationality: nationality,
+      query: query,
     );
     buffer.writeln('# LEGAL KNOWLEDGE BASE');
     buffer.writeln();
@@ -102,11 +104,13 @@ Be thorough but concise. Always cite specific legal provisions.''';
     CaseType? caseType,
     String? country,
     String? nationality,
+    String? query,
   }) {
     final knowledge = KnowledgeBase.buildContext(
       caseType: caseType,
       country: country,
       nationality: nationality,
+      query: query,
     );
 
     return '''$_baseRole

@@ -1,4 +1,5 @@
 import '../models/case_model.dart';
+import 'knowledge_router.dart';
 
 // ---------------------------------------------------------------------------
 // Legal knowledge base — structured context for Claude system prompts
@@ -13,11 +14,15 @@ abstract final class KnowledgeBase {
 
   /// Build the knowledge context string for a given case type and country.
   ///
+  /// [query] is the user's current message text. When provided it is forwarded
+  /// to [KnowledgeRouter] to pull relevant data from the 22 specialty databases.
+  ///
   /// Returns a formatted text block suitable for inclusion in a system prompt.
   static String buildContext({
     CaseType? caseType,
     String? country,
     String? nationality,
+    String? query,
   }) {
     final sections = <String>[];
 
@@ -80,6 +85,23 @@ abstract final class KnowledgeBase {
     // If EU citizen, add free movement rights
     if (nationality != null && _euCountries.contains(nationality.toLowerCase())) {
       sections.add(_euFreeMovement);
+    }
+
+    // Specialty database context — pulled from 22 domain databases based on
+    // the user's query keywords and case type.
+    if (query != null && query.isNotEmpty) {
+      try {
+        final routerContext = KnowledgeRouter.getContextForQuery(
+          query,
+          country: country,
+          caseType: caseType?.name,
+        );
+        if (routerContext.isNotEmpty) {
+          sections.add(routerContext);
+        }
+      } catch (_) {
+        // Router failure must never break the base prompt.
+      }
     }
 
     return sections.join('\n\n---\n\n');
