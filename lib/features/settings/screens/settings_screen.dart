@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../main.dart';
+import '../../../services/demo_data.dart';
+import '../../../services/supabase_service.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/status_chip.dart';
@@ -99,7 +105,7 @@ class SettingsScreen extends ConsumerWidget {
             icon: AppIcons.dataExport,
             title: l.exportMyData,
             subtitle: l.exportDataDesc,
-            onTap: () => _showExportDataDialog(context),
+            onTap: () => _showExportDataDialog(context, ref),
           ),
           _SettingsTile(
             icon: AppIcons.deleteAccount,
@@ -551,9 +557,7 @@ class SettingsScreen extends ConsumerWidget {
           TextButton(
             onPressed: () async {
               Navigator.pop(ctx);
-              // TODO: Call delete account API
-              await ref.read(authControllerProvider.notifier).logout();
-              if (context.mounted) context.go(AppRoutes.onboarding);
+              await _performAccountDeletion(context, ref);
             },
             child: Text(
               l.permanentlyDelete,
@@ -565,7 +569,65 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  void _showExportDataDialog(BuildContext context) {
+  Future<void> _performAccountDeletion(
+      BuildContext context, WidgetRef ref) async {
+    final isDemo = ref.read(isDemoModeProvider);
+    final supabase = ref.read(supabaseServiceProvider);
+
+    // Show a loading indicator
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Row(
+            children: [
+              SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: Colors.white),
+              ),
+              SizedBox(width: 12),
+              Text('Deleting account data...'),
+            ],
+          ),
+          duration: Duration(seconds: 30),
+        ),
+      );
+    }
+
+    try {
+      if (!isDemo) {
+        // Real Supabase account: delete all data then sign out
+        await supabase.deleteAllUserData();
+      }
+
+      // Log out (clears demo mode flag + auth state)
+      await ref.read(authControllerProvider.notifier).logout();
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account deleted successfully.'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        context.go(AppRoutes.onboarding);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete account: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showExportDataDialog(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     showDialog(
       context: context,
@@ -583,17 +645,69 @@ class SettingsScreen extends ConsumerWidget {
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(l.dataExportRequested),
-                ),
-              );
+              _performDataExport(context, ref);
             },
             child: Text(l.requestExport),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _performDataExport(BuildContext context, WidgetRef ref) async {
+    final supabase = ref.read(supabaseServiceProvider);
+
+    // Show loading indicator
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Row(
+            children: [
+              SizedBox(
+                width: 18,
+                height: 18,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2, color: Colors.white),
+              ),
+              SizedBox(width: 12),
+              Text('Preparing data export...'),
+            ],
+          ),
+          duration: Duration(seconds: 30),
+        ),
+      );
+    }
+
+    try {
+      final jsonString = await supabase.exportUserData();
+
+      // Write to a temporary file
+      final tempDir = await getTemporaryDirectory();
+      final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
+      final file =
+          File('${tempDir.path}/advocat_export_$timestamp.json');
+      await file.writeAsString(jsonString);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      }
+
+      // Share via system share sheet
+      await Share.shareXFiles(
+        [XFile(file.path, mimeType: 'application/json')],
+        subject: 'Advocat Data Export',
+      );
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Export failed: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
   }
 
   void _showLegalInfoDialog(BuildContext context) {

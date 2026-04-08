@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -202,7 +203,12 @@ class SupabaseService {
 
   Future<String> getDocumentUrl(String storagePath) async {
     if (isDemo) return '';
-    return _client.storage.from('documents').getPublicUrl(storagePath);
+    // Use signed URLs with 5-minute expiry so legal documents are never
+    // publicly accessible via a static URL.
+    final signedUrl = await _client.storage
+        .from('documents')
+        .createSignedUrl(storagePath, 300);
+    return signedUrl;
   }
 
   // ── Correspondence ────────────────────────────────────────────────────
@@ -284,5 +290,110 @@ class SupabaseService {
       'role': role,
       'content': content,
     });
+  }
+
+  // ── Delete all user data ─────────────────────────────────────────────
+
+  /// Deletes all user data from Supabase tables and storage, then signs out.
+  /// Tables are deleted in foreign-key-safe order.
+  /// Throws if not authenticated or if any step fails.
+  Future<void> deleteAllUserData() async {
+    if (isDemo) return; // Demo data is in-memory; nothing to delete.
+
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) throw Exception('Not authenticated');
+
+    // Delete in FK-safe order: children first, then parents.
+    // 1. chat_messages
+    await _client.from('chat_messages').delete().eq('user_id', uid);
+    // 2. documents (rows) + storage files
+    final docRows = await _client
+        .from('documents')
+        .select('storage_path')
+        .eq('user_id', uid);
+    final storagePaths = (docRows as List)
+        .map((r) => r['storage_path'] as String?)
+        .where((p) => p != null && p.isNotEmpty)
+        .cast<String>()
+        .toList();
+    if (storagePaths.isNotEmpty) {
+      await _client.storage.from('documents').remove(storagePaths);
+    }
+    await _client.from('documents').delete().eq('user_id', uid);
+    // 3. deadlines
+    await _client.from('deadlines').delete().eq('user_id', uid);
+    // 4. correspondence
+    await _client.from('correspondence').delete().eq('user_id', uid);
+    // 5. cases
+    await _client.from('cases').delete().eq('user_id', uid);
+    // 6. profile
+    await _client.from('profiles').delete().eq('id', uid);
+
+    // Sign out after data deletion
+    await _client.auth.signOut();
+  }
+
+  // ── Export user data ─────────────────────────────────────────────────
+
+  /// Fetches all user data and returns it as a formatted JSON string.
+  /// Works in both demo and authenticated modes.
+  Future<String> exportUserData() async {
+    if (isDemo) {
+      return _buildExportJson(
+        profile: DemoData.user.toJson(),
+        cases: DemoData.cases.map((c) => c.toJson()).toList(),
+        documents: DemoData.documents.map((d) => d.toJson()).toList(),
+        deadlines: DemoData.deadlines.map((d) => d.toJson()).toList(),
+        correspondence:
+            DemoData.correspondence.map((c) => c.toJson()).toList(),
+        chatMessages: DemoData.chatMessages,
+      );
+    }
+
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) throw Exception('Not authenticated');
+
+    // Fetch all data in parallel
+    final results = await Future.wait<dynamic>([
+      _client.from('profiles').select().eq('id', uid).maybeSingle(),
+      _client.from('cases').select().eq('user_id', uid),
+      _client.from('documents').select().eq('user_id', uid),
+      _client.from('deadlines').select().eq('user_id', uid),
+      _client.from('correspondence').select().eq('user_id', uid),
+      _client.from('chat_messages').select().eq('user_id', uid),
+    ]);
+
+    return _buildExportJson(
+      profile: results[0] as Map<String, dynamic>?,
+      cases: List<Map<String, dynamic>>.from((results[1] as List?) ?? []),
+      documents: List<Map<String, dynamic>>.from((results[2] as List?) ?? []),
+      deadlines: List<Map<String, dynamic>>.from((results[3] as List?) ?? []),
+      correspondence:
+          List<Map<String, dynamic>>.from((results[4] as List?) ?? []),
+      chatMessages:
+          List<Map<String, dynamic>>.from((results[5] as List?) ?? []),
+    );
+  }
+
+  String _buildExportJson({
+    required Map<String, dynamic>? profile,
+    required List<Map<String, dynamic>> cases,
+    required List<Map<String, dynamic>> documents,
+    required List<Map<String, dynamic>> deadlines,
+    required List<Map<String, dynamic>> correspondence,
+    required List<Map<String, dynamic>> chatMessages,
+  }) {
+    final exportData = {
+      'exported_at': DateTime.now().toIso8601String(),
+      'app': 'Advocat',
+      'version': '1.0.0',
+      'profile': profile,
+      'cases': cases,
+      'documents': documents,
+      'deadlines': deadlines,
+      'correspondence': correspondence,
+      'chat_messages': chatMessages,
+    };
+    return const JsonEncoder.withIndent('  ').convert(exportData);
   }
 }

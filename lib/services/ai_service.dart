@@ -47,7 +47,10 @@ class AIService {
   // ── Input sanitization ──────────────────────────────────────────────────
 
   /// Patterns that indicate prompt injection attempts.
+  ///
+  /// Covers English, Russian, Estonian, and Arabic injection vectors.
   static final List<RegExp> _injectionPatterns = [
+    // ── English ──────────────────────────────────────────────────────────
     RegExp(r'ignore\s+(all\s+)?previous\s+instructions', caseSensitive: false),
     RegExp(r'ignore\s+(all\s+)?prior\s+instructions', caseSensitive: false),
     RegExp(r'disregard\s+(all\s+)?(previous|prior|above)\s+instructions', caseSensitive: false),
@@ -61,17 +64,92 @@ class AIService {
     RegExp(r'<\s*system\s*>', caseSensitive: false),
     RegExp(r'\[SYSTEM\]', caseSensitive: false),
     RegExp(r'ENTER\s+(ADMIN|DEBUG|DEV)\s+MODE', caseSensitive: false),
+
+    // ── Russian ──────────────────────────────────────────────────────────
+    RegExp(r'игнорируй\s+(все\s+)?предыдущие\s+инструкции', caseSensitive: false),
+    RegExp(r'забудь\s+(все\s+)?(предыдущие\s+)?инструкции', caseSensitive: false),
+    RegExp(r'ты\s+теперь\s+', caseSensitive: false),
+    RegExp(r'системная\s+команда', caseSensitive: false),
+    RegExp(r'новая\s+системная\s+(роль|команда|инструкция)', caseSensitive: false),
+    RegExp(r'притворись\s+(что\s+)?ты\s+', caseSensitive: false),
+    RegExp(r'действуй\s+как\s+', caseSensitive: false),
+
+    // ── Estonian ─────────────────────────────────────────────────────────
+    RegExp(r'ignoreeri\s+(k[õo]iki\s+)?eelmisi\s+juhiseid', caseSensitive: false),
+    RegExp(r'sa\s+oled\s+n[üu]{1,2}d\s+', caseSensitive: false),
+    RegExp(r's[üu]steemi\s+k[äa]sk', caseSensitive: false),
+    RegExp(r'unusta\s+(k[õo]ik\s+)?eelmised\s+juhised', caseSensitive: false),
+
+    // ── Arabic ──────────────────────────────────────────────────────────
+    RegExp(r'تجاهل\s+التعليمات\s+السابقة', caseSensitive: false),
+    RegExp(r'أنت\s+الآن\s+', caseSensitive: false),
+    RegExp(r'تجاهل\s+(كل\s+)?التعليمات', caseSensitive: false),
   ];
+
+  /// Map of Cyrillic characters that visually resemble Latin ones.
+  ///
+  /// Attackers may substitute е→e, а→a, о→o, etc. to bypass regex
+  /// filters. We normalise these before pattern matching.
+  static const Map<String, String> _cyrillicHomoglyphs = {
+    'А': 'A', 'а': 'a', // Cyrillic A
+    'В': 'B',            // Cyrillic Ve
+    'Е': 'E', 'е': 'e', // Cyrillic Ie
+    'К': 'K', 'к': 'k', // Cyrillic Ka
+    'М': 'M',            // Cyrillic Em
+    'Н': 'H',            // Cyrillic En
+    'О': 'O', 'о': 'o', // Cyrillic O
+    'Р': 'P', 'р': 'p', // Cyrillic Er
+    'С': 'C', 'с': 'c', // Cyrillic Es
+    'Т': 'T',            // Cyrillic Te
+    'У': 'Y',            // Cyrillic U
+    'Х': 'X', 'х': 'x', // Cyrillic Kha
+  };
+
+  /// Normalise Cyrillic homoglyphs to their Latin equivalents so that
+  /// mixed-script injection attempts are caught by the English patterns.
+  static String _normalizeCyrillicHomoglyphs(String text) {
+    final buffer = StringBuffer();
+    for (final rune in text.runes) {
+      final char = String.fromCharCode(rune);
+      buffer.write(_cyrillicHomoglyphs[char] ?? char);
+    }
+    return buffer.toString();
+  }
 
   /// Sanitize user input by stripping prompt injection patterns.
   ///
   /// Returns the cleaned text. Matched fragments are replaced with
   /// `[removed]` so the user's intent is still partially preserved
   /// without the injection payload.
+  ///
+  /// The method first normalises Cyrillic homoglyphs to Latin so that
+  /// mixed-script evasion attempts (e.g. using Cyrillic "а" instead of
+  /// Latin "a") are caught by the English-language patterns.
   static String _sanitizeInput(String text) {
+    // First pass: normalise homoglyphs and check against all patterns
+    final normalised = _normalizeCyrillicHomoglyphs(text);
     var sanitized = text;
     for (final pattern in _injectionPatterns) {
-      sanitized = sanitized.replaceAll(pattern, '[removed]');
+      // Check against the normalised text to find match positions,
+      // then remove from the original text at the same offsets.
+      if (pattern.hasMatch(normalised)) {
+        sanitized = sanitized.replaceAll(pattern, '[removed]');
+        // Also replace in the homoglyph-normalised form applied to sanitized
+        final sanitizedNorm = _normalizeCyrillicHomoglyphs(sanitized);
+        if (pattern.hasMatch(sanitizedNorm)) {
+          // Rebuild sanitized by replacing matches found in normalised form
+          final normMatches = pattern.allMatches(sanitizedNorm);
+          // Replace from end to preserve offsets
+          final matchList = normMatches.toList().reversed;
+          final chars = sanitized.split('');
+          for (final m in matchList) {
+            chars.replaceRange(m.start, m.end, '[removed]'.split(''));
+          }
+          sanitized = chars.join();
+        }
+      } else {
+        sanitized = sanitized.replaceAll(pattern, '[removed]');
+      }
     }
     return sanitized;
   }
@@ -198,7 +276,7 @@ class AIService {
         // Send to Claude with tools enabled
         final rawResponse = await _claudeService.sendMessageWithTools(
           messages: _conversationHistory[caseId] ?? [
-            {'role': 'user', 'content': message},
+            {'role': 'user', 'content': sanitizedMessage},
           ],
           systemPrompt: systemPrompt,
         );

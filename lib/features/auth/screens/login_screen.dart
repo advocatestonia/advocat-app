@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/gdpr_consent_dialog.dart';
 import '../providers/auth_provider.dart';
 
 /// Clean, minimal login screen for Advocat.
@@ -92,6 +93,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       );
   }
 
+  /// Checks GDPR consent before navigating to home.
+  /// If consent was not previously given, shows the dialog.
+  /// If the user declines, logs them out so they stay on the login screen.
+  Future<void> _ensureGdprConsentThenNavigate() async {
+    final alreadyConsented = await hasGdprConsent();
+    if (alreadyConsented) {
+      if (mounted) context.go(AppRoutes.home);
+      return;
+    }
+
+    if (!mounted) return;
+    final accepted = await showGdprConsentDialog(context);
+    if (!mounted) return;
+
+    if (accepted) {
+      context.go(AppRoutes.home);
+    } else {
+      // User declined — log them out so they remain on the login screen.
+      ref.read(authControllerProvider.notifier).logout();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
@@ -99,7 +122,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
     ref.listen<AuthState>(authControllerProvider, (prev, next) {
       if (next.isAuthenticated) {
-        context.go(AppRoutes.home);
+        _ensureGdprConsentThenNavigate();
       } else if (next.hasError && next.errorMessage != null) {
         _showSnackBar(next.errorMessage!);
         ref.read(authControllerProvider.notifier).clearError();
