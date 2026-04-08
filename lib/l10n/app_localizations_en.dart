@@ -1528,7 +1528,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gdprFooter =>
-      'Your data is encrypted and never shared with third parties. You can withdraw consent and delete all data from Settings.';
+      'Your data is encrypted and processed securely. We use trusted service providers (AI processing, cloud database) to deliver the service. See our Privacy Policy for details. You can withdraw consent and delete all data from Settings.';
+
+  @override
+  String get gdprConsentAiProcessing =>
+      'I agree to the processing of my data for AI legal assistance (required)';
+
+  @override
+  String get gdprConsentAnalytics =>
+      'I agree to analytics to improve the service (optional)';
+
+  @override
+  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+
+  @override
+  String get legalInformation => 'Legal Information';
+
+  @override
+  String get legalEntityName => 'Vorantis OÜ';
+
+  @override
+  String get legalRegistryCode => 'Registry code: to be added';
+
+  @override
+  String get legalAddress => 'Address: to be added';
+
+  @override
+  String get legalEmail => 'Email: support@advocat.ee';
+
+  @override
+  String get legalRegistry =>
+      'Registered in Estonian Commercial Register (Äriregister)';
+
+  @override
+  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
 
   @override
   String get decline => 'Decline';

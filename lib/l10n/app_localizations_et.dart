@@ -1541,6 +1541,39 @@ class AppLocalizationsEt extends AppLocalizations {
       'Teie andmed on krüpteeritud ega jagata kunagi kolmandatele osapooltele. Saate nõusoleku tagasi võtta ja kõik andmed kustutada Seadetest.';
 
   @override
+  String get gdprConsentAiProcessing =>
+      'I agree to the processing of my data for AI legal assistance (required)';
+
+  @override
+  String get gdprConsentAnalytics =>
+      'I agree to analytics to improve the service (optional)';
+
+  @override
+  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+
+  @override
+  String get legalInformation => 'Legal Information';
+
+  @override
+  String get legalEntityName => 'Vorantis OÜ';
+
+  @override
+  String get legalRegistryCode => 'Registry code: to be added';
+
+  @override
+  String get legalAddress => 'Address: to be added';
+
+  @override
+  String get legalEmail => 'Email: support@advocat.ee';
+
+  @override
+  String get legalRegistry =>
+      'Registered in Estonian Commercial Register (Äriregister)';
+
+  @override
+  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+
+  @override
   String get decline => 'Keeldu';
 
   @override

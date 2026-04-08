@@ -126,6 +126,12 @@ class SettingsScreen extends ConsumerWidget {
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
             onTap: () => _launchUrl('https://advocat.ee/privacy'),
           ),
+          _SettingsTile(
+            icon: Icons.business_outlined,
+            title: l.legalInformation,
+            trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
+            onTap: () => _showLegalInfoDialog(context),
+          ),
 
           const _SectionDivider(),
 
@@ -590,6 +596,69 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
+  void _showLegalInfoDialog(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                l.legalInformation,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              _LegalInfoRow(
+                icon: Icons.business_outlined,
+                text: l.legalEntityName,
+              ),
+              _LegalInfoRow(
+                icon: Icons.tag_outlined,
+                text: l.legalRegistryCode,
+              ),
+              _LegalInfoRow(
+                icon: Icons.location_on_outlined,
+                text: l.legalAddress,
+              ),
+              _LegalInfoRow(
+                icon: Icons.email_outlined,
+                text: l.legalEmail,
+              ),
+              _LegalInfoRow(
+                icon: Icons.account_balance_outlined,
+                text: l.legalRegistry,
+              ),
+              const SizedBox(height: AppSpacing.md),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Future<void> _launchUrl(String url) async {
     final uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
@@ -787,6 +856,38 @@ class _SettingsTileState extends State<_SettingsTile>
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _LegalInfoRow extends StatelessWidget {
+  const _LegalInfoRow({required this.icon, required this.text});
+
+  final IconData icon;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, size: 20, color: AppColors.textSecondary),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 14,
+                height: 1.4,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

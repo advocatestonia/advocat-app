@@ -84,14 +84,30 @@ class ChatMessageBubble extends StatelessWidget {
                   onActionTap: (label) => onAction?.call(label),
                 ),
               const SizedBox(height: 4),
-              Text(
-                _formatTime(message.timestamp),
-                style: TextStyle(
-                  fontSize: 11,
-                  color: _isUser
-                      ? Colors.white.withValues(alpha: 0.6)
-                      : AppColors.textTertiary,
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    _formatTime(message.timestamp),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: _isUser
+                          ? Colors.white.withValues(alpha: 0.6)
+                          : AppColors.textTertiary,
+                    ),
+                  ),
+                  if (!_isUser) ...[
+                    const SizedBox(width: 8),
+                    const Text(
+                      'AI-generated \u2022 Not legal advice',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: AppColors.textTertiary,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ],
           ),

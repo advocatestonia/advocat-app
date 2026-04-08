@@ -2981,8 +2981,68 @@ abstract class AppLocalizations {
   /// No description provided for @gdprFooter.
   ///
   /// In en, this message translates to:
-  /// **'Your data is encrypted and never shared with third parties. You can withdraw consent and delete all data from Settings.'**
+  /// **'Your data is encrypted and processed securely. We use trusted service providers (AI processing, cloud database) to deliver the service. See our Privacy Policy for details. You can withdraw consent and delete all data from Settings.'**
   String get gdprFooter;
+
+  /// No description provided for @gdprConsentAiProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to the processing of my data for AI legal assistance (required)'**
+  String get gdprConsentAiProcessing;
+
+  /// No description provided for @gdprConsentAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to analytics to improve the service (optional)'**
+  String get gdprConsentAnalytics;
+
+  /// No description provided for @gdprViewPrivacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'View Privacy Policy'**
+  String get gdprViewPrivacyPolicy;
+
+  /// No description provided for @legalInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal Information'**
+  String get legalInformation;
+
+  /// No description provided for @legalEntityName.
+  ///
+  /// In en, this message translates to:
+  /// **'Vorantis OÜ'**
+  String get legalEntityName;
+
+  /// No description provided for @legalRegistryCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Registry code: to be added'**
+  String get legalRegistryCode;
+
+  /// No description provided for @legalAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Address: to be added'**
+  String get legalAddress;
+
+  /// No description provided for @legalEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email: support@advocat.ee'**
+  String get legalEmail;
+
+  /// No description provided for @legalRegistry.
+  ///
+  /// In en, this message translates to:
+  /// **'Registered in Estonian Commercial Register (Äriregister)'**
+  String get legalRegistry;
+
+  /// No description provided for @aiGeneratedDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-generated • Not legal advice'**
+  String get aiGeneratedDisclaimer;
 
   /// No description provided for @decline.
   ///
