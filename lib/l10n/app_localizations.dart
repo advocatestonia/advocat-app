@@ -1961,8 +1961,8 @@ abstract class AppLocalizations {
   /// No description provided for @checkEligibility.
   ///
   /// In en, this message translates to:
-  /// **'Check your eligibility for Finnish legal aid'**
-  String get checkEligibility;
+  /// **'Check your eligibility for {country} legal aid'**
+  String checkEligibility(String country);
 
   /// No description provided for @estimateDisclaimer.
   ///
@@ -3367,6 +3367,384 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Victim Support Finland (RIKU)'**
   String get contactVictimSupportRIKU;
+
+  /// No description provided for @domesticViolence.
+  ///
+  /// In en, this message translates to:
+  /// **'Domestic Violence & Assault'**
+  String get domesticViolence;
+
+  /// No description provided for @domesticViolenceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Victim rights, emergency help, restraining orders'**
+  String get domesticViolenceDesc;
+
+  /// No description provided for @rightCallEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to call 112 in any emergency — police, ambulance, fire'**
+  String get rightCallEmergency;
+
+  /// No description provided for @rightVictimProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'As a victim, you have the right to protection, support, and information about your case'**
+  String get rightVictimProtection;
+
+  /// No description provided for @rightRestrainingOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'You can apply for a restraining order (lähestymiskielto) to keep the abuser away'**
+  String get rightRestrainingOrder;
+
+  /// No description provided for @rightVictimInterpreter.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to an interpreter during all legal proceedings'**
+  String get rightVictimInterpreter;
+
+  /// No description provided for @rightMedicalHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to immediate medical treatment and documentation of injuries'**
+  String get rightMedicalHelp;
+
+  /// No description provided for @rightShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to emergency shelter — contact a shelter or social services'**
+  String get rightShelter;
+
+  /// No description provided for @mustReportDanger.
+  ///
+  /// In en, this message translates to:
+  /// **'If someone is in immediate danger, call 112 immediately'**
+  String get mustReportDanger;
+
+  /// No description provided for @mustDocumentInjuries.
+  ///
+  /// In en, this message translates to:
+  /// **'Document all injuries — photos, medical records, written notes'**
+  String get mustDocumentInjuries;
+
+  /// No description provided for @domesticActionCallEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Call 112 if you are in immediate danger'**
+  String get domesticActionCallEmergency;
+
+  /// No description provided for @domesticActionGoToSafe.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to a safe place — shelter, friend, public place'**
+  String get domesticActionGoToSafe;
+
+  /// No description provided for @domesticActionDocumentEverything.
+  ///
+  /// In en, this message translates to:
+  /// **'Document injuries: take photos, get medical records'**
+  String get domesticActionDocumentEverything;
+
+  /// No description provided for @domesticActionFilePoliceReport.
+  ///
+  /// In en, this message translates to:
+  /// **'File a police report — you can do this later too'**
+  String get domesticActionFilePoliceReport;
+
+  /// No description provided for @domesticActionContactShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact a shelter or crisis helpline'**
+  String get domesticActionContactShelter;
+
+  /// No description provided for @domesticActionApplyRestraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply for a restraining order through police or court'**
+  String get domesticActionApplyRestraining;
+
+  /// No description provided for @domesticFactRestrainingOrder.
+  ///
+  /// In en, this message translates to:
+  /// **'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.'**
+  String get domesticFactRestrainingOrder;
+
+  /// No description provided for @domesticFactVictimDirective.
+  ///
+  /// In en, this message translates to:
+  /// **'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.'**
+  String get domesticFactVictimDirective;
+
+  /// No description provided for @domesticDeadlinePoliceReport.
+  ///
+  /// In en, this message translates to:
+  /// **'File police report — no strict deadline, but sooner is better for evidence'**
+  String get domesticDeadlinePoliceReport;
+
+  /// No description provided for @domesticDeadlineRestraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Restraining order — can be applied for at any time'**
+  String get domesticDeadlineRestraining;
+
+  /// No description provided for @contactEmergency.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency Number'**
+  String get contactEmergency;
+
+  /// No description provided for @contactShelter.
+  ///
+  /// In en, this message translates to:
+  /// **'Turvakoti (Shelter) Helpline'**
+  String get contactShelter;
+
+  /// No description provided for @contactCrisisHelpline.
+  ///
+  /// In en, this message translates to:
+  /// **'Crisis Helpline (Kriisipuhelin)'**
+  String get contactCrisisHelpline;
+
+  /// No description provided for @contactNollaLinja.
+  ///
+  /// In en, this message translates to:
+  /// **'Nollalinja — Violence Against Women Helpline'**
+  String get contactNollaLinja;
+
+  /// No description provided for @consumerProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer Protection'**
+  String get consumerProtection;
+
+  /// No description provided for @consumerProtectionDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Fraud, defective products, returns, deceptive sellers'**
+  String get consumerProtectionDesc;
+
+  /// No description provided for @rightReturnOnline.
+  ///
+  /// In en, this message translates to:
+  /// **'You have 14 days to cancel online purchases without reason (EU right of withdrawal)'**
+  String get rightReturnOnline;
+
+  /// No description provided for @rightDefectiveProduct.
+  ///
+  /// In en, this message translates to:
+  /// **'If a product is defective, you have the right to repair, replacement, or refund'**
+  String get rightDefectiveProduct;
+
+  /// No description provided for @rightClearPricing.
+  ///
+  /// In en, this message translates to:
+  /// **'Sellers must display clear prices including all fees — hidden costs are illegal'**
+  String get rightClearPricing;
+
+  /// No description provided for @rightComplainBoard.
+  ///
+  /// In en, this message translates to:
+  /// **'You can file a free complaint with the Consumer Disputes Board'**
+  String get rightComplainBoard;
+
+  /// No description provided for @rightProtectionFraud.
+  ///
+  /// In en, this message translates to:
+  /// **'You are protected against unfair commercial practices and fraud'**
+  String get rightProtectionFraud;
+
+  /// No description provided for @mustKeepReceipts.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep all receipts, contracts, and communication with sellers'**
+  String get mustKeepReceipts;
+
+  /// No description provided for @mustActTimely.
+  ///
+  /// In en, this message translates to:
+  /// **'Report defects to the seller within a reasonable time after discovery'**
+  String get mustActTimely;
+
+  /// No description provided for @consumerActionKeepEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep receipts, screenshots, emails, and all proof of purchase'**
+  String get consumerActionKeepEvidence;
+
+  /// No description provided for @consumerActionContactSeller.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the seller first — explain the problem in writing'**
+  String get consumerActionContactSeller;
+
+  /// No description provided for @consumerActionFileComplaint.
+  ///
+  /// In en, this message translates to:
+  /// **'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)'**
+  String get consumerActionFileComplaint;
+
+  /// No description provided for @consumerActionContactAuthority.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the Consumer Advisory Services for free help'**
+  String get consumerActionContactAuthority;
+
+  /// No description provided for @consumerActionReportFraud.
+  ///
+  /// In en, this message translates to:
+  /// **'Report fraud to the police and Consumer Ombudsman'**
+  String get consumerActionReportFraud;
+
+  /// No description provided for @consumerFactWithdrawal.
+  ///
+  /// In en, this message translates to:
+  /// **'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.'**
+  String get consumerFactWithdrawal;
+
+  /// No description provided for @consumerFactWarranty.
+  ///
+  /// In en, this message translates to:
+  /// **'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.'**
+  String get consumerFactWarranty;
+
+  /// No description provided for @consumerDeadlineWithdrawal.
+  ///
+  /// In en, this message translates to:
+  /// **'Online purchase withdrawal — 14 days from delivery'**
+  String get consumerDeadlineWithdrawal;
+
+  /// No description provided for @consumerDeadlineDefect.
+  ///
+  /// In en, this message translates to:
+  /// **'Report defect to seller — within 2 months of discovery (recommended)'**
+  String get consumerDeadlineDefect;
+
+  /// No description provided for @contactConsumerAdvisory.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer Advisory Services'**
+  String get contactConsumerAdvisory;
+
+  /// No description provided for @contactConsumerOmbudsman.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer Ombudsman (Kuluttaja-asiamies)'**
+  String get contactConsumerOmbudsman;
+
+  /// No description provided for @contactConsumerDisputesBoardDirect.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer Disputes Board'**
+  String get contactConsumerDisputesBoardDirect;
+
+  /// No description provided for @caseTypeStepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Case Type'**
+  String get caseTypeStepLabel;
+
+  /// No description provided for @detailsStepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get detailsStepLabel;
+
+  /// No description provided for @documentsStepLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documentsStepLabel;
+
+  /// No description provided for @whatTypeOfCase.
+  ///
+  /// In en, this message translates to:
+  /// **'What type of case is this?'**
+  String get whatTypeOfCase;
+
+  /// No description provided for @selectCategoryDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the category that best describes your situation.'**
+  String get selectCategoryDescription;
+
+  /// No description provided for @tellUsAboutCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Tell us about your case'**
+  String get tellUsAboutCase;
+
+  /// No description provided for @aiHelpsUnderstand.
+  ///
+  /// In en, this message translates to:
+  /// **'This information helps our AI understand your situation better.'**
+  String get aiHelpsUnderstand;
+
+  /// No description provided for @caseTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., Residence Permit Appeal 2026'**
+  String get caseTitleHint;
+
+  /// No description provided for @countryJurisdiction.
+  ///
+  /// In en, this message translates to:
+  /// **'Country / Jurisdiction'**
+  String get countryJurisdiction;
+
+  /// No description provided for @selectCountryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a country'**
+  String get selectCountryHint;
+
+  /// No description provided for @referenceNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., UMA/12345/2026'**
+  String get referenceNumberHint;
+
+  /// No description provided for @descriptionOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get descriptionOptional;
+
+  /// No description provided for @descriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your situation briefly. What happened? What decision was made?'**
+  String get descriptionHint;
+
+  /// No description provided for @uploadFirstDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your first document'**
+  String get uploadFirstDocument;
+
+  /// No description provided for @uploadDocumentDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload the decision letter or any relevant document. You can skip this step and add documents later.'**
+  String get uploadDocumentDescription;
+
+  /// No description provided for @tapToUploadFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to upload a file'**
+  String get tapToUploadFile;
+
+  /// No description provided for @fileSizeLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF, JPG, PNG up to 25 MB'**
+  String get fileSizeLimit;
+
+  /// No description provided for @addDocumentsLaterHint.
+  ///
+  /// In en, this message translates to:
+  /// **'You can always add documents later from the case detail screen.'**
+  String get addDocumentsLaterHint;
 }
 
 class _AppLocalizationsDelegate

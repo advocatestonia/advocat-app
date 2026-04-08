@@ -27,12 +27,13 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AppBar(
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            caseName ?? 'AI Legal Assistant',
+            caseName ?? l10n.aiAssistant,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,

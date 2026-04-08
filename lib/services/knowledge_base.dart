@@ -73,6 +73,12 @@ abstract final class KnowledgeBase {
       case CaseType.socialBenefits:
         sections.add(_socialBenefitsLaw(countryLower));
         break;
+      case CaseType.domesticViolence:
+        sections.add(_discriminationLaw(countryLower));
+        break;
+      case CaseType.consumerProtection:
+        sections.add(_consumerLaw(countryLower));
+        break;
       case CaseType.other:
       case null:
         // Include a broad overview

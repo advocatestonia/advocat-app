@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import 'voice_button.dart';
 
 /// Bottom input bar for the chat screen with text field, send, voice and attach.
@@ -94,10 +95,10 @@ class ChatInputBar extends StatelessWidget {
                     enabled: !isSending,
                     textInputAction: TextInputAction.send,
                     onSubmitted: (_) => onSend(),
-                    decoration: const InputDecoration(
-                      hintText: 'Type your message...',
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)?.typeMessage ?? 'Type a message...',
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
+                      contentPadding: const EdgeInsets.symmetric(
                         horizontal: 14,
                         vertical: 10,
                       ),

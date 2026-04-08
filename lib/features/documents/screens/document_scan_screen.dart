@@ -43,7 +43,7 @@ class DocumentScanScreen extends ConsumerStatefulWidget {
 }
 
 class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
   // Camera
   CameraController? _cameraController;
   bool _isCameraInitialized = false;
@@ -63,10 +63,25 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
   bool _isProcessingOcr = false;
   double _uploadProgress = 0;
 
+  // Animations
+  late final AnimationController _scanLineController;
+  late final Animation<double> _scanLineAnimation;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // Animated scan line
+    _scanLineController = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _scanLineAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _scanLineController, curve: Curves.easeInOut),
+    );
+
     _initCamera();
   }
 
@@ -75,6 +90,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
     WidgetsBinding.instance.removeObserver(this);
     _cameraController?.dispose();
     _textRecognizer.close();
+    _scanLineController.dispose();
     super.dispose();
   }
 
@@ -302,12 +318,22 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
     );
   }
 
-  // ── Camera view with document frame overlay ─────────────────────────────
+  // ── Camera view with animated scanning frame overlay ────────────────────
 
   Widget _buildCameraView() {
     if (!_isCameraInitialized) {
-      return const Center(
-        child: CircularProgressIndicator(color: Colors.white),
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(color: Colors.white),
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              'Initializing camera...',
+              style: TextStyle(color: Colors.white.withValues(alpha: 0.7), fontSize: 14),
+            ),
+          ],
+        ),
       );
     }
 
@@ -318,12 +344,24 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.camera_alt_outlined,
-                  size: 64, color: Colors.white54),
-              const SizedBox(height: AppSpacing.md),
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.camera_alt_outlined,
+                    size: 40, color: Colors.white54),
+              ),
+              const SizedBox(height: AppSpacing.lg),
               Text(
                 AppLocalizations.of(context)!.cameraPermissionRequired,
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: AppSpacing.sm),
@@ -338,11 +376,18 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
                   side: const BorderSide(color: Colors.white54),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
                 ),
                 child: Text(AppLocalizations.of(context)!.openSettings),
               ),
             ],
-          ),
+          )
+              .animate()
+              .fadeIn(duration: 400.ms)
+              .slideY(begin: 0.1, end: 0, duration: 400.ms),
         ),
       );
     }
@@ -365,9 +410,16 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
           ),
         ),
 
-        // Document edge detection frame overlay
-        CustomPaint(
-          painter: _DocumentFramePainter(),
+        // Document edge detection frame overlay with animated scan line
+        AnimatedBuilder(
+          animation: _scanLineAnimation,
+          builder: (context, child) {
+            return CustomPaint(
+              painter: _AnimatedDocumentFramePainter(
+                scanProgress: _scanLineAnimation.value,
+              ),
+            );
+          },
         ),
 
         // Hint text
@@ -408,6 +460,13 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               decoration: BoxDecoration(
                 color: AppColors.accent,
                 borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.4),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: Text(
                 AppLocalizations.of(context)!.pageCount(_pages.length),
@@ -417,22 +476,27 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
+            )
+                .animate()
+                .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 300.ms, curve: Curves.elasticOut),
           ),
       ],
     );
   }
 
-  // ── Preview after capture ───────────────────────────────────────────────
+  // ── Preview after capture with smooth transition ────────────────────────
 
   Widget _buildPreview() {
     return Image.file(
       File(_currentCapture!.path),
       fit: BoxFit.contain,
-    );
+    )
+        .animate()
+        .fadeIn(duration: 300.ms)
+        .scale(begin: const Offset(0.96, 0.96), end: const Offset(1, 1), duration: 300.ms, curve: Curves.easeOut);
   }
 
-  // ── Upload progress ─────────────────────────────────────────────────────
+  // ── Upload progress with premium animation ─────────────────────────────
 
   Widget _buildUploadProgress() {
     return Container(
@@ -443,14 +507,39 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              // Animated progress ring
               SizedBox(
-                width: 80,
-                height: 80,
-                child: CircularProgressIndicator(
-                  value: _uploadProgress > 0 ? _uploadProgress : null,
-                  color: AppColors.accent,
-                  strokeWidth: 4,
-                  backgroundColor: Colors.white24,
+                width: 100,
+                height: 100,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: CircularProgressIndicator(
+                        value: _uploadProgress > 0 ? _uploadProgress : null,
+                        color: AppColors.accent,
+                        strokeWidth: 4,
+                        backgroundColor: Colors.white.withValues(alpha: 0.15),
+                      ),
+                    ),
+                    if (_uploadProgress > 0)
+                      Text(
+                        '${(_uploadProgress * 100).toInt()}%',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      )
+                    else
+                      const Icon(
+                        Icons.cloud_upload_outlined,
+                        color: Colors.white70,
+                        size: 32,
+                      ),
+                  ],
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
@@ -470,27 +559,61 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
             ],
-          ),
+          )
+              .animate()
+              .fadeIn(duration: 400.ms)
+              .slideY(begin: 0.1, end: 0, duration: 400.ms),
         ),
       ),
     );
   }
 
-  // ── Processing overlay ──────────────────────────────────────────────────
+  // ── Processing overlay with typewriter-style text ──────────────────────
 
   Widget _buildProcessingOverlay() {
     return Container(
-      color: Colors.black54,
+      color: Colors.black.withValues(alpha: 0.7),
       child: Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircularProgressIndicator(color: Colors.white),
-            const SizedBox(height: AppSpacing.md),
+            // Scanning animation container
+            Container(
+              width: 72,
+              height: 72,
+              decoration: BoxDecoration(
+                color: AppColors.accent.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.document_scanner_rounded,
+                color: AppColors.accentLight,
+                size: 36,
+              ),
+            )
+                .animate(onPlay: (c) => c.repeat(reverse: true))
+                .scaleXY(begin: 0.9, end: 1.1, duration: 800.ms),
+            const SizedBox(height: AppSpacing.lg),
             Text(
               AppLocalizations.of(context)!.readingText,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
-            ),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+                .animate()
+                .fadeIn(duration: 300.ms),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Extracting text from document...',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 13,
+              ),
+            )
+                .animate()
+                .fadeIn(delay: 200.ms, duration: 400.ms),
           ],
         ),
       ),
@@ -516,9 +639,10 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
       ),
       child: Row(
         children: [
-          IconButton(
+          // Close button with press feedback
+          _PremiumIconButton(
+            icon: Icons.close_rounded,
             onPressed: () => context.pop(),
-            icon: const Icon(Icons.close_rounded, color: Colors.white, size: 28),
           ),
           const Spacer(),
           Text(
@@ -531,19 +655,31 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               color: Colors.white,
               fontSize: 17,
               fontWeight: FontWeight.w600,
+              letterSpacing: -0.3,
             ),
           ),
           const Spacer(),
           // Finish button (visible when pages are captured and in camera mode)
           if (_pages.isNotEmpty && _phase == _ScanPhase.camera)
-            TextButton(
-              onPressed: _finishAndUpload,
-              child: Text(
-                AppLocalizations.of(context)!.done,
-                style: const TextStyle(
-                  color: AppColors.accentLight,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accentLight.withValues(alpha: 0.3),
+                    blurRadius: 8,
+                  ),
+                ],
+              ),
+              child: TextButton(
+                onPressed: _finishAndUpload,
+                child: Text(
+                  AppLocalizations.of(context)!.done,
+                  style: const TextStyle(
+                    color: AppColors.accentLight,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             )
@@ -585,24 +721,9 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               size: 48,
             ),
 
-            // Shutter button
-            GestureDetector(
+            // Shutter button with premium animation
+            _ShutterButton(
               onTap: _hasCameraPermission ? _takePhoto : _pickFromGallery,
-              child: Container(
-                width: 72,
-                height: 72,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 4),
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(4),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
             ),
 
             // Flash toggle
@@ -616,7 +737,10 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
             ),
           ],
         ),
-      ),
+      )
+          .animate()
+          .fadeIn(delay: 200.ms, duration: 400.ms)
+          .slideY(begin: 0.15, end: 0, delay: 200.ms, duration: 400.ms),
     );
   }
 
@@ -660,24 +784,140 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
             const SizedBox(width: AppSpacing.md),
             Expanded(
               flex: 2,
-              child: ElevatedButton(
-                onPressed: _isProcessingOcr ? null : _usePhoto,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                  ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.35),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: Text(
-                  _pages.isEmpty ? AppLocalizations.of(context)!.useThisPhoto : AppLocalizations.of(context)!.addPage,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600),
+                child: ElevatedButton(
+                  onPressed: _isProcessingOcr ? null : _usePhoto,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                  ),
+                  child: Text(
+                    _pages.isEmpty ? AppLocalizations.of(context)!.useThisPhoto : AppLocalizations.of(context)!.addPage,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
             ),
           ],
+        ),
+      )
+          .animate()
+          .fadeIn(duration: 300.ms)
+          .slideY(begin: 0.1, end: 0, duration: 300.ms),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Premium Shutter Button with tap animation
+// ---------------------------------------------------------------------------
+
+class _ShutterButton extends StatefulWidget {
+  const _ShutterButton({required this.onTap});
+  final VoidCallback onTap;
+
+  @override
+  State<_ShutterButton> createState() => _ShutterButtonState();
+}
+
+class _ShutterButtonState extends State<_ShutterButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.88 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: Container(
+          width: 72,
+          height: 72,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white, width: 4),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.white.withValues(alpha: _isPressed ? 0.1 : 0.2),
+                blurRadius: _isPressed ? 4 : 12,
+                spreadRadius: _isPressed ? 0 : 2,
+              ),
+            ],
+          ),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            margin: EdgeInsets.all(_isPressed ? 6 : 4),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _isPressed ? Colors.white70 : Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Premium icon button for top bar
+// ---------------------------------------------------------------------------
+
+class _PremiumIconButton extends StatefulWidget {
+  const _PremiumIconButton({
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  @override
+  State<_PremiumIconButton> createState() => _PremiumIconButtonState();
+}
+
+class _PremiumIconButtonState extends State<_PremiumIconButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onPressed();
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.9 : 1.0,
+        duration: const Duration(milliseconds: 80),
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: _isPressed ? Colors.white24 : Colors.transparent,
+            shape: BoxShape.circle,
+          ),
+          child: Icon(widget.icon, color: Colors.white, size: 28),
         ),
       ),
     );
@@ -688,7 +928,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
 // Helper widgets
 // ---------------------------------------------------------------------------
 
-class _CircleIconButton extends StatelessWidget {
+class _CircleIconButton extends StatefulWidget {
   const _CircleIconButton({
     required this.icon,
     required this.onPressed,
@@ -702,21 +942,43 @@ class _CircleIconButton extends StatelessWidget {
   final bool isActive;
 
   @override
+  State<_CircleIconButton> createState() => _CircleIconButtonState();
+}
+
+class _CircleIconButtonState extends State<_CircleIconButton> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: isActive ? Colors.white24 : Colors.black38,
-          border: Border.all(color: Colors.white30),
-        ),
-        child: Icon(
-          icon,
-          color: isActive ? AppColors.accentLight : Colors.white,
-          size: size * 0.48,
+      onTapDown: widget.onPressed != null ? (_) => setState(() => _isPressed = true) : null,
+      onTapUp: widget.onPressed != null
+          ? (_) {
+              setState(() => _isPressed = false);
+              widget.onPressed!();
+            }
+          : null,
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.9 : 1.0,
+        duration: const Duration(milliseconds: 80),
+        child: Container(
+          width: widget.size,
+          height: widget.size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: widget.isActive
+                ? Colors.white24
+                : _isPressed
+                    ? Colors.white.withValues(alpha: 0.15)
+                    : Colors.black38,
+            border: Border.all(color: Colors.white30),
+          ),
+          child: Icon(
+            widget.icon,
+            color: widget.isActive ? AppColors.accentLight : Colors.white,
+            size: widget.size * 0.48,
+          ),
         ),
       ),
     );
@@ -724,10 +986,14 @@ class _CircleIconButton extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Document frame overlay painter
+// Animated document frame overlay painter with scanning line
 // ---------------------------------------------------------------------------
 
-class _DocumentFramePainter extends CustomPainter {
+class _AnimatedDocumentFramePainter extends CustomPainter {
+  _AnimatedDocumentFramePainter({required this.scanProgress});
+
+  final double scanProgress;
+
   @override
   void paint(Canvas canvas, Size size) {
     // Semi-transparent overlay outside the frame
@@ -750,7 +1016,23 @@ class _DocumentFramePainter extends CustomPainter {
       Paint()..color = Colors.black.withValues(alpha: 0.5),
     );
 
-    // Draw corner brackets (white)
+    // Draw animated scanning line
+    final scanY = frameRect.top + (frameRect.height * scanProgress);
+    final scanLinePaint = Paint()
+      ..shader = LinearGradient(
+        colors: [
+          Colors.transparent,
+          const Color(0xFF0D9488).withValues(alpha: 0.6),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.5, 1.0],
+      ).createShader(Rect.fromLTWH(frameRect.left, scanY - 1, frameRect.width, 2));
+    canvas.drawRect(
+      Rect.fromLTWH(frameRect.left + 4, scanY - 1, frameRect.width - 8, 2),
+      scanLinePaint,
+    );
+
+    // Draw corner brackets (white with glow effect)
     final cornerPaint = Paint()
       ..color = Colors.white
       ..strokeWidth = 3
@@ -806,5 +1088,7 @@ class _DocumentFramePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _AnimatedDocumentFramePainter oldDelegate) {
+    return oldDelegate.scanProgress != scanProgress;
+  }
 }

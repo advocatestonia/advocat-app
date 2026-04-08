@@ -17,7 +17,8 @@ class RegisterScreen extends ConsumerStatefulWidget {
   ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends ConsumerState<RegisterScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen>
+    with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -29,12 +30,103 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   bool _agreedToTerms = false;
   String _selectedLanguage = 'en';
 
+  // Focus nodes for shadow animations
+  final _nameFocus = FocusNode();
+  final _emailFocus = FocusNode();
+  final _passwordFocus = FocusNode();
+  final _confirmPasswordFocus = FocusNode();
+
+  // Fade-in animation
+  late final AnimationController _fadeController;
+  late final Animation<double> _fadeAnimation;
+
+  // Checkbox scale animation
+  late final AnimationController _checkboxController;
+  late final Animation<double> _checkboxScale;
+
+  // Button press animation
+  late final AnimationController _buttonPressController;
+  late final Animation<double> _buttonScale;
+
+  // Google button press animation
+  late final AnimationController _googlePressController;
+  late final Animation<double> _googleScale;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Fade-in on screen load
+    _fadeController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _fadeController,
+      curve: Curves.easeOut,
+    );
+    _fadeController.forward();
+
+    // Checkbox bounce
+    _checkboxController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+    _checkboxScale = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.25), weight: 50),
+      TweenSequenceItem(tween: Tween(begin: 1.25, end: 1.0), weight: 50),
+    ]).animate(CurvedAnimation(
+      parent: _checkboxController,
+      curve: Curves.easeInOut,
+    ));
+
+    // Create Account button press
+    _buttonPressController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 120),
+    );
+    _buttonScale = Tween<double>(begin: 1.0, end: 0.96).animate(
+      CurvedAnimation(
+        parent: _buttonPressController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    // Google button press
+    _googlePressController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 120),
+    );
+    _googleScale = Tween<double>(begin: 1.0, end: 0.96).animate(
+      CurvedAnimation(
+        parent: _googlePressController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
+    // Listen to focus changes for shadow effect
+    _nameFocus.addListener(_onFocusChange);
+    _emailFocus.addListener(_onFocusChange);
+    _passwordFocus.addListener(_onFocusChange);
+    _confirmPasswordFocus.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() => setState(() {});
+
   @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _nameFocus.dispose();
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+    _confirmPasswordFocus.dispose();
+    _fadeController.dispose();
+    _checkboxController.dispose();
+    _buttonPressController.dispose();
+    _googlePressController.dispose();
     super.dispose();
   }
 
@@ -86,8 +178,35 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
       );
   }
 
+  /// Wraps a text field in an animated container that shows a subtle
+  /// shadow when the field is focused.
+  Widget _buildFocusableField({
+    required FocusNode focusNode,
+    required Widget child,
+  }) {
+    final isFocused = focusNode.hasFocus;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.sm),
+        boxShadow: isFocused
+            ? [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : [],
+      ),
+      child: child,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final authState = ref.watch(authControllerProvider);
     final passwordStrength = _evaluateStrength(_passwordController.text);
 
@@ -110,319 +229,431 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         ),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Create Account',
-                  style:
-                      Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                          ),
-                ),
-                const SizedBox(height: AppSpacing.xxl),
-
-                // -- Full name --
-                TextFormField(
-                  controller: _nameController,
-                  textCapitalization: TextCapitalization.words,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Full Name',
-                    prefixIcon: Icon(Icons.person_outlined),
-                  ),
-                  validator: (v) =>
-                      (v == null || v.trim().isEmpty) ? 'Name is required' : null,
-                ),
-                const SizedBox(height: AppSpacing.md),
-
-                // -- Email --
-                TextFormField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
-                  ),
-                  validator: (v) {
-                    if (v == null || v.trim().isEmpty) return 'Email is required';
-                    final emailRegex =
-                        RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-                    if (!emailRegex.hasMatch(v.trim())) {
-                      return 'Enter a valid email address';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: AppSpacing.md),
-
-                // -- Password --
-                TextFormField(
-                  controller: _passwordController,
-                  obscureText: _obscurePassword,
-                  textInputAction: TextInputAction.next,
-                  onChanged: (_) => setState(() {}),
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock_outlined),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscurePassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                      ),
-                      onPressed: () => setState(
-                          () => _obscurePassword = !_obscurePassword),
-                    ),
-                  ),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) return 'Password is required';
-                    if (v.length < 8) return 'Password must be at least 8 characters';
-                    return null;
-                  },
-                ),
-                const SizedBox(height: AppSpacing.sm),
-
-                // -- Password strength indicator --
-                if (_passwordController.text.isNotEmpty)
-                  _PasswordStrengthIndicator(strength: passwordStrength),
-                const SizedBox(height: AppSpacing.md),
-
-                // -- Confirm password --
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: _obscureConfirmPassword,
-                  textInputAction: TextInputAction.done,
-                  decoration: InputDecoration(
-                    labelText: 'Confirm Password',
-                    prefixIcon: const Icon(Icons.lock_outlined),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureConfirmPassword
-                            ? Icons.visibility_outlined
-                            : Icons.visibility_off_outlined,
-                      ),
-                      onPressed: () => setState(() =>
-                          _obscureConfirmPassword =
-                              !_obscureConfirmPassword),
-                    ),
-                  ),
-                  validator: (v) {
-                    if (v == null || v.isEmpty) return 'Password is required';
-                    if (v != _passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: AppSpacing.lg),
-
-                // -- Language selector --
-                DropdownButtonFormField<String>(
-                  initialValue: _selectedLanguage,
-                  decoration: InputDecoration(
-                    labelText: AppLocalizations.of(context)?.preferredLanguage ?? 'Preferred Language',
-                    prefixIcon: const Icon(Icons.language_outlined),
-                  ),
-                  items: [
-                    DropdownMenuItem(value: 'en', child: Text(AppLocalizations.of(context)?.english ?? 'English')),
-                    DropdownMenuItem(value: 'ru', child: Text(AppLocalizations.of(context)?.russian ?? 'Russian')),
-                    DropdownMenuItem(value: 'fi', child: Text(AppLocalizations.of(context)?.finnish ?? 'Finnish')),
-                  ],
-                  onChanged: (value) {
-                    if (value != null) {
-                      setState(() => _selectedLanguage = value);
-                    }
-                  },
-                ),
-                const SizedBox(height: AppSpacing.lg),
-
-                // -- Terms checkbox --
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: 24,
-                      height: 24,
-                      child: Checkbox(
-                        value: _agreedToTerms,
-                        onChanged: (v) =>
-                            setState(() => _agreedToTerms = v ?? false),
-                        activeColor: AppColors.accent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 2),
-                        child: RichText(
-                          text: TextSpan(
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  height: 1.4,
-                                ),
-                            children: [
-                              TextSpan(text: AppLocalizations.of(context)?.iAgreeToThe ?? 'I agree to the '),
-                              TextSpan(
-                                text: AppLocalizations.of(context)?.termsOfService ?? 'Terms of Service',
-                                style: const TextStyle(
-                                  color: AppColors.accent,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    // TODO: Open Terms of Service
-                                  },
-                              ),
-                              TextSpan(text: AppLocalizations.of(context)?.andWord ?? ' and '),
-                              TextSpan(
-                                text: AppLocalizations.of(context)?.privacyPolicy ?? 'Privacy Policy',
-                                style: const TextStyle(
-                                  color: AppColors.accent,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    // TODO: Open Privacy Policy
-                                  },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.xl),
-
-                // -- Create Account button --
-                SizedBox(
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed:
-                        authState.isLoading ? null : _handleRegister,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.accent,
-                      foregroundColor: Colors.white,
-                      disabledBackgroundColor:
-                          AppColors.accent.withValues(alpha: 0.6),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppRadius.md),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    child: authState.isLoading
-                        ? const SizedBox(
-                            height: 22,
-                            width: 22,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2.5,
-                              color: Colors.white,
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Reduced top spacing (was xxl = 48)
+                  Text(
+                    l.createAccount,
+                    style:
+                        Theme.of(context).textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
                             ),
-                          )
-                        : Text(AppLocalizations.of(context)?.createAccount ?? 'Create Account'),
                   ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
+                  const SizedBox(height: AppSpacing.lg),
 
-                // -- Divider --
-                Row(
-                  children: [
-                    const Expanded(
-                        child: Divider(color: AppColors.border)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpacing.md),
-                      child: Text(
-                        AppLocalizations.of(context)?.orWord ?? 'or',
+                  // -- Full name --
+                  _buildFocusableField(
+                    focusNode: _nameFocus,
+                    child: TextFormField(
+                      controller: _nameController,
+                      focusNode: _nameFocus,
+                      textCapitalization: TextCapitalization.words,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        labelText: l.fullName,
+                        prefixIcon: const Icon(Icons.person_outlined),
+                      ),
+                      validator: (v) => (v == null || v.trim().isEmpty)
+                          ? l.nameRequired
+                          : null,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm + 4),
+
+                  // -- Email --
+                  _buildFocusableField(
+                    focusNode: _emailFocus,
+                    child: TextFormField(
+                      controller: _emailController,
+                      focusNode: _emailFocus,
+                      keyboardType: TextInputType.emailAddress,
+                      autocorrect: false,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                        labelText: l.email,
+                        prefixIcon: const Icon(Icons.email_outlined),
+                      ),
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) {
+                          return l.emailRequired;
+                        }
+                        final emailRegex =
+                            RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+                        if (!emailRegex.hasMatch(v.trim())) {
+                          return l.emailInvalid;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm + 4),
+
+                  // -- Password --
+                  _buildFocusableField(
+                    focusNode: _passwordFocus,
+                    child: TextFormField(
+                      controller: _passwordController,
+                      focusNode: _passwordFocus,
+                      obscureText: _obscurePassword,
+                      textInputAction: TextInputAction.next,
+                      onChanged: (_) => setState(() {}),
+                      decoration: InputDecoration(
+                        labelText: l.password,
+                        prefixIcon: const Icon(Icons.lock_outlined),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                          onPressed: () => setState(
+                              () => _obscurePassword = !_obscurePassword),
+                        ),
+                      ),
+                      validator: (v) {
+                        if (v == null || v.isEmpty) {
+                          return l.passwordRequired;
+                        }
+                        if (v.length < 8) {
+                          return l.passwordTooShort;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xs + 2),
+
+                  // -- Password strength indicator (animated) --
+                  _AnimatedPasswordStrengthIndicator(
+                    strength: passwordStrength,
+                    visible: _passwordController.text.isNotEmpty,
+                  ),
+                  const SizedBox(height: AppSpacing.sm + 4),
+
+                  // -- Confirm password --
+                  _buildFocusableField(
+                    focusNode: _confirmPasswordFocus,
+                    child: TextFormField(
+                      controller: _confirmPasswordController,
+                      focusNode: _confirmPasswordFocus,
+                      obscureText: _obscureConfirmPassword,
+                      textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                        labelText: l.confirmPassword,
+                        prefixIcon: const Icon(Icons.lock_outlined),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirmPassword
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                          ),
+                          onPressed: () => setState(() =>
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword),
+                        ),
+                      ),
+                      validator: (v) {
+                        if (v == null || v.isEmpty) {
+                          return l.passwordRequired;
+                        }
+                        if (v != _passwordController.text) {
+                          return l.passwordsDoNotMatch;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+
+                  // -- Language selector --
+                  DropdownButtonFormField<String>(
+                    initialValue: _selectedLanguage,
+                    decoration: InputDecoration(
+                      labelText:
+                          AppLocalizations.of(context)?.preferredLanguage ??
+                              'Preferred Language',
+                      prefixIcon: const Icon(Icons.language_outlined),
+                    ),
+                    items: [
+                      DropdownMenuItem(
+                          value: 'en',
+                          child: Text(AppLocalizations.of(context)?.english ??
+                              'English')),
+                      DropdownMenuItem(
+                          value: 'ru',
+                          child: Text(AppLocalizations.of(context)?.russian ??
+                              'Russian')),
+                      DropdownMenuItem(
+                          value: 'fi',
+                          child: Text(AppLocalizations.of(context)?.finnish ??
+                              'Finnish')),
+                    ],
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() => _selectedLanguage = value);
+                      }
+                    },
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+
+                  // -- Terms checkbox with scale animation --
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(
+                              () => _agreedToTerms = !_agreedToTerms);
+                          _checkboxController.forward(from: 0);
+                        },
+                        child: ScaleTransition(
+                          scale: _checkboxScale,
+                          child: SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: Checkbox(
+                              value: _agreedToTerms,
+                              onChanged: (v) {
+                                setState(
+                                    () => _agreedToTerms = v ?? false);
+                                _checkboxController.forward(from: 0);
+                              },
+                              activeColor: AppColors.accent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 2),
+                          child: RichText(
+                            text: TextSpan(
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyMedium
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    height: 1.4,
+                                  ),
+                              children: [
+                                TextSpan(
+                                    text:
+                                        AppLocalizations.of(context)
+                                                ?.iAgreeToThe ??
+                                            'I agree to the '),
+                                TextSpan(
+                                  text: AppLocalizations.of(context)
+                                          ?.termsOfService ??
+                                      'Terms of Service',
+                                  style: const TextStyle(
+                                    color: AppColors.accent,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // TODO: Open Terms of Service
+                                    },
+                                ),
+                                TextSpan(
+                                    text:
+                                        AppLocalizations.of(context)
+                                                ?.andWord ??
+                                            ' and '),
+                                TextSpan(
+                                  text: AppLocalizations.of(context)
+                                          ?.privacyPolicy ??
+                                      'Privacy Policy',
+                                  style: const TextStyle(
+                                    color: AppColors.accent,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // TODO: Open Privacy Policy
+                                    },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // -- Create Account button with glow + press animation --
+                  ScaleTransition(
+                    scale: _buttonScale,
+                    child: GestureDetector(
+                      onTapDown: (_) => _buttonPressController.forward(),
+                      onTapUp: (_) => _buttonPressController.reverse(),
+                      onTapCancel: () => _buttonPressController.reverse(),
+                      child: Container(
+                        height: 52,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.md),
+                          boxShadow: [
+                            BoxShadow(
+                              color:
+                                  AppColors.accent.withValues(alpha: 0.35),
+                              blurRadius: 16,
+                              offset: const Offset(0, 4),
+                            ),
+                            BoxShadow(
+                              color:
+                                  AppColors.accent.withValues(alpha: 0.15),
+                              blurRadius: 32,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
+                        ),
+                        child: ElevatedButton(
+                          onPressed:
+                              authState.isLoading ? null : _handleRegister,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.accent,
+                            foregroundColor: Colors.white,
+                            disabledBackgroundColor:
+                                AppColors.accent.withValues(alpha: 0.6),
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.md),
+                            ),
+                            minimumSize: const Size.fromHeight(52),
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          child: authState.isLoading
+                              ? const SizedBox(
+                                  height: 22,
+                                  width: 22,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2.5,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  AppLocalizations.of(context)
+                                          ?.createAccount ??
+                                      'Create Account'),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+
+                  // -- Divider --
+                  Row(
+                    children: [
+                      const Expanded(
+                          child: Divider(color: AppColors.border)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppSpacing.md),
+                        child: Text(
+                          AppLocalizations.of(context)?.orWord ?? 'or',
+                          style: const TextStyle(
+                            color: AppColors.textTertiary,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      const Expanded(
+                          child: Divider(color: AppColors.border)),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+
+                  // -- Google sign-in with press animation --
+                  ScaleTransition(
+                    scale: _googleScale,
+                    child: GestureDetector(
+                      onTapDown: (_) =>
+                          _googlePressController.forward(),
+                      onTapUp: (_) =>
+                          _googlePressController.reverse(),
+                      onTapCancel: () =>
+                          _googlePressController.reverse(),
+                      child: SizedBox(
+                        height: 52,
+                        child: OutlinedButton.icon(
+                          onPressed: authState.isLoading
+                              ? null
+                              : _handleGoogleRegister,
+                          icon: Image.network(
+                            'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
+                            width: 20,
+                            height: 20,
+                            errorBuilder: (_, __, ___) => const Icon(
+                              Icons.g_mobiledata_rounded,
+                              size: 24,
+                            ),
+                          ),
+                          label: Text(
+                              AppLocalizations.of(context)
+                                      ?.continueWithGoogle ??
+                                  'Continue with Google'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: AppColors.textPrimary,
+                            side: const BorderSide(
+                                color: AppColors.border),
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.md),
+                            ),
+                            textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // -- Already have account --
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        l.alreadyHaveAccount,
                         style: const TextStyle(
-                          color: AppColors.textTertiary,
+                          color: AppColors.textSecondary,
                           fontSize: 14,
                         ),
                       ),
-                    ),
-                    const Expanded(
-                        child: Divider(color: AppColors.border)),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.lg),
-
-                // -- Google sign-in --
-                SizedBox(
-                  height: 52,
-                  child: OutlinedButton.icon(
-                    onPressed: authState.isLoading
-                        ? null
-                        : _handleGoogleRegister,
-                    icon: Image.network(
-                      'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                      width: 20,
-                      height: 20,
-                      errorBuilder: (_, __, ___) => const Icon(
-                        Icons.g_mobiledata_rounded,
-                        size: 24,
+                      GestureDetector(
+                        onTap: () => context.go(AppRoutes.login),
+                        child: Text(
+                          l.signIn,
+                          style: const TextStyle(
+                            color: AppColors.accent,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
                       ),
-                    ),
-                    label: Text(AppLocalizations.of(context)?.continueWithGoogle ?? 'Continue with Google'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: AppColors.textPrimary,
-                      side: const BorderSide(color: AppColors.border),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppRadius.md),
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: AppSpacing.xl),
-
-                // -- Already have account --
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Already have an account? ',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 14,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => context.go(AppRoutes.login),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: AppColors.accent,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.xxl),
-              ],
+                  const SizedBox(height: AppSpacing.xl),
+                ],
+              ),
             ),
           ),
         ),
@@ -432,59 +663,70 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 }
 
 // ---------------------------------------------------------------------------
-// Password strength types & indicator widget
+// Password strength types & animated indicator widget
 // ---------------------------------------------------------------------------
 
 enum _PasswordStrength { none, weak, medium, strong }
 
-class _PasswordStrengthIndicator extends StatelessWidget {
-  const _PasswordStrengthIndicator({required this.strength});
+class _AnimatedPasswordStrengthIndicator extends StatelessWidget {
+  const _AnimatedPasswordStrengthIndicator({
+    required this.strength,
+    required this.visible,
+  });
 
   final _PasswordStrength strength;
+  final bool visible;
 
   @override
   Widget build(BuildContext context) {
     final (label, color, filledBars) = switch (strength) {
       _PasswordStrength.none => ('', AppColors.border, 0),
-      _PasswordStrength.weak =>
-        ('Weak', const Color(0xFFC0392B), 1),
-      _PasswordStrength.medium =>
-        ('Medium', const Color(0xFFD4870E), 2),
-      _PasswordStrength.strong =>
-        ('Strong', AppColors.accent, 3),
+      _PasswordStrength.weak => ('Weak', const Color(0xFFC0392B), 1),
+      _PasswordStrength.medium => ('Medium', const Color(0xFFD4870E), 2),
+      _PasswordStrength.strong => ('Strong', AppColors.accent, 3),
     };
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: List.generate(3, (index) {
-            return Expanded(
-              child: Container(
-                height: 4,
-                margin: EdgeInsets.only(right: index < 2 ? 6 : 0),
-                decoration: BoxDecoration(
-                  color: index < filledBars
-                      ? color
-                      : AppColors.border,
-                  borderRadius: BorderRadius.circular(2),
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      alignment: Alignment.topCenter,
+      child: visible
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: List.generate(3, (index) {
+                    final isFilled = index < filledBars;
+                    return Expanded(
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 350),
+                        curve: Curves.easeInOut,
+                        height: 4,
+                        margin:
+                            EdgeInsets.only(right: index < 2 ? 6 : 0),
+                        decoration: BoxDecoration(
+                          color: isFilled ? color : AppColors.border,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                    );
+                  }),
                 ),
-              ),
-            );
-          }),
-        ),
-        if (label.isNotEmpty) ...[
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              color: color,
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ],
+                if (label.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 300),
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    child: Text(label),
+                  ),
+                ],
+              ],
+            )
+          : const SizedBox.shrink(),
     );
   }
 }

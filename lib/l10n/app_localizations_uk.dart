@@ -971,7 +971,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get legalAidCalculator => 'Калькулятор правової допомоги';
 
   @override
-  String get checkEligibility => 'Перевірте право на фінську правову допомогу';
+  String checkEligibility(String country) {
+    return 'Перевірте право на правову допомогу: $country';
+  }
 
   @override
   String get estimateDisclaimer =>
@@ -1762,4 +1764,236 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get contactVictimSupportRIKU => 'Підтримка жертв Фінляндія (RIKU)';
+
+  @override
+  String get domesticViolence => 'Домашнє насильство';
+
+  @override
+  String get domesticViolenceDesc =>
+      'Victim rights, emergency help, restraining orders';
+
+  @override
+  String get rightCallEmergency =>
+      'You have the right to call 112 in any emergency — police, ambulance, fire';
+
+  @override
+  String get rightVictimProtection =>
+      'As a victim, you have the right to protection, support, and information about your case';
+
+  @override
+  String get rightRestrainingOrder =>
+      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+
+  @override
+  String get rightVictimInterpreter =>
+      'You have the right to an interpreter during all legal proceedings';
+
+  @override
+  String get rightMedicalHelp =>
+      'You have the right to immediate medical treatment and documentation of injuries';
+
+  @override
+  String get rightShelter =>
+      'You have the right to emergency shelter — contact a shelter or social services';
+
+  @override
+  String get mustReportDanger =>
+      'If someone is in immediate danger, call 112 immediately';
+
+  @override
+  String get mustDocumentInjuries =>
+      'Document all injuries — photos, medical records, written notes';
+
+  @override
+  String get domesticActionCallEmergency =>
+      'Call 112 if you are in immediate danger';
+
+  @override
+  String get domesticActionGoToSafe =>
+      'Go to a safe place — shelter, friend, public place';
+
+  @override
+  String get domesticActionDocumentEverything =>
+      'Document injuries: take photos, get medical records';
+
+  @override
+  String get domesticActionFilePoliceReport =>
+      'File a police report — you can do this later too';
+
+  @override
+  String get domesticActionContactShelter =>
+      'Contact a shelter or crisis helpline';
+
+  @override
+  String get domesticActionApplyRestraining =>
+      'Apply for a restraining order through police or court';
+
+  @override
+  String get domesticFactRestrainingOrder =>
+      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+
+  @override
+  String get domesticFactVictimDirective =>
+      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+
+  @override
+  String get domesticDeadlinePoliceReport =>
+      'File police report — no strict deadline, but sooner is better for evidence';
+
+  @override
+  String get domesticDeadlineRestraining =>
+      'Restraining order — can be applied for at any time';
+
+  @override
+  String get contactEmergency => 'Emergency Number';
+
+  @override
+  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+
+  @override
+  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+
+  @override
+  String get contactNollaLinja =>
+      'Nollalinja — Violence Against Women Helpline';
+
+  @override
+  String get consumerProtection => 'Захист споживачів';
+
+  @override
+  String get consumerProtectionDesc =>
+      'Fraud, defective products, returns, deceptive sellers';
+
+  @override
+  String get rightReturnOnline =>
+      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+
+  @override
+  String get rightDefectiveProduct =>
+      'If a product is defective, you have the right to repair, replacement, or refund';
+
+  @override
+  String get rightClearPricing =>
+      'Sellers must display clear prices including all fees — hidden costs are illegal';
+
+  @override
+  String get rightComplainBoard =>
+      'You can file a free complaint with the Consumer Disputes Board';
+
+  @override
+  String get rightProtectionFraud =>
+      'You are protected against unfair commercial practices and fraud';
+
+  @override
+  String get mustKeepReceipts =>
+      'Keep all receipts, contracts, and communication with sellers';
+
+  @override
+  String get mustActTimely =>
+      'Report defects to the seller within a reasonable time after discovery';
+
+  @override
+  String get consumerActionKeepEvidence =>
+      'Keep receipts, screenshots, emails, and all proof of purchase';
+
+  @override
+  String get consumerActionContactSeller =>
+      'Contact the seller first — explain the problem in writing';
+
+  @override
+  String get consumerActionFileComplaint =>
+      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+
+  @override
+  String get consumerActionContactAuthority =>
+      'Contact the Consumer Advisory Services for free help';
+
+  @override
+  String get consumerActionReportFraud =>
+      'Report fraud to the police and Consumer Ombudsman';
+
+  @override
+  String get consumerFactWithdrawal =>
+      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+
+  @override
+  String get consumerFactWarranty =>
+      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+
+  @override
+  String get consumerDeadlineWithdrawal =>
+      'Online purchase withdrawal — 14 days from delivery';
+
+  @override
+  String get consumerDeadlineDefect =>
+      'Report defect to seller — within 2 months of discovery (recommended)';
+
+  @override
+  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+
+  @override
+  String get contactConsumerOmbudsman =>
+      'Consumer Ombudsman (Kuluttaja-asiamies)';
+
+  @override
+  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+
+  @override
+  String get caseTypeStepLabel => 'Case Type';
+
+  @override
+  String get detailsStepLabel => 'Details';
+
+  @override
+  String get documentsStepLabel => 'Documents';
+
+  @override
+  String get whatTypeOfCase => 'What type of case is this?';
+
+  @override
+  String get selectCategoryDescription =>
+      'Select the category that best describes your situation.';
+
+  @override
+  String get tellUsAboutCase => 'Tell us about your case';
+
+  @override
+  String get aiHelpsUnderstand =>
+      'This information helps our AI understand your situation better.';
+
+  @override
+  String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
+
+  @override
+  String get countryJurisdiction => 'Country / Jurisdiction';
+
+  @override
+  String get selectCountryHint => 'Select a country';
+
+  @override
+  String get referenceNumberHint => 'e.g., UMA/12345/2026';
+
+  @override
+  String get descriptionOptional => 'Description (optional)';
+
+  @override
+  String get descriptionHint =>
+      'Describe your situation briefly. What happened? What decision was made?';
+
+  @override
+  String get uploadFirstDocument => 'Upload your first document';
+
+  @override
+  String get uploadDocumentDescription =>
+      'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
+
+  @override
+  String get tapToUploadFile => 'Tap to upload a file';
+
+  @override
+  String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
+
+  @override
+  String get addDocumentsLaterHint =>
+      'You can always add documents later from the case detail screen.';
 }

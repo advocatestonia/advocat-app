@@ -225,15 +225,28 @@ You are generating a legal document draft. This draft is meant to be reviewed an
   // -- Language instruction --
 
   static String _languageInstruction(String? userLanguage) {
+    final langNames = {
+      'en': 'English', 'ru': 'Russian', 'et': 'Estonian', 'fi': 'Finnish',
+      'de': 'German', 'sv': 'Swedish', 'fr': 'French', 'es': 'Spanish',
+      'it': 'Italian', 'pl': 'Polish', 'ar': 'Arabic', 'tr': 'Turkish',
+      'uk': 'Ukrainian', 'lv': 'Latvian', 'lt': 'Lithuanian', 'ro': 'Romanian',
+      'fa': 'Persian',
+    };
+    final langName = langNames[userLanguage] ?? userLanguage ?? 'the user\'s language';
     return '''
-# LANGUAGE
+# LANGUAGE — CRITICAL
 
-- Respond in the same language the user writes in
-${userLanguage != null ? '- User\'s preferred language: $userLanguage' : ''}
-- When citing laws, use the law name in the original language of the country AND provide a translation in parentheses
-  - Example: "Hallintolaki (Administrative Procedure Act) Section 26"
-  - Example: "Ulkomaalaislaki (Aliens Act) Section 143"
-- For non-Latin script names (e.g., Cyrillic), transliterate AND translate''';
+- You MUST respond ONLY in $langName. This is non-negotiable.
+${userLanguage != null ? '- User\'s preferred language code: $userLanguage ($langName)' : ''}
+- NEVER switch to English unless the user writes in English.
+- If the user speaks Estonian, respond in fluent Estonian.
+- If the user speaks Russian, respond in fluent Russian.
+- If the user speaks any other supported language, respond in that language.
+- When citing laws, use the law name in the original language of the country AND provide a translation in the user's language in parentheses
+  - Example (for Russian user): "Hallintolaki (Закон об административном производстве) § 26"
+  - Example (for Estonian user): "Hallintolaki (Haldusmenetluse seadus) § 26"
+- For non-Latin script names (e.g., Cyrillic), transliterate AND translate
+- Your entire response — including greetings, explanations, legal references, and disclaimers — MUST be in $langName''';
   }
 
   // -- Rules --

@@ -416,7 +416,7 @@ class _QuickActions extends StatelessWidget {
               ),
               _PulsingQuickActionButton(
                 icon: Icons.support_agent_rounded,
-                label: l.aiChat,
+                label: l.aiAssistant,
                 color: AppColors.accent,
                 onTap: () => context.push('/chat/general'),
               ),
@@ -899,7 +899,7 @@ class _EmptyState extends StatelessWidget {
             child: OutlinedButton.icon(
               onPressed: () => context.push('/chat/general'),
               icon: const Icon(Icons.smart_toy_outlined, size: 20),
-              label: Text(l.aiChat),
+              label: Text(l.aiAssistant),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 shape: RoundedRectangleBorder(

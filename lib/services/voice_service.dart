@@ -12,23 +12,23 @@ import 'package:speech_to_text/speech_to_text.dart';
 
 /// Maps our app language codes to the best STT/TTS locale identifiers.
 const Map<String, String> _sttLocaleMap = {
-  'en': 'en_US',
-  'fi': 'fi_FI',
-  'sv': 'sv_SE',
-  'de': 'de_DE',
-  'fr': 'fr_FR',
-  'es': 'es_ES',
-  'it': 'it_IT',
-  'pl': 'pl_PL',
-  'ro': 'ro_RO',
-  'lt': 'lt_LT',
-  'lv': 'lv_LV',
-  'et': 'et_EE',
-  'ru': 'ru_RU',
-  'uk': 'uk_UA',
-  'tr': 'tr_TR',
-  'ar': 'ar_SA',
-  'fa': 'fa_IR',
+  'en': 'en-US',
+  'fi': 'fi-FI',
+  'sv': 'sv-SE',
+  'de': 'de-DE',
+  'fr': 'fr-FR',
+  'es': 'es-ES',
+  'it': 'it-IT',
+  'pl': 'pl-PL',
+  'ro': 'ro-RO',
+  'lt': 'lt-LT',
+  'lv': 'lv-LV',
+  'et': 'et-EE',
+  'ru': 'ru-RU',
+  'uk': 'uk-UA',
+  'tr': 'tr-TR',
+  'ar': 'ar-SA',
+  'fa': 'fa-IR',
 };
 
 const Map<String, String> _ttsLocaleMap = {
@@ -138,7 +138,8 @@ class VoiceService {
     _finalResult = '';
     _isListening = true;
 
-    final sttLocale = _sttLocaleMap[langCode] ?? 'en_US';
+    final sttLocale = _sttLocaleMap[langCode] ?? 'en-US';
+    debugPrint('STT: starting with langCode=$langCode, sttLocale=$sttLocale');
 
     _stt.listen(
       onResult: _onSpeechResult,
@@ -181,6 +182,7 @@ class VoiceService {
     if (!_ttsInitialized || text.isEmpty) return;
 
     final ttsLocale = _ttsLocaleMap[langCode] ?? 'en-US';
+    debugPrint('TTS: speaking with langCode=$langCode, ttsLocale=$ttsLocale');
     await _tts.setLanguage(ttsLocale);
     _isSpeaking = true;
     await _tts.speak(text);

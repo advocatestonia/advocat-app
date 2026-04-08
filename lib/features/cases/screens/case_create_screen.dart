@@ -127,9 +127,11 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.newCase ?? 'New Case'),
+        title: Text(l?.newCase ?? 'New Case'),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => Navigator.of(context).pop(),
@@ -207,6 +209,8 @@ class _StepProgressBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
@@ -239,7 +243,7 @@ class _StepProgressBar extends StatelessWidget {
           Row(
             children: [
               Text(
-                _stepLabel(currentStep),
+                _stepLabel(currentStep, l),
                 style: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
@@ -248,7 +252,7 @@ class _StepProgressBar extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                AppLocalizations.of(context)?.step(currentStep + 1, totalSteps) ?? 'Step ${currentStep + 1} of $totalSteps',
+                l?.step(currentStep + 1, totalSteps) ?? 'Step ${currentStep + 1} of $totalSteps',
                 style: const TextStyle(
                   fontSize: 13,
                   color: AppColors.textTertiary,
@@ -261,19 +265,71 @@ class _StepProgressBar extends StatelessWidget {
     );
   }
 
-  String _stepLabel(int step) {
+  String _stepLabel(int step, AppLocalizations? l) {
     return switch (step) {
-      0 => 'Case Type',
-      1 => 'Details',
-      2 => 'Documents',
+      0 => l?.caseTypeStepLabel ?? 'Case Type',
+      1 => l?.detailsStepLabel ?? 'Details',
+      2 => l?.documentsStepLabel ?? 'Documents',
       _ => '',
     };
   }
 }
 
 // ---------------------------------------------------------------------------
-// Step 1: Case Type Selector
+// Step 1: Case Type Selector — compact 2-column grid
 // ---------------------------------------------------------------------------
+
+/// Data holder for a category card.
+class _CategoryDef {
+  final CaseType type;
+  final IconData icon;
+  final Color color;
+
+  const _CategoryDef({
+    required this.type,
+    required this.icon,
+    required this.color,
+  });
+}
+
+const _categories = <_CategoryDef>[
+  _CategoryDef(type: CaseType.deportation, icon: Icons.flight_takeoff, color: AppColors.error),
+  _CategoryDef(type: CaseType.asylum, icon: Icons.home_outlined, color: AppColors.info),
+  _CategoryDef(type: CaseType.residencePermit, icon: Icons.credit_card_outlined, color: AppColors.accent),
+  _CategoryDef(type: CaseType.familyReunification, icon: Icons.people_outline, color: AppColors.warning),
+  _CategoryDef(type: CaseType.citizenship, icon: Icons.flag_outlined, color: Color(0xFF6366F1)),
+  _CategoryDef(type: CaseType.workPermit, icon: Icons.work_outline, color: AppColors.primaryLight),
+  _CategoryDef(type: CaseType.laborDispute, icon: Icons.gavel_outlined, color: Color(0xFF8B5CF6)),
+  _CategoryDef(type: CaseType.domesticViolence, icon: Icons.shield_outlined, color: Color(0xFFE11D48)),
+  _CategoryDef(type: CaseType.consumerProtection, icon: Icons.shopping_bag_outlined, color: Color(0xFFD97706)),
+  _CategoryDef(type: CaseType.tenantRights, icon: Icons.apartment_outlined, color: Color(0xFF10B981)),
+  _CategoryDef(type: CaseType.debtCollection, icon: Icons.account_balance_wallet_outlined, color: Color(0xFFF59E0B)),
+  _CategoryDef(type: CaseType.discrimination, icon: Icons.balance_outlined, color: Color(0xFFEC4899)),
+  _CategoryDef(type: CaseType.policeMisconduct, icon: Icons.local_police_outlined, color: Color(0xFF6366F1)),
+  _CategoryDef(type: CaseType.socialBenefits, icon: Icons.health_and_safety_outlined, color: Color(0xFF14B8A6)),
+  _CategoryDef(type: CaseType.other, icon: Icons.more_horiz, color: AppColors.textSecondary),
+];
+
+/// Returns the localized label for a [CaseType].
+String _localizedCaseTypeLabel(CaseType type, AppLocalizations? l) {
+  return switch (type) {
+    CaseType.deportation => l?.deportation ?? 'Deportation',
+    CaseType.asylum => l?.asylum ?? 'Asylum',
+    CaseType.residencePermit => l?.residencePermit ?? 'Residence Permit',
+    CaseType.familyReunification => l?.familyReunification ?? 'Family Reunification',
+    CaseType.citizenship => l?.citizenship ?? 'Citizenship',
+    CaseType.workPermit => l?.workPermit ?? 'Work Permit',
+    CaseType.laborDispute => l?.laborDispute ?? 'Labor Dispute',
+    CaseType.domesticViolence => l?.domesticViolence ?? 'Domestic Violence',
+    CaseType.consumerProtection => l?.consumerProtection ?? 'Consumer Protection',
+    CaseType.tenantRights => l?.tenantRights ?? 'Tenant Rights',
+    CaseType.debtCollection => l?.debtCollection ?? 'Debt Collection',
+    CaseType.discrimination => l?.discrimination ?? 'Discrimination',
+    CaseType.policeMisconduct => l?.policeMisconduct ?? 'Police Misconduct',
+    CaseType.socialBenefits => l?.socialBenefits ?? 'Social Benefits',
+    CaseType.other => l?.other ?? 'Other',
+  };
+}
 
 class _Step1CaseType extends StatelessWidget {
   const _Step1CaseType({
@@ -286,133 +342,55 @@ class _Step1CaseType extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.md,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'What type of case is this?',
+            l?.whatTypeOfCase ?? 'What type of case is this?',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
                 ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: AppSpacing.xs),
           Text(
-            'Select the category that best describes your situation.',
+            l?.selectCategoryDescription ?? 'Select the category that best describes your situation.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.4,
                 ),
           ),
-          const SizedBox(height: AppSpacing.xl),
-          GridView.count(
-            crossAxisCount: 2,
+          const SizedBox(height: AppSpacing.md),
+          GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            mainAxisSpacing: AppSpacing.sm,
-            crossAxisSpacing: AppSpacing.sm,
-            childAspectRatio: 1.3,
-            children: [
-              _CaseTypeCard(
-                type: CaseType.deportation,
-                icon: Icons.flight_takeoff,
-                label: AppLocalizations.of(context)?.deportation ?? 'Deportation',
-                isSelected: selectedType == CaseType.deportation,
-                color: AppColors.error,
-                onTap: () => onTypeSelected(CaseType.deportation),
-              ),
-              _CaseTypeCard(
-                type: CaseType.asylum,
-                icon: Icons.home_outlined,
-                label: AppLocalizations.of(context)?.asylum ?? 'Asylum',
-                isSelected: selectedType == CaseType.asylum,
-                color: AppColors.info,
-                onTap: () => onTypeSelected(CaseType.asylum),
-              ),
-              _CaseTypeCard(
-                type: CaseType.residencePermit,
-                icon: Icons.credit_card_outlined,
-                label: AppLocalizations.of(context)?.residencePermit ?? 'Residence Permit',
-                isSelected: selectedType == CaseType.residencePermit,
-                color: AppColors.accent,
-                onTap: () => onTypeSelected(CaseType.residencePermit),
-              ),
-              _CaseTypeCard(
-                type: CaseType.familyReunification,
-                icon: Icons.people_outline,
-                label: AppLocalizations.of(context)?.familyReunification ?? 'Family Reunion',
-                isSelected: selectedType == CaseType.familyReunification,
-                color: AppColors.warning,
-                onTap: () => onTypeSelected(CaseType.familyReunification),
-              ),
-              _CaseTypeCard(
-                type: CaseType.workPermit,
-                icon: Icons.work_outline,
-                label: 'Work Permit',
-                isSelected: selectedType == CaseType.workPermit,
-                color: AppColors.primaryLight,
-                onTap: () => onTypeSelected(CaseType.workPermit),
-              ),
-              _CaseTypeCard(
-                type: CaseType.laborDispute,
-                icon: Icons.work_outline,
-                label: AppLocalizations.of(context)?.laborDispute ?? 'Labor Dispute',
-                isSelected: selectedType == CaseType.laborDispute,
-                color: const Color(0xFF8B5CF6),
-                onTap: () => onTypeSelected(CaseType.laborDispute),
-              ),
-              _CaseTypeCard(
-                type: CaseType.tenantRights,
-                icon: Icons.home_outlined,
-                label: AppLocalizations.of(context)?.tenantRights ?? 'Tenant Rights',
-                isSelected: selectedType == CaseType.tenantRights,
-                color: const Color(0xFF10B981),
-                onTap: () => onTypeSelected(CaseType.tenantRights),
-              ),
-              _CaseTypeCard(
-                type: CaseType.debtCollection,
-                icon: Icons.account_balance_wallet_outlined,
-                label: AppLocalizations.of(context)?.debtCollection ?? 'Debt Collection',
-                isSelected: selectedType == CaseType.debtCollection,
-                color: const Color(0xFFF59E0B),
-                onTap: () => onTypeSelected(CaseType.debtCollection),
-              ),
-              _CaseTypeCard(
-                type: CaseType.discrimination,
-                icon: Icons.balance_outlined,
-                label: AppLocalizations.of(context)?.discrimination ?? 'Discrimination',
-                isSelected: selectedType == CaseType.discrimination,
-                color: const Color(0xFFEC4899),
-                onTap: () => onTypeSelected(CaseType.discrimination),
-              ),
-              _CaseTypeCard(
-                type: CaseType.policeMisconduct,
-                icon: Icons.local_police_outlined,
-                label: AppLocalizations.of(context)?.policeMisconduct ?? 'Police Misconduct',
-                isSelected: selectedType == CaseType.policeMisconduct,
-                color: const Color(0xFF6366F1),
-                onTap: () => onTypeSelected(CaseType.policeMisconduct),
-              ),
-              _CaseTypeCard(
-                type: CaseType.socialBenefits,
-                icon: Icons.health_and_safety_outlined,
-                label: AppLocalizations.of(context)?.socialBenefits ?? 'Social Benefits',
-                isSelected: selectedType == CaseType.socialBenefits,
-                color: const Color(0xFF14B8A6),
-                onTap: () => onTypeSelected(CaseType.socialBenefits),
-              ),
-              _CaseTypeCard(
-                type: CaseType.other,
-                icon: Icons.more_horiz,
-                label: AppLocalizations.of(context)?.other ?? 'Other',
-                isSelected: selectedType == CaseType.other,
-                color: AppColors.textSecondary,
-                onTap: () => onTypeSelected(CaseType.other),
-              ),
-            ],
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1.65,
+            ),
+            itemCount: _categories.length,
+            itemBuilder: (context, index) {
+              final cat = _categories[index];
+              final isSelected = selectedType == cat.type;
+              return _CaseTypeCard(
+                icon: cat.icon,
+                label: _localizedCaseTypeLabel(cat.type, l),
+                isSelected: isSelected,
+                color: cat.color,
+                onTap: () => onTypeSelected(cat.type),
+              );
+            },
           ),
+          const SizedBox(height: AppSpacing.md),
         ],
       ),
     );
@@ -421,7 +399,6 @@ class _Step1CaseType extends StatelessWidget {
 
 class _CaseTypeCard extends StatelessWidget {
   const _CaseTypeCard({
-    required this.type,
     required this.icon,
     required this.label,
     required this.isSelected,
@@ -429,7 +406,6 @@ class _CaseTypeCard extends StatelessWidget {
     required this.onTap,
   });
 
-  final CaseType type;
   final IconData icon;
   final String label;
   final bool isSelected;
@@ -443,6 +419,7 @@ class _CaseTypeCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected ? color.withValues(alpha: 0.1) : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -463,17 +440,20 @@ class _CaseTypeCard extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 32,
+              size: 26,
               color: isSelected ? color : AppColors.textSecondary,
             ),
-            const SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: 6),
             Text(
               label,
               textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                 color: isSelected ? color : AppColors.textPrimary,
+                height: 1.2,
               ),
             ),
           ],
@@ -517,13 +497,15 @@ class _Step2Details extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Tell us about your case',
+            l?.tellUsAboutCase ?? 'Tell us about your case',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -531,7 +513,7 @@ class _Step2Details extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            'This information helps our AI understand your situation better.',
+            l?.aiHelpsUnderstand ?? 'This information helps our AI understand your situation better.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.4,
@@ -543,8 +525,8 @@ class _Step2Details extends StatelessWidget {
           TextFormField(
             controller: titleController,
             decoration: InputDecoration(
-              labelText: AppLocalizations.of(context)?.caseTitle ?? 'Case Title',
-              hintText: 'e.g., Residence Permit Appeal 2026',
+              labelText: l?.caseTitle ?? 'Case Title',
+              hintText: l?.caseTitleHint ?? 'e.g., Residence Permit Appeal 2026',
             ),
             onChanged: (_) => onChanged(),
             textInputAction: TextInputAction.next,
@@ -554,9 +536,9 @@ class _Step2Details extends StatelessWidget {
           // Country / jurisdiction
           DropdownButtonFormField<String>(
             initialValue: selectedCountry,
-            decoration: const InputDecoration(
-              labelText: 'Country / Jurisdiction',
-              hintText: 'Select a country',
+            decoration: InputDecoration(
+              labelText: l?.countryJurisdiction ?? 'Country / Jurisdiction',
+              hintText: l?.selectCountryHint ?? 'Select a country',
             ),
             items: _countries.map((c) {
               return DropdownMenuItem(value: c, child: Text(c));
@@ -569,8 +551,8 @@ class _Step2Details extends StatelessWidget {
           TextFormField(
             controller: referenceController,
             decoration: InputDecoration(
-              labelText: '${AppLocalizations.of(context)?.referenceNumber ?? "Reference Number"} ${AppLocalizations.of(context)?.optional ?? "(optional)"}',
-              hintText: 'e.g., UMA/12345/2026',
+              labelText: '${l?.referenceNumber ?? "Reference Number"} ${l?.optional ?? "(optional)"}',
+              hintText: l?.referenceNumberHint ?? 'e.g., UMA/12345/2026',
             ),
             textInputAction: TextInputAction.next,
           ),
@@ -580,10 +562,9 @@ class _Step2Details extends StatelessWidget {
           TextFormField(
             controller: descriptionController,
             maxLines: 4,
-            decoration: const InputDecoration(
-              labelText: 'Description (optional)',
-              hintText:
-                  'Describe your situation briefly. What happened? What decision was made?',
+            decoration: InputDecoration(
+              labelText: l?.descriptionOptional ?? 'Description (optional)',
+              hintText: l?.descriptionHint ?? 'Describe your situation briefly. What happened? What decision was made?',
               alignLabelWithHint: true,
             ),
             textInputAction: TextInputAction.done,
@@ -603,13 +584,15 @@ class _Step3Document extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Upload your first document',
+            l?.uploadFirstDocument ?? 'Upload your first document',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -617,7 +600,7 @@ class _Step3Document extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            'Upload the decision letter or any relevant document. You can skip this step and add documents later.',
+            l?.uploadDocumentDescription ?? 'Upload the decision letter or any relevant document. You can skip this step and add documents later.',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.4,
@@ -648,27 +631,27 @@ class _Step3Document extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.cloud_upload_outlined,
                     size: 48,
                     color: AppColors.textTertiary,
                   ),
-                  SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.md),
                   Text(
-                    'Tap to upload a file',
-                    style: TextStyle(
+                    l?.tapToUploadFile ?? 'Tap to upload a file',
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textSecondary,
                     ),
                   ),
-                  SizedBox(height: AppSpacing.xs),
+                  const SizedBox(height: AppSpacing.xs),
                   Text(
-                    'PDF, JPG, PNG up to 25 MB',
-                    style: TextStyle(
+                    l?.fileSizeLimit ?? 'PDF, JPG, PNG up to 25 MB',
+                    style: const TextStyle(
                       fontSize: 13,
                       color: AppColors.textTertiary,
                     ),
@@ -685,7 +668,7 @@ class _Step3Document extends StatelessWidget {
               // TODO: Open camera for document scan
             },
             icon: const Icon(Icons.camera_alt_outlined),
-            label: Text(AppLocalizations.of(context)?.takePhotoInstead ?? 'Take a Photo Instead'),
+            label: Text(l?.takePhotoInstead ?? 'Take a Photo Instead'),
             style: OutlinedButton.styleFrom(
               minimumSize: const Size(double.infinity, 48),
             ),
@@ -693,11 +676,11 @@ class _Step3Document extends StatelessWidget {
           const SizedBox(height: AppSpacing.xl),
 
           // Skip hint
-          const Center(
+          Center(
             child: Text(
-              'You can always add documents later from the case detail screen.',
+              l?.addDocumentsLaterHint ?? 'You can always add documents later from the case detail screen.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.textTertiary,
                 fontStyle: FontStyle.italic,
@@ -733,6 +716,7 @@ class _BottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final isLastStep = currentStep == totalSteps - 1;
 
     return SafeArea(
@@ -744,7 +728,7 @@ class _BottomNav extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: isLoading ? null : onBack,
-                  child: Text(AppLocalizations.of(context)?.back ?? 'Back'),
+                  child: Text(l?.back ?? 'Back'),
                 ),
               ),
             if (currentStep > 0) const SizedBox(width: AppSpacing.md),
@@ -761,7 +745,7 @@ class _BottomNav extends StatelessWidget {
                           color: Colors.white,
                         ),
                       )
-                    : Text(isLastStep ? (AppLocalizations.of(context)?.createCase ?? 'Create Case') : (AppLocalizations.of(context)?.next ?? 'Next')),
+                    : Text(isLastStep ? (l?.createCase ?? 'Create Case') : (l?.next ?? 'Next')),
               ),
             ),
           ],

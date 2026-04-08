@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
@@ -148,12 +150,64 @@ class EmailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(l10n.emailIntegrationTitle),
+        title: Text(
+          l10n.emailIntegrationTitle,
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
+        ),
         backgroundColor: AppColors.surface,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
       ),
-      body: connection.isConnected
-          ? _ConnectedView(connection: connection)
-          : const _DisconnectedView(),
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 400),
+        switchInCurve: Curves.easeOutCubic,
+        switchOutCurve: Curves.easeInCubic,
+        child: connection.isConnected
+            ? _ConnectedView(key: const ValueKey('connected'), connection: connection)
+            : const _DisconnectedView(key: ValueKey('disconnected')),
+      ),
+      floatingActionButton: connection.isConnected
+          ? _ComposeButton()
+              .animate()
+              .scale(
+                begin: const Offset(0, 0),
+                end: const Offset(1, 1),
+                duration: 400.ms,
+                curve: Curves.elasticOut,
+              )
+          : null,
+    );
+  }
+}
+
+// ── Compose FAB with glow ────────────────────────────────────────────────
+
+class _ComposeButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.accent.withValues(alpha: 0.4),
+            blurRadius: 16,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: FloatingActionButton(
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          // TODO: Navigate to compose screen
+        },
+        backgroundColor: AppColors.accent,
+        elevation: 0,
+        child: const Icon(Icons.edit_rounded, color: Colors.white),
+      ),
     );
   }
 }
@@ -161,7 +215,7 @@ class EmailScreen extends ConsumerWidget {
 // ── Disconnected View ────────────────────────────────────────────────────
 
 class _DisconnectedView extends ConsumerWidget {
-  const _DisconnectedView();
+  const _DisconnectedView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -174,20 +228,30 @@ class _DisconnectedView extends ConsumerWidget {
           children: [
             const Spacer(flex: 2),
 
-            // Illustration
+            // Illustration with animated glow
             Container(
               width: 120,
               height: 120,
               decoration: BoxDecoration(
                 color: AppColors.accent.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.12),
+                    blurRadius: 32,
+                    spreadRadius: 8,
+                  ),
+                ],
               ),
               child: Icon(
                 AppIcons.emailOutlined,
                 size: 56,
                 color: AppColors.accent.withValues(alpha: 0.6),
               ),
-            ),
+            )
+                .animate()
+                .fadeIn(duration: 500.ms, curve: Curves.easeOut)
+                .slideY(begin: -0.15, end: 0, duration: 500.ms, curve: Curves.easeOut),
 
             const SizedBox(height: AppSpacing.lg),
 
@@ -196,8 +260,12 @@ class _DisconnectedView extends ConsumerWidget {
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                     color: AppColors.textPrimary,
+                    letterSpacing: -0.5,
                   ),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 100.ms, duration: 400.ms)
+                .slideY(begin: 0.1, end: 0, delay: 100.ms, duration: 400.ms),
 
             const SizedBox(height: AppSpacing.sm),
 
@@ -208,7 +276,10 @@ class _DisconnectedView extends ConsumerWidget {
                     color: AppColors.textSecondary,
                     height: 1.5,
                   ),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 200.ms, duration: 400.ms)
+                .slideY(begin: 0.1, end: 0, delay: 200.ms, duration: 400.ms),
 
             const SizedBox(height: AppSpacing.xl),
 
@@ -223,7 +294,10 @@ class _DisconnectedView extends ConsumerWidget {
               onPressed: () => ref
                   .read(_emailConnectionProvider.notifier)
                   .connect(_EmailProvider.gmail),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 300.ms, duration: 400.ms)
+                .slideX(begin: -0.08, end: 0, delay: 300.ms, duration: 400.ms),
 
             const SizedBox(height: AppSpacing.sm),
 
@@ -238,7 +312,10 @@ class _DisconnectedView extends ConsumerWidget {
               onPressed: () => ref
                   .read(_emailConnectionProvider.notifier)
                   .connect(_EmailProvider.outlook),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 400.ms, duration: 400.ms)
+                .slideX(begin: -0.08, end: 0, delay: 400.ms, duration: 400.ms),
 
             const SizedBox(height: AppSpacing.lg),
 
@@ -271,7 +348,10 @@ class _DisconnectedView extends ConsumerWidget {
                   ),
                 ],
               ),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 500.ms, duration: 400.ms)
+                .slideY(begin: 0.1, end: 0, delay: 500.ms, duration: 400.ms),
 
             const Spacer(flex: 3),
           ],
@@ -284,7 +364,7 @@ class _DisconnectedView extends ConsumerWidget {
 // ── Connected View ───────────────────────────────────────────────────────
 
 class _ConnectedView extends ConsumerWidget {
-  const _ConnectedView({required this.connection});
+  const _ConnectedView({super.key, required this.connection});
 
   final _EmailConnectionState connection;
 
@@ -299,80 +379,11 @@ class _ConnectedView extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
-        // ── Connection status ─────────────────────────────────────────
-        Container(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: AppColors.border),
-          ),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 10,
-                    height: 10,
-                    decoration: const BoxDecoration(
-                      color: AppColors.success,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Text(
-                      l10n.connectedTo(connection.email ?? ''),
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              if (connection.lastSyncAt != null) ...[
-                const SizedBox(height: AppSpacing.sm),
-                Row(
-                  children: [
-                    const Icon(
-                      AppIcons.sync,
-                      size: 14,
-                      color: AppColors.textTertiary,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      l10n.lastSynced(_formatTimeAgo(connection.lastSyncAt!)),
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        color: AppColors.textTertiary,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-              const SizedBox(height: AppSpacing.md),
-              Row(
-                children: [
-                  Expanded(
-                    child: AppButton(
-                      label: l10n.syncNow,
-                      variant: AppButtonVariant.secondary,
-                      size: AppButtonSize.small,
-                      isLoading: connection.isSyncing,
-                      leadingIcon: AppIcons.sync,
-                      onPressed: () =>
-                          ref.read(_emailConnectionProvider.notifier).syncNow(),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        // ── Connection status with animated indicator ──────────────────
+        _AnimatedConnectionCard(connection: connection, ref: ref)
+            .animate()
+            .fadeIn(duration: 400.ms)
+            .slideY(begin: 0.08, end: 0, duration: 400.ms),
 
         const SizedBox(height: AppSpacing.lg),
 
@@ -380,7 +391,9 @@ class _ConnectedView extends ConsumerWidget {
         _SectionLabel(
           title: l10n.legalEmails,
           count: linkedEmails.length,
-        ),
+        )
+            .animate()
+            .fadeIn(delay: 100.ms, duration: 300.ms),
         const SizedBox(height: AppSpacing.sm),
 
         if (linkedEmails.isEmpty)
@@ -391,10 +404,22 @@ class _ConnectedView extends ConsumerWidget {
             compact: true,
           )
         else
-          ...linkedEmails.map(
-            (email) => Padding(
+          ...linkedEmails.asMap().entries.map(
+            (entry) => Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: _EmailCard(email: email),
+              child: _EmailCard(email: entry.value)
+                  .animate()
+                  .fadeIn(
+                    delay: Duration(milliseconds: 200 + entry.key * 80),
+                    duration: 350.ms,
+                  )
+                  .slideX(
+                    begin: 0.05,
+                    end: 0,
+                    delay: Duration(milliseconds: 200 + entry.key * 80),
+                    duration: 350.ms,
+                    curve: Curves.easeOutCubic,
+                  ),
             ),
           ),
 
@@ -405,12 +430,26 @@ class _ConnectedView extends ConsumerWidget {
           _SectionLabel(
             title: l10n.unlinkedEmails,
             count: unlinkedEmails.length,
-          ),
+          )
+              .animate()
+              .fadeIn(delay: 300.ms, duration: 300.ms),
           const SizedBox(height: AppSpacing.sm),
-          ...unlinkedEmails.map(
-            (email) => Padding(
+          ...unlinkedEmails.asMap().entries.map(
+            (entry) => Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: _EmailCard(email: email, showAssignAction: true),
+              child: _EmailCard(email: entry.value, showAssignAction: true)
+                  .animate()
+                  .fadeIn(
+                    delay: Duration(milliseconds: 400 + entry.key * 80),
+                    duration: 350.ms,
+                  )
+                  .slideX(
+                    begin: 0.05,
+                    end: 0,
+                    delay: Duration(milliseconds: 400 + entry.key * 80),
+                    duration: 350.ms,
+                    curve: Curves.easeOutCubic,
+                  ),
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
@@ -425,7 +464,9 @@ class _ConnectedView extends ConsumerWidget {
             leadingIcon: Icons.link_off_rounded,
             onPressed: () => _showDisconnectDialog(context, ref),
           ),
-        ),
+        )
+            .animate()
+            .fadeIn(delay: 600.ms, duration: 300.ms),
 
         const SizedBox(height: AppSpacing.xl),
       ],
@@ -464,6 +505,102 @@ class _ConnectedView extends ConsumerWidget {
       ),
     );
   }
+}
+
+// ── Animated Connection Card ─────────────────────────────────────────────
+
+class _AnimatedConnectionCard extends StatelessWidget {
+  const _AnimatedConnectionCard({
+    required this.connection,
+    required this.ref,
+  });
+
+  final _EmailConnectionState connection;
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.success.withValues(alpha: 0.08),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+          ...AppShadows.shadowSmall,
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              // Animated pulsing green dot
+              _PulsingDot(),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Text(
+                  l10n.connectedTo(connection.email ?? ''),
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (connection.lastSyncAt != null) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Row(
+              children: [
+                AnimatedRotation(
+                  turns: connection.isSyncing ? 1 : 0,
+                  duration: const Duration(seconds: 1),
+                  child: const Icon(
+                    AppIcons.sync,
+                    size: 14,
+                    color: AppColors.textTertiary,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  l10n.lastSynced(_formatTimeAgo(connection.lastSyncAt!)),
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    color: AppColors.textTertiary,
+                  ),
+                ),
+              ],
+            ),
+          ],
+          const SizedBox(height: AppSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: AppButton(
+                  label: l10n.syncNow,
+                  variant: AppButtonVariant.secondary,
+                  size: AppButtonSize.small,
+                  isLoading: connection.isSyncing,
+                  leadingIcon: AppIcons.sync,
+                  onPressed: () =>
+                      ref.read(_emailConnectionProvider.notifier).syncNow(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   String _formatTimeAgo(DateTime dt) {
     final diff = DateTime.now().difference(dt);
@@ -474,9 +611,47 @@ class _ConnectedView extends ConsumerWidget {
   }
 }
 
+// ── Pulsing green dot ────────────────────────────────────────────────────
+
+class _PulsingDot extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 14,
+      height: 14,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Outer pulse ring
+          Container(
+            width: 14,
+            height: 14,
+            decoration: BoxDecoration(
+              color: AppColors.success.withValues(alpha: 0.2),
+              shape: BoxShape.circle,
+            ),
+          )
+              .animate(onPlay: (c) => c.repeat())
+              .scaleXY(begin: 0.8, end: 1.4, duration: 1500.ms, curve: Curves.easeOut)
+              .fadeOut(begin: 0.6, duration: 1500.ms),
+          // Inner solid dot
+          Container(
+            width: 10,
+            height: 10,
+            decoration: const BoxDecoration(
+              color: AppColors.success,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ── Sub-widgets ──────────────────────────────────────────────────────────
 
-class _OAuthButton extends StatelessWidget {
+class _OAuthButton extends StatefulWidget {
   const _OAuthButton({
     required this.label,
     required this.icon,
@@ -496,27 +671,53 @@ class _OAuthButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   @override
+  State<_OAuthButton> createState() => _OAuthButtonState();
+}
+
+class _OAuthButtonState extends State<_OAuthButton> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: OutlinedButton.icon(
-        onPressed: onPressed,
-        icon: Icon(icon, color: iconColor, size: 28),
-        label: Text(
-          label,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: foregroundColor,
-          ),
-        ),
-        style: OutlinedButton.styleFrom(
-          backgroundColor: backgroundColor,
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        widget.onPressed();
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.97 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 120),
+          width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 14),
-          side: BorderSide(color: borderColor),
-          shape: RoundedRectangleBorder(
+          decoration: BoxDecoration(
+            color: _isPressed
+                ? widget.backgroundColor.withValues(alpha: 0.9)
+                : widget.backgroundColor,
             borderRadius: BorderRadius.circular(AppRadius.sm),
+            border: Border.all(color: widget.borderColor),
+            boxShadow: _isPressed
+                ? []
+                : AppShadows.shadowSmall,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(widget.icon, color: widget.iconColor, size: 28),
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                widget.label,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600,
+                  color: widget.foregroundColor,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -534,12 +735,13 @@ class _SectionLabel extends StatelessWidget {
     return Row(
       children: [
         Text(
-          title,
+          title.toUpperCase(),
           style: const TextStyle(
             fontFamily: 'Inter',
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            fontSize: 12,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textTertiary,
+            letterSpacing: 1.0,
           ),
         ),
         if (count != null) ...[
@@ -547,7 +749,7 @@ class _SectionLabel extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
             decoration: BoxDecoration(
-              color: AppColors.surfaceVariant,
+              color: AppColors.accent.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppRadius.full),
             ),
             child: Text(
@@ -555,8 +757,8 @@ class _SectionLabel extends StatelessWidget {
               style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
+                color: AppColors.accent,
               ),
             ),
           ),
@@ -566,106 +768,151 @@ class _SectionLabel extends StatelessWidget {
   }
 }
 
-class _EmailCard extends StatelessWidget {
+class _EmailCard extends StatefulWidget {
   const _EmailCard({required this.email, this.showAssignAction = false});
   final _LegalEmail email;
   final bool showAssignAction;
 
   @override
+  State<_EmailCard> createState() => _EmailCardState();
+}
+
+class _EmailCardState extends State<_EmailCard> {
+  bool _isPressed = false;
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return AppCard(
-      onTap: () {
-        // TODO: Navigate to email detail or linked case
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) => setState(() => _isPressed = false),
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.98 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: AppCard(
+          onTap: () {
+            HapticFeedback.selectionClick();
+            // TODO: Navigate to email detail or linked case
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
+              Row(
+                children: [
+                  // Sender avatar circle
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.08),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        widget.email.sender.substring(0, 1).toUpperCase(),
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Text(
+                      widget.email.sender,
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textSecondary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  Text(
+                    _formatDate(widget.email.date),
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      color: AppColors.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Padding(
+                padding: const EdgeInsets.only(left: 40),
                 child: Text(
-                  email.sender,
+                  widget.email.subject,
                   style: const TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textPrimary,
                   ),
-                  maxLines: 1,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: AppSpacing.sm),
-              Text(
-                _formatDate(email.date),
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 12,
-                  color: AppColors.textTertiary,
+              const SizedBox(height: AppSpacing.sm),
+              Padding(
+                padding: const EdgeInsets.only(left: 40),
+                child: Row(
+                  children: [
+                    if (widget.email.isLinked) ...[
+                      StatusChip(
+                        label: widget.email.linkedCaseName!,
+                        variant: StatusChipVariant.info,
+                        showDot: false,
+                        icon: AppIcons.link,
+                      ),
+                    ],
+                    if (widget.showAssignAction)
+                      InkWell(
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          // TODO: Show case picker bottom sheet
+                        },
+                        borderRadius: BorderRadius.circular(AppRadius.full),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: AppColors.accent),
+                            borderRadius: BorderRadius.circular(AppRadius.full),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(AppIcons.add, size: 14, color: AppColors.accent),
+                              const SizedBox(width: 4),
+                              Text(
+                                l10n.assignToCase,
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.accent,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            email.subject,
-            style: const TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
-            ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Row(
-            children: [
-              if (email.isLinked) ...[
-                StatusChip(
-                  label: email.linkedCaseName!,
-                  variant: StatusChipVariant.info,
-                  showDot: false,
-                  icon: AppIcons.link,
-                ),
-              ],
-              if (showAssignAction)
-                InkWell(
-                  onTap: () {
-                    // TODO: Show case picker bottom sheet
-                  },
-                  borderRadius: BorderRadius.circular(AppRadius.full),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.accent),
-                      borderRadius: BorderRadius.circular(AppRadius.full),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(AppIcons.add, size: 14, color: AppColors.accent),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.assignToCase,
-                          style: const TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.accent,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }

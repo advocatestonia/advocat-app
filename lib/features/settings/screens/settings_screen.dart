@@ -11,6 +11,7 @@ import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/status_chip.dart';
 import '../../auth/providers/auth_provider.dart';
+import 'edit_profile_screen.dart';
 
 // ── Providers ────────────────────────────────────────────────────────────
 
@@ -63,7 +64,10 @@ class SettingsScreen extends ConsumerWidget {
               value: ref.watch(_pushNotificationsProvider),
               onChanged: (v) =>
                   ref.read(_pushNotificationsProvider.notifier).state = v,
+              activeThumbColor: Colors.white,
               activeTrackColor: AppColors.accent,
+              inactiveThumbColor: Colors.white,
+              inactiveTrackColor: AppColors.border,
             ),
           ),
           _SettingsTile(
@@ -74,7 +78,10 @@ class SettingsScreen extends ConsumerWidget {
               value: ref.watch(_deadlineRemindersProvider),
               onChanged: (v) =>
                   ref.read(_deadlineRemindersProvider.notifier).state = v,
+              activeThumbColor: Colors.white,
               activeTrackColor: AppColors.accent,
+              inactiveThumbColor: Colors.white,
+              inactiveTrackColor: AppColors.border,
             ),
           ),
 
@@ -111,13 +118,13 @@ class SettingsScreen extends ConsumerWidget {
             icon: AppIcons.termsOutlined,
             title: l.termsOfService,
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
-            onTap: () => _launchUrl('https://advocat.app/terms'),
+            onTap: () => _launchUrl('https://advocat.ee/terms'),
           ),
           _SettingsTile(
             icon: AppIcons.privacyOutlined,
             title: l.privacyPolicy,
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
-            onTap: () => _launchUrl('https://advocat.app/privacy'),
+            onTap: () => _launchUrl('https://advocat.ee/privacy'),
           ),
 
           const _SectionDivider(),
@@ -141,7 +148,7 @@ class SettingsScreen extends ConsumerWidget {
             icon: AppIcons.supportOutlined,
             title: l.contactSupport,
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
-            onTap: () => _launchUrl('mailto:support@advocat.app'),
+            onTap: () => _launchUrl('mailto:support@advocat.ee'),
           ),
 
           const _SectionDivider(),
@@ -173,77 +180,117 @@ class SettingsScreen extends ConsumerWidget {
     final userAsync = ref.watch(currentUserProvider);
 
     return Container(
-      color: AppColors.surface,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      child: userAsync.when(
-        loading: () => const SizedBox(
-          height: 64,
-          child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
-        ),
-        error: (_, __) => const SizedBox.shrink(),
-        data: (user) {
-          if (user == null) return const SizedBox.shrink();
-          final initials = user.fullName.isNotEmpty
-              ? user.fullName
-                  .split(' ')
-                  .take(2)
-                  .map((w) => w.isNotEmpty ? w[0].toUpperCase() : '')
-                  .join()
-              : '?';
-
-          return Row(
-            children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: AppColors.primary,
-                child: Text(
-                  initials,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    fontFamily: 'Inter',
-                  ),
-                ),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Accent gradient bar at the top of profile section
+          Container(
+            height: 3,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.accent, AppColors.accentLight, AppColors.accent],
               ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: userAsync.when(
+              loading: () => const SizedBox(
+                height: 64,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              ),
+              error: (_, __) => const SizedBox.shrink(),
+              data: (user) {
+                if (user == null) return const SizedBox.shrink();
+                final initials = user.fullName.isNotEmpty
+                    ? user.fullName
+                        .split(' ')
+                        .take(2)
+                        .map((w) => w.isNotEmpty ? w[0].toUpperCase() : '')
+                        .join()
+                    : '?';
+
+                return Row(
                   children: [
-                    Text(
-                      user.fullName,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: AppColors.primary,
+                      child: Text(
+                        initials,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: 'Inter',
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      user.email,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            user.fullName,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
+                          const SizedBox(height: 2),
+                          Text(
+                            user.email,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: AppColors.textSecondary,
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          isScrollControlled: true,
+                          backgroundColor: Colors.transparent,
+                          builder: (_) => DraggableScrollableSheet(
+                            initialChildSize: 0.92,
+                            minChildSize: 0.5,
+                            maxChildSize: 0.95,
+                            expand: false,
+                            builder: (ctx, _) => const ClipRRect(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(AppRadius.lg),
+                              ),
+                              child: EditProfileScreen(),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)?.editProfile ?? 'Edit Profile',
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.accent,
+                        ),
+                      ),
                     ),
                   ],
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // TODO: Navigate to edit profile screen
-                },
-                child: Text(
-                  AppLocalizations.of(context)?.editProfile ?? 'Edit Profile',
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.accent,
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -346,6 +393,10 @@ class SettingsScreen extends ConsumerWidget {
       context: context,
       backgroundColor: AppColors.surface,
       isScrollControlled: true,
+      transitionAnimationController: AnimationController(
+        vsync: Navigator.of(context),
+        duration: const Duration(milliseconds: 400),
+      ),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
       ),
@@ -562,15 +613,28 @@ class _SectionHeader extends StatelessWidget {
         AppSpacing.md,
         AppSpacing.xs,
       ),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: AppColors.textTertiary,
-          letterSpacing: 0.8,
-        ),
+      child: Row(
+        children: [
+          Container(
+            width: 3,
+            height: 14,
+            decoration: BoxDecoration(
+              color: AppColors.accent,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Text(
+            title,
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textTertiary,
+              letterSpacing: 0.8,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -588,7 +652,7 @@ class _SectionDivider extends StatelessWidget {
   }
 }
 
-class _SettingsTile extends StatelessWidget {
+class _SettingsTile extends StatefulWidget {
   const _SettingsTile({
     required this.icon,
     required this.title,
@@ -608,50 +672,121 @@ class _SettingsTile extends StatelessWidget {
   final Color? titleColor;
 
   @override
+  State<_SettingsTile> createState() => _SettingsTileState();
+}
+
+class _SettingsTileState extends State<_SettingsTile>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _scaleController;
+  late final Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+      reverseDuration: const Duration(milliseconds: 150),
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.98).animate(
+      CurvedAnimation(parent: _scaleController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scaleController.dispose();
+    super.dispose();
+  }
+
+  void _handleTapDown(TapDownDetails _) {
+    if (widget.onTap != null) _scaleController.forward();
+  }
+
+  void _handleTapUp(TapUpDetails _) {
+    if (widget.onTap != null) _scaleController.reverse();
+  }
+
+  void _handleTapCancel() {
+    if (widget.onTap != null) _scaleController.reverse();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '$title${subtitle != null ? ", $subtitle" : ""}',
-      button: onTap != null,
-      child: Container(
-      color: AppColors.surface,
-      child: ListTile(
-        leading: Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(
-            color: (iconColor ?? AppColors.textSecondary).withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-          ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: iconColor ?? AppColors.textSecondary,
-          ),
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-            fontFamily: 'Inter',
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: titleColor ?? AppColors.textPrimary,
-          ),
-        ),
-        subtitle: subtitle != null
-            ? Text(
-                subtitle!,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
+      label: '${widget.title}${widget.subtitle != null ? ", ${widget.subtitle}" : ""}',
+      button: widget.onTap != null,
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: GestureDetector(
+          onTapDown: _handleTapDown,
+          onTapUp: _handleTapUp,
+          onTapCancel: _handleTapCancel,
+          child: Container(
+            color: AppColors.surface,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: widget.onTap,
+                splashColor: AppColors.accent.withValues(alpha: 0.08),
+                highlightColor: AppColors.accent.withValues(alpha: 0.04),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.md,
+                    vertical: AppSpacing.sm,
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: (widget.iconColor ?? AppColors.textSecondary)
+                              .withValues(alpha: 0.08),
+                          borderRadius: BorderRadius.circular(AppRadius.sm),
+                        ),
+                        child: Icon(
+                          widget.icon,
+                          size: 20,
+                          color: widget.iconColor ?? AppColors.textSecondary,
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: widget.titleColor ?? AppColors.textPrimary,
+                              ),
+                            ),
+                            if (widget.subtitle != null) ...[
+                              const SizedBox(height: 2),
+                              Text(
+                                widget.subtitle!,
+                                style: const TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 13,
+                                  color: AppColors.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      if (widget.trailing != null) widget.trailing!,
+                    ],
+                  ),
                 ),
-              )
-            : null,
-        trailing: trailing,
-        onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-        minVerticalPadding: AppSpacing.sm,
-      ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

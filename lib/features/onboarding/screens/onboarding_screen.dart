@@ -1,4 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -23,16 +27,38 @@ class OnboardingScreen extends ConsumerStatefulWidget {
   ConsumerState<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
+class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
+    with TickerProviderStateMixin {
   final _pageController = PageController();
   int _currentPage = 0;
 
   // Total pages: 1 language + 4 feature
   static const _pageCount = 5;
 
+  // Gradient colors for each page (shifts between pages)
+  static const _gradientColors = <List<Color>>[
+    [Color(0xFFF0EEEB), Color(0xFFE8E6E3)], // Language page
+    [Color(0xFFF0EEEB), Color(0xFFE3EBF0)], // Shield - blueish
+    [Color(0xFFF0EEEB), Color(0xFFE3F0ED)], // Camera - tealish
+    [Color(0xFFF0EEEB), Color(0xFFF0ECE3)], // Search - warmish
+    [Color(0xFFF0EEEB), Color(0xFFE3F0ED)], // Send - tealish
+  ];
+
+  late final AnimationController _particleController;
+
+  @override
+  void initState() {
+    super.initState();
+    _particleController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 8),
+    )..repeat();
+  }
+
   @override
   void dispose() {
     _pageController.dispose();
+    _particleController.dispose();
     super.dispose();
   }
 
@@ -41,7 +67,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   void _goToNextPage() {
     if (_currentPage < _pageCount - 1) {
       _pageController.nextPage(
-        duration: const Duration(milliseconds: 400),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOutCubic,
       );
     } else {
@@ -54,6 +80,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _selectLanguage(String code) {
+    HapticFeedback.mediumImpact();
     ref.read(localeProvider.notifier).setLocale(Locale(code));
     _goToNextPage();
   }
@@ -99,151 +126,311 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     final isLastPage = _currentPage == _pageCount - 1;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
-      body: SafeArea(
-        child: Column(
+      body: AnimatedContainer(
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: _gradientColors[_currentPage],
+          ),
+        ),
+        child: Stack(
           children: [
-            // -- Skip button (top-right, hidden on language and last page) --
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: AppSpacing.sm,
-                  right: AppSpacing.md,
-                ),
-                child: AnimatedOpacity(
-                  opacity: (isLastPage || isLanguagePage) ? 0.0 : 1.0,
-                  duration: const Duration(milliseconds: 200),
-                  child: TextButton(
-                    onPressed: (isLastPage || isLanguagePage)
-                        ? null
-                        : _navigateToLogin,
-                    child: Text(
-                      l.onboardingSkip,
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontWeight: FontWeight.w500,
+            // Subtle particle/shimmer background
+            _ParticleBackground(controller: _particleController),
+
+            SafeArea(
+              child: Column(
+                children: [
+                  // -- Skip button (top-right, hidden on language and last page) --
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: AppSpacing.sm,
+                        right: AppSpacing.md,
+                      ),
+                      child: AnimatedOpacity(
+                        opacity: (isLastPage || isLanguagePage) ? 0.0 : 1.0,
+                        duration: const Duration(milliseconds: 200),
+                        child: TextButton(
+                          onPressed: (isLastPage || isLanguagePage)
+                              ? null
+                              : _navigateToLogin,
+                          child: Text(
+                            l.onboardingSkip,
+                            style: const TextStyle(
+                              color: AppColors.textSecondary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
 
-            // -- Page content --
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: _pageCount,
-                // Prevent swiping away from language page without choosing
-                physics: isLanguagePage
-                    ? const NeverScrollableScrollPhysics()
-                    : const PageScrollPhysics(),
-                onPageChanged: (index) =>
-                    setState(() => _currentPage = index),
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return _LanguageSelectionPage(
-                      onLanguageSelected: _selectLanguage,
-                    );
-                  }
-                  final featureIndex = index - 1;
-                  return OnboardingPage(
-                    icon: _icons[featureIndex],
-                    title: titles[featureIndex],
-                    subtitle: subtitles[featureIndex],
-                    isActive: _currentPage == index,
-                    iconColor: _iconColors[featureIndex],
-                    iconBackgroundColor:
-                        _iconColors[featureIndex].withValues(alpha: 0.08),
-                  );
-                },
-              ),
-            ),
+                  // -- Page content --
+                  Expanded(
+                    child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: _pageCount,
+                      // Prevent swiping away from language page without choosing
+                      physics: isLanguagePage
+                          ? const NeverScrollableScrollPhysics()
+                          : const BouncingScrollPhysics(),
+                      onPageChanged: (index) =>
+                          setState(() => _currentPage = index),
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return _LanguageSelectionPage(
+                            onLanguageSelected: _selectLanguage,
+                          );
+                        }
+                        final featureIndex = index - 1;
+                        return OnboardingPage(
+                          icon: _icons[featureIndex],
+                          title: titles[featureIndex],
+                          subtitle: subtitles[featureIndex],
+                          isActive: _currentPage == index,
+                          iconColor: _iconColors[featureIndex],
+                          iconBackgroundColor:
+                              _iconColors[featureIndex].withValues(alpha: 0.08),
+                        );
+                      },
+                    ),
+                  ),
 
-            // -- Dots indicator (hidden on language page) --
-            if (!isLanguagePage)
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: AppSpacing.md),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(_pageCount, (index) {
-                    final isActive = _currentPage == index;
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      margin:
-                          const EdgeInsets.symmetric(horizontal: 4),
-                      width: isActive ? 28 : 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: isActive
-                            ? AppColors.accent
-                            : AppColors.border,
-                        borderRadius: BorderRadius.circular(4),
+                  // -- Dots indicator (hidden on language page) --
+                  if (!isLanguagePage)
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(_pageCount, (index) {
+                          final isActive = _currentPage == index;
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 350),
+                            curve: Curves.easeInOutCubic,
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 5),
+                            width: isActive ? 32 : 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              color: isActive
+                                  ? AppColors.accent
+                                  : AppColors.border,
+                              borderRadius: BorderRadius.circular(5),
+                              boxShadow: isActive
+                                  ? [
+                                      BoxShadow(
+                                        color: AppColors.accent.withValues(alpha: 0.4),
+                                        blurRadius: 8,
+                                        spreadRadius: 1,
+                                      ),
+                                    ]
+                                  : null,
+                            ),
+                          );
+                        }),
                       ),
-                    );
-                  }),
-                ),
-              ),
+                    ),
 
-            // -- Action buttons (hidden on language page) --
-            if (!isLanguagePage)
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xl,
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 52,
-                      child: ElevatedButton(
-                        onPressed: _goToNextPage,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.accent,
-                          foregroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(AppRadius.md),
-                          ),
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          child: Text(
-                            isLastPage
+                  // -- Action buttons (hidden on language page) --
+                  if (!isLanguagePage)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xl,
+                      ),
+                      child: Column(
+                        children: [
+                          // Premium glow button
+                          _GlowButton(
+                            onPressed: _goToNextPage,
+                            label: isLastPage
                                 ? l.getStarted
                                 : l.onboardingNext,
-                            key: ValueKey(isLastPage),
+                            isLastPage: isLastPage,
                           ),
-                        ),
+                          const SizedBox(height: AppSpacing.sm),
+                          TextButton(
+                            onPressed: _navigateToLogin,
+                            child: Text(
+                              '${l.alreadyHaveAccount}${l.signInLink}',
+                              style: const TextStyle(
+                                color: AppColors.accent,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.sm),
-                    TextButton(
-                      onPressed: _navigateToLogin,
-                      child: Text(
-                        '${l.alreadyHaveAccount}${l.signInLink}',
-                        style: const TextStyle(
-                          color: AppColors.accent,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  SizedBox(height: isLanguagePage ? AppSpacing.md : AppSpacing.lg),
+                ],
               ),
-            SizedBox(height: isLanguagePage ? AppSpacing.md : AppSpacing.lg),
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+// ---------------------------------------------------------------------------
+// Premium Glow Button
+// ---------------------------------------------------------------------------
+
+class _GlowButton extends StatefulWidget {
+  const _GlowButton({
+    required this.onPressed,
+    required this.label,
+    required this.isLastPage,
+  });
+
+  final VoidCallback onPressed;
+  final String label;
+  final bool isLastPage;
+
+  @override
+  State<_GlowButton> createState() => _GlowButtonState();
+}
+
+class _GlowButtonState extends State<_GlowButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _glowCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _glowCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _glowCtrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _glowCtrl,
+      builder: (context, child) {
+        final glowIntensity = 0.2 + _glowCtrl.value * 0.3;
+        return Container(
+          width: double.infinity,
+          height: 54,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.accent.withValues(alpha: glowIntensity),
+                blurRadius: 16 + _glowCtrl.value * 8,
+                spreadRadius: _glowCtrl.value * 2,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: child,
+        );
+      },
+      child: ElevatedButton(
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          widget.onPressed();
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.accent,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.md),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 200),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.label,
+                key: ValueKey(widget.isLastPage),
+              ),
+              if (widget.isLastPage) ...[
+                const SizedBox(width: 8),
+                const Icon(Icons.arrow_forward_rounded, size: 20),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Particle Background — subtle floating particles
+// ---------------------------------------------------------------------------
+
+class _ParticleBackground extends StatelessWidget {
+  const _ParticleBackground({required this.controller});
+
+  final AnimationController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        return CustomPaint(
+          size: MediaQuery.of(context).size,
+          painter: _ParticlePainter(progress: controller.value),
+        );
+      },
+    );
+  }
+}
+
+class _ParticlePainter extends CustomPainter {
+  _ParticlePainter({required this.progress});
+
+  final double progress;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..style = PaintingStyle.fill;
+
+    // 15 subtle floating particles
+    final rng = math.Random(42); // fixed seed for consistency
+    for (int i = 0; i < 15; i++) {
+      final baseX = rng.nextDouble() * size.width;
+      final baseY = rng.nextDouble() * size.height;
+      final speed = 0.3 + rng.nextDouble() * 0.7;
+      final radius = 1.5 + rng.nextDouble() * 2.5;
+
+      final phase = (progress * speed + i * 0.07) % 1.0;
+      final x = baseX + math.sin(phase * 2 * math.pi) * 20;
+      final y = baseY - phase * 40 + 20;
+      final opacity = (math.sin(phase * math.pi) * 0.12).clamp(0.0, 0.12);
+
+      paint.color = AppColors.accent.withValues(alpha: opacity);
+      canvas.drawCircle(Offset(x, y), radius, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_ParticlePainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }
 
 // ---------------------------------------------------------------------------
@@ -274,29 +461,44 @@ class _LanguageSelectionPage extends StatelessWidget {
         children: [
           const SizedBox(height: AppSpacing.lg),
 
-          // Globe icon
+          // Globe icon with entrance animation
           Container(
             width: 80,
             height: 80,
             decoration: BoxDecoration(
               color: AppColors.accent.withValues(alpha: 0.1),
               shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.accent.withValues(alpha: 0.15),
+                  blurRadius: 20,
+                  spreadRadius: 2,
+                ),
+              ],
             ),
             child: const Icon(
               Icons.language_rounded,
               size: 40,
               color: AppColors.accent,
             ),
-          ),
+          )
+              .animate()
+              .scaleXY(
+                begin: 0.5,
+                end: 1.0,
+                duration: 600.ms,
+                curve: Curves.elasticOut,
+              )
+              .fadeIn(duration: 400.ms),
 
           const SizedBox(height: AppSpacing.md),
 
-          // Multilingual titles
-          for (final title in _multilingualTitles)
-            Padding(
+          // Multilingual titles with staggered fade-in
+          ...List.generate(_multilingualTitles.length, (i) {
+            return Padding(
               padding: const EdgeInsets.symmetric(vertical: 1),
               child: Text(
-                title,
+                _multilingualTitles[i],
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
@@ -305,11 +507,24 @@ class _LanguageSelectionPage extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-            ),
+            )
+                .animate()
+                .fadeIn(
+                  delay: Duration(milliseconds: 300 + i * 80),
+                  duration: 350.ms,
+                )
+                .slideY(
+                  begin: 0.2,
+                  end: 0,
+                  delay: Duration(milliseconds: 300 + i * 80),
+                  duration: 350.ms,
+                  curve: Curves.easeOutCubic,
+                );
+          }),
 
           const SizedBox(height: AppSpacing.lg),
 
-          // Language grid (2 columns)
+          // Language grid (2 columns) with staggered entrance
           Expanded(
             child: GridView.count(
               crossAxisCount: 2,
@@ -318,11 +533,12 @@ class _LanguageSelectionPage extends StatelessWidget {
               childAspectRatio: 2.4,
               shrinkWrap: true,
               children: [
-                for (final lang in supportedLanguages)
+                for (int i = 0; i < supportedLanguages.length; i++)
                   _LanguageButton(
-                    flag: lang.flag,
-                    label: lang.name,
-                    onTap: () => onLanguageSelected(lang.code),
+                    flag: supportedLanguages[i].flag,
+                    label: supportedLanguages[i].name,
+                    onTap: () => onLanguageSelected(supportedLanguages[i].code),
+                    delay: Duration(milliseconds: 600 + i * 70),
                   ),
               ],
             ),
@@ -333,29 +549,66 @@ class _LanguageSelectionPage extends StatelessWidget {
   }
 }
 
-class _LanguageButton extends StatelessWidget {
+class _LanguageButton extends StatefulWidget {
   const _LanguageButton({
     required this.flag,
     required this.label,
     required this.onTap,
+    required this.delay,
   });
 
   final String flag;
   final String label;
   final VoidCallback onTap;
+  final Duration delay;
+
+  @override
+  State<_LanguageButton> createState() => _LanguageButtonState();
+}
+
+class _LanguageButtonState extends State<_LanguageButton> {
+  bool _pressed = false;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(AppRadius.md),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        child: Container(
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        HapticFeedback.selectionClick();
+        widget.onTap();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.93 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeOutCubic,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 120),
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.border),
+            color: _pressed
+                ? AppColors.accent.withValues(alpha: 0.06)
+                : AppColors.surface,
+            border: Border.all(
+              color: _pressed ? AppColors.accent : AppColors.border,
+              width: _pressed ? 1.5 : 1.0,
+            ),
             borderRadius: BorderRadius.circular(AppRadius.md),
+            boxShadow: _pressed
+                ? [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.15),
+                      blurRadius: 12,
+                      spreadRadius: 1,
+                    ),
+                  ]
+                : [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.04),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
           ),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.md,
@@ -364,11 +617,11 @@ class _LanguageButton extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(flag, style: const TextStyle(fontSize: 28)),
+              Text(widget.flag, style: const TextStyle(fontSize: 28)),
               const SizedBox(width: AppSpacing.sm),
               Flexible(
                 child: Text(
-                  label,
+                  widget.label,
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -381,6 +634,15 @@ class _LanguageButton extends StatelessWidget {
           ),
         ),
       ),
-    );
+    )
+        .animate()
+        .fadeIn(delay: widget.delay, duration: 300.ms)
+        .scaleXY(
+          begin: 0.85,
+          end: 1.0,
+          delay: widget.delay,
+          duration: 300.ms,
+          curve: Curves.easeOutCubic,
+        );
   }
 }

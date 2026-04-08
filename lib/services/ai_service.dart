@@ -195,13 +195,36 @@ class AIService {
           query: sanitizedMessage,
         );
 
-        // Send to Claude with full conversation history
-        final responseText = await _claudeService.sendMessage(
+        // Send to Claude with tools enabled
+        final rawResponse = await _claudeService.sendMessageWithTools(
           messages: _conversationHistory[caseId] ?? [
             {'role': 'user', 'content': message},
           ],
           systemPrompt: systemPrompt,
         );
+
+        // Check if Claude wants to use a tool
+        if (_claudeService.hasToolUse(rawResponse)) {
+          // Extract any accompanying text from the response
+          final textContent = _claudeService.extractText(rawResponse);
+          // Add text to history if present so context is preserved
+          if (textContent.isNotEmpty) {
+            _addToHistory(caseId, 'assistant', textContent);
+          }
+
+          return ChatResponse(
+            message: textContent.isNotEmpty
+                ? textContent
+                : '', // text may be empty when only tool_use is returned
+            disclaimer:
+                'This is AI-generated legal information, not legal advice. '
+                'Please consult a qualified attorney for advice specific to your situation.',
+            toolUseResponse: rawResponse,
+          );
+        }
+
+        // Normal text-only response
+        final responseText = _claudeService.extractText(rawResponse);
 
         // Add assistant response to history
         _addToHistory(caseId, 'assistant', responseText);
@@ -388,11 +411,20 @@ class ChatResponse {
   final List<String>? suggestedActions;
   final String? disclaimer;
 
+  /// When the Claude response contains tool_use blocks, this holds the raw
+  /// API response so that the caller (e.g. ChatToolBridge) can extract and
+  /// execute tool calls.  `null` for plain text responses.
+  final Map<String, dynamic>? toolUseResponse;
+
   const ChatResponse({
     required this.message,
     this.suggestedActions,
     this.disclaimer,
+    this.toolUseResponse,
   });
+
+  /// Whether this response contains tool calls that need to be executed.
+  bool get hasToolUse => toolUseResponse != null;
 
   factory ChatResponse.fromJson(Map<String, dynamic> json) {
     return ChatResponse(

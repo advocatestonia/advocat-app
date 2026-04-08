@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -91,46 +93,60 @@ class MainShell extends ConsumerWidget {
 
     return Scaffold(
       body: child,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.06),
-              blurRadius: 12,
-              offset: const Offset(0, -2),
+      bottomNavigationBar: ClipRRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface.withValues(alpha: 0.85),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  blurRadius: 20,
+                  spreadRadius: 0,
+                  offset: const Offset(0, -4),
+                ),
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.03),
+                  blurRadius: 6,
+                  offset: const Offset(0, -1),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: SafeArea(
-          top: false,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-            child: Row(
-              children: List.generate(_tabs.length, (i) {
-                final tab = _tabs[i];
-                final isActive = currentIdx == i;
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 4,
+                  vertical: 6,
+                ),
+                child: Row(
+                  children: List.generate(_tabs.length, (i) {
+                    final tab = _tabs[i];
+                    final isActive = currentIdx == i;
 
-                if (tab.isCenter) {
-                  return Expanded(
-                    child: _CenterScanButton(
-                      isActive: isActive,
-                      label: localizedLabels[i],
-                      onTap: () => _onTap(context, i),
-                    ),
-                  );
-                }
+                    if (tab.isCenter) {
+                      return Expanded(
+                        child: _CenterScanButton(
+                          isActive: isActive,
+                          label: localizedLabels[i],
+                          onTap: () => _onTap(context, i),
+                        ),
+                      );
+                    }
 
-                return Expanded(
-                  child: _NavBarItem(
-                    icon: isActive ? tab.activeIcon : tab.icon,
-                    label: localizedLabels[i],
-                    isActive: isActive,
-                    badgeCount: tab.hasBadge ? urgentCount : 0,
-                    onTap: () => _onTap(context, i),
-                  ),
-                );
-              }),
+                    return Expanded(
+                      child: _NavBarItem(
+                        icon: isActive ? tab.activeIcon : tab.icon,
+                        label: localizedLabels[i],
+                        isActive: isActive,
+                        badgeCount: tab.hasBadge ? urgentCount : 0,
+                        onTap: () => _onTap(context, i),
+                      ),
+                    );
+                  }),
+                ),
+              ),
             ),
           ),
         ),
@@ -179,52 +195,76 @@ class _NavBarItem extends StatelessWidget {
     final color = isActive ? AppColors.accent : AppColors.textTertiary;
 
     return Semantics(
-      label: '$label tab${isActive ? ", selected" : ""}${badgeCount > 0 ? ", $badgeCount notifications" : ""}',
+      label:
+          '$label tab${isActive ? ", selected" : ""}${badgeCount > 0 ? ", $badgeCount notifications" : ""}',
       button: true,
       selected: isActive,
       child: InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadius.sm),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(minHeight: 48),
-        child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Badge(
-              isLabelVisible: badgeCount > 0,
-              label: Text(
-                badgeCount > 9 ? '9+' : '$badgeCount',
-                style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadius.sm),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Icon with subtle glow when active
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  curve: Curves.easeOut,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    boxShadow: isActive
+                        ? [
+                            BoxShadow(
+                              color: AppColors.accent.withValues(alpha: 0.30),
+                              blurRadius: 12,
+                              spreadRadius: 1,
+                            ),
+                          ]
+                        : [],
+                  ),
+                  child: Badge(
+                    isLabelVisible: badgeCount > 0,
+                    label: Text(
+                      badgeCount > 9 ? '9+' : '$badgeCount',
+                      style: const TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    backgroundColor: AppColors.error,
+                    child: AnimatedScale(
+                      scale: isActive ? 1.1 : 1.0,
+                      duration: const Duration(milliseconds: 200),
+                      curve: Curves.easeOut,
+                      child: Icon(icon, size: 24, color: color),
+                    ),
+                  ),
                 ),
-              ),
-              backgroundColor: AppColors.error,
-              child: Icon(icon, size: 24, color: color),
+                const SizedBox(height: 3),
+                AnimatedDefaultTextStyle(
+                  duration: const Duration(milliseconds: 200),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
+                    color: color,
+                  ),
+                  child: Text(label),
+                ),
+              ],
             ),
-            const SizedBox(height: 3),
-            Text(
-              label,
-              style: TextStyle(
-                fontFamily: 'Inter',
-                fontSize: 11,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-                color: color,
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
-      ),
       ),
     );
   }
 }
 
-class _CenterScanButton extends StatelessWidget {
+class _CenterScanButton extends StatefulWidget {
   const _CenterScanButton({
     required this.isActive,
     required this.label,
@@ -236,53 +276,113 @@ class _CenterScanButton extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
+  State<_CenterScanButton> createState() => _CenterScanButtonState();
+}
+
+class _CenterScanButtonState extends State<_CenterScanButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulseController;
+  late final Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: '$label tab${isActive ? ", selected" : ""}',
+      label: '${widget.label} tab${widget.isActive ? ", selected" : ""}',
       button: true,
-      selected: isActive,
+      selected: widget.isActive,
       child: GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 52,
-            height: 52,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.accent, AppColors.accentDark],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+        onTap: widget.onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedBuilder(
+              animation: _pulseAnimation,
+              builder: (context, child) {
+                final pulseValue = _pulseAnimation.value;
+                return Container(
+                  width: 60,
+                  height: 60,
+                  alignment: Alignment.center,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Outer pulse ring
+                      Container(
+                        width: 52 + (8 * pulseValue),
+                        height: 52 + (8 * pulseValue),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.accent
+                                .withValues(alpha: 0.25 * (1 - pulseValue)),
+                            width: 2,
+                          ),
+                        ),
+                      ),
+                      // Main button
+                      Container(
+                        width: 52,
+                        height: 52,
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [AppColors.accent, AppColors.accentDark],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.accent
+                                  .withValues(alpha: 0.35 + 0.15 * pulseValue),
+                              blurRadius: 12 + 6 * pulseValue,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          AppIcons.scan,
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 3),
+            Text(
+              widget.label,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 11,
+                fontWeight:
+                    widget.isActive ? FontWeight.w600 : FontWeight.w500,
+                color:
+                    widget.isActive ? AppColors.accent : AppColors.textTertiary,
               ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.accent.withValues(alpha: 0.35),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
-            child: const Icon(
-              AppIcons.scan,
-              color: Colors.white,
-              size: 26,
-            ),
-          ),
-          const SizedBox(height: 3),
-          Text(
-            label,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 11,
-              fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
-              color: isActive ? AppColors.accent : AppColors.textTertiary,
-            ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
     );
   }

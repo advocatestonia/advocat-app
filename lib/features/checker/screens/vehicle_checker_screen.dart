@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,10 +24,21 @@ class VehicleCheckerScreen extends ConsumerStatefulWidget {
 
 class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
   final _controller = TextEditingController();
+  final _searchFocusNode = FocusNode();
+  bool _isSearchFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFocusNode.addListener(() {
+      setState(() => _isSearchFocused = _searchFocusNode.hasFocus);
+    });
+  }
 
   @override
   void dispose() {
     _controller.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -37,12 +50,22 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(l10n?.vehicleChecker ?? 'Vehicle Checker'),
+        title: Text(
+          l10n?.vehicleChecker ?? 'Vehicle Checker',
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.pop(),
         ),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -71,7 +94,11 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                   ),
                 ),
               ),
-            ),
+            )
+                .animate()
+                .fadeIn(duration: 300.ms)
+                .slideY(begin: -0.1, end: 0, duration: 300.ms),
+
             const SizedBox(height: AppSpacing.lg),
 
             // ── Input Mode Toggle ────────────────────────────────────────
@@ -82,7 +109,11 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                 _controller.clear();
               },
               l10n: l10n,
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 100.ms, duration: 300.ms)
+                .slideY(begin: 0.08, end: 0, delay: 100.ms, duration: 300.ms),
+
             const SizedBox(height: AppSpacing.md),
 
             // ── Country Selector (only for license plate mode) ───────────
@@ -90,75 +121,84 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
               _CountrySelector(
                 selectedCode: state.countryCode,
                 onChanged: notifier.setCountryCode,
-              ),
+              )
+                  .animate()
+                  .fadeIn(duration: 250.ms)
+                  .slideY(begin: 0.05, end: 0, duration: 250.ms),
               const SizedBox(height: AppSpacing.md),
             ],
 
-            // ── Input Field ──────────────────────────────────────────────
-            TextField(
-              controller: _controller,
-              onChanged: notifier.setQuery,
-              textCapitalization: TextCapitalization.characters,
-              decoration: InputDecoration(
-                hintText: state.inputMode == VehicleInputMode.licensePlate
-                    ? (l10n?.licensePlate ?? 'License plate')
-                    : (l10n?.vinNumber ?? 'VIN number'),
-                prefixIcon: Icon(
-                  state.inputMode == VehicleInputMode.licensePlate
-                      ? Icons.pin_outlined
-                      : Icons.qr_code_outlined,
+            // ── Input Field with glow on focus ───────────────────────────
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+                boxShadow: _isSearchFocused
+                    ? [
+                        BoxShadow(
+                          color: AppColors.accent.withValues(alpha: 0.2),
+                          blurRadius: 16,
+                          spreadRadius: 1,
+                        ),
+                      ]
+                    : [],
+              ),
+              child: TextField(
+                controller: _controller,
+                focusNode: _searchFocusNode,
+                onChanged: notifier.setQuery,
+                textCapitalization: TextCapitalization.characters,
+                decoration: InputDecoration(
+                  hintText: state.inputMode == VehicleInputMode.licensePlate
+                      ? (l10n?.licensePlate ?? 'License plate')
+                      : (l10n?.vinNumber ?? 'VIN number'),
+                  prefixIcon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      state.inputMode == VehicleInputMode.licensePlate
+                          ? Icons.pin_outlined
+                          : Icons.qr_code_outlined,
+                      key: ValueKey('${state.inputMode}_$_isSearchFocused'),
+                      color: _isSearchFocused ? AppColors.accent : null,
+                    ),
+                  ),
+                  suffixIcon: state.query.isNotEmpty
+                      ? IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            _controller.clear();
+                            notifier.clearResults();
+                          },
+                        )
+                      : null,
                 ),
-                suffixIcon: state.query.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _controller.clear();
-                          notifier.clearResults();
-                        },
-                      )
-                    : null,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.5,
+                ),
               ),
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1.5,
-              ),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 200.ms, duration: 300.ms)
+                .slideY(begin: 0.08, end: 0, delay: 200.ms, duration: 300.ms),
+
             const SizedBox(height: AppSpacing.md),
 
-            // ── Check Button ─────────────────────────────────────────────
-            SizedBox(
-              height: 52,
-              child: ElevatedButton.icon(
-                onPressed: state.isLoading ? null : () => notifier.checkVehicle(),
-                icon: state.isLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Icon(Icons.search),
-                label: Text(
-                  state.isLoading
-                      ? (l10n?.loading ?? 'Loading...')
-                      : (l10n?.checkVehicle ?? 'Check Vehicle'),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
+            // ── Check Button with glow ─────────────────────────────────
+            _GlowVehicleCheckButton(
+              isLoading: state.isLoading,
+              label: state.isLoading
+                  ? (l10n?.loading ?? 'Loading...')
+                  : (l10n?.checkVehicle ?? 'Check Vehicle'),
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                notifier.checkVehicle();
+              },
+            )
+                .animate()
+                .fadeIn(delay: 300.ms, duration: 300.ms)
+                .slideY(begin: 0.08, end: 0, delay: 300.ms, duration: 300.ms),
 
             // ── Demo Hint ────────────────────────────────────────────────
             if (state.report == null && !state.isLoading) ...[
@@ -171,7 +211,9 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                     fontStyle: FontStyle.italic,
                   ),
                 ),
-              ),
+              )
+                  .animate()
+                  .fadeIn(delay: 400.ms, duration: 300.ms),
             ],
 
             // ── Error Message ────────────────────────────────────────────
@@ -185,6 +227,13 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                   border: Border.all(
                     color: AppColors.error.withValues(alpha: 0.3),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.error.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -200,10 +249,13 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                     ),
                   ],
                 ),
-              ),
+              )
+                  .animate()
+                  .fadeIn(duration: 300.ms)
+                  .shakeX(hz: 3, amount: 4, duration: 400.ms),
             ],
 
-            // ── Report Results ───────────────────────────────────────────
+            // ── Report Results with stagger animation ─────────────────
             if (state.report != null) ...[
               const SizedBox(height: AppSpacing.lg),
               VehicleReportCard(
@@ -212,7 +264,10 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                     ? () => _showFraudDialog(context)
                     : null,
                 onOpenCase: () => context.go(AppRoutes.caseCreate),
-              ),
+              )
+                  .animate()
+                  .fadeIn(duration: 500.ms, curve: Curves.easeOut)
+                  .slideY(begin: 0.1, end: 0, duration: 500.ms, curve: Curves.easeOutCubic),
             ],
 
             const SizedBox(height: AppSpacing.xxl),
@@ -226,6 +281,9 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
         title: Text(AppLocalizations.of(context)?.reportMileageFraud ?? 'Report Mileage Fraud'),
         content: Text(
           AppLocalizations.of(context)?.reportMileageFraudDesc ?? 'This will create a fraud report based on the vehicle check data. You can also open a legal case for further action.',
@@ -255,6 +313,88 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
   }
 }
 
+// ── Glow Vehicle Check Button ────────────────────────────────────────────
+
+class _GlowVehicleCheckButton extends StatefulWidget {
+  const _GlowVehicleCheckButton({
+    required this.isLoading,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final bool isLoading;
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  State<_GlowVehicleCheckButton> createState() => _GlowVehicleCheckButtonState();
+}
+
+class _GlowVehicleCheckButtonState extends State<_GlowVehicleCheckButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: widget.isLoading ? null : (_) => setState(() => _isPressed = true),
+      onTapUp: widget.isLoading
+          ? null
+          : (_) {
+              setState(() => _isPressed = false);
+              widget.onPressed();
+            },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.97 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          height: 52,
+          decoration: BoxDecoration(
+            color: widget.isLoading
+                ? AppColors.accent.withValues(alpha: 0.7)
+                : AppColors.accent,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.accent.withValues(alpha: _isPressed ? 0.15 : 0.35),
+                blurRadius: _isPressed ? 6 : 16,
+                offset: Offset(0, _isPressed ? 2 : 6),
+                spreadRadius: _isPressed ? -2 : 0,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (widget.isLoading)
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
+              else
+                const Icon(Icons.search, color: Colors.white),
+              const SizedBox(width: AppSpacing.sm),
+              Text(
+                widget.label,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 // ── Input Mode Toggle ──────────────────────────────────────────────────────
 
 class _InputModeToggle extends StatelessWidget {
@@ -277,6 +417,7 @@ class _InputModeToggle extends StatelessWidget {
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkSurfaceVariant : AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.sm),
+        boxShadow: AppShadows.shadowSmall,
       ),
       padding: const EdgeInsets.all(4),
       child: Row(
@@ -285,13 +426,19 @@ class _InputModeToggle extends StatelessWidget {
             label: l10n?.licensePlate ?? 'License plate',
             icon: Icons.pin_outlined,
             isSelected: mode == VehicleInputMode.licensePlate,
-            onTap: () => onChanged(VehicleInputMode.licensePlate),
+            onTap: () {
+              HapticFeedback.selectionClick();
+              onChanged(VehicleInputMode.licensePlate);
+            },
           ),
           _ToggleOption(
             label: l10n?.vinNumber ?? 'VIN number',
             icon: Icons.qr_code_outlined,
             isSelected: mode == VehicleInputMode.vin,
-            onTap: () => onChanged(VehicleInputMode.vin),
+            onTap: () {
+              HapticFeedback.selectionClick();
+              onChanged(VehicleInputMode.vin);
+            },
           ),
         ],
       ),
@@ -321,10 +468,20 @@ class _ToggleOption extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: BoxDecoration(
             color: isSelected ? AppColors.accent : Colors.transparent,
             borderRadius: BorderRadius.circular(AppRadius.sm - 2),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : [],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

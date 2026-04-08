@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart' show Share;
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -20,10 +21,12 @@ class _RightItem {
     this.text, {
     this.severity = _Severity.info,
     this.legalRef,
+    this.legalUrl,
   });
   final String text;
   final _Severity severity;
   final String? legalRef;
+  final String? legalUrl;
 }
 
 class _ActionItem {
@@ -93,8 +96,25 @@ class RightsDetailScreen extends StatefulWidget {
   State<RightsDetailScreen> createState() => _RightsDetailScreenState();
 }
 
-class _RightsDetailScreenState extends State<RightsDetailScreen> {
+class _RightsDetailScreenState extends State<RightsDetailScreen>
+    with SingleTickerProviderStateMixin {
   final Set<int> _checkedActions = {};
+  late final AnimationController _sectionController;
+
+  @override
+  void initState() {
+    super.initState();
+    _sectionController = AnimationController(
+      duration: const Duration(milliseconds: 800),
+      vsync: this,
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _sectionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +127,139 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
         appBar: AppBar(),
         body: Center(child: Text(l10n.scenarioNotFound)),
       );
+    }
+
+    // Build sections list for staggered animation
+    final sections = <Widget>[];
+    var sectionIndex = 0;
+
+    if (scenario.rights.isNotEmpty) {
+      sections.add(_AnimatedSection(
+        index: sectionIndex++,
+        controller: _sectionController,
+        child: _ExpandableSection(
+          icon: Icons.shield_outlined,
+          iconColor: AppColors.info,
+          title: l10n.yourRights.replaceAll(':', ''),
+          initiallyExpanded: true,
+          child: Column(
+            children: [
+              for (int i = 0; i < scenario.rights.length; i++)
+                _RightItemTile(
+                  index: i + 1,
+                  item: scenario.rights[i],
+                  onShare: () => _shareRight(scenario.rights[i].text),
+                ),
+            ],
+          ),
+        ),
+      ));
+    }
+
+    if (scenario.didYouKnow.isNotEmpty) {
+      sections.add(_AnimatedSection(
+        index: sectionIndex++,
+        controller: _sectionController,
+        child: _DidYouKnowCard(fact: scenario.didYouKnow.first),
+      ));
+    }
+
+    if (scenario.obligations.isNotEmpty) {
+      sections.add(_AnimatedSection(
+        index: sectionIndex++,
+        controller: _sectionController,
+        child: _ExpandableSection(
+          icon: Icons.info_outline,
+          iconColor: AppColors.warning,
+          title: l10n.youMust.replaceAll(':', ''),
+          child: Column(
+            children: [
+              for (int i = 0; i < scenario.obligations.length; i++)
+                _RightItemTile(
+                  index: i + 1,
+                  item: scenario.obligations[i],
+                  onShare: () =>
+                      _shareRight(scenario.obligations[i].text),
+                ),
+            ],
+          ),
+        ),
+      ));
+    }
+
+    if (scenario.actions.isNotEmpty) {
+      sections.add(_AnimatedSection(
+        index: sectionIndex++,
+        controller: _sectionController,
+        child: _ExpandableSection(
+          icon: Icons.bolt_outlined,
+          iconColor: AppColors.accent,
+          title: l10n.whatToDo,
+          initiallyExpanded: true,
+          child: Column(
+            children: [
+              for (int i = 0; i < scenario.actions.length; i++)
+                _ActionChecklistItem(
+                  index: i + 1,
+                  text: scenario.actions[i].text,
+                  isChecked: _checkedActions.contains(i),
+                  onToggle: () {
+                    setState(() {
+                      if (_checkedActions.contains(i)) {
+                        _checkedActions.remove(i);
+                      } else {
+                        _checkedActions.add(i);
+                      }
+                    });
+                  },
+                ),
+            ],
+          ),
+        ),
+      ));
+    }
+
+    if (scenario.didYouKnow.length > 1) {
+      sections.add(_AnimatedSection(
+        index: sectionIndex++,
+        controller: _sectionController,
+        child: _DidYouKnowCard(fact: scenario.didYouKnow[1]),
+      ));
+    }
+
+    if (scenario.deadlines.isNotEmpty) {
+      sections.add(_AnimatedSection(
+        index: sectionIndex++,
+        controller: _sectionController,
+        child: _ExpandableSection(
+          icon: Icons.schedule_outlined,
+          iconColor: AppColors.error,
+          title: l10n.deadlines,
+          child: Column(
+            children: [
+              for (final d in scenario.deadlines) _DeadlineTile(item: d),
+            ],
+          ),
+        ),
+      ));
+    }
+
+    if (scenario.helpContacts.isNotEmpty) {
+      sections.add(_AnimatedSection(
+        index: sectionIndex++,
+        controller: _sectionController,
+        child: _ExpandableSection(
+          icon: Icons.phone_outlined,
+          iconColor: AppColors.success,
+          title: l10n.getHelp,
+          child: Column(
+            children: [
+              for (final c in scenario.helpContacts)
+                _HelpContactCard(contact: c),
+            ],
+          ),
+        ),
+      ));
     }
 
     return Scaffold(
@@ -146,12 +299,19 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                         Row(
                           children: [
                             Container(
-                              width: 44,
-                              height: 44,
+                              width: 48,
+                              height: 48,
                               decoration: BoxDecoration(
                                 color: Colors.white.withValues(alpha: 0.2),
                                 borderRadius:
                                     BorderRadius.circular(AppRadius.md),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.1),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: Icon(
                                 scenario.icon,
@@ -170,6 +330,14 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
                                       color: Colors.white,
+                                      letterSpacing: -0.3,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black26,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 1),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   const SizedBox(height: 2),
@@ -177,8 +345,8 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
                                     scenario.tagline,
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color:
-                                          Colors.white.withValues(alpha: 0.85),
+                                      color: Colors.white
+                                          .withValues(alpha: 0.85),
                                       height: 1.3,
                                     ),
                                   ),
@@ -210,131 +378,16 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
               padding: const EdgeInsets.all(AppSpacing.md),
               child: Column(
                 children: [
-                  // Your Rights section
-                  if (scenario.rights.isNotEmpty)
-                    _ExpandableSection(
-                      icon: Icons.shield_outlined,
-                      iconColor: AppColors.info,
-                      title: l10n.yourRights.replaceAll(':', ''),
-                      initiallyExpanded: true,
-                      child: Column(
-                        children: [
-                          for (int i = 0; i < scenario.rights.length; i++)
-                            _RightItemTile(
-                              index: i + 1,
-                              item: scenario.rights[i],
-                              onShare: () =>
-                                  _shareRight(scenario.rights[i].text),
-                            ),
-                        ],
-                      ),
-                    ),
-
-                  // "Did you know?" card between sections
-                  if (scenario.didYouKnow.isNotEmpty)
-                    _DidYouKnowCard(fact: scenario.didYouKnow.first),
-
-                  // Obligations section
-                  if (scenario.obligations.isNotEmpty)
-                    _ExpandableSection(
-                      icon: Icons.info_outline,
-                      iconColor: AppColors.warning,
-                      title: l10n.youMust.replaceAll(':', ''),
-                      child: Column(
-                        children: [
-                          for (int i = 0;
-                              i < scenario.obligations.length;
-                              i++)
-                            _RightItemTile(
-                              index: i + 1,
-                              item: scenario.obligations[i],
-                              onShare: () => _shareRight(
-                                  scenario.obligations[i].text),
-                            ),
-                        ],
-                      ),
-                    ),
-
-                  // What To Do - interactive checklist
-                  if (scenario.actions.isNotEmpty)
-                    _ExpandableSection(
-                      icon: Icons.bolt_outlined,
-                      iconColor: AppColors.accent,
-                      title: l10n.whatToDo,
-                      initiallyExpanded: true,
-                      child: Column(
-                        children: [
-                          for (int i = 0; i < scenario.actions.length; i++)
-                            _ActionChecklistItem(
-                              index: i + 1,
-                              text: scenario.actions[i].text,
-                              isChecked: _checkedActions.contains(i),
-                              onToggle: () {
-                                setState(() {
-                                  if (_checkedActions.contains(i)) {
-                                    _checkedActions.remove(i);
-                                  } else {
-                                    _checkedActions.add(i);
-                                  }
-                                });
-                              },
-                            ),
-                        ],
-                      ),
-                    ),
-
-                  // Second "Did you know?" if available
-                  if (scenario.didYouKnow.length > 1)
-                    _DidYouKnowCard(fact: scenario.didYouKnow[1]),
-
-                  // Deadlines section
-                  if (scenario.deadlines.isNotEmpty)
-                    _ExpandableSection(
-                      icon: Icons.schedule_outlined,
-                      iconColor: AppColors.error,
-                      title: l10n.deadlines,
-                      child: Column(
-                        children: [
-                          for (final d in scenario.deadlines)
-                            _DeadlineTile(item: d),
-                        ],
-                      ),
-                    ),
-
-                  // Get Help section
-                  if (scenario.helpContacts.isNotEmpty)
-                    _ExpandableSection(
-                      icon: Icons.phone_outlined,
-                      iconColor: AppColors.success,
-                      title: l10n.getHelp,
-                      child: Column(
-                        children: [
-                          for (final c in scenario.helpContacts)
-                            _HelpContactCard(contact: c),
-                        ],
-                      ),
-                    ),
+                  ...sections,
 
                   const SizedBox(height: AppSpacing.lg),
 
-                  // Ask AI CTA button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () =>
-                          context.push('/chat/general'),
-                      icon: const Icon(Icons.chat_bubble_outline, size: 20),
-                      label: Text(AppLocalizations.of(context)?.haveQuestionsAi ?? 'Have questions? Talk to AI'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppRadius.md),
-                        ),
-                      ),
-                    ),
+                  // Ask AI CTA button with glow
+                  _PremiumCtaButton(
+                    onPressed: () => context.push('/chat/general'),
+                    label: AppLocalizations.of(context)?.haveQuestionsAi ??
+                        'Have questions? Talk to AI',
+                    icon: Icons.chat_bubble_outline,
                   ),
 
                   const SizedBox(height: AppSpacing.xl),
@@ -364,6 +417,91 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
   // ── Build scenario data ────────────────────────────────────────────────
   Map<String, _ScenarioData> _buildData(AppLocalizations l10n) {
     return {
+      // ── Domestic Violence & Assault (TOP PRIORITY) ──────────────────
+      'domestic-violence': _ScenarioData(
+        title: l10n.domesticViolence,
+        tagline: l10n.domesticViolenceDesc,
+        icon: Icons.health_and_safety_outlined,
+        color: AppColors.error,
+        rights: [
+          _RightItem(l10n.rightCallEmergency,
+              severity: _Severity.critical,
+              legalRef: 'Emergency Response Centre Act (692/2010)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2010/en20100692'),
+          _RightItem(l10n.rightVictimProtection,
+              severity: _Severity.critical,
+              legalRef: 'EU Victims\' Directive 2012/29/EU',
+              legalUrl: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32012L0029'),
+          _RightItem(l10n.rightRestrainingOrder,
+              severity: _Severity.critical,
+              legalRef: 'Act on Restraining Orders (898/1998)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1998/en19980898'),
+          _RightItem(l10n.rightVictimInterpreter,
+              severity: _Severity.important,
+              legalRef: 'Language Act (423/2003)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2003/en20030423'),
+          _RightItem(l10n.rightMedicalHelp,
+              severity: _Severity.critical,
+              legalRef: 'Criminal Code (39/1889) Chapter 21 — Assault § 5',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1889/en18890039'),
+          _RightItem(l10n.rightShelter,
+              severity: _Severity.important,
+              legalRef: 'Act on Shelter Services (1354/2014)',
+              legalUrl: 'https://www.finlex.fi/fi/laki/alkup/2014/20141354'),
+        ],
+        obligations: [
+          _RightItem(l10n.mustReportDanger, severity: _Severity.critical),
+          _RightItem(l10n.mustDocumentInjuries, severity: _Severity.important),
+        ],
+        actions: [
+          _ActionItem(l10n.domesticActionCallEmergency),
+          _ActionItem(l10n.domesticActionGoToSafe),
+          _ActionItem(l10n.domesticActionDocumentEverything),
+          _ActionItem(l10n.domesticActionFilePoliceReport),
+          _ActionItem(l10n.domesticActionContactShelter),
+          _ActionItem(l10n.domesticActionApplyRestraining),
+        ],
+        deadlines: [
+          _DeadlineTile.data(
+            l10n.domesticDeadlinePoliceReport,
+            isUrgent: false,
+          ),
+          _DeadlineTile.data(
+            l10n.domesticDeadlineRestraining,
+            isUrgent: false,
+          ),
+        ],
+        didYouKnow: [
+          _DidYouKnow(l10n.domesticFactRestrainingOrder),
+          _DidYouKnow(l10n.domesticFactVictimDirective),
+        ],
+        helpContacts: [
+          _HelpContact(
+            name: l10n.contactEmergency,
+            phone: '112',
+          ),
+          _HelpContact(
+            name: l10n.contactNollaLinja,
+            phone: '080 005 005',
+            url: 'https://nollalinja.fi/en/',
+          ),
+          _HelpContact(
+            name: l10n.contactShelter,
+            phone: '0800 161 323',
+            url: 'https://turvakoti.fi',
+          ),
+          _HelpContact(
+            name: l10n.contactCrisisHelpline,
+            phone: '09 2525 0111',
+          ),
+          _HelpContact(
+            name: l10n.contactVictimSupportRIKU,
+            phone: '116 006',
+            url: 'https://www.riku.fi/en/',
+          ),
+        ],
+      ),
+      // ── Police Stop ─────────────────────────────────────────────────
       'police-stop': _ScenarioData(
         title: l10n.stoppedByPolice,
         tagline: l10n.stoppedByPoliceDesc,
@@ -372,16 +510,20 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
         rights: [
           _RightItem(l10n.rightKnowWhyStopped,
               severity: _Severity.critical,
-              legalRef: 'Police Act (872/2011) Section 2'),
+              legalRef: 'Police Act (872/2011) Section 2',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2011/en20110872'),
           _RightItem(l10n.rightRemainSilent,
               severity: _Severity.critical,
-              legalRef: 'Constitution of Finland, Section 21'),
+              legalRef: 'Constitution of Finland, Section 21',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1999/en19990731'),
           _RightItem(l10n.rightAskInterpreter,
               severity: _Severity.important,
-              legalRef: 'Language Act (423/2003)'),
+              legalRef: 'Language Act (423/2003)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2003/en20030423'),
           _RightItem(l10n.rightContactLawyer,
               severity: _Severity.critical,
-              legalRef: 'Criminal Procedure Act, Chapter 2'),
+              legalRef: 'Criminal Procedure Act, Chapter 2',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1997/en19970689'),
           _RightItem(l10n.rightRecordEncounter, severity: _Severity.info),
         ],
         obligations: [
@@ -422,16 +564,20 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
         rights: [
           _RightItem(l10n.rightAppealAdmin,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act (301/2004) Section 190'),
+              legalRef: 'Aliens Act (301/2004) Section 190',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
           _RightItem(l10n.rightLegalRep,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 9'),
+              legalRef: 'Aliens Act Section 9',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
           _RightItem(l10n.rightInterpreter,
               severity: _Severity.important,
-              legalRef: 'Language Act (423/2003)'),
+              legalRef: 'Language Act (423/2003)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2003/en20030423'),
           _RightItem(l10n.rightStayDuringAppeal,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 200'),
+              legalRef: 'Aliens Act Section 200',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
         ],
         actions: [
           _ActionItem(l10n.doNotIgnoreNotice),
@@ -477,19 +623,24 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
         rights: [
           _RightItem(l10n.minimumWage,
               severity: _Severity.critical,
-              legalRef: 'Employment Contracts Act (55/2001)'),
+              legalRef: 'Employment Contracts Act (55/2001)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2001/en20010055'),
           _RightItem(l10n.workingTimeLimits,
               severity: _Severity.important,
-              legalRef: 'Working Time Act (872/2019)'),
+              legalRef: 'Working Time Act (872/2019)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2019/en20190872'),
           _RightItem(l10n.annualLeave,
               severity: _Severity.important,
-              legalRef: 'Annual Holidays Act (162/2005)'),
+              legalRef: 'Annual Holidays Act (162/2005)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2005/en20050162'),
           _RightItem(l10n.sickLeave,
               severity: _Severity.important,
-              legalRef: 'Employment Contracts Act Chapter 2, Section 11'),
+              legalRef: 'Employment Contracts Act Chapter 2, Section 11',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2001/en20010055'),
           _RightItem(l10n.safeWorkingConditions,
               severity: _Severity.critical,
-              legalRef: 'Occupational Safety and Health Act (738/2002)'),
+              legalRef: 'Occupational Safety and Health Act (738/2002)',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2002/en20020738'),
         ],
         actions: [
           _ActionItem(l10n.workplaceActionKeepContract),
@@ -522,24 +673,24 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
         rights: [
           _RightItem(l10n.writtenRentalAgreement,
               severity: _Severity.important,
-              legalRef:
-                  'Act on Residential Leases (481/1995) Chapter 1'),
+              legalRef: 'Act on Residential Leases (481/1995) Chapter 1',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
           _RightItem(l10n.securityDeposit,
               severity: _Severity.important,
-              legalRef:
-                  'Act on Residential Leases Section 8'),
+              legalRef: 'Act on Residential Leases Section 8',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
           _RightItem(l10n.landlordNotice,
               severity: _Severity.critical,
-              legalRef:
-                  'Act on Residential Leases Section 52'),
+              legalRef: 'Act on Residential Leases Section 52',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
           _RightItem(l10n.rightHabitableDwelling,
               severity: _Severity.critical,
-              legalRef:
-                  'Act on Residential Leases Section 20'),
+              legalRef: 'Act on Residential Leases Section 20',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
           _RightItem(l10n.protectionUnjustEviction,
               severity: _Severity.critical,
-              legalRef:
-                  'Act on Residential Leases Sections 51-55'),
+              legalRef: 'Act on Residential Leases Sections 51-55',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
         ],
         actions: [
           _ActionItem(l10n.tenantActionWrittenAgreement),
@@ -571,19 +722,24 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
         rights: [
           _RightItem(l10n.rightKnowDetentionReason,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 123'),
+              legalRef: 'Aliens Act Section 123',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
           _RightItem(l10n.rightContactLawyerDetention,
               severity: _Severity.critical,
-              legalRef: 'Constitution of Finland Section 21'),
+              legalRef: 'Constitution of Finland Section 21',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1999/en19990731'),
           _RightItem(l10n.rightContactEmbassy,
               severity: _Severity.important,
-              legalRef: 'Vienna Convention on Consular Relations'),
+              legalRef: 'Vienna Convention on Consular Relations',
+              legalUrl: 'https://legal.un.org/ilc/texts/instruments/english/conventions/9_2_1963.pdf'),
           _RightItem(l10n.rightChallengeDetention,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 127'),
+              legalRef: 'Aliens Act Section 127',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
           _RightItem(l10n.rightHumaneTreatment,
               severity: _Severity.critical,
-              legalRef: 'ECHR Article 3'),
+              legalRef: 'ECHR Article 3',
+              legalUrl: 'https://www.echr.coe.int/documents/d/echr/convention_ENG'),
         ],
         actions: [
           _ActionItem(l10n.detentionActionAskDecision),
@@ -628,12 +784,14 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
               severity: _Severity.critical),
           _RightItem(l10n.fileComplaintOmbudsman,
               severity: _Severity.critical,
-              legalRef: 'Non-Discrimination Act (1325/2014) Section 19'),
+              legalRef: 'Non-Discrimination Act (1325/2014) Section 19',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2014/en20141325'),
           _RightItem(l10n.contactLegalAidOffice,
               severity: _Severity.important),
           _RightItem(l10n.reportToPolice,
               severity: _Severity.important,
-              legalRef: 'Criminal Code Chapter 11'),
+              legalRef: 'Criminal Code Chapter 11',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1889/en18890039'),
         ],
         actions: [
           _ActionItem(l10n.discriminationActionWriteDown),
@@ -658,12 +816,203 @@ class _RightsDetailScreenState extends State<RightsDetailScreen> {
           ),
         ],
       ),
+      // ── Consumer Protection ─────────────────────────────────────────
+      'consumer': _ScenarioData(
+        title: l10n.consumerProtection,
+        tagline: l10n.consumerProtectionDesc,
+        icon: Icons.shopping_bag_outlined,
+        color: AppColors.accent,
+        rights: [
+          _RightItem(l10n.rightReturnOnline,
+              severity: _Severity.critical,
+              legalRef: 'EU Consumer Rights Directive 2011/83/EU',
+              legalUrl: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32011L0083'),
+          _RightItem(l10n.rightDefectiveProduct,
+              severity: _Severity.critical,
+              legalRef: 'Consumer Protection Act (38/1978) Chapter 5',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1978/en19780038'),
+          _RightItem(l10n.rightClearPricing,
+              severity: _Severity.important,
+              legalRef: 'Consumer Protection Act Chapter 2',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1978/en19780038'),
+          _RightItem(l10n.rightComplainBoard,
+              severity: _Severity.important,
+              legalRef: 'Act on Consumer Disputes Board (8/2007)',
+              legalUrl: 'https://www.finlex.fi/fi/laki/ajantasa/2007/20070008'),
+          _RightItem(l10n.rightProtectionFraud,
+              severity: _Severity.critical,
+              legalRef: 'Consumer Protection Act Chapter 2 — Unfair Practices',
+              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1978/en19780038'),
+        ],
+        obligations: [
+          _RightItem(l10n.mustKeepReceipts, severity: _Severity.important),
+          _RightItem(l10n.mustActTimely, severity: _Severity.important),
+        ],
+        actions: [
+          _ActionItem(l10n.consumerActionKeepEvidence),
+          _ActionItem(l10n.consumerActionContactSeller),
+          _ActionItem(l10n.consumerActionFileComplaint),
+          _ActionItem(l10n.consumerActionContactAuthority),
+          _ActionItem(l10n.consumerActionReportFraud),
+        ],
+        deadlines: [
+          _DeadlineTile.data(
+            l10n.consumerDeadlineWithdrawal,
+            isUrgent: true,
+          ),
+          _DeadlineTile.data(
+            l10n.consumerDeadlineDefect,
+            isUrgent: false,
+          ),
+        ],
+        didYouKnow: [
+          _DidYouKnow(l10n.consumerFactWithdrawal),
+          _DidYouKnow(l10n.consumerFactWarranty),
+        ],
+        helpContacts: [
+          _HelpContact(
+            name: l10n.contactConsumerAdvisory,
+            phone: '029 505 3050',
+            url: 'https://www.kkv.fi/en/consumer-advisory-services/',
+          ),
+          _HelpContact(
+            name: l10n.contactConsumerOmbudsman,
+            url: 'https://www.kkv.fi/en/consumer-ombudsman/',
+          ),
+          _HelpContact(
+            name: l10n.contactConsumerDisputesBoardDirect,
+            phone: '029 566 5200',
+            url: 'https://www.kuluttajariita.fi/en/',
+          ),
+        ],
+      ),
     };
   }
 }
 
 // ---------------------------------------------------------------------------
-// Expandable section widget
+// Animated section wrapper for staggered entrance
+// ---------------------------------------------------------------------------
+
+class _AnimatedSection extends StatelessWidget {
+  const _AnimatedSection({
+    required this.index,
+    required this.controller,
+    required this.child,
+  });
+
+  final int index;
+  final AnimationController controller;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final begin = (index * 0.08).clamp(0.0, 0.6);
+    final end = (begin + 0.4).clamp(0.0, 1.0);
+
+    final fadeAnim = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Interval(begin, end, curve: Curves.easeOutCubic),
+      ),
+    );
+    final slideAnim = Tween<Offset>(
+      begin: const Offset(0, 0.06),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Interval(begin, end, curve: Curves.easeOutCubic),
+      ),
+    );
+
+    return FadeTransition(
+      opacity: fadeAnim,
+      child: SlideTransition(
+        position: slideAnim,
+        child: child,
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Premium CTA button with glow
+// ---------------------------------------------------------------------------
+
+class _PremiumCtaButton extends StatefulWidget {
+  const _PremiumCtaButton({
+    required this.onPressed,
+    required this.label,
+    required this.icon,
+  });
+
+  final VoidCallback onPressed;
+  final String label;
+  final IconData icon;
+
+  @override
+  State<_PremiumCtaButton> createState() => _PremiumCtaButtonState();
+}
+
+class _PremiumCtaButtonState extends State<_PremiumCtaButton> {
+  bool _pressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _pressed = true),
+      onTapUp: (_) {
+        setState(() => _pressed = false);
+        widget.onPressed();
+      },
+      onTapCancel: () => setState(() => _pressed = false),
+      child: AnimatedScale(
+        scale: _pressed ? 0.97 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: AppColors.primary,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: _pressed ? 0.4 : 0.25),
+                blurRadius: _pressed ? 20 : 12,
+                offset: const Offset(0, 4),
+              ),
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.1),
+                blurRadius: 24,
+                spreadRadius: 2,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(widget.icon, size: 20, color: Colors.white),
+              const SizedBox(width: 8),
+              Text(
+                widget.label,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Expandable section widget with enhanced styling
 // ---------------------------------------------------------------------------
 
 class _ExpandableSection extends StatelessWidget {
@@ -690,6 +1039,13 @@ class _ExpandableSection extends StatelessWidget {
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.md),
           border: Border.all(color: AppColors.border),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -710,6 +1066,13 @@ class _ExpandableSection extends StatelessWidget {
               decoration: BoxDecoration(
                 color: iconColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppRadius.sm),
+                boxShadow: [
+                  BoxShadow(
+                    color: iconColor.withValues(alpha: 0.08),
+                    blurRadius: 6,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
               child: Icon(icon, color: iconColor, size: 20),
             ),
@@ -791,6 +1154,13 @@ class _RightItemTileState extends State<_RightItemTile> {
             border: Border(
               left: BorderSide(color: _severityColor, width: 3),
             ),
+            boxShadow: [
+              BoxShadow(
+                color: _severityColor.withValues(alpha: 0.04),
+                blurRadius: 4,
+                offset: const Offset(0, 1),
+              ),
+            ],
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -870,28 +1240,64 @@ class _RightItemTileState extends State<_RightItemTile> {
               // Expandable legal reference
               if (_showRef && widget.item.legalRef != null) ...[
                 const SizedBox(height: AppSpacing.sm),
-                Container(
-                  padding: const EdgeInsets.all(AppSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceVariant,
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                  ),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.gavel_outlined,
-                          size: 14, color: AppColors.textTertiary),
-                      const SizedBox(width: AppSpacing.xs),
-                      Expanded(
-                        child: Text(
-                          widget.item.legalRef!,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontStyle: FontStyle.italic,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
+                AnimatedSize(
+                  duration: const Duration(milliseconds: 200),
+                  child: GestureDetector(
+                    onTap: widget.item.legalUrl != null
+                        ? () async {
+                            final uri = Uri.parse(widget.item.legalUrl!);
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri,
+                                  mode: LaunchMode.externalApplication);
+                            }
+                          }
+                        : null,
+                    child: Container(
+                      padding: const EdgeInsets.all(AppSpacing.sm),
+                      decoration: BoxDecoration(
+                        color: AppColors.surfaceVariant,
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
                       ),
-                    ],
+                      child: Row(
+                        children: [
+                          Icon(
+                            widget.item.legalUrl != null
+                                ? Icons.open_in_new_outlined
+                                : Icons.gavel_outlined,
+                            size: 14,
+                            color: widget.item.legalUrl != null
+                                ? AppColors.info
+                                : AppColors.textTertiary,
+                          ),
+                          const SizedBox(width: AppSpacing.xs),
+                          Expanded(
+                            child: Text(
+                              widget.item.legalRef!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                                color: widget.item.legalUrl != null
+                                    ? AppColors.info
+                                    : AppColors.textSecondary,
+                                decoration: widget.item.legalUrl != null
+                                    ? TextDecoration.underline
+                                    : TextDecoration.none,
+                                decorationColor: AppColors.info,
+                              ),
+                            ),
+                          ),
+                          if (widget.item.legalUrl != null)
+                            const Padding(
+                              padding: EdgeInsets.only(left: 4),
+                              child: Icon(
+                                Icons.launch_outlined,
+                                size: 12,
+                                color: AppColors.info,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -930,7 +1336,8 @@ class _ActionChecklistItem extends StatelessWidget {
           HapticFeedback.lightImpact();
           onToggle();
         },
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 250),
           padding: const EdgeInsets.all(AppSpacing.sm + 4),
           decoration: BoxDecoration(
             color: isChecked
@@ -942,6 +1349,14 @@ class _ActionChecklistItem extends StatelessWidget {
                   ? AppColors.success.withValues(alpha: 0.3)
                   : AppColors.border,
             ),
+            boxShadow: [
+              if (isChecked)
+                BoxShadow(
+                  color: AppColors.success.withValues(alpha: 0.06),
+                  blurRadius: 6,
+                  offset: const Offset(0, 1),
+                ),
+            ],
           ),
           child: Row(
             children: [
@@ -955,6 +1370,14 @@ class _ActionChecklistItem extends StatelessWidget {
                       ? AppColors.success
                       : AppColors.accent.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
+                  boxShadow: isChecked
+                      ? [
+                          BoxShadow(
+                            color: AppColors.success.withValues(alpha: 0.3),
+                            blurRadius: 6,
+                          ),
+                        ]
+                      : null,
                 ),
                 alignment: Alignment.center,
                 child: isChecked
@@ -1019,6 +1442,13 @@ class _DeadlineTile extends StatelessWidget {
           border: Border(
             left: BorderSide(color: color, width: 3),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: color.withValues(alpha: 0.06),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
         ),
         child: Row(
           children: [
@@ -1077,6 +1507,13 @@ class _DidYouKnowCard extends StatelessWidget {
           border: Border.all(
             color: AppColors.accent.withValues(alpha: 0.2),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.accent.withValues(alpha: 0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1146,6 +1583,13 @@ class _HelpContactCard extends StatelessWidget {
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.sm),
           border: Border.all(color: AppColors.border),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.02),
+              blurRadius: 4,
+              offset: const Offset(0, 1),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

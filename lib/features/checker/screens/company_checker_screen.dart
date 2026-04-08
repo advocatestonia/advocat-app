@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
@@ -17,10 +19,21 @@ class CompanyCheckerScreen extends ConsumerStatefulWidget {
 
 class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
   final _searchController = TextEditingController();
+  final _searchFocusNode = FocusNode();
+  bool _isSearchFocused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchFocusNode.addListener(() {
+      setState(() => _isSearchFocused = _searchFocusNode.hasFocus);
+    });
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -30,25 +43,62 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
     final notifier = ref.read(companyCheckerProvider.notifier);
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.checkCompany),
+        title: Text(
+          AppLocalizations.of(context)!.checkCompany,
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
+        ),
+        backgroundColor: AppColors.surface,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: ListView(
           padding: const EdgeInsets.all(AppSpacing.md),
           children: [
-            // Search field
-            TextField(
-              controller: _searchController,
-              onChanged: notifier.setQuery,
-              decoration: const InputDecoration(
-                hintText: 'Company name or reg. number',
-                prefixIcon: Icon(Icons.search_rounded),
+            // Search field with glow on focus
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+                boxShadow: _isSearchFocused
+                    ? [
+                        BoxShadow(
+                          color: AppColors.accent.withValues(alpha: 0.2),
+                          blurRadius: 16,
+                          spreadRadius: 1,
+                        ),
+                      ]
+                    : [],
               ),
-              textInputAction: TextInputAction.search,
-              onSubmitted: (_) => notifier.checkCompany(),
-            ),
+              child: TextField(
+                controller: _searchController,
+                focusNode: _searchFocusNode,
+                onChanged: notifier.setQuery,
+                decoration: InputDecoration(
+                  hintText: 'Company name or reg. number',
+                  prefixIcon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      Icons.search_rounded,
+                      key: ValueKey(_isSearchFocused),
+                      color: _isSearchFocused ? AppColors.accent : AppColors.textTertiary,
+                    ),
+                  ),
+                ),
+                textInputAction: TextInputAction.search,
+                onSubmitted: (_) => notifier.checkCompany(),
+              ),
+            )
+                .animate()
+                .fadeIn(duration: 300.ms)
+                .slideY(begin: 0.08, end: 0, duration: 300.ms),
+
             const SizedBox(height: AppSpacing.md),
 
             // Country selector
@@ -66,39 +116,25 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                         child: Text('${c.flag}  ${c.name}'),
                       ))
                   .toList(),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 100.ms, duration: 300.ms)
+                .slideY(begin: 0.08, end: 0, delay: 100.ms, duration: 300.ms),
+
             const SizedBox(height: AppSpacing.lg),
 
-            // Check button
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                onPressed:
-                    state.status == CheckerStatus.loading ? null : () => notifier.checkCompany(),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.sm),
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                child: state.status == CheckerStatus.loading
-                    ? const SizedBox(
-                        width: 22,
-                        height: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Text(AppLocalizations.of(context)!.checkCompany),
-              ),
-            ),
+            // Check button with glow
+            _GlowCheckButton(
+              isLoading: state.status == CheckerStatus.loading,
+              label: AppLocalizations.of(context)!.checkCompany,
+              onPressed: () {
+                HapticFeedback.mediumImpact();
+                notifier.checkCompany();
+              },
+            )
+                .animate()
+                .fadeIn(delay: 200.ms, duration: 300.ms)
+                .slideY(begin: 0.08, end: 0, delay: 200.ms, duration: 300.ms),
 
             // Price badge
             const SizedBox(height: AppSpacing.sm),
@@ -121,7 +157,9 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                   ),
                 ),
               ),
-            ),
+            )
+                .animate()
+                .fadeIn(delay: 300.ms, duration: 300.ms),
 
             const SizedBox(height: AppSpacing.xl),
 
@@ -133,6 +171,13 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                   color: AppColors.error.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                   border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.error.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -146,11 +191,17 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                     ),
                   ],
                 ),
-              ),
+              )
+                  .animate()
+                  .fadeIn(duration: 300.ms)
+                  .shakeX(hz: 3, amount: 4, duration: 400.ms),
 
-            // Results
+            // Results with slide-in animation
             if (state.status == CheckerStatus.results && state.report != null)
-              CompanyReportCard(report: state.report!),
+              CompanyReportCard(report: state.report!)
+                  .animate()
+                  .fadeIn(duration: 500.ms, curve: Curves.easeOut)
+                  .slideY(begin: 0.1, end: 0, duration: 500.ms, curve: Curves.easeOutCubic),
 
             // Idle hint
             if (state.status == CheckerStatus.idle) ...[
@@ -164,6 +215,13 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                       decoration: BoxDecoration(
                         color: AppColors.accent.withValues(alpha: 0.08),
                         shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.accent.withValues(alpha: 0.06),
+                            blurRadius: 24,
+                            spreadRadius: 8,
+                          ),
+                        ],
                       ),
                       child: Icon(
                         Icons.business_center_outlined,
@@ -183,11 +241,91 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                     ),
                   ],
                 ),
-              ),
+              )
+                  .animate()
+                  .fadeIn(delay: 400.ms, duration: 500.ms)
+                  .slideY(begin: 0.08, end: 0, delay: 400.ms, duration: 500.ms),
             ],
 
             const SizedBox(height: AppSpacing.xxl),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Glow Check Button ────────────────────────────────────────────────────
+
+class _GlowCheckButton extends StatefulWidget {
+  const _GlowCheckButton({
+    required this.isLoading,
+    required this.label,
+    required this.onPressed,
+  });
+
+  final bool isLoading;
+  final String label;
+  final VoidCallback onPressed;
+
+  @override
+  State<_GlowCheckButton> createState() => _GlowCheckButtonState();
+}
+
+class _GlowCheckButtonState extends State<_GlowCheckButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: widget.isLoading ? null : (_) => setState(() => _isPressed = true),
+      onTapUp: widget.isLoading
+          ? null
+          : (_) {
+              setState(() => _isPressed = false);
+              widget.onPressed();
+            },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.97 : 1.0,
+        duration: const Duration(milliseconds: 100),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          width: double.infinity,
+          height: 52,
+          decoration: BoxDecoration(
+            color: widget.isLoading
+                ? AppColors.accent.withValues(alpha: 0.7)
+                : AppColors.accent,
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.accent.withValues(alpha: _isPressed ? 0.15 : 0.35),
+                blurRadius: _isPressed ? 6 : 16,
+                offset: Offset(0, _isPressed ? 2 : 6),
+                spreadRadius: _isPressed ? -2 : 0,
+              ),
+            ],
+          ),
+          child: Center(
+            child: widget.isLoading
+                ? const SizedBox(
+                    width: 22,
+                    height: 22,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: Colors.white,
+                    ),
+                  )
+                : Text(
+                    widget.label,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+          ),
         ),
       ),
     );

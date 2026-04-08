@@ -35,6 +35,10 @@ extension CaseTypeX on CaseType {
         return 'Police Misconduct';
       case CaseType.socialBenefits:
         return 'Social Benefits';
+      case CaseType.domesticViolence:
+        return 'Domestic Violence';
+      case CaseType.consumerProtection:
+        return 'Consumer Protection';
       case CaseType.other:
         return 'Other';
     }
@@ -67,6 +71,10 @@ extension CaseTypeX on CaseType {
         return AppColors.error;
       case CaseType.socialBenefits:
         return AppColors.success;
+      case CaseType.domesticViolence:
+        return AppColors.error;
+      case CaseType.consumerProtection:
+        return AppColors.info;
       case CaseType.other:
         return AppColors.textTertiary;
     }

@@ -1228,8 +1228,8 @@ function loadSettings() {
         dom.claudeKey.value = _cachedClaudeKey || '';
     }
     dom.proxyUrl.value = localStorage.getItem('advocat_proxy_url') || '';
-    state.language = localStorage.getItem('advocat_language') || 'fi';
-    state.userLanguage = localStorage.getItem('advocat_user_language') || 'ru';
+    state.userLanguage = localStorage.getItem('advocat_user_language') || navigator.language?.slice(0,2) || 'ru';
+    state.language = localStorage.getItem('advocat_language') || state.userLanguage;
     state.mode = localStorage.getItem('advocat_mode') || 'deepgram';
     state.secureMode = localStorage.getItem('advocat_secure_mode') === '1';
     dom.languageSelect.value = state.language;
@@ -2036,14 +2036,28 @@ function startDemoMode() {
     state.recognition.continuous = true;
     state.recognition.interimResults = true;
 
-    // Map language codes
+    // Map language codes to BCP 47 for Web Speech API
     const langMap = {
         'fi': 'fi-FI',
         'en': 'en-US',
         'ru': 'ru-RU',
-        'multi': 'en-US' // Web Speech API doesn't support multi
+        'et': 'et-EE',
+        'de': 'de-DE',
+        'sv': 'sv-SE',
+        'ar': 'ar-SA',
+        'lv': 'lv-LV',
+        'lt': 'lt-LT',
+        'es': 'es-ES',
+        'it': 'it-IT',
+        'ro': 'ro-RO',
+        'pl': 'pl-PL',
+        'fr': 'fr-FR',
+        'fa': 'fa-IR',
+        'tr': 'tr-TR',
+        'uk': 'uk-UA',
+        'multi': 'en-US'
     };
-    state.recognition.lang = langMap[state.language] || 'fi-FI';
+    state.recognition.lang = langMap[state.language] || langMap[state.userLanguage] || 'en-US';
 
     state.recognition.onstart = () => {
         const _tDemo = UI_TRANSLATIONS[state.userLanguage] || UI_TRANSLATIONS['en'];

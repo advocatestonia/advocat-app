@@ -137,6 +137,8 @@ class LegalCase {
       case 'discrimination': return CaseType.discrimination;
       case 'police_misconduct': return CaseType.policeMisconduct;
       case 'social_benefits': return CaseType.socialBenefits;
+      case 'domestic_violence': return CaseType.domesticViolence;
+      case 'consumer_protection': return CaseType.consumerProtection;
       case 'other': return CaseType.other;
       default: return CaseType.deportation;
     }
@@ -156,6 +158,8 @@ class LegalCase {
       case CaseType.discrimination: return 'discrimination';
       case CaseType.policeMisconduct: return 'police_misconduct';
       case CaseType.socialBenefits: return 'social_benefits';
+      case CaseType.domesticViolence: return 'domestic_violence';
+      case CaseType.consumerProtection: return 'consumer_protection';
       case CaseType.other: return 'other';
     }
   }
@@ -197,6 +201,8 @@ enum CaseType {
   discrimination,
   policeMisconduct,
   socialBenefits,
+  domesticViolence,
+  consumerProtection,
   other,
 }
 

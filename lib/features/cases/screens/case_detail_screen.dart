@@ -55,7 +55,7 @@ class CaseDetailScreen extends ConsumerWidget {
       data: (legalCase) => Scaffold(
         body: CustomScrollView(
           slivers: [
-            // ── Sliver app bar ─────────────────────────────────────────
+            // ── Sliver app bar with glow effect ──────────────────────
             SliverAppBar(
               expandedHeight: 120,
               pinned: true,
@@ -66,15 +66,7 @@ class CaseDetailScreen extends ConsumerWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                background: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [AppColors.primary, AppColors.primaryDark],
-                    ),
-                  ),
-                ),
+                background: _GlowingAppBarBackground(),
               ),
               actions: [
                 _StatusChip(status: legalCase.status),
@@ -88,39 +80,54 @@ class CaseDetailScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // ── Case info card ──────────────────────────────────
-                    _CaseInfoCard(legalCase: legalCase),
+                    // ── Case info card (entrance animation) ───────────
+                    _EntranceAnimation(
+                      delay: 0,
+                      child: _CaseInfoCard(legalCase: legalCase),
+                    ),
                     const SizedBox(height: AppSpacing.lg),
 
-                    // ── Action tiles (horizontal scroll) ────────────────
-                    _ActionTilesRow(caseId: caseId),
+                    // ── Action tiles (entrance animation) ─────────────
+                    _EntranceAnimation(
+                      delay: 1,
+                      child: _ActionTilesRow(caseId: caseId),
+                    ),
                     const SizedBox(height: AppSpacing.lg),
 
-                    // ── Documents section ───────────────────────────────
-                    docsAsync.when(
-                      loading: () => const _SectionShimmer(),
-                      error: (_, __) => const SizedBox.shrink(),
-                      data: (docs) => _DocumentsSection(
-                        documents: docs,
+                    // ── Documents section ─────────────────────────────
+                    _EntranceAnimation(
+                      delay: 2,
+                      child: docsAsync.when(
+                        loading: () => const _SectionShimmer(),
+                        error: (_, __) => const SizedBox.shrink(),
+                        data: (docs) => _DocumentsSection(
+                          documents: docs,
+                          caseId: caseId,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+
+                    // ── Deadlines section ─────────────────────────────
+                    _EntranceAnimation(
+                      delay: 3,
+                      child: deadlinesAsync.when(
+                        loading: () => const _SectionShimmer(),
+                        error: (_, __) => const SizedBox.shrink(),
+                        data: (deadlines) => _DeadlinesSection(
+                          deadlines: deadlines,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+
+                    // ── Timeline section ──────────────────────────────
+                    _EntranceAnimation(
+                      delay: 4,
+                      child: _TimelineSection(
+                        legalCase: legalCase,
                         caseId: caseId,
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-
-                    // ── Deadlines section ───────────────────────────────
-                    deadlinesAsync.when(
-                      loading: () => const _SectionShimmer(),
-                      error: (_, __) => const SizedBox.shrink(),
-                      data: (deadlines) => _DeadlinesSection(
-                        deadlines: deadlines,
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-
-                    // ── Timeline section ────────────────────────────────
-                    _TimelineSection(
-                      legalCase: legalCase,
-                      caseId: caseId,
                     ),
 
                     const SizedBox(height: AppSpacing.xxl),
@@ -130,6 +137,138 @@ class CaseDetailScreen extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Entrance Animation wrapper (fade + slide up)
+// ---------------------------------------------------------------------------
+
+class _EntranceAnimation extends StatefulWidget {
+  const _EntranceAnimation({
+    required this.delay,
+    required this.child,
+  });
+
+  /// Delay index (0, 1, 2...) — each adds 80ms delay.
+  final int delay;
+  final Widget child;
+
+  @override
+  State<_EntranceAnimation> createState() => _EntranceAnimationState();
+}
+
+class _EntranceAnimationState extends State<_EntranceAnimation>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 400),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.08),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOutCubic,
+    ));
+
+    Future.delayed(Duration(milliseconds: widget.delay * 80), () {
+      if (mounted) _controller.forward();
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: _slideAnimation,
+      child: FadeTransition(
+        opacity: _fadeAnimation,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Glowing App Bar Background
+// ---------------------------------------------------------------------------
+
+class _GlowingAppBarBackground extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.primary, AppColors.primaryDark],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.4),
+            blurRadius: 20,
+            spreadRadius: 2,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          // Subtle radial glow in top-left
+          Positioned(
+            top: -20,
+            left: -20,
+            child: Container(
+              width: 140,
+              height: 140,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.accent.withValues(alpha: 0.15),
+                    AppColors.accent.withValues(alpha: 0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Subtle radial glow in bottom-right
+          Positioned(
+            bottom: -30,
+            right: -10,
+            child: Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    AppColors.accentLight.withValues(alpha: 0.1),
+                    AppColors.accentLight.withValues(alpha: 0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -220,6 +359,8 @@ class _CaseInfoCard extends StatelessWidget {
         CaseType.discrimination => l10n.discrimination,
         CaseType.policeMisconduct => l10n.policeMisconduct,
         CaseType.socialBenefits => l10n.socialBenefits,
+        CaseType.domesticViolence => l10n.domesticViolence,
+        CaseType.consumerProtection => l10n.consumerProtection,
         CaseType.other => l10n.other,
       };
 
@@ -316,7 +457,7 @@ class _InfoRow extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Action Tiles Row
+// Action Tiles Row (with scale animation on tap)
 // ---------------------------------------------------------------------------
 
 class _ActionTilesRow extends StatelessWidget {
@@ -333,25 +474,25 @@ class _ActionTilesRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
         children: [
-          _ActionTile(
+          _AnimatedActionTile(
             icon: Icons.document_scanner_outlined,
             label: l.scanDocument,
             color: AppColors.accent,
             onTap: () => context.push(AppRoutes.scan),
           ),
-          _ActionTile(
+          _AnimatedActionTile(
             icon: Icons.psychology_outlined,
             label: l.aiAnalysis,
             color: AppColors.info,
             onTap: () => context.push('/chat/$caseId'),
           ),
-          _ActionTile(
+          _AnimatedActionTile(
             icon: Icons.description_outlined,
             label: l.draftAppeal,
             color: AppColors.primary,
             onTap: () => context.push('/chat/$caseId'),
           ),
-          _ActionTile(
+          _AnimatedActionTile(
             icon: Icons.smart_toy_outlined,
             label: l.aiChat,
             color: AppColors.accentDark,
@@ -363,8 +504,8 @@ class _ActionTilesRow extends StatelessWidget {
   }
 }
 
-class _ActionTile extends StatelessWidget {
-  const _ActionTile({
+class _AnimatedActionTile extends StatefulWidget {
+  const _AnimatedActionTile({
     required this.icon,
     required this.label,
     required this.color,
@@ -377,42 +518,78 @@ class _ActionTile extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
+  State<_AnimatedActionTile> createState() => _AnimatedActionTileState();
+}
+
+class _AnimatedActionTileState extends State<_AnimatedActionTile>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 100),
+      reverseDuration: const Duration(milliseconds: 150),
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.92).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
       child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 88,
-          padding: const EdgeInsets.all(AppSpacing.sm),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.08),
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(color: color.withValues(alpha: 0.15)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.03),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, color: color, size: 28),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                label,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: color,
-                  height: 1.2,
+        onTapDown: (_) => _controller.forward(),
+        onTapUp: (_) {
+          _controller.reverse();
+          widget.onTap();
+        },
+        onTapCancel: () => _controller.reverse(),
+        child: ScaleTransition(
+          scale: _scaleAnimation,
+          child: Container(
+            width: 88,
+            padding: const EdgeInsets.all(AppSpacing.sm),
+            decoration: BoxDecoration(
+              color: widget.color.withValues(alpha: 0.08),
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              border: Border.all(color: widget.color.withValues(alpha: 0.15)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.03),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-            ],
+              ],
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(widget.icon, color: widget.color, size: 28),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  widget.label,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: widget.color,
+                    height: 1.2,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -517,7 +694,7 @@ class _ProcessingBadge extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Deadlines Section
+// Deadlines Section (with glow for urgent items)
 // ---------------------------------------------------------------------------
 
 class _DeadlinesSection extends StatelessWidget {
@@ -554,13 +731,22 @@ class _DeadlinesSection extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: AppSpacing.sm),
             child: Row(
               children: [
-                // Days countdown
+                // Days countdown with glow for urgent
                 Container(
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
                     color: urgencyColor.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.sm),
+                    boxShadow: (isUrgent || isOverdue)
+                        ? [
+                            BoxShadow(
+                              color: urgencyColor.withValues(alpha: 0.3),
+                              blurRadius: 10,
+                              spreadRadius: 0,
+                            ),
+                          ]
+                        : null,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -702,7 +888,7 @@ class _TimelineEntry extends StatelessWidget {
             width: 32,
             child: Column(
               children: [
-                Icon(icon, size: 18, color: color),
+                _PulsingTimelineDot(icon: icon, color: color),
                 if (!isLast)
                   Expanded(
                     child: Container(
@@ -743,6 +929,72 @@ class _TimelineEntry extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Pulsing Timeline Dot
+// ---------------------------------------------------------------------------
+
+class _PulsingTimelineDot extends StatefulWidget {
+  const _PulsingTimelineDot({required this.icon, required this.color});
+
+  final IconData icon;
+  final Color color;
+
+  @override
+  State<_PulsingTimelineDot> createState() => _PulsingTimelineDotState();
+}
+
+class _PulsingTimelineDotState extends State<_PulsingTimelineDot>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _pulseAnimation;
+  final _pulseNotifier = ValueNotifier<double>(0.0);
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+    _controller.addListener(() {
+      _pulseNotifier.value = _pulseAnimation.value;
+    });
+  }
+
+  @override
+  void dispose() {
+    _pulseNotifier.dispose();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<double>(
+      valueListenable: _pulseNotifier,
+      builder: (context, pulse, child) {
+        return Container(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: widget.color.withValues(alpha: 0.15 + pulse * 0.15),
+                blurRadius: 4 + pulse * 4,
+                spreadRadius: pulse * 1.5,
+              ),
+            ],
+          ),
+          child: child,
+        );
+      },
+      child: Icon(widget.icon, size: 18, color: widget.color),
     );
   }
 }

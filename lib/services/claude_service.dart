@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 import '../config/app_config.dart';
+import 'tool_definitions.dart';
 
 // ---------------------------------------------------------------------------
 // Provider
@@ -115,6 +116,7 @@ class ClaudeService {
     required List<Map<String, String>> messages,
     int maxTokens = 4096,
     double temperature = 0.3,
+    bool includeTools = false,
   }) async {
     if (!isAvailable) {
       throw const ClaudeServiceException('Claude API key is not configured');
@@ -137,6 +139,7 @@ class ClaudeService {
       'temperature': temperature,
       'system': systemPrompt,
       'messages': messages,
+      if (includeTools) 'tools': ToolDefinitions.toolDefinitions,
     };
 
     Exception? lastError;
@@ -210,6 +213,9 @@ class ClaudeService {
   }
 
   /// Extract the text content from a Claude API response.
+  ///
+  /// This is also exposed publicly as [extractText] for callers that
+  /// work with raw API responses (e.g. tool_use flow).
   String _extractText(Map<String, dynamic> response) {
     final content = response['content'] as List<dynamic>?;
     if (content == null || content.isEmpty) {
@@ -227,6 +233,32 @@ class ClaudeService {
     if (usage == null) return null;
     return TokenUsage.fromJson(usage);
   }
+
+  /// Check whether a Claude API response contains tool_use content blocks.
+  bool hasToolUse(Map<String, dynamic> response) {
+    final content = response['content'] as List<dynamic>?;
+    if (content == null) return false;
+    return content.any(
+      (block) => (block as Map<String, dynamic>)['type'] == 'tool_use',
+    );
+  }
+
+  /// Extract tool_use blocks from a Claude API response.
+  ///
+  /// Each returned map contains `id`, `name`, and `input` keys matching
+  /// the Claude API tool_use content block format.
+  List<Map<String, dynamic>> extractToolUseBlocks(
+      Map<String, dynamic> response) {
+    final content = response['content'] as List<dynamic>?;
+    if (content == null) return [];
+    return content
+        .where((block) => (block as Map<String, dynamic>)['type'] == 'tool_use')
+        .map((block) => block as Map<String, dynamic>)
+        .toList();
+  }
+
+  /// Public accessor for extracting text from a raw API response.
+  String extractText(Map<String, dynamic> response) => _extractText(response);
 
   // ── Public methods ──────────────────────────────────────────────────────
 
@@ -250,6 +282,27 @@ class ClaudeService {
     );
 
     return _extractText(response);
+  }
+
+  /// Send a chat message with tool definitions included.
+  ///
+  /// Returns the raw Claude API response so the caller can inspect
+  /// `stop_reason` and handle both text-only and tool_use responses.
+  Future<Map<String, dynamic>> sendMessageWithTools({
+    required List<Map<String, String>> messages,
+    required String systemPrompt,
+    int maxTokens = 4096,
+  }) async {
+    _log.d(
+        'Sending message with tools to Claude (${messages.length} messages)');
+
+    return _callApi(
+      systemPrompt: systemPrompt,
+      messages: messages,
+      maxTokens: maxTokens,
+      temperature: 0.3,
+      includeTools: true,
+    );
   }
 
   /// Analyze a document's text content.

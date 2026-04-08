@@ -1,4 +1,7 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../config/theme.dart';
 
@@ -30,10 +33,11 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
   late final Animation<Offset> _slideAnimation;
+  late final AnimationController _shimmerController;
 
   @override
   void initState() {
@@ -56,6 +60,11 @@ class _OnboardingPageState extends State<OnboardingPage>
       curve: Curves.easeOutCubic,
     ));
 
+    _shimmerController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2500),
+    )..repeat();
+
     if (widget.isActive) {
       _controller.forward();
     }
@@ -72,6 +81,7 @@ class _OnboardingPageState extends State<OnboardingPage>
   @override
   void dispose() {
     _controller.dispose();
+    _shimmerController.dispose();
     super.dispose();
   }
 
@@ -93,20 +103,69 @@ class _OnboardingPageState extends State<OnboardingPage>
               Expanded(
                 flex: 4,
                 child: Center(
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    decoration: BoxDecoration(
-                      color: effectiveBgColor,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Icon(
-                        widget.icon,
-                        size: 80,
-                        color: effectiveIconColor,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Outer decorative ring with shimmer
+                      AnimatedBuilder(
+                        animation: _shimmerController,
+                        builder: (context, child) {
+                          return Container(
+                            width: 200,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: SweepGradient(
+                                startAngle: _shimmerController.value * 2 * math.pi,
+                                colors: [
+                                  effectiveIconColor.withValues(alpha: 0.0),
+                                  effectiveIconColor.withValues(alpha: 0.12),
+                                  effectiveIconColor.withValues(alpha: 0.0),
+                                ],
+                                stops: const [0.0, 0.5, 1.0],
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    ),
+                      // Main icon circle with scale animation
+                      Container(
+                        width: 180,
+                        height: 180,
+                        decoration: BoxDecoration(
+                          color: effectiveBgColor,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: effectiveIconColor.withValues(alpha: 0.15),
+                              blurRadius: 30,
+                              spreadRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Icon(
+                            widget.icon,
+                            size: 80,
+                            color: effectiveIconColor,
+                          ),
+                        ),
+                      )
+                          .animate(
+                            autoPlay: false,
+                            target: widget.isActive ? 1.0 : 0.0,
+                          )
+                          .scaleXY(
+                            begin: 0.6,
+                            end: 1.0,
+                            duration: 700.ms,
+                            curve: Curves.elasticOut,
+                          )
+                          .fadeIn(
+                            duration: 400.ms,
+                            curve: Curves.easeOut,
+                          ),
+                    ],
                   ),
                 ),
               ),
@@ -125,7 +184,13 @@ class _OnboardingPageState extends State<OnboardingPage>
                                 height: 1.3,
                               ),
                       textAlign: TextAlign.center,
-                    ),
+                    )
+                        .animate(
+                          autoPlay: false,
+                          target: widget.isActive ? 1.0 : 0.0,
+                        )
+                        .fadeIn(delay: 200.ms, duration: 400.ms)
+                        .slideY(begin: 0.15, end: 0, duration: 400.ms, curve: Curves.easeOutCubic),
                     const SizedBox(height: AppSpacing.md),
                     Text(
                       widget.subtitle,
@@ -134,7 +199,13 @@ class _OnboardingPageState extends State<OnboardingPage>
                             height: 1.5,
                           ),
                       textAlign: TextAlign.center,
-                    ),
+                    )
+                        .animate(
+                          autoPlay: false,
+                          target: widget.isActive ? 1.0 : 0.0,
+                        )
+                        .fadeIn(delay: 350.ms, duration: 400.ms)
+                        .slideY(begin: 0.15, end: 0, duration: 400.ms, curve: Curves.easeOutCubic),
                   ],
                 ),
               ),

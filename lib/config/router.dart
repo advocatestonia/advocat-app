@@ -60,7 +60,7 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: AppRoutes.onboarding,
+    initialLocation: AppRoutes.home,
     debugLogDiagnostics: true,
     // NOTE: Auth redirect disabled for demo. Enable when Supabase is configured.
     // redirect: (context, state) { ... },

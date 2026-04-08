@@ -22,6 +22,16 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
 
     final scenarios = <_RightsScenario>[
       _RightsScenario(
+        id: 'domestic-violence',
+        title: l10n.domesticViolence,
+        subtitle: l10n.domesticViolenceDesc,
+        icon: Icons.health_and_safety_outlined,
+        color: AppColors.error,
+        category: 'Essential',
+        rightsCount: 6,
+        tag: 'Essential',
+      ),
+      _RightsScenario(
         id: 'police-stop',
         title: l10n.stoppedByPolice,
         subtitle: l10n.stoppedByPoliceDesc,
@@ -81,6 +91,16 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
         rightsCount: 4,
         tag: 'Essential',
       ),
+      _RightsScenario(
+        id: 'consumer',
+        title: l10n.consumerProtection,
+        subtitle: l10n.consumerProtectionDesc,
+        icon: Icons.shopping_bag_outlined,
+        color: AppColors.accent,
+        category: 'Consumer',
+        rightsCount: 5,
+        tag: 'Consumer',
+      ),
     ];
 
     final categories = [
@@ -89,6 +109,7 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
       'Police',
       'Work',
       'Housing',
+      'Consumer',
     ];
 
     final filtered = _selectedCategory == null ||
@@ -99,11 +120,21 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text(l10n.knowYourRights),
+        title: Text(
+          l10n.knowYourRights,
+          style: const TextStyle(
+            fontWeight: FontWeight.w700,
+            letterSpacing: -0.3,
+          ),
+        ),
         backgroundColor: AppColors.surface,
+        elevation: 0,
       ),
       body: CustomScrollView(
         slivers: [
+          // Spacer
+          const SliverToBoxAdapter(child: SizedBox(height: AppSpacing.sm)),
+
           // Category filter chips
           SliverToBoxAdapter(
             child: SizedBox(
@@ -199,6 +230,7 @@ class _AnimatedScenarioCardState extends State<_AnimatedScenarioCard>
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
   late final Animation<Offset> _slideAnimation;
+  bool _pressed = false;
 
   @override
   void initState() {
@@ -240,115 +272,147 @@ class _AnimatedScenarioCardState extends State<_AnimatedScenarioCard>
         position: _slideAnimation,
         child: Padding(
           padding: const EdgeInsets.only(bottom: AppSpacing.sm + 4),
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-              border: Border.all(color: AppColors.border),
-              boxShadow: [
-                BoxShadow(
-                  color: s.color.withValues(alpha: 0.06),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+          child: GestureDetector(
+            onTapDown: (_) => setState(() => _pressed = true),
+            onTapUp: (_) {
+              setState(() => _pressed = false);
+              context.push('/rights/${s.id}');
+            },
+            onTapCancel: () => setState(() => _pressed = false),
+            child: AnimatedScale(
+              scale: _pressed ? 0.97 : 1.0,
+              duration: const Duration(milliseconds: 100),
+              curve: Curves.easeInOut,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(
+                    color: _pressed
+                        ? s.color.withValues(alpha: 0.3)
+                        : AppColors.border,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: s.color.withValues(alpha: _pressed ? 0.12 : 0.06),
+                      blurRadius: _pressed ? 20 : 12,
+                      offset: const Offset(0, 4),
+                    ),
+                    if (_pressed)
+                      BoxShadow(
+                        color: s.color.withValues(alpha: 0.06),
+                        blurRadius: 30,
+                        spreadRadius: 2,
+                      ),
+                  ],
                 ),
-              ],
-            ),
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(AppRadius.lg),
-                onTap: () => context.push('/rights/${s.id}'),
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  child: Row(
-                    children: [
-                      // Larger icon container
-                      Container(
-                        width: 56,
-                        height: 56,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [
-                              s.color.withValues(alpha: 0.15),
-                              s.color.withValues(alpha: 0.05),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(AppRadius.md),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        left: BorderSide(
+                          color: s.color,
+                          width: 4,
                         ),
-                        child: Icon(s.icon, color: s.color, size: 28),
                       ),
-                      const SizedBox(width: AppSpacing.md),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Title row with tag
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    s.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15,
-                                      color: AppColors.textPrimary,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 3),
-                            Text(
-                              s.subtitle,
-                              style: const TextStyle(
-                                fontSize: 13,
-                                color: AppColors.textSecondary,
-                                height: 1.3,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSpacing.md),
+                      child: Row(
+                        children: [
+                          // Larger icon container with glow
+                          Container(
+                            width: 56,
+                            height: 56,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  s.color.withValues(alpha: 0.15),
+                                  s.color.withValues(alpha: 0.05),
+                                ],
                               ),
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            // Bottom row: tag + rights count badge
-                            Row(
-                              children: [
-                                _CategoryTag(
-                                  label: s.tag,
-                                  color: s.color,
-                                ),
-                                const SizedBox(width: AppSpacing.sm),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 3,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary
-                                        .withValues(alpha: 0.08),
-                                    borderRadius:
-                                        BorderRadius.circular(AppRadius.full),
-                                  ),
-                                  child: Text(
-                                    '${s.rightsCount} rights inside',
-                                    style: const TextStyle(
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.md),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: s.color.withValues(alpha: 0.1),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                            child: Icon(s.icon, color: s.color, size: 28),
+                          ),
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Title row
+                                Text(
+                                  s.title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  s.subtitle,
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.textSecondary,
+                                    height: 1.3,
+                                  ),
+                                ),
+                                const SizedBox(height: AppSpacing.sm),
+                                // Bottom row: tag + rights count badge
+                                Row(
+                                  children: [
+                                    _CategoryTag(
+                                      label: s.tag,
+                                      color: s.color,
+                                    ),
+                                    const SizedBox(width: AppSpacing.sm),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 3,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary
+                                            .withValues(alpha: 0.08),
+                                        borderRadius: BorderRadius.circular(
+                                            AppRadius.full),
+                                      ),
+                                      child: Text(
+                                        '${s.rightsCount} rights inside',
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.xs),
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: s.color.withValues(alpha: 0.5),
+                            size: 24,
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: AppSpacing.xs),
-                      Icon(
-                        Icons.chevron_right_rounded,
-                        color: s.color.withValues(alpha: 0.5),
-                        size: 24,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),

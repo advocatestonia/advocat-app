@@ -23,33 +23,15 @@ class CaseCard extends StatelessWidget {
   final VoidCallback? onArchive;
   final VoidCallback? onDelete;
 
-  // ── Color coding by case type ────────────────────────────────────────────
-
-  Color _typeAccentColor(CaseType type) {
-    return switch (type) {
-      CaseType.deportation => AppColors.error,
-      CaseType.asylum => AppColors.info,
-      CaseType.residencePermit => AppColors.accent,
-      CaseType.familyReunification => AppColors.warning,
-      CaseType.citizenship => AppColors.success,
-      CaseType.workPermit => AppColors.primaryLight,
-      CaseType.laborDispute => const Color(0xFF8B5CF6),
-      CaseType.tenantRights => const Color(0xFF10B981),
-      CaseType.debtCollection => const Color(0xFFF59E0B),
-      CaseType.discrimination => const Color(0xFFEC4899),
-      CaseType.policeMisconduct => const Color(0xFF6366F1),
-      CaseType.socialBenefits => const Color(0xFF14B8A6),
-      CaseType.other => AppColors.textTertiary,
-    };
-  }
+  // ── Color coding by case status ──────────────────────────────────────────
 
   Color _statusColor(CaseStatus status) {
     return switch (status) {
-      CaseStatus.active => AppColors.accent,
-      CaseStatus.pendingDecision => AppColors.warning,
-      CaseStatus.appealFiled => AppColors.info,
-      CaseStatus.inCourt => AppColors.primary,
-      CaseStatus.resolved => AppColors.success,
+      CaseStatus.active => const Color(0xFF0D9488),
+      CaseStatus.pendingDecision => const Color(0xFFD69E2E),
+      CaseStatus.appealFiled => const Color(0xFF0D9488),
+      CaseStatus.inCourt => const Color(0xFFE53E3E),
+      CaseStatus.resolved => const Color(0xFF38A169),
       CaseStatus.closed => AppColors.textTertiary,
     };
   }
@@ -79,13 +61,14 @@ class CaseCard extends StatelessWidget {
       CaseType.discrimination => 'Discrimination',
       CaseType.policeMisconduct => 'Police Misconduct',
       CaseType.socialBenefits => 'Social Benefits',
+      CaseType.domesticViolence => 'Domestic Violence',
+      CaseType.consumerProtection => 'Consumer Protection',
       CaseType.other => 'Other',
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    final accentColor = _typeAccentColor(legalCase.type);
     final statusColor = _statusColor(legalCase.status);
     final lastActivity = legalCase.updatedAt ?? legalCase.createdAt;
 
@@ -96,9 +79,14 @@ class CaseCard extends StatelessWidget {
         border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 3,
+            offset: const Offset(0, 1),
           ),
         ],
       ),
@@ -114,11 +102,11 @@ class CaseCard extends StatelessWidget {
         child: IntrinsicHeight(
           child: Row(
             children: [
-              // ── Left color bar ─────────────────────────────────────────
+              // ── Left status color bar ──────────────────────────────────
               Container(
-                width: 4,
+                width: 3,
                 decoration: BoxDecoration(
-                  color: accentColor,
+                  color: statusColor,
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(AppRadius.md),
                     bottomLeft: Radius.circular(AppRadius.md),

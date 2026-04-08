@@ -695,7 +695,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.caseName ?? 'AI Legal Assistant',
+                  widget.caseName ?? AppLocalizations.of(context)!.aiAssistant,
                   style: const TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w600),
                   overflow: TextOverflow.ellipsis,
@@ -805,7 +805,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // Case name
           Expanded(
             child: Text(
-              widget.caseName ?? 'New Case',
+              widget.caseName ?? AppLocalizations.of(context)!.newCase,
               style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
@@ -1142,9 +1142,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     : Border.all(color: AppColors.border, width: 0.5),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
+                    color: (isUser
+                            ? AppColors.primary
+                            : Colors.black)
+                        .withValues(alpha: isUser ? 0.15 : 0.06),
+                    blurRadius: 12,
+                    offset: const Offset(0, 3),
+                  ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.02),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
                   ),
                 ],
               ),
@@ -1229,11 +1237,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       ),
     )
         .animate()
-        .fadeIn(duration: 250.ms)
-        .slideY(
-          begin: 0.1,
+        .fadeIn(duration: 300.ms)
+        .slideX(
+          begin: isUser ? 0.15 : -0.15,
           end: 0,
-          duration: 250.ms,
+          duration: 350.ms,
           curve: Curves.easeOutCubic,
         );
   }
@@ -1589,7 +1597,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         margin: const EdgeInsets.only(bottom: AppSpacing.sm, right: 80),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
-          vertical: AppSpacing.sm + 4,
+          vertical: AppSpacing.sm + 6,
         ),
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -1600,6 +1608,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             bottomRight: Radius.circular(AppRadius.lg),
           ),
           border: Border.all(color: AppColors.border, width: 0.5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -1612,39 +1627,48 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             ...List.generate(3, (i) {
               return Container(
-                margin: const EdgeInsets.symmetric(horizontal: 2),
-                width: 7,
-                height: 7,
-                decoration: const BoxDecoration(
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
                   color: AppColors.accent,
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.3),
+                      blurRadius: 4,
+                    ),
+                  ],
                 ),
               )
                   .animate(
                     onPlay: (c) => c.repeat(),
                   )
-                  .scaleXY(
-                    begin: 0.5,
-                    end: 1.0,
-                    delay: Duration(milliseconds: 200 * i),
-                    duration: 600.ms,
-                    curve: Curves.easeInOut,
+                  .moveY(
+                    begin: 0,
+                    end: -6,
+                    delay: Duration(milliseconds: 180 * i),
+                    duration: 350.ms,
+                    curve: Curves.easeOutCubic,
                   )
                   .then()
-                  .scaleXY(
-                    begin: 1.0,
-                    end: 0.5,
-                    duration: 600.ms,
-                    curve: Curves.easeInOut,
+                  .moveY(
+                    begin: -6,
+                    end: 0,
+                    duration: 350.ms,
+                    curve: Curves.bounceOut,
                   );
             }),
           ],
         ),
       ),
-    ).animate().fadeIn(duration: 200.ms);
+    )
+        .animate()
+        .fadeIn(duration: 250.ms)
+        .slideX(begin: -0.1, end: 0, duration: 300.ms, curve: Curves.easeOutCubic);
   }
 
   // -- Quick action chips --
@@ -1722,17 +1746,27 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       padding: EdgeInsets.only(
         left: AppSpacing.sm,
         right: AppSpacing.sm,
-        top: AppSpacing.sm,
+        top: AppSpacing.sm + 2,
         bottom:
             MediaQuery.of(context).padding.bottom + AppSpacing.sm,
       ),
       decoration: BoxDecoration(
         color: AppColors.surface,
+        border: Border(
+          top: BorderSide(
+            color: AppColors.border.withValues(alpha: 0.3),
+          ),
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, -2),
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, -4),
+          ),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 4,
+            offset: const Offset(0, -1),
           ),
         ],
       ),
@@ -1768,37 +1802,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 },
               ),
 
-              // Text field
+              // Text field with premium focus glow
               Expanded(
-                child: Container(
-                  constraints:
-                      const BoxConstraints(maxHeight: 120),
-                  child: TextField(
-                    controller: _messageController,
-                    focusNode: _focusNode,
-                    maxLines: 5,
-                    minLines: 1,
-                    textCapitalization:
-                        TextCapitalization.sentences,
-                    textInputAction: TextInputAction.newline,
-                    decoration: InputDecoration(
-                      hintText: 'Опишите вашу ситуацию...',
-                      hintStyle: const TextStyle(
-                          color: AppColors.textTertiary),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                            AppRadius.xl),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: AppColors.surfaceVariant,
-                      contentPadding:
-                          const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.md,
-                        vertical: AppSpacing.sm + 2,
-                      ),
-                    ),
-                  ),
+                child: _PremiumTextField(
+                  controller: _messageController,
+                  focusNode: _focusNode,
                 ),
               ),
               const SizedBox(width: 4),
@@ -1815,9 +1823,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
               if (_voiceInitialized) const SizedBox(width: 4),
 
-              // Send button
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
+              // Send button with subtle glow
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: IconButton(
                   onPressed:
                       _isSending ? null : () => _sendMessage(),
@@ -1930,7 +1947,7 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
     super.initState();
     _ctrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 2400),
     )..repeat(reverse: true);
     _pulse = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
@@ -1946,25 +1963,46 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 44,
-      height: 44,
+      width: 46,
+      height: 46,
       child: AnimatedBuilder(
         animation: _pulse,
         builder: (context, child) {
           return Stack(
             alignment: Alignment.center,
             children: [
+              // Outer breathing glow ring
               Container(
-                width: 36 + _pulse.value * 8,
-                height: 36 + _pulse.value * 8,
+                width: 36 + _pulse.value * 10,
+                height: 36 + _pulse.value * 10,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.accent.withValues(alpha: 0.35 - _pulse.value * 0.3),
+                    color: AppColors.accent.withValues(alpha: 0.3 - _pulse.value * 0.25),
                     width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.12 + _pulse.value * 0.12),
+                      blurRadius: 8 + _pulse.value * 8,
+                      spreadRadius: _pulse.value * 3,
+                    ),
+                  ],
+                ),
+              ),
+              // Second subtle ring
+              Container(
+                width: 36 + _pulse.value * 5,
+                height: 36 + _pulse.value * 5,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.accentLight.withValues(alpha: 0.15 - _pulse.value * 0.1),
+                    width: 1.0,
                   ),
                 ),
               ),
+              // Core avatar
               Container(
                 width: 36,
                 height: 36,
@@ -1977,8 +2015,8 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.3),
-                      blurRadius: 6,
+                      color: AppColors.accent.withValues(alpha: 0.3 + _pulse.value * 0.15),
+                      blurRadius: 8 + _pulse.value * 4,
                       offset: const Offset(0, 2),
                     ),
                   ],
@@ -1992,6 +2030,98 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Premium Text Field with focus glow
+// ---------------------------------------------------------------------------
+
+class _PremiumTextField extends StatefulWidget {
+  const _PremiumTextField({
+    required this.controller,
+    required this.focusNode,
+  });
+
+  final TextEditingController controller;
+  final FocusNode focusNode;
+
+  @override
+  State<_PremiumTextField> createState() => _PremiumTextFieldState();
+}
+
+class _PremiumTextFieldState extends State<_PremiumTextField> {
+  bool _hasFocus = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    widget.focusNode.removeListener(_onFocusChange);
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (mounted) setState(() => _hasFocus = widget.focusNode.hasFocus);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOutCubic,
+      constraints: const BoxConstraints(maxHeight: 120),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        boxShadow: _hasFocus
+            ? [
+                BoxShadow(
+                  color: AppColors.accent.withValues(alpha: 0.15),
+                  blurRadius: 12,
+                  spreadRadius: 1,
+                ),
+              ]
+            : null,
+      ),
+      child: TextField(
+        controller: widget.controller,
+        focusNode: widget.focusNode,
+        maxLines: 5,
+        minLines: 1,
+        textCapitalization: TextCapitalization.sentences,
+        textInputAction: TextInputAction.newline,
+        decoration: InputDecoration(
+          hintText: 'Опишите вашу ситуацию...',
+          hintStyle: const TextStyle(color: AppColors.textTertiary),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            borderSide: _hasFocus
+                ? BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0)
+                : BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            borderSide: BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0),
+          ),
+          filled: true,
+          fillColor: _hasFocus
+              ? AppColors.surface
+              : AppColors.surfaceVariant,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm + 2,
+          ),
+        ),
       ),
     );
   }

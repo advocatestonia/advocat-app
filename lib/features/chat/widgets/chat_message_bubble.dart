@@ -22,85 +22,111 @@ class ChatMessageBubble extends StatelessWidget {
   bool get _isUser => message.role == MessageRole.user;
   bool get _isSystem => message.role == MessageRole.system;
 
+  /// Teal accent used for the AI avatar badge.
+  static const _kAvatarTeal = Color(0xFF0D9488);
+
   @override
   Widget build(BuildContext context) {
     if (_isSystem) return _buildSystemMessage(context);
+
+    final bubble = ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: _isUser
+            ? MediaQuery.of(context).size.width * 0.82
+            : MediaQuery.of(context).size.width * 0.82 - 32,
+      ),
+      child: GestureDetector(
+        onLongPress: () {
+          HapticFeedback.mediumImpact();
+          onCopy?.call(message.content);
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm + 2,
+          ),
+          decoration: BoxDecoration(
+            color: _isUser ? AppColors.primary : AppColors.surface,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(AppRadius.lg),
+              topRight: const Radius.circular(AppRadius.lg),
+              bottomLeft: Radius.circular(
+                _isUser ? AppRadius.lg : AppRadius.sm,
+              ),
+              bottomRight: Radius.circular(
+                _isUser ? AppRadius.sm : AppRadius.lg,
+              ),
+            ),
+            border: _isUser ? null : Border.all(color: AppColors.border),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (_isUser)
+                Text(
+                  message.content,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    height: 1.4,
+                  ),
+                )
+              else
+                RichMessage(
+                  text: message.content,
+                  onActionTap: (label) => onAction?.call(label),
+                ),
+              const SizedBox(height: 4),
+              Text(
+                _formatTime(message.timestamp),
+                style: TextStyle(
+                  fontSize: 11,
+                  color: _isUser
+                      ? Colors.white.withValues(alpha: 0.6)
+                      : AppColors.textTertiary,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Align(
         alignment: _isUser ? Alignment.centerRight : Alignment.centerLeft,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.82,
-          ),
-          child: GestureDetector(
-            onLongPress: () {
-              HapticFeedback.mediumImpact();
-              onCopy?.call(message.content);
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.sm + 2,
-              ),
-              decoration: BoxDecoration(
-                color: _isUser
-                    ? AppColors.primary
-                    : AppColors.surface,
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(AppRadius.lg),
-                  topRight: const Radius.circular(AppRadius.lg),
-                  bottomLeft: Radius.circular(
-                    _isUser ? AppRadius.lg : AppRadius.sm,
-                  ),
-                  bottomRight: Radius.circular(
-                    _isUser ? AppRadius.sm : AppRadius.lg,
-                  ),
-                ),
-                border: _isUser
-                    ? null
-                    : Border.all(color: AppColors.border),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: _isUser
+            ? bubble
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (_isUser)
-                    Text(
-                      message.content,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                        height: 1.4,
-                      ),
-                    )
-                  else
-                    RichMessage(
-                      text: message.content,
-                      onActionTap: (label) => onAction?.call(label),
+                  // AI avatar — teal shield icon
+                  Container(
+                    width: 24,
+                    height: 24,
+                    margin: const EdgeInsets.only(right: 8),
+                    decoration: BoxDecoration(
+                      color: _kAvatarTeal.withValues(alpha: 0.10),
+                      shape: BoxShape.circle,
                     ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _formatTime(message.timestamp),
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: _isUser
-                          ? Colors.white.withValues(alpha: 0.6)
-                          : AppColors.textTertiary,
+                    child: const Icon(
+                      Icons.shield_rounded,
+                      size: 14,
+                      color: _kAvatarTeal,
                     ),
                   ),
+                  Flexible(child: bubble),
                 ],
               ),
-            ),
-          ),
-        ),
       ),
     ).animate().fadeIn(duration: 250.ms).slideY(
           begin: 0.1,

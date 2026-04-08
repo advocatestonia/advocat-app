@@ -40,6 +40,67 @@ abstract final class AppColors {
   static const Color darkTextSecondary = Color(0xFF94A3B8);
 }
 
+/// Shadow and glow design tokens.
+abstract final class AppShadows {
+  /// Subtle card shadow.
+  static const List<BoxShadow> shadowSmall = [
+    BoxShadow(
+      color: Color(0x0D000000), // black 5%
+      blurRadius: 4,
+      offset: Offset(0, 1),
+    ),
+  ];
+
+  /// Elevated elements shadow.
+  static const List<BoxShadow> shadowMedium = [
+    BoxShadow(
+      color: Color(0x14000000), // black 8%
+      blurRadius: 8,
+      offset: Offset(0, 4),
+    ),
+    BoxShadow(
+      color: Color(0x0A000000), // black 4%
+      blurRadius: 4,
+      offset: Offset(0, 2),
+    ),
+  ];
+
+  /// Teal glow for accent buttons.
+  static const List<BoxShadow> glowAccent = [
+    BoxShadow(
+      color: Color(0x4D0D9488), // accent with ~0.3 alpha
+      blurRadius: 12,
+      spreadRadius: 0,
+    ),
+  ];
+
+  /// Navy glow for primary elements.
+  static const List<BoxShadow> glowPrimary = [
+    BoxShadow(
+      color: Color(0x4D1A365D), // primary with ~0.3 alpha
+      blurRadius: 12,
+      spreadRadius: 0,
+    ),
+  ];
+
+  /// Focus shadow decoration for text fields.
+  static BoxDecoration inputFocusShadow({
+    double borderRadius = AppRadius.sm,
+    Color glowColor = const Color(0x261A365D), // primary ~0.15 alpha
+  }) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(borderRadius),
+      boxShadow: [
+        BoxShadow(
+          color: glowColor,
+          blurRadius: 8,
+          spreadRadius: 0,
+        ),
+      ],
+    );
+  }
+}
+
 abstract final class AppSpacing {
   static const double xs = 4;
   static const double sm = 8;
