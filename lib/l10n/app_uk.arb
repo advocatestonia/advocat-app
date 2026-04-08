@@ -747,4 +747,34 @@
     "tapToUploadFile": "Tap to upload a file",
     "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
     "addDocumentsLaterHint": "You can always add documents later from the case detail screen."
+,
+    "aiGeneratedDisclaimer": "AI-generated \u2022 Not legal advice",
+    "callAI": "Call AI",
+    "encrypted": "Encrypted",
+    "typing": "Typing...",
+    "online": "Online",
+    "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+    "tapMicrophoneToSpeak": "Tap the microphone to speak",
+    "categoryEssential": "Essential",
+    "categoryPolice": "Police",
+    "categoryWork": "Work",
+    "categoryHousing": "Housing",
+    "categoryConsumer": "Consumer",
+    "rightsInsideCount": "{count} rights inside",
+    "@rightsInsideCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freeAidThreshold": "Free aid threshold",
+    "partialAidThreshold": "Partial aid threshold",
+    "assetLimit": "Asset limit",
+    "whereToApplyLabel": "Where to apply",
+    "phoneLabel": "Phone",
+    "websiteLabel": "Website",
+    "disclaimerCollapsed": "AI guidance only",
+    "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
+    "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer."
 }

@@ -745,5 +745,34 @@
     "uploadDocumentDescription": "Lataa päätöskirje tai muu asiakirja. Voit ohittaa tämän vaiheen ja lisätä asiakirjoja myöhemmin.",
     "tapToUploadFile": "Napauta ladataksesi tiedoston",
     "fileSizeLimit": "PDF, JPG, PNG enintään 25 MB",
-    "addDocumentsLaterHint": "Voit aina lisätä asiakirjoja myöhemmin tapauksen tietosivulta."
+    "addDocumentsLaterHint": "Voit aina lisätä asiakirjoja myöhemmin tapauksen tietosivulta.",
+    "aiGeneratedDisclaimer": "Tekoälyn luoma \u2022 Ei oikeudellista neuvontaa",
+    "callAI": "Soita tekoälylle",
+    "encrypted": "Salattu",
+    "typing": "Kirjoittaa...",
+    "online": "Paikalla",
+    "chatWelcomeSubtitle": "Analysoin tilanteen, tarkistan asiakirjat, etsin virheitä ja ehdotan, mitä tehdä.",
+    "tapMicrophoneToSpeak": "Napauta mikrofonia puhuaksesi",
+    "categoryEssential": "Tärkeät",
+    "categoryPolice": "Poliisi",
+    "categoryWork": "Työ",
+    "categoryHousing": "Asuminen",
+    "categoryConsumer": "Kuluttaja",
+    "rightsInsideCount": "{count} oikeutta sisällä",
+    "@rightsInsideCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freeAidThreshold": "Ilmaisen avun raja",
+    "partialAidThreshold": "Osittaisen avun raja",
+    "assetLimit": "Omaisuusraja",
+    "whereToApplyLabel": "Mistä hakea",
+    "phoneLabel": "Puhelin",
+    "websiteLabel": "Verkkosivusto",
+    "disclaimerCollapsed": "Vain tiedoksi",
+    "disclaimerExpanded": "Tekoälyavustaja — ei oikeudellista neuvontaa. Tarkista aina pätevältä lakimieheltä.",
+    "chatDisclaimerBanner": "Tekoälyavustaja tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. Ota aina yhteyttä pätevään lakimieheen."
 }

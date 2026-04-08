@@ -745,5 +745,34 @@
     "uploadDocumentDescription": "Laadige üles otsuse kiri või mõni asjakohane dokument. Võite selle sammu vahele jätta ja dokumendid hiljem lisada.",
     "tapToUploadFile": "Puudutage faili üleslaadimiseks",
     "fileSizeLimit": "PDF, JPG, PNG kuni 25 MB",
-    "addDocumentsLaterHint": "Saate dokumente alati hiljem lisada juhtumi üksikasjade ekraanilt."
+    "addDocumentsLaterHint": "Saate dokumente alati hiljem lisada juhtumi üksikasjade ekraanilt.",
+    "aiGeneratedDisclaimer": "Tehisintellekti loodud \u2022 Mitte õigusnõuanne",
+    "callAI": "Helista AI-le",
+    "encrypted": "Krüpteeritud",
+    "typing": "Kirjutab...",
+    "online": "Võrgus",
+    "chatWelcomeSubtitle": "Analüüsin olukorda, kontrollin dokumente, otsin vigu ja soovitan, mida teha.",
+    "tapMicrophoneToSpeak": "Puudutage mikrofoni rääkimiseks",
+    "categoryEssential": "Olulised",
+    "categoryPolice": "Politsei",
+    "categoryWork": "Töö",
+    "categoryHousing": "Eluase",
+    "categoryConsumer": "Tarbija",
+    "rightsInsideCount": "{count} õigust sees",
+    "@rightsInsideCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freeAidThreshold": "Tasuta abi piirmäär",
+    "partialAidThreshold": "Osalise abi piirmäär",
+    "assetLimit": "Varade piirmäär",
+    "whereToApplyLabel": "Kuhu pöörduda",
+    "phoneLabel": "Telefon",
+    "websiteLabel": "Veebileht",
+    "disclaimerCollapsed": "Ainult teabeks",
+    "disclaimerExpanded": "Tehisintellekti assistent — mitte õigusnõuanne. Kontrollige alati kvalifitseeritud juristiga.",
+    "chatDisclaimerBanner": "Tehisintellekti assistent pakub õigusteavet, mitte õigusnõuannet. Konsulteerige alati kvalifitseeritud juristiga."
 }

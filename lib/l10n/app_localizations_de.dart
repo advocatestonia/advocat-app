@@ -1591,7 +1591,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Registered in Estonian Commercial Register (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer => 'KI-generiert • Keine Rechtsberatung';
 
   @override
   String get decline => 'Ablehnen';
@@ -2059,4 +2059,72 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get addDocumentsLaterHint =>
       'You can always add documents later from the case detail screen.';
+
+  @override
+  String get callAI => 'KI anrufen';
+
+  @override
+  String get encrypted => 'Verschlüsselt';
+
+  @override
+  String get typing => 'Tippt...';
+
+  @override
+  String get online => 'Online';
+
+  @override
+  String get chatWelcomeSubtitle =>
+      'Ich analysiere die Situation, prüfe Dokumente, finde Fehler und schlage vor, was zu tun ist.';
+
+  @override
+  String get tapMicrophoneToSpeak => 'Tippen Sie auf das Mikrofon zum Sprechen';
+
+  @override
+  String get categoryEssential => 'Wesentlich';
+
+  @override
+  String get categoryPolice => 'Polizei';
+
+  @override
+  String get categoryWork => 'Arbeit';
+
+  @override
+  String get categoryHousing => 'Wohnen';
+
+  @override
+  String get categoryConsumer => 'Verbraucher';
+
+  @override
+  String rightsInsideCount(int count) {
+    return '$count Rechte enthalten';
+  }
+
+  @override
+  String get freeAidThreshold => 'Schwelle für kostenlose Hilfe';
+
+  @override
+  String get partialAidThreshold => 'Schwelle für Teilhilfe';
+
+  @override
+  String get assetLimit => 'Vermögensgrenze';
+
+  @override
+  String get whereToApplyLabel => 'Wo beantragen';
+
+  @override
+  String get phoneLabel => 'Telefon';
+
+  @override
+  String get websiteLabel => 'Webseite';
+
+  @override
+  String get disclaimerCollapsed => 'Nur zur Information';
+
+  @override
+  String get disclaimerExpanded =>
+      'KI-Assistent — keine Rechtsberatung. Überprüfen Sie immer mit einem qualifizierten Anwalt.';
+
+  @override
+  String get chatDisclaimerBanner =>
+      'Der KI-Assistent bietet rechtliche Informationen, keine Rechtsberatung. Konsultieren Sie immer einen qualifizierten Anwalt.';
 }

@@ -747,4 +747,34 @@
     "tapToUploadFile": "Tap to upload a file",
     "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
     "addDocumentsLaterHint": "You can always add documents later from the case detail screen."
+,
+    "aiGeneratedDisclaimer": "Generado por IA \u2022 No es asesoramiento legal",
+    "callAI": "Llamar IA",
+    "encrypted": "Cifrado",
+    "typing": "Escribiendo...",
+    "online": "En línea",
+    "chatWelcomeSubtitle": "Analizaré la situación, revisaré documentos, buscaré errores y sugeriré qué hacer.",
+    "tapMicrophoneToSpeak": "Toque el micrófono para hablar",
+    "categoryEssential": "Esencial",
+    "categoryPolice": "Policía",
+    "categoryWork": "Trabajo",
+    "categoryHousing": "Vivienda",
+    "categoryConsumer": "Consumidor",
+    "rightsInsideCount": "{count} derechos incluidos",
+    "@rightsInsideCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freeAidThreshold": "Umbral de ayuda gratuita",
+    "partialAidThreshold": "Umbral de ayuda parcial",
+    "assetLimit": "Límite de activos",
+    "whereToApplyLabel": "Dónde solicitar",
+    "phoneLabel": "Teléfono",
+    "websiteLabel": "Sitio web",
+    "disclaimerCollapsed": "Solo informativo",
+    "disclaimerExpanded": "Asistente IA — no es asesoramiento legal. Siempre verifique con un abogado calificado.",
+    "chatDisclaimerBanner": "El asistente IA proporciona información legal, no asesoramiento legal. Consulte siempre a un abogado calificado."
 }

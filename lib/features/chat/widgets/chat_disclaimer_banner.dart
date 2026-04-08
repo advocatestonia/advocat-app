@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Teal accent used for the calming info banner.
 const _kBannerTeal = Color(0xFF0D9488);
@@ -20,6 +21,7 @@ class ChatDisclaimerBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     if (!expanded) return const SizedBox.shrink();
 
+    final l = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
@@ -44,8 +46,7 @@ class ChatDisclaimerBanner extends StatelessWidget {
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Text(
-              'AI assistant provides legal information, not legal advice. '
-              'Always consult a qualified lawyer.',
+              l.chatDisclaimerBanner,
               style: TextStyle(
                 fontSize: 11,
                 color: _kBannerTeal.withValues(alpha: 0.9),
@@ -65,7 +66,7 @@ class ChatDisclaimerBanner extends StatelessWidget {
               ),
               const SizedBox(width: 3),
               Text(
-                'Encrypted',
+                l.encrypted,
                 style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,

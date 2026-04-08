@@ -1571,7 +1571,8 @@ class AppLocalizationsEt extends AppLocalizations {
       'Registered in Estonian Commercial Register (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'Tehisintellekti loodud • Mitte õigusnõuanne';
 
   @override
   String get decline => 'Keeldu';
@@ -2030,4 +2031,72 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get addDocumentsLaterHint =>
       'Saate dokumente alati hiljem lisada juhtumi üksikasjade ekraanilt.';
+
+  @override
+  String get callAI => 'Helista AI-le';
+
+  @override
+  String get encrypted => 'Krüpteeritud';
+
+  @override
+  String get typing => 'Kirjutab...';
+
+  @override
+  String get online => 'Võrgus';
+
+  @override
+  String get chatWelcomeSubtitle =>
+      'Analüüsin olukorda, kontrollin dokumente, otsin vigu ja soovitan, mida teha.';
+
+  @override
+  String get tapMicrophoneToSpeak => 'Puudutage mikrofoni rääkimiseks';
+
+  @override
+  String get categoryEssential => 'Olulised';
+
+  @override
+  String get categoryPolice => 'Politsei';
+
+  @override
+  String get categoryWork => 'Töö';
+
+  @override
+  String get categoryHousing => 'Eluase';
+
+  @override
+  String get categoryConsumer => 'Tarbija';
+
+  @override
+  String rightsInsideCount(int count) {
+    return '$count õigust sees';
+  }
+
+  @override
+  String get freeAidThreshold => 'Tasuta abi piirmäär';
+
+  @override
+  String get partialAidThreshold => 'Osalise abi piirmäär';
+
+  @override
+  String get assetLimit => 'Varade piirmäär';
+
+  @override
+  String get whereToApplyLabel => 'Kuhu pöörduda';
+
+  @override
+  String get phoneLabel => 'Telefon';
+
+  @override
+  String get websiteLabel => 'Veebileht';
+
+  @override
+  String get disclaimerCollapsed => 'Ainult teabeks';
+
+  @override
+  String get disclaimerExpanded =>
+      'Tehisintellekti assistent — mitte õigusnõuanne. Kontrollige alati kvalifitseeritud juristiga.';
+
+  @override
+  String get chatDisclaimerBanner =>
+      'Tehisintellekti assistent pakub õigusteavet, mitte õigusnõuannet. Konsulteerige alati kvalifitseeritud juristiga.';
 }

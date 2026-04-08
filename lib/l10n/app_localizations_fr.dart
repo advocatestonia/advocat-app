@@ -1593,7 +1593,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Registered in Estonian Commercial Register (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer => 'Généré par IA • Pas un avis juridique';
 
   @override
   String get decline => 'Refuser';
@@ -2062,4 +2062,72 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get addDocumentsLaterHint =>
       'You can always add documents later from the case detail screen.';
+
+  @override
+  String get callAI => 'Appeler IA';
+
+  @override
+  String get encrypted => 'Chiffré';
+
+  @override
+  String get typing => 'Écrit...';
+
+  @override
+  String get online => 'En ligne';
+
+  @override
+  String get chatWelcomeSubtitle =>
+      'J\'analyserai la situation, vérifierai les documents, trouverai les erreurs et suggérerai quoi faire.';
+
+  @override
+  String get tapMicrophoneToSpeak => 'Appuyez sur le micro pour parler';
+
+  @override
+  String get categoryEssential => 'Essentiel';
+
+  @override
+  String get categoryPolice => 'Police';
+
+  @override
+  String get categoryWork => 'Travail';
+
+  @override
+  String get categoryHousing => 'Logement';
+
+  @override
+  String get categoryConsumer => 'Consommateur';
+
+  @override
+  String rightsInsideCount(int count) {
+    return '$count droits inclus';
+  }
+
+  @override
+  String get freeAidThreshold => 'Seuil d\'aide gratuite';
+
+  @override
+  String get partialAidThreshold => 'Seuil d\'aide partielle';
+
+  @override
+  String get assetLimit => 'Limite de patrimoine';
+
+  @override
+  String get whereToApplyLabel => 'Où postuler';
+
+  @override
+  String get phoneLabel => 'Téléphone';
+
+  @override
+  String get websiteLabel => 'Site web';
+
+  @override
+  String get disclaimerCollapsed => 'À titre informatif uniquement';
+
+  @override
+  String get disclaimerExpanded =>
+      'Assistant IA — pas un avis juridique. Vérifiez toujours avec un avocat qualifié.';
+
+  @override
+  String get chatDisclaimerBanner =>
+      'L\'assistant IA fournit des informations juridiques, pas des conseils juridiques. Consultez toujours un avocat qualifié.';
 }

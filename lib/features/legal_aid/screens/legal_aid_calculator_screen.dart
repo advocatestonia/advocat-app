@@ -553,6 +553,7 @@ class _CountryInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -607,21 +608,21 @@ class _CountryInfoCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             _InfoRow(
               icon: Icons.money_off,
-              label: 'Free aid threshold',
+              label: l10n.freeAidThreshold,
               value:
                   '\u2264${country.freeThreshold.toStringAsFixed(0)} ${country.currency}/month',
             ),
             if (country.partialThreshold != country.freeThreshold)
               _InfoRow(
                 icon: Icons.money,
-                label: 'Partial aid threshold',
+                label: l10n.partialAidThreshold,
                 value:
                     '\u2264${country.partialThreshold.toStringAsFixed(0)} ${country.currency}/month',
               ),
             if (country.assetThreshold > 0)
               _InfoRow(
                 icon: Icons.account_balance_wallet,
-                label: 'Asset limit',
+                label: l10n.assetLimit,
                 value:
                     '<${country.assetThreshold.toStringAsFixed(0)} ${country.currency}',
               ),
@@ -630,17 +631,17 @@ class _CountryInfoCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.sm),
             _InfoRow(
               icon: Icons.business,
-              label: 'Where to apply',
+              label: l10n.whereToApplyLabel,
               value: country.whereToApply,
             ),
             _InfoRow(
               icon: Icons.phone,
-              label: 'Phone',
+              label: l10n.phoneLabel,
               value: country.phone,
             ),
             _InfoRow(
               icon: Icons.language,
-              label: 'Website',
+              label: l10n.websiteLabel,
               value: country.website,
             ),
             if (country.notes.isNotEmpty) ...[

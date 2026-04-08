@@ -446,13 +446,13 @@ class _QuickActions extends StatelessWidget {
               ),
               _QuickActionButton(
                 icon: Icons.email_outlined,
-                label: 'Email',
+                label: l.email,
                 color: AppColors.info,
                 onTap: () => context.push(AppRoutes.email),
               ),
               _QuickActionButton(
                 icon: Icons.phone_in_talk_outlined,
-                label: 'Call AI',
+                label: l.callAI,
                 color: AppColors.success,
                 onTap: () => launchCallAssistant(),
               ),

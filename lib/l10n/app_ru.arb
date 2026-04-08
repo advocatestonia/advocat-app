@@ -745,5 +745,34 @@
     "uploadDocumentDescription": "Загрузите письмо с решением или любой соответствующий документ. Вы можете пропустить этот шаг и добавить документы позже.",
     "tapToUploadFile": "Нажмите для загрузки файла",
     "fileSizeLimit": "PDF, JPG, PNG до 25 МБ",
-    "addDocumentsLaterHint": "Вы всегда можете добавить документы позже на странице дела."
+    "addDocumentsLaterHint": "Вы всегда можете добавить документы позже на странице дела.",
+    "aiGeneratedDisclaimer": "Создано ИИ \u2022 Не является юридической консультацией",
+    "callAI": "Звонок ИИ",
+    "encrypted": "Зашифровано",
+    "typing": "Печатает...",
+    "online": "Онлайн",
+    "chatWelcomeSubtitle": "Я проанализирую ситуацию, проверю документы, найду ошибки и подскажу, что делать.",
+    "tapMicrophoneToSpeak": "Нажмите на микрофон, чтобы говорить",
+    "categoryEssential": "Основные",
+    "categoryPolice": "Полиция",
+    "categoryWork": "Работа",
+    "categoryHousing": "Жильё",
+    "categoryConsumer": "Потребитель",
+    "rightsInsideCount": "{count} прав внутри",
+    "@rightsInsideCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freeAidThreshold": "Порог бесплатной помощи",
+    "partialAidThreshold": "Порог частичной помощи",
+    "assetLimit": "Лимит активов",
+    "whereToApplyLabel": "Куда обращаться",
+    "phoneLabel": "Телефон",
+    "websiteLabel": "Сайт",
+    "disclaimerCollapsed": "Только справочная информация",
+    "disclaimerExpanded": "ИИ-помощник — не юридическая консультация. Всегда проверяйте у квалифицированного юриста.",
+    "chatDisclaimerBanner": "ИИ-помощник предоставляет правовую информацию, а не юридическую консультацию. Всегда консультируйтесь с квалифицированным юристом."
 }

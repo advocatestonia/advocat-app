@@ -2029,4 +2029,72 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get addDocumentsLaterHint =>
       'You can always add documents later from the case detail screen.';
+
+  @override
+  String get callAI => 'Call AI';
+
+  @override
+  String get encrypted => 'Encrypted';
+
+  @override
+  String get typing => 'Typing...';
+
+  @override
+  String get online => 'Online';
+
+  @override
+  String get chatWelcomeSubtitle =>
+      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+
+  @override
+  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+
+  @override
+  String get categoryEssential => 'Essential';
+
+  @override
+  String get categoryPolice => 'Police';
+
+  @override
+  String get categoryWork => 'Work';
+
+  @override
+  String get categoryHousing => 'Housing';
+
+  @override
+  String get categoryConsumer => 'Consumer';
+
+  @override
+  String rightsInsideCount(int count) {
+    return '$count rights inside';
+  }
+
+  @override
+  String get freeAidThreshold => 'Free aid threshold';
+
+  @override
+  String get partialAidThreshold => 'Partial aid threshold';
+
+  @override
+  String get assetLimit => 'Asset limit';
+
+  @override
+  String get whereToApplyLabel => 'Where to apply';
+
+  @override
+  String get phoneLabel => 'Phone';
+
+  @override
+  String get websiteLabel => 'Website';
+
+  @override
+  String get disclaimerCollapsed => 'AI guidance only';
+
+  @override
+  String get disclaimerExpanded =>
+      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+
+  @override
+  String get chatDisclaimerBanner =>
+      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
 }

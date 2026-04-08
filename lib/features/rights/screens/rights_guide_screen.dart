@@ -103,6 +103,15 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
       ),
     ];
 
+    final categoryLabels = <String, String>{
+      _categoryAll: l10n.all,
+      'Essential': l10n.categoryEssential,
+      'Police': l10n.categoryPolice,
+      'Work': l10n.categoryWork,
+      'Housing': l10n.categoryHousing,
+      'Consumer': l10n.categoryConsumer,
+    };
+
     final categories = [
       _categoryAll,
       'Essential',
@@ -153,7 +162,7 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
                   final isSelected =
                       (_selectedCategory ?? _categoryAll) == cat;
                   return FilterChip(
-                    label: Text(cat),
+                    label: Text(categoryLabels[cat] ?? cat),
                     selected: isSelected,
                     onSelected: (_) {
                       setState(() {
@@ -266,6 +275,7 @@ class _AnimatedScenarioCardState extends State<_AnimatedScenarioCard>
   @override
   Widget build(BuildContext context) {
     final s = widget.scenario;
+    final l10n = AppLocalizations.of(context)!;
     return FadeTransition(
       opacity: _fadeAnimation,
       child: SlideTransition(
@@ -391,7 +401,7 @@ class _AnimatedScenarioCardState extends State<_AnimatedScenarioCard>
                                             AppRadius.full),
                                       ),
                                       child: Text(
-                                        '${s.rightsCount} rights inside',
+                                        l10n.rightsInsideCount(s.rightsCount),
                                         style: const TextStyle(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w600,

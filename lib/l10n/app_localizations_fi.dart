@@ -1571,7 +1571,8 @@ class AppLocalizationsFi extends AppLocalizations {
       'Registered in Estonian Commercial Register (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'Tekoälyn luoma • Ei oikeudellista neuvontaa';
 
   @override
   String get decline => 'Hylkää';
@@ -2029,4 +2030,72 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get addDocumentsLaterHint =>
       'Voit aina lisätä asiakirjoja myöhemmin tapauksen tietosivulta.';
+
+  @override
+  String get callAI => 'Soita tekoälylle';
+
+  @override
+  String get encrypted => 'Salattu';
+
+  @override
+  String get typing => 'Kirjoittaa...';
+
+  @override
+  String get online => 'Paikalla';
+
+  @override
+  String get chatWelcomeSubtitle =>
+      'Analysoin tilanteen, tarkistan asiakirjat, etsin virheitä ja ehdotan, mitä tehdä.';
+
+  @override
+  String get tapMicrophoneToSpeak => 'Napauta mikrofonia puhuaksesi';
+
+  @override
+  String get categoryEssential => 'Tärkeät';
+
+  @override
+  String get categoryPolice => 'Poliisi';
+
+  @override
+  String get categoryWork => 'Työ';
+
+  @override
+  String get categoryHousing => 'Asuminen';
+
+  @override
+  String get categoryConsumer => 'Kuluttaja';
+
+  @override
+  String rightsInsideCount(int count) {
+    return '$count oikeutta sisällä';
+  }
+
+  @override
+  String get freeAidThreshold => 'Ilmaisen avun raja';
+
+  @override
+  String get partialAidThreshold => 'Osittaisen avun raja';
+
+  @override
+  String get assetLimit => 'Omaisuusraja';
+
+  @override
+  String get whereToApplyLabel => 'Mistä hakea';
+
+  @override
+  String get phoneLabel => 'Puhelin';
+
+  @override
+  String get websiteLabel => 'Verkkosivusto';
+
+  @override
+  String get disclaimerCollapsed => 'Vain tiedoksi';
+
+  @override
+  String get disclaimerExpanded =>
+      'Tekoälyavustaja — ei oikeudellista neuvontaa. Tarkista aina pätevältä lakimieheltä.';
+
+  @override
+  String get chatDisclaimerBanner =>
+      'Tekoälyavustaja tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. Ota aina yhteyttä pätevään lakimieheen.';
 }

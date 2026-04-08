@@ -747,4 +747,34 @@
     "tapToUploadFile": "Tap to upload a file",
     "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
     "addDocumentsLaterHint": "You can always add documents later from the case detail screen."
+,
+    "aiGeneratedDisclaimer": "KI-generiert \u2022 Keine Rechtsberatung",
+    "callAI": "KI anrufen",
+    "encrypted": "Verschlüsselt",
+    "typing": "Tippt...",
+    "online": "Online",
+    "chatWelcomeSubtitle": "Ich analysiere die Situation, prüfe Dokumente, finde Fehler und schlage vor, was zu tun ist.",
+    "tapMicrophoneToSpeak": "Tippen Sie auf das Mikrofon zum Sprechen",
+    "categoryEssential": "Wesentlich",
+    "categoryPolice": "Polizei",
+    "categoryWork": "Arbeit",
+    "categoryHousing": "Wohnen",
+    "categoryConsumer": "Verbraucher",
+    "rightsInsideCount": "{count} Rechte enthalten",
+    "@rightsInsideCount": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "freeAidThreshold": "Schwelle für kostenlose Hilfe",
+    "partialAidThreshold": "Schwelle für Teilhilfe",
+    "assetLimit": "Vermögensgrenze",
+    "whereToApplyLabel": "Wo beantragen",
+    "phoneLabel": "Telefon",
+    "websiteLabel": "Webseite",
+    "disclaimerCollapsed": "Nur zur Information",
+    "disclaimerExpanded": "KI-Assistent — keine Rechtsberatung. Überprüfen Sie immer mit einem qualifizierten Anwalt.",
+    "chatDisclaimerBanner": "Der KI-Assistent bietet rechtliche Informationen, keine Rechtsberatung. Konsultieren Sie immer einen qualifizierten Anwalt."
 }

@@ -714,7 +714,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      _isTyping ? 'Typing...' : 'Online',
+                      _isTyping ? (AppLocalizations.of(context)?.typing ?? 'Typing...') : (AppLocalizations.of(context)?.online ?? 'Online'),
                       style: TextStyle(
                         fontSize: 12,
                         color: _isTyping
@@ -936,8 +936,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 Expanded(
                   child: Text(
                     _disclaimerExpanded
-                        ? 'AI assistant -- not legal advice. Always verify with a qualified lawyer.'
-                        : 'AI guidance only',
+                        ? (AppLocalizations.of(context)?.disclaimerExpanded ?? 'AI assistant — not legal advice. Always verify with a qualified lawyer.')
+                        : (AppLocalizations.of(context)?.disclaimerCollapsed ?? 'AI guidance only'),
                     style: TextStyle(
                       fontSize: 12,
                       color: AppColors.warning.withValues(alpha: 0.9),
@@ -1048,7 +1048,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 .fadeIn(delay: 200.ms, duration: 400.ms),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'I will analyze the situation, check documents, find errors, and suggest what to do.',
+              AppLocalizations.of(context)?.chatWelcomeSubtitle ?? 'I will analyze the situation, check documents, find errors, and suggest what to do.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -1059,7 +1059,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             if (_voiceInitialized) ...[
               const SizedBox(height: AppSpacing.lg),
               Text(
-                'Tap the microphone to speak',
+                AppLocalizations.of(context)?.tapMicrophoneToSpeak ?? 'Tap the microphone to speak',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textTertiary,
                     ),

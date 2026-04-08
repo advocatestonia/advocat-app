@@ -1569,7 +1569,8 @@ class AppLocalizationsRu extends AppLocalizations {
       'Registered in Estonian Commercial Register (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'Создано ИИ • Не является юридической консультацией';
 
   @override
   String get decline => 'Отклонить';
@@ -2036,4 +2037,72 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get addDocumentsLaterHint =>
       'Вы всегда можете добавить документы позже на странице дела.';
+
+  @override
+  String get callAI => 'Звонок ИИ';
+
+  @override
+  String get encrypted => 'Зашифровано';
+
+  @override
+  String get typing => 'Печатает...';
+
+  @override
+  String get online => 'Онлайн';
+
+  @override
+  String get chatWelcomeSubtitle =>
+      'Я проанализирую ситуацию, проверю документы, найду ошибки и подскажу, что делать.';
+
+  @override
+  String get tapMicrophoneToSpeak => 'Нажмите на микрофон, чтобы говорить';
+
+  @override
+  String get categoryEssential => 'Основные';
+
+  @override
+  String get categoryPolice => 'Полиция';
+
+  @override
+  String get categoryWork => 'Работа';
+
+  @override
+  String get categoryHousing => 'Жильё';
+
+  @override
+  String get categoryConsumer => 'Потребитель';
+
+  @override
+  String rightsInsideCount(int count) {
+    return '$count прав внутри';
+  }
+
+  @override
+  String get freeAidThreshold => 'Порог бесплатной помощи';
+
+  @override
+  String get partialAidThreshold => 'Порог частичной помощи';
+
+  @override
+  String get assetLimit => 'Лимит активов';
+
+  @override
+  String get whereToApplyLabel => 'Куда обращаться';
+
+  @override
+  String get phoneLabel => 'Телефон';
+
+  @override
+  String get websiteLabel => 'Сайт';
+
+  @override
+  String get disclaimerCollapsed => 'Только справочная информация';
+
+  @override
+  String get disclaimerExpanded =>
+      'ИИ-помощник — не юридическая консультация. Всегда проверяйте у квалифицированного юриста.';
+
+  @override
+  String get chatDisclaimerBanner =>
+      'ИИ-помощник предоставляет правовую информацию, а не юридическую консультацию. Всегда консультируйтесь с квалифицированным юристом.';
 }

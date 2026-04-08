@@ -3805,6 +3805,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You can always add documents later from the case detail screen.'**
   String get addDocumentsLaterHint;
+
+  /// No description provided for @callAI.
+  ///
+  /// In en, this message translates to:
+  /// **'Call AI'**
+  String get callAI;
+
+  /// No description provided for @encrypted.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted'**
+  String get encrypted;
+
+  /// No description provided for @typing.
+  ///
+  /// In en, this message translates to:
+  /// **'Typing...'**
+  String get typing;
+
+  /// No description provided for @online.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get online;
+
+  /// No description provided for @chatWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I will analyze the situation, check documents, find errors, and suggest what to do.'**
+  String get chatWelcomeSubtitle;
+
+  /// No description provided for @tapMicrophoneToSpeak.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the microphone to speak'**
+  String get tapMicrophoneToSpeak;
+
+  /// No description provided for @categoryEssential.
+  ///
+  /// In en, this message translates to:
+  /// **'Essential'**
+  String get categoryEssential;
+
+  /// No description provided for @categoryPolice.
+  ///
+  /// In en, this message translates to:
+  /// **'Police'**
+  String get categoryPolice;
+
+  /// No description provided for @categoryWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work'**
+  String get categoryWork;
+
+  /// No description provided for @categoryHousing.
+  ///
+  /// In en, this message translates to:
+  /// **'Housing'**
+  String get categoryHousing;
+
+  /// No description provided for @categoryConsumer.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer'**
+  String get categoryConsumer;
+
+  /// No description provided for @rightsInsideCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} rights inside'**
+  String rightsInsideCount(int count);
+
+  /// No description provided for @freeAidThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Free aid threshold'**
+  String get freeAidThreshold;
+
+  /// No description provided for @partialAidThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Partial aid threshold'**
+  String get partialAidThreshold;
+
+  /// No description provided for @assetLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Asset limit'**
+  String get assetLimit;
+
+  /// No description provided for @whereToApplyLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Where to apply'**
+  String get whereToApplyLabel;
+
+  /// No description provided for @phoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone'**
+  String get phoneLabel;
+
+  /// No description provided for @websiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Website'**
+  String get websiteLabel;
+
+  /// No description provided for @disclaimerCollapsed.
+  ///
+  /// In en, this message translates to:
+  /// **'AI guidance only'**
+  String get disclaimerCollapsed;
+
+  /// No description provided for @disclaimerExpanded.
+  ///
+  /// In en, this message translates to:
+  /// **'AI assistant — not legal advice. Always verify with a qualified lawyer.'**
+  String get disclaimerExpanded;
+
+  /// No description provided for @chatDisclaimerBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.'**
+  String get chatDisclaimerBanner;
 }
 
 class _AppLocalizationsDelegate
