@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../config/app_config.dart';
 import '../models/case_model.dart';
@@ -38,6 +39,109 @@ class AIService {
 
   /// Whether this service instance is using the real Claude API.
   bool get isUsingRealAI => AppConfig.useRealAI && ClaudeService.isAvailable;
+
+  // ── Response cache (avoids API calls for repeated common questions) ────
+
+  /// In-memory cache: normalized query -> (response, timestamp).
+  final Map<String, _CachedResponse> _responseCache = {};
+
+  /// Cache TTL: 1 hour.
+  static const Duration _cacheTtl = Duration(hours: 1);
+
+  /// Max entries in cache to prevent unbounded memory growth.
+  static const int _maxCacheEntries = 100;
+
+  /// Normalize a query for cache lookup: lowercase, trimmed, first 100 chars.
+  static String _normalizeCacheKey(String query) {
+    final trimmed = query.trim().toLowerCase();
+    return trimmed.length > 100 ? trimmed.substring(0, 100) : trimmed;
+  }
+
+  /// Look up a cached response. Returns null if not found or expired.
+  String? _getCachedResponse(String query) {
+    final key = _normalizeCacheKey(query);
+    final cached = _responseCache[key];
+    if (cached == null) return null;
+    if (DateTime.now().difference(cached.timestamp) > _cacheTtl) {
+      _responseCache.remove(key);
+      return null;
+    }
+    return cached.response;
+  }
+
+  /// Store a response in cache.
+  void _cacheResponse(String query, String response) {
+    // Evict oldest entries if cache is full.
+    if (_responseCache.length >= _maxCacheEntries) {
+      final oldest = _responseCache.entries.reduce(
+        (a, b) => a.value.timestamp.isBefore(b.value.timestamp) ? a : b,
+      );
+      _responseCache.remove(oldest.key);
+    }
+    final key = _normalizeCacheKey(query);
+    _responseCache[key] = _CachedResponse(response, DateTime.now());
+  }
+
+  // ── Free-tier daily limit ─────────────────────────────────────────────
+
+  /// Maximum free API calls per day for non-Pro users.
+  static const int _freeDailyLimit = 3;
+
+  /// Whether the current user is a Pro subscriber.
+  /// Set this from your subscription/auth logic.
+  bool isProUser = false;
+
+  /// Check if the free user has remaining API calls today.
+  /// Returns true if the call is allowed, false if limit reached.
+  Future<bool> _checkAndIncrementDailyLimit() async {
+    if (isProUser) return true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final today = DateTime.now().toIso8601String().substring(0, 10);
+      final key = 'ai_daily_count_$today';
+      final count = prefs.getInt(key) ?? 0;
+      if (count >= _freeDailyLimit) return false;
+      await prefs.setInt(key, count + 1);
+      return true;
+    } catch (_) {
+      // If SharedPreferences fails, allow the call.
+      return true;
+    }
+  }
+
+  /// Get remaining free calls for today.
+  Future<int> getRemainingFreeCalls() async {
+    if (isProUser) return -1; // unlimited
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final today = DateTime.now().toIso8601String().substring(0, 10);
+      final key = 'ai_daily_count_$today';
+      final count = prefs.getInt(key) ?? 0;
+      return (_freeDailyLimit - count).clamp(0, _freeDailyLimit);
+    } catch (_) {
+      return _freeDailyLimit;
+    }
+  }
+
+  // ── Session usage tracking ────────────────────────────────────────────
+
+  /// Total input tokens used in this session (across all API calls).
+  int get sessionInputTokens => _claudeService.sessionInputTokens;
+
+  /// Total output tokens used in this session (across all API calls).
+  int get sessionOutputTokens => _claudeService.sessionOutputTokens;
+
+  /// Total tokens used in this session.
+  int get sessionTotalTokens => _claudeService.sessionTotalTokens;
+
+  /// Estimated session cost in USD (rough, based on Sonnet pricing as upper bound).
+  double get estimatedSessionCostUsd {
+    // Sonnet: $3/1M input, $15/1M output
+    // Haiku: $0.25/1M input, $1.25/1M output
+    // Use Sonnet pricing as conservative upper bound.
+    return (sessionInputTokens * 3.0 / 1000000) +
+        (sessionOutputTokens * 15.0 / 1000000);
+  }
 
   /// Set the Supabase access token for authenticated proxy requests.
   void setAuthToken(String token) {
@@ -160,16 +264,55 @@ class AIService {
   final Map<String, List<Map<String, String>>> _conversationHistory = {};
 
   /// Maximum messages to keep in conversation history per case.
-  static const int _maxHistoryMessages = 40;
+  static const int _maxHistoryMessages = 20;
+
+  /// Number of recent messages to keep as full content.
+  /// Older messages are summarized to a single line each.
+  static const int _fullContentMessages = 10;
 
   void _addToHistory(String caseId, String role, String content) {
     _conversationHistory.putIfAbsent(caseId, () => []);
     _conversationHistory[caseId]!.add({'role': role, 'content': content});
-    // Trim old messages, keeping system-level context fresh
+    // Trim old messages
     if (_conversationHistory[caseId]!.length > _maxHistoryMessages) {
       _conversationHistory[caseId] = _conversationHistory[caseId]!
           .sublist(_conversationHistory[caseId]!.length - _maxHistoryMessages);
     }
+  }
+
+  /// Build the messages list for the API call, summarizing older messages.
+  ///
+  /// Returns the last [_fullContentMessages] as full content.
+  /// Older messages are condensed to a single-line summary each to save tokens.
+  List<Map<String, String>> _buildMessagesForApi(String caseId) {
+    final history = _conversationHistory[caseId];
+    if (history == null || history.isEmpty) return [];
+
+    if (history.length <= _fullContentMessages) {
+      return List<Map<String, String>>.from(history);
+    }
+
+    final result = <Map<String, String>>[];
+
+    // Summarize older messages (before the last _fullContentMessages)
+    final olderCount = history.length - _fullContentMessages;
+    for (var i = 0; i < olderCount; i++) {
+      final msg = history[i];
+      final role = msg['role'] ?? 'user';
+      final content = msg['content'] ?? '';
+      // Condense to first 80 chars + ellipsis
+      final summary = content.length > 80
+          ? '${content.substring(0, 80)}...'
+          : content;
+      result.add({'role': role, 'content': summary});
+    }
+
+    // Keep recent messages as full content
+    for (var i = olderCount; i < history.length; i++) {
+      result.add(Map<String, String>.from(history[i]));
+    }
+
+    return result;
   }
 
   /// Clear conversation history for a case (e.g., on new session).
@@ -258,12 +401,42 @@ class AIService {
     final sanitizedMessage = _sanitizeInput(message);
 
     if (isUsingRealAI) {
+      // ── Free-tier daily limit check ──
+      final allowed = await _checkAndIncrementDailyLimit();
+      if (!allowed) {
+        return ChatResponse(
+          message: 'You have reached the daily limit of $_freeDailyLimit '
+              'free AI messages. Upgrade to Pro for unlimited AI assistance!',
+          disclaimer: null,
+        );
+      }
+
+      // ── Response cache check ──
+      final cached = _getCachedResponse(sanitizedMessage);
+      if (cached != null) {
+        _log.i('Cache hit for query');
+        _addToHistory(caseId, 'user', sanitizedMessage);
+        _addToHistory(caseId, 'assistant', cached);
+        return ChatResponse(
+          message: cached,
+          disclaimer:
+              'This is AI-generated legal information, not legal advice. '
+              'Please consult a qualified attorney for advice specific to your situation.',
+        );
+      }
+
       _log.i('Using Claude API for chat');
       try {
+        // Choose model based on query complexity
+        final model = ClaudeService.chooseModel(sanitizedMessage);
+        final maxTokens = ClaudeService.maxTokensForModel(model);
+        _log.i('Model routing: $model (maxTokens: $maxTokens)');
+
         // Add user message to history
         _addToHistory(caseId, 'user', sanitizedMessage);
 
         // Build system prompt with relevant knowledge from all 22 databases
+        // Use reduced context for Haiku model
         final systemPrompt = SystemPrompts.buildChatPrompt(
           caseType: caseType,
           country: country,
@@ -271,15 +444,30 @@ class AIService {
           caseContext: caseDescription,
           userLanguage: userLanguage,
           query: sanitizedMessage,
+          useReducedContext: model == ClaudeService.modelHaiku,
         );
+
+        // Build messages with summarized older history
+        final messages = _buildMessagesForApi(caseId);
+        if (messages.isEmpty) {
+          messages.add({'role': 'user', 'content': sanitizedMessage});
+        }
 
         // Send to Claude with tools enabled
         final rawResponse = await _claudeService.sendMessageWithTools(
-          messages: _conversationHistory[caseId] ?? [
-            {'role': 'user', 'content': sanitizedMessage},
-          ],
+          messages: messages,
           systemPrompt: systemPrompt,
+          maxTokens: maxTokens,
+          model: model,
         );
+
+        // Log token usage
+        final usage = rawResponse['usage'] as Map<String, dynamic>?;
+        if (usage != null) {
+          _log.i('Tokens — input: ${usage['input_tokens']}, '
+              'output: ${usage['output_tokens']}, '
+              'model: $model');
+        }
 
         // Check if Claude wants to use a tool
         if (_claudeService.hasToolUse(rawResponse)) {
@@ -306,6 +494,9 @@ class AIService {
 
         // Add assistant response to history
         _addToHistory(caseId, 'assistant', responseText);
+
+        // Cache the response for future identical queries
+        _cacheResponse(sanitizedMessage, responseText);
 
         return ChatResponse(
           message: responseText,
@@ -570,4 +761,14 @@ class AIServiceException implements Exception {
 
   @override
   String toString() => 'AIServiceException: $message';
+}
+
+// ── Internal helper ─────────────────────────────────────────────────────
+
+/// A cached AI response with a creation timestamp.
+class _CachedResponse {
+  final String response;
+  final DateTime timestamp;
+
+  const _CachedResponse(this.response, this.timestamp);
 }

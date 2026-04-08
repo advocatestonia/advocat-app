@@ -100,8 +100,75 @@ class ClaudeService {
   /// Whether a valid API key is configured.
   static bool get isAvailable => AppConfig.claudeApiKey.isNotEmpty;
 
-  /// The model to use for requests.
-  static const String _model = 'claude-sonnet-4-20250514';
+  /// Expensive model for complex legal analysis.
+  static const String modelSonnet = 'claude-sonnet-4-20250514';
+
+  /// Cheap model for simple questions (12x cheaper).
+  static const String modelHaiku = 'claude-haiku-4-5-20251001';
+
+  /// Max output tokens for Haiku (short answers).
+  static const int _maxTokensHaiku = 500;
+
+  /// Max output tokens for Sonnet (detailed answers).
+  static const int _maxTokensSonnet = 1000;
+
+  /// Keywords that indicate a complex legal query requiring Sonnet.
+  static const List<String> _complexKeywords = [
+    // English legal terms
+    'appeal', 'deportation', 'asylum', 'court', 'judge', 'ruling',
+    'deadline', 'hearing', 'petition', 'complaint', 'violation',
+    'article', 'section', 'directive', 'regulation', 'statute',
+    'lawyer', 'attorney', 'legal aid', 'ombudsman', 'prosecutor',
+    'evidence', 'witness', 'testimony', 'precedent', 'case law',
+    'residence permit', 'work permit', 'visa', 'citizenship',
+    'discrimination', 'human rights', 'echr', 'eu charter',
+    'non-refoulement', 'proportionality', 'procedural',
+    'draft', 'document', 'analyze', 'review', 'strategy',
+    'family reunification', 'entry ban', 'expulsion',
+    // Russian legal terms
+    'апелляция', 'депортация', 'суд', 'судья', 'решение',
+    'срок', 'слушание', 'жалоба', 'нарушение', 'закон',
+    'статья', 'директива', 'адвокат', 'юрист', 'прокурор',
+    'доказательств', 'свидетел', 'прецедент', 'разрешение',
+    'дискриминация', 'права человека', 'пропорциональность',
+    'документ', 'анализ', 'стратегия', 'обжалован',
+    // Finnish legal terms
+    'valitus', 'hallinto-oikeus', 'karkotus', 'oleskelulupa',
+    'tuomioistuin', 'päätös', 'määräaika', 'oikeusapu',
+    // Estonian legal terms
+    'kaebus', 'kohus', 'otsus', 'elamisluba',
+  ];
+
+  /// Determine the appropriate model for a query.
+  ///
+  /// Returns [modelHaiku] for simple/short questions,
+  /// [modelSonnet] for complex legal analysis.
+  static String chooseModel(String query) {
+    // Short greetings and simple questions -> Haiku
+    if (query.length < 100) {
+      final lower = query.toLowerCase();
+      final hasComplexKeyword =
+          _complexKeywords.any((kw) => lower.contains(kw));
+      if (!hasComplexKeyword) return modelHaiku;
+    }
+
+    // Check for complex keywords in any length message
+    final lower = query.toLowerCase();
+    if (_complexKeywords.any((kw) => lower.contains(kw))) {
+      return modelSonnet;
+    }
+
+    // Messages > 200 chars likely need detailed analysis
+    if (query.length > 200) return modelSonnet;
+
+    // Default: Haiku for cost savings
+    return modelHaiku;
+  }
+
+  /// Get the recommended max tokens for a given model.
+  static int maxTokensForModel(String model) {
+    return model == modelHaiku ? _maxTokensHaiku : _maxTokensSonnet;
+  }
 
   /// Maximum retries on transient failures.
   static const int _maxRetries = 2;
@@ -117,6 +184,7 @@ class ClaudeService {
     int maxTokens = 4096,
     double temperature = 0.3,
     bool includeTools = false,
+    String? model,
   }) async {
     if (!isAvailable) {
       throw const ClaudeServiceException('Claude API key is not configured');
@@ -134,7 +202,7 @@ class ClaudeService {
     _lastRequestTime = DateTime.now();
 
     final body = {
-      'model': _model,
+      'model': model ?? modelSonnet,
       'max_tokens': maxTokens,
       'temperature': temperature,
       'system': systemPrompt,
@@ -271,14 +339,17 @@ class ClaudeService {
     required List<Map<String, String>> messages,
     required String systemPrompt,
     int maxTokens = 4096,
+    String? model,
   }) async {
-    _log.d('Sending message to Claude (${messages.length} messages)');
+    _log.d('Sending message to Claude (${messages.length} messages, '
+        'model: ${model ?? modelSonnet})');
 
     final response = await _callApi(
       systemPrompt: systemPrompt,
       messages: messages,
       maxTokens: maxTokens,
       temperature: 0.3,
+      model: model,
     );
 
     return _extractText(response);
@@ -292,9 +363,10 @@ class ClaudeService {
     required List<Map<String, String>> messages,
     required String systemPrompt,
     int maxTokens = 4096,
+    String? model,
   }) async {
-    _log.d(
-        'Sending message with tools to Claude (${messages.length} messages)');
+    _log.d('Sending message with tools to Claude (${messages.length} messages, '
+        'model: ${model ?? modelSonnet})');
 
     return _callApi(
       systemPrompt: systemPrompt,
@@ -302,6 +374,7 @@ class ClaudeService {
       maxTokens: maxTokens,
       temperature: 0.3,
       includeTools: true,
+      model: model,
     );
   }
 
@@ -408,6 +481,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     required List<Map<String, String>> messages,
     required String systemPrompt,
     int maxTokens = 4096,
+    String? model,
   }) async* {
     // For MVP: get the full response and yield it
     // TODO: Implement true SSE streaming with stream: true parameter
@@ -415,6 +489,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
       messages: messages,
       systemPrompt: systemPrompt,
       maxTokens: maxTokens,
+      model: model,
     );
     yield response;
   }

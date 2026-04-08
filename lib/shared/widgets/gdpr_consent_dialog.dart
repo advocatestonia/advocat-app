@@ -10,9 +10,13 @@ const _analyticsConsentKey = 'analytics_consent_accepted';
 
 /// Returns `true` if the user has previously given GDPR consent.
 Future<bool> hasGdprConsent() async {
-  const storage = FlutterSecureStorage();
-  final value = await storage.read(key: _gdprStorageKey);
-  return value == 'true';
+  try {
+    const storage = FlutterSecureStorage();
+    final value = await storage.read(key: _gdprStorageKey);
+    return value == 'true';
+  } catch (_) {
+    return false;
+  }
 }
 
 /// Returns `true` if the user has opted in to analytics.
@@ -24,12 +28,16 @@ Future<bool> hasAnalyticsConsent() async {
 
 /// Persists the GDPR consent flag.
 Future<void> _saveGdprConsent({required bool analytics}) async {
-  const storage = FlutterSecureStorage();
-  await storage.write(key: _gdprStorageKey, value: 'true');
-  await storage.write(
-    key: _analyticsConsentKey,
-    value: analytics ? 'true' : 'false',
-  );
+  try {
+    const storage = FlutterSecureStorage();
+    await storage.write(key: _gdprStorageKey, value: 'true');
+    await storage.write(
+      key: _analyticsConsentKey,
+      value: analytics ? 'true' : 'false',
+    );
+  } catch (_) {
+    // On web, secure storage may fail — consent still accepted for this session
+  }
 }
 
 /// Shows a GDPR consent dialog and returns `true` if accepted.

@@ -57,6 +57,7 @@ abstract final class KnowledgeRouter {
     String query, {
     String? country,
     String? caseType,
+    int? maxChars,
   }) {
     final combined =
         '${query.toLowerCase()} ${(caseType ?? '').toLowerCase()}';
@@ -319,12 +320,13 @@ abstract final class KnowledgeRouter {
     if (sections.isEmpty) return '';
 
     // Assemble and truncate to budget.
+    final budget = maxChars ?? _maxContextChars;
     final joined = sections.join('\n\n---\n\n');
-    if (joined.length <= _maxContextChars) return joined;
+    if (joined.length <= budget) return joined;
 
     // Trim gracefully: include as many full sections as fit.
     final buffer = StringBuffer();
-    var remaining = _maxContextChars;
+    var remaining = budget;
     for (final s in sections) {
       if (remaining <= 100) break;
       final piece = s.length <= remaining ? s : s.substring(0, remaining);

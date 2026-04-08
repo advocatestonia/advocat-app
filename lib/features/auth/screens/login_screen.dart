@@ -93,25 +93,31 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       );
   }
 
+  bool _navigating = false;
+
   /// Checks GDPR consent before navigating to home.
-  /// If consent was not previously given, shows the dialog.
-  /// If the user declines, logs them out so they stay on the login screen.
   Future<void> _ensureGdprConsentThenNavigate() async {
-    final alreadyConsented = await hasGdprConsent();
-    if (alreadyConsented) {
-      if (mounted) context.go(AppRoutes.home);
-      return;
-    }
+    if (_navigating) return;
+    _navigating = true;
 
-    if (!mounted) return;
-    final accepted = await showGdprConsentDialog(context);
-    if (!mounted) return;
+    try {
+      final alreadyConsented = await hasGdprConsent();
+      if (alreadyConsented) {
+        if (mounted) context.go(AppRoutes.home);
+        return;
+      }
 
-    if (accepted) {
-      context.go(AppRoutes.home);
-    } else {
-      // User declined — log them out so they remain on the login screen.
-      ref.read(authControllerProvider.notifier).logout();
+      if (!mounted) return;
+      final accepted = await showGdprConsentDialog(context);
+      if (!mounted) return;
+
+      if (accepted) {
+        context.go(AppRoutes.home);
+      } else {
+        ref.read(authControllerProvider.notifier).logout();
+      }
+    } finally {
+      _navigating = false;
     }
   }
 

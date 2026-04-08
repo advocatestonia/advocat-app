@@ -23,6 +23,7 @@ abstract final class KnowledgeBase {
     String? country,
     String? nationality,
     String? query,
+    int? maxContextChars,
   }) {
     final sections = <String>[];
 
@@ -101,6 +102,7 @@ abstract final class KnowledgeBase {
           query,
           country: country,
           caseType: caseType?.name,
+          maxChars: maxContextChars,
         );
         if (routerContext.isNotEmpty) {
           sections.add(routerContext);

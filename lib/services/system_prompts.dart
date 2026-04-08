@@ -20,6 +20,7 @@ abstract final class SystemPrompts {
     String? caseContext,
     String? userLanguage,
     String? query,
+    bool useReducedContext = false,
   }) {
     final buffer = StringBuffer();
 
@@ -45,6 +46,7 @@ abstract final class SystemPrompts {
       country: country,
       nationality: nationality,
       query: query,
+      maxContextChars: useReducedContext ? 4000 : null,
     );
     buffer.writeln('# LEGAL KNOWLEDGE BASE');
     buffer.writeln();
