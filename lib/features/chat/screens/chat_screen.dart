@@ -896,10 +896,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('🇫🇮', style: TextStyle(fontSize: 14)),
+                Text('🇪🇪', style: TextStyle(fontSize: 14)),
                 SizedBox(width: 4),
                 Text(
-                  'FI',
+                  'EE',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,

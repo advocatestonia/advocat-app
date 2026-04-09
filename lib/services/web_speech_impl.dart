@@ -114,3 +114,30 @@ void webTtsPlayBase64(String base64Audio) {
     globalContext.callMethod('advocatPlayBase64Audio'.toJS, base64Audio.toJS);
   } catch (_) {}
 }
+
+/// Full ElevenLabs TTS: fetch + play entirely in JS (avoids Dart↔JS data issues).
+Future<bool> webTtsSpeakElevenLabs({
+  required String text,
+  required String voiceId,
+  required String langCode,
+  required String supabaseUrl,
+  required String anonKey,
+}) async {
+  try {
+    final json = '{"text":${_jsonEscape(text)},"voiceId":"$voiceId","langCode":"$langCode","supabaseUrl":"$supabaseUrl","anonKey":"$anonKey"}';
+    final promise = globalContext.callMethod(
+      'advocatSpeakElevenLabsJson'.toJS,
+      json.toJS,
+    );
+    if (promise == null) return false;
+    final result = await (promise as JSPromise).toDart;
+    if (result is JSBoolean) return result.toDart;
+    return result != null;
+  } catch (_) {
+    return false;
+  }
+}
+
+String _jsonEscape(String s) {
+  return '"${s.replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('\n', '\\n').replaceAll('\r', '\\r')}"';
+}

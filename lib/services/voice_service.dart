@@ -509,18 +509,28 @@ class VoiceService {
     if (_elevenLabsAvailable) {
       final ok = await _speakWithElevenLabs(text, langCode: langCode);
       if (ok) return;
-      // ElevenLabs failed -- fall through to browser TTS.
       if (kDebugMode) {
         debugPrint('TTS: ElevenLabs failed, falling back to browser TTS');
       }
     }
 
-    // Browser / native TTS fallback.
+    // Browser TTS fallback — only for languages with reliable browser voices.
+    // Estonian, Latvian, Lithuanian etc don't have good browser voices —
+    // Chrome substitutes Finnish which sounds terrible.
+    const _browserTtsReliable = {'en', 'ru', 'de', 'fr', 'es', 'it', 'pl', 'tr'};
+    if (!_browserTtsReliable.contains(langCode)) {
+      if (kDebugMode) {
+        debugPrint('TTS: skipping browser TTS for $langCode (no reliable voice)');
+      }
+      return;
+    }
+
     await _speakWithBrowserTts(text, langCode: langCode);
   }
 
   /// Attempt to speak using ElevenLabs via the Supabase tts-proxy function.
-  /// Returns true on success.
+  /// On web, the entire fetch+play flow runs in JS (speech.js) to avoid
+  /// Dart↔JS interop issues with large binary data.
   Future<bool> _speakWithElevenLabs(
     String text, {
     String langCode = 'en',
@@ -529,49 +539,33 @@ class VoiceService {
       final voiceId = _elevenLabsVoices[_voiceGender] ??
           _elevenLabsVoices[VoiceGender.female]!;
 
-      const url = '${AppConfig.supabaseUrl}/functions/v1/tts-proxy';
-
       if (kDebugMode) {
-        debugPrint('TTS: calling ElevenLabs proxy, voice=$voiceId, '
+        debugPrint('TTS: calling ElevenLabs, voice=$voiceId, '
             'lang=$langCode, textLen=${text.length}');
       }
 
-      final response = await _dio.post<List<int>>(
-        url,
-        data: jsonEncode({
-          'text': text,
-          'voice_id': voiceId,
-          'language': langCode,
-        }),
-        options: Options(
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
-          },
-          responseType: ResponseType.bytes,
-        ),
-      );
-
-      if (response.statusCode != 200 || response.data == null) {
-        if (kDebugMode) {
-          debugPrint('TTS: ElevenLabs proxy returned ${response.statusCode}');
-        }
-        return false;
-      }
-
-      final audioBytes = response.data!;
-      if (audioBytes.isEmpty) return false;
-
-      // On web, create a Blob and play through JS.
       if (kIsWeb) {
+        // Run entirely in JS to avoid Dart↔JS binary data issues.
         _isSpeaking = true;
-        _playAudioBytesOnWeb(audioBytes);
-        return true;
+        final ok = await web_speech.webTtsSpeakElevenLabs(
+          text: text,
+          voiceId: voiceId,
+          langCode: langCode,
+          supabaseUrl: AppConfig.supabaseUrl,
+          anonKey: AppConfig.supabaseAnonKey,
+        );
+        if (ok) {
+          _pollElevenLabsSpeaking();
+          return true;
+        }
+        _isSpeaking = false;
+        return false;
       }
 
       return false; // Non-web not supported for ElevenLabs yet.
     } catch (e) {
       if (kDebugMode) debugPrint('TTS: ElevenLabs error: $e');
+      _isSpeaking = false;
       return false;
     }
   }

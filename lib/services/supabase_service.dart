@@ -41,6 +41,9 @@ class SupabaseService {
   /// Convenience accessor; only call when [_isInitialized] is `true`.
   SupabaseClient get _client => Supabase.instance.client;
 
+  /// Returns true for real Supabase UUIDs (contains dashes and length > 10).
+  bool _isRealUuid(String id) => id.contains('-') && id.length > 10;
+
   // ── Auth shortcuts ──────────────────────────────────────────────────
 
   String? get currentUserId {
@@ -188,7 +191,7 @@ class SupabaseService {
     final response = await _client
         .from('documents')
         .insert({
-          'case_id': caseId,
+          if (_isRealUuid(caseId)) 'case_id': caseId,
           'user_id': uid,
           'file_name': fileName,
           'storage_path': storagePath,
@@ -209,6 +212,21 @@ class SupabaseService {
         .from('documents')
         .createSignedUrl(storagePath, 300);
     return signedUrl;
+  }
+
+  /// Fetch all documents belonging to the current user (for the vault).
+  Future<List<Map<String, dynamic>>> getVaultDocuments() async {
+    if (isDemo) {
+      return DemoData.documents.map((d) => d.toJson()).toList();
+    }
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return [];
+    final response = await _client
+        .from('documents')
+        .select()
+        .eq('user_id', uid)
+        .order('created_at', ascending: false);
+    return List<Map<String, dynamic>>.from(response as List);
   }
 
   // ── Correspondence ────────────────────────────────────────────────────
@@ -267,12 +285,16 @@ class SupabaseService {
     if (isDemo) return DemoData.chatMessages;
     final uid = _client.auth.currentUser?.id;
     if (uid == null) return [];
-    final response = await _client
+    var query = _client
         .from('chat_messages')
         .select()
-        .eq('case_id', caseId)
-        .eq('user_id', uid)
-        .order('created_at', ascending: true);
+        .eq('user_id', uid);
+    if (_isRealUuid(caseId)) {
+      query = query.eq('case_id', caseId);
+    } else {
+      query = query.isFilter('case_id', null);
+    }
+    final response = await query.order('created_at', ascending: true);
     return List<Map<String, dynamic>>.from(response as List);
   }
 
@@ -285,7 +307,7 @@ class SupabaseService {
     final uid = _client.auth.currentUser?.id;
     if (uid == null) return;
     await _client.from('chat_messages').insert({
-      'case_id': caseId,
+      if (_isRealUuid(caseId)) 'case_id': caseId,
       'user_id': uid,
       'role': role,
       'content': content,

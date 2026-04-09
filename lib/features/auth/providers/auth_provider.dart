@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../../models/user.dart';
 import '../../../services/demo_data.dart';
@@ -75,6 +77,8 @@ class AuthController extends StateNotifier<AuthState> {
 
   final Ref _ref;
 
+  SupabaseService get _supabase => _ref.read(supabaseServiceProvider);
+
   // -- Initialization -------------------------------------------------------
 
   void _init() {
@@ -84,14 +88,36 @@ class AuthController extends StateNotifier<AuthState> {
         status: AuthStatus.authenticated,
         appUser: DemoData.user,
       );
-    } else {
+      return;
+    }
+
+    // Check if user is already logged in via Supabase
+    try {
+      final currentUser = Supabase.instance.client.auth.currentUser;
+      if (currentUser != null) {
+        state = AuthState(
+          status: AuthStatus.authenticated,
+          appUser: AppUser(
+            id: currentUser.id,
+            email: currentUser.email ?? '',
+            fullName: currentUser.userMetadata?['full_name'] as String? ?? '',
+            preferredLanguage:
+                currentUser.userMetadata?['preferred_language'] as String? ??
+                    'et',
+            createdAt: DateTime.tryParse(currentUser.createdAt) ?? DateTime.now(),
+          ),
+        );
+      } else {
+        state = const AuthState(status: AuthStatus.unauthenticated);
+      }
+    } catch (_) {
       state = const AuthState(status: AuthStatus.unauthenticated);
     }
   }
 
   // -- Public API -----------------------------------------------------------
 
-  /// Enter demo mode — bypasses all backend authentication.
+  /// Enter demo mode -- bypasses all backend authentication.
   void enterDemoMode() {
     _ref.read(isDemoModeProvider.notifier).state = true;
     state = AuthState(
@@ -103,11 +129,42 @@ class AuthController extends StateNotifier<AuthState> {
   /// Sign in with email and password.
   Future<void> login(String email, String password) async {
     state = state.copyWith(status: AuthStatus.loading, errorMessage: null);
-    // In demo mode or without backend, show error
-    state = const AuthState(
-      status: AuthStatus.error,
-      errorMessage: 'Backend not configured. Use Demo Mode instead.',
-    );
+    try {
+      final response = await _supabase.signIn(
+        email: email,
+        password: password,
+      );
+      final user = response.user;
+      if (user != null) {
+        state = AuthState(
+          status: AuthStatus.authenticated,
+          appUser: AppUser(
+            id: user.id,
+            email: user.email ?? email,
+            fullName: user.userMetadata?['full_name'] as String? ?? '',
+            preferredLanguage:
+                user.userMetadata?['preferred_language'] as String? ?? 'et',
+            createdAt: DateTime.tryParse(user.createdAt) ?? DateTime.now(),
+          ),
+        );
+      } else {
+        state = const AuthState(
+          status: AuthStatus.error,
+          errorMessage: 'Login failed. Please check your credentials.',
+        );
+      }
+    } on AuthException catch (e) {
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: e.message,
+      );
+    } catch (e) {
+      if (kDebugMode) debugPrint('Login error: $e');
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'Login failed: ${e.toString()}',
+      );
+    }
   }
 
   /// Register a new account.
@@ -118,23 +175,74 @@ class AuthController extends StateNotifier<AuthState> {
     required String language,
   }) async {
     state = state.copyWith(status: AuthStatus.loading, errorMessage: null);
-    state = const AuthState(
-      status: AuthStatus.error,
-      errorMessage: 'Backend not configured. Use Demo Mode instead.',
-    );
+    try {
+      final response = await _supabase.signUp(
+        email: email,
+        password: password,
+        data: {
+          'full_name': name,
+          'preferred_language': language,
+        },
+      );
+      final user = response.user;
+      if (user != null) {
+        state = AuthState(
+          status: AuthStatus.authenticated,
+          appUser: AppUser(
+            id: user.id,
+            email: user.email ?? email,
+            fullName: name,
+            preferredLanguage: language,
+            createdAt: DateTime.tryParse(user.createdAt) ?? DateTime.now(),
+          ),
+        );
+      } else {
+        state = const AuthState(
+          status: AuthStatus.error,
+          errorMessage:
+              'Registration successful. Please check your email to confirm.',
+        );
+      }
+    } on AuthException catch (e) {
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: e.message,
+      );
+    } catch (e) {
+      if (kDebugMode) debugPrint('Register error: $e');
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'Registration failed: ${e.toString()}',
+      );
+    }
   }
 
   /// Sign in with Google OAuth.
   Future<void> loginWithGoogle() async {
     state = state.copyWith(status: AuthStatus.loading, errorMessage: null);
-    state = const AuthState(
-      status: AuthStatus.error,
-      errorMessage: 'Backend not configured. Use Demo Mode instead.',
-    );
+    try {
+      await Supabase.instance.client.auth
+          .signInWithOAuth(OAuthProvider.google);
+      // OAuth redirects the browser; on return _init() picks up the session.
+    } on AuthException catch (e) {
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: e.message,
+      );
+    } catch (e) {
+      if (kDebugMode) debugPrint('Google login error: $e');
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'Google sign-in failed: ${e.toString()}',
+      );
+    }
   }
 
   /// Sign out the current user.
   Future<void> logout() async {
+    try {
+      await _supabase.signOut();
+    } catch (_) {}
     _ref.read(isDemoModeProvider.notifier).state = false;
     state = const AuthState(status: AuthStatus.unauthenticated);
   }
@@ -142,11 +250,24 @@ class AuthController extends StateNotifier<AuthState> {
   /// Send a password reset email.
   Future<bool> resetPassword(String email) async {
     state = state.copyWith(status: AuthStatus.loading, errorMessage: null);
-    state = const AuthState(
-      status: AuthStatus.error,
-      errorMessage: 'Backend not configured.',
-    );
-    return false;
+    try {
+      await _supabase.resetPassword(email);
+      state = const AuthState(status: AuthStatus.unauthenticated);
+      return true;
+    } on AuthException catch (e) {
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: e.message,
+      );
+      return false;
+    } catch (e) {
+      if (kDebugMode) debugPrint('Reset password error: $e');
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'Password reset failed: ${e.toString()}',
+      );
+      return false;
+    }
   }
 
   /// Clear any error and return to unauthenticated state.

@@ -1,18 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../services/supabase_service.dart';
 
-class DocumentVaultScreen extends StatefulWidget {
+// ---------------------------------------------------------------------------
+// Vault documents provider
+// ---------------------------------------------------------------------------
+
+final vaultDocumentsProvider =
+    FutureProvider<List<Map<String, dynamic>>>((ref) async {
+  final svc = ref.watch(supabaseServiceProvider);
+  return svc.getVaultDocuments();
+});
+
+// ---------------------------------------------------------------------------
+// Screen
+// ---------------------------------------------------------------------------
+
+class DocumentVaultScreen extends ConsumerStatefulWidget {
   const DocumentVaultScreen({super.key});
 
   @override
-  State<DocumentVaultScreen> createState() => _DocumentVaultScreenState();
+  ConsumerState<DocumentVaultScreen> createState() =>
+      _DocumentVaultScreenState();
 }
 
-class _DocumentVaultScreenState extends State<DocumentVaultScreen>
+class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
     with TickerProviderStateMixin {
   late final AnimationController _entranceController;
   late final AnimationController _lockGlowController;
@@ -71,6 +88,8 @@ class _DocumentVaultScreenState extends State<DocumentVaultScreen>
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final docsAsync = ref.watch(vaultDocumentsProvider);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -84,163 +103,272 @@ class _DocumentVaultScreenState extends State<DocumentVaultScreen>
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
-      body: Center(
-        child: FadeTransition(
-          opacity: _fadeIn,
-          child: SlideTransition(
-            position: _slideUp,
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              child: Container(
-                padding: const EdgeInsets.all(AppSpacing.xl),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(AppRadius.lg),
-                  border: Border.all(
-                    color: AppColors.accent.withValues(alpha: 0.12),
+      body: docsAsync.when(
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (e, _) => Center(child: Text('Error: $e')),
+        data: (docs) {
+          if (docs.isNotEmpty) {
+            return _buildDocumentList(context, l10n, docs);
+          }
+          return _buildEmptyState(context, l10n);
+        },
+      ),
+    );
+  }
+
+  // -- Document list --------------------------------------------------------
+
+  Widget _buildDocumentList(
+    BuildContext context,
+    AppLocalizations l10n,
+    List<Map<String, dynamic>> docs,
+  ) {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            itemCount: docs.length,
+            itemBuilder: (context, index) {
+              final doc = docs[index];
+              final fileName = doc['file_name'] as String? ?? 'Document';
+              final mimeType = doc['mime_type'] as String? ?? '';
+              final createdAt = doc['created_at'] as String?;
+              final dateStr = createdAt != null
+                  ? DateTime.tryParse(createdAt)
+                          ?.toLocal()
+                          .toString()
+                          .substring(0, 16) ??
+                      ''
+                  : '';
+
+              IconData icon;
+              if (mimeType.contains('pdf')) {
+                icon = Icons.picture_as_pdf;
+              } else if (mimeType.contains('image')) {
+                icon = Icons.image;
+              } else {
+                icon = Icons.insert_drive_file;
+              }
+
+              return Card(
+                color: AppColors.surface,
+                margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  side: BorderSide(
+                    color: AppColors.border,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.06),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                    BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.04),
-                      blurRadius: 40,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: AppSpacing.md),
+                child: ListTile(
+                  leading: Icon(icon, color: AppColors.accent),
+                  title: Text(
+                    fileName,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  subtitle: Text(
+                    dateStr,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                  trailing: const Icon(
+                    Icons.chevron_right,
+                    color: AppColors.textTertiary,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: _GlowButton(
+            onPressed: () async {
+              await context.push(AppRoutes.vaultAdd);
+              ref.invalidate(vaultDocumentsProvider);
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.add, size: 20),
+                const SizedBox(width: 8),
+                Text(l10n.addDocument),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-                    // Lock icon with glow
-                    AnimatedBuilder(
-                      animation: _lockGlow,
-                      builder: (context, child) {
-                        return Container(
-                          width: 88,
-                          height: 88,
-                          decoration: BoxDecoration(
-                            color: AppColors.accent.withValues(alpha: 0.08),
-                            shape: BoxShape.circle,
-                            border: Border.all(
+  // -- Empty state ----------------------------------------------------------
+
+  Widget _buildEmptyState(BuildContext context, AppLocalizations l10n) {
+    return Center(
+      child: FadeTransition(
+        opacity: _fadeIn,
+        child: SlideTransition(
+          position: _slideUp,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.xl),
+            child: Container(
+              padding: const EdgeInsets.all(AppSpacing.xl),
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                border: Border.all(
+                  color: AppColors.accent.withValues(alpha: 0.12),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.06),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
+                  ),
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.04),
+                    blurRadius: 40,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: AppSpacing.md),
+
+                  // Lock icon with glow
+                  AnimatedBuilder(
+                    animation: _lockGlow,
+                    builder: (context, child) {
+                      return Container(
+                        width: 88,
+                        height: 88,
+                        decoration: BoxDecoration(
+                          color: AppColors.accent.withValues(alpha: 0.08),
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.accent
+                                .withValues(alpha: _lockGlow.value),
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
                               color: AppColors.accent
-                                  .withValues(alpha: _lockGlow.value),
-                              width: 2,
+                                  .withValues(alpha: _lockGlow.value * 0.3),
+                              blurRadius: 20,
+                              spreadRadius: 2,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.accent
-                                    .withValues(alpha: _lockGlow.value * 0.3),
-                                blurRadius: 20,
-                                spreadRadius: 2,
-                              ),
-                            ],
-                          ),
-                          child: const Icon(
-                            Icons.lock_outlined,
-                            size: 38,
-                            color: AppColors.accent,
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.lock_outlined,
+                          size: 38,
+                          color: AppColors.accent,
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
 
-                    // Premium header with shadow
-                    Text(
-                      l10n.secureDocumentStorage,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
-                            letterSpacing: -0.3,
-                            shadows: [
-                              Shadow(
-                                color: AppColors.primary.withValues(alpha: 0.08),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-
-                    Text(
-                      l10n.secureDocumentStorageDesc,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: AppColors.textSecondary,
-                        height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-
-                    // Glow button with tap animation
-                    _GlowButton(
-                      onPressed: () => context.push(AppRoutes.vaultAdd),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.add, size: 20),
-                          const SizedBox(width: 8),
-                          Text(l10n.addDocument),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-
-                    // Encrypted badge with subtle pulse
-                    AnimatedBuilder(
-                      animation: _pulse,
-                      builder: (context, child) {
-                        return Transform.scale(
-                          scale: _pulse.value,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
+                  // Premium header with shadow
+                  Text(
+                    l10n.secureDocumentStorage,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                          letterSpacing: -0.3,
+                          shadows: [
+                            Shadow(
+                              color:
+                                  AppColors.primary.withValues(alpha: 0.08),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
                             ),
-                            decoration: BoxDecoration(
-                              color: AppColors.accent.withValues(alpha: 0.06),
-                              borderRadius:
-                                  BorderRadius.circular(AppRadius.full),
-                              border: Border.all(
+                          ],
+                        ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+
+                  Text(
+                    l10n.secureDocumentStorageDesc,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                      height: 1.5,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+
+                  // Glow button with tap animation
+                  _GlowButton(
+                    onPressed: () async {
+                      await context.push(AppRoutes.vaultAdd);
+                      ref.invalidate(vaultDocumentsProvider);
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.add, size: 20),
+                        const SizedBox(width: 8),
+                        Text(l10n.addDocument),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+
+                  // Encrypted badge with subtle pulse
+                  AnimatedBuilder(
+                    animation: _pulse,
+                    builder: (context, child) {
+                      return Transform.scale(
+                        scale: _pulse.value,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.accent.withValues(alpha: 0.06),
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.full),
+                            border: Border.all(
+                              color:
+                                  AppColors.accent.withValues(alpha: 0.15),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.verified_user_outlined,
+                                size: 14,
                                 color:
-                                    AppColors.accent.withValues(alpha: 0.15),
+                                    AppColors.accent.withValues(alpha: 0.7),
                               ),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.verified_user_outlined,
-                                  size: 14,
-                                  color:
-                                      AppColors.accent.withValues(alpha: 0.7),
+                              const SizedBox(width: 6),
+                              Text(
+                                l10n.secureDocumentStorageDesc,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: AppColors.textTertiary,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  l10n.secureDocumentStorageDesc,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.textTertiary,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
           ),

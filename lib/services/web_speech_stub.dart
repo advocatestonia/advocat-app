@@ -22,3 +22,10 @@ void webTtsPlayBlob(dynamic blob) {}
 void webTtsStopAudio() {}
 bool webTtsIsSpeaking() => false;
 void webTtsPlayBase64(String base64Audio) {}
+Future<bool> webTtsSpeakElevenLabs({
+  required String text,
+  required String voiceId,
+  required String langCode,
+  required String supabaseUrl,
+  required String anonKey,
+}) async => false;

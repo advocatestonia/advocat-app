@@ -1,18 +1,26 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../services/supabase_service.dart';
+import 'document_vault_screen.dart';
 
-class AddVaultDocumentScreen extends StatefulWidget {
+class AddVaultDocumentScreen extends ConsumerStatefulWidget {
   const AddVaultDocumentScreen({super.key});
 
   @override
-  State<AddVaultDocumentScreen> createState() => _AddVaultDocumentScreenState();
+  ConsumerState<AddVaultDocumentScreen> createState() =>
+      _AddVaultDocumentScreenState();
 }
 
-class _AddVaultDocumentScreenState extends State<AddVaultDocumentScreen>
+class _AddVaultDocumentScreenState
+    extends ConsumerState<AddVaultDocumentScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _entranceController;
+  bool _uploading = false;
 
   @override
   void initState() {
@@ -27,6 +35,49 @@ class _AddVaultDocumentScreenState extends State<AddVaultDocumentScreen>
   void dispose() {
     _entranceController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickAndUpload(ImageSource source) async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: source, imageQuality: 85);
+    if (picked == null) return;
+
+    setState(() => _uploading = true);
+    try {
+      final bytes = await picked.readAsBytes();
+      final fileName = picked.name;
+      final mimeType = fileName.toLowerCase().endsWith('.png')
+          ? 'image/png'
+          : 'image/jpeg';
+
+      final svc = ref.read(supabaseServiceProvider);
+      final caseId = 'vault-${DateTime.now().millisecondsSinceEpoch}';
+      await svc.uploadDocument(
+        caseId: caseId,
+        fileName: fileName,
+        fileBytes: bytes,
+        mimeType: mimeType,
+      );
+
+      // Invalidate vault documents so the list refreshes on pop.
+      ref.invalidate(vaultDocumentsProvider);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Document uploaded successfully')),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('Upload error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Upload failed: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _uploading = false);
+    }
   }
 
   @override
@@ -46,61 +97,64 @@ class _AddVaultDocumentScreenState extends State<AddVaultDocumentScreen>
         elevation: 0,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Premium header with subtle shadow
-              Text(
-                l10n.chooseHowToAdd,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                  letterSpacing: -0.3,
-                  shadows: [
-                    Shadow(
-                      color: AppColors.primary.withValues(alpha: 0.06),
-                      blurRadius: 6,
-                      offset: const Offset(0, 2),
+        child: _uploading
+            ? const Center(child: CircularProgressIndicator())
+            : Padding(
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    // Premium header with subtle shadow
+                    Text(
+                      l10n.chooseHowToAdd,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textPrimary,
+                        letterSpacing: -0.3,
+                        shadows: [
+                          Shadow(
+                            color:
+                                AppColors.primary.withValues(alpha: 0.06),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    _AnimatedOptionCard(
+                      index: 0,
+                      controller: _entranceController,
+                      icon: Icons.camera_alt_outlined,
+                      title: l10n.scanDocument,
+                      subtitle: l10n.scanDocumentDesc,
+                      color: AppColors.accent,
+                      onTap: () => _pickAndUpload(ImageSource.camera),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    _AnimatedOptionCard(
+                      index: 1,
+                      controller: _entranceController,
+                      icon: Icons.upload_file_outlined,
+                      title: l10n.uploadFile,
+                      subtitle: l10n.uploadFileDesc,
+                      color: AppColors.info,
+                      onTap: () => _pickAndUpload(ImageSource.gallery),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    _AnimatedOptionCard(
+                      index: 2,
+                      controller: _entranceController,
+                      icon: Icons.edit_document,
+                      title: l10n.createNote,
+                      subtitle: l10n.createNoteDesc,
+                      color: AppColors.warning,
+                      onTap: () => Navigator.pop(context),
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: AppSpacing.xl),
-              _AnimatedOptionCard(
-                index: 0,
-                controller: _entranceController,
-                icon: Icons.camera_alt_outlined,
-                title: l10n.scanDocument,
-                subtitle: l10n.scanDocumentDesc,
-                color: AppColors.accent,
-                onTap: () => Navigator.pop(context),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              _AnimatedOptionCard(
-                index: 1,
-                controller: _entranceController,
-                icon: Icons.upload_file_outlined,
-                title: l10n.uploadFile,
-                subtitle: l10n.uploadFileDesc,
-                color: AppColors.info,
-                onTap: () => Navigator.pop(context),
-              ),
-              const SizedBox(height: AppSpacing.md),
-              _AnimatedOptionCard(
-                index: 2,
-                controller: _entranceController,
-                icon: Icons.edit_document,
-                title: l10n.createNote,
-                subtitle: l10n.createNoteDesc,
-                color: AppColors.warning,
-                onTap: () => Navigator.pop(context),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
