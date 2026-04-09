@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/user.dart';
+import '../../../services/stripe_checkout_service.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../auth/providers/auth_provider.dart';
@@ -269,20 +270,29 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     WidgetRef ref,
     String planId,
   ) async {
+    // Free plan does not need Stripe checkout.
+    if (planId == 'free') return;
+
     ref.read(_isLoadingPlanProvider.notifier).state = planId;
+    final isAnnual = ref.read(_isAnnualProvider);
 
     try {
-      // TODO: Open Stripe checkout session or in-app payment sheet.
-      await Future<void>.delayed(const Duration(seconds: 2));
+      final stripeService = ref.read(stripeCheckoutServiceProvider);
+      await stripeService.startCheckout(
+        uiPlanId: planId,
+        isAnnual: isAnnual,
+      );
 
+      // The user has been redirected to Stripe Checkout in the browser.
+      // Show a brief info message — the actual subscription confirmation
+      // will happen via webhook when the user completes payment.
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text(
-                AppLocalizations.of(context)
-                        ?.successSubscribed(planId.toUpperCase()) ??
-                    'Successfully subscribed to ${planId.toUpperCase()}!'),
-            backgroundColor: AppColors.success,
+              'Redirecting to payment page...',
+            ),
+            backgroundColor: AppColors.accent,
           ),
         );
       }
@@ -307,7 +317,10 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.checkingPurchases)),
     );
-    // TODO: Call Stripe or RevenueCat restore
+    // Stripe subscriptions are managed server-side via webhooks.
+    // "Restore" checks the user's subscription status in Supabase.
+    // For now we show a placeholder — a real implementation would
+    // query the user's Stripe customer and sync the tier.
     await Future<void>.delayed(const Duration(seconds: 1));
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
