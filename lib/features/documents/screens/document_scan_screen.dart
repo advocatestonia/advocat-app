@@ -575,15 +575,15 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.xl),
-            // Capture photo button
+            // Upload from gallery button (primary on web)
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: _takePhoto,
-                icon: const Icon(Icons.camera_alt_rounded, size: 22),
-                label: const Text(
-                  'Capture Photo',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                onPressed: _pickFromGallery,
+                icon: const Icon(Icons.upload_file_rounded, size: 22),
+                label: Text(
+                  l10n.uploadFile,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.accent,
@@ -597,15 +597,15 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
               ),
             ),
             const SizedBox(height: AppSpacing.md),
-            // Gallery button
+            // Camera button (secondary on web)
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: _pickFromGallery,
-                icon: const Icon(Icons.photo_library_outlined, size: 22),
-                label: const Text(
-                  'Choose from Gallery',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                onPressed: _takePhoto,
+                icon: const Icon(Icons.camera_alt_rounded, size: 22),
+                label: Text(
+                  l10n.takePhotoInstead,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,

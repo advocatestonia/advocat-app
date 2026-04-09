@@ -156,7 +156,7 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
                 margin: const EdgeInsets.only(bottom: AppSpacing.sm),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(AppRadius.md),
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: AppColors.border,
                   ),
                 ),

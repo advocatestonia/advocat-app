@@ -34,4 +34,118 @@
     <priority>0.6</priority>
   </url>
 
+  <!-- Blog index pages -->
+  <url>
+    <loc>https://advocat.ee/blog/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/"/>
+  </url>
+
+  <!-- Blog articles: Domestic violence / Perevagivald -->
+  <url>
+    <loc>https://advocat.ee/blog/perevagivald-abi.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/perevagivald-abi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/domashnee-nasilie.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/domashnee-nasilie.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/perevagivald-abi.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/domashnee-nasilie.html"/>
+  </url>
+
+  <!-- Blog articles: Alimony / Elatis -->
+  <url>
+    <loc>https://advocat.ee/blog/elatis-eestis.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-eestis.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/alimenty-estoniya.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-eestis.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya.html"/>
+  </url>
+
+  <!-- Blog articles: Internet fraud / Internetipettus -->
+  <url>
+    <loc>https://advocat.ee/blog/internetipettus.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/internetipettus.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/internet-moshennichestvo.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/internet-moshennichestvo.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/internetipettus.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/internet-moshennichestvo.html"/>
+  </url>
+
+  <!-- Blog articles: Wrongful dismissal / Toooigus -->
+  <url>
+    <loc>https://advocat.ee/blog/toooigus-vallandamine.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/toooigus-vallandamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/nezakonnoe-uvolnenie.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/nezakonnoe-uvolnenie.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/toooigus-vallandamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/nezakonnoe-uvolnenie.html"/>
+  </url>
+
+  <!-- Blog articles: Cyberbullying / Kuberkiusamine -->
+  <url>
+    <loc>https://advocat.ee/blog/kuberkiusamine.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kuberkiusamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/kiberbulling.html"/>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/blog/ru/kiberbulling.html</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kuberkiusamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/kiberbulling.html"/>
+  </url>
+
 </urlset>

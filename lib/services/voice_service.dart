@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -82,13 +80,6 @@ class VoiceService {
 
   final SpeechToText _stt = SpeechToText();
   final FlutterTts _tts = FlutterTts();
-
-  /// Dio instance for ElevenLabs TTS proxy calls.
-  final Dio _dio = Dio(BaseOptions(
-    connectTimeout: const Duration(seconds: 10),
-    receiveTimeout: const Duration(seconds: 30),
-    responseType: ResponseType.bytes,
-  ));
 
   bool _sttInitialized = false;
   bool _ttsInitialized = false;
@@ -175,46 +166,6 @@ class VoiceService {
       if (kDebugMode) debugPrint('STT init failed: $e');
       return false;
     }
-  }
-
-  /// Try to lazily initialize STT (called from user gesture context on web).
-  Future<bool> _ensureSttInitialized() async {
-    if (_sttInitialized) return true;
-    if (_useNativeWebSpeech) return true;
-
-    // On web, try the plugin once more from user gesture context.
-    try {
-      _sttInitialized = await _stt.initialize(
-        onError: (error) {
-          if (kDebugMode) debugPrint('STT error: ${error.errorMsg}');
-          _isListening = false;
-        },
-        onStatus: (status) {
-          if (kDebugMode) debugPrint('STT status: $status');
-          if (status == 'notListening' || status == 'done') {
-            _isListening = false;
-          }
-        },
-      );
-      if (_sttInitialized) {
-        _webSttDeferred = false;
-        return true;
-      }
-    } catch (e) {
-      if (kDebugMode) debugPrint('STT lazy init plugin failed: $e');
-    }
-
-    // Last resort: try native JS.
-    if (kIsWeb && web_speech.webSpeechSupported()) {
-      _useNativeWebSpeech = true;
-      _webSttDeferred = false;
-      if (kDebugMode) {
-        debugPrint('STT: lazy fallback to native Web Speech API');
-      }
-      return true;
-    }
-
-    return false;
   }
 
   /// Initialize the text-to-speech engine with natural voice settings.
@@ -517,8 +468,8 @@ class VoiceService {
     // Browser TTS fallback — only for languages with reliable browser voices.
     // Estonian, Latvian, Lithuanian etc don't have good browser voices —
     // Chrome substitutes Finnish which sounds terrible.
-    const _browserTtsReliable = {'en', 'ru', 'de', 'fr', 'es', 'it', 'pl', 'tr'};
-    if (!_browserTtsReliable.contains(langCode)) {
+    const browserTtsReliable = {'en', 'ru', 'de', 'fr', 'es', 'it', 'pl', 'tr'};
+    if (!browserTtsReliable.contains(langCode)) {
       if (kDebugMode) {
         debugPrint('TTS: skipping browser TTS for $langCode (no reliable voice)');
       }
@@ -567,34 +518,6 @@ class VoiceService {
       if (kDebugMode) debugPrint('TTS: ElevenLabs error: $e');
       _isSpeaking = false;
       return false;
-    }
-  }
-
-  /// Play raw MP3 bytes on web via JS interop (speech.js advocatPlayBlob).
-  void _playAudioBytesOnWeb(List<int> bytes) {
-    if (!kIsWeb) return;
-    try {
-      // Use JS interop to create a Blob and play it.
-      // We pass the bytes as a base64 string and decode in JS.
-      _playBase64AudioOnWeb(base64Encode(bytes));
-    } catch (e) {
-      if (kDebugMode) debugPrint('TTS: web audio play failed: $e');
-      _isSpeaking = false;
-    }
-  }
-
-  /// Play base64-encoded MP3 audio on web via inline JS.
-  void _playBase64AudioOnWeb(String base64Audio) {
-    if (!kIsWeb) return;
-    try {
-      // Use dart:js_interop to call a helper that decodes and plays.
-      web_speech.webTtsPlayBase64(base64Audio);
-      _isSpeaking = true;
-      // Poll for completion.
-      _pollElevenLabsSpeaking();
-    } catch (e) {
-      if (kDebugMode) debugPrint('TTS: base64 play failed: $e');
-      _isSpeaking = false;
     }
   }
 

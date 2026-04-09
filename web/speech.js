@@ -142,24 +142,29 @@ window._advocatTtsSpeaking = false;
 /**
  * Play an audio blob (MP3) through an HTML5 Audio element.
  * Sets window._advocatTtsSpeaking while playing.
+ * Volume is always set to 1.0 for consistent output.
  */
 function advocatPlayBlob(blob) {
   advocatStopAudio();
   var url = URL.createObjectURL(blob);
   var audio = new Audio(url);
+  audio.volume = 1.0;
   window._advocatCurrentAudio = audio;
   window._advocatTtsSpeaking = true;
   audio.onended = function() {
+    console.log('[Advocat TTS] Audio playback ended');
     URL.revokeObjectURL(url);
     window._advocatCurrentAudio = null;
     window._advocatTtsSpeaking = false;
   };
-  audio.onerror = function() {
+  audio.onerror = function(e) {
+    console.error('[Advocat TTS] Audio playback error:', e.type || e);
     URL.revokeObjectURL(url);
     window._advocatCurrentAudio = null;
     window._advocatTtsSpeaking = false;
   };
-  audio.play().catch(function() {
+  audio.play().catch(function(err) {
+    console.error('[Advocat TTS] Audio play() rejected:', err.message || err);
     window._advocatCurrentAudio = null;
     window._advocatTtsSpeaking = false;
   });
@@ -170,7 +175,13 @@ function advocatPlayBlob(blob) {
  */
 function advocatStopAudio() {
   if (window._advocatCurrentAudio) {
-    try { window._advocatCurrentAudio.pause(); } catch(e) {}
+    try {
+      window._advocatCurrentAudio.pause();
+      window._advocatCurrentAudio.currentTime = 0;
+      console.log('[Advocat TTS] Audio stopped');
+    } catch(e) {
+      console.warn('[Advocat TTS] Error stopping audio:', e);
+    }
     window._advocatCurrentAudio = null;
   }
   window._advocatTtsSpeaking = false;
@@ -198,7 +209,135 @@ function advocatPlayBase64Audio(base64Str) {
     var blob = new Blob([bytes], { type: 'audio/mpeg' });
     advocatPlayBlob(blob);
   } catch (e) {
-    console.error('advocatPlayBase64Audio error:', e);
+    console.error('[Advocat TTS] advocatPlayBase64Audio error:', e);
     window._advocatTtsSpeaking = false;
   }
 }
+
+// ---------------------------------------------------------------------------
+// ElevenLabs TTS: Full fetch + play flow in JS
+// ---------------------------------------------------------------------------
+
+/**
+ * Full ElevenLabs TTS flow: fetch audio from Supabase tts-proxy and play it.
+ * Called from Dart via js_interop. Accepts a JSON string with parameters:
+ *   { text, voiceId, langCode, supabaseUrl, anonKey }
+ *
+ * Returns a Promise<boolean> — true if audio started playing successfully.
+ */
+function advocatSpeakElevenLabsJson(jsonStr) {
+  return new Promise(function(resolve) {
+    try {
+      var params = JSON.parse(jsonStr);
+      var text = params.text;
+      var voiceId = params.voiceId;
+      var langCode = params.langCode;
+      var supabaseUrl = params.supabaseUrl;
+      var anonKey = params.anonKey;
+
+      if (!text || !voiceId || !supabaseUrl || !anonKey) {
+        console.error('[Advocat TTS] Missing required parameters:', Object.keys(params).join(', '));
+        resolve(false);
+        return;
+      }
+
+      var proxyUrl = supabaseUrl + '/functions/v1/tts-proxy';
+      console.log('[Advocat TTS] Fetching from:', proxyUrl,
+        'voice:', voiceId, 'lang:', langCode, 'textLen:', text.length);
+
+      fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + anonKey,
+          'apikey': anonKey
+        },
+        body: JSON.stringify({
+          text: text,
+          voice_id: voiceId,
+          language_code: langCode
+        })
+      })
+      .then(function(response) {
+        if (!response.ok) {
+          return response.text().then(function(errBody) {
+            console.error('[Advocat TTS] Proxy returned', response.status, ':', errBody);
+            throw new Error('TTS proxy error: ' + response.status);
+          });
+        }
+        return response.blob();
+      })
+      .then(function(blob) {
+        if (!blob || blob.size === 0) {
+          console.error('[Advocat TTS] Empty audio blob received');
+          resolve(false);
+          return;
+        }
+        console.log('[Advocat TTS] Received audio blob, size:', blob.size, 'bytes');
+        advocatPlayBlob(blob);
+        resolve(true);
+      })
+      .catch(function(err) {
+        console.error('[Advocat TTS] Fetch/play error:', err.message || err);
+        window._advocatTtsSpeaking = false;
+        resolve(false);
+      });
+    } catch (e) {
+      console.error('[Advocat TTS] JSON parse or setup error:', e);
+      window._advocatTtsSpeaking = false;
+      resolve(false);
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Audio Unlock: ensure AudioContext is unlocked on first user interaction
+// ---------------------------------------------------------------------------
+
+(function() {
+  var _advocatAudioUnlocked = false;
+
+  function _advocatUnlockAudio() {
+    if (_advocatAudioUnlocked) return;
+    _advocatAudioUnlocked = true;
+
+    // Create a silent AudioContext and resume it (required by Chrome/Safari).
+    try {
+      var AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        var ctx = new AudioCtx();
+        // Play a silent buffer to unlock.
+        var buffer = ctx.createBuffer(1, 1, 22050);
+        var source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.start(0);
+        if (ctx.state === 'suspended') {
+          ctx.resume();
+        }
+        console.log('[Advocat TTS] Audio context unlocked');
+      }
+    } catch (e) {
+      console.warn('[Advocat TTS] Audio unlock failed:', e);
+    }
+
+    // Also try to play+pause a silent HTML5 Audio element.
+    try {
+      var silentAudio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=');
+      silentAudio.volume = 0;
+      silentAudio.play().then(function() {
+        silentAudio.pause();
+      }).catch(function() {});
+    } catch (e) {}
+
+    // Remove listeners after unlock.
+    ['click', 'touchstart', 'touchend', 'keydown'].forEach(function(evt) {
+      document.removeEventListener(evt, _advocatUnlockAudio, { capture: true });
+    });
+  }
+
+  // Register unlock on all user interaction events.
+  ['click', 'touchstart', 'touchend', 'keydown'].forEach(function(evt) {
+    document.addEventListener(evt, _advocatUnlockAudio, { capture: true, passive: true });
+  });
+})();
