@@ -1804,174 +1804,171 @@ class AppLocalizationsEt extends AppLocalizations {
   String get domesticViolence => 'Koduvägivald';
 
   @override
-  String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+  String get domesticViolenceDesc => 'Ohvri õigused, hädaabi, lähenemiskeeld';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'Teil on õigus helistada 112 igal hädajuhul — politsei, kiirabi, tuletõrje';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'Ohvrina on teil õigus kaitsele, toele ja teabele oma asja kohta';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'Saate taotleda lähenemiskeeldu, et hoida vägivallatseja eemal';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'Teil on õigus tõlgile kõigi õigusmenetluste ajal';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'Teil on õigus viivitamatule arstiabile ja vigastuste dokumenteerimisele';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'Teil on õigus varjupaigale — võtke ühendust varjupaiga või sotsiaalteenustega';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'Kui keegi on otseses ohus, helistage kohe 112';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'Dokumenteerige kõik vigastused — fotod, arstitõendid, kirjalikud märkmed';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'Helistage 112, kui olete otseses ohus';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'Minge turvalisse kohta — varjupaik, sõber, avalik koht';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'Dokumenteerige vigastused: tehke fotod, hankige arstitõendid';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'Esitage politseile avaldus — saate seda teha ka hiljem';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'Võtke ühendust varjupaiga või kriisitelefoniga';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'Taotlege lähenemiskeeldu politsei või kohtu kaudu';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'Eestis saab lähenemiskeeldu taotleda ka ilma kriminaalasjata. See keelab isikul teiega ühendust võtta või teile läheneda.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'EL-i ohvrite direktiivi 2012/29/EL kohaselt on teil õigus lugupidavale kohtlemisele, teabe saamisele arusaadavas keeles ja ohvriabiteenustele — olenemata teie elamisloast.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'Politseile avalduse esitamine — kindlat tähtaega pole, kuid mida varem, seda parem tõendite jaoks';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'Lähenemiskeeld — saab taotleda igal ajal';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'Hädaabinumber';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'Naiste tugikeskus';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'Ohvriabi telefon';
 
   @override
-  String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+  String get contactNollaLinja => 'Ohvriabi kriisitelefon';
 
   @override
   String get consumerProtection => 'Tarbijakaitse';
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'Pettus, defektsed tooted, tagastused, petlikud müüjad';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'Teil on 14 päeva veebiostu tühistamiseks ilma põhjuseta (EL-i taganemisõigus)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'Kui toode on defektne, on teil õigus parandusele, asendusele või tagasimaksele';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'Müüjad peavad kuvama selged hinnad koos kõigi tasudega — varjatud kulud on ebaseaduslikud';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'Saate esitada tasuta kaebuse tarbijavaidluste komisjonile';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'Teid kaitseb seadus ebaausate kaubandustavade ja pettuse eest';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'Hoidke alles kõik kviitungid, lepingud ja suhtlus müüjatega';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'Teatage defektidest müüjale mõistliku aja jooksul pärast avastamist';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'Hoidke alles kviitungid, ekraanipildid, e-kirjad ja kõik ostutõendid';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'Võtke esmalt ühendust müüjaga — selgitage probleemi kirjalikult';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'Esitage kaebus tarbijavaidluste komisjonile';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'Võtke ühendust tarbijakaitseametiga tasuta abi saamiseks';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'Teatage pettusest politseile ja tarbijakaitseametile';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'EL-i tarbijaõiguste direktiivi 2011/83/EL kohaselt on teil 14 päeva igast veebi- või kaugostust taganemiseks — küsimusi ei esitata. Müüja peab teile raha tagastama 14 päeva jooksul.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'Eestis vastutab müüja toote defektide eest mõistliku aja jooksul (sageli 2+ aastat). See on eraldiseisev mis tahes tootja garantiist.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'Veebiostu taganemistähtaeg — 14 päeva alates kättesaamisest';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'Defektist müüjale teatamine — 2 kuu jooksul pärast avastamist (soovitatav)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'Tarbijakaitseamet';
 
   @override
-  String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+  String get contactConsumerOmbudsman => 'Tarbijakaitse ombudsman';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect => 'Tarbijavaidluste komisjon';
 
   @override
   String get caseTypeStepLabel => 'Juhtumi tüüp';

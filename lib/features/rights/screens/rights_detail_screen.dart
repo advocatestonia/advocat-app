@@ -84,6 +84,1317 @@ class _ScenarioData {
 }
 
 // ---------------------------------------------------------------------------
+// Country-specific legal reference data
+// ---------------------------------------------------------------------------
+
+class _CountryLegalData {
+  const _CountryLegalData({
+    required this.emergencyAct,
+    required this.emergencyActUrl,
+    required this.restrainingOrderAct,
+    required this.restrainingOrderActUrl,
+    required this.languageAct,
+    required this.languageActUrl,
+    required this.criminalCodeAssault,
+    required this.criminalCodeAssaultUrl,
+    required this.shelterAct,
+    required this.shelterActUrl,
+    required this.policeAct,
+    required this.policeActUrl,
+    required this.constitution,
+    required this.constitutionUrl,
+    required this.criminalProcedureAct,
+    required this.criminalProcedureActUrl,
+    required this.aliensAct,
+    required this.aliensActUrl,
+    required this.aliensActLegalRep,
+    required this.aliensActStay,
+    required this.aliensActDetention,
+    required this.aliensActChallengeDetention,
+    required this.employmentAct,
+    required this.employmentActUrl,
+    required this.workingTimeAct,
+    required this.workingTimeActUrl,
+    required this.annualHolidaysAct,
+    required this.annualHolidaysActUrl,
+    required this.sickLeaveRef,
+    required this.occupationalSafetyAct,
+    required this.occupationalSafetyActUrl,
+    required this.residentialLeaseAct,
+    required this.residentialLeaseActUrl,
+    required this.residentialLeaseDeposit,
+    required this.residentialLeaseNotice,
+    required this.residentialLeaseHabitable,
+    required this.residentialLeaseEviction,
+    required this.nonDiscriminationAct,
+    required this.nonDiscriminationActUrl,
+    required this.criminalCodeDiscrimination,
+    required this.criminalCodeDiscriminationUrl,
+    required this.consumerProtectionAct,
+    required this.consumerProtectionActUrl,
+    required this.consumerProtectionPricing,
+    required this.consumerProtectionUnfair,
+    required this.consumerDisputesAct,
+    required this.consumerDisputesActUrl,
+    required this.domesticContactsFn,
+    required this.policeContactsFn,
+    required this.deportationContactsFn,
+    required this.workplaceContactsFn,
+    required this.tenantContactsFn,
+    required this.detentionContactsFn,
+    required this.discriminationContactsFn,
+    required this.consumerContactsFn,
+  });
+
+  final String emergencyAct;
+  final String emergencyActUrl;
+  final String restrainingOrderAct;
+  final String restrainingOrderActUrl;
+  final String languageAct;
+  final String languageActUrl;
+  final String criminalCodeAssault;
+  final String criminalCodeAssaultUrl;
+  final String shelterAct;
+  final String shelterActUrl;
+  final String policeAct;
+  final String policeActUrl;
+  final String constitution;
+  final String constitutionUrl;
+  final String criminalProcedureAct;
+  final String criminalProcedureActUrl;
+  final String aliensAct;
+  final String aliensActUrl;
+  final String aliensActLegalRep;
+  final String aliensActStay;
+  final String aliensActDetention;
+  final String aliensActChallengeDetention;
+  final String employmentAct;
+  final String employmentActUrl;
+  final String workingTimeAct;
+  final String workingTimeActUrl;
+  final String annualHolidaysAct;
+  final String annualHolidaysActUrl;
+  final String sickLeaveRef;
+  final String occupationalSafetyAct;
+  final String occupationalSafetyActUrl;
+  final String residentialLeaseAct;
+  final String residentialLeaseActUrl;
+  final String residentialLeaseDeposit;
+  final String residentialLeaseNotice;
+  final String residentialLeaseHabitable;
+  final String residentialLeaseEviction;
+  final String nonDiscriminationAct;
+  final String nonDiscriminationActUrl;
+  final String criminalCodeDiscrimination;
+  final String criminalCodeDiscriminationUrl;
+  final String consumerProtectionAct;
+  final String consumerProtectionActUrl;
+  final String consumerProtectionPricing;
+  final String consumerProtectionUnfair;
+  final String consumerDisputesAct;
+  final String consumerDisputesActUrl;
+
+  final List<_HelpContact> Function(AppLocalizations) domesticContactsFn;
+  final List<_HelpContact> Function(AppLocalizations) policeContactsFn;
+  final List<_HelpContact> Function(AppLocalizations) deportationContactsFn;
+  final List<_HelpContact> Function(AppLocalizations) workplaceContactsFn;
+  final List<_HelpContact> Function(AppLocalizations) tenantContactsFn;
+  final List<_HelpContact> Function(AppLocalizations) detentionContactsFn;
+  final List<_HelpContact> Function(AppLocalizations) discriminationContactsFn;
+  final List<_HelpContact> Function(AppLocalizations) consumerContactsFn;
+
+  List<_HelpContact> domesticViolenceContacts(AppLocalizations l10n) =>
+      domesticContactsFn(l10n);
+  List<_HelpContact> policeStopContacts(AppLocalizations l10n) =>
+      policeContactsFn(l10n);
+  List<_HelpContact> deportationContacts(AppLocalizations l10n) =>
+      deportationContactsFn(l10n);
+  List<_HelpContact> workplaceContacts(AppLocalizations l10n) =>
+      workplaceContactsFn(l10n);
+  List<_HelpContact> tenantContacts(AppLocalizations l10n) =>
+      tenantContactsFn(l10n);
+  List<_HelpContact> detentionContacts(AppLocalizations l10n) =>
+      detentionContactsFn(l10n);
+  List<_HelpContact> discriminationContacts(AppLocalizations l10n) =>
+      discriminationContactsFn(l10n);
+  List<_HelpContact> consumerContacts(AppLocalizations l10n) =>
+      consumerContactsFn(l10n);
+
+  // ── Estonia ──────────────────────────────────────────────────────────
+  factory _CountryLegalData.estonia() => _CountryLegalData(
+        emergencyAct: 'Hädaolukorra seadus',
+        emergencyActUrl: 'https://www.riigiteataja.ee/akt/117032011008',
+        restrainingOrderAct: 'Karistusseadustik § 1201 (Lähenemiskeeld)',
+        restrainingOrderActUrl:
+            'https://www.riigiteataja.ee/akt/184411',
+        languageAct: 'Keeleseadus',
+        languageActUrl: 'https://www.riigiteataja.ee/akt/118032011001',
+        criminalCodeAssault: 'Karistusseadustik § 121 (Kehaline väärkohtlemine)',
+        criminalCodeAssaultUrl:
+            'https://www.riigiteataja.ee/akt/184411',
+        shelterAct: 'Ohvriabi seadus',
+        shelterActUrl:
+            'https://www.riigiteataja.ee/akt/OhsS',
+        policeAct: 'Korrakaitseseadus § 30',
+        policeActUrl:
+            'https://www.riigiteataja.ee/akt/KorS',
+        constitution: 'Eesti Vabariigi põhiseadus § 21',
+        constitutionUrl:
+            'https://www.riigiteataja.ee/akt/PS',
+        criminalProcedureAct: 'Kriminaalmenetluse seadustik 2. peatükk',
+        criminalProcedureActUrl:
+            'https://www.riigiteataja.ee/akt/KrMS',
+        aliensAct: 'Välismaalaste seadus § 281',
+        aliensActUrl:
+            'https://www.riigiteataja.ee/akt/VMS',
+        aliensActLegalRep: 'Välismaalaste seadus § 10',
+        aliensActStay: 'Välismaalaste seadus § 283',
+        aliensActDetention: 'Välismaalaste seadus § 23',
+        aliensActChallengeDetention: 'Välismaalaste seadus § 24',
+        employmentAct: 'Töölepingu seadus',
+        employmentActUrl:
+            'https://www.riigiteataja.ee/akt/TLS',
+        workingTimeAct: 'Töölepingu seadus § 43 (Tööaeg)',
+        workingTimeActUrl:
+            'https://www.riigiteataja.ee/akt/TLS',
+        annualHolidaysAct: 'Töölepingu seadus § 54 (Puhkus)',
+        annualHolidaysActUrl:
+            'https://www.riigiteataja.ee/akt/TLS',
+        sickLeaveRef: 'Töölepingu seadus § 62 (Haigushüvitis)',
+        occupationalSafetyAct: 'Töötervishoiu ja tööohutuse seadus',
+        occupationalSafetyActUrl:
+            'https://www.riigiteataja.ee/akt/TTOS',
+        residentialLeaseAct:
+            'Võlaõigusseadus 15. peatükk (Üürileping)',
+        residentialLeaseActUrl:
+            'https://www.riigiteataja.ee/akt/VOS',
+        residentialLeaseDeposit: 'Võlaõigusseadus § 308 (Tagatisraha)',
+        residentialLeaseNotice: 'Võlaõigusseadus § 312 (Ülesütlemine)',
+        residentialLeaseHabitable:
+            'Võlaõigusseadus § 276 (Lepingule vastavus)',
+        residentialLeaseEviction:
+            'Võlaõigusseadus §§ 312-319 (Ülesütlemise kaitse)',
+        nonDiscriminationAct:
+            'Võrdse kohtlemise seadus § 19',
+        nonDiscriminationActUrl:
+            'https://www.riigiteataja.ee/akt/VoKoS',
+        criminalCodeDiscrimination:
+            'Karistusseadustik § 152 (Vaenu õhutamine)',
+        criminalCodeDiscriminationUrl:
+            'https://www.riigiteataja.ee/akt/184411',
+        consumerProtectionAct:
+            'Võlaõigusseadus 5. peatükk (Tarbijaleping)',
+        consumerProtectionActUrl:
+            'https://www.riigiteataja.ee/akt/VOS',
+        consumerProtectionPricing:
+            'Tarbijakaitseseadus § 4 (Hinnateave)',
+        consumerProtectionUnfair:
+            'Tarbijakaitseseadus § 12 (Ebaausad kaubandustavad)',
+        consumerDisputesAct:
+            'Tarbijakaitseseadus § 36 (Tarbijavaidluste komisjon)',
+        consumerDisputesActUrl:
+            'https://www.riigiteataja.ee/akt/TKS',
+        domesticContactsFn: (l10n) => [
+          _HelpContact(name: l10n.contactEmergency, phone: '112'),
+          const _HelpContact(
+            name: 'Ohvriabi kriisitelefon',
+            phone: '116 006',
+            url: 'https://www.sotsiaalkindlustusamet.ee/ohvriabi',
+          ),
+          const _HelpContact(
+            name: 'Naiste tugikeskus',
+            phone: '1492',
+            url: 'https://naistetugi.ee',
+          ),
+          const _HelpContact(
+            name: 'Lasteabi telefon',
+            phone: '116 111',
+          ),
+        ],
+        policeContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Riigi Õigusabi',
+            phone: '631 4222',
+            url: 'https://www.rik.ee/oigusabi',
+          ),
+          const _HelpContact(
+            name: 'Õiguskantsler',
+            phone: '693 8400',
+            url: 'https://www.oiguskantsler.ee',
+          ),
+        ],
+        deportationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Eesti Pagulasabi',
+            email: 'info@pagulasabi.ee',
+            url: 'https://www.pagulasabi.ee',
+          ),
+          const _HelpContact(
+            name: 'Riigi Õigusabi',
+            phone: '631 4222',
+            url: 'https://www.rik.ee/oigusabi',
+          ),
+          const _HelpContact(
+            name: 'Halduskohus',
+            phone: '628 2740',
+            url: 'https://www.kohus.ee',
+          ),
+        ],
+        workplaceContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Tööinspektsioon',
+            phone: '640 6000',
+            url: 'https://www.ti.ee',
+          ),
+          const _HelpContact(
+            name: 'Eesti Ametiühingute Keskliit (EAKL)',
+            phone: '641 2886',
+            url: 'https://www.eakl.ee',
+          ),
+        ],
+        tenantContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Tarbijakaitse ja Tehnilise Järelevalve Amet',
+            phone: '667 2000',
+            url: 'https://www.ttja.ee',
+          ),
+          const _HelpContact(
+            name: 'Tarbijavaidluste komisjon',
+            phone: '667 2000',
+            url: 'https://komisjon.ee',
+          ),
+        ],
+        detentionContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Eesti Pagulasabi',
+            email: 'info@pagulasabi.ee',
+            url: 'https://www.pagulasabi.ee',
+          ),
+          const _HelpContact(
+            name: 'Õiguskantsler',
+            phone: '693 8400',
+            url: 'https://www.oiguskantsler.ee',
+          ),
+        ],
+        discriminationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Soolise võrdõiguslikkuse ja võrdse kohtlemise volinik',
+            phone: '626 9059',
+            url: 'https://volinik.ee',
+          ),
+          const _HelpContact(
+            name: 'Ohvriabi',
+            phone: '116 006',
+            url: 'https://www.sotsiaalkindlustusamet.ee/ohvriabi',
+          ),
+        ],
+        consumerContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Tarbijakaitse ja Tehnilise Järelevalve Amet (TTJA)',
+            phone: '667 2000',
+            url: 'https://www.ttja.ee',
+          ),
+          const _HelpContact(
+            name: 'Tarbijavaidluste komisjon',
+            phone: '667 2000',
+            url: 'https://komisjon.ee',
+          ),
+        ],
+      );
+
+  // ── Finland ──────────────────────────────────────────────────────────
+  factory _CountryLegalData.finland() => _CountryLegalData(
+        emergencyAct: 'Hätäkeskuslaki (692/2010)',
+        emergencyActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2010/20100692',
+        restrainingOrderAct: 'Laki lähestymiskiellosta (898/1998)',
+        restrainingOrderActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/1998/19980898',
+        languageAct: 'Kielilaki (423/2003)',
+        languageActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2003/20030423',
+        criminalCodeAssault: 'Rikoslaki (39/1889) 21 luku — Pahoinpitely § 5',
+        criminalCodeAssaultUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/1889/18890039001',
+        shelterAct: 'Laki valtion varoista maksettavasta korvauksesta turvakotipalvelun tuottajalle (1354/2014)',
+        shelterActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2014/20141354',
+        policeAct: 'Poliisilaki (872/2011) 2 §',
+        policeActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2011/20110872',
+        constitution: 'Suomen perustuslaki (731/1999) 21 §',
+        constitutionUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/1999/19990731',
+        criminalProcedureAct: 'Laki oikeudenkäynnistä rikosasioissa, 2 luku',
+        criminalProcedureActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/1997/19970689',
+        aliensAct: 'Ulkomaalaislaki (301/2004) 190 §',
+        aliensActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2004/20040301',
+        aliensActLegalRep: 'Ulkomaalaislaki 9 §',
+        aliensActStay: 'Ulkomaalaislaki 200 §',
+        aliensActDetention: 'Ulkomaalaislaki 123 §',
+        aliensActChallengeDetention: 'Ulkomaalaislaki 127 §',
+        employmentAct: 'Työsopimuslaki (55/2001)',
+        employmentActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2001/20010055',
+        workingTimeAct: 'Työaikalaki (872/2019)',
+        workingTimeActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2019/20190872',
+        annualHolidaysAct: 'Vuosilomalaki (162/2005)',
+        annualHolidaysActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2005/20050162',
+        sickLeaveRef: 'Työsopimuslaki 2 luku, 11 §',
+        occupationalSafetyAct:
+            'Työturvallisuuslaki (738/2002)',
+        occupationalSafetyActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2002/20020738',
+        residentialLeaseAct:
+            'Laki asuinhuoneiston vuokrauksesta (481/1995) 1 luku',
+        residentialLeaseActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/1995/19950481',
+        residentialLeaseDeposit:
+            'Laki asuinhuoneiston vuokrauksesta 8 §',
+        residentialLeaseNotice:
+            'Laki asuinhuoneiston vuokrauksesta 52 §',
+        residentialLeaseHabitable:
+            'Laki asuinhuoneiston vuokrauksesta 20 §',
+        residentialLeaseEviction:
+            'Laki asuinhuoneiston vuokrauksesta 51-55 §',
+        nonDiscriminationAct:
+            'Yhdenvertaisuuslaki (1325/2014) 19 §',
+        nonDiscriminationActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2014/20141325',
+        criminalCodeDiscrimination: 'Rikoslaki 11 luku',
+        criminalCodeDiscriminationUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/1889/18890039001',
+        consumerProtectionAct:
+            'Kuluttajansuojalaki (38/1978) 5 luku',
+        consumerProtectionActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/1978/19780038',
+        consumerProtectionPricing:
+            'Kuluttajansuojalaki 2 luku',
+        consumerProtectionUnfair:
+            'Kuluttajansuojalaki 2 luku — Sopimaton menettely',
+        consumerDisputesAct:
+            'Laki kuluttajariitalautakunnasta (8/2007)',
+        consumerDisputesActUrl:
+            'https://www.finlex.fi/fi/laki/ajantasa/2007/20070008',
+        domesticContactsFn: (l10n) => [
+          _HelpContact(name: l10n.contactEmergency, phone: '112'),
+          _HelpContact(
+            name: l10n.contactNollaLinja,
+            phone: '080 005 005',
+            url: 'https://nollalinja.fi',
+          ),
+          _HelpContact(
+            name: l10n.contactShelter,
+            phone: '0800 161 323',
+            url: 'https://turvakoti.fi',
+          ),
+          _HelpContact(
+            name: l10n.contactCrisisHelpline,
+            phone: '09 2525 0111',
+          ),
+          _HelpContact(
+            name: l10n.contactVictimSupportRIKU,
+            phone: '116 006',
+            url: 'https://www.riku.fi',
+          ),
+        ],
+        policeContactsFn: (l10n) => [
+          _HelpContact(
+            name: l10n.contactFinnishLegalAid,
+            phone: '0295 390 390',
+            url: 'https://oikeus.fi/oikeusapu/fi/',
+          ),
+          _HelpContact(
+            name: l10n.contactNonDiscriminationOmbudsman,
+            phone: '0295 666 817',
+            email: 'yvv@oikeus.fi',
+          ),
+        ],
+        deportationContactsFn: (l10n) => [
+          _HelpContact(
+            name: l10n.contactRefugeeAdviceCentre,
+            phone: '09 2313 9300',
+            email: 'info@pakolaisneuvonta.fi',
+          ),
+          _HelpContact(
+            name: l10n.contactAdminCourtHelsinki,
+            phone: '029 564 2000',
+            url: 'https://oikeus.fi/hallintooikeudet/fi/',
+          ),
+          _HelpContact(
+            name: l10n.contactFinnishLegalAid,
+            phone: '0295 390 390',
+          ),
+        ],
+        workplaceContactsFn: (l10n) => [
+          _HelpContact(
+            name: l10n.contactOccupationalSafety,
+            phone: '0295 016 620',
+            url: 'https://www.tyosuojelu.fi/fi',
+          ),
+          _HelpContact(
+            name: l10n.contactTradeUnionSAK,
+            phone: '020 774 0100',
+          ),
+        ],
+        tenantContactsFn: (l10n) => [
+          _HelpContact(
+            name: l10n.contactTenantsAssociation,
+            phone: '09 4767 0100',
+            url: 'https://vuokralaiset.fi',
+          ),
+          _HelpContact(
+            name: l10n.contactConsumerDisputesBoard,
+            phone: '029 566 5200',
+          ),
+        ],
+        detentionContactsFn: (l10n) => [
+          _HelpContact(
+            name: l10n.contactRefugeeAdviceCentre,
+            phone: '09 2313 9300',
+            email: 'info@pakolaisneuvonta.fi',
+          ),
+          _HelpContact(
+            name: l10n.contactParliamentaryOmbudsman,
+            phone: '09 4321',
+            url: 'https://www.oikeusasiamies.fi/fi',
+          ),
+        ],
+        discriminationContactsFn: (l10n) => [
+          _HelpContact(
+            name: l10n.contactNonDiscriminationOmbudsman,
+            phone: '0295 666 817',
+            email: 'yvv@oikeus.fi',
+          ),
+          _HelpContact(
+            name: l10n.contactVictimSupportRIKU,
+            phone: '116 006',
+            url: 'https://www.riku.fi',
+          ),
+        ],
+        consumerContactsFn: (l10n) => [
+          _HelpContact(
+            name: l10n.contactConsumerAdvisory,
+            phone: '029 505 3050',
+            url: 'https://www.kkv.fi/kuluttajaneuvonta/',
+          ),
+          const _HelpContact(
+            name: 'Kuluttaja-asiamies',
+            url: 'https://www.kkv.fi/kuluttaja-asiamies/',
+          ),
+          _HelpContact(
+            name: l10n.contactConsumerDisputesBoardDirect,
+            phone: '029 566 5200',
+            url: 'https://www.kuluttajariita.fi/fi/',
+          ),
+        ],
+      );
+
+  // ── Germany ──────────────────────────────────────────────────────────
+  factory _CountryLegalData.germany() => _CountryLegalData(
+        emergencyAct: 'Notrufverordnung',
+        emergencyActUrl:
+            'https://www.gesetze-im-internet.de/notrufv/',
+        restrainingOrderAct: 'Gewaltschutzgesetz (GewSchG)',
+        restrainingOrderActUrl:
+            'https://www.gesetze-im-internet.de/gewschg/',
+        languageAct: 'Gerichtsverfassungsgesetz (GVG) § 185',
+        languageActUrl:
+            'https://www.gesetze-im-internet.de/gvg/__185.html',
+        criminalCodeAssault:
+            'Strafgesetzbuch (StGB) § 223 (Körperverletzung)',
+        criminalCodeAssaultUrl:
+            'https://www.gesetze-im-internet.de/stgb/__223.html',
+        shelterAct: 'Sozialgesetzbuch (SGB) VIII',
+        shelterActUrl:
+            'https://www.gesetze-im-internet.de/sgb_8/',
+        policeAct: 'Polizeigesetz',
+        policeActUrl:
+            'https://www.gesetze-im-internet.de/bpolg/',
+        constitution: 'Grundgesetz (GG) Art. 103',
+        constitutionUrl:
+            'https://www.gesetze-im-internet.de/gg/art_103.html',
+        criminalProcedureAct:
+            'Strafprozessordnung (StPO) § 137',
+        criminalProcedureActUrl:
+            'https://www.gesetze-im-internet.de/stpo/__137.html',
+        aliensAct: 'Aufenthaltsgesetz (AufenthG) § 59',
+        aliensActUrl:
+            'https://www.gesetze-im-internet.de/aufenthg_2004/',
+        aliensActLegalRep: 'AufenthG § 14',
+        aliensActStay: 'AufenthG § 81',
+        aliensActDetention: 'AufenthG § 62',
+        aliensActChallengeDetention: 'AufenthG § 62a',
+        employmentAct: 'Bürgerliches Gesetzbuch (BGB) § 611a',
+        employmentActUrl:
+            'https://www.gesetze-im-internet.de/bgb/__611a.html',
+        workingTimeAct: 'Arbeitszeitgesetz (ArbZG)',
+        workingTimeActUrl:
+            'https://www.gesetze-im-internet.de/arbzg/',
+        annualHolidaysAct: 'Bundesurlaubsgesetz (BUrlG)',
+        annualHolidaysActUrl:
+            'https://www.gesetze-im-internet.de/burlg/',
+        sickLeaveRef:
+            'Entgeltfortzahlungsgesetz (EntgFG)',
+        occupationalSafetyAct:
+            'Arbeitsschutzgesetz (ArbSchG)',
+        occupationalSafetyActUrl:
+            'https://www.gesetze-im-internet.de/arbschg/',
+        residentialLeaseAct: 'BGB §§ 535-580a (Mietrecht)',
+        residentialLeaseActUrl:
+            'https://www.gesetze-im-internet.de/bgb/__535.html',
+        residentialLeaseDeposit: 'BGB § 551 (Kaution)',
+        residentialLeaseNotice: 'BGB § 573 (Kündigung)',
+        residentialLeaseHabitable:
+            'BGB § 536 (Mietminderung)',
+        residentialLeaseEviction:
+            'BGB §§ 573-574c (Kündigungsschutz)',
+        nonDiscriminationAct:
+            'Allgemeines Gleichbehandlungsgesetz (AGG) § 13',
+        nonDiscriminationActUrl:
+            'https://www.gesetze-im-internet.de/agg/',
+        criminalCodeDiscrimination:
+            'StGB § 130 (Volksverhetzung)',
+        criminalCodeDiscriminationUrl:
+            'https://www.gesetze-im-internet.de/stgb/__130.html',
+        consumerProtectionAct:
+            'BGB §§ 474-479 (Verbrauchsgüterkauf)',
+        consumerProtectionActUrl:
+            'https://www.gesetze-im-internet.de/bgb/__474.html',
+        consumerProtectionPricing:
+            'Preisangabenverordnung (PAngV)',
+        consumerProtectionUnfair:
+            'Gesetz gegen den unlauteren Wettbewerb (UWG)',
+        consumerDisputesAct:
+            'Verbraucherstreitbeilegungsgesetz (VSBG)',
+        consumerDisputesActUrl:
+            'https://www.gesetze-im-internet.de/vsbg/',
+        domesticContactsFn: (l10n) => [
+          _HelpContact(name: l10n.contactEmergency, phone: '112'),
+          const _HelpContact(
+            name: 'Hilfetelefon Gewalt gegen Frauen',
+            phone: '0800 011 6016',
+            url: 'https://www.hilfetelefon.de',
+          ),
+          const _HelpContact(
+            name: 'Weisser Ring (Opferhilfe)',
+            phone: '116 006',
+            url: 'https://weisser-ring.de',
+          ),
+        ],
+        policeContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Rechtsanwaltskammer',
+            url: 'https://www.brak.de',
+          ),
+          const _HelpContact(
+            name: 'Antidiskriminierungsstelle',
+            phone: '030 18555 1855',
+            url: 'https://www.antidiskriminierungsstelle.de',
+          ),
+        ],
+        deportationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Pro Asyl',
+            phone: '069 242 314 0',
+            url: 'https://www.proasyl.de',
+          ),
+          const _HelpContact(
+            name: 'Beratungshilfe (Rechtsantragstelle)',
+            url: 'https://www.bmj.de',
+          ),
+        ],
+        workplaceContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Gewerbeaufsicht / Arbeitsschutz',
+            url: 'https://www.baua.de',
+          ),
+          const _HelpContact(
+            name: 'DGB (Deutscher Gewerkschaftsbund)',
+            phone: '030 24060 0',
+            url: 'https://www.dgb.de',
+          ),
+        ],
+        tenantContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Deutscher Mieterbund',
+            phone: '030 223 230',
+            url: 'https://www.mieterbund.de',
+          ),
+          const _HelpContact(
+            name: 'Verbraucherzentrale',
+            url: 'https://www.verbraucherzentrale.de',
+          ),
+        ],
+        detentionContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Pro Asyl',
+            phone: '069 242 314 0',
+            url: 'https://www.proasyl.de',
+          ),
+          const _HelpContact(
+            name: 'UNHCR Deutschland',
+            url: 'https://www.unhcr.org/dach/de/',
+          ),
+        ],
+        discriminationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Antidiskriminierungsstelle des Bundes',
+            phone: '030 18555 1855',
+            url: 'https://www.antidiskriminierungsstelle.de',
+          ),
+          const _HelpContact(
+            name: 'Weisser Ring',
+            phone: '116 006',
+            url: 'https://weisser-ring.de',
+          ),
+        ],
+        consumerContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Verbraucherzentrale',
+            url: 'https://www.verbraucherzentrale.de',
+          ),
+          const _HelpContact(
+            name: 'Schlichtungsstellen',
+            url: 'https://www.bmj.de',
+          ),
+        ],
+      );
+
+  // ── Sweden ───────────────────────────────────────────────────────────
+  factory _CountryLegalData.sweden() => _CountryLegalData(
+        emergencyAct: 'Lagen om skydd mot olyckor (2003:778)',
+        emergencyActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2003778-om-skydd-mot-olyckor_sfs-2003-778/',
+        restrainingOrderAct: 'Lagen om kontaktförbud (1988:688)',
+        restrainingOrderActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-1988688-om-kontaktforbud_sfs-1988-688/',
+        languageAct: 'Språklagen (2009:600)',
+        languageActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/spraklag-2009600_sfs-2009-600/',
+        criminalCodeAssault:
+            'Brottsbalken (1962:700) 3 kap. — Misshandel',
+        criminalCodeAssaultUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/brottsbalk-1962700_sfs-1962-700/',
+        shelterAct: 'Socialtjänstlagen (2001:453)',
+        shelterActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/socialtjanstlag-2001453_sfs-2001-453/',
+        policeAct: 'Polislagen (1984:387) 10 §',
+        policeActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/polislag-1984387_sfs-1984-387/',
+        constitution:
+            'Regeringsformen (1974:152) 2 kap. 9 §',
+        constitutionUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/kungorelse-1974152-om-beslutad-ny-regeringsform_sfs-1974-152/',
+        criminalProcedureAct:
+            'Rättegångsbalken 21 kap.',
+        criminalProcedureActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/rattegangsbalk-1942740_sfs-1942-740/',
+        aliensAct: 'Utlänningslagen (2005:716)',
+        aliensActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/utlanningslag-2005716_sfs-2005-716/',
+        aliensActLegalRep: 'Utlänningslagen 18 kap.',
+        aliensActStay: 'Utlänningslagen 12 kap.',
+        aliensActDetention: 'Utlänningslagen 10 kap.',
+        aliensActChallengeDetention: 'Utlänningslagen 10 kap. 9 §',
+        employmentAct:
+            'Lag om anställningsskydd (1982:80) (LAS)',
+        employmentActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-198280-om-anstallningsskydd_sfs-1982-80/',
+        workingTimeAct: 'Arbetstidslagen (1982:673)',
+        workingTimeActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/arbetstidslag-1982673_sfs-1982-673/',
+        annualHolidaysAct: 'Semesterlagen (1977:480)',
+        annualHolidaysActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/semesterlag-1977480_sfs-1977-480/',
+        sickLeaveRef: 'Lag om sjuklön (1991:1047)',
+        occupationalSafetyAct:
+            'Arbetsmiljölagen (1977:1160)',
+        occupationalSafetyActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/arbetsmiljolag-19771160_sfs-1977-1160/',
+        residentialLeaseAct:
+            'Jordabalken (1970:994) 12 kap. (Hyreslagen)',
+        residentialLeaseActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/jordabalk-1970994_sfs-1970-994/',
+        residentialLeaseDeposit: 'Jordabalken 12 kap. 28 §',
+        residentialLeaseNotice: 'Jordabalken 12 kap. 4 §',
+        residentialLeaseHabitable:
+            'Jordabalken 12 kap. 9 §',
+        residentialLeaseEviction:
+            'Jordabalken 12 kap. 42-44 §',
+        nonDiscriminationAct:
+            'Diskrimineringslagen (2008:567)',
+        nonDiscriminationActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/diskrimineringslag-2008567_sfs-2008-567/',
+        criminalCodeDiscrimination:
+            'Brottsbalken 16 kap. (Hets mot folkgrupp)',
+        criminalCodeDiscriminationUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/brottsbalk-1962700_sfs-1962-700/',
+        consumerProtectionAct:
+            'Konsumentköplagen (2022:260)',
+        consumerProtectionActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/konsumentkoplag-2022260_sfs-2022-260/',
+        consumerProtectionPricing:
+            'Prisinformationslagen (2004:347)',
+        consumerProtectionUnfair:
+            'Marknadsföringslagen (2008:486)',
+        consumerDisputesAct:
+            'Lag om alternativ tvistlösning (2015:671)',
+        consumerDisputesActUrl:
+            'https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2015671-om-alternativ-tvistlosning-i_sfs-2015-671/',
+        domesticContactsFn: (l10n) => [
+          _HelpContact(name: l10n.contactEmergency, phone: '112'),
+          const _HelpContact(
+            name: 'Kvinnofridslinjen',
+            phone: '020-50 50 50',
+            url: 'https://kvinnofridslinjen.se',
+          ),
+          const _HelpContact(
+            name: 'Brottsofferjouren',
+            phone: '116 006',
+            url: 'https://www.brottsofferjouren.se',
+          ),
+        ],
+        policeContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Rättshjälpsmyndigheten',
+            url: 'https://www.rattshjalp.se',
+          ),
+          const _HelpContact(
+            name: 'Diskrimineringsombudsmannen (DO)',
+            phone: '08-120 20 700',
+            url: 'https://www.do.se',
+          ),
+        ],
+        deportationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Asylrättscentrum',
+            url: 'https://sweref.org',
+          ),
+          const _HelpContact(
+            name: 'Rättshjälpsmyndigheten',
+            url: 'https://www.rattshjalp.se',
+          ),
+        ],
+        workplaceContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Arbetsmiljöverket',
+            phone: '010-730 90 00',
+            url: 'https://www.av.se',
+          ),
+          const _HelpContact(
+            name: 'LO (Landsorganisationen)',
+            url: 'https://www.lo.se',
+          ),
+        ],
+        tenantContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Hyresgästföreningen',
+            phone: '0771-443 443',
+            url: 'https://www.hyresgastforeningen.se',
+          ),
+          const _HelpContact(
+            name: 'ARN (Allmänna reklamationsnämnden)',
+            url: 'https://www.arn.se',
+          ),
+        ],
+        detentionContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Asylrättscentrum',
+            url: 'https://sweref.org',
+          ),
+          const _HelpContact(
+            name: 'JO (Justitieombudsmannen)',
+            phone: '08-786 51 00',
+            url: 'https://www.jo.se',
+          ),
+        ],
+        discriminationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Diskrimineringsombudsmannen (DO)',
+            phone: '08-120 20 700',
+            url: 'https://www.do.se',
+          ),
+          const _HelpContact(
+            name: 'Brottsofferjouren',
+            phone: '116 006',
+            url: 'https://www.brottsofferjouren.se',
+          ),
+        ],
+        consumerContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Konsumentverket',
+            url: 'https://www.konsumentverket.se',
+          ),
+          const _HelpContact(
+            name: 'ARN (Allmänna reklamationsnämnden)',
+            url: 'https://www.arn.se',
+          ),
+        ],
+      );
+
+  // ── Latvia ───────────────────────────────────────────────────────────
+  factory _CountryLegalData.latvia() => _CountryLegalData(
+        emergencyAct: 'Likums par policiju',
+        emergencyActUrl: 'https://likumi.lv/ta/id/67957',
+        restrainingOrderAct:
+            'Civilprocesa likums 305. pants (Pagaidu aizsardziba)',
+        restrainingOrderActUrl: 'https://likumi.lv/ta/id/50500',
+        languageAct: 'Valsts valodas likums',
+        languageActUrl: 'https://likumi.lv/ta/id/14740',
+        criminalCodeAssault:
+            'Kriminallikums 130. pants (Tisa miesas bojajumi)',
+        criminalCodeAssaultUrl: 'https://likumi.lv/ta/id/88966',
+        shelterAct: 'Socialas aizsardzibas likums',
+        shelterActUrl: 'https://likumi.lv/ta/id/45905',
+        policeAct: 'Likums par policiju 12. pants',
+        policeActUrl: 'https://likumi.lv/ta/id/67957',
+        constitution: 'Latvijas Republikas Satversme 92. pants',
+        constitutionUrl: 'https://likumi.lv/ta/id/57980',
+        criminalProcedureAct:
+            'Kriminalprocesa likums 11. nodala',
+        criminalProcedureActUrl: 'https://likumi.lv/ta/id/107820',
+        aliensAct: 'Imigracijas likums',
+        aliensActUrl: 'https://likumi.lv/ta/id/68522',
+        aliensActLegalRep: 'Imigracijas likums 46. pants',
+        aliensActStay: 'Imigracijas likums 51. pants',
+        aliensActDetention: 'Imigracijas likums 54. pants',
+        aliensActChallengeDetention: 'Imigracijas likums 55. pants',
+        employmentAct: 'Darba likums',
+        employmentActUrl: 'https://likumi.lv/ta/id/26019',
+        workingTimeAct: 'Darba likums 131. pants (Darba laiks)',
+        workingTimeActUrl: 'https://likumi.lv/ta/id/26019',
+        annualHolidaysAct:
+            'Darba likums 149. pants (Ikgadejais atvalinajums)',
+        annualHolidaysActUrl: 'https://likumi.lv/ta/id/26019',
+        sickLeaveRef:
+            'Darba likums 73. pants (Slimibas pabalsts)',
+        occupationalSafetyAct:
+            'Darba aizsardzibas likums',
+        occupationalSafetyActUrl: 'https://likumi.lv/ta/id/26020',
+        residentialLeaseAct:
+            'Dzivokla ires likums',
+        residentialLeaseActUrl: 'https://likumi.lv/ta/id/309844',
+        residentialLeaseDeposit:
+            'Dzivokla ires likums 10. pants',
+        residentialLeaseNotice:
+            'Dzivokla ires likums 25. pants',
+        residentialLeaseHabitable:
+            'Dzivokla ires likums 14. pants',
+        residentialLeaseEviction:
+            'Dzivokla ires likums 28.-32. pants',
+        nonDiscriminationAct:
+            'Darba likums 29. pants (Diskriminacijas aizliegums)',
+        nonDiscriminationActUrl: 'https://likumi.lv/ta/id/26019',
+        criminalCodeDiscrimination:
+            'Kriminallikums 150. pants (Naida kurinasana)',
+        criminalCodeDiscriminationUrl: 'https://likumi.lv/ta/id/88966',
+        consumerProtectionAct:
+            'Pateretaju tiesibu aizsardzibas likums',
+        consumerProtectionActUrl: 'https://likumi.lv/ta/id/23309',
+        consumerProtectionPricing:
+            'Pateretaju tiesibu aizsardzibas likums 12. pants',
+        consumerProtectionUnfair:
+            'Negodiga komercprakses aizlieguma likums',
+        consumerDisputesAct:
+            'Pateretaju arpastejas rikojumu komisija',
+        consumerDisputesActUrl: 'https://likumi.lv/ta/id/23309',
+        domesticContactsFn: (l10n) => [
+          _HelpContact(name: l10n.contactEmergency, phone: '112'),
+          const _HelpContact(
+            name: 'Krizu un konsultaciju centrs "Skalbes"',
+            phone: '67 222 922',
+            url: 'https://www.skalbes.lv',
+          ),
+          const _HelpContact(
+            name: 'Valsts policija',
+            phone: '110',
+          ),
+        ],
+        policeContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Juridiskas palidzibas administracija',
+            phone: '67 514 208',
+            url: 'https://www.jpa.gov.lv',
+          ),
+          const _HelpContact(
+            name: 'Tiesibudsargs',
+            phone: '67 686 768',
+            url: 'https://www.tiesibsargs.lv',
+          ),
+        ],
+        deportationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Latvijas Cilvektiesibu centrs',
+            url: 'https://cilvektiesibas.org.lv',
+          ),
+          const _HelpContact(
+            name: 'Juridiskas palidzibas administracija',
+            phone: '67 514 208',
+            url: 'https://www.jpa.gov.lv',
+          ),
+        ],
+        workplaceContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Valsts darba inspekcija',
+            phone: '67 021 704',
+            url: 'https://www.vdi.gov.lv',
+          ),
+          const _HelpContact(
+            name: 'LBAS (Arodbiedribu savieniba)',
+            url: 'https://www.lbas.lv',
+          ),
+        ],
+        tenantContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Pateretaju tiesibu aizsardzibas centrs',
+            phone: '65 452 554',
+            url: 'https://www.ptac.gov.lv',
+          ),
+        ],
+        detentionContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Latvijas Cilvektiesibu centrs',
+            url: 'https://cilvektiesibas.org.lv',
+          ),
+          const _HelpContact(
+            name: 'Tiesibudsargs',
+            phone: '67 686 768',
+            url: 'https://www.tiesibsargs.lv',
+          ),
+        ],
+        discriminationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Tiesibudsargs',
+            phone: '67 686 768',
+            url: 'https://www.tiesibsargs.lv',
+          ),
+        ],
+        consumerContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Pateretaju tiesibu aizsardzibas centrs (PTAC)',
+            phone: '65 452 554',
+            url: 'https://www.ptac.gov.lv',
+          ),
+        ],
+      );
+
+  // ── Lithuania ─────────────────────────────────────────────────────────
+  factory _CountryLegalData.lithuania() => _CountryLegalData(
+        emergencyAct: 'Priesgaisrines saugos ir gelbejimo istatymas',
+        emergencyActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.77316',
+        restrainingOrderAct:
+            'Apsaugos nuo smurto artimoje aplinkoje istatymas',
+        restrainingOrderActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.400989',
+        languageAct: 'Valstybines kalbos istatymas',
+        languageActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.15211',
+        criminalCodeAssault:
+            'Baudziamasis kodeksas 138 str. (Nesunkus sveikatos sutrikdymas)',
+        criminalCodeAssaultUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.111555',
+        shelterAct: 'Socialines paslaugos istatymas',
+        shelterActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.270342',
+        policeAct: 'Policijos veiklos istatymas 18 str.',
+        policeActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.153695',
+        constitution: 'Lietuvos Respublikos Konstitucija 31 str.',
+        constitutionUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.21892',
+        criminalProcedureAct:
+            'Baudziamojo proceso kodeksas 44 str.',
+        criminalProcedureActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.163482',
+        aliensAct: 'Uzsienieciu teisines padeties istatymas',
+        aliensActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.232378',
+        aliensActLegalRep: 'Uzsienieciu istatymas 5 str.',
+        aliensActStay: 'Uzsienieciu istatymas 128 str.',
+        aliensActDetention: 'Uzsienieciu istatymas 113 str.',
+        aliensActChallengeDetention: 'Uzsienieciu istatymas 115 str.',
+        employmentAct: 'Darbo kodeksas',
+        employmentActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.291049',
+        workingTimeAct: 'Darbo kodeksas 112 str. (Darbo laikas)',
+        workingTimeActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.291049',
+        annualHolidaysAct:
+            'Darbo kodeksas 126 str. (Kasmetines atostogos)',
+        annualHolidaysActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.291049',
+        sickLeaveRef: 'Darbo kodeksas 133 str. (Ligos ismokos)',
+        occupationalSafetyAct:
+            'Darbuotoju saugos ir sveikatos istatymas',
+        occupationalSafetyActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.152080',
+        residentialLeaseAct:
+            'Civilinis kodeksas 6.577-6.619 str. (Gyvenamosios patalpos nuoma)',
+        residentialLeaseActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.107687',
+        residentialLeaseDeposit: 'CK 6.584 str. (Uzstatas)',
+        residentialLeaseNotice: 'CK 6.609 str. (Sutarties nutraukimas)',
+        residentialLeaseHabitable:
+            'CK 6.582 str. (Tinkamumo reikalavimai)',
+        residentialLeaseEviction:
+            'CK 6.611-6.614 str. (Ikeldininimo apsauga)',
+        nonDiscriminationAct:
+            'Lygiu galimybiu istatymas',
+        nonDiscriminationActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.222522',
+        criminalCodeDiscrimination:
+            'BK 170 str. (Kurstymas pries grupes)',
+        criminalCodeDiscriminationUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.111555',
+        consumerProtectionAct:
+            'Vartotoju teisiu apsaugos istatymas',
+        consumerProtectionActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.104400',
+        consumerProtectionPricing:
+            'Vartotoju teisiu apsaugos istatymas 6 str.',
+        consumerProtectionUnfair:
+            'Nesaziningos komercines veiklos vartotojams draudimo istatymas',
+        consumerDisputesAct:
+            'Vartotoju teisiu apsaugos istatymas 27 str.',
+        consumerDisputesActUrl:
+            'https://e-seimas.lrs.lt/portal/legalAct/lt/TAD/TAIS.104400',
+        domesticContactsFn: (l10n) => [
+          _HelpContact(name: l10n.contactEmergency, phone: '112'),
+          const _HelpContact(
+            name: 'Pagalbos moterim linija',
+            phone: '8 800 66 366',
+            url: 'https://www.specializuotospaslaugos.lt',
+          ),
+          const _HelpContact(
+            name: 'Vaiku linija',
+            phone: '116 111',
+          ),
+        ],
+        policeContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Valstybine garantuojama teisine pagalba',
+            phone: '8 700 00 211',
+            url: 'https://www.teisinepagalba.lt',
+          ),
+          const _HelpContact(
+            name: 'Lygiu galimybiu kontrolieriaus tarnyba',
+            url: 'https://www.lygybe.lt',
+          ),
+        ],
+        deportationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Lietuvos Raudonasis Kryžius (pabegelu programa)',
+            url: 'https://www.redcross.lt',
+          ),
+          const _HelpContact(
+            name: 'Valstybine garantuojama teisine pagalba',
+            phone: '8 700 00 211',
+            url: 'https://www.teisinepagalba.lt',
+          ),
+        ],
+        workplaceContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Valstybine darbo inspekcija',
+            phone: '8 5 213 9772',
+            url: 'https://www.vdi.lt',
+          ),
+          const _HelpContact(
+            name: 'Lietuvos profesines sajungos',
+            url: 'https://www.lpsk.lt',
+          ),
+        ],
+        tenantContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Valstybine vartotoju teisiu apsaugos tarnyba',
+            phone: '8 5 262 6760',
+            url: 'https://www.vvtat.lt',
+          ),
+        ],
+        detentionContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Lietuvos Raudonasis Kryžius',
+            url: 'https://www.redcross.lt',
+          ),
+          const _HelpContact(
+            name: 'Seimo kontrolieriu staiga',
+            phone: '8 5 266 5105',
+            url: 'https://www.lrski.lt',
+          ),
+        ],
+        discriminationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Lygiu galimybiu kontrolieriaus tarnyba',
+            url: 'https://www.lygybe.lt',
+          ),
+        ],
+        consumerContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'Valstybine vartotoju teisiu apsaugos tarnyba (VVTAT)',
+            phone: '8 5 262 6760',
+            url: 'https://www.vvtat.lt',
+          ),
+        ],
+      );
+
+  // ── EU default ───────────────────────────────────────────────────────
+  factory _CountryLegalData.eu() => _CountryLegalData(
+        emergencyAct: 'EU Emergency Number 112',
+        emergencyActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32002D0733',
+        restrainingOrderAct:
+            'EU Victims\' Directive 2012/29/EU, Art. 18-24',
+        restrainingOrderActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32012L0029',
+        languageAct: 'ECHR Article 6 (Right to an interpreter)',
+        languageActUrl:
+            'https://www.echr.coe.int/documents/d/echr/convention_ENG',
+        criminalCodeAssault: 'ECHR Article 3 (Prohibition of torture)',
+        criminalCodeAssaultUrl:
+            'https://www.echr.coe.int/documents/d/echr/convention_ENG',
+        shelterAct: 'EU Victims\' Directive 2012/29/EU, Art. 8-9',
+        shelterActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32012L0029',
+        policeAct: 'ECHR Article 5 (Right to liberty)',
+        policeActUrl:
+            'https://www.echr.coe.int/documents/d/echr/convention_ENG',
+        constitution: 'EU Charter of Fundamental Rights, Art. 47',
+        constitutionUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A12012P%2FTXT',
+        criminalProcedureAct:
+            'EU Directive 2013/48/EU (Right of access to a lawyer)',
+        criminalProcedureActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32013L0048',
+        aliensAct: 'EU Return Directive 2008/115/EC',
+        aliensActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32008L0115',
+        aliensActLegalRep: 'Return Directive Art. 13 (Legal remedies)',
+        aliensActStay: 'Return Directive Art. 13(2)',
+        aliensActDetention: 'Return Directive Art. 15',
+        aliensActChallengeDetention: 'Return Directive Art. 15(2)',
+        employmentAct:
+            'EU Directive 2019/1152 (Transparent working conditions)',
+        employmentActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32019L1152',
+        workingTimeAct: 'EU Working Time Directive 2003/88/EC',
+        workingTimeActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32003L0088',
+        annualHolidaysAct:
+            'Working Time Directive Art. 7 (Annual leave)',
+        annualHolidaysActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32003L0088',
+        sickLeaveRef: 'EU Charter Art. 31 (Fair working conditions)',
+        occupationalSafetyAct:
+            'EU Framework Directive 89/391/EEC',
+        occupationalSafetyActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A31989L0391',
+        residentialLeaseAct:
+            'EU Charter Art. 34(3) (Housing assistance)',
+        residentialLeaseActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A12012P%2FTXT',
+        residentialLeaseDeposit:
+            'National law applies (deposit)',
+        residentialLeaseNotice:
+            'National law applies (notice period)',
+        residentialLeaseHabitable:
+            'National law applies (habitability)',
+        residentialLeaseEviction:
+            'ECHR Protocol 1, Art. 1 (Property)',
+        nonDiscriminationAct:
+            'EU Equal Treatment Directive 2000/78/EC',
+        nonDiscriminationActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32000L0078',
+        criminalCodeDiscrimination:
+            'EU Framework Decision 2008/913/JHA (Racism)',
+        criminalCodeDiscriminationUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32008F0913',
+        consumerProtectionAct:
+            'EU Consumer Rights Directive 2011/83/EU',
+        consumerProtectionActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32011L0083',
+        consumerProtectionPricing:
+            'EU Directive 98/6/EC (Price Indication)',
+        consumerProtectionUnfair:
+            'EU Unfair Commercial Practices Directive 2005/29/EC',
+        consumerDisputesAct:
+            'EU Directive 2013/11/EU (ADR for consumer disputes)',
+        consumerDisputesActUrl:
+            'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32013L0011',
+        domesticContactsFn: (l10n) => [
+          _HelpContact(name: l10n.contactEmergency, phone: '112'),
+          const _HelpContact(
+            name: 'EU Victim Support Helpline',
+            phone: '116 006',
+            url: 'https://victim-support.eu',
+          ),
+        ],
+        policeContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'EU Fundamental Rights Agency (FRA)',
+            url: 'https://fra.europa.eu',
+          ),
+        ],
+        deportationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'UNHCR',
+            url: 'https://www.unhcr.org',
+          ),
+          const _HelpContact(
+            name: 'EU Fundamental Rights Agency (FRA)',
+            url: 'https://fra.europa.eu',
+          ),
+        ],
+        workplaceContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'EU-OSHA (Occupational Safety Agency)',
+            url: 'https://osha.europa.eu',
+          ),
+        ],
+        tenantContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'European Consumer Centre (ECC-Net)',
+            url: 'https://ec.europa.eu/info/ecc-net',
+          ),
+        ],
+        detentionContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'UNHCR',
+            url: 'https://www.unhcr.org',
+          ),
+          const _HelpContact(
+            name: 'European Committee for the Prevention of Torture (CPT)',
+            url: 'https://www.coe.int/en/web/cpt',
+          ),
+        ],
+        discriminationContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'EU Fundamental Rights Agency (FRA)',
+            url: 'https://fra.europa.eu',
+          ),
+          const _HelpContact(
+            name: 'Equinet (European Network of Equality Bodies)',
+            url: 'https://equineteurope.org',
+          ),
+        ],
+        consumerContactsFn: (l10n) => [
+          const _HelpContact(
+            name: 'European Consumer Centre (ECC-Net)',
+            url: 'https://ec.europa.eu/info/ecc-net',
+          ),
+          const _HelpContact(
+            name: 'EU Online Dispute Resolution (ODR)',
+            url: 'https://ec.europa.eu/consumers/odr',
+          ),
+        ],
+      );
+}
+
+// ---------------------------------------------------------------------------
 // Main screen
 // ---------------------------------------------------------------------------
 
@@ -414,8 +1725,31 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
     Share.share('$rightText\n\n${l10n.sentFromAdvocat}');
   }
 
+  // ── Country-specific legal references based on locale ────────────────
+  _CountryLegalData _getLegalData() {
+    final lang = Localizations.localeOf(context).languageCode;
+    switch (lang) {
+      case 'et':
+        return _CountryLegalData.estonia();
+      case 'fi':
+        return _CountryLegalData.finland();
+      case 'de':
+        return _CountryLegalData.germany();
+      case 'sv':
+        return _CountryLegalData.sweden();
+      case 'lv':
+        return _CountryLegalData.latvia();
+      case 'lt':
+        return _CountryLegalData.lithuania();
+      default:
+        return _CountryLegalData.eu();
+    }
+  }
+
   // ── Build scenario data ────────────────────────────────────────────────
   Map<String, _ScenarioData> _buildData(AppLocalizations l10n) {
+    final law = _getLegalData();
+
     return {
       // ── Domestic Violence & Assault (TOP PRIORITY) ──────────────────
       'domestic-violence': _ScenarioData(
@@ -426,28 +1760,28 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         rights: [
           _RightItem(l10n.rightCallEmergency,
               severity: _Severity.critical,
-              legalRef: 'Emergency Response Centre Act (692/2010)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2010/en20100692'),
+              legalRef: law.emergencyAct,
+              legalUrl: law.emergencyActUrl),
           _RightItem(l10n.rightVictimProtection,
               severity: _Severity.critical,
               legalRef: 'EU Victims\' Directive 2012/29/EU',
               legalUrl: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32012L0029'),
           _RightItem(l10n.rightRestrainingOrder,
               severity: _Severity.critical,
-              legalRef: 'Act on Restraining Orders (898/1998)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1998/en19980898'),
+              legalRef: law.restrainingOrderAct,
+              legalUrl: law.restrainingOrderActUrl),
           _RightItem(l10n.rightVictimInterpreter,
               severity: _Severity.important,
-              legalRef: 'Language Act (423/2003)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2003/en20030423'),
+              legalRef: law.languageAct,
+              legalUrl: law.languageActUrl),
           _RightItem(l10n.rightMedicalHelp,
               severity: _Severity.critical,
-              legalRef: 'Criminal Code (39/1889) Chapter 21 — Assault § 5',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1889/en18890039'),
+              legalRef: law.criminalCodeAssault,
+              legalUrl: law.criminalCodeAssaultUrl),
           _RightItem(l10n.rightShelter,
               severity: _Severity.important,
-              legalRef: 'Act on Shelter Services (1354/2014)',
-              legalUrl: 'https://www.finlex.fi/fi/laki/alkup/2014/20141354'),
+              legalRef: law.shelterAct,
+              legalUrl: law.shelterActUrl),
         ],
         obligations: [
           _RightItem(l10n.mustReportDanger, severity: _Severity.critical),
@@ -475,31 +1809,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _DidYouKnow(l10n.domesticFactRestrainingOrder),
           _DidYouKnow(l10n.domesticFactVictimDirective),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactEmergency,
-            phone: '112',
-          ),
-          _HelpContact(
-            name: l10n.contactNollaLinja,
-            phone: '080 005 005',
-            url: 'https://nollalinja.fi/en/',
-          ),
-          _HelpContact(
-            name: l10n.contactShelter,
-            phone: '0800 161 323',
-            url: 'https://turvakoti.fi',
-          ),
-          _HelpContact(
-            name: l10n.contactCrisisHelpline,
-            phone: '09 2525 0111',
-          ),
-          _HelpContact(
-            name: l10n.contactVictimSupportRIKU,
-            phone: '116 006',
-            url: 'https://www.riku.fi/en/',
-          ),
-        ],
+        helpContacts: law.domesticViolenceContacts(l10n),
       ),
       // ── Police Stop ─────────────────────────────────────────────────
       'police-stop': _ScenarioData(
@@ -510,20 +1820,20 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         rights: [
           _RightItem(l10n.rightKnowWhyStopped,
               severity: _Severity.critical,
-              legalRef: 'Police Act (872/2011) Section 2',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2011/en20110872'),
+              legalRef: law.policeAct,
+              legalUrl: law.policeActUrl),
           _RightItem(l10n.rightRemainSilent,
               severity: _Severity.critical,
-              legalRef: 'Constitution of Finland, Section 21',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1999/en19990731'),
+              legalRef: law.constitution,
+              legalUrl: law.constitutionUrl),
           _RightItem(l10n.rightAskInterpreter,
               severity: _Severity.important,
-              legalRef: 'Language Act (423/2003)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2003/en20030423'),
+              legalRef: law.languageAct,
+              legalUrl: law.languageActUrl),
           _RightItem(l10n.rightContactLawyer,
               severity: _Severity.critical,
-              legalRef: 'Criminal Procedure Act, Chapter 2',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1997/en19970689'),
+              legalRef: law.criminalProcedureAct,
+              legalUrl: law.criminalProcedureActUrl),
           _RightItem(l10n.rightRecordEncounter, severity: _Severity.info),
         ],
         obligations: [
@@ -543,18 +1853,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _DidYouKnow(l10n.policeFactMustTellReason),
           _DidYouKnow(l10n.policeFactCanRecord),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactFinnishLegalAid,
-            phone: '0295 390 390',
-            url: 'https://oikeus.fi/oikeusapu/en/',
-          ),
-          _HelpContact(
-            name: l10n.contactNonDiscriminationOmbudsman,
-            phone: '0295 666 817',
-            email: 'yvv@oikeus.fi',
-          ),
-        ],
+        helpContacts: law.policeStopContacts(l10n),
       ),
       'deportation': _ScenarioData(
         title: l10n.deportationNotice,
@@ -564,20 +1863,20 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         rights: [
           _RightItem(l10n.rightAppealAdmin,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act (301/2004) Section 190',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
+              legalRef: law.aliensAct,
+              legalUrl: law.aliensActUrl),
           _RightItem(l10n.rightLegalRep,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 9',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
+              legalRef: law.aliensActLegalRep,
+              legalUrl: law.aliensActUrl),
           _RightItem(l10n.rightInterpreter,
               severity: _Severity.important,
-              legalRef: 'Language Act (423/2003)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2003/en20030423'),
+              legalRef: law.languageAct,
+              legalUrl: law.languageActUrl),
           _RightItem(l10n.rightStayDuringAppeal,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 200',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
+              legalRef: law.aliensActStay,
+              legalUrl: law.aliensActUrl),
         ],
         actions: [
           _ActionItem(l10n.doNotIgnoreNotice),
@@ -598,22 +1897,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         didYouKnow: [
           _DidYouKnow(l10n.deportationFactStayDuringAppeal),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactRefugeeAdviceCentre,
-            phone: '09 2313 9300',
-            email: 'info@pakolaisneuvonta.fi',
-          ),
-          _HelpContact(
-            name: l10n.contactAdminCourtHelsinki,
-            phone: '029 564 2000',
-            url: 'https://oikeus.fi/hallintooikeudet/en/',
-          ),
-          _HelpContact(
-            name: l10n.contactFinnishLegalAid,
-            phone: '0295 390 390',
-          ),
-        ],
+        helpContacts: law.deportationContacts(l10n),
       ),
       'workplace': _ScenarioData(
         title: l10n.workplaceRights,
@@ -623,24 +1907,24 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         rights: [
           _RightItem(l10n.minimumWage,
               severity: _Severity.critical,
-              legalRef: 'Employment Contracts Act (55/2001)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2001/en20010055'),
+              legalRef: law.employmentAct,
+              legalUrl: law.employmentActUrl),
           _RightItem(l10n.workingTimeLimits,
               severity: _Severity.important,
-              legalRef: 'Working Time Act (872/2019)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2019/en20190872'),
+              legalRef: law.workingTimeAct,
+              legalUrl: law.workingTimeActUrl),
           _RightItem(l10n.annualLeave,
               severity: _Severity.important,
-              legalRef: 'Annual Holidays Act (162/2005)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2005/en20050162'),
+              legalRef: law.annualHolidaysAct,
+              legalUrl: law.annualHolidaysActUrl),
           _RightItem(l10n.sickLeave,
               severity: _Severity.important,
-              legalRef: 'Employment Contracts Act Chapter 2, Section 11',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2001/en20010055'),
+              legalRef: law.sickLeaveRef,
+              legalUrl: law.employmentActUrl),
           _RightItem(l10n.safeWorkingConditions,
               severity: _Severity.critical,
-              legalRef: 'Occupational Safety and Health Act (738/2002)',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2002/en20020738'),
+              legalRef: law.occupationalSafetyAct,
+              legalUrl: law.occupationalSafetyActUrl),
         ],
         actions: [
           _ActionItem(l10n.workplaceActionKeepContract),
@@ -653,17 +1937,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _DidYouKnow(l10n.workplaceFactCollectiveWage),
           _DidYouKnow(l10n.workplaceFactOralContract),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactOccupationalSafety,
-            phone: '0295 016 620',
-            url: 'https://www.tyosuojelu.fi/en',
-          ),
-          _HelpContact(
-            name: l10n.contactTradeUnionSAK,
-            phone: '020 774 0100',
-          ),
-        ],
+        helpContacts: law.workplaceContacts(l10n),
       ),
       'tenant': _ScenarioData(
         title: l10n.tenantRights,
@@ -673,24 +1947,24 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         rights: [
           _RightItem(l10n.writtenRentalAgreement,
               severity: _Severity.important,
-              legalRef: 'Act on Residential Leases (481/1995) Chapter 1',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
+              legalRef: law.residentialLeaseAct,
+              legalUrl: law.residentialLeaseActUrl),
           _RightItem(l10n.securityDeposit,
               severity: _Severity.important,
-              legalRef: 'Act on Residential Leases Section 8',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
+              legalRef: law.residentialLeaseDeposit,
+              legalUrl: law.residentialLeaseActUrl),
           _RightItem(l10n.landlordNotice,
               severity: _Severity.critical,
-              legalRef: 'Act on Residential Leases Section 52',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
+              legalRef: law.residentialLeaseNotice,
+              legalUrl: law.residentialLeaseActUrl),
           _RightItem(l10n.rightHabitableDwelling,
               severity: _Severity.critical,
-              legalRef: 'Act on Residential Leases Section 20',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
+              legalRef: law.residentialLeaseHabitable,
+              legalUrl: law.residentialLeaseActUrl),
           _RightItem(l10n.protectionUnjustEviction,
               severity: _Severity.critical,
-              legalRef: 'Act on Residential Leases Sections 51-55',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1995/en19950481'),
+              legalRef: law.residentialLeaseEviction,
+              legalUrl: law.residentialLeaseActUrl),
         ],
         actions: [
           _ActionItem(l10n.tenantActionWrittenAgreement),
@@ -702,17 +1976,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         didYouKnow: [
           _DidYouKnow(l10n.tenantFactNoEvictionWithoutCourt),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactTenantsAssociation,
-            phone: '09 4767 0100',
-            url: 'https://vuokralaiset.fi',
-          ),
-          _HelpContact(
-            name: l10n.contactConsumerDisputesBoard,
-            phone: '029 566 5200',
-          ),
-        ],
+        helpContacts: law.tenantContacts(l10n),
       ),
       'detention': _ScenarioData(
         title: l10n.immigrationDetention,
@@ -722,20 +1986,20 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         rights: [
           _RightItem(l10n.rightKnowDetentionReason,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 123',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
+              legalRef: law.aliensActDetention,
+              legalUrl: law.aliensActUrl),
           _RightItem(l10n.rightContactLawyerDetention,
               severity: _Severity.critical,
-              legalRef: 'Constitution of Finland Section 21',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1999/en19990731'),
+              legalRef: law.constitution,
+              legalUrl: law.constitutionUrl),
           _RightItem(l10n.rightContactEmbassy,
               severity: _Severity.important,
               legalRef: 'Vienna Convention on Consular Relations',
               legalUrl: 'https://legal.un.org/ilc/texts/instruments/english/conventions/9_2_1963.pdf'),
           _RightItem(l10n.rightChallengeDetention,
               severity: _Severity.critical,
-              legalRef: 'Aliens Act Section 127',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2004/en20040301'),
+              legalRef: law.aliensActChallengeDetention,
+              legalUrl: law.aliensActUrl),
           _RightItem(l10n.rightHumaneTreatment,
               severity: _Severity.critical,
               legalRef: 'ECHR Article 3',
@@ -761,18 +2025,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         didYouKnow: [
           _DidYouKnow(l10n.detentionFactCourtReview),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactRefugeeAdviceCentre,
-            phone: '09 2313 9300',
-            email: 'info@pakolaisneuvonta.fi',
-          ),
-          _HelpContact(
-            name: l10n.contactParliamentaryOmbudsman,
-            phone: '09 4321',
-            url: 'https://www.oikeusasiamies.fi/en',
-          ),
-        ],
+        helpContacts: law.detentionContacts(l10n),
       ),
       'discrimination': _ScenarioData(
         title: l10n.discrimination,
@@ -784,14 +2037,14 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
               severity: _Severity.critical),
           _RightItem(l10n.fileComplaintOmbudsman,
               severity: _Severity.critical,
-              legalRef: 'Non-Discrimination Act (1325/2014) Section 19',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/2014/en20141325'),
+              legalRef: law.nonDiscriminationAct,
+              legalUrl: law.nonDiscriminationActUrl),
           _RightItem(l10n.contactLegalAidOffice,
               severity: _Severity.important),
           _RightItem(l10n.reportToPolice,
               severity: _Severity.important,
-              legalRef: 'Criminal Code Chapter 11',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1889/en18890039'),
+              legalRef: law.criminalCodeDiscrimination,
+              legalUrl: law.criminalCodeDiscriminationUrl),
         ],
         actions: [
           _ActionItem(l10n.discriminationActionWriteDown),
@@ -803,18 +2056,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
         didYouKnow: [
           _DidYouKnow(l10n.discriminationFactNonDiscriminationAct),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactNonDiscriminationOmbudsman,
-            phone: '0295 666 817',
-            email: 'yvv@oikeus.fi',
-          ),
-          _HelpContact(
-            name: l10n.contactVictimSupportRIKU,
-            phone: '116 006',
-            url: 'https://www.riku.fi/en/',
-          ),
-        ],
+        helpContacts: law.discriminationContacts(l10n),
       ),
       // ── Consumer Protection ─────────────────────────────────────────
       'consumer': _ScenarioData(
@@ -829,20 +2071,20 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
               legalUrl: 'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32011L0083'),
           _RightItem(l10n.rightDefectiveProduct,
               severity: _Severity.critical,
-              legalRef: 'Consumer Protection Act (38/1978) Chapter 5',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1978/en19780038'),
+              legalRef: law.consumerProtectionAct,
+              legalUrl: law.consumerProtectionActUrl),
           _RightItem(l10n.rightClearPricing,
               severity: _Severity.important,
-              legalRef: 'Consumer Protection Act Chapter 2',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1978/en19780038'),
+              legalRef: law.consumerProtectionPricing,
+              legalUrl: law.consumerProtectionActUrl),
           _RightItem(l10n.rightComplainBoard,
               severity: _Severity.important,
-              legalRef: 'Act on Consumer Disputes Board (8/2007)',
-              legalUrl: 'https://www.finlex.fi/fi/laki/ajantasa/2007/20070008'),
+              legalRef: law.consumerDisputesAct,
+              legalUrl: law.consumerDisputesActUrl),
           _RightItem(l10n.rightProtectionFraud,
               severity: _Severity.critical,
-              legalRef: 'Consumer Protection Act Chapter 2 — Unfair Practices',
-              legalUrl: 'https://www.finlex.fi/en/laki/kaannokset/1978/en19780038'),
+              legalRef: law.consumerProtectionUnfair,
+              legalUrl: law.consumerProtectionActUrl),
         ],
         obligations: [
           _RightItem(l10n.mustKeepReceipts, severity: _Severity.important),
@@ -869,22 +2111,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _DidYouKnow(l10n.consumerFactWithdrawal),
           _DidYouKnow(l10n.consumerFactWarranty),
         ],
-        helpContacts: [
-          _HelpContact(
-            name: l10n.contactConsumerAdvisory,
-            phone: '029 505 3050',
-            url: 'https://www.kkv.fi/en/consumer-advisory-services/',
-          ),
-          _HelpContact(
-            name: l10n.contactConsumerOmbudsman,
-            url: 'https://www.kkv.fi/en/consumer-ombudsman/',
-          ),
-          _HelpContact(
-            name: l10n.contactConsumerDisputesBoardDirect,
-            phone: '029 566 5200',
-            url: 'https://www.kuluttajariita.fi/en/',
-          ),
-        ],
+        helpContacts: law.consumerContacts(l10n),
       ),
     };
   }
