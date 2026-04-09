@@ -25,8 +25,8 @@ class AIService {
         _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
-            connectTimeout: const Duration(seconds: 30),
-            receiveTimeout: const Duration(seconds: 120),
+            connectTimeout: const Duration(seconds: 10),
+            receiveTimeout: const Duration(seconds: 30),
             headers: {
               'Content-Type': 'application/json',
             },
@@ -92,7 +92,7 @@ class AIService {
   //
 
   /// Maximum free API calls TOTAL (lifetime, not per day).
-  static const int _freeTotalLimit = 5;
+  static const int _freeTotalLimit = 50;
 
   /// Key for storing total free message count.
   static const String _freeTotalKey = 'ai_total_free_count';
@@ -453,50 +453,89 @@ class AIService {
         );
       }
 
-      // ── Response cache check ──
-      final cached = _getCachedResponse(sanitizedMessage);
-      if (cached != null) {
-        _log.i('Cache hit for query');
-        _addToHistory(caseId, 'user', sanitizedMessage);
-        _addToHistory(caseId, 'assistant', cached);
-        return ChatResponse(
-          message: cached,
-          disclaimer:
-              'This is AI-generated legal information, not legal advice. '
-              'Please consult a qualified attorney for advice specific to your situation.',
-        );
+      // ── Response cache check (skip map lookup if cache is empty) ──
+      if (_responseCache.isNotEmpty) {
+        final cached = _getCachedResponse(sanitizedMessage);
+        if (cached != null) {
+          _log.i('Cache hit for query');
+          _addToHistory(caseId, 'user', sanitizedMessage);
+          _addToHistory(caseId, 'assistant', cached);
+          return ChatResponse(
+            message: cached,
+            disclaimer:
+                'This is AI-generated legal information, not legal advice. '
+                'Please consult a qualified attorney for advice specific to your situation.',
+          );
+        }
       }
 
       _log.i('Using Claude API for chat');
       try {
+        // Determine if this is a simple query (greetings, meta-questions)
+        final isSimple = ClaudeService.isSimpleQuery(sanitizedMessage);
+
         // Choose model based on query complexity
-        final model = ClaudeService.chooseModel(sanitizedMessage);
-        final maxTokens = ClaudeService.maxTokensForModel(model);
-        _log.i('Model routing: $model (maxTokens: $maxTokens)');
+        final model = isSimple
+            ? ClaudeService.modelHaiku
+            : ClaudeService.chooseModel(sanitizedMessage);
+        final maxTokens = isSimple ? 200 : ClaudeService.maxTokensForModel(model);
+        _log.i('Model routing: $model (simple: $isSimple, maxTokens: $maxTokens)');
 
         // Add user message to history
         _addToHistory(caseId, 'user', sanitizedMessage);
 
-        // Build system prompt with relevant knowledge from all 22 databases
-        // Use reduced context for Haiku model
-        final systemPrompt = SystemPrompts.buildChatPrompt(
-          caseType: caseType,
-          country: country,
-          nationality: nationality,
-          caseContext: caseDescription,
-          userLanguage: userLanguage,
-          query: sanitizedMessage,
-          useReducedContext: model == ClaudeService.modelHaiku,
-        );
-
-        // Build messages with summarized older history
-        final messages = _buildMessagesForApi(caseId);
-        if (messages.isEmpty) {
-          messages.add({'role': 'user', 'content': sanitizedMessage});
+        // Build system prompt: light prompt for simple queries, full for complex
+        final String systemPrompt;
+        if (isSimple) {
+          systemPrompt = SystemPrompts.buildLightPrompt(
+            userLanguage: userLanguage,
+          );
+        } else {
+          systemPrompt = SystemPrompts.buildChatPrompt(
+            caseType: caseType,
+            country: country,
+            nationality: nationality,
+            caseContext: caseDescription,
+            userLanguage: userLanguage,
+            query: sanitizedMessage,
+            useReducedContext: model == ClaudeService.modelHaiku,
+          );
         }
 
-        // Send to Claude with tools enabled
-        final rawResponse = await _claudeService.sendMessageWithTools(
+        // Build messages with summarized older history.
+        // For simple queries, skip history to reduce input tokens.
+        final List<Map<String, String>> messages;
+        if (isSimple) {
+          messages = [{'role': 'user', 'content': sanitizedMessage}];
+        } else {
+          messages = _buildMessagesForApi(caseId);
+          if (messages.isEmpty) {
+            messages.add({'role': 'user', 'content': sanitizedMessage});
+          }
+        }
+
+        // For simple queries: skip tools (saves ~500 input tokens and tool parsing overhead).
+        // For complex queries: include tools for full functionality.
+        final Map<String, dynamic> rawResponse;
+        if (isSimple) {
+          final textOnly = await _claudeService.sendMessage(
+            messages: messages,
+            systemPrompt: systemPrompt,
+            maxTokens: maxTokens,
+            model: model,
+          );
+          // Add to history and return immediately — no tool processing needed.
+          _addToHistory(caseId, 'assistant', textOnly);
+          _cacheResponse(sanitizedMessage, textOnly);
+          return ChatResponse(
+            message: textOnly,
+            disclaimer:
+                'This is AI-generated legal information, not legal advice. '
+                'Please consult a qualified attorney for advice specific to your situation.',
+          );
+        }
+
+        rawResponse = await _claudeService.sendMessageWithTools(
           messages: messages,
           systemPrompt: systemPrompt,
           maxTokens: maxTokens,
@@ -554,21 +593,32 @@ class AIService {
       }
     }
 
-    // Proxy fallback
-    try {
-      final response = await _dio.post(
-        '/ai/chat',
-        data: {
-          'case_id': caseId,
-          'message': sanitizedMessage,
-          if (attachmentIds != null) 'attachment_ids': attachmentIds,
-        },
-      );
-      return ChatResponse.fromJson(response.data as Map<String, dynamic>);
-    } on DioException catch (e) {
-      _log.e('Chat message failed', error: e);
-      throw AIServiceException('Failed to send message', e);
+    // Proxy fallback — only attempt if a proxy base URL is configured.
+    if (AppConfig.aiApiBaseUrl.isNotEmpty) {
+      try {
+        final response = await _dio.post(
+          '/ai/chat',
+          data: {
+            'case_id': caseId,
+            'message': sanitizedMessage,
+            if (attachmentIds != null) 'attachment_ids': attachmentIds,
+          },
+        );
+        return ChatResponse.fromJson(response.data as Map<String, dynamic>);
+      } on DioException catch (e) {
+        _log.e('Chat proxy fallback also failed', error: e);
+        // Fall through to demo fallback below
+      }
     }
+
+    // Final fallback: return a helpful message instead of crashing.
+    _log.w('All AI backends unavailable, returning fallback message');
+    return const ChatResponse(
+      message: 'AI assistant is temporarily unavailable. '
+          'Please check your internet connection and try again. '
+          'If the problem persists, restart the app.',
+      disclaimer: null,
+    );
   }
 
   // ── Draft generation ───────────────────────────────────────────────────

@@ -32,7 +32,7 @@ import 'work_permit_database.dart';
 /// The returned string is ready to append to the LEGAL KNOWLEDGE BASE section.
 abstract final class KnowledgeRouter {
   /// Maximum characters to include from all specialty databases combined.
-  static const int _maxContextChars = 8000;
+  static const int _maxContextChars = 3000;
 
   // Singleton instances for databases that use factory constructors.
   static final _healthcareDb = HealthcareDatabase();

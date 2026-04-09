@@ -2,7 +2,12 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 
-const rateLimits = new Map<string, number[]>();
+// O(1) rate limiting: sliding window counter per IP.
+// Stores { count, windowStart } instead of an array of timestamps.
+const rateLimits = new Map<string, { count: number; windowStart: number }>();
+
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX = 10;
 
 const ALLOWED_MODELS = new Set([
   "claude-sonnet-4-20250514",
@@ -32,24 +37,33 @@ serve(async (req) => {
   }
 
   try {
-    // Rate limiting by IP
+    // O(1) rate limiting by IP — sliding window counter
     const clientIp = req.headers.get("x-forwarded-for") || "unknown";
     const now = Date.now();
-    const requests = rateLimits.get(clientIp) || [];
-    const recent = requests.filter(t => now - t < 60000);
-    if (recent.length >= 10) {
-      return new Response(JSON.stringify({ error: "Rate limit exceeded. Try again in a minute." }), {
-        status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" }
-      });
+    const bucket = rateLimits.get(clientIp);
+
+    if (bucket) {
+      if (now - bucket.windowStart < RATE_LIMIT_WINDOW_MS) {
+        if (bucket.count >= RATE_LIMIT_MAX) {
+          return new Response(JSON.stringify({ error: "Rate limit exceeded. Try again in a minute." }), {
+            status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" }
+          });
+        }
+        bucket.count++;
+      } else {
+        // Window expired — reset
+        bucket.count = 1;
+        bucket.windowStart = now;
+      }
+    } else {
+      rateLimits.set(clientIp, { count: 1, windowStart: now });
     }
-    recent.push(now);
-    rateLimits.set(clientIp, recent);
 
     const body = await req.json();
 
     // Enforce allowed model
     if (!body.model || !ALLOWED_MODELS.has(body.model)) {
-      body.model = "claude-3-haiku-20240307";
+      body.model = "claude-haiku-4-5-20251001";
     }
 
     // Enforce limits

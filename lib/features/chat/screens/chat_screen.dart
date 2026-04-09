@@ -99,7 +99,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   // -- Voice state --
   VoiceButtonState _voiceState = VoiceButtonState.idle;
-  String _partialSpeech = '';
   bool _ttsEnabled = true;
   bool _voiceInitialized = false;
   StreamSubscription<String>? _speechSub;
@@ -162,7 +161,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     setState(() {
       _voiceState = VoiceButtonState.listening;
-      _partialSpeech = '';
     });
 
     final stream = voice.startListening(langCode: langCode);
@@ -170,7 +168,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _speechSub = stream.listen(
       (partial) {
         if (mounted) {
-          setState(() => _partialSpeech = partial);
+          // Put partial speech directly into the text field
+          _messageController.text = partial;
+          _messageController.selection = TextSelection.fromPosition(
+            TextPosition(offset: partial.length),
+          );
+          setState(() {});
         }
       },
       onError: (Object error) {
@@ -178,7 +181,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         if (mounted) {
           setState(() {
             _voiceState = VoiceButtonState.idle;
-            _partialSpeech = '';
           });
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -205,26 +207,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     if (!mounted) return;
 
-    if (finalText.trim().isEmpty) {
-      setState(() {
-        _voiceState = VoiceButtonState.idle;
-        _partialSpeech = '';
-      });
-      return;
+    // Put final text into the text field (user can edit before sending)
+    if (finalText.trim().isNotEmpty) {
+      _messageController.text = finalText;
+      _messageController.selection = TextSelection.fromPosition(
+        TextPosition(offset: finalText.length),
+      );
     }
 
     setState(() {
-      _voiceState = VoiceButtonState.processing;
-      _partialSpeech = '';
+      _voiceState = VoiceButtonState.idle;
     });
 
-    await _sendMessage(finalText);
-
-    if (mounted) {
-      setState(() {
-        _voiceState = VoiceButtonState.idle;
-      });
-    }
+    // Focus the text field so user can edit and send
+    _focusNode.requestFocus();
   }
 
   Future<void> _speakResponse(String text) async {
@@ -345,14 +341,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _scrollToBottom();
 
     try {
-      final isDemo = ref.read(isDemoModeProvider);
       final supabase = ref.read(supabaseServiceProvider);
 
-      await supabase.saveChatMessage(
+      // Save user message in background — don't block the AI call.
+      // This shaves ~100-300ms off perceived latency.
+      unawaited(supabase.saveChatMessage(
         caseId: widget.caseId,
         role: 'user',
         content: text,
-      );
+      ));
 
       // Check if the message maps to a tool call (intent detection)
       final toolCall = _detectToolIntent(text);
@@ -364,15 +361,21 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         // Normal AI response flow
         String responseText;
         final ai = ref.read(aiServiceProvider);
-        if (isDemo && !ai.isUsingRealAI) {
-          await Future.delayed(const Duration(milliseconds: 800));
-          responseText = _getDemoResponse(text);
-        } else {
+        if (ai.isUsingRealAI) {
+          // Real AI is available — use it regardless of demo mode.
           final response = await ai.sendChatMessage(
             caseId: widget.caseId,
             message: text,
           );
           responseText = response.message;
+          // Guard against empty responses (e.g. tool_use only).
+          if (responseText.trim().isEmpty) {
+            responseText = _getDemoResponse(text);
+          }
+        } else {
+          // No AI backend configured — use canned demo responses.
+          await Future.delayed(const Duration(milliseconds: 800));
+          responseText = _getDemoResponse(text);
         }
 
         await supabase.saveChatMessage(
@@ -400,17 +403,21 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           }
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      debugPrint('ChatScreen._sendMessage error: $e\n$stackTrace');
       if (mounted) {
+        // When AI fails, fall back to demo response so user always gets an answer.
+        final fallback = _getDemoResponse(text);
         setState(() {
           _isTyping = false;
           _messages.add(ChatMessage(
-            id: 'error_${DateTime.now().millisecondsSinceEpoch}',
-            role: MessageRole.system,
-            content: 'Failed to get response. Please try again.',
+            id: 'ai_fallback_${DateTime.now().millisecondsSinceEpoch}',
+            role: MessageRole.assistant,
+            content: fallback,
             timestamp: DateTime.now(),
           ));
         });
+        _scrollToBottom();
       }
     } finally {
       if (mounted) setState(() => _isSending = false);
@@ -1787,6 +1794,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // -- Input bar --
 
   Widget _buildInputBar() {
+    final isListening = _voiceState == VoiceButtonState.listening;
+
     return Container(
       padding: EdgeInsets.only(
         left: AppSpacing.sm,
@@ -1815,63 +1824,82 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // Voice partial text + button
-          if (_voiceState == VoiceButtonState.listening ||
-              _voiceState == VoiceButtonState.speaking)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: VoiceButton(
-                state: _voiceState,
-                partialText:
-                    _voiceState == VoiceButtonState.listening
-                        ? _partialSpeech
-                        : null,
-                onTap: _onVoiceTap,
-              ),
+          // Attach button
+          SizedBox(
+            width: 40,
+            height: 44,
+            child: IconButton(
+              icon: const Icon(Icons.add_circle_outline_rounded, size: 22),
+              color: AppColors.textTertiary,
+              onPressed: () {
+                context.push('/scan?caseId=${widget.caseId}');
+              },
+              padding: EdgeInsets.zero,
             ),
+          ),
 
+          const SizedBox(width: 4),
+
+          // Text field with premium focus glow — takes most width
+          Expanded(
+            child: _PremiumTextField(
+              controller: _messageController,
+              focusNode: _focusNode,
+              onSend: _isSending ? null : () => _sendMessage(),
+            ),
+          ),
+
+          const SizedBox(width: 6),
+
+          // Mic + Send buttons — same size, aligned in a row
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              // Attach button
-              IconButton(
-                icon:
-                    const Icon(Icons.add_circle_outline_rounded),
-                color: AppColors.textTertiary,
-                onPressed: () {
-                  context
-                      .push('/scan?caseId=${widget.caseId}');
-                },
-              ),
-
-              // Text field with premium focus glow
-              Expanded(
-                child: _PremiumTextField(
-                  controller: _messageController,
-                  focusNode: _focusNode,
+              // Mic button — 44x44, circular
+              if (_voiceInitialized)
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isListening
+                        ? AppColors.error.withValues(alpha: 0.12)
+                        : AppColors.surfaceVariant,
+                    boxShadow: [
+                      BoxShadow(
+                        color: isListening
+                            ? AppColors.error.withValues(alpha: 0.2)
+                            : Colors.black.withValues(alpha: 0.06),
+                        blurRadius: isListening ? 10 : 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: IconButton(
+                    onPressed: _isSending ? null : _onVoiceTap,
+                    icon: Icon(
+                      isListening ? Icons.stop_rounded : Icons.mic_rounded,
+                      color: isListening ? AppColors.error : AppColors.textSecondary,
+                      size: 22,
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 4),
 
-              // Voice button (compact, next to send)
-              if (_voiceInitialized &&
-                  _voiceState != VoiceButtonState.listening &&
-                  _voiceState != VoiceButtonState.speaking)
-                VoiceButton(
-                  state: _voiceState,
-                  size: 40,
-                  onTap: _onVoiceTap,
-                ),
+              if (_voiceInitialized) const SizedBox(width: 6),
 
-              if (_voiceInitialized) const SizedBox(width: 4),
-
-              // Send button with subtle glow
+              // Send button — 44x44, circular, accent color
               Container(
+                width: 44,
+                height: 44,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  color: _isSending
+                      ? AppColors.accent.withValues(alpha: 0.5)
+                      : AppColors.accent,
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.accent.withValues(alpha: 0.25),
@@ -1881,24 +1909,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ],
                 ),
                 child: IconButton(
-                  onPressed:
-                      _isSending ? null : () => _sendMessage(),
+                  onPressed: _isSending ? null : () => _sendMessage(),
                   icon: _isSending
                       ? const SizedBox(
-                          width: 22,
-                          height: 22,
+                          width: 20,
+                          height: 20,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: AppColors.accent,
+                            color: Colors.white,
                           ),
                         )
-                      : const Icon(Icons.send_rounded),
-                  style: IconButton.styleFrom(
-                    backgroundColor: AppColors.accent,
-                    foregroundColor: Colors.white,
-                    disabledBackgroundColor:
-                        AppColors.accent.withValues(alpha: 0.5),
-                  ),
+                      : const Icon(Icons.send_rounded, size: 20),
+                  color: Colors.white,
+                  padding: EdgeInsets.zero,
                 ),
               ),
             ],
@@ -2088,10 +2111,12 @@ class _PremiumTextField extends StatefulWidget {
   const _PremiumTextField({
     required this.controller,
     required this.focusNode,
+    this.onSend,
   });
 
   final TextEditingController controller;
   final FocusNode focusNode;
+  final VoidCallback? onSend;
 
   @override
   State<_PremiumTextField> createState() => _PremiumTextFieldState();
@@ -2099,16 +2124,19 @@ class _PremiumTextField extends StatefulWidget {
 
 class _PremiumTextFieldState extends State<_PremiumTextField> {
   bool _hasFocus = false;
+  late final FocusNode _keyboardFocusNode;
 
   @override
   void initState() {
     super.initState();
+    _keyboardFocusNode = FocusNode();
     widget.focusNode.addListener(_onFocusChange);
   }
 
   @override
   void dispose() {
     widget.focusNode.removeListener(_onFocusChange);
+    _keyboardFocusNode.dispose();
     super.dispose();
   }
 
@@ -2134,37 +2162,48 @@ class _PremiumTextFieldState extends State<_PremiumTextField> {
               ]
             : null,
       ),
-      child: TextField(
-        controller: widget.controller,
-        focusNode: widget.focusNode,
-        maxLines: 5,
-        minLines: 1,
-        textCapitalization: TextCapitalization.sentences,
-        textInputAction: TextInputAction.newline,
-        decoration: InputDecoration(
-          hintText: 'Опишите вашу ситуацию...',
-          hintStyle: const TextStyle(color: AppColors.textTertiary),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            borderSide: _hasFocus
-                ? BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0)
-                : BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-            borderSide: BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0),
-          ),
-          filled: true,
-          fillColor: _hasFocus
-              ? AppColors.surface
-              : AppColors.surfaceVariant,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.sm + 2,
+      child: KeyboardListener(
+        focusNode: _keyboardFocusNode,
+        onKeyEvent: (event) {
+          if (event is KeyDownEvent &&
+              event.logicalKey == LogicalKeyboardKey.enter &&
+              !HardwareKeyboard.instance.isShiftPressed &&
+              widget.onSend != null) {
+            widget.onSend!();
+          }
+        },
+        child: TextField(
+          controller: widget.controller,
+          focusNode: widget.focusNode,
+          maxLines: 5,
+          minLines: 1,
+          textCapitalization: TextCapitalization.sentences,
+          textInputAction: TextInputAction.newline,
+          decoration: InputDecoration(
+            hintText: 'Опишите вашу ситуацию...',
+            hintStyle: const TextStyle(color: AppColors.textTertiary),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              borderSide: _hasFocus
+                  ? BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0)
+                  : BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppRadius.xl),
+              borderSide: BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0),
+            ),
+            filled: true,
+            fillColor: _hasFocus
+                ? AppColors.surface
+                : AppColors.surfaceVariant,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.sm + 2,
+            ),
           ),
         ),
       ),

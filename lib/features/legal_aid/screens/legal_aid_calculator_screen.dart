@@ -37,20 +37,6 @@ class _CountryLegalAid {
 
 const List<_CountryLegalAid> _countries = [
   _CountryLegalAid(
-    countryCode: 'FI',
-    flag: '\u{1F1EB}\u{1F1EE}',
-    countryName: 'Finland',
-    systemName: 'Oikeusapu',
-    currency: 'EUR',
-    freeThreshold: 600,
-    partialThreshold: 1400,
-    assetThreshold: 10000,
-    whereToApply: 'Oikeusaputoimisto (Legal Aid Office)',
-    phone: '029 56 00100',
-    website: 'https://oikeus.fi/oikeusapu',
-    notes: 'Dependents reduce disposable income by ~300 EUR each.',
-  ),
-  _CountryLegalAid(
     countryCode: 'EE',
     flag: '\u{1F1EA}\u{1F1EA}',
     countryName: 'Estonia',
@@ -63,6 +49,20 @@ const List<_CountryLegalAid> _countries = [
     phone: '+372 620 8183',
     website: 'https://www.riigiteataja.ee/en/eli/ee/Riigikogu/act/503012023005/consolide',
     notes: 'Free if income below minimum wage (~820 EUR). Court may grant partial aid.',
+  ),
+  _CountryLegalAid(
+    countryCode: 'FI',
+    flag: '\u{1F1EB}\u{1F1EE}',
+    countryName: 'Finland',
+    systemName: 'Oikeusapu',
+    currency: 'EUR',
+    freeThreshold: 600,
+    partialThreshold: 1400,
+    assetThreshold: 10000,
+    whereToApply: 'Oikeusaputoimisto (Legal Aid Office)',
+    phone: '029 56 00100',
+    website: 'https://oikeus.fi/oikeusapu',
+    notes: 'Dependents reduce disposable income by ~300 EUR each.',
   ),
   _CountryLegalAid(
     countryCode: 'DE',

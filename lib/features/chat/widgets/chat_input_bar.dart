@@ -36,7 +36,7 @@ class ChatInputBar extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.only(
-        left: AppSpacing.md,
+        left: AppSpacing.sm,
         right: AppSpacing.sm,
         top: AppSpacing.sm,
         bottom: MediaQuery.of(context).padding.bottom + AppSpacing.sm,
@@ -44,117 +44,151 @@ class ChatInputBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         border: Border(
-          top: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
+          top: BorderSide(color: AppColors.border.withValues(alpha: 0.3)),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, -3),
+          ),
+        ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // Partial speech text
-          if (isListening && partialSpeech.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: Text(
-                partialSpeech,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
-                  fontStyle: FontStyle.italic,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+          // Attach button
+          if (onAttach != null)
+            SizedBox(
+              width: 40,
+              height: 44,
+              child: IconButton(
+                icon: const Icon(Icons.attach_file_rounded, size: 22),
+                color: AppColors.textTertiary,
+                onPressed: isSending ? null : onAttach,
+                padding: EdgeInsets.zero,
               ),
             ),
 
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // Attach button
-              if (onAttach != null)
-                IconButton(
-                  icon: const Icon(Icons.attach_file_rounded, size: 22),
-                  color: AppColors.textTertiary,
-                  onPressed: isSending ? null : onAttach,
-                  padding: const EdgeInsets.all(8),
-                  constraints: const BoxConstraints(),
-                ),
+          if (onAttach != null) const SizedBox(width: 4),
 
-              // Text field
-              Expanded(
-                child: Container(
-                  constraints: const BoxConstraints(maxHeight: 120),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceVariant,
-                    borderRadius: BorderRadius.circular(AppRadius.lg),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  child: KeyboardListener(
-                    focusNode: FocusNode(),
-                    onKeyEvent: (event) {
-                      if (event is KeyDownEvent &&
-                          event.logicalKey == LogicalKeyboardKey.enter &&
-                          !HardwareKeyboard.instance.isShiftPressed) {
-                        onSend();
-                      }
-                    },
-                    child: TextField(
-                    controller: messageController,
-                    focusNode: focusNode,
-                    maxLines: 5,
-                    minLines: 1,
-                    enabled: !isSending,
-                    textInputAction: TextInputAction.send,
-                    onSubmitted: (_) => onSend(),
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)?.typeMessage ?? 'Type a message...',
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 14,
-                        vertical: 10,
-                      ),
-                      isDense: true,
-                    ),
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  ),
+          // Text field — takes most width
+          Expanded(
+            child: Container(
+              constraints: const BoxConstraints(maxHeight: 120),
+              decoration: BoxDecoration(
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(AppRadius.xl),
+                border: Border.all(
+                  color: AppColors.border.withValues(alpha: 0.5),
                 ),
               ),
+              child: KeyboardListener(
+                focusNode: FocusNode(),
+                onKeyEvent: (event) {
+                  if (event is KeyDownEvent &&
+                      event.logicalKey == LogicalKeyboardKey.enter &&
+                      !HardwareKeyboard.instance.isShiftPressed) {
+                    onSend();
+                  }
+                },
+                child: TextField(
+                  controller: messageController,
+                  focusNode: focusNode,
+                  maxLines: 5,
+                  minLines: 1,
+                  enabled: !isSending,
+                  textInputAction: TextInputAction.newline,
+                  textCapitalization: TextCapitalization.sentences,
+                  decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)?.typeMessage ??
+                        'Type a message...',
+                    hintStyle:
+                        const TextStyle(color: AppColors.textTertiary),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
+                    isDense: true,
+                  ),
+                  style: const TextStyle(fontSize: 15),
+                ),
+              ),
+            ),
+          ),
 
-              const SizedBox(width: 4),
+          const SizedBox(width: 6),
 
-              // Voice button (compact)
+          // Mic + Send buttons — same size, aligned in a row
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Mic button — 44x44, circular
               if (voiceInitialized)
-                SizedBox(
-                  width: 40,
-                  height: 40,
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: isListening
+                        ? AppColors.error.withValues(alpha: 0.12)
+                        : AppColors.surfaceVariant,
+                    boxShadow: [
+                      BoxShadow(
+                        color: isListening
+                            ? AppColors.error.withValues(alpha: 0.2)
+                            : Colors.black.withValues(alpha: 0.06),
+                        blurRadius: isListening ? 10 : 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
                   child: IconButton(
+                    onPressed: isSending ? null : onVoiceTap,
                     icon: Icon(
                       isListening ? Icons.stop_rounded : Icons.mic_rounded,
-                      color: isListening ? AppColors.error : AppColors.textTertiary,
+                      color: isListening
+                          ? AppColors.error
+                          : AppColors.textSecondary,
                       size: 22,
                     ),
-                    onPressed: isSending ? null : onVoiceTap,
                     padding: EdgeInsets.zero,
                   ),
                 ),
 
-              // Send button
-              SizedBox(
-                width: 40,
-                height: 40,
+              if (voiceInitialized) const SizedBox(width: 6),
+
+              // Send button — 44x44, circular, accent color
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: isSending
+                      ? AppColors.accent.withValues(alpha: 0.5)
+                      : AppColors.accent,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.25),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: IconButton(
+                  onPressed: isSending ? null : onSend,
                   icon: isSending
                       ? const SizedBox(
                           width: 20,
                           height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: Colors.white,
+                          ),
                         )
-                      : const Icon(
-                          Icons.send_rounded,
-                          color: AppColors.accent,
-                          size: 22,
-                        ),
-                  onPressed: isSending ? null : onSend,
+                      : const Icon(Icons.send_rounded, size: 20),
+                  color: Colors.white,
                   padding: EdgeInsets.zero,
                 ),
               ),

@@ -10,7 +10,7 @@ import 'knowledge_router.dart';
 /// limits by selecting only relevant knowledge sections.
 abstract final class KnowledgeBase {
   /// Maximum approximate token budget for the knowledge base context.
-  static const int maxTokenBudget = 50000;
+  static const int maxTokenBudget = 15000;
 
   /// Build the knowledge context string for a given case type and country.
   ///
@@ -31,8 +31,10 @@ abstract final class KnowledgeBase {
     sections.add(_euFundamentalRights);
 
     // Country-specific procedural law
-    final countryLower = (country ?? 'finland').toLowerCase();
-    if (countryLower.contains('finland') || countryLower.contains('suomi')) {
+    final countryLower = (country ?? 'estonia').toLowerCase();
+    if (countryLower.contains('estonia') || countryLower.contains('eesti')) {
+      sections.add(_estoniaProcedural);
+    } else if (countryLower.contains('finland') || countryLower.contains('suomi')) {
       sections.add(_finlandProcedural);
     } else if (countryLower.contains('germany') ||
         countryLower.contains('deutschland')) {
@@ -41,9 +43,9 @@ abstract final class KnowledgeBase {
         countryLower.contains('sverige')) {
       sections.add(_swedenProcedural);
     }
-    // Default: include Finland as primary market
+    // Default: include Estonia as primary market
     if (sections.length == 1) {
-      sections.add(_finlandProcedural);
+      sections.add(_estoniaProcedural);
     }
 
     // Case-type-specific knowledge
@@ -174,7 +176,48 @@ abstract final class KnowledgeBase {
 - C-413/99 Baumbast: Right of residence has direct effect
 - C-145/09 Tsakouridis: High threshold for expulsion of long-term residents''';
 
-  // ── Finland Procedural ──────────────────────────────────────────────────
+  // ── Estonia Procedural (PRIMARY) ────────────────────────────────────────
+
+  static const String _estoniaProcedural = '''
+## ESTONIA — PROCEDURAL LAW
+
+**Haldusmenetluse seadus (Administrative Procedure Act, HMS):**
+- § 4: Principles of good administration (proportionality, impartiality, legitimate expectations)
+- § 8: Language of proceedings is Estonian; translation provided if person does not understand
+- § 6: Principle of investigation — authority must establish facts
+- § 40: Right to be heard before decision (ärakuulamisõigus)
+- § 56: Administrative act must be in writing with reasons
+- § 57: Obligation to state reasons for the decision
+- § 58: Administrative act must include appeal instructions (vaidlustamisviide)
+- § 64-68: Correction and annulment of erroneous administrative acts
+- § 71-76: Challenge procedure (vaie) — administrative appeal within 30 days
+
+**Halduskohtumenetluse seadustik (Administrative Court Procedure Code, HKMS):**
+- § 46: Right to file action against administrative act within 30 days
+- § 249-252: Interim measures (esialgne õiguskaitse) — court can suspend execution
+- § 158: Court can annul, modify, or return matter for new consideration
+
+**Välismaalaste seadus (Aliens Act, VMS):**
+- § 4: Application of law must respect human rights and fundamental freedoms
+- § 171: Non-refoulement (väljasaatmise keeld)
+- § 72: Obligation to leave Estonia
+- § 74-78: Expulsion (väljasaatmine) and entry ban
+- § 281-284: Right of appeal to administrative court
+- § 15: Residence permit application and decision procedures
+
+**Karistusseadustik (Penal Code, KarS):**
+- General criminal law reference for cases involving criminal records
+
+**Key Estonian Courts:**
+- First instance: Tallinna Halduskohus (Tallinn Administrative Court), Tartu Halduskohus
+- Second instance: Tallinna Ringkonnakohus (Tallinn Circuit Court), Tartu Ringkonnakohus
+- Supreme Court: Riigikohus (Supreme Court of Estonia)
+- Ombudsman: Õiguskantsler (Chancellor of Justice)
+
+**Key Authority:**
+- PPA — Politsei- ja Piirivalveamet (Police and Border Guard Board) — handles immigration, residence permits, expulsion''';
+
+  // ── Finland Procedural (SECONDARY) ────────────────────────────────────
 
   static const String _finlandProcedural = '''
 ## FINLAND — PROCEDURAL LAW
@@ -266,6 +309,55 @@ abstract final class KnowledgeBase {
   // ── Case-type-specific knowledge ────────────────────────────────────────
 
   static String _immigrationLaw(String country) {
+    if (country.contains('estonia') || country.contains('eesti')) {
+      return '''
+## ESTONIA — IMMIGRATION & DEPORTATION LAW
+
+**Expulsion (Välismaalaste seadus / Aliens Act, VMS):**
+- § 72: Obligation to leave Estonia (lahkumiskohustus)
+- § 74: Grounds for expulsion (conviction, threat to public order, illegal stay)
+- § 75-76: Expulsion decision must consider:
+  - Duration of residence in Estonia
+  - Family and social ties
+  - Best interests of the child
+  - Conditions in the country of return
+  - Health condition
+- § 171: Non-refoulement (väljasaatmise keeld) — prohibition of return to danger
+- § 74(3): Voluntary departure period (7-30 days)
+- § 74(5): Entry ban (up to 10 years)
+
+**Appeal Process:**
+1. Receive decision with appeal instructions (vaidlustamisviide)
+2. Optional: File challenge (vaie) to PPA within 30 days (Haldusmenetluse seadus § 71-76)
+3. File action to Tallinna Halduskohus (Administrative Court) within 30 days (HKMS § 46)
+4. Request interim measures (esialgne õiguskaitse) if expulsion imminent (HKMS § 249)
+5. Court hearing
+6. Court decision — can annul, modify, or return for new consideration
+7. Appeal to Tallinna Ringkonnakohus (Circuit Court) — leave required
+8. Cassation to Riigikohus (Supreme Court) — on points of law only
+9. Alternative: Complaint to Õiguskantsler (Chancellor of Justice)
+
+**Procedural Errors That Can Invalidate a Decision:**
+- Wrong language (must provide in language person understands — HMS § 8)
+- Failure to hear the person before decision (HMS § 40)
+- Decision by unauthorized official
+- Factual errors in the decision
+- Failure to consider relevant circumstances
+- Missing or inadequate reasoning (HMS § 56-57)
+- Missing appeal instructions (HMS § 58)
+
+**Free Legal Aid:**
+- Riigi õigusabi (State Legal Aid) — means-tested, apply through court
+- Õigusteenuse osutamine (legal service provision by NGOs)
+- Eesti Pagulasabi (Estonian Refugee Council) — for asylum seekers
+- Ohvriabi (Victim Support Estonia) — if crime involved (Sotsiaalkindlustusamet)
+
+**Key PPA (Politsei- ja Piirivalveamet) Procedures:**
+- Application for residence permit: online via PPA self-service portal
+- Interview at PPA service office
+- Decision notification (must include reasons and appeal instructions)
+- Processing times vary: 1-6 months depending on permit type''';
+    }
     if (country.contains('finland') || country.contains('suomi')) {
       return '''
 ## FINLAND — IMMIGRATION & DEPORTATION LAW
@@ -352,6 +444,30 @@ abstract final class KnowledgeBase {
   }
 
   static String _laborLaw(String country) {
+    if (country.contains('estonia') || country.contains('eesti')) {
+      return '''
+## ESTONIA — LABOR LAW
+
+**Töölepingu seadus (Employment Contracts Act, TLS):**
+- § 1-4: Employment contract must be in writing
+- § 85-92: Grounds for termination (extraordinary cancellation — serious breach of obligations)
+- § 88: Employer extraordinary cancellation (breach by employee, incompetence, redundancy)
+- § 89: Employee extraordinary cancellation (employer breach, health reasons)
+- § 97-100: Notice periods (15 calendar days to 90 calendar days depending on duration)
+- § 109: Compensation for unlawful termination (up to 3 months average salary; up to 12 months by court decision)
+
+**Võlaõigusseadus (Law of Obligations Act, VÕS):**
+- General contractual obligations applicable to employment relationships
+
+**Võrdse kohtlemise seadus (Equal Treatment Act):**
+- Prohibits discrimination in employment on grounds of nationality, race, colour, religion, age, disability, sexual orientation
+
+**Key Bodies:**
+- Tööinspektsioon (Labour Inspectorate) — workplace inspections, dispute resolution
+- Töövaidluskomisjon (Labour Dispute Committee) — resolves individual labour disputes (free, mandatory pre-court)
+- Soolise võrdõiguslikkuse ja võrdse kohtlemise volinik (Gender Equality and Equal Treatment Commissioner)
+- Halduskohus (Administrative Court) — for public sector employment disputes''';
+    }
     if (country.contains('finland') || country.contains('suomi')) {
       return '''
 ## FINLAND — LABOR LAW
@@ -406,6 +522,36 @@ abstract final class KnowledgeBase {
   }
 
   static String _tenantLaw(String country) {
+    if (country.contains('estonia') || country.contains('eesti')) {
+      return '''
+## ESTONIA — TENANT RIGHTS
+
+**Võlaõigusseadus (Law of Obligations Act, VÕS) — Chapters 29-34 (Lease of Residential Premises):**
+- § 271-275: Lease agreement (written form recommended, oral valid)
+- § 309-312: Termination by landlord:
+  - Open-ended lease: 3 months notice
+  - Fixed-term lease: only for extraordinary reasons
+  - Must have justified reason (breach of contract, own use, etc.)
+  - Notice must be in writing
+- § 312-313: Termination by tenant:
+  - Open-ended: 3 months notice
+  - Fixed-term: only for extraordinary reasons
+  - Extraordinary cancellation: immediately upon serious breach
+- § 275: Rent increase — only as per contract terms, must give 30 days notice
+- § 276-280: Maintenance obligations (landlord: structure and major repairs; tenant: daily upkeep)
+- § 314: Disputes resolved in county court (Maakohus)
+
+**Eviction Process:**
+- Landlord cannot self-help evict (change locks, remove belongings)
+- Must get court order through Maakohus (County Court)
+- Tenant has right to state legal aid (riigi õigusabi)
+- Court can grant reasonable time for vacating
+
+**Key Bodies:**
+- Tarbijakaitse ja Tehnilise Järelevalve Amet (Consumer Protection and Technical Regulatory Authority — TTJA)
+- Maakohus (County Court) — for formal lease disputes
+- Õigusteenuse bürood (Legal aid offices)''';
+    }
     if (country.contains('finland') || country.contains('suomi')) {
       return '''
 ## FINLAND — TENANT RIGHTS
@@ -459,7 +605,16 @@ Tenant rights are primarily national law, but EU law provides:
 - Prohibition of aggressive debt collection practices
 - Misleading actions and omissions prohibited
 
-${country.contains('finland') || country.contains('suomi') ? '''
+${country.contains('estonia') || country.contains('eesti') ? '''
+**Estonia — Debt Collection:**
+- Võlaõigusseadus (Law of Obligations Act, VÕS) — general obligations
+- Täitemenetluse seadustik (Code of Enforcement Procedure) — enforcement through kohtutäitur (bailiff)
+- Debt collector must identify themselves and the creditor
+- Consumer has right to dispute the debt
+- Aggressive or harassing collection is prohibited
+- Tarbijakaitse ja Tehnilise Järelevalve Amet (TTJA — Consumer Protection Authority) can intervene
+- Enforcement only through official kohtutäitur (bailiff) with court order
+''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Debt Collection:**
 - Laki saatavien perinnästä (Debt Collection Act, 513/1999)
 - Debt collector must identify themselves and the creditor
@@ -485,7 +640,14 @@ ${country.contains('finland') || country.contains('suomi') ? '''
 - Victimization (retaliation for complaint) prohibited
 - Burden of proof shifts to respondent once prima facie case established
 
-${country.contains('finland') || country.contains('suomi') ? '''
+${country.contains('estonia') || country.contains('eesti') ? '''
+**Estonia — Võrdse kohtlemise seadus (Equal Treatment Act):**
+- Applies to: employment, education, services, social protection
+- Protected grounds: nationality, race, colour, language, origin, religion, political opinion, property, social status, age, disability, sexual orientation
+- Soolise võrdõiguslikkuse ja võrdse kohtlemise volinik (Gender Equality and Equal Treatment Commissioner) — free, handles complaints
+- Tööinspektsioon (Labour Inspectorate) — employment discrimination
+- Õiguskantsler (Chancellor of Justice) — can review public sector discrimination
+''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Yhdenvertaisuuslaki (Non-Discrimination Act, 1325/2014):**
 - Applies to: employment, education, services, housing
 - Protected grounds: age, origin, nationality, language, religion, belief, opinion, political activity, trade union activity, family relationships, health, disability, sexual orientation, or other personal characteristic
@@ -503,7 +665,15 @@ ${country.contains('finland') || country.contains('suomi') ? '''
 - Art. 5: Right to liberty (unlawful arrest/detention)
 - Art. 13: Right to effective remedy against state actors
 
-${country.contains('finland') || country.contains('suomi') ? '''
+${country.contains('estonia') || country.contains('eesti') ? '''
+**Estonia — Complaints Against Police:**
+- Politsei- ja Piirivalveamet (PPA) internal control department
+- Õiguskantsler (Chancellor of Justice) — handles complaints against state authorities including police
+- Riigiprokuratuur (Prosecutor's Office) — investigates police criminal matters
+- Criminal complaint: file with Prokuratuur (Prosecutor's Office) directly
+- Korruptsioonivastane seadus (Anti-Corruption Act) — for corruption cases
+- Politsei ja piirivalve seadus (Police and Border Guard Act) — § 3: Proportionality requirement
+''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Complaints Against Police:**
 - Poliisin laillisuusvalvonta (Police Legality Control)
 - Eduskunnan oikeusasiamies (Parliamentary Ombudsman) — handles police complaints
@@ -518,7 +688,25 @@ ${country.contains('finland') || country.contains('suomi') ? '''
     return '''
 ## SOCIAL BENEFITS LAW
 
-${country.contains('finland') || country.contains('suomi') ? '''
+${country.contains('estonia') || country.contains('eesti') ? '''
+**Estonia — Key Social Benefits:**
+- Sotsiaalkindlustusamet (Social Insurance Board) — manages most benefits
+- Toimetulekutoetus (Subsistence benefit) — last resort, through local municipality (KOV)
+- Peretoetused (Family benefits) — Sotsiaalkindlustusamet
+- Töötuskindlustus (Unemployment insurance) — Eesti Töötukassa (Estonian Unemployment Insurance Fund)
+- Haigushüvitis (Sickness benefit) — Eesti Haigekassa (Estonian Health Insurance Fund)
+
+**Appeal Process for Social Insurance Board Decisions:**
+1. File challenge (vaie) to Sotsiaalkindlustusamet within 30 days
+2. Appeal to Tallinna Halduskohus (Administrative Court) within 30 days
+3. Further appeal to Ringkonnakohus (Circuit Court)
+
+**Right to Social Assistance:**
+- Toimetulekutoetus available to legal residents regardless of nationality
+- Cannot be denied if person has no other means of support
+- Covers: food, housing costs, clothing, hygiene, transport, small personal expenses
+- Apply at local municipality (kohalik omavalitsus)
+''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Key Social Benefits:**
 - Kela (Social Insurance Institution) — manages most benefits
 - Toimeentulotuki (Social Assistance) — last resort, municipality/Kela

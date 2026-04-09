@@ -78,8 +78,8 @@ class ClaudeService {
             baseUrl: AppConfig.useSupabaseProxy
                 ? '${AppConfig.supabaseUrl}/functions/v1'
                 : 'https://api.anthropic.com',
-            connectTimeout: const Duration(seconds: 30),
-            receiveTimeout: const Duration(seconds: 120),
+            connectTimeout: const Duration(seconds: 10),
+            receiveTimeout: const Duration(seconds: 30),
             headers: {
               'Content-Type': 'application/json',
               if (!AppConfig.useSupabaseProxy) 'anthropic-version': '2023-06-01',
@@ -106,9 +106,10 @@ class ClaudeService {
   /// Timestamp of the last API request, used for throttling.
   DateTime? _lastRequestTime;
 
-  /// Whether the service is available (Supabase proxy or direct API key).
+  /// Whether the service is available (Supabase proxy with anon key, or direct API key).
   static bool get isAvailable =>
-      AppConfig.supabaseUrl.isNotEmpty || AppConfig.claudeApiKey.isNotEmpty;
+      (AppConfig.supabaseUrl.isNotEmpty && AppConfig.supabaseAnonKey.isNotEmpty) ||
+      AppConfig.claudeApiKey.isNotEmpty;
 
   /// Expensive model for complex legal analysis.
   static const String modelSonnet = 'claude-sonnet-4-20250514';
@@ -116,8 +117,8 @@ class ClaudeService {
   /// Cheap model for simple questions (12x cheaper).
   static const String modelHaiku = 'claude-haiku-4-5-20251001';
 
-  /// Max output tokens for Haiku (short answers).
-  static const int _maxTokensHaiku = 500;
+  /// Max output tokens for Haiku (short answers — fewer tokens = faster).
+  static const int _maxTokensHaiku = 400;
 
   /// Max output tokens for Sonnet (detailed answers).
   static const int _maxTokensSonnet = 1000;
@@ -151,27 +152,27 @@ class ClaudeService {
 
   /// Determine the appropriate model for a query.
   ///
-  /// Returns [modelHaiku] for simple/short questions,
-  /// [modelSonnet] for complex legal analysis.
+  /// Aggressively defaults to [modelHaiku] (3x faster) unless the query
+  /// is clearly complex legal analysis requiring [modelSonnet].
   static String chooseModel(String query) {
-    // Short greetings and simple questions -> Haiku
-    if (query.length < 100) {
-      final lower = query.toLowerCase();
+    final lower = query.toLowerCase();
+
+    // Short messages (< 150 chars) without complex keywords -> always Haiku
+    if (query.length < 150) {
       final hasComplexKeyword =
           _complexKeywords.any((kw) => lower.contains(kw));
       if (!hasComplexKeyword) return modelHaiku;
     }
 
-    // Check for complex keywords in any length message
-    final lower = query.toLowerCase();
-    if (_complexKeywords.any((kw) => lower.contains(kw))) {
-      return modelSonnet;
-    }
+    // Only use Sonnet if MULTIPLE complex keywords found (truly complex query)
+    final matchCount =
+        _complexKeywords.where((kw) => lower.contains(kw)).length;
+    if (matchCount >= 2) return modelSonnet;
 
-    // Messages > 200 chars likely need detailed analysis
-    if (query.length > 200) return modelSonnet;
+    // Very long messages (> 300 chars) with at least one keyword -> Sonnet
+    if (query.length > 300 && matchCount >= 1) return modelSonnet;
 
-    // Default: Haiku for cost savings
+    // Default: Haiku for speed
     return modelHaiku;
   }
 
@@ -180,11 +181,38 @@ class ClaudeService {
     return model == modelHaiku ? _maxTokensHaiku : _maxTokensSonnet;
   }
 
+  /// Whether a query is "simple" — greetings, meta-questions, short queries
+  /// without legal keywords. Simple queries skip the knowledge base entirely
+  /// and use a minimal system prompt for maximum speed.
+  static bool isSimpleQuery(String query) {
+    if (query.length > 80) return false;
+    final lower = query.toLowerCase().trim();
+    // Check for any complex keyword — if found, not simple
+    if (_complexKeywords.any((kw) => lower.contains(kw))) return false;
+    // Greetings and meta-questions are always simple
+    const simplePatterns = [
+      'hi', 'hello', 'hey', 'привет', 'здравствуйте', 'tere', 'hei',
+      'hola', 'bonjour', 'moi', 'terve', 'help', 'помощь', 'abi',
+      'what can you do', 'что ты умеешь', 'mida sa oskad',
+      'who are you', 'кто ты', 'kes sa oled',
+      'thanks', 'thank you', 'спасибо', 'aitäh', 'kiitos',
+      'ok', 'okay', 'good', 'хорошо', 'ладно', 'понял',
+      'yes', 'no', 'да', 'нет', 'jah', 'ei',
+    ];
+    // Exact match or very short message
+    if (simplePatterns.any((p) => lower == p || lower.startsWith('$p '))) {
+      return true;
+    }
+    // Very short messages without legal content are simple
+    if (query.length < 30) return true;
+    return false;
+  }
+
   /// Maximum retries on transient failures.
-  static const int _maxRetries = 2;
+  static const int _maxRetries = 1;
 
   /// Delay between retries.
-  static const Duration _retryDelay = Duration(seconds: 2);
+  static const Duration _retryDelay = Duration(seconds: 1);
 
   // ── Core API call with retries ──────────────────────────────────────────
   // When _useProxy is true, requests go to Supabase Edge Function which
@@ -206,10 +234,13 @@ class ClaudeService {
     }
 
     // Enforce rate limiting: wait if the last request was too recent.
+    // Use 300ms minimum gap (was 1000ms) — fast enough to prevent abuse,
+    // short enough not to add perceived latency.
     if (_lastRequestTime != null) {
       final elapsed =
           DateTime.now().difference(_lastRequestTime!).inMilliseconds;
-      final remaining = AppConfig.aiRequestThrottleMs - elapsed;
+      const throttleMs = 300; // Reduced from AppConfig.aiRequestThrottleMs
+      final remaining = throttleMs - elapsed;
       if (remaining > 0) {
         await Future<void>.delayed(Duration(milliseconds: remaining));
       }

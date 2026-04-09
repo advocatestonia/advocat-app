@@ -18,7 +18,7 @@ class AppConfig {
   // ── Supabase ──────────────────────────────────────────────────────────
   static const String supabaseUrl = String.fromEnvironment(
     'SUPABASE_URL',
-    defaultValue: '',
+    defaultValue: 'https://okgnkucgwsytsondrjye.supabase.co',
   );
 
   static const String supabaseAnonKey = String.fromEnvironment(
@@ -65,16 +65,18 @@ class AppConfig {
   );
 
   /// Resolved AI mode. When set to 'auto', uses real AI if a Supabase proxy
-  /// or direct Claude API key is available, otherwise falls back to demo mode.
+  /// (with anon key) or direct Claude API key is available, otherwise falls
+  /// back to demo mode.
   static bool get useRealAI {
     if (_aiModeRaw == 'real') return true;
     if (_aiModeRaw == 'demo') return false;
-    // 'auto': use real AI if Supabase proxy or direct API key is configured
-    return supabaseUrl.isNotEmpty || claudeApiKey.isNotEmpty;
+    // 'auto': use real AI if Supabase proxy with anon key, or direct API key
+    return useSupabaseProxy || claudeApiKey.isNotEmpty;
   }
 
-  /// Whether the Supabase proxy is configured (preferred, secure path).
-  static bool get useSupabaseProxy => supabaseUrl.isNotEmpty;
+  /// Whether the Supabase proxy is fully configured (URL + anon key).
+  static bool get useSupabaseProxy =>
+      supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty;
 
   // ── Email Integration ─────────────────────────────────────────────────
   static const String emailApiBaseUrl = String.fromEnvironment(
