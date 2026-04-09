@@ -66,19 +66,23 @@ class ClaudeAnalysisResult {
 }
 
 // ---------------------------------------------------------------------------
-// Claude API Service — direct API calls (MVP only, move to server-side later)
+// Claude API Service — Supabase Edge Function proxy (secure, key on server)
+// Falls back to direct Anthropic API if Supabase is not configured (local dev).
 // ---------------------------------------------------------------------------
 
 class ClaudeService {
   ClaudeService()
-      : _dio = Dio(
+      : _useProxy = AppConfig.useSupabaseProxy,
+        _dio = Dio(
           BaseOptions(
-            baseUrl: 'https://api.anthropic.com',
+            baseUrl: AppConfig.useSupabaseProxy
+                ? '${AppConfig.supabaseUrl}/functions/v1'
+                : 'https://api.anthropic.com',
             connectTimeout: const Duration(seconds: 30),
             receiveTimeout: const Duration(seconds: 120),
             headers: {
               'Content-Type': 'application/json',
-              'anthropic-version': '2023-06-01',
+              if (!AppConfig.useSupabaseProxy) 'anthropic-version': '2023-06-01',
             },
           ),
         ),
@@ -89,6 +93,7 @@ class ClaudeService {
 
   final Dio _dio;
   final Logger _log;
+  final bool _useProxy;
 
   /// Running total of tokens used in this session.
   int _sessionInputTokens = 0;
@@ -101,8 +106,9 @@ class ClaudeService {
   /// Timestamp of the last API request, used for throttling.
   DateTime? _lastRequestTime;
 
-  /// Whether a valid API key is configured.
-  static bool get isAvailable => AppConfig.claudeApiKey.isNotEmpty;
+  /// Whether the service is available (Supabase proxy or direct API key).
+  static bool get isAvailable =>
+      AppConfig.supabaseUrl.isNotEmpty || AppConfig.claudeApiKey.isNotEmpty;
 
   /// Expensive model for complex legal analysis.
   static const String modelSonnet = 'claude-sonnet-4-20250514';
@@ -181,6 +187,9 @@ class ClaudeService {
   static const Duration _retryDelay = Duration(seconds: 2);
 
   // ── Core API call with retries ──────────────────────────────────────────
+  // When _useProxy is true, requests go to Supabase Edge Function which
+  // holds the Claude API key server-side. The client authenticates with
+  // the Supabase anon key (safe for client-side use).
 
   Future<Map<String, dynamic>> _callApi({
     required String systemPrompt,
@@ -191,7 +200,9 @@ class ClaudeService {
     String? model,
   }) async {
     if (!isAvailable) {
-      throw const ClaudeServiceException('Claude API key is not configured');
+      throw const ClaudeServiceException(
+        'Claude API is not configured. Set SUPABASE_URL or CLAUDE_API_KEY.',
+      );
     }
 
     // Enforce rate limiting: wait if the last request was too recent.
@@ -224,12 +235,16 @@ class ClaudeService {
         }
 
         final response = await _dio.post(
-          '/v1/messages',
+          _useProxy ? '/claude-proxy' : '/v1/messages',
           data: body,
           options: Options(
-            headers: {
-              'x-api-key': AppConfig.claudeApiKey,
-            },
+            headers: _useProxy
+                ? {
+                    'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
+                  }
+                : {
+                    'x-api-key': AppConfig.claudeApiKey,
+                  },
           ),
         );
 

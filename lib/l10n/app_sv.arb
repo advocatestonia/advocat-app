@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
     "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "Gäst"
+    "guestUser": "Gäst",
+    "howToUse": "Hur använda?",
+    "tutorialStep1Title": "AI-juridisk assistent",
+    "tutorialStep1Desc": "Ställ vilken rättslig fråga som helst och få omedelbara svar baserade på estnisk lag.",
+    "tutorialStep2Title": "Känn till dina rättigheter",
+    "tutorialStep2Desc": "Bläddra bland juridisk information efter ämne — arbete, boende, konsumenträttigheter och mer.",
+    "tutorialStep3Title": "Skanna dokument",
+    "tutorialStep3Desc": "Ta bilder av juridiska dokument för AI-analys och säker förvaring.",
+    "tutorialStep4Title": "Kom igång!",
+    "tutorialStep4Desc": "Utforska appen och skydda dina rättigheter. All data förblir privat på din enhet."
 }

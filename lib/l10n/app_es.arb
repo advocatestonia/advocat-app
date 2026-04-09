@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "Solo informativo",
     "disclaimerExpanded": "Asistente IA — no es asesoramiento legal. Siempre verifique con un abogado calificado.",
     "chatDisclaimerBanner": "El asistente IA proporciona información legal, no asesoramiento legal. Consulte siempre a un abogado calificado.",
-    "guestUser": "Invitado"
+    "guestUser": "Invitado",
+    "howToUse": "Como usar?",
+    "tutorialStep1Title": "Asistente legal IA",
+    "tutorialStep1Desc": "Haga cualquier pregunta legal y obtenga respuestas instantaneas basadas en la legislacion estonia.",
+    "tutorialStep2Title": "Conozca sus derechos",
+    "tutorialStep2Desc": "Explore informacion legal por temas — trabajo, vivienda, derechos del consumidor y mas.",
+    "tutorialStep3Title": "Escanear documentos",
+    "tutorialStep3Desc": "Tome fotos de documentos legales para analisis de IA y almacenamiento seguro.",
+    "tutorialStep4Title": "Empecemos!",
+    "tutorialStep4Desc": "Explore la aplicacion y proteja sus derechos. Todos los datos permanecen privados en su dispositivo."
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -126,7 +127,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final sttOk = await voice.initSpeech();
     await voice.initTTS();
     if (mounted) {
-      setState(() => _voiceInitialized = sttOk);
+      // On web, show the mic button even if STT init failed at startup.
+      // The VoiceService will retry lazily on first tap (user gesture).
+      setState(() => _voiceInitialized = sttOk || kIsWeb);
     }
   }
 
@@ -168,6 +171,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       (partial) {
         if (mounted) {
           setState(() => _partialSpeech = partial);
+        }
+      },
+      onError: (Object error) {
+        // Handle STT unavailable (e.g. web permissions denied).
+        if (mounted) {
+          setState(() {
+            _voiceState = VoiceButtonState.idle;
+            _partialSpeech = '';
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Speech recognition unavailable. Please check microphone permissions.',
+              ),
+              duration: Duration(seconds: 3),
+            ),
+          );
         }
       },
       onDone: () {
@@ -753,6 +773,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 setState(() => _voiceState = VoiceButtonState.idle);
               }
             }
+            HapticFeedback.selectionClick();
+          },
+        ),
+        // Voice gender toggle (male / female)
+        IconButton(
+          icon: Icon(
+            ref.read(voiceServiceProvider).voiceGender == VoiceGender.male
+                ? Icons.record_voice_over_rounded
+                : Icons.record_voice_over_outlined,
+            color: AppColors.textTertiary,
+            size: 20,
+          ),
+          tooltip: ref.read(voiceServiceProvider).voiceGender == VoiceGender.male
+              ? 'Switch to female voice'
+              : 'Switch to male voice',
+          onPressed: () {
+            final voice = ref.read(voiceServiceProvider);
+            final newGender = voice.voiceGender == VoiceGender.male
+                ? VoiceGender.female
+                : VoiceGender.male;
+            voice.setVoiceGender(newGender);
+            setState(() {});
             HapticFeedback.selectionClick();
           },
         ),

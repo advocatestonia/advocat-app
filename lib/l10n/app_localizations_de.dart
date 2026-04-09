@@ -2154,7 +2154,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Minimum alimony in Estonia is half the minimum wage per child — currently around €415/month (PKS § 101²)';
+      'Since 2022, minimum child support in Estonia is €200/month per child (base amount set by government regulation). The court may increase it based on the parent\'s income (PKS § 101)';
 
   @override
   String get rightCourtAlimony =>
@@ -2166,7 +2166,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'If the parent does not pay, the state provides elatisabi (alimony guarantee) through Sotsiaalkindlustusamet — up to €200/month';
+      'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child';
 
   @override
   String get rightChildEducation =>
@@ -2290,4 +2290,35 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get guestUser => 'Gast';
+
+  @override
+  String get howToUse => 'Wie benutzen?';
+
+  @override
+  String get tutorialStep1Title => 'KI-Rechtsassistent';
+
+  @override
+  String get tutorialStep1Desc =>
+      'Stellen Sie eine beliebige Rechtsfrage und erhalten Sie sofortige Antworten basierend auf estnischem Recht.';
+
+  @override
+  String get tutorialStep2Title => 'Kennen Sie Ihre Rechte';
+
+  @override
+  String get tutorialStep2Desc =>
+      'Durchsuchen Sie Rechtsinformationen nach Themen — Arbeit, Wohnen, Verbraucherrechte und mehr.';
+
+  @override
+  String get tutorialStep3Title => 'Dokumente scannen';
+
+  @override
+  String get tutorialStep3Desc =>
+      'Fotografieren Sie Rechtsdokumente zur KI-Analyse und sicheren Aufbewahrung.';
+
+  @override
+  String get tutorialStep4Title => 'Los geht\'s!';
+
+  @override
+  String get tutorialStep4Desc =>
+      'Entdecken Sie die App und schützen Sie Ihre Rechte. Alle Daten bleiben privat auf Ihrem Gerät.';
 }

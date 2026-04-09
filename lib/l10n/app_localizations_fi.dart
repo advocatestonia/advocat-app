@@ -2124,7 +2124,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Vähimmäiselatusapu Virossa on puolet vähimmäispalkasta lasta kohden — noin 415 €/kk (PKS § 101²)';
+      'Vuodesta 2022 vähimmäiselatusapu Virossa on 200 €/kk lasta kohden (hallituksen asettama perussumma). Tuomioistuin voi korottaa vanhemman tulojen perusteella (PKS § 101)';
 
   @override
   String get rightCourtAlimony =>
@@ -2136,7 +2136,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'Jos vanhempi ei maksa, valtio maksaa elatisabi Sotsiaalkindlustusametin kautta — enintään 200 €/kk';
+      'Jos vanhempi ei maksa, valtio maksaa elatisabi Sotsiaalkindlustusametin kautta — enintään 100 €/kk lasta kohden';
 
   @override
   String get rightChildEducation =>
@@ -2260,4 +2260,35 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get guestUser => 'Vieras';
+
+  @override
+  String get howToUse => 'Kuinka käyttää?';
+
+  @override
+  String get tutorialStep1Title => 'Tekoäly-lakiavustaja';
+
+  @override
+  String get tutorialStep1Desc =>
+      'Kysy mikä tahansa oikeudellinen kysymys ja saat välittömät vastaukset Viron lakien perusteella.';
+
+  @override
+  String get tutorialStep2Title => 'Tunne oikeutesi';
+
+  @override
+  String get tutorialStep2Desc =>
+      'Selaa oikeudellista tietoa aiheittain — työ, asuminen, kuluttajaoikeudet ja paljon muuta.';
+
+  @override
+  String get tutorialStep3Title => 'Skannaa asiakirjoja';
+
+  @override
+  String get tutorialStep3Desc =>
+      'Ota kuvia oikeudellisista asiakirjoista tekoälyanalyysiä ja turvallista säilytystä varten.';
+
+  @override
+  String get tutorialStep4Title => 'Aloitetaan!';
+
+  @override
+  String get tutorialStep4Desc =>
+      'Tutustu sovellukseen ja suojaa oikeutesi. Kaikki tiedot pysyvät yksityisinä laitteellasi.';
 }

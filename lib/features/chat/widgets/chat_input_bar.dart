@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -87,7 +88,16 @@ class ChatInputBar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.lg),
                     border: Border.all(color: AppColors.border),
                   ),
-                  child: TextField(
+                  child: KeyboardListener(
+                    focusNode: FocusNode(),
+                    onKeyEvent: (event) {
+                      if (event is KeyDownEvent &&
+                          event.logicalKey == LogicalKeyboardKey.enter &&
+                          !HardwareKeyboard.instance.isShiftPressed) {
+                        onSend();
+                      }
+                    },
+                    child: TextField(
                     controller: messageController,
                     focusNode: focusNode,
                     maxLines: 5,
@@ -105,6 +115,7 @@ class ChatInputBar extends StatelessWidget {
                       isDense: true,
                     ),
                     style: const TextStyle(fontSize: 15),
+                  ),
                   ),
                 ),
               ),

@@ -1730,6 +1730,8 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
     final lang = Localizations.localeOf(context).languageCode;
     switch (lang) {
       case 'et':
+      case 'uk': // Ukrainian speakers in Estonia → Estonian laws
+      case 'ru': // Russian speakers in Estonia → Estonian laws
         return _CountryLegalData.estonia();
       case 'fi':
         return _CountryLegalData.finland();

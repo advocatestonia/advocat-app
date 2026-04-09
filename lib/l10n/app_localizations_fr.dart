@@ -2157,7 +2157,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Minimum alimony in Estonia is half the minimum wage per child — currently around €415/month (PKS § 101²)';
+      'Since 2022, minimum child support in Estonia is €200/month per child (base amount set by government regulation). The court may increase it based on the parent\'s income (PKS § 101)';
 
   @override
   String get rightCourtAlimony =>
@@ -2169,7 +2169,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'If the parent does not pay, the state provides elatisabi (alimony guarantee) through Sotsiaalkindlustusamet — up to €200/month';
+      'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child';
 
   @override
   String get rightChildEducation =>
@@ -2293,4 +2293,35 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get guestUser => 'Invité';
+
+  @override
+  String get howToUse => 'Comment utiliser ?';
+
+  @override
+  String get tutorialStep1Title => 'Assistant juridique IA';
+
+  @override
+  String get tutorialStep1Desc =>
+      'Posez n\'importe quelle question juridique et obtenez des réponses instantanées basées sur le droit estonien.';
+
+  @override
+  String get tutorialStep2Title => 'Connaissez vos droits';
+
+  @override
+  String get tutorialStep2Desc =>
+      'Parcourez les informations juridiques par thème — travail, logement, droits des consommateurs et plus.';
+
+  @override
+  String get tutorialStep3Title => 'Scanner des documents';
+
+  @override
+  String get tutorialStep3Desc =>
+      'Prenez des photos de documents juridiques pour l\'analyse IA et le stockage sécurisé.';
+
+  @override
+  String get tutorialStep4Title => 'C\'est parti !';
+
+  @override
+  String get tutorialStep4Desc =>
+      'Explorez l\'application et protégez vos droits. Toutes les données restent privées sur votre appareil.';
 }

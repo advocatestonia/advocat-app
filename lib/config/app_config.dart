@@ -64,14 +64,17 @@ class AppConfig {
     defaultValue: 'auto',
   );
 
-  /// Resolved AI mode. When set to 'auto', uses real AI if a Claude API key
-  /// is available, otherwise falls back to demo mode.
+  /// Resolved AI mode. When set to 'auto', uses real AI if a Supabase proxy
+  /// or direct Claude API key is available, otherwise falls back to demo mode.
   static bool get useRealAI {
     if (_aiModeRaw == 'real') return true;
     if (_aiModeRaw == 'demo') return false;
-    // 'auto': use real AI if API key is configured
-    return claudeApiKey.isNotEmpty;
+    // 'auto': use real AI if Supabase proxy or direct API key is configured
+    return supabaseUrl.isNotEmpty || claudeApiKey.isNotEmpty;
   }
+
+  /// Whether the Supabase proxy is configured (preferred, secure path).
+  static bool get useSupabaseProxy => supabaseUrl.isNotEmpty;
 
   // ── Email Integration ─────────────────────────────────────────────────
   static const String emailApiBaseUrl = String.fromEnvironment(

@@ -3977,7 +3977,7 @@ abstract class AppLocalizations {
   /// No description provided for @rightMinimumAlimony.
   ///
   /// In en, this message translates to:
-  /// **'Minimum alimony in Estonia is half the minimum wage per child — currently around €415/month (PKS § 101²)'**
+  /// **'Since 2022, minimum child support in Estonia is €200/month per child (base amount set by government regulation). The court may increase it based on the parent\'s income (PKS § 101)'**
   String get rightMinimumAlimony;
 
   /// No description provided for @rightCourtAlimony.
@@ -3995,7 +3995,7 @@ abstract class AppLocalizations {
   /// No description provided for @rightStateAlimonyGuarantee.
   ///
   /// In en, this message translates to:
-  /// **'If the parent does not pay, the state provides elatisabi (alimony guarantee) through Sotsiaalkindlustusamet — up to €200/month'**
+  /// **'If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child'**
   String get rightStateAlimonyGuarantee;
 
   /// No description provided for @rightChildEducation.
@@ -4183,6 +4183,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Guest'**
   String get guestUser;
+
+  /// No description provided for @howToUse.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use?'**
+  String get howToUse;
+
+  /// No description provided for @tutorialStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Legal Assistant'**
+  String get tutorialStep1Title;
+
+  /// No description provided for @tutorialStep1Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask any legal question and get instant answers based on Estonian law.'**
+  String get tutorialStep1Desc;
+
+  /// No description provided for @tutorialStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Know Your Rights'**
+  String get tutorialStep2Title;
+
+  /// No description provided for @tutorialStep2Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse legal information by topic — employment, housing, consumer rights and more.'**
+  String get tutorialStep2Desc;
+
+  /// No description provided for @tutorialStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Documents'**
+  String get tutorialStep3Title;
+
+  /// No description provided for @tutorialStep3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photos of legal documents for AI analysis and safe storage.'**
+  String get tutorialStep3Desc;
+
+  /// No description provided for @tutorialStep4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started!'**
+  String get tutorialStep4Title;
+
+  /// No description provided for @tutorialStep4Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore the app and protect your rights. All data stays private on your device.'**
+  String get tutorialStep4Desc;
 }
 
 class _AppLocalizationsDelegate

@@ -2132,7 +2132,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Минимальные алименты в Эстонии — половина минимальной зарплаты на ребёнка, около 415 €/мес (PKS § 101²)';
+      'С 2022 года минимальные алименты в Эстонии — 200 €/мес на ребёнка (базовая сумма, устанавливается правительством). Суд может увеличить с учётом дохода родителя (PKS § 101)';
 
   @override
   String get rightCourtAlimony =>
@@ -2144,7 +2144,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'Если родитель не платит, государство выплачивает elatisabi через Sotsiaalkindlustusamet — до 200 €/мес';
+      'Если родитель не платит, государство выплачивает elatisabi через Sotsiaalkindlustusamet — до 100 €/мес на ребёнка';
 
   @override
   String get rightChildEducation =>
@@ -2268,4 +2268,35 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get guestUser => 'Гость';
+
+  @override
+  String get howToUse => 'Как пользоваться?';
+
+  @override
+  String get tutorialStep1Title => 'ИИ-юрист';
+
+  @override
+  String get tutorialStep1Desc =>
+      'Задайте любой правовой вопрос и получите мгновенные ответы на основе законов Эстонии.';
+
+  @override
+  String get tutorialStep2Title => 'Знайте свои права';
+
+  @override
+  String get tutorialStep2Desc =>
+      'Просматривайте правовую информацию по темам — работа, жильё, права потребителя и другое.';
+
+  @override
+  String get tutorialStep3Title => 'Сканирование документов';
+
+  @override
+  String get tutorialStep3Desc =>
+      'Фотографируйте юридические документы для анализа ИИ и безопасного хранения.';
+
+  @override
+  String get tutorialStep4Title => 'Начнём!';
+
+  @override
+  String get tutorialStep4Desc =>
+      'Исследуйте приложение и защищайте свои права. Все данные остаются на вашем устройстве.';
 }

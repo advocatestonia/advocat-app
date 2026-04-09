@@ -108,7 +108,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
   static final Set<String> _supportedCodes =
       supportedLanguages.map((l) => l.code).toSet();
 
-  /// Priority: URL ?lang= param > SharedPreferences > device locale > 'en'.
+  /// Priority: URL ?lang= param > SharedPreferences > Estonian (default).
   static Locale _loadSavedLocale() {
     // 1. Check URL query parameter (works on web; empty map on other platforms).
     if (kIsWeb) {
@@ -126,17 +126,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
       return Locale(saved);
     }
 
-    // 3. Try device locale.
-    if (kIsWeb) {
-      final deviceLang = Uri.base.toString().isNotEmpty
-          ? WidgetsBinding.instance.platformDispatcher.locale.languageCode
-          : 'en';
-      if (_supportedCodes.contains(deviceLang)) {
-        return Locale(deviceLang);
-      }
-    }
-
-    // 4. Fallback — Estonian as default for advocat.ee.
+    // 3. Default — ALWAYS Estonian. No browser language auto-detect.
     return const Locale('et');
   }
 

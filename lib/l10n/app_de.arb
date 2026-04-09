@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "Nur zur Information",
     "disclaimerExpanded": "KI-Assistent — keine Rechtsberatung. Überprüfen Sie immer mit einem qualifizierten Anwalt.",
     "chatDisclaimerBanner": "Der KI-Assistent bietet rechtliche Informationen, keine Rechtsberatung. Konsultieren Sie immer einen qualifizierten Anwalt.",
-    "guestUser": "Gast"
+    "guestUser": "Gast",
+    "howToUse": "Wie benutzen?",
+    "tutorialStep1Title": "KI-Rechtsassistent",
+    "tutorialStep1Desc": "Stellen Sie eine beliebige Rechtsfrage und erhalten Sie sofortige Antworten basierend auf estnischem Recht.",
+    "tutorialStep2Title": "Kennen Sie Ihre Rechte",
+    "tutorialStep2Desc": "Durchsuchen Sie Rechtsinformationen nach Themen — Arbeit, Wohnen, Verbraucherrechte und mehr.",
+    "tutorialStep3Title": "Dokumente scannen",
+    "tutorialStep3Desc": "Fotografieren Sie Rechtsdokumente zur KI-Analyse und sicheren Aufbewahrung.",
+    "tutorialStep4Title": "Los geht's!",
+    "tutorialStep4Desc": "Entdecken Sie die App und schützen Sie Ihre Rechte. Alle Daten bleiben privat auf Ihrem Gerät."
 }

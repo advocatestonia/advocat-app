@@ -2123,7 +2123,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Minimaalne elatis Eestis on pool miinimumpalgast lapse kohta — praegu umbes 415 €/kuus (PKS § 101²)';
+      'Alates 2022 on minimaalne elatis Eestis 200 €/kuus lapse kohta (baassumma, mille kehtestab valitsus). Kohus võib seda suurendada vanema sissetuleku alusel (PKS § 101)';
 
   @override
   String get rightCourtAlimony =>
@@ -2135,7 +2135,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get rightStateAlimonyGuarantee =>
-      'Kui vanem ei maksa, maksab riik elatisabi Sotsiaalkindlustusameti kaudu — kuni 200 €/kuus';
+      'Kui vanem ei maksa, maksab riik elatisabi Sotsiaalkindlustusameti kaudu — kuni 100 €/kuus lapse kohta';
 
   @override
   String get rightChildEducation =>
@@ -2259,4 +2259,35 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get guestUser => 'Külaline';
+
+  @override
+  String get howToUse => 'Kuidas kasutada?';
+
+  @override
+  String get tutorialStep1Title => 'Tehisintellekt-õigusabi';
+
+  @override
+  String get tutorialStep1Desc =>
+      'Küsige mis tahes õigusküsimus ja saage kohesed vastused Eesti seaduste põhjal.';
+
+  @override
+  String get tutorialStep2Title => 'Tunne oma õigusi';
+
+  @override
+  String get tutorialStep2Desc =>
+      'Sirvige õigusteavet teemade kaupa — töö, eluase, tarbijaõigused ja palju muud.';
+
+  @override
+  String get tutorialStep3Title => 'Skaneeri dokumente';
+
+  @override
+  String get tutorialStep3Desc =>
+      'Pildistage õigusdokumente tehisintellekti analüüsiks ja turvaliseks hoidmiseks.';
+
+  @override
+  String get tutorialStep4Title => 'Alustame!';
+
+  @override
+  String get tutorialStep4Desc =>
+      'Avastage rakendust ja kaitske oma õigusi. Kõik andmed jäävad privaatselt teie seadmesse.';
 }

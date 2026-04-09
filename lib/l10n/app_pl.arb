@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
     "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "Gość"
+    "guestUser": "Gość",
+    "howToUse": "Jak korzystac?",
+    "tutorialStep1Title": "Asystent prawny AI",
+    "tutorialStep1Desc": "Zadaj dowolne pytanie prawne i uzyskaj natychmiastowe odpowiedzi na podstawie prawa estonskiego.",
+    "tutorialStep2Title": "Poznaj swoje prawa",
+    "tutorialStep2Desc": "Przegladaj informacje prawne wedlug tematow — praca, mieszkanie, prawa konsumenta i wiecej.",
+    "tutorialStep3Title": "Skanuj dokumenty",
+    "tutorialStep3Desc": "Fotografuj dokumenty prawne do analizy AI i bezpiecznego przechowywania.",
+    "tutorialStep4Title": "Zaczynamy!",
+    "tutorialStep4Desc": "Odkryj aplikacje i chron swoje prawa. Wszystkie dane pozostaja prywatne na Twoim urzadzeniu."
 }

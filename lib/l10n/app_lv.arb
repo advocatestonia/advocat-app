@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
     "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "Viesis"
+    "guestUser": "Viesis",
+    "howToUse": "Ka lietot?",
+    "tutorialStep1Title": "MI juridiskais paligs",
+    "tutorialStep1Desc": "Uzdodiet jebkuru juridisku jautajumu un sanemiet tulejas atbildes, pamatojoties uz Igaunijas likumiem.",
+    "tutorialStep2Title": "Ziniet savas tiesibas",
+    "tutorialStep2Desc": "Parlukojiet juridisko informaciju pa temam — darbs, majoklis, pateretaju tiesibas un citas.",
+    "tutorialStep3Title": "Skenet dokumentus",
+    "tutorialStep3Desc": "Fotografejiet juridiskos dokumentus MI analizei un drosai glabasanai.",
+    "tutorialStep4Title": "Sakas!",
+    "tutorialStep4Desc": "Izpetiet lietotni un aizsargajiet savas tiesibas. Visi dati paliek privati jusu ierice."
 }

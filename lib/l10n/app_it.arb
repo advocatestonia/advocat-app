@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
     "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "Ospite"
+    "guestUser": "Ospite",
+    "howToUse": "Come usare?",
+    "tutorialStep1Title": "Assistente legale IA",
+    "tutorialStep1Desc": "Fai qualsiasi domanda legale e ottieni risposte immediate basate sul diritto estone.",
+    "tutorialStep2Title": "Conosci i tuoi diritti",
+    "tutorialStep2Desc": "Sfoglia le informazioni legali per argomento — lavoro, alloggio, diritti dei consumatori e altro.",
+    "tutorialStep3Title": "Scansiona documenti",
+    "tutorialStep3Desc": "Scatta foto di documenti legali per l'analisi IA e l'archiviazione sicura.",
+    "tutorialStep4Title": "Iniziamo!",
+    "tutorialStep4Desc": "Esplora l'app e proteggi i tuoi diritti. Tutti i dati rimangono privati sul tuo dispositivo."
 }

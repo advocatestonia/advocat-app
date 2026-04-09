@@ -782,10 +782,10 @@
     "cyberbullying": "Nettikiusaaminen ja häirintä",
     "cyberbullyingDesc": "Uhkaukset, yksityisyyden loukkaus, kunnianloukkaus verkossa",
     "rightChildSupport": "Molemmat vanhemmat ovat lain mukaan velvollisia elättämään lastaan taloudellisesti (Perekonnaseadus § 100–102)",
-    "rightMinimumAlimony": "Vähimmäiselatusapu Virossa on puolet vähimmäispalkasta lasta kohden — noin 415 €/kk (PKS § 101²)",
+    "rightMinimumAlimony": "Vuodesta 2022 vähimmäiselatusapu Virossa on 200 €/kk lasta kohden (hallituksen asettama perussumma). Tuomioistuin voi korottaa vanhemman tulojen perusteella (PKS § 101)",
     "rightCourtAlimony": "Elatusapua voi hakea maakohuksen kautta — asianajajaa ei tarvita alle 6 400 € vaatimuksiin",
     "rightBailiffEnforcement": "Jos vanhempi kieltäytyy maksamasta, ulosottomies (kohtutäitur) voi panna tuomion täytäntöön palkan ulosmittauksella",
-    "rightStateAlimonyGuarantee": "Jos vanhempi ei maksa, valtio maksaa elatisabi Sotsiaalkindlustusametin kautta — enintään 200 €/kk",
+    "rightStateAlimonyGuarantee": "Jos vanhempi ei maksa, valtio maksaa elatisabi Sotsiaalkindlustusametin kautta — enintään 100 €/kk lasta kohden",
     "rightChildEducation": "Jokaisella lapsella on oikeus koulutukseen, terveydenhuoltoon ja suojeluun (Lastekaitseseadus § 4–5)",
     "rightChildContact": "Lapsella on oikeus pitää yhteyttä molempiin vanhempiin, ellei tuomioistuin toisin päätä (PKS § 143)",
     "mustFileCourtClaim": "Elatusavun saamiseksi on jätettävä kanne tuomioistuimeen tai sovittava summasta kirjallisesti",
@@ -815,5 +815,14 @@
     "cyberDeadlineCriminal": "Rikosilmoitus — ei tiukkaa määräaikaa, mutta ilmoita viipymättä parhaan tuloksen saamiseksi",
     "cyberDeadlineCivil": "Siviilioikeudellinen vahingonkorvausvaatimus — enintään 3 vuotta rikkomuksen havaitsemisesta (TsÜS § 150)",
     "cyberFactPrivacy": "Virossa intiimikuvien luvaton jakaminen voi johtaa enintään 3 vuoden vankeusrangaistukseen KarS § 157¹ nojalla.",
-    "cyberFactGDPR": "GDPR:n mukaan sinulla on 'oikeus tulla unohdetuksi' — alustojen on poistettava henkilötietosi pyynnöstä, jos niiden säilyttämiselle ei ole laillista perustetta."
+    "cyberFactGDPR": "GDPR:n mukaan sinulla on 'oikeus tulla unohdetuksi' — alustojen on poistettava henkilötietosi pyynnöstä, jos niiden säilyttämiselle ei ole laillista perustetta.",
+    "howToUse": "Kuinka käyttää?",
+    "tutorialStep1Title": "Tekoäly-lakiavustaja",
+    "tutorialStep1Desc": "Kysy mikä tahansa oikeudellinen kysymys ja saat välittömät vastaukset Viron lakien perusteella.",
+    "tutorialStep2Title": "Tunne oikeutesi",
+    "tutorialStep2Desc": "Selaa oikeudellista tietoa aiheittain — työ, asuminen, kuluttajaoikeudet ja paljon muuta.",
+    "tutorialStep3Title": "Skannaa asiakirjoja",
+    "tutorialStep3Desc": "Ota kuvia oikeudellisista asiakirjoista tekoälyanalyysiä ja turvallista säilytystä varten.",
+    "tutorialStep4Title": "Aloitetaan!",
+    "tutorialStep4Desc": "Tutustu sovellukseen ja suojaa oikeutesi. Kaikki tiedot pysyvät yksityisinä laitteellasi."
 }

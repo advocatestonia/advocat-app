@@ -840,10 +840,10 @@
     "cyberbullying": "Cyberbullying & Online Harassment",
     "cyberbullyingDesc": "Threats, privacy violations, defamation online",
     "rightChildSupport": "Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)",
-    "rightMinimumAlimony": "Minimum alimony in Estonia is half the minimum wage per child — currently around €415/month (PKS § 101²)",
+    "rightMinimumAlimony": "Since 2022, minimum child support in Estonia is €200/month per child (base amount set by government regulation). The court may increase it based on the parent's income (PKS § 101)",
     "rightCourtAlimony": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400",
     "rightBailiffEnforcement": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment",
-    "rightStateAlimonyGuarantee": "If the parent does not pay, the state provides elatisabi (alimony guarantee) through Sotsiaalkindlustusamet — up to €200/month",
+    "rightStateAlimonyGuarantee": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child",
     "rightChildEducation": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)",
     "rightChildContact": "A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)",
     "mustFileCourtClaim": "To receive alimony, you must file a claim at court or agree on the amount in writing",
@@ -874,5 +874,14 @@
     "cyberDeadlineCivil": "Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)",
     "cyberFactPrivacy": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).",
     "cyberFactGDPR": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it.",
-    "guestUser": "Guest"
+    "guestUser": "Guest",
+    "howToUse": "How to use?",
+    "tutorialStep1Title": "AI Legal Assistant",
+    "tutorialStep1Desc": "Ask any legal question and get instant answers based on Estonian law.",
+    "tutorialStep2Title": "Know Your Rights",
+    "tutorialStep2Desc": "Browse legal information by topic — employment, housing, consumer rights and more.",
+    "tutorialStep3Title": "Scan Documents",
+    "tutorialStep3Desc": "Take photos of legal documents for AI analysis and safe storage.",
+    "tutorialStep4Title": "Get Started!",
+    "tutorialStep4Desc": "Explore the app and protect your rights. All data stays private on your device."
 }

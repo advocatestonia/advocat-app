@@ -79,6 +79,9 @@ class HomeScreen extends ConsumerWidget {
             // ── Quick actions ────────────────────────────────────────────
             const SliverToBoxAdapter(child: _QuickActions()),
 
+            // ── How to use ─────────────────────────────────────────────
+            const SliverToBoxAdapter(child: _HowToUseButton()),
+
             // ── Cases or empty state ─────────────────────────────────────
             casesAsync.when(
               loading: () => const SliverFillRemaining(
@@ -638,6 +641,182 @@ class _QuickActionButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// How To Use Button + Tutorial Bottom Sheet
+// ---------------------------------------------------------------------------
+
+class _HowToUseButton extends StatelessWidget {
+  const _HowToUseButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: TextButton.icon(
+          onPressed: () => _showTutorial(context, l),
+          icon: const Icon(Icons.help_outline_rounded, size: 18),
+          label: Text(l.howToUse),
+          style: TextButton.styleFrom(
+            foregroundColor: AppColors.textSecondary,
+            textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            minimumSize: Size.zero,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showTutorial(BuildContext context, AppLocalizations l) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.lg,
+            AppSpacing.md,
+            AppSpacing.lg,
+            AppSpacing.lg,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Drag handle
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              Text(
+                l.howToUse,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              _TutorialStep(
+                icon: Icons.support_agent_rounded,
+                color: AppColors.accent,
+                title: l.tutorialStep1Title,
+                description: l.tutorialStep1Desc,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              _TutorialStep(
+                icon: Icons.gavel_outlined,
+                color: AppColors.primary,
+                title: l.tutorialStep2Title,
+                description: l.tutorialStep2Desc,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              _TutorialStep(
+                icon: Icons.document_scanner_outlined,
+                color: AppColors.info,
+                title: l.tutorialStep3Title,
+                description: l.tutorialStep3Desc,
+              ),
+              const SizedBox(height: AppSpacing.md),
+              _TutorialStep(
+                icon: Icons.rocket_launch_rounded,
+                color: AppColors.success,
+                title: l.tutorialStep4Title,
+                description: l.tutorialStep4Desc,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(l.tutorialStep4Title),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TutorialStep extends StatelessWidget {
+  const _TutorialStep({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.description,
+  });
+
+  final IconData icon;
+  final Color color;
+  final String title;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: color, size: 22),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                description,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AppColors.textSecondary,
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

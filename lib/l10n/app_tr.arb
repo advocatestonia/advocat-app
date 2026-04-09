@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
     "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "Misafir"
+    "guestUser": "Misafir",
+    "howToUse": "Nasil kullanilir?",
+    "tutorialStep1Title": "YZ Hukuk Asistani",
+    "tutorialStep1Desc": "Herhangi bir hukuki soru sorun ve Estonya yasalarina dayali aninda yanitlar alin.",
+    "tutorialStep2Title": "Haklarinizi Bilin",
+    "tutorialStep2Desc": "Hukuki bilgileri konulara gore arayin — is, konut, tuketici haklari ve daha fazlasi.",
+    "tutorialStep3Title": "Belgeleri Tarayin",
+    "tutorialStep3Desc": "Hukuki belgelerin fotografini cekin, YZ analizi ve guvenli depolama icin.",
+    "tutorialStep4Title": "Baslayalim!",
+    "tutorialStep4Desc": "Uygulamayi kesfedin ve haklarinizi koruyun. Tum veriler cihazinizda ozel kalir."
 }

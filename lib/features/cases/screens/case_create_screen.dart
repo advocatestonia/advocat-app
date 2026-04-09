@@ -491,6 +491,7 @@ class _Step2Details extends StatelessWidget {
   final VoidCallback onChanged;
 
   static const _countries = [
+    'Estonia',
     'Finland',
     'Sweden',
     'Norway',

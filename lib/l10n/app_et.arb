@@ -824,10 +824,10 @@
     "cyberbullying": "Küberkiusamine",
     "cyberbullyingDesc": "Ähvardamine, privaatsuse rikkumine, laimamine internetis",
     "rightChildSupport": "Mõlemal vanemal on seaduslik kohustus last rahaliselt ülal pidada (Perekonnaseadus § 100–102)",
-    "rightMinimumAlimony": "Minimaalne elatis Eestis on pool miinimumpalgast lapse kohta — praegu umbes 415 €/kuus (PKS § 101²)",
+    "rightMinimumAlimony": "Alates 2022 on minimaalne elatis Eestis 200 €/kuus lapse kohta (baassumma, mille kehtestab valitsus). Kohus võib seda suurendada vanema sissetuleku alusel (PKS § 101)",
     "rightCourtAlimony": "Elatist saab nõuda maakohtu kaudu — advokaati ei ole vaja nõuete puhul kuni 6400 €",
     "rightBailiffEnforcement": "Kui vanem keeldub maksmast, saab kohtutäitur kohtuotsuse täitmisele pöörata, sh palgast kinni pidada",
-    "rightStateAlimonyGuarantee": "Kui vanem ei maksa, maksab riik elatisabi Sotsiaalkindlustusameti kaudu — kuni 200 €/kuus",
+    "rightStateAlimonyGuarantee": "Kui vanem ei maksa, maksab riik elatisabi Sotsiaalkindlustusameti kaudu — kuni 100 €/kuus lapse kohta",
     "rightChildEducation": "Igal lapsel on õigus haridusele, tervishoiule ja kaitsele väärkohtlemise eest (Lastekaitseseadus § 4–5)",
     "rightChildContact": "Lapsel on õigus suhelda mõlema vanemaga, kui kohus ei ole teisiti otsustanud (PKS § 143)",
     "mustFileCourtClaim": "Elatise saamiseks tuleb esitada kohtule hagi või leppida summas kirjalikult kokku",
@@ -858,5 +858,14 @@
     "cyberDeadlineCivil": "Tsiviilhagi kahju hüvitamiseks — kuni 3 aastat rikkumisest teadasaamisest (TsÜS § 150)",
     "cyberFactPrivacy": "Eestis võib intiimpiltide loata jagamine kaasa tuua kuni 3 aasta pikkuse vangistuse Karistusseadustiku § 157¹ alusel.",
     "cyberFactGDPR": "GDPR-i kohaselt on teil 'õigus olla unustatud' — platvormid peavad teie isikuandmed kustutama, kui puudub seaduslik alus nende säilitamiseks.",
-    "guestUser": "Külaline"
+    "guestUser": "Külaline",
+    "howToUse": "Kuidas kasutada?",
+    "tutorialStep1Title": "Tehisintellekt-õigusabi",
+    "tutorialStep1Desc": "Küsige mis tahes õigusküsimus ja saage kohesed vastused Eesti seaduste põhjal.",
+    "tutorialStep2Title": "Tunne oma õigusi",
+    "tutorialStep2Desc": "Sirvige õigusteavet teemade kaupa — töö, eluase, tarbijaõigused ja palju muud.",
+    "tutorialStep3Title": "Skaneeri dokumente",
+    "tutorialStep3Desc": "Pildistage õigusdokumente tehisintellekti analüüsiks ja turvaliseks hoidmiseks.",
+    "tutorialStep4Title": "Alustame!",
+    "tutorialStep4Desc": "Avastage rakendust ja kaitske oma õigusi. Kõik andmed jäävad privaatselt teie seadmesse."
 }

@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
     "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "ضيف"
+    "guestUser": "ضيف",
+    "howToUse": "كيفية الاستخدام؟",
+    "tutorialStep1Title": "مساعد قانوني بالذكاء الاصطناعي",
+    "tutorialStep1Desc": "اطرح أي سؤال قانوني واحصل على إجابات فورية بناءً على القانون الإستوني.",
+    "tutorialStep2Title": "اعرف حقوقك",
+    "tutorialStep2Desc": "تصفح المعلومات القانونية حسب الموضوع — العمل، السكن، حقوق المستهلك والمزيد.",
+    "tutorialStep3Title": "مسح المستندات",
+    "tutorialStep3Desc": "التقط صور المستندات القانونية لتحليل الذكاء الاصطناعي والتخزين الآمن.",
+    "tutorialStep4Title": "لنبدأ!",
+    "tutorialStep4Desc": "استكشف التطبيق واحمِ حقوقك. جميع البيانات تبقى خاصة على جهازك."
 }

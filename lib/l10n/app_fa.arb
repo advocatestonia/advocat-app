@@ -774,5 +774,14 @@
     "disclaimerCollapsed": "AI guidance only",
     "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
     "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "مهمان"
+    "guestUser": "مهمان",
+    "howToUse": "چگونه استفاده کنیم؟",
+    "tutorialStep1Title": "دستیار حقوقی هوش مصنوعی",
+    "tutorialStep1Desc": "هر سوال حقوقی بپرسید و پاسخ‌های فوری بر اساس قوانین استونی دریافت کنید.",
+    "tutorialStep2Title": "حقوق خود را بشناسید",
+    "tutorialStep2Desc": "اطلاعات حقوقی را بر اساس موضوع مرور کنید — کار، مسکن، حقوق مصرف‌کننده و بیشتر.",
+    "tutorialStep3Title": "اسکن اسناد",
+    "tutorialStep3Desc": "از اسناد حقوقی عکس بگیرید برای تحلیل هوش مصنوعی و ذخیره‌سازی امن.",
+    "tutorialStep4Title": "شروع کنیم!",
+    "tutorialStep4Desc": "برنامه را کاوش کنید و از حقوق خود محافظت کنید. همه داده‌ها خصوصی در دستگاه شما باقی می‌مانند."
 }
