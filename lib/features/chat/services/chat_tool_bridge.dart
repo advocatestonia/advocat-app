@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -64,7 +65,10 @@ class ChatToolBridge {
     required this.context,
     required this.ref,
   })  : _executor = ToolExecutor(context: context, ref: ref),
-        _log = Logger(printer: PrettyPrinter(methodCount: 0));
+        _log = Logger(
+          printer: PrettyPrinter(methodCount: 0),
+          level: kDebugMode ? Level.debug : Level.off,
+        );
 
   final BuildContext context;
   final WidgetRef ref;

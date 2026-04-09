@@ -83,11 +83,11 @@ class VoiceService {
     try {
       _sttInitialized = await _stt.initialize(
         onError: (error) {
-          debugPrint('STT error: ${error.errorMsg}');
+          if (kDebugMode) debugPrint('STT error: ${error.errorMsg}');
           _isListening = false;
         },
         onStatus: (status) {
-          debugPrint('STT status: $status');
+          if (kDebugMode) debugPrint('STT status: $status');
           if (status == 'notListening' || status == 'done') {
             _isListening = false;
           }
@@ -95,7 +95,7 @@ class VoiceService {
       );
       return _sttInitialized;
     } catch (e) {
-      debugPrint('STT init failed: $e');
+      if (kDebugMode) debugPrint('STT init failed: $e');
       return false;
     }
   }
@@ -118,13 +118,13 @@ class VoiceService {
         _isSpeaking = false;
       });
       _tts.setErrorHandler((msg) {
-        debugPrint('TTS error: $msg');
+        if (kDebugMode) debugPrint('TTS error: $msg');
         _isSpeaking = false;
       });
 
       _ttsInitialized = true;
     } catch (e) {
-      debugPrint('TTS init failed: $e');
+      if (kDebugMode) debugPrint('TTS init failed: $e');
     }
   }
 
@@ -139,7 +139,7 @@ class VoiceService {
     _isListening = true;
 
     final sttLocale = _sttLocaleMap[langCode] ?? 'en-US';
-    debugPrint('STT: starting with langCode=$langCode, sttLocale=$sttLocale');
+    if (kDebugMode) debugPrint('STT: starting with langCode=$langCode, sttLocale=$sttLocale');
 
     _stt.listen(
       onResult: _onSpeechResult,
@@ -182,7 +182,7 @@ class VoiceService {
     if (!_ttsInitialized || text.isEmpty) return;
 
     final ttsLocale = _ttsLocaleMap[langCode] ?? 'en-US';
-    debugPrint('TTS: speaking with langCode=$langCode, ttsLocale=$ttsLocale');
+    if (kDebugMode) debugPrint('TTS: speaking with langCode=$langCode, ttsLocale=$ttsLocale');
     await _tts.setLanguage(ttsLocale);
     _isSpeaking = true;
     await _tts.speak(text);

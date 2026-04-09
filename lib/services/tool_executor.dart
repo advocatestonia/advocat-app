@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -65,7 +66,10 @@ class ToolExecutor {
     required this.context,
     required this.ref,
   })  : _tools = ref.read(assistantToolsProvider),
-        _log = Logger(printer: PrettyPrinter(methodCount: 0));
+        _log = Logger(
+          printer: PrettyPrinter(methodCount: 0),
+          level: kDebugMode ? Level.debug : Level.off,
+        );
 
   final BuildContext context;
   final WidgetRef ref;

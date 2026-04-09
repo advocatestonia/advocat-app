@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,7 +32,10 @@ class AIService {
             },
           ),
         ),
-        _log = Logger(printer: PrettyPrinter(methodCount: 0));
+        _log = Logger(
+          printer: PrettyPrinter(methodCount: 0),
+          level: kDebugMode ? Level.debug : Level.off,
+        );
 
   final ClaudeService _claudeService;
   final Dio _dio;
@@ -83,6 +87,13 @@ class AIService {
   }
 
   // ── Free-tier daily limit ─────────────────────────────────────────────
+  //
+  // TODO(production): The daily limit below is enforced client-side via
+  // SharedPreferences and can be bypassed by clearing app data. For
+  // production, rate limiting MUST be enforced server-side (e.g. in the
+  // Supabase claude-proxy Edge Function or a dedicated rate-limit
+  // middleware) where the user cannot tamper with counters.
+  //
 
   /// Maximum free API calls per day for non-Pro users.
   static const int _freeDailyLimit = 3;
@@ -271,8 +282,12 @@ class AIService {
   static const int _fullContentMessages = 10;
 
   void _addToHistory(String caseId, String role, String content) {
+    // Purge stale histories before adding new messages.
+    purgeStaleHistory();
+
     _conversationHistory.putIfAbsent(caseId, () => []);
     _conversationHistory[caseId]!.add({'role': role, 'content': content});
+    _caseLastActivity[caseId] = DateTime.now();
     // Trim old messages
     if (_conversationHistory[caseId]!.length > _maxHistoryMessages) {
       _conversationHistory[caseId] = _conversationHistory[caseId]!
@@ -318,6 +333,41 @@ class AIService {
   /// Clear conversation history for a case (e.g., on new session).
   void clearHistory(String caseId) {
     _conversationHistory.remove(caseId);
+  }
+
+  /// Clear all conversation history across all cases.
+  ///
+  /// Call this when the app goes to background (or when the browser tab
+  /// becomes hidden on web) to prevent sensitive chat data from lingering
+  /// in memory.
+  void clearAllHistory() {
+    _conversationHistory.clear();
+    _responseCache.clear();
+  }
+
+  /// Remove messages older than [maxAge] from all conversation histories.
+  ///
+  /// This is a best-effort cleanup: messages do not carry individual
+  /// timestamps, so we track the *last activity time* per case and
+  /// purge entire case histories that have been idle longer than [maxAge].
+  static const Duration _maxMessageAge = Duration(hours: 24);
+
+  /// Per-case last-activity timestamp, updated whenever a message is added.
+  final Map<String, DateTime> _caseLastActivity = {};
+
+  /// Purge conversation histories that have not been touched for 24 hours.
+  void purgeStaleHistory() {
+    final now = DateTime.now();
+    final staleCases = <String>[];
+    for (final entry in _caseLastActivity.entries) {
+      if (now.difference(entry.value) > _maxMessageAge) {
+        staleCases.add(entry.key);
+      }
+    }
+    for (final caseId in staleCases) {
+      _conversationHistory.remove(caseId);
+      _caseLastActivity.remove(caseId);
+    }
   }
 
   // ── Document analysis ──────────────────────────────────────────────────
@@ -404,7 +454,7 @@ class AIService {
       // ── Free-tier daily limit check ──
       final allowed = await _checkAndIncrementDailyLimit();
       if (!allowed) {
-        return ChatResponse(
+        return const ChatResponse(
           message: 'You have reached the daily limit of $_freeDailyLimit '
               'free AI messages. Upgrade to Pro for unlimited AI assistance!',
           disclaimer: null,

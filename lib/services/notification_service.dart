@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:logger/logger.dart';
 
 /// Singleton service managing Firebase Cloud Messaging for push notifications.
@@ -8,7 +9,10 @@ import 'package:logger/logger.dart';
 class NotificationService {
   NotificationService._internal()
       : _messaging = FirebaseMessaging.instance,
-        _log = Logger(printer: PrettyPrinter(methodCount: 0));
+        _log = Logger(
+          printer: PrettyPrinter(methodCount: 0),
+          level: kDebugMode ? Level.debug : Level.off,
+        );
 
   static final NotificationService instance = NotificationService._internal();
 

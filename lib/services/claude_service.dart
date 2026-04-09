@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
@@ -81,7 +82,10 @@ class ClaudeService {
             },
           ),
         ),
-        _log = Logger(printer: PrettyPrinter(methodCount: 0));
+        _log = Logger(
+          printer: PrettyPrinter(methodCount: 0),
+          level: kDebugMode ? Level.debug : Level.off,
+        );
 
   final Dio _dio;
   final Logger _log;

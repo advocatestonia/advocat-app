@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
@@ -80,7 +81,11 @@ class ToolResult {
 /// real services, the tool implementations delegate to the corresponding
 /// service classes.
 class AssistantTools {
-  AssistantTools() : _log = Logger(printer: PrettyPrinter(methodCount: 0));
+  AssistantTools()
+      : _log = Logger(
+          printer: PrettyPrinter(methodCount: 0),
+          level: kDebugMode ? Level.debug : Level.off,
+        );
 
   final Logger _log;
 

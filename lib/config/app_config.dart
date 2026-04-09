@@ -2,6 +2,16 @@
 ///
 /// All sensitive values are read from compile-time environment variables
 /// using `--dart-define`. Never hard-code secrets here.
+///
+/// **SECURITY NOTE — MVP ONLY:**
+/// API keys below are embedded as compile-time constants via `--dart-define`.
+/// While not visible in source code, they ARE present in the compiled binary
+/// and can be extracted via reverse-engineering. Before production launch,
+/// ALL API calls must be routed through a server-side proxy so that keys
+/// never leave the backend. See: https://docs.anthropic.com/en/docs/build-with-claude
+///
+/// **NEVER log or print any of these values.** They must not appear in
+/// console output, crash reports, or analytics payloads.
 class AppConfig {
   AppConfig._();
 
@@ -38,7 +48,10 @@ class AppConfig {
     defaultValue: '',
   );
 
-  // ── Claude Direct API (MVP — will move to server-side proxy) ────────
+  // ── Claude Direct API ────────────────────────────────────────────────
+  // TODO(production): MOVE TO SERVER-SIDE PROXY before public launch.
+  // Client-side API keys can be extracted from compiled binaries.
+  // Use a Supabase Edge Function or similar backend proxy instead.
   static const String claudeApiKey = String.fromEnvironment(
     'CLAUDE_API_KEY',
     defaultValue: '',

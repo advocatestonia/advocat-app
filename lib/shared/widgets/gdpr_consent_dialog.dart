@@ -1,9 +1,16 @@
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../config/theme.dart';
 import '../../l10n/app_localizations.dart';
+
+final _log = Logger(
+  printer: PrettyPrinter(methodCount: 0),
+  level: kDebugMode ? Level.debug : Level.off,
+);
 
 const _gdprStorageKey = 'gdpr_consent_accepted';
 const _analyticsConsentKey = 'analytics_consent_accepted';
@@ -35,8 +42,13 @@ Future<void> _saveGdprConsent({required bool analytics}) async {
       key: _analyticsConsentKey,
       value: analytics ? 'true' : 'false',
     );
-  } catch (_) {
-    // On web, secure storage may fail — consent still accepted for this session
+  } catch (e) {
+    // On web, FlutterSecureStorage may fail (e.g. no Web Crypto API).
+    // Consent is still accepted for this session but will not persist.
+    if (kIsWeb) {
+      _log.w('FlutterSecureStorage unavailable on web — GDPR consent '
+          'accepted for this session only. Error: $e');
+    }
   }
 }
 

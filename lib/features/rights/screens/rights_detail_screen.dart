@@ -2643,6 +2643,8 @@ class _RightItemTileState extends State<_RightItemTile> {
                     onTap: widget.item.legalUrl != null
                         ? () async {
                             final uri = Uri.parse(widget.item.legalUrl!);
+                            // Security: only allow https:// URLs
+                            if (uri.scheme != 'https') return;
                             if (await canLaunchUrl(uri)) {
                               await launchUrl(uri,
                                   mode: LaunchMode.externalApplication);

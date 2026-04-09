@@ -8,12 +8,27 @@ const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 // Rate limit: 20 req/min per user
 const rateLimits = new Map<string, number[]>();
 
+// Allowed origin for CORS
+const ALLOWED_ORIGIN = "https://advocat.ee";
+
+// Allowed Claude models — reject anything else from the client
+const ALLOWED_MODELS = new Set([
+  "claude-sonnet-4-20250514",
+  "claude-haiku-235-20241022",
+  "claude-3-5-sonnet-20241022",
+  "claude-3-haiku-20240307",
+]);
+
+// Hard limits for request body
+const MAX_TOKENS_LIMIT = 1000;
+const MAX_MESSAGES = 20;
+
 serve(async (req) => {
   // CORS
   if (req.method === "OPTIONS") {
     return new Response(null, {
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
         "Access-Control-Allow-Methods": "POST",
         "Access-Control-Allow-Headers": "Authorization, Content-Type",
       },
@@ -48,9 +63,24 @@ serve(async (req) => {
   recentRequests.push(now);
   rateLimits.set(userId, recentRequests);
 
-  // Forward to Claude
+  // Parse and sanitize request body
   const body = await req.json();
-  body.max_tokens = Math.min(body.max_tokens || 4096, 8192);
+
+  // Enforce allowed model — default to haiku if not specified or not allowed
+  if (!body.model || !ALLOWED_MODELS.has(body.model)) {
+    body.model = "claude-3-haiku-20240307";
+  }
+
+  // Enforce max_tokens ceiling
+  body.max_tokens = Math.min(body.max_tokens || MAX_TOKENS_LIMIT, MAX_TOKENS_LIMIT);
+
+  // Truncate messages array to prevent abuse
+  if (Array.isArray(body.messages) && body.messages.length > MAX_MESSAGES) {
+    body.messages = body.messages.slice(-MAX_MESSAGES);
+  }
+
+  // Strip client-supplied system prompt — the server controls the system prompt
+  delete body.system;
 
   const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
@@ -67,7 +97,7 @@ serve(async (req) => {
     status: claudeResponse.status,
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
     },
   });
 });

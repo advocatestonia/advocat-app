@@ -1207,8 +1207,17 @@ function _updatePinWarning() {
     const el = document.getElementById('pin-warning');
     if (!el) return;
     const hasPin = localStorage.getItem('advocat_has_pin') === '1';
-    const hasKeys = !!(localStorage.getItem('advocat_dg_key') || localStorage.getItem('advocat_claude_key'));
-    el.style.display = (hasKeys && !hasPin) ? 'block' : 'none';
+    const dgVal = dom.deepgramKey ? dom.deepgramKey.value.trim() : '';
+    const clVal = dom.claudeKey ? dom.claudeKey.value.trim() : '';
+    const hasKeys = !!(dgVal || clVal || localStorage.getItem('advocat_dg_key') || localStorage.getItem('advocat_claude_key'));
+    const pinInput = document.getElementById('pin-code');
+    const pinEntered = pinInput && pinInput.value.trim().length >= 4;
+    if (hasKeys && !hasPin && !pinEntered) {
+        el.style.display = 'block';
+        el.innerHTML = '<strong>Warning:</strong> Without a PIN, your API keys are stored unencrypted in this browser. <strong>Set a PIN above to enable encryption.</strong>';
+    } else {
+        el.style.display = 'none';
+    }
 }
 
 // ============================================
@@ -1262,7 +1271,13 @@ async function saveSettings() {
     }
     _cachedDgKey = dgKey;
     _cachedClaudeKey = claudeKey;
-    localStorage.setItem('advocat_proxy_url', dom.proxyUrl.value.trim());
+    const proxyVal = dom.proxyUrl.value.trim();
+    if (proxyVal && !proxyVal.startsWith('https://')) {
+        alert('Proxy URL must use HTTPS (start with https://). The proxy URL was not saved.');
+        dom.proxyUrl.focus();
+        return;
+    }
+    localStorage.setItem('advocat_proxy_url', proxyVal);
     const smToggle = document.getElementById('settings-secure-mode');
     if (smToggle) {
         state.secureMode = smToggle.checked;
@@ -1274,7 +1289,14 @@ async function saveSettings() {
 
 function getDgKey() { return _cachedDgKey || localStorage.getItem('advocat_dg_key') || ''; }
 function getClaudeKey() { return _cachedClaudeKey || localStorage.getItem('advocat_claude_key') || ''; }
-function getProxyUrl() { return localStorage.getItem('advocat_proxy_url') || ''; }
+function getProxyUrl() {
+    const url = localStorage.getItem('advocat_proxy_url') || '';
+    if (url && !url.startsWith('https://')) {
+        console.warn('[ADVOCAT Security] Proxy URL rejected: must start with https://');
+        return '';
+    }
+    return url;
+}
 
 // ============================================
 // Status & UI helpers
@@ -1420,11 +1442,19 @@ function showGlossaryTooltip(event) {
     const translation = entry[lang] || entry.en || '';
     const description = entry[`desc_${lang}`] || entry.desc_en || entry.desc_ru || '';
 
-    dom.glossaryTooltip.innerHTML = `
-        <span class="gt-term">${entry.fi}</span>
-        <span class="gt-translation">${translation}</span>
-        <span class="gt-desc">${description}</span>
-    `;
+    dom.glossaryTooltip.textContent = '';
+    const termSpan = document.createElement('span');
+    termSpan.className = 'gt-term';
+    termSpan.textContent = entry.fi;
+    const transSpan = document.createElement('span');
+    transSpan.className = 'gt-translation';
+    transSpan.textContent = translation;
+    const descSpan = document.createElement('span');
+    descSpan.className = 'gt-desc';
+    descSpan.textContent = description;
+    dom.glossaryTooltip.appendChild(termSpan);
+    dom.glossaryTooltip.appendChild(transSpan);
+    dom.glossaryTooltip.appendChild(descSpan);
     dom.glossaryTooltip.style.display = 'block';
 
     // Position near the element
@@ -3067,17 +3097,32 @@ function init() {
         });
     }
 
-    // 4. Secure Mode: auto-delete transcript on page close
+    // 4. Secure Mode: auto-delete transcript on page close + clear sensitive memory
     window.addEventListener('beforeunload', () => {
+        // Always clear API keys from JS memory on page unload
+        _cachedDgKey = '';
+        _cachedClaudeKey = '';
+        _cachedPin = '';
         if (state.secureMode) {
             localStorage.removeItem('advocat_transcript');
             localStorage.removeItem('advocat_keypoints');
+            localStorage.removeItem('advocat_dg_key');
+            localStorage.removeItem('advocat_claude_key');
+            localStorage.removeItem('advocat_has_pin');
+            localStorage.removeItem('advocat_proxy_url');
         }
     });
     window.addEventListener('pagehide', () => {
+        _cachedDgKey = '';
+        _cachedClaudeKey = '';
+        _cachedPin = '';
         if (state.secureMode) {
             localStorage.removeItem('advocat_transcript');
             localStorage.removeItem('advocat_keypoints');
+            localStorage.removeItem('advocat_dg_key');
+            localStorage.removeItem('advocat_claude_key');
+            localStorage.removeItem('advocat_has_pin');
+            localStorage.removeItem('advocat_proxy_url');
         }
     });
 
