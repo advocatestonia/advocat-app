@@ -3,6 +3,8 @@
 
 bool webSpeechSupported() => false;
 
+Future<bool> webSpeechRequestMicPermission() async => false;
+
 bool webSpeechStart(String locale) => false;
 
 void webSpeechStop() {}

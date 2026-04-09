@@ -137,51 +137,22 @@ class VoiceService {
   Future<bool> initSpeech() async {
     if (_sttInitialized) return true;
 
-    // On web, first check if native Web Speech API is available.
+    // On web: ALWAYS use native JS Web Speech API. Skip Flutter plugin entirely.
     if (kIsWeb) {
       final nativeSupported = web_speech.webSpeechSupported();
       if (kDebugMode) {
-        debugPrint('STT: native Web Speech API supported = $nativeSupported');
+        debugPrint('STT: web platform, native Speech API supported = $nativeSupported');
       }
 
-      // Try the plugin first.
-      try {
-        _sttInitialized = await _stt.initialize(
-          onError: (error) {
-            if (kDebugMode) debugPrint('STT plugin error: ${error.errorMsg}');
-            _isListening = false;
-          },
-          onStatus: (status) {
-            if (kDebugMode) debugPrint('STT plugin status: $status');
-            if (status == 'notListening' || status == 'done') {
-              _isListening = false;
-            }
-          },
-        );
-      } catch (e) {
-        if (kDebugMode) debugPrint('STT plugin init failed on web: $e');
-        _sttInitialized = false;
-      }
-
-      // If the plugin worked, great.
-      if (_sttInitialized) {
-        if (kDebugMode) debugPrint('STT: using speech_to_text plugin on web');
-        _webSttDeferred = false;
-        return true;
-      }
-
-      // Plugin failed -- fall back to native JS if available.
       if (nativeSupported) {
         _useNativeWebSpeech = true;
         _webSttDeferred = false;
-        if (kDebugMode) {
-          debugPrint('STT: falling back to native Web Speech API via JS');
-        }
-        return true; // Report as available; will use JS on startListening.
+        _sttInitialized = false; // Don't use plugin on web
+        return true;
       }
 
-      // Neither works -- defer for lazy retry on tap.
-      _webSttDeferred = true;
+      // Web Speech API not supported (e.g. Firefox, iOS Safari)
+      _webSttDeferred = false;
       return false;
     }
 
@@ -375,24 +346,9 @@ class VoiceService {
 
     final sttLocale = _sttLocaleMap[langCode] ?? 'en-US';
 
-    // ── Web: native JS Speech API fallback ──
-    if (kIsWeb && _useNativeWebSpeech) {
+    // ── Web: ALWAYS use native JS Speech API ──
+    if (kIsWeb) {
       _beginNativeWebListening(sttLocale);
-      return _partialController.stream;
-    }
-
-    // ── Web: lazy init for deferred plugin ──
-    if (!_sttInitialized && _webSttDeferred) {
-      _ensureSttInitialized().then((ok) {
-        if (ok && _useNativeWebSpeech) {
-          // Fell back to native during lazy init.
-          _beginNativeWebListening(sttLocale);
-        } else if (ok) {
-          _beginListening(langCode);
-        } else {
-          _partialController.addError('Speech recognition unavailable');
-        }
-      });
       return _partialController.stream;
     }
 
@@ -430,6 +386,9 @@ class VoiceService {
   }
 
   /// Start listening using the native Web Speech API via JS interop.
+  ///
+  /// On mobile browsers, we first request microphone permission explicitly
+  /// via `getUserMedia` to ensure the permission prompt fires reliably.
   void _beginNativeWebListening(String sttLocale) {
     _finalResult = '';
     _isListening = true;
@@ -438,13 +397,44 @@ class VoiceService {
       debugPrint('STT: starting native Web Speech API with locale=$sttLocale');
     }
 
+    // Request mic permission first (important for mobile browsers).
+    web_speech.webSpeechRequestMicPermission().then((granted) {
+      if (!granted) {
+        if (kDebugMode) debugPrint('STT: mic permission denied');
+      }
+      // Proceed even if permission request failed -- SpeechRecognition
+      // will surface its own error if mic is not available.
+      _startNativeRecognition(sttLocale);
+    }).catchError((_) {
+      // Fallback: try anyway.
+      _startNativeRecognition(sttLocale);
+    });
+  }
+
+  /// Actually starts the native JS SpeechRecognition after permission.
+  void _startNativeRecognition(String sttLocale) {
     final started = web_speech.webSpeechStart(sttLocale);
     if (!started) {
       _isListening = false;
       final error = web_speech.webSpeechGetError();
       if (kDebugMode) debugPrint('STT: native web start failed: $error');
-      _partialController
-          .addError('Speech recognition failed: ${error.isNotEmpty ? error : "unknown error"}');
+
+      // Provide user-friendly error messages.
+      String userMessage;
+      if (error == 'ios_safari_not_supported') {
+        userMessage =
+            'Voice input is not supported on this browser. Please use Chrome.';
+      } else if (error == 'mic_permission_denied') {
+        userMessage =
+            'Microphone permission was denied. Please allow microphone access in your browser settings.';
+      } else if (error == 'network_error') {
+        userMessage =
+            'Network error during speech recognition. Please check your connection.';
+      } else {
+        userMessage =
+            'Speech recognition failed: ${error.isNotEmpty ? error : "unknown error"}';
+      }
+      _partialController.addError(userMessage);
       return;
     }
 

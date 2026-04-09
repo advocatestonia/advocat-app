@@ -91,7 +91,7 @@ class _DocumentAnalysisScreenState
       String summary;
 
       if (isDemo) {
-        // Use the 3 real errors from the Finland case
+        // Use the 3 real errors from the Estonia case
         await Future.delayed(const Duration(milliseconds: 800));
         issues = DemoData.analysisIssues.map((data) {
           return DocumentIssue(
@@ -195,19 +195,19 @@ class _DocumentAnalysisScreenState
 
   String _inferLegalBasis(String point) {
     final lower = point.toLowerCase();
-    if (lower.contains('language') || lower.contains('kieli')) {
-      return 'Hallintolaki \u00A726, Ulkomaalaislaki \u00A7203';
+    if (lower.contains('language') || lower.contains('keel')) {
+      return 'Haldusmenetluse seadus \u00A78, V\u00E4lismaalaste seadus \u00A7203';
     }
     if (lower.contains('deadline') || lower.contains('time') || lower.contains('day')) {
-      return 'Hallintolaki \u00A733, Ulkomaalaislaki \u00A7190';
+      return 'Haldusmenetluse seadus \u00A733, V\u00E4lismaalaste seadus \u00A7190';
     }
     if (lower.contains('hearing') || lower.contains('interview')) {
-      return 'Hallintolaki \u00A734, Perustuslaki \u00A721';
+      return 'Haldusmenetluse seadus \u00A740, P\u00F5hiseadus \u00A715';
     }
-    if (lower.contains('decision') || lower.contains('päätös')) {
-      return 'Hallintolaki \u00A745, Ulkomaalaislaki \u00A7196';
+    if (lower.contains('decision') || lower.contains('otsus')) {
+      return 'Haldusmenetluse seadus \u00A756, V\u00E4lismaalaste seadus \u00A7196';
     }
-    return 'Ulkomaalaislaki, Hallintolaki';
+    return 'V\u00E4lismaalaste seadus, Haldusmenetluse seadus';
   }
 
   void _toggleIssueForAppeal(String issueId, bool selected) {

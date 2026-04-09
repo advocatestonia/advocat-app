@@ -13,7 +13,7 @@ import '../../../shared/widgets/status_chip.dart';
 
 // ── State ────────────────────────────────────────────────────────────────
 
-enum _EmailProvider { gmail, outlook }
+enum _EmailProvider { gmail, outlook, icloud, yahoo }
 
 class _EmailConnectionState {
   const _EmailConnectionState({
@@ -217,21 +217,51 @@ class _ComposeButton extends StatelessWidget {
 class _DisconnectedView extends ConsumerWidget {
   const _DisconnectedView({super.key});
 
+  static const _providers = [
+    _ProviderInfo(
+      provider: _EmailProvider.gmail,
+      name: 'Gmail',
+      icon: Icons.email,
+      color: Color(0xFFDB4437),
+      label: 'Connect Gmail',
+    ),
+    _ProviderInfo(
+      provider: _EmailProvider.outlook,
+      name: 'Outlook',
+      icon: Icons.email,
+      color: Color(0xFF0078D4),
+      label: 'Connect Outlook',
+    ),
+    _ProviderInfo(
+      provider: _EmailProvider.icloud,
+      name: 'iCloud',
+      icon: Icons.cloud,
+      color: Color(0xFFA2AAAD),
+      label: 'Connect iCloud',
+    ),
+    _ProviderInfo(
+      provider: _EmailProvider.yahoo,
+      name: 'Yahoo',
+      icon: Icons.email,
+      color: Color(0xFF6001D2),
+      label: 'Connect Yahoo',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Spacer(flex: 2),
+            const SizedBox(height: AppSpacing.lg),
 
             // Illustration with animated glow
             Container(
-              width: 120,
-              height: 120,
+              width: 100,
+              height: 100,
               decoration: BoxDecoration(
                 color: AppColors.accent.withValues(alpha: 0.08),
                 shape: BoxShape.circle,
@@ -245,7 +275,7 @@ class _DisconnectedView extends ConsumerWidget {
               ),
               child: Icon(
                 AppIcons.emailOutlined,
-                size: 56,
+                size: 48,
                 color: AppColors.accent.withValues(alpha: 0.6),
               ),
             )
@@ -253,7 +283,7 @@ class _DisconnectedView extends ConsumerWidget {
                 .fadeIn(duration: 500.ms, curve: Curves.easeOut)
                 .slideY(begin: -0.15, end: 0, duration: 500.ms, curve: Curves.easeOut),
 
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: AppSpacing.md),
 
             Text(
               l10n.connectYourEmail,
@@ -267,7 +297,7 @@ class _DisconnectedView extends ConsumerWidget {
                 .fadeIn(delay: 100.ms, duration: 400.ms)
                 .slideY(begin: 0.1, end: 0, delay: 100.ms, duration: 400.ms),
 
-            const SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: AppSpacing.xs),
 
             Text(
               l10n.connectYourEmailDesc,
@@ -283,39 +313,32 @@ class _DisconnectedView extends ConsumerWidget {
 
             const SizedBox(height: AppSpacing.xl),
 
-            // Gmail button
-            _OAuthButton(
-              label: l10n.connectGmail,
-              icon: Icons.g_mobiledata_rounded,
-              iconColor: const Color(0xFFDB4437),
-              backgroundColor: AppColors.surface,
-              foregroundColor: AppColors.textPrimary,
-              borderColor: AppColors.border,
-              onPressed: () => ref
-                  .read(_emailConnectionProvider.notifier)
-                  .connect(_EmailProvider.gmail),
-            )
-                .animate()
-                .fadeIn(delay: 300.ms, duration: 400.ms)
-                .slideX(begin: -0.08, end: 0, delay: 300.ms, duration: 400.ms),
-
-            const SizedBox(height: AppSpacing.sm),
-
-            // Outlook button
-            _OAuthButton(
-              label: l10n.connectOutlook,
-              icon: Icons.mail_outline_rounded,
-              iconColor: const Color(0xFF0078D4),
-              backgroundColor: AppColors.surface,
-              foregroundColor: AppColors.textPrimary,
-              borderColor: AppColors.border,
-              onPressed: () => ref
-                  .read(_emailConnectionProvider.notifier)
-                  .connect(_EmailProvider.outlook),
-            )
-                .animate()
-                .fadeIn(delay: 400.ms, duration: 400.ms)
-                .slideX(begin: -0.08, end: 0, delay: 400.ms, duration: 400.ms),
+            // Provider grid (2 columns)
+            GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: AppSpacing.md,
+              crossAxisSpacing: AppSpacing.md,
+              childAspectRatio: 1.05,
+              children: _providers.asMap().entries.map((entry) {
+                final idx = entry.key;
+                final info = entry.value;
+                return _ProviderCard(info: info)
+                    .animate()
+                    .fadeIn(
+                      delay: Duration(milliseconds: 250 + idx * 100),
+                      duration: 400.ms,
+                    )
+                    .scale(
+                      begin: const Offset(0.9, 0.9),
+                      end: const Offset(1, 1),
+                      delay: Duration(milliseconds: 250 + idx * 100),
+                      duration: 400.ms,
+                      curve: Curves.easeOutCubic,
+                    );
+              }).toList(),
+            ),
 
             const SizedBox(height: AppSpacing.lg),
 
@@ -350,11 +373,141 @@ class _DisconnectedView extends ConsumerWidget {
               ),
             )
                 .animate()
-                .fadeIn(delay: 500.ms, duration: 400.ms)
-                .slideY(begin: 0.1, end: 0, delay: 500.ms, duration: 400.ms),
+                .fadeIn(delay: 650.ms, duration: 400.ms)
+                .slideY(begin: 0.1, end: 0, delay: 650.ms, duration: 400.ms),
 
-            const Spacer(flex: 3),
+            const SizedBox(height: AppSpacing.xl),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Provider info model ─────────────────────────────────────────────────
+
+class _ProviderInfo {
+  const _ProviderInfo({
+    required this.provider,
+    required this.name,
+    required this.icon,
+    required this.color,
+    required this.label,
+  });
+
+  final _EmailProvider provider;
+  final String name;
+  final IconData icon;
+  final Color color;
+  final String label;
+}
+
+// ── Provider card widget ────────────────────────────────────────────────
+
+class _ProviderCard extends StatefulWidget {
+  const _ProviderCard({required this.info});
+  final _ProviderInfo info;
+
+  @override
+  State<_ProviderCard> createState() => _ProviderCardState();
+}
+
+class _ProviderCardState extends State<_ProviderCard> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() => _isPressed = true),
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        HapticFeedback.lightImpact();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${widget.info.name} connection coming soon!',
+              style: const TextStyle(fontFamily: 'Inter'),
+            ),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      },
+      onTapCancel: () => setState(() => _isPressed = false),
+      child: AnimatedScale(
+        scale: _isPressed ? 0.95 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: _isPressed
+                  ? widget.info.color.withValues(alpha: 0.4)
+                  : AppColors.border,
+            ),
+            boxShadow: _isPressed
+                ? []
+                : [
+                    BoxShadow(
+                      color: widget.info.color.withValues(alpha: 0.06),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                    ...AppShadows.shadowSmall,
+                  ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Logo container
+              Container(
+                width: 52,
+                height: 52,
+                decoration: BoxDecoration(
+                  color: widget.info.color.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(
+                  widget.info.icon,
+                  color: widget.info.color,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(height: 10),
+              // Provider name
+              Text(
+                widget.info.name,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 6),
+              // Connect button
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                decoration: BoxDecoration(
+                  color: widget.info.color.withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(AppRadius.full),
+                ),
+                child: Text(
+                  'Connect',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: widget.info.color,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

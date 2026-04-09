@@ -13,6 +13,22 @@ bool webSpeechSupported() {
   }
 }
 
+/// Request microphone permission before starting speech recognition.
+/// Returns a [Future] that resolves to true if permission was granted.
+/// On mobile browsers this triggers the native permission prompt.
+Future<bool> webSpeechRequestMicPermission() async {
+  try {
+    final promise = globalContext.callMethod('advocatRequestMicPermission'.toJS);
+    if (promise == null) return false;
+    final result = await (promise as JSPromise).toDart;
+    if (result is JSBoolean) return result.toDart;
+    // Fallback: treat any non-null result as success.
+    return result != null;
+  } catch (_) {
+    return false;
+  }
+}
+
 bool webSpeechStart(String locale) {
   try {
     final result = globalContext.callMethod('advocatStartSpeech'.toJS, locale.toJS);

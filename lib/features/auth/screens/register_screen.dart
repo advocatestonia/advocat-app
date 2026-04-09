@@ -28,7 +28,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _agreedToTerms = false;
-  String _selectedLanguage = 'en';
+  String _selectedLanguage = 'et';
 
   // Focus nodes for shadow animations
   final _nameFocus = FocusNode();
@@ -382,19 +382,24 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                               'Preferred Language',
                       prefixIcon: const Icon(Icons.language_outlined),
                     ),
-                    items: [
-                      DropdownMenuItem(
-                          value: 'en',
-                          child: Text(AppLocalizations.of(context)?.english ??
-                              'English')),
-                      DropdownMenuItem(
-                          value: 'ru',
-                          child: Text(AppLocalizations.of(context)?.russian ??
-                              'Russian')),
-                      DropdownMenuItem(
-                          value: 'fi',
-                          child: Text(AppLocalizations.of(context)?.finnish ??
-                              'Finnish')),
+                    items: const [
+                      DropdownMenuItem(value: 'et', child: Text('🇪🇪 Eesti')),
+                      DropdownMenuItem(value: 'en', child: Text('🇬🇧 English')),
+                      DropdownMenuItem(value: 'fi', child: Text('🇫🇮 Suomi')),
+                      DropdownMenuItem(value: 'de', child: Text('🇩🇪 Deutsch')),
+                      DropdownMenuItem(value: 'sv', child: Text('🇸🇪 Svenska')),
+                      DropdownMenuItem(value: 'fr', child: Text('🇫🇷 Français')),
+                      DropdownMenuItem(value: 'es', child: Text('🇪🇸 Español')),
+                      DropdownMenuItem(value: 'it', child: Text('🇮🇹 Italiano')),
+                      DropdownMenuItem(value: 'pl', child: Text('🇵🇱 Polski')),
+                      DropdownMenuItem(value: 'lv', child: Text('🇱🇻 Latviešu')),
+                      DropdownMenuItem(value: 'lt', child: Text('🇱🇹 Lietuvių')),
+                      DropdownMenuItem(value: 'ro', child: Text('🇷🇴 Română')),
+                      DropdownMenuItem(value: 'tr', child: Text('🇹🇷 Türkçe')),
+                      DropdownMenuItem(value: 'ru', child: Text('🇷🇺 Русский')),
+                      DropdownMenuItem(value: 'uk', child: Text('🇺🇦 Українська')),
+                      DropdownMenuItem(value: 'ar', child: Text('🇸🇦 العربية')),
+                      DropdownMenuItem(value: 'fa', child: Text('🇮🇷 فارسی')),
                     ],
                     onChanged: (value) {
                       if (value != null) {

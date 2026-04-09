@@ -554,7 +554,7 @@ class _Step2Details extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
 
-          // Migri reference
+          // Case reference number
           TextFormField(
             controller: referenceController,
             decoration: InputDecoration(

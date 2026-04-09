@@ -694,8 +694,22 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // Disclaimer banner
           _buildDisclaimerBanner(),
 
-          // Messages
-          Expanded(child: _buildMessageList()),
+          // Messages with subtle gradient background
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Color(0xFFF5F3F0), // slightly lighter top
+                    Color(0xFFECEAE6), // slightly darker bottom
+                  ],
+                ),
+              ),
+              child: _buildMessageList(),
+            ),
+          ),
 
           // Quick action chips
           if (!_isSending) _buildQuickActions(),
@@ -712,11 +726,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
       titleSpacing: 0,
+      flexibleSpace: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              AppColors.surface,
+              AppColors.accent.withValues(alpha: 0.04),
+            ],
+          ),
+        ),
+      ),
       title: Row(
         children: [
-          // AI avatar — pulsing
+          // AI avatar — pulsing with glow
           const _PulsingAvatar(),
-          const SizedBox(width: AppSpacing.sm + 2),
+          const SizedBox(width: AppSpacing.sm + 4),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -724,30 +750,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 Text(
                   widget.caseName ?? AppLocalizations.of(context)!.aiAssistant,
                   style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600),
+                    fontSize: 17,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.3,
+                  ),
                   overflow: TextOverflow.ellipsis,
                 ),
+                const SizedBox(height: 1),
                 Row(
                   children: [
-                    Container(
-                      width: 7,
-                      height: 7,
-                      decoration: BoxDecoration(
-                        color: _isTyping
-                            ? AppColors.warning
-                            : AppColors.success,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
+                    _OnlineDot(isTyping: _isTyping),
+                    const SizedBox(width: 5),
                     Text(
                       _isTyping ? (AppLocalizations.of(context)?.typing ?? 'Typing...') : (AppLocalizations.of(context)?.online ?? 'Online'),
                       style: TextStyle(
                         fontSize: 12,
                         color: _isTyping
                             ? AppColors.warning
-                            : AppColors.textTertiary,
-                        fontWeight: FontWeight.w400,
+                            : AppColors.success,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -1798,29 +1819,29 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     return Container(
       padding: EdgeInsets.only(
-        left: AppSpacing.sm,
-        right: AppSpacing.sm,
-        top: AppSpacing.sm + 2,
+        left: 12,
+        right: 12,
+        top: 8,
         bottom:
-            MediaQuery.of(context).padding.bottom + AppSpacing.sm,
+            MediaQuery.of(context).padding.bottom + 8,
       ),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: const Color(0xFFF8F7F5), // slightly lighter than message area
         border: Border(
           top: BorderSide(
-            color: AppColors.border.withValues(alpha: 0.3),
+            color: AppColors.border.withValues(alpha: 0.15),
           ),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 16,
-            offset: const Offset(0, -4),
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, -6),
           ),
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 4,
-            offset: const Offset(0, -1),
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 6,
+            offset: const Offset(0, -2),
           ),
         ],
       ),
@@ -1854,11 +1875,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           const SizedBox(width: 6),
 
-          // Mic + Send buttons — same size, aligned in a row
+          // Mic + Send buttons — same size (44x44), aligned in a row
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Mic button — 44x44, circular
+              // Mic button — 44x44, circular with shadow
               if (_voiceInitialized)
                 Container(
                   width: 44,
@@ -1867,15 +1888,27 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     shape: BoxShape.circle,
                     color: isListening
                         ? AppColors.error.withValues(alpha: 0.12)
-                        : AppColors.surfaceVariant,
+                        : AppColors.surface,
+                    border: Border.all(
+                      color: isListening
+                          ? AppColors.error.withValues(alpha: 0.3)
+                          : AppColors.border.withValues(alpha: 0.3),
+                      width: 0.5,
+                    ),
                     boxShadow: [
                       BoxShadow(
                         color: isListening
                             ? AppColors.error.withValues(alpha: 0.2)
                             : Colors.black.withValues(alpha: 0.06),
-                        blurRadius: isListening ? 10 : 4,
+                        blurRadius: isListening ? 12 : 6,
                         offset: const Offset(0, 2),
                       ),
+                      if (!isListening)
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.02),
+                          blurRadius: 2,
+                          offset: const Offset(0, 1),
+                        ),
                     ],
                   ),
                   child: IconButton(
@@ -1891,20 +1924,32 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
               if (_voiceInitialized) const SizedBox(width: 6),
 
-              // Send button — 44x44, circular, accent color
+              // Send button — 44x44, circular, accent with glow
               Container(
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  gradient: _isSending
+                      ? null
+                      : const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [AppColors.accent, AppColors.accentLight],
+                        ),
                   color: _isSending
                       ? AppColors.accent.withValues(alpha: 0.5)
-                      : AppColors.accent,
+                      : null,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.25),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
+                      color: AppColors.accent.withValues(alpha: 0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.1),
+                      blurRadius: 4,
+                      spreadRadius: 1,
                     ),
                   ],
                 ),
@@ -1919,7 +1964,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                             color: Colors.white,
                           ),
                         )
-                      : const Icon(Icons.send_rounded, size: 20),
+                      : const Icon(Icons.arrow_upward_rounded, size: 22),
                   color: Colors.white,
                   padding: EdgeInsets.zero,
                 ),
@@ -2031,8 +2076,8 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 46,
-      height: 46,
+      width: 50,
+      height: 50,
       child: AnimatedBuilder(
         animation: _pulse,
         builder: (context, child) {
@@ -2041,39 +2086,39 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
             children: [
               // Outer breathing glow ring
               Container(
-                width: 36 + _pulse.value * 10,
-                height: 36 + _pulse.value * 10,
+                width: 40 + _pulse.value * 10,
+                height: 40 + _pulse.value * 10,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.accent.withValues(alpha: 0.3 - _pulse.value * 0.25),
+                    color: AppColors.accent.withValues(alpha: 0.25 - _pulse.value * 0.2),
                     width: 1.5,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.12 + _pulse.value * 0.12),
-                      blurRadius: 8 + _pulse.value * 8,
-                      spreadRadius: _pulse.value * 3,
+                      color: AppColors.accent.withValues(alpha: 0.15 + _pulse.value * 0.15),
+                      blurRadius: 12 + _pulse.value * 10,
+                      spreadRadius: _pulse.value * 4,
                     ),
                   ],
                 ),
               ),
               // Second subtle ring
               Container(
-                width: 36 + _pulse.value * 5,
-                height: 36 + _pulse.value * 5,
+                width: 40 + _pulse.value * 5,
+                height: 40 + _pulse.value * 5,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.accentLight.withValues(alpha: 0.15 - _pulse.value * 0.1),
+                    color: AppColors.accentLight.withValues(alpha: 0.12 - _pulse.value * 0.08),
                     width: 1.0,
                   ),
                 ),
               ),
-              // Core avatar
+              // Core avatar — larger, more prominent
               Container(
-                width: 36,
-                height: 36,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     begin: Alignment.topLeft,
@@ -2083,15 +2128,20 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.3 + _pulse.value * 0.15),
-                      blurRadius: 8 + _pulse.value * 4,
+                      color: AppColors.accent.withValues(alpha: 0.35 + _pulse.value * 0.15),
+                      blurRadius: 10 + _pulse.value * 6,
                       offset: const Offset(0, 2),
+                    ),
+                    BoxShadow(
+                      color: AppColors.accentLight.withValues(alpha: 0.1 + _pulse.value * 0.1),
+                      blurRadius: 20,
+                      spreadRadius: _pulse.value * 2,
                     ),
                   ],
                 ),
                 child: const Icon(
                   Icons.balance_rounded,
-                  size: 20,
+                  size: 22,
                   color: Colors.white,
                 ),
               ),
@@ -2099,6 +2149,69 @@ class _PulsingAvatarState extends State<_PulsingAvatar>
           );
         },
       ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Pulsing Online status dot
+// ---------------------------------------------------------------------------
+
+class _OnlineDot extends StatefulWidget {
+  const _OnlineDot({required this.isTyping});
+
+  final bool isTyping;
+
+  @override
+  State<_OnlineDot> createState() => _OnlineDotState();
+}
+
+class _OnlineDotState extends State<_OnlineDot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ctrl;
+  late final Animation<double> _pulse;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    )..repeat(reverse: true);
+    _pulse = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final color = widget.isTyping ? AppColors.warning : AppColors.success;
+
+    return AnimatedBuilder(
+      animation: _pulse,
+      builder: (context, child) {
+        return Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color,
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: 0.4 + _pulse.value * 0.3),
+                blurRadius: 3 + _pulse.value * 3,
+                spreadRadius: _pulse.value * 1,
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -2151,16 +2264,21 @@ class _PremiumTextFieldState extends State<_PremiumTextField> {
       curve: Curves.easeOutCubic,
       constraints: const BoxConstraints(maxHeight: 120),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        boxShadow: _hasFocus
-            ? [
-                BoxShadow(
-                  color: AppColors.accent.withValues(alpha: 0.15),
-                  blurRadius: 12,
-                  spreadRadius: 1,
-                ),
-              ]
-            : null,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          if (_hasFocus)
+            BoxShadow(
+              color: AppColors.accent.withValues(alpha: 0.15),
+              blurRadius: 14,
+              spreadRadius: 1,
+            ),
+          // Subtle outer shadow for depth
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 4,
+            offset: const Offset(0, 1),
+          ),
+        ],
       ),
       child: KeyboardListener(
         focusNode: _keyboardFocusNode,
@@ -2179,30 +2297,37 @@ class _PremiumTextFieldState extends State<_PremiumTextField> {
           minLines: 1,
           textCapitalization: TextCapitalization.sentences,
           textInputAction: TextInputAction.newline,
+          style: const TextStyle(fontSize: 15, height: 1.4),
           decoration: InputDecoration(
             hintText: 'Опишите вашу ситуацию...',
-            hintStyle: const TextStyle(color: AppColors.textTertiary),
+            hintStyle: TextStyle(
+              color: AppColors.textTertiary.withValues(alpha: 0.7),
+              fontSize: 15,
+            ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.xl),
+              borderRadius: BorderRadius.circular(24),
               borderSide: _hasFocus
-                  ? BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0)
+                  ? BorderSide(color: AppColors.accent.withValues(alpha: 0.35), width: 1.0)
                   : BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.xl),
-              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(24),
+              borderSide: BorderSide(
+                color: AppColors.border.withValues(alpha: 0.2),
+                width: 0.5,
+              ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppRadius.xl),
-              borderSide: BorderSide(color: AppColors.accent.withValues(alpha: 0.4), width: 1.0),
+              borderRadius: BorderRadius.circular(24),
+              borderSide: BorderSide(color: AppColors.accent.withValues(alpha: 0.35), width: 1.0),
             ),
             filled: true,
             fillColor: _hasFocus
                 ? AppColors.surface
-                : AppColors.surfaceVariant,
+                : AppColors.surface.withValues(alpha: 0.9),
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: AppSpacing.sm + 2,
+              horizontal: 18,
+              vertical: 12,
             ),
           ),
         ),

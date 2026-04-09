@@ -2,8 +2,59 @@
 // Called from Dart via js_interop when the speech_to_text plugin fails.
 
 var _advocatRecognition = null;
+var _advocatMicPermissionGranted = false;
+
+/**
+ * Detect if running on a mobile browser.
+ */
+function _advocatIsMobile() {
+  return /Android|iPhone|iPad|iPod|Mobile|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+/**
+ * Detect iOS Safari (Web Speech API is NOT supported there).
+ */
+function _advocatIsIOSSafari() {
+  var ua = navigator.userAgent;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isSafari = /^((?!chrome|android|CriOS|FxiOS).)*safari/i.test(ua);
+  return isIOS && isSafari;
+}
+
+/**
+ * Request microphone permission explicitly.
+ * On mobile browsers, calling getUserMedia before SpeechRecognition
+ * ensures the permission prompt fires reliably.
+ * Returns a Promise that resolves to true/false.
+ */
+function advocatRequestMicPermission() {
+  if (_advocatMicPermissionGranted) {
+    return Promise.resolve(true);
+  }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    return Promise.resolve(false);
+  }
+  return navigator.mediaDevices.getUserMedia({ audio: true })
+    .then(function(stream) {
+      // Stop the tracks immediately — we just needed the permission.
+      stream.getTracks().forEach(function(track) { track.stop(); });
+      _advocatMicPermissionGranted = true;
+      return true;
+    })
+    .catch(function(err) {
+      console.warn('advocatRequestMicPermission denied:', err.name, err.message);
+      window._advocatSpeechError = 'mic_permission_denied';
+      return false;
+    });
+}
 
 function advocatStartSpeech(lang) {
+  // iOS Safari does not support Web Speech API at all.
+  if (_advocatIsIOSSafari()) {
+    window._advocatSpeechError = 'ios_safari_not_supported';
+    return false;
+  }
+
   var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
     window._advocatSpeechError = 'not_supported';
@@ -15,7 +66,10 @@ function advocatStartSpeech(lang) {
 
     var recognition = new SpeechRecognition();
     recognition.lang = lang || 'en-US';
-    recognition.interimResults = true;
+
+    // On mobile, use simpler settings for reliability.
+    var isMobile = _advocatIsMobile();
+    recognition.interimResults = !isMobile;
     recognition.continuous = false;
     recognition.maxAlternatives = 1;
 
@@ -36,7 +90,17 @@ function advocatStartSpeech(lang) {
     };
 
     recognition.onerror = function(event) {
-      window._advocatSpeechError = event.error || 'unknown';
+      var err = event.error || 'unknown';
+      // Provide better messages for mobile-specific errors.
+      if (err === 'not-allowed') {
+        window._advocatSpeechError = 'mic_permission_denied';
+      } else if (err === 'network') {
+        window._advocatSpeechError = 'network_error';
+      } else if (err === 'service-not-allowed') {
+        window._advocatSpeechError = 'service_not_allowed';
+      } else {
+        window._advocatSpeechError = err;
+      }
       window._advocatSpeechActive = false;
     };
 
@@ -59,6 +123,10 @@ function advocatStopSpeech() {
 }
 
 function advocatIsSpeechSupported() {
+  // iOS Safari does not support Web Speech API.
+  if (_advocatIsIOSSafari()) {
+    return false;
+  }
   return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 }
 

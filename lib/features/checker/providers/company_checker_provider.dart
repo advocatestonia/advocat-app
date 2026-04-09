@@ -50,7 +50,7 @@ class CompanyCheckerState {
     this.report,
     this.errorMessage,
     this.query = '',
-    this.selectedCountry = 'FI',
+    this.selectedCountry = 'EE',
   });
 
   final CheckerStatus status;
@@ -88,8 +88,8 @@ class CheckerCountry {
 }
 
 const checkerCountries = [
-  CheckerCountry(code: 'FI', name: 'Finland', flag: '🇫🇮'),
   CheckerCountry(code: 'EE', name: 'Estonia', flag: '🇪🇪'),
+  CheckerCountry(code: 'FI', name: 'Finland', flag: '🇫🇮'),
   CheckerCountry(code: 'LV', name: 'Latvia', flag: '🇱🇻'),
   CheckerCountry(code: 'LT', name: 'Lithuania', flag: '🇱🇹'),
   CheckerCountry(code: 'DE', name: 'Germany', flag: '🇩🇪'),
@@ -145,11 +145,11 @@ class CompanyCheckerNotifier extends StateNotifier<CompanyCheckerState> {
     // Provide different mock results based on query
     if (lowerQuery.contains('bad') || lowerQuery.contains('risk')) {
       return CompanyReport(
-        companyName: 'Bad Corp International Oy',
-        registrationNumber: '9876543-2',
+        companyName: 'Bad Corp International O\u00DC',
+        registrationNumber: '98765432',
         status: CompanyStatus.active,
         country: country,
-        address: 'Mannerheimintie 1, 00100 Helsinki',
+        address: 'Narva mnt 1, 10117 Tallinn',
         foundingDate: DateTime(2019, 3, 15),
         taxDebtLevel: TaxDebtLevel.significant,
         hasCourtCases: true,
@@ -164,11 +164,11 @@ class CompanyCheckerNotifier extends StateNotifier<CompanyCheckerState> {
 
     if (lowerQuery.contains('caution') || lowerQuery.contains('medium')) {
       return CompanyReport(
-        companyName: 'Nordic Trade Solutions Oy',
-        registrationNumber: '5544332-1',
+        companyName: 'Nordic Trade Solutions O\u00DC',
+        registrationNumber: '55443321',
         status: CompanyStatus.active,
         country: country,
-        address: 'Aleksanterinkatu 52, 00100 Helsinki',
+        address: 'Tartu mnt 52, 10115 Tallinn',
         foundingDate: DateTime(2021, 7, 1),
         taxDebtLevel: TaxDebtLevel.minor,
         hasCourtCases: true,
@@ -183,11 +183,11 @@ class CompanyCheckerNotifier extends StateNotifier<CompanyCheckerState> {
 
     // Default: safe company
     return CompanyReport(
-      companyName: 'TechFlow Finland Oy',
-      registrationNumber: '1234567-8',
+      companyName: 'TechFlow Estonia O\u00DC',
+      registrationNumber: '12345678',
       status: CompanyStatus.active,
       country: country,
-      address: 'Korkeavuorenkatu 25, 00130 Helsinki',
+      address: 'P\u00e4rnu mnt 25, 10141 Tallinn',
       foundingDate: DateTime(2015, 6, 12),
       taxDebtLevel: TaxDebtLevel.none,
       hasCourtCases: false,

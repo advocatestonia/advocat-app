@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../config/theme.dart';
@@ -20,6 +24,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
   late TextEditingController _phoneController;
   bool _saving = false;
   bool _showSuccess = false;
+  XFile? _pickedImage;
 
   late final AnimationController _entranceController;
   late final Animation<Offset> _slideAnimation;
@@ -96,6 +101,92 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
     _successController.dispose();
     _glowController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(
+      source: source,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 80,
+    );
+    if (image != null && mounted) {
+      setState(() => _pickedImage = image);
+    }
+  }
+
+  void _showImageSourceSheet() {
+    // On web, camera is often unsupported — go straight to gallery
+    if (kIsWeb) {
+      _pickImage(ImageSource.gallery);
+      return;
+    }
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      backgroundColor: AppColors.surface,
+      builder: (ctx) => SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 36,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.accent.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.camera_alt_rounded, color: AppColors.accent),
+                ),
+                title: const Text(
+                  'Take Photo',
+                  style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+                ),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+              ListTile(
+                leading: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.photo_library_rounded, color: AppColors.primary),
+                ),
+                title: const Text(
+                  'Choose from Gallery',
+                  style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w600),
+                ),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Future<void> _save() async {
@@ -177,34 +268,45 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                             child: CircleAvatar(
                               radius: 48,
                               backgroundColor: AppColors.primary,
-                              child: Text(
-                                initials,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Inter',
-                                ),
-                              ),
+                              backgroundImage: _pickedImage != null
+                                  ? (kIsWeb
+                                      ? NetworkImage(_pickedImage!.path)
+                                      : FileImage(File(_pickedImage!.path)))
+                                      as ImageProvider
+                                  : null,
+                              child: _pickedImage == null
+                                  ? Text(
+                                      initials,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: 'Inter',
+                                      ),
+                                    )
+                                  : null,
                             ),
                           ),
                           // Camera button with glow
-                          Container(
-                            width: 36,
-                            height: 36,
-                            decoration: BoxDecoration(
-                              color: AppColors.accent,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.background, width: 2.5),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.accent.withValues(alpha: 0.4),
-                                  blurRadius: 8,
-                                  spreadRadius: 1,
-                                ),
-                              ],
+                          GestureDetector(
+                            onTap: _showImageSourceSheet,
+                            child: Container(
+                              width: 36,
+                              height: 36,
+                              decoration: BoxDecoration(
+                                color: AppColors.accent,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppColors.background, width: 2.5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.accent.withValues(alpha: 0.4),
+                                    blurRadius: 8,
+                                    spreadRadius: 1,
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(Icons.camera_alt_rounded, size: 17, color: Colors.white),
                             ),
-                            child: const Icon(Icons.camera_alt_rounded, size: 17, color: Colors.white),
                           ),
                         ],
                       ),

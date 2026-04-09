@@ -351,9 +351,9 @@ abstract final class KnowledgeRouter {
   }
 
   /// Resolve a country string to an uppercase 2-letter ISO code.
-  /// Defaults to 'FI' (Finland) if unrecognised.
+  /// Defaults to 'EE' (Estonia) if unrecognised.
   static String _resolveCountryCode(String? country) {
-    if (country == null || country.isEmpty) return 'FI';
+    if (country == null || country.isEmpty) return 'EE';
     final upper = country.toUpperCase().trim();
     if (upper.length == 2) return upper;
     const nameToCode = {
