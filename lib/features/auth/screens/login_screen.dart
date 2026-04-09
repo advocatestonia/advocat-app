@@ -137,6 +137,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: AnimatedOpacity(
           opacity: _opacity,
@@ -144,19 +145,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           curve: Curves.easeOut,
           child: LayoutBuilder(
             builder: (context, constraints) {
-              // Use SingleChildScrollView only when screen is very small
               final content = _buildContent(context, l, authState);
-              if (constraints.maxHeight < 580) {
-                return SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  child: content,
-                );
-              }
-              return Padding(
+              // Always use SingleChildScrollView so keyboard doesn't push content off
+              return SingleChildScrollView(
                 padding:
                     const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: content,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(child: content),
+                ),
               );
             },
           ),
@@ -167,6 +166,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
   Widget _buildContent(
       BuildContext context, AppLocalizations l, AuthState authState) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isCompact = screenHeight < 700;
+    final logoSize = isCompact ? 100.0 : 140.0;
+    final glowSize = isCompact ? 150.0 : 200.0;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -174,13 +178,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: AppSpacing.lg),
+          SizedBox(height: isCompact ? AppSpacing.sm : AppSpacing.lg),
 
           // -- Logo with premium glow --
           Center(
             child: Container(
-              width: 200,
-              height: 200,
+              width: glowSize,
+              height: glowSize,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: RadialGradient(
@@ -195,14 +199,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               child: Center(
                 child: Image.asset(
                   'assets/images/logo_shield.png',
-                  width: 140,
-                  height: 140,
+                  width: logoSize,
+                  height: logoSize,
                   fit: BoxFit.contain,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          SizedBox(height: isCompact ? AppSpacing.xs : AppSpacing.sm),
 
           // -- Title with shadow effect --
           Text(

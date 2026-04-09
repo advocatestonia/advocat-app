@@ -21,6 +21,7 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     final scenarios = <_RightsScenario>[
+      // 1. Домашнее насилие
       _RightsScenario(
         id: 'domestic-violence',
         title: l10n.domesticViolence,
@@ -31,76 +32,7 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
         rightsCount: 6,
         tag: 'Essential',
       ),
-      _RightsScenario(
-        id: 'police-stop',
-        title: l10n.stoppedByPolice,
-        subtitle: l10n.stoppedByPoliceDesc,
-        icon: Icons.local_police_outlined,
-        color: AppColors.info,
-        category: 'Police',
-        rightsCount: 5,
-        tag: 'Essential',
-      ),
-      _RightsScenario(
-        id: 'deportation',
-        title: l10n.deportationNotice,
-        subtitle: l10n.deportationNoticeDesc,
-        icon: Icons.flight_takeoff_outlined,
-        color: AppColors.error,
-        category: 'Essential',
-        rightsCount: 4,
-        tag: 'Essential',
-      ),
-      _RightsScenario(
-        id: 'workplace',
-        title: l10n.workplaceRights,
-        subtitle: l10n.workplaceRightsDesc,
-        icon: Icons.work_outline,
-        color: AppColors.accent,
-        category: 'Work',
-        rightsCount: 5,
-        tag: 'Work',
-      ),
-      _RightsScenario(
-        id: 'tenant',
-        title: l10n.tenantRights,
-        subtitle: l10n.tenantRightsDesc,
-        icon: Icons.home_outlined,
-        color: AppColors.warning,
-        category: 'Housing',
-        rightsCount: 5,
-        tag: 'Housing',
-      ),
-      _RightsScenario(
-        id: 'detention',
-        title: l10n.immigrationDetention,
-        subtitle: l10n.immigrationDetentionDesc,
-        icon: Icons.lock_outline,
-        color: AppColors.error,
-        category: 'Essential',
-        rightsCount: 5,
-        tag: 'Essential',
-      ),
-      _RightsScenario(
-        id: 'discrimination',
-        title: l10n.discrimination,
-        subtitle: l10n.discriminationDesc,
-        icon: Icons.balance_outlined,
-        color: AppColors.primary,
-        category: 'Essential',
-        rightsCount: 4,
-        tag: 'Essential',
-      ),
-      _RightsScenario(
-        id: 'consumer',
-        title: l10n.consumerProtection,
-        subtitle: l10n.consumerProtectionDesc,
-        icon: Icons.shopping_bag_outlined,
-        color: AppColors.accent,
-        category: 'Consumer',
-        rightsCount: 5,
-        tag: 'Consumer',
-      ),
+      // 2. Права детей и алименты
       _RightsScenario(
         id: 'children-rights',
         title: l10n.childrenRights,
@@ -111,6 +43,7 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
         rightsCount: 7,
         tag: 'Children',
       ),
+      // 3. Кибербуллинг
       _RightsScenario(
         id: 'cyberbullying',
         title: l10n.cyberbullying,
@@ -120,6 +53,83 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
         category: 'Digital',
         rightsCount: 6,
         tag: 'Digital',
+      ),
+      // 4. Полиция
+      _RightsScenario(
+        id: 'police-stop',
+        title: l10n.stoppedByPolice,
+        subtitle: l10n.stoppedByPoliceDesc,
+        icon: Icons.local_police_outlined,
+        color: AppColors.info,
+        category: 'Police',
+        rightsCount: 5,
+        tag: 'Essential',
+      ),
+      // 5. Депортация
+      _RightsScenario(
+        id: 'deportation',
+        title: l10n.deportationNotice,
+        subtitle: l10n.deportationNoticeDesc,
+        icon: Icons.flight_takeoff_outlined,
+        color: AppColors.error,
+        category: 'Essential',
+        rightsCount: 4,
+        tag: 'Essential',
+      ),
+      // 6. Трудовые права
+      _RightsScenario(
+        id: 'workplace',
+        title: l10n.workplaceRights,
+        subtitle: l10n.workplaceRightsDesc,
+        icon: Icons.work_outline,
+        color: AppColors.accent,
+        category: 'Work',
+        rightsCount: 5,
+        tag: 'Work',
+      ),
+      // 7. Жильё
+      _RightsScenario(
+        id: 'tenant',
+        title: l10n.tenantRights,
+        subtitle: l10n.tenantRightsDesc,
+        icon: Icons.home_outlined,
+        color: AppColors.warning,
+        category: 'Housing',
+        rightsCount: 5,
+        tag: 'Housing',
+      ),
+      // 8. Задержание
+      _RightsScenario(
+        id: 'detention',
+        title: l10n.immigrationDetention,
+        subtitle: l10n.immigrationDetentionDesc,
+        icon: Icons.lock_outline,
+        color: AppColors.error,
+        category: 'Essential',
+        rightsCount: 5,
+        tag: 'Essential',
+      ),
+      // 9. Дискриминация
+      _RightsScenario(
+        id: 'discrimination',
+        title: l10n.discrimination,
+        subtitle: l10n.discriminationDesc,
+        icon: Icons.balance_outlined,
+        color: AppColors.primary,
+        category: 'Essential',
+        rightsCount: 4,
+        tag: 'Essential',
+      ),
+      // 10. Защита потребителя
+      _RightsScenario(
+        id: 'consumer',
+        title: l10n.consumerProtection,
+        subtitle: l10n.consumerProtectionDesc,
+        icon: Icons.shopping_bag_outlined,
+        color: AppColors.accent,
+        category: 'Consumer',
+        rightsCount: 5,
+        tag: 'Consumer',
       ),
     ];
 

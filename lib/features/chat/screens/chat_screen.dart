@@ -1104,13 +1104,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       );
     }
 
+    final screenWidth = MediaQuery.of(context).size.width;
+    final bubbleMargin = screenWidth < 380 ? 32.0 : 48.0;
+
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.only(
           bottom: AppSpacing.sm,
-          left: isUser ? 48 : 0,
-          right: isUser ? 0 : (isToolResult ? 16 : 48),
+          left: isUser ? bubbleMargin : 0,
+          right: isUser ? 0 : (isToolResult ? 16 : bubbleMargin),
         ),
         child: Column(
           crossAxisAlignment:

@@ -413,7 +413,7 @@ class _QuickActions extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _QuickActionButton(
                 icon: Icons.document_scanner_outlined,
@@ -443,7 +443,7 @@ class _QuickActions extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _QuickActionButton(
                 icon: Icons.lock_outlined,
@@ -519,10 +519,9 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: SizedBox(
-        width: 72,
+    return Expanded(
+      child: GestureDetector(
+        onTap: widget.onTap,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -608,10 +607,9 @@ class _QuickActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: SizedBox(
-        width: 72,
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

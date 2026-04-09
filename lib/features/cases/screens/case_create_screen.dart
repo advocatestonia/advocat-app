@@ -368,25 +368,31 @@ class _Step1CaseType extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: AppSpacing.md),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 1.65,
-            ),
-            itemCount: _categories.length,
-            itemBuilder: (context, index) {
-              final cat = _categories[index];
-              final isSelected = selectedType == cat.type;
-              return _CaseTypeCard(
-                icon: cat.icon,
-                label: _localizedCaseTypeLabel(cat.type, l),
-                isSelected: isSelected,
-                color: cat.color,
-                onTap: () => onTypeSelected(cat.type),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final crossAxisCount = constraints.maxWidth < 360 ? 1 : 2;
+              final aspectRatio = crossAxisCount == 1 ? 3.5 : 1.65;
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: aspectRatio,
+                ),
+                itemCount: _categories.length,
+                itemBuilder: (context, index) {
+                  final cat = _categories[index];
+                  final isSelected = selectedType == cat.type;
+                  return _CaseTypeCard(
+                    icon: cat.icon,
+                    label: _localizedCaseTypeLabel(cat.type, l),
+                    isSelected: isSelected,
+                    color: cat.color,
+                    onTap: () => onTypeSelected(cat.type),
+                  );
+                },
               );
             },
           ),

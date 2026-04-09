@@ -811,7 +811,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get workplaceRights => 'Трудовые права';
 
   @override
-  String get workplaceRightsDesc => 'Защита трудовых прав в Финляндии';
+  String get workplaceRightsDesc => 'Защита трудовых прав в Эстонии';
 
   @override
   String get tenantRightsDesc => 'Жилищные права и защита арендаторов';
@@ -1649,14 +1649,15 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get policeFactMustTellReason =>
-      'В Финляндии полиция обязана сообщить вам причину остановки. Если они этого не делают, вы можете спросить — они обязаны объяснить по закону.';
+      'В Эстонии полиция обязана сообщить вам причину остановки. Если они этого не делают, вы можете спросить — они обязаны объяснить по закону.';
 
   @override
   String get policeFactCanRecord =>
-      'В Финляндии вы можете записывать взаимодействие с полицией в общественных местах. Это защищено свободой слова.';
+      'В Эстонии вы можете записывать взаимодействие с полицией в общественных местах. Это защищено свободой слова.';
 
   @override
-  String get contactFinnishLegalAid => 'Юридическая помощь Финляндии';
+  String get contactFinnishLegalAid =>
+      'Государственная правовая помощь Эстонии';
 
   @override
   String get contactNonDiscriminationOmbudsman =>
@@ -1672,7 +1673,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get deportationFactStayDuringAppeal =>
-      'В Финляндии вы обычно имеете право оставаться в стране, пока рассматривается ваша апелляция. Депортация не может произойти во время активной апелляции в большинстве случаев.';
+      'В Эстонии вы обычно имеете право оставаться в стране, пока рассматривается ваша апелляция. Депортация не может произойти во время активной апелляции в большинстве случаев.';
 
   @override
   String get contactRefugeeAdviceCentre =>
@@ -1701,11 +1702,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get workplaceFactCollectiveWage =>
-      'В Финляндии коллективные соглашения устанавливают минимальную зарплату по отраслям — единой национальной минимальной зарплаты нет. Работодатель обязан следовать коллективному соглашению вашей отрасли.';
+      'В Эстонии правительство устанавливает государственную минимальную зарплату. Работодатель обязан платить не менее установленного минимума.';
 
   @override
   String get workplaceFactOralContract =>
-      'Даже без письменного договора вы имеете полные трудовые права в Финляндии. Устное соглашение юридически равноценно.';
+      'Даже без письменного договора вы имеете полные трудовые права в Эстонии. Устное соглашение юридически равноценно.';
 
   @override
   String get contactOccupationalSafety => 'Управление охраны труда';
@@ -1735,10 +1736,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get tenantFactNoEvictionWithoutCourt =>
-      'Арендодатель в Финляндии не может выселить вас без решения суда, даже если срок аренды истёк. Замена замков или отключение коммунальных услуг незаконны.';
+      'Арендодатель в Эстонии не может выселить вас без решения суда, даже если срок аренды истёк. Замена замков или отключение коммунальных услуг незаконны.';
 
   @override
-  String get contactTenantsAssociation => 'Ассоциация арендаторов Финляндии';
+  String get contactTenantsAssociation => 'Союз квартирных товариществ Эстонии';
 
   @override
   String get contactConsumerDisputesBoard =>
@@ -1773,7 +1774,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get detentionFactCourtReview =>
-      'Иммиграционное задержание в Финляндии должно быть рассмотрено районным судом в течение 4 дней. Если этого не произошло, задержание становится незаконным.';
+      'Иммиграционное задержание в Эстонии должно быть рассмотрено районным судом в течение 4 дней. Если этого не произошло, задержание становится незаконным.';
 
   @override
   String get contactParliamentaryOmbudsman => 'Парламентский омбудсмен';
@@ -1800,11 +1801,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get discriminationFactNonDiscriminationAct =>
-      'Закон Финляндии о недискриминации охватывает дискриминацию по возрасту, происхождению, национальности, языку, религии, здоровью, инвалидности, сексуальной ориентации и другим личным характеристикам.';
+      'Закон Эстонии о недискриминации охватывает дискриминацию по возрасту, происхождению, национальности, языку, религии, здоровью, инвалидности, сексуальной ориентации и другим личным характеристикам.';
 
   @override
-  String get contactVictimSupportRIKU =>
-      'Служба поддержки жертв Финляндии (RIKU)';
+  String get contactVictimSupportRIKU => 'Служба помощи жертвам (116 006)';
 
   @override
   String get domesticViolence => 'Домашнее насилие';

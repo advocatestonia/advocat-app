@@ -813,7 +813,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get workplaceRights => 'Права на робочому місці';
 
   @override
-  String get workplaceRightsDesc => 'Захист трудового права у Фінляндії';
+  String get workplaceRightsDesc => 'Захист трудового права в Естонії';
 
   @override
   String get tenantRightsDesc => 'Захист житла та орендарів';
@@ -1566,7 +1566,8 @@ class AppLocalizationsUk extends AppLocalizations {
       'Registered in Estonian Commercial Register (Äriregister)';
 
   @override
-  String get aiGeneratedDisclaimer => 'AI-generated • Not legal advice';
+  String get aiGeneratedDisclaimer =>
+      'Згенеровано ШІ • Не є юридичною консультацією';
 
   @override
   String get decline => 'Відхилити';
@@ -1643,14 +1644,14 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get policeFactMustTellReason =>
-      'У Фінляндії поліція зобов\'язана повідомити причину зупинки. Якщо вони цього не роблять, ви можете запитати — і вони зобов\'язані за законом пояснити.';
+      'В Естонії поліція зобов\'язана повідомити причину зупинки. Якщо вони цього не роблять, ви можете запитати — і вони зобов\'язані за законом пояснити.';
 
   @override
   String get policeFactCanRecord =>
-      'У Фінляндії ви можете записувати взаємодію з поліцією в громадських місцях. Це захищено свободою слова.';
+      'В Естонії ви можете записувати взаємодію з поліцією в громадських місцях. Це захищено свободою слова.';
 
   @override
-  String get contactFinnishLegalAid => 'Фінська правова допомога';
+  String get contactFinnishLegalAid => 'Державна правова допомога Естонії';
 
   @override
   String get contactNonDiscriminationOmbudsman =>
@@ -1666,7 +1667,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get deportationFactStayDuringAppeal =>
-      'У Фінляндії ви зазвичай маєте право залишатися в країні під час розгляду вашого оскарження. Депортація не може бути здійснена під час активного оскарження у більшості випадків.';
+      'В Естонії ви зазвичай маєте право залишатися в країні під час розгляду вашого оскарження. Депортація не може бути здійснена під час активного оскарження у більшості випадків.';
 
   @override
   String get contactRefugeeAdviceCentre =>
@@ -1695,11 +1696,11 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get workplaceFactCollectiveWage =>
-      'У Фінляндії колективні договори встановлюють мінімальну заробітну плату за галузями — єдиної національної мінімальної зарплати не існує. Ваш роботодавець повинен дотримуватися колективного договору вашої галузі.';
+      'В Естонії уряд встановлює державну мінімальну заробітну плату. Роботодавець зобов\'язаний платити не менше встановленого мінімуму.';
 
   @override
   String get workplaceFactOralContract =>
-      'Навіть без письмового договору ви маєте повні трудові права у Фінляндії. Усна угода є однаково обов\'язковою за законом.';
+      'Навіть без письмового договору ви маєте повні трудові права в Естонії. Усна угода є однаково обов\'язковою за законом.';
 
   @override
   String get contactOccupationalSafety => 'Управління з охорони праці';
@@ -1729,7 +1730,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get tenantFactNoEvictionWithoutCourt =>
-      'Орендодавець у Фінляндії не може виселити вас без рішення суду, навіть якщо термін оренди закінчився. Заміна замків або відключення комунальних послуг є незаконним.';
+      'Орендодавець в Естонії не може виселити вас без рішення суду, навіть якщо термін оренди закінчився. Заміна замків або відключення комунальних послуг є незаконним.';
 
   @override
   String get contactTenantsAssociation => 'Фінська асоціація орендарів';
@@ -1766,7 +1767,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get detentionFactCourtReview =>
-      'Імміграційне затримання у Фінляндії повинно бути переглянуте районним судом протягом 4 днів. Якщо цього не відбувається, затримання стає незаконним.';
+      'Імміграційне затримання в Естонії повинно бути переглянуте районним судом протягом 4 днів. Якщо цього не відбувається, затримання стає незаконним.';
 
   @override
   String get contactParliamentaryOmbudsman => 'Парламентський омбудсмен';
@@ -1796,7 +1797,7 @@ class AppLocalizationsUk extends AppLocalizations {
       'Фінський Закон про недискримінацію охоплює дискримінацію за віком, походженням, громадянством, мовою, релігією, станом здоров\'я, інвалідністю, сексуальною орієнтацією та іншими особистими характеристиками.';
 
   @override
-  String get contactVictimSupportRIKU => 'Підтримка жертв Фінляндія (RIKU)';
+  String get contactVictimSupportRIKU => 'Служба допомоги жертвам (116 006)';
 
   @override
   String get domesticViolence => 'Домашнє насильство';
@@ -1972,23 +1973,23 @@ class AppLocalizationsUk extends AppLocalizations {
   String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
 
   @override
-  String get caseTypeStepLabel => 'Case Type';
+  String get caseTypeStepLabel => 'Тип справи';
 
   @override
-  String get detailsStepLabel => 'Details';
+  String get detailsStepLabel => 'Деталі';
 
   @override
-  String get documentsStepLabel => 'Documents';
+  String get documentsStepLabel => 'Документи';
 
   @override
-  String get whatTypeOfCase => 'What type of case is this?';
+  String get whatTypeOfCase => 'Який тип справи?';
 
   @override
   String get selectCategoryDescription =>
       'Select the category that best describes your situation.';
 
   @override
-  String get tellUsAboutCase => 'Tell us about your case';
+  String get tellUsAboutCase => 'Розкажіть про вашу справу';
 
   @override
   String get aiHelpsUnderstand =>
@@ -1998,10 +1999,10 @@ class AppLocalizationsUk extends AppLocalizations {
   String get caseTitleHint => 'e.g., Residence Permit Appeal 2026';
 
   @override
-  String get countryJurisdiction => 'Country / Jurisdiction';
+  String get countryJurisdiction => 'Країна / Юрисдикція';
 
   @override
-  String get selectCountryHint => 'Select a country';
+  String get selectCountryHint => 'Оберіть країну';
 
   @override
   String get referenceNumberHint => 'e.g., UMA/12345/2026';
@@ -2014,14 +2015,14 @@ class AppLocalizationsUk extends AppLocalizations {
       'Describe your situation briefly. What happened? What decision was made?';
 
   @override
-  String get uploadFirstDocument => 'Upload your first document';
+  String get uploadFirstDocument => 'Завантажте перший документ';
 
   @override
   String get uploadDocumentDescription =>
       'Upload the decision letter or any relevant document. You can skip this step and add documents later.';
 
   @override
-  String get tapToUploadFile => 'Tap to upload a file';
+  String get tapToUploadFile => 'Натисніть щоб завантажити файл';
 
   @override
   String get fileSizeLimit => 'PDF, JPG, PNG up to 25 MB';
@@ -2031,72 +2032,72 @@ class AppLocalizationsUk extends AppLocalizations {
       'You can always add documents later from the case detail screen.';
 
   @override
-  String get callAI => 'Call AI';
+  String get callAI => 'Зателефонувати ШІ';
 
   @override
-  String get encrypted => 'Encrypted';
+  String get encrypted => 'Зашифровано';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Друкує...';
 
   @override
-  String get online => 'Online';
+  String get online => 'Онлайн';
 
   @override
   String get chatWelcomeSubtitle =>
-      'I will analyze the situation, check documents, find errors, and suggest what to do.';
+      'Я проаналізую вашу ситуацію та допоможу зрозуміти ваші права';
 
   @override
-  String get tapMicrophoneToSpeak => 'Tap the microphone to speak';
+  String get tapMicrophoneToSpeak => 'Натисніть мікрофон щоб говорити';
 
   @override
-  String get categoryEssential => 'Essential';
+  String get categoryEssential => 'Основне';
 
   @override
-  String get categoryPolice => 'Police';
+  String get categoryPolice => 'Поліція';
 
   @override
-  String get categoryWork => 'Work';
+  String get categoryWork => 'Робота';
 
   @override
-  String get categoryHousing => 'Housing';
+  String get categoryHousing => 'Житло';
 
   @override
-  String get categoryConsumer => 'Consumer';
+  String get categoryConsumer => 'Споживач';
 
   @override
   String rightsInsideCount(int count) {
-    return '$count rights inside';
+    return '$count прав всередині';
   }
 
   @override
-  String get freeAidThreshold => 'Free aid threshold';
+  String get freeAidThreshold => 'Поріг безкоштовної допомоги';
 
   @override
-  String get partialAidThreshold => 'Partial aid threshold';
+  String get partialAidThreshold => 'Поріг часткової допомоги';
 
   @override
-  String get assetLimit => 'Asset limit';
+  String get assetLimit => 'Ліміт активів';
 
   @override
-  String get whereToApplyLabel => 'Where to apply';
+  String get whereToApplyLabel => 'Куди звертатися';
 
   @override
-  String get phoneLabel => 'Phone';
+  String get phoneLabel => 'Телефон';
 
   @override
-  String get websiteLabel => 'Website';
+  String get websiteLabel => 'Вебсайт';
 
   @override
-  String get disclaimerCollapsed => 'AI guidance only';
+  String get disclaimerCollapsed => 'ШІ-помічник — не юридична консультація';
 
   @override
   String get disclaimerExpanded =>
-      'AI assistant — not legal advice. Always verify with a qualified lawyer.';
+      'ШІ-помічник надає правову інформацію, а не юридичну консультацію. Завжди перевіряйте у кваліфікованого юриста.';
 
   @override
   String get chatDisclaimerBanner =>
-      'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+      'ШІ-помічник надає загальну правову інформацію. Це не замінює кваліфіковану юридичну консультацію.';
 
   @override
   String get categoryChildren => 'Children';

@@ -811,7 +811,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get workplaceRights => 'Töökoha õigused';
 
   @override
-  String get workplaceRightsDesc => 'Tööõiguskaitse Soomes';
+  String get workplaceRightsDesc => 'Tööõiguskaitse Eestis';
 
   @override
   String get tenantRightsDesc => 'Eluaseme- ja üürikaitse';
@@ -1648,14 +1648,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get policeFactMustTellReason =>
-      'Soomes peab politsei ütlema teile peatamise põhjuse. Kui nad seda ei tee, võite küsida — ja nad on seaduslikult kohustatud selgitama.';
+      'Eestis peab politsei ütlema teile peatamise põhjuse. Kui nad seda ei tee, võite küsida — ja nad on seaduslikult kohustatud selgitama.';
 
   @override
   String get policeFactCanRecord =>
-      'Soomes võite avalikes kohtades politseikokkupuuteid salvestada. Seda kaitseb sõnavabadus.';
+      'Eestis võite avalikes kohtades politseikokkupuuteid salvestada. Seda kaitseb sõnavabadus.';
 
   @override
-  String get contactFinnishLegalAid => 'Soome õigusabi';
+  String get contactFinnishLegalAid => 'Riigi õigusabi';
 
   @override
   String get contactNonDiscriminationOmbudsman => 'Võrdõigusvolinik';
@@ -1670,13 +1670,13 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get deportationFactStayDuringAppeal =>
-      'Soomes on teil tavaliselt õigus jääda riiki, kuni teie kaebus on menetluses. Väljasaatmist ei saa enamikul juhtudel teostada aktiivse kaebuse ajal.';
+      'Eestis on teil tavaliselt õigus jääda riiki, kuni teie kaebus on menetluses. Väljasaatmist ei saa enamikul juhtudel teostada aktiivse kaebuse ajal.';
 
   @override
-  String get contactRefugeeAdviceCentre => 'Soome Pagulaste Nõustamiskeskus';
+  String get contactRefugeeAdviceCentre => 'Eesti Pagulasabi';
 
   @override
-  String get contactAdminCourtHelsinki => 'Helsingi Halduskohus';
+  String get contactAdminCourtHelsinki => 'Tallinna Halduskohus';
 
   @override
   String get workplaceActionKeepContract => 'Hoidke alles töölepingu koopiad';
@@ -1697,17 +1697,17 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get workplaceFactCollectiveWage =>
-      'Soomes kehtestavad kollektiivlepingud miinimumpalga valdkonniti — ühtset riiklikku miinimumpalka ei ole. Teie tööandja peab järgima teie valdkonna kollektiivlepingut.';
+      'Eestis kehtestab Vabariigi Valitsus riikliku miinimumpalga. Tööandja peab maksma vähemalt seaduses sätestatud miinimumpalka.';
 
   @override
   String get workplaceFactOralContract =>
-      'Isegi ilma kirjaliku lepinguta on teil Soomes täielikud töötaja õigused. Suuline kokkulepe on seaduse järgi sama siduv.';
+      'Isegi ilma kirjaliku lepinguta on teil Eestis täielikud töötaja õigused. Suuline kokkulepe on seaduse järgi sama siduv.';
 
   @override
   String get contactOccupationalSafety => 'Tööinspektsioon';
 
   @override
-  String get contactTradeUnionSAK => 'Ametiühingu nõustamine (SAK)';
+  String get contactTradeUnionSAK => 'Eesti Ametiühingute Keskliit (EAKL)';
 
   @override
   String get tenantActionWrittenAgreement =>
@@ -1731,10 +1731,10 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get tenantFactNoEvictionWithoutCourt =>
-      'Soomes ei saa üürileandja teid välja tõsta ilma kohtumääruseta, isegi kui üürileping on lõppenud. Lukkude vahetamine või kommunaalteenuste katkestamine on ebaseaduslik.';
+      'Eestis ei saa üürileandja teid välja tõsta ilma kohtumääruseta, isegi kui üürileping on lõppenud. Lukkude vahetamine või kommunaalteenuste katkestamine on ebaseaduslik.';
 
   @override
-  String get contactTenantsAssociation => 'Soome Üürnike Liit';
+  String get contactTenantsAssociation => 'Eesti Üürnike Liit';
 
   @override
   String get contactConsumerDisputesBoard => 'Tarbijavaidluste komisjon';
@@ -1768,7 +1768,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get detentionFactCourtReview =>
-      'Sisserände kinnipidamine Soomes peab olema maakohtu poolt läbi vaadatud 4 päeva jooksul. Kui seda ei tehta, muutub kinnipidamine ebaseaduslikuks.';
+      'Sisserände kinnipidamine Eestis peab olema maakohtu poolt läbi vaadatud 4 päeva jooksul. Kui seda ei tehta, muutub kinnipidamine ebaseaduslikuks.';
 
   @override
   String get contactParliamentaryOmbudsman => 'Õiguskantsler';
@@ -1795,10 +1795,10 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get discriminationFactNonDiscriminationAct =>
-      'Soome võrdse kohtlemise seadus hõlmab diskrimineerimist vanuse, päritolu, kodakondsuse, keele, usu, tervise, puude, seksuaalse sättumuse ja muude isikuomaduste alusel.';
+      'Eesti võrdse kohtlemise seadus hõlmab diskrimineerimist vanuse, päritolu, kodakondsuse, keele, usu, tervise, puude, seksuaalse sättumuse ja muude isikuomaduste alusel.';
 
   @override
-  String get contactVictimSupportRIKU => 'Ohvriabi Soome (RIKU)';
+  String get contactVictimSupportRIKU => 'Ohvriabi (116 006)';
 
   @override
   String get domesticViolence => 'Koduvägivald';
