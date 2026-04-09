@@ -566,7 +566,29 @@ class _SegmentEmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 64, color: AppColors.textTertiary),
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.accent.withValues(alpha: 0.15),
+                    AppColors.accent.withValues(alpha: 0.05),
+                  ],
+                ),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
+              ),
+              child: Icon(icon, size: 40, color: AppColors.accent),
+            ),
             const SizedBox(height: AppSpacing.lg),
             Text(
               title,
@@ -585,10 +607,34 @@ class _SegmentEmptyState extends StatelessWidget {
             ),
             if (segment == _CaseSegment.all) ...[
               const SizedBox(height: AppSpacing.xl),
-              ElevatedButton.icon(
-                onPressed: onCreateCase,
-                icon: const Icon(Icons.add),
-                label: Text(AppLocalizations.of(context)?.createCase ?? 'Create Case'),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.3),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton.icon(
+                  onPressed: onCreateCase,
+                  icon: const Icon(Icons.add),
+                  label: Text(AppLocalizations.of(context)?.createCase ?? 'Create Case'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.accent,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
               ),
             ],
           ],

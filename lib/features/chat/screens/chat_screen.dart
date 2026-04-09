@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/ai_service.dart';
@@ -96,6 +97,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _disclaimerExpanded = true;
   _ChatPhase _chatPhase = _ChatPhase.newCase;
   int _issuesFound = 0;
+  bool _upgradeBannerDismissed = false;
+  int _freeMessagesUsed = 0;
+  int _freeMessagesTotal = 50;
 
   // -- Voice state --
   VoiceButtonState _voiceState = VoiceButtonState.idle;
@@ -108,6 +112,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     super.initState();
     _loadMessages();
     _initVoice();
+    _loadFreeMessageCount();
+  }
+
+  Future<void> _loadFreeMessageCount() async {
+    try {
+      final ai = ref.read(aiServiceProvider);
+      final remaining = await ai.getRemainingFreeCalls();
+      if (remaining >= 0 && mounted) {
+        setState(() {
+          _freeMessagesTotal = 50;
+          _freeMessagesUsed = _freeMessagesTotal - remaining;
+        });
+      }
+    } catch (_) {}
   }
 
   @override
@@ -420,7 +438,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         _scrollToBottom();
       }
     } finally {
-      if (mounted) setState(() => _isSending = false);
+      if (mounted) {
+        setState(() => _isSending = false);
+        _loadFreeMessageCount(); // refresh counter after each message
+      }
     }
   }
 
@@ -688,8 +709,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       appBar: _buildAppBar(),
       body: Column(
         children: [
-          // Status bar
+          // Status bar with free message counter
           _buildStatusBar(),
+
+          // Upgrade banner (after 3+ user messages, dismissible)
+          if (!_upgradeBannerDismissed &&
+              _messages.where((m) => m.role == MessageRole.user).length >= 3 &&
+              !ref.read(aiServiceProvider).isProUser)
+            _buildUpgradeBanner(),
 
           // Disclaimer banner
           _buildDisclaimerBanner(),
@@ -910,6 +937,45 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
           ),
 
+          // Free message counter
+          if (!ref.read(aiServiceProvider).isProUser &&
+              _freeMessagesUsed > 0) ...[
+            const SizedBox(width: AppSpacing.sm),
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: _freeMessagesUsed >= _freeMessagesTotal - 5
+                    ? AppColors.warning.withValues(alpha: 0.12)
+                    : AppColors.accent.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(AppRadius.full),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.chat_bubble_outline_rounded,
+                    size: 12,
+                    color: _freeMessagesUsed >= _freeMessagesTotal - 5
+                        ? AppColors.warning
+                        : AppColors.accent,
+                  ),
+                  const SizedBox(width: 3),
+                  Text(
+                    '$_freeMessagesUsed/$_freeMessagesTotal',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: _freeMessagesUsed >= _freeMessagesTotal - 5
+                          ? AppColors.warning
+                          : AppColors.accent,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
           // Issues badge
           if (_issuesFound > 0) ...[
             const SizedBox(width: AppSpacing.sm),
@@ -1026,6 +1092,80 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // -- Upgrade banner --
+
+  Widget _buildUpgradeBanner() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 6,
+      ),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.accent.withValues(alpha: 0.08),
+            AppColors.primary.withValues(alpha: 0.06),
+          ],
+        ),
+        border: Border(
+          bottom: BorderSide(
+            color: AppColors.accent.withValues(alpha: 0.15),
+          ),
+        ),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            Icons.workspace_premium_rounded,
+            size: 18,
+            color: AppColors.accent,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Upgrade for unlimited consultations',
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.accent,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 28,
+            child: TextButton(
+              onPressed: () => context.push(AppRoutes.subscription),
+              style: TextButton.styleFrom(
+                backgroundColor: AppColors.accent,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                minimumSize: Size.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              child: const Text('Upgrade'),
+            ),
+          ),
+          const SizedBox(width: 4),
+          GestureDetector(
+            onTap: () => setState(() => _upgradeBannerDismissed = true),
+            child: const Icon(
+              Icons.close_rounded,
+              size: 16,
+              color: AppColors.textTertiary,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -1199,7 +1339,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 vertical: AppSpacing.sm + 4,
               ),
               decoration: BoxDecoration(
-                color: isUser ? AppColors.primary : AppColors.surface,
+                gradient: isUser
+                    ? const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [AppColors.accent, AppColors.accentDark],
+                      )
+                    : null,
+                color: isUser ? null : AppColors.surface,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(AppRadius.lg),
                   topRight: const Radius.circular(AppRadius.lg),
@@ -1216,9 +1363,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 boxShadow: [
                   BoxShadow(
                     color: (isUser
-                            ? AppColors.primary
+                            ? AppColors.accent
                             : Colors.black)
-                        .withValues(alpha: isUser ? 0.15 : 0.06),
+                        .withValues(alpha: isUser ? 0.20 : 0.06),
                     blurRadius: 12,
                     offset: const Offset(0, 3),
                   ),

@@ -222,13 +222,27 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: AppColors.background,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: BackButton(
           onPressed: () => context.go(AppRoutes.onboarding),
         ),
       ),
-      body: SafeArea(
+      extendBodyBehindAppBar: true,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFF7F6F4),
+              Color(0xFFF0EEEB),
+              Color(0xFFE8E5E1),
+            ],
+            stops: [0.0, 0.5, 1.0],
+          ),
+        ),
+        child: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: SingleChildScrollView(
@@ -373,39 +387,54 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                   ),
                   const SizedBox(height: AppSpacing.md),
 
-                  // -- Language selector --
-                  DropdownButtonFormField<String>(
-                    initialValue: _selectedLanguage,
-                    decoration: InputDecoration(
-                      labelText:
-                          AppLocalizations.of(context)?.preferredLanguage ??
-                              'Preferred Language',
-                      prefixIcon: const Icon(Icons.language_outlined),
+                  // -- Language selector with premium styling --
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.04),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
                     ),
-                    items: const [
-                      DropdownMenuItem(value: 'et', child: Text('🇪🇪 Eesti')),
-                      DropdownMenuItem(value: 'en', child: Text('🇬🇧 English')),
-                      DropdownMenuItem(value: 'fi', child: Text('🇫🇮 Suomi')),
-                      DropdownMenuItem(value: 'de', child: Text('🇩🇪 Deutsch')),
-                      DropdownMenuItem(value: 'sv', child: Text('🇸🇪 Svenska')),
-                      DropdownMenuItem(value: 'fr', child: Text('🇫🇷 Français')),
-                      DropdownMenuItem(value: 'es', child: Text('🇪🇸 Español')),
-                      DropdownMenuItem(value: 'it', child: Text('🇮🇹 Italiano')),
-                      DropdownMenuItem(value: 'pl', child: Text('🇵🇱 Polski')),
-                      DropdownMenuItem(value: 'lv', child: Text('🇱🇻 Latviešu')),
-                      DropdownMenuItem(value: 'lt', child: Text('🇱🇹 Lietuvių')),
-                      DropdownMenuItem(value: 'ro', child: Text('🇷🇴 Română')),
-                      DropdownMenuItem(value: 'tr', child: Text('🇹🇷 Türkçe')),
-                      DropdownMenuItem(value: 'ru', child: Text('🇷🇺 Русский')),
-                      DropdownMenuItem(value: 'uk', child: Text('🇺🇦 Українська')),
-                      DropdownMenuItem(value: 'ar', child: Text('🇸🇦 العربية')),
-                      DropdownMenuItem(value: 'fa', child: Text('🇮🇷 فارسی')),
-                    ],
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() => _selectedLanguage = value);
-                      }
-                    },
+                    child: DropdownButtonFormField<String>(
+                      value: _selectedLanguage,
+                      decoration: InputDecoration(
+                        labelText:
+                            AppLocalizations.of(context)?.preferredLanguage ??
+                                'Preferred Language',
+                        prefixIcon: const Icon(Icons.language_outlined),
+                      ),
+                      menuMaxHeight: 300,
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                      dropdownColor: AppColors.surface,
+                      items: const [
+                        DropdownMenuItem(value: 'et', child: Text('🇪🇪  Eesti')),
+                        DropdownMenuItem(value: 'en', child: Text('🇬🇧  English')),
+                        DropdownMenuItem(value: 'fi', child: Text('🇫🇮  Suomi')),
+                        DropdownMenuItem(value: 'de', child: Text('🇩🇪  Deutsch')),
+                        DropdownMenuItem(value: 'sv', child: Text('🇸🇪  Svenska')),
+                        DropdownMenuItem(value: 'fr', child: Text('🇫🇷  Français')),
+                        DropdownMenuItem(value: 'es', child: Text('🇪🇸  Español')),
+                        DropdownMenuItem(value: 'it', child: Text('🇮🇹  Italiano')),
+                        DropdownMenuItem(value: 'pl', child: Text('🇵🇱  Polski')),
+                        DropdownMenuItem(value: 'lv', child: Text('🇱🇻  Latviešu')),
+                        DropdownMenuItem(value: 'lt', child: Text('🇱🇹  Lietuvių')),
+                        DropdownMenuItem(value: 'ro', child: Text('🇷🇴  Română')),
+                        DropdownMenuItem(value: 'tr', child: Text('🇹🇷  Türkçe')),
+                        DropdownMenuItem(value: 'ru', child: Text('🇷🇺  Русский')),
+                        DropdownMenuItem(value: 'uk', child: Text('🇺🇦  Українська')),
+                        DropdownMenuItem(value: 'ar', child: Text('🇸🇦  العربية')),
+                        DropdownMenuItem(value: 'fa', child: Text('🇮🇷  فارسی')),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() => _selectedLanguage = value);
+                        }
+                      },
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.md),
 
@@ -662,6 +691,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
             ),
           ),
         ),
+      ),
       ),
     );
   }

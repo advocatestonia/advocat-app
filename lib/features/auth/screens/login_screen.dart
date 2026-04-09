@@ -138,26 +138,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     return Scaffold(
       backgroundColor: AppColors.background,
       resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        child: AnimatedOpacity(
-          opacity: _opacity,
-          duration: const Duration(milliseconds: 600),
-          curve: Curves.easeOut,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final content = _buildContent(context, l, authState);
-              // Always use SingleChildScrollView so keyboard doesn't push content off
-              return SingleChildScrollView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFF7F6F4), // lighter at top
+              Color(0xFFF0EEEB), // background
+              Color(0xFFE8E5E1), // darker at bottom
+            ],
+            stops: [0.0, 0.5, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: AnimatedOpacity(
+            opacity: _opacity,
+            duration: const Duration(milliseconds: 600),
+            curve: Curves.easeOut,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final content = _buildContent(context, l, authState);
+                // Always use SingleChildScrollView so keyboard doesn't push content off
+                return SingleChildScrollView(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minHeight: constraints.maxHeight,
+                    ),
+                    child: IntrinsicHeight(child: content),
                   ),
-                  child: IntrinsicHeight(child: content),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -423,8 +437,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           // -- Google sign-in with press animation --
           _ScaleOnTapButton(
             onTap: authState.isLoading ? null : _handleGoogleLogin,
-            child: SizedBox(
+            child: Container(
               height: 48,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.08),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
               child: OutlinedButton.icon(
                 onPressed:
                     authState.isLoading ? null : _handleGoogleLogin,
@@ -440,7 +470,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 label: Text(l.continueWithGoogle),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.textPrimary,
-                  side: const BorderSide(color: AppColors.border),
+                  backgroundColor: Colors.white,
+                  side: BorderSide(color: AppColors.border.withValues(alpha: 0.5)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),

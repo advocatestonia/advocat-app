@@ -204,24 +204,29 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
                       });
                     },
                     backgroundColor: AppColors.surface,
-                    selectedColor: AppColors.primary.withValues(alpha: 0.12),
-                    checkmarkColor: AppColors.primary,
+                    selectedColor: AppColors.accent.withValues(alpha: 0.12),
+                    checkmarkColor: AppColors.accent,
+                    showCheckmark: false,
                     labelStyle: TextStyle(
                       fontSize: 13,
                       fontWeight:
                           isSelected ? FontWeight.w600 : FontWeight.w500,
                       color: isSelected
-                          ? AppColors.primary
+                          ? AppColors.accent
                           : AppColors.textSecondary,
                     ),
                     side: BorderSide(
                       color: isSelected
-                          ? AppColors.primary.withValues(alpha: 0.3)
+                          ? AppColors.accent.withValues(alpha: 0.4)
                           : AppColors.border,
+                      width: isSelected ? 1.5 : 1.0,
                     ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.full),
                     ),
+                    elevation: isSelected ? 2 : 0,
+                    pressElevation: 4,
+                    shadowColor: AppColors.accent.withValues(alpha: 0.2),
                   );
                 },
               ),

@@ -620,13 +620,20 @@ class _PlanCardState extends State<_PlanCard>
         return BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.accent, width: 2),
+          border: Border.all(color: AppColors.accent, width: 2.5),
           boxShadow: [
             BoxShadow(
               color: AppColors.accent.withValues(
-                  alpha: 0.12 + 0.08 * (_glowAnimation?.value ?? 0)),
-              blurRadius: 16 + 8 * (_glowAnimation?.value ?? 0),
+                  alpha: 0.15 + 0.12 * (_glowAnimation?.value ?? 0)),
+              blurRadius: 20 + 12 * (_glowAnimation?.value ?? 0),
+              spreadRadius: 1 + 2 * (_glowAnimation?.value ?? 0),
               offset: const Offset(0, 4),
+            ),
+            BoxShadow(
+              color: AppColors.accent.withValues(
+                  alpha: 0.06 + 0.04 * (_glowAnimation?.value ?? 0)),
+              blurRadius: 40,
+              spreadRadius: 0,
             ),
           ],
         );
@@ -676,23 +683,34 @@ class _PlanCardState extends State<_PlanCard>
           // ── Recommended badge ────────────────────────────────────
           if (widget.isRecommended)
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: const BoxDecoration(
-                color: AppColors.accent,
+                gradient: LinearGradient(
+                  colors: [AppColors.accent, AppColors.accentLight],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ),
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(AppRadius.lg - 1),
                 ),
               ),
-              child: const Text(
-                'Soovitatav / Recommended',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.5,
-                  color: Colors.white,
-                ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.star_rounded, size: 14, color: Colors.white),
+                  SizedBox(width: 4),
+                  Text(
+                    'Soovitatav / Recommended',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.5,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
               ),
             ),
 
