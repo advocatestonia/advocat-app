@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -96,6 +97,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (kIsWeb) return; // No CameraController on web.
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
     }
@@ -110,6 +112,18 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
   // ── Camera init ──────────────────────────────────────────────────────────
 
   Future<void> _initCamera() async {
+    if (kIsWeb) {
+      // On web, browser handles camera permissions natively via image_picker.
+      // CameraController and permission_handler do not work on web.
+      if (mounted) {
+        setState(() {
+          _hasCameraPermission = true;
+          _isCameraInitialized = true;
+        });
+      }
+      return;
+    }
+
     final status = await Permission.camera.request();
     if (!status.isGranted) {
       if (mounted) {
@@ -153,6 +167,26 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
   // ── Actions ──────────────────────────────────────────────────────────────
 
   Future<void> _takePhoto() async {
+    if (kIsWeb) {
+      // On web, use image_picker which triggers the browser's native camera.
+      try {
+        final photo = await _picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 90,
+        );
+        if (photo != null && mounted) {
+          setState(() {
+            _currentCapture = photo;
+            _phase = _ScanPhase.preview;
+          });
+        }
+      } catch (_) {
+        if (!mounted) return;
+        _showError(AppLocalizations.of(context)!.capturePhotoFailed);
+      }
+      return;
+    }
+
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return;
     }
@@ -205,12 +239,15 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
     setState(() => _isProcessingOcr = true);
 
     String? ocrText;
-    try {
-      final inputImage = InputImage.fromFilePath(_currentCapture!.path);
-      final recognized = await _textRecognizer.processImage(inputImage);
-      ocrText = recognized.text;
-    } catch (_) {
-      // OCR failure is non-fatal; we still keep the page.
+    if (!kIsWeb) {
+      // ML Kit text recognition only works on native (iOS/Android).
+      try {
+        final inputImage = InputImage.fromFilePath(_currentCapture!.path);
+        final recognized = await _textRecognizer.processImage(inputImage);
+        ocrText = recognized.text;
+      } catch (_) {
+        // OCR failure is non-fatal; we still keep the page.
+      }
     }
 
     setState(() {
@@ -241,7 +278,9 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
 
       for (var i = 0; i < _pages.length; i++) {
         final page = _pages[i];
-        final bytes = await File(page.file.path).readAsBytes();
+        // On web, dart:io File doesn't work. Use XFile.readAsBytes() which
+        // works on all platforms.
+        final bytes = await page.file.readAsBytes();
         final fileName =
             'scan_${DateTime.now().millisecondsSinceEpoch}_p${i + 1}.jpg';
 
@@ -335,6 +374,11 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
           ],
         ),
       );
+    }
+
+    // On web: show capture/gallery buttons instead of native camera preview.
+    if (kIsWeb) {
+      return _buildWebCameraView();
     }
 
     if (!_hasCameraPermission || _cameraController == null) {
@@ -484,13 +528,152 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
     );
   }
 
+  // ── Web camera view — buttons for capture / gallery ─────────────────────
+
+  Widget _buildWebCameraView() {
+    final l10n = AppLocalizations.of(context)!;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Camera icon
+            Container(
+              width: 100,
+              height: 100,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.08),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  width: 2,
+                ),
+              ),
+              child: const Icon(
+                Icons.document_scanner_rounded,
+                size: 48,
+                color: Colors.white70,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              l10n.scanDocument,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Take a photo or choose from gallery',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.6),
+                fontSize: 14,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            // Capture photo button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _takePhoto,
+                icon: const Icon(Icons.camera_alt_rounded, size: 22),
+                label: const Text(
+                  'Capture Photo',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accent,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
+                  elevation: 0,
+                ),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            // Gallery button
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _pickFromGallery,
+                icon: const Icon(Icons.photo_library_outlined, size: 22),
+                label: const Text(
+                  'Choose from Gallery',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  side: BorderSide(
+                    color: Colors.white.withValues(alpha: 0.3),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
+                ),
+              ),
+            ),
+            // Page counter
+            if (_pages.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.lg),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppColors.accent.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppColors.accent.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Text(
+                  l10n.pageCount(_pages.length),
+                  style: const TextStyle(
+                    color: AppColors.accentLight,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        )
+            .animate()
+            .fadeIn(duration: 400.ms)
+            .slideY(begin: 0.08, end: 0, duration: 400.ms),
+      ),
+    );
+  }
+
   // ── Preview after capture with smooth transition ────────────────────────
 
   Widget _buildPreview() {
-    return Image.file(
-      File(_currentCapture!.path),
-      fit: BoxFit.contain,
-    )
+    final Widget image;
+    if (kIsWeb) {
+      // On web, XFile.path is a blob URL — use Image.network to display it.
+      image = Image.network(
+        _currentCapture!.path,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return const Center(
+            child: Icon(Icons.broken_image_outlined,
+                color: Colors.white54, size: 64),
+          );
+        },
+      );
+    } else {
+      image = Image.file(
+        File(_currentCapture!.path),
+        fit: BoxFit.contain,
+      );
+    }
+    return image
         .animate()
         .fadeIn(duration: 300.ms)
         .scale(begin: const Offset(0.96, 0.96), end: const Offset(1, 1), duration: 300.ms, curve: Curves.easeOut);
@@ -693,6 +876,9 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
   // ── Camera bottom controls ──────────────────────────────────────────────
 
   Widget _buildCameraControls() {
+    // On web, the camera view itself has capture/gallery buttons.
+    if (kIsWeb) return const SizedBox.shrink();
+
     return Positioned(
       bottom: 0,
       left: 0,
