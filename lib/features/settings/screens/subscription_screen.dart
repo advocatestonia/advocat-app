@@ -160,12 +160,12 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                     isCurrent: currentTier == SubscriptionTier.free,
                     isLoading: loadingPlan == 'free',
                     features: [
+                      _Feature(l10n.fiveAiMessagesTotal, true),
                       _Feature(l10n.oneCaseActive, true),
                       _Feature(l10n.threeDocScans, true),
                       _Feature(l10n.basicAiAnalysis, true),
-                      _Feature(l10n.emailIntegrationTitle, false),
-                      _Feature(l10n.fullAiAnalysis, false),
-                      _Feature(l10n.priorityProcessing, false),
+                      _Feature(l10n.draftGeneration, false),
+                      _Feature(l10n.voiceInput, false),
                     ],
                     onSelect: currentTier == SubscriptionTier.free
                         ? null
@@ -180,19 +180,22 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                   child: _PlanCard(
                     planId: 'basic',
                     title: l10n.legalFighter,
-                    tierLabel: 'BASIC',
-                    monthlyPrice: 9.99,
-                    annualPrice: 89.99,
+                    tierLabel: 'COUNSEL',
+                    monthlyPrice: 14.99,
+                    annualPrice: 119.99,
                     isAnnual: isAnnual,
                     isCurrent: currentTier == SubscriptionTier.basic,
                     isLoading: loadingPlan == 'basic',
                     isPopular: true,
+                    foundingMemberNote: l10n.foundingMemberNote,
                     features: [
+                      _Feature(l10n.hundredAiMessagesDay, true),
                       _Feature(l10n.threeCasesActive, true),
                       _Feature(l10n.twentyDocScans, true),
                       _Feature(l10n.fullAiAnalysis, true),
-                      _Feature(l10n.emailIntegrationTitle, true),
                       _Feature(l10n.draftGeneration, true),
+                      _Feature(l10n.emailIntegrationTitle, true),
+                      _Feature(l10n.voiceInput, true),
                       _Feature(l10n.priorityProcessing, false),
                     ],
                     onSelect: currentTier == SubscriptionTier.basic
@@ -210,19 +213,22 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                     title: l10n.fullDefense,
                     tierLabel: 'PRO',
                     monthlyPrice: 29.99,
-                    annualPrice: 269.99,
+                    annualPrice: 249.99,
                     isAnnual: isAnnual,
                     isCurrent: currentTier == SubscriptionTier.premium,
                     isLoading: loadingPlan == 'premium',
                     isPremium: true,
                     accentColor: AppColors.primary,
                     features: [
+                      _Feature(l10n.unlimitedAiMessages, true),
                       _Feature(l10n.unlimitedCases, true),
                       _Feature(l10n.unlimitedDocScans, true),
                       _Feature(l10n.fullAiAnalysis, true),
-                      _Feature(l10n.emailIntegrationTitle, true),
                       _Feature(l10n.draftGeneration, true),
+                      _Feature(l10n.emailIntegrationTitle, true),
+                      _Feature(l10n.voiceInput, true),
                       _Feature(l10n.priorityProcessing, true),
+                      _Feature(l10n.strategyRecommendations, true),
                     ],
                     onSelect: currentTier == SubscriptionTier.premium
                         ? null
@@ -502,6 +508,7 @@ class _PlanCard extends StatefulWidget {
     this.isPopular = false,
     this.isPremium = false,
     this.accentColor,
+    this.foundingMemberNote,
   });
 
   final String planId;
@@ -517,6 +524,7 @@ class _PlanCard extends StatefulWidget {
   final List<_Feature> features;
   final VoidCallback? onSelect;
   final Color? accentColor;
+  final String? foundingMemberNote;
 
   @override
   State<_PlanCard> createState() => _PlanCardState();
@@ -721,6 +729,47 @@ class _PlanCardState extends State<_PlanCard>
                     ],
                   ),
                 ),
+
+                if (widget.foundingMemberNote != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFF3CD),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.sm),
+                      border: Border.all(
+                        color: const Color(0xFFD69E2E)
+                            .withValues(alpha: 0.4),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.star_rounded,
+                          size: 16,
+                          color: Color(0xFFD69E2E),
+                        ),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: Text(
+                            widget.foundingMemberNote!,
+                            style: const TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF92620E),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
 
                 const SizedBox(height: AppSpacing.md),
                 const Divider(color: AppColors.border),

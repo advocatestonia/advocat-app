@@ -665,7 +665,7 @@ abstract class AppLocalizations {
   /// No description provided for @emergencyShield.
   ///
   /// In en, this message translates to:
-  /// **'Emergency Shield'**
+  /// **'Basic Protection'**
   String get emergencyShield;
 
   /// No description provided for @error.
@@ -719,7 +719,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullDefense.
   ///
   /// In en, this message translates to:
-  /// **'Full Defense'**
+  /// **'Full Representation'**
   String get fullDefense;
 
   /// No description provided for @fullName.
@@ -845,7 +845,7 @@ abstract class AppLocalizations {
   /// No description provided for @legalFighter.
   ///
   /// In en, this message translates to:
-  /// **'Legal Fighter'**
+  /// **'Legal Counsel'**
   String get legalFighter;
 
   /// No description provided for @legalSection.
@@ -2753,13 +2753,13 @@ abstract class AppLocalizations {
   /// No description provided for @oneCaseActive.
   ///
   /// In en, this message translates to:
-  /// **'1 active case'**
+  /// **'1 case'**
   String get oneCaseActive;
 
   /// No description provided for @threeCasesActive.
   ///
   /// In en, this message translates to:
-  /// **'3 active cases'**
+  /// **'3 cases'**
   String get threeCasesActive;
 
   /// No description provided for @unlimitedCases.
@@ -2771,13 +2771,13 @@ abstract class AppLocalizations {
   /// No description provided for @threeDocScans.
   ///
   /// In en, this message translates to:
-  /// **'3 document scans'**
+  /// **'3 document scans (total)'**
   String get threeDocScans;
 
   /// No description provided for @twentyDocScans.
   ///
   /// In en, this message translates to:
-  /// **'20 document scans'**
+  /// **'20 document scans/month'**
   String get twentyDocScans;
 
   /// No description provided for @unlimitedDocScans.
@@ -2809,6 +2809,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Priority processing'**
   String get priorityProcessing;
+
+  /// No description provided for @fiveAiMessagesTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'5 AI messages (lifetime)'**
+  String get fiveAiMessagesTotal;
+
+  /// No description provided for @hundredAiMessagesDay.
+  ///
+  /// In en, this message translates to:
+  /// **'100 AI messages/day'**
+  String get hundredAiMessagesDay;
+
+  /// No description provided for @unlimitedAiMessages.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited AI messages'**
+  String get unlimitedAiMessages;
+
+  /// No description provided for @voiceInput.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice input'**
+  String get voiceInput;
+
+  /// No description provided for @strategyRecommendations.
+  ///
+  /// In en, this message translates to:
+  /// **'Strategy recommendations'**
+  String get strategyRecommendations;
+
+  /// No description provided for @foundingMemberNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Founding Member: 9.99€/mo for first 3 months'**
+  String get foundingMemberNote;
+
+  /// No description provided for @saveTwentyPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'Save 20%'**
+  String get saveTwentyPercent;
 
   /// No description provided for @forever.
   ///

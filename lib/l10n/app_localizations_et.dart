@@ -287,7 +287,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get emailRequired => 'E-posti aadress on kohustuslik';
 
   @override
-  String get emergencyShield => 'Hädakaitse';
+  String get emergencyShield => 'Põhikaitse';
 
   @override
   String get error => 'Viga';
@@ -315,7 +315,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get free => 'Tasuta';
 
   @override
-  String get fullDefense => 'Täiskaitse';
+  String get fullDefense => 'Täisesindus';
 
   @override
   String get fullName => 'Täisnimi';
@@ -388,7 +388,7 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String get legalFighter => 'Õigusvõitleja';
+  String get legalFighter => 'Õigusnõustaja';
 
   @override
   String get legalSection => 'ÕIGUSLIK';
@@ -1416,19 +1416,19 @@ class AppLocalizationsEt extends AppLocalizations {
   String get mostPopular => 'POPULAARSEIM';
 
   @override
-  String get oneCaseActive => '1 aktiivne juhtum';
+  String get oneCaseActive => '1 juhtum';
 
   @override
-  String get threeCasesActive => '3 aktiivset juhtumit';
+  String get threeCasesActive => '3 juhtumit';
 
   @override
   String get unlimitedCases => 'Piiramatult juhtumeid';
 
   @override
-  String get threeDocScans => '3 dokumendi skannimist';
+  String get threeDocScans => '3 dokumendi skannimist (kokku)';
 
   @override
-  String get twentyDocScans => '20 dokumendi skannimist';
+  String get twentyDocScans => '20 dokumendi skannimist/kuu';
 
   @override
   String get unlimitedDocScans => 'Piiramatu dokumendiskannimine';
@@ -1444,6 +1444,27 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get priorityProcessing => 'Prioriteetne töötlemine';
+
+  @override
+  String get fiveAiMessagesTotal => '5 AI sõnumit (kogu eluea jooksul)';
+
+  @override
+  String get hundredAiMessagesDay => '100 AI sõnumit/päev';
+
+  @override
+  String get unlimitedAiMessages => 'Piiramatu AI sõnumid';
+
+  @override
+  String get voiceInput => 'Häälsisend';
+
+  @override
+  String get strategyRecommendations => 'Strateegilised soovitused';
+
+  @override
+  String get foundingMemberNote => 'Asutajaliige: 9.99€/kuu esimesed 3 kuud';
+
+  @override
+  String get saveTwentyPercent => 'Säästa 20%';
 
   @override
   String get forever => 'igavesti';

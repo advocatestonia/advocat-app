@@ -286,7 +286,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailRequired => 'Email is required';
 
   @override
-  String get emergencyShield => 'Emergency Shield';
+  String get emergencyShield => 'Basic Protection';
 
   @override
   String get error => 'Error';
@@ -314,7 +314,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get free => 'Free';
 
   @override
-  String get fullDefense => 'Full Defense';
+  String get fullDefense => 'Full Representation';
 
   @override
   String get fullName => 'Full Name';
@@ -387,7 +387,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get legalFighter => 'Legal Fighter';
+  String get legalFighter => 'Legal Counsel';
 
   @override
   String get legalSection => 'LEGAL';
@@ -1406,19 +1406,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mostPopular => 'MOST POPULAR';
 
   @override
-  String get oneCaseActive => '1 active case';
+  String get oneCaseActive => '1 case';
 
   @override
-  String get threeCasesActive => '3 active cases';
+  String get threeCasesActive => '3 cases';
 
   @override
   String get unlimitedCases => 'Unlimited cases';
 
   @override
-  String get threeDocScans => '3 document scans';
+  String get threeDocScans => '3 document scans (total)';
 
   @override
-  String get twentyDocScans => '20 document scans';
+  String get twentyDocScans => '20 document scans/month';
 
   @override
   String get unlimitedDocScans => 'Unlimited document scans';
@@ -1434,6 +1434,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get priorityProcessing => 'Priority processing';
+
+  @override
+  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+
+  @override
+  String get hundredAiMessagesDay => '100 AI messages/day';
+
+  @override
+  String get unlimitedAiMessages => 'Unlimited AI messages';
+
+  @override
+  String get voiceInput => 'Voice input';
+
+  @override
+  String get strategyRecommendations => 'Strategy recommendations';
+
+  @override
+  String get foundingMemberNote =>
+      'Founding Member: 9.99€/mo for first 3 months';
+
+  @override
+  String get saveTwentyPercent => 'Save 20%';
 
   @override
   String get forever => 'forever';

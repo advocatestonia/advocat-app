@@ -86,51 +86,43 @@ class AIService {
     _responseCache[key] = _CachedResponse(response, DateTime.now());
   }
 
-  // ── Free-tier daily limit ─────────────────────────────────────────────
+  // ── Free-tier TOTAL limit (5 messages ever, not per day) ──────────────
   //
-  // TODO(production): The daily limit below is enforced client-side via
-  // SharedPreferences and can be bypassed by clearing app data. For
-  // production, rate limiting MUST be enforced server-side (e.g. in the
-  // Supabase claude-proxy Edge Function or a dedicated rate-limit
-  // middleware) where the user cannot tamper with counters.
+  // TODO(production): Enforce server-side in Supabase Edge Function.
   //
 
-  /// Maximum free API calls per day for non-Pro users.
-  static const int _freeDailyLimit = 3;
+  /// Maximum free API calls TOTAL (lifetime, not per day).
+  static const int _freeTotalLimit = 5;
+
+  /// Key for storing total free message count.
+  static const String _freeTotalKey = 'ai_total_free_count';
 
   /// Whether the current user is a Pro subscriber.
-  /// Set this from your subscription/auth logic.
   bool isProUser = false;
 
-  /// Check if the free user has remaining API calls today.
-  /// Returns true if the call is allowed, false if limit reached.
+  /// Check if free user has remaining API calls (lifetime limit).
   Future<bool> _checkAndIncrementDailyLimit() async {
     if (isProUser) return true;
     try {
       final prefs = await SharedPreferences.getInstance();
-      final today = DateTime.now().toIso8601String().substring(0, 10);
-      final key = 'ai_daily_count_$today';
-      final count = prefs.getInt(key) ?? 0;
-      if (count >= _freeDailyLimit) return false;
-      await prefs.setInt(key, count + 1);
+      final count = prefs.getInt(_freeTotalKey) ?? 0;
+      if (count >= _freeTotalLimit) return false;
+      await prefs.setInt(_freeTotalKey, count + 1);
       return true;
     } catch (_) {
-      // If SharedPreferences fails, allow the call.
       return true;
     }
   }
 
-  /// Get remaining free calls for today.
+  /// Get remaining free calls (lifetime).
   Future<int> getRemainingFreeCalls() async {
     if (isProUser) return -1; // unlimited
     try {
       final prefs = await SharedPreferences.getInstance();
-      final today = DateTime.now().toIso8601String().substring(0, 10);
-      final key = 'ai_daily_count_$today';
-      final count = prefs.getInt(key) ?? 0;
-      return (_freeDailyLimit - count).clamp(0, _freeDailyLimit);
+      final count = prefs.getInt(_freeTotalKey) ?? 0;
+      return (_freeTotalLimit - count).clamp(0, _freeTotalLimit);
     } catch (_) {
-      return _freeDailyLimit;
+      return _freeTotalLimit;
     }
   }
 
@@ -455,8 +447,8 @@ class AIService {
       final allowed = await _checkAndIncrementDailyLimit();
       if (!allowed) {
         return const ChatResponse(
-          message: 'You have reached the daily limit of $_freeDailyLimit '
-              'free AI messages. Upgrade to Pro for unlimited AI assistance!',
+          message: 'You have used all $_freeTotalLimit free AI messages. '
+              'Upgrade to Legal Counsel for unlimited AI assistance!',
           disclaimer: null,
         );
       }

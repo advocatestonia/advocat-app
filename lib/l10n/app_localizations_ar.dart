@@ -1433,6 +1433,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get priorityProcessing => 'معالجة ذات أولوية';
 
   @override
+  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+
+  @override
+  String get hundredAiMessagesDay => '100 AI messages/day';
+
+  @override
+  String get unlimitedAiMessages => 'Unlimited AI messages';
+
+  @override
+  String get voiceInput => 'Voice input';
+
+  @override
+  String get strategyRecommendations => 'Strategy recommendations';
+
+  @override
+  String get foundingMemberNote =>
+      'Founding Member: 9.99€/mo for first 3 months';
+
+  @override
+  String get saveTwentyPercent => 'Save 20%';
+
+  @override
   String get forever => 'للأبد';
 
   @override
