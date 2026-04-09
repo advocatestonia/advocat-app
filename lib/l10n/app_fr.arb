@@ -724,9 +724,7 @@
     "discriminationActionContactLegalAid": "Contactez un bureau d'aide juridictionnelle pour des conseils gratuits",
     "discriminationActionReportPolice": "Signalez à la police en cas de menace ou d'agression",
     "discriminationFactNonDiscriminationAct": "La loi finlandaise sur la non-discrimination couvre la discrimination fondée sur l'âge, l'origine, la nationalité, la langue, la religion, la santé, le handicap, l'orientation sexuelle et d'autres caractéristiques personnelles.",
-    "contactVictimSupportRIKU": "Aide aux victimes Finlande (RIKU)"
-,
-
+    "contactVictimSupportRIKU": "Aide aux victimes Finlande (RIKU)",
     "domesticViolence": "Violence domestique",
     "consumerProtection": "Protection des consommateurs",
     "caseTypeStepLabel": "Case Type",
@@ -746,9 +744,8 @@
     "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
     "tapToUploadFile": "Tap to upload a file",
     "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen."
-,
-    "aiGeneratedDisclaimer": "Généré par IA \u2022 Pas un avis juridique",
+    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+    "aiGeneratedDisclaimer": "Généré par IA • Pas un avis juridique",
     "callAI": "Appeler IA",
     "encrypted": "Chiffré",
     "typing": "Écrit...",
@@ -776,5 +773,6 @@
     "websiteLabel": "Site web",
     "disclaimerCollapsed": "À titre informatif uniquement",
     "disclaimerExpanded": "Assistant IA — pas un avis juridique. Vérifiez toujours avec un avocat qualifié.",
-    "chatDisclaimerBanner": "L'assistant IA fournit des informations juridiques, pas des conseils juridiques. Consultez toujours un avocat qualifié."
+    "chatDisclaimerBanner": "L'assistant IA fournit des informations juridiques, pas des conseils juridiques. Consultez toujours un avocat qualifié.",
+    "guestUser": "Invité"
 }

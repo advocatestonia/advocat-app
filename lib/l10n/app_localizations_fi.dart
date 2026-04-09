@@ -2098,4 +2098,166 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get chatDisclaimerBanner =>
       'Tekoälyavustaja tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. Ota aina yhteyttä pätevään lakimieheen.';
+
+  @override
+  String get categoryChildren => 'Lapset';
+
+  @override
+  String get categoryDigital => 'Digitaalinen';
+
+  @override
+  String get childrenRights => 'Lapsen oikeudet ja elatusapu';
+
+  @override
+  String get childrenRightsDesc => 'Elatusapu, lastensuojelu, valtion takuu';
+
+  @override
+  String get cyberbullying => 'Nettikiusaaminen ja häirintä';
+
+  @override
+  String get cyberbullyingDesc =>
+      'Uhkaukset, yksityisyyden loukkaus, kunnianloukkaus verkossa';
+
+  @override
+  String get rightChildSupport =>
+      'Molemmat vanhemmat ovat lain mukaan velvollisia elättämään lastaan taloudellisesti (Perekonnaseadus § 100–102)';
+
+  @override
+  String get rightMinimumAlimony =>
+      'Vähimmäiselatusapu Virossa on puolet vähimmäispalkasta lasta kohden — noin 415 €/kk (PKS § 101²)';
+
+  @override
+  String get rightCourtAlimony =>
+      'Elatusapua voi hakea maakohuksen kautta — asianajajaa ei tarvita alle 6 400 € vaatimuksiin';
+
+  @override
+  String get rightBailiffEnforcement =>
+      'Jos vanhempi kieltäytyy maksamasta, ulosottomies (kohtutäitur) voi panna tuomion täytäntöön palkan ulosmittauksella';
+
+  @override
+  String get rightStateAlimonyGuarantee =>
+      'Jos vanhempi ei maksa, valtio maksaa elatisabi Sotsiaalkindlustusametin kautta — enintään 200 €/kk';
+
+  @override
+  String get rightChildEducation =>
+      'Jokaisella lapsella on oikeus koulutukseen, terveydenhuoltoon ja suojeluun (Lastekaitseseadus § 4–5)';
+
+  @override
+  String get rightChildContact =>
+      'Lapsella on oikeus pitää yhteyttä molempiin vanhempiin, ellei tuomioistuin toisin päätä (PKS § 143)';
+
+  @override
+  String get mustFileCourtClaim =>
+      'Elatusavun saamiseksi on jätettävä kanne tuomioistuimeen tai sovittava summasta kirjallisesti';
+
+  @override
+  String get mustNotifyAddressChange =>
+      'Ilmoita Sotsiaalkindlustusametille osoitteen muutoksesta elatisabia saadessasi';
+
+  @override
+  String get childrenActionGatherDocs =>
+      'Kerää lapsen syntymätodistus, henkilöllisyystodistus ja kulujen todisteet';
+
+  @override
+  String get childrenActionFileCourtClaim =>
+      'Jätä elatusapukanne maakohukseen — voidaan tehdä verkossa e-toimiku kautta';
+
+  @override
+  String get childrenActionApplyElatisabi =>
+      'Hae valtion elatisapitakuuta (elatisabi) Sotsiaalkindlustusametista, jos vanhempi ei maksa';
+
+  @override
+  String get childrenActionContactBailiff =>
+      'Ota yhteyttä ulosottomieheen (kohtutäitur) tuomion täytäntöönpanemiseksi';
+
+  @override
+  String get childrenActionCallLasteabi =>
+      'Soita Lasteabi-puhelimeen 116 111 — maksuton, 24/7';
+
+  @override
+  String get childrenDeadlineElatisabi =>
+      'Elatisabin hakeminen — tuomion jälkeen, ei tiukkaa määräaikaa, mutta prosessi vie aikaa';
+
+  @override
+  String get childrenDeadlineCourt =>
+      'Elatusapua voi vaatia takautuvasti 1 vuotta ennen kanteen jättämistä';
+
+  @override
+  String get childrenFactMinimum =>
+      'Virossa vähimmäiselatusapu on puolet vähimmäispalkasta lasta kohden. Vanhempi ei voi sopia pienemmästä summasta — edes yhteisellä sopimuksella.';
+
+  @override
+  String get childrenFactElatisabi =>
+      'Viron valtion elatusaputakuu (elatisabi) otettiin käyttöön 2017 lasten suojelemiseksi, kun vanhempi kieltäytyy maksamasta. Valtio maksaa ja perii summan sitten velalliselta.';
+
+  @override
+  String get rightReportCybercrime =>
+      'Sinulla on oikeus ilmoittaa poliisille verkkouhkauksista, häirinnästä ja identiteettivarkaudesta (KarS § 120, § 157¹)';
+
+  @override
+  String get rightContentRemoval =>
+      'Voit vaatia halventavan tai yksityisen sisällön poistamista alustoilta GDPR:n nojalla';
+
+  @override
+  String get rightMoralDamageCompensation =>
+      'Voit vaatia korvausta nettikiusaamisen aiheuttamasta henkisestä kärsimyksestä (VÕS § 1043–1055)';
+
+  @override
+  String get rightPrivacyProtection =>
+      'Yksityiselämäsi on suojattu — kuvien, viestien tai henkilötietojen luvaton jakaminen on laitonta (KarS § 157)';
+
+  @override
+  String get rightDataProtection =>
+      'Ilmoita tietosuojarikkomuksista Andmekaitse Inspektsioonille';
+
+  @override
+  String get rightDefamationAction =>
+      'Kunnianloukkaus on siviilioikeudellinen rikkomus — voit vaatia vahingonkorvausta ja oikaisua (VÕS § 1047)';
+
+  @override
+  String get mustCollectEvidence =>
+      'Kerää ja säilytä kaikki todisteet — kuvakaappaukset, linkit, päivämäärät ja todistajien tiedot';
+
+  @override
+  String get mustNotRetaliate =>
+      'Älä kosta tai häiritse takaisin — se voi heikentää asemaasi';
+
+  @override
+  String get cyberActionScreenshots =>
+      'Ota kuvakaappaukset kaikesta häirinnästä — tallenna URL-osoitteet, päivämäärät, käyttäjänimet ja sisältö';
+
+  @override
+  String get cyberActionReportPolice =>
+      'Tee rikosilmoitus lähimmällä poliisiasemalla tai verkossa politsei.ee-sivustolla';
+
+  @override
+  String get cyberActionReportPlatform =>
+      'Ilmoita sisällöstä sosiaalisen median alustalle poistamista varten';
+
+  @override
+  String get cyberActionContactDPA =>
+      'Ota yhteyttä Andmekaitse Inspektsiooniin, jos henkilötietojasi on käytetty väärin';
+
+  @override
+  String get cyberActionConsultLawyer =>
+      'Neuvottele lakimiehen kanssa siviilikorvauksista — ilmaista oikeusapua on saatavilla Riigi Õigusabin kautta';
+
+  @override
+  String get cyberDeadlineCriminal =>
+      'Rikosilmoitus — ei tiukkaa määräaikaa, mutta ilmoita viipymättä parhaan tuloksen saamiseksi';
+
+  @override
+  String get cyberDeadlineCivil =>
+      'Siviilioikeudellinen vahingonkorvausvaatimus — enintään 3 vuotta rikkomuksen havaitsemisesta (TsÜS § 150)';
+
+  @override
+  String get cyberFactPrivacy =>
+      'Virossa intiimikuvien luvaton jakaminen voi johtaa enintään 3 vuoden vankeusrangaistukseen KarS § 157¹ nojalla.';
+
+  @override
+  String get cyberFactGDPR =>
+      'GDPR:n mukaan sinulla on \'oikeus tulla unohdetuksi\' — alustojen on poistettava henkilötietosi pyynnöstä, jos niiden säilyttämiselle ei ole laillista perustetta.';
+
+  @override
+  String get guestUser => 'Vieras';
 }

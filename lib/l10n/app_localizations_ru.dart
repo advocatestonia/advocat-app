@@ -2105,4 +2105,167 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get chatDisclaimerBanner =>
       'ИИ-помощник предоставляет правовую информацию, а не юридическую консультацию. Всегда консультируйтесь с квалифицированным юристом.';
+
+  @override
+  String get categoryChildren => 'Дети';
+
+  @override
+  String get categoryDigital => 'Онлайн';
+
+  @override
+  String get childrenRights => 'Права ребёнка и алименты';
+
+  @override
+  String get childrenRightsDesc =>
+      'Алименты, защита детей, государственные гарантии';
+
+  @override
+  String get cyberbullying => 'Кибербуллинг и онлайн-преследование';
+
+  @override
+  String get cyberbullyingDesc =>
+      'Угрозы, нарушение приватности, клевета в интернете';
+
+  @override
+  String get rightChildSupport =>
+      'Оба родителя обязаны содержать ребёнка финансово (Perekonnaseadus § 100–102)';
+
+  @override
+  String get rightMinimumAlimony =>
+      'Минимальные алименты в Эстонии — половина минимальной зарплаты на ребёнка, около 415 €/мес (PKS § 101²)';
+
+  @override
+  String get rightCourtAlimony =>
+      'Алименты можно взыскать через уездный суд (maakohus) — адвокат не нужен для исков до 6400 €';
+
+  @override
+  String get rightBailiffEnforcement =>
+      'Если родитель отказывается платить, судебный исполнитель (kohtutäitur) принудит к исполнению, включая удержание из зарплаты';
+
+  @override
+  String get rightStateAlimonyGuarantee =>
+      'Если родитель не платит, государство выплачивает elatisabi через Sotsiaalkindlustusamet — до 200 €/мес';
+
+  @override
+  String get rightChildEducation =>
+      'Каждый ребёнок имеет право на образование, медицинскую помощь и защиту от насилия (Lastekaitseseadus § 4–5)';
+
+  @override
+  String get rightChildContact =>
+      'Ребёнок имеет право общаться с обоими родителями, если суд не решил иначе (PKS § 143)';
+
+  @override
+  String get mustFileCourtClaim =>
+      'Для получения алиментов необходимо подать иск в суд или договориться о сумме письменно';
+
+  @override
+  String get mustNotifyAddressChange =>
+      'При получении elatisabi уведомите Sotsiaalkindlustusamet о смене адреса';
+
+  @override
+  String get childrenActionGatherDocs =>
+      'Соберите свидетельство о рождении ребёнка, удостоверение личности и подтверждение расходов';
+
+  @override
+  String get childrenActionFileCourtClaim =>
+      'Подайте иск об алиментах в уездный суд (maakohus) — можно онлайн через e-toimik';
+
+  @override
+  String get childrenActionApplyElatisabi =>
+      'Подайте заявление на elatisabi в Sotsiaalkindlustusamet, если родитель не платит';
+
+  @override
+  String get childrenActionContactBailiff =>
+      'Обратитесь к судебному исполнителю (kohtutäitur) для принудительного исполнения решения суда';
+
+  @override
+  String get childrenActionCallLasteabi =>
+      'Позвоните на телефон помощи детям 116 111 — бесплатно, круглосуточно';
+
+  @override
+  String get childrenDeadlineElatisabi =>
+      'Заявление на elatisabi — после решения суда, строгого срока нет, но процесс занимает время';
+
+  @override
+  String get childrenDeadlineCourt =>
+      'Алименты можно взыскать за прошлый период — до 1 года до подачи иска';
+
+  @override
+  String get childrenFactMinimum =>
+      'В Эстонии минимальные алименты составляют половину минимальной зарплаты на ребёнка. Родитель не может договориться о меньшей сумме — даже по обоюдному согласию.';
+
+  @override
+  String get childrenFactElatisabi =>
+      'Государственная гарантия алиментов (elatisabi) была введена в 2017 году для защиты детей, когда родитель отказывается платить. Государство платит и затем взыскивает сумму с должника.';
+
+  @override
+  String get rightReportCybercrime =>
+      'Вы имеете право сообщить в полицию об угрозах, преследовании и краже личности в интернете (KarS § 120, § 157¹)';
+
+  @override
+  String get rightContentRemoval =>
+      'Вы можете потребовать удаление клеветнического или личного контента с платформ по GDPR';
+
+  @override
+  String get rightMoralDamageCompensation =>
+      'Вы можете требовать компенсацию морального вреда от кибербуллинга (VÕS § 1043–1055)';
+
+  @override
+  String get rightPrivacyProtection =>
+      'Ваша частная жизнь защищена — несанкционированное распространение фото, сообщений или данных незаконно (KarS § 157)';
+
+  @override
+  String get rightDataProtection =>
+      'Сообщайте о нарушениях защиты данных в Andmekaitse Inspektsioon';
+
+  @override
+  String get rightDefamationAction =>
+      'Клевета — гражданское правонарушение: можно подать иск о возмещении ущерба и требовать опровержения (VÕS § 1047)';
+
+  @override
+  String get mustCollectEvidence =>
+      'Соберите и сохраните все доказательства — скриншоты, ссылки, даты и данные свидетелей';
+
+  @override
+  String get mustNotRetaliate =>
+      'Не отвечайте тем же и не преследуйте в ответ — это может ослабить вашу позицию';
+
+  @override
+  String get cyberActionScreenshots =>
+      'Сделайте скриншоты всего преследования — сохраните URL, даты, имена пользователей и контент';
+
+  @override
+  String get cyberActionReportPolice =>
+      'Подайте заявление в полицию в ближайшем отделении или онлайн на politsei.ee';
+
+  @override
+  String get cyberActionReportPlatform =>
+      'Пожалуйтесь на контент в социальной сети для его удаления';
+
+  @override
+  String get cyberActionContactDPA =>
+      'Обратитесь в Andmekaitse Inspektsioon, если ваши персональные данные были использованы незаконно';
+
+  @override
+  String get cyberActionConsultLawyer =>
+      'Проконсультируйтесь с юристом о гражданском иске — бесплатная помощь доступна через Riigi Õigusabi';
+
+  @override
+  String get cyberDeadlineCriminal =>
+      'Заявление о преступлении — строгого срока нет, но сообщите как можно скорее';
+
+  @override
+  String get cyberDeadlineCivil =>
+      'Гражданский иск о возмещении ущерба — до 3 лет с момента, когда вы узнали о нарушении (TsÜS § 150)';
+
+  @override
+  String get cyberFactPrivacy =>
+      'В Эстонии несанкционированное распространение интимных изображений может повлечь до 3 лет лишения свободы по KarS § 157¹.';
+
+  @override
+  String get cyberFactGDPR =>
+      'По GDPR у вас есть «право быть забытым» — платформы обязаны удалить ваши данные по запросу, если нет законного основания их хранить.';
+
+  @override
+  String get guestUser => 'Гость';
 }

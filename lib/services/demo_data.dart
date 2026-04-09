@@ -22,8 +22,8 @@ abstract final class DemoData {
 
   static final AppUser user = AppUser(
     id: 'demo-user-001',
-    email: 'dmitri.sulga@example.com',
-    fullName: 'Dmitri Sulga',
+    email: 'guest@advocat.ee',
+    fullName: 'Guest',
     phone: '+358 40 123 4567',
     preferredLanguage: 'en',
     subscriptionTier: SubscriptionTier.premium,

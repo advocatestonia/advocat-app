@@ -11,6 +11,7 @@ import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
 import '../../../shared/utils/call_assistant_launcher.dart';
+import '../../../services/demo_data.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../cases/providers/cases_provider.dart';
 import '../../cases/widgets/case_card.dart';
@@ -40,8 +41,14 @@ class HomeScreen extends ConsumerWidget {
           slivers: [
             // ── Greeting header ──────────────────────────────────────────
             SliverToBoxAdapter(
-              child: _GreetingHeader(
-                userName: userAsync.valueOrNull?.fullName,
+              child: Builder(
+                builder: (context) {
+                  final isDemo = ref.watch(isDemoModeProvider);
+                  final displayName = isDemo
+                      ? (AppLocalizations.of(context)?.guestUser ?? 'Guest')
+                      : userAsync.valueOrNull?.fullName;
+                  return _GreetingHeader(userName: displayName);
+                },
               ),
             ),
 

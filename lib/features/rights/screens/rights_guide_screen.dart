@@ -101,6 +101,26 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
         rightsCount: 5,
         tag: 'Consumer',
       ),
+      _RightsScenario(
+        id: 'children-rights',
+        title: l10n.childrenRights,
+        subtitle: l10n.childrenRightsDesc,
+        icon: Icons.child_care,
+        color: const Color(0xFFE91E63),
+        category: 'Children',
+        rightsCount: 7,
+        tag: 'Children',
+      ),
+      _RightsScenario(
+        id: 'cyberbullying',
+        title: l10n.cyberbullying,
+        subtitle: l10n.cyberbullyingDesc,
+        icon: Icons.security,
+        color: const Color(0xFF9C27B0),
+        category: 'Digital',
+        rightsCount: 6,
+        tag: 'Digital',
+      ),
     ];
 
     final categoryLabels = <String, String>{
@@ -110,6 +130,8 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
       'Work': l10n.categoryWork,
       'Housing': l10n.categoryHousing,
       'Consumer': l10n.categoryConsumer,
+      'Children': l10n.categoryChildren,
+      'Digital': l10n.categoryDigital,
     };
 
     final categories = [
@@ -119,6 +141,8 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
       'Work',
       'Housing',
       'Consumer',
+      'Children',
+      'Digital',
     ];
 
     final filtered = _selectedCategory == null ||

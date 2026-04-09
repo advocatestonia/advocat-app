@@ -2108,4 +2108,167 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get chatDisclaimerBanner =>
       'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.';
+
+  @override
+  String get categoryChildren => 'Children';
+
+  @override
+  String get categoryDigital => 'Digital';
+
+  @override
+  String get childrenRights => 'Children\'s Rights & Alimony';
+
+  @override
+  String get childrenRightsDesc =>
+      'Child support, alimony, protection, state guarantees';
+
+  @override
+  String get cyberbullying => 'Cyberbullying & Online Harassment';
+
+  @override
+  String get cyberbullyingDesc =>
+      'Threats, privacy violations, defamation online';
+
+  @override
+  String get rightChildSupport =>
+      'Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)';
+
+  @override
+  String get rightMinimumAlimony =>
+      'Minimum alimony in Estonia is half the minimum wage per child — currently around €415/month (PKS § 101²)';
+
+  @override
+  String get rightCourtAlimony =>
+      'You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400';
+
+  @override
+  String get rightBailiffEnforcement =>
+      'If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment';
+
+  @override
+  String get rightStateAlimonyGuarantee =>
+      'If the parent does not pay, the state provides elatisabi (alimony guarantee) through Sotsiaalkindlustusamet — up to €200/month';
+
+  @override
+  String get rightChildEducation =>
+      'Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)';
+
+  @override
+  String get rightChildContact =>
+      'A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)';
+
+  @override
+  String get mustFileCourtClaim =>
+      'To receive alimony, you must file a claim at court or agree on the amount in writing';
+
+  @override
+  String get mustNotifyAddressChange =>
+      'Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi';
+
+  @override
+  String get childrenActionGatherDocs =>
+      'Gather child\'s birth certificate, your ID, and proof of expenses';
+
+  @override
+  String get childrenActionFileCourtClaim =>
+      'File an alimony claim at the county court (maakohus) — can be done online via e-toimik';
+
+  @override
+  String get childrenActionApplyElatisabi =>
+      'Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won\'t pay';
+
+  @override
+  String get childrenActionContactBailiff =>
+      'Contact a bailiff (kohtutäitur) to enforce the court order';
+
+  @override
+  String get childrenActionCallLasteabi =>
+      'Call Lasteabi 116 111 for children\'s helpline — free, 24/7';
+
+  @override
+  String get childrenDeadlineElatisabi =>
+      'Apply for elatisabi — after court order, no strict deadline but process takes time';
+
+  @override
+  String get childrenDeadlineCourt =>
+      'Alimony can be claimed retroactively for up to 1 year before court filing';
+
+  @override
+  String get childrenFactMinimum =>
+      'In Estonia, minimum child support (elatis) is set at half the minimum wage per child. A parent cannot agree to pay less — even by mutual agreement.';
+
+  @override
+  String get childrenFactElatisabi =>
+      'Estonia\'s state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.';
+
+  @override
+  String get rightReportCybercrime =>
+      'You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)';
+
+  @override
+  String get rightContentRemoval =>
+      'You can request removal of defamatory or private content from platforms and demand takedown under GDPR';
+
+  @override
+  String get rightMoralDamageCompensation =>
+      'You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)';
+
+  @override
+  String get rightPrivacyProtection =>
+      'Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)';
+
+  @override
+  String get rightDataProtection =>
+      'Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon';
+
+  @override
+  String get rightDefamationAction =>
+      'Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)';
+
+  @override
+  String get mustCollectEvidence =>
+      'Collect and preserve all evidence — screenshots, links, dates, and witness information';
+
+  @override
+  String get mustNotRetaliate =>
+      'Do not retaliate or engage in counter-harassment — it may weaken your case';
+
+  @override
+  String get cyberActionScreenshots =>
+      'Take screenshots of all harassment — save URLs, dates, usernames, and content';
+
+  @override
+  String get cyberActionReportPolice =>
+      'File a police report at the nearest station or online at politsei.ee';
+
+  @override
+  String get cyberActionReportPlatform =>
+      'Report the content to the social media platform for removal';
+
+  @override
+  String get cyberActionContactDPA =>
+      'Contact Andmekaitse Inspektsioon if your personal data was misused';
+
+  @override
+  String get cyberActionConsultLawyer =>
+      'Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi';
+
+  @override
+  String get cyberDeadlineCriminal =>
+      'Criminal complaint — no strict deadline, but report promptly for best results';
+
+  @override
+  String get cyberDeadlineCivil =>
+      'Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)';
+
+  @override
+  String get cyberFactPrivacy =>
+      'In Estonia, unauthorized sharing of someone\'s intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).';
+
+  @override
+  String get cyberFactGDPR =>
+      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+
+  @override
+  String get guestUser => 'Gość';
 }

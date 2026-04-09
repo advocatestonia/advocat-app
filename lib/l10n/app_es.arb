@@ -724,9 +724,7 @@
     "discriminationActionContactLegalAid": "Contacte una oficina de asistencia jurídica para asesoría gratuita",
     "discriminationActionReportPolice": "Denuncie a la policía si hubo amenazas o agresión",
     "discriminationFactNonDiscriminationAct": "La Ley de No Discriminación de Finlandia cubre la discriminación por edad, origen, nacionalidad, idioma, religión, salud, discapacidad, orientación sexual y otras características personales.",
-    "contactVictimSupportRIKU": "Apoyo a Víctimas Finlandia (RIKU)"
-,
-
+    "contactVictimSupportRIKU": "Apoyo a Víctimas Finlandia (RIKU)",
     "domesticViolence": "Violencia doméstica",
     "consumerProtection": "Protección al consumidor",
     "caseTypeStepLabel": "Case Type",
@@ -746,9 +744,8 @@
     "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
     "tapToUploadFile": "Tap to upload a file",
     "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen."
-,
-    "aiGeneratedDisclaimer": "Generado por IA \u2022 No es asesoramiento legal",
+    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+    "aiGeneratedDisclaimer": "Generado por IA • No es asesoramiento legal",
     "callAI": "Llamar IA",
     "encrypted": "Cifrado",
     "typing": "Escribiendo...",
@@ -776,5 +773,6 @@
     "websiteLabel": "Sitio web",
     "disclaimerCollapsed": "Solo informativo",
     "disclaimerExpanded": "Asistente IA — no es asesoramiento legal. Siempre verifique con un abogado calificado.",
-    "chatDisclaimerBanner": "El asistente IA proporciona información legal, no asesoramiento legal. Consulte siempre a un abogado calificado."
+    "chatDisclaimerBanner": "El asistente IA proporciona información legal, no asesoramiento legal. Consulte siempre a un abogado calificado.",
+    "guestUser": "Invitado"
 }

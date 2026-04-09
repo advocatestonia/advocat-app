@@ -724,9 +724,7 @@
     "discriminationActionContactLegalAid": "Wenden Sie sich an ein Rechtshilfebüro für kostenlose Beratung",
     "discriminationActionReportPolice": "Erstatten Sie Anzeige bei der Polizei bei Drohung oder Körperverletzung",
     "discriminationFactNonDiscriminationAct": "Das finnische Gleichbehandlungsgesetz umfasst Diskriminierung aufgrund von Alter, Herkunft, Staatsangehörigkeit, Sprache, Religion, Gesundheit, Behinderung, sexueller Orientierung und anderen persönlichen Merkmalen.",
-    "contactVictimSupportRIKU": "Opferhilfe Finnland (RIKU)"
-,
-
+    "contactVictimSupportRIKU": "Opferhilfe Finnland (RIKU)",
     "domesticViolence": "Häusliche Gewalt",
     "consumerProtection": "Verbraucherschutz",
     "caseTypeStepLabel": "Case Type",
@@ -746,9 +744,8 @@
     "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
     "tapToUploadFile": "Tap to upload a file",
     "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen."
-,
-    "aiGeneratedDisclaimer": "KI-generiert \u2022 Keine Rechtsberatung",
+    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+    "aiGeneratedDisclaimer": "KI-generiert • Keine Rechtsberatung",
     "callAI": "KI anrufen",
     "encrypted": "Verschlüsselt",
     "typing": "Tippt...",
@@ -776,5 +773,6 @@
     "websiteLabel": "Webseite",
     "disclaimerCollapsed": "Nur zur Information",
     "disclaimerExpanded": "KI-Assistent — keine Rechtsberatung. Überprüfen Sie immer mit einem qualifizierten Anwalt.",
-    "chatDisclaimerBanner": "Der KI-Assistent bietet rechtliche Informationen, keine Rechtsberatung. Konsultieren Sie immer einen qualifizierten Anwalt."
+    "chatDisclaimerBanner": "Der KI-Assistent bietet rechtliche Informationen, keine Rechtsberatung. Konsultieren Sie immer einen qualifizierten Anwalt.",
+    "guestUser": "Gast"
 }

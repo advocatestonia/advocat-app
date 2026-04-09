@@ -3931,6 +3931,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.'**
   String get chatDisclaimerBanner;
+
+  /// No description provided for @categoryChildren.
+  ///
+  /// In en, this message translates to:
+  /// **'Children'**
+  String get categoryChildren;
+
+  /// No description provided for @categoryDigital.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital'**
+  String get categoryDigital;
+
+  /// No description provided for @childrenRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Children\'s Rights & Alimony'**
+  String get childrenRights;
+
+  /// No description provided for @childrenRightsDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Child support, alimony, protection, state guarantees'**
+  String get childrenRightsDesc;
+
+  /// No description provided for @cyberbullying.
+  ///
+  /// In en, this message translates to:
+  /// **'Cyberbullying & Online Harassment'**
+  String get cyberbullying;
+
+  /// No description provided for @cyberbullyingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Threats, privacy violations, defamation online'**
+  String get cyberbullyingDesc;
+
+  /// No description provided for @rightChildSupport.
+  ///
+  /// In en, this message translates to:
+  /// **'Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)'**
+  String get rightChildSupport;
+
+  /// No description provided for @rightMinimumAlimony.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimum alimony in Estonia is half the minimum wage per child — currently around €415/month (PKS § 101²)'**
+  String get rightMinimumAlimony;
+
+  /// No description provided for @rightCourtAlimony.
+  ///
+  /// In en, this message translates to:
+  /// **'You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400'**
+  String get rightCourtAlimony;
+
+  /// No description provided for @rightBailiffEnforcement.
+  ///
+  /// In en, this message translates to:
+  /// **'If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment'**
+  String get rightBailiffEnforcement;
+
+  /// No description provided for @rightStateAlimonyGuarantee.
+  ///
+  /// In en, this message translates to:
+  /// **'If the parent does not pay, the state provides elatisabi (alimony guarantee) through Sotsiaalkindlustusamet — up to €200/month'**
+  String get rightStateAlimonyGuarantee;
+
+  /// No description provided for @rightChildEducation.
+  ///
+  /// In en, this message translates to:
+  /// **'Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)'**
+  String get rightChildEducation;
+
+  /// No description provided for @rightChildContact.
+  ///
+  /// In en, this message translates to:
+  /// **'A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)'**
+  String get rightChildContact;
+
+  /// No description provided for @mustFileCourtClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'To receive alimony, you must file a claim at court or agree on the amount in writing'**
+  String get mustFileCourtClaim;
+
+  /// No description provided for @mustNotifyAddressChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi'**
+  String get mustNotifyAddressChange;
+
+  /// No description provided for @childrenActionGatherDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Gather child\'s birth certificate, your ID, and proof of expenses'**
+  String get childrenActionGatherDocs;
+
+  /// No description provided for @childrenActionFileCourtClaim.
+  ///
+  /// In en, this message translates to:
+  /// **'File an alimony claim at the county court (maakohus) — can be done online via e-toimik'**
+  String get childrenActionFileCourtClaim;
+
+  /// No description provided for @childrenActionApplyElatisabi.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won\'t pay'**
+  String get childrenActionApplyElatisabi;
+
+  /// No description provided for @childrenActionContactBailiff.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact a bailiff (kohtutäitur) to enforce the court order'**
+  String get childrenActionContactBailiff;
+
+  /// No description provided for @childrenActionCallLasteabi.
+  ///
+  /// In en, this message translates to:
+  /// **'Call Lasteabi 116 111 for children\'s helpline — free, 24/7'**
+  String get childrenActionCallLasteabi;
+
+  /// No description provided for @childrenDeadlineElatisabi.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply for elatisabi — after court order, no strict deadline but process takes time'**
+  String get childrenDeadlineElatisabi;
+
+  /// No description provided for @childrenDeadlineCourt.
+  ///
+  /// In en, this message translates to:
+  /// **'Alimony can be claimed retroactively for up to 1 year before court filing'**
+  String get childrenDeadlineCourt;
+
+  /// No description provided for @childrenFactMinimum.
+  ///
+  /// In en, this message translates to:
+  /// **'In Estonia, minimum child support (elatis) is set at half the minimum wage per child. A parent cannot agree to pay less — even by mutual agreement.'**
+  String get childrenFactMinimum;
+
+  /// No description provided for @childrenFactElatisabi.
+  ///
+  /// In en, this message translates to:
+  /// **'Estonia\'s state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.'**
+  String get childrenFactElatisabi;
+
+  /// No description provided for @rightReportCybercrime.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)'**
+  String get rightReportCybercrime;
+
+  /// No description provided for @rightContentRemoval.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request removal of defamatory or private content from platforms and demand takedown under GDPR'**
+  String get rightContentRemoval;
+
+  /// No description provided for @rightMoralDamageCompensation.
+  ///
+  /// In en, this message translates to:
+  /// **'You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)'**
+  String get rightMoralDamageCompensation;
+
+  /// No description provided for @rightPrivacyProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)'**
+  String get rightPrivacyProtection;
+
+  /// No description provided for @rightDataProtection.
+  ///
+  /// In en, this message translates to:
+  /// **'Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon'**
+  String get rightDataProtection;
+
+  /// No description provided for @rightDefamationAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)'**
+  String get rightDefamationAction;
+
+  /// No description provided for @mustCollectEvidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Collect and preserve all evidence — screenshots, links, dates, and witness information'**
+  String get mustCollectEvidence;
+
+  /// No description provided for @mustNotRetaliate.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not retaliate or engage in counter-harassment — it may weaken your case'**
+  String get mustNotRetaliate;
+
+  /// No description provided for @cyberActionScreenshots.
+  ///
+  /// In en, this message translates to:
+  /// **'Take screenshots of all harassment — save URLs, dates, usernames, and content'**
+  String get cyberActionScreenshots;
+
+  /// No description provided for @cyberActionReportPolice.
+  ///
+  /// In en, this message translates to:
+  /// **'File a police report at the nearest station or online at politsei.ee'**
+  String get cyberActionReportPolice;
+
+  /// No description provided for @cyberActionReportPlatform.
+  ///
+  /// In en, this message translates to:
+  /// **'Report the content to the social media platform for removal'**
+  String get cyberActionReportPlatform;
+
+  /// No description provided for @cyberActionContactDPA.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Andmekaitse Inspektsioon if your personal data was misused'**
+  String get cyberActionContactDPA;
+
+  /// No description provided for @cyberActionConsultLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi'**
+  String get cyberActionConsultLawyer;
+
+  /// No description provided for @cyberDeadlineCriminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Criminal complaint — no strict deadline, but report promptly for best results'**
+  String get cyberDeadlineCriminal;
+
+  /// No description provided for @cyberDeadlineCivil.
+  ///
+  /// In en, this message translates to:
+  /// **'Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)'**
+  String get cyberDeadlineCivil;
+
+  /// No description provided for @cyberFactPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'In Estonia, unauthorized sharing of someone\'s intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).'**
+  String get cyberFactPrivacy;
+
+  /// No description provided for @cyberFactGDPR.
+  ///
+  /// In en, this message translates to:
+  /// **'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.'**
+  String get cyberFactGDPR;
+
+  /// No description provided for @guestUser.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get guestUser;
 }
 
 class _AppLocalizationsDelegate

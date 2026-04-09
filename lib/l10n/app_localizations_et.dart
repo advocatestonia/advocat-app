@@ -2096,4 +2096,167 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get chatDisclaimerBanner =>
       'Tehisintellekti assistent pakub õigusteavet, mitte õigusnõuannet. Konsulteerige alati kvalifitseeritud juristiga.';
+
+  @override
+  String get categoryChildren => 'Lapsed';
+
+  @override
+  String get categoryDigital => 'Digitaalne';
+
+  @override
+  String get childrenRights => 'Lapse õigused ja elatis';
+
+  @override
+  String get childrenRightsDesc =>
+      'Elatis, lastekaitse, riigi garantii, kohtusse pöördumine';
+
+  @override
+  String get cyberbullying => 'Küberkiusamine';
+
+  @override
+  String get cyberbullyingDesc =>
+      'Ähvardamine, privaatsuse rikkumine, laimamine internetis';
+
+  @override
+  String get rightChildSupport =>
+      'Mõlemal vanemal on seaduslik kohustus last rahaliselt ülal pidada (Perekonnaseadus § 100–102)';
+
+  @override
+  String get rightMinimumAlimony =>
+      'Minimaalne elatis Eestis on pool miinimumpalgast lapse kohta — praegu umbes 415 €/kuus (PKS § 101²)';
+
+  @override
+  String get rightCourtAlimony =>
+      'Elatist saab nõuda maakohtu kaudu — advokaati ei ole vaja nõuete puhul kuni 6400 €';
+
+  @override
+  String get rightBailiffEnforcement =>
+      'Kui vanem keeldub maksmast, saab kohtutäitur kohtuotsuse täitmisele pöörata, sh palgast kinni pidada';
+
+  @override
+  String get rightStateAlimonyGuarantee =>
+      'Kui vanem ei maksa, maksab riik elatisabi Sotsiaalkindlustusameti kaudu — kuni 200 €/kuus';
+
+  @override
+  String get rightChildEducation =>
+      'Igal lapsel on õigus haridusele, tervishoiule ja kaitsele väärkohtlemise eest (Lastekaitseseadus § 4–5)';
+
+  @override
+  String get rightChildContact =>
+      'Lapsel on õigus suhelda mõlema vanemaga, kui kohus ei ole teisiti otsustanud (PKS § 143)';
+
+  @override
+  String get mustFileCourtClaim =>
+      'Elatise saamiseks tuleb esitada kohtule hagi või leppida summas kirjalikult kokku';
+
+  @override
+  String get mustNotifyAddressChange =>
+      'Elatisabi saamisel teavitage Sotsiaalkindlustusametit aadressi muutumisest';
+
+  @override
+  String get childrenActionGatherDocs =>
+      'Koguge kokku lapse sünnitunnistus, isikut tõendav dokument ja kulude tõendid';
+
+  @override
+  String get childrenActionFileCourtClaim =>
+      'Esitage elatise hagi maakohtusse — saab teha internetis e-toimiku kaudu';
+
+  @override
+  String get childrenActionApplyElatisabi =>
+      'Taotlege riigi elatisabi Sotsiaalkindlustusametist, kui vanem ei maksa';
+
+  @override
+  String get childrenActionContactBailiff =>
+      'Pöörduge kohtutäituri poole kohtuotsuse täitmisele pööramiseks';
+
+  @override
+  String get childrenActionCallLasteabi =>
+      'Helistage Lasteabi telefonile 116 111 — tasuta, ööpäevaringselt';
+
+  @override
+  String get childrenDeadlineElatisabi =>
+      'Elatisabi taotlemine — pärast kohtuotsust, kindlat tähtaega ei ole, kuid protsess võtab aega';
+
+  @override
+  String get childrenDeadlineCourt =>
+      'Elatist saab nõuda tagasiulatuvalt kuni 1 aasta enne kohtusse pöördumist';
+
+  @override
+  String get childrenFactMinimum =>
+      'Eestis on minimaalne elatis pool miinimumpalgast lapse kohta. Vanem ei saa kokku leppida väiksemat summat — isegi mõlema vanema nõusolekul.';
+
+  @override
+  String get childrenFactElatisabi =>
+      'Eesti riiklik elatisabi kehtestati 2017. aastal, et kaitsta lapsi, kui vanem keeldub elatist maksmast. Riik maksab ja nõuab summa hiljem võlgnikult sisse.';
+
+  @override
+  String get rightReportCybercrime =>
+      'Teil on õigus teatada politseile internetiähvardustest, kiusamisest ja identiteedivargusest (KarS § 120, § 157¹)';
+
+  @override
+  String get rightContentRemoval =>
+      'Saate nõuda laimava või eraelulise sisu eemaldamist platvormidelt ja nõuda kustutamist GDPR alusel';
+
+  @override
+  String get rightMoralDamageCompensation =>
+      'Küberkiusamise tekitatud moraalse kahju eest saab nõuda hüvitist (VÕS § 1043–1055)';
+
+  @override
+  String get rightPrivacyProtection =>
+      'Teie eraelu on kaitstud — fotode, sõnumite või isikuandmete loata jagamine on ebaseaduslik (KarS § 157)';
+
+  @override
+  String get rightDataProtection =>
+      'Teatage andmekaitse rikkumistest (isikuandmete loata kasutamine) Andmekaitse Inspektsioonile';
+
+  @override
+  String get rightDefamationAction =>
+      'Laimamine on tsiviilõiguslik rikkumine — saate nõuda kahju hüvitamist ja avalikku ümberlükkamist (VÕS § 1047)';
+
+  @override
+  String get mustCollectEvidence =>
+      'Koguge ja säilitage kõik tõendid — ekraanipildid, lingid, kuupäevad ja tunnistajate andmed';
+
+  @override
+  String get mustNotRetaliate =>
+      'Ärge vastake samaga ega kiusake vastu — see võib teie positsiooni nõrgendada';
+
+  @override
+  String get cyberActionScreenshots =>
+      'Tehke ekraanipildid kogu kiusamisest — salvestage URL-id, kuupäevad, kasutajanimed ja sisu';
+
+  @override
+  String get cyberActionReportPolice =>
+      'Esitage politseile avaldus lähimas kontoris või veebis politsei.ee kaudu';
+
+  @override
+  String get cyberActionReportPlatform =>
+      'Teavitage sisu kohta sotsiaalmeedia platvormi eemaldamiseks';
+
+  @override
+  String get cyberActionContactDPA =>
+      'Pöörduge Andmekaitse Inspektsiooni poole, kui teie isikuandmeid kuritarvitati';
+
+  @override
+  String get cyberActionConsultLawyer =>
+      'Konsulteerige advokaadiga tsiviilkahju osas — tasuta õigusabi on saadaval Riigi Õigusabi kaudu';
+
+  @override
+  String get cyberDeadlineCriminal =>
+      'Kriminaalteade — kindlat tähtaega ei ole, kuid teatage viivitamatult parima tulemuse saavutamiseks';
+
+  @override
+  String get cyberDeadlineCivil =>
+      'Tsiviilhagi kahju hüvitamiseks — kuni 3 aastat rikkumisest teadasaamisest (TsÜS § 150)';
+
+  @override
+  String get cyberFactPrivacy =>
+      'Eestis võib intiimpiltide loata jagamine kaasa tuua kuni 3 aasta pikkuse vangistuse Karistusseadustiku § 157¹ alusel.';
+
+  @override
+  String get cyberFactGDPR =>
+      'GDPR-i kohaselt on teil \'õigus olla unustatud\' — platvormid peavad teie isikuandmed kustutama, kui puudub seaduslik alus nende säilitamiseks.';
+
+  @override
+  String get guestUser => 'Külaline';
 }
