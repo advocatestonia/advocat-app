@@ -253,7 +253,7 @@ class _NavBarItem extends StatelessWidget {
                     fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
                     color: color,
                   ),
-                  child: Text(label),
+                  child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
                 ),
               ],
             ),

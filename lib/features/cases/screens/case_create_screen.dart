@@ -543,14 +543,16 @@ class _Step1CaseType extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: AppSpacing.md),
-          GridView.builder(
+          LayoutBuilder(builder: (context, constraints) {
+            final cols = constraints.maxWidth > 400 ? 3 : 2;
+            return GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: cols,
               mainAxisSpacing: 10,
               crossAxisSpacing: 10,
-              childAspectRatio: 1.0,
+              childAspectRatio: cols == 3 ? 1.0 : 1.4,
             ),
             itemCount: _categories.length,
             itemBuilder: (context, index) {
@@ -564,7 +566,8 @@ class _Step1CaseType extends StatelessWidget {
                 onTap: () => onTypeSelected(cat.type),
               );
             },
-          ),
+          );
+          }),
           const SizedBox(height: AppSpacing.md),
         ],
       ),
