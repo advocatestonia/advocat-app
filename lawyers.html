@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advocat for Lawyers — AI Legal Research for Immigration Professionals</title>
+<meta name="description" content="470+ EU court cases, 120+ directives, 27 countries. The largest structured EU legal knowledge base. API access for legal professionals.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#F8F6F3;color:#1A2B4A}
+.container{max-width:800px;margin:0 auto;padding:24px}
+
+/* Hero */
+.hero{text-align:center;padding:60px 20px 40px}
+.badge{display:inline-block;background:#0A8F6C;color:#fff;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:24px;letter-spacing:0.5px}
+.hero h1{font-size:36px;font-weight:700;line-height:1.2;margin-bottom:16px}
+.hero h1 span{color:#0A8F6C}
+.hero p{font-size:18px;color:#4A5568;line-height:1.6;max-width:600px;margin:0 auto}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;padding:20px 0 40px}
+.stat{background:#fff;border-radius:12px;padding:24px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.stat-number{font-size:32px;font-weight:700;color:#0A8F6C}
+.stat-label{font-size:14px;color:#4A5568;margin-top:4px}
+
+/* What you get */
+.section{padding:40px 0}
+.section h2{font-size:24px;font-weight:700;margin-bottom:24px;text-align:center}
+.feature-list{list-style:none}
+.feature-list li{background:#fff;border-radius:12px;padding:20px 24px;margin-bottom:12px;display:flex;align-items:flex-start;gap:16px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.feature-icon{width:40px;height:40px;background:#E6F7F3;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.feature-text h3{font-size:16px;font-weight:600;margin-bottom:4px}
+.feature-text p{font-size:14px;color:#4A5568;line-height:1.5}
+
+/* Pricing */
+.pricing{background:#1A2B4A;border-radius:16px;padding:40px 32px;text-align:center;color:#fff;margin:40px 0}
+.pricing h2{font-size:24px;margin-bottom:8px}
+.pricing .subtitle{color:#94A3B8;margin-bottom:32px}
+.price-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.price-card{background:rgba(255,255,255,0.08);border-radius:12px;padding:24px;border:1px solid rgba(255,255,255,0.1)}
+.price-card.featured{border-color:#0A8F6C;background:rgba(10,143,108,0.15)}
+.price-card h3{font-size:16px;font-weight:600;margin-bottom:8px}
+.price-card .price{font-size:28px;font-weight:700;color:#0A8F6C}
+.price-card .price span{font-size:14px;font-weight:400;color:#94A3B8}
+.price-card ul{list-style:none;text-align:left;margin-top:16px;font-size:13px;color:#CBD5E1}
+.price-card ul li{padding:4px 0}
+.price-card ul li::before{content:"✓ ";color:#0A8F6C}
+
+/* Waitlist */
+.waitlist{text-align:center;padding:40px 0 60px}
+.waitlist h2{font-size:24px;font-weight:700;margin-bottom:8px}
+.waitlist p{color:#4A5568;margin-bottom:24px}
+.waitlist-form{display:flex;gap:12px;max-width:480px;margin:0 auto}
+.waitlist-form input{flex:1;padding:14px 20px;border:2px solid #E2E8F0;border-radius:10px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border 0.2s}
+.waitlist-form input:focus{border-color:#0A8F6C}
+.waitlist-form button{background:#0A8F6C;color:#fff;border:none;padding:14px 28px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;transition:background 0.2s}
+.waitlist-form button:hover{background:#078A65}
+.note{font-size:13px;color:#94A3B8;margin-top:12px}
+
+/* Footer */
+.footer{text-align:center;padding:24px 0;border-top:1px solid #E2E8F0;font-size:13px;color:#94A3B8}
+.footer a{color:#0A8F6C;text-decoration:none}
+
+/* Compare */
+.compare{margin:40px 0}
+.compare table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.08)}
+.compare th,.compare td{padding:12px 16px;text-align:left;font-size:14px;border-bottom:1px solid #F0F0F0}
+.compare th{background:#1A2B4A;color:#fff;font-weight:600}
+.compare tr:last-child td{border-bottom:none}
+.compare .yes{color:#0A8F6C;font-weight:600}
+.compare .no{color:#C0392B}
+
+@media(max-width:600px){
+.hero h1{font-size:28px}
+.stats{grid-template-columns:1fr 1fr}
+.price-cards{grid-template-columns:1fr}
+.waitlist-form{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="hero">
+<div class="badge">EARLY ACCESS — JOIN THE WAITLIST</div>
+<h1>The EU Legal Knowledge Base <span>Your Clients Deserve</span></h1>
+<p>470+ court cases. 120+ EU directives. 27 countries. Structured for instant AI-powered search. Built for immigration and human rights lawyers.</p>
+</div>
+
+<div class="stats">
+<div class="stat"><div class="stat-number">470+</div><div class="stat-label">CJEU & ECHR Cases</div></div>
+<div class="stat"><div class="stat-number">120+</div><div class="stat-label">EU Directives</div></div>
+<div class="stat"><div class="stat-number">27</div><div class="stat-label">EU Countries</div></div>
+<div class="stat"><div class="stat-number">168K</div><div class="stat-label">Words of Legal Knowledge</div></div>
+</div>
+
+<div class="section">
+<h2>What Advocat Pro Gives You</h2>
+<ul class="feature-list">
+<li><div class="feature-icon">⚡</div><div class="feature-text"><h3>Instant Case Law Search</h3><p>"Find ECHR cases where deportation was overturned on Article 8 family life grounds" — results in 3 seconds, not 3 hours.</p></div></li>
+<li><div class="feature-icon">🌍</div><div class="feature-text"><h3>Cross-Border Legal Comparison</h3><p>Compare deportation appeal deadlines across Finland, Germany, and France in one query. No more switching between databases.</p></div></li>
+<li><div class="feature-icon">📄</div><div class="feature-text"><h3>AI Document Generation</h3><p>Generate appeals with proper ECLI citations, EU directive references, and country-specific legal formatting. Review and file.</p></div></li>
+<li><div class="feature-icon">👥</div><div class="feature-text"><h3>Multi-Client Management</h3><p>Manage 100+ immigration cases. Each client's documents, deadlines, and correspondence in one place.</p></div></li>
+<li><div class="feature-icon">🔗</div><div class="feature-text"><h3>API Access</h3><p>Integrate our knowledge base into your existing case management system. REST API with structured JSON responses.</p></div></li>
+<li><div class="feature-icon">📊</div><div class="feature-text"><h3>Audit Trail</h3><p>Every search, every case reviewed, timestamped. Full compliance with bar association documentation requirements.</p></div></li>
+</ul>
+</div>
+
+<div class="compare">
+<h2 style="text-align:center;margin-bottom:16px">Advocat Pro vs Traditional Tools</h2>
+<table>
+<tr><th>Feature</th><th>Westlaw / LexisNexis</th><th style="color:#0A8F6C">Advocat Pro</th></tr>
+<tr><td>EU immigration case law</td><td class="no">Limited</td><td class="yes">470+ cases, structured</td></tr>
+<tr><td>Cross-country comparison</td><td class="no">Manual</td><td class="yes">Instant, 27 countries</td></tr>
+<tr><td>AI-powered analysis</td><td class="no">Basic search only</td><td class="yes">Deep analysis + reasoning</td></tr>
+<tr><td>Document generation</td><td class="no">No</td><td class="yes">Appeals, complaints, letters</td></tr>
+<tr><td>Multi-language</td><td class="no">English only</td><td class="yes">7 languages</td></tr>
+<tr><td>Price per month</td><td>€200-500</td><td class="yes">€99-299</td></tr>
+</table>
+</div>
+
+<div class="pricing">
+<h2>Simple Pricing for Legal Professionals</h2>
+<p class="subtitle">No long-term contracts. Cancel anytime.</p>
+<div class="price-cards">
+<div class="price-card">
+<h3>Solo Practitioner</h3>
+<div class="price">€99<span>/month</span></div>
+<ul>
+<li>Full knowledge base access</li>
+<li>50 AI searches/day</li>
+<li>Document generation</li>
+<li>10 active cases</li>
+<li>Export in ECLI format</li>
+</ul>
+</div>
+<div class="price-card featured">
+<h3>Law Firm</h3>
+<div class="price">€299<span>/month</span></div>
+<ul>
+<li>Everything in Solo +</li>
+<li>Unlimited AI searches</li>
+<li>Unlimited cases</li>
+<li>API access</li>
+<li>Multi-seat (up to 5)</li>
+<li>Audit trail</li>
+<li>Priority support</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="waitlist">
+<h2>Join the Early Access Waitlist</h2>
+<p>Be the first to access Advocat Pro when it launches. Early adopters get 50% off for life.</p>
+<div class="waitlist-form">
+<input type="email" id="email" placeholder="your@lawfirm.com">
+<button onclick="joinWaitlist()">Join Waitlist</button>
+</div>
+<p class="note">No spam. We'll notify you when Pro launches. Unsubscribe anytime.</p>
+</div>
+
+<div class="footer">
+<p><a href="/">Advocat for Individuals</a> · <a href="mailto:pro@advocat.eu">pro@advocat.eu</a> · © 2026 Advocat Oy</p>
+</div>
+
+</div>
+
+<script>
+function joinWaitlist(){
+var e=document.getElementById('email');
+var email=e.value.trim();
+if(!email||!email.includes('@')){e.style.borderColor='#C0392B';return}
+var btn=document.querySelector('.waitlist-form button');
+btn.textContent='Joining...';btn.disabled=true;
+setTimeout(function(){
+btn.textContent='✓ You\'re on the list!';
+btn.style.background='#1A2B4A';
+e.value='';e.placeholder='Thank you!';
+},1000);
+}
+</script>
+
+</body>
+</html>

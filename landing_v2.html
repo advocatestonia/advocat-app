@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Advocat — Defend Your Rights</title>
+<meta name="description" content="AI-powered legal defense accessible to everyone. Free, anonymous, no sign-up required.">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#F0EEEB;--text:#1A365D;--accent:#0D9488;--card:#FFFFFF;--accent-glow:rgba(13,148,136,0.3);--accent-light:rgba(13,148,136,0.08);--surface:#FFFFFF}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes fadeInPage{from{opacity:0}to{opacity:1}}
+@keyframes breathe{0%,100%{box-shadow:0 4px 20px var(--accent-glow)}50%{box-shadow:0 4px 40px rgba(13,148,136,0.5),0 0 60px rgba(13,148,136,0.15)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes particle{0%{transform:translate(0,0);opacity:0}10%{opacity:.4}90%{opacity:.4}100%{transform:translate(var(--dx),var(--dy));opacity:0}}
+html{font-family:'Inter',system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+body{margin:0;padding:0;background:linear-gradient(135deg,#F0EEEB 0%,#E8E4DF 25%,#F0EEEB 50%,#EBE7E2 75%,#F0EEEB 100%);background-size:400% 400%;animation:gradientShift 15s ease infinite;min-height:100vh;opacity:0;animation:fadeInPage .8s ease-out .1s forwards,gradientShift 15s ease infinite}
+.particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:0}
+.particle{position:absolute;width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:0;animation:particle linear infinite}
+.page{position:relative;z-index:1;max-width:740px;margin:0 auto;padding:48px 24px 0;text-align:center}
+.logo{margin:0 0 8px;padding:0;line-height:0}
+.logo img{width:100%;max-width:480px;height:auto;display:block;margin:0 auto;animation:float 6s ease-in-out infinite}
+.social-proof{font-size:13px;font-weight:500;color:var(--accent);letter-spacing:.5px;margin:0 0 28px;opacity:.85}
+.langs{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:0 0 32px}
+.lang-btn{appearance:none;border:1.5px solid rgba(26,53,93,0.15);background:rgba(255,255,255,0.5);backdrop-filter:blur(4px);color:var(--text);font-family:inherit;font-size:13px;font-weight:500;padding:7px 16px;border-radius:24px;cursor:pointer;transition:all .25s ease;white-space:nowrap}
+.lang-btn:hover{border-color:var(--accent);background:rgba(13,148,136,0.06);box-shadow:0 2px 12px var(--accent-glow);transform:translateY(-2px)}
+.lang-btn.active{border-color:var(--accent);background:var(--accent-light);color:var(--accent);font-weight:600;box-shadow:0 2px 12px var(--accent-glow)}
+.hero-title{font-size:42px;font-weight:800;line-height:1.15;color:var(--text);margin:0 0 20px;letter-spacing:-.5px}
+.hero-title span{color:var(--accent)}
+.mission{font-size:17px;line-height:1.7;color:var(--text);opacity:.75;max-width:560px;margin:0 auto 36px;padding:0 8px}
+.mission-short{display:none}
+.cta-wrap{margin:0 0 48px}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,#0D9488,#0B8276);color:#fff;font-family:inherit;font-size:18px;font-weight:700;padding:16px 44px;border-radius:14px;text-decoration:none;animation:breathe 3s ease-in-out infinite;transition:transform .2s,filter .2s;letter-spacing:.3px}
+.cta-btn:hover{transform:translateY(-2px) scale(1.02);filter:brightness(1.1)}
+.cta-sub{display:block;font-size:13px;color:var(--text);opacity:.5;margin-top:10px;font-weight:500}
+.stats-section{background:var(--surface);border-radius:20px;padding:36px 24px;margin:0 auto 48px;max-width:620px;box-shadow:0 2px 24px rgba(26,53,93,0.06);opacity:0;transform:translateY(24px);transition:all .6s ease-out}
+.stats-section.visible{opacity:1;transform:translateY(0)}
+.stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.stat{text-align:center;min-width:100px}
+.stat-num{font-size:32px;font-weight:800;color:var(--accent);line-height:1.2}
+.stat-label{font-size:11px;color:var(--text);opacity:.55;margin-top:2px;font-weight:500}
+.trust-section{margin:0 auto 48px;max-width:620px;opacity:0;transform:translateY(24px);transition:all .6s ease-out .1s}
+.trust-section.visible{opacity:1;transform:translateY(0)}
+.trust-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid rgba(13,148,136,0.2);border-radius:40px;padding:12px 28px;font-size:14px;font-weight:600;color:var(--text);box-shadow:0 2px 16px rgba(26,53,93,0.05)}
+.trust-badge svg{flex-shrink:0}
+.footer{text-align:center;padding:24px 20px 32px;font-size:12px;color:var(--text);opacity:.45;line-height:1.8}
+.footer a{color:var(--accent);text-decoration:none;font-weight:500;transition:opacity .2s}
+.footer a:hover{opacity:.7}
+.footer-disclaimer{font-size:10px;max-width:560px;margin:8px auto 0;opacity:.7}
+@media(max-width:600px){
+  .page{padding:28px 16px 0}
+  .logo img{max-width:90%}
+  .hero-title{font-size:28px}
+  .mission{font-size:14px;margin-bottom:24px}
+  .mission-full{display:none}
+  .mission-short{display:inline}
+  .social-proof{font-size:11px}
+  .langs{gap:4px;margin-bottom:24px}
+  .lang-btn{font-size:10px;padding:5px 10px}
+  .cta-btn{font-size:15px;padding:14px 32px}
+  .stats{gap:16px}
+  .stat-num{font-size:24px}
+  .stat-label{font-size:9px}
+  .stats-section{padding:24px 16px;border-radius:16px}
+  .trust-badge{font-size:12px;padding:10px 20px}
+}
+html[dir="rtl"] body{direction:rtl}
+</style>
+</head>
+<body>
+
+<!-- PARTICLES -->
+<div class="particles" id="particles"></div>
+
+<div class="page">
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="logo.png" alt="Advocat — Defend Your Rights">
+  </div>
+
+  <!-- SOCIAL PROOF -->
+  <p class="social-proof" id="social-proof">Protecting immigrant rights across 27 EU countries</p>
+
+  <!-- LANGUAGES -->
+  <div class="langs" role="group" aria-label="Language">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">English</button>
+    <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">Русский</button>
+    <button class="lang-btn" data-lang="uk" onclick="setLang('uk')">Українська</button>
+    <button class="lang-btn" data-lang="fi" onclick="setLang('fi')">Suomi</button>
+    <button class="lang-btn" data-lang="et" onclick="setLang('et')">Eesti</button>
+    <button class="lang-btn" data-lang="sv" onclick="setLang('sv')">Svenska</button>
+    <button class="lang-btn" data-lang="de" onclick="setLang('de')">Deutsch</button>
+    <button class="lang-btn" data-lang="ar" onclick="setLang('ar')">العربية</button>
+    <button class="lang-btn" data-lang="pl" onclick="setLang('pl')">Polski</button>
+    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">Français</button>
+    <button class="lang-btn" data-lang="fa" onclick="setLang('fa')">فارسی</button>
+    <button class="lang-btn" data-lang="tr" onclick="setLang('tr')">Türkçe</button>
+    <button class="lang-btn" data-lang="lv" onclick="setLang('lv')">Latviešu</button>
+    <button class="lang-btn" data-lang="lt" onclick="setLang('lt')">Lietuvių</button>
+    <button class="lang-btn" data-lang="es" onclick="setLang('es')">Español</button>
+    <button class="lang-btn" data-lang="it" onclick="setLang('it')">Italiano</button>
+    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">Română</button>
+  </div>
+
+  <!-- HERO -->
+  <h1 class="hero-title" id="hero-title">Defend Your <span>Rights</span></h1>
+
+  <!-- MISSION -->
+  <p class="mission">
+    <span class="mission-full" id="mission-full"></span>
+    <span class="mission-short" id="mission-short"></span>
+  </p>
+
+  <!-- CTA -->
+  <div class="cta-wrap">
+    <a class="cta-btn" id="cta-btn" href="/app.html?lang=en#/login"></a>
+    <span class="cta-sub" id="cta-sub"></span>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-section" id="stats-section">
+    <div class="stats">
+      <div class="stat"><div class="stat-num" data-target="540">0</div><div class="stat-label" id="stat-templates">Legal templates</div></div>
+      <div class="stat"><div class="stat-num" data-target="27">0</div><div class="stat-label" id="stat-jurisdictions">EU countries</div></div>
+      <div class="stat"><div class="stat-num" data-target="22">0</div><div class="stat-label" id="stat-scenarios">Knowledge bases</div></div>
+      <div class="stat"><div class="stat-num" data-target="17">0</div><div class="stat-label" id="stat-languages">Languages</div></div>
+    </div>
+  </div>
+
+  <!-- TRUST -->
+  <div class="trust-section" id="trust-section">
+    <div class="trust-badge">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span id="trust-text">Trusted & Secure — Your data stays private</span>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div id="footer-disclaimer" class="footer-disclaimer"></div>
+  <div style="margin-top:12px"><a href="mailto:hello@advocat.ee">hello@advocat.ee</a></div>
+  <div style="margin-top:4px">&copy; 2026 Advocat. All rights reserved.</div>
+</div>
+
+<script>
+const T={
+en:{
+  mission:"You have legal rights \u2014 even if no one told you. Today, millions of people face legal systems alone, simply because they cannot afford representation. Advocat is working to change that.",
+  missionShort:"You have legal rights \u2014 even if no one told you. Advocat is working to change that.",
+  heroTitle:'Defend Your <span>Rights</span>',
+  cta:"Check My Case \u2192",
+  sub:"Free \u2022 Anonymous \u2022 No sign-up required",
+  disclaimer:"Advocat provides legal information, not legal advice. This is not a substitute for a licensed attorney.",
+  jurisdictions:"EU Countries",templates:"Legal Templates",scenarios:"Knowledge Bases",languages:"Languages",
+  socialProof:"Protecting immigrant rights across 27 EU countries",
+  trust:"Trusted & Secure \u2014 Your data stays private"
+},
+ru:{
+  mission:"\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0437\u0430\u0449\u0438\u0442\u0435 \u2014 \u044d\u0442\u043e \u0431\u0430\u0437\u043e\u0432\u0430\u044f \u043f\u043e\u0442\u0440\u0435\u0431\u043d\u043e\u0441\u0442\u044c \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u0430, \u0430 \u043d\u0435 \u0440\u043e\u0441\u043a\u043e\u0448\u044c \u0434\u043b\u044f \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0445. \u0421\u0435\u0433\u043e\u0434\u043d\u044f \u043c\u0438\u043b\u043b\u0438\u043e\u043d\u044b \u043b\u044e\u0434\u0435\u0439 \u0441\u0442\u0430\u043b\u043a\u0438\u0432\u0430\u044e\u0442\u0441\u044f \u0441 \u043f\u0440\u0430\u0432\u043e\u0432\u044b\u043c\u0438 \u0441\u0438\u0441\u0442\u0435\u043c\u0430\u043c\u0438 \u0432 \u043e\u0434\u0438\u043d\u043e\u0447\u043a\u0443, \u043f\u0440\u043e\u0441\u0442\u043e \u043f\u043e\u0442\u043e\u043c\u0443 \u0447\u0442\u043e \u043d\u0435 \u043c\u043e\u0433\u0443\u0442 \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u044c \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u043e. Advocat \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043d\u0430\u0434 \u0442\u0435\u043c, \u0447\u0442\u043e\u0431\u044b \u044d\u0442\u043e \u0438\u0437\u043c\u0435\u043d\u0438\u0442\u044c.",
+  missionShort:"\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0437\u0430\u0449\u0438\u0442\u0435 \u2014 \u044d\u0442\u043e \u0431\u0430\u0437\u043e\u0432\u0430\u044f \u043f\u043e\u0442\u0440\u0435\u0431\u043d\u043e\u0441\u0442\u044c \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u0430. Advocat \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043d\u0430\u0434 \u0442\u0435\u043c, \u0447\u0442\u043e\u0431\u044b \u044d\u0442\u043e \u0438\u0437\u043c\u0435\u043d\u0438\u0442\u044c.",
+  heroTitle:'\u0417\u0430\u0449\u0438\u0442\u0438 \u0441\u0432\u043e\u0438 <span>\u043f\u0440\u0430\u0432\u0430</span>',
+  cta:"\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043c\u043e\u0451 \u0434\u0435\u043b\u043e \u2192",
+  sub:"\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e \u2022 \u0410\u043d\u043e\u043d\u0438\u043c\u043d\u043e \u2022 \u0411\u0435\u0437 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438",
+  disclaimer:"Advocat \u043f\u0440\u0435\u0434\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u0442 \u043f\u0440\u0430\u0432\u043e\u0432\u0443\u044e \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044e. \u042d\u0442\u043e \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u0430 \u043b\u0438\u0446\u0435\u043d\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430.",
+  jurisdictions:"\u0421\u0442\u0440\u0430\u043d \u0415\u0421",templates:"\u0428\u0430\u0431\u043b\u043e\u043d\u043e\u0432",scenarios:"\u0411\u0430\u0437 \u0437\u043d\u0430\u043d\u0438\u0439",languages:"\u042f\u0437\u044b\u043a\u043e\u0432",
+  socialProof:"\u0417\u0430\u0449\u0438\u0442\u0430 \u043f\u0440\u0430\u0432 \u043c\u0438\u0433\u0440\u0430\u043d\u0442\u043e\u0432 \u0432 27 \u0441\u0442\u0440\u0430\u043d\u0430\u0445 \u0415\u0421",
+  trust:"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e \u0438 \u043d\u0430\u0434\u0451\u0436\u043d\u043e \u2014 \u0432\u0430\u0448\u0438 \u0434\u0430\u043d\u043d\u044b\u0435 \u043e\u0441\u0442\u0430\u044e\u0442\u0441\u044f \u043f\u0440\u0438\u0432\u0430\u0442\u043d\u044b\u043c\u0438"
+},
+uk:{
+  mission:"\u0414\u043e\u0441\u0442\u0443\u043f \u0434\u043e \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u043e\u0433\u043e \u0437\u0430\u0445\u0438\u0441\u0442\u0443 \u2014 \u0446\u0435 \u0431\u0430\u0437\u043e\u0432\u0430 \u043f\u043e\u0442\u0440\u0435\u0431\u0430 \u043b\u044e\u0434\u0438\u043d\u0438, \u0430 \u043d\u0435 \u0440\u043e\u0437\u043a\u0456\u0448 \u0434\u043b\u044f \u043e\u0431\u0440\u0430\u043d\u0438\u0445. \u0421\u044c\u043e\u0433\u043e\u0434\u043d\u0456 \u043c\u0456\u043b\u044c\u0439\u043e\u043d\u0438 \u043b\u044e\u0434\u0435\u0439 \u0441\u0442\u0438\u043a\u0430\u044e\u0442\u044c\u0441\u044f \u0437 \u043f\u0440\u0430\u0432\u043e\u0432\u0438\u043c\u0438 \u0441\u0438\u0441\u0442\u0435\u043c\u0430\u043c\u0438 \u043d\u0430 \u0441\u0430\u043c\u043e\u0442\u0456, \u043f\u0440\u043e\u0441\u0442\u043e \u0442\u043e\u043c\u0443 \u0449\u043e \u043d\u0435 \u043c\u043e\u0436\u0443\u0442\u044c \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u0438 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043d\u0438\u0446\u0442\u0432\u043e. Advocat \u043f\u0440\u0430\u0446\u044e\u0454 \u043d\u0430\u0434 \u0442\u0438\u043c, \u0449\u043e\u0431 \u0446\u0435 \u0437\u043c\u0456\u043d\u0438\u0442\u0438.",
+  missionShort:"\u0414\u043e\u0441\u0442\u0443\u043f \u0434\u043e \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u043e\u0433\u043e \u0437\u0430\u0445\u0438\u0441\u0442\u0443 \u2014 \u0446\u0435 \u0431\u0430\u0437\u043e\u0432\u0430 \u043f\u043e\u0442\u0440\u0435\u0431\u0430 \u043b\u044e\u0434\u0438\u043d\u0438. Advocat \u043f\u0440\u0430\u0446\u044e\u0454 \u043d\u0430\u0434 \u0442\u0438\u043c, \u0449\u043e\u0431 \u0446\u0435 \u0437\u043c\u0456\u043d\u0438\u0442\u0438.",
+  heroTitle:'\u0417\u0430\u0445\u0438\u0441\u0442\u0438 \u0441\u0432\u043e\u0457 <span>\u043f\u0440\u0430\u0432\u0430</span>',
+  cta:"\u041f\u0435\u0440\u0435\u0432\u0456\u0440\u0438\u0442\u0438 \u043c\u043e\u044e \u0441\u043f\u0440\u0430\u0432\u0443 \u2192",
+  sub:"\u0411\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u043e \u2022 \u0410\u043d\u043e\u043d\u0456\u043c\u043d\u043e \u2022 \u0411\u0435\u0437 \u0440\u0435\u0454\u0441\u0442\u0440\u0430\u0446\u0456\u0457",
+  disclaimer:"Advocat \u043d\u0430\u0434\u0430\u0454 \u043f\u0440\u0430\u0432\u043e\u0432\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u0443 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0456\u044e. \u0426\u0435 \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u0430 \u043b\u0456\u0446\u0435\u043d\u0437\u043e\u0432\u0430\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430.",
+  jurisdictions:"\u041a\u0440\u0430\u0457\u043d \u0404\u0421",templates:"\u0428\u0430\u0431\u043b\u043e\u043d\u0456\u0432",scenarios:"\u0411\u0430\u0437 \u0437\u043d\u0430\u043d\u044c",languages:"\u041c\u043e\u0432",
+  socialProof:"\u0417\u0430\u0445\u0438\u0441\u0442 \u043f\u0440\u0430\u0432 \u043c\u0456\u0433\u0440\u0430\u043d\u0442\u0456\u0432 \u0443 27 \u043a\u0440\u0430\u0457\u043d\u0430\u0445 \u0404\u0421",
+  trust:"\u0411\u0435\u0437\u043f\u0435\u0447\u043d\u043e \u0442\u0430 \u043d\u0430\u0434\u0456\u0439\u043d\u043e \u2014 \u0432\u0430\u0448\u0456 \u0434\u0430\u043d\u0456 \u0437\u0430\u043b\u0438\u0448\u0430\u044e\u0442\u044c\u0441\u044f \u043f\u0440\u0438\u0432\u0430\u0442\u043d\u0438\u043c\u0438"
+},
+fi:{
+  mission:"Oikeudellisen puolustuksen saatavuus on ihmisen perustarve \u2014 ei harvojen ylellisyys. T\u00e4n\u00e4\u00e4n miljoonat ihmiset kohtaavat oikeusj\u00e4rjestelm\u00e4t yksin, yksinkertaisesti siksi, ettei heill\u00e4 ole varaa edustajaan. Advocat pyrkii muuttamaan t\u00e4m\u00e4n.",
+  missionShort:"Sinulla on oikeuksia \u2014 vaikka kukaan ei olisi kertonut. Advocat pyrkii muuttamaan t\u00e4m\u00e4n.",
+  heroTitle:'Puolusta <span>oikeuksiasi</span>',
+  cta:"Tarkista tapaukseni \u2192",
+  sub:"Ilmainen \u2022 Anonyymi \u2022 Ei rekister\u00f6itymist\u00e4",
+  disclaimer:"Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. T\u00e4m\u00e4 ei korvaa laillistettua asianajajaa.",
+  jurisdictions:"EU-maata",templates:"Asiakirjamallia",scenarios:"Tietokantaa",languages:"Kielt\u00e4",
+  socialProof:"Suojaamme maahanmuuttajien oikeuksia 27 EU-maassa",
+  trust:"Luotettava ja turvallinen \u2014 tietosi pysyv\u00e4t yksityisin\u00e4"
+},
+et:{
+  mission:"Juurdep\u00e4\u00e4s \u00f5iguskaitsele on inimese p\u00f5hivajadus \u2014 mitte v\u00e4heste luksus. T\u00e4na seisavad miljonid inimesed \u00f5iguss\u00fcsteemidega silmitsi \u00fcksi, lihtsalt seet\u00f5ttu, et nad ei saa endale esindajat lubada. Advocat t\u00f6\u00f6tab selle muutmise nimel.",
+  missionShort:"Juurdep\u00e4\u00e4s \u00f5iguskaitsele on inimese p\u00f5hivajadus. Advocat t\u00f6\u00f6tab selle muutmise nimel.",
+  heroTitle:'Kaitse oma <span>\u00f5igusi</span>',
+  cta:"Kontrolli minu asja \u2192",
+  sub:"Tasuta \u2022 Anon\u00fc\u00fcmne \u2022 Ilma registreerimiseta",
+  disclaimer:"Advocat pakub \u00f5igusteavet, mitte \u00f5igusn\u00f5ustamist. See ei asenda litsentseeritud advokaati.",
+  jurisdictions:"EL riiki",templates:"Malli",scenarios:"Teadmusbaasi",languages:"Keelt",
+  socialProof:"Kaitseme sisser\u00e4ndajate \u00f5igusi 27 EL riigis",
+  trust:"Usaldusv\u00e4\u00e4rne ja turvaline \u2014 teie andmed j\u00e4\u00e4vad privaatseks"
+},
+sv:{
+  mission:"Tillg\u00e5ng till r\u00e4ttsligt f\u00f6rsvar \u00e4r ett grundl\u00e4ggande m\u00e4nskligt behov \u2014 inte en lyx f\u00f6r de f\u00e5. Idag m\u00f6ter miljontals m\u00e4nniskor r\u00e4ttssystem ensamma, helt enkelt f\u00f6r att de inte har r\u00e5d med representation. Advocat arbetar f\u00f6r att f\u00f6r\u00e4ndra detta.",
+  missionShort:"Tillg\u00e5ng till r\u00e4ttsligt f\u00f6rsvar \u00e4r ett grundl\u00e4ggande m\u00e4nskligt behov. Advocat arbetar f\u00f6r att f\u00f6r\u00e4ndra detta.",
+  heroTitle:'F\u00f6rsvara dina <span>r\u00e4ttigheter</span>',
+  cta:"Kontrollera mitt \u00e4rende \u2192",
+  sub:"Gratis \u2022 Anonymt \u2022 Ingen registrering",
+  disclaimer:"Advocat tillhandah\u00e5ller juridisk information, inte juridisk r\u00e5dgivning. Detta ers\u00e4tter inte en licensierad advokat.",
+  jurisdictions:"EU-l\u00e4nder",templates:"Mallar",scenarios:"Kunskapsbaser",languages:"Spr\u00e5k",
+  socialProof:"Skyddar invandrares r\u00e4ttigheter i 27 EU-l\u00e4nder",
+  trust:"Tryggt och s\u00e4kert \u2014 dina uppgifter f\u00f6rblir privata"
+},
+de:{
+  mission:"Zugang zu rechtlichem Schutz ist ein grundlegendes menschliches Bed\u00fcrfnis \u2014 kein Luxus f\u00fcr wenige. Heute stehen Millionen von Menschen Rechtssystemen allein gegen\u00fcber, einfach weil sie sich keinen Anwalt leisten k\u00f6nnen. Advocat arbeitet daran, das zu \u00e4ndern.",
+  missionShort:"Zugang zu rechtlichem Schutz ist ein grundlegendes menschliches Bed\u00fcrfnis. Advocat arbeitet daran, das zu \u00e4ndern.",
+  heroTitle:'Verteidige deine <span>Rechte</span>',
+  cta:"Meinen Fall pr\u00fcfen \u2192",
+  sub:"Kostenlos \u2022 Anonym \u2022 Ohne Registrierung",
+  disclaimer:"Advocat bietet rechtliche Informationen, keine Rechtsberatung. Dies ersetzt keinen zugelassenen Anwalt.",
+  jurisdictions:"EU-L\u00e4nder",templates:"Vorlagen",scenarios:"Wissensdatenbanken",languages:"Sprachen",
+  socialProof:"Schutz der Rechte von Einwanderern in 27 EU-L\u00e4ndern",
+  trust:"Vertrauensw\u00fcrdig & sicher \u2014 Ihre Daten bleiben privat"
+},
+ar:{
+  mission:"\u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a \u062d\u0627\u062c\u0629 \u0625\u0646\u0633\u0627\u0646\u064a\u0629 \u0623\u0633\u0627\u0633\u064a\u0629 \u2014 \u0648\u0644\u064a\u0633 \u062a\u0631\u0641\u064b\u0627 \u0644\u0644\u0642\u0644\u0629. \u0627\u0644\u064a\u0648\u0645\u060c \u064a\u0648\u0627\u062c\u0647 \u0645\u0644\u0627\u064a\u064a\u0646 \u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0627\u0644\u0623\u0646\u0638\u0645\u0629 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u0629 \u0628\u0645\u0641\u0631\u062f\u0647\u0645\u060c \u0628\u0628\u0633\u0627\u0637\u0629 \u0644\u0623\u0646\u0647\u0645 \u0644\u0627 \u064a\u0633\u062a\u0637\u064a\u0639\u0648\u0646 \u062a\u062d\u0645\u0644 \u062a\u0643\u0627\u0644\u064a\u0641 \u0627\u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a. \u064a\u0639\u0645\u0644 Advocat \u0639\u0644\u0649 \u062a\u063a\u064a\u064a\u0631 \u0630\u0644\u0643.",
+  missionShort:"\u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a \u062d\u0627\u062c\u0629 \u0625\u0646\u0633\u0627\u0646\u064a\u0629 \u0623\u0633\u0627\u0633\u064a\u0629. \u064a\u0639\u0645\u0644 Advocat \u0639\u0644\u0649 \u062a\u063a\u064a\u064a\u0631 \u0630\u0644\u0643.",
+  heroTitle:'<span>\u062f\u0627\u0641\u0639</span> \u0639\u0646 \u062d\u0642\u0648\u0642\u0643',
+  cta:"\u2190 \u062a\u062d\u0642\u0642 \u0645\u0646 \u0642\u0636\u064a\u062a\u064a",
+  sub:"\u0645\u062c\u0627\u0646\u064a \u2022 \u0645\u062c\u0647\u0648\u0644 \u0627\u0644\u0647\u0648\u064a\u0629 \u2022 \u0628\u062f\u0648\u0646 \u062a\u0633\u062c\u064a\u0644",
+  disclaimer:"\u064a\u0642\u062f\u0645 Advocat \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629\u060c \u0648\u0644\u064a\u0633 \u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629. \u0647\u0630\u0627 \u0644\u064a\u0633 \u0628\u062f\u064a\u0644\u0627\u064b \u0639\u0646 \u0645\u062d\u0627\u0645\u064d \u0645\u0631\u062e\u0635.",
+  jurisdictions:"\u062f\u0648\u0644\u0629 \u0623\u0648\u0631\u0648\u0628\u064a\u0629",templates:"\u0646\u0645\u0648\u0630\u062c",scenarios:"\u0642\u0627\u0639\u062f\u0629 \u0645\u0639\u0631\u0641\u064a\u0629",languages:"\u0644\u063a\u0627\u062a",
+  socialProof:"\u062d\u0645\u0627\u064a\u0629 \u062d\u0642\u0648\u0642 \u0627\u0644\u0645\u0647\u0627\u062c\u0631\u064a\u0646 \u0641\u064a 27 \u062f\u0648\u0644\u0629 \u0623\u0648\u0631\u0648\u0628\u064a\u0629",
+  trust:"\u0645\u0648\u062b\u0648\u0642 \u0648\u0622\u0645\u0646 \u2014 \u0628\u064a\u0627\u0646\u0627\u062a\u0643 \u062a\u0628\u0642\u0649 \u062e\u0627\u0635\u0629"
+},
+pl:{
+  mission:"Masz prawa \u2014 nawet je\u015bli nikt ci o tym nie powiedzia\u0142. Dzi\u015b miliony ludzi staj\u0105 przed systemami prawnymi samotnie, po prostu dlatego, \u017ce nie sta\u0107 ich na reprezentacj\u0119. Advocat pracuje nad zmian\u0105 tego stanu rzeczy.",
+  missionShort:"Masz prawa \u2014 nawet je\u015bli nikt ci o tym nie powiedzia\u0142. Advocat pracuje nad zmian\u0105 tego stanu rzeczy.",
+  heroTitle:'Bro\u0144 swoich <span>praw</span>',
+  cta:"Sprawd\u017a moj\u0105 spraw\u0119 \u2192",
+  sub:"Bezp\u0142atnie \u2022 Anonimowo \u2022 Bez rejestracji",
+  disclaimer:"Advocat to narz\u0119dzie informacji prawnej, nie kancelaria. Zawsze skonsultuj si\u0119 z wykwalifikowanym prawnikiem.",
+  jurisdictions:"Kraj\u00f3w UE",templates:"Szablon\u00f3w",scenarios:"Baz wiedzy",languages:"J\u0119zyk\u00f3w",
+  socialProof:"Ochrona praw imigrant\u00f3w w 27 krajach UE",
+  trust:"Zaufany i bezpieczny \u2014 Twoje dane pozostaj\u0105 prywatne"
+},
+fr:{
+  mission:"Vous avez des droits \u2014 m\u00eame si personne ne vous l\u2019a dit. Aujourd\u2019hui, des millions de personnes font face seules aux syst\u00e8mes juridiques, simplement parce qu\u2019elles n\u2019ont pas les moyens de se faire repr\u00e9senter. Advocat travaille \u00e0 changer cela.",
+  missionShort:"Vous avez des droits \u2014 m\u00eame si personne ne vous l\u2019a dit. Advocat travaille \u00e0 changer cela.",
+  heroTitle:'D\u00e9fendez vos <span>droits</span>',
+  cta:"V\u00e9rifier mon dossier \u2192",
+  sub:"Gratuit \u2022 Anonyme \u2022 Sans inscription",
+  disclaimer:"Advocat est un outil d\u2019information juridique, pas un cabinet d\u2019avocats. Consultez toujours un avocat qualifi\u00e9.",
+  jurisdictions:"Pays UE",templates:"Mod\u00e8les",scenarios:"Bases de connaissances",languages:"Langues",
+  socialProof:"Protection des droits des immigrants dans 27 pays de l\u2019UE",
+  trust:"Fiable et s\u00e9curis\u00e9 \u2014 vos donn\u00e9es restent priv\u00e9es"
+},
+fa:{
+  mission:"\u0634\u0645\u0627 \u062d\u0642\u0648\u0642 \u0642\u0627\u0646\u0648\u0646\u06cc \u062f\u0627\u0631\u06cc\u062f \u2014 \u062d\u062a\u06cc \u0627\u06af\u0631 \u06a9\u0633\u06cc \u0628\u0647 \u0634\u0645\u0627 \u0646\u06af\u0641\u062a\u0647 \u0628\u0627\u0634\u062f. \u0627\u0645\u0631\u0648\u0632 \u0645\u06cc\u0644\u06cc\u0648\u0646\u200c\u0647\u0627 \u0646\u0641\u0631 \u0628\u0647 \u062a\u0646\u0647\u0627\u06cc\u06cc \u0628\u0627 \u0633\u06cc\u0633\u062a\u0645\u200c\u0647\u0627\u06cc \u062d\u0642\u0648\u0642\u06cc \u0645\u0648\u0627\u062c\u0647 \u0645\u06cc\u200c\u0634\u0648\u0646\u062f\u060c \u0635\u0631\u0641\u0627\u064b \u0628\u0647 \u0627\u06cc\u0646 \u062f\u0644\u06cc\u0644 \u06a9\u0647 \u062a\u0648\u0627\u0646\u0627\u06cc\u06cc \u067e\u0631\u062f\u0627\u062e\u062a \u0647\u0632\u06cc\u0646\u0647 \u0648\u06a9\u06cc\u0644 \u0631\u0627 \u0646\u062f\u0627\u0631\u0646\u062f. Advocat \u062f\u0631 \u062a\u0644\u0627\u0634 \u0627\u0633\u062a \u0627\u06cc\u0646 \u0648\u0636\u0639\u06cc\u062a \u0631\u0627 \u062a\u063a\u06cc\u06cc\u0631 \u062f\u0647\u062f.",
+  missionShort:"\u0634\u0645\u0627 \u062d\u0642\u0648\u0642 \u0642\u0627\u0646\u0648\u0646\u06cc \u062f\u0627\u0631\u06cc\u062f \u2014 \u062d\u062a\u06cc \u0627\u06af\u0631 \u06a9\u0633\u06cc \u0628\u0647 \u0634\u0645\u0627 \u0646\u06af\u0641\u062a\u0647 \u0628\u0627\u0634\u062f. Advocat \u062f\u0631 \u062a\u0644\u0627\u0634 \u0627\u0633\u062a \u0627\u06cc\u0646 \u0648\u0636\u0639\u06cc\u062a \u0631\u0627 \u062a\u063a\u06cc\u06cc\u0631 \u062f\u0647\u062f.",
+  heroTitle:'<span>\u062f\u0641\u0627\u0639</span> \u0627\u0632 \u062d\u0642\u0648\u0642 \u062e\u0648\u062f',
+  cta:"\u2190 \u0628\u0631\u0631\u0633\u06cc \u067e\u0631\u0648\u0646\u062f\u0647 \u0645\u0646",
+  sub:"\u0631\u0627\u06cc\u06af\u0627\u0646 \u2022 \u0646\u0627\u0634\u0646\u0627\u0633 \u2022 \u0628\u062f\u0648\u0646 \u062b\u0628\u062a\u200c\u0646\u0627\u0645",
+  disclaimer:"Advocat \u06cc\u06a9 \u0627\u0628\u0632\u0627\u0631 \u0627\u0637\u0644\u0627\u0639\u0627\u062a \u062d\u0642\u0648\u0642\u06cc \u0627\u0633\u062a\u060c \u0646\u0647 \u06cc\u06a9 \u062f\u0641\u062a\u0631 \u0648\u06a9\u0627\u0644\u062a. \u0647\u0645\u06cc\u0634\u0647 \u0628\u0627 \u06cc\u06a9 \u0648\u06a9\u06cc\u0644 \u0648\u0627\u062c\u062f \u0634\u0631\u0627\u06cc\u0637 \u0645\u0634\u0648\u0631\u062a \u06a9\u0646\u06cc\u062f.",
+  jurisdictions:"\u06a9\u0634\u0648\u0631 \u0627\u0631\u0648\u067e\u0627\u06cc\u06cc",templates:"\u0627\u0644\u06af\u0648",scenarios:"\u067e\u0627\u06cc\u06af\u0627\u0647 \u062f\u0627\u0646\u0634",languages:"\u0632\u0628\u0627\u0646",
+  socialProof:"\u062d\u0641\u0627\u0638\u062a \u0627\u0632 \u062d\u0642\u0648\u0642 \u0645\u0647\u0627\u062c\u0631\u0627\u0646 \u062f\u0631 27 \u06a9\u0634\u0648\u0631 \u0627\u0631\u0648\u067e\u0627\u06cc\u06cc",
+  trust:"\u0642\u0627\u0628\u0644 \u0627\u0639\u062a\u0645\u0627\u062f \u0648 \u0627\u0645\u0646 \u2014 \u062f\u0627\u062f\u0647\u200c\u0647\u0627\u06cc \u0634\u0645\u0627 \u062e\u0635\u0648\u0635\u06cc \u0645\u06cc\u200c\u0645\u0627\u0646\u062f"
+},
+tr:{
+  mission:"Haklar\u0131n\u0131z var \u2014 kimse size s\u00f6ylememi\u015f olsa bile. Bug\u00fcn milyonlarca insan, yaln\u0131zca temsil masraflar\u0131n\u0131 kar\u015f\u0131layamad\u0131klar\u0131 i\u00e7in hukuk sistemleriyle yaln\u0131z y\u00fczle\u015fiyor. Advocat bunu de\u011fi\u015ftirmek i\u00e7in \u00e7al\u0131\u015f\u0131yor.",
+  missionShort:"Haklar\u0131n\u0131z var \u2014 kimse size s\u00f6ylememi\u015f olsa bile. Advocat bunu de\u011fi\u015ftirmek i\u00e7in \u00e7al\u0131\u015f\u0131yor.",
+  heroTitle:'<span>Haklar\u0131n\u0131</span> savun',
+  cta:"Davam\u0131 kontrol et \u2192",
+  sub:"\u00dccretsiz \u2022 Anonim \u2022 Kay\u0131t gerektirmez",
+  disclaimer:"Advocat bir hukuki bilgi arac\u0131d\u0131r, hukuk b\u00fcrosu de\u011fildir. Her zaman nitelikli bir avukata dan\u0131\u015f\u0131n.",
+  jurisdictions:"AB \u00dclkesi",templates:"\u015eablon",scenarios:"Bilgi taban\u0131",languages:"Dil",
+  socialProof:"27 AB \u00fclkesinde g\u00f6\u00e7men haklar\u0131n\u0131 koruma",
+  trust:"G\u00fcvenilir ve g\u00fcvenli \u2014 verileriniz gizli kal\u0131r"
+},
+lv:{
+  mission:"Piekl\u016bve juridiskajai aizsardz\u012bbai ir cilv\u0113ka pamatvajadz\u012bba \u2014 nevis grezn\u012bba da\u017eiem. \u0160odien miljoniem cilv\u0113ku saskaras ar ties\u012bbu sist\u0113m\u0101m vientn\u0113 t\u0101p\u0113c, ka vi\u0146i nevar at\u013cauties p\u0101rst\u0101v\u012bbu. Advocat str\u0101d\u0101, lai to main\u012btu.",
+  missionShort:"Piekl\u016bve juridiskajai aizsardz\u012bbai ir cilv\u0113ka pamatvajadz\u012bba. Advocat str\u0101d\u0101, lai to main\u012btu.",
+  heroTitle:'Aizst\u0101vi savas <span>ties\u012bbas</span>',
+  cta:"P\u0101rbaud\u012bt manu lietu \u2192",
+  sub:"Bezmaksas \u2022 Anon\u012bmi \u2022 Nav nepiecie\u0161ama re\u0123istr\u0101cija",
+  disclaimer:"Advocat sniedz juridisku inform\u0101ciju, nevis juridiskas konsult\u0101cijas. Tas neaizst\u0101j licenc\u0113tu advok\u0101tu.",
+  jurisdictions:"ES valstis",templates:"Veidnes",scenarios:"Zin\u0101\u0161anu b\u0101zes",languages:"Valodas",
+  socialProof:"Imigrantu ties\u012bbu aizsardz\u012bba 27 ES valst\u012bs",
+  trust:"Uzticams un dro\u0161s \u2014 j\u016bsu dati paliek priv\u0101ti"
+},
+lt:{
+  mission:"Prieiga prie teisin\u0117s gynybos yra pagrindinis \u017emogaus poreikis \u2014 ne prabanga keleriems. \u0160iandien milijonai \u017emoni\u0173 susiduria su teis\u0117s sistemomis vieni, tiesiog tod\u0117l, kad negali sau leisti atstovavimo. Advocat dirba, kad tai pakeist\u0173.",
+  missionShort:"Prieiga prie teisin\u0117s gynybos yra pagrindinis \u017emogaus poreikis. Advocat dirba, kad tai pakeist\u0173.",
+  heroTitle:'Gink savo <span>teises</span>',
+  cta:"Patikrinti mano byl\u0105 \u2192",
+  sub:"Nemokama \u2022 Anonimi\u0161ka \u2022 Nereikia registruotis",
+  disclaimer:"Advocat teikia teisin\u0119 informacij\u0105, o ne teisines konsultacijas. Tai nepakei\u010dia licencijuoto advokato.",
+  jurisdictions:"ES \u0161ali\u0173",templates:"\u0160ablon\u0173",scenarios:"\u017dini\u0173 bazi\u0173",languages:"Kalb\u0173",
+  socialProof:"Imigrant\u0173 teisi\u0173 apsauga 27 ES \u0161alyse",
+  trust:"Patikima ir saugu \u2014 j\u016bs\u0173 duomenys lieka privatūs"
+},
+es:{
+  mission:"El acceso a la defensa legal es una necesidad humana b\u00e1sica \u2014 no un lujo para unos pocos. Hoy, millones de personas enfrentan sistemas legales solas, simplemente porque no pueden pagar representaci\u00f3n. Advocat trabaja para cambiar eso.",
+  missionShort:"El acceso a la defensa legal es una necesidad humana b\u00e1sica. Advocat trabaja para cambiar eso.",
+  heroTitle:'Defiende tus <span>derechos</span>',
+  cta:"Verificar mi caso \u2192",
+  sub:"Gratis \u2022 An\u00f3nimo \u2022 Sin registro",
+  disclaimer:"Advocat proporciona informaci\u00f3n legal, no asesor\u00eda legal. Esto no sustituye a un abogado licenciado.",
+  jurisdictions:"Pa\u00edses UE",templates:"Plantillas",scenarios:"Bases de conocimiento",languages:"Idiomas",
+  socialProof:"Protegiendo los derechos de inmigrantes en 27 pa\u00edses de la UE",
+  trust:"Confiable y seguro \u2014 tus datos permanecen privados"
+},
+it:{
+  mission:"L\u2019accesso alla difesa legale \u00e8 un bisogno umano fondamentale \u2014 non un lusso per pochi. Oggi milioni di persone affrontano i sistemi legali da sole, semplicemente perch\u00e9 non possono permettersi una rappresentanza. Advocat lavora per cambiare questo.",
+  missionShort:"L\u2019accesso alla difesa legale \u00e8 un bisogno umano fondamentale. Advocat lavora per cambiare questo.",
+  heroTitle:'Difendi i tuoi <span>diritti</span>',
+  cta:"Controlla il mio caso \u2192",
+  sub:"Gratuito \u2022 Anonimo \u2022 Nessuna registrazione",
+  disclaimer:"Advocat fornisce informazioni legali, non consulenza legale. Non sostituisce un avvocato abilitato.",
+  jurisdictions:"Paesi UE",templates:"Modelli",scenarios:"Basi di conoscenza",languages:"Lingue",
+  socialProof:"Protezione dei diritti degli immigrati in 27 paesi dell\u2019UE",
+  trust:"Affidabile e sicuro \u2014 i tuoi dati restano privati"
+},
+ro:{
+  mission:"Accesul la ap\u0103rarea juridic\u0103 este o nevoie uman\u0103 fundamental\u0103 \u2014 nu un lux pentru c\u00e2\u021biva. Ast\u0103zi, milioane de oameni se confrunt\u0103 singuri cu sistemele juridice, pur \u0219i simplu pentru c\u0103 nu \u00ee\u0219i pot permite reprezentare. Advocat lucreaz\u0103 pentru a schimba acest lucru.",
+  missionShort:"Accesul la ap\u0103rarea juridic\u0103 este o nevoie uman\u0103 fundamental\u0103. Advocat lucreaz\u0103 pentru a schimba acest lucru.",
+  heroTitle:'Ap\u0103r\u0103-\u021bi <span>drepturile</span>',
+  cta:"Verific\u0103 cazul meu \u2192",
+  sub:"Gratuit \u2022 Anonim \u2022 F\u0103r\u0103 \u00eenregistrare",
+  disclaimer:"Advocat ofer\u0103 informa\u021bii juridice, nu consultan\u021b\u0103 juridic\u0103. Nu \u00eenlocuie\u0219te un avocat licen\u021biat.",
+  jurisdictions:"\u021a\u0103ri UE",templates:"\u0218abloane",scenarios:"Baze de cuno\u0219tin\u021be",languages:"Limbi",
+  socialProof:"Protec\u021bia drepturilor imigran\u021bilor \u00een 27 de \u021b\u0103ri UE",
+  trust:"De \u00eencredere \u0219i sigur \u2014 datele tale r\u0103m\u00e2n private"
+}
+};
+
+/* Animated counter */
+function animateCounters(){
+  document.querySelectorAll('.stat-num[data-target]').forEach(function(el){
+    var target=parseInt(el.dataset.target);var suffix=target>100?'+':'';
+    var duration=1200;var start=performance.now();
+    function tick(now){
+      var p=Math.min((now-start)/duration,1);
+      var ease=1-Math.pow(1-p,3);
+      el.textContent=Math.round(target*ease)+(p>0.1?suffix:'');
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+/* Scroll reveal */
+var revealed=false;
+function checkScroll(){
+  var ss=document.getElementById('stats-section');
+  var ts=document.getElementById('trust-section');
+  if(!ss)return;
+  var rect=ss.getBoundingClientRect();
+  if(rect.top<window.innerHeight-60){
+    ss.classList.add('visible');
+    ts.classList.add('visible');
+    if(!revealed){revealed=true;animateCounters();}
+  }
+}
+window.addEventListener('scroll',checkScroll,{passive:true});
+setTimeout(checkScroll,400);
+
+/* Particles */
+(function(){
+  var c=document.getElementById('particles');if(!c)return;
+  for(var i=0;i<12;i++){
+    var d=document.createElement('div');d.className='particle';
+    d.style.left=Math.random()*100+'%';
+    d.style.top=Math.random()*60+'%';
+    d.style.setProperty('--dx',(Math.random()*120-60)+'px');
+    d.style.setProperty('--dy',(Math.random()*120-60)+'px');
+    d.style.animationDuration=(8+Math.random()*12)+'s';
+    d.style.animationDelay=(Math.random()*10)+'s';
+    d.style.width=d.style.height=(2+Math.random()*2)+'px';
+    c.appendChild(d);
+  }
+})();
+
+/* Language switcher */
+function setLang(lang){
+  var t=T[lang];if(!t)return;
+  document.documentElement.lang=lang;
+  document.documentElement.dir=(lang==='ar'||lang==='fa')?'rtl':'ltr';
+  document.getElementById('cta-btn').href='/app.html?lang='+lang+'#/login';
+  document.getElementById('hero-title').innerHTML=t.heroTitle;
+  document.getElementById('mission-full').textContent=t.mission;
+  document.getElementById('mission-short').textContent=t.missionShort;
+  document.getElementById('cta-btn').textContent=t.cta;
+  document.getElementById('cta-sub').textContent=t.sub;
+  document.getElementById('footer-disclaimer').textContent=t.disclaimer;
+  document.getElementById('stat-jurisdictions').textContent=t.jurisdictions;
+  document.getElementById('stat-templates').textContent=t.templates;
+  document.getElementById('stat-scenarios').textContent=t.scenarios;
+  document.getElementById('stat-languages').textContent=t.languages;
+  document.getElementById('social-proof').textContent=t.socialProof;
+  document.getElementById('trust-text').textContent=t.trust;
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active',b.dataset.lang===lang);
+  });
+  try{localStorage.setItem('advocat-lang',lang)}catch(e){}
+}
+
+(function(){
+  var lang='en';
+  try{var s=localStorage.getItem('advocat-lang');if(s&&T[s])lang=s;}catch(e){}
+  if(lang==='en'){
+    var nav=(navigator.language||'').toLowerCase();
+    if(nav.startsWith('ru'))lang='ru';
+    else if(nav.startsWith('uk'))lang='uk';
+    else if(nav.startsWith('fi'))lang='fi';
+    else if(nav.startsWith('et'))lang='et';
+    else if(nav.startsWith('sv'))lang='sv';
+    else if(nav.startsWith('de'))lang='de';
+    else if(nav.startsWith('ar'))lang='ar';
+    else if(nav.startsWith('pl'))lang='pl';
+    else if(nav.startsWith('fr'))lang='fr';
+    else if(nav.startsWith('fa'))lang='fa';
+    else if(nav.startsWith('tr'))lang='tr';
+    else if(nav.startsWith('lv'))lang='lv';
+    else if(nav.startsWith('lt'))lang='lt';
+    else if(nav.startsWith('es'))lang='es';
+    else if(nav.startsWith('it'))lang='it';
+    else if(nav.startsWith('ro'))lang='ro';
+  }
+  setLang(lang);
+})();
+</script>
+</body>
+</html>
