@@ -407,7 +407,7 @@ class _BillingToggle extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 40),
+      margin: const EdgeInsets.symmetric(horizontal: 32),
       height: 40,
       decoration: BoxDecoration(
         color: AppColors.surfaceVariant,
@@ -718,17 +718,14 @@ class _PlanCardState extends State<_PlanCard>
         );
       case _CardStyle.recommended:
         return BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF1B5E20), Color(0xFF0A3A12)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: AppColors.accent, width: 2),
           boxShadow: [
             BoxShadow(
               color: AppColors.accent.withValues(
-                  alpha: 0.20 + 0.10 * (_glowAnimation?.value ?? 0)),
-              blurRadius: 16 + 8 * (_glowAnimation?.value ?? 0),
+                  alpha: 0.10 + 0.05 * (_glowAnimation?.value ?? 0)),
+              blurRadius: 12 + 4 * (_glowAnimation?.value ?? 0),
               offset: const Offset(0, 4),
             ),
           ],
@@ -753,8 +750,7 @@ class _PlanCardState extends State<_PlanCard>
   }
 
   bool get _isDark =>
-      widget.cardStyle == _CardStyle.premium ||
-      widget.cardStyle == _CardStyle.recommended;
+      widget.cardStyle == _CardStyle.premium;
 
   Color get _textPrimary =>
       _isDark ? Colors.white : AppColors.textPrimary;
@@ -772,20 +768,21 @@ class _PlanCardState extends State<_PlanCard>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    Widget cardContent = Container(
-      decoration: _cardDecoration,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    Widget cardContent = ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: Container(
+        decoration: _cardDecoration,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // ── Recommended badge ────────────────────────────────────
           if (widget.isRecommended)
             Container(
               padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: AppColors.accent,
                 borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg - 1),
+                  top: Radius.circular(AppRadius.lg - 2),
                 ),
               ),
               child: Row(
@@ -1001,6 +998,7 @@ class _PlanCardState extends State<_PlanCard>
             ),
           ),
         ],
+        ),
       ),
     );
 
@@ -1055,16 +1053,16 @@ class _PlanCardState extends State<_PlanCard>
         );
 
       case _CardStyle.recommended:
-        // White button on dark green (matches premium style)
+        // Green filled button on white card
         return SizedBox(
           width: double.infinity,
           height: 42,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: const Color(0xFF1B5E20),
-              disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
+              backgroundColor: AppColors.accent,
+              foregroundColor: Colors.white,
+              disabledBackgroundColor: AppColors.accent.withValues(alpha: 0.3),
               disabledForegroundColor: Colors.white60,
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -1082,7 +1080,7 @@ class _PlanCardState extends State<_PlanCard>
                     height: 18,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Color(0xFF1B5E20),
+                      color: Colors.white,
                     ),
                   )
                 : Text(label),
