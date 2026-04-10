@@ -998,9 +998,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         IconButton(
           icon: const Icon(Icons.attach_file_rounded),
           tooltip: 'Attach document',
-          onPressed: () {
-            context.push('/scan?caseId=${widget.caseId}');
-          },
+          onPressed: _showAttachOptions,
         ),
       ],
     );
