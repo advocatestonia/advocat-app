@@ -21,6 +21,43 @@ class CasesNotifier extends AsyncNotifier<List<LegalCase>> {
     return _supabase.getCases();
   }
 
+  /// Converts a [CaseType] enum value to the snake_case string
+  /// that the Supabase `cases.type` column expects.
+  static String _caseTypeToDbString(CaseType type) {
+    switch (type) {
+      case CaseType.deportation:
+        return 'deportation';
+      case CaseType.asylum:
+        return 'asylum';
+      case CaseType.residencePermit:
+        return 'residence_permit';
+      case CaseType.familyReunification:
+        return 'family_reunification';
+      case CaseType.citizenship:
+        return 'citizenship';
+      case CaseType.workPermit:
+        return 'work_permit';
+      case CaseType.laborDispute:
+        return 'labor_dispute';
+      case CaseType.tenantRights:
+        return 'tenant_rights';
+      case CaseType.debtCollection:
+        return 'debt_collection';
+      case CaseType.discrimination:
+        return 'discrimination';
+      case CaseType.policeMisconduct:
+        return 'police_misconduct';
+      case CaseType.socialBenefits:
+        return 'social_benefits';
+      case CaseType.domesticViolence:
+        return 'domestic_violence';
+      case CaseType.consumerProtection:
+        return 'consumer_protection';
+      case CaseType.other:
+        return 'other';
+    }
+  }
+
   /// Optimistically adds a case, then syncs with the server.
   Future<LegalCase> createCase({
     required String title,
@@ -28,9 +65,11 @@ class CasesNotifier extends AsyncNotifier<List<LegalCase>> {
     String? description,
     String? migriReferenceNumber,
   }) async {
+    // Convert CaseType enum to snake_case string matching DB schema
+    final typeStr = _caseTypeToDbString(type);
     final result = await _supabase.createCase({
       'title': title,
-      'type': type.name,
+      'type': typeStr,
       if (description != null) 'description': description,
       if (migriReferenceNumber != null)
         'migri_reference_number': migriReferenceNumber,

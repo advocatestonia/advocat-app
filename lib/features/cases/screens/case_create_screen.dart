@@ -1,11 +1,53 @@
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/case_model.dart';
+import '../../../services/supabase_service.dart';
 import '../providers/cases_provider.dart';
+
+// ---------------------------------------------------------------------------
+// Picked file holder — stores file bytes + metadata for upload
+// ---------------------------------------------------------------------------
+
+class _PickedFile {
+  final String name;
+  final Uint8List bytes;
+  final String mimeType;
+
+  const _PickedFile({
+    required this.name,
+    required this.bytes,
+    required this.mimeType,
+  });
+}
+
+/// Guess MIME type from file extension.
+String _guessMimeType(String fileName) {
+  final ext = fileName.split('.').last.toLowerCase();
+  switch (ext) {
+    case 'pdf':
+      return 'application/pdf';
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'png':
+      return 'image/png';
+    case 'heic':
+      return 'image/heic';
+    case 'webp':
+      return 'image/webp';
+    default:
+      return 'application/octet-stream';
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Case Create Screen — Step-by-step wizard
@@ -27,6 +69,9 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
   final _referenceController = TextEditingController();
   String? _selectedCountry;
   bool _isLoading = false;
+
+  /// Files the user picked / photographed in Step 3.
+  final List<_PickedFile> _pickedFiles = [];
 
   late final AnimationController _fadeController;
   late final Animation<double> _fadeAnimation;
@@ -93,12 +138,88 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
     }
   }
 
+  // ── File picking helpers ─────────────────────────────────────────────
+
+  Future<void> _pickFiles() async {
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png', 'heic', 'webp'],
+        allowMultiple: true,
+        withData: true,
+      );
+      if (result == null || result.files.isEmpty) return;
+
+      for (final file in result.files) {
+        final bytes = file.bytes;
+        if (bytes == null || bytes.isEmpty) continue;
+        final name = file.name;
+        setState(() {
+          _pickedFiles.add(_PickedFile(
+            name: name,
+            bytes: bytes,
+            mimeType: _guessMimeType(name),
+          ));
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to pick file: $e'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _takePhoto() async {
+    try {
+      final picker = ImagePicker();
+      final photo = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 85,
+        maxWidth: 2048,
+      );
+      if (photo == null) return;
+
+      final bytes = await photo.readAsBytes();
+      final name = photo.name.isNotEmpty
+          ? photo.name
+          : 'photo_${DateTime.now().millisecondsSinceEpoch}.jpg';
+      setState(() {
+        _pickedFiles.add(_PickedFile(
+          name: name,
+          bytes: bytes,
+          mimeType: _guessMimeType(name),
+        ));
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to take photo: $e'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  void _removeFile(int index) {
+    setState(() => _pickedFiles.removeAt(index));
+  }
+
+  // ── Create case + upload documents ──────────────────────────────────
+
   Future<void> _createCase() async {
     if (_selectedType == null || _titleController.text.trim().isEmpty) return;
 
     setState(() => _isLoading = true);
 
     try {
+      // 1. Create the case in Supabase (or locally in demo mode)
       final controller = ref.read(caseControllerProvider.notifier);
       final newCase = await controller.createCase(
         title: _titleController.text.trim(),
@@ -110,12 +231,58 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
             ? null
             : _referenceController.text.trim(),
       );
-      if (mounted) context.go('/cases/${newCase.id}');
-    } catch (_) {
+
+      // 2. Upload attached documents (if any) linked to the new case ID
+      int uploadFailures = 0;
+      if (_pickedFiles.isNotEmpty) {
+        final supabase = ref.read(supabaseServiceProvider);
+        for (final file in _pickedFiles) {
+          try {
+            await supabase.uploadDocument(
+              caseId: newCase.id,
+              fileName: file.name,
+              fileBytes: file.bytes,
+              mimeType: file.mimeType,
+            );
+          } catch (_) {
+            uploadFailures++;
+          }
+        }
+      }
+
+      // 3. Show warning if some documents failed to upload
+      if (mounted && uploadFailures > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '$uploadFailures document(s) failed to upload. You can add them later.',
+            ),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.orange.shade700,
+          ),
+        );
+      }
+
+      // 4. Navigate to the new case detail screen
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)?.failedToCreateCaseRetry ?? 'Failed to create case. Please try again.'),
+            content: const Text('Case created successfully!'),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.green.shade700,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        context.go('/cases/${newCase.id}');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.failedToCreateCaseRetry ??
+                  'Failed to create case. Please try again.',
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -187,7 +354,12 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
           onChanged: () => setState(() {}),
         );
       case 2:
-        return const _Step3Document();
+        return _Step3Document(
+          pickedFiles: _pickedFiles,
+          onPickFiles: _pickFiles,
+          onTakePhoto: _takePhoto,
+          onRemoveFile: _removeFile,
+        );
       default:
         return const SizedBox.shrink();
     }
@@ -542,7 +714,7 @@ class _Step2Details extends StatelessWidget {
 
           // Country / jurisdiction
           DropdownButtonFormField<String>(
-            initialValue: selectedCountry,
+            value: selectedCountry,
             decoration: InputDecoration(
               labelText: l?.countryJurisdiction ?? 'Country / Jurisdiction',
               hintText: l?.selectCountryHint ?? 'Select a country',
@@ -587,7 +759,17 @@ class _Step2Details extends StatelessWidget {
 // ---------------------------------------------------------------------------
 
 class _Step3Document extends StatelessWidget {
-  const _Step3Document();
+  const _Step3Document({
+    required this.pickedFiles,
+    required this.onPickFiles,
+    required this.onTakePhoto,
+    required this.onRemoveFile,
+  });
+
+  final List<_PickedFile> pickedFiles;
+  final VoidCallback onPickFiles;
+  final VoidCallback onTakePhoto;
+  final ValueChanged<int> onRemoveFile;
 
   @override
   Widget build(BuildContext context) {
@@ -615,14 +797,75 @@ class _Step3Document extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.xl),
 
-          // Upload area
+          // ── List of already-picked files ──────────────────────────
+          if (pickedFiles.isNotEmpty) ...[
+            ...List.generate(pickedFiles.length, (index) {
+              final file = pickedFiles[index];
+              final sizeKB = (file.bytes.length / 1024).toStringAsFixed(1);
+              final isImage = file.mimeType.startsWith('image/');
+              return Container(
+                margin: const EdgeInsets.only(bottom: 8),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12, vertical: 10),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.sm),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      isImage
+                          ? Icons.image_outlined
+                          : Icons.description_outlined,
+                      size: 24,
+                      color: AppColors.accent,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            file.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          Text(
+                            '$sizeKB KB',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: AppColors.textTertiary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, size: 20),
+                      color: AppColors.textTertiary,
+                      onPressed: () => onRemoveFile(index),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+              );
+            }),
+            const SizedBox(height: AppSpacing.sm),
+          ],
+
+          // ── Upload area ──────────────────────────────────────────
           GestureDetector(
-            onTap: () {
-              // TODO: Open file picker
-            },
+            onTap: onPickFiles,
             child: Container(
               width: double.infinity,
-              height: 200,
+              height: pickedFiles.isEmpty ? 200 : 120,
               decoration: BoxDecoration(
                 color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(AppRadius.md),
@@ -641,46 +884,51 @@ class _Step3Document extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.cloud_upload_outlined,
-                    size: 48,
+                  Icon(
+                    pickedFiles.isEmpty
+                        ? Icons.cloud_upload_outlined
+                        : Icons.add_circle_outline,
+                    size: pickedFiles.isEmpty ? 48 : 32,
                     color: AppColors.textTertiary,
                   ),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.sm),
                   Text(
-                    l?.tapToUploadFile ?? 'Tap to upload a file',
-                    style: const TextStyle(
-                      fontSize: 16,
+                    pickedFiles.isEmpty
+                        ? (l?.tapToUploadFile ?? 'Tap to upload a file')
+                        : 'Add more files',
+                    style: TextStyle(
+                      fontSize: pickedFiles.isEmpty ? 16 : 14,
                       fontWeight: FontWeight.w600,
                       color: AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Text(
-                    l?.fileSizeLimit ?? 'PDF, JPG, PNG up to 25 MB',
-                    style: const TextStyle(
-                      fontSize: 13,
-                      color: AppColors.textTertiary,
+                  if (pickedFiles.isEmpty) ...[
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      l?.fileSizeLimit ?? 'PDF, JPG, PNG up to 25 MB',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: AppColors.textTertiary,
+                      ),
                     ),
-                  ),
+                  ],
                 ],
               ),
             ),
           ),
           const SizedBox(height: AppSpacing.md),
 
-          // Camera option
-          OutlinedButton.icon(
-            onPressed: () {
-              // TODO: Open camera for document scan
-            },
-            icon: const Icon(Icons.camera_alt_outlined),
-            label: Text(l?.takePhotoInstead ?? 'Take a Photo Instead'),
-            style: OutlinedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 48),
+          // Camera option — hide on web where camera is unavailable
+          if (!kIsWeb)
+            OutlinedButton.icon(
+              onPressed: onTakePhoto,
+              icon: const Icon(Icons.camera_alt_outlined),
+              label: Text(l?.takePhotoInstead ?? 'Take a Photo Instead'),
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 48),
+              ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.xl),
+          if (!kIsWeb) const SizedBox(height: AppSpacing.xl),
 
           // Skip hint
           Center(
