@@ -659,14 +659,18 @@ class _ScaleOnTapButtonState extends State<_ScaleOnTapButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTapDown: widget.onTap != null ? (_) => setState(() => _isPressed = true) : null,
-      onTapUp: widget.onTap != null ? (_) => setState(() => _isPressed = false) : null,
+      onTapUp: widget.onTap != null ? (_) {
+        setState(() => _isPressed = false);
+        widget.onTap?.call();
+      } : null,
       onTapCancel: widget.onTap != null ? () => setState(() => _isPressed = false) : null,
       child: AnimatedScale(
         scale: _isPressed ? 0.97 : 1.0,
         duration: const Duration(milliseconds: 100),
         curve: Curves.easeInOut,
-        child: widget.child,
+        child: IgnorePointer(child: widget.child),
       ),
     );
   }
