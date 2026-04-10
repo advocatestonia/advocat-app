@@ -209,9 +209,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           );
           setState(() {});
 
-          // Reset silence timer — auto-send after 2s of silence.
+          // Reset silence timer — auto-send after 3s of silence.
           _voiceSilenceTimer?.cancel();
-          _voiceSilenceTimer = Timer(const Duration(seconds: 2), () {
+          _voiceSilenceTimer = Timer(const Duration(seconds: 3), () {
             if (_voiceState == VoiceButtonState.listening &&
                 _messageController.text.trim().isNotEmpty) {
               _stopVoiceInput(autoSend: true);
