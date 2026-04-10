@@ -582,10 +582,7 @@ class _QuickActions extends StatelessWidget {
                 color: AppColors.info,
                 onTap: () => context.push(AppRoutes.email),
               ),
-              _QuickActionButton(
-                icon: Icons.shield_rounded,
-                label: 'Advocat Pro',
-                color: const Color(0xFFDAA520),
+              _AdvocatProQuickActionButton(
                 onTap: () => context.push(AppRoutes.subscription),
               ),
               _QuickActionButton(
@@ -716,6 +713,121 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
               height: 1.2,
             ),
           ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AdvocatProQuickActionButton extends StatefulWidget {
+  const _AdvocatProQuickActionButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  State<_AdvocatProQuickActionButton> createState() =>
+      _AdvocatProQuickActionButtonState();
+}
+
+class _AdvocatProQuickActionButtonState
+    extends State<_AdvocatProQuickActionButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              width: 72,
+              height: 72,
+              child: AnimatedBuilder(
+                animation: _scaleAnimation,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.accent.withValues(alpha: 0.15),
+                            const Color(0xFF4DA3A0).withValues(alpha: 0.25),
+                          ],
+                        ),
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.accent.withValues(alpha: 0.20),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(
+                            Icons.shield_rounded,
+                            color: AppColors.accent,
+                            size: 34,
+                          ),
+                          Positioned(
+                            top: 10,
+                            right: 10,
+                            child: Icon(
+                              Icons.star_rounded,
+                              color: const Color(0xFF4DA3A0),
+                              size: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Advocat Pro',
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: AppColors.accent,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                height: 1.2,
+              ),
+            ),
           ],
         ),
       ),
@@ -953,8 +1065,35 @@ class _TutorialStep extends StatelessWidget {
 // Premium Upgrade Card
 // ---------------------------------------------------------------------------
 
-class _PremiumUpgradeCard extends StatelessWidget {
+class _PremiumUpgradeCard extends StatefulWidget {
   const _PremiumUpgradeCard();
+
+  @override
+  State<_PremiumUpgradeCard> createState() => _PremiumUpgradeCardState();
+}
+
+class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _glowController;
+  late final Animation<double> _glowAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _glowController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2200),
+    )..repeat(reverse: true);
+    _glowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _glowController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -965,87 +1104,92 @@ class _PremiumUpgradeCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () => context.push(AppRoutes.subscription),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xFFF7E8B0), // light gold
-                Color(0xFFEAC54F), // rich gold
-                Color(0xFFDAA520), // goldenrod
-              ],
-            ),
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            border: Border.all(
-              color: const Color(0xFFDAA520),
-              width: 0.5,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFFDAA520).withValues(alpha: 0.30),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-              BoxShadow(
-                color: const Color(0xFFEAC54F).withValues(alpha: 0.15),
-                blurRadius: 20,
-                spreadRadius: 2,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              // Crown icon
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF6B4E00).withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Icon(
-                  Icons.star_rounded,
-                  color: Color(0xFFB8860B),
-                  size: 24,
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Text
-              const Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Advocat Pro',
-                      style: TextStyle(
-                        color: Color(0xFF6B4E00),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -0.3,
-                      ),
-                    ),
-                    Text(
-                      'Unlimited AI consultations',
-                      style: TextStyle(
-                        color: Color(0xFF8B6914),
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+        child: AnimatedBuilder(
+          animation: _glowAnimation,
+          builder: (context, child) {
+            return Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFFE0F2F1), // light teal
+                    Color(0xFF4DA3A0), // accent teal
+                    Color(0xFF2D7A77), // dark teal
                   ],
                 ),
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                border: Border.all(
+                  color: const Color(0xFF4DA3A0),
+                  width: 0.5,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF4DA3A0).withValues(alpha: 0.20 + _glowAnimation.value * 0.25),
+                    blurRadius: 12 + _glowAnimation.value * 10,
+                    offset: const Offset(0, 4),
+                  ),
+                  BoxShadow(
+                    color: const Color(0xFF4DA3A0).withValues(alpha: 0.10 + _glowAnimation.value * 0.15),
+                    blurRadius: 20 + _glowAnimation.value * 8,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
-              // Arrow
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
-                color: Color(0xFFB8860B),
-                size: 16,
+              child: Row(
+                children: [
+                  // Star icon
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.18),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.star_rounded,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // Text
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Advocat Pro',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                        Text(
+                          'Unlimited AI consultations',
+                          style: TextStyle(
+                            color: Color(0xFFE0F2F1),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Arrow
+                  const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Colors.white,
+                    size: 16,
+                  ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );
