@@ -2327,4 +2327,26 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'دستیار صوتی فعلاً فقط روی دسکتاپ کار می‌کند (مرورگر Chrome). پشتیبانی موبایل به زودی.';
+
+  @override
+  String get recommended => 'پیشنهادی';
+
+  @override
+  String get pleaseLogIn => 'لطفاً وارد شوید';
+
+  @override
+  String get subscriptionNotFound => 'اشتراک یافت نشد';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'خطا: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'در حال انتقال به صفحه پرداخت...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/ماه ارزان‌تر با اشتراک سالانه';
+  }
 }

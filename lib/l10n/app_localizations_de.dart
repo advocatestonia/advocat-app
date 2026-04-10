@@ -2359,4 +2359,26 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Der Sprachassistent funktioniert derzeit nur auf dem Desktop (Chrome-Browser). Mobile Unterstützung kommt bald.';
+
+  @override
+  String get recommended => 'Empfohlen';
+
+  @override
+  String get pleaseLogIn => 'Bitte melden Sie sich an';
+
+  @override
+  String get subscriptionNotFound => 'Abonnement nicht gefunden';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Fehler: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Weiterleitung zur Zahlungsseite...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/Monat günstiger im Jahresabo';
+  }
 }

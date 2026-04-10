@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "Entdecken Sie die App und schützen Sie Ihre Rechte. Alle Daten bleiben privat auf Ihrem Gerät.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Premium-Funktionen freischalten",
-    "voiceDisclaimer": "Der Sprachassistent funktioniert derzeit nur auf dem Desktop (Chrome-Browser). Mobile Unterstützung kommt bald."
+    "voiceDisclaimer": "Der Sprachassistent funktioniert derzeit nur auf dem Desktop (Chrome-Browser). Mobile Unterstützung kommt bald.",
+    "recommended": "Empfohlen",
+    "pleaseLogIn": "Bitte melden Sie sich an",
+    "subscriptionNotFound": "Abonnement nicht gefunden",
+    "errorWithMessage": "Fehler: {message}",
+    "redirectingToPayment": "Weiterleitung zur Zahlungsseite...",
+    "cheaperAnnually": "\u20AC{amount}/Monat günstiger im Jahresabo"
 }

@@ -2337,4 +2337,26 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Голосовой помощник работает пока только на компьютере (браузер Chrome). Поддержка мобильных скоро.';
+
+  @override
+  String get recommended => 'Рекомендуем';
+
+  @override
+  String get pleaseLogIn => 'Пожалуйста, войдите в систему';
+
+  @override
+  String get subscriptionNotFound => 'Подписка не найдена';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Ошибка: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Перенаправление на страницу оплаты...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/мес. дешевле при годовой подписке';
+  }
 }

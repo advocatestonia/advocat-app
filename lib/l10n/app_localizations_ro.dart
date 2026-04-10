@@ -2345,4 +2345,26 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Asistentul vocal funcționează momentan doar pe desktop (browser Chrome). Suport mobil în curând.';
+
+  @override
+  String get recommended => 'Recomandat';
+
+  @override
+  String get pleaseLogIn => 'Vă rugăm să vă autentificați';
+
+  @override
+  String get subscriptionNotFound => 'Abonamentul nu a fost găsit';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Eroare: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Redirecționare către pagina de plată...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/lună mai ieftin cu abonamentul anual';
+  }
 }

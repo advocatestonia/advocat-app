@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "Izpetiet lietotni un aizsargajiet savas tiesibas. Visi dati paliek privati jusu ierice.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Atbloķējiet premium funkcijas",
-    "voiceDisclaimer": "Balss asistents pašlaik darbojas tikai datorā (Chrome pārlūkprogramma). Mobilais atbalsts drīzumā."
+    "voiceDisclaimer": "Balss asistents pa\u0161laik darbojas tikai dator\u0101 (Chrome p\u0101rl\u016bkprogramma). Mobilais atbalsts dr\u012bzum\u0101.",
+    "recommended": "Ieteicams",
+    "pleaseLogIn": "L\u016bdzu, piesakieties",
+    "subscriptionNotFound": "Abonements nav atrasts",
+    "errorWithMessage": "K\u013c\u016bda: {message}",
+    "redirectingToPayment": "P\u0101rvirzī\u0161ana uz maks\u0101jumu lapu...",
+    "cheaperAnnually": "\u20AC{amount}/m\u0113n. l\u0113t\u0101k ar gada abonementu"
 }

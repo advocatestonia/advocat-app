@@ -2339,4 +2339,26 @@ class AppLocalizationsLv extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Balss asistents pašlaik darbojas tikai datorā (Chrome pārlūkprogramma). Mobilais atbalsts drīzumā.';
+
+  @override
+  String get recommended => 'Ieteicams';
+
+  @override
+  String get pleaseLogIn => 'Lūdzu, piesakieties';
+
+  @override
+  String get subscriptionNotFound => 'Abonements nav atrasts';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Kļūda: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Pārvirzīšana uz maksājumu lapu...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/mēn. lētāk ar gada abonementu';
+  }
 }

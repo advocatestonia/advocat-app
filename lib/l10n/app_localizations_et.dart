@@ -2327,4 +2327,26 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Häälassistent töötab praegu ainult arvutis (Chrome\'i brauser). Mobiilitugi tuleb peagi.';
+
+  @override
+  String get recommended => 'Soovitatud';
+
+  @override
+  String get pleaseLogIn => 'Palun logige sisse';
+
+  @override
+  String get subscriptionNotFound => 'Tellimust ei leitud';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Viga: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Suunatakse makseleheküljele...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/kuus soodsam aastamaksega';
+  }
 }

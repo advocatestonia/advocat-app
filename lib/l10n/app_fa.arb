@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "برنامه را کاوش کنید و از حقوق خود محافظت کنید. همه داده‌ها خصوصی در دستگاه شما باقی می‌مانند.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "ویژگی‌های ویژه را باز کنید",
-    "voiceDisclaimer": "دستیار صوتی فعلاً فقط روی دسکتاپ کار می‌کند (مرورگر Chrome). پشتیبانی موبایل به زودی."
+    "voiceDisclaimer": "دستیار صوتی فعلاً فقط روی دسکتاپ کار می‌کند (مرورگر Chrome). پشتیبانی موبایل به زودی.",
+    "recommended": "پیشنهادی",
+    "pleaseLogIn": "لطفاً وارد شوید",
+    "subscriptionNotFound": "اشتراک یافت نشد",
+    "errorWithMessage": "خطا: {message}",
+    "redirectingToPayment": "در حال انتقال به صفحه پرداخت...",
+    "cheaperAnnually": "\u20AC{amount}/ماه ارزان‌تر با اشتراک سالانه"
 }

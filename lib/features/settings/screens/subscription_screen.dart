@@ -160,8 +160,9 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                     final session = Supabase.instance.client.auth.currentSession;
                     if (session == null) {
                       if (context.mounted) {
+                        final l10n = AppLocalizations.of(context)!;
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Palun logige sisse')),
+                          SnackBar(content: Text(l10n.pleaseLogIn)),
                         );
                       }
                       return;
@@ -196,7 +197,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(data?['error']?.toString() ?? 'Tellimust ei leitud'),
+                            content: Text(data?['error']?.toString() ?? AppLocalizations.of(context)!.subscriptionNotFound),
                           ),
                         );
                       }
@@ -204,7 +205,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                   } catch (e) {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Viga: $e')),
+                        SnackBar(content: Text(AppLocalizations.of(context)!.errorWithMessage(e.toString()))),
                       );
                     }
                   }
@@ -352,9 +353,10 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       );
 
       if (context.mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Redirecting to payment page...'),
+          SnackBar(
+            content: Text(l10n.redirectingToPayment),
             backgroundColor: AppColors.accent,
           ),
         );
@@ -696,12 +698,12 @@ class _PlanCardState extends State<_PlanCard>
     return widget.isAnnual ? l10n.perYear : l10n.perMonth;
   }
 
-  String? _annualSavingsText() {
+  String? _annualSavingsText(AppLocalizations l10n) {
     if (widget.monthlyPrice == 0 || widget.isAnnual) return null;
     final annualMonthly = widget.annualPrice / 12;
     final saved = widget.monthlyPrice - annualMonthly;
     if (saved <= 0) return null;
-    return '\u20AC${saved.toStringAsFixed(2)}/mo cheaper annually';
+    return l10n.cheaperAnnually(saved.toStringAsFixed(2));
   }
 
   // Background per card style
@@ -782,25 +784,25 @@ class _PlanCardState extends State<_PlanCard>
           if (widget.isRecommended)
             Container(
               padding: const EdgeInsets.symmetric(vertical: 6),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
                   colors: [AppColors.accent, AppColors.accentLight],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                 ),
                 borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg - 1),
+                  top: Radius.circular(AppRadius.lg - 2.5),
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.star_rounded, size: 14, color: Colors.white),
-                  SizedBox(width: 4),
+                  const Icon(Icons.star_rounded, size: 14, color: Colors.white),
+                  const SizedBox(width: 4),
                   Text(
-                    'Soovitatav / Recommended',
+                    l10n.recommended,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
@@ -821,7 +823,7 @@ class _PlanCardState extends State<_PlanCard>
                     ? Colors.white.withValues(alpha: 0.15)
                     : AppColors.accent,
                 borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg - 1),
+                  top: Radius.circular(AppRadius.lg - 2),
                 ),
               ),
               child: Text(
@@ -926,10 +928,10 @@ class _PlanCardState extends State<_PlanCard>
                   ),
 
                   // Annual savings hint
-                  if (_annualSavingsText() != null) ...[
+                  if (_annualSavingsText(l10n) != null) ...[
                     const SizedBox(height: 2),
                     Text(
-                      _annualSavingsText()!,
+                      _annualSavingsText(l10n)!,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 11,

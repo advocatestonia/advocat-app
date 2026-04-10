@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "Esplora l'app e proteggi i tuoi diritti. Tutti i dati rimangono privati sul tuo dispositivo.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Sblocca le funzionalità premium",
-    "voiceDisclaimer": "L'assistente vocale funziona attualmente solo su desktop (browser Chrome). Supporto mobile in arrivo."
+    "voiceDisclaimer": "L'assistente vocale funziona attualmente solo su desktop (browser Chrome). Supporto mobile in arrivo.",
+    "recommended": "Consigliato",
+    "pleaseLogIn": "Effettua l'accesso",
+    "subscriptionNotFound": "Abbonamento non trovato",
+    "errorWithMessage": "Errore: {message}",
+    "redirectingToPayment": "Reindirizzamento alla pagina di pagamento...",
+    "cheaperAnnually": "\u20AC{amount}/mese in meno con l'abbonamento annuale"
 }

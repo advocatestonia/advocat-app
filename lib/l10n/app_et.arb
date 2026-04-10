@@ -879,5 +879,11 @@
     "tutorialStep4Desc": "Avastage rakendust ja kaitske oma õigusi. Kõik andmed jäävad privaatselt teie seadmesse.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Avage täiustatud funktsioonid",
-    "voiceDisclaimer": "Häälassistent töötab praegu ainult arvutis (Chrome'i brauser). Mobiilitugi tuleb peagi."
+    "voiceDisclaimer": "Häälassistent töötab praegu ainult arvutis (Chrome'i brauser). Mobiilitugi tuleb peagi.",
+    "recommended": "Soovitatud",
+    "pleaseLogIn": "Palun logige sisse",
+    "subscriptionNotFound": "Tellimust ei leitud",
+    "errorWithMessage": "Viga: {message}",
+    "redirectingToPayment": "Suunatakse makseleheküljele...",
+    "cheaperAnnually": "\u20AC{amount}/kuus soodsam aastamaksega"
 }

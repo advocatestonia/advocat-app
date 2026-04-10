@@ -2329,4 +2329,26 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Ääniavustaja toimii tällä hetkellä vain tietokoneella (Chrome-selain). Mobiilatuki tulossa pian.';
+
+  @override
+  String get recommended => 'Suositeltava';
+
+  @override
+  String get pleaseLogIn => 'Kirjaudu sisään';
+
+  @override
+  String get subscriptionNotFound => 'Tilausta ei löytynyt';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Virhe: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Siirrytään maksusivulle...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/kk edullisempi vuositilauksella';
+  }
 }

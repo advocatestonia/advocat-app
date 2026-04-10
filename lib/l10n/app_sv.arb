@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "Utforska appen och skydda dina rättigheter. All data förblir privat på din enhet.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Lås upp premiumfunktioner",
-    "voiceDisclaimer": "Röstassistenten fungerar för närvarande bara på dator (Chrome-webbläsare). Mobilstöd kommer snart."
+    "voiceDisclaimer": "R\u00f6stassistenten fungerar f\u00f6r n\u00e4rvarande bara p\u00e5 dator (Chrome-webbl\u00e4sare). Mobilst\u00f6d kommer snart.",
+    "recommended": "Rekommenderas",
+    "pleaseLogIn": "V\u00e4nligen logga in",
+    "subscriptionNotFound": "Prenumeration hittades inte",
+    "errorWithMessage": "Fel: {message}",
+    "redirectingToPayment": "Omdirigerar till betalningssidan...",
+    "cheaperAnnually": "\u20AC{amount}/m\u00e5n billigare med \u00e5rsprenumeration"
 }

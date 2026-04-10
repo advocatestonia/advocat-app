@@ -2340,4 +2340,26 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Asystent głosowy działa obecnie tylko na komputerze (przeglądarka Chrome). Wsparcie mobilne wkrótce.';
+
+  @override
+  String get recommended => 'Polecany';
+
+  @override
+  String get pleaseLogIn => 'Proszę się zalogować';
+
+  @override
+  String get subscriptionNotFound => 'Nie znaleziono subskrypcji';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Błąd: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Przekierowanie na stronę płatności...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/mies. taniej w subskrypcji rocznej';
+  }
 }

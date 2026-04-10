@@ -2340,4 +2340,26 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Balso asistentas šiuo metu veikia tik kompiuteryje (Chrome naršyklė). Mobilusis palaikymas netrukus.';
+
+  @override
+  String get recommended => 'Rekomenduojama';
+
+  @override
+  String get pleaseLogIn => 'Prašome prisijungti';
+
+  @override
+  String get subscriptionNotFound => 'Prenumerata nerasta';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Klaida: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Nukreipiama į mokėjimo puslapį...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/mėn. pigiau su metine prenumerata';
+  }
 }

@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "Explorati aplicatia si protejati-va drepturile. Toate datele raman private pe dispozitivul dvs.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Deblocați funcțiile premium",
-    "voiceDisclaimer": "Asistentul vocal funcționează momentan doar pe desktop (browser Chrome). Suport mobil în curând."
+    "voiceDisclaimer": "Asistentul vocal func\u021bioneaz\u0103 momentan doar pe desktop (browser Chrome). Suport mobil \u00een cur\u00e2nd.",
+    "recommended": "Recomandat",
+    "pleaseLogIn": "V\u0103 rug\u0103m s\u0103 v\u0103 autentifica\u021bi",
+    "subscriptionNotFound": "Abonamentul nu a fost g\u0103sit",
+    "errorWithMessage": "Eroare: {message}",
+    "redirectingToPayment": "Redirec\u021bionare c\u0103tre pagina de plat\u0103...",
+    "cheaperAnnually": "\u20AC{amount}/lun\u0103 mai ieftin cu abonamentul anual"
 }

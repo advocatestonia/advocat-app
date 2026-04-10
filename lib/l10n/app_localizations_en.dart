@@ -2322,4 +2322,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Voice assistant currently works only on desktop (Chrome browser). Mobile support coming soon.';
+
+  @override
+  String get recommended => 'Recommended';
+
+  @override
+  String get pleaseLogIn => 'Please log in';
+
+  @override
+  String get subscriptionNotFound => 'Subscription not found';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Redirecting to payment page...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/mo cheaper annually';
+  }
 }

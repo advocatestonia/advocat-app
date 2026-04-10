@@ -829,5 +829,11 @@
     "tutorialStep4Desc": "Tutustu sovellukseen ja suojaa oikeutesi. Kaikki tiedot pysyvät yksityisinä laitteellasi.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Avaa premium-ominaisuudet",
-    "voiceDisclaimer": "Ääniavustaja toimii tällä hetkellä vain tietokoneella (Chrome-selain). Mobiilatuki tulossa pian."
+    "voiceDisclaimer": "Ääniavustaja toimii tällä hetkellä vain tietokoneella (Chrome-selain). Mobiilatuki tulossa pian.",
+    "recommended": "Suositeltava",
+    "pleaseLogIn": "Kirjaudu sisään",
+    "subscriptionNotFound": "Tilausta ei löytynyt",
+    "errorWithMessage": "Virhe: {message}",
+    "redirectingToPayment": "Siirrytään maksusivulle...",
+    "cheaperAnnually": "\u20AC{amount}/kk edullisempi vuositilauksella"
 }

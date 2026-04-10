@@ -4309,6 +4309,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Voice assistant currently works only on desktop (Chrome browser). Mobile support coming soon.'**
   String get voiceDisclaimer;
+
+  /// No description provided for @recommended.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended'**
+  String get recommended;
+
+  /// No description provided for @pleaseLogIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Please log in'**
+  String get pleaseLogIn;
+
+  /// No description provided for @subscriptionNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription not found'**
+  String get subscriptionNotFound;
+
+  /// No description provided for @errorWithMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error: {message}'**
+  String errorWithMessage(String message);
+
+  /// No description provided for @redirectingToPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Redirecting to payment page...'**
+  String get redirectingToPayment;
+
+  /// No description provided for @cheaperAnnually.
+  ///
+  /// In en, this message translates to:
+  /// **'€{amount}/mo cheaper annually'**
+  String cheaperAnnually(String amount);
 }
 
 class _AppLocalizationsDelegate

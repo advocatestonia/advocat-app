@@ -2327,4 +2327,26 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Sesli asistan şu anda yalnızca masaüstünde çalışmaktadır (Chrome tarayıcı). Mobil destek yakında.';
+
+  @override
+  String get recommended => 'Önerilen';
+
+  @override
+  String get pleaseLogIn => 'Lütfen giriş yapın';
+
+  @override
+  String get subscriptionNotFound => 'Abonelik bulunamadı';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Hata: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Ödeme sayfasına yönlendiriliyor...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/ay daha ucuz yıllık abonelikle';
+  }
 }

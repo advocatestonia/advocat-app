@@ -2312,4 +2312,26 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'المساعد الصوتي يعمل حاليًا فقط على الكمبيوتر (متصفح Chrome). دعم الهاتف قريبًا.';
+
+  @override
+  String get recommended => 'موصى به';
+
+  @override
+  String get pleaseLogIn => 'يرجى تسجيل الدخول';
+
+  @override
+  String get subscriptionNotFound => 'لم يتم العثور على الاشتراك';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'خطأ: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'جارٍ التوجيه إلى صفحة الدفع...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/شهر أرخص بالاشتراك السنوي';
+  }
 }

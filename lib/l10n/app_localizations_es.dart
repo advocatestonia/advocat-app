@@ -2352,4 +2352,26 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'El asistente de voz actualmente solo funciona en escritorio (navegador Chrome). Soporte móvil próximamente.';
+
+  @override
+  String get recommended => 'Recomendado';
+
+  @override
+  String get pleaseLogIn => 'Por favor, inicie sesión';
+
+  @override
+  String get subscriptionNotFound => 'Suscripción no encontrada';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Error: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Redirigiendo a la página de pago...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/mes más barato anualmente';
+  }
 }

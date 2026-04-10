@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "Odkryj aplikacje i chron swoje prawa. Wszystkie dane pozostaja prywatne na Twoim urzadzeniu.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Odblokuj funkcje premium",
-    "voiceDisclaimer": "Asystent głosowy działa obecnie tylko na komputerze (przeglądarka Chrome). Wsparcie mobilne wkrótce."
+    "voiceDisclaimer": "Asystent g\u0142osowy dzia\u0142a obecnie tylko na komputerze (przegl\u0105darka Chrome). Wsparcie mobilne wkr\u00f3tce.",
+    "recommended": "Polecany",
+    "pleaseLogIn": "Prosz\u0119 si\u0119 zalogowa\u0107",
+    "subscriptionNotFound": "Nie znaleziono subskrypcji",
+    "errorWithMessage": "B\u0142\u0105d: {message}",
+    "redirectingToPayment": "Przekierowanie na stron\u0119 p\u0142atno\u015bci...",
+    "cheaperAnnually": "\u20AC{amount}/mies. taniej w subskrypcji rocznej"
 }

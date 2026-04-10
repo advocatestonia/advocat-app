@@ -2327,4 +2327,26 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Röstassistenten fungerar för närvarande bara på dator (Chrome-webbläsare). Mobilstöd kommer snart.';
+
+  @override
+  String get recommended => 'Rekommenderas';
+
+  @override
+  String get pleaseLogIn => 'Vänligen logga in';
+
+  @override
+  String get subscriptionNotFound => 'Prenumeration hittades inte';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Fel: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Omdirigerar till betalningssidan...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/mån billigare med årsprenumeration';
+  }
 }

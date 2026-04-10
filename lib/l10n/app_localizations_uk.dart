@@ -2330,4 +2330,26 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get voiceDisclaimer =>
       'Голосовий помічник наразі працює лише на комп\'ютері (браузер Chrome). Мобільна підтримка незабаром.';
+
+  @override
+  String get recommended => 'Рекомендовано';
+
+  @override
+  String get pleaseLogIn => 'Будь ласка, увійдіть';
+
+  @override
+  String get subscriptionNotFound => 'Підписку не знайдено';
+
+  @override
+  String errorWithMessage(String message) {
+    return 'Помилка: $message';
+  }
+
+  @override
+  String get redirectingToPayment => 'Перенаправлення на сторінку оплати...';
+
+  @override
+  String cheaperAnnually(String amount) {
+    return '€$amount/міс. дешевше з річною підпискою';
+  }
 }

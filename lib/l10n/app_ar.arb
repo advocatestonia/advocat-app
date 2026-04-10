@@ -788,5 +788,11 @@
     "tutorialStep4Desc": "استكشف التطبيق واحمِ حقوقك. جميع البيانات تبقى خاصة على جهازك.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "افتح الميزات المتقدمة",
-    "voiceDisclaimer": "المساعد الصوتي يعمل حاليًا فقط على الكمبيوتر (متصفح Chrome). دعم الهاتف قريبًا."
+    "voiceDisclaimer": "المساعد الصوتي يعمل حاليًا فقط على الكمبيوتر (متصفح Chrome). دعم الهاتف قريبًا.",
+    "recommended": "موصى به",
+    "pleaseLogIn": "يرجى تسجيل الدخول",
+    "subscriptionNotFound": "لم يتم العثور على الاشتراك",
+    "errorWithMessage": "خطأ: {message}",
+    "redirectingToPayment": "جارٍ التوجيه إلى صفحة الدفع...",
+    "cheaperAnnually": "\u20AC{amount}/شهر أرخص بالاشتراك السنوي"
 }
