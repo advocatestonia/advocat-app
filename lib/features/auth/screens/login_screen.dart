@@ -182,8 +182,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       BuildContext context, AppLocalizations l, AuthState authState) {
     final screenHeight = MediaQuery.of(context).size.height;
     final isCompact = screenHeight < 750;
-    final logoSize = isCompact ? 72.0 : 100.0;
-    final glowSize = isCompact ? 100.0 : 140.0;
+    final logoSize = isCompact ? 110.0 : 150.0;
+    final glowSize = isCompact ? 150.0 : 200.0;
 
     return Form(
       key: _formKey,
