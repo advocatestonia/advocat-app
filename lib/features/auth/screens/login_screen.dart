@@ -182,8 +182,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       BuildContext context, AppLocalizations l, AuthState authState) {
     final screenHeight = MediaQuery.of(context).size.height;
     final isCompact = screenHeight < 750;
-    final logoSize = isCompact ? 200.0 : 280.0;
-    final glowSize = isCompact ? 260.0 : 340.0;
+    final logoSize = isCompact ? 160.0 : 240.0;
+    final glowSize = isCompact ? 200.0 : 280.0;
 
     return Form(
       key: _formKey,
@@ -272,7 +272,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               },
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: 6),
 
           // -- Password field with focus animation --
           AnimatedContainer(
@@ -348,21 +348,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             child: _ScaleOnTapButton(
               onTap: authState.isLoading ? null : _handleLogin,
               child: Container(
-                height: 50,
+                height: 44,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppRadius.md),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.35),
-                      blurRadius: 16,
-                      spreadRadius: 0,
-                      offset: const Offset(0, 4),
-                    ),
-                    BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.15),
-                      blurRadius: 6,
-                      spreadRadius: 0,
-                      offset: const Offset(0, 1),
+                      color: AppColors.accent.withValues(alpha: 0.25),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
                     ),
                   ],
                 ),
@@ -376,7 +369,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
-                    minimumSize: const Size.fromHeight(50),
+                    minimumSize: const Size.fromHeight(44),
                     textStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -396,7 +389,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
 
           // -- Divider with "or" --
           Row(
@@ -416,13 +409,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               const Expanded(child: Divider(color: AppColors.border)),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
 
           // -- Google sign-in --
           _ScaleOnTapButton(
             onTap: authState.isLoading ? null : _handleGoogleLogin,
             child: Container(
-              height: 48,
+              height: 44,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(AppRadius.md),
@@ -444,7 +437,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  minimumSize: const Size.fromHeight(48),
+                  minimumSize: const Size.fromHeight(44),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -464,7 +457,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
 
           // -- Apple sign-in --
           _ScaleOnTapButton(
@@ -472,7 +465,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               _showSnackBar('Apple Sign-In — tuleb peagi');
             },
             child: Container(
-              height: 48,
+              height: 44,
               decoration: BoxDecoration(
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(AppRadius.md),
@@ -495,7 +488,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  minimumSize: const Size.fromHeight(48),
+                  minimumSize: const Size.fromHeight(44),
                 ),
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -515,7 +508,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 6),
 
           // -- Demo Mode button with press animation --
           Semantics(
@@ -530,7 +523,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                           .enterDemoMode();
                     },
               child: SizedBox(
-                height: 48,
+                height: 44,
                 child: ElevatedButton.icon(
                   onPressed: authState.isLoading
                       ? null
@@ -547,7 +540,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
-                    minimumSize: const Size.fromHeight(48),
+                    minimumSize: const Size.fromHeight(44),
                     textStyle: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
@@ -557,7 +550,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 4),
 
           // -- Sign up link --
           Row(
@@ -594,7 +587,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: 4),
         ],
       ),
     );
