@@ -192,35 +192,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(height: isCompact ? AppSpacing.sm : AppSpacing.lg),
+          SizedBox(height: isCompact ? 4.0 : 8.0),
 
-          // -- Logo with premium glow --
+          // -- Logo --
           Center(
-            child: Container(
-              width: glowSize,
-              height: glowSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.accent.withValues(alpha: 0.12),
-                    AppColors.accent.withValues(alpha: 0.04),
-                    Colors.transparent,
-                  ],
-                  stops: const [0.3, 0.6, 1.0],
-                ),
-              ),
-              child: Center(
-                child: Image.asset(
-                  'assets/images/logo_shield.png',
-                  width: logoSize,
-                  height: logoSize,
-                  fit: BoxFit.contain,
-                ),
-              ),
+            child: Image.asset(
+              'assets/images/logo_shield.png',
+              width: logoSize,
+              height: logoSize,
+              fit: BoxFit.contain,
+              filterQuality: FilterQuality.high,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
 
           // -- Title with shadow effect --
           Text(
@@ -239,7 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.xs),
+          const SizedBox(height: 2),
           Text(
             l.signInSubtitle,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -247,7 +231,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: AppSpacing.lg),
+          const SizedBox(height: 8),
 
           // -- Email field with focus animation --
           AnimatedContainer(
