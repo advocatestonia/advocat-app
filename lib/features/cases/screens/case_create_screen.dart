@@ -521,7 +521,7 @@ class _Step1CaseType extends StatelessWidget {
 
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.lg,
+        horizontal: AppSpacing.md,
         vertical: AppSpacing.md,
       ),
       child: Column(
@@ -547,10 +547,10 @@ class _Step1CaseType extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 2.6,
+              crossAxisCount: 3,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 1.0,
             ),
             itemCount: _categories.length,
             itemBuilder: (context, index) {
@@ -593,44 +593,42 @@ class _CaseTypeCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected
-              ? color.withValues(alpha: 0.10)
-              : AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
+          color: isSelected ? color.withValues(alpha: 0.12) : AppColors.surface,
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected ? color : AppColors.border,
-            width: isSelected ? 2 : 1,
+            color: isSelected ? color : AppColors.border.withValues(alpha: 0.5),
+            width: isSelected ? 2 : 0.5,
           ),
+          boxShadow: isSelected ? [
+            BoxShadow(color: color.withValues(alpha: 0.15), blurRadius: 8, offset: const Offset(0, 2)),
+          ] : [],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 34,
-              height: 34,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
-                color: color.withValues(alpha: isSelected ? 0.18 : 0.08),
-                borderRadius: BorderRadius.circular(8),
+                color: color.withValues(alpha: isSelected ? 0.15 : 0.08),
+                shape: BoxShape.circle,
               ),
-              child: Icon(
-                icon,
-                size: 18,
-                color: isSelected ? color : color.withValues(alpha: 0.7),
-              ),
+              child: Icon(icon, size: 20, color: color),
             ),
-            const SizedBox(width: 8),
-            Expanded(
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Text(
                 label,
+                textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 12.5,
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                   color: isSelected ? color : AppColors.textPrimary,
-                  height: 1.15,
+                  fontSize: 11,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                  height: 1.2,
                 ),
               ),
             ),
