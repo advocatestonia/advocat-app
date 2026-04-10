@@ -98,7 +98,7 @@ serve(async (req: Request) => {
 
     // Build Stripe Checkout Session parameters
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "link"],
       mode: "subscription",
       currency: "eur",
       line_items: [
