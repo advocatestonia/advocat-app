@@ -1090,12 +1090,21 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
           animation: _glowAnimation,
           builder: (context, child) {
             return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(14),
-                image: const DecorationImage(
-                  image: AssetImage('assets/images/card_pro_bg.png'),
-                  fit: BoxFit.cover,
+                borderRadius: BorderRadius.circular(16),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF1A3C40),
+                    Color(0xFF2D6A6A),
+                    Color(0xFF1A3C40),
+                  ],
+                ),
+                border: Border.all(
+                  color: AppColors.accent.withValues(alpha: 0.25),
+                  width: 1,
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -1110,15 +1119,14 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                     offset: const Offset(0, 1),
                   ),
                 ],
-                border: Border.all(color: AppColors.accent.withValues(alpha: 0.2), width: 0.5),
               ),
               child: Row(
                 children: [
                   // Shield Pro icon
                   Image.asset(
                     'assets/images/shield_pro.png',
-                    width: 32,
-                    height: 32,
+                    width: 36,
+                    height: 36,
                     filterQuality: FilterQuality.high,
                   ),
                   const SizedBox(width: 12),
@@ -1126,39 +1134,33 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
                         Text(
                           'Advocat Pro',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 17,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700,
-                            letterSpacing: -0.3,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                offset: Offset(0, 1),
-                              ),
-                            ],
+                            letterSpacing: 0.3,
                           ),
                         ),
+                        SizedBox(height: 2),
                         Text(
-                          'Unlimited AI consultations',
+                          'Avage täiustatud funktsioonid',
                           style: TextStyle(
-                            color: Color(0xFFB2DFDB),
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF8ECAC7),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  // Arrow
+                  // Chevron
                   const Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: Colors.white,
-                    size: 18,
+                    Icons.chevron_right_rounded,
+                    color: Color(0xFF8ECAC7),
+                    size: 24,
                   ),
                 ],
               ),
