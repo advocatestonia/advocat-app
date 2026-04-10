@@ -3,6 +3,10 @@
 
 var _advocatRecognition = null;
 var _advocatMicPermissionGranted = false;
+// Whether the user explicitly requested to stop (vs browser auto-stopping).
+var _advocatUserStopped = false;
+// Accumulated final transcript across all recognition results.
+var _advocatAccumulatedTranscript = '';
 
 /**
  * Detect if running on a mobile browser.
@@ -67,30 +71,57 @@ function advocatStartSpeech(lang) {
     var recognition = new SpeechRecognition();
     recognition.lang = lang || 'en-US';
 
-    // On mobile, use simpler settings for reliability.
-    var isMobile = _advocatIsMobile();
-    recognition.interimResults = !isMobile;
-    recognition.continuous = false;
+    // CONTINUOUS MODE: keep listening until user explicitly stops.
+    recognition.continuous = true;
+    recognition.interimResults = true;
     recognition.maxAlternatives = 1;
 
     // Reset state.
+    _advocatUserStopped = false;
+    _advocatAccumulatedTranscript = '';
     window._advocatSpeechResult = '';
     window._advocatSpeechFinal = false;
     window._advocatSpeechError = '';
     window._advocatSpeechActive = true;
 
     recognition.onresult = function(event) {
-      var last = event.results[event.results.length - 1];
-      window._advocatSpeechResult = last[0].transcript;
-      window._advocatSpeechFinal = last.isFinal;
+      // Build full transcript from all results (final + interim).
+      var finalPart = '';
+      var interimPart = '';
+      for (var i = 0; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          finalPart += event.results[i][0].transcript;
+        } else {
+          interimPart += event.results[i][0].transcript;
+        }
+      }
+      // Expose accumulated final + current interim to Dart.
+      window._advocatSpeechResult = (finalPart + interimPart).trim();
+      window._advocatSpeechFinal = false; // Never signal final — user decides when to stop.
     };
 
     recognition.onend = function() {
+      // If user did NOT explicitly stop, auto-restart (browser sometimes
+      // stops recognition after silence or network hiccup).
+      if (!_advocatUserStopped && window._advocatSpeechActive) {
+        try {
+          recognition.start();
+          return;
+        } catch (e) {
+          // Could not restart — fall through to deactivate.
+          console.warn('advocatSpeech: auto-restart failed:', e.message);
+        }
+      }
       window._advocatSpeechActive = false;
     };
 
     recognition.onerror = function(event) {
       var err = event.error || 'unknown';
+      // "no-speech" and "aborted" are not fatal — keep listening.
+      if (err === 'no-speech' || err === 'aborted') {
+        // Browser fires these on silence timeout; onend will auto-restart.
+        return;
+      }
       // Provide better messages for mobile-specific errors.
       if (err === 'not-allowed') {
         window._advocatSpeechError = 'mic_permission_denied';
@@ -101,6 +132,7 @@ function advocatStartSpeech(lang) {
       } else {
         window._advocatSpeechError = err;
       }
+      _advocatUserStopped = true; // Prevent auto-restart on real errors.
       window._advocatSpeechActive = false;
     };
 
@@ -115,6 +147,7 @@ function advocatStartSpeech(lang) {
 }
 
 function advocatStopSpeech() {
+  _advocatUserStopped = true; // Prevent auto-restart in onend.
   if (_advocatRecognition) {
     try { _advocatRecognition.stop(); } catch(e) {}
     _advocatRecognition = null;

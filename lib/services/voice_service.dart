@@ -390,22 +390,29 @@ class VoiceService {
     }
 
     // Poll the JS global state every 150ms for results.
+    // In continuous mode, we keep polling until user explicitly stops
+    // (which sets _isListening = false via stopListening()).
     _webPollTimer?.cancel();
     _webPollTimer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
+      // If stopListening() was called, stop polling.
+      if (!_isListening) {
+        timer.cancel();
+        return;
+      }
+
       final result = web_speech.webSpeechGetResult();
-      final isFinal = web_speech.webSpeechIsFinal();
       final isActive = web_speech.webSpeechIsActive();
       final error = web_speech.webSpeechGetError();
 
       if (error.isNotEmpty && error != 'done') {
         if (kDebugMode) debugPrint('STT: native web error: $error');
         // "no-speech" is not a real error -- just means user was silent.
-        if (error != 'no-speech') {
+        if (error != 'no-speech' && error != 'aborted') {
           _partialController.addError('Speech error: $error');
+          _isListening = false;
+          timer.cancel();
+          return;
         }
-        _isListening = false;
-        timer.cancel();
-        return;
       }
 
       if (result.isNotEmpty) {
@@ -413,8 +420,8 @@ class VoiceService {
         _partialController.add(result);
       }
 
-      if (isFinal || !isActive) {
-        _isListening = false;
+      // Only stop if JS side has deactivated (real error or user stop).
+      if (!isActive && !_isListening) {
         timer.cancel();
       }
     });
