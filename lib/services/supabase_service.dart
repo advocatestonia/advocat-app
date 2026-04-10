@@ -181,7 +181,7 @@ class SupabaseService {
     if (uid == null) throw Exception('Not authenticated');
 
     final storagePath = '$uid/$caseId/$fileName';
-    await _client.storage.from('documents').uploadBinary(
+    await _client.storage.from('case-documents').uploadBinary(
           storagePath,
           fileBytes,
           fileOptions: FileOptions(contentType: mimeType),
@@ -209,7 +209,7 @@ class SupabaseService {
     // Use signed URLs with 5-minute expiry so legal documents are never
     // publicly accessible via a static URL.
     final signedUrl = await _client.storage
-        .from('documents')
+        .from('case-documents')
         .createSignedUrl(storagePath, 300);
     return signedUrl;
   }
@@ -339,7 +339,7 @@ class SupabaseService {
         .cast<String>()
         .toList();
     if (storagePaths.isNotEmpty) {
-      await _client.storage.from('documents').remove(storagePaths);
+      await _client.storage.from('case-documents').remove(storagePaths);
     }
     await _client.from('documents').delete().eq('user_id', uid);
     // 3. deadlines

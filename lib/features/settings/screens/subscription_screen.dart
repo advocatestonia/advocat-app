@@ -126,6 +126,28 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
               ),
             ),
 
+            // ── Voice disclaimer ────────────────────────────────────
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFE3F2FD),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, size: 18, color: Color(0xFF1976D2)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Häälassistent töötab praegu ainult arvutis (Chrome\'i brauser). Mobiilitugi tuleb peagi.',
+                      style: TextStyle(fontSize: 12, color: Color(0xFF1976D2)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             // ── Restore Purchases ────────────────────────────────────
             Padding(
               padding: const EdgeInsets.only(bottom: 16),

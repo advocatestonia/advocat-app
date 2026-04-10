@@ -11,6 +11,7 @@ import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
+import '../../../services/client_knowledge_service.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../../services/tool_executor.dart';
@@ -98,6 +99,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _disclaimerExpanded = true;
   _ChatPhase _chatPhase = _ChatPhase.newCase;
   int _issuesFound = 0;
+  final _knowledgeService = ClientKnowledgeService();
   bool _upgradeBannerDismissed = false;
   int _freeMessagesUsed = 0;
   int _freeMessagesTotal = 50;
@@ -114,6 +116,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _loadMessages();
     _initVoice();
     _loadFreeMessageCount();
+    _knowledgeService.buildClientContext(caseId: widget.caseId);
   }
 
   Future<void> _loadFreeMessageCount() async {
@@ -131,6 +134,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   void dispose() {
+    _voiceSilenceTimer?.cancel();
     _messageController.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
@@ -193,6 +197,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             TextPosition(offset: partial.length),
           );
           setState(() {});
+
+          // Reset silence timer — auto-send after 2s of silence.
+          _voiceSilenceTimer?.cancel();
+          _voiceSilenceTimer = Timer(const Duration(seconds: 2), () {
+            if (_voiceState == VoiceButtonState.listening &&
+                _messageController.text.trim().isNotEmpty) {
+              _stopVoiceInput(autoSend: true);
+            }
+          });
         }
       },
       onError: (Object error) {
@@ -218,27 +231,34 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
-  Future<void> _stopVoiceInput() async {
+  /// Timer that fires after user stops speaking — auto-sends the message.
+  Timer? _voiceSilenceTimer;
+
+  Future<void> _stopVoiceInput({bool autoSend = false}) async {
+    _voiceSilenceTimer?.cancel();
     _speechSub?.cancel();
     final voice = ref.read(voiceServiceProvider);
     final finalText = await voice.stopListening();
 
     if (!mounted) return;
 
-    // Put final text into the text field (user can edit before sending)
-    if (finalText.trim().isNotEmpty) {
-      _messageController.text = finalText;
-      _messageController.selection = TextSelection.fromPosition(
-        TextPosition(offset: finalText.length),
-      );
-    }
-
     setState(() {
       _voiceState = VoiceButtonState.idle;
     });
 
-    // Focus the text field so user can edit and send
-    _focusNode.requestFocus();
+    // Auto-send if text is not empty
+    if (finalText.trim().isNotEmpty) {
+      if (autoSend) {
+        _messageController.clear();
+        _sendMessage(finalText.trim());
+      } else {
+        _messageController.text = finalText;
+        _messageController.selection = TextSelection.fromPosition(
+          TextPosition(offset: finalText.length),
+        );
+        _focusNode.requestFocus();
+      }
+    }
   }
 
   Future<void> _speakResponse(String text) async {
@@ -404,13 +424,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           final userName = authState.appUser?.fullName;
 
           // Real AI is available — use it regardless of demo mode.
+          final ctx = await _knowledgeService.buildClientContext(caseId: widget.caseId);
           final response = await ai.sendChatMessage(
             caseId: widget.caseId,
             message: text,
             userLanguage: Localizations.localeOf(context).languageCode,
             userName: userName,
+            clientContext: ctx,
           );
           responseText = response.message;
+          _knowledgeService.notifyMessageSent();
           // Guard against empty responses (e.g. tool_use only).
           if (responseText.trim().isEmpty) {
             responseText = _getDemoResponse(text);

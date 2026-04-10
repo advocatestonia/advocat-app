@@ -434,7 +434,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           ),
           const SizedBox(height: AppSpacing.md),
 
-          // -- Google sign-in with press animation --
+          // -- Google sign-in --
           _ScaleOnTapButton(
             onTap: authState.isLoading ? null : _handleGoogleLogin,
             child: Container(
@@ -448,26 +448,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     blurRadius: 8,
                     offset: const Offset(0, 2),
                   ),
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 2,
-                    offset: const Offset(0, 1),
-                  ),
                 ],
               ),
-              child: OutlinedButton.icon(
+              child: OutlinedButton(
                 onPressed:
                     authState.isLoading ? null : _handleGoogleLogin,
-                icon: Image.network(
-                  'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                  width: 20,
-                  height: 20,
-                  errorBuilder: (_, __, ___) => const Icon(
-                    Icons.g_mobiledata_rounded,
-                    size: 24,
-                  ),
-                ),
-                label: Text(l.continueWithGoogle),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.textPrimary,
                   backgroundColor: Colors.white,
@@ -475,10 +460,77 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
-                  textStyle: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // Google "G" logo — painted inline, no network dependency
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CustomPaint(painter: _GoogleLogoPainter()),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      l.continueWithGoogle,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // -- Apple sign-in --
+          _ScaleOnTapButton(
+            onTap: authState.isLoading ? null : () {
+              _showSnackBar('Apple Sign-In tuleb peagi / Coming soon');
+            },
+            child: Container(
+              height: 48,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.15),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
+                ],
+              ),
+              child: OutlinedButton(
+                onPressed: authState.isLoading ? null : () {
+                  _showSnackBar('Apple Sign-In tuleb peagi / Coming soon');
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.black,
+                  side: BorderSide.none,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                  minimumSize: const Size.fromHeight(48),
+                ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.apple, size: 22, color: Colors.white),
+                    SizedBox(width: 10),
+                    Text(
+                      'Continue with Apple',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -567,6 +619,73 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       ),
     );
   }
+}
+
+/// Paints the official Google "G" multicolor logo.
+class _GoogleLogoPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double s = size.width;
+    final center = Offset(s / 2, s / 2);
+    final radius = s / 2;
+    final strokeWidth = s * 0.22;
+
+    // Blue arc (top-right, going clockwise from ~225° to ~330°)
+    final bluePaint = Paint()
+      ..color = const Color(0xFF4285F4)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.butt;
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
+      -0.9, 2.2, false, bluePaint,
+    );
+
+    // Green arc (bottom-right)
+    final greenPaint = Paint()
+      ..color = const Color(0xFF34A853)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.butt;
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
+      1.3, 1.0, false, greenPaint,
+    );
+
+    // Yellow arc (bottom-left)
+    final yellowPaint = Paint()
+      ..color = const Color(0xFFFBBC05)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.butt;
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
+      2.3, 0.9, false, yellowPaint,
+    );
+
+    // Red arc (top-left)
+    final redPaint = Paint()
+      ..color = const Color(0xFFEA4335)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.butt;
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius - strokeWidth / 2),
+      3.2, 1.0, false, redPaint,
+    );
+
+    // Blue horizontal bar (the "crossbar" of the G)
+    final barPaint = Paint()
+      ..color = const Color(0xFF4285F4)
+      ..style = PaintingStyle.fill;
+    canvas.drawRect(
+      Rect.fromLTWH(s * 0.5, s * 0.4, s * 0.4, strokeWidth * 0.8),
+      barPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 /// A widget that applies a subtle scale-down animation on press.

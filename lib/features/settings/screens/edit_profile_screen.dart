@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../../config/theme.dart';
@@ -192,16 +194,54 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _saving = true);
-    await Future.delayed(const Duration(milliseconds: 600));
-    if (mounted) {
-      setState(() {
-        _saving = false;
-        _showSuccess = true;
-      });
-      _successController.forward();
-      await Future.delayed(const Duration(milliseconds: 1200));
+
+    try {
+      final client = Supabase.instance.client;
+      final userId = client.auth.currentUser?.id;
+      if (userId == null) throw Exception('Not authenticated');
+
+      String? avatarUrl;
+
+      // Upload photo if picked
+      if (_pickedImage != null) {
+        final bytes = await _pickedImage!.readAsBytes();
+        final filename = 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        await client.storage.from('case-documents').uploadBinary(
+              'avatars/$userId/$filename',
+              Uint8List.fromList(bytes),
+              fileOptions: const FileOptions(contentType: 'image/jpeg', upsert: true),
+            );
+        avatarUrl = client.storage
+            .from('case-documents')
+            .getPublicUrl('avatars/$userId/$filename');
+      }
+
+      // Update profile
+      final updates = <String, dynamic>{
+        'full_name': _nameController.text.trim(),
+        'phone': _phoneController.text.trim(),
+      };
+      if (avatarUrl != null) updates['avatar_url'] = avatarUrl;
+
+      await client.from('users').update(updates).eq('id', userId);
+
       if (mounted) {
-        Navigator.pop(context);
+        setState(() {
+          _saving = false;
+          _showSuccess = true;
+        });
+        _successController.forward();
+        await Future.delayed(const Duration(milliseconds: 1200));
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _saving = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Save failed: $e')),
+        );
       }
     }
   }

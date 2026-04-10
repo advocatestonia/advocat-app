@@ -460,6 +460,7 @@ class AIService {
     String? caseDescription,
     String? userLanguage,
     String? userName,
+    String? clientContext,
   }) async {
     // Sanitize user input before any AI processing
     final sanitizedMessage = _sanitizeInput(message);
@@ -522,6 +523,11 @@ class AIService {
             query: sanitizedMessage,
             useReducedContext: model == ClaudeService.modelHaiku,
           );
+        }
+
+        // Prepend client knowledge base if available
+        if (clientContext != null && clientContext.isNotEmpty) {
+          systemPrompt = '# CLIENT PERSONAL KNOWLEDGE BASE\n\n$clientContext\n\n$systemPrompt';
         }
 
         // Personalize: tell the AI the user's name so it can greet them

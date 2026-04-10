@@ -475,7 +475,7 @@ class VoiceService {
     // Browser TTS fallback — only for languages with reliable browser voices.
     // Estonian, Latvian, Lithuanian etc don't have good browser voices —
     // Chrome substitutes Finnish which sounds terrible.
-    const browserTtsReliable = {'en', 'ru', 'de', 'fr', 'es', 'it', 'pl', 'tr'};
+    const browserTtsReliable = {'en', 'ru', 'de', 'fr', 'es', 'it', 'pl', 'tr', 'et', 'fi', 'sv'};
     if (!browserTtsReliable.contains(langCode)) {
       if (kDebugMode) {
         debugPrint('TTS: skipping browser TTS for $langCode (no reliable voice)');
