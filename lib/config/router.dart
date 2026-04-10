@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auth/providers/auth_provider.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/register_screen.dart';
 import '../features/onboarding/screens/onboarding_screen.dart';
@@ -60,10 +61,19 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.login,
     debugLogDiagnostics: true,
-    // NOTE: Auth redirect disabled for demo. Enable when Supabase is configured.
-    // redirect: (context, state) { ... },
+    redirect: (context, state) {
+      final isAuth = ref.read(isAuthenticatedProvider);
+      final isAuthRoute = state.matchedLocation == AppRoutes.login ||
+          state.matchedLocation == AppRoutes.register ||
+          state.matchedLocation == AppRoutes.onboarding;
+      // Not logged in → go to login (unless already there)
+      if (!isAuth && !isAuthRoute) return AppRoutes.login;
+      // Logged in but on auth page → go to home
+      if (isAuth && isAuthRoute) return AppRoutes.home;
+      return null;
+    },
     routes: [
       // ── Auth routes (no shell) ──────────────────────────────────────
       GoRoute(
