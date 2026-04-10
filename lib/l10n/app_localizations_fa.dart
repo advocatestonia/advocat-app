@@ -2314,4 +2314,10 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'برنامه را کاوش کنید و از حقوق خود محافظت کنید. همه داده‌ها خصوصی در دستگاه شما باقی می‌مانند.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'ویژگی‌های ویژه را باز کنید';
 }

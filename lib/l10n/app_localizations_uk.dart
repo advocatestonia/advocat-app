@@ -2317,4 +2317,10 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Досліджуйте додаток та захищайте свої права. Усі дані залишаються на вашому пристрої.';
+
+  @override
+  String get advocatProTitle => 'Підписка Pro';
+
+  @override
+  String get advocatProSubtitle => 'Відкрийте всі можливості';
 }

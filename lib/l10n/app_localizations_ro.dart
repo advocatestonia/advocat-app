@@ -2332,4 +2332,10 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Explorati aplicatia si protejati-va drepturile. Toate datele raman private pe dispozitivul dvs.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'Deblocați funcțiile premium';
 }

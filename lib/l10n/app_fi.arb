@@ -825,5 +825,7 @@
     "tutorialStep3Title": "Skannaa asiakirjoja",
     "tutorialStep3Desc": "Ota kuvia oikeudellisista asiakirjoista tekoälyanalyysiä ja turvallista säilytystä varten.",
     "tutorialStep4Title": "Aloitetaan!",
-    "tutorialStep4Desc": "Tutustu sovellukseen ja suojaa oikeutesi. Kaikki tiedot pysyvät yksityisinä laitteellasi."
+    "tutorialStep4Desc": "Tutustu sovellukseen ja suojaa oikeutesi. Kaikki tiedot pysyvät yksityisinä laitteellasi.",
+    "advocatProTitle": "Advocat Pro",
+    "advocatProSubtitle": "Avaa premium-ominaisuudet"
 }

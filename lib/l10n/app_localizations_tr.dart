@@ -2314,4 +2314,10 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Uygulamayi kesfedin ve haklarinizi koruyun. Tum veriler cihazinizda ozel kalir.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'Premium özellikleri açın';
 }

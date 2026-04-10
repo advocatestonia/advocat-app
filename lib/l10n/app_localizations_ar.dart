@@ -2299,4 +2299,10 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'استكشف التطبيق واحمِ حقوقك. جميع البيانات تبقى خاصة على جهازك.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'افتح الميزات المتقدمة';
 }

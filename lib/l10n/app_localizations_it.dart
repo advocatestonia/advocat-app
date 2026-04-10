@@ -2339,4 +2339,10 @@ class AppLocalizationsIt extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Esplora l\'app e proteggi i tuoi diritti. Tutti i dati rimangono privati sul tuo dispositivo.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'Sblocca le funzionalità premium';
 }

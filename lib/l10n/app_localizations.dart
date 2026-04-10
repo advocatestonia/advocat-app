@@ -4285,6 +4285,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Explore the app and protect your rights. All data stays private on your device.'**
   String get tutorialStep4Desc;
+
+  /// No description provided for @advocatProTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat Pro'**
+  String get advocatProTitle;
+
+  /// No description provided for @advocatProSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock premium features'**
+  String get advocatProSubtitle;
 }
 
 class _AppLocalizationsDelegate

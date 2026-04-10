@@ -2324,4 +2324,10 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Исследуйте приложение и защищайте свои права. Все данные остаются на вашем устройстве.';
+
+  @override
+  String get advocatProTitle => 'Подписка Pro';
+
+  @override
+  String get advocatProSubtitle => 'Откройте все возможности';
 }

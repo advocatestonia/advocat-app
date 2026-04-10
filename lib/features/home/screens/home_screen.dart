@@ -799,7 +799,7 @@ class _AdvocatProQuickActionButtonState
             ),
             const SizedBox(height: 6),
             Text(
-              'Advocat Pro',
+              AppLocalizations.of(context)?.advocatProTitle ?? 'Advocat Pro',
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -1134,20 +1134,20 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
-                          'Advocat Pro',
-                          style: TextStyle(
+                          AppLocalizations.of(context)?.advocatProTitle ?? 'Advocat Pro',
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                             letterSpacing: 0.3,
                           ),
                         ),
-                        SizedBox(height: 2),
+                        const SizedBox(height: 2),
                         Text(
-                          'Avage täiustatud funktsioonid',
-                          style: TextStyle(
+                          AppLocalizations.of(context)?.advocatProSubtitle ?? 'Unlock premium features',
+                          style: const TextStyle(
                             color: Color(0xFF8ECAC7),
                             fontSize: 12,
                             fontWeight: FontWeight.w400,

@@ -2327,4 +2327,10 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Isstyrinkite programele ir apsaugokite savo teises. Visi duomenys lieka privatūs jusu irengynyje.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'Atrakinkite premium funkcijas';
 }

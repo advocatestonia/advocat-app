@@ -2314,4 +2314,10 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Avastage rakendust ja kaitske oma õigusi. Kõik andmed jäävad privaatselt teie seadmesse.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'Avage täiustatud funktsioonid';
 }

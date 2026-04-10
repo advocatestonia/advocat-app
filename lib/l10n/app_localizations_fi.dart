@@ -2316,4 +2316,10 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get tutorialStep4Desc =>
       'Tutustu sovellukseen ja suojaa oikeutesi. Kaikki tiedot pysyvät yksityisinä laitteellasi.';
+
+  @override
+  String get advocatProTitle => 'Advocat Pro';
+
+  @override
+  String get advocatProSubtitle => 'Avaa premium-ominaisuudet';
 }
