@@ -27,29 +27,53 @@ class ClientKnowledgeService {
     }
     if (uid == null) return '';
     final buf = StringBuffer();
+    // Fetch profile and cases in parallel for faster loading
+    Map<String, dynamic>? profile;
+    List<dynamic> cases = [];
     try {
-      final profile = await _client.from('profiles').select().eq('id', uid).maybeSingle();
-      if (profile != null) {
-        buf.writeln('=== CLIENT PROFILE ===');
-        buf.writeln('Name: ${profile['full_name'] ?? 'Unknown'}');
-        buf.writeln('Email: ${profile['email'] ?? ''}');
-        if (profile['phone'] != null) buf.writeln('Phone: ${profile['phone']}');
-        buf.writeln('Language: ${profile['preferred_language'] ?? 'et'}');
-        buf.writeln();
-      }
+      final futures = await Future.wait([
+        _client.from('profiles').select().eq('id', uid).maybeSingle(),
+        _client.from('cases').select().eq('user_id', uid).order('created_at', ascending: false),
+      ]);
+      profile = futures[0] as Map<String, dynamic>?;
+      cases = (futures[1] as List?) ?? [];
     } catch (_) {}
-    try {
-      final cases = await _client.from('cases').select().eq('user_id', uid).order('created_at', ascending: false);
-      if ((cases as List).isNotEmpty) {
-        buf.writeln('=== CLIENT CASES (${cases.length}) ===');
-        for (final c in cases) {
-          buf.write(c['id'] == caseId ? '>>> CURRENT: ' : '- ');
-          buf.writeln('${c['title']} (${c['type']}, ${c['status']})');
-          if (c['description'] != null) buf.writeln('  ${c['description']}');
+
+    // Client identity — prominent at the top
+    final clientName = profile?['full_name'] ?? 'Unknown';
+    final clientLang = profile?['preferred_language'] ?? 'et';
+    buf.writeln('=== CLIENT: $clientName ===');
+    buf.writeln('Preferred language: $clientLang');
+    if (profile?['email'] != null) buf.writeln('Email: ${profile!['email']}');
+    if (profile?['phone'] != null) buf.writeln('Phone: ${profile!['phone']}');
+    buf.writeln('Total cases: ${cases.length}');
+    buf.writeln();
+
+    // All cases summary — so the AI knows the full picture
+    if (cases.isNotEmpty) {
+      buf.writeln('=== ALL CASES SUMMARY ===');
+      for (var i = 0; i < cases.length; i++) {
+        final c = cases[i];
+        final marker = c['id'] == caseId ? ' [CURRENT]' : '';
+        buf.writeln('${i + 1}. ${c['title']} — ${c['type']}, ${c['status']}$marker');
+      }
+      buf.writeln();
+
+      // Current case details
+      final currentCase = cases.where((c) => c['id'] == caseId).toList();
+      if (currentCase.isNotEmpty) {
+        final c = currentCase.first;
+        buf.writeln('=== CURRENT CASE: ${c['title']} ===');
+        buf.writeln('Type: ${c['type']}');
+        buf.writeln('Status: ${c['status']}');
+        if (c['description'] != null && (c['description'] as String).isNotEmpty) {
+          buf.writeln('Description: ${c['description']}');
         }
+        if (c['nationality'] != null) buf.writeln('Nationality: ${c['nationality']}');
+        if (c['country'] != null) buf.writeln('Country: ${c['country']}');
         buf.writeln();
       }
-    } catch (_) {}
+    }
     if (caseId != null) {
       try {
         final docs = await _client.from('documents').select().eq('case_id', caseId).order('created_at', ascending: false);

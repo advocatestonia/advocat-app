@@ -11,6 +11,7 @@ import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/case_model.dart';
+import '../../../models/deadline.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
 import '../../../services/client_knowledge_service.dart';
@@ -333,6 +334,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _updateChatPhase();
         }
 
+        // Check for urgent deadlines and notify the user
+        _checkUrgentDeadlines();
+
         _scrollToBottom(animated: false);
       }
     } catch (e) {
@@ -376,6 +380,49 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _chatPhase = _ChatPhase.newCase;
     });
     _scrollToBottom();
+  }
+
+  /// Check for deadlines within 3 days and show a system-level warning.
+  Future<void> _checkUrgentDeadlines() async {
+    try {
+      final supabase = ref.read(supabaseServiceProvider);
+      final deadlines = await supabase.getDeadlines(caseId: widget.caseId);
+      if (deadlines.isEmpty || !mounted) return;
+
+      final now = DateTime.now();
+      final urgentDeadlines = deadlines.where((d) {
+        final daysLeft = d.dueDate.difference(now).inDays;
+        // Show warning for deadlines within 3 days that are not completed/cancelled
+        return daysLeft >= 0 &&
+            daysLeft <= 3 &&
+            d.status != DeadlineStatus.completed &&
+            d.status != DeadlineStatus.cancelled;
+      }).toList();
+
+      if (urgentDeadlines.isEmpty) return;
+
+      for (final d in urgentDeadlines) {
+        final daysLeft = d.dueDate.difference(now).inDays;
+        final timeLabel = daysLeft == 0 ? 'TODAY' : 'in $daysLeft day${daysLeft == 1 ? '' : 's'}';
+        // Avoid duplicate deadline warnings in the same session
+        final warningId = 'deadline_warn_${d.id}';
+        if (_messages.any((m) => m.id == warningId)) continue;
+
+        final warning = ChatMessage(
+          id: warningId,
+          role: MessageRole.system,
+          content: '\u26a0\ufe0f Deadline $timeLabel: ${d.title}. '
+              'Want me to help prepare?',
+          timestamp: DateTime.now(),
+        );
+        if (mounted) {
+          setState(() => _messages.insert(0, warning));
+        }
+      }
+      if (mounted) _scrollToBottom();
+    } catch (_) {
+      // Non-critical — silently ignore errors
+    }
   }
 
   void _updateChatPhase() {

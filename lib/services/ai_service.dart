@@ -267,11 +267,12 @@ class AIService {
   final Map<String, List<Map<String, String>>> _conversationHistory = {};
 
   /// Maximum messages to keep in conversation history per case.
-  static const int _maxHistoryMessages = 20;
+  /// Increased from 20 to 50 so the AI retains more context across sessions.
+  static const int _maxHistoryMessages = 50;
 
   /// Number of recent messages to keep as full content.
   /// Older messages are summarized to a single line each.
-  static const int _fullContentMessages = 10;
+  static const int _fullContentMessages = 16;
 
   void _addToHistory(String caseId, String role, String content) {
     // Purge stale histories before adding new messages.
@@ -437,15 +438,16 @@ class AIService {
     if (messages.isEmpty) return;
     _conversationHistory.putIfAbsent(caseId, () => []);
     final existing = _conversationHistory[caseId]!;
-    // Only seed if history is empty (avoid duplicates on reload)
+    // Only seed if history is empty (avoid duplicates on reload).
+    // This also allows re-seeding after clearAllHistory (e.g. app resume).
     if (existing.isNotEmpty) return;
-    for (final msg in messages) {
-      existing.add(msg);
-    }
-    // Trim to max
-    if (existing.length > _maxHistoryMessages) {
-      _conversationHistory[caseId] =
-          existing.sublist(existing.length - _maxHistoryMessages);
+    // Seed ALL provided messages (up to max limit) so the AI remembers
+    // the full conversation from Supabase, not just the last 20.
+    final start = messages.length > _maxHistoryMessages
+        ? messages.length - _maxHistoryMessages
+        : 0;
+    for (var i = start; i < messages.length; i++) {
+      existing.add(messages[i]);
     }
     _caseLastActivity[caseId] = DateTime.now();
   }
