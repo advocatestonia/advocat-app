@@ -792,20 +792,13 @@ class _AdvocatProQuickActionButtonState
                           ),
                         ],
                       ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          const Icon(
-                            Icons.shield_rounded,
-                            color: Colors.white,
-                            size: 34,
-                          ),
-                          const Icon(
-                            Icons.star_rounded,
-                            color: Colors.white,
-                            size: 16,
-                          ),
-                        ],
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/shield_pro_gold.png',
+                          width: 48,
+                          height: 48,
+                          filterQuality: FilterQuality.high,
+                        ),
                       ),
                     ),
                   );
@@ -1137,7 +1130,7 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
               ),
               child: Row(
                 children: [
-                  // Star icon
+                  // Shield Pro icon
                   Container(
                     width: 44,
                     height: 44,
@@ -1145,10 +1138,14 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                       color: const Color(0xFF1A5C59).withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(
-                      Icons.star_rounded,
-                      color: Color(0xFFFFD700),
-                      size: 28,
+                    child: Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: Image.asset(
+                        'assets/images/shield_pro_green.png',
+                        width: 40,
+                        height: 40,
+                        filterQuality: FilterQuality.high,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -1176,7 +1173,7 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                         Text(
                           'Unlimited AI consultations',
                           style: TextStyle(
-                            color: Color(0xFFE0F2F1),
+                            color: Color(0xFFB2DFDB),
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                           ),
