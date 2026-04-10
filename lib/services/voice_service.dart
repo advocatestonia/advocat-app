@@ -411,7 +411,14 @@ class VoiceService {
         if (kDebugMode) debugPrint('STT: native web error: $error');
         // "no-speech" is not a real error -- just means user was silent.
         if (error != 'no-speech' && error != 'aborted') {
-          _partialController.addError('Speech error: $error');
+          String errorMessage;
+          if (error == 'no_recognition') {
+            errorMessage =
+                'Speech recognition could not detect audio. Please check your microphone and try again.';
+          } else {
+            errorMessage = 'Speech error: $error';
+          }
+          _partialController.addError(errorMessage);
           _isListening = false;
           timer.cancel();
           return;

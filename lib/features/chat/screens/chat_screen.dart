@@ -198,6 +198,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
 
     final stream = voice.startListening(langCode: langCode);
+
+    // Timeout: if no speech detected in 5 seconds, show hint
+    Future.delayed(const Duration(seconds: 5), () {
+      if (mounted &&
+          _voiceState == VoiceButtonState.listening &&
+          _messageController.text.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Rääkige mikrofoni. Veenduge, et mikrofon on lubatud.'),
+            duration: Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    });
+
     _speechSub?.cancel();
     _speechSub = stream.listen(
       (partial) {

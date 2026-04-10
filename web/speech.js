@@ -84,7 +84,11 @@ function advocatStartSpeech(lang) {
     window._advocatSpeechError = '';
     window._advocatSpeechActive = true;
 
+    var _advocatRestartCount = 0;
+
     recognition.onresult = function(event) {
+      // Reset restart counter on actual results.
+      _advocatRestartCount = 0;
       // Build full transcript from all results (final + interim).
       var finalPart = '';
       var interimPart = '';
@@ -104,6 +108,15 @@ function advocatStartSpeech(lang) {
       // If user did NOT explicitly stop, auto-restart (browser sometimes
       // stops recognition after silence or network hiccup).
       if (!_advocatUserStopped && window._advocatSpeechActive) {
+        _advocatRestartCount++;
+        if (_advocatRestartCount > 3 && window._advocatSpeechResult === '') {
+          // Restarted 3+ times with no recognition — language may not be
+          // supported or mic is not picking up audio.
+          console.warn('advocatSpeech: no recognition after', _advocatRestartCount, 'restarts, stopping');
+          window._advocatSpeechError = 'no_recognition';
+          window._advocatSpeechActive = false;
+          return;
+        }
         try {
           recognition.start();
           return;
