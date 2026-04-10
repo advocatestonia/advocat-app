@@ -56471,7 +56471,7 @@ q=s.cN(r,t.FB)
 s.FJ(r,new A.b33(p))
 r=p.at
 return A.fb(o,B.bL,A.Y(o,A.hx(!0,A.WE(A.Cg(new A.b34(p,n,q)),B.am,B.cf,r),B.ai,!0),B.f,o,o,B.vx,o,o,o,o,o,o,o),o,!1,o,!0)},
-auu(a3,a4,a5){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d=this,c=null,b=A.cb(a3,c,t.l).w.a.b<750,a=b?110:150,a0=b?150:200,a1=A.bZ(c,b?8:24,c),a2=A.b([B.h.E(0.12),B.h.E(0.04),B.B],t.O)
+auu(a3,a4,a5){var s,r,q,p,o,n,m,l,k,j,i,h,g,f,e,d=this,c=null,b=A.cb(a3,c,t.l).w.a.b<750,a=b?200:280,a0=b?260:340,a1=A.bZ(c,b?8:24,c),a2=A.b([B.h.E(0.12),B.h.E(0.04),B.B],t.O)
 a2=A.cl(A.Y(c,A.cl(A.bmV("assets/images/logo_shield.png",B.dF,B.vy,a,a),c,c),B.f,c,c,new A.S(c,c,c,c,c,new A.qQ(B.E,0.5,B.aK,c,0,a2,B.aBg,c),B.a7),c,a0,c,c,c,c,a0),c,c)
 s=a4.gr7()
 r=A.P(a3).ok.f
