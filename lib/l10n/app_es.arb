@@ -232,6 +232,7 @@
     "resetPasswordFailed": "No se pudo enviar el enlace. Inténtelo de nuevo.",
     "resetPasswordSent": "Enlace de restablecimiento enviado a su correo.",
     "residencePermit": "Permiso de residencia",
+    "manageSubscription": "Gestionar suscripción",
     "restorePurchases": "Restaurar compras",
     "retry": "Reintentar",
     "reviewWarning": "Revise cuidadosamente antes de enviar. Usted es responsable del contenido.",

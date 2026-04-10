@@ -232,6 +232,7 @@
     "resetPasswordFailed": "فشل إرسال رابط إعادة التعيين. يرجى المحاولة مرة أخرى.",
     "resetPasswordSent": "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني.",
     "residencePermit": "تصريح إقامة",
+    "manageSubscription": "إدارة الاشتراك",
     "restorePurchases": "استعادة المشتريات",
     "retry": "إعادة المحاولة",
     "reviewWarning": "تحذير: راجع المسودة بعناية قبل التقديم",

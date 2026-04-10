@@ -592,6 +592,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get residencePermit => 'Aufenthaltstitel';
 
   @override
+  String get manageSubscription => 'Abonnement verwalten';
+
+  @override
   String get restorePurchases => 'Käufe wiederherstellen';
 
   @override

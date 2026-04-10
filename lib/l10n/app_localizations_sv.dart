@@ -588,6 +588,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get residencePermit => 'Uppehållstillstånd';
 
   @override
+  String get manageSubscription => 'Hantera prenumeration';
+
+  @override
   String get restorePurchases => 'Återställ köp';
 
   @override

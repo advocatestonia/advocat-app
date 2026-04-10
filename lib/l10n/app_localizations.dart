@@ -1226,6 +1226,12 @@ abstract class AppLocalizations {
   /// **'Residence Permit'**
   String get residencePermit;
 
+  /// No description provided for @manageSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage subscription'**
+  String get manageSubscription;
+
   /// No description provided for @restorePurchases.
   ///
   /// In en, this message translates to:

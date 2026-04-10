@@ -587,6 +587,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get residencePermit => 'تصريح إقامة';
 
   @override
+  String get manageSubscription => 'إدارة الاشتراك';
+
+  @override
   String get restorePurchases => 'استعادة المشتريات';
 
   @override

@@ -587,6 +587,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get residencePermit => 'Leidimas gyventi';
 
   @override
+  String get manageSubscription => 'Tvarkyti prenumeratą';
+
+  @override
   String get restorePurchases => 'Atkurti pirkinius';
 
   @override

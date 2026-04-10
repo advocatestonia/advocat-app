@@ -588,6 +588,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get residencePermit => 'Вид на жительство';
 
   @override
+  String get manageSubscription => 'Управление подпиской';
+
+  @override
   String get restorePurchases => 'Восстановить покупки';
 
   @override

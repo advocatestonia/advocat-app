@@ -232,6 +232,7 @@
     "resetPasswordFailed": "Der Zurücksetzungslink konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
     "resetPasswordSent": "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet.",
     "residencePermit": "Aufenthaltstitel",
+    "manageSubscription": "Abonnement verwalten",
     "restorePurchases": "Käufe wiederherstellen",
     "retry": "Erneut versuchen",
     "reviewWarning": "Überprüfungshinweis",

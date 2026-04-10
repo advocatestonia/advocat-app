@@ -589,6 +589,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get residencePermit => 'Permis de séjour';
 
   @override
+  String get manageSubscription => 'Gérer l\'abonnement';
+
+  @override
   String get restorePurchases => 'Restaurer les achats';
 
   @override

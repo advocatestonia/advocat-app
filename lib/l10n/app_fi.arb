@@ -232,6 +232,7 @@
     "resetPasswordFailed": "Linkin lähettäminen epäonnistui. Yritä uudelleen.",
     "resetPasswordSent": "Salasanan nollauslinkki lähetetty sähköpostiisi.",
     "residencePermit": "Oleskelulupa",
+    "manageSubscription": "Hallitse tilausta",
     "restorePurchases": "Palauta ostokset",
     "retry": "Yritä uudelleen",
     "reviewWarning": "Tarkista ennen lähettämistä",

@@ -588,6 +588,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get residencePermit => 'Дозвіл на проживання';
 
   @override
+  String get manageSubscription => 'Керування підпискою';
+
+  @override
   String get restorePurchases => 'Відновити покупки';
 
   @override

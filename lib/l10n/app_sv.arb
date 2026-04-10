@@ -232,6 +232,7 @@
     "resetPasswordFailed": "Det gick inte att skicka återställningslänken. Försök igen.",
     "resetPasswordSent": "Länk för återställning av lösenord har skickats till din e-post.",
     "residencePermit": "Uppehållstillstånd",
+    "manageSubscription": "Hantera prenumeration",
     "restorePurchases": "Återställ köp",
     "retry": "Försök igen",
     "reviewWarning": "Granska varning",

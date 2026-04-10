@@ -585,6 +585,9 @@ class AppLocalizationsRo extends AppLocalizations {
   String get residencePermit => 'Permis de ședere';
 
   @override
+  String get manageSubscription => 'Gestionați abonamentul';
+
+  @override
   String get restorePurchases => 'Restaurați achizițiile';
 
   @override

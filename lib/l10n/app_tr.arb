@@ -232,6 +232,7 @@
     "resetPasswordFailed": "Bağlantı gönderilemedi. Lütfen tekrar deneyin.",
     "resetPasswordSent": "Şifre sıfırlama bağlantısı e-postanıza gönderildi.",
     "residencePermit": "Oturma İzni",
+    "manageSubscription": "Aboneliği yönet",
     "restorePurchases": "Satın Almaları Geri Yükle",
     "retry": "Tekrar Dene",
     "reviewWarning": "Göndermeden önce dikkatlice inceleyin. İçerikten siz sorumlusunuz.",

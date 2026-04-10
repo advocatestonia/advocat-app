@@ -588,6 +588,9 @@ class AppLocalizationsLv extends AppLocalizations {
   String get residencePermit => 'Uzturēšanās atļauja';
 
   @override
+  String get manageSubscription => 'Pārvaldīt abonementu';
+
+  @override
   String get restorePurchases => 'Atjaunot pirkumus';
 
   @override

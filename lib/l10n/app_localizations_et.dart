@@ -587,6 +587,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get residencePermit => 'Elamisluba';
 
   @override
+  String get manageSubscription => 'Halda tellimust';
+
+  @override
   String get restorePurchases => 'Taasta ostud';
 
   @override

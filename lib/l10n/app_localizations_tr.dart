@@ -587,6 +587,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get residencePermit => 'Oturma İzni';
 
   @override
+  String get manageSubscription => 'Aboneliği yönet';
+
+  @override
   String get restorePurchases => 'Satın Almaları Geri Yükle';
 
   @override

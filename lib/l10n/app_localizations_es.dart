@@ -589,6 +589,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get residencePermit => 'Permiso de residencia';
 
   @override
+  String get manageSubscription => 'Gestionar suscripción';
+
+  @override
   String get restorePurchases => 'Restaurar compras';
 
   @override

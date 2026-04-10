@@ -232,6 +232,7 @@
     "resetPasswordFailed": "Failed to send reset link. Please try again.",
     "resetPasswordSent": "Password reset link sent to your email.",
     "residencePermit": "Residence Permit",
+    "manageSubscription": "Manage subscription",
     "restorePurchases": "Restore Purchases",
     "retry": "Retry",
     "reviewWarning": "Review carefully before sending. You are responsible for the content.",

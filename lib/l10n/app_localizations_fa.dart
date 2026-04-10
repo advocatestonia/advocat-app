@@ -587,6 +587,9 @@ class AppLocalizationsFa extends AppLocalizations {
   String get residencePermit => 'اجازه اقامت';
 
   @override
+  String get manageSubscription => 'مدیریت اشتراک';
+
+  @override
   String get restorePurchases => 'بازیابی خریدها';
 
   @override

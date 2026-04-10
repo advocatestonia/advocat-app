@@ -232,6 +232,7 @@
     "resetPasswordFailed": "Échec de l’envoi du lien. Veuillez réessayer.",
     "resetPasswordSent": "Lien de réinitialisation envoyé à votre e-mail.",
     "residencePermit": "Permis de séjour",
+    "manageSubscription": "Gérer l'abonnement",
     "restorePurchases": "Restaurer les achats",
     "retry": "Réessayer",
     "reviewWarning": "Vérifiez attentivement avant d’envoyer. Vous êtes responsable du contenu.",

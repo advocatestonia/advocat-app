@@ -232,6 +232,7 @@
     "resetPasswordFailed": "ارسال لینک ناموفق بود. لطفاً دوباره تلاش کنید.",
     "resetPasswordSent": "لینک بازنشانی رمز عبور به ایمیل شما ارسال شد.",
     "residencePermit": "اجازه اقامت",
+    "manageSubscription": "مدیریت اشتراک",
     "restorePurchases": "بازیابی خریدها",
     "retry": "تلاش مجدد",
     "reviewWarning": "قبل از ارسال با دقت بررسی کنید. شما مسئول محتوا هستید.",

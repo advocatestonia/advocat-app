@@ -2,6 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -148,6 +150,46 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
               ),
             ),
 
+            // ── Manage Subscription (Stripe Customer Portal) ────────
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              child: OutlinedButton.icon(
+                onPressed: () async {
+                  try {
+                    final response =
+                        await Supabase.instance.client.functions.invoke(
+                      'customer-portal',
+                      method: HttpMethod.post,
+                    );
+                    final data = response.data as Map<String, dynamic>?;
+                    final url = data?['url'] as String?;
+                    if (url != null && url.isNotEmpty) {
+                      await launchUrl(Uri.parse(url),
+                          mode: LaunchMode.externalApplication);
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Viga: $e')),
+                      );
+                    }
+                  }
+                },
+                icon: const Icon(Icons.settings_outlined, size: 18),
+                label: Text(
+                  l10n.manageSubscription,
+                  style: const TextStyle(fontSize: 14),
+                ),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 44),
+                  side: BorderSide(color: AppColors.border),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                  ),
+                ),
+              ),
+            ),
+
             // ── Restore Purchases ────────────────────────────────────
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
@@ -268,9 +310,11 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
 
     try {
       final stripeService = ref.read(stripeCheckoutServiceProvider);
+      final userEmail = Supabase.instance.client.auth.currentUser?.email;
       await stripeService.startCheckout(
         uiPlanId: planId,
         isAnnual: isAnnual,
+        customerEmail: userEmail,
       );
 
       if (context.mounted) {

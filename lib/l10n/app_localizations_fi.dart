@@ -587,6 +587,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get residencePermit => 'Oleskelulupa';
 
   @override
+  String get manageSubscription => 'Hallitse tilausta';
+
+  @override
   String get restorePurchases => 'Palauta ostokset';
 
   @override
