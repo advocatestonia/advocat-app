@@ -845,9 +845,10 @@ class _PlanCardState extends State<_PlanCard>
           Expanded(
             child: Padding(
               padding: EdgeInsets.fromLTRB(
-                  16, _hasBadge ? 10 : 16, 16, 16),
+                  16, _hasBadge ? 8 : 14, 16, 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: [
                   // Tier label pill
                   Container(
@@ -894,7 +895,7 @@ class _PlanCardState extends State<_PlanCard>
                     ),
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
 
                   // ── Price ──────────────────────────────────
                   FadeTransition(
@@ -907,7 +908,7 @@ class _PlanCardState extends State<_PlanCard>
                           _priceText(l10n),
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            fontSize: 28,
+                            fontSize: 24,
                             fontWeight: FontWeight.w800,
                             color: _textPrimary,
                             height: 1.1,
@@ -928,7 +929,7 @@ class _PlanCardState extends State<_PlanCard>
 
                   // Annual savings hint (fixed height slot)
                   SizedBox(
-                    height: 16,
+                    height: 14,
                     child: _annualSavingsText(l10n) != null
                         ? Align(
                             alignment: Alignment.centerLeft,
@@ -947,7 +948,7 @@ class _PlanCardState extends State<_PlanCard>
                         : null,
                   ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 6),
 
                   Divider(
                     height: 1,
@@ -956,7 +957,7 @@ class _PlanCardState extends State<_PlanCard>
                         : AppColors.border,
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 6),
 
                   // ── Features list ──────────────────────────
                   ...List.generate(
@@ -964,7 +965,7 @@ class _PlanCardState extends State<_PlanCard>
                     (i) {
                       final f = widget.features[i];
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
+                        padding: const EdgeInsets.only(bottom: 3),
                         child: Row(
                           children: [
                             Icon(
@@ -1038,7 +1039,7 @@ class _PlanCardState extends State<_PlanCard>
       case _CardStyle.free:
         return SizedBox(
           width: double.infinity,
-          height: 44,
+          height: 40,
           child: OutlinedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: OutlinedButton.styleFrom(
@@ -1065,7 +1066,7 @@ class _PlanCardState extends State<_PlanCard>
       case _CardStyle.recommended:
         return SizedBox(
           width: double.infinity,
-          height: 44,
+          height: 40,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
@@ -1097,7 +1098,7 @@ class _PlanCardState extends State<_PlanCard>
       case _CardStyle.premium:
         return SizedBox(
           width: double.infinity,
-          height: 44,
+          height: 40,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
