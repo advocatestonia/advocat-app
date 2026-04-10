@@ -110,10 +110,20 @@ class AssistantTools {
   };
 
   /// Tools that require explicit user approval before the result is acted upon.
+  ///
+  /// All action-oriented tools require approval so the user can confirm
+  /// before the app performs any action on their behalf.
   static final Set<String> requiresApproval = {
-    'send_email',
+    'check_company',
+    'check_vehicle',
     'create_case',
+    'analyze_document',
     'generate_draft',
+    'find_lawyer',
+    'open_camera',
+    'draft_email',
+    'send_email',
+    'translate_text',
   };
 
   /// List of all registered tool names.
@@ -151,7 +161,7 @@ class AssistantTools {
           data: result.data,
           requiresApproval: true,
           approvalMessage:
-              result.approvalMessage ?? 'Please confirm this action.',
+              result.approvalMessage ?? _defaultApprovalMessage(toolName, params),
         );
       }
 
@@ -159,6 +169,33 @@ class AssistantTools {
     } catch (e, st) {
       _log.e('Tool execution failed: $toolName', error: e, stackTrace: st);
       return ToolResult.error('Tool "$toolName" failed: $e');
+    }
+  }
+
+  // ── Approval messages ──────────────────────────────────────────────────
+
+  /// Returns a human-readable approval message for tools that don't provide
+  /// their own. The message describes the action so the user can confirm.
+  String _defaultApprovalMessage(String toolName, Map<String, dynamic> params) {
+    switch (toolName) {
+      case 'check_company':
+        final name = params['company_name'] as String? ?? '';
+        return 'Check company "$name"?';
+      case 'check_vehicle':
+        final plate = params['plate_number'] as String? ?? '';
+        return 'Check vehicle "$plate"?';
+      case 'analyze_document':
+        return 'Analyze this document?';
+      case 'find_lawyer':
+        final country = params['country'] as String? ?? '';
+        return 'Search for legal aid contacts in $country?';
+      case 'open_camera':
+        return 'Open the camera to scan a document?';
+      case 'translate_text':
+        final lang = params['target_language'] as String? ?? '';
+        return 'Translate the text to $lang?';
+      default:
+        return 'Confirm this action?';
     }
   }
 
