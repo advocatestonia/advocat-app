@@ -18,6 +18,7 @@ import '../../../services/supabase_service.dart';
 import '../../../services/tool_executor.dart';
 import '../../../services/voice_service.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../services/chat_tool_bridge.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 
@@ -445,8 +446,70 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             country: 'estonia',
             nationality: _currentCase?.nationality,
           );
-          responseText = response.message;
           _knowledgeService.notifyMessageSent();
+
+          // ── Handle Claude tool_use responses ──────────────────────
+          if (response.hasToolUse && response.toolUseResponse != null && mounted) {
+            final bridge = ChatToolBridge(context: context, ref: ref);
+            final toolResults = await bridge.executeToolCalls(response.toolUseResponse!);
+
+            for (final tr in toolResults) {
+              // Show Claude's accompanying text if present (only once)
+              if (tr.claudeText != null && tr.claudeText!.isNotEmpty) {
+                await supabase.saveChatMessage(
+                  caseId: widget.caseId,
+                  role: 'assistant',
+                  content: tr.claudeText!,
+                );
+                if (mounted) {
+                  setState(() {
+                    _messages.add(ChatMessage(
+                      id: 'ai_text_${DateTime.now().millisecondsSinceEpoch}',
+                      role: MessageRole.assistant,
+                      content: tr.claudeText!,
+                      timestamp: DateTime.now(),
+                    ));
+                  });
+                  _scrollToBottom();
+                }
+              }
+
+              // Show the tool result card
+              await supabase.saveChatMessage(
+                caseId: widget.caseId,
+                role: 'assistant',
+                content: tr.displayText,
+              );
+              if (mounted) {
+                setState(() {
+                  _messages.add(ChatMessage(
+                    id: 'tool_${DateTime.now().millisecondsSinceEpoch}',
+                    role: MessageRole.toolResult,
+                    content: tr.displayText,
+                    timestamp: DateTime.now(),
+                    contentType: MessageContentType.toolCard,
+                    toolResult: tr.toolResult,
+                    navigation: tr.navigation,
+                  ));
+                });
+                _scrollToBottom();
+              }
+            }
+
+            // Perform navigation from the first tool result (if any)
+            if (mounted) {
+              await bridge.performNavigations(toolResults);
+            }
+
+            if (mounted) {
+              setState(() => _isTyping = false);
+              _updateChatPhase();
+              _scrollToBottom();
+            }
+            return; // Tool results handled — skip normal text flow
+          }
+
+          responseText = response.message;
           // Guard against empty responses (e.g. tool_use only).
           if (responseText.trim().isEmpty) {
             responseText = _getDemoResponse(text);
