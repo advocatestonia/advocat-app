@@ -1914,6 +1914,9 @@ class AppLocalizationsUk extends AppLocalizations {
       'Nollalinja — Violence Against Women Helpline';
 
   @override
+  String get inheritance => 'Спадщина';
+
+  @override
   String get consumerProtection => 'Захист споживачів';
 
   @override

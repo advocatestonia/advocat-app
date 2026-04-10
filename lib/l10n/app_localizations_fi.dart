@@ -1914,6 +1914,9 @@ class AppLocalizationsFi extends AppLocalizations {
       'Nollalinja — Violence Against Women Helpline';
 
   @override
+  String get inheritance => 'Perintö';
+
+  @override
   String get consumerProtection => 'Kuluttajansuoja';
 
   @override

@@ -66,6 +66,7 @@ class CaseCard extends StatelessWidget {
       CaseType.socialBenefits => l?.socialBenefits ?? 'Social Benefits',
       CaseType.domesticViolence => l?.domesticViolence ?? 'Domestic Violence',
       CaseType.consumerProtection => l?.consumerProtection ?? 'Consumer Protection',
+      CaseType.inheritance => l?.inheritance ?? 'Inheritance',
       CaseType.other => l?.other ?? 'Other',
     };
   }

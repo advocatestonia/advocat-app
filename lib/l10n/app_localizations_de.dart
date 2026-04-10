@@ -1943,6 +1943,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Nollalinja — Violence Against Women Helpline';
 
   @override
+  String get inheritance => 'Erbschaft';
+
+  @override
   String get consumerProtection => 'Verbraucherschutz';
 
   @override

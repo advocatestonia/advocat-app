@@ -500,6 +500,7 @@ String _caseTypeLabel(BuildContext context, CaseType type) {
     CaseType.socialBenefits => l10n?.socialBenefits ?? 'Social Benefits',
     CaseType.domesticViolence => l10n?.domesticViolence ?? 'Domestic Violence',
     CaseType.consumerProtection => l10n?.consumerProtection ?? 'Consumer Protection',
+    CaseType.inheritance => l10n?.inheritance ?? 'Inheritance',
     CaseType.other => l10n?.other ?? 'Other',
   };
 }

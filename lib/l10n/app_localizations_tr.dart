@@ -1911,6 +1911,9 @@ class AppLocalizationsTr extends AppLocalizations {
       'Nollalinja — Violence Against Women Helpline';
 
   @override
+  String get inheritance => 'Miras';
+
+  @override
   String get consumerProtection => 'Tüketici koruması';
 
   @override

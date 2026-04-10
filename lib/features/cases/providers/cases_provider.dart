@@ -53,6 +53,8 @@ class CasesNotifier extends AsyncNotifier<List<LegalCase>> {
         return 'domestic_violence';
       case CaseType.consumerProtection:
         return 'consumer_protection';
+      case CaseType.inheritance:
+        return 'inheritance';
       case CaseType.other:
         return 'other';
     }

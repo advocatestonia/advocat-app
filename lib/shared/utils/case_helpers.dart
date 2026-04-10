@@ -39,6 +39,8 @@ extension CaseTypeX on CaseType {
         return 'Domestic Violence';
       case CaseType.consumerProtection:
         return 'Consumer Protection';
+      case CaseType.inheritance:
+        return 'Inheritance';
       case CaseType.other:
         return 'Other';
     }
@@ -75,6 +77,8 @@ extension CaseTypeX on CaseType {
         return AppColors.error;
       case CaseType.consumerProtection:
         return AppColors.info;
+      case CaseType.inheritance:
+        return AppColors.warning;
       case CaseType.other:
         return AppColors.textTertiary;
     }

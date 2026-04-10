@@ -466,21 +466,22 @@ class _CategoryDef {
 }
 
 const _categories = <_CategoryDef>[
-  _CategoryDef(type: CaseType.deportation, icon: Icons.flight_takeoff, color: AppColors.error),
-  _CategoryDef(type: CaseType.asylum, icon: Icons.home_outlined, color: AppColors.info),
-  _CategoryDef(type: CaseType.residencePermit, icon: Icons.credit_card_outlined, color: AppColors.accent),
-  _CategoryDef(type: CaseType.familyReunification, icon: Icons.people_outline, color: AppColors.warning),
-  _CategoryDef(type: CaseType.citizenship, icon: Icons.flag_outlined, color: Color(0xFF6366F1)),
-  _CategoryDef(type: CaseType.workPermit, icon: Icons.work_outline, color: AppColors.primaryLight),
-  _CategoryDef(type: CaseType.laborDispute, icon: Icons.gavel_outlined, color: Color(0xFF8B5CF6)),
   _CategoryDef(type: CaseType.domesticViolence, icon: Icons.shield_outlined, color: Color(0xFFE11D48)),
-  _CategoryDef(type: CaseType.consumerProtection, icon: Icons.shopping_bag_outlined, color: Color(0xFFD97706)),
-  _CategoryDef(type: CaseType.tenantRights, icon: Icons.apartment_outlined, color: Color(0xFF10B981)),
-  _CategoryDef(type: CaseType.debtCollection, icon: Icons.account_balance_wallet_outlined, color: Color(0xFFF59E0B)),
-  _CategoryDef(type: CaseType.discrimination, icon: Icons.balance_outlined, color: Color(0xFFEC4899)),
-  _CategoryDef(type: CaseType.policeMisconduct, icon: Icons.local_police_outlined, color: Color(0xFF6366F1)),
-  _CategoryDef(type: CaseType.socialBenefits, icon: Icons.health_and_safety_outlined, color: Color(0xFF14B8A6)),
-  _CategoryDef(type: CaseType.other, icon: Icons.more_horiz, color: AppColors.textSecondary),
+  _CategoryDef(type: CaseType.deportation, icon: Icons.flight_takeoff, color: Color(0xFFDC2626)),
+  _CategoryDef(type: CaseType.asylum, icon: Icons.home_outlined, color: Color(0xFF2563EB)),
+  _CategoryDef(type: CaseType.residencePermit, icon: Icons.credit_card_outlined, color: Color(0xFF0891B2)),
+  _CategoryDef(type: CaseType.familyReunification, icon: Icons.people_outline, color: Color(0xFFD97706)),
+  _CategoryDef(type: CaseType.laborDispute, icon: Icons.gavel_outlined, color: Color(0xFF7C3AED)),
+  _CategoryDef(type: CaseType.tenantRights, icon: Icons.apartment_outlined, color: Color(0xFF059669)),
+  _CategoryDef(type: CaseType.debtCollection, icon: Icons.account_balance_wallet_outlined, color: Color(0xFFCA8A04)),
+  _CategoryDef(type: CaseType.discrimination, icon: Icons.balance_outlined, color: Color(0xFFDB2777)),
+  _CategoryDef(type: CaseType.policeMisconduct, icon: Icons.local_police_outlined, color: Color(0xFF4F46E5)),
+  _CategoryDef(type: CaseType.consumerProtection, icon: Icons.shopping_bag_outlined, color: Color(0xFFEA580C)),
+  _CategoryDef(type: CaseType.inheritance, icon: Icons.description_outlined, color: Color(0xFF9333EA)),
+  _CategoryDef(type: CaseType.socialBenefits, icon: Icons.health_and_safety_outlined, color: Color(0xFF0D9488)),
+  _CategoryDef(type: CaseType.citizenship, icon: Icons.flag_outlined, color: Color(0xFF4338CA)),
+  _CategoryDef(type: CaseType.workPermit, icon: Icons.work_outline, color: Color(0xFF0369A1)),
+  _CategoryDef(type: CaseType.other, icon: Icons.more_horiz, color: Color(0xFF6B7280)),
 ];
 
 /// Returns the localized label for a [CaseType].
@@ -500,6 +501,7 @@ String _localizedCaseTypeLabel(CaseType type, AppLocalizations? l) {
     CaseType.discrimination => l?.discrimination ?? 'Discrimination',
     CaseType.policeMisconduct => l?.policeMisconduct ?? 'Police Misconduct',
     CaseType.socialBenefits => l?.socialBenefits ?? 'Social Benefits',
+    CaseType.inheritance => l?.inheritance ?? 'Inheritance',
     CaseType.other => l?.other ?? 'Other',
   };
 }
@@ -541,31 +543,25 @@ class _Step1CaseType extends StatelessWidget {
                 ),
           ),
           const SizedBox(height: AppSpacing.md),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final crossAxisCount = constraints.maxWidth < 360 ? 1 : 2;
-              final aspectRatio = crossAxisCount == 1 ? 3.5 : 1.65;
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: aspectRatio,
-                ),
-                itemCount: _categories.length,
-                itemBuilder: (context, index) {
-                  final cat = _categories[index];
-                  final isSelected = selectedType == cat.type;
-                  return _CaseTypeCard(
-                    icon: cat.icon,
-                    label: _localizedCaseTypeLabel(cat.type, l),
-                    isSelected: isSelected,
-                    color: cat.color,
-                    onTap: () => onTypeSelected(cat.type),
-                  );
-                },
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 2.6,
+            ),
+            itemCount: _categories.length,
+            itemBuilder: (context, index) {
+              final cat = _categories[index];
+              final isSelected = selectedType == cat.type;
+              return _CaseTypeCard(
+                icon: cat.icon,
+                label: _localizedCaseTypeLabel(cat.type, l),
+                isSelected: isSelected,
+                color: cat.color,
+                onTap: () => onTypeSelected(cat.type),
               );
             },
           ),

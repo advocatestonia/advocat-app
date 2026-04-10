@@ -3614,6 +3614,12 @@ abstract class AppLocalizations {
   /// **'Nollalinja — Violence Against Women Helpline'**
   String get contactNollaLinja;
 
+  /// No description provided for @inheritance.
+  ///
+  /// In en, this message translates to:
+  /// **'Inheritance'**
+  String get inheritance;
+
   /// No description provided for @consumerProtection.
   ///
   /// In en, this message translates to:

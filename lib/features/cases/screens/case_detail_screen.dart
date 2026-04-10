@@ -361,6 +361,7 @@ class _CaseInfoCard extends StatelessWidget {
         CaseType.socialBenefits => l10n.socialBenefits,
         CaseType.domesticViolence => l10n.domesticViolence,
         CaseType.consumerProtection => l10n.consumerProtection,
+        CaseType.inheritance => l10n.inheritance,
         CaseType.other => l10n.other,
       };
 

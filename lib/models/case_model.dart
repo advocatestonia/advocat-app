@@ -139,6 +139,7 @@ class LegalCase {
       case 'social_benefits': return CaseType.socialBenefits;
       case 'domestic_violence': return CaseType.domesticViolence;
       case 'consumer_protection': return CaseType.consumerProtection;
+      case 'inheritance': return CaseType.inheritance;
       case 'other': return CaseType.other;
       default: return CaseType.deportation;
     }
@@ -160,6 +161,7 @@ class LegalCase {
       case CaseType.socialBenefits: return 'social_benefits';
       case CaseType.domesticViolence: return 'domestic_violence';
       case CaseType.consumerProtection: return 'consumer_protection';
+      case CaseType.inheritance: return 'inheritance';
       case CaseType.other: return 'other';
     }
   }
@@ -203,6 +205,7 @@ enum CaseType {
   socialBenefits,
   domesticViolence,
   consumerProtection,
+  inheritance,
   other,
 }
 

@@ -1936,6 +1936,9 @@ class AppLocalizationsEs extends AppLocalizations {
       'Nollalinja — Violence Against Women Helpline';
 
   @override
+  String get inheritance => 'Herencia';
+
+  @override
   String get consumerProtection => 'Protección al consumidor';
 
   @override

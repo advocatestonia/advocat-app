@@ -1912,6 +1912,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get contactNollaLinja => 'Ohvriabi kriisitelefon';
 
   @override
+  String get inheritance => 'Pärimine';
+
+  @override
   String get consumerProtection => 'Tarbijakaitse';
 
   @override

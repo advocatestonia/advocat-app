@@ -82,6 +82,9 @@ abstract final class KnowledgeBase {
       case CaseType.consumerProtection:
         sections.add(_consumerLaw(countryLower));
         break;
+      case CaseType.inheritance:
+        sections.add(_consumerLaw(countryLower));
+        break;
       case CaseType.other:
       case null:
         // Include a broad overview
