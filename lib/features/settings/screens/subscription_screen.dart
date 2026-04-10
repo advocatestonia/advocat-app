@@ -706,61 +706,60 @@ class _PlanCardState extends State<_PlanCard>
     return l10n.cheaperAnnually(saved.toStringAsFixed(2));
   }
 
-  // Background per card style — NO borderRadius here (ClipRRect handles it)
-  BoxDecoration get _cardDecoration {
+  Color? get _backgroundColor {
     switch (widget.cardStyle) {
       case _CardStyle.free:
-        return const BoxDecoration(
-          color: Color(0xFFF5F5F5),
-        );
+        return const Color(0xFFF5F5F5);
       case _CardStyle.recommended:
-        return const BoxDecoration(
-          color: Colors.white,
-        );
+        return Colors.white;
       case _CardStyle.premium:
-        return const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xFF1A365D), Color(0xFF0F2240)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        );
+        return null; // uses gradient
     }
   }
 
-  // Outer decoration with border, shadow, borderRadius (wraps ClipRRect)
-  BoxDecoration get _outerDecoration {
+  Gradient? get _backgroundGradient {
+    if (widget.cardStyle == _CardStyle.premium) {
+      return const LinearGradient(
+        colors: [Color(0xFF1A365D), Color(0xFF0F2240)],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+    }
+    return null;
+  }
+
+  Border? get _border {
     switch (widget.cardStyle) {
       case _CardStyle.free:
-        return BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.border, width: 1),
-          boxShadow: AppShadows.shadowSmall,
-        );
+        return Border.all(color: AppColors.border, width: 1);
       case _CardStyle.recommended:
-        return BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.accent, width: 2),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.accent.withValues(
-                  alpha: 0.10 + 0.05 * (_glowAnimation?.value ?? 0)),
-              blurRadius: 12 + 4 * (_glowAnimation?.value ?? 0),
-              offset: const Offset(0, 4),
-            ),
-          ],
-        );
+        return Border.all(color: AppColors.accent, width: 2);
       case _CardStyle.premium:
-        return BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.3),
-              blurRadius: 16,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        );
+        return null;
+    }
+  }
+
+  List<BoxShadow> get _shadow {
+    switch (widget.cardStyle) {
+      case _CardStyle.free:
+        return AppShadows.shadowSmall;
+      case _CardStyle.recommended:
+        return [
+          BoxShadow(
+            color: AppColors.accent.withValues(
+                alpha: 0.10 + 0.05 * (_glowAnimation?.value ?? 0)),
+            blurRadius: 12 + 4 * (_glowAnimation?.value ?? 0),
+            offset: const Offset(0, 4),
+          ),
+        ];
+      case _CardStyle.premium:
+        return [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ];
     }
   }
 
@@ -787,229 +786,230 @@ class _PlanCardState extends State<_PlanCard>
     final l10n = AppLocalizations.of(context)!;
 
     Widget cardContent = Container(
-      decoration: _outerDecoration,
-      child: ClipRRect(
+      decoration: BoxDecoration(
+        color: _backgroundColor,
+        gradient: _backgroundGradient,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: Container(
-          decoration: _cardDecoration,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // ── Top badge (recommended or current plan) ──────────
-              if (widget.isRecommended)
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  color: AppColors.accent,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.star_rounded,
-                          size: 14, color: Colors.white),
-                      const SizedBox(width: 4),
-                      Text(
-                        l10n.recommended,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 11,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 0.5,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              else if (widget.isCurrent)
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: 6),
-                  color: _isDark
-                      ? Colors.white.withValues(alpha: 0.15)
-                      : AppColors.accent,
-                  child: Text(
-                    l10n.currentPlan.toUpperCase(),
+        border: _border,
+        boxShadow: _shadow,
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // ── Top badge (recommended or current plan) ──────────
+          if (widget.isRecommended)
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              color: AppColors.accent,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.star_rounded,
+                      size: 14, color: Colors.white),
+                  const SizedBox(width: 4),
+                  Text(
+                    l10n.recommended,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 0.8,
+                      letterSpacing: 0.5,
                       color: Colors.white,
                     ),
                   ),
+                ],
+              ),
+            )
+          else if (widget.isCurrent)
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              color: _isDark
+                  ? Colors.white.withValues(alpha: 0.15)
+                  : AppColors.accent,
+              child: Text(
+                l10n.currentPlan.toUpperCase(),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.8,
+                  color: Colors.white,
                 ),
+              ),
+            ),
 
-              // ── Card body ───────────────────────────────────────
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      16, _hasBadge ? 10 : 16, 16, 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Tier label pill
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: _isDark
-                              ? Colors.white.withValues(alpha: 0.12)
-                              : (widget.isRecommended
-                                  ? AppColors.accent
-                                      .withValues(alpha: 0.1)
-                                  : AppColors.textTertiary
-                                      .withValues(alpha: 0.1)),
-                          borderRadius:
-                              BorderRadius.circular(AppRadius.full),
-                        ),
-                        child: Text(
-                          widget.tierLabel,
+          // ── Card body ───────────────────────────────────────
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(
+                  16, _hasBadge ? 10 : 16, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Tier label pill
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _isDark
+                          ? Colors.white.withValues(alpha: 0.12)
+                          : (widget.isRecommended
+                              ? AppColors.accent
+                                  .withValues(alpha: 0.1)
+                              : AppColors.textTertiary
+                                  .withValues(alpha: 0.1)),
+                      borderRadius:
+                          BorderRadius.circular(AppRadius.full),
+                    ),
+                    child: Text(
+                      widget.tierLabel,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: _isDark
+                            ? Colors.white70
+                            : (widget.isRecommended
+                                ? AppColors.accent
+                                : AppColors.textTertiary),
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+
+                  // Title
+                  Text(
+                    widget.title,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      color: _textPrimary,
+                    ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  // ── Price ──────────────────────────────────
+                  FadeTransition(
+                    opacity: _priceAnimation,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          _priceText(l10n),
                           style: TextStyle(
                             fontFamily: 'Inter',
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: _isDark
-                                ? Colors.white70
-                                : (widget.isRecommended
-                                    ? AppColors.accent
-                                    : AppColors.textTertiary),
-                            letterSpacing: 0.5,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w800,
+                            color: _textPrimary,
+                            height: 1.1,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 6),
-
-                      // Title
-                      Text(
-                        widget.title,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: _textPrimary,
+                        const SizedBox(width: 3),
+                        Text(
+                          _periodText(l10n),
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 12,
+                            color: _textSecondary,
+                          ),
                         ),
-                      ),
+                      ],
+                    ),
+                  ),
 
-                      const SizedBox(height: 8),
-
-                      // ── Price ──────────────────────────────────
-                      FadeTransition(
-                        opacity: _priceAnimation,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.baseline,
-                          textBaseline: TextBaseline.alphabetic,
-                          children: [
-                            Text(
-                              _priceText(l10n),
+                  // Annual savings hint (fixed height slot)
+                  SizedBox(
+                    height: 16,
+                    child: _annualSavingsText(l10n) != null
+                        ? Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              _annualSavingsText(l10n)!,
                               style: TextStyle(
                                 fontFamily: 'Inter',
-                                fontSize: 28,
-                                fontWeight: FontWeight.w800,
-                                color: _textPrimary,
-                                height: 1.1,
+                                fontSize: 11,
+                                color: _isDark
+                                    ? AppColors.accentLight
+                                    : AppColors.accent,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            const SizedBox(width: 3),
-                            Text(
-                              _periodText(l10n),
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 12,
-                                color: _textSecondary,
+                          )
+                        : null,
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Divider(
+                    height: 1,
+                    color: _isDark
+                        ? Colors.white.withValues(alpha: 0.12)
+                        : AppColors.border,
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  // ── Features list ──────────────────────────
+                  ...List.generate(
+                    math.min(widget.features.length, 6),
+                    (i) {
+                      final f = widget.features[i];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Row(
+                          children: [
+                            Icon(
+                              f.included
+                                  ? AppIcons.checkCircle
+                                  : Icons.cancel_rounded,
+                              size: 15,
+                              color: f.included
+                                  ? _checkColor
+                                  : _uncheckColor,
+                            ),
+                            const SizedBox(width: 7),
+                            Expanded(
+                              child: Text(
+                                f.text,
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: f.included
+                                      ? _textPrimary
+                                      : _textSecondary,
+                                  decoration: f.included
+                                      ? null
+                                      : TextDecoration.lineThrough,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ],
                         ),
-                      ),
-
-                      // Annual savings hint (fixed height slot)
-                      SizedBox(
-                        height: 16,
-                        child: _annualSavingsText(l10n) != null
-                            ? Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  _annualSavingsText(l10n)!,
-                                  style: TextStyle(
-                                    fontFamily: 'Inter',
-                                    fontSize: 11,
-                                    color: _isDark
-                                        ? AppColors.accentLight
-                                        : AppColors.accent,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              )
-                            : null,
-                      ),
-
-                      const SizedBox(height: 8),
-
-                      Divider(
-                        height: 1,
-                        color: _isDark
-                            ? Colors.white.withValues(alpha: 0.12)
-                            : AppColors.border,
-                      ),
-
-                      const SizedBox(height: 10),
-
-                      // ── Features list ──────────────────────────
-                      ...List.generate(
-                        math.min(widget.features.length, 6),
-                        (i) {
-                          final f = widget.features[i];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  f.included
-                                      ? AppIcons.checkCircle
-                                      : Icons.cancel_rounded,
-                                  size: 15,
-                                  color: f.included
-                                      ? _checkColor
-                                      : _uncheckColor,
-                                ),
-                                const SizedBox(width: 7),
-                                Expanded(
-                                  child: Text(
-                                    f.text,
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: f.included
-                                          ? _textPrimary
-                                          : _textSecondary,
-                                      decoration: f.included
-                                          ? null
-                                          : TextDecoration.lineThrough,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-
-                      const Spacer(),
-
-                      // ── CTA Button ─────────────────────────────
-                      _buildCta(l10n),
-                    ],
+                      );
+                    },
                   ),
-                ),
+
+                  const Spacer(),
+
+                  // ── CTA Button ─────────────────────────────
+                  _buildCta(l10n),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
 
