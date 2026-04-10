@@ -1166,6 +1166,18 @@ abstract class AppLocalizations {
   /// **'Rate Us'**
   String get rateUs;
 
+  /// No description provided for @rateAppComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming to app stores soon!'**
+  String get rateAppComingSoon;
+
+  /// No description provided for @dataCopiedToClipboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Data copied to clipboard'**
+  String get dataCopiedToClipboard;
+
   /// No description provided for @readingDocument.
   ///
   /// In en, this message translates to:
@@ -3065,13 +3077,13 @@ abstract class AppLocalizations {
   /// No description provided for @legalRegistryCode.
   ///
   /// In en, this message translates to:
-  /// **'Registry code: to be added'**
+  /// **'Registry code: 17098992'**
   String get legalRegistryCode;
 
   /// No description provided for @legalAddress.
   ///
   /// In en, this message translates to:
-  /// **'Address: to be added'**
+  /// **'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145'**
   String get legalAddress;
 
   /// No description provided for @legalEmail.
@@ -3866,6 +3878,12 @@ abstract class AppLocalizations {
   /// **'Call AI'**
   String get callAI;
 
+  /// No description provided for @comingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get comingSoon;
+
   /// No description provided for @encrypted.
   ///
   /// In en, this message translates to:
@@ -4031,7 +4049,7 @@ abstract class AppLocalizations {
   /// No description provided for @rightMinimumAlimony.
   ///
   /// In en, this message translates to:
-  /// **'Since 2022, minimum child support in Estonia is €200/month per child (base amount set by government regulation). The court may increase it based on the parent\'s income (PKS § 101)'**
+  /// **'Minimum child support in Estonia is calculated by formula: child\'s subsistence minimum + share of minimum wage (PKS § 101). In 2026 — approx. €260/month per child. The court may increase it based on the parent\'s income'**
   String get rightMinimumAlimony;
 
   /// No description provided for @rightCourtAlimony.
@@ -4121,7 +4139,7 @@ abstract class AppLocalizations {
   /// No description provided for @childrenFactMinimum.
   ///
   /// In en, this message translates to:
-  /// **'In Estonia, minimum child support (elatis) is set at half the minimum wage per child. A parent cannot agree to pay less — even by mutual agreement.'**
+  /// **'In Estonia, minimum child support (elatis) is calculated using a formula based on the child\'s subsistence minimum and a share of the minimum wage. A parent cannot agree to pay less — even by mutual agreement.'**
   String get childrenFactMinimum;
 
   /// No description provided for @childrenFactElatisabi.

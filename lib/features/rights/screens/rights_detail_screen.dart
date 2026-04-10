@@ -226,27 +226,27 @@ class _CountryLegalData {
         emergencyActUrl: 'https://www.riigiteataja.ee/akt/117032011008',
         restrainingOrderAct: 'Karistusseadustik § 1201 (Lähenemiskeeld)',
         restrainingOrderActUrl:
-            'https://www.riigiteataja.ee/akt/184411',
+            'https://www.riigiteataja.ee/akt/184411#para_120_1',
         languageAct: 'Keeleseadus',
         languageActUrl: 'https://www.riigiteataja.ee/akt/118032011001',
         criminalCodeAssault: 'Karistusseadustik § 121 (Kehaline väärkohtlemine)',
         criminalCodeAssaultUrl:
-            'https://www.riigiteataja.ee/akt/184411',
+            'https://www.riigiteataja.ee/akt/184411#para_121',
         shelterAct: 'Ohvriabi seadus',
         shelterActUrl:
             'https://www.riigiteataja.ee/akt/OhsS',
         policeAct: 'Korrakaitseseadus § 30',
         policeActUrl:
-            'https://www.riigiteataja.ee/akt/KorS',
+            'https://www.riigiteataja.ee/akt/KorS#para_30',
         constitution: 'Eesti Vabariigi põhiseadus § 21',
         constitutionUrl:
-            'https://www.riigiteataja.ee/akt/PS',
+            'https://www.riigiteataja.ee/akt/PS#para_21',
         criminalProcedureAct: 'Kriminaalmenetluse seadustik 2. peatükk',
         criminalProcedureActUrl:
             'https://www.riigiteataja.ee/akt/KrMS',
         aliensAct: 'Välismaalaste seadus § 281',
         aliensActUrl:
-            'https://www.riigiteataja.ee/akt/VMS',
+            'https://www.riigiteataja.ee/akt/VMS#para_28_1',
         aliensActLegalRep: 'Välismaalaste seadus § 10',
         aliensActStay: 'Välismaalaste seadus § 283',
         aliensActDetention: 'Välismaalaste seadus § 23',
@@ -277,11 +277,11 @@ class _CountryLegalData {
         nonDiscriminationAct:
             'Võrdse kohtlemise seadus § 19',
         nonDiscriminationActUrl:
-            'https://www.riigiteataja.ee/akt/VoKoS',
+            'https://www.riigiteataja.ee/akt/VoKoS#para_19',
         criminalCodeDiscrimination:
             'Karistusseadustik § 152 (Vaenu õhutamine)',
         criminalCodeDiscriminationUrl:
-            'https://www.riigiteataja.ee/akt/184411',
+            'https://www.riigiteataja.ee/akt/184411#para_152',
         consumerProtectionAct:
             'Võlaõigusseadus 5. peatükk (Tarbijaleping)',
         consumerProtectionActUrl:
@@ -2125,11 +2125,11 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _RightItem(l10n.rightChildSupport,
               severity: _Severity.critical,
               legalRef: 'Perekonnaseadus § 100–102',
-              legalUrl: 'https://www.riigiteataja.ee/akt/PKS'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/PKS#para_100'),
           _RightItem(l10n.rightMinimumAlimony,
               severity: _Severity.critical,
               legalRef: 'Perekonnaseadus § 101²',
-              legalUrl: 'https://www.riigiteataja.ee/akt/PKS'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/PKS#para_101'),
           _RightItem(l10n.rightCourtAlimony,
               severity: _Severity.important,
               legalRef: 'Tsiviilkohtumenetluse seadustik',
@@ -2141,15 +2141,15 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _RightItem(l10n.rightStateAlimonyGuarantee,
               severity: _Severity.critical,
               legalRef: 'Perehüvitiste seadus § 57–62',
-              legalUrl: 'https://www.riigiteataja.ee/akt/PHS'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/PHS#para_57'),
           _RightItem(l10n.rightChildEducation,
               severity: _Severity.important,
               legalRef: 'Lastekaitseseadus § 4–5',
-              legalUrl: 'https://www.riigiteataja.ee/akt/LasteKS'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/LasteKS#para_4'),
           _RightItem(l10n.rightChildContact,
               severity: _Severity.info,
               legalRef: 'Perekonnaseadus § 143',
-              legalUrl: 'https://www.riigiteataja.ee/akt/PKS'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/PKS#para_143'),
         ],
         obligations: [
           _RightItem(l10n.mustFileCourtClaim,
@@ -2210,11 +2210,11 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _RightItem(l10n.rightReportCybercrime,
               severity: _Severity.critical,
               legalRef: 'Karistusseadustik § 120 (Ähvardamine)',
-              legalUrl: 'https://www.riigiteataja.ee/akt/184411'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/184411#para_120'),
           _RightItem(l10n.rightPrivacyProtection,
               severity: _Severity.critical,
               legalRef: 'Karistusseadustik § 157 (Eraelu puutumatuse rikkumine)',
-              legalUrl: 'https://www.riigiteataja.ee/akt/184411'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/184411#para_157'),
           _RightItem(l10n.rightContentRemoval,
               severity: _Severity.important,
               legalRef: 'GDPR Art. 17 (Õigus olla unustatud)',
@@ -2222,7 +2222,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _RightItem(l10n.rightMoralDamageCompensation,
               severity: _Severity.important,
               legalRef: 'Võlaõigusseadus § 1043–1055',
-              legalUrl: 'https://www.riigiteataja.ee/akt/VOS'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/VOS#para_1043'),
           _RightItem(l10n.rightDataProtection,
               severity: _Severity.important,
               legalRef: 'Isikuandmete kaitse seadus',
@@ -2230,7 +2230,7 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           _RightItem(l10n.rightDefamationAction,
               severity: _Severity.info,
               legalRef: 'Võlaõigusseadus § 1047',
-              legalUrl: 'https://www.riigiteataja.ee/akt/VOS'),
+              legalUrl: 'https://www.riigiteataja.ee/akt/VOS#para_1047'),
         ],
         obligations: [
           _RightItem(l10n.mustCollectEvidence,

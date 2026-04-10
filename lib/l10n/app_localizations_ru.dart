@@ -555,6 +555,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get rateUs => 'Оценить приложение';
 
   @override
+  String get rateAppComingSoon => 'Скоро в магазинах приложений!';
+
+  @override
+  String get dataCopiedToClipboard => 'Данные скопированы в буфер обмена';
+
+  @override
   String get readingDocument => 'Читаем документ...';
 
   @override
@@ -1575,23 +1581,24 @@ class AppLocalizationsRu extends AppLocalizations {
   String get gdprViewPrivacyPolicy => 'View Privacy Policy';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'Юридическая информация';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: to be added';
+  String get legalRegistryCode => 'Регистрационный код: 17098992';
 
   @override
-  String get legalAddress => 'Address: to be added';
+  String get legalAddress =>
+      'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'E-mail: support@advocat.ee';
 
   @override
   String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+      'Зарегистрировано в Коммерческом регистре Эстонии (Äriregister)';
 
   @override
   String get aiGeneratedDisclaimer =>
@@ -1836,79 +1843,79 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+      'Права жертв, экстренная помощь, запретительные предписания';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'Вы имеете право позвонить 112 в любой экстренной ситуации — полиция, скорая, пожарные';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'Как жертва, вы имеете право на защиту, поддержку и информацию о вашем деле';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'Вы можете подать заявление на запретительное предписание (lähenemiskeeld), чтобы держать обидчика на расстоянии';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'Вы имеете право на переводчика во всех судебных разбирательствах';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'Вы имеете право на немедленную медицинскую помощь и документирование травм';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'Вы имеете право на экстренное убежище — обратитесь в приют или социальные службы';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'Если кто-то в непосредственной опасности, звоните 112 немедленно';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'Документируйте все травмы — фото, медицинские записи, письменные заметки';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'Звоните 112, если вы в непосредственной опасности';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'Идите в безопасное место — приют, к друзьям, в общественное место';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'Документируйте травмы: фотографируйте, получите медицинские записи';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'Подайте заявление в полицию — это можно сделать и позже';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'Свяжитесь с приютом или кризисной горячей линией';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'Подайте заявление на запретительное предписание через полицию или суд';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'В Эстонии запретительное предписание (lähenemiskeeld) может быть выдано даже без уголовного дела. Оно запрещает человеку связываться с вами или приближаться к вам.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'Согласно Директиве ЕС о жертвах 2012/29/EU, вы имеете право на уважительное обращение, получение информации на понятном вам языке и доступ к службам помощи жертвам — независимо от вашего статуса проживания.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'Подайте заявление в полицию — строгого срока нет, но чем раньше, тем лучше для доказательств';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'Запретительное предписание — можно подать в любое время';
 
   @override
   String get contactEmergency => 'Emergency Number';
@@ -2070,6 +2077,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get callAI => 'Звонок ИИ';
 
   @override
+  String get comingSoon => 'Скоро будет доступно';
+
+  @override
   String get encrypted => 'Зашифровано';
 
   @override
@@ -2160,7 +2170,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'С 2022 года минимальные алименты в Эстонии — 200 €/мес на ребёнка (базовая сумма, устанавливается правительством). Суд может увеличить с учётом дохода родителя (PKS § 101)';
+      'Минимальные алименты в Эстонии рассчитываются по формуле: прожиточный минимум ребёнка + доля от минимальной зарплаты (PKS § 101). В 2026 году — около 260 €/мес на ребёнка. Суд может увеличить с учётом дохода родителя';
 
   @override
   String get rightCourtAlimony =>
@@ -2220,7 +2230,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get childrenFactMinimum =>
-      'В Эстонии минимальные алименты составляют половину минимальной зарплаты на ребёнка. Родитель не может договориться о меньшей сумме — даже по обоюдному согласию.';
+      'В Эстонии минимальные алименты рассчитываются по формуле, учитывающей прожиточный минимум ребёнка и долю от минимальной зарплаты. Родитель не может договориться о меньшей сумме — даже по обоюдному согласию.';
 
   @override
   String get childrenFactElatisabi =>

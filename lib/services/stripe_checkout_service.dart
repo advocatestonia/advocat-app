@@ -98,7 +98,7 @@ class StripeCheckoutService {
       throw Exception('Cannot open checkout URL');
     }
 
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
+    await launchUrl(uri, mode: LaunchMode.platformDefault);
     return true;
   }
 
@@ -153,7 +153,7 @@ class StripeCheckoutService {
       throw Exception('Cannot open checkout URL');
     }
 
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
+    await launchUrl(uri, mode: LaunchMode.platformDefault);
     return true;
   }
 }

@@ -11,7 +11,6 @@ import '../../../main.dart';
 import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
-import '../../../shared/utils/call_assistant_launcher.dart';
 import '../../../services/demo_data.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../cases/providers/cases_provider.dart';
@@ -589,7 +588,11 @@ class _QuickActions extends StatelessWidget {
                 icon: Icons.phone_in_talk_outlined,
                 label: l.callAI,
                 color: AppColors.success,
-                onTap: () => launchCallAssistant(),
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(l.comingSoon)),
+                  );
+                },
               ),
               _QuickActionButton(
                 icon: Icons.add_circle_outline,

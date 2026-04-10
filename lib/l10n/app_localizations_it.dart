@@ -554,6 +554,12 @@ class AppLocalizationsIt extends AppLocalizations {
   String get rateUs => 'Valutaci';
 
   @override
+  String get rateAppComingSoon => 'Coming to app stores soon!';
+
+  @override
+  String get dataCopiedToClipboard => 'Data copied to clipboard';
+
+  @override
   String get readingDocument => 'Lettura documento...';
 
   @override
@@ -1591,10 +1597,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: to be added';
+  String get legalRegistryCode => 'Registry code: 17098992';
 
   @override
-  String get legalAddress => 'Address: to be added';
+  String get legalAddress =>
+      'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
   String get legalEmail => 'Email: support@advocat.ee';
@@ -2085,6 +2092,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get callAI => 'Call AI';
 
   @override
+  String get comingSoon => 'In arrivo';
+
+  @override
   String get encrypted => 'Encrypted';
 
   @override
@@ -2175,7 +2185,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Since 2022, minimum child support in Estonia is €200/month per child (base amount set by government regulation). The court may increase it based on the parent\'s income (PKS § 101)';
+      'Minimum child support in Estonia is calculated by formula: child\'s subsistence minimum + share of minimum wage (PKS § 101). In 2026 — approx. €260/month per child. The court may increase it based on the parent\'s income';
 
   @override
   String get rightCourtAlimony =>
@@ -2235,7 +2245,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get childrenFactMinimum =>
-      'In Estonia, minimum child support (elatis) is set at half the minimum wage per child. A parent cannot agree to pay less — even by mutual agreement.';
+      'In Estonia, minimum child support (elatis) is calculated using a formula based on the child\'s subsistence minimum and a share of the minimum wage. A parent cannot agree to pay less — even by mutual agreement.';
 
   @override
   String get childrenFactElatisabi =>

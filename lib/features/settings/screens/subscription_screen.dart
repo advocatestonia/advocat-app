@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -187,12 +186,8 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                     }
                     final url = data?['url'] as String?;
                     if (url != null && url.isNotEmpty) {
-                      if (!kIsWeb) {
-                        await launchUrl(Uri.parse(url),
-                            mode: LaunchMode.externalApplication);
-                      } else {
-                        await launchUrl(Uri.parse(url));
-                      }
+                      await launchUrl(Uri.parse(url),
+                          mode: LaunchMode.platformDefault);
                     } else {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(

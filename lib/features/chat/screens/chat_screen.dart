@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -2112,6 +2113,92 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
+  // -- Attach options --
+
+  void _showAttachOptions() {
+    final lang = Localizations.localeOf(context).languageCode;
+    String _l(String et, String en, String ru) {
+      switch (lang) {
+        case 'et': return et;
+        case 'en': return en;
+        case 'ru': return ru;
+        default: return en;
+      }
+    }
+
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.upload_file_rounded),
+              title: Text(_l('Vali fail', 'Choose file', 'Выбрать файл')),
+              subtitle: Text(_l(
+                'PDF, foto, dokument',
+                'PDF, photo, document',
+                'PDF, фото, документ',
+              )),
+              onTap: () async {
+                Navigator.pop(ctx);
+                await _pickAndAttachFile();
+              },
+            ),
+            if (!kIsWeb)
+              ListTile(
+                leading: const Icon(Icons.document_scanner_outlined),
+                title: Text(_l('Skaneeri dokument', 'Scan document', 'Сканировать документ')),
+                subtitle: Text(_l(
+                  'Kasuta kaamerat',
+                  'Use camera',
+                  'Использовать камеру',
+                )),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  context.push('/scan?caseId=${widget.caseId}');
+                },
+              ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _pickAndAttachFile() async {
+    // Capture locale before async gap
+    final lang = Localizations.localeOf(context).languageCode;
+    try {
+      final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'jpeg', 'heic'],
+        withData: kIsWeb, // on web we need bytes
+      );
+      if (result == null || result.files.isEmpty) return;
+
+      final file = result.files.first;
+      final fileName = file.name;
+
+      // Add a user message indicating a file was attached
+      String attachLabel;
+      switch (lang) {
+        case 'et': attachLabel = 'Dokument lisatud: $fileName'; break;
+        case 'ru': attachLabel = 'Документ прикреплён: $fileName'; break;
+        default: attachLabel = 'Document attached: $fileName'; break;
+      }
+
+      // Send as a chat message so the AI knows about it
+      _sendMessage(attachLabel);
+    } catch (e) {
+      // Silently fail — the user can try again
+      debugPrint('File picker error: $e');
+    }
+  }
+
   // -- Input bar --
 
   Widget _buildInputBar() {
@@ -2148,16 +2235,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // Attach button
+          // Attach button — file picker (web-compatible) with scan fallback
           SizedBox(
             width: 40,
             height: 44,
             child: IconButton(
               icon: const Icon(Icons.add_circle_outline_rounded, size: 22),
               color: AppColors.textTertiary,
-              onPressed: () {
-                context.push('/scan?caseId=${widget.caseId}');
-              },
+              onPressed: () => _showAttachOptions(),
               padding: EdgeInsets.zero,
             ),
           ),
@@ -2599,7 +2684,7 @@ class _PremiumTextFieldState extends State<_PremiumTextField> {
           textInputAction: TextInputAction.newline,
           style: const TextStyle(fontSize: 15, height: 1.4),
           decoration: InputDecoration(
-            hintText: 'Опишите вашу ситуацию...',
+            hintText: AppLocalizations.of(context)?.typeMessage ?? 'Type a message...',
             hintStyle: TextStyle(
               color: AppColors.textTertiary.withValues(alpha: 0.7),
               fontSize: 15,

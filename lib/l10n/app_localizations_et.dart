@@ -555,6 +555,12 @@ class AppLocalizationsEt extends AppLocalizations {
   String get rateUs => 'Hinda rakendust';
 
   @override
+  String get rateAppComingSoon => 'Saadaval peagi rakenduste poodides!';
+
+  @override
+  String get dataCopiedToClipboard => 'Andmed kopeeritud lõikelauale';
+
+  @override
   String get readingDocument => 'Dokumendi lugemine...';
 
   @override
@@ -1576,23 +1582,23 @@ class AppLocalizationsEt extends AppLocalizations {
   String get gdprViewPrivacyPolicy => 'View Privacy Policy';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'Õiguslik teave';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: to be added';
+  String get legalRegistryCode => 'Registrikood: 17098992';
 
   @override
-  String get legalAddress => 'Address: to be added';
+  String get legalAddress =>
+      'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'E-post: support@advocat.ee';
 
   @override
-  String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+  String get legalRegistry => 'Registreeritud Eesti äriregistris';
 
   @override
   String get aiGeneratedDisclaimer =>
@@ -2060,6 +2066,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get callAI => 'Helista AI-le';
 
   @override
+  String get comingSoon => 'Tuleb peagi';
+
+  @override
   String get encrypted => 'Krüpteeritud';
 
   @override
@@ -2150,7 +2159,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Alates 2022 on minimaalne elatis Eestis 200 €/kuus lapse kohta (baassumma, mille kehtestab valitsus). Kohus võib seda suurendada vanema sissetuleku alusel (PKS § 101)';
+      'Minimaalne elatis Eestis arvutatakse valemiga: lapse toimetulekumiinimum + osa miinimumpalgast (PKS § 101). 2026. aastal — umbes 260 €/kuus lapse kohta. Kohus võib seda suurendada vanema sissetuleku alusel';
 
   @override
   String get rightCourtAlimony =>
@@ -2210,7 +2219,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get childrenFactMinimum =>
-      'Eestis on minimaalne elatis pool miinimumpalgast lapse kohta. Vanem ei saa kokku leppida väiksemat summat — isegi mõlema vanema nõusolekul.';
+      'Eestis arvutatakse minimaalne elatis valemi alusel, mis arvestab lapse toimetulekumiinimumi ja osa miinimumpalgast. Vanem ei saa kokku leppida väiksemat summat — isegi mõlema vanema nõusolekul.';
 
   @override
   String get childrenFactElatisabi =>

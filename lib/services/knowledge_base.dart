@@ -83,7 +83,7 @@ abstract final class KnowledgeBase {
         sections.add(_consumerLaw(countryLower));
         break;
       case CaseType.inheritance:
-        sections.add(_consumerLaw(countryLower));
+        sections.add(_inheritanceLaw(countryLower));
         break;
       case CaseType.other:
       case null:
@@ -593,6 +593,88 @@ Tenant rights are primarily national law, but EU law provides:
 - Consumer protection in unfair contract terms (Directive 93/13/EEC)
 - Energy performance requirements (Directive 2010/31/EU)
 - Right to adequate housing recognized in EU Charter Art. 34''';
+  }
+
+  static String _inheritanceLaw(String country) {
+    return '''
+## INHERITANCE LAW (Pärimisõigus)
+
+**EU Succession Regulation 650/2012 (Brussels IV):**
+- Applies to cross-border successions in all EU Member States (except Denmark and Ireland)
+- Default rule: law of habitual residence of the deceased at time of death
+- Choice of law: person may choose the law of their nationality (professio juris)
+- European Certificate of Succession: facilitates cross-border inheritance proceedings
+- Art. 21: General rule — law of habitual residence
+- Art. 22: Choice of law — nationality
+- Art. 34: Renvoi — limited application
+
+${country.contains('estonia') || country.contains('eesti') ? '''
+**Estonia — Pärimisseadus (Succession Act, PärS):**
+- § 1-4: General provisions — inheritance opens upon death
+- § 5-9: Capacity to inherit
+- § 10-12: Unworthiness to inherit
+- § 13-25: Intestate succession (seadusjärgne pärimine):
+  - First order: children and their descendants
+  - Second order: parents and their descendants (siblings)
+  - Third order: grandparents and their descendants
+  - Surviving spouse inherits alongside first order heirs (equal share) or gets larger share with second/third order
+- § 26-44: Testamentary succession (testament):
+  - Notarial will (notariaalne testament) — strongest form
+  - Domestic will (kodune testament) — handwritten, signed, dated
+  - § 29: Freedom of testation, but subject to compulsory portion (sundosa)
+- § 104-110: Compulsory portion (sundosa):
+  - Entitled: descendants and spouse who would inherit under intestate succession
+  - Amount: half of what person would receive under intestate succession
+  - Claim must be made within 3 years of learning about succession
+- § 111-130: Acceptance and renunciation of inheritance:
+  - Inheritance is accepted unless renounced within 3 months
+  - Renunciation filed with notary
+- § 147-152: European Certificate of Succession (Euroopa pärimistunnistus)
+
+**Key Deadlines:**
+- Renunciation of inheritance: 3 months from learning of right to inherit (PärS § 119)
+- Compulsory portion claim: 3 years (PärS § 107)
+- Succession certificate from notary: apply at any time
+
+**Key Bodies:**
+- Notar (Notary) — issues succession certificates, handles inheritance proceedings
+- Maakohus (County Court) — inheritance disputes
+- Notarite Koda (Chamber of Notaries): www.notar.ee
+
+**Inheritance Tax:**
+- Estonia has NO inheritance tax (pärandimaks) — one of the few EU countries
+- However, income from inherited property (e.g., rental income) is taxable
+''' : country.contains('finland') || country.contains('suomi') ? '''
+**Finland — Perintökaari (Code of Inheritance, 40/1965):**
+- Chapter 2: Intestate succession — children, spouse, parents, siblings
+- Chapter 3: Surviving spouse's rights — right to remain in shared home
+- Chapter 7: Compulsory portion (lakiosa) — half of intestate share for direct descendants
+- Chapter 10-13: Wills (testamentti) — requirements, validity
+- Chapter 16: Acceptance and renunciation of inheritance
+- Chapter 21: Inventory of estate (perunkirjoitus) — must be done within 3 months of death
+
+**Perintö- ja lahjaverolaki (Inheritance and Gift Tax Act, 378/1940):**
+- Tax class I (close relatives): 7-19% depending on amount
+- Tax class II (others): 19-33%
+- Spouse exemption: EUR 90,000
+- Child exemption: EUR 20,000 (under 18)
+
+**Key Deadlines:**
+- Estate inventory (perunkirjoitus): 3 months from death
+- Inheritance tax return: 3 months from estate inventory
+- Challenge to will: 6 months from notification
+
+**Key Bodies:**
+- Maistraatti (Local Register Office) — estate inventories
+- Verohallinto (Tax Administration) — inheritance tax
+- Käräjäoikeus (District Court) — inheritance disputes
+''' : '''
+**General EU Inheritance Rights:**
+- EU Succession Regulation provides unified framework for cross-border inheritance
+- European Certificate of Succession simplifies proceedings across borders
+- Each country has its own inheritance tax rules
+- Non-refoulement of compulsory portion rights across EU
+'''}''';
   }
 
   static String _consumerLaw(String country) {

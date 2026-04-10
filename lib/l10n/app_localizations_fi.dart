@@ -555,6 +555,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get rateUs => 'Arvostele sovellus';
 
   @override
+  String get rateAppComingSoon => 'Tulossa pian sovelluskauppoihin!';
+
+  @override
+  String get dataCopiedToClipboard => 'Tiedot kopioitu leikepöydälle';
+
+  @override
   String get readingDocument => 'Luetaan asiakirjaa...';
 
   @override
@@ -1577,23 +1583,24 @@ class AppLocalizationsFi extends AppLocalizations {
   String get gdprViewPrivacyPolicy => 'View Privacy Policy';
 
   @override
-  String get legalInformation => 'Legal Information';
+  String get legalInformation => 'Oikeudellinen tieto';
 
   @override
   String get legalEntityName => 'Vorantis OÜ';
 
   @override
-  String get legalRegistryCode => 'Registry code: to be added';
+  String get legalRegistryCode => 'Rekisterinumero: 17098992';
 
   @override
-  String get legalAddress => 'Address: to be added';
+  String get legalAddress =>
+      'Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145';
 
   @override
-  String get legalEmail => 'Email: support@advocat.ee';
+  String get legalEmail => 'Sähköposti: support@advocat.ee';
 
   @override
   String get legalRegistry =>
-      'Registered in Estonian Commercial Register (Äriregister)';
+      'Rekisteröity Viron kaupparekisteriin (Äriregister)';
 
   @override
   String get aiGeneratedDisclaimer =>
@@ -2061,6 +2068,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get callAI => 'Soita tekoälylle';
+
+  @override
+  String get comingSoon => 'Tulossa pian';
 
   @override
   String get encrypted => 'Salattu';

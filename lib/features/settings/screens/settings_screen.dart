@@ -124,13 +124,13 @@ class SettingsScreen extends ConsumerWidget {
             icon: AppIcons.termsOutlined,
             title: l.termsOfService,
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
-            onTap: () => _launchUrl('https://advocat.ee/terms'),
+            onTap: () => _launchUrl('https://advocat.ee/terms.html'),
           ),
           _SettingsTile(
             icon: AppIcons.privacyOutlined,
             title: l.privacyPolicy,
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
-            onTap: () => _launchUrl('https://advocat.ee/privacy'),
+            onTap: () => _launchUrl('https://advocat.ee/privacy.html'),
           ),
           _SettingsTile(
             icon: Icons.business_outlined,
@@ -153,7 +153,14 @@ class SettingsScreen extends ConsumerWidget {
             title: l.rateUs,
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
             onTap: () {
-              // TODO: Open app store review page
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    l.rateAppComingSoon,
+                  ),
+                  backgroundColor: AppColors.info,
+                ),
+              );
             },
           ),
           _SettingsTile(
@@ -663,10 +670,11 @@ class SettingsScreen extends ConsumerWidget {
         // On web, use clipboard as fallback (dart:io not available)
         await Clipboard.setData(ClipboardData(text: jsonString));
         if (context.mounted) {
+          final l = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Andmed kopeeritud lõikelauale'),
+            SnackBar(
+              content: Text(l.dataCopiedToClipboard),
               backgroundColor: AppColors.success,
             ),
           );
