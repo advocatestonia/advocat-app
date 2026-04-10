@@ -313,19 +313,7 @@ function setLang(lang){
   // No browser language auto-detect — Estonian is our market.
   var lang='et';
   try{var s=localStorage.getItem('advocat-lang');if(s&&T[s])lang=s;}catch(e){}
-  if(false){
-    // Disabled: no auto-detect from browser language
-    var nav='et';
-    else if(nav.startsWith('pl'))lang='pl';
-    else if(nav.startsWith('fr'))lang='fr';
-    else if(nav.startsWith('fa'))lang='fa';
-    else if(nav.startsWith('tr'))lang='tr';
-    else if(nav.startsWith('lv'))lang='lv';
-    else if(nav.startsWith('lt'))lang='lt';
-    else if(nav.startsWith('es'))lang='es';
-    else if(nav.startsWith('it'))lang='it';
-    else if(nav.startsWith('ro'))lang='ro';
-  }
+  // Estonian always default. No browser auto-detect.
   setLang(lang);
 })();
 </script>
