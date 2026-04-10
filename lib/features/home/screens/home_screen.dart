@@ -774,19 +774,20 @@ class _AdvocatProQuickActionButtonState
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            AppColors.accent.withValues(alpha: 0.15),
-                            const Color(0xFF4DA3A0).withValues(alpha: 0.25),
+                            Color(0xFFFFD700),
+                            Color(0xFFDAA520),
+                            Color(0xFFB8860B),
                           ],
                         ),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.accent.withValues(alpha: 0.20),
-                            blurRadius: 8,
+                            color: const Color(0xFFDAA520).withValues(alpha: 0.4),
+                            blurRadius: 12,
                             offset: const Offset(0, 2),
                           ),
                         ],
@@ -794,19 +795,15 @@ class _AdvocatProQuickActionButtonState
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.shield_rounded,
-                            color: AppColors.accent,
+                            color: Colors.white,
                             size: 34,
                           ),
-                          Positioned(
-                            top: 10,
-                            right: 10,
-                            child: Icon(
-                              Icons.star_rounded,
-                              color: const Color(0xFF4DA3A0),
-                              size: 16,
-                            ),
+                          const Icon(
+                            Icons.star_rounded,
+                            color: Colors.white,
+                            size: 16,
                           ),
                         ],
                       ),
@@ -822,7 +819,7 @@ class _AdvocatProQuickActionButtonState
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: AppColors.accent,
+                color: const Color(0xFF8B6914),
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
                 height: 1.2,
@@ -1142,21 +1139,21 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                 children: [
                   // Star icon
                   Container(
-                    width: 40,
-                    height: 40,
+                    width: 44,
+                    height: 44,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.18),
+                      color: const Color(0xFF1A5C59).withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
                       Icons.star_rounded,
-                      color: Colors.white,
-                      size: 24,
+                      color: Color(0xFFFFD700),
+                      size: 28,
                     ),
                   ),
                   const SizedBox(width: 12),
                   // Text
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -1164,9 +1161,16 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                           'Advocat Pro',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.w800,
                             letterSpacing: -0.3,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black26,
+                                blurRadius: 4,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
                           ),
                         ),
                         Text(
@@ -1184,7 +1188,7 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                   const Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: Colors.white,
-                    size: 16,
+                    size: 18,
                   ),
                 ],
               ),
