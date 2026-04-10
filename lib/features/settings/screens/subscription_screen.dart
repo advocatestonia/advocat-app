@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -156,16 +157,49 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
               child: OutlinedButton.icon(
                 onPressed: () async {
                   try {
+                    final session = Supabase.instance.client.auth.currentSession;
+                    if (session == null) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Palun logige sisse')),
+                        );
+                      }
+                      return;
+                    }
                     final response =
                         await Supabase.instance.client.functions.invoke(
                       'customer-portal',
                       method: HttpMethod.post,
                     );
-                    final data = response.data as Map<String, dynamic>?;
+                    final responseData = response.data;
+                    Map<String, dynamic>? data;
+                    if (responseData is Map<String, dynamic>) {
+                      data = responseData;
+                    } else if (responseData is String) {
+                      try {
+                        data = Map<String, dynamic>.from(
+                          (responseData as String).isNotEmpty
+                            ? Map.from(Uri.splitQueryString(responseData))
+                            : {},
+                        );
+                      } catch (_) {}
+                    }
                     final url = data?['url'] as String?;
                     if (url != null && url.isNotEmpty) {
-                      await launchUrl(Uri.parse(url),
-                          mode: LaunchMode.externalApplication);
+                      if (!kIsWeb) {
+                        await launchUrl(Uri.parse(url),
+                            mode: LaunchMode.externalApplication);
+                      } else {
+                        await launchUrl(Uri.parse(url));
+                      }
+                    } else {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(data?['error']?.toString() ?? 'Tellimust ei leitud'),
+                          ),
+                        );
+                      }
                     }
                   } catch (e) {
                     if (context.mounted) {
