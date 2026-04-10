@@ -4,7 +4,7 @@
 <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-J5LGKRTMJ7"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-J5LGKRTMJ7');</script>
-<meta charset="UTF-8"><meta name="google-site-verification" content="2Tai1f-cIuZqYnHvOZiZQgx6YXpd4LTozCrZXpOx8ts" /><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
+<meta charset="UTF-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Advocat — AI Õigusabi Assistent | Kaitse oma õigusi</title>
 <meta name="description" content="AI-põhine õigusabi assistent. Perevägivald, elatis, tööõigus, internetipettus, küberkiusamine. 470+ kohtulahendit, 17 keelt. advocat.ee">
@@ -108,19 +108,20 @@ html[dir="rtl"] body{direction:rtl}
   <div class="langs" role="group" aria-label="Language">
     <button class="lang-btn active" data-lang="et" onclick="setLang('et')">Eesti</button>
     <button class="lang-btn" data-lang="en" onclick="setLang('en')">English</button>
-    <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">Русский</button>
-    <button class="lang-btn" data-lang="uk" onclick="setLang('uk')">Українська</button>
-    <button class="lang-btn" data-lang="sv" onclick="setLang('sv')">Svenska</button>
+    <button class="lang-btn" data-lang="fi" onclick="setLang('fi')">Suomi</button>
     <button class="lang-btn" data-lang="de" onclick="setLang('de')">Deutsch</button>
-    <button class="lang-btn" data-lang="ar" onclick="setLang('ar')">العربية</button>
-    <button class="lang-btn" data-lang="pl" onclick="setLang('pl')">Polski</button>
+    <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">Русский</button>
+    <button class="lang-btn" data-lang="sv" onclick="setLang('sv')">Svenska</button>
+    <button class="lang-btn" data-lang="uk" onclick="setLang('uk')">Українська</button>
     <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">Français</button>
-    <button class="lang-btn" data-lang="fa" onclick="setLang('fa')">فارسی</button>
-    <button class="lang-btn" data-lang="tr" onclick="setLang('tr')">Türkçe</button>
-    <button class="lang-btn" data-lang="lv" onclick="setLang('lv')">Latviešu</button>
-    <button class="lang-btn" data-lang="lt" onclick="setLang('lt')">Lietuvių</button>
+    <button class="lang-btn" data-lang="pl" onclick="setLang('pl')">Polski</button>
     <button class="lang-btn" data-lang="es" onclick="setLang('es')">Español</button>
     <button class="lang-btn" data-lang="it" onclick="setLang('it')">Italiano</button>
+    <button class="lang-btn" data-lang="lv" onclick="setLang('lv')">Latviešu</button>
+    <button class="lang-btn" data-lang="lt" onclick="setLang('lt')">Lietuvių</button>
+    <button class="lang-btn" data-lang="tr" onclick="setLang('tr')">Türkçe</button>
+    <button class="lang-btn" data-lang="ar" onclick="setLang('ar')">العربية</button>
+    <button class="lang-btn" data-lang="fa" onclick="setLang('fa')">فارسی</button>
     <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">Română</button>
   </div>
 
@@ -309,11 +310,27 @@ function setLang(lang){
 }
 
 (function(){
-  // ALWAYS Estonian by default. User picks language manually.
-  // No browser language auto-detect — Estonian is our market.
   var lang='et';
   try{var s=localStorage.getItem('advocat-lang');if(s&&T[s])lang=s;}catch(e){}
-  // Estonian always default. No browser auto-detect.
+  if(lang==='et'){
+    var nav=(navigator.language||'').toLowerCase();
+    if(nav.startsWith('ru'))lang='ru';
+    else if(nav.startsWith('uk'))lang='uk';
+    else if(nav.startsWith('fi'))lang='fi';
+    else if(nav.startsWith('et'))lang='et';
+    else if(nav.startsWith('sv'))lang='sv';
+    else if(nav.startsWith('de'))lang='de';
+    else if(nav.startsWith('ar'))lang='ar';
+    else if(nav.startsWith('pl'))lang='pl';
+    else if(nav.startsWith('fr'))lang='fr';
+    else if(nav.startsWith('fa'))lang='fa';
+    else if(nav.startsWith('tr'))lang='tr';
+    else if(nav.startsWith('lv'))lang='lv';
+    else if(nav.startsWith('lt'))lang='lt';
+    else if(nav.startsWith('es'))lang='es';
+    else if(nav.startsWith('it'))lang='it';
+    else if(nav.startsWith('ro'))lang='ro';
+  }
   setLang(lang);
 })();
 </script>

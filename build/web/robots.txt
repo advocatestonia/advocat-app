@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /flutter_service_worker.js
-Disallow: /assets/
-Disallow: /canvaskit/
-
-Sitemap: https://advocat.ee/sitemap.xml
