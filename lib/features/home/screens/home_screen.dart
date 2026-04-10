@@ -390,52 +390,56 @@ class _GreetingHeader extends ConsumerWidget {
       bottom: false,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.lg,
-          AppSpacing.sm,
+          AppSpacing.md,
+          AppSpacing.md,
+          AppSpacing.md,
+          AppSpacing.xs,
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Row(
-              children: [
-                // Time-of-day icon
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: _timeColor.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(_timeIcon, color: _timeColor, size: 22),
+            // Shield brand icon
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.accent.withValues(alpha: 0.15),
+                    AppColors.primary.withValues(alpha: 0.10),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ShaderMask(
-                    shaderCallback: (bounds) => LinearGradient(
-                      colors: [AppColors.primary, _timeColor],
-                    ).createShader(bounds),
-                    child: Text(
-                      _greeting(l),
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                ),
-                // Globe icon for quick language switching
-                IconButton(
-                  onPressed: () => _showLanguagePicker(context, ref),
-                  icon: const Icon(Icons.language_rounded),
-                  color: AppColors.textSecondary,
-                  tooltip: l.language,
-                  iconSize: 26,
-                ),
-              ],
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(Icons.shield_outlined, color: AppColors.accent, size: 22),
             ),
-            const SizedBox(height: 2),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ShaderMask(
+                shaderCallback: (bounds) => LinearGradient(
+                  colors: [AppColors.primary, _timeColor],
+                ).createShader(bounds),
+                child: Text(
+                  _greeting(l),
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                ),
+              ),
+            ),
+            // Globe icon for quick language switching
+            IconButton(
+              onPressed: () => _showLanguagePicker(context, ref),
+              icon: const Icon(Icons.language_rounded),
+              color: AppColors.textSecondary,
+              tooltip: l.language,
+              iconSize: 24,
+              visualDensity: VisualDensity.compact,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+            ),
           ],
         ),
       ),
@@ -467,10 +471,10 @@ class _UrgentBanner extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
+        vertical: AppSpacing.xs,
       ),
       child: Container(
-        padding: const EdgeInsets.all(AppSpacing.md),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 10),
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(AppRadius.md),
@@ -529,7 +533,7 @@ class _QuickActions extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
-        vertical: AppSpacing.md,
+        vertical: AppSpacing.sm,
       ),
       child: Column(
         children: [
@@ -562,7 +566,7 @@ class _QuickActions extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: AppSpacing.sm),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -577,6 +581,12 @@ class _QuickActions extends StatelessWidget {
                 label: l.email,
                 color: AppColors.info,
                 onTap: () => context.push(AppRoutes.email),
+              ),
+              _QuickActionButton(
+                icon: Icons.shield_rounded,
+                label: 'Advocat Pro',
+                color: const Color(0xFFDAA520),
+                onTap: () => context.push(AppRoutes.subscription),
               ),
               _QuickActionButton(
                 icon: Icons.phone_in_talk_outlined,
@@ -774,17 +784,17 @@ class _HowToUseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      padding: const EdgeInsets.only(left: AppSpacing.md),
       child: Align(
         alignment: Alignment.centerLeft,
         child: TextButton.icon(
           onPressed: () => _showTutorial(context, l),
-          icon: const Icon(Icons.help_outline_rounded, size: 18),
+          icon: const Icon(Icons.help_outline_rounded, size: 16),
           label: Text(l.howToUse),
           style: TextButton.styleFrom(
-            foregroundColor: AppColors.textSecondary,
-            textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            foregroundColor: AppColors.textTertiary,
+            textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             minimumSize: Size.zero,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
@@ -951,68 +961,77 @@ class _PremiumUpgradeCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
+        vertical: AppSpacing.xs,
       ),
       child: GestureDetector(
         onTap: () => context.push(AppRoutes.subscription),
         child: Container(
-          padding: const EdgeInsets.all(AppSpacing.md),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xFF0D9488), // accent
-                Color(0xFF14B8A6), // accentLight
-                Color(0xFF1A365D), // primary
+                Color(0xFFF7E8B0), // light gold
+                Color(0xFFEAC54F), // rich gold
+                Color(0xFFDAA520), // goldenrod
               ],
             ),
             borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+              color: const Color(0xFFDAA520),
+              width: 0.5,
+            ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.accent.withValues(alpha: 0.3),
+                color: const Color(0xFFDAA520).withValues(alpha: 0.30),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
+              ),
+              BoxShadow(
+                color: const Color(0xFFEAC54F).withValues(alpha: 0.15),
+                blurRadius: 20,
+                spreadRadius: 2,
+                offset: const Offset(0, 1),
               ),
             ],
           ),
           child: Row(
             children: [
-              // Icon
+              // Crown icon
               Container(
-                width: 48,
-                height: 48,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  color: const Color(0xFF6B4E00).withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Icon(
-                  Icons.workspace_premium_rounded,
-                  color: Colors.white,
-                  size: 28,
+                  Icons.star_rounded,
+                  color: Color(0xFFB8860B),
+                  size: 24,
                 ),
               ),
-              const SizedBox(width: AppSpacing.md),
+              const SizedBox(width: 12),
               // Text
-              Expanded(
+              const Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Premium',
+                    Text(
+                      'Advocat Pro',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
+                        color: Color(0xFF6B4E00),
+                        fontSize: 16,
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.3,
                       ),
                     ),
-                    const SizedBox(height: 2),
                     Text(
                       'Unlimited AI consultations',
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.85),
-                        fontSize: 13,
+                        color: Color(0xFF8B6914),
+                        fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -1020,18 +1039,10 @@ class _PremiumUpgradeCard extends StatelessWidget {
                 ),
               ),
               // Arrow
-              Container(
-                width: 36,
-                height: 36,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.arrow_forward_rounded,
-                  color: Colors.white,
-                  size: 20,
-                ),
+              const Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Color(0xFFB8860B),
+                size: 16,
               ),
             ],
           ),
@@ -1347,11 +1358,11 @@ class _EmptyState extends StatelessWidget {
           ClipRect(
             child: Align(
               alignment: Alignment.center,
-              heightFactor: 0.7,
+              heightFactor: 0.65,
               child: Image.asset(
                 'assets/images/logo_shield.png',
-                width: 240,
-                height: 240,
+                width: 200,
+                height: 200,
                 filterQuality: FilterQuality.high,
               ),
             ),
