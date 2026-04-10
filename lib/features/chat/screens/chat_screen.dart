@@ -211,9 +211,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       },
       onDone: () {
-        if (mounted && _voiceState == VoiceButtonState.listening) {
-          _stopVoiceInput();
-        }
+        // In continuous mode, the stream does not complete until the user
+        // explicitly presses the stop button.  Do NOT auto-stop here.
       },
     );
   }
@@ -384,6 +383,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           final response = await ai.sendChatMessage(
             caseId: widget.caseId,
             message: text,
+            userLanguage: Localizations.localeOf(context).languageCode,
           );
           responseText = response.message;
           // Guard against empty responses (e.g. tool_use only).
@@ -1896,29 +1896,41 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget _buildQuickActions() {
     final List<(String, IconData)> actions;
 
+    final lang = Localizations.localeOf(context).languageCode;
+
+    // Localized quick-action labels
+    String _l(String et, String en, String ru) {
+      switch (lang) {
+        case 'et': return et;
+        case 'en': return en;
+        case 'ru': return ru;
+        default: return en;
+      }
+    }
+
     switch (_chatPhase) {
       case _ChatPhase.newCase:
         actions = [
-          ('Что у меня за ситуация?', Icons.help_outline_rounded),
-          ('Какие у меня права?', Icons.shield_outlined),
-          ('Что делать первым?', Icons.flag_outlined),
-          ('Сканировать документ', Icons.document_scanner_outlined),
+          (_l('Mis on minu olukord?', 'What is my situation?', 'Что у меня за ситуация?'), Icons.help_outline_rounded),
+          (_l('Millised on minu õigused?', 'What are my rights?', 'Какие у меня права?'), Icons.shield_outlined),
+          (_l('Mida teha kõigepealt?', 'What should I do first?', 'Что делать первым?'), Icons.flag_outlined),
+          (_l('Skaneeri dokument', 'Scan document', 'Сканировать документ'), Icons.document_scanner_outlined),
         ];
         break;
       case _ChatPhase.afterScan:
         actions = [
-          ('Найти ошибки', Icons.search_rounded),
-          ('Составить жалобу', Icons.description_outlined),
-          ('Проверить сроки', Icons.schedule_rounded),
-          ('Объяснить простыми словами', Icons.translate_rounded),
+          (_l('Leia vead', 'Find errors', 'Найти ошибки'), Icons.search_rounded),
+          (_l('Koosta kaebus', 'Draft a complaint', 'Составить жалобу'), Icons.description_outlined),
+          (_l('Kontrolli tähtaegu', 'Check deadlines', 'Проверить сроки'), Icons.schedule_rounded),
+          (_l('Selgita lihtsalt', 'Explain simply', 'Объяснить простыми словами'), Icons.translate_rounded),
         ];
         break;
       case _ChatPhase.afterAnalysis:
         actions = [
-          ('Составить жалобу', Icons.description_outlined),
-          ('Найти адвоката', Icons.person_search_outlined),
-          ('Объяснить простыми словами', Icons.translate_rounded),
-          ('Проверить дедлайны', Icons.schedule_rounded),
+          (_l('Koosta kaebus', 'Draft a complaint', 'Составить жалобу'), Icons.description_outlined),
+          (_l('Leia advokaat', 'Find a lawyer', 'Найти адвоката'), Icons.person_search_outlined),
+          (_l('Selgita lihtsalt', 'Explain simply', 'Объяснить простыми словами'), Icons.translate_rounded),
+          (_l('Kontrolli tähtaegu', 'Check deadlines', 'Проверить дедлайны'), Icons.schedule_rounded),
         ];
         break;
     }
