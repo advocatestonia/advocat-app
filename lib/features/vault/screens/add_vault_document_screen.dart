@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,29 @@ import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
 import 'document_vault_screen.dart';
+
+/// Detect MIME type from file extension.
+String _mimeFromExt(String fileName) {
+  final ext = fileName.toLowerCase().split('.').last;
+  switch (ext) {
+    case 'pdf':
+      return 'application/pdf';
+    case 'doc':
+      return 'application/msword';
+    case 'docx':
+      return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    case 'txt':
+      return 'text/plain';
+    case 'png':
+      return 'image/png';
+    case 'heic':
+      return 'image/heic';
+    case 'jpg':
+    case 'jpeg':
+    default:
+      return 'image/jpeg';
+  }
+}
 
 class AddVaultDocumentScreen extends ConsumerStatefulWidget {
   const AddVaultDocumentScreen({super.key});
@@ -37,19 +61,67 @@ class _AddVaultDocumentScreenState
     super.dispose();
   }
 
-  Future<void> _pickAndUpload(ImageSource source) async {
+  /// Pick any file (PDF, DOC, DOCX, TXT, images) using FilePicker.
+  Future<void> _pickFileAndUpload() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf', 'doc', 'docx', 'txt',
+        'jpg', 'jpeg', 'png', 'heic',
+      ],
+      withData: true,
+    );
+    if (result == null || result.files.isEmpty) return;
+
+    final file = result.files.first;
+    if (file.bytes == null || file.name.isEmpty) return;
+
+    setState(() => _uploading = true);
+    try {
+      final mimeType = _mimeFromExt(file.name);
+      final svc = ref.read(supabaseServiceProvider);
+      final caseId = 'vault-${DateTime.now().millisecondsSinceEpoch}';
+      await svc.uploadDocument(
+        caseId: caseId,
+        fileName: file.name,
+        fileBytes: file.bytes!,
+        mimeType: mimeType,
+      );
+
+      ref.invalidate(vaultDocumentsProvider);
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Document uploaded successfully')),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('Upload error: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Upload failed: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _uploading = false);
+    }
+  }
+
+  /// Take a photo with the camera and upload it.
+  Future<void> _scanAndUpload() async {
     final picker = ImagePicker();
-    final picked = await picker.pickImage(source: source, imageQuality: 85);
+    final picked = await picker.pickImage(
+      source: ImageSource.camera,
+      imageQuality: 85,
+    );
     if (picked == null) return;
 
     setState(() => _uploading = true);
     try {
       final bytes = await picked.readAsBytes();
       final fileName = picked.name;
-      final mimeType = fileName.toLowerCase().endsWith('.png')
-          ? 'image/png'
-          : 'image/jpeg';
-
+      final mimeType = _mimeFromExt(fileName);
       final svc = ref.read(supabaseServiceProvider);
       final caseId = 'vault-${DateTime.now().millisecondsSinceEpoch}';
       await svc.uploadDocument(
@@ -59,7 +131,6 @@ class _AddVaultDocumentScreenState
         mimeType: mimeType,
       );
 
-      // Invalidate vault documents so the list refreshes on pop.
       ref.invalidate(vaultDocumentsProvider);
 
       if (mounted) {
@@ -130,7 +201,7 @@ class _AddVaultDocumentScreenState
                       title: l10n.scanDocument,
                       subtitle: l10n.scanDocumentDesc,
                       color: AppColors.accent,
-                      onTap: () => _pickAndUpload(ImageSource.camera),
+                      onTap: _scanAndUpload,
                     ),
                     const SizedBox(height: AppSpacing.md),
                     _AnimatedOptionCard(
@@ -140,7 +211,7 @@ class _AddVaultDocumentScreenState
                       title: l10n.uploadFile,
                       subtitle: l10n.uploadFileDesc,
                       color: AppColors.info,
-                      onTap: () => _pickAndUpload(ImageSource.gallery),
+                      onTap: _pickFileAndUpload,
                     ),
                     const SizedBox(height: AppSpacing.md),
                     _AnimatedOptionCard(

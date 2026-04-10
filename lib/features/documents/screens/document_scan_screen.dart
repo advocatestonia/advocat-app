@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -204,16 +205,94 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
     }
   }
 
-  Future<void> _pickFromGallery() async {
-    final image = await _picker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 92,
+  /// Detect MIME type from file extension.
+  static String _mimeFromExt(String fileName) {
+    final ext = fileName.toLowerCase().split('.').last;
+    switch (ext) {
+      case 'pdf':
+        return 'application/pdf';
+      case 'doc':
+        return 'application/msword';
+      case 'docx':
+        return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+      case 'txt':
+        return 'text/plain';
+      case 'png':
+        return 'image/png';
+      case 'heic':
+        return 'image/heic';
+      case 'jpg':
+      case 'jpeg':
+      default:
+        return 'image/jpeg';
+    }
+  }
+
+  /// Pick any supported file (PDF, DOC, DOCX, TXT, images) and upload directly.
+  Future<void> _pickFileAndUpload() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: [
+        'pdf', 'doc', 'docx', 'txt',
+        'jpg', 'jpeg', 'png', 'heic',
+      ],
+      withData: true,
     );
-    if (image != null && mounted) {
-      setState(() {
-        _currentCapture = image;
-        _phase = _ScanPhase.preview;
-      });
+    if (result == null || result.files.isEmpty) return;
+
+    final file = result.files.first;
+    if (file.bytes == null || file.name.isEmpty) return;
+
+    // For image files, go through the preview flow as before.
+    final ext = file.name.toLowerCase().split('.').last;
+    final isImage = ['jpg', 'jpeg', 'png', 'heic'].contains(ext);
+
+    if (isImage) {
+      final xFile = XFile.fromData(file.bytes!, name: file.name);
+      if (mounted) {
+        setState(() {
+          _currentCapture = xFile;
+          _phase = _ScanPhase.preview;
+        });
+      }
+      return;
+    }
+
+    // For non-image files (PDF, DOC, DOCX, TXT), upload directly.
+    setState(() {
+      _phase = _ScanPhase.uploading;
+      _uploadProgress = 0;
+    });
+
+    try {
+      final supabase = ref.read(supabaseServiceProvider);
+      final caseId =
+          widget.caseId ?? 'scan-${DateTime.now().millisecondsSinceEpoch}';
+      final mimeType = _mimeFromExt(file.name);
+
+      await supabase.uploadDocument(
+        caseId: caseId,
+        fileName: file.name,
+        fileBytes: file.bytes!,
+        mimeType: mimeType,
+      );
+
+      setState(() => _uploadProgress = 1.0);
+
+      if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.documentUploadedSuccess),
+            backgroundColor: AppColors.success,
+          ),
+        );
+        context.pop(true);
+      }
+    } catch (e) {
+      if (!mounted) return;
+      _showError(AppLocalizations.of(context)!.uploadFailed);
+      setState(() => _phase = _ScanPhase.camera);
     }
   }
 
@@ -579,7 +658,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: _pickFromGallery,
+                onPressed: _pickFileAndUpload,
                 icon: const Icon(Icons.upload_file_rounded, size: 22),
                 label: Text(
                   l10n.uploadFile,
@@ -903,13 +982,13 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
             // Gallery
             _CircleIconButton(
               icon: Icons.photo_library_outlined,
-              onPressed: _pickFromGallery,
+              onPressed: _pickFileAndUpload,
               size: 48,
             ),
 
             // Shutter button with premium animation
             _ShutterButton(
-              onTap: _hasCameraPermission ? _takePhoto : _pickFromGallery,
+              onTap: _hasCameraPermission ? _takePhoto : _pickFileAndUpload,
             ),
 
             // Flash toggle
