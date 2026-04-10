@@ -778,27 +778,29 @@ class _AdvocatProQuickActionButtonState
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Color(0xFFFFD700),
-                            Color(0xFFDAA520),
-                            Color(0xFFB8860B),
+                            AppColors.accent,
+                            Color(0xFF3D9B97),
+                            Color(0xFF2D7A77),
                           ],
                         ),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xFFDAA520).withValues(alpha: 0.4),
-                            blurRadius: 12,
+                            color: AppColors.accent.withValues(alpha: 0.3),
+                            blurRadius: 10,
                             offset: const Offset(0, 2),
                           ),
                         ],
                       ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/shield_pro_gold.png',
-                          width: 48,
-                          height: 48,
-                          filterQuality: FilterQuality.high,
-                        ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Icon(Icons.shield_rounded, size: 34, color: Colors.white),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 2),
+                            child: Icon(Icons.star_rounded, size: 15, color: Colors.white.withValues(alpha: 0.9)),
+                          ),
+                        ],
                       ),
                     ),
                   );
@@ -812,7 +814,7 @@ class _AdvocatProQuickActionButtonState
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: const Color(0xFF8B6914),
+                color: AppColors.accent,
                 fontSize: 11,
                 fontWeight: FontWeight.w600,
                 height: 1.2,
@@ -1138,14 +1140,15 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                       color: const Color(0xFF1A5C59).withValues(alpha: 0.5),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(2),
-                      child: Image.asset(
-                        'assets/images/shield_pro_green.png',
-                        width: 40,
-                        height: 40,
-                        filterQuality: FilterQuality.high,
-                      ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        const Icon(Icons.shield_rounded, size: 26, color: Colors.white),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 1),
+                          child: Icon(Icons.star_rounded, size: 12, color: const Color(0xFFFFD700)),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 12),
