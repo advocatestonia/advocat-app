@@ -25,8 +25,6 @@ import 'edit_profile_screen.dart';
 
 final _pushNotificationsProvider = StateProvider<bool>((ref) => true);
 final _deadlineRemindersProvider = StateProvider<bool>((ref) => true);
-final _emailConnectedProvider = StateProvider<bool>((ref) => false);
-final _connectedEmailProvider = StateProvider<String?>((ref) => null);
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -359,52 +357,13 @@ class SettingsScreen extends ConsumerWidget {
   // ── Email tile ───────────────────────────────────────────────────────
 
   Widget _buildEmailTile(BuildContext context, WidgetRef ref) {
-    final connected = ref.watch(_emailConnectedProvider);
-    final connectedEmail = ref.watch(_connectedEmailProvider);
-
     final l = AppLocalizations.of(context)!;
     return _SettingsTile(
       icon: AppIcons.emailOutlined,
-      title: connected ? l.emailConnected : l.connectEmail,
-      subtitle: connected
-          ? connectedEmail ?? l.connected
-          : l.syncLegalCorrespondence,
-      trailing: connected
-          ? TextButton(
-              onPressed: () {
-                ref.read(_emailConnectedProvider.notifier).state = false;
-                ref.read(_connectedEmailProvider.notifier).state = null;
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(l.emailDisconnected)),
-                );
-              },
-              child: Text(
-                l.disconnect,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.error,
-                ),
-              ),
-            )
-          : TextButton(
-              onPressed: () {
-                // TODO: Start OAuth flow
-                ref.read(_emailConnectedProvider.notifier).state = true;
-                ref.read(_connectedEmailProvider.notifier).state =
-                    'europeworktallinn@gmail.com';
-              },
-              child: Text(
-                l.connectGmail,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.accent,
-                ),
-              ),
-            ),
+      title: l.emailIntegration,
+      subtitle: l.syncLegalCorrespondence,
+      trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
+      onTap: () => context.push(AppRoutes.email),
     );
   }
 

@@ -9,6 +9,7 @@ import 'package:go_router/go_router.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../models/case_model.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
 import '../../../services/client_knowledge_service.dart';
@@ -103,6 +104,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _upgradeBannerDismissed = false;
   int _freeMessagesUsed = 0;
   int _freeMessagesTotal = 50;
+  LegalCase? _currentCase;
 
   // -- Voice state --
   VoiceButtonState _voiceState = VoiceButtonState.idle;
@@ -116,6 +118,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _loadMessages();
     _initVoice();
     _loadFreeMessageCount();
+    _loadCase();
     _knowledgeService.buildClientContext(caseId: widget.caseId);
   }
 
@@ -129,6 +132,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _freeMessagesUsed = _freeMessagesTotal - remaining;
         });
       }
+    } catch (_) {}
+  }
+
+  Future<void> _loadCase() async {
+    try {
+      final supabase = ref.read(supabaseServiceProvider);
+      _currentCase = await supabase.getCaseById(widget.caseId);
     } catch (_) {}
   }
 
@@ -431,6 +441,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             userLanguage: Localizations.localeOf(context).languageCode,
             userName: userName,
             clientContext: ctx,
+            caseType: _currentCase?.type,
+            country: 'estonia',
+            nationality: _currentCase?.nationality,
           );
           responseText = response.message;
           _knowledgeService.notifyMessageSent();

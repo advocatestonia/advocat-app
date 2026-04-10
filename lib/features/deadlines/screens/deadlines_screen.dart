@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/deadline.dart';
+import '../../../services/supabase_service.dart';
 import '../../../shared/utils/date_utils.dart';
 import '../providers/deadlines_provider.dart';
 
@@ -170,11 +171,14 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
                             isFirstUrgent: index == 0 && isUrgent,
                             child: _DeadlineCard(
                               deadline: filtered[index],
-                              onMarkComplete: () {
-                                ref
-                                    .read(allDeadlinesProvider.future)
-                                    .then((_) =>
-                                        ref.invalidate(allDeadlinesProvider));
+                              onMarkComplete: () async {
+                                final supabase =
+                                    ref.read(supabaseServiceProvider);
+                                await supabase.updateDeadline(
+                                  filtered[index].id,
+                                  {'status': 'completed'},
+                                );
+                                ref.invalidate(allDeadlinesProvider);
                               },
                             ),
                           );

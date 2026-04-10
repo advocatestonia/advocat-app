@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -93,7 +94,7 @@ class StripeCheckoutService {
     }
 
     final uri = Uri.parse(checkoutUrl);
-    if (!await canLaunchUrl(uri)) {
+    if (!kIsWeb && !await canLaunchUrl(uri)) {
       throw Exception('Cannot open checkout URL');
     }
 
@@ -148,7 +149,7 @@ class StripeCheckoutService {
     }
 
     final uri = Uri.parse(checkoutUrl);
-    if (!await canLaunchUrl(uri)) {
+    if (!kIsWeb && !await canLaunchUrl(uri)) {
       throw Exception('Cannot open checkout URL');
     }
 

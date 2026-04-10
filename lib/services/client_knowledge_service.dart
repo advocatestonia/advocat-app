@@ -4,13 +4,27 @@ class ClientKnowledgeService {
   final _client = Supabase.instance.client;
   String? _cachedContext;
   String? _cachedCaseId;
+  String? _cachedUserId;
   int _messageCount = 0;
 
+  /// Clear all cached state (call on logout or user change).
+  void clear() {
+    _cachedContext = null;
+    _cachedCaseId = null;
+    _cachedUserId = null;
+    _messageCount = 0;
+  }
+
   Future<String> buildClientContext({String? caseId}) async {
+    final uid = _client.auth.currentUser?.id;
+    // Invalidate cache when user changes (e.g. after logout/login)
+    if (uid != _cachedUserId) {
+      clear();
+      _cachedUserId = uid;
+    }
     if (_cachedContext != null && _cachedCaseId == caseId && _messageCount < 5) {
       return _cachedContext!;
     }
-    final uid = _client.auth.currentUser?.id;
     if (uid == null) return '';
     final buf = StringBuffer();
     try {

@@ -35,13 +35,14 @@ class CasesListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)?.myCases ?? 'My Cases'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.tune_outlined),
-            tooltip: 'Filter',
-            onPressed: () => _showFilterSheet(context, ref),
-          ),
-        ],
+        // TODO: Re-enable filter when case type filtering is implemented
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.tune_outlined),
+        //     tooltip: 'Filter',
+        //     onPressed: () => _showFilterSheet(context, ref),
+        //   ),
+        // ],
       ),
       body: Column(
         children: [

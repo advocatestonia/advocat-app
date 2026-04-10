@@ -230,6 +230,7 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
         migriReferenceNumber: _referenceController.text.trim().isEmpty
             ? null
             : _referenceController.text.trim(),
+        country: _selectedCountry,
       );
 
       // 2. Upload attached documents (if any) linked to the new case ID

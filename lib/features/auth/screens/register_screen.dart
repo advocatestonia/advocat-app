@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../config/router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../config/theme.dart';
+import '../../../shared/widgets/gdpr_consent_dialog.dart';
 import '../providers/auth_provider.dart';
 
 /// Registration screen with full name, email, password with strength
@@ -28,7 +29,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _agreedToTerms = false;
+  bool _navigating = false;
   String _selectedLanguage = 'et';
+
+  // Gesture recognizers for terms/privacy links (must be disposed)
+  late final TapGestureRecognizer _termsRecognizer;
+  late final TapGestureRecognizer _privacyRecognizer;
 
   // Focus nodes for shadow animations
   final _nameFocus = FocusNode();
@@ -104,6 +110,16 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
       ),
     );
 
+    // Tap recognizers for terms/privacy links
+    _termsRecognizer = TapGestureRecognizer()
+      ..onTap = () {
+        // TODO: Open Terms of Service
+      };
+    _privacyRecognizer = TapGestureRecognizer()
+      ..onTap = () {
+        // TODO: Open Privacy Policy
+      };
+
     // Listen to focus changes for shadow effect
     _nameFocus.addListener(_onFocusChange);
     _emailFocus.addListener(_onFocusChange);
@@ -127,6 +143,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
     _checkboxController.dispose();
     _buttonPressController.dispose();
     _googlePressController.dispose();
+    _termsRecognizer.dispose();
+    _privacyRecognizer.dispose();
     super.dispose();
   }
 
@@ -178,6 +196,32 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
       );
   }
 
+  /// Checks GDPR consent before navigating to home.
+  Future<void> _ensureGdprConsentThenNavigate() async {
+    if (_navigating) return;
+    _navigating = true;
+
+    try {
+      final alreadyConsented = await hasGdprConsent();
+      if (alreadyConsented) {
+        if (mounted) context.go(AppRoutes.home);
+        return;
+      }
+
+      if (!mounted) return;
+      final accepted = await showGdprConsentDialog(context);
+      if (!mounted) return;
+
+      if (accepted) {
+        context.go(AppRoutes.home);
+      } else {
+        ref.read(authControllerProvider.notifier).logout();
+      }
+    } finally {
+      _navigating = false;
+    }
+  }
+
   /// Wraps a text field in an animated container that shows a subtle
   /// shadow when the field is focused.
   Widget _buildFocusableField({
@@ -212,7 +256,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
 
     ref.listen<AuthState>(authControllerProvider, (prev, next) {
       if (next.isAuthenticated) {
-        context.go(AppRoutes.home);
+        _ensureGdprConsentThenNavigate();
       } else if (next.hasError && next.errorMessage != null) {
         _showSnackBar(next.errorMessage!);
         ref.read(authControllerProvider.notifier).clearError();
@@ -495,10 +539,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                                     color: AppColors.accent,
                                     fontWeight: FontWeight.w600,
                                   ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      // TODO: Open Terms of Service
-                                    },
+                                  recognizer: _termsRecognizer,
                                 ),
                                 TextSpan(
                                     text:
@@ -513,10 +554,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                                     color: AppColors.accent,
                                     fontWeight: FontWeight.w600,
                                   ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      // TODO: Open Privacy Policy
-                                    },
+                                  recognizer: _privacyRecognizer,
                                 ),
                               ],
                             ),
@@ -629,15 +667,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                           onPressed: authState.isLoading
                               ? null
                               : _handleGoogleRegister,
-                          icon: Image.network(
-                            'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                            width: 20,
-                            height: 20,
-                            errorBuilder: (_, __, ___) => const Icon(
-                              Icons.g_mobiledata_rounded,
-                              size: 24,
-                            ),
-                          ),
+                          icon: const _GoogleGLogo(size: 20),
                           label: Text(
                               AppLocalizations.of(context)
                                       ?.continueWithGoogle ??
@@ -762,6 +792,53 @@ class _AnimatedPasswordStrengthIndicator extends StatelessWidget {
               ],
             )
           : const SizedBox.shrink(),
+    );
+  }
+}
+
+/// Google "G" logo as 4 colored circles arranged in the classic pattern.
+class _GoogleGLogo extends StatelessWidget {
+  const _GoogleGLogo({this.size = 20});
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _dot(const Color(0xFFEA4335), size * 0.42),
+              SizedBox(width: size * 0.08),
+              _dot(const Color(0xFF4285F4), size * 0.42),
+            ],
+          ),
+          SizedBox(height: size * 0.08),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _dot(const Color(0xFFFBBC05), size * 0.42),
+              SizedBox(width: size * 0.08),
+              _dot(const Color(0xFF34A853), size * 0.42),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _dot(Color color, double dotSize) {
+    return Container(
+      width: dotSize,
+      height: dotSize,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
+      ),
     );
   }
 }

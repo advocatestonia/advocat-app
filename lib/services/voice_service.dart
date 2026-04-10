@@ -104,8 +104,11 @@ class VoiceService {
   final _partialController = StreamController<String>.broadcast();
   String _finalResult = '';
 
-  /// Timer used to poll JS recognition state on web.
-  Timer? _webPollTimer;
+  /// Timer used to poll JS STT recognition state on web.
+  Timer? _sttPollTimer;
+
+  /// Timer used to poll ElevenLabs TTS speaking state on web.
+  Timer? _ttsPollTimer;
 
   // ── Getters ─────────────────────────────────────────────────────────────
 
@@ -392,8 +395,8 @@ class VoiceService {
     // Poll the JS global state every 150ms for results.
     // In continuous mode, we keep polling until user explicitly stops
     // (which sets _isListening = false via stopListening()).
-    _webPollTimer?.cancel();
-    _webPollTimer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
+    _sttPollTimer?.cancel();
+    _sttPollTimer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
       // If stopListening() was called, stop polling.
       if (!_isListening) {
         timer.cancel();
@@ -438,8 +441,8 @@ class VoiceService {
 
   /// Stop listening and return the final recognized text.
   Future<String> stopListening() async {
-    _webPollTimer?.cancel();
-    _webPollTimer = null;
+    _sttPollTimer?.cancel();
+    _sttPollTimer = null;
 
     if (_isListening) {
       if (kIsWeb && _useNativeWebSpeech) {
@@ -530,8 +533,8 @@ class VoiceService {
 
   /// Poll JS state to detect when ElevenLabs audio finishes.
   void _pollElevenLabsSpeaking() {
-    _webPollTimer?.cancel();
-    _webPollTimer =
+    _ttsPollTimer?.cancel();
+    _ttsPollTimer =
         Timer.periodic(const Duration(milliseconds: 200), (timer) {
       if (!web_speech.webTtsIsSpeaking()) {
         _isSpeaking = false;
@@ -622,6 +625,8 @@ class VoiceService {
 
   /// Stop any ongoing speech (both ElevenLabs and browser TTS).
   Future<void> stopSpeaking() async {
+    _ttsPollTimer?.cancel();
+    _ttsPollTimer = null;
     // Stop ElevenLabs audio on web.
     if (kIsWeb) {
       web_speech.webTtsStopAudio();
@@ -633,8 +638,10 @@ class VoiceService {
   // ── Cleanup ─────────────────────────────────────────────────────────────
 
   Future<void> dispose() async {
-    _webPollTimer?.cancel();
-    _webPollTimer = null;
+    _sttPollTimer?.cancel();
+    _sttPollTimer = null;
+    _ttsPollTimer?.cancel();
+    _ttsPollTimer = null;
     await stopListening();
     await stopSpeaking();
     await _partialController.close();

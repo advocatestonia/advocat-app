@@ -36,7 +36,8 @@ class CaseCard extends StatelessWidget {
     };
   }
 
-  String _statusLabel(CaseStatus status) {
+  // TODO: Add l10n keys for case status labels (caseStatusActive, caseStatusPending, etc.) to ARB files
+  String _statusLabel(CaseStatus status, BuildContext context) {
     return switch (status) {
       CaseStatus.active => 'Active',
       CaseStatus.pendingDecision => 'Pending Decision',
@@ -47,23 +48,25 @@ class CaseCard extends StatelessWidget {
     };
   }
 
-  String _typeLabel(CaseType type) {
+  // TODO: Add l10n keys for case type labels to ARB files (reuse from case_create_screen)
+  String _typeLabel(CaseType type, BuildContext context) {
+    final l = AppLocalizations.of(context);
     return switch (type) {
-      CaseType.deportation => 'Deportation',
-      CaseType.asylum => 'Asylum',
-      CaseType.residencePermit => 'Residence Permit',
-      CaseType.familyReunification => 'Family Reunion',
-      CaseType.citizenship => 'Citizenship',
-      CaseType.workPermit => 'Work Permit',
-      CaseType.laborDispute => 'Labor Dispute',
-      CaseType.tenantRights => 'Tenant Rights',
-      CaseType.debtCollection => 'Debt Collection',
-      CaseType.discrimination => 'Discrimination',
-      CaseType.policeMisconduct => 'Police Misconduct',
-      CaseType.socialBenefits => 'Social Benefits',
-      CaseType.domesticViolence => 'Domestic Violence',
-      CaseType.consumerProtection => 'Consumer Protection',
-      CaseType.other => 'Other',
+      CaseType.deportation => l?.deportation ?? 'Deportation',
+      CaseType.asylum => l?.asylum ?? 'Asylum',
+      CaseType.residencePermit => l?.residencePermit ?? 'Residence Permit',
+      CaseType.familyReunification => l?.familyReunification ?? 'Family Reunion',
+      CaseType.citizenship => l?.citizenship ?? 'Citizenship',
+      CaseType.workPermit => l?.workPermit ?? 'Work Permit',
+      CaseType.laborDispute => l?.laborDispute ?? 'Labor Dispute',
+      CaseType.tenantRights => l?.tenantRights ?? 'Tenant Rights',
+      CaseType.debtCollection => l?.debtCollection ?? 'Debt Collection',
+      CaseType.discrimination => l?.discrimination ?? 'Discrimination',
+      CaseType.policeMisconduct => l?.policeMisconduct ?? 'Police Misconduct',
+      CaseType.socialBenefits => l?.socialBenefits ?? 'Social Benefits',
+      CaseType.domesticViolence => l?.domesticViolence ?? 'Domestic Violence',
+      CaseType.consumerProtection => l?.consumerProtection ?? 'Consumer Protection',
+      CaseType.other => l?.other ?? 'Other',
     };
   }
 
@@ -92,7 +95,7 @@ class CaseCard extends StatelessWidget {
       ),
       clipBehavior: Clip.antiAlias,
       child: Semantics(
-        label: 'Case: ${legalCase.title}, status: ${_statusLabel(legalCase.status)}',
+        label: 'Case: ${legalCase.title}, status: ${_statusLabel(legalCase.status, context)}',
         button: true,
         child: Material(
         color: Colors.transparent,
@@ -160,7 +163,7 @@ class CaseCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  _statusLabel(legalCase.status),
+                                  _statusLabel(legalCase.status, context),
                                   style: TextStyle(
                                     color: statusColor,
                                     fontSize: 12,
@@ -180,7 +183,7 @@ class CaseCard extends StatelessWidget {
                         runSpacing: AppSpacing.xs,
                         children: [
                           _Chip(
-                            label: _typeLabel(legalCase.type),
+                            label: _typeLabel(legalCase.type, context),
                             icon: Icons.category_outlined,
                           ),
                           if (legalCase.nationality != null)

@@ -64,6 +64,7 @@ class CasesNotifier extends AsyncNotifier<List<LegalCase>> {
     required CaseType type,
     String? description,
     String? migriReferenceNumber,
+    String? country,
   }) async {
     // Convert CaseType enum to snake_case string matching DB schema
     final typeStr = _caseTypeToDbString(type);
@@ -73,6 +74,7 @@ class CasesNotifier extends AsyncNotifier<List<LegalCase>> {
       if (description != null) 'description': description,
       if (migriReferenceNumber != null)
         'migri_reference_number': migriReferenceNumber,
+      if (country != null) 'country': country,
     });
 
     // Optimistic update — add to the top of the list
@@ -167,6 +169,7 @@ class CaseController extends StateNotifier<AsyncValue<void>> {
     required CaseType type,
     String? description,
     String? migriReferenceNumber,
+    String? country,
   }) async {
     state = const AsyncLoading();
     try {
@@ -175,6 +178,7 @@ class CaseController extends StateNotifier<AsyncValue<void>> {
         type: type,
         description: description,
         migriReferenceNumber: migriReferenceNumber,
+        country: country,
       );
       state = const AsyncData(null);
       return result;
