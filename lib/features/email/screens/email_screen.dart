@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -22,6 +23,8 @@ class _EmailConnectionState {
     this.provider,
     this.lastSyncAt,
     this.isSyncing = false,
+    this.isConnecting = false,
+    this.errorMessage,
   });
 
   final bool isConnected;
@@ -29,6 +32,8 @@ class _EmailConnectionState {
   final _EmailProvider? provider;
   final DateTime? lastSyncAt;
   final bool isSyncing;
+  final bool isConnecting;
+  final String? errorMessage;
 
   _EmailConnectionState copyWith({
     bool? isConnected,
@@ -36,6 +41,8 @@ class _EmailConnectionState {
     _EmailProvider? provider,
     DateTime? lastSyncAt,
     bool? isSyncing,
+    bool? isConnecting,
+    String? errorMessage,
   }) {
     return _EmailConnectionState(
       isConnected: isConnected ?? this.isConnected,
@@ -43,31 +50,68 @@ class _EmailConnectionState {
       provider: provider ?? this.provider,
       lastSyncAt: lastSyncAt ?? this.lastSyncAt,
       isSyncing: isSyncing ?? this.isSyncing,
+      isConnecting: isConnecting ?? this.isConnecting,
+      errorMessage: errorMessage,
     );
   }
 }
 
 class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
-  _EmailConnectionNotifier() : super(const _EmailConnectionState());
+  _EmailConnectionNotifier() : super(const _EmailConnectionState()) {
+    _checkExistingConnection();
+  }
 
-  Future<void> connect(_EmailProvider provider) async {
-    // TODO: Replace with real OAuth flow via EmailService
-    state = state.copyWith(isSyncing: true);
-    await Future<void>.delayed(const Duration(seconds: 2));
-    state = _EmailConnectionState(
-      isConnected: true,
-      email: provider == _EmailProvider.gmail
-          ? 'europeworktallinn@gmail.com'
-          : 'user@outlook.com',
-      provider: provider,
-      lastSyncAt: DateTime.now(),
-      isSyncing: false,
-    );
+  /// Check if the user is already signed in with Google via Supabase.
+  void _checkExistingConnection() {
+    try {
+      final user = Supabase.instance.client.auth.currentUser;
+      if (user != null) {
+        // Check if user authenticated via Google OAuth
+        final providers = user.appMetadata['providers'] as List<dynamic>?;
+        final identities = user.identities;
+        final hasGoogle = (providers != null && providers.contains('google')) ||
+            (identities != null &&
+                identities.any((i) => i.provider == 'google'));
+
+        if (hasGoogle) {
+          state = _EmailConnectionState(
+            isConnected: true,
+            email: user.email ?? '',
+            provider: _EmailProvider.gmail,
+            lastSyncAt: DateTime.now(),
+          );
+        }
+      }
+    } catch (_) {
+      // Supabase not initialized or other error — stay disconnected
+    }
+  }
+
+  /// Connect Gmail via Google OAuth through Supabase.
+  Future<void> connectGmail() async {
+    state = state.copyWith(isConnecting: true, errorMessage: null);
+    try {
+      // Link Google identity to existing session, or sign in with Google
+      await Supabase.instance.client.auth.signInWithOAuth(
+        OAuthProvider.google,
+        scopes: 'email',
+      );
+      // On web, this redirects the browser. When the user comes back,
+      // _checkExistingConnection() will pick up the Google identity.
+      // We keep isConnecting true since the page will reload.
+    } catch (e) {
+      state = _EmailConnectionState(
+        isConnecting: false,
+        errorMessage: 'Failed to connect Gmail: ${e.toString()}',
+      );
+    }
   }
 
   Future<void> syncNow() async {
     state = state.copyWith(isSyncing: true);
-    await Future<void>.delayed(const Duration(seconds: 2));
+    // Email reading requires Gmail API backend — not yet implemented.
+    // Simulate a brief check then update timestamp.
+    await Future<void>.delayed(const Duration(milliseconds: 500));
     state = state.copyWith(
       lastSyncAt: DateTime.now(),
       isSyncing: false,
@@ -83,59 +127,6 @@ final _emailConnectionProvider =
     StateNotifierProvider<_EmailConnectionNotifier, _EmailConnectionState>(
   (ref) => _EmailConnectionNotifier(),
 );
-
-// ── Mock data ────────────────────────────────────────────────────────────
-
-class _LegalEmail {
-  const _LegalEmail({
-    required this.id,
-    required this.sender,
-    required this.subject,
-    required this.date,
-    this.linkedCaseId,
-    this.linkedCaseName,
-  });
-
-  final String id;
-  final String sender;
-  final String subject;
-  final DateTime date;
-  final String? linkedCaseId;
-  final String? linkedCaseName;
-
-  bool get isLinked => linkedCaseId != null;
-}
-
-final _mockEmails = [
-  _LegalEmail(
-    id: '1',
-    sender: 'migri@migri.fi',
-    subject: 'Re: Residence permit application - Decision pending',
-    date: DateTime.now().subtract(const Duration(hours: 3)),
-    linkedCaseId: 'case-1',
-    linkedCaseName: 'Residence Permit Appeal',
-  ),
-  _LegalEmail(
-    id: '2',
-    sender: 'helsinki.ao@oikeus.fi',
-    subject: 'Administrative Court - Hearing date confirmation',
-    date: DateTime.now().subtract(const Duration(days: 1)),
-    linkedCaseId: 'case-1',
-    linkedCaseName: 'Residence Permit Appeal',
-  ),
-  _LegalEmail(
-    id: '3',
-    sender: 'legal-aid@oikeusapu.fi',
-    subject: 'Legal aid decision - Application No. 2024-1234',
-    date: DateTime.now().subtract(const Duration(days: 3)),
-  ),
-  _LegalEmail(
-    id: '4',
-    sender: 'te-palvelut@te-toimisto.fi',
-    subject: 'Employment permit - Additional documents required',
-    date: DateTime.now().subtract(const Duration(days: 5)),
-  ),
-];
 
 // ── Screen ───────────────────────────────────────────────────────────────
 
@@ -166,47 +157,9 @@ class EmailScreen extends ConsumerWidget {
         switchInCurve: Curves.easeOutCubic,
         switchOutCurve: Curves.easeInCubic,
         child: connection.isConnected
-            ? _ConnectedView(key: const ValueKey('connected'), connection: connection)
+            ? _ConnectedView(
+                key: const ValueKey('connected'), connection: connection)
             : const _DisconnectedView(key: ValueKey('disconnected')),
-      ),
-      floatingActionButton: connection.isConnected
-          ? _ComposeButton()
-              .animate()
-              .scale(
-                begin: const Offset(0, 0),
-                end: const Offset(1, 1),
-                duration: 400.ms,
-                curve: Curves.elasticOut,
-              )
-          : null,
-    );
-  }
-}
-
-// ── Compose FAB with glow ────────────────────────────────────────────────
-
-class _ComposeButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.accent.withValues(alpha: 0.4),
-            blurRadius: 16,
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      child: FloatingActionButton(
-        onPressed: () {
-          HapticFeedback.lightImpact();
-          // TODO: Navigate to compose screen
-        },
-        backgroundColor: AppColors.accent,
-        elevation: 0,
-        child: const Icon(Icons.edit_rounded, color: Colors.white),
       ),
     );
   }
@@ -224,6 +177,7 @@ class _DisconnectedView extends ConsumerWidget {
       icon: Icons.email,
       color: Color(0xFFDB4437),
       label: 'Connect Gmail',
+      isAvailable: true,
     ),
     _ProviderInfo(
       provider: _EmailProvider.outlook,
@@ -231,6 +185,7 @@ class _DisconnectedView extends ConsumerWidget {
       icon: Icons.email,
       color: Color(0xFF0078D4),
       label: 'Connect Outlook',
+      isAvailable: false,
     ),
     _ProviderInfo(
       provider: _EmailProvider.icloud,
@@ -238,6 +193,7 @@ class _DisconnectedView extends ConsumerWidget {
       icon: Icons.cloud,
       color: Color(0xFFA2AAAD),
       label: 'Connect iCloud',
+      isAvailable: false,
     ),
     _ProviderInfo(
       provider: _EmailProvider.yahoo,
@@ -245,12 +201,15 @@ class _DisconnectedView extends ConsumerWidget {
       icon: Icons.email,
       color: Color(0xFF6001D2),
       label: 'Connect Yahoo',
+      isAvailable: false,
     ),
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final connection = ref.watch(_emailConnectionProvider);
+
     return SafeArea(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -281,7 +240,11 @@ class _DisconnectedView extends ConsumerWidget {
             )
                 .animate()
                 .fadeIn(duration: 500.ms, curve: Curves.easeOut)
-                .slideY(begin: -0.15, end: 0, duration: 500.ms, curve: Curves.easeOut),
+                .slideY(
+                    begin: -0.15,
+                    end: 0,
+                    duration: 500.ms,
+                    curve: Curves.easeOut),
 
             const SizedBox(height: AppSpacing.md),
 
@@ -295,7 +258,11 @@ class _DisconnectedView extends ConsumerWidget {
             )
                 .animate()
                 .fadeIn(delay: 100.ms, duration: 400.ms)
-                .slideY(begin: 0.1, end: 0, delay: 100.ms, duration: 400.ms),
+                .slideY(
+                    begin: 0.1,
+                    end: 0,
+                    delay: 100.ms,
+                    duration: 400.ms),
 
             const SizedBox(height: AppSpacing.xs),
 
@@ -309,7 +276,11 @@ class _DisconnectedView extends ConsumerWidget {
             )
                 .animate()
                 .fadeIn(delay: 200.ms, duration: 400.ms)
-                .slideY(begin: 0.1, end: 0, delay: 200.ms, duration: 400.ms),
+                .slideY(
+                    begin: 0.1,
+                    end: 0,
+                    delay: 200.ms,
+                    duration: 400.ms),
 
             const SizedBox(height: AppSpacing.xl),
 
@@ -324,13 +295,15 @@ class _DisconnectedView extends ConsumerWidget {
               children: _providers.asMap().entries.map((entry) {
                 final idx = entry.key;
                 final info = entry.value;
-                return _ProviderCard(info: info)
-                    .animate()
-                    .fadeIn(
+                return _ProviderCard(
+                  info: info,
+                  isConnecting:
+                      connection.isConnecting &&
+                      info.provider == _EmailProvider.gmail,
+                ).animate().fadeIn(
                       delay: Duration(milliseconds: 250 + idx * 100),
                       duration: 400.ms,
-                    )
-                    .scale(
+                    ).scale(
                       begin: const Offset(0.9, 0.9),
                       end: const Offset(1, 1),
                       delay: Duration(milliseconds: 250 + idx * 100),
@@ -340,6 +313,28 @@ class _DisconnectedView extends ConsumerWidget {
               }).toList(),
             ),
 
+            // Error message
+            if (connection.errorMessage != null) ...[
+              const SizedBox(height: AppSpacing.md),
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.sm),
+                decoration: BoxDecoration(
+                  color: AppColors.error.withValues(alpha: 0.06),
+                  borderRadius: BorderRadius.circular(AppRadius.md),
+                  border: Border.all(
+                      color: AppColors.error.withValues(alpha: 0.15)),
+                ),
+                child: Text(
+                  connection.errorMessage!,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13,
+                    color: AppColors.error.withValues(alpha: 0.9),
+                  ),
+                ),
+              ),
+            ],
+
             const SizedBox(height: AppSpacing.lg),
 
             // Security note
@@ -348,7 +343,8 @@ class _DisconnectedView extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: AppColors.info.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(AppRadius.md),
-                border: Border.all(color: AppColors.info.withValues(alpha: 0.15)),
+                border:
+                    Border.all(color: AppColors.info.withValues(alpha: 0.15)),
               ),
               child: Row(
                 children: [
@@ -374,7 +370,11 @@ class _DisconnectedView extends ConsumerWidget {
             )
                 .animate()
                 .fadeIn(delay: 650.ms, duration: 400.ms)
-                .slideY(begin: 0.1, end: 0, delay: 650.ms, duration: 400.ms),
+                .slideY(
+                    begin: 0.1,
+                    end: 0,
+                    delay: 650.ms,
+                    duration: 400.ms),
 
             const SizedBox(height: AppSpacing.xl),
           ],
@@ -393,6 +393,7 @@ class _ProviderInfo {
     required this.icon,
     required this.color,
     required this.label,
+    required this.isAvailable,
   });
 
   final _EmailProvider provider;
@@ -400,41 +401,171 @@ class _ProviderInfo {
   final IconData icon;
   final Color color;
   final String label;
+  final bool isAvailable;
 }
 
 // ── Provider card widget ────────────────────────────────────────────────
 
-class _ProviderCard extends StatefulWidget {
-  const _ProviderCard({required this.info});
+class _ProviderCard extends ConsumerStatefulWidget {
+  const _ProviderCard({
+    required this.info,
+    this.isConnecting = false,
+  });
   final _ProviderInfo info;
+  final bool isConnecting;
 
   @override
-  State<_ProviderCard> createState() => _ProviderCardState();
+  ConsumerState<_ProviderCard> createState() => _ProviderCardState();
 }
 
-class _ProviderCardState extends State<_ProviderCard> {
+class _ProviderCardState extends ConsumerState<_ProviderCard> {
   bool _isPressed = false;
+
+  void _handleTap() {
+    HapticFeedback.lightImpact();
+
+    if (widget.info.isAvailable) {
+      // Gmail — trigger real Google OAuth
+      ref.read(_emailConnectionProvider.notifier).connectGmail();
+    } else {
+      // Other providers — show "Coming soon" bottom sheet
+      _showComingSoonSheet(context, widget.info);
+    }
+  }
+
+  void _showComingSoonSheet(BuildContext context, _ProviderInfo info) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(24),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Drag handle
+            Container(
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.textTertiary.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Provider icon
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: info.color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(18),
+              ),
+              child: Icon(
+                info.icon,
+                color: info.color,
+                size: 32,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Title
+            Text(
+              '${info.name} Integration',
+              style: const TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Description
+            Text(
+              'Email sync for ${info.name} is coming soon.\nWe\'re working on bringing this integration to you!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 15,
+                color: AppColors.textSecondary,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Status badge
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.warning.withValues(alpha: 0.08),
+                borderRadius: BorderRadius.circular(AppRadius.full),
+                border: Border.all(
+                  color: AppColors.warning.withValues(alpha: 0.2),
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.schedule_rounded,
+                    size: 16,
+                    color: AppColors.warning,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Coming Soon',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.warning,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Close button
+            SizedBox(
+              width: double.infinity,
+              child: AppButton(
+                label: 'Got it',
+                variant: AppButtonVariant.secondary,
+                onPressed: () => Navigator.pop(ctx),
+              ),
+            ),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isUnavailable = !widget.info.isAvailable;
+
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
         setState(() => _isPressed = false);
-        HapticFeedback.lightImpact();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              '${widget.info.name} connection coming soon!',
-              style: const TextStyle(fontFamily: 'Inter'),
-            ),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            duration: const Duration(seconds: 2),
-          ),
-        );
+        _handleTap();
       },
       onTapCancel: () => setState(() => _isPressed = false),
       child: AnimatedScale(
@@ -460,51 +591,75 @@ class _ProviderCardState extends State<_ProviderCard> {
                     ...AppShadows.shadowSmall,
                   ],
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
             children: [
-              // Logo container
-              Container(
-                width: 52,
-                height: 52,
-                decoration: BoxDecoration(
-                  color: widget.info.color.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                child: Icon(
-                  widget.info.icon,
-                  color: widget.info.color,
-                  size: 28,
-                ),
-              ),
-              const SizedBox(height: 10),
-              // Provider name
-              Text(
-                widget.info.name,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 6),
-              // Connect button
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-                decoration: BoxDecoration(
-                  color: widget.info.color.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(AppRadius.full),
-                ),
-                child: Text(
-                  'Connect',
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: widget.info.color,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo container
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: widget.info.color.withValues(
+                          alpha: isUnavailable ? 0.05 : 0.1),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: widget.isConnecting
+                        ? Center(
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                color: widget.info.color,
+                              ),
+                            ),
+                          )
+                        : Icon(
+                            widget.info.icon,
+                            color: widget.info.color.withValues(
+                                alpha: isUnavailable ? 0.4 : 1.0),
+                            size: 28,
+                          ),
                   ),
-                ),
+                  const SizedBox(height: 10),
+                  // Provider name
+                  Text(
+                    widget.info.name,
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: isUnavailable
+                          ? AppColors.textTertiary
+                          : AppColors.textPrimary,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  // Connect button / Coming soon label
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: isUnavailable
+                          ? AppColors.textTertiary.withValues(alpha: 0.08)
+                          : widget.info.color.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(AppRadius.full),
+                    ),
+                    child: Text(
+                      isUnavailable ? 'Coming soon' : 'Connect',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: isUnavailable
+                            ? AppColors.textTertiary
+                            : widget.info.color,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -524,10 +679,6 @@ class _ConnectedView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final linkedEmails =
-        _mockEmails.where((e) => e.isLinked).toList();
-    final unlinkedEmails =
-        _mockEmails.where((e) => !e.isLinked).toList();
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -540,73 +691,70 @@ class _ConnectedView extends ConsumerWidget {
 
         const SizedBox(height: AppSpacing.lg),
 
-        // ── Linked Legal Emails ───────────────────────────────────────
-        _SectionLabel(
-          title: l10n.legalEmails,
-          count: linkedEmails.length,
+        // ── Email reading coming soon notice ─────────────────────────
+        Container(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          decoration: BoxDecoration(
+            color: AppColors.warning.withValues(alpha: 0.06),
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            border: Border.all(
+                color: AppColors.warning.withValues(alpha: 0.15)),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(
+                Icons.construction_rounded,
+                size: 20,
+                color: AppColors.warning,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Email Reading Coming Soon',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'Your Gmail account is connected. Email sync and automatic legal email detection will be available in an upcoming update.',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 13,
+                        color: AppColors.textSecondary,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         )
             .animate()
-            .fadeIn(delay: 100.ms, duration: 300.ms),
-        const SizedBox(height: AppSpacing.sm),
-
-        if (linkedEmails.isEmpty)
-          EmptyState(
-            icon: AppIcons.emailOutlined,
-            title: l10n.noLegalEmailsYet,
-            description: l10n.legalEmailsWillAppear,
-            compact: true,
-          )
-        else
-          ...linkedEmails.asMap().entries.map(
-            (entry) => Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: _EmailCard(email: entry.value)
-                  .animate()
-                  .fadeIn(
-                    delay: Duration(milliseconds: 200 + entry.key * 80),
-                    duration: 350.ms,
-                  )
-                  .slideX(
-                    begin: 0.05,
-                    end: 0,
-                    delay: Duration(milliseconds: 200 + entry.key * 80),
-                    duration: 350.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
-            ),
-          ),
+            .fadeIn(delay: 200.ms, duration: 400.ms)
+            .slideY(begin: 0.08, end: 0, delay: 200.ms, duration: 400.ms),
 
         const SizedBox(height: AppSpacing.lg),
 
-        // ── Unlinked Emails ───────────────────────────────────────────
-        if (unlinkedEmails.isNotEmpty) ...[
-          _SectionLabel(
-            title: l10n.unlinkedEmails,
-            count: unlinkedEmails.length,
-          )
-              .animate()
-              .fadeIn(delay: 300.ms, duration: 300.ms),
-          const SizedBox(height: AppSpacing.sm),
-          ...unlinkedEmails.asMap().entries.map(
-            (entry) => Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: _EmailCard(email: entry.value, showAssignAction: true)
-                  .animate()
-                  .fadeIn(
-                    delay: Duration(milliseconds: 400 + entry.key * 80),
-                    duration: 350.ms,
-                  )
-                  .slideX(
-                    begin: 0.05,
-                    end: 0,
-                    delay: Duration(milliseconds: 400 + entry.key * 80),
-                    duration: 350.ms,
-                    curve: Curves.easeOutCubic,
-                  ),
-            ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-        ],
+        // ── Empty state for emails ──────────────────────────────────
+        EmptyState(
+          icon: AppIcons.emailOutlined,
+          title: l10n.noLegalEmailsYet,
+          description: l10n.legalEmailsWillAppear,
+          compact: true,
+        )
+            .animate()
+            .fadeIn(delay: 300.ms, duration: 400.ms),
+
+        const SizedBox(height: AppSpacing.xl),
 
         // ── Disconnect button ─────────────────────────────────────────
         Center(
@@ -619,7 +767,7 @@ class _ConnectedView extends ConsumerWidget {
           ),
         )
             .animate()
-            .fadeIn(delay: 600.ms, duration: 300.ms),
+            .fadeIn(delay: 400.ms, duration: 300.ms),
 
         const SizedBox(height: AppSpacing.xl),
       ],
@@ -697,55 +845,42 @@ class _AnimatedConnectionCard extends StatelessWidget {
               _PulsingDot(),
               const SizedBox(width: AppSpacing.sm),
               Expanded(
-                child: Text(
-                  l10n.connectedTo(connection.email ?? ''),
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.connectedTo(connection.email ?? ''),
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Gmail',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        color: AppColors.textTertiary,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-          if (connection.lastSyncAt != null) ...[
-            const SizedBox(height: AppSpacing.sm),
-            Row(
-              children: [
-                AnimatedRotation(
-                  turns: connection.isSyncing ? 1 : 0,
-                  duration: const Duration(seconds: 1),
-                  child: const Icon(
-                    AppIcons.sync,
-                    size: 14,
-                    color: AppColors.textTertiary,
-                  ),
+              // Green check icon
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: AppColors.success.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  l10n.lastSynced(_formatTimeAgo(connection.lastSyncAt!)),
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 12,
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ],
-            ),
-          ],
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              Expanded(
-                child: AppButton(
-                  label: l10n.syncNow,
-                  variant: AppButtonVariant.secondary,
-                  size: AppButtonSize.small,
-                  isLoading: connection.isSyncing,
-                  leadingIcon: AppIcons.sync,
-                  onPressed: () =>
-                      ref.read(_emailConnectionProvider.notifier).syncNow(),
+                child: const Icon(
+                  Icons.check_rounded,
+                  size: 18,
+                  color: AppColors.success,
                 ),
               ),
             ],
@@ -753,14 +888,6 @@ class _AnimatedConnectionCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatTimeAgo(DateTime dt) {
-    final diff = DateTime.now().difference(dt);
-    if (diff.inMinutes < 1) return 'just now';
-    if (diff.inMinutes < 60) return '${diff.inMinutes}m ago';
-    if (diff.inHours < 24) return '${diff.inHours}h ago';
-    return '${diff.inDays}d ago';
   }
 }
 
@@ -785,7 +912,11 @@ class _PulsingDot extends StatelessWidget {
             ),
           )
               .animate(onPlay: (c) => c.repeat())
-              .scaleXY(begin: 0.8, end: 1.4, duration: 1500.ms, curve: Curves.easeOut)
+              .scaleXY(
+                  begin: 0.8,
+                  end: 1.4,
+                  duration: 1500.ms,
+                  curve: Curves.easeOut)
               .fadeOut(begin: 0.6, duration: 1500.ms),
           // Inner solid dot
           Container(
@@ -803,80 +934,6 @@ class _PulsingDot extends StatelessWidget {
 }
 
 // ── Sub-widgets ──────────────────────────────────────────────────────────
-
-class _OAuthButton extends StatefulWidget {
-  const _OAuthButton({
-    required this.label,
-    required this.icon,
-    required this.iconColor,
-    required this.backgroundColor,
-    required this.foregroundColor,
-    required this.borderColor,
-    required this.onPressed,
-  });
-
-  final String label;
-  final IconData icon;
-  final Color iconColor;
-  final Color backgroundColor;
-  final Color foregroundColor;
-  final Color borderColor;
-  final VoidCallback onPressed;
-
-  @override
-  State<_OAuthButton> createState() => _OAuthButtonState();
-}
-
-class _OAuthButtonState extends State<_OAuthButton> {
-  bool _isPressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
-      onTapUp: (_) {
-        setState(() => _isPressed = false);
-        widget.onPressed();
-      },
-      onTapCancel: () => setState(() => _isPressed = false),
-      child: AnimatedScale(
-        scale: _isPressed ? 0.97 : 1.0,
-        duration: const Duration(milliseconds: 120),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          decoration: BoxDecoration(
-            color: _isPressed
-                ? widget.backgroundColor.withValues(alpha: 0.9)
-                : widget.backgroundColor,
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-            border: Border.all(color: widget.borderColor),
-            boxShadow: _isPressed
-                ? []
-                : AppShadows.shadowSmall,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(widget.icon, color: widget.iconColor, size: 28),
-              const SizedBox(width: AppSpacing.sm),
-              Text(
-                widget.label,
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: widget.foregroundColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class _SectionLabel extends StatelessWidget {
   const _SectionLabel({required this.title, this.count});
@@ -918,167 +975,5 @@ class _SectionLabel extends StatelessWidget {
         ],
       ],
     );
-  }
-}
-
-class _EmailCard extends StatefulWidget {
-  const _EmailCard({required this.email, this.showAssignAction = false});
-  final _LegalEmail email;
-  final bool showAssignAction;
-
-  @override
-  State<_EmailCard> createState() => _EmailCardState();
-}
-
-class _EmailCardState extends State<_EmailCard> {
-  bool _isPressed = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _isPressed = true),
-      onTapUp: (_) => setState(() => _isPressed = false),
-      onTapCancel: () => setState(() => _isPressed = false),
-      child: AnimatedScale(
-        scale: _isPressed ? 0.98 : 1.0,
-        duration: const Duration(milliseconds: 100),
-        child: AppCard(
-          onTap: () {
-            HapticFeedback.selectionClick();
-            // TODO: Navigate to email detail or linked case
-          },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  // Sender avatar circle
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withValues(alpha: 0.08),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Text(
-                        widget.email.sender.substring(0, 1).toUpperCase(),
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: Text(
-                      widget.email.sender,
-                      style: const TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textSecondary,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Text(
-                    _formatDate(widget.email.date),
-                    style: const TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 12,
-                      color: AppColors.textTertiary,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              Padding(
-                padding: const EdgeInsets.only(left: 40),
-                child: Text(
-                  widget.email.subject,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textPrimary,
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sm),
-              Padding(
-                padding: const EdgeInsets.only(left: 40),
-                child: Row(
-                  children: [
-                    if (widget.email.isLinked) ...[
-                      StatusChip(
-                        label: widget.email.linkedCaseName!,
-                        variant: StatusChipVariant.info,
-                        showDot: false,
-                        icon: AppIcons.link,
-                      ),
-                    ],
-                    if (widget.showAssignAction)
-                      InkWell(
-                        onTap: () {
-                          HapticFeedback.selectionClick();
-                          // TODO: Show case picker bottom sheet
-                        },
-                        borderRadius: BorderRadius.circular(AppRadius.full),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColors.accent),
-                            borderRadius: BorderRadius.circular(AppRadius.full),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(AppIcons.add, size: 14, color: AppColors.accent),
-                              const SizedBox(width: 4),
-                              Text(
-                                l10n.assignToCase,
-                                style: const TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.accent,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _formatDate(DateTime dt) {
-    final now = DateTime.now();
-    final diff = now.difference(dt);
-    if (diff.inHours < 24) {
-      return '${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}';
-    }
-    if (diff.inDays < 7) {
-      return '${diff.inDays}d ago';
-    }
-    return '${dt.day}/${dt.month}/${dt.year}';
   }
 }
