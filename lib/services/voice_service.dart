@@ -464,16 +464,32 @@ class VoiceService {
 
   // ── Text-to-Speech ─────────────────────────────────────────────────────
 
+  /// Whether Google TTS is available (web + Supabase configured).
+  bool get _googleTtsAvailable =>
+      kIsWeb &&
+      AppConfig.supabaseUrl.isNotEmpty &&
+      AppConfig.supabaseAnonKey.isNotEmpty;
+
   /// Speak the given text aloud.
   /// [langCode] should be one of the 17 app language codes.
   ///
-  /// On web with Supabase configured, uses ElevenLabs premium TTS via the
-  /// `tts-proxy` Edge Function. Falls back to browser SpeechSynthesis on
-  /// failure or when ElevenLabs is unavailable.
+  /// Priority order:
+  /// 1. Google TTS (cheaper, better Estonian/multilingual support)
+  /// 2. ElevenLabs premium TTS (fallback for premium voice quality)
+  /// 3. Browser SpeechSynthesis (last resort)
   Future<void> speak(String text, {String langCode = 'en'}) async {
     if (!_ttsInitialized || text.isEmpty) return;
 
-    // Try ElevenLabs first on web when Supabase proxy is available.
+    // 1. Try Google TTS first (cheaper, better Estonian support).
+    if (_googleTtsAvailable) {
+      final ok = await _speakWithGoogleTTS(text, langCode: langCode);
+      if (ok) return;
+      if (kDebugMode) {
+        debugPrint('TTS: Google TTS failed, trying ElevenLabs');
+      }
+    }
+
+    // 2. Try ElevenLabs as premium fallback.
     if (_elevenLabsAvailable) {
       final ok = await _speakWithElevenLabs(text, langCode: langCode);
       if (ok) return;
@@ -482,9 +498,7 @@ class VoiceService {
       }
     }
 
-    // Browser TTS fallback — only for languages with reliable browser voices.
-    // Estonian, Latvian, Lithuanian etc don't have good browser voices —
-    // Chrome substitutes Finnish which sounds terrible.
+    // 3. Browser TTS fallback — only for languages with reliable browser voices.
     const browserTtsReliable = {'en', 'ru', 'de', 'fr', 'es', 'it', 'pl', 'tr', 'et', 'fi', 'sv'};
     if (!browserTtsReliable.contains(langCode)) {
       if (kDebugMode) {
@@ -494,6 +508,53 @@ class VoiceService {
     }
 
     await _speakWithBrowserTts(text, langCode: langCode);
+  }
+
+  /// Attempt to speak using Google TTS via the Supabase google-tts function.
+  Future<bool> _speakWithGoogleTTS(
+    String text, {
+    String langCode = 'en',
+  }) async {
+    try {
+      if (kDebugMode) {
+        debugPrint('TTS: calling Google TTS, '
+            'lang=$langCode, textLen=${text.length}');
+      }
+
+      if (kIsWeb) {
+        _isSpeaking = true;
+        final ok = await web_speech.webTtsSpeakGoogleTts(
+          text: text,
+          langCode: langCode,
+          supabaseUrl: AppConfig.supabaseUrl,
+          anonKey: AppConfig.supabaseAnonKey,
+        );
+        if (ok) {
+          _pollCloudTtsSpeaking();
+          return true;
+        }
+        _isSpeaking = false;
+        return false;
+      }
+
+      return false; // Non-web not supported yet.
+    } catch (e) {
+      if (kDebugMode) debugPrint('TTS: Google TTS error: $e');
+      _isSpeaking = false;
+      return false;
+    }
+  }
+
+  /// Poll JS state to detect when cloud TTS audio (Google/ElevenLabs) finishes.
+  void _pollCloudTtsSpeaking() {
+    _ttsPollTimer?.cancel();
+    _ttsPollTimer =
+        Timer.periodic(const Duration(milliseconds: 200), (timer) {
+      if (!web_speech.webTtsIsSpeaking()) {
+        _isSpeaking = false;
+        timer.cancel();
+      }
+    });
   }
 
   /// Attempt to speak using ElevenLabs via the Supabase tts-proxy function.

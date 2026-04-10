@@ -29,3 +29,10 @@ Future<bool> webTtsSpeakElevenLabs({
   required String supabaseUrl,
   required String anonKey,
 }) async => false;
+
+Future<bool> webTtsSpeakGoogleTts({
+  required String text,
+  required String langCode,
+  required String supabaseUrl,
+  required String anonKey,
+}) async => false;

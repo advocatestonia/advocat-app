@@ -138,6 +138,28 @@ Future<bool> webTtsSpeakElevenLabs({
   }
 }
 
+/// Full Google TTS: fetch + play entirely in JS (same pattern as ElevenLabs).
+Future<bool> webTtsSpeakGoogleTts({
+  required String text,
+  required String langCode,
+  required String supabaseUrl,
+  required String anonKey,
+}) async {
+  try {
+    final json = '{"text":${_jsonEscape(text)},"langCode":"$langCode","supabaseUrl":"$supabaseUrl","anonKey":"$anonKey"}';
+    final promise = globalContext.callMethod(
+      'advocatSpeakGoogleTtsJson'.toJS,
+      json.toJS,
+    );
+    if (promise == null) return false;
+    final result = await (promise as JSPromise).toDart;
+    if (result is JSBoolean) return result.toDart;
+    return result != null;
+  } catch (_) {
+    return false;
+  }
+}
+
 String _jsonEscape(String s) {
   return '"${s.replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('\n', '\\n').replaceAll('\r', '\\r')}"';
 }
