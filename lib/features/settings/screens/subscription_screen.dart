@@ -718,22 +718,18 @@ class _PlanCardState extends State<_PlanCard>
         );
       case _CardStyle.recommended:
         return BoxDecoration(
-          color: Colors.white,
+          gradient: const LinearGradient(
+            colors: [Color(0xFF1B5E20), Color(0xFF0A3A12)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(color: AppColors.accent, width: 2.5),
           boxShadow: [
             BoxShadow(
               color: AppColors.accent.withValues(
-                  alpha: 0.15 + 0.12 * (_glowAnimation?.value ?? 0)),
-              blurRadius: 20 + 12 * (_glowAnimation?.value ?? 0),
-              spreadRadius: 1 + 2 * (_glowAnimation?.value ?? 0),
+                  alpha: 0.20 + 0.10 * (_glowAnimation?.value ?? 0)),
+              blurRadius: 16 + 8 * (_glowAnimation?.value ?? 0),
               offset: const Offset(0, 4),
-            ),
-            BoxShadow(
-              color: AppColors.accent.withValues(
-                  alpha: 0.06 + 0.04 * (_glowAnimation?.value ?? 0)),
-              blurRadius: 40,
-              spreadRadius: 0,
             ),
           ],
         );
@@ -756,7 +752,9 @@ class _PlanCardState extends State<_PlanCard>
     }
   }
 
-  bool get _isDark => widget.cardStyle == _CardStyle.premium;
+  bool get _isDark =>
+      widget.cardStyle == _CardStyle.premium ||
+      widget.cardStyle == _CardStyle.recommended;
 
   Color get _textPrimary =>
       _isDark ? Colors.white : AppColors.textPrimary;
@@ -785,13 +783,9 @@ class _PlanCardState extends State<_PlanCard>
             Container(
               padding: const EdgeInsets.symmetric(vertical: 6),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [AppColors.accent, AppColors.accentLight],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                ),
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg - 2.5),
+                color: Colors.white.withValues(alpha: 0.15),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(AppRadius.lg - 1),
                 ),
               ),
               child: Row(
@@ -1061,38 +1055,24 @@ class _PlanCardState extends State<_PlanCard>
         );
 
       case _CardStyle.recommended:
-        // Filled accent with glow
-        return Container(
+        // White button on dark green (matches premium style)
+        return SizedBox(
           width: double.infinity,
-          height: 44,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.sm),
-            boxShadow: widget.isCurrent
-                ? null
-                : [
-                    BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.35),
-                      blurRadius: 14,
-                      spreadRadius: 0,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-          ),
+          height: 42,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.accent,
-              foregroundColor: Colors.white,
-              disabledBackgroundColor:
-                  AppColors.accent.withValues(alpha: 0.4),
-              disabledForegroundColor: Colors.white70,
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xFF1B5E20),
+              disabledBackgroundColor: Colors.white.withValues(alpha: 0.3),
+              disabledForegroundColor: Colors.white60,
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadius.sm),
               ),
               textStyle: const TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -1102,7 +1082,7 @@ class _PlanCardState extends State<_PlanCard>
                     height: 18,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Colors.white,
+                      color: Color(0xFF1B5E20),
                     ),
                   )
                 : Text(label),
