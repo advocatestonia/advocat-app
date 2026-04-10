@@ -181,9 +181,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   Widget _buildContent(
       BuildContext context, AppLocalizations l, AuthState authState) {
     final screenHeight = MediaQuery.of(context).size.height;
-    final isCompact = screenHeight < 700;
-    final logoSize = isCompact ? 100.0 : 140.0;
-    final glowSize = isCompact ? 150.0 : 200.0;
+    final isCompact = screenHeight < 750;
+    final logoSize = isCompact ? 72.0 : 100.0;
+    final glowSize = isCompact ? 100.0 : 140.0;
 
     return Form(
       key: _formKey,
@@ -220,7 +220,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          SizedBox(height: isCompact ? AppSpacing.xs : AppSpacing.sm),
+          const SizedBox(height: 4),
 
           // -- Title with shadow effect --
           Text(
@@ -355,7 +355,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.sm),
+          const SizedBox(height: 8),
 
           // -- Log In button with teal glow and press animation --
           Semantics(
@@ -412,7 +412,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: 12),
 
           // -- Divider with "or" --
           Row(
@@ -432,7 +432,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               const Expanded(child: Divider(color: AppColors.border)),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: 12),
 
           // -- Google sign-in --
           _ScaleOnTapButton(
@@ -531,7 +531,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: 10),
 
           // -- Demo Mode button with press animation --
           Semantics(
@@ -573,7 +573,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: 10),
 
           // -- Sign up link --
           Row(
@@ -617,39 +617,49 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   }
 }
 
-/// Renders the Google "G" logo as colored text — simple and reliable.
+/// Google "G" logo as 4 colored circles arranged in the classic pattern.
 class _GoogleGLogo extends StatelessWidget {
   const _GoogleGLogo({this.size = 20});
   final double size;
 
   @override
   Widget build(BuildContext context) {
+    // Use the official Google colors in a simple 2x2 grid pattern
     return SizedBox(
       width: size,
       height: size,
-      child: Stack(
-        alignment: Alignment.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'G',
-            style: TextStyle(
-              fontSize: size * 0.9,
-              fontWeight: FontWeight.w700,
-              foreground: Paint()
-                ..shader = const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xFFEA4335), // red
-                    Color(0xFFFBBC05), // yellow
-                    Color(0xFF34A853), // green
-                    Color(0xFF4285F4), // blue
-                  ],
-                ).createShader(Rect.fromLTWH(0, 0, 20, 20)),
-              height: 1.0,
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _dot(const Color(0xFFEA4335), size * 0.42), // red top-left
+              SizedBox(width: size * 0.08),
+              _dot(const Color(0xFF4285F4), size * 0.42), // blue top-right
+            ],
+          ),
+          SizedBox(height: size * 0.08),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _dot(const Color(0xFFFBBC05), size * 0.42), // yellow bottom-left
+              SizedBox(width: size * 0.08),
+              _dot(const Color(0xFF34A853), size * 0.42), // green bottom-right
+            ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _dot(Color color, double dotSize) {
+    return Container(
+      width: dotSize,
+      height: dotSize,
+      decoration: BoxDecoration(
+        color: color,
+        shape: BoxShape.circle,
       ),
     );
   }
