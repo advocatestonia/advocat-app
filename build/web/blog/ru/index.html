@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Юридический блог на русском языке | Advocat</title>
+    <meta name="description" content="Юридические статьи на русском языке для жителей Эстонии. Трудовое право, семейное право, защита от мошенничества и насилия.">
+    <meta name="keywords" content="юридическая помощь эстония русский, адвокат эстония русский, правовая помощь таллинн">
+    <link rel="canonical" href="https://advocat.ee/blog/ru/">
+    <link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/">
+    <link rel="alternate" hreflang="et" href="https://advocat.ee/blog/et/">
+    <link rel="alternate" hreflang="x-default" href="https://advocat.ee/blog/et/">
+    <meta property="og:title" content="Юридический блог на русском языке | Advocat">
+    <meta property="og:description" content="Юридические статьи на русском языке для жителей Эстонии.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://advocat.ee/blog/ru/">
+    <meta property="og:site_name" content="Advocat">
+    <meta property="og:locale" content="ru_RU">
+    <link rel="icon" href="/favicon.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --navy: #1A2B4A;
+            --navy-light: #243656;
+            --teal: #0A8F6C;
+            --teal-light: #0DB382;
+            --teal-bg: #E8F8F3;
+            --yellow-bg: #FFF8E1;
+            --yellow-border: #FFD54F;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-400: #94A3B8;
+            --gray-600: #475569;
+            --gray-800: #1E293B;
+            --white: #FFFFFF;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--gray-800);
+            background: var(--gray-50);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Header */
+        .header {
+            background: var(--navy);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--white);
+        }
+        .header-logo img {
+            height: 36px;
+            width: 36px;
+            border-radius: 8px;
+        }
+        .header-logo span {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .header-nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .header-nav a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .header-nav a:hover { color: var(--white); }
+        .header-nav .lang-switch {
+            background: rgba(255,255,255,0.15);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+            padding: 64px 24px 56px;
+            text-align: center;
+            color: var(--white);
+        }
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+        .hero p {
+            font-size: 18px;
+            opacity: 0.85;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 28px; }
+            .hero p { font-size: 16px; }
+        }
+        /* Articles Grid */
+        .articles-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 48px 24px 64px;
+        }
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 28px;
+        }
+        .article-card {
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        .card-category {
+            display: inline-block;
+            padding: 20px 24px 0;
+        }
+        .card-category span {
+            background: var(--teal-bg);
+            color: var(--teal);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .card-body {
+            padding: 16px 24px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-body h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 10px;
+            line-height: 1.35;
+        }
+        .card-body h2 a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .card-body h2 a:hover { color: var(--teal); }
+        .card-body p {
+            font-size: 15px;
+            color: var(--gray-600);
+            flex: 1;
+            margin-bottom: 16px;
+        }
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+        .card-meta svg { width: 14px; height: 14px; opacity: 0.6; }
+        .card-meta .meta-item { display: flex; align-items: center; gap: 4px; }
+        /* Footer */
+        .footer {
+            background: var(--navy);
+            color: rgba(255,255,255,0.7);
+            padding: 40px 24px;
+        }
+        .footer-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--white); }
+        .footer-disclaimer {
+            font-size: 12px;
+            opacity: 0.6;
+            max-width: 600px;
+            margin: 16px auto 0;
+            line-height: 1.6;
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Advocat Blog (RU)",
+        "description": "Юридические статьи на русском языке для жителей Эстонии",
+        "url": "https://advocat.ee/blog/ru/",
+        "inLanguage": "ru",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Advocat",
+            "url": "https://advocat.ee"
+        }
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://advocat.ee" class="header-logo">
+                <img src="/logo.png" alt="Advocat">
+                <span>Advocat</span>
+            </a>
+            <nav class="header-nav">
+                <a href="https://advocat.ee">Главная</a>
+                <a href="/blog/ru/">Блог</a>
+                <a href="/blog/et/" class="lang-switch">Eesti</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Юридический блог</h1>
+        <p>Понятные статьи о законах Эстонии на русском языке. Ваши права, ваша защита.</p>
+    </section>
+
+    <main class="articles-section">
+        <div class="articles-grid">
+
+            <article class="article-card">
+                <div class="card-category"><span>Семейное право</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/domashnee-nasilie.html">Домашнее насилие в Эстонии -- куда обращаться и что делать</a></h2>
+                    <p>Что считается домашним насилием по эстонскому закону, куда звонить и как получить защиту. Запретительный ордер, приюты, ваши права.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            10 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Семейное право</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/alimenty-estoniya.html">Алименты в Эстонии 2026 -- размер, как подать, как взыскать</a></h2>
+                    <p>Минимальный размер алиментов, как подать в суд, арест зарплаты через судебного исполнителя. Всё по эстонскому закону.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            9 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Защита потребителей</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/internet-moshennichestvo.html">Интернет-мошенничество в Эстонии -- как вернуть деньги</a></h2>
+                    <p>Типы мошенничества, пошаговый план действий: банк, полиция, TTJA. Как вернуть деньги и защитить себя.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            8 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Трудовое право</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/nezakonnoe-uvolnenie.html">Незаконное увольнение в Эстонии -- ваши права</a></h2>
+                    <p>Когда увольнение незаконно, сроки обжалования, компенсации, трудовая комиссия. Права иностранных работников.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            11 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Цифровое право</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/kiberbulling.html">Кибербуллинг в Эстонии -- закон и защита</a></h2>
+                    <p>Что говорит закон о кибербуллинге, распространении интимных фото, преследовании онлайн. Как защитить себя и детей.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            8 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Уголовное право</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/presledovanie-stalking.html">Преследование (сталкинг) в Эстонии -- закон и защита</a></h2>
+                    <p>Что считается преследованием по эстонскому закону, как получить запретительный ордер и куда обращаться за помощью.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            10 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Правовая помощь</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/besplatnaya-pomosh.html">Бесплатная юридическая помощь в Эстонии 2026</a></h2>
+                    <p>Государственная правовая помощь, юридические клиники, НКО, помощь жертвам и AI-решения. Как подать заявку и что покрывается.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            11 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Защита потребителей</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/prava-potrebitelya.html">Права потребителя в Эстонии -- возврат, гарантия, жалобы</a></h2>
+                    <p>14-дневный срок возврата, гарантийные права, дефектный товар, жалобы в TTJA и права при онлайн-покупках.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            10 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Уголовное право</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/poboi-nasiliye.html">Побои и физическое насилие -- наказания и права жертвы</a></h2>
+                    <p>Статьи KarS 121 и 118, судебно-медицинская экспертиза, возмещение ущерба и пределы необходимой обороны.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            11 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>Миграционное право</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/deportaciya-obzhalovanie.html">Депортация из Эстонии -- как обжаловать решение</a></h2>
+                    <p>30-дневный срок обжалования, принцип пропорциональности ЕС, статья 8 ЕКПЧ, решения PPA и судебная практика.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            12 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <article class="article-card">
+                <div class="card-category"><span>FAQ</span></div>
+                <div class="card-body">
+                    <h2><a href="/blog/ru/chasto-zadavaemye-voprosy.html">Часто задаваемые вопросы — юридическая помощь в Эстонии</a></h2>
+                    <p>20 самых частых вопросов о юридической помощи в Эстонии. Домашнее насилие, алименты, увольнение, кибербуллинг, мошенничество и многое другое.</p>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Апрель 2026
+                        </div>
+                        <div class="meta-item">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            15 мин
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div class="footer-links">
+                <a href="https://advocat.ee">Главная</a>
+                <a href="https://advocat.ee/app.html">Приложение</a>
+                <a href="/blog/ru/">Блог</a>
+                <a href="mailto:support@advocat.ee">support@advocat.ee</a>
+            </div>
+            <p class="footer-disclaimer">Advocat предоставляет юридическую информацию, а не юридические услуги. Информация в статьях носит общий характер и не заменяет консультацию квалифицированного адвоката. Для решения конкретных правовых вопросов обратитесь к лицензированному юристу.</p>
+            <p style="font-size: 12px; opacity: 0.5; margin-top: 12px;">&copy; 2026 Advocat. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>
