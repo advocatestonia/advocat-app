@@ -28,6 +28,27 @@ serve(async (req) => {
 
     const voiceId = voice_id || DEFAULT_VOICE_ID;
 
+    // ElevenLabs supported language codes (multilingual_v2)
+    const supportedLangs = new Set([
+      "en", "ru", "de", "fr", "es", "it", "pl", "pt", "nl",
+      "sv", "tr", "ar", "hi", "ja", "ko", "zh", "id", "fil",
+    ]);
+    // For unsupported languages (like Estonian), let the model auto-detect from text
+    const langCode = language && supportedLangs.has(language) ? language : undefined;
+
+    const body: Record<string, unknown> = {
+      text,
+      model_id: "eleven_multilingual_v2",
+      voice_settings: {
+        stability: 0.65,
+        similarity_boost: 0.85,
+        style: 0.15,
+      },
+    };
+    if (langCode) {
+      body.language_code = langCode;
+    }
+
     const response = await fetch(
       `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
       {
@@ -36,15 +57,7 @@ serve(async (req) => {
           "Content-Type": "application/json",
           "xi-api-key": ELEVENLABS_API_KEY!,
         },
-        body: JSON.stringify({
-          text,
-          model_id: "eleven_multilingual_v2",
-          voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.75,
-            style: 0.3,
-          },
-        }),
+        body: JSON.stringify(body),
       }
     );
 
