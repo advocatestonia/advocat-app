@@ -2336,4 +2336,8 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Atrakinkite premium funkcijas';
+
+  @override
+  String get voiceDisclaimer =>
+      'Balso asistentas šiuo metu veikia tik kompiuteryje (Chrome naršyklė). Mobilusis palaikymas netrukus.';
 }

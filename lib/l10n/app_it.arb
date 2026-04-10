@@ -787,5 +787,6 @@
     "tutorialStep4Title": "Iniziamo!",
     "tutorialStep4Desc": "Esplora l'app e proteggi i tuoi diritti. Tutti i dati rimangono privati sul tuo dispositivo.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Sblocca le funzionalità premium"
+    "advocatProSubtitle": "Sblocca le funzionalità premium",
+    "voiceDisclaimer": "L'assistente vocale funziona attualmente solo su desktop (browser Chrome). Supporto mobile in arrivo."
 }

@@ -2323,4 +2323,8 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Avage täiustatud funktsioonid';
+
+  @override
+  String get voiceDisclaimer =>
+      'Häälassistent töötab praegu ainult arvutis (Chrome\'i brauser). Mobiilitugi tuleb peagi.';
 }

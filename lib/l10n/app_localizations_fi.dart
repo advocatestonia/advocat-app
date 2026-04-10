@@ -2325,4 +2325,8 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Avaa premium-ominaisuudet';
+
+  @override
+  String get voiceDisclaimer =>
+      'Ääniavustaja toimii tällä hetkellä vain tietokoneella (Chrome-selain). Mobiilatuki tulossa pian.';
 }

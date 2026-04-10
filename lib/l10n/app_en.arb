@@ -894,5 +894,6 @@
     "tutorialStep4Title": "Get Started!",
     "tutorialStep4Desc": "Explore the app and protect your rights. All data stays private on your device.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Unlock premium features"
+    "advocatProSubtitle": "Unlock premium features",
+    "voiceDisclaimer": "Voice assistant currently works only on desktop (Chrome browser). Mobile support coming soon."
 }

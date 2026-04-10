@@ -787,5 +787,6 @@
     "tutorialStep4Title": "شروع کنیم!",
     "tutorialStep4Desc": "برنامه را کاوش کنید و از حقوق خود محافظت کنید. همه داده‌ها خصوصی در دستگاه شما باقی می‌مانند.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "ویژگی‌های ویژه را باز کنید"
+    "advocatProSubtitle": "ویژگی‌های ویژه را باز کنید",
+    "voiceDisclaimer": "دستیار صوتی فعلاً فقط روی دسکتاپ کار می‌کند (مرورگر Chrome). پشتیبانی موبایل به زودی."
 }

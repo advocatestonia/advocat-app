@@ -787,5 +787,6 @@
     "tutorialStep4Title": "Pradekime!",
     "tutorialStep4Desc": "Isstyrinkite programele ir apsaugokite savo teises. Visi duomenys lieka privatūs jusu irengynyje.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Atrakinkite premium funkcijas"
+    "advocatProSubtitle": "Atrakinkite premium funkcijas",
+    "voiceDisclaimer": "Balso asistentas šiuo metu veikia tik kompiuteryje (Chrome naršyklė). Mobilusis palaikymas netrukus."
 }

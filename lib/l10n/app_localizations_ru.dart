@@ -2333,4 +2333,8 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Откройте все возможности';
+
+  @override
+  String get voiceDisclaimer =>
+      'Голосовой помощник работает пока только на компьютере (браузер Chrome). Поддержка мобильных скоро.';
 }

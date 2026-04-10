@@ -878,5 +878,6 @@
     "tutorialStep4Title": "Alustame!",
     "tutorialStep4Desc": "Avastage rakendust ja kaitske oma õigusi. Kõik andmed jäävad privaatselt teie seadmesse.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Avage täiustatud funktsioonid"
+    "advocatProSubtitle": "Avage täiustatud funktsioonid",
+    "voiceDisclaimer": "Häälassistent töötab praegu ainult arvutis (Chrome'i brauser). Mobiilitugi tuleb peagi."
 }

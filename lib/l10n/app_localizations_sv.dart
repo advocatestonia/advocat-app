@@ -2323,4 +2323,8 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Lås upp premiumfunktioner';
+
+  @override
+  String get voiceDisclaimer =>
+      'Röstassistenten fungerar för närvarande bara på dator (Chrome-webbläsare). Mobilstöd kommer snart.';
 }

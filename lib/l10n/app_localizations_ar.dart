@@ -2308,4 +2308,8 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'افتح الميزات المتقدمة';
+
+  @override
+  String get voiceDisclaimer =>
+      'المساعد الصوتي يعمل حاليًا فقط على الكمبيوتر (متصفح Chrome). دعم الهاتف قريبًا.';
 }

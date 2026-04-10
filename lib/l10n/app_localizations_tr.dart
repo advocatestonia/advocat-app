@@ -2323,4 +2323,8 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Premium özellikleri açın';
+
+  @override
+  String get voiceDisclaimer =>
+      'Sesli asistan şu anda yalnızca masaüstünde çalışmaktadır (Chrome tarayıcı). Mobil destek yakında.';
 }

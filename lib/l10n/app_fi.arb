@@ -828,5 +828,6 @@
     "tutorialStep4Title": "Aloitetaan!",
     "tutorialStep4Desc": "Tutustu sovellukseen ja suojaa oikeutesi. Kaikki tiedot pysyvät yksityisinä laitteellasi.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Avaa premium-ominaisuudet"
+    "advocatProSubtitle": "Avaa premium-ominaisuudet",
+    "voiceDisclaimer": "Ääniavustaja toimii tällä hetkellä vain tietokoneella (Chrome-selain). Mobiilatuki tulossa pian."
 }

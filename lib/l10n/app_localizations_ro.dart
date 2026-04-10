@@ -2341,4 +2341,8 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Deblocați funcțiile premium';
+
+  @override
+  String get voiceDisclaimer =>
+      'Asistentul vocal funcționează momentan doar pe desktop (browser Chrome). Suport mobil în curând.';
 }

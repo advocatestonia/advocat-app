@@ -143,7 +143,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Häälassistent töötab praegu ainult arvutis (Chrome\'i brauser). Mobiilitugi tuleb peagi.',
+                      l10n.voiceDisclaimer,
                       style: TextStyle(fontSize: 12, color: Color(0xFF1976D2)),
                     ),
                   ),
@@ -290,7 +290,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         isLoading: loadingPlan == 'basic',
         isRecommended: true,
         cardStyle: _CardStyle.recommended,
-        foundingMemberNote: l10n.foundingMemberNote,
+
         features: [
           _Feature(l10n.hundredAiMessagesDay, true),
           _Feature(l10n.threeCasesActive, true),
@@ -617,7 +617,6 @@ class _PlanCard extends StatefulWidget {
     required this.onSelect,
     required this.cardStyle,
     this.isRecommended = false,
-    this.foundingMemberNote,
   });
 
   final String planId;
@@ -632,7 +631,6 @@ class _PlanCard extends StatefulWidget {
   final _CardStyle cardStyle;
   final List<_Feature> features;
   final VoidCallback? onSelect;
-  final String? foundingMemberNote;
 
   @override
   State<_PlanCard> createState() => _PlanCardState();
@@ -943,32 +941,6 @@ class _PlanCardState extends State<_PlanCard>
                     ),
                   ],
 
-                  // Founding member note
-                  if (widget.foundingMemberNote != null) ...[
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.star_rounded,
-                          size: 13,
-                          color: Color(0xFFD69E2E),
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            widget.foundingMemberNote!,
-                            style: const TextStyle(
-                              fontFamily: 'Inter',
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFFD69E2E),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-
                   const SizedBox(height: 10),
 
                   Divider(
@@ -981,54 +953,52 @@ class _PlanCardState extends State<_PlanCard>
                   const SizedBox(height: 10),
 
                   // ── Features list ────────────────────────────────
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(
-                        math.min(widget.features.length, 6),
-                        (i) {
-                          final f = widget.features[i];
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 5),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  f.included
-                                      ? AppIcons.checkCircle
-                                      : Icons.cancel_rounded,
-                                  size: 15,
-                                  color: f.included
-                                      ? _checkColor
-                                      : _uncheckColor,
-                                ),
-                                const SizedBox(width: 7),
-                                Expanded(
-                                  child: Text(
-                                    f.text,
-                                    style: TextStyle(
-                                      fontFamily: 'Inter',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: f.included
-                                          ? _textPrimary
-                                          : _textSecondary,
-                                      decoration: f.included
-                                          ? null
-                                          : TextDecoration.lineThrough,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
+                  ...List.generate(
+                    math.min(widget.features.length, 6),
+                    (i) {
+                      final f = widget.features[i];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Row(
+                          children: [
+                            Icon(
+                              f.included
+                                  ? AppIcons.checkCircle
+                                  : Icons.cancel_rounded,
+                              size: 15,
+                              color: f.included
+                                  ? _checkColor
+                                  : _uncheckColor,
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                            const SizedBox(width: 7),
+                            Expanded(
+                              child: Text(
+                                f.text,
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: f.included
+                                      ? _textPrimary
+                                      : _textSecondary,
+                                  decoration: f.included
+                                      ? null
+                                      : TextDecoration.lineThrough,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   ),
 
+                  const Spacer(),
+
                   // ── CTA Button ──────────────────────────────────
+                  const SizedBox(height: 8),
                   _buildCta(l10n),
                 ],
               ),

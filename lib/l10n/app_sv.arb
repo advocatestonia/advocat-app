@@ -787,5 +787,6 @@
     "tutorialStep4Title": "Kom igång!",
     "tutorialStep4Desc": "Utforska appen och skydda dina rättigheter. All data förblir privat på din enhet.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Lås upp premiumfunktioner"
+    "advocatProSubtitle": "Lås upp premiumfunktioner",
+    "voiceDisclaimer": "Röstassistenten fungerar för närvarande bara på dator (Chrome-webbläsare). Mobilstöd kommer snart."
 }

@@ -2318,4 +2318,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Unlock premium features';
+
+  @override
+  String get voiceDisclaimer =>
+      'Voice assistant currently works only on desktop (Chrome browser). Mobile support coming soon.';
 }

@@ -2355,4 +2355,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Premium-Funktionen freischalten';
+
+  @override
+  String get voiceDisclaimer =>
+      'Der Sprachassistent funktioniert derzeit nur auf dem Desktop (Chrome-Browser). Mobile Unterstützung kommt bald.';
 }

@@ -4303,6 +4303,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlock premium features'**
   String get advocatProSubtitle;
+
+  /// No description provided for @voiceDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice assistant currently works only on desktop (Chrome browser). Mobile support coming soon.'**
+  String get voiceDisclaimer;
 }
 
 class _AppLocalizationsDelegate

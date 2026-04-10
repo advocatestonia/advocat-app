@@ -787,5 +787,6 @@
     "tutorialStep4Title": "Baslayalim!",
     "tutorialStep4Desc": "Uygulamayi kesfedin ve haklarinizi koruyun. Tum veriler cihazinizda ozel kalir.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Premium özellikleri açın"
+    "advocatProSubtitle": "Premium özellikleri açın",
+    "voiceDisclaimer": "Sesli asistan şu anda yalnızca masaüstünde çalışmaktadır (Chrome tarayıcı). Mobil destek yakında."
 }

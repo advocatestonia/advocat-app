@@ -787,5 +787,6 @@
     "tutorialStep4Title": "لنبدأ!",
     "tutorialStep4Desc": "استكشف التطبيق واحمِ حقوقك. جميع البيانات تبقى خاصة على جهازك.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "افتح الميزات المتقدمة"
+    "advocatProSubtitle": "افتح الميزات المتقدمة",
+    "voiceDisclaimer": "المساعد الصوتي يعمل حاليًا فقط على الكمبيوتر (متصفح Chrome). دعم الهاتف قريبًا."
 }

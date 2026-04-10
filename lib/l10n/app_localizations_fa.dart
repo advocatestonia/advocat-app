@@ -2323,4 +2323,8 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'ویژگی‌های ویژه را باز کنید';
+
+  @override
+  String get voiceDisclaimer =>
+      'دستیار صوتی فعلاً فقط روی دسکتاپ کار می‌کند (مرورگر Chrome). پشتیبانی موبایل به زودی.';
 }

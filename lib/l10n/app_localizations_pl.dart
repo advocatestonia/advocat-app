@@ -2336,4 +2336,8 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Odblokuj funkcje premium';
+
+  @override
+  String get voiceDisclaimer =>
+      'Asystent głosowy działa obecnie tylko na komputerze (przeglądarka Chrome). Wsparcie mobilne wkrótce.';
 }

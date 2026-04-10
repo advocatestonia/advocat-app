@@ -787,5 +787,6 @@
     "tutorialStep4Title": "C'est parti !",
     "tutorialStep4Desc": "Explorez l'application et protégez vos droits. Toutes les données restent privées sur votre appareil.",
     "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Débloquez les fonctions premium"
+    "advocatProSubtitle": "Débloquez les fonctions premium",
+    "voiceDisclaimer": "L'assistant vocal fonctionne actuellement uniquement sur ordinateur (navigateur Chrome). Support mobile bientôt."
 }

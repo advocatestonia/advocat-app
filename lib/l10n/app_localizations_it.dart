@@ -2348,4 +2348,8 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get advocatProSubtitle => 'Sblocca le funzionalità premium';
+
+  @override
+  String get voiceDisclaimer =>
+      'L\'assistente vocale funziona attualmente solo su desktop (browser Chrome). Supporto mobile in arrivo.';
 }
