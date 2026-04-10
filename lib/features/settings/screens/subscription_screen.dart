@@ -706,19 +706,39 @@ class _PlanCardState extends State<_PlanCard>
     return l10n.cheaperAnnually(saved.toStringAsFixed(2));
   }
 
-  // Background per card style
+  // Background per card style — NO borderRadius here (ClipRRect handles it)
   BoxDecoration get _cardDecoration {
     switch (widget.cardStyle) {
       case _CardStyle.free:
+        return const BoxDecoration(
+          color: Color(0xFFF5F5F5),
+        );
+      case _CardStyle.recommended:
+        return const BoxDecoration(
+          color: Colors.white,
+        );
+      case _CardStyle.premium:
+        return const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF1A365D), Color(0xFF0F2240)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        );
+    }
+  }
+
+  // Outer decoration with border, shadow, borderRadius (wraps ClipRRect)
+  BoxDecoration get _outerDecoration {
+    switch (widget.cardStyle) {
+      case _CardStyle.free:
         return BoxDecoration(
-          color: const Color(0xFFF5F5F5),
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(color: AppColors.border, width: 1),
           boxShadow: AppShadows.shadowSmall,
         );
       case _CardStyle.recommended:
         return BoxDecoration(
-          color: Colors.white,
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(color: AppColors.accent, width: 2),
           boxShadow: [
@@ -732,11 +752,6 @@ class _PlanCardState extends State<_PlanCard>
         );
       case _CardStyle.premium:
         return BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF1A365D), Color(0xFF0F2240)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
           borderRadius: BorderRadius.circular(AppRadius.lg),
           boxShadow: [
             BoxShadow(
@@ -764,82 +779,75 @@ class _PlanCardState extends State<_PlanCard>
   Color get _uncheckColor =>
       _isDark ? Colors.white24 : AppColors.textTertiary.withValues(alpha: 0.4);
 
+  // Whether this card shows a top badge
+  bool get _hasBadge => widget.isRecommended || widget.isCurrent;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    Widget cardContent = ClipRRect(
-      borderRadius: BorderRadius.circular(AppRadius.lg),
-      child: Container(
-        decoration: _cardDecoration,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // ── Recommended badge ────────────────────────────────────
-          if (widget.isRecommended)
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              decoration: BoxDecoration(
-                color: AppColors.accent,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg - 2),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.star_rounded, size: 14, color: Colors.white),
-                  const SizedBox(width: 4),
-                  Text(
-                    l10n.recommended,
+    Widget cardContent = Container(
+      decoration: _outerDecoration,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: Container(
+          decoration: _cardDecoration,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // ── Top badge (recommended or current plan) ──────────
+              if (widget.isRecommended)
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  color: AppColors.accent,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.star_rounded,
+                          size: 14, color: Colors.white),
+                      const SizedBox(width: 4),
+                      Text(
+                        l10n.recommended,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else if (widget.isCurrent)
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  color: _isDark
+                      ? Colors.white.withValues(alpha: 0.15)
+                      : AppColors.accent,
+                  child: Text(
+                    l10n.currentPlan.toUpperCase(),
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
+                      letterSpacing: 0.8,
                       color: Colors.white,
                     ),
                   ),
-                ],
-              ),
-            ),
-
-          // ── Current plan badge ───────────────────────────────────
-          if (widget.isCurrent && !widget.isRecommended)
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              decoration: BoxDecoration(
-                color: _isDark
-                    ? Colors.white.withValues(alpha: 0.15)
-                    : AppColors.accent,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.lg - 2),
                 ),
-              ),
-              child: Text(
-                l10n.currentPlan.toUpperCase(),
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
-                  color: Colors.white,
-                ),
-              ),
-            ),
 
-          // ── Card body ────────────────────────────────────────────
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Tier label pill
-                  Row(
+              // ── Card body ───────────────────────────────────────
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                      16, _hasBadge ? 10 : 16, 16, 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Tier label pill
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 8,
@@ -871,133 +879,136 @@ class _PlanCardState extends State<_PlanCard>
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
+                      const SizedBox(height: 6),
 
-                  // Title
-                  Text(
-                    widget.title,
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                      color: _textPrimary,
-                    ),
-                  ),
-
-                  const SizedBox(height: 8),
-
-                  // ── Price ────────────────────────────────────────
-                  FadeTransition(
-                    opacity: _priceAnimation,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        Text(
-                          _priceText(l10n),
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 28,
-                            fontWeight: FontWeight.w800,
-                            color: _textPrimary,
-                            height: 1.1,
-                          ),
+                      // Title
+                      Text(
+                        widget.title,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: _textPrimary,
                         ),
-                        const SizedBox(width: 3),
-                        Text(
-                          _periodText(l10n),
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            color: _textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Annual savings hint
-                  if (_annualSavingsText(l10n) != null) ...[
-                    const SizedBox(height: 2),
-                    Text(
-                      _annualSavingsText(l10n)!,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 11,
-                        color: _isDark
-                            ? AppColors.accentLight
-                            : AppColors.accent,
-                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ],
 
-                  const SizedBox(height: 10),
+                      const SizedBox(height: 8),
 
-                  Divider(
-                    height: 1,
-                    color: _isDark
-                        ? Colors.white.withValues(alpha: 0.12)
-                        : AppColors.border,
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // ── Features list ────────────────────────────────
-                  ...List.generate(
-                    math.min(widget.features.length, 6),
-                    (i) {
-                      final f = widget.features[i];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 5),
+                      // ── Price ──────────────────────────────────
+                      FadeTransition(
+                        opacity: _priceAnimation,
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
                           children: [
-                            Icon(
-                              f.included
-                                  ? AppIcons.checkCircle
-                                  : Icons.cancel_rounded,
-                              size: 15,
-                              color: f.included
-                                  ? _checkColor
-                                  : _uncheckColor,
+                            Text(
+                              _priceText(l10n),
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 28,
+                                fontWeight: FontWeight.w800,
+                                color: _textPrimary,
+                                height: 1.1,
+                              ),
                             ),
-                            const SizedBox(width: 7),
-                            Expanded(
-                              child: Text(
-                                f.text,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: f.included
-                                      ? _textPrimary
-                                      : _textSecondary,
-                                  decoration: f.included
-                                      ? null
-                                      : TextDecoration.lineThrough,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                            const SizedBox(width: 3),
+                            Text(
+                              _periodText(l10n),
+                              style: TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 12,
+                                color: _textSecondary,
                               ),
                             ),
                           ],
                         ),
-                      );
-                    },
+                      ),
+
+                      // Annual savings hint (fixed height slot)
+                      SizedBox(
+                        height: 16,
+                        child: _annualSavingsText(l10n) != null
+                            ? Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  _annualSavingsText(l10n)!,
+                                  style: TextStyle(
+                                    fontFamily: 'Inter',
+                                    fontSize: 11,
+                                    color: _isDark
+                                        ? AppColors.accentLight
+                                        : AppColors.accent,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              )
+                            : null,
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Divider(
+                        height: 1,
+                        color: _isDark
+                            ? Colors.white.withValues(alpha: 0.12)
+                            : AppColors.border,
+                      ),
+
+                      const SizedBox(height: 10),
+
+                      // ── Features list ──────────────────────────
+                      ...List.generate(
+                        math.min(widget.features.length, 6),
+                        (i) {
+                          final f = widget.features[i];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  f.included
+                                      ? AppIcons.checkCircle
+                                      : Icons.cancel_rounded,
+                                  size: 15,
+                                  color: f.included
+                                      ? _checkColor
+                                      : _uncheckColor,
+                                ),
+                                const SizedBox(width: 7),
+                                Expanded(
+                                  child: Text(
+                                    f.text,
+                                    style: TextStyle(
+                                      fontFamily: 'Inter',
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: f.included
+                                          ? _textPrimary
+                                          : _textSecondary,
+                                      decoration: f.included
+                                          ? null
+                                          : TextDecoration.lineThrough,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+
+                      const Spacer(),
+
+                      // ── CTA Button ─────────────────────────────
+                      _buildCta(l10n),
+                    ],
                   ),
-
-                  const Spacer(),
-
-                  // ── CTA Button ──────────────────────────────────
-                  const SizedBox(height: 8),
-                  _buildCta(l10n),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
         ),
       ),
     );
@@ -1017,12 +1028,17 @@ class _PlanCardState extends State<_PlanCard>
   Widget _buildCta(AppLocalizations l10n) {
     final label = widget.isCurrent ? l10n.currentPlan : l10n.choosePlan;
 
+    final Widget loader = const SizedBox(
+      width: 18,
+      height: 18,
+      child: CircularProgressIndicator(strokeWidth: 2),
+    );
+
     switch (widget.cardStyle) {
       case _CardStyle.free:
-        // Outlined, subtle
         return SizedBox(
           width: double.infinity,
-          height: 40,
+          height: 44,
           child: OutlinedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: OutlinedButton.styleFrom(
@@ -1042,21 +1058,14 @@ class _PlanCardState extends State<_PlanCard>
                 fontWeight: FontWeight.w600,
               ),
             ),
-            child: widget.isLoading
-                ? const SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : Text(label),
+            child: widget.isLoading ? loader : Text(label),
           ),
         );
 
       case _CardStyle.recommended:
-        // Green filled button on white card
         return SizedBox(
           width: double.infinity,
-          height: 42,
+          height: 44,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
@@ -1079,19 +1088,16 @@ class _PlanCardState extends State<_PlanCard>
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
+                      strokeWidth: 2, color: Colors.white),
                   )
                 : Text(label),
           ),
         );
 
       case _CardStyle.premium:
-        // Filled navy/white
         return SizedBox(
           width: double.infinity,
-          height: 42,
+          height: 44,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
@@ -1114,9 +1120,7 @@ class _PlanCardState extends State<_PlanCard>
                     width: 18,
                     height: 18,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: AppColors.primary,
-                    ),
+                      strokeWidth: 2, color: AppColors.primary),
                   )
                 : Text(label),
           ),
