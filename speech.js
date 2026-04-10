@@ -336,6 +336,79 @@ function advocatSpeakElevenLabsJson(jsonStr) {
 }
 
 // ---------------------------------------------------------------------------
+// Google TTS: Full fetch + play flow in JS
+// ---------------------------------------------------------------------------
+
+/**
+ * Full Google TTS flow: fetch audio from Supabase google-tts function and play it.
+ * Called from Dart via js_interop. Accepts a JSON string with parameters:
+ *   { text, langCode, supabaseUrl, anonKey }
+ *
+ * Returns a Promise<boolean> — true if audio started playing successfully.
+ */
+function advocatSpeakGoogleTtsJson(jsonStr) {
+  return new Promise(function(resolve) {
+    try {
+      var params = JSON.parse(jsonStr);
+      var text = params.text;
+      var langCode = params.langCode || 'en';
+      var supabaseUrl = params.supabaseUrl;
+      var anonKey = params.anonKey;
+
+      if (!text || !supabaseUrl || !anonKey) {
+        console.error('[Advocat TTS] Google TTS: missing required parameters:', Object.keys(params).join(', '));
+        resolve(false);
+        return;
+      }
+
+      var googleTtsUrl = supabaseUrl + '/functions/v1/google-tts';
+      console.log('[Advocat TTS] Google TTS: fetching from:', googleTtsUrl,
+        'lang:', langCode, 'textLen:', text.length);
+
+      fetch(googleTtsUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + anonKey
+        },
+        body: JSON.stringify({
+          text: text,
+          language: langCode
+        })
+      })
+      .then(function(response) {
+        if (!response.ok) {
+          return response.text().then(function(errBody) {
+            console.error('[Advocat TTS] Google TTS returned', response.status, ':', errBody);
+            throw new Error('Google TTS error: ' + response.status);
+          });
+        }
+        return response.blob();
+      })
+      .then(function(blob) {
+        if (!blob || blob.size === 0) {
+          console.error('[Advocat TTS] Google TTS: empty audio blob received');
+          resolve(false);
+          return;
+        }
+        console.log('[Advocat TTS] Google TTS: received audio blob, size:', blob.size, 'bytes');
+        advocatPlayBlob(blob);
+        resolve(true);
+      })
+      .catch(function(err) {
+        console.error('[Advocat TTS] Google TTS fetch/play error:', err.message || err);
+        window._advocatTtsSpeaking = false;
+        resolve(false);
+      });
+    } catch (e) {
+      console.error('[Advocat TTS] Google TTS JSON parse or setup error:', e);
+      window._advocatTtsSpeaking = false;
+      resolve(false);
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
 // Audio Unlock: ensure AudioContext is unlocked on first user interaction
 // ---------------------------------------------------------------------------
 
