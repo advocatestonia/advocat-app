@@ -48,10 +48,10 @@ class AppUser {
   factory AppUser.fromJson(Map<String, dynamic> json) {
     return AppUser(
       id: json['id'] as String,
-      email: json['email'] as String,
+      email: json['email'] as String? ?? '',
       fullName: json['full_name'] as String? ?? '',
       phone: json['phone'] as String?,
-      preferredLanguage: json['preferred_language'] as String? ?? 'en',
+      preferredLanguage: json['preferred_language'] as String? ?? 'et',
       subscriptionTier: _subscriptionTierFromJson(json['subscription_tier'] as String?),
       subscriptionExpiresAt: json['subscription_expires_at'] != null
           ? DateTime.parse(json['subscription_expires_at'] as String)
