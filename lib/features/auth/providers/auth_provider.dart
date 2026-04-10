@@ -95,6 +95,7 @@ class AuthController extends StateNotifier<AuthState> {
     try {
       final currentUser = Supabase.instance.client.auth.currentUser;
       if (currentUser != null) {
+        // Set initial state from auth metadata (fast, synchronous)
         state = AuthState(
           status: AuthStatus.authenticated,
           appUser: AppUser(
@@ -107,11 +108,32 @@ class AuthController extends StateNotifier<AuthState> {
             createdAt: DateTime.tryParse(currentUser.createdAt) ?? DateTime.now(),
           ),
         );
+        // Then load full profile from database (async, updates state)
+        _loadProfileFromDatabase();
       } else {
         state = const AuthState(status: AuthStatus.unauthenticated);
       }
     } catch (_) {
       state = const AuthState(status: AuthStatus.unauthenticated);
+    }
+  }
+
+  /// Load the user's full profile from the Supabase `profiles` table.
+  ///
+  /// This enriches the auth state with data that may not be present in
+  /// the auth metadata (e.g. full_name saved only to profiles).
+  Future<void> _loadProfileFromDatabase() async {
+    try {
+      final profile = await _supabase.getUserProfile();
+      if (profile != null && mounted) {
+        state = AuthState(
+          status: AuthStatus.authenticated,
+          appUser: profile,
+        );
+      }
+    } catch (e) {
+      if (kDebugMode) debugPrint('Failed to load profile from database: $e');
+      // Keep the metadata-based state; not critical.
     }
   }
 
@@ -136,6 +158,7 @@ class AuthController extends StateNotifier<AuthState> {
       );
       final user = response.user;
       if (user != null) {
+        // Set initial state from auth metadata (immediate)
         state = AuthState(
           status: AuthStatus.authenticated,
           appUser: AppUser(
@@ -147,6 +170,8 @@ class AuthController extends StateNotifier<AuthState> {
             createdAt: DateTime.tryParse(user.createdAt) ?? DateTime.now(),
           ),
         );
+        // Load full profile from DB to get accurate full_name
+        await _loadProfileFromDatabase();
       } else {
         state = const AuthState(
           status: AuthStatus.error,
@@ -196,6 +221,16 @@ class AuthController extends StateNotifier<AuthState> {
             createdAt: DateTime.tryParse(user.createdAt) ?? DateTime.now(),
           ),
         );
+        // Save profile to profiles table so it persists across sessions
+        try {
+          await _supabase.updateUserProfile({
+            'full_name': name,
+            'email': email,
+            'preferred_language': language,
+          });
+        } catch (e) {
+          if (kDebugMode) debugPrint('Failed to save profile after register: $e');
+        }
       } else {
         state = const AuthState(
           status: AuthStatus.error,

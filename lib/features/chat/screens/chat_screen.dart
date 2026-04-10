@@ -15,6 +15,7 @@ import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../../services/tool_executor.dart';
 import '../../../services/voice_service.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 
@@ -273,6 +274,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _isLoading = false;
         });
 
+        // Seed AI conversation history from saved messages
+        _seedAIHistory();
+
         // If no messages exist, this is a new case -- send welcome
         if (_messages.isEmpty) {
           _sendWelcomeMessage();
@@ -291,6 +295,22 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         _sendWelcomeMessage();
       }
     }
+  }
+
+  /// Seed the AI service's conversation history from previously loaded messages
+  /// so the AI has context from prior conversations.
+  void _seedAIHistory() {
+    if (_messages.isEmpty) return;
+    final ai = ref.read(aiServiceProvider);
+    final historyMsgs = <Map<String, String>>[];
+    for (final msg in _messages) {
+      if (msg.role == MessageRole.user) {
+        historyMsgs.add({'role': 'user', 'content': msg.content});
+      } else if (msg.role == MessageRole.assistant) {
+        historyMsgs.add({'role': 'assistant', 'content': msg.content});
+      }
+    }
+    ai.seedHistory(widget.caseId, historyMsgs);
   }
 
   void _sendWelcomeMessage() {
@@ -379,11 +399,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         String responseText;
         final ai = ref.read(aiServiceProvider);
         if (ai.isUsingRealAI) {
+          // Get user name from auth state for personalization
+          final authState = ref.read(authControllerProvider);
+          final userName = authState.appUser?.fullName;
+
           // Real AI is available — use it regardless of demo mode.
           final response = await ai.sendChatMessage(
             caseId: widget.caseId,
             message: text,
             userLanguage: Localizations.localeOf(context).languageCode,
+            userName: userName,
           );
           responseText = response.message;
           // Guard against empty responses (e.g. tool_use only).

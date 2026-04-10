@@ -429,6 +429,27 @@ class AIService {
   /// When using real AI, [caseType], [country], [nationality], and
   /// [caseDescription] are used to build the system prompt with relevant
   /// legal knowledge.
+  /// Seed the conversation history for a case from previously saved messages.
+  ///
+  /// Call this after loading messages from Supabase so the AI has context
+  /// from prior conversations.
+  void seedHistory(String caseId, List<Map<String, String>> messages) {
+    if (messages.isEmpty) return;
+    _conversationHistory.putIfAbsent(caseId, () => []);
+    final existing = _conversationHistory[caseId]!;
+    // Only seed if history is empty (avoid duplicates on reload)
+    if (existing.isNotEmpty) return;
+    for (final msg in messages) {
+      existing.add(msg);
+    }
+    // Trim to max
+    if (existing.length > _maxHistoryMessages) {
+      _conversationHistory[caseId] =
+          existing.sublist(existing.length - _maxHistoryMessages);
+    }
+    _caseLastActivity[caseId] = DateTime.now();
+  }
+
   Future<ChatResponse> sendChatMessage({
     required String caseId,
     required String message,
@@ -438,6 +459,7 @@ class AIService {
     String? nationality,
     String? caseDescription,
     String? userLanguage,
+    String? userName,
   }) async {
     // Sanitize user input before any AI processing
     final sanitizedMessage = _sanitizeInput(message);
@@ -485,7 +507,7 @@ class AIService {
         _addToHistory(caseId, 'user', sanitizedMessage);
 
         // Build system prompt: light prompt for simple queries, full for complex
-        final String systemPrompt;
+        String systemPrompt;
         if (isSimple) {
           systemPrompt = SystemPrompts.buildLightPrompt(
             userLanguage: userLanguage,
@@ -500,6 +522,12 @@ class AIService {
             query: sanitizedMessage,
             useReducedContext: model == ClaudeService.modelHaiku,
           );
+        }
+
+        // Personalize: tell the AI the user's name so it can greet them
+        if (userName != null && userName.isNotEmpty) {
+          systemPrompt += '\n\nThe user\'s name is $userName. '
+              'Address them by name when appropriate (e.g. greetings).';
         }
 
         // Build messages with summarized older history.
