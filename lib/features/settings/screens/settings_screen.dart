@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
@@ -698,22 +700,36 @@ class SettingsScreen extends ConsumerWidget {
     try {
       final jsonString = await supabase.exportUserData();
 
-      // Write to a temporary file
-      final tempDir = await getTemporaryDirectory();
-      final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
-      final file =
-          File('${tempDir.path}/advocat_export_$timestamp.json');
-      await file.writeAsString(jsonString);
+      if (kIsWeb) {
+        // On web, use clipboard as fallback (dart:io not available)
+        await Clipboard.setData(ClipboardData(text: jsonString));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Andmed kopeeritud lõikelauale'),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        }
+      } else {
+        // Write to a temporary file
+        final tempDir = await getTemporaryDirectory();
+        final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
+        final file =
+            File('${tempDir.path}/advocat_export_$timestamp.json');
+        await file.writeAsString(jsonString);
 
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        }
+
+        // Share via system share sheet
+        await Share.shareXFiles(
+          [XFile(file.path, mimeType: 'application/json')],
+          subject: 'Advocat Data Export',
+        );
       }
-
-      // Share via system share sheet
-      await Share.shareXFiles(
-        [XFile(file.path, mimeType: 'application/json')],
-        subject: 'Advocat Data Export',
-      );
     } catch (e) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();

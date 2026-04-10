@@ -223,7 +223,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
       };
       if (avatarUrl != null) updates['avatar_url'] = avatarUrl;
 
-      await client.from('users').update(updates).eq('id', userId);
+      await client.from('profiles').update(updates).eq('id', userId);
 
       if (mounted) {
         setState(() {

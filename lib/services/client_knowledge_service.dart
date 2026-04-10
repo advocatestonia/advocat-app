@@ -14,7 +14,7 @@ class ClientKnowledgeService {
     if (uid == null) return '';
     final buf = StringBuffer();
     try {
-      final profile = await _client.from('users').select().eq('id', uid).maybeSingle();
+      final profile = await _client.from('profiles').select().eq('id', uid).maybeSingle();
       if (profile != null) {
         buf.writeln('=== CLIENT PROFILE ===');
         buf.writeln('Name: ${profile['full_name'] ?? 'Unknown'}');
