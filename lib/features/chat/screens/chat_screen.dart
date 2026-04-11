@@ -276,15 +276,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _voiceState = VoiceButtonState.idle;
     });
 
-    // Auto-send if text is not empty
-    if (finalText.trim().isNotEmpty) {
+    // Use finalText from STT, or fall back to what's already in the text field
+    final textToSend = finalText.trim().isNotEmpty
+        ? finalText.trim()
+        : _messageController.text.trim();
+
+    if (textToSend.isNotEmpty) {
       if (autoSend) {
         _messageController.clear();
-        _sendMessage(finalText.trim());
+        _sendMessage(textToSend);
       } else {
-        _messageController.text = finalText;
+        _messageController.text = textToSend;
         _messageController.selection = TextSelection.fromPosition(
-          TextPosition(offset: finalText.length),
+          TextPosition(offset: textToSend.length),
         );
         _focusNode.requestFocus();
       }
@@ -296,6 +300,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     final voice = ref.read(voiceServiceProvider);
     final langCode = Localizations.localeOf(context).languageCode;
+
+    // Stop STT before TTS to prevent echo (AI voice being recognized as user input)
+    if (_voiceState == VoiceButtonState.listening) {
+      _voiceSilenceTimer?.cancel();
+      _speechSub?.cancel();
+      await voice.stopListening();
+    }
+
+    // Clear any text that might have been echoed into the input field
+    _messageController.clear();
 
     setState(() => _voiceState = VoiceButtonState.speaking);
 
