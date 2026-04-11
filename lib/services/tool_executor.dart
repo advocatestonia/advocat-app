@@ -165,10 +165,9 @@ class ToolExecutor {
         return null;
 
       case 'draft_email':
-        return const ToolNavigation(
-          route: AppRoutes.email,
-          delay: Duration(milliseconds: 800),
-        );
+        // Email sending is handled via mailto: link in the approval flow,
+        // not by navigating to the email settings screen.
+        return null;
 
       case 'get_case_status':
         final caseId = params['case_id'] as String?;

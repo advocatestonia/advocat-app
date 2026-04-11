@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -1043,6 +1044,52 @@ class _EmailDraftCard extends StatelessWidget {
   const _EmailDraftCard({required this.data});
   final Map<String, dynamic> data;
 
+  Future<void> _openMailto(BuildContext context) async {
+    final to = data['to'] as String? ?? '';
+    final subject = data['subject'] as String? ?? '';
+    final body = data['body'] as String? ?? '';
+
+    final uri = Uri(
+      scheme: 'mailto',
+      path: to,
+      queryParameters: {
+        'subject': subject,
+        'body': body,
+      },
+    );
+
+    try {
+      await launchUrl(uri);
+    } catch (_) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not open email app'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
+  }
+
+  void _copyToClipboard(BuildContext context) {
+    final to = data['to'] as String? ?? '';
+    final subject = data['subject'] as String? ?? '';
+    final body = data['body'] as String? ?? '';
+
+    final fullText = 'To: $to\nSubject: $subject\n\n$body';
+    Clipboard.setData(ClipboardData(text: fullText));
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context)?.draftCopiedToClipboard ?? 'Email copied to clipboard'),
+        backgroundColor: AppColors.accent,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final to = data['to'] as String? ?? '';
@@ -1067,6 +1114,40 @@ class _EmailDraftCard extends StatelessWidget {
               color: AppColors.textSecondary,
               height: 1.4,
             ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () => _openMailto(context),
+                  icon: const Icon(Icons.send_rounded, size: 16),
+                  label: Text(AppLocalizations.of(context)?.sendViaEmail ?? 'Send Email'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.info,
+                    side: const BorderSide(color: AppColors.info),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () => _copyToClipboard(context),
+                  icon: const Icon(Icons.copy_rounded, size: 16),
+                  label: Text(AppLocalizations.of(context)?.copy ?? 'Copy'),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.accent,
+                    side: const BorderSide(color: AppColors.accent),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

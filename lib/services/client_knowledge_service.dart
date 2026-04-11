@@ -97,7 +97,7 @@ class ClientKnowledgeService {
       } catch (_) {}
       try {
         final msgs = await _client.from('chat_messages').select().eq('case_id', caseId).order('created_at', ascending: true);
-        final recent = (msgs as List).length > 10 ? msgs.sublist(msgs.length - 10) : msgs;
+        final recent = (msgs as List).length > 15 ? msgs.sublist(msgs.length - 15) : msgs;
         if (recent.isNotEmpty) {
           buf.writeln('=== RECENT CONVERSATION ===');
           for (final m in recent) {
@@ -109,7 +109,7 @@ class ClientKnowledgeService {
       } catch (_) {}
     }
     var result = buf.toString();
-    if (result.length > 15000) result = '${result.substring(0, 15000)}\n[truncated]';
+    if (result.length > 25000) result = '${result.substring(0, 25000)}\n[truncated]';
     _cachedContext = result;
     _cachedCaseId = caseId;
     _messageCount = 0;

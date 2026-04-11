@@ -7,13 +7,15 @@ import 'package:logger/logger.dart';
 import '../models/case_model.dart';
 import 'demo_data.dart';
 import 'knowledge_base.dart';
+import 'supabase_service.dart';
 
 // ---------------------------------------------------------------------------
 // Provider
 // ---------------------------------------------------------------------------
 
 final assistantToolsProvider = Provider<AssistantTools>((ref) {
-  return AssistantTools();
+  final supabase = ref.watch(supabaseServiceProvider);
+  return AssistantTools(supabaseService: supabase);
 });
 
 // ---------------------------------------------------------------------------
@@ -81,12 +83,14 @@ class ToolResult {
 /// real services, the tool implementations delegate to the corresponding
 /// service classes.
 class AssistantTools {
-  AssistantTools()
-      : _log = Logger(
+  AssistantTools({required SupabaseService supabaseService})
+      : _supabase = supabaseService,
+        _log = Logger(
           printer: PrettyPrinter(methodCount: 0),
           level: kDebugMode ? Level.debug : Level.off,
         );
 
+  final SupabaseService _supabase;
   final Logger _log;
 
   // ── Tool registry ──────────────────────────────────────────────────────
@@ -111,19 +115,15 @@ class AssistantTools {
 
   /// Tools that require explicit user approval before the result is acted upon.
   ///
-  /// All action-oriented tools require approval so the user can confirm
-  /// before the app performs any action on their behalf.
+  /// Only WRITE/ACTION tools require approval. READ-ONLY tools (deadlines,
+  /// status, knowledge search, check company/vehicle, find lawyer, translate,
+  /// analyze document) execute immediately without asking.
   static final Set<String> requiresApproval = {
-    'check_company',
-    'check_vehicle',
     'create_case',
-    'analyze_document',
     'generate_draft',
-    'find_lawyer',
     'open_camera',
     'draft_email',
     'send_email',
-    'translate_text',
   };
 
   /// List of all registered tool names.
@@ -295,11 +295,8 @@ Country: ${country.toUpperCase()}
   Future<ToolResult> _getDeadlines(Map<String, dynamic> params) async {
     final caseId = params['case_id'] as String?;
 
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-
-    final deadlines = DemoData.deadlines
-        .where((d) => caseId == null || d.caseId == caseId)
-        .toList()
+    // Fetch from Supabase for authenticated users, DemoData for demo mode.
+    final deadlines = await _supabase.getDeadlines(caseId: caseId)
       ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
 
     if (deadlines.isEmpty) {
@@ -357,32 +354,37 @@ Country: ${country.toUpperCase()}
     final caseType = params['case_type'] as String? ?? 'other';
     final country = params['country'] as String? ?? 'Finland';
 
-    await Future<void>.delayed(const Duration(milliseconds: 400));
-
-    final newCaseId = 'case-new-${DateTime.now().millisecondsSinceEpoch}';
+    // Create via Supabase for authenticated users, in-memory for demo.
+    final newCase = await _supabase.createCase({
+      'title': title,
+      'description': description.isNotEmpty ? description : null,
+      'type': caseType,
+      'country': country,
+      'status': 'active',
+    });
 
     return ToolResult(
       success: true,
       displayText: '''
 **New Case Created**
 
-Title: $title
+Title: ${newCase.title}
 Type: $caseType
 Country: $country
-Case ID: $newCaseId
+Case ID: ${newCase.id}
 
 ${description.isNotEmpty ? 'Description: $description\n' : ''}
 The case has been created. You can now upload documents and I will help analyze them.
 ''',
       cardType: 'case_summary',
       data: {
-        'case_id': newCaseId,
-        'title': title,
-        'description': description,
+        'case_id': newCase.id,
+        'title': newCase.title,
+        'description': newCase.description,
         'case_type': caseType,
         'country': country,
-        'status': 'active',
-        'created_at': DateTime.now().toIso8601String(),
+        'status': newCase.status.name,
+        'created_at': newCase.createdAt.toIso8601String(),
       },
       requiresApproval: true,
       approvalMessage:
@@ -754,22 +756,33 @@ _Review the email above. Tap "Send" to send or "Edit" to modify._
   }
 
   Future<ToolResult> _getCaseStatus(Map<String, dynamic> params) async {
-    final caseId = params['case_id'] as String? ?? DemoData.mainCaseId;
+    final caseId = params['case_id'] as String?;
 
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-
-    final legalCase = DemoData.cases
-        .where((c) => c.id == caseId)
-        .firstOrNull;
-
-    if (legalCase == null) {
-      return ToolResult.error('Case "$caseId" not found.');
+    // Fetch from Supabase for authenticated users, DemoData for demo mode.
+    LegalCase? legalCase;
+    if (caseId != null) {
+      try {
+        legalCase = await _supabase.getCaseById(caseId);
+      } catch (_) {
+        // Fall through to error below
+      }
+    } else {
+      // No case_id provided — try to get the first case from the list
+      final cases = await _supabase.getCases();
+      legalCase = cases.isNotEmpty ? cases.first : null;
     }
 
-    final caseDeadlines = DemoData.deadlines
-        .where((d) => d.caseId == caseId)
-        .toList()
-      ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
+    if (legalCase == null) {
+      return ToolResult.error(
+        caseId != null
+            ? 'Case "$caseId" not found.'
+            : 'No cases found. Create a case first.',
+      );
+    }
+
+    final caseDeadlines =
+        await _supabase.getDeadlines(caseId: legalCase.id)
+          ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
 
     final nextDeadline = caseDeadlines.isNotEmpty
         ? '${caseDeadlines.first.title} — '

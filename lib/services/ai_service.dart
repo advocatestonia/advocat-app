@@ -541,7 +541,8 @@ class AIService {
         // Personalize: tell the AI the user's name so it can greet them
         if (userName != null && userName.isNotEmpty) {
           systemPrompt += '\n\nThe user\'s name is $userName. '
-              'Address them by name when appropriate (e.g. greetings).';
+              'Use their name naturally in conversation — at least once every 3-4 messages. '
+              'Do not overuse it, just weave it in like a friend would.';
         }
 
         // Build messages with summarized older history.

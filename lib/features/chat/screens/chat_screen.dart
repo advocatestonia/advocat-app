@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -616,6 +617,47 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             // Perform navigation from the first tool result (if any)
             if (mounted) {
               await bridge.performNavigations(toolResults);
+            }
+
+            // After showing tool results, ask Claude for follow-up suggestions
+            if (toolResults.isNotEmpty && mounted) {
+              try {
+                final toolSummary = toolResults.map((tr) => tr.displayText).join('\n');
+                final followUp = await ai.sendChatMessage(
+                  caseId: widget.caseId,
+                  message: '[TOOL_RESULT]\n$toolSummary\n[/TOOL_RESULT]\n'
+                      'Based on this result, briefly suggest 1-2 natural next steps '
+                      'the user might want to take. Be proactive and helpful. '
+                      'Keep it short — 1-2 sentences.',
+                  userLanguage: Localizations.localeOf(context).languageCode,
+                  userName: authState.appUser?.fullName,
+                  clientContext: ctx,
+                  caseType: _currentCase?.type,
+                  country: 'estonia',
+                  nationality: _currentCase?.nationality,
+                );
+
+                if (mounted && followUp.message.trim().isNotEmpty) {
+                  await supabase.saveChatMessage(
+                    caseId: widget.caseId,
+                    role: 'assistant',
+                    content: followUp.message,
+                  );
+                  setState(() {
+                    _messages.add(ChatMessage(
+                      id: 'followup_${DateTime.now().millisecondsSinceEpoch}',
+                      role: MessageRole.assistant,
+                      content: followUp.message,
+                      timestamp: DateTime.now(),
+                    ));
+                  });
+                  _scrollToBottom();
+
+                  if (_ttsEnabled) _speakResponse(followUp.message);
+                }
+              } catch (e) {
+                debugPrint('Follow-up suggestion failed (non-fatal): $e');
+              }
             }
 
             if (mounted) {
@@ -1717,8 +1759,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             result: message.toolResult!,
             onAction: (action) => _sendMessage(action),
             onApprove: () {
-              // Handle approval -- navigate if there's a pending navigation
-              if (message.navigation != null) {
+              // Handle approval -- execute the real action
+              if (message.toolResult?.cardType == 'email_draft') {
+                // Open mailto: link with pre-filled fields
+                final data = message.toolResult?.data ?? {};
+                final to = data['to'] as String? ?? '';
+                final subject = data['subject'] as String? ?? '';
+                final body = data['body'] as String? ?? '';
+                final uri = Uri(
+                  scheme: 'mailto',
+                  path: to,
+                  queryParameters: {
+                    'subject': subject,
+                    'body': body,
+                  },
+                );
+                launchUrl(uri);
+              } else if (message.navigation != null) {
                 final executor = ToolExecutor(context: context, ref: ref);
                 executor.performNavigation(message.navigation!);
               }
