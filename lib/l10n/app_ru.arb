@@ -887,5 +887,8 @@
     "subscriptionNotFound": "Подписка не найдена",
     "errorWithMessage": "Ошибка: {message}",
     "redirectingToPayment": "Перенаправление на страницу оплаты...",
-    "cheaperAnnually": "\u20AC{amount}/мес. дешевле при годовой подписке"
+    "cheaperAnnually": "€{amount}/мес. дешевле при годовой подписке",
+    "navigatingTo": "Открываю",
+    "stayInChat": "Остаться в чате",
+    "backToChat": "Назад в чат"
 }

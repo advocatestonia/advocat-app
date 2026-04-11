@@ -2428,4 +2428,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/mån billigare med årsprenumeration';
   }
+
+  @override
+  String get navigatingTo => 'Öppnar';
+
+  @override
+  String get stayInChat => 'Stanna i chatten';
+
+  @override
+  String get backToChat => 'Tillbaka till chatten';
 }

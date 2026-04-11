@@ -112,7 +112,7 @@
     "familyReunification": "Perekonna taasühendamine",
     "fiveAiMessagesTotal": "5 AI sõnumit (kogu eluea jooksul)",
     "forgotPassword": "Unustasid parooli?",
-    "foundingMemberNote": "Asutajaliige: 9.99\u20AC/kuu esimesed 3 kuud",
+    "foundingMemberNote": "Asutajaliige: 9.99€/kuu esimesed 3 kuud",
     "free": "Tasuta",
     "fullDefense": "Täisesindus",
     "fullName": "Täisnimi",
@@ -918,5 +918,8 @@
     "subscriptionNotFound": "Tellimust ei leitud",
     "errorWithMessage": "Viga: {message}",
     "redirectingToPayment": "Suunatakse makseleheküljele...",
-    "cheaperAnnually": "\u20AC{amount}/kuus soodsam aastamaksega"
+    "cheaperAnnually": "€{amount}/kuus soodsam aastamaksega",
+    "navigatingTo": "Avan",
+    "stayInChat": "Jää vestlusesse",
+    "backToChat": "Tagasi vestlusesse"
 }

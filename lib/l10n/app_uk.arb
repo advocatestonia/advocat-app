@@ -819,5 +819,8 @@
     "subscriptionNotFound": "Підписку не знайдено",
     "errorWithMessage": "Помилка: {message}",
     "redirectingToPayment": "Перенаправлення на сторінку оплати...",
-    "cheaperAnnually": "\u20AC{amount}/міс. дешевше з річною підпискою"
+    "cheaperAnnually": "€{amount}/міс. дешевше з річною підпискою",
+    "navigatingTo": "Відкриваю",
+    "stayInChat": "Залишитися в чаті",
+    "backToChat": "Назад до чату"
 }

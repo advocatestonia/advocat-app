@@ -813,11 +813,14 @@
     "tutorialStep4Desc": "Explorati aplicatia si protejati-va drepturile. Toate datele raman private pe dispozitivul dvs.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Deblocați funcțiile premium",
-    "voiceDisclaimer": "Asistentul vocal func\u021bioneaz\u0103 momentan doar pe desktop (browser Chrome). Suport mobil \u00een cur\u00e2nd.",
+    "voiceDisclaimer": "Asistentul vocal funcționează momentan doar pe desktop (browser Chrome). Suport mobil în curând.",
     "recommended": "Recomandat",
-    "pleaseLogIn": "V\u0103 rug\u0103m s\u0103 v\u0103 autentifica\u021bi",
-    "subscriptionNotFound": "Abonamentul nu a fost g\u0103sit",
+    "pleaseLogIn": "Vă rugăm să vă autentificați",
+    "subscriptionNotFound": "Abonamentul nu a fost găsit",
     "errorWithMessage": "Eroare: {message}",
-    "redirectingToPayment": "Redirec\u021bionare c\u0103tre pagina de plat\u0103...",
-    "cheaperAnnually": "\u20AC{amount}/lun\u0103 mai ieftin cu abonamentul anual"
+    "redirectingToPayment": "Redirecționare către pagina de plată...",
+    "cheaperAnnually": "€{amount}/lună mai ieftin cu abonamentul anual",
+    "navigatingTo": "Se deschide",
+    "stayInChat": "Rămâi în chat",
+    "backToChat": "Înapoi la chat"
 }

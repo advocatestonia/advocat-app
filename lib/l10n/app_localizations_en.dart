@@ -2423,4 +2423,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/mo cheaper annually';
   }
+
+  @override
+  String get navigatingTo => 'Opening';
+
+  @override
+  String get stayInChat => 'Stay in chat';
+
+  @override
+  String get backToChat => 'Back to chat';
 }

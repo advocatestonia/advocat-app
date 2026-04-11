@@ -872,6 +872,9 @@ ${legalCase.description ?? 'No description available.'}
       'checker': 'Checker',
       'new_case': 'New Case',
       'profile': 'Profile',
+      'back': 'Chat',
+      'previous': 'Chat',
+      'chat': 'Chat',
     };
 
     final screenName = screenNames[screen] ?? screen;

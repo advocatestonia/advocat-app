@@ -819,5 +819,8 @@
     "subscriptionNotFound": "لم يتم العثور على الاشتراك",
     "errorWithMessage": "خطأ: {message}",
     "redirectingToPayment": "جارٍ التوجيه إلى صفحة الدفع...",
-    "cheaperAnnually": "\u20AC{amount}/شهر أرخص بالاشتراك السنوي"
+    "cheaperAnnually": "€{amount}/شهر أرخص بالاشتراك السنوي",
+    "navigatingTo": "جارٍ فتح",
+    "stayInChat": "البقاء في المحادثة",
+    "backToChat": "العودة إلى المحادثة"
 }

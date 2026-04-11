@@ -634,7 +634,7 @@
     "unlimitedAiMessages": "Unlimited AI messages",
     "voiceInput": "Voice input",
     "strategyRecommendations": "Strategy recommendations",
-    "foundingMemberNote": "Founding Member: 9.99\u20AC/mo for first 3 months",
+    "foundingMemberNote": "Founding Member: 9.99€/mo for first 3 months",
     "saveTwentyPercent": "Save 20%",
     "forever": "forever",
     "perMonth": "/month",
@@ -935,12 +935,15 @@
         }
     },
     "redirectingToPayment": "Redirecting to payment page...",
-    "cheaperAnnually": "\u20AC{amount}/mo cheaper annually",
+    "cheaperAnnually": "€{amount}/mo cheaper annually",
     "@cheaperAnnually": {
         "placeholders": {
             "amount": {
                 "type": "String"
             }
         }
-    }
+    },
+    "navigatingTo": "Opening",
+    "stayInChat": "Stay in chat",
+    "backToChat": "Back to chat"
 }

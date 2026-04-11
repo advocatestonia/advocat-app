@@ -2430,4 +2430,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/kk edullisempi vuositilauksella';
   }
+
+  @override
+  String get navigatingTo => 'Avataan';
+
+  @override
+  String get stayInChat => 'Pysy chatissa';
+
+  @override
+  String get backToChat => 'Takaisin chattiin';
 }

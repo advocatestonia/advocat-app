@@ -2428,4 +2428,13 @@ class AppLocalizationsFa extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/ماه ارزان‌تر با اشتراک سالانه';
   }
+
+  @override
+  String get navigatingTo => 'در حال باز کردن';
+
+  @override
+  String get stayInChat => 'ماندن در چت';
+
+  @override
+  String get backToChat => 'بازگشت به چت';
 }

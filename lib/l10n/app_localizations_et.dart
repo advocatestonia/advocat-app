@@ -2427,4 +2427,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/kuus soodsam aastamaksega';
   }
+
+  @override
+  String get navigatingTo => 'Avan';
+
+  @override
+  String get stayInChat => 'Jää vestlusesse';
+
+  @override
+  String get backToChat => 'Tagasi vestlusesse';
 }

@@ -2446,4 +2446,13 @@ class AppLocalizationsRo extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/lună mai ieftin cu abonamentul anual';
   }
+
+  @override
+  String get navigatingTo => 'Se deschide';
+
+  @override
+  String get stayInChat => 'Rămâi în chat';
+
+  @override
+  String get backToChat => 'Înapoi la chat';
 }

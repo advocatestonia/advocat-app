@@ -813,11 +813,14 @@
     "tutorialStep4Desc": "Isstyrinkite programele ir apsaugokite savo teises. Visi duomenys lieka privatūs jusu irengynyje.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Atrakinkite premium funkcijas",
-    "voiceDisclaimer": "Balso asistentas \u0161iuo metu veikia tik kompiuteryje (Chrome nar\u0161ykl\u0117). Mobilusis palaikymas netrukus.",
+    "voiceDisclaimer": "Balso asistentas šiuo metu veikia tik kompiuteryje (Chrome naršyklė). Mobilusis palaikymas netrukus.",
     "recommended": "Rekomenduojama",
-    "pleaseLogIn": "Pra\u0161ome prisijungti",
+    "pleaseLogIn": "Prašome prisijungti",
     "subscriptionNotFound": "Prenumerata nerasta",
     "errorWithMessage": "Klaida: {message}",
-    "redirectingToPayment": "Nukreipiama \u012f mok\u0117jimo puslap\u012f...",
-    "cheaperAnnually": "\u20AC{amount}/m\u0117n. pigiau su metine prenumerata"
+    "redirectingToPayment": "Nukreipiama į mokėjimo puslapį...",
+    "cheaperAnnually": "€{amount}/mėn. pigiau su metine prenumerata",
+    "navigatingTo": "Atidaroma",
+    "stayInChat": "Likti pokalbyje",
+    "backToChat": "Grįžti į pokalbį"
 }

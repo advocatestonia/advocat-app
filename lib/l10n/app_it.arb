@@ -819,5 +819,8 @@
     "subscriptionNotFound": "Abbonamento non trovato",
     "errorWithMessage": "Errore: {message}",
     "redirectingToPayment": "Reindirizzamento alla pagina di pagamento...",
-    "cheaperAnnually": "\u20AC{amount}/mese in meno con l'abbonamento annuale"
+    "cheaperAnnually": "€{amount}/mese in meno con l'abbonamento annuale",
+    "navigatingTo": "Apertura di",
+    "stayInChat": "Resta nella chat",
+    "backToChat": "Torna alla chat"
 }

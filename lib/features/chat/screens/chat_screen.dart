@@ -855,7 +855,55 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
         // Perform navigation if the tool result doesn't require approval
         if (execResult.navigation != null && !result.requiresApproval) {
-          await executor.performNavigation(execResult.navigation!);
+          final nav = execResult.navigation!;
+          if (nav.route == '__pop__') {
+            // Pop immediately for "back" actions
+            await executor.performNavigation(nav);
+          } else {
+            // Show cancelable navigation preview toast
+            final l10n = AppLocalizations.of(context);
+            final screenName = nav.route.split('/').last;
+            bool cancelled = false;
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Row(
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        '${l10n?.navigatingTo ?? "Opening"} $screenName...',
+                      ),
+                    ),
+                  ],
+                ),
+                action: SnackBarAction(
+                  label: l10n?.stayInChat ?? 'Stay in chat',
+                  textColor: Colors.white,
+                  onPressed: () {
+                    cancelled = true;
+                  },
+                ),
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+                backgroundColor: AppColors.primary,
+              ),
+            );
+
+            await Future.delayed(const Duration(seconds: 2));
+
+            if (!cancelled && mounted) {
+              await executor.performNavigation(nav);
+            }
+          }
         }
       }
     } catch (e) {

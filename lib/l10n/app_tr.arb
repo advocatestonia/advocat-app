@@ -813,11 +813,14 @@
     "tutorialStep4Desc": "Uygulamayi kesfedin ve haklarinizi koruyun. Tum veriler cihazinizda ozel kalir.",
     "advocatProTitle": "Advocat Pro",
     "advocatProSubtitle": "Premium özellikleri açın",
-    "voiceDisclaimer": "Sesli asistan \u015fu anda yaln\u0131zca masa\u00fcst\u00fcnde \u00e7al\u0131\u015fmaktad\u0131r (Chrome taray\u0131c\u0131). Mobil destek yak\u0131nda.",
-    "recommended": "\u00d6nerilen",
-    "pleaseLogIn": "L\u00fctfen giri\u015f yap\u0131n",
-    "subscriptionNotFound": "Abonelik bulunamad\u0131",
+    "voiceDisclaimer": "Sesli asistan şu anda yalnızca masaüstünde çalışmaktadır (Chrome tarayıcı). Mobil destek yakında.",
+    "recommended": "Önerilen",
+    "pleaseLogIn": "Lütfen giriş yapın",
+    "subscriptionNotFound": "Abonelik bulunamadı",
     "errorWithMessage": "Hata: {message}",
-    "redirectingToPayment": "\u00d6deme sayfas\u0131na y\u00f6nlendiriliyor...",
-    "cheaperAnnually": "\u20AC{amount}/ay daha ucuz y\u0131ll\u0131k abonelikle"
+    "redirectingToPayment": "Ödeme sayfasına yönlendiriliyor...",
+    "cheaperAnnually": "€{amount}/ay daha ucuz yıllık abonelikle",
+    "navigatingTo": "Açılıyor",
+    "stayInChat": "Sohbette kal",
+    "backToChat": "Sohbete dön"
 }

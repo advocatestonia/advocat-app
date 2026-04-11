@@ -2428,4 +2428,13 @@ class AppLocalizationsTr extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/ay daha ucuz yıllık abonelikle';
   }
+
+  @override
+  String get navigatingTo => 'Açılıyor';
+
+  @override
+  String get stayInChat => 'Sohbette kal';
+
+  @override
+  String get backToChat => 'Sohbete dön';
 }

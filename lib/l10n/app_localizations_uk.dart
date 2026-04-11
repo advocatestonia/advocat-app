@@ -2431,4 +2431,13 @@ class AppLocalizationsUk extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/міс. дешевше з річною підпискою';
   }
+
+  @override
+  String get navigatingTo => 'Відкриваю';
+
+  @override
+  String get stayInChat => 'Залишитися в чаті';
+
+  @override
+  String get backToChat => 'Назад до чату';
 }

@@ -111,7 +111,11 @@ class ToolExecutor {
     if (!context.mounted) return;
 
     _log.i('ToolExecutor: navigating to ${navigation.route}');
-    GoRouter.of(context).push(navigation.route, extra: navigation.extra);
+    if (navigation.route == '__pop__') {
+      GoRouter.of(context).pop();
+    } else {
+      GoRouter.of(context).push(navigation.route, extra: navigation.extra);
+    }
   }
 
   // ── Navigation resolution ────────────────────────────────────────────
@@ -199,6 +203,15 @@ class ToolExecutor {
 
       case 'navigate_to':
         final screen = params['screen'] as String? ?? 'home';
+
+        // Handle "back" / "previous" / "chat" as a pop action
+        if (screen == 'back' || screen == 'previous' || screen == 'chat') {
+          return const ToolNavigation(
+            route: '__pop__',
+            delay: Duration(milliseconds: 300),
+          );
+        }
+
         const routeMap = <String, String>{
           'home': AppRoutes.home,
           'cases': AppRoutes.cases,
@@ -217,7 +230,7 @@ class ToolExecutor {
         final route = routeMap[screen] ?? AppRoutes.home;
         return ToolNavigation(
           route: route,
-          delay: const Duration(milliseconds: 400),
+          delay: const Duration(milliseconds: 300),
         );
 
       default:

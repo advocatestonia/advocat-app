@@ -4465,6 +4465,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'€{amount}/mo cheaper annually'**
   String cheaperAnnually(String amount);
+
+  /// No description provided for @navigatingTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening'**
+  String get navigatingTo;
+
+  /// No description provided for @stayInChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay in chat'**
+  String get stayInChat;
+
+  /// No description provided for @backToChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to chat'**
+  String get backToChat;
 }
 
 class _AppLocalizationsDelegate

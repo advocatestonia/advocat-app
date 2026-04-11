@@ -868,5 +868,8 @@
     "subscriptionNotFound": "Tilausta ei löytynyt",
     "errorWithMessage": "Virhe: {message}",
     "redirectingToPayment": "Siirrytään maksusivulle...",
-    "cheaperAnnually": "\u20AC{amount}/kk edullisempi vuositilauksella"
+    "cheaperAnnually": "€{amount}/kk edullisempi vuositilauksella",
+    "navigatingTo": "Avataan",
+    "stayInChat": "Pysy chatissa",
+    "backToChat": "Takaisin chattiin"
 }

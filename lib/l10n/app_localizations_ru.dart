@@ -2438,4 +2438,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String cheaperAnnually(String amount) {
     return '€$amount/мес. дешевле при годовой подписке';
   }
+
+  @override
+  String get navigatingTo => 'Открываю';
+
+  @override
+  String get stayInChat => 'Остаться в чате';
+
+  @override
+  String get backToChat => 'Назад в чат';
 }

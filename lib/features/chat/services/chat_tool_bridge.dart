@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
+import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/assistant_tools.dart';
 import '../../../services/tool_executor.dart';
 
@@ -181,13 +183,67 @@ class ChatToolBridge {
 
   /// Perform all pending navigations from tool results.
   ///
-  /// Call this after all results have been inserted into the chat.
+  /// Shows a cancelable toast/snackbar for 2 seconds before navigating,
+  /// allowing the user to tap "Stay in chat" to cancel the navigation.
   /// Only the first navigation will be executed (multiple navigations
   /// at once would be confusing).
   Future<void> performNavigations(List<ToolResultMessage> results) async {
     for (final result in results) {
       if (result.navigation != null && result.toolResult?.requiresApproval != true) {
-        await _executor.performNavigation(result.navigation!);
+        final nav = result.navigation!;
+
+        // For pop actions, navigate immediately (no preview needed)
+        if (nav.route == '__pop__') {
+          await _executor.performNavigation(nav);
+          break;
+        }
+
+        // Show cancelable navigation preview toast
+        if (!context.mounted) break;
+
+        final l10n = AppLocalizations.of(context);
+        final screenName = nav.route.split('/').last;
+        bool cancelled = false;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    '${l10n?.navigatingTo ?? "Opening"} $screenName...',
+                  ),
+                ),
+              ],
+            ),
+            action: SnackBarAction(
+              label: l10n?.stayInChat ?? 'Stay in chat',
+              textColor: Colors.white,
+              onPressed: () {
+                cancelled = true;
+              },
+            ),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: AppColors.primary,
+          ),
+        );
+
+        // Wait 2 seconds for user to cancel
+        await Future.delayed(const Duration(seconds: 2));
+
+        if (!cancelled && context.mounted) {
+          await _executor.performNavigation(nav);
+        }
         break; // Only navigate once
       }
     }
