@@ -3,7 +3,7 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 const GOOGLE_TTS_API_KEY = Deno.env.get("GOOGLE_TTS_API_KEY");
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://advocat.ee",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers":
     "Authorization, Content-Type, apikey, x-client-info",

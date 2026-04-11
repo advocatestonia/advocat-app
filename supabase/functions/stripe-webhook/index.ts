@@ -6,10 +6,9 @@ const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, Stripe-Signature",
+// No CORS headers needed — Stripe calls server-to-server, not from browsers
+const responseHeaders = {
+  "Content-Type": "application/json",
 };
 
 // Plan mapping from Stripe to our tiers
@@ -20,15 +19,51 @@ const PLAN_MAPPING: Record<string, string> = {
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, { status: 204 });
   }
 
   try {
     const body = await req.text();
 
+    // Verify Stripe webhook signature
+    const signature = req.headers.get("stripe-signature");
+    if (!signature || !STRIPE_WEBHOOK_SECRET) {
+      return new Response(JSON.stringify({ error: "Missing signature" }), {
+        status: 401, headers: responseHeaders,
+      });
+    }
+
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(STRIPE_WEBHOOK_SECRET),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+
+    const parts = signature.split(",");
+    const timestamp = parts.find((p: string) => p.startsWith("t="))?.split("=")[1];
+    const sig = parts.find((p: string) => p.startsWith("v1="))?.split("=")[1];
+
+    if (!timestamp || !sig) {
+      return new Response(JSON.stringify({ error: "Invalid signature format" }), {
+        status: 401, headers: responseHeaders,
+      });
+    }
+
+    const signedPayload = `${timestamp}.${body}`;
+    const expectedSig = await crypto.subtle.sign("HMAC", key, encoder.encode(signedPayload));
+    const expectedHex = Array.from(new Uint8Array(expectedSig))
+      .map((b: number) => b.toString(16).padStart(2, "0")).join("");
+
+    if (expectedHex !== sig) {
+      return new Response(JSON.stringify({ error: "Invalid signature" }), {
+        status: 401, headers: responseHeaders,
+      });
+    }
+
     // Parse the Stripe event
-    // Note: In production, verify webhook signature with STRIPE_WEBHOOK_SECRET
-    // For now, we trust the event since it's on a private endpoint
     let event;
     try {
       event = JSON.parse(body);
@@ -152,13 +187,13 @@ serve(async (req) => {
 
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: responseHeaders,
     });
   } catch (error) {
     console.error("Webhook error:", error);
     return new Response(JSON.stringify({ error: String(error) }), {
       status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      headers: responseHeaders,
     });
   }
 });

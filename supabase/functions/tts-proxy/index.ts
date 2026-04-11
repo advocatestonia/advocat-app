@@ -6,7 +6,7 @@ const ELEVENLABS_API_KEY = Deno.env.get("ELEVENLABS_API_KEY");
 const DEFAULT_VOICE_ID = "21m00Tcm4TlvDq8ikWAM";
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "https://advocat.ee",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Authorization, Content-Type, apikey, x-client-info",
 };

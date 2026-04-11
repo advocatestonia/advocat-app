@@ -2880,12 +2880,15 @@ class _PremiumTextFieldState extends State<_PremiumTextField> {
         child: TextField(
           controller: widget.controller,
           focusNode: widget.focusNode,
+          maxLength: 3000,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
           maxLines: 5,
           minLines: 1,
           textCapitalization: TextCapitalization.sentences,
           textInputAction: TextInputAction.newline,
           style: const TextStyle(fontSize: 15, height: 1.4),
           decoration: InputDecoration(
+            counterText: '',
             hintText: AppLocalizations.of(context)?.typeMessage ?? 'Type a message...',
             hintStyle: TextStyle(
               color: AppColors.textTertiary.withValues(alpha: 0.7),
