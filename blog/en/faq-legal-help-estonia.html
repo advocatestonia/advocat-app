@@ -28,59 +28,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.7; }
-        a { color: #0A8F6C; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-
-        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
-        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
-        .logo { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-        .logo span { color: #0A8F6C; }
-        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
-        .header-nav a:hover { color: #fff; text-decoration: none; }
-
-        .breadcrumb { max-width: 800px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
-        .breadcrumb a { color: #0A8F6C; }
-
-        .article { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
-        .article-header { margin: 24px 0 36px; }
-        .article-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; background: #EBF8FF; color: #3182CE; margin-bottom: 16px; }
-        .article-header h1 { font-size: 34px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; color: #1A2B4A; }
-        .article-meta { font-size: 14px; color: #8A9AAA; display: flex; gap: 20px; flex-wrap: wrap; }
-
-        .article-body h2 { font-size: 24px; font-weight: 700; margin: 40px 0 16px; color: #1A2B4A; padding-top: 16px; border-top: 1px solid #E2E8F0; }
-        .article-body p { margin-bottom: 16px; font-size: 16px; color: #2D3748; }
-        .article-body strong { color: #1A2B4A; }
-
-        .faq-item { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; }
-        .faq-item h3 { font-size: 18px; font-weight: 700; margin: 0 0 12px; color: #1A2B4A; }
-        .faq-item p { margin-bottom: 0; font-size: 15px; color: #2D3748; line-height: 1.7; }
-
-        .cta-box { background: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%); border: 2px solid #0A8F6C; border-radius: 12px; padding: 28px; margin: 36px 0; text-align: center; }
-        .cta-box h3 { color: #0A8F6C; font-size: 20px; margin-bottom: 10px; }
-        .cta-box p { color: #2D3748; margin-bottom: 16px; }
-        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 12px 32px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: background 0.2s; }
-        .cta-btn:hover { background: #078a63; text-decoration: none; }
-
-        .related { background: #fff; border-radius: 12px; padding: 28px; margin: 40px 0; border: 1px solid #E2E8F0; }
-        .related h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
-        .related ul { list-style: none; padding: 0; }
-        .related li { margin-bottom: 10px; }
-        .related a { font-weight: 500; font-size: 15px; }
-
-        .lang-links { text-align: center; margin: 20px 0; font-size: 14px; }
-        .lang-links a { margin: 0 12px; padding: 6px 14px; background: #E2E8F0; border-radius: 6px; font-weight: 600; }
-
-        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
-        .footer a { color: rgba(255,255,255,0.7); }
-
-        @media (max-width: 600px) {
-            .article-header h1 { font-size: 26px; }
-            .article-meta { flex-direction: column; gap: 6px; }
-        }
-    </style>
+    <link rel="stylesheet" href="/blog/style.css">
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -253,11 +201,12 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <a href="https://advocat.ee" class="logo">Advo<span>cat</span></a>
+            <a href="https://advocat.ee" class="header-logo">Advo<span class="accent">cat</span></a>
             <nav class="header-nav">
                 <a href="https://advocat.ee">Home</a>
                 <a href="/blog/en/">Blog</a>
-                <a href="/app.html">Try free</a>
+                <a href="/blog/" class="lang-link">ET</a>
+                <a href="/blog/ru/" class="lang-link">RU</a>
             </nav>
         </div>
     </header>
@@ -421,8 +370,17 @@
     </main>
 
     <footer class="footer">
-        <p>&copy; 2026 Advocat. All rights reserved. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
-        <p style="margin-top:8px;">This article is general in nature and does not replace professional legal advice. For specific situations, consult a lawyer.</p>
+        <div class="footer-inner">
+            <div class="footer-links">
+                <a href="https://advocat.ee">Home</a>
+                <a href="/blog/en/">Blog</a>
+                <a href="/blog/">ET</a>
+                <a href="/blog/ru/">RU</a>
+                <a href="mailto:hello@advocat.ee">hello@advocat.ee</a>
+            </div>
+            <p class="footer-disclaimer">Advocat provides legal information, not legal services. The information in these articles is general in nature and does not replace consultation with a qualified lawyer.</p>
+            <p class="footer-copy">&copy; 2026 Vorantis O&Uuml;. All rights reserved.</p>
+        </div>
     </footer>
 </body>
 </html>
