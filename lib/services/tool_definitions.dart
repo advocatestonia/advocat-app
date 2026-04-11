@@ -312,6 +312,46 @@ abstract final class ToolDefinitions {
         'required': ['text', 'target_language'],
       },
     },
+    {
+      'name': 'navigate_to',
+      'description':
+          'Navigate the user to a specific screen in the app. Use this when '
+              'the user asks to go somewhere, see something, or needs to access '
+              'a feature. For example: "покажи мои дедлайны", "näita mulle seadeid", '
+              '"show me my cases", "хочу подписаться", "помоги сфотографировать документ". '
+              'Available screens: home, cases, deadlines, settings, subscription, '
+              'email, scan, vault, rights, legal_aid, checker, new_case, profile.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'screen': {
+            'type': 'string',
+            'description': 'The screen to navigate to.',
+            'enum': [
+              'home',
+              'cases',
+              'deadlines',
+              'settings',
+              'subscription',
+              'email',
+              'scan',
+              'vault',
+              'rights',
+              'legal_aid',
+              'checker',
+              'new_case',
+              'profile',
+            ],
+          },
+          'message': {
+            'type': 'string',
+            'description':
+                'Brief message to show the user about why we are navigating.',
+          },
+        },
+        'required': ['screen'],
+      },
+    },
   ];
 
   /// Returns only the tool names as a list.

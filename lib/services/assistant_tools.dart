@@ -111,6 +111,7 @@ class AssistantTools {
     'get_case_status': _getCaseStatus,
     'change_language': _changeLanguage,
     'translate_text': _translateText,
+    'navigate_to': _navigateTo,
   };
 
   /// Tools that require explicit user approval before the result is acted upon.
@@ -848,6 +849,42 @@ ${legalCase.description ?? 'No description available.'}
         'action': 'change_language',
         'language': language,
         'display_name': displayName,
+      },
+    );
+  }
+
+  Future<ToolResult> _navigateTo(Map<String, dynamic> params) async {
+    final screen = params['screen'] as String? ?? 'home';
+    final message = params['message'] as String? ?? '';
+
+    // Human-readable screen names for display
+    const screenNames = <String, String>{
+      'home': 'Home',
+      'cases': 'Cases',
+      'deadlines': 'Deadlines',
+      'settings': 'Settings',
+      'subscription': 'Subscription',
+      'email': 'Email',
+      'scan': 'Document Scanner',
+      'vault': 'Document Vault',
+      'rights': 'Rights Guide',
+      'legal_aid': 'Legal Aid Calculator',
+      'checker': 'Checker',
+      'new_case': 'New Case',
+      'profile': 'Profile',
+    };
+
+    final screenName = screenNames[screen] ?? screen;
+    final displayText = message.isNotEmpty
+        ? message
+        : 'Navigating to $screenName...';
+
+    return ToolResult(
+      success: true,
+      displayText: displayText,
+      data: {
+        'action': 'navigate_to',
+        'screen': screen,
       },
     );
   }

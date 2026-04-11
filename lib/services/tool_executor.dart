@@ -197,6 +197,29 @@ class ToolExecutor {
         // Knowledge results shown inline
         return null;
 
+      case 'navigate_to':
+        final screen = params['screen'] as String? ?? 'home';
+        const routeMap = <String, String>{
+          'home': AppRoutes.home,
+          'cases': AppRoutes.cases,
+          'deadlines': AppRoutes.deadlines,
+          'settings': AppRoutes.settings,
+          'subscription': AppRoutes.subscription,
+          'email': AppRoutes.email,
+          'scan': AppRoutes.scan,
+          'vault': AppRoutes.vault,
+          'rights': AppRoutes.rights,
+          'legal_aid': AppRoutes.legalAid,
+          'checker': AppRoutes.checker,
+          'new_case': AppRoutes.caseCreate,
+          'profile': AppRoutes.settings,
+        };
+        final route = routeMap[screen] ?? AppRoutes.home;
+        return ToolNavigation(
+          route: route,
+          delay: const Duration(milliseconds: 400),
+        );
+
       default:
         return null;
     }
