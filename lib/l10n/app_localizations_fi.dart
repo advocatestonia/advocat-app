@@ -345,6 +345,11 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String goodNight(String name) {
+    return 'Hyvää yötä, $name';
+  }
+
+  @override
   String get home => 'Koti';
 
   @override

@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "شب بخیر، {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "خانه",
     "important": "مهم",
     "inProgress": "در حال انجام",

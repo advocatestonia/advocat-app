@@ -143,6 +143,14 @@
             }
         }
     },
+    "goodNight": "Head ööd, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Avaleht",
     "hundredAiMessagesDay": "100 AI sõnumit/päev",
     "important": "Oluline",

@@ -345,6 +345,11 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
+  String goodNight(String name) {
+    return 'شب بخیر، $name';
+  }
+
+  @override
   String get home => 'خانه';
 
   @override

@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "İyi geceler, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Ana Sayfa",
     "important": "Önemli",
     "inProgress": "Devam Ediyor",

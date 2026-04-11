@@ -276,13 +276,16 @@ class _GreetingHeader extends ConsumerWidget {
   String _greeting(AppLocalizations l) {
     final hour = DateTime.now().hour;
     final name = _firstName;
+    final n = name.isEmpty ? '' : name;
     String text;
-    if (hour < 12) {
-      text = l.goodMorning(name.isEmpty ? '' : name);
+    if (hour < 6) {
+      text = l.goodNight(n);
+    } else if (hour < 12) {
+      text = l.goodMorning(n);
     } else if (hour < 17) {
-      text = l.goodAfternoon(name.isEmpty ? '' : name);
+      text = l.goodAfternoon(n);
     } else {
-      text = l.goodEvening(name.isEmpty ? '' : name);
+      text = l.goodEvening(n);
     }
     // Remove trailing comma+space when name is empty: "Добрый день, " → "Добрый день"
     return text.replaceAll(RegExp(r',\s*$'), '').trim();
@@ -414,6 +417,8 @@ class _GreetingHeader extends ConsumerWidget {
               child: Icon(Icons.shield_outlined, color: AppColors.accent, size: 22),
             ),
             const SizedBox(width: 10),
+            Icon(_timeIcon, size: 22, color: AppColors.accent),
+            const SizedBox(width: 8),
             Expanded(
               child: ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(

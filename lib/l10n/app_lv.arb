@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "Ar labu nakti, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Sākums",
     "important": "Svarīgs",
     "inProgress": "Processā",

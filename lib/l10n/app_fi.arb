@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "Hyvää yötä, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Koti",
     "important": "Tärkeä",
     "inProgress": "Käsittelyssä",

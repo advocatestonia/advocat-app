@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "تصبح على خير، {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "الرئيسية",
     "important": "مهم",
     "inProgress": "قيد المعالجة",

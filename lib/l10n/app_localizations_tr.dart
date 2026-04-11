@@ -345,6 +345,11 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String goodNight(String name) {
+    return 'İyi geceler, $name';
+  }
+
+  @override
   String get home => 'Ana Sayfa';
 
   @override

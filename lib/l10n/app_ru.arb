@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "Доброй ночи, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Главная",
     "important": "Важное",
     "inProgress": "В работе",

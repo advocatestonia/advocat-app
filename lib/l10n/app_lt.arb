@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "Labos nakties, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Pradinis",
     "important": "Svarbus",
     "inProgress": "Vykdoma",

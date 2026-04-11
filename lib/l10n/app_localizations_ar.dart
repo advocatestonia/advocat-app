@@ -345,6 +345,11 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String goodNight(String name) {
+    return 'تصبح على خير، $name';
+  }
+
+  @override
   String get home => 'الرئيسية';
 
   @override

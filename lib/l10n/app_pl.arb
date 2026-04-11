@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "Dobranoc, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Główna",
     "important": "Ważny",
     "inProgress": "W toku",

@@ -764,6 +764,12 @@ abstract class AppLocalizations {
   /// **'Good morning, {name}'**
   String goodMorning(String name);
 
+  /// No description provided for @goodNight.
+  ///
+  /// In en, this message translates to:
+  /// **'Good night, {name}'**
+  String goodNight(String name);
+
   /// No description provided for @home.
   ///
   /// In en, this message translates to:

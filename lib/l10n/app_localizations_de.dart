@@ -348,6 +348,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String goodNight(String name) {
+    return 'Gute Nacht, $name';
+  }
+
+  @override
   String get home => 'Startseite';
 
   @override

@@ -141,6 +141,14 @@
             }
         }
     },
+    "goodNight": "God natt, {name}",
+    "@goodNight": {
+        "placeholders": {
+            "name": {
+                "type": "String"
+            }
+        }
+    },
     "home": "Hem",
     "important": "Viktigt",
     "inProgress": "Pågående",

@@ -345,6 +345,11 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
+  String goodNight(String name) {
+    return 'Head ööd, $name';
+  }
+
+  @override
   String get home => 'Avaleht';
 
   @override

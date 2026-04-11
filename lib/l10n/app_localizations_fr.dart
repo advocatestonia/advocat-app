@@ -346,6 +346,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String goodNight(String name) {
+    return 'Bonne nuit, $name';
+  }
+
+  @override
   String get home => 'Accueil';
 
   @override
