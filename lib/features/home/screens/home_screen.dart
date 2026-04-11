@@ -414,11 +414,9 @@ class _GreetingHeader extends ConsumerWidget {
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(Icons.shield_outlined, color: AppColors.accent, size: 22),
+              child: Icon(_timeIcon, color: AppColors.accent, size: 22),
             ),
             const SizedBox(width: 10),
-            Icon(_timeIcon, size: 22, color: AppColors.accent),
-            const SizedBox(width: 8),
             Expanded(
               child: ShaderMask(
                 shaderCallback: (bounds) => LinearGradient(
