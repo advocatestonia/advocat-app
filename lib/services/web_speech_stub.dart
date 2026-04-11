@@ -33,6 +33,7 @@ Future<bool> webTtsSpeakElevenLabs({
 Future<bool> webTtsSpeakGoogleTts({
   required String text,
   required String langCode,
+  String gender = 'female',
   required String supabaseUrl,
   required String anonKey,
 }) async => false;

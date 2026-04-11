@@ -11,7 +11,7 @@ const corsHeaders = {
 
 // Language to voice mapping — best available voice per language
 // Uses Chirp3-HD > Wavenet > Standard (in order of quality)
-const VOICE_MAP: Record<string, { name: string; gender: string }> = {
+const VOICE_MAP_FEMALE: Record<string, { name: string; gender: string }> = {
   et: { name: "et-EE-Standard-A", gender: "FEMALE" },
   ru: { name: "ru-RU-Chirp3-HD-Leda", gender: "FEMALE" },
   en: { name: "en-US-Chirp3-HD-Leda", gender: "FEMALE" },
@@ -32,13 +32,34 @@ const VOICE_MAP: Record<string, { name: string; gender: string }> = {
   pt: { name: "pt-PT-Wavenet-A", gender: "FEMALE" },
 };
 
+const VOICE_MAP_MALE: Record<string, { name: string; gender: string }> = {
+  et: { name: "et-EE-Standard-B", gender: "MALE" },
+  ru: { name: "ru-RU-Wavenet-B", gender: "MALE" },
+  en: { name: "en-US-Neural2-D", gender: "MALE" },
+  fi: { name: "fi-FI-Wavenet-B", gender: "MALE" },
+  de: { name: "de-DE-Wavenet-B", gender: "MALE" },
+  fr: { name: "fr-FR-Wavenet-B", gender: "MALE" },
+  es: { name: "es-ES-Wavenet-B", gender: "MALE" },
+  it: { name: "it-IT-Wavenet-C", gender: "MALE" },
+  sv: { name: "sv-SE-Wavenet-C", gender: "MALE" },
+  pl: { name: "pl-PL-Wavenet-B", gender: "MALE" },
+  uk: { name: "uk-UA-Standard-B", gender: "MALE" },
+  tr: { name: "tr-TR-Wavenet-B", gender: "MALE" },
+  ar: { name: "ar-XA-Wavenet-B", gender: "MALE" },
+  lv: { name: "lv-LV-Standard-B", gender: "MALE" },
+  lt: { name: "lt-LT-Standard-B", gender: "MALE" },
+  ro: { name: "ro-RO-Wavenet-B", gender: "MALE" },
+  nl: { name: "nl-NL-Wavenet-B", gender: "MALE" },
+  pt: { name: "pt-PT-Wavenet-B", gender: "MALE" },
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { text, language } = await req.json();
+    const { text, language, gender } = await req.json();
 
     if (!text || text.length > 5000) {
       return new Response(JSON.stringify({ error: "Invalid text" }), {
@@ -60,7 +81,11 @@ serve(async (req) => {
     };
     const finalLangCode = langCodeMap[lang] || langCode;
 
-    const voice = VOICE_MAP[lang] || { name: `${finalLangCode}-Standard-A`, gender: "FEMALE" };
+    const isMale = gender === "male";
+    const voiceMap = isMale ? VOICE_MAP_MALE : VOICE_MAP_FEMALE;
+    const fallbackGender = isMale ? "MALE" : "FEMALE";
+    const fallbackSuffix = isMale ? "B" : "A";
+    const voice = voiceMap[lang] || { name: `${finalLangCode}-Standard-${fallbackSuffix}`, gender: fallbackGender };
 
     const response = await fetch(
       `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`,

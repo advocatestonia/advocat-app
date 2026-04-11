@@ -352,6 +352,7 @@ function advocatSpeakGoogleTtsJson(jsonStr) {
       var params = JSON.parse(jsonStr);
       var text = params.text;
       var langCode = params.langCode || 'en';
+      var gender = params.gender || 'female';
       var supabaseUrl = params.supabaseUrl;
       var anonKey = params.anonKey;
 
@@ -363,7 +364,7 @@ function advocatSpeakGoogleTtsJson(jsonStr) {
 
       var googleTtsUrl = supabaseUrl + '/functions/v1/google-tts';
       console.log('[Advocat TTS] Google TTS: fetching from:', googleTtsUrl,
-        'lang:', langCode, 'textLen:', text.length);
+        'lang:', langCode, 'gender:', gender, 'textLen:', text.length);
 
       fetch(googleTtsUrl, {
         method: 'POST',
@@ -373,7 +374,8 @@ function advocatSpeakGoogleTtsJson(jsonStr) {
         },
         body: JSON.stringify({
           text: text,
-          language: langCode
+          language: langCode,
+          gender: gender
         })
       })
       .then(function(response) {

@@ -142,11 +142,12 @@ Future<bool> webTtsSpeakElevenLabs({
 Future<bool> webTtsSpeakGoogleTts({
   required String text,
   required String langCode,
+  String gender = 'female',
   required String supabaseUrl,
   required String anonKey,
 }) async {
   try {
-    final json = '{"text":${_jsonEscape(text)},"langCode":"$langCode","supabaseUrl":"$supabaseUrl","anonKey":"$anonKey"}';
+    final json = '{"text":${_jsonEscape(text)},"langCode":"$langCode","gender":"$gender","supabaseUrl":"$supabaseUrl","anonKey":"$anonKey"}';
     final promise = globalContext.callMethod(
       'advocatSpeakGoogleTtsJson'.toJS,
       json.toJS,

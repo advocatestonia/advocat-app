@@ -295,6 +295,36 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
+  /// Strip markdown formatting for natural TTS speech.
+  String _cleanTextForTTS(String text) {
+    var clean = text;
+    // Remove bold/italic markers
+    clean = clean.replaceAll(RegExp(r'\*{1,3}'), '');
+    // Remove headers
+    clean = clean.replaceAll(RegExp(r'^#{1,6}\s*', multiLine: true), '');
+    // Remove bullet points
+    clean = clean.replaceAll(RegExp(r'^[-•]\s*', multiLine: true), '');
+    // Remove numbered lists (keep text after number)
+    clean = clean.replaceAll(RegExp(r'^\d+\.\s*', multiLine: true), '');
+    // Remove code blocks
+    clean = clean.replaceAll(RegExp(r'```\w*\n?'), '');
+    // Remove inline code
+    clean = clean.replaceAll(RegExp(r'`([^`]+)`'), r'$1');
+    // Remove blockquotes
+    clean = clean.replaceAll(RegExp(r'^>\s*', multiLine: true), '');
+    // Remove markdown links, keep text
+    clean = clean.replaceAll(RegExp(r'\[([^\]]+)\]\([^\)]+\)'), r'$1');
+    // Remove emoji severity markers
+    clean = clean.replaceAll(RegExp(r'[🔴🟡🔵🟢⚠️📋🔍🚗📷📅📝✉️⚖️📊🌐⚙️✅❌ℹ️]'), '');
+    // Convert section markers to spoken form
+    clean = clean.replaceAll(RegExp(r'§\s*'), 'paragrahv ');
+    // Collapse multiple spaces/newlines into natural pauses
+    clean = clean.replaceAll(RegExp(r'\n{2,}'), '. ');
+    clean = clean.replaceAll(RegExp(r'\n'), '. ');
+    clean = clean.replaceAll(RegExp(r'\s{2,}'), ' ');
+    return clean.trim();
+  }
+
   Future<void> _speakResponse(String text) async {
     if (!_ttsEnabled) return;
 
@@ -314,7 +344,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     setState(() => _voiceState = VoiceButtonState.speaking);
 
     try {
-      await voice.speak(text, langCode: langCode);
+      await voice.speak(_cleanTextForTTS(text), langCode: langCode);
 
       // Wait for audio to finish, with a safety timeout (30s max).
       var waited = 0;

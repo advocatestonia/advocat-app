@@ -550,6 +550,7 @@ class VoiceService {
         final ok = await web_speech.webTtsSpeakGoogleTts(
           text: text,
           langCode: langCode,
+          gender: _voiceGender == VoiceGender.male ? 'male' : 'female',
           supabaseUrl: AppConfig.supabaseUrl,
           anonKey: AppConfig.supabaseAnonKey,
         );
