@@ -295,7 +295,8 @@ function advocatSpeakElevenLabsJson(jsonStr) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + anonKey
+          'Authorization': 'Bearer ' + anonKey,
+          'apikey': anonKey
         },
         body: JSON.stringify({
           text: text,
@@ -370,7 +371,8 @@ function advocatSpeakGoogleTtsJson(jsonStr) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + anonKey
+          'Authorization': 'Bearer ' + anonKey,
+          'apikey': anonKey
         },
         body: JSON.stringify({
           text: text,
