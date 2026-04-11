@@ -4145,7 +4145,7 @@ abstract class AppLocalizations {
   /// No description provided for @rightMinimumAlimony.
   ///
   /// In en, this message translates to:
-  /// **'Minimum child support in Estonia is calculated by formula: child\'s subsistence minimum + share of minimum wage (PKS § 101). In 2026 — approx. €260/month per child. The court may increase it based on the parent\'s income'**
+  /// **'Minimum child support in Estonia: base amount (€295.86) + 3% of previous year\'s average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee'**
   String get rightMinimumAlimony;
 
   /// No description provided for @rightCourtAlimony.
@@ -4235,7 +4235,7 @@ abstract class AppLocalizations {
   /// No description provided for @childrenFactMinimum.
   ///
   /// In en, this message translates to:
-  /// **'In Estonia, minimum child support (elatis) is calculated using a formula based on the child\'s subsistence minimum and a share of the minimum wage. A parent cannot agree to pay less — even by mutual agreement.'**
+  /// **'From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year\'s average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee'**
   String get childrenFactMinimum;
 
   /// No description provided for @childrenFactElatisabi.

@@ -2223,7 +2223,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get rightMinimumAlimony =>
-      'Minimaalne elatis Eestis arvutatakse valemiga: lapse toimetulekumiinimum + osa miinimumpalgast (PKS § 101). 2026. aastal — umbes 260 €/kuus lapse kohta. Kohus võib seda suurendada vanema sissetuleku alusel';
+      'Minimaalne elatis Eestis arvutatakse valemiga: baassumma (295,86 €) + 3% eelmise aasta keskmisest brutopalgast (PKS § 101). Alates 01.04.2026 — 318,62 €/kuus lapse kohta. Kohus võib seda suurendada vanema sissetuleku alusel. Kalkulaator: alimendid.ee';
 
   @override
   String get rightCourtAlimony =>
@@ -2283,7 +2283,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get childrenFactMinimum =>
-      'Eestis arvutatakse minimaalne elatis valemi alusel, mis arvestab lapse toimetulekumiinimumi ja osa miinimumpalgast. Vanem ei saa kokku leppida väiksemat summat — isegi mõlema vanema nõusolekul.';
+      'Alates 01.04.2026 on minimaalne elatis 318,62 €/kuus lapse kohta. Valem: baassumma (295,86 €) + 3% eelmise aasta keskmisest brutopalgast. Summa muutub igal aastal 1. aprillil. Vanem ei saa kokku leppida väiksemat summat. Kalkulaator: alimendid.ee';
 
   @override
   String get childrenFactElatisabi =>
