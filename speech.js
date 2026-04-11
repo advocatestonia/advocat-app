@@ -190,28 +190,38 @@ window._advocatTtsSpeaking = false;
  * Sets window._advocatTtsSpeaking while playing.
  * Volume is always set to 1.0 for consistent output.
  */
+// Reusable audio element — unlocked on first user touch, reused for all TTS.
+// Mobile browsers block new Audio().play() without gesture, but allow reuse.
+var _advocatReusableAudio = null;
+var _advocatPrevBlobUrl = null;
+
+function _advocatGetAudio() {
+  if (!_advocatReusableAudio) {
+    _advocatReusableAudio = new Audio();
+    _advocatReusableAudio.volume = 1.0;
+  }
+  return _advocatReusableAudio;
+}
+
 function advocatPlayBlob(blob) {
   advocatStopAudio();
+  if (_advocatPrevBlobUrl) { URL.revokeObjectURL(_advocatPrevBlobUrl); }
   var url = URL.createObjectURL(blob);
-  var audio = new Audio(url);
-  audio.volume = 1.0;
+  _advocatPrevBlobUrl = url;
+  var audio = _advocatGetAudio();
+  audio.src = url;
   window._advocatCurrentAudio = audio;
   window._advocatTtsSpeaking = true;
   audio.onended = function() {
     console.log('[Advocat TTS] Audio playback ended');
-    URL.revokeObjectURL(url);
-    window._advocatCurrentAudio = null;
     window._advocatTtsSpeaking = false;
   };
   audio.onerror = function(e) {
     console.error('[Advocat TTS] Audio playback error:', e.type || e);
-    URL.revokeObjectURL(url);
-    window._advocatCurrentAudio = null;
     window._advocatTtsSpeaking = false;
   };
   audio.play().catch(function(err) {
     console.error('[Advocat TTS] Audio play() rejected:', err.message || err);
-    window._advocatCurrentAudio = null;
     window._advocatTtsSpeaking = false;
   });
 }
@@ -441,12 +451,15 @@ function advocatSpeakGoogleTtsJson(jsonStr) {
       console.warn('[Advocat TTS] Audio unlock failed:', e);
     }
 
-    // Also try to play+pause a silent HTML5 Audio element.
+    // Prime the REUSABLE audio element with a silent WAV — unlocks it for future .play() calls.
     try {
-      var silentAudio = new Audio('data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=');
-      silentAudio.volume = 0;
-      silentAudio.play().then(function() {
-        silentAudio.pause();
+      var audio = _advocatGetAudio();
+      audio.src = 'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
+      audio.volume = 0;
+      audio.play().then(function() {
+        audio.pause();
+        audio.volume = 1.0;
+        console.log('[Advocat TTS] Reusable audio element unlocked');
       }).catch(function() {});
     } catch (e) {}
 
