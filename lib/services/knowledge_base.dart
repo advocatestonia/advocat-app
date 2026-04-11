@@ -1,4 +1,5 @@
 import '../models/case_model.dart';
+import 'estonian_legal_database.dart';
 import 'knowledge_router.dart';
 
 // ---------------------------------------------------------------------------
@@ -359,7 +360,13 @@ abstract final class KnowledgeBase {
 - Application for residence permit: online via PPA self-service portal
 - Interview at PPA service office
 - Decision notification (must include reasons and appeal instructions)
-- Processing times vary: 1-6 months depending on permit type''';
+- Processing times vary: 1-6 months depending on permit type
+
+${EstonianLegalDatabase.immigrationLaw}
+${EstonianLegalDatabase.administrativeLaw}
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}''';
     }
     if (country.contains('finland') || country.contains('suomi')) {
       return '''
@@ -469,7 +476,13 @@ abstract final class KnowledgeBase {
 - Tööinspektsioon (Labour Inspectorate) — workplace inspections, dispute resolution
 - Töövaidluskomisjon (Labour Dispute Committee) — resolves individual labour disputes (free, mandatory pre-court)
 - Soolise võrdõiguslikkuse ja võrdse kohtlemise volinik (Gender Equality and Equal Treatment Commissioner)
-- Halduskohus (Administrative Court) — for public sector employment disputes''';
+- Halduskohus (Administrative Court) — for public sector employment disputes
+
+${EstonianLegalDatabase.employmentLaw}
+${EstonianLegalDatabase.discriminationLaw}
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}''';
     }
     if (country.contains('finland') || country.contains('suomi')) {
       return '''
@@ -553,7 +566,12 @@ abstract final class KnowledgeBase {
 **Key Bodies:**
 - Tarbijakaitse ja Tehnilise Järelevalve Amet (Consumer Protection and Technical Regulatory Authority — TTJA)
 - Maakohus (County Court) — for formal lease disputes
-- Õigusteenuse bürood (Legal aid offices)''';
+- Õigusteenuse bürood (Legal aid offices)
+
+${EstonianLegalDatabase.rentalLaw}
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}''';
     }
     if (country.contains('finland') || country.contains('suomi')) {
       return '''
@@ -644,6 +662,11 @@ ${country.contains('estonia') || country.contains('eesti') ? '''
 **Inheritance Tax:**
 - Estonia has NO inheritance tax (pärandimaks) — one of the few EU countries
 - However, income from inherited property (e.g., rental income) is taxable
+
+${EstonianLegalDatabase.inheritanceLaw}
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}
 ''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Perintökaari (Code of Inheritance, 40/1965):**
 - Chapter 2: Intestate succession — children, spouse, parents, siblings
@@ -699,6 +722,11 @@ ${country.contains('estonia') || country.contains('eesti') ? '''
 - Aggressive or harassing collection is prohibited
 - Tarbijakaitse ja Tehnilise Järelevalve Amet (TTJA — Consumer Protection Authority) can intervene
 - Enforcement only through official kohtutäitur (bailiff) with court order
+
+${EstonianLegalDatabase.consumerLaw}
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}
 ''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Debt Collection:**
 - Laki saatavien perinnästä (Debt Collection Act, 513/1999)
@@ -732,6 +760,11 @@ ${country.contains('estonia') || country.contains('eesti') ? '''
 - Soolise võrdõiguslikkuse ja võrdse kohtlemise volinik (Gender Equality and Equal Treatment Commissioner) — free, handles complaints
 - Tööinspektsioon (Labour Inspectorate) — employment discrimination
 - Õiguskantsler (Chancellor of Justice) — can review public sector discrimination
+
+${EstonianLegalDatabase.discriminationLaw}
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}
 ''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Yhdenvertaisuuslaki (Non-Discrimination Act, 1325/2014):**
 - Applies to: employment, education, services, housing
@@ -758,6 +791,12 @@ ${country.contains('estonia') || country.contains('eesti') ? '''
 - Criminal complaint: file with Prokuratuur (Prosecutor's Office) directly
 - Korruptsioonivastane seadus (Anti-Corruption Act) — for corruption cases
 - Politsei ja piirivalve seadus (Police and Border Guard Act) — § 3: Proportionality requirement
+
+${EstonianLegalDatabase.criminalLaw}
+${EstonianLegalDatabase.administrativeLaw}
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}
 ''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Complaints Against Police:**
 - Poliisin laillisuusvalvonta (Police Legality Control)
@@ -791,6 +830,10 @@ ${country.contains('estonia') || country.contains('eesti') ? '''
 - Cannot be denied if person has no other means of support
 - Covers: food, housing costs, clothing, hygiene, transport, small personal expenses
 - Apply at local municipality (kohalik omavalitsus)
+
+${EstonianLegalDatabase.deadlines}
+${EstonianLegalDatabase.contacts}
+${EstonianLegalDatabase.portals}
 ''' : country.contains('finland') || country.contains('suomi') ? '''
 **Finland — Key Social Benefits:**
 - Kela (Social Insurance Institution) — manages most benefits
