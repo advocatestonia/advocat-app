@@ -131,6 +131,17 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
         rightsCount: 5,
         tag: 'Consumer',
       ),
+      // 11. Наследство / Inheritance
+      _RightsScenario(
+        id: 'inheritance',
+        title: l10n.inheritance,
+        subtitle: l10n.inheritanceDesc,
+        icon: Icons.account_balance_outlined,
+        color: const Color(0xFF795548),
+        category: 'Essential',
+        rightsCount: 5,
+        tag: 'Essential',
+      ),
     ];
 
     final categoryLabels = <String, String>{

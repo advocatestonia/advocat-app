@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
@@ -116,6 +117,58 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
     );
   }
 
+  // -- Open document --------------------------------------------------------
+
+  Future<void> _openVaultDocument(Map<String, dynamic> doc) async {
+    final storagePath = doc['storage_path'] as String?;
+    if (storagePath == null || storagePath.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Document path not found'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+      return;
+    }
+
+    try {
+      final supabase = ref.read(supabaseServiceProvider);
+      // Generate a fresh signed URL (5 min expiry) each time.
+      final url = await supabase.getDocumentUrl(storagePath);
+      if (url.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Could not generate document URL'),
+              backgroundColor: AppColors.error,
+            ),
+          );
+        }
+        return;
+      }
+
+      final uri = Uri.parse(url);
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!launched) {
+        await launchUrl(uri, mode: LaunchMode.platformDefault);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to open document: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
   // -- Document list --------------------------------------------------------
 
   Widget _buildDocumentList(
@@ -180,6 +233,7 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
                     Icons.chevron_right,
                     color: AppColors.textTertiary,
                   ),
+                  onTap: () => _openVaultDocument(doc),
                 ),
               );
             },

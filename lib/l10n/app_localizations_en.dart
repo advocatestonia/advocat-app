@@ -1919,6 +1919,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inheritance => 'Inheritance';
 
   @override
+  String get inheritanceDesc =>
+      'Wills, estate, heirs\' rights, forced heirship, probate';
+
+  @override
+  String get rightInheritanceForced =>
+      'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will';
+
+  @override
+  String get rightInheritanceWill =>
+      'You have the right to make a will disposing of your property — notarized wills have the strongest legal force';
+
+  @override
+  String get rightInheritanceRenounce =>
+      'You can renounce an inheritance within 3 months of learning about it';
+
+  @override
+  String get rightInheritanceInfo =>
+      'You have the right to obtain information about the estate from banks and registries';
+
+  @override
+  String get rightInheritanceDispute =>
+      'You can challenge an unfair will in court within the statutory limitation period';
+
+  @override
+  String get mustFileInheritance =>
+      'File for succession proceedings at a notary within a reasonable time';
+
+  @override
+  String get mustNotifyHeirs =>
+      'All known heirs must be notified of the succession proceedings';
+
+  @override
+  String get inheritanceActionGatherDocs =>
+      'Gather all documents: death certificate, will, property records, bank statements';
+
+  @override
+  String get inheritanceActionContactNotary =>
+      'Contact a notary to open succession proceedings';
+
+  @override
+  String get inheritanceActionCheckDebts =>
+      'Check whether the estate has debts before accepting inheritance';
+
+  @override
+  String get inheritanceActionFileCourt =>
+      'If the will is disputed, file a claim in court';
+
+  @override
+  String get inheritanceDeadlineRenounce =>
+      '3 months to renounce inheritance after learning of it';
+
+  @override
+  String get inheritanceDeadlineDispute =>
+      'Statute of limitations for challenging a will: varies by grounds';
+
+  @override
+  String get inheritanceFactForced =>
+      'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will';
+
+  @override
+  String get inheritanceFactNotary =>
+      'All succession proceedings in Estonia must go through a notary — you cannot skip this step';
+
+  @override
   String get consumerProtection => 'Consumer Protection';
 
   @override

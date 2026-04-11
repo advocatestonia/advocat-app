@@ -298,11 +298,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final langCode = Localizations.localeOf(context).languageCode;
 
     setState(() => _voiceState = VoiceButtonState.speaking);
-    await voice.speak(text, langCode: langCode);
 
-    while (voice.isSpeaking) {
-      await Future.delayed(const Duration(milliseconds: 200));
-      if (!mounted) return;
+    try {
+      await voice.speak(text, langCode: langCode);
+
+      // Wait for audio to finish, with a safety timeout (30s max).
+      var waited = 0;
+      while (voice.isSpeaking && waited < 150) {
+        await Future.delayed(const Duration(milliseconds: 200));
+        waited++;
+        if (!mounted) return;
+      }
+    } catch (e) {
+      debugPrint('TTS: _speakResponse error: $e');
     }
 
     if (mounted) {

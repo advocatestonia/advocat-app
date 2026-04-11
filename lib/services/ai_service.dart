@@ -438,11 +438,17 @@ class AIService {
     if (messages.isEmpty) return;
     _conversationHistory.putIfAbsent(caseId, () => []);
     final existing = _conversationHistory[caseId]!;
-    // Only seed if history is empty (avoid duplicates on reload).
-    // This also allows re-seeding after clearAllHistory (e.g. app resume).
-    if (existing.isNotEmpty) return;
-    // Seed ALL provided messages (up to max limit) so the AI remembers
-    // the full conversation from Supabase, not just the last 20.
+
+    // Always replace with the full Supabase history when it has more context
+    // than what's currently in memory. This ensures the AI never loses
+    // conversation context after app resume or screen re-entry.
+    if (existing.isNotEmpty && existing.length >= messages.length) {
+      // In-memory history already has equal or more messages — skip.
+      return;
+    }
+
+    // Replace with the full history from Supabase.
+    existing.clear();
     final start = messages.length > _maxHistoryMessages
         ? messages.length - _maxHistoryMessages
         : 0;

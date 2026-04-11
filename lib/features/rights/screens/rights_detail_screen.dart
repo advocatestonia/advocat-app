@@ -2285,6 +2285,75 @@ class _RightsDetailScreenState extends State<RightsDetailScreen>
           ),
         ],
       ),
+      // ── Inheritance / Pärimine ─────────────────────────────────────────
+      'inheritance': _ScenarioData(
+        title: l10n.inheritance,
+        tagline: l10n.inheritanceDesc,
+        icon: Icons.account_balance_outlined,
+        color: const Color(0xFF795548),
+        rights: [
+          _RightItem(l10n.rightInheritanceForced,
+              severity: _Severity.critical,
+              legalRef: 'Pärimisseadus § 104\u2013106',
+              legalUrl: 'https://www.riigiteataja.ee/akt/PärS#para_104'),
+          _RightItem(l10n.rightInheritanceWill,
+              severity: _Severity.important,
+              legalRef: 'Pärimisseadus § 19\u201326',
+              legalUrl: 'https://www.riigiteataja.ee/akt/PärS#para_19'),
+          _RightItem(l10n.rightInheritanceRenounce,
+              severity: _Severity.critical,
+              legalRef: 'Pärimisseadus § 119',
+              legalUrl: 'https://www.riigiteataja.ee/akt/PärS#para_119'),
+          _RightItem(l10n.rightInheritanceInfo,
+              severity: _Severity.important,
+              legalRef: 'Pärimisseadus § 168',
+              legalUrl: 'https://www.riigiteataja.ee/akt/PärS#para_168'),
+          _RightItem(l10n.rightInheritanceDispute,
+              severity: _Severity.important,
+              legalRef: 'Pärimisseadus § 107',
+              legalUrl: 'https://www.riigiteataja.ee/akt/PärS#para_107'),
+        ],
+        obligations: [
+          _RightItem(l10n.mustFileInheritance, severity: _Severity.important),
+          _RightItem(l10n.mustNotifyHeirs, severity: _Severity.info),
+        ],
+        actions: [
+          _ActionItem(l10n.inheritanceActionGatherDocs),
+          _ActionItem(l10n.inheritanceActionContactNotary),
+          _ActionItem(l10n.inheritanceActionCheckDebts),
+          _ActionItem(l10n.inheritanceActionFileCourt),
+        ],
+        deadlines: [
+          _DeadlineTile.data(
+            l10n.inheritanceDeadlineRenounce,
+            isUrgent: true,
+          ),
+          _DeadlineTile.data(
+            l10n.inheritanceDeadlineDispute,
+            isUrgent: false,
+          ),
+        ],
+        didYouKnow: [
+          _DidYouKnow(l10n.inheritanceFactForced),
+          _DidYouKnow(l10n.inheritanceFactNotary),
+        ],
+        helpContacts: [
+          const _HelpContact(
+            name: 'Notarite Koda',
+            phone: '693 8040',
+            url: 'https://www.notar.ee',
+          ),
+          const _HelpContact(
+            name: 'Riigi Õigusabi',
+            phone: '631 4222',
+            url: 'https://www.rik.ee/oigusabi',
+          ),
+          const _HelpContact(
+            name: 'Pärimisregister',
+            url: 'https://www.rik.ee/parimisregister',
+          ),
+        ],
+      ),
     };
   }
 }

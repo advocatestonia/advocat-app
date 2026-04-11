@@ -3638,6 +3638,102 @@ abstract class AppLocalizations {
   /// **'Inheritance'**
   String get inheritance;
 
+  /// No description provided for @inheritanceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Wills, estate, heirs\' rights, forced heirship, probate'**
+  String get inheritanceDesc;
+
+  /// No description provided for @rightInheritanceForced.
+  ///
+  /// In en, this message translates to:
+  /// **'Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will'**
+  String get rightInheritanceForced;
+
+  /// No description provided for @rightInheritanceWill.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to make a will disposing of your property — notarized wills have the strongest legal force'**
+  String get rightInheritanceWill;
+
+  /// No description provided for @rightInheritanceRenounce.
+  ///
+  /// In en, this message translates to:
+  /// **'You can renounce an inheritance within 3 months of learning about it'**
+  String get rightInheritanceRenounce;
+
+  /// No description provided for @rightInheritanceInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to obtain information about the estate from banks and registries'**
+  String get rightInheritanceInfo;
+
+  /// No description provided for @rightInheritanceDispute.
+  ///
+  /// In en, this message translates to:
+  /// **'You can challenge an unfair will in court within the statutory limitation period'**
+  String get rightInheritanceDispute;
+
+  /// No description provided for @mustFileInheritance.
+  ///
+  /// In en, this message translates to:
+  /// **'File for succession proceedings at a notary within a reasonable time'**
+  String get mustFileInheritance;
+
+  /// No description provided for @mustNotifyHeirs.
+  ///
+  /// In en, this message translates to:
+  /// **'All known heirs must be notified of the succession proceedings'**
+  String get mustNotifyHeirs;
+
+  /// No description provided for @inheritanceActionGatherDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Gather all documents: death certificate, will, property records, bank statements'**
+  String get inheritanceActionGatherDocs;
+
+  /// No description provided for @inheritanceActionContactNotary.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact a notary to open succession proceedings'**
+  String get inheritanceActionContactNotary;
+
+  /// No description provided for @inheritanceActionCheckDebts.
+  ///
+  /// In en, this message translates to:
+  /// **'Check whether the estate has debts before accepting inheritance'**
+  String get inheritanceActionCheckDebts;
+
+  /// No description provided for @inheritanceActionFileCourt.
+  ///
+  /// In en, this message translates to:
+  /// **'If the will is disputed, file a claim in court'**
+  String get inheritanceActionFileCourt;
+
+  /// No description provided for @inheritanceDeadlineRenounce.
+  ///
+  /// In en, this message translates to:
+  /// **'3 months to renounce inheritance after learning of it'**
+  String get inheritanceDeadlineRenounce;
+
+  /// No description provided for @inheritanceDeadlineDispute.
+  ///
+  /// In en, this message translates to:
+  /// **'Statute of limitations for challenging a will: varies by grounds'**
+  String get inheritanceDeadlineDispute;
+
+  /// No description provided for @inheritanceFactForced.
+  ///
+  /// In en, this message translates to:
+  /// **'In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will'**
+  String get inheritanceFactForced;
+
+  /// No description provided for @inheritanceFactNotary.
+  ///
+  /// In en, this message translates to:
+  /// **'All succession proceedings in Estonia must go through a notary — you cannot skip this step'**
+  String get inheritanceFactNotary;
+
   /// No description provided for @consumerProtection.
   ///
   /// In en, this message translates to:

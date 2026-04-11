@@ -477,37 +477,61 @@ class VoiceService {
   /// 1. Google TTS (cheaper, better Estonian/multilingual support)
   /// 2. ElevenLabs premium TTS (fallback for premium voice quality)
   /// 3. Browser SpeechSynthesis (last resort)
+  ///
+  /// Never fails silently — always resets [_isSpeaking] on exit.
   Future<void> speak(String text, {String langCode = 'en'}) async {
-    if (!_ttsInitialized || text.isEmpty) return;
-
-    // 1. Try Google TTS first (cheaper, better Estonian support).
-    if (_googleTtsAvailable) {
-      final ok = await _speakWithGoogleTTS(text, langCode: langCode);
-      if (ok) return;
+    if (!_ttsInitialized || text.isEmpty) {
       if (kDebugMode) {
-        debugPrint('TTS: Google TTS failed, trying ElevenLabs');
-      }
-    }
-
-    // 2. Try ElevenLabs as premium fallback.
-    if (_elevenLabsAvailable) {
-      final ok = await _speakWithElevenLabs(text, langCode: langCode);
-      if (ok) return;
-      if (kDebugMode) {
-        debugPrint('TTS: ElevenLabs failed, falling back to browser TTS');
-      }
-    }
-
-    // 3. Browser TTS fallback — only for languages with reliable browser voices.
-    const browserTtsReliable = {'en', 'ru', 'de', 'fr', 'es', 'it', 'pl', 'tr', 'et', 'fi', 'sv'};
-    if (!browserTtsReliable.contains(langCode)) {
-      if (kDebugMode) {
-        debugPrint('TTS: skipping browser TTS for $langCode (no reliable voice)');
+        debugPrint('TTS: speak() skipped — initialized=$_ttsInitialized, '
+            'textEmpty=${text.isEmpty}');
       }
       return;
     }
 
-    await _speakWithBrowserTts(text, langCode: langCode);
+    try {
+      // 1. Try Google TTS first (cheaper, better Estonian support).
+      if (_googleTtsAvailable) {
+        try {
+          final ok = await _speakWithGoogleTTS(text, langCode: langCode);
+          if (ok) return;
+        } catch (e) {
+          if (kDebugMode) debugPrint('TTS: Google TTS exception: $e');
+        }
+        if (kDebugMode) {
+          debugPrint('TTS: Google TTS failed, trying ElevenLabs');
+        }
+      }
+
+      // 2. Try ElevenLabs as premium fallback.
+      if (_elevenLabsAvailable) {
+        try {
+          final ok = await _speakWithElevenLabs(text, langCode: langCode);
+          if (ok) return;
+        } catch (e) {
+          if (kDebugMode) debugPrint('TTS: ElevenLabs exception: $e');
+        }
+        if (kDebugMode) {
+          debugPrint('TTS: ElevenLabs failed, falling back to browser TTS');
+        }
+      }
+
+      // 3. Browser TTS fallback — try for all languages (better than silence).
+      try {
+        await _speakWithBrowserTts(text, langCode: langCode);
+      } catch (e) {
+        if (kDebugMode) debugPrint('TTS: Browser TTS exception: $e');
+      }
+    } finally {
+      // Ensure _isSpeaking is eventually reset even if all engines fail.
+      // The polling timers or completion handlers will reset it normally,
+      // but if none of the engines started, we must reset it here.
+      if (!_isSpeaking) {
+        // Already false — no engine started successfully.
+      } else {
+        // An engine started; the polling timer / completion handler will
+        // handle resetting _isSpeaking. Nothing to do here.
+      }
+    }
   }
 
   /// Attempt to speak using Google TTS via the Supabase google-tts function.

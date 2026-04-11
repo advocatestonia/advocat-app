@@ -1934,6 +1934,70 @@ class AppLocalizationsRu extends AppLocalizations {
   String get inheritance => 'Наследство';
 
   @override
+  String get inheritanceDesc =>
+      'Завещания, наследственное имущество, права наследников, обязательная доля, наследственное производство';
+
+  @override
+  String get rightInheritanceForced =>
+      'Обязательные наследники (дети, супруг) имеют право на обязательную долю независимо от завещания';
+
+  @override
+  String get rightInheritanceWill =>
+      'Вы имеете право составить завещание — нотариальное завещание имеет наибольшую юридическую силу';
+
+  @override
+  String get rightInheritanceRenounce =>
+      'От наследства можно отказаться в течение 3 месяцев после получе��ия информации о нём';
+
+  @override
+  String get rightInheritanceInfo =>
+      'Вы имеете право получить информацию о наследственном имуществе из банков и реестров';
+
+  @override
+  String get rightInheritanceDispute =>
+      'Несправедливое завещание можно оспорить в суде в пределах срока исковой давности';
+
+  @override
+  String get mustFileInheritance =>
+      'Начните наследств��нное производство у нотариуса в разумный срок';
+
+  @override
+  String get mustNotifyHeirs =>
+      'Все известные наследники должны быть уведомлены о наследственном производстве';
+
+  @override
+  String get inheritanceActionGatherDocs =>
+      'Соберите докуме��ты: свидетельство о смерти, завещание, документы на имущество, выписки из банка';
+
+  @override
+  String get inheritanceActionContactNotary =>
+      'Обратитесь к нотариусу для начала наследственного производства';
+
+  @override
+  String get inheritanceActionCheckDebts =>
+      'Проверьте, есть ли долги у наследственного имущества, прежде чем принять наследство';
+
+  @override
+  String get inheritanceActionFileCourt =>
+      'Для оспаривания завещания подайте иск в суд';
+
+  @override
+  String get inheritanceDeadlineRenounce =>
+      '3 месяца на отказ от наследства после получения информации';
+
+  @override
+  String get inheritanceDeadlineDispute =>
+      'Срок исковой давности для оспаривания завещания: зависит от оснований';
+
+  @override
+  String get inheritanceFactForced =>
+      'В Эстонии нисходящие родственники и супруг имеют право на обязательную долю (1/2 от законной доли) даже при исключении из завещания';
+
+  @override
+  String get inheritanceFactNotary =>
+      'Все наследственные производства в Эстонии проходят через нотариуса — этот шаг нельзя пропустить';
+
+  @override
   String get consumerProtection => 'Защита потребителей';
 
   @override

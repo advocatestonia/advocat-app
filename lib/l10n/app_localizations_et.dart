@@ -1924,6 +1924,70 @@ class AppLocalizationsEt extends AppLocalizations {
   String get inheritance => 'Pärimine';
 
   @override
+  String get inheritanceDesc =>
+      'Testamendid, pärandvara, pärijate õigused, sundosa, pärimismenetlus';
+
+  @override
+  String get rightInheritanceForced =>
+      'Sundpärijatel (lapsed, abikaasa) on õigus sundosale olenemata testamendist';
+
+  @override
+  String get rightInheritanceWill =>
+      'Teil on õigus teha testament oma vara kohta — notariaalne testament on kõige tugevam';
+
+  @override
+  String get rightInheritanceRenounce =>
+      'Pärandist saab loobuda 3 kuu jooksul pärast sellest teadasaamist';
+
+  @override
+  String get rightInheritanceInfo =>
+      'Teil on õigus saada teavet pärandvara kohta pankadest ja registritest';
+
+  @override
+  String get rightInheritanceDispute =>
+      'Ebaõiglast testamenti saab kohtus vaidlustada aegumistähtaja jooksul';
+
+  @override
+  String get mustFileInheritance =>
+      'Algatage pärimismenetlus notari juures mõistliku aja jooksul';
+
+  @override
+  String get mustNotifyHeirs =>
+      'Kõiki teadaolevaid pärijaid tuleb pärimismenetlusest teavitada';
+
+  @override
+  String get inheritanceActionGatherDocs =>
+      'Koguge dokumendid: surmatunnistus, testament, kinnisvaraandmed, pangaväljavõtted';
+
+  @override
+  String get inheritanceActionContactNotary =>
+      'Võtke ühendust notariga pärimismenetluse alustamiseks';
+
+  @override
+  String get inheritanceActionCheckDebts =>
+      'Kontrollige, kas pärandvaral on võlgu, enne pärandi vastuvõtmist';
+
+  @override
+  String get inheritanceActionFileCourt =>
+      'Testamendi vaidlustamiseks esitage kohtule hagi';
+
+  @override
+  String get inheritanceDeadlineRenounce =>
+      '3 kuud pärandist loobumiseks pärast sellest teadasaamist';
+
+  @override
+  String get inheritanceDeadlineDispute =>
+      'Testamendi vaidlustamise aegumistähtaeg: sõltub alustest';
+
+  @override
+  String get inheritanceFactForced =>
+      'Eestis on alanejatel sugulastel ja abikaasal õigus sundosale (1/2 seaduslikust osast) isegi testamendist väljajätmisel';
+
+  @override
+  String get inheritanceFactNotary =>
+      'Kõik pärimismenetlused Eestis peavad käima läbi notari — seda sammu ei saa vahele jätta';
+
+  @override
   String get consumerProtection => 'Tarbijakaitse';
 
   @override

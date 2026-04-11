@@ -74,10 +74,18 @@ class StripeCheckoutService {
       body['customer_email'] = customerEmail;
     }
 
-    final response = await Supabase.instance.client.functions.invoke(
-      'create-checkout',
-      body: body,
-    );
+    final dynamic response;
+    try {
+      response = await Supabase.instance.client.functions.invoke(
+        'create-checkout',
+        body: body,
+      );
+    } catch (e) {
+      throw Exception(
+        'Network error calling checkout: $e. '
+        'Please check your connection and try again.',
+      );
+    }
 
     if (response.status != 200) {
       final errorMsg = response.data is Map
@@ -86,7 +94,12 @@ class StripeCheckoutService {
       throw Exception('Failed to create checkout session: $errorMsg');
     }
 
-    final data = response.data as Map<String, dynamic>;
+    final data = response.data;
+    if (data is! Map<String, dynamic>) {
+      throw Exception(
+        'Unexpected response format from checkout: ${data.runtimeType}',
+      );
+    }
     final checkoutUrl = data['url'] as String?;
 
     if (checkoutUrl == null || checkoutUrl.isEmpty) {
@@ -94,11 +107,24 @@ class StripeCheckoutService {
     }
 
     final uri = Uri.parse(checkoutUrl);
-    if (!kIsWeb && !await canLaunchUrl(uri)) {
-      throw Exception('Cannot open checkout URL');
-    }
 
-    await launchUrl(uri, mode: LaunchMode.platformDefault);
+    // On mobile web, skip canLaunchUrl check — it's unreliable.
+    // Just attempt to launch directly.
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!launched) {
+        // Fallback: try platformDefault mode
+        await launchUrl(uri, mode: LaunchMode.platformDefault);
+      }
+    } catch (e) {
+      throw Exception(
+        'Could not open payment page: $e. '
+        'Try copying this URL in your browser: $checkoutUrl',
+      );
+    }
     return true;
   }
 
@@ -129,10 +155,18 @@ class StripeCheckoutService {
       body['customer_email'] = customerEmail;
     }
 
-    final response = await Supabase.instance.client.functions.invoke(
-      'create-checkout',
-      body: body,
-    );
+    final dynamic response;
+    try {
+      response = await Supabase.instance.client.functions.invoke(
+        'create-checkout',
+        body: body,
+      );
+    } catch (e) {
+      throw Exception(
+        'Network error calling checkout: $e. '
+        'Please check your connection and try again.',
+      );
+    }
 
     if (response.status != 200) {
       final errorMsg = response.data is Map
@@ -141,7 +175,12 @@ class StripeCheckoutService {
       throw Exception('Failed to create checkout session: $errorMsg');
     }
 
-    final data = response.data as Map<String, dynamic>;
+    final data = response.data;
+    if (data is! Map<String, dynamic>) {
+      throw Exception(
+        'Unexpected response format from checkout: ${data.runtimeType}',
+      );
+    }
     final checkoutUrl = data['url'] as String?;
 
     if (checkoutUrl == null || checkoutUrl.isEmpty) {
@@ -149,11 +188,21 @@ class StripeCheckoutService {
     }
 
     final uri = Uri.parse(checkoutUrl);
-    if (!kIsWeb && !await canLaunchUrl(uri)) {
-      throw Exception('Cannot open checkout URL');
-    }
 
-    await launchUrl(uri, mode: LaunchMode.platformDefault);
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (!launched) {
+        await launchUrl(uri, mode: LaunchMode.platformDefault);
+      }
+    } catch (e) {
+      throw Exception(
+        'Could not open payment page: $e. '
+        'Try copying this URL in your browser: $checkoutUrl',
+      );
+    }
     return true;
   }
 }

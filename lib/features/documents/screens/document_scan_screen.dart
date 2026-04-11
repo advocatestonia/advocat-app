@@ -287,7 +287,13 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
             backgroundColor: AppColors.success,
           ),
         );
-        context.pop(true);
+        // Navigate to documents list so user can see the uploaded file.
+        final uploadCaseId = widget.caseId;
+        if (uploadCaseId != null) {
+          context.go('/cases/$uploadCaseId/documents');
+        } else {
+          context.pop(true);
+        }
       }
     } catch (e) {
       if (!mounted) return;
@@ -387,7 +393,13 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
             backgroundColor: AppColors.success,
           ),
         );
-        context.pop(true);
+        // Navigate to documents list so user can see and analyze the upload,
+        // or pop back if no case context.
+        if (caseId != null) {
+          context.go('/cases/$caseId/documents');
+        } else {
+          context.pop(true);
+        }
       }
     } catch (e) {
       if (!mounted) return;
