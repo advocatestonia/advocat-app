@@ -11749,8 +11749,8 @@ _.b=b
 _.w=_.r=_.f=_.e=_.d=_.c=!1
 _.x=c
 _.y=d
-_.z=""
-_.as=_.Q=null},
+_.Q=_.z=""
+_.at=_.as=null},
 aSy:function aSy(a){this.a=a},
 aSz:function aSz(a){this.a=a},
 aSA:function aSA(a){this.a=a},
@@ -77632,7 +77632,7 @@ q.avo(r==null?"en-US":r)
 s=q.y
 return new A.dG(s,A.v(s).h("dG<1>"))},
 avo(a){var s=this
-s.z=""
+s.Q=s.z=""
 s.e=!0
 A.bfX().c0(0,new A.aSt(s,a),t.P).vR(new A.aSu(s,a))},
 ad6(a){var s,r,q,p=this
@@ -77643,14 +77643,14 @@ else if(s==="mic_permission_denied")r="Microphone permission was denied. Please 
 else if(s==="network_error")r="Network error during speech recognition. Please check your connection."
 else r="Speech recognition failed: "+(s.length!==0?s:"unknown error")
 p.y.yR(r)
-return}q=p.Q
+return}q=p.as
 if(q!=null)q.aK(0)
-p.Q=A.zu(B.cm,new A.aSx(p))},
+p.as=A.zu(B.cm,new A.aSx(p))},
 Ev(){var s=0,r=A.t(t.N),q,p=this,o
 var $async$Ev=A.o(function(a,b){if(a===1)return A.p(b,r)
-for(;;)switch(s){case 0:o=p.Q
+for(;;)switch(s){case 0:o=p.as
 if(o!=null)o.aK(0)
-p.Q=null
+p.as=null
 s=p.e?3:4
 break
 case 3:o=p.r
@@ -77662,7 +77662,8 @@ break
 case 7:s=8
 return A.k(p.a.dK(0),$async$Ev)
 case 8:case 6:p.e=!1
-case 4:q=p.z
+case 4:p.Q=""
+q=p.z
 s=1
 break
 case 1:return A.q(q,r)}})
@@ -77781,9 +77782,9 @@ break
 case 6:case 1:return A.q(q,r)
 case 2:return A.p(o.at(-1),r)}})
 return A.r($async$Fr,r)},
-aJY(){var s=this.as
+aJY(){var s=this.at
 if(s!=null)s.aK(0)
-this.as=A.zu(B.G,new A.aSv(this))},
+this.at=A.zu(B.G,new A.aSv(this))},
 Cr(a,b){return this.aNd(a,b)},
 aNd(a,b){var s=0,r=A.t(t.H),q=this,p,o
 var $async$Cr=A.o(function(c,d){if(c===1)return A.p(d,r)
@@ -77895,9 +77896,9 @@ case 2:return A.p(o.at(-1),r)}})
 return A.r($async$Fn,r)},
 BW(){var s=0,r=A.t(t.H),q=this,p
 var $async$BW=A.o(function(a,b){if(a===1)return A.p(b,r)
-for(;;)switch(s){case 0:p=q.as
+for(;;)switch(s){case 0:p=q.at
 if(p!=null)p.aK(0)
-q.as=null
+q.at=null
 A.bQc()
 s=2
 return A.k(q.b.dK(0),$async$BW)
@@ -77906,12 +77907,12 @@ return A.q(null,r)}})
 return A.r($async$BW,r)},
 k(){var s=0,r=A.t(t.H),q=this,p
 var $async$k=A.o(function(a,b){if(a===1)return A.p(b,r)
-for(;;)switch(s){case 0:p=q.Q
-if(p!=null)p.aK(0)
-q.Q=null
-p=q.as
+for(;;)switch(s){case 0:p=q.as
 if(p!=null)p.aK(0)
 q.as=null
+p=q.at
+if(p!=null)p.aK(0)
+q.at=null
 s=2
 return A.k(q.Ev(),$async$k)
 case 2:s=3
@@ -77949,7 +77950,8 @@ o.y.yR(p)
 o.e=!1
 a.aK(0)
 return}if(s.length!==0){o.z=s
-o.y.F(0,s)}if(!r&&!o.e)a.aK(0)},
+if(s!==o.Q){o.Q=s
+o.y.F(0,s)}}if(!r&&!o.e)a.aK(0)},
 $S:59}
 A.aSv.prototype={
 $1(a){if(!A.bQa()){this.a.f=!1
