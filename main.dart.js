@@ -76337,7 +76337,7 @@ var $async$N1=A.o(function(a0,a1){if(a0===1){o.push(a1)
 s=p}for(;;)switch(s){case 0:if(!n.gaNa())throw A.f(A.dq("Supabase is not initialised. Cannot create checkout session."))
 j=B.aXG.i(0,c)
 if(j==null)throw A.f(A.c2('No Stripe plan mapping for "'+c+'"',null))
-m=A.a4(["plan_id",j,"billing_period",b?"yearly":"monthly","success_url","https://advocat.ee/payment-success","cancel_url","https://advocat.ee/payment-cancel"],t.N,t.z)
+m=A.a4(["plan_id",j,"billing_period",b?"yearly":"monthly","success_url","https://advocat.ee/app.html?payment=success","cancel_url","https://advocat.ee/app.html?payment=cancel"],t.N,t.z)
 if(a!=null&&a.length!==0)J.h8(m,"customer_email",a)
 l=null
 p=4
