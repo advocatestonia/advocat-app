@@ -245,11 +245,19 @@ class SettingsScreen extends ConsumerWidget {
                       height: 60,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [AppColors.primary, AppColors.accent],
-                        ),
+                        gradient: user.avatarUrl == null
+                            ? const LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [AppColors.primary, AppColors.accent],
+                              )
+                            : null,
+                        image: user.avatarUrl != null
+                            ? DecorationImage(
+                                image: NetworkImage(user.avatarUrl!),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                         boxShadow: [
                           BoxShadow(
                             color: AppColors.accent.withValues(alpha: 0.2),
@@ -258,17 +266,19 @@ class SettingsScreen extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      child: Center(
-                        child: Text(
-                          initials,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Inter',
-                          ),
-                        ),
-                      ),
+                      child: user.avatarUrl == null
+                          ? Center(
+                              child: Text(
+                                initials,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Inter',
+                                ),
+                              ),
+                            )
+                          : null,
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Expanded(

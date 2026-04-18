@@ -19,7 +19,7 @@ const ALLOWED_MODELS = new Set([
   "claude-3-haiku-20240307",
 ]);
 
-const MAX_TOKENS_LIMIT = 1000;
+const MAX_TOKENS_LIMIT = 4096;
 const MAX_MESSAGES = 20;
 
 const corsHeaders = {
@@ -104,6 +104,40 @@ serve(async (req) => {
       });
     }
 
+    // Streaming mode — pipe SSE events from Claude directly to client
+    if (body.stream) {
+      const claudeStreamResponse = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": CLAUDE_API_KEY,
+          "anthropic-version": "2023-06-01",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!claudeStreamResponse.ok) {
+        const errorText = await claudeStreamResponse.text();
+        return new Response(JSON.stringify({ error: errorText }), {
+          status: claudeStreamResponse.status,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Pipe SSE stream directly through — no server-side parsing needed
+      return new Response(claudeStreamResponse.body, {
+        status: 200,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          "Connection": "keep-alive",
+          "X-Accel-Buffering": "no",
+        },
+      });
+    }
+
+    // Non-streaming mode (existing behavior)
     const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {

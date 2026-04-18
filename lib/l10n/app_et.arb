@@ -13,6 +13,16 @@
     "all": "Kõik",
     "alreadyHaveAccount": "Teil on juba konto? ",
     "analyzing": "Analüüsimine...",
+    "aiAnalyzing": "AI analüüsib",
+    "speakIntoMicHint": "Rääkige mikrofoni. Veenduge, et mikrofon on lubatud.",
+    "freeLimitReached": "Olete kasutanud kõik {count} tasuta AI sõnumit. Uuendage Õigusnõustaja paketile piiramatu AI abi saamiseks!",
+    "@freeLimitReached": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "andWord": " ja ",
     "appTitle": "Advocat — Õigusalane teabetööriist",
     "appVersion": "Rakenduse versioon",
@@ -101,7 +111,7 @@
     "emailDisconnected": "E-post lahti ühendatud",
     "emailIntegration": "E-POSTI INTEGRATSIOON",
     "emailInvalid": "Sisestage kehtiv e-posti aadress",
-    "emailPrivacyNote": "Loeme ainult immigratsiooniga seotud kirju. Teie privaatsus on kaitstud.",
+    "emailPrivacyNote": "Loeme ainult õiguslike asjadega seotud kirju. Teie privaatsus on kaitstud.",
     "emailRequired": "E-posti aadress on kohustuslik",
     "emergencyShield": "Põhikaitse",
     "error": "Viga",
@@ -114,7 +124,7 @@
     "forgotPassword": "Unustasid parooli?",
     "foundingMemberNote": "Asutajaliige: 9.99€/kuu esimesed 3 kuud",
     "free": "Tasuta",
-    "fullDefense": "Täisesindus",
+    "fullDefense": "Advocat Pro",
     "fullName": "Täisnimi",
     "gallery": "Galerii",
     "generateAppeal": "Genereeri kaebus",
@@ -461,6 +471,14 @@
     "gdprFooter": "Teie andmed on krüpteeritud ega jagata kunagi kolmandatele osapooltele. Saate nõusoleku tagasi võtta ja kõik andmed kustutada Seadetest.",
     "gdprIntro": "AI õigusabi pakkumiseks töötleme teie andmeid vastavalt GDPR-ile (EL 2016/679). Jätkates nõustute:",
     "gdprStorage": "Juhtumite andmete krüpteeritud salvestamine",
+    "gdprArt9Intro": "See rakendus töötleb GDPR artikli 9 alusel erilist liiki isikuandmeid, sealhulgas:",
+    "gdprSpecialLegalCases": "Teie kohtuasja üksikasjad ja kohtudokumendid",
+    "gdprSpecialNationality": "Kodakondsus ja immigratsiooniseisund",
+    "gdprConsentAiProcessing": "Nõustun oma andmete töötlemisega AI õigusabi jaoks (kohustuslik)",
+    "gdprConsentAnalytics": "Nõustun analüütikaga teenuse parandamiseks (valikuline)",
+    "gdprConsentLegalData": "Nõustun oma kohtuasja andmete, kodakondsuse ja immigratsiooniseisundi töötlemisega AI poolt (kohustuslik)",
+    "gdprConsentVoice": "Nõustun häälsalvestuse töötlemisega (valikuline)",
+    "gdprViewPrivacyPolicy": "Vaata privaatsuspoliitikat",
     "generateAppealWithIssues": "Loo kaebus ({count} probleemi)",
     "@generateAppealWithIssues": {
         "placeholders": {

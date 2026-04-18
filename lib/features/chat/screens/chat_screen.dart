@@ -116,6 +116,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _voiceInitialized = false;
   StreamSubscription<String>? _speechSub;
 
+  // -- Sentence-level TTS during streaming --
+  List<String> _ttsQueue = [];
+  StringBuffer _sentenceBuffer = StringBuffer();
+  bool _isSpeakingStreamed = false;
+
   @override
   void initState() {
     super.initState();
@@ -148,6 +153,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   void dispose() {
+    _knowledgeService.saveConversationSummary(caseId: widget.caseId);
     _voiceSilenceTimer?.cancel();
     _messageController.dispose();
     _scrollController.dispose();
@@ -166,6 +172,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       // On web, show the mic button even if STT init failed at startup.
       // The VoiceService will retry lazily on first tap (user gesture).
       setState(() => _voiceInitialized = sttOk || kIsWeb);
+    }
+    // Pre-warm Google TTS Edge Function to avoid cold start on first message.
+    if (_ttsEnabled) {
+      Future.delayed(const Duration(seconds: 1), () {
+        if (mounted) voice.warmUp();
+      });
     }
   }
 
@@ -208,10 +220,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _voiceState == VoiceButtonState.listening &&
           _messageController.text.trim().isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
-                'Rääkige mikrofoni. Veenduge, et mikrofon on lubatud.'),
-            duration: Duration(seconds: 3),
+                AppLocalizations.of(context)?.speakIntoMicHint ?? 'Speak into the microphone. Make sure microphone access is enabled.'),
+            duration: const Duration(seconds: 3),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -229,9 +241,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           );
           setState(() {});
 
-          // Reset silence timer — auto-send after 3s of silence.
+          // Reset silence timer — auto-send after 4.5s of silence.
           _voiceSilenceTimer?.cancel();
-          _voiceSilenceTimer = Timer(const Duration(seconds: 3), () {
+          _voiceSilenceTimer = Timer(const Duration(milliseconds: 4500), () {
             if (_voiceState == VoiceButtonState.listening &&
                 _messageController.text.trim().isNotEmpty) {
               _stopVoiceInput(autoSend: true);
@@ -363,6 +375,51 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
+  /// Speak a single sentence from the streaming TTS queue, then proceed
+  /// to the next queued sentence when done.
+  Future<void> _speakSentence(String sentence) async {
+    final voice = ref.read(voiceServiceProvider);
+    final langCode = Localizations.localeOf(context).languageCode;
+    final cleaned = _cleanTextForTTS(sentence);
+    if (cleaned.isEmpty) {
+      _playNextFromQueue();
+      return;
+    }
+
+    // Ensure voice state reflects speaking
+    if (mounted && _voiceState != VoiceButtonState.speaking) {
+      setState(() => _voiceState = VoiceButtonState.speaking);
+    }
+
+    try {
+      await voice.speak(cleaned, langCode: langCode);
+      // Wait for speech to finish
+      var waited = 0;
+      while (voice.isSpeaking && waited < 150) {
+        await Future.delayed(const Duration(milliseconds: 100));
+        waited++;
+        if (!mounted) return;
+      }
+    } catch (e) {
+      debugPrint('TTS: _speakSentence error: $e');
+    }
+
+    _playNextFromQueue();
+  }
+
+  /// Play the next sentence from the TTS queue, or mark streaming TTS as done.
+  void _playNextFromQueue() {
+    if (_ttsQueue.isNotEmpty) {
+      final next = _ttsQueue.removeAt(0);
+      _speakSentence(next);
+    } else {
+      _isSpeakingStreamed = false;
+      if (mounted) {
+        setState(() => _voiceState = VoiceButtonState.idle);
+      }
+    }
+  }
+
   // -- Data loading --
 
   Future<void> _loadMessages() async {
@@ -386,6 +443,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         } else {
           _updateChatPhase();
         }
+
+        // Preload context so the first AI response doesn't block on Supabase queries
+        unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
 
         // Check for urgent deadlines and notify the user
         _checkUrgentDeadlines();
@@ -473,6 +533,41 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       }
       if (mounted) _scrollToBottom();
+
+      // Check if case has been inactive (use already loaded messages)
+      if (_currentCase != null && _messages.isNotEmpty) {
+        final lastMessage = _messages.last;
+        final daysSince = DateTime.now().difference(lastMessage.timestamp).inDays;
+        if (daysSince >= 3 && _currentCase!.status != CaseStatus.closed) {
+          final caseTitle = _currentCase?.title ?? 'your case';
+          _messages.add(ChatMessage(
+            id: 'proactive_${DateTime.now().millisecondsSinceEpoch}',
+            role: MessageRole.system,
+            content: '💡 It\'s been $daysSince days since our last conversation about "$caseTitle". Any updates? New documents to analyze? Deadlines approaching?',
+            timestamp: DateTime.now(),
+          ));
+        }
+      }
+
+      // Check if case has no deadlines tracked (user might be missing something)
+      if (_currentCase != null && _messages.length > 5) {
+        if (deadlines.isEmpty && _currentCase!.status != CaseStatus.closed) {
+          final hintId = 'hint_deadlines_${widget.caseId}';
+          if (!_messages.any((m) => m.id == hintId) && mounted) {
+            setState(() {
+              _messages.add(ChatMessage(
+                id: hintId,
+                role: MessageRole.system,
+                content:
+                    '\u23f0 No deadlines tracked for this case. Want me to '
+                    'check if there are any important deadlines you should '
+                    'know about?',
+                timestamp: DateTime.now(),
+              ));
+            });
+          }
+        }
+      }
     } catch (_) {
       // Non-critical — silently ignore errors
     }
@@ -524,7 +619,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _isSending = true;
       _isTyping = true;
     });
-    _scrollToBottom();
+    _scrollToBottom(force: true);
 
     try {
       final supabase = ref.read(supabaseServiceProvider);
@@ -545,7 +640,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         await _executeToolCall(toolCall.$1, toolCall.$2, supabase);
       } else {
         // Normal AI response flow
-        String responseText;
+        String responseText = '';
+        bool usedStreaming = false;
         final ai = ref.read(aiServiceProvider);
         if (ai.isUsingRealAI) {
           // Get user name from auth state for personalization
@@ -553,122 +649,289 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           final userName = authState.appUser?.fullName;
 
           // Real AI is available — use it regardless of demo mode.
-          final ctx = await _knowledgeService.buildClientContext(caseId: widget.caseId);
-          final response = await ai.sendChatMessage(
-            caseId: widget.caseId,
-            message: text,
-            userLanguage: Localizations.localeOf(context).languageCode,
-            userName: userName,
-            clientContext: ctx,
-            caseType: _currentCase?.type,
-            country: 'estonia',
-            nationality: _currentCase?.nationality,
-          );
-          _knowledgeService.notifyMessageSent();
+          // Use cached context immediately to eliminate 1-2s dead silence.
+          // On first message the cache may be empty (preloaded in _loadMessages),
+          // so fall back to awaiting the full build only when necessary.
+          final String ctx;
+          if (_knowledgeService.getCachedContext() != null) {
+            ctx = _knowledgeService.getCachedContext()!;
+            // Refresh in background for the next message
+            unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
+          } else {
+            ctx = await _knowledgeService.buildClientContext(caseId: widget.caseId);
+          }
 
-          // ── Handle Claude tool_use responses ──────────────────────
-          if (response.hasToolUse && response.toolUseResponse != null && mounted) {
-            final bridge = ChatToolBridge(context: context, ref: ref);
-            final toolResults = await bridge.executeToolCalls(response.toolUseResponse!);
+          // ── Try streaming first for word-by-word UI ──────────────
+          // Throttle timer declared outside try so catch can clean it up.
+          Timer? streamUITimer;
+          bool streamUIDirty = false;
+          try {
+            final streamingMessageId = 'ai_stream_${DateTime.now().millisecondsSinceEpoch}';
+            final streamingMessage = ChatMessage(
+              id: streamingMessageId,
+              role: MessageRole.assistant,
+              content: '',
+              timestamp: DateTime.now(),
+            );
 
-            for (final tr in toolResults) {
-              // Show Claude's accompanying text if present (only once)
-              if (tr.claudeText != null && tr.claudeText!.isNotEmpty) {
+            setState(() {
+              _isTyping = false; // Hide typing indicator — text is appearing
+              _messages.add(streamingMessage);
+            });
+            _scrollToBottom(force: true);
+
+            // Reset sentence-level TTS state for this streaming response
+            _ttsQueue = [];
+            _sentenceBuffer = StringBuffer();
+            _isSpeakingStreamed = false;
+
+            final fullText = StringBuffer();
+
+            await for (final chunk in ai.sendChatMessageStreaming(
+              caseId: widget.caseId,
+              message: text,
+              userLanguage: Localizations.localeOf(context).languageCode,
+              userName: userName,
+              clientContext: ctx,
+              caseType: _currentCase?.type,
+              country: 'estonia',
+              nationality: _currentCase?.nationality,
+              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(50),
+            )) {
+              fullText.write(chunk);
+              streamUIDirty = true;
+              streamUITimer ??= Timer.periodic(const Duration(milliseconds: 50), (_) {
+                if (streamUIDirty && mounted) {
+                  streamUIDirty = false;
+                  setState(() {
+                    final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
+                    if (idx >= 0) {
+                      _messages[idx] = ChatMessage(
+                        id: streamingMessageId,
+                        role: MessageRole.assistant,
+                        content: fullText.toString(),
+                        timestamp: DateTime.now(),
+                      );
+                    }
+                  });
+                  _scrollToBottom();
+                }
+              });
+
+              // Sentence-level TTS during streaming
+              if (_ttsEnabled) {
+                _sentenceBuffer.write(chunk);
+                final bufText = _sentenceBuffer.toString();
+
+                // Detect sentence boundary: . ! ? followed by space or newline,
+                // but NOT inside numbers (e.g. "§ 40.3") or abbreviations.
+                final sentenceEnd = RegExp(
+                  r'(?<!\d)[.!?](?:\s|\n)',
+                ).allMatches(bufText);
+                if (sentenceEnd.isNotEmpty && bufText.length >= 40) {
+                  final lastMatch = sentenceEnd.last;
+                  final sentence = bufText.substring(0, lastMatch.end).trim();
+                  _sentenceBuffer = StringBuffer(bufText.substring(lastMatch.end));
+
+                  if (sentence.isNotEmpty) {
+                    if (!_isSpeakingStreamed) {
+                      _isSpeakingStreamed = true;
+                      _speakSentence(sentence);
+                    } else {
+                      _ttsQueue.add(sentence);
+                    }
+                  }
+                }
+              }
+            }
+
+            // Speak any remaining text after streaming ends
+            if (_ttsEnabled && _sentenceBuffer.toString().trim().isNotEmpty) {
+              final remaining = _sentenceBuffer.toString().trim();
+              if (_isSpeakingStreamed) {
+                _ttsQueue.add(remaining);
+              } else {
+                _isSpeakingStreamed = true;
+                _speakSentence(remaining);
+              }
+            }
+
+            // Clean up the throttle timer.
+            streamUITimer?.cancel();
+            streamUITimer = null;
+
+            responseText = fullText.toString();
+            _knowledgeService.notifyMessageSent();
+
+            // Final setState to ensure the complete text is displayed.
+            if (mounted) {
+              setState(() {
+                final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
+                if (idx >= 0) {
+                  _messages[idx] = ChatMessage(
+                    id: streamingMessageId,
+                    role: MessageRole.assistant,
+                    content: responseText,
+                    timestamp: DateTime.now(),
+                  );
+                }
+              });
+            }
+
+            usedStreaming = true;
+          } catch (e) {
+            // Cancel throttle timer on error.
+            streamUITimer?.cancel();
+            streamUITimer = null;
+            debugPrint('Streaming failed, falling back to non-streaming: $e');
+            // Remove any leftover streaming placeholder.
+            if (mounted) {
+              setState(() {
+                _messages.removeWhere(
+                    (m) => m.id.startsWith('ai_stream_'));
+                _isTyping = true; // Re-show typing indicator for fallback
+              });
+            }
+          }
+
+          // ── Fallback: non-streaming path (also handles tool_use) ──
+          if (!usedStreaming) {
+            final response = await ai.sendChatMessage(
+              caseId: widget.caseId,
+              message: text,
+              userLanguage: Localizations.localeOf(context).languageCode,
+              userName: userName,
+              clientContext: ctx,
+              caseType: _currentCase?.type,
+              country: 'estonia',
+              nationality: _currentCase?.nationality,
+              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(50),
+            );
+            _knowledgeService.notifyMessageSent();
+
+            // ── Handle Claude tool_use responses ──────────────────────
+            if (response.hasToolUse && response.toolUseResponse != null && mounted) {
+              final bridge = ChatToolBridge(context: context, ref: ref);
+              final toolResults = await bridge.executeToolCalls(response.toolUseResponse!);
+
+              for (final tr in toolResults) {
+                // Show Claude's accompanying text if present (only once)
+                if (tr.claudeText != null && tr.claudeText!.isNotEmpty) {
+                  await supabase.saveChatMessage(
+                    caseId: widget.caseId,
+                    role: 'assistant',
+                    content: tr.claudeText!,
+                  );
+                  if (mounted) {
+                    setState(() {
+                      _messages.add(ChatMessage(
+                        id: 'ai_text_${DateTime.now().millisecondsSinceEpoch}',
+                        role: MessageRole.assistant,
+                        content: tr.claudeText!,
+                        timestamp: DateTime.now(),
+                      ));
+                    });
+                    _scrollToBottom();
+                  }
+                }
+
+                // Show the tool result card
                 await supabase.saveChatMessage(
                   caseId: widget.caseId,
                   role: 'assistant',
-                  content: tr.claudeText!,
+                  content: tr.displayText,
                 );
                 if (mounted) {
                   setState(() {
                     _messages.add(ChatMessage(
-                      id: 'ai_text_${DateTime.now().millisecondsSinceEpoch}',
-                      role: MessageRole.assistant,
-                      content: tr.claudeText!,
+                      id: 'tool_${DateTime.now().millisecondsSinceEpoch}',
+                      role: MessageRole.toolResult,
+                      content: tr.displayText,
                       timestamp: DateTime.now(),
+                      contentType: MessageContentType.toolCard,
+                      toolResult: tr.toolResult,
+                      navigation: tr.navigation,
                     ));
                   });
                   _scrollToBottom();
                 }
               }
 
-              // Show the tool result card
-              await supabase.saveChatMessage(
-                caseId: widget.caseId,
-                role: 'assistant',
-                content: tr.displayText,
-              );
+              // Perform navigation from the first tool result (if any)
               if (mounted) {
-                setState(() {
-                  _messages.add(ChatMessage(
-                    id: 'tool_${DateTime.now().millisecondsSinceEpoch}',
-                    role: MessageRole.toolResult,
-                    content: tr.displayText,
-                    timestamp: DateTime.now(),
-                    contentType: MessageContentType.toolCard,
-                    toolResult: tr.toolResult,
-                    navigation: tr.navigation,
-                  ));
-                });
+                await bridge.performNavigations(toolResults);
+              }
+
+              // After showing tool results, ask Claude for follow-up / generation
+              if (toolResults.isNotEmpty && mounted) {
+                try {
+                  // Check if any tool result has claudeText (generation prompt)
+                  final claudePrompt = toolResults
+                      .where((tr) => tr.toolResult?.claudeText != null)
+                      .map((tr) => tr.toolResult!.claudeText!)
+                      .join('\n\n');
+
+                  final String followUpMessage;
+                  if (claudePrompt.isNotEmpty) {
+                    // Tool wants Claude to generate content (draft, analysis, translation)
+                    followUpMessage = claudePrompt;
+                  } else {
+                    // Standard follow-up: summarize tool results and suggest next steps
+                    final toolSummary = ChatToolBridge.buildFollowUpSummary(toolResults);
+                    followUpMessage = 'I just ran a tool on behalf of the client. Here is what happened:\n\n'
+                        '$toolSummary\n\n'
+                        'Based on the above result, tell the client what this means for '
+                        'their case and suggest 1-2 concrete next steps they should take. '
+                        'Be specific — reference actual data from the result. '
+                        'Keep it concise (2-3 sentences).';
+                  }
+
+                  final followUp = await ai.sendChatMessage(
+                    caseId: widget.caseId,
+                    message: followUpMessage,
+                    userLanguage: Localizations.localeOf(context).languageCode,
+                    userName: authState.appUser?.fullName,
+                    clientContext: ctx,
+                    caseType: _currentCase?.type,
+                    country: 'estonia',
+                    nationality: _currentCase?.nationality,
+                    freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(50),
+                  );
+
+                  if (mounted && followUp.message.trim().isNotEmpty) {
+                    await supabase.saveChatMessage(
+                      caseId: widget.caseId,
+                      role: 'assistant',
+                      content: followUp.message,
+                    );
+                    setState(() {
+                      _messages.add(ChatMessage(
+                        id: 'followup_${DateTime.now().millisecondsSinceEpoch}',
+                        role: MessageRole.assistant,
+                        content: followUp.message,
+                        timestamp: DateTime.now(),
+                      ));
+                    });
+                    _scrollToBottom();
+
+                    if (_ttsEnabled) _speakResponse(followUp.message);
+                  }
+                } catch (e) {
+                  debugPrint('Follow-up suggestion failed (non-fatal): $e');
+                }
+              }
+
+              if (mounted) {
+                setState(() => _isTyping = false);
+                _updateChatPhase();
                 _scrollToBottom();
               }
+              return; // Tool results handled — skip normal text flow
             }
 
-            // Perform navigation from the first tool result (if any)
-            if (mounted) {
-              await bridge.performNavigations(toolResults);
-            }
-
-            // After showing tool results, ask Claude for follow-up suggestions
-            if (toolResults.isNotEmpty && mounted) {
-              try {
-                final toolSummary = toolResults.map((tr) => tr.displayText).join('\n');
-                final followUp = await ai.sendChatMessage(
-                  caseId: widget.caseId,
-                  message: '[TOOL_RESULT]\n$toolSummary\n[/TOOL_RESULT]\n'
-                      'Based on this result, briefly suggest 1-2 natural next steps '
-                      'the user might want to take. Be proactive and helpful. '
-                      'Keep it short — 1-2 sentences.',
-                  userLanguage: Localizations.localeOf(context).languageCode,
-                  userName: authState.appUser?.fullName,
-                  clientContext: ctx,
-                  caseType: _currentCase?.type,
-                  country: 'estonia',
-                  nationality: _currentCase?.nationality,
-                );
-
-                if (mounted && followUp.message.trim().isNotEmpty) {
-                  await supabase.saveChatMessage(
-                    caseId: widget.caseId,
-                    role: 'assistant',
-                    content: followUp.message,
-                  );
-                  setState(() {
-                    _messages.add(ChatMessage(
-                      id: 'followup_${DateTime.now().millisecondsSinceEpoch}',
-                      role: MessageRole.assistant,
-                      content: followUp.message,
-                      timestamp: DateTime.now(),
-                    ));
-                  });
-                  _scrollToBottom();
-
-                  if (_ttsEnabled) _speakResponse(followUp.message);
-                }
-              } catch (e) {
-                debugPrint('Follow-up suggestion failed (non-fatal): $e');
-              }
-            }
-
-            if (mounted) {
-              setState(() => _isTyping = false);
-              _updateChatPhase();
-              _scrollToBottom();
-            }
-            return; // Tool results handled — skip normal text flow
+            responseText = response.message;
           }
 
-          responseText = response.message;
           // Guard against empty responses (e.g. tool_use only).
           if (responseText.trim().isEmpty) {
             responseText = _getDemoResponse(text);
@@ -686,20 +949,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         );
 
         if (mounted) {
-          final aiMessage = ChatMessage(
-            id: 'ai_${DateTime.now().millisecondsSinceEpoch}',
-            role: MessageRole.assistant,
-            content: responseText,
-            timestamp: DateTime.now(),
-          );
-          setState(() {
-            _isTyping = false;
-            _messages.add(aiMessage);
-          });
+          if (!usedStreaming) {
+            final aiMessage = ChatMessage(
+              id: 'ai_${DateTime.now().millisecondsSinceEpoch}',
+              role: MessageRole.assistant,
+              content: responseText,
+              timestamp: DateTime.now(),
+            );
+            setState(() {
+              _isTyping = false;
+              _messages.add(aiMessage);
+            });
+          } else {
+            setState(() {
+              _isTyping = false;
+            });
+          }
           _updateChatPhase();
           _scrollToBottom();
 
-          if (_ttsEnabled) {
+          // For non-streaming path, speak the full response at once.
+          // Streaming path already speaks sentence-by-sentence above.
+          if (_ttsEnabled && !usedStreaming) {
             _speakResponse(responseText);
           }
         }
@@ -738,7 +1009,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // Check company: "check company X", "check firm X", "проверь фирму X"
     final companyMatch = RegExp(
-      r'(?:check|проверь?|проверить|проверка|найти|узнай)\s+(?:company|firm|фирму?|компанию?|работодател[яь]?|employer)\s+(.+)',
+      r'(?:check|проверь?|проверить|проверка|найти|узнай|kontrolli|otsi)\s+(?:company|firm|фирму?|компанию?|работодател[яь]?|employer|ettevõtet|firmat?)\s+(.+)',
       caseSensitive: false,
     ).firstMatch(lower);
     if (companyMatch != null) {
@@ -747,7 +1018,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // Check vehicle: "check plate ABC123", "проверь авто ABC123"
     final vehicleMatch = RegExp(
-      r'(?:check|проверь?|проверить|проверка)\s+(?:vehicle|car|plate|авто|машину?|номер)\s+([A-Za-z0-9\- ]+)',
+      r'(?:check|проверь?|проверить|проверка|kontrolli)\s+(?:vehicle|car|plate|авто|машину?|номер|sõidukit|autot?|numbrimärki)\s+([A-Za-z0-9\- ]+)',
       caseSensitive: false,
     ).firstMatch(lower);
     if (vehicleMatch != null) {
@@ -755,7 +1026,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
 
     // Create case: "create case", "создай дело", "new case"
-    if (RegExp(r'(?:create|open|new|создай|открой|новое)\s+(?:case|дело|кейс)', caseSensitive: false).hasMatch(lower)) {
+    if (RegExp(r'(?:create|open|new|создай|открой|новое|loo|alusta)\s+(?:case|дело|кейс|juhtumi?)', caseSensitive: false).hasMatch(lower)) {
       final titleMatch = RegExp(r'(?:titled?|named?|с названием)\s+(.+)', caseSensitive: false).firstMatch(lower);
       return ('create_case', {
         'title': titleMatch?.group(1)?.trim() ?? 'New Case',
@@ -770,8 +1041,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
 
     // Find lawyer: "find lawyer", "найти адвоката"
-    if (RegExp(r'(?:find|search|найти|ищу|подскажи)\s*(?:lawyer|attorney|адвокат|юрист)', caseSensitive: false).hasMatch(lower)) {
-      return ('find_lawyer', {'country': 'finland'});
+    if (RegExp(r'(?:find|search|найти|ищу|подскажи|otsi|leia)\s*(?:lawyer|attorney|адвокат|юрист|advokaati?|juristi?)', caseSensitive: false).hasMatch(lower)) {
+      return ('find_lawyer', {'country': 'estonia'});
     }
 
     // Change language: "switch to english", "переключи на финский"
@@ -798,13 +1069,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // Translate: "translate ... to ..."
     final translateMatch = RegExp(
-      r'(?:translate|переведи|перевод)\s+(.+?)\s+(?:to|на)\s+(english|finnish|russian|german|en|fi|ru|de)',
+      r'(?:translate|переведи|перевод|tõlgi)\s+(.+?)\s+(?:to|на|keelde)\s+(english|finnish|russian|german|estonian|eesti|en|fi|ru|de|et)',
       caseSensitive: false,
     ).firstMatch(lower);
     if (translateMatch != null) {
       final langMap = {
         'english': 'en', 'finnish': 'fi', 'russian': 'ru', 'german': 'de',
-        'en': 'en', 'fi': 'fi', 'ru': 'ru', 'de': 'de',
+        'estonian': 'et', 'eesti': 'et',
+        'en': 'en', 'fi': 'fi', 'ru': 'ru', 'de': 'de', 'et': 'et',
       };
       return ('translate_text', {
         'text': translateMatch.group(1)!.trim(),
@@ -967,10 +1239,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     return DemoData.chatResponses['default']!;
   }
 
-  void _scrollToBottom({bool animated = true}) {
+  void _scrollToBottom({bool animated = true, bool force = false}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_scrollController.hasClients) return;
-      final target = _scrollController.position.maxScrollExtent;
+      final pos = _scrollController.position;
+      // Only auto-scroll if user is already near the bottom (within 150px)
+      // or if force is true (e.g. user just sent a message).
+      if (!force && pos.maxScrollExtent - pos.pixels > 150) return;
+      final target = pos.maxScrollExtent;
       if (animated) {
         _scrollController.animateTo(
           target,
@@ -1189,7 +1465,50 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           tooltip: 'Attach document',
           onPressed: _showAttachOptions,
         ),
+        // User profile avatar
+        Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: GestureDetector(
+            onTap: () => context.push('/settings'),
+            child: _buildUserAvatar(),
+          ),
+        ),
       ],
+    );
+  }
+
+  Widget _buildUserAvatar() {
+    final user = ref.watch(currentUserProvider).valueOrNull;
+    final name = user?.fullName ?? '';
+    final initials = name.isNotEmpty ? name[0].toUpperCase() : '?';
+
+    if (user?.avatarUrl != null) {
+      return CircleAvatar(
+        radius: 16,
+        backgroundImage: NetworkImage(user!.avatarUrl!),
+      );
+    }
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.primary, AppColors.accent],
+        ),
+      ),
+      child: Center(
+        child: Text(
+          initials,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
     );
   }
 
@@ -1806,23 +2125,68 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ToolResultCard(
             result: message.toolResult!,
             onAction: (action) => _sendMessage(action),
-            onApprove: () {
+            onApprove: () async {
               // Handle approval -- execute the real action
               if (message.toolResult?.cardType == 'email_draft') {
-                // Open mailto: link with pre-filled fields
                 final data = message.toolResult?.data ?? {};
-                final to = data['to'] as String? ?? '';
-                final subject = data['subject'] as String? ?? '';
-                final body = data['body'] as String? ?? '';
-                final uri = Uri(
-                  scheme: 'mailto',
-                  path: to,
-                  queryParameters: {
-                    'subject': subject,
-                    'body': body,
-                  },
-                );
-                launchUrl(uri);
+                final sendVia = data['send_via'] as String?;
+
+                // v24.1: if the tool emitted `send_via: 'send-email'` we
+                // dispatch via the Edge Function (real server-side send).
+                // Otherwise we fall back to the legacy mailto: flow used by
+                // the old draft_email tool.
+                if (sendVia == 'send-email') {
+                  final supabase = ref.read(supabaseServiceProvider);
+                  final resp = await supabase.callEdgeFunction(
+                    'send-email',
+                    body: {
+                      'to': data['to'],
+                      if (data['cc'] != null) 'cc': data['cc'],
+                      'subject': data['subject'],
+                      'body': data['body'],
+                      if (data['case_id'] != null)
+                        'case_id': data['case_id'],
+                    },
+                  );
+                  if (!mounted) return;
+                  if (resp != null && resp['ok'] == true) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Email sent via ${resp['provider'] ?? 'provider'}.',
+                        ),
+                        backgroundColor: AppColors.success,
+                      ),
+                    );
+                    _sendMessage(
+                        'The email was sent successfully. Please confirm '
+                        'and tell me the next step.');
+                  } else {
+                    final err = resp?['error'] as String? ??
+                        'email dispatch failed';
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Email not sent: $err'),
+                        backgroundColor: AppColors.error,
+                        duration: const Duration(seconds: 6),
+                      ),
+                    );
+                  }
+                } else {
+                  // Legacy draft_email path: open mailto:
+                  final to = data['to'] as String? ?? '';
+                  final subject = data['subject'] as String? ?? '';
+                  final body = data['body'] as String? ?? '';
+                  final uri = Uri(
+                    scheme: 'mailto',
+                    path: to,
+                    queryParameters: {
+                      'subject': subject,
+                      'body': body,
+                    },
+                  );
+                  launchUrl(uri);
+                }
               } else if (message.navigation != null) {
                 final executor = ToolExecutor(context: context, ref: ref);
                 executor.performNavigation(message.navigation!);
@@ -2183,9 +2547,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'AI анализирует',
-              style: TextStyle(
+            Text(
+              AppLocalizations.of(context)?.aiAnalyzing ?? 'AI is analyzing',
+              style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textTertiary,
                 fontWeight: FontWeight.w500,

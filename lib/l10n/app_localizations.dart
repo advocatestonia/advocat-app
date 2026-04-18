@@ -206,6 +206,24 @@ abstract class AppLocalizations {
   /// **'Analyzing...'**
   String get analyzing;
 
+  /// No description provided for @aiAnalyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'AI is analyzing'**
+  String get aiAnalyzing;
+
+  /// No description provided for @speakIntoMicHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Speak into the microphone. Make sure microphone access is enabled.'**
+  String get speakIntoMicHint;
+
+  /// No description provided for @freeLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!'**
+  String freeLimitReached(int count);
+
   /// No description provided for @andWord.
   ///
   /// In en, this message translates to:
@@ -719,7 +737,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullDefense.
   ///
   /// In en, this message translates to:
-  /// **'Full Representation'**
+  /// **'Advocat Pro'**
   String get fullDefense;
 
   /// No description provided for @fullName.
@@ -3061,6 +3079,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'I agree to analytics to improve the service (optional)'**
   String get gdprConsentAnalytics;
+
+  /// No description provided for @gdprArt9Intro.
+  ///
+  /// In en, this message translates to:
+  /// **'This app processes special category personal data under GDPR Article 9, including:'**
+  String get gdprArt9Intro;
+
+  /// No description provided for @gdprSpecialLegalCases.
+  ///
+  /// In en, this message translates to:
+  /// **'Your legal case details and court documents'**
+  String get gdprSpecialLegalCases;
+
+  /// No description provided for @gdprSpecialNationality.
+  ///
+  /// In en, this message translates to:
+  /// **'Nationality and immigration status'**
+  String get gdprSpecialNationality;
+
+  /// No description provided for @gdprConsentLegalData.
+  ///
+  /// In en, this message translates to:
+  /// **'I consent to the processing of my legal case data, nationality, and immigration status by AI (required)'**
+  String get gdprConsentLegalData;
+
+  /// No description provided for @gdprConsentVoice.
+  ///
+  /// In en, this message translates to:
+  /// **'I consent to voice recording processing (optional)'**
+  String get gdprConsentVoice;
 
   /// No description provided for @gdprViewPrivacyPolicy.
   ///

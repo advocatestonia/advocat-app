@@ -48,6 +48,18 @@ class AppLocalizationsFi extends AppLocalizations {
   String get analyzing => 'Analysoidaan...';
 
   @override
+  String get aiAnalyzing => 'Tekoäly analysoi';
+
+  @override
+  String get speakIntoMicHint =>
+      'Puhu mikrofoniin. Varmista, että mikrofonin käyttöoikeus on sallittu.';
+
+  @override
+  String freeLimitReached(int count) {
+    return 'Olet käyttänyt kaikki $count ilmaista tekoälyviestiä. Päivitä Oikeusneuvoja-tilaukseen saadaksesi rajattoman tekoälyavun!';
+  }
+
+  @override
   String get andWord => ' ja ';
 
   @override
@@ -281,7 +293,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get emailPrivacyNote =>
-      'Luemme vain maahanmuuttoon liittyvät viestit. Yksityisyytesi on suojattu.';
+      'Luemme vain oikeudellisiin asioihin liittyvät viestit. Yksityisyytesi on suojattu.';
 
   @override
   String get emailRequired => 'Sähköposti on pakollinen';
@@ -315,7 +327,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get free => 'Ilmainen';
 
   @override
-  String get fullDefense => 'Täysi puolustus';
+  String get fullDefense => 'Advocat Pro';
 
   @override
   String get fullName => 'Koko nimi';
@@ -1460,26 +1472,26 @@ class AppLocalizationsFi extends AppLocalizations {
   String get priorityProcessing => 'Prioriteettikäsittely';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+  String get fiveAiMessagesTotal => '5 tekoälyviestiä (koko käyttöaika)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI messages/day';
+  String get hundredAiMessagesDay => '100 tekoälyviestiä/päivä';
 
   @override
-  String get unlimitedAiMessages => 'Unlimited AI messages';
+  String get unlimitedAiMessages => 'Rajattomat tekoälyviestit';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'Äänitulo';
 
   @override
-  String get strategyRecommendations => 'Strategy recommendations';
+  String get strategyRecommendations => 'Strategiasuositukset';
 
   @override
   String get foundingMemberNote =>
-      'Founding Member: 9.99€/mo for first 3 months';
+      'Perustajajäsen: 9,99€/kk ensimmäiset 3 kuukautta';
 
   @override
-  String get saveTwentyPercent => 'Save 20%';
+  String get saveTwentyPercent => 'Säästä 20%';
 
   @override
   String get forever => 'ikuisesti';
@@ -1578,14 +1590,33 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'Hyväksyn tietojeni käsittelyn tekoälypohjaiseen oikeusapuun (pakollinen)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'Hyväksyn analytiikan palvelun parantamiseksi (valinnainen)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprArt9Intro =>
+      'Tämä sovellus käsittelee erityisiä henkilötietoja GDPR:n artiklan 9 mukaisesti, mukaan lukien:';
+
+  @override
+  String get gdprSpecialLegalCases =>
+      'Oikeudenkäyntiasiakirjat ja tapauksesi tiedot';
+
+  @override
+  String get gdprSpecialNationality => 'Kansalaisuus ja maahanmuuttostatus';
+
+  @override
+  String get gdprConsentLegalData =>
+      'Annan suostumukseni oikeudellisten tietojeni, kansalaisuuteni ja maahanmuuttostatukseni käsittelyyn tekoälyllä (pakollinen)';
+
+  @override
+  String get gdprConsentVoice =>
+      'Annan suostumukseni äänitallenteiden käsittelyyn (valinnainen)';
+
+  @override
+  String get gdprViewPrivacyPolicy => 'Näytä tietosuojakäytäntö';
 
   @override
   String get legalInformation => 'Oikeudellinen tieto';
@@ -1841,92 +1872,92 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get domesticViolenceDesc =>
-      'Victim rights, emergency help, restraining orders';
+      'Uhrin oikeudet, hätäapu, lähestymiskiellot';
 
   @override
   String get rightCallEmergency =>
-      'You have the right to call 112 in any emergency — police, ambulance, fire';
+      'Sinulla on oikeus soittaa 112 missä tahansa hätätilanteessa — poliisi, ambulanssi, palokunta';
 
   @override
   String get rightVictimProtection =>
-      'As a victim, you have the right to protection, support, and information about your case';
+      'Uhrina sinulla on oikeus suojeluun, tukeen ja tietoihin asiasi etenemisestä';
 
   @override
   String get rightRestrainingOrder =>
-      'You can apply for a restraining order (lähestymiskielto) to keep the abuser away';
+      'Voit hakea lähestymiskieltoa pitääksesi väkivallantekijän loitolla';
 
   @override
   String get rightVictimInterpreter =>
-      'You have the right to an interpreter during all legal proceedings';
+      'Sinulla on oikeus tulkkiin kaikissa oikeudellisissa menettelyissä';
 
   @override
   String get rightMedicalHelp =>
-      'You have the right to immediate medical treatment and documentation of injuries';
+      'Sinulla on oikeus välittömään lääkärinhoitoon ja vammojen dokumentointiin';
 
   @override
   String get rightShelter =>
-      'You have the right to emergency shelter — contact a shelter or social services';
+      'Sinulla on oikeus hätämajoitukseen — ota yhteyttä turvakotiin tai sosiaalitoimeen';
 
   @override
   String get mustReportDanger =>
-      'If someone is in immediate danger, call 112 immediately';
+      'Jos joku on välittömässä vaarassa, soita heti 112';
 
   @override
   String get mustDocumentInjuries =>
-      'Document all injuries — photos, medical records, written notes';
+      'Dokumentoi kaikki vammat — valokuvat, lääkärintodistukset, kirjalliset muistiinpanot';
 
   @override
   String get domesticActionCallEmergency =>
-      'Call 112 if you are in immediate danger';
+      'Soita 112, jos olet välittömässä vaarassa';
 
   @override
   String get domesticActionGoToSafe =>
-      'Go to a safe place — shelter, friend, public place';
+      'Mene turvalliseen paikkaan — turvakoti, ystävä, julkinen paikka';
 
   @override
   String get domesticActionDocumentEverything =>
-      'Document injuries: take photos, get medical records';
+      'Dokumentoi vammat: ota valokuvia, hanki lääkärintodistukset';
 
   @override
   String get domesticActionFilePoliceReport =>
-      'File a police report — you can do this later too';
+      'Tee rikosilmoitus — voit tehdä sen myös myöhemmin';
 
   @override
   String get domesticActionContactShelter =>
-      'Contact a shelter or crisis helpline';
+      'Ota yhteyttä turvakotiin tai kriisipuhelimeen';
 
   @override
   String get domesticActionApplyRestraining =>
-      'Apply for a restraining order through police or court';
+      'Hae lähestymiskieltoa poliisin tai tuomioistuimen kautta';
 
   @override
   String get domesticFactRestrainingOrder =>
-      'In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.';
+      'Suomessa lähestymiskielto voidaan määrätä myös ilman rikosasiaa. Se kieltää henkilöä ottamasta yhteyttä tai lähestymästä sinua.';
 
   @override
   String get domesticFactVictimDirective =>
-      'Under EU Victims\' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.';
+      'EU:n uhridirektiivin 2012/29/EU mukaan sinulla on oikeus tulla kohdelluksi kunnioittavasti, saada tietoa ymmärtämälläsi kielellä ja käyttää uhrien tukipalveluja — riippumatta asuinstatuksestasi.';
 
   @override
   String get domesticDeadlinePoliceReport =>
-      'File police report — no strict deadline, but sooner is better for evidence';
+      'Rikosilmoitus — ei tiukkaa määräaikaa, mutta mitä nopeammin sitä parempi todisteiden kannalta';
 
   @override
   String get domesticDeadlineRestraining =>
-      'Restraining order — can be applied for at any time';
+      'Lähestymiskielto — voidaan hakea milloin tahansa';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'Hätänumero';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'Turvakoti-puhelin';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'Kriisipuhelin';
 
   @override
   String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+      'Nollalinja — Naisiin kohdistuvan väkivallan auttava puhelin';
 
   @override
   String get inheritance => 'Perintö';
@@ -2000,81 +2031,80 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'Petokset, vialliset tuotteet, palautukset, harhaanjohtavat myyjät';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'Sinulla on 14 päivää aikaa peruuttaa verkko-ostokset ilman syytä (EU:n peruuttamisoikeus)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'Jos tuote on viallinen, sinulla on oikeus korjaukseen, vaihtoon tai hyvitykseen';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'Myyjien on näytettävä selkeät hinnat kaikkine maksuineen — piilokulut ovat laittomia';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'Voit tehdä ilmaisen valituksen kuluttajariitalautakuntaan';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'Sinua suojataan sopimattomilta kaupallisilta käytännöiltä ja petoksilta';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'Säilytä kaikki kuitit, sopimukset ja viestintä myyjien kanssa';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'Ilmoita virheistä myyjälle kohtuullisessa ajassa havaitsemisen jälkeen';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'Säilytä kuitit, kuvakaappaukset, sähköpostit ja kaikki ostotodisteet';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'Ota ensin yhteyttä myyjään — selitä ongelma kirjallisesti';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'Tee valitus kuluttajariitalautakuntaan';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'Ota yhteyttä kuluttajaneuvontaan saadaksesi ilmaista apua';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'Ilmoita petoksesta poliisille ja kuluttaja-asiamiehelle';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'EU:n kuluttajaoikeusdirektiivin 2011/83/EU mukaan sinulla on 14 päivää aikaa peruuttaa verkko- tai etäostos — ilman perusteluja. Myyjän on palautettava rahat 14 päivän kuluessa.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'Suomessa myyjä vastaa tuotteen virheistä kohtuullisen ajan (usein 2+ vuotta). Tämä on erillinen valmistajan takuusta.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'Verkko-ostoksen peruuttaminen — 14 päivää toimituksesta';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'Ilmoita virheestä myyjälle — kahden kuukauden kuluessa havaitsemisesta (suositus)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'Kuluttajaneuvonta';
 
   @override
-  String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+  String get contactConsumerOmbudsman => 'Kuluttaja-asiamies';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect => 'Kuluttajariitalautakunta';
 
   @override
   String get caseTypeStepLabel => 'Tapaustyyppi';

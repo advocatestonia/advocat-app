@@ -1,826 +1,1427 @@
 {
-    "@@locale": "de",
-    "about": "Über",
-    "aboutSection": "ÜBER",
-    "accidents": "Unfälle",
-    "active": "Aktiv",
-    "activeCases": "Aktive Verfahren",
-    "addedToAppeal": "Zum Widerspruch hinzugefügt",
-    "agreeToTerms": "Ich stimme den ",
-    "aiAnalysis": "KI-Analyse",
-    "aiAssistant": "KI Rechtsassistent",
-    "aiChat": "KI-Chat",
-    "all": "Alle",
-    "alreadyHaveAccount": "Bereits ein Konto? ",
-    "analyzing": "Wird analysiert",
-    "andWord": " und ",
-    "appTitle": "Advocat — Rechtsinformationswerkzeug",
-    "appVersion": "App-Version",
-    "appealFiled": "Widerspruch eingereicht",
-    "areYouAbsolutelySure": "Sind Sie sich absolut sicher?",
-    "askAboutCase": "Zum Verfahren fragen",
-    "asylum": "Asyl",
-    "back": "Zurück",
-    "basic": "Basis",
-    "beforeYouBuy": "Vor dem Kauf",
-    "beforeYouWork": "Bevor Sie mit ihnen arbeiten",
-    "camera": "Kamera",
-    "cancel": "Abbrechen",
-    "caseDescription": "Verfahrensbeschreibung",
-    "caseDetail": "Verfahrensdetails",
-    "caseOverview": "Verfahrensübersicht",
-    "caseTitle": "Verfahrenstitel",
-    "caseUpdated": "Verfahren aktualisiert",
-    "cases": "Verfahren",
-    "checkCompany": "Firma prüfen",
-    "checkDeadlines": "Fristen prüfen",
-    "checkVehicle": "Fahrzeug prüfen",
-    "checkerTitle": "Prüfer",
-    "checkingErrors": "Fehlerprüfung",
-    "choosePlan": "Tarif wählen",
-    "closed": "Abgeschlossen",
-    "companyName": "Firmenname oder Reg.-Nr.",
-    "completed": "Abgeschlossen",
-    "confirm": "Bestätigen",
-    "confirmPassword": "Passwort bestätigen",
-    "connectEmail": "E-Mail verbinden",
-    "connectGmail": "Gmail verbinden",
-    "connectOutlook": "Outlook verbinden",
-    "connected": "Verbunden",
-    "contactSupport": "Support kontaktieren",
-    "continueWithGoogle": "Weiter mit Google",
-    "copyText": "Text kopieren",
-    "correspondence": "Korrespondenz",
-    "couldNotLoadCases": "Ihre Verfahren konnten nicht geladen werden",
-    "country": "Land",
-    "createAccount": "Konto erstellen",
-    "createCase": "Verfahren anlegen",
-    "criminalCase": "Strafsache",
-    "critical": "Kritisch",
-    "currentPlan": "Aktueller Tarif",
-    "dataAndPrivacy": "DATEN & DATENSCHUTZ",
-    "dataExportRequested": "Datenexport angefordert. Überprüfen Sie Ihre E-Mail.",
-    "daysRemaining": "{count} Tage",
-    "@daysRemaining": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
+  "@@locale": "de",
+  "about": "Über",
+  "aboutSection": "ÜBER",
+  "accidents": "Unfälle",
+  "active": "Aktiv",
+  "activeCases": "Aktive Verfahren",
+  "addedToAppeal": "Zum Widerspruch hinzugefügt",
+  "agreeToTerms": "Ich stimme den ",
+  "aiAnalysis": "KI-Analyse",
+  "aiAssistant": "KI Rechtsassistent",
+  "aiChat": "KI-Chat",
+  "all": "Alle",
+  "alreadyHaveAccount": "Bereits ein Konto? ",
+  "analyzing": "Wird analysiert",
+  "andWord": " und ",
+  "appTitle": "Advocat — Rechtsinformationswerkzeug",
+  "appVersion": "App-Version",
+  "appealFiled": "Widerspruch eingereicht",
+  "areYouAbsolutelySure": "Sind Sie sich absolut sicher?",
+  "askAboutCase": "Zum Verfahren fragen",
+  "asylum": "Asyl",
+  "back": "Zurück",
+  "basic": "Basis",
+  "beforeYouBuy": "Vor dem Kauf",
+  "beforeYouWork": "Bevor Sie mit ihnen arbeiten",
+  "camera": "Kamera",
+  "cancel": "Abbrechen",
+  "caseDescription": "Verfahrensbeschreibung",
+  "caseDetail": "Verfahrensdetails",
+  "caseOverview": "Verfahrensübersicht",
+  "caseTitle": "Verfahrenstitel",
+  "caseUpdated": "Verfahren aktualisiert",
+  "cases": "Verfahren",
+  "checkCompany": "Firma prüfen",
+  "checkDeadlines": "Fristen prüfen",
+  "checkVehicle": "Fahrzeug prüfen",
+  "checkerTitle": "Prüfer",
+  "checkingErrors": "Fehlerprüfung",
+  "choosePlan": "Tarif wählen",
+  "closed": "Abgeschlossen",
+  "companyName": "Firmenname oder Reg.-Nr.",
+  "completed": "Abgeschlossen",
+  "confirm": "Bestätigen",
+  "confirmPassword": "Passwort bestätigen",
+  "connectEmail": "E-Mail verbinden",
+  "connectGmail": "Gmail verbinden",
+  "connectOutlook": "Outlook verbinden",
+  "connected": "Verbunden",
+  "contactSupport": "Support kontaktieren",
+  "continueWithGoogle": "Weiter mit Google",
+  "copyText": "Text kopieren",
+  "correspondence": "Korrespondenz",
+  "couldNotLoadCases": "Ihre Verfahren konnten nicht geladen werden",
+  "country": "Land",
+  "createAccount": "Konto erstellen",
+  "createCase": "Verfahren anlegen",
+  "criminalCase": "Strafsache",
+  "critical": "Kritisch",
+  "currentPlan": "Aktueller Tarif",
+  "dataAndPrivacy": "DATEN & DATENSCHUTZ",
+  "dataExportRequested": "Datenexport angefordert. Überprüfen Sie Ihre E-Mail.",
+  "daysRemaining": "{count} Tage",
+  "@daysRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineReminders": "Fristenerinnerungen",
+  "deadlineRemindersDesc": "Erhalten Sie Erinnerungen, bevor wichtige Fristen ablaufen",
+  "deadlines": "Fristen",
+  "debtCollection": "Inkasso",
+  "deleteAccount": "Konto löschen",
+  "deleteAccountDesc": "Löschen Sie Ihr Konto und alle Daten dauerhaft",
+  "deleteAccountDialogContent": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden. Alle Ihre Daten, Verfahren und Dokumente werden dauerhaft gelöscht.",
+  "deleteConfirm": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "demoHint": "Demo: Kennzeichen \"908FBT\" ausprobieren",
+  "demoModeDesc": "Erkunden Sie die App mit Beispieldaten, ohne ein Konto zu erstellen",
+  "deportation": "Abschiebung",
+  "disclaimer": "Nur KI-gestützte Orientierung – keine Rechtsberatung. Konsultieren Sie stets einen Anwalt.",
+  "disclaimerFull": "Dies ist eine KI-gestützte Orientierungshilfe und stellt keine Rechtsberatung dar. Sämtliche Inhalte sollten vor der Verwendung in rechtlichen Angelegenheiten von einem zugelassenen Anwalt geprüft werden.",
+  "disconnect": "Trennen",
+  "discrimination": "Diskriminierung",
+  "doNotBuy": "Nicht kaufen",
+  "documents": "Dokumente",
+  "documentsCount": "{count} Dokumente",
+  "@documentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "draftAppeal": "Widerspruchsentwurf",
+  "editDraft": "Entwurf bearbeiten",
+  "editProfile": "Profil bearbeiten",
+  "email": "E-Mail",
+  "emailConnected": "E-Mail verbunden",
+  "emailDisconnected": "E-Mail getrennt",
+  "emailIntegration": "E-MAIL-INTEGRATION",
+  "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+  "emailPrivacyNote": "Ihre E-Mail wird ausschließlich für verfahrensbezogene Korrespondenz verwendet und sicher gespeichert.",
+  "emailRequired": "E-Mail-Adresse ist erforderlich",
+  "emergencyShield": "Notfallschutz",
+  "error": "Fehler",
+  "exportDataDesc": "Laden Sie alle Ihre Verfahrensdaten und Dokumente herunter",
+  "exportDataDialogContent": "Wir bereiten einen Download aller Ihrer Daten vor, einschließlich Verfahren, Dokumente und Korrespondenz. Sie erhalten eine E-Mail, wenn es fertig ist.",
+  "exportMyData": "Meine Daten exportieren",
+  "exportPdf": "PDF exportieren",
+  "familyReunification": "Familienzusammenführung",
+  "forgotPassword": "Passwort vergessen?",
+  "free": "Kostenlos",
+  "fullDefense": "Advocat Pro",
+  "fullName": "Vollständiger Name",
+  "gallery": "Galerie",
+  "generateAppeal": "Widerspruch erstellen",
+  "getStarted": "Jetzt starten",
+  "goodAfternoon": "Guten Tag, {name}",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "Guten Abend, {name}",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodMorning": "Guten Morgen, {name}",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodNight": "Gute Nacht, {name}",
+  "@goodNight": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "home": "Startseite",
+  "important": "Wichtig",
+  "inProgress": "In Bearbeitung",
+  "informational": "Informativ",
+  "inspection": "Technische Inspektion",
+  "insurance": "Versicherung",
+  "issuesFound": "{count} Probleme gefunden",
+  "@issuesFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "laborDispute": "Arbeitsstreitigkeiten",
+  "langEnglish": "Englisch",
+  "langFinnish": "Finnisch",
+  "langRussian": "Russisch",
+  "language": "Sprache",
+  "lastActivity": "Letzte Aktivität: {time}",
+  "@lastActivity": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "legalFighter": "Rechtskämpfer",
+  "legalSection": "RECHTLICHES",
+  "licensePlate": "Kennzeichen",
+  "loading": "Wird geladen...",
+  "logIn": "Anmelden",
+  "loginFailed": "Ungültige E-Mail-Adresse oder ungültiges Passwort. Bitte versuchen Sie es erneut.",
+  "lost": "Verloren",
+  "markComplete": "Als abgeschlossen markieren",
+  "mileage": "Kilometerstand",
+  "myCases": "Meine Verfahren",
+  "nameRequired": "Vollständiger Name ist erforderlich",
+  "newCase": "Neues Verfahren",
+  "next": "Weiter",
+  "noAccount": "Noch kein Konto? ",
+  "noCases": "Noch keine Verfahren",
+  "noCasesYet": "Noch keine Verfahren",
+  "noDeadlines": "Keine Fristen",
+  "noRecentActivity": "Keine kürzliche Aktivität",
+  "notifications": "BENACHRICHTIGUNGEN",
+  "onboardingDesc1": "Advocat hilft Ihnen, Ihre rechtliche Situation zu verstehen. KI-Werkzeuge analysieren Dokumente, identifizieren mögliche Probleme und erstellen Dokumententwürfe zu Ihrer Überprüfung. Keine Anwaltskanzlei — ein Technologiewerkzeug zur Unterstützung Ihres Falls.",
+  "onboardingDesc2": "Fotografieren Sie jedes Rechtsdokument. Die KI liest es in mehreren Sprachen, extrahiert wichtige Details und prüft anhand von EU-Richtlinien und nationalen Gesetzen auf mögliche Probleme.",
+  "onboardingDesc3": "Unsere KI-Werkzeuge prüfen über 40 Arten von Verfahrensanforderungen. Die KI-Analyse kann Punkte identifizieren, die Aufmerksamkeit erfordern — wie Zustellungssprache, Verfahrensschritte und rechtliche Fristen. Überprüfen Sie immer mit einem qualifizierten Anwalt.",
+  "onboardingDesc4": "Die KI erstellt Entwürfe für Widersprüche, Beschwerden und Schreiben mit Rechtsverweisen zu Ihrer Überprüfung. Sie entscheiden, was eingereicht wird. Jedes Dokument sollte vor der Einreichung von einem qualifizierten Rechtsexperten geprüft werden.",
+  "onboardingNext": "Weiter",
+  "onboardingSkip": "Überspringen",
+  "onboardingTitle1": "KI-gestützte Rechtsinformation",
+  "onboardingTitle2": "Dokumente scannen und analysieren",
+  "onboardingTitle3": "KI prüft auf mögliche Probleme",
+  "onboardingTitle4": "Dokumententwürfe zu Ihrer Überprüfung",
+  "openACase": "Fall eröffnen",
+  "optional": "Optional",
+  "orDivider": "oder",
+  "other": "Sonstiges",
+  "overdue": "Überfällig",
+  "owners": "Vorbesitzer",
+  "password": "Passwort",
+  "passwordRequired": "Passwort ist erforderlich",
+  "passwordStrengthMedium": "Mittel",
+  "passwordStrengthStrong": "Stark",
+  "passwordStrengthWeak": "Schwach",
+  "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
+  "passwordsDoNotMatch": "Die Passwörter stimmen nicht überein",
+  "pendingDecision": "Bescheid ausstehend",
+  "perCheck": "pro Prüfung",
+  "permanentlyDelete": "Dauerhaft löschen",
+  "policeMisconduct": "Polizeiverhalten",
+  "popular": "Beliebt",
+  "preferences": "EINSTELLUNGEN",
+  "preferredLanguage": "Bevorzugte Sprache",
+  "pricePerCheck": "4,99 € pro Prüfung",
+  "privacyPolicy": "Datenschutzrichtlinie",
+  "pro": "Pro",
+  "pushNotifications": "Push-Benachrichtigungen",
+  "rateUs": "Bewerten Sie uns",
+  "readingDocument": "Dokument wird gelesen",
+  "recentActivity": "Letzte Aktivität",
+  "referenceNumber": "Aktenzeichen",
+  "registerFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+  "reportFraud": "Betrug melden",
+  "requestExport": "Export anfordern",
+  "researchingLaw": "Rechtliche Recherche",
+  "resetPasswordFailed": "Der Zurücksetzungslink konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+  "resetPasswordSent": "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet.",
+  "residencePermit": "Aufenthaltstitel",
+  "manageSubscription": "Abonnement verwalten",
+  "restorePurchases": "Käufe wiederherstellen",
+  "retry": "Erneut versuchen",
+  "reviewWarning": "Überprüfungshinweis",
+  "riskHigh": "Hohes Risiko — vermeiden",
+  "riskLow": "Sicher zur Zusammenarbeit",
+  "riskMedium": "Mit Vorsicht vorgehen",
+  "safeToBuy": "Sicher zu kaufen",
+  "saveAndAnalyze": "Speichern und analysieren",
+  "saveDraft": "Entwurf speichern",
+  "saveWithAnnual": "Mit Jahresabo sparen",
+  "scan": "Scannen",
+  "scanDocument": "Dokument scannen",
+  "searchCases": "Verfahren suchen",
+  "selectCountry": "Land auswählen",
+  "selectLanguage": "Sprache wählen",
+  "sendViaEmail": "Per E-Mail senden",
+  "settings": "Einstellungen",
+  "signIn": "Anmelden",
+  "signInLink": "Anmelden",
+  "signInSubtitle": "Melden Sie sich an, um auf Ihre Verfahren zuzugreifen",
+  "signOut": "Abmelden",
+  "signOutConfirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
+  "signUp": "Konto erstellen",
+  "signUpLink": "Registrieren",
+  "socialBenefits": "Sozialleistungen",
+  "someConcerns": "Einige Bedenken",
+  "startFirstCase": "Erstellen Sie Ihr erstes Verfahren",
+  "step": "Schritt {current} von {total}",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stolen": "Diebstahlprüfung",
+  "subscription": "Abonnement",
+  "syncLegalCorrespondence": "Rechtliche Korrespondenz synchronisieren",
+  "syncNow": "Jetzt synchronisieren",
+  "tenantRights": "Mieterrechte",
+  "termsOfService": "Nutzungsbedingungen",
+  "termsRequired": "Sie müssen den Nutzungsbedingungen zustimmen",
+  "timeline": "Zeitverlauf",
+  "tryDemoMode": "Demomodus testen",
+  "typeDeleteToConfirm": "Geben Sie DELETE ein, um die permanente Kontolöschung zu bestätigen.",
+  "typeMessage": "Nachricht eingeben",
+  "upcoming": "Anstehend",
+  "uploadDocument": "Dokument hochladen",
+  "urgentDeadline": "Dringend: {title}",
+  "@urgentDeadline": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "useInAppeal": "Im Widerspruch verwenden",
+  "vehicleChecker": "Fahrzeugprüfer",
+  "vehicleChecks": "Statusprüfungen",
+  "vehicleColor": "Farbe",
+  "vehicleMake": "Marke",
+  "vehicleModel": "Modell",
+  "vehicleYear": "Baujahr",
+  "version": "Version",
+  "victimSupport": "Opferhilfe",
+  "viewAll": "Alle anzeigen",
+  "vinNumber": "Fahrgestellnummer",
+  "welcomeBack": "Willkommen zurück",
+  "whatAreMyOptions": "Welche Möglichkeiten habe ich?",
+  "won": "Gewonnen",
+  "activityWillAppear": "Aktivitäten werden hier angezeigt, wenn Ihr Fall voranschreitet.",
+  "addDocument": "Dokument hinzufügen",
+  "addPage": "Seite hinzufügen",
+  "aiDisclaimer": "KI-Haftungsausschluss",
+  "alignDocument": "Dokument im Rahmen ausrichten",
+  "allClearDeadlines": "Alles erledigt! Neue Fristen erscheinen hier, wenn sie gesetzt werden.",
+  "analysisFailedRetry": "Analyse fehlgeschlagen. Bitte erneut versuchen.",
+  "analyzeSelected": "Ausgewählte analysieren",
+  "analyzed": "Analysiert",
+  "analyzingContent": "Inhalt wird analysiert...",
+  "annual": "Jährlich",
+  "annualLeave": "Jahresurlaub (mindestens 2 Tage pro gearbeitetem Monat)",
+  "appeal": "Einspruch",
+  "appealDeadline": "Einspruchsfrist",
+  "appealDeadlineDesc": "Einspruch muss bis {date} eingereicht werden.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "appealDeadlineSet": "Einspruchsfrist gesetzt",
+  "appealDraft": "Einspruchsentwurf",
+  "applyLegalAid": "Bei Bedarf Prozesskostenhilfe beantragen",
+  "assignToCase": "Dem Fall zuordnen",
+  "basicAiAnalysis": "Basis-KI-Analyse",
+  "basicRights": "Grundrechte:",
+  "batchAnalysisStarting": "Stapelanalyse wird gestartet...",
+  "calculateEligibility": "Anspruch berechnen",
+  "cameraPermissionDesc": "Kamerazugriff zum Scannen von Dokumenten gewähren oder die Galerie verwenden.",
+  "cameraPermissionRequired": "Kameraberechtigung erforderlich",
+  "capturePhotoFailed": "Foto konnte nicht aufgenommen werden. Bitte erneut versuchen.",
+  "caseCreated": "Fall erstellt",
+  "caseCreatedDesc": "Fall \"{title}\" wurde erstellt.",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "caseCreationComingSoon": "Fallerstellung mit vorausgefüllten Daten kommt bald",
+  "caseInfoUpdated": "Fallinformationen wurden zuletzt aktualisiert.",
+  "caseSummaryCopied": "Fallzusammenfassung kopiert",
+  "caseTimeline": "Fallzeitleiste",
+  "changesSaved": "Änderungen gespeichert",
+  "chatWelcomeMessage": "Hallo! Ich bin Ihr Rechtsassistent. Erzählen Sie mir, was passiert ist — ich analysiere die Situation und schlage vor, was zu tun ist.",
+  "checkEligibility": "Prüfen Sie Ihren Anspruch auf Prozesskostenhilfe: {country}",
+  "checkingPurchases": "Frühere Käufe werden geprüft...",
+  "chooseHowToAdd": "Wählen Sie, wie Sie Ihr Dokument hinzufügen möchten",
+  "citizenship": "Staatsangehörigkeit",
+  "completedDeadlinesDesc": "Erledigte Fristen werden hier angezeigt.",
+  "connectYourEmail": "E-Mail verbinden",
+  "connectYourEmailDesc": "Verbinden Sie Ihre E-Mail, um rechtliche Korrespondenz zu Ihren Fällen automatisch zu erkennen.",
+  "connectedTo": "Verbunden mit {email}",
+  "@connectedTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "contactLawyerImmediately": "Sofort einen Anwalt kontaktieren",
+  "contactLegalAidOffice": "Rechtsberatungsstelle kontaktieren",
+  "cookiePolicy": "Cookie-Richtlinie",
+  "copiedToClipboard": "In die Zwischenablage kopiert",
+  "copy": "Kopieren",
+  "copySummary": "Zusammenfassung kopieren",
+  "couldNotLoadCase": "Falldetails konnten nicht geladen werden",
+  "couldNotLoadDeadlines": "Fristen konnten nicht geladen werden",
+  "couldNotLoadTimeline": "Zeitleiste konnte nicht geladen werden",
+  "courtCaseNo": "Gerichtsaktenzeichen",
+  "createNote": "Notiz erstellen",
+  "createNoteDesc": "Eine Notiz schreiben oder wichtige Details festhalten",
+  "created": "Erstellt",
+  "dataPrivacyConsent": "Datenschutzeinwilligung",
+  "days": "Tage",
+  "daysLate": "Tage überfällig",
+  "decisionReceived": "Entscheidung erhalten",
+  "decisionReceivedDesc": "Eine offizielle Entscheidung wurde für diesen Fall erhalten.",
+  "decline": "Ablehnen",
+  "delete": "Löschen",
+  "deleteCase": "Fall löschen",
+  "deleteCaseConfirm": "Möchten Sie \"{title}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "@deleteCaseConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteDocumentsConfirm": "{count} Dokumente löschen?",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "Ausgewählte löschen",
+  "deportationNotice": "Abschiebungsbescheid",
+  "deportationNoticeDesc": "Schritte zur Anfechtung einer Abschiebungsanordnung",
+  "disconnectEmail": "E-Mail trennen",
+  "disconnectEmailConfirm": "Die automatische E-Mail-Synchronisierung wird gestoppt. Zuvor synchronisierte E-Mails bleiben in Ihren Fällen.",
+  "discriminationDesc": "Wie man Diskriminierung meldet und bekämpft",
+  "doNotIgnoreNotice": "Den Bescheid NICHT ignorieren - Fristen sind streng",
+  "documentAnalysis": "Dokumentenanalyse",
+  "documentIncident": "Vorfall dokumentieren (Datum, Uhrzeit, Zeugen)",
+  "documentProcessedOk": "Dokument erfolgreich verarbeitet",
+  "documentUploadedSuccess": "Dokument erfolgreich hochgeladen",
+  "documentVault": "Dokumententresor",
+  "done": "Fertig",
+  "draftCopiedToClipboard": "Entwurf in die Zwischenablage kopiert",
+  "draftDocument": "Dokument entwerfen",
+  "draftGeneration": "Entwurfserstellung",
+  "edit": "Bearbeiten",
+  "editDocument": "Dokument bearbeiten",
+  "emailComingSoon": "E-Mail-Versand kommt bald",
+  "emailIntegrationTitle": "E-Mail-Integration",
+  "english": "Englisch",
+  "estimateDisclaimer": "Dies ist nur eine Schätzung. Die tatsächliche Berechtigung wird vom Rechtsberatungsbüro festgestellt.",
+  "exportAsPdf": "Als PDF exportieren",
+  "failed": "Fehlgeschlagen",
+  "failedToCreateCaseRetry": "Fall konnte nicht erstellt werden. Bitte erneut versuchen.",
+  "failedToGenerateDraft": "Entwurf konnte nicht erstellt werden. Bitte erneut versuchen.",
+  "failedToLoadCases": "Fälle konnten nicht geladen werden",
+  "failedToLoadDocuments": "Dokumente konnten nicht geladen werden",
+  "fileComplaintOmbudsman": "Beschwerde beim Antidiskriminierungsbeauftragten einreichen",
+  "filterByType": "Nach Typ filtern",
+  "finnish": "Finnisch",
+  "forever": "unbegrenzt",
+  "fromDocument": "Aus Dokument",
+  "fullAiAnalysis": "Volle KI-Analyse",
+  "fullFreeLegalAid": "Sie qualifizieren sich wahrscheinlich für kostenlose Prozesskostenhilfe (ohne Zuzahlung).",
+  "gdprChat": "Verarbeitung Ihrer Chat-Nachrichten durch KI",
+  "gdprDelete": "Recht, Ihre Daten jederzeit zu löschen",
+  "gdprDocs": "Analyse hochgeladener Dokumente",
+  "gdprFooter": "Ihre Daten sind verschlüsselt und werden nie an Dritte weitergegeben. Sie können die Einwilligung widerrufen und alle Daten in den Einstellungen löschen.",
+  "gdprIntro": "Um KI-Rechtsberatung zu bieten, verarbeiten wir Ihre Daten gemäß DSGVO (EU 2016/679). Durch Fortfahren stimmen Sie zu:",
+  "gdprStorage": "Verschlüsselte Speicherung von Falldaten",
+  "generateAppealWithIssues": "Einspruch erstellen ({count} Probleme)",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "generatingDraft": "Ihr Entwurf wird erstellt...",
+  "generatingDraftDesc": "KI bereitet ein Rechtsdokument basierend auf Ihren Falldetails und ausgewählten Problemen vor.",
+  "greatJobDeadlines": "Gut gemacht, Sie behalten Ihre Fristen im Blick.",
+  "haveQuestionsAi": "Fragen? Fragen Sie die KI",
+  "hearingScheduled": "Anhörung geplant",
+  "hearingScheduledDesc": "Gerichtsverhandlung geplant für {date}.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "howToAct": "Wie Sie handeln sollten:",
+  "iAgree": "Ich stimme zu",
+  "iAgreeToThe": "Ich stimme den ",
+  "immediateSteps": "Sofortmaßnahmen:",
+  "immigrationDetention": "Einwanderungshaft",
+  "immigrationDetentionDesc": "Rechte bei Inhaftierung durch Behörden",
+  "inCourt": "Vor Gericht",
+  "issuesFoundHeader": "Gefundene Probleme",
+  "issuesFoundInDocument": "{count} Problem(e) in Ihrem Dokument gefunden",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "knowYourRights": "Kennen Sie Ihre Rechte",
+  "landlordNotice": "Vermieter muss kündigen (3-6 Monate)",
+  "lastSynced": "Zuletzt synchronisiert: {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "late": "überfällig",
+  "legalAidCalculator": "Prozesskostenhilfe-Rechner",
+  "legalAidWithCopay": "Sie qualifizieren sich möglicherweise für Prozesskostenhilfe mit einer Zuzahlung von {percent}%.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "legalEmails": "Rechtliche E-Mails",
+  "legalEmailsWillAppear": "Als rechtlich eingestufte E-Mails erscheinen hier.",
+  "likelyEligible": "Wahrscheinlich berechtigt",
+  "mayNotQualify": "Möglicherweise nicht berechtigt",
+  "mayNotQualifyDesc": "Basierend auf dieser Schätzung qualifizieren Sie sich möglicherweise nicht für staatliche Prozesskostenhilfe. Erwägen Sie einen Privatanwalt oder eine Rechtsberatungsstelle.",
+  "migriReference": "Migri-Referenz",
+  "minimumWage": "Mindestlohn gemäß Tarifvertrag",
+  "monthly": "Monatlich",
+  "monthlyIncome": "Monatliches Einkommen (EUR)",
+  "mostPopular": "BELIEBTESTE",
+  "mustNotResist": "Keinen physischen Widerstand leisten",
+  "mustProvideName": "Namen und Geburtsdatum angeben",
+  "mustShowId": "Ausweis zeigen, falls vorhanden",
+  "nationality": "Staatsangehörigkeit",
+  "noCasesMatchSearch": "Keine Fälle entsprechen Ihrer Suche",
+  "noCompletedDeadlines": "Keine erledigten Fristen",
+  "noContentAvailable": "Kein Inhalt verfügbar",
+  "noDocumentsScanHint": "Noch keine Dokumente. Scannen oder hochladen.",
+  "noDocumentsYet": "Noch keine Dokumente hochgeladen",
+  "noDocumentsYetScan": "Noch keine Dokumente",
+  "noEventsYet": "Noch keine Ereignisse",
+  "noLegalEmailsYet": "Noch keine rechtlichen E-Mails",
+  "noPreviousPurchases": "Keine früheren Käufe gefunden.",
+  "noSignificantIssues": "Keine wesentlichen Probleme in diesem Dokument erkannt.",
+  "noUpcomingDeadlines": "Keine anstehenden Fristen",
+  "noUpcomingDeadlinesShort": "Keine anstehenden Fristen",
+  "noteAppealDeadline": "Einspruchsfrist beachten (normalerweise 30 Tage)",
+  "nothingOverdue": "Nichts überfällig",
+  "numberOfDependents": "Anzahl der Unterhaltsberechtigten",
+  "oneCaseActive": "1 aktiver Fall",
+  "openCase": "Fall öffnen",
+  "openSettings": "Einstellungen öffnen",
+  "orWord": "oder",
+  "pageCount": "{count} Seite(n)",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pageNumber": "Seite {number}",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "pagesUploadedSuccess": "{count} Seiten erfolgreich hochgeladen",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentFailed": "Zahlung fehlgeschlagen: {error}",
+  "@paymentFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "pdf": "PDF",
+  "pdfExportComingSoon": "PDF-Export kommt bald",
+  "pending": "Ausstehend",
+  "perMonth": "/Monat",
+  "perYear": "/Jahr",
+  "preparingUpload": "Upload wird vorbereitet...",
+  "preview": "Vorschau",
+  "priorityProcessing": "Prioritätsbearbeitung",
+  "processing": "Verarbeitung",
+  "protectionUnjustEviction": "Schutz vor ungerechtfertigter Räumung",
+  "readingText": "Text wird gelesen...",
+  "ready": "Bereit",
+  "reportAndOpenCase": "Melden und Fall eröffnen",
+  "reportMileageFraud": "Kilometerbetrug melden",
+  "reportMileageFraudDesc": "Es wird ein Betrugsbericht basierend auf den Fahrzeugprüfdaten erstellt. Sie können auch einen Rechtsfall eröffnen.",
+  "reportToPolice": "Bei Straftaten Polizei einschalten (Bedrohung, Körperverletzung)",
+  "retake": "Neu aufnehmen",
+  "retryAnalysis": "Analyse wiederholen",
+  "reviewBeforeSending": "Vor dem Senden sorgfältig prüfen. Sie sind für den Inhalt dieses Dokuments verantwortlich.",
+  "rightAppealAdmin": "Recht auf Einspruch beim Verwaltungsgericht",
+  "rightAskInterpreter": "Einen Dolmetscher verlangen",
+  "rightChallengeDetention": "Recht, die Haft gerichtlich anzufechten",
+  "rightContactEmbassy": "Recht, Ihre Botschaft zu kontaktieren",
+  "rightContactLawyer": "Vor der Vernehmung einen Anwalt kontaktieren",
+  "rightContactLawyerDetention": "Recht, einen Anwalt zu kontaktieren",
+  "rightHabitableDwelling": "Recht auf eine bewohnbare Wohnung",
+  "rightHumaneTreatment": "Recht auf menschenwürdige Behandlung und medizinische Versorgung",
+  "rightInterpreter": "Recht auf einen Dolmetscher",
+  "rightKnowDetentionReason": "Recht, den Grund der Inhaftierung zu erfahren",
+  "rightKnowWhyStopped": "Wissen, warum Sie angehalten werden",
+  "rightLegalRep": "Recht auf rechtliche Vertretung",
+  "rightRecordEncounter": "Die Begegnung aufzeichnen (an öffentlichen Orten)",
+  "rightRemainSilent": "Schweigen (Sie müssen sich ausweisen)",
+  "rightStayDuringAppeal": "Recht, während des Einspruchs zu bleiben (in den meisten Fällen)",
+  "russian": "Russisch",
+  "safeWorkingConditions": "Sichere Arbeitsbedingungen",
+  "save": "Speichern",
+  "saveChanges": "Änderungen speichern",
+  "saveTwentyFivePercent": "25% sparen",
+  "scanDocumentDesc": "Fotografieren Sie Ihr Dokument",
+  "scanFirstDocumentHint": "Scannen Sie Ihr erstes Dokument, damit die KI es auf Fehler analysieren und Einsprüche erstellen kann.",
+  "scanNew": "Neu scannen",
+  "scenarioNotFound": "Szenario nicht gefunden",
+  "secureDocumentStorage": "Sichere Dokumentenablage",
+  "secureDocumentStorageDesc": "Bewahren Sie Ihre wichtigen Rechtsdokumente an einem Ort für einfachen Zugriff auf.",
+  "securityDeposit": "Kaution max. 3 Monatsmieten",
+  "selected": "{count} ausgewählt",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "Schweregrad-Übersicht",
+  "sickLeave": "Lohnfortzahlung im Krankheitsfall",
+  "somethingWentWrong": "Etwas ist schiefgelaufen",
+  "stoppedByPolice": "Von der Polizei angehalten",
+  "stoppedByPoliceDesc": "Ihre Rechte bei einer Polizeikontrolle",
+  "successSubscribed": "Erfolgreich für {plan} abonniert!",
+  "@successSubscribed": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "switchToGrid": "Zur Rasteransicht wechseln",
+  "switchToList": "Zur Listenansicht wechseln",
+  "takePhotoInstead": "Stattdessen Foto aufnehmen",
+  "tenantRightsDesc": "Wohn- und Mieterschutz",
+  "threeCasesActive": "3 aktive Fälle",
+  "threeDocScans": "3 Dokumentenscans",
+  "totalAssets": "Gesamtvermögen (EUR)",
+  "twentyDocScans": "20 Dokumentenscans",
+  "typeLabel": "Typ",
+  "unlimitedCases": "Unbegrenzte Fälle",
+  "unlimitedDocScans": "Unbegrenztes Dokumentenscannen",
+  "unlinkedEmails": "Nicht verknüpfte E-Mails",
+  "uploadFailed": "Upload fehlgeschlagen. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+  "uploadFile": "Datei hochladen",
+  "uploadFileDesc": "Wählen Sie eine PDF- oder Bilddatei von Ihrem Gerät",
+  "uploadingPercent": "Hochladen... {percent}%",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "useThisPhoto": "Dieses Foto verwenden",
+  "viewFull": "Vollständig anzeigen",
+  "workPermit": "Arbeitserlaubnis",
+  "workingTimeLimits": "Arbeitszeitgrenzen (max. 8 Std./Tag, 40 Std./Woche)",
+  "workplaceRights": "Arbeitsplatzrechte",
+  "workplaceRightsDesc": "Arbeitsrechtlicher Schutz in Finnland",
+  "writtenRentalAgreement": "Schriftlicher Mietvertrag erforderlich",
+  "youHaveRightTo": "Sie haben das Recht auf:",
+  "youMust": "Sie müssen:",
+  "yourRights": "Ihre Rechte:",
+  "yourRightsAsTenant": "Ihre Rechte als Mieter:",
+  "yourRightsInDetention": "Ihre Rechte in Haft:",
+  "whatToDo": "Was tun",
+  "getHelp": "Hilfe bekommen",
+  "share": "Teilen",
+  "didYouKnow": "Wussten Sie?",
+  "mustKnow": "Wichtig zu wissen",
+  "goodToKnow": "Gut zu wissen",
+  "sentFromAdvocat": "Gesendet von der Advocat-App",
+  "policeActionStayCalm": "Bleiben Sie ruhig und halten Sie die Hände sichtbar",
+  "policeActionAskWhy": "Fragen Sie den Beamten, warum Sie angehalten werden",
+  "policeActionProvideName": "Nennen Sie Ihren Namen und Ihr Geburtsdatum",
+  "policeActionWantLawyer": "Sagen Sie deutlich: \"Ich möchte einen Anwalt, bevor ich Fragen beantworte\"",
+  "policeActionAskInterpreter": "Bitten Sie bei Bedarf um einen Dolmetscher",
+  "policeActionNoteBadge": "Notieren Sie den Namen und die Dienstnummer des Beamten",
+  "policeFactMustTellReason": "In Finnland muss die Polizei Ihnen den Grund für das Anhalten nennen. Wenn sie es nicht tun, können Sie fragen — und sie sind gesetzlich verpflichtet, es zu erklären.",
+  "policeFactCanRecord": "Sie können Polizeikontakte an öffentlichen Orten in Finnland aufnehmen. Dies wird durch die Meinungsfreiheit geschützt.",
+  "contactFinnishLegalAid": "Finnische Rechtshilfe",
+  "contactNonDiscriminationOmbudsman": "Gleichbehandlungsbeauftragter",
+  "deportationDeadlineAppeal": "Berufung beim Verwaltungsgericht — in der Regel 30 Tage nach Zustellung",
+  "deportationDeadlineLegalAid": "Beantragen Sie Rechtshilfe — tun Sie dies SOFORT",
+  "deportationFactStayDuringAppeal": "In Finnland haben Sie in der Regel das Recht, im Land zu bleiben, während Ihre Berufung bearbeitet wird. Die Abschiebung kann in den meisten Fällen während einer laufenden Berufung nicht vollzogen werden.",
+  "contactRefugeeAdviceCentre": "Finnisches Flüchtlingsberatungszentrum",
+  "contactAdminCourtHelsinki": "Verwaltungsgericht Helsinki",
+  "workplaceActionKeepContract": "Bewahren Sie Kopien Ihres Arbeitsvertrags auf",
+  "workplaceActionTrackHours": "Erfassen Sie Ihre Arbeitszeiten eigenständig",
+  "workplaceActionReportUnsafe": "Melden Sie unsichere Bedingungen der Arbeitsschutzbehörde",
+  "workplaceActionJoinUnion": "Treten Sie einer Gewerkschaft bei",
+  "workplaceActionContactAuthority": "Wenden Sie sich bei Bedarf an die Arbeitsschutzbehörde",
+  "workplaceFactCollectiveWage": "In Finnland legen Tarifverträge die Mindestlöhne je Branche fest — es gibt keinen einheitlichen nationalen Mindestlohn. Ihr Arbeitgeber muss den Tarifvertrag Ihrer Branche einhalten.",
+  "workplaceFactOralContract": "Auch ohne schriftlichen Vertrag haben Sie in Finnland volle Arbeitnehmerrechte. Eine mündliche Vereinbarung ist gesetzlich ebenso bindend.",
+  "contactOccupationalSafety": "Arbeitsschutzbehörde",
+  "contactTradeUnionSAK": "Gewerkschaftsberatung (SAK)",
+  "tenantActionWrittenAgreement": "Schließen Sie immer einen schriftlichen Mietvertrag ab",
+  "tenantActionDocumentCondition": "Dokumentieren Sie den Zustand der Wohnung beim Einzug (Fotos)",
+  "tenantActionReportMaintenance": "Melden Sie Instandhaltungsprobleme schriftlich",
+  "tenantActionNoIllegalEviction": "Stimmen Sie niemals einer rechtswidrigen Räumung zu — Gerichte müssen entscheiden",
+  "tenantActionContactAdvisory": "Wenden Sie sich bei Streitigkeiten an eine Mieterberatung",
+  "tenantFactNoEvictionWithoutCourt": "Ein Vermieter in Finnland kann Sie nicht ohne Gerichtsbeschluss räumen, auch wenn Ihr Mietvertrag abgelaufen ist. Schlösser austauschen oder Versorgungsleistungen kappen ist illegal.",
+  "contactTenantsAssociation": "Finnischer Mieterverband",
+  "contactConsumerDisputesBoard": "Verbraucherschlichtungsstelle",
+  "detentionActionAskDecision": "Fordern Sie sofort den schriftlichen Haftbeschluss an",
+  "detentionActionRequestLawyer": "Verlangen Sie, einen Anwalt zu kontaktieren",
+  "detentionActionContactEmbassy": "Kontaktieren Sie Ihre Botschaft oder Ihr Konsulat",
+  "detentionActionAskMedical": "Bitten Sie bei Bedarf um medizinische Versorgung",
+  "detentionActionRequestInterpreter": "Verlangen Sie einen Dolmetscher für alle Verfahren",
+  "detentionDeadlineCourtReview": "Das Amtsgericht muss die Haft innerhalb von 4 Tagen überprüfen",
+  "detentionDeadlineContinuation": "Das Gericht überprüft die Verlängerung alle 2 Wochen",
+  "detentionFactCourtReview": "Einwanderungshaft in Finnland muss innerhalb von 4 Tagen von einem Amtsgericht überprüft werden. Geschieht dies nicht, wird die Haft rechtswidrig.",
+  "contactParliamentaryOmbudsman": "Parlamentarischer Ombudsmann",
+  "discriminationActionWriteDown": "Schreiben Sie genau auf, was passiert ist (Datum, Uhrzeit, Ort)",
+  "discriminationActionSaveEvidence": "Sichern Sie Beweise: Nachrichten, E-Mails, Zeugen",
+  "discriminationActionFileComplaint": "Reichen Sie eine Beschwerde beim Gleichbehandlungsbeauftragten ein",
+  "discriminationActionContactLegalAid": "Wenden Sie sich an ein Rechtshilfebüro für kostenlose Beratung",
+  "discriminationActionReportPolice": "Erstatten Sie Anzeige bei der Polizei bei Drohung oder Körperverletzung",
+  "discriminationFactNonDiscriminationAct": "Das finnische Gleichbehandlungsgesetz umfasst Diskriminierung aufgrund von Alter, Herkunft, Staatsangehörigkeit, Sprache, Religion, Gesundheit, Behinderung, sexueller Orientierung und anderen persönlichen Merkmalen.",
+  "contactVictimSupportRIKU": "Opferhilfe Finnland (RIKU)",
+  "domesticViolence": "Häusliche Gewalt",
+  "inheritance": "Erbschaft",
+  "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
+  "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
+  "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
+  "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
+  "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
+  "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
+  "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
+  "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
+  "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
+  "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
+  "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
+  "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
+  "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
+  "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
+  "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
+  "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
+  "consumerProtection": "Verbraucherschutz",
+  "caseTypeStepLabel": "Case Type",
+  "detailsStepLabel": "Details",
+  "documentsStepLabel": "Documents",
+  "whatTypeOfCase": "What type of case is this?",
+  "selectCategoryDescription": "Select the category that best describes your situation.",
+  "tellUsAboutCase": "Tell us about your case",
+  "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
+  "caseTitleHint": "e.g., Residence Permit Appeal 2026",
+  "countryJurisdiction": "Country / Jurisdiction",
+  "selectCountryHint": "Select a country",
+  "referenceNumberHint": "e.g., UMA/12345/2026",
+  "descriptionOptional": "Description (optional)",
+  "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
+  "uploadFirstDocument": "Upload your first document",
+  "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
+  "tapToUploadFile": "Tap to upload a file",
+  "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
+  "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+  "aiGeneratedDisclaimer": "KI-generiert • Keine Rechtsberatung",
+  "callAI": "KI anrufen",
+  "comingSoon": "Kommt bald",
+  "encrypted": "Verschlüsselt",
+  "typing": "Tippt...",
+  "online": "Online",
+  "chatWelcomeSubtitle": "Ich analysiere die Situation, prüfe Dokumente, finde Fehler und schlage vor, was zu tun ist.",
+  "tapMicrophoneToSpeak": "Tippen Sie auf das Mikrofon zum Sprechen",
+  "categoryEssential": "Wesentlich",
+  "categoryPolice": "Polizei",
+  "categoryWork": "Arbeit",
+  "categoryHousing": "Wohnen",
+  "categoryConsumer": "Verbraucher",
+  "rightsInsideCount": "{count} Rechte enthalten",
+  "@rightsInsideCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeAidThreshold": "Schwelle für kostenlose Hilfe",
+  "partialAidThreshold": "Schwelle für Teilhilfe",
+  "assetLimit": "Vermögensgrenze",
+  "whereToApplyLabel": "Wo beantragen",
+  "phoneLabel": "Telefon",
+  "websiteLabel": "Webseite",
+  "disclaimerCollapsed": "Nur zur Information",
+  "disclaimerExpanded": "KI-Assistent — keine Rechtsberatung. Überprüfen Sie immer mit einem qualifizierten Anwalt.",
+  "chatDisclaimerBanner": "Der KI-Assistent bietet rechtliche Informationen, keine Rechtsberatung. Konsultieren Sie immer einen qualifizierten Anwalt.",
+  "guestUser": "Gast",
+  "howToUse": "Wie benutzen?",
+  "tutorialStep1Title": "KI-Rechtsassistent",
+  "tutorialStep1Desc": "Stellen Sie eine beliebige Rechtsfrage und erhalten Sie sofortige Antworten basierend auf estnischem Recht.",
+  "tutorialStep2Title": "Kennen Sie Ihre Rechte",
+  "tutorialStep2Desc": "Durchsuchen Sie Rechtsinformationen nach Themen — Arbeit, Wohnen, Verbraucherrechte und mehr.",
+  "tutorialStep3Title": "Dokumente scannen",
+  "tutorialStep3Desc": "Fotografieren Sie Rechtsdokumente zur KI-Analyse und sicheren Aufbewahrung.",
+  "tutorialStep4Title": "Los geht's!",
+  "tutorialStep4Desc": "Entdecken Sie die App und schützen Sie Ihre Rechte. Alle Daten bleiben privat auf Ihrem Gerät.",
+  "advocatProTitle": "Advocat Pro",
+  "advocatProSubtitle": "Premium-Funktionen freischalten",
+  "voiceDisclaimer": "Der Sprachassistent funktioniert derzeit nur auf dem Desktop (Chrome-Browser). Mobile Unterstützung kommt bald.",
+  "recommended": "Empfohlen",
+  "pleaseLogIn": "Bitte melden Sie sich an",
+  "subscriptionNotFound": "Abonnement nicht gefunden",
+  "errorWithMessage": "Fehler: {message}",
+  "redirectingToPayment": "Weiterleitung zur Zahlungsseite...",
+  "cheaperAnnually": "€{amount}/Monat günstiger im Jahresabo",
+  "navigatingTo": "Öffne",
+  "stayInChat": "Im Chat bleiben",
+  "backToChat": "Zurück zum Chat",
+  "aiAnalyzing": "AI is analyzing",
+  "@aiAnalyzing": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "AI is analyzing"
+  },
+  "speakIntoMicHint": "Speak into the microphone. Make sure microphone access is enabled.",
+  "@speakIntoMicHint": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Speak into the microphone. Make sure microphone access is enabled."
+  },
+  "freeLimitReached": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!",
+  "@freeLimitReached": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!"
+  },
+  "rateAppComingSoon": "Coming to app stores soon!",
+  "@rateAppComingSoon": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Coming to app stores soon!"
+  },
+  "dataCopiedToClipboard": "Data copied to clipboard",
+  "@dataCopiedToClipboard": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Data copied to clipboard"
+  },
+  "@checkEligibility": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@@checkEligibility": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": {
+      "placeholders": {
+        "country": {
+          "type": "String"
         }
-    },
-    "deadlineReminders": "Fristenerinnerungen",
-    "deadlineRemindersDesc": "Erhalten Sie Erinnerungen, bevor wichtige Fristen ablaufen",
-    "deadlines": "Fristen",
-    "debtCollection": "Inkasso",
-    "deleteAccount": "Konto löschen",
-    "deleteAccountDesc": "Löschen Sie Ihr Konto und alle Daten dauerhaft",
-    "deleteAccountDialogContent": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden. Alle Ihre Daten, Verfahren und Dokumente werden dauerhaft gelöscht.",
-    "deleteConfirm": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-    "demoHint": "Demo: Kennzeichen \"908FBT\" ausprobieren",
-    "demoModeDesc": "Erkunden Sie die App mit Beispieldaten, ohne ein Konto zu erstellen",
-    "deportation": "Abschiebung",
-    "disclaimer": "Nur KI-gestützte Orientierung – keine Rechtsberatung. Konsultieren Sie stets einen Anwalt.",
-    "disclaimerFull": "Dies ist eine KI-gestützte Orientierungshilfe und stellt keine Rechtsberatung dar. Sämtliche Inhalte sollten vor der Verwendung in rechtlichen Angelegenheiten von einem zugelassenen Anwalt geprüft werden.",
-    "disconnect": "Trennen",
-    "discrimination": "Diskriminierung",
-    "doNotBuy": "Nicht kaufen",
-    "documents": "Dokumente",
-    "documentsCount": "{count} Dokumente",
-    "@documentsCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
+      }
+    }
+  },
+  "fiveAiMessagesTotal": "5 AI messages (lifetime)",
+  "@fiveAiMessagesTotal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "5 AI messages (lifetime)"
+  },
+  "hundredAiMessagesDay": "100 AI messages/day",
+  "@hundredAiMessagesDay": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "100 AI messages/day"
+  },
+  "unlimitedAiMessages": "Unlimited AI messages",
+  "@unlimitedAiMessages": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Unlimited AI messages"
+  },
+  "voiceInput": "Voice input",
+  "@voiceInput": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Voice input"
+  },
+  "strategyRecommendations": "Strategy recommendations",
+  "@strategyRecommendations": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Strategy recommendations"
+  },
+  "foundingMemberNote": "Founding Member: 9.99€/mo for first 3 months",
+  "@foundingMemberNote": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Founding Member: 9.99€/mo for first 3 months"
+  },
+  "saveTwentyPercent": "Save 20%",
+  "@saveTwentyPercent": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Save 20%"
+  },
+  "gdprConsentAiProcessing": "I agree to the processing of my data for AI legal assistance (required)",
+  "@gdprConsentAiProcessing": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I agree to the processing of my data for AI legal assistance (required)"
+  },
+  "gdprConsentAnalytics": "I agree to analytics to improve the service (optional)",
+  "@gdprConsentAnalytics": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I agree to analytics to improve the service (optional)"
+  },
+  "gdprArt9Intro": "This app processes special category personal data under GDPR Article 9, including:",
+  "@gdprArt9Intro": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "This app processes special category personal data under GDPR Article 9, including:"
+  },
+  "gdprSpecialLegalCases": "Your legal case details and court documents",
+  "@gdprSpecialLegalCases": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Your legal case details and court documents"
+  },
+  "gdprSpecialNationality": "Nationality and immigration status",
+  "@gdprSpecialNationality": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Nationality and immigration status"
+  },
+  "gdprConsentLegalData": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)",
+  "@gdprConsentLegalData": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)"
+  },
+  "gdprConsentVoice": "I consent to voice recording processing (optional)",
+  "@gdprConsentVoice": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I consent to voice recording processing (optional)"
+  },
+  "gdprViewPrivacyPolicy": "View Privacy Policy",
+  "@gdprViewPrivacyPolicy": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "View Privacy Policy"
+  },
+  "legalInformation": "Legal Information",
+  "@legalInformation": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Legal Information"
+  },
+  "legalEntityName": "Vorantis OÜ",
+  "@legalEntityName": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Vorantis OÜ"
+  },
+  "legalRegistryCode": "Registry code: 17098992",
+  "@legalRegistryCode": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Registry code: 17098992"
+  },
+  "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+  "@legalAddress": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145"
+  },
+  "legalEmail": "Email: support@advocat.ee",
+  "@legalEmail": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Email: support@advocat.ee"
+  },
+  "legalRegistry": "Registered in Estonian Commercial Register (Äriregister)",
+  "@legalRegistry": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Registered in Estonian Commercial Register (Äriregister)"
+  },
+  "domesticViolenceDesc": "Victim rights, emergency help, restraining orders",
+  "@domesticViolenceDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Victim rights, emergency help, restraining orders"
+  },
+  "rightCallEmergency": "You have the right to call 112 in any emergency — police, ambulance, fire",
+  "@rightCallEmergency": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to call 112 in any emergency — police, ambulance, fire"
+  },
+  "rightVictimProtection": "As a victim, you have the right to protection, support, and information about your case",
+  "@rightVictimProtection": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "As a victim, you have the right to protection, support, and information about your case"
+  },
+  "rightRestrainingOrder": "You can apply for a restraining order (lähestymiskielto) to keep the abuser away",
+  "@rightRestrainingOrder": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can apply for a restraining order (lähestymiskielto) to keep the abuser away"
+  },
+  "rightVictimInterpreter": "You have the right to an interpreter during all legal proceedings",
+  "@rightVictimInterpreter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to an interpreter during all legal proceedings"
+  },
+  "rightMedicalHelp": "You have the right to immediate medical treatment and documentation of injuries",
+  "@rightMedicalHelp": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to immediate medical treatment and documentation of injuries"
+  },
+  "rightShelter": "You have the right to emergency shelter — contact a shelter or social services",
+  "@rightShelter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to emergency shelter — contact a shelter or social services"
+  },
+  "mustReportDanger": "If someone is in immediate danger, call 112 immediately",
+  "@mustReportDanger": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If someone is in immediate danger, call 112 immediately"
+  },
+  "mustDocumentInjuries": "Document all injuries — photos, medical records, written notes",
+  "@mustDocumentInjuries": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Document all injuries — photos, medical records, written notes"
+  },
+  "domesticActionCallEmergency": "Call 112 if you are in immediate danger",
+  "@domesticActionCallEmergency": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Call 112 if you are in immediate danger"
+  },
+  "domesticActionGoToSafe": "Go to a safe place — shelter, friend, public place",
+  "@domesticActionGoToSafe": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Go to a safe place — shelter, friend, public place"
+  },
+  "domesticActionDocumentEverything": "Document injuries: take photos, get medical records",
+  "@domesticActionDocumentEverything": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Document injuries: take photos, get medical records"
+  },
+  "domesticActionFilePoliceReport": "File a police report — you can do this later too",
+  "@domesticActionFilePoliceReport": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File a police report — you can do this later too"
+  },
+  "domesticActionContactShelter": "Contact a shelter or crisis helpline",
+  "@domesticActionContactShelter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact a shelter or crisis helpline"
+  },
+  "domesticActionApplyRestraining": "Apply for a restraining order through police or court",
+  "@domesticActionApplyRestraining": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Apply for a restraining order through police or court"
+  },
+  "domesticFactRestrainingOrder": "In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.",
+  "@domesticFactRestrainingOrder": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you."
+  },
+  "domesticFactVictimDirective": "Under EU Victims' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.",
+  "@domesticFactVictimDirective": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Under EU Victims' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status."
+  },
+  "domesticDeadlinePoliceReport": "File police report — no strict deadline, but sooner is better for evidence",
+  "@domesticDeadlinePoliceReport": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File police report — no strict deadline, but sooner is better for evidence"
+  },
+  "domesticDeadlineRestraining": "Restraining order — can be applied for at any time",
+  "@domesticDeadlineRestraining": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Restraining order — can be applied for at any time"
+  },
+  "contactEmergency": "Emergency Number",
+  "@contactEmergency": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Emergency Number"
+  },
+  "contactShelter": "Turvakoti (Shelter) Helpline",
+  "@contactShelter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Turvakoti (Shelter) Helpline"
+  },
+  "contactCrisisHelpline": "Crisis Helpline (Kriisipuhelin)",
+  "@contactCrisisHelpline": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Crisis Helpline (Kriisipuhelin)"
+  },
+  "contactNollaLinja": "Nollalinja — Violence Against Women Helpline",
+  "@contactNollaLinja": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Nollalinja — Violence Against Women Helpline"
+  },
+  "consumerProtectionDesc": "Fraud, defective products, returns, deceptive sellers",
+  "@consumerProtectionDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Fraud, defective products, returns, deceptive sellers"
+  },
+  "rightReturnOnline": "You have 14 days to cancel online purchases without reason (EU right of withdrawal)",
+  "@rightReturnOnline": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have 14 days to cancel online purchases without reason (EU right of withdrawal)"
+  },
+  "rightDefectiveProduct": "If a product is defective, you have the right to repair, replacement, or refund",
+  "@rightDefectiveProduct": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If a product is defective, you have the right to repair, replacement, or refund"
+  },
+  "rightClearPricing": "Sellers must display clear prices including all fees — hidden costs are illegal",
+  "@rightClearPricing": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Sellers must display clear prices including all fees — hidden costs are illegal"
+  },
+  "rightComplainBoard": "You can file a free complaint with the Consumer Disputes Board",
+  "@rightComplainBoard": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can file a free complaint with the Consumer Disputes Board"
+  },
+  "rightProtectionFraud": "You are protected against unfair commercial practices and fraud",
+  "@rightProtectionFraud": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You are protected against unfair commercial practices and fraud"
+  },
+  "mustKeepReceipts": "Keep all receipts, contracts, and communication with sellers",
+  "@mustKeepReceipts": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Keep all receipts, contracts, and communication with sellers"
+  },
+  "mustActTimely": "Report defects to the seller within a reasonable time after discovery",
+  "@mustActTimely": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report defects to the seller within a reasonable time after discovery"
+  },
+  "consumerActionKeepEvidence": "Keep receipts, screenshots, emails, and all proof of purchase",
+  "@consumerActionKeepEvidence": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Keep receipts, screenshots, emails, and all proof of purchase"
+  },
+  "consumerActionContactSeller": "Contact the seller first — explain the problem in writing",
+  "@consumerActionContactSeller": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact the seller first — explain the problem in writing"
+  },
+  "consumerActionFileComplaint": "File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)",
+  "@consumerActionFileComplaint": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)"
+  },
+  "consumerActionContactAuthority": "Contact the Consumer Advisory Services for free help",
+  "@consumerActionContactAuthority": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact the Consumer Advisory Services for free help"
+  },
+  "consumerActionReportFraud": "Report fraud to the police and Consumer Ombudsman",
+  "@consumerActionReportFraud": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report fraud to the police and Consumer Ombudsman"
+  },
+  "consumerFactWithdrawal": "Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.",
+  "@consumerFactWithdrawal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days."
+  },
+  "consumerFactWarranty": "In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.",
+  "@consumerFactWarranty": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty."
+  },
+  "consumerDeadlineWithdrawal": "Online purchase withdrawal — 14 days from delivery",
+  "@consumerDeadlineWithdrawal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Online purchase withdrawal — 14 days from delivery"
+  },
+  "consumerDeadlineDefect": "Report defect to seller — within 2 months of discovery (recommended)",
+  "@consumerDeadlineDefect": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report defect to seller — within 2 months of discovery (recommended)"
+  },
+  "contactConsumerAdvisory": "Consumer Advisory Services",
+  "@contactConsumerAdvisory": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consumer Advisory Services"
+  },
+  "contactConsumerOmbudsman": "Consumer Ombudsman (Kuluttaja-asiamies)",
+  "@contactConsumerOmbudsman": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consumer Ombudsman (Kuluttaja-asiamies)"
+  },
+  "contactConsumerDisputesBoardDirect": "Consumer Disputes Board",
+  "@contactConsumerDisputesBoardDirect": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consumer Disputes Board"
+  },
+  "categoryChildren": "Children",
+  "@categoryChildren": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Children"
+  },
+  "categoryDigital": "Digital",
+  "@categoryDigital": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Digital"
+  },
+  "childrenRights": "Children's Rights & Alimony",
+  "@childrenRights": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Children's Rights & Alimony"
+  },
+  "childrenRightsDesc": "Child support, alimony, protection, state guarantees",
+  "@childrenRightsDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Child support, alimony, protection, state guarantees"
+  },
+  "cyberbullying": "Cyberbullying & Online Harassment",
+  "@cyberbullying": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Cyberbullying & Online Harassment"
+  },
+  "cyberbullyingDesc": "Threats, privacy violations, defamation online",
+  "@cyberbullyingDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Threats, privacy violations, defamation online"
+  },
+  "rightChildSupport": "Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)",
+  "@rightChildSupport": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)"
+  },
+  "rightMinimumAlimony": "Minimum child support in Estonia: base amount (€295.86) + 3% of previous year's average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee",
+  "@rightMinimumAlimony": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Minimum child support in Estonia: base amount (€295.86) + 3% of previous year's average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee"
+  },
+  "rightCourtAlimony": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400",
+  "@rightCourtAlimony": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400"
+  },
+  "rightBailiffEnforcement": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment",
+  "@rightBailiffEnforcement": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment"
+  },
+  "rightStateAlimonyGuarantee": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child",
+  "@rightStateAlimonyGuarantee": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child"
+  },
+  "rightChildEducation": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)",
+  "@rightChildEducation": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)"
+  },
+  "rightChildContact": "A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)",
+  "@rightChildContact": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)"
+  },
+  "mustFileCourtClaim": "To receive alimony, you must file a claim at court or agree on the amount in writing",
+  "@mustFileCourtClaim": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "To receive alimony, you must file a claim at court or agree on the amount in writing"
+  },
+  "mustNotifyAddressChange": "Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi",
+  "@mustNotifyAddressChange": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi"
+  },
+  "childrenActionGatherDocs": "Gather child's birth certificate, your ID, and proof of expenses",
+  "@childrenActionGatherDocs": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Gather child's birth certificate, your ID, and proof of expenses"
+  },
+  "childrenActionFileCourtClaim": "File an alimony claim at the county court (maakohus) — can be done online via e-toimik",
+  "@childrenActionFileCourtClaim": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File an alimony claim at the county court (maakohus) — can be done online via e-toimik"
+  },
+  "childrenActionApplyElatisabi": "Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won't pay",
+  "@childrenActionApplyElatisabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won't pay"
+  },
+  "childrenActionContactBailiff": "Contact a bailiff (kohtutäitur) to enforce the court order",
+  "@childrenActionContactBailiff": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact a bailiff (kohtutäitur) to enforce the court order"
+  },
+  "childrenActionCallLasteabi": "Call Lasteabi 116 111 for children's helpline — free, 24/7",
+  "@childrenActionCallLasteabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Call Lasteabi 116 111 for children's helpline — free, 24/7"
+  },
+  "childrenDeadlineElatisabi": "Apply for elatisabi — after court order, no strict deadline but process takes time",
+  "@childrenDeadlineElatisabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Apply for elatisabi — after court order, no strict deadline but process takes time"
+  },
+  "childrenDeadlineCourt": "Alimony can be claimed retroactively for up to 1 year before court filing",
+  "@childrenDeadlineCourt": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Alimony can be claimed retroactively for up to 1 year before court filing"
+  },
+  "childrenFactMinimum": "From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year's average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee",
+  "@childrenFactMinimum": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year's average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee"
+  },
+  "childrenFactElatisabi": "Estonia's state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.",
+  "@childrenFactElatisabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Estonia's state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent."
+  },
+  "rightReportCybercrime": "You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)",
+  "@rightReportCybercrime": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)"
+  },
+  "rightContentRemoval": "You can request removal of defamatory or private content from platforms and demand takedown under GDPR",
+  "@rightContentRemoval": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can request removal of defamatory or private content from platforms and demand takedown under GDPR"
+  },
+  "rightMoralDamageCompensation": "You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)",
+  "@rightMoralDamageCompensation": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)"
+  },
+  "rightPrivacyProtection": "Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)",
+  "@rightPrivacyProtection": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)"
+  },
+  "rightDataProtection": "Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon",
+  "@rightDataProtection": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon"
+  },
+  "rightDefamationAction": "Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)",
+  "@rightDefamationAction": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)"
+  },
+  "mustCollectEvidence": "Collect and preserve all evidence — screenshots, links, dates, and witness information",
+  "@mustCollectEvidence": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Collect and preserve all evidence — screenshots, links, dates, and witness information"
+  },
+  "mustNotRetaliate": "Do not retaliate or engage in counter-harassment — it may weaken your case",
+  "@mustNotRetaliate": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Do not retaliate or engage in counter-harassment — it may weaken your case"
+  },
+  "cyberActionScreenshots": "Take screenshots of all harassment — save URLs, dates, usernames, and content",
+  "@cyberActionScreenshots": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Take screenshots of all harassment — save URLs, dates, usernames, and content"
+  },
+  "cyberActionReportPolice": "File a police report at the nearest station or online at politsei.ee",
+  "@cyberActionReportPolice": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File a police report at the nearest station or online at politsei.ee"
+  },
+  "cyberActionReportPlatform": "Report the content to the social media platform for removal",
+  "@cyberActionReportPlatform": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report the content to the social media platform for removal"
+  },
+  "cyberActionContactDPA": "Contact Andmekaitse Inspektsioon if your personal data was misused",
+  "@cyberActionContactDPA": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact Andmekaitse Inspektsioon if your personal data was misused"
+  },
+  "cyberActionConsultLawyer": "Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi",
+  "@cyberActionConsultLawyer": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi"
+  },
+  "cyberDeadlineCriminal": "Criminal complaint — no strict deadline, but report promptly for best results",
+  "@cyberDeadlineCriminal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Criminal complaint — no strict deadline, but report promptly for best results"
+  },
+  "cyberDeadlineCivil": "Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)",
+  "@cyberDeadlineCivil": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)"
+  },
+  "cyberFactPrivacy": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).",
+  "@cyberFactPrivacy": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy)."
+  },
+  "cyberFactGDPR": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it.",
+  "@cyberFactGDPR": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it."
+  },
+  "@errorWithMessage": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "@@errorWithMessage": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": {
+      "placeholders": {
+        "message": {
+          "type": "String"
         }
-    },
-    "draftAppeal": "Widerspruchsentwurf",
-    "editDraft": "Entwurf bearbeiten",
-    "editProfile": "Profil bearbeiten",
-    "email": "E-Mail",
-    "emailConnected": "E-Mail verbunden",
-    "emailDisconnected": "E-Mail getrennt",
-    "emailIntegration": "E-MAIL-INTEGRATION",
-    "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
-    "emailPrivacyNote": "Ihre E-Mail wird ausschließlich für verfahrensbezogene Korrespondenz verwendet und sicher gespeichert.",
-    "emailRequired": "E-Mail-Adresse ist erforderlich",
-    "emergencyShield": "Notfallschutz",
-    "error": "Fehler",
-    "exportDataDesc": "Laden Sie alle Ihre Verfahrensdaten und Dokumente herunter",
-    "exportDataDialogContent": "Wir bereiten einen Download aller Ihrer Daten vor, einschließlich Verfahren, Dokumente und Korrespondenz. Sie erhalten eine E-Mail, wenn es fertig ist.",
-    "exportMyData": "Meine Daten exportieren",
-    "exportPdf": "PDF exportieren",
-    "familyReunification": "Familienzusammenführung",
-    "forgotPassword": "Passwort vergessen?",
-    "free": "Kostenlos",
-    "fullDefense": "Vollverteidigung",
-    "fullName": "Vollständiger Name",
-    "gallery": "Galerie",
-    "generateAppeal": "Widerspruch erstellen",
-    "getStarted": "Jetzt starten",
-    "goodAfternoon": "Guten Tag, {name}",
-    "@goodAfternoon": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
+      }
+    }
+  },
+  "@cheaperAnnually": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@@cheaperAnnually": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": {
+      "placeholders": {
+        "amount": {
+          "type": "String"
         }
-    },
-    "goodEvening": "Guten Abend, {name}",
-    "@goodEvening": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodMorning": "Guten Morgen, {name}",
-    "@goodMorning": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodNight": "Gute Nacht, {name}",
-    "@goodNight": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "home": "Startseite",
-    "important": "Wichtig",
-    "inProgress": "In Bearbeitung",
-    "informational": "Informativ",
-    "inspection": "Technische Inspektion",
-    "insurance": "Versicherung",
-    "issuesFound": "{count} Probleme gefunden",
-    "@issuesFound": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "laborDispute": "Arbeitsstreitigkeiten",
-    "langEnglish": "Englisch",
-    "langFinnish": "Finnisch",
-    "langRussian": "Russisch",
-    "language": "Sprache",
-    "lastActivity": "Letzte Aktivität: {time}",
-    "@lastActivity": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalFighter": "Rechtskämpfer",
-    "legalSection": "RECHTLICHES",
-    "licensePlate": "Kennzeichen",
-    "loading": "Wird geladen...",
-    "logIn": "Anmelden",
-    "loginFailed": "Ungültige E-Mail-Adresse oder ungültiges Passwort. Bitte versuchen Sie es erneut.",
-    "lost": "Verloren",
-    "markComplete": "Als abgeschlossen markieren",
-    "mileage": "Kilometerstand",
-    "myCases": "Meine Verfahren",
-    "nameRequired": "Vollständiger Name ist erforderlich",
-    "newCase": "Neues Verfahren",
-    "next": "Weiter",
-    "noAccount": "Noch kein Konto? ",
-    "noCases": "Noch keine Verfahren",
-    "noCasesYet": "Noch keine Verfahren",
-    "noDeadlines": "Keine Fristen",
-    "noRecentActivity": "Keine kürzliche Aktivität",
-    "notifications": "BENACHRICHTIGUNGEN",
-    "onboardingDesc1": "Advocat hilft Ihnen, Ihre rechtliche Situation zu verstehen. KI-Werkzeuge analysieren Dokumente, identifizieren mögliche Probleme und erstellen Dokumententwürfe zu Ihrer Überprüfung. Keine Anwaltskanzlei — ein Technologiewerkzeug zur Unterstützung Ihres Falls.",
-    "onboardingDesc2": "Fotografieren Sie jedes Rechtsdokument. Die KI liest es in mehreren Sprachen, extrahiert wichtige Details und prüft anhand von EU-Richtlinien und nationalen Gesetzen auf mögliche Probleme.",
-    "onboardingDesc3": "Unsere KI-Werkzeuge prüfen über 40 Arten von Verfahrensanforderungen. Die KI-Analyse kann Punkte identifizieren, die Aufmerksamkeit erfordern — wie Zustellungssprache, Verfahrensschritte und rechtliche Fristen. Überprüfen Sie immer mit einem qualifizierten Anwalt.",
-    "onboardingDesc4": "Die KI erstellt Entwürfe für Widersprüche, Beschwerden und Schreiben mit Rechtsverweisen zu Ihrer Überprüfung. Sie entscheiden, was eingereicht wird. Jedes Dokument sollte vor der Einreichung von einem qualifizierten Rechtsexperten geprüft werden.",
-    "onboardingNext": "Weiter",
-    "onboardingSkip": "Überspringen",
-    "onboardingTitle1": "KI-gestützte Rechtsinformation",
-    "onboardingTitle2": "Dokumente scannen und analysieren",
-    "onboardingTitle3": "KI prüft auf mögliche Probleme",
-    "onboardingTitle4": "Dokumententwürfe zu Ihrer Überprüfung",
-    "openACase": "Fall eröffnen",
-    "optional": "Optional",
-    "orDivider": "oder",
-    "other": "Sonstiges",
-    "overdue": "Überfällig",
-    "owners": "Vorbesitzer",
-    "password": "Passwort",
-    "passwordRequired": "Passwort ist erforderlich",
-    "passwordStrengthMedium": "Mittel",
-    "passwordStrengthStrong": "Stark",
-    "passwordStrengthWeak": "Schwach",
-    "passwordTooShort": "Das Passwort muss mindestens 8 Zeichen lang sein",
-    "passwordsDoNotMatch": "Die Passwörter stimmen nicht überein",
-    "pendingDecision": "Bescheid ausstehend",
-    "perCheck": "pro Prüfung",
-    "permanentlyDelete": "Dauerhaft löschen",
-    "policeMisconduct": "Polizeiverhalten",
-    "popular": "Beliebt",
-    "preferences": "EINSTELLUNGEN",
-    "preferredLanguage": "Bevorzugte Sprache",
-    "pricePerCheck": "4,99 € pro Prüfung",
-    "privacyPolicy": "Datenschutzrichtlinie",
-    "pro": "Pro",
-    "pushNotifications": "Push-Benachrichtigungen",
-    "rateUs": "Bewerten Sie uns",
-    "readingDocument": "Dokument wird gelesen",
-    "recentActivity": "Letzte Aktivität",
-    "referenceNumber": "Aktenzeichen",
-    "registerFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
-    "reportFraud": "Betrug melden",
-    "requestExport": "Export anfordern",
-    "researchingLaw": "Rechtliche Recherche",
-    "resetPasswordFailed": "Der Zurücksetzungslink konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
-    "resetPasswordSent": "Ein Link zum Zurücksetzen des Passworts wurde an Ihre E-Mail-Adresse gesendet.",
-    "residencePermit": "Aufenthaltstitel",
-    "manageSubscription": "Abonnement verwalten",
-    "restorePurchases": "Käufe wiederherstellen",
-    "retry": "Erneut versuchen",
-    "reviewWarning": "Überprüfungshinweis",
-    "riskHigh": "Hohes Risiko — vermeiden",
-    "riskLow": "Sicher zur Zusammenarbeit",
-    "riskMedium": "Mit Vorsicht vorgehen",
-    "safeToBuy": "Sicher zu kaufen",
-    "saveAndAnalyze": "Speichern und analysieren",
-    "saveDraft": "Entwurf speichern",
-    "saveWithAnnual": "Mit Jahresabo sparen",
-    "scan": "Scannen",
-    "scanDocument": "Dokument scannen",
-    "searchCases": "Verfahren suchen",
-    "selectCountry": "Land auswählen",
-    "selectLanguage": "Sprache wählen",
-    "sendViaEmail": "Per E-Mail senden",
-    "settings": "Einstellungen",
-    "signIn": "Anmelden",
-    "signInLink": "Anmelden",
-    "signInSubtitle": "Melden Sie sich an, um auf Ihre Verfahren zuzugreifen",
-    "signOut": "Abmelden",
-    "signOutConfirm": "Sind Sie sicher, dass Sie sich abmelden möchten?",
-    "signUp": "Konto erstellen",
-    "signUpLink": "Registrieren",
-    "socialBenefits": "Sozialleistungen",
-    "someConcerns": "Einige Bedenken",
-    "startFirstCase": "Erstellen Sie Ihr erstes Verfahren",
-    "step": "Schritt {current} von {total}",
-    "@step": {
-        "placeholders": {
-            "current": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "stolen": "Diebstahlprüfung",
-    "subscription": "Abonnement",
-    "syncLegalCorrespondence": "Rechtliche Korrespondenz synchronisieren",
-    "syncNow": "Jetzt synchronisieren",
-    "tenantRights": "Mieterrechte",
-    "termsOfService": "Nutzungsbedingungen",
-    "termsRequired": "Sie müssen den Nutzungsbedingungen zustimmen",
-    "timeline": "Zeitverlauf",
-    "tryDemoMode": "Demomodus testen",
-    "typeDeleteToConfirm": "Geben Sie DELETE ein, um die permanente Kontolöschung zu bestätigen.",
-    "typeMessage": "Nachricht eingeben",
-    "upcoming": "Anstehend",
-    "uploadDocument": "Dokument hochladen",
-    "urgentDeadline": "Dringend: {title}",
-    "@urgentDeadline": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "useInAppeal": "Im Widerspruch verwenden",
-    "vehicleChecker": "Fahrzeugprüfer",
-    "vehicleChecks": "Statusprüfungen",
-    "vehicleColor": "Farbe",
-    "vehicleMake": "Marke",
-    "vehicleModel": "Modell",
-    "vehicleYear": "Baujahr",
-    "version": "Version",
-    "victimSupport": "Opferhilfe",
-    "viewAll": "Alle anzeigen",
-    "vinNumber": "Fahrgestellnummer",
-    "welcomeBack": "Willkommen zurück",
-    "whatAreMyOptions": "Welche Möglichkeiten habe ich?",
-    "won": "Gewonnen",
-    "activityWillAppear": "Aktivitäten werden hier angezeigt, wenn Ihr Fall voranschreitet.",
-    "addDocument": "Dokument hinzufügen",
-    "addPage": "Seite hinzufügen",
-    "aiDisclaimer": "KI-Haftungsausschluss",
-    "alignDocument": "Dokument im Rahmen ausrichten",
-    "allClearDeadlines": "Alles erledigt! Neue Fristen erscheinen hier, wenn sie gesetzt werden.",
-    "analysisFailedRetry": "Analyse fehlgeschlagen. Bitte erneut versuchen.",
-    "analyzeSelected": "Ausgewählte analysieren",
-    "analyzed": "Analysiert",
-    "analyzingContent": "Inhalt wird analysiert...",
-    "annual": "Jährlich",
-    "annualLeave": "Jahresurlaub (mindestens 2 Tage pro gearbeitetem Monat)",
-    "appeal": "Einspruch",
-    "appealDeadline": "Einspruchsfrist",
-    "appealDeadlineDesc": "Einspruch muss bis {date} eingereicht werden.",
-    "@appealDeadlineDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "appealDeadlineSet": "Einspruchsfrist gesetzt",
-    "appealDraft": "Einspruchsentwurf",
-    "applyLegalAid": "Bei Bedarf Prozesskostenhilfe beantragen",
-    "assignToCase": "Dem Fall zuordnen",
-    "basicAiAnalysis": "Basis-KI-Analyse",
-    "basicRights": "Grundrechte:",
-    "batchAnalysisStarting": "Stapelanalyse wird gestartet...",
-    "calculateEligibility": "Anspruch berechnen",
-    "cameraPermissionDesc": "Kamerazugriff zum Scannen von Dokumenten gewähren oder die Galerie verwenden.",
-    "cameraPermissionRequired": "Kameraberechtigung erforderlich",
-    "capturePhotoFailed": "Foto konnte nicht aufgenommen werden. Bitte erneut versuchen.",
-    "caseCreated": "Fall erstellt",
-    "caseCreatedDesc": "Fall \"{title}\" wurde erstellt.",
-    "@caseCreatedDesc": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "caseCreationComingSoon": "Fallerstellung mit vorausgefüllten Daten kommt bald",
-    "caseInfoUpdated": "Fallinformationen wurden zuletzt aktualisiert.",
-    "caseSummaryCopied": "Fallzusammenfassung kopiert",
-    "caseTimeline": "Fallzeitleiste",
-    "changesSaved": "Änderungen gespeichert",
-    "chatWelcomeMessage": "Hallo! Ich bin Ihr Rechtsassistent. Erzählen Sie mir, was passiert ist — ich analysiere die Situation und schlage vor, was zu tun ist.",
-    "checkEligibility": "Prüfen Sie Ihren Anspruch auf Prozesskostenhilfe: {country}",
-    "checkingPurchases": "Frühere Käufe werden geprüft...",
-    "chooseHowToAdd": "Wählen Sie, wie Sie Ihr Dokument hinzufügen möchten",
-    "citizenship": "Staatsangehörigkeit",
-    "completedDeadlinesDesc": "Erledigte Fristen werden hier angezeigt.",
-    "connectYourEmail": "E-Mail verbinden",
-    "connectYourEmailDesc": "Verbinden Sie Ihre E-Mail, um rechtliche Korrespondenz zu Ihren Fällen automatisch zu erkennen.",
-    "connectedTo": "Verbunden mit {email}",
-    "@connectedTo": {
-        "placeholders": {
-            "email": {
-                "type": "String"
-            }
-        }
-    },
-    "contactLawyerImmediately": "Sofort einen Anwalt kontaktieren",
-    "contactLegalAidOffice": "Rechtsberatungsstelle kontaktieren",
-    "cookiePolicy": "Cookie-Richtlinie",
-    "copiedToClipboard": "In die Zwischenablage kopiert",
-    "copy": "Kopieren",
-    "copySummary": "Zusammenfassung kopieren",
-    "couldNotLoadCase": "Falldetails konnten nicht geladen werden",
-    "couldNotLoadDeadlines": "Fristen konnten nicht geladen werden",
-    "couldNotLoadTimeline": "Zeitleiste konnte nicht geladen werden",
-    "courtCaseNo": "Gerichtsaktenzeichen",
-    "createNote": "Notiz erstellen",
-    "createNoteDesc": "Eine Notiz schreiben oder wichtige Details festhalten",
-    "created": "Erstellt",
-    "dataPrivacyConsent": "Datenschutzeinwilligung",
-    "days": "Tage",
-    "daysLate": "Tage überfällig",
-    "decisionReceived": "Entscheidung erhalten",
-    "decisionReceivedDesc": "Eine offizielle Entscheidung wurde für diesen Fall erhalten.",
-    "decline": "Ablehnen",
-    "delete": "Löschen",
-    "deleteCase": "Fall löschen",
-    "deleteCaseConfirm": "Möchten Sie \"{title}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
-    "@deleteCaseConfirm": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "deleteDocumentsConfirm": "{count} Dokumente löschen?",
-    "@deleteDocumentsConfirm": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deleteSelected": "Ausgewählte löschen",
-    "deportationNotice": "Abschiebungsbescheid",
-    "deportationNoticeDesc": "Schritte zur Anfechtung einer Abschiebungsanordnung",
-    "disconnectEmail": "E-Mail trennen",
-    "disconnectEmailConfirm": "Die automatische E-Mail-Synchronisierung wird gestoppt. Zuvor synchronisierte E-Mails bleiben in Ihren Fällen.",
-    "discriminationDesc": "Wie man Diskriminierung meldet und bekämpft",
-    "doNotIgnoreNotice": "Den Bescheid NICHT ignorieren - Fristen sind streng",
-    "documentAnalysis": "Dokumentenanalyse",
-    "documentIncident": "Vorfall dokumentieren (Datum, Uhrzeit, Zeugen)",
-    "documentProcessedOk": "Dokument erfolgreich verarbeitet",
-    "documentUploadedSuccess": "Dokument erfolgreich hochgeladen",
-    "documentVault": "Dokumententresor",
-    "done": "Fertig",
-    "draftCopiedToClipboard": "Entwurf in die Zwischenablage kopiert",
-    "draftDocument": "Dokument entwerfen",
-    "draftGeneration": "Entwurfserstellung",
-    "edit": "Bearbeiten",
-    "editDocument": "Dokument bearbeiten",
-    "emailComingSoon": "E-Mail-Versand kommt bald",
-    "emailIntegrationTitle": "E-Mail-Integration",
-    "english": "Englisch",
-    "estimateDisclaimer": "Dies ist nur eine Schätzung. Die tatsächliche Berechtigung wird vom Rechtsberatungsbüro festgestellt.",
-    "exportAsPdf": "Als PDF exportieren",
-    "failed": "Fehlgeschlagen",
-    "failedToCreateCaseRetry": "Fall konnte nicht erstellt werden. Bitte erneut versuchen.",
-    "failedToGenerateDraft": "Entwurf konnte nicht erstellt werden. Bitte erneut versuchen.",
-    "failedToLoadCases": "Fälle konnten nicht geladen werden",
-    "failedToLoadDocuments": "Dokumente konnten nicht geladen werden",
-    "fileComplaintOmbudsman": "Beschwerde beim Antidiskriminierungsbeauftragten einreichen",
-    "filterByType": "Nach Typ filtern",
-    "finnish": "Finnisch",
-    "forever": "unbegrenzt",
-    "fromDocument": "Aus Dokument",
-    "fullAiAnalysis": "Volle KI-Analyse",
-    "fullFreeLegalAid": "Sie qualifizieren sich wahrscheinlich für kostenlose Prozesskostenhilfe (ohne Zuzahlung).",
-    "gdprChat": "Verarbeitung Ihrer Chat-Nachrichten durch KI",
-    "gdprDelete": "Recht, Ihre Daten jederzeit zu löschen",
-    "gdprDocs": "Analyse hochgeladener Dokumente",
-    "gdprFooter": "Ihre Daten sind verschlüsselt und werden nie an Dritte weitergegeben. Sie können die Einwilligung widerrufen und alle Daten in den Einstellungen löschen.",
-    "gdprIntro": "Um KI-Rechtsberatung zu bieten, verarbeiten wir Ihre Daten gemäß DSGVO (EU 2016/679). Durch Fortfahren stimmen Sie zu:",
-    "gdprStorage": "Verschlüsselte Speicherung von Falldaten",
-    "generateAppealWithIssues": "Einspruch erstellen ({count} Probleme)",
-    "@generateAppealWithIssues": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "generatingDraft": "Ihr Entwurf wird erstellt...",
-    "generatingDraftDesc": "KI bereitet ein Rechtsdokument basierend auf Ihren Falldetails und ausgewählten Problemen vor.",
-    "greatJobDeadlines": "Gut gemacht, Sie behalten Ihre Fristen im Blick.",
-    "haveQuestionsAi": "Fragen? Fragen Sie die KI",
-    "hearingScheduled": "Anhörung geplant",
-    "hearingScheduledDesc": "Gerichtsverhandlung geplant für {date}.",
-    "@hearingScheduledDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "howToAct": "Wie Sie handeln sollten:",
-    "iAgree": "Ich stimme zu",
-    "iAgreeToThe": "Ich stimme den ",
-    "immediateSteps": "Sofortmaßnahmen:",
-    "immigrationDetention": "Einwanderungshaft",
-    "immigrationDetentionDesc": "Rechte bei Inhaftierung durch Behörden",
-    "inCourt": "Vor Gericht",
-    "issuesFoundHeader": "Gefundene Probleme",
-    "issuesFoundInDocument": "{count} Problem(e) in Ihrem Dokument gefunden",
-    "@issuesFoundInDocument": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "knowYourRights": "Kennen Sie Ihre Rechte",
-    "landlordNotice": "Vermieter muss kündigen (3-6 Monate)",
-    "lastSynced": "Zuletzt synchronisiert: {time}",
-    "@lastSynced": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "late": "überfällig",
-    "legalAidCalculator": "Prozesskostenhilfe-Rechner",
-    "legalAidWithCopay": "Sie qualifizieren sich möglicherweise für Prozesskostenhilfe mit einer Zuzahlung von {percent}%.",
-    "@legalAidWithCopay": {
-        "placeholders": {
-            "percent": {
-                "type": "String"
-            }
-        }
-    },
-    "legalEmails": "Rechtliche E-Mails",
-    "legalEmailsWillAppear": "Als rechtlich eingestufte E-Mails erscheinen hier.",
-    "likelyEligible": "Wahrscheinlich berechtigt",
-    "mayNotQualify": "Möglicherweise nicht berechtigt",
-    "mayNotQualifyDesc": "Basierend auf dieser Schätzung qualifizieren Sie sich möglicherweise nicht für staatliche Prozesskostenhilfe. Erwägen Sie einen Privatanwalt oder eine Rechtsberatungsstelle.",
-    "migriReference": "Migri-Referenz",
-    "minimumWage": "Mindestlohn gemäß Tarifvertrag",
-    "monthly": "Monatlich",
-    "monthlyIncome": "Monatliches Einkommen (EUR)",
-    "mostPopular": "BELIEBTESTE",
-    "mustNotResist": "Keinen physischen Widerstand leisten",
-    "mustProvideName": "Namen und Geburtsdatum angeben",
-    "mustShowId": "Ausweis zeigen, falls vorhanden",
-    "nationality": "Staatsangehörigkeit",
-    "noCasesMatchSearch": "Keine Fälle entsprechen Ihrer Suche",
-    "noCompletedDeadlines": "Keine erledigten Fristen",
-    "noContentAvailable": "Kein Inhalt verfügbar",
-    "noDocumentsScanHint": "Noch keine Dokumente. Scannen oder hochladen.",
-    "noDocumentsYet": "Noch keine Dokumente hochgeladen",
-    "noDocumentsYetScan": "Noch keine Dokumente",
-    "noEventsYet": "Noch keine Ereignisse",
-    "noLegalEmailsYet": "Noch keine rechtlichen E-Mails",
-    "noPreviousPurchases": "Keine früheren Käufe gefunden.",
-    "noSignificantIssues": "Keine wesentlichen Probleme in diesem Dokument erkannt.",
-    "noUpcomingDeadlines": "Keine anstehenden Fristen",
-    "noUpcomingDeadlinesShort": "Keine anstehenden Fristen",
-    "noteAppealDeadline": "Einspruchsfrist beachten (normalerweise 30 Tage)",
-    "nothingOverdue": "Nichts überfällig",
-    "numberOfDependents": "Anzahl der Unterhaltsberechtigten",
-    "oneCaseActive": "1 aktiver Fall",
-    "openCase": "Fall öffnen",
-    "openSettings": "Einstellungen öffnen",
-    "orWord": "oder",
-    "pageCount": "{count} Seite(n)",
-    "@pageCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "pageNumber": "Seite {number}",
-    "@pageNumber": {
-        "placeholders": {
-            "number": {
-                "type": "int"
-            }
-        }
-    },
-    "pagesUploadedSuccess": "{count} Seiten erfolgreich hochgeladen",
-    "@pagesUploadedSuccess": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "paymentFailed": "Zahlung fehlgeschlagen: {error}",
-    "@paymentFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String"
-            }
-        }
-    },
-    "pdf": "PDF",
-    "pdfExportComingSoon": "PDF-Export kommt bald",
-    "pending": "Ausstehend",
-    "perMonth": "/Monat",
-    "perYear": "/Jahr",
-    "preparingUpload": "Upload wird vorbereitet...",
-    "preview": "Vorschau",
-    "priorityProcessing": "Prioritätsbearbeitung",
-    "processing": "Verarbeitung",
-    "protectionUnjustEviction": "Schutz vor ungerechtfertigter Räumung",
-    "readingText": "Text wird gelesen...",
-    "ready": "Bereit",
-    "reportAndOpenCase": "Melden und Fall eröffnen",
-    "reportMileageFraud": "Kilometerbetrug melden",
-    "reportMileageFraudDesc": "Es wird ein Betrugsbericht basierend auf den Fahrzeugprüfdaten erstellt. Sie können auch einen Rechtsfall eröffnen.",
-    "reportToPolice": "Bei Straftaten Polizei einschalten (Bedrohung, Körperverletzung)",
-    "retake": "Neu aufnehmen",
-    "retryAnalysis": "Analyse wiederholen",
-    "reviewBeforeSending": "Vor dem Senden sorgfältig prüfen. Sie sind für den Inhalt dieses Dokuments verantwortlich.",
-    "rightAppealAdmin": "Recht auf Einspruch beim Verwaltungsgericht",
-    "rightAskInterpreter": "Einen Dolmetscher verlangen",
-    "rightChallengeDetention": "Recht, die Haft gerichtlich anzufechten",
-    "rightContactEmbassy": "Recht, Ihre Botschaft zu kontaktieren",
-    "rightContactLawyer": "Vor der Vernehmung einen Anwalt kontaktieren",
-    "rightContactLawyerDetention": "Recht, einen Anwalt zu kontaktieren",
-    "rightHabitableDwelling": "Recht auf eine bewohnbare Wohnung",
-    "rightHumaneTreatment": "Recht auf menschenwürdige Behandlung und medizinische Versorgung",
-    "rightInterpreter": "Recht auf einen Dolmetscher",
-    "rightKnowDetentionReason": "Recht, den Grund der Inhaftierung zu erfahren",
-    "rightKnowWhyStopped": "Wissen, warum Sie angehalten werden",
-    "rightLegalRep": "Recht auf rechtliche Vertretung",
-    "rightRecordEncounter": "Die Begegnung aufzeichnen (an öffentlichen Orten)",
-    "rightRemainSilent": "Schweigen (Sie müssen sich ausweisen)",
-    "rightStayDuringAppeal": "Recht, während des Einspruchs zu bleiben (in den meisten Fällen)",
-    "russian": "Russisch",
-    "safeWorkingConditions": "Sichere Arbeitsbedingungen",
-    "save": "Speichern",
-    "saveChanges": "Änderungen speichern",
-    "saveTwentyFivePercent": "25% sparen",
-    "scanDocumentDesc": "Fotografieren Sie Ihr Dokument",
-    "scanFirstDocumentHint": "Scannen Sie Ihr erstes Dokument, damit die KI es auf Fehler analysieren und Einsprüche erstellen kann.",
-    "scanNew": "Neu scannen",
-    "scenarioNotFound": "Szenario nicht gefunden",
-    "secureDocumentStorage": "Sichere Dokumentenablage",
-    "secureDocumentStorageDesc": "Bewahren Sie Ihre wichtigen Rechtsdokumente an einem Ort für einfachen Zugriff auf.",
-    "securityDeposit": "Kaution max. 3 Monatsmieten",
-    "selected": "{count} ausgewählt",
-    "@selected": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "severityOverview": "Schweregrad-Übersicht",
-    "sickLeave": "Lohnfortzahlung im Krankheitsfall",
-    "somethingWentWrong": "Etwas ist schiefgelaufen",
-    "stoppedByPolice": "Von der Polizei angehalten",
-    "stoppedByPoliceDesc": "Ihre Rechte bei einer Polizeikontrolle",
-    "successSubscribed": "Erfolgreich für {plan} abonniert!",
-    "@successSubscribed": {
-        "placeholders": {
-            "plan": {
-                "type": "String"
-            }
-        }
-    },
-    "switchToGrid": "Zur Rasteransicht wechseln",
-    "switchToList": "Zur Listenansicht wechseln",
-    "takePhotoInstead": "Stattdessen Foto aufnehmen",
-    "tenantRightsDesc": "Wohn- und Mieterschutz",
-    "threeCasesActive": "3 aktive Fälle",
-    "threeDocScans": "3 Dokumentenscans",
-    "totalAssets": "Gesamtvermögen (EUR)",
-    "twentyDocScans": "20 Dokumentenscans",
-    "typeLabel": "Typ",
-    "unlimitedCases": "Unbegrenzte Fälle",
-    "unlimitedDocScans": "Unbegrenztes Dokumentenscannen",
-    "unlinkedEmails": "Nicht verknüpfte E-Mails",
-    "uploadFailed": "Upload fehlgeschlagen. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
-    "uploadFile": "Datei hochladen",
-    "uploadFileDesc": "Wählen Sie eine PDF- oder Bilddatei von Ihrem Gerät",
-    "uploadingPercent": "Hochladen... {percent}%",
-    "@uploadingPercent": {
-        "placeholders": {
-            "percent": {
-                "type": "int"
-            }
-        }
-    },
-    "useThisPhoto": "Dieses Foto verwenden",
-    "viewFull": "Vollständig anzeigen",
-    "workPermit": "Arbeitserlaubnis",
-    "workingTimeLimits": "Arbeitszeitgrenzen (max. 8 Std./Tag, 40 Std./Woche)",
-    "workplaceRights": "Arbeitsplatzrechte",
-    "workplaceRightsDesc": "Arbeitsrechtlicher Schutz in Finnland",
-    "writtenRentalAgreement": "Schriftlicher Mietvertrag erforderlich",
-    "youHaveRightTo": "Sie haben das Recht auf:",
-    "youMust": "Sie müssen:",
-    "yourRights": "Ihre Rechte:",
-    "yourRightsAsTenant": "Ihre Rechte als Mieter:",
-    "yourRightsInDetention": "Ihre Rechte in Haft:",
-    "whatToDo": "Was tun",
-    "getHelp": "Hilfe bekommen",
-    "share": "Teilen",
-    "didYouKnow": "Wussten Sie?",
-    "mustKnow": "Wichtig zu wissen",
-    "goodToKnow": "Gut zu wissen",
-    "sentFromAdvocat": "Gesendet von der Advocat-App",
-    "policeActionStayCalm": "Bleiben Sie ruhig und halten Sie die Hände sichtbar",
-    "policeActionAskWhy": "Fragen Sie den Beamten, warum Sie angehalten werden",
-    "policeActionProvideName": "Nennen Sie Ihren Namen und Ihr Geburtsdatum",
-    "policeActionWantLawyer": "Sagen Sie deutlich: \"Ich möchte einen Anwalt, bevor ich Fragen beantworte\"",
-    "policeActionAskInterpreter": "Bitten Sie bei Bedarf um einen Dolmetscher",
-    "policeActionNoteBadge": "Notieren Sie den Namen und die Dienstnummer des Beamten",
-    "policeFactMustTellReason": "In Finnland muss die Polizei Ihnen den Grund für das Anhalten nennen. Wenn sie es nicht tun, können Sie fragen — und sie sind gesetzlich verpflichtet, es zu erklären.",
-    "policeFactCanRecord": "Sie können Polizeikontakte an öffentlichen Orten in Finnland aufnehmen. Dies wird durch die Meinungsfreiheit geschützt.",
-    "contactFinnishLegalAid": "Finnische Rechtshilfe",
-    "contactNonDiscriminationOmbudsman": "Gleichbehandlungsbeauftragter",
-    "deportationDeadlineAppeal": "Berufung beim Verwaltungsgericht — in der Regel 30 Tage nach Zustellung",
-    "deportationDeadlineLegalAid": "Beantragen Sie Rechtshilfe — tun Sie dies SOFORT",
-    "deportationFactStayDuringAppeal": "In Finnland haben Sie in der Regel das Recht, im Land zu bleiben, während Ihre Berufung bearbeitet wird. Die Abschiebung kann in den meisten Fällen während einer laufenden Berufung nicht vollzogen werden.",
-    "contactRefugeeAdviceCentre": "Finnisches Flüchtlingsberatungszentrum",
-    "contactAdminCourtHelsinki": "Verwaltungsgericht Helsinki",
-    "workplaceActionKeepContract": "Bewahren Sie Kopien Ihres Arbeitsvertrags auf",
-    "workplaceActionTrackHours": "Erfassen Sie Ihre Arbeitszeiten eigenständig",
-    "workplaceActionReportUnsafe": "Melden Sie unsichere Bedingungen der Arbeitsschutzbehörde",
-    "workplaceActionJoinUnion": "Treten Sie einer Gewerkschaft bei",
-    "workplaceActionContactAuthority": "Wenden Sie sich bei Bedarf an die Arbeitsschutzbehörde",
-    "workplaceFactCollectiveWage": "In Finnland legen Tarifverträge die Mindestlöhne je Branche fest — es gibt keinen einheitlichen nationalen Mindestlohn. Ihr Arbeitgeber muss den Tarifvertrag Ihrer Branche einhalten.",
-    "workplaceFactOralContract": "Auch ohne schriftlichen Vertrag haben Sie in Finnland volle Arbeitnehmerrechte. Eine mündliche Vereinbarung ist gesetzlich ebenso bindend.",
-    "contactOccupationalSafety": "Arbeitsschutzbehörde",
-    "contactTradeUnionSAK": "Gewerkschaftsberatung (SAK)",
-    "tenantActionWrittenAgreement": "Schließen Sie immer einen schriftlichen Mietvertrag ab",
-    "tenantActionDocumentCondition": "Dokumentieren Sie den Zustand der Wohnung beim Einzug (Fotos)",
-    "tenantActionReportMaintenance": "Melden Sie Instandhaltungsprobleme schriftlich",
-    "tenantActionNoIllegalEviction": "Stimmen Sie niemals einer rechtswidrigen Räumung zu — Gerichte müssen entscheiden",
-    "tenantActionContactAdvisory": "Wenden Sie sich bei Streitigkeiten an eine Mieterberatung",
-    "tenantFactNoEvictionWithoutCourt": "Ein Vermieter in Finnland kann Sie nicht ohne Gerichtsbeschluss räumen, auch wenn Ihr Mietvertrag abgelaufen ist. Schlösser austauschen oder Versorgungsleistungen kappen ist illegal.",
-    "contactTenantsAssociation": "Finnischer Mieterverband",
-    "contactConsumerDisputesBoard": "Verbraucherschlichtungsstelle",
-    "detentionActionAskDecision": "Fordern Sie sofort den schriftlichen Haftbeschluss an",
-    "detentionActionRequestLawyer": "Verlangen Sie, einen Anwalt zu kontaktieren",
-    "detentionActionContactEmbassy": "Kontaktieren Sie Ihre Botschaft oder Ihr Konsulat",
-    "detentionActionAskMedical": "Bitten Sie bei Bedarf um medizinische Versorgung",
-    "detentionActionRequestInterpreter": "Verlangen Sie einen Dolmetscher für alle Verfahren",
-    "detentionDeadlineCourtReview": "Das Amtsgericht muss die Haft innerhalb von 4 Tagen überprüfen",
-    "detentionDeadlineContinuation": "Das Gericht überprüft die Verlängerung alle 2 Wochen",
-    "detentionFactCourtReview": "Einwanderungshaft in Finnland muss innerhalb von 4 Tagen von einem Amtsgericht überprüft werden. Geschieht dies nicht, wird die Haft rechtswidrig.",
-    "contactParliamentaryOmbudsman": "Parlamentarischer Ombudsmann",
-    "discriminationActionWriteDown": "Schreiben Sie genau auf, was passiert ist (Datum, Uhrzeit, Ort)",
-    "discriminationActionSaveEvidence": "Sichern Sie Beweise: Nachrichten, E-Mails, Zeugen",
-    "discriminationActionFileComplaint": "Reichen Sie eine Beschwerde beim Gleichbehandlungsbeauftragten ein",
-    "discriminationActionContactLegalAid": "Wenden Sie sich an ein Rechtshilfebüro für kostenlose Beratung",
-    "discriminationActionReportPolice": "Erstatten Sie Anzeige bei der Polizei bei Drohung oder Körperverletzung",
-    "discriminationFactNonDiscriminationAct": "Das finnische Gleichbehandlungsgesetz umfasst Diskriminierung aufgrund von Alter, Herkunft, Staatsangehörigkeit, Sprache, Religion, Gesundheit, Behinderung, sexueller Orientierung und anderen persönlichen Merkmalen.",
-    "contactVictimSupportRIKU": "Opferhilfe Finnland (RIKU)",
-    "domesticViolence": "Häusliche Gewalt",
-    "inheritance": "Erbschaft",
-    "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
-    "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
-    "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
-    "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
-    "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
-    "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
-    "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
-    "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
-    "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
-    "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
-    "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
-    "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
-    "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
-    "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
-    "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
-    "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
-    "consumerProtection": "Verbraucherschutz",
-    "caseTypeStepLabel": "Case Type",
-    "detailsStepLabel": "Details",
-    "documentsStepLabel": "Documents",
-    "whatTypeOfCase": "What type of case is this?",
-    "selectCategoryDescription": "Select the category that best describes your situation.",
-    "tellUsAboutCase": "Tell us about your case",
-    "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
-    "caseTitleHint": "e.g., Residence Permit Appeal 2026",
-    "countryJurisdiction": "Country / Jurisdiction",
-    "selectCountryHint": "Select a country",
-    "referenceNumberHint": "e.g., UMA/12345/2026",
-    "descriptionOptional": "Description (optional)",
-    "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
-    "uploadFirstDocument": "Upload your first document",
-    "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
-    "tapToUploadFile": "Tap to upload a file",
-    "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
-    "aiGeneratedDisclaimer": "KI-generiert • Keine Rechtsberatung",
-    "callAI": "KI anrufen",
-    "comingSoon": "Kommt bald",
-    "encrypted": "Verschlüsselt",
-    "typing": "Tippt...",
-    "online": "Online",
-    "chatWelcomeSubtitle": "Ich analysiere die Situation, prüfe Dokumente, finde Fehler und schlage vor, was zu tun ist.",
-    "tapMicrophoneToSpeak": "Tippen Sie auf das Mikrofon zum Sprechen",
-    "categoryEssential": "Wesentlich",
-    "categoryPolice": "Polizei",
-    "categoryWork": "Arbeit",
-    "categoryHousing": "Wohnen",
-    "categoryConsumer": "Verbraucher",
-    "rightsInsideCount": "{count} Rechte enthalten",
-    "@rightsInsideCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "freeAidThreshold": "Schwelle für kostenlose Hilfe",
-    "partialAidThreshold": "Schwelle für Teilhilfe",
-    "assetLimit": "Vermögensgrenze",
-    "whereToApplyLabel": "Wo beantragen",
-    "phoneLabel": "Telefon",
-    "websiteLabel": "Webseite",
-    "disclaimerCollapsed": "Nur zur Information",
-    "disclaimerExpanded": "KI-Assistent — keine Rechtsberatung. Überprüfen Sie immer mit einem qualifizierten Anwalt.",
-    "chatDisclaimerBanner": "Der KI-Assistent bietet rechtliche Informationen, keine Rechtsberatung. Konsultieren Sie immer einen qualifizierten Anwalt.",
-    "guestUser": "Gast",
-    "howToUse": "Wie benutzen?",
-    "tutorialStep1Title": "KI-Rechtsassistent",
-    "tutorialStep1Desc": "Stellen Sie eine beliebige Rechtsfrage und erhalten Sie sofortige Antworten basierend auf estnischem Recht.",
-    "tutorialStep2Title": "Kennen Sie Ihre Rechte",
-    "tutorialStep2Desc": "Durchsuchen Sie Rechtsinformationen nach Themen — Arbeit, Wohnen, Verbraucherrechte und mehr.",
-    "tutorialStep3Title": "Dokumente scannen",
-    "tutorialStep3Desc": "Fotografieren Sie Rechtsdokumente zur KI-Analyse und sicheren Aufbewahrung.",
-    "tutorialStep4Title": "Los geht's!",
-    "tutorialStep4Desc": "Entdecken Sie die App und schützen Sie Ihre Rechte. Alle Daten bleiben privat auf Ihrem Gerät.",
-    "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Premium-Funktionen freischalten",
-    "voiceDisclaimer": "Der Sprachassistent funktioniert derzeit nur auf dem Desktop (Chrome-Browser). Mobile Unterstützung kommt bald.",
-    "recommended": "Empfohlen",
-    "pleaseLogIn": "Bitte melden Sie sich an",
-    "subscriptionNotFound": "Abonnement nicht gefunden",
-    "errorWithMessage": "Fehler: {message}",
-    "redirectingToPayment": "Weiterleitung zur Zahlungsseite...",
-    "cheaperAnnually": "€{amount}/Monat günstiger im Jahresabo",
-    "navigatingTo": "Öffne",
-    "stayInChat": "Im Chat bleiben",
-    "backToChat": "Zurück zum Chat"
+      }
+    }
+  }
 }

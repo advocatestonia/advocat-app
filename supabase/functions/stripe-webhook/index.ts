@@ -11,6 +11,19 @@ const responseHeaders = {
   "Content-Type": "application/json",
 };
 
+/** Constant-time equality for hex strings (prevents timing oracle). */
+function timingSafeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let r = 0;
+  for (let i = 0; i < a.length; i++) {
+    r |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return r === 0;
+}
+
+// Stripe recommends rejecting events older than 5 minutes to block replays.
+const MAX_WEBHOOK_AGE_SEC = 300;
+
 // Plan mapping from Stripe to our tiers
 const PLAN_MAPPING: Record<string, string> = {
   counsel: "basic",
@@ -52,12 +65,21 @@ serve(async (req) => {
       });
     }
 
+    // Replay-attack protection: reject stale webhooks
+    const timestampNum = parseInt(timestamp, 10);
+    const nowSec = Math.floor(Date.now() / 1000);
+    if (!timestampNum || Math.abs(nowSec - timestampNum) > MAX_WEBHOOK_AGE_SEC) {
+      return new Response(JSON.stringify({ error: "Stale webhook" }), {
+        status: 401, headers: responseHeaders,
+      });
+    }
+
     const signedPayload = `${timestamp}.${body}`;
     const expectedSig = await crypto.subtle.sign("HMAC", key, encoder.encode(signedPayload));
     const expectedHex = Array.from(new Uint8Array(expectedSig))
       .map((b: number) => b.toString(16).padStart(2, "0")).join("");
 
-    if (expectedHex !== sig) {
+    if (!timingSafeEqual(expectedHex, sig)) {
       return new Response(JSON.stringify({ error: "Invalid signature" }), {
         status: 401, headers: responseHeaders,
       });

@@ -181,6 +181,50 @@ class ChatToolBridge {
     return toolResults;
   }
 
+  /// Build a human-readable summary of tool results suitable for sending
+  /// back to Claude as context so it can give informed follow-up suggestions.
+  ///
+  /// Instead of raw JSON or opaque `[TOOL_RESULT]` tags, this produces a
+  /// structured natural-language description of what each tool returned.
+  static String buildFollowUpSummary(List<ToolResultMessage> results) {
+    final buf = StringBuffer();
+    for (final tr in results) {
+      final tool = tr.toolResult;
+      if (tool == null) {
+        buf.writeln('Tool executed but returned no structured result.');
+        buf.writeln('Display text: ${tr.displayText}');
+        continue;
+      }
+
+      buf.writeln('Tool: ${tool.cardType ?? "general"}');
+      buf.writeln('Status: ${tool.success ? "success" : "failed"}');
+      buf.writeln('Summary: ${tool.displayText}');
+
+      // Include key structured fields so Claude has concrete data
+      if (tool.data != null && tool.data!.isNotEmpty) {
+        buf.writeln('Key details:');
+        for (final entry in tool.data!.entries) {
+          final value = entry.value;
+          // Skip large nested objects — include scalars and short lists
+          if (value is String || value is num || value is bool) {
+            buf.writeln('  ${entry.key}: $value');
+          } else if (value is List && value.length <= 5) {
+            buf.writeln('  ${entry.key}: ${value.join(", ")}');
+          } else if (value is List) {
+            buf.writeln('  ${entry.key}: ${value.length} items');
+          }
+        }
+      }
+
+      if (tool.requiresApproval) {
+        buf.writeln('⚠️ This action requires user approval: ${tool.approvalMessage ?? ""}');
+      }
+
+      buf.writeln();
+    }
+    return buf.toString().trim();
+  }
+
   /// Perform all pending navigations from tool results.
   ///
   /// Shows a cancelable toast/snackbar for 2 seconds before navigating,

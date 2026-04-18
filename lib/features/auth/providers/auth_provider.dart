@@ -131,6 +131,26 @@ class AuthController extends StateNotifier<AuthState> {
           appUser: profile,
         );
       }
+
+      // Ensure Google OAuth email is saved in profiles table
+      try {
+        final currentEmail =
+            Supabase.instance.client.auth.currentUser?.email;
+        if (currentEmail != null && currentEmail.isNotEmpty) {
+          final profileEmail = profile?.email;
+          if (profileEmail == null || profileEmail.isEmpty) {
+            final userId =
+                Supabase.instance.client.auth.currentUser?.id;
+            if (userId != null) {
+              await Supabase.instance.client
+                  .from('profiles')
+                  .update({'email': currentEmail}).eq('id', userId);
+            }
+          }
+        }
+      } catch (e) {
+        if (kDebugMode) debugPrint('Failed to sync email to profile: $e');
+      }
     } catch (e) {
       if (kDebugMode) debugPrint('Failed to load profile from database: $e');
       // Keep the metadata-based state; not critical.
@@ -257,7 +277,10 @@ class AuthController extends StateNotifier<AuthState> {
     state = state.copyWith(status: AuthStatus.loading, errorMessage: null);
     try {
       await Supabase.instance.client.auth
-          .signInWithOAuth(OAuthProvider.google);
+          .signInWithOAuth(
+        OAuthProvider.google,
+        redirectTo: 'https://advocat.ee/app.html',
+      );
       // OAuth redirects the browser; on return _init() picks up the session.
     } on AuthException catch (e) {
       state = AuthState(

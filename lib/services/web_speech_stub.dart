@@ -37,3 +37,20 @@ Future<bool> webTtsSpeakGoogleTts({
   required String supabaseUrl,
   required String anonKey,
 }) async => false;
+
+// Whisper STT stubs (non-web platforms never call these).
+bool webWhisperSupported() => false;
+
+Future<bool> webWhisperStart({
+  required String supabaseUrl,
+  required String anonKey,
+  String? language,
+  int maxSeconds = 15,
+  int silenceMs = 1500,
+  double silenceLevel = 0.015,
+}) async => false;
+
+void webWhisperStop() {}
+
+double webGetVoiceLevel() => 0;
+

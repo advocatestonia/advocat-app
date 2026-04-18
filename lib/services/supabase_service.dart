@@ -355,6 +355,35 @@ class SupabaseService {
     await _client.auth.signOut();
   }
 
+  // ── Edge Functions ──────────────────────────────────────────────────
+
+  /// Call a Supabase Edge Function by [functionName] with an optional JSON
+  /// [body]. Returns the decoded JSON response, or `null` on failure.
+  Future<Map<String, dynamic>?> callEdgeFunction(
+    String functionName, {
+    Map<String, dynamic>? body,
+  }) async {
+    if (isDemo) return null;
+    try {
+      final response = await _client.functions.invoke(
+        functionName,
+        body: body,
+      );
+      if (response.status == 200 && response.data != null) {
+        if (response.data is Map<String, dynamic>) {
+          return response.data as Map<String, dynamic>;
+        }
+        // Some versions return a string that needs decoding
+        if (response.data is String) {
+          return jsonDecode(response.data as String) as Map<String, dynamic>;
+        }
+      }
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   // ── Export user data ─────────────────────────────────────────────────
 
   /// Fetches all user data and returns it as a formatted JSON string.

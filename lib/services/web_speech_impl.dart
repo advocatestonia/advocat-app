@@ -164,3 +164,69 @@ Future<bool> webTtsSpeakGoogleTts({
 String _jsonEscape(String s) {
   return '"${s.replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('\n', '\\n').replaceAll('\r', '\\r')}"';
 }
+
+// ---------------------------------------------------------------------------
+// Whisper STT: MediaRecorder → Supabase whisper-stt → OpenAI Whisper
+// ---------------------------------------------------------------------------
+
+/// Whether the browser supports Whisper path (MediaRecorder + getUserMedia).
+bool webWhisperSupported() {
+  try {
+    final result = globalContext.callMethod('advocatWhisperSupported'.toJS);
+    return (result as JSBoolean?)?.toDart ?? false;
+  } catch (_) {
+    return false;
+  }
+}
+
+/// Start Whisper recording with VAD auto-stop.
+///
+/// * [language] — ISO 639-1 code, or null for auto-detect (recommended for
+///   multilingual users).
+/// * [maxSeconds] — hard cap (default 15s).
+/// * [silenceMs] — VAD silence threshold in ms (default 1500).
+/// * [silenceLevel] — normalised RMS threshold (default 0.015).
+Future<bool> webWhisperStart({
+  required String supabaseUrl,
+  required String anonKey,
+  String? language,
+  int maxSeconds = 15,
+  int silenceMs = 1500,
+  double silenceLevel = 0.015,
+}) async {
+  try {
+    final langJson = language == null ? 'null' : '"$language"';
+    final json = '{"supabaseUrl":"$supabaseUrl","anonKey":"$anonKey",'
+        '"language":$langJson,"maxSeconds":$maxSeconds,'
+        '"silenceMs":$silenceMs,"silenceLevel":$silenceLevel}';
+    final promise = globalContext.callMethod(
+      'advocatWhisperStart'.toJS,
+      json.toJS,
+    );
+    if (promise == null) return false;
+    final result = await (promise as JSPromise).toDart;
+    if (result is JSBoolean) return result.toDart;
+    return result != null;
+  } catch (_) {
+    return false;
+  }
+}
+
+/// Stop any ongoing Whisper recording.
+void webWhisperStop() {
+  try {
+    globalContext.callMethod('advocatWhisperStop'.toJS);
+  } catch (_) {}
+}
+
+/// Current microphone RMS level (0-1), exposed by the VAD tick loop.
+double webGetVoiceLevel() {
+  try {
+    final val = globalContext.callMethod('advocatGetVoiceLevel'.toJS);
+    if (val is JSNumber) return val.toDartDouble;
+    return 0;
+  } catch (_) {
+    return 0;
+  }
+}
+

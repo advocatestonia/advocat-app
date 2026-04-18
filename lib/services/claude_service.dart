@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 import '../config/app_config.dart';
 import 'tool_definitions.dart';
+import 'web_streaming_stub.dart' if (dart.library.js_interop) 'web_streaming_impl.dart';
 
 // ---------------------------------------------------------------------------
 // Provider
@@ -118,10 +119,10 @@ class ClaudeService {
   static const String modelHaiku = 'claude-haiku-4-5-20251001';
 
   /// Max output tokens for Haiku (short answers — fewer tokens = faster).
-  static const int _maxTokensHaiku = 400;
+  static const int _maxTokensHaiku = 800;
 
   /// Max output tokens for Sonnet (detailed answers).
-  static const int _maxTokensSonnet = 1000;
+  static const int _maxTokensSonnet = 2500;
 
   /// Keywords that indicate a complex legal query requiring Sonnet.
   static const List<String> _complexKeywords = [
@@ -148,6 +149,22 @@ class ClaudeService {
     'tuomioistuin', 'päätös', 'määräaika', 'oikeusapu',
     // Estonian legal terms
     'kaebus', 'kohus', 'otsus', 'elamisluba',
+    'palk', 'tööandja', 'leping', 'trahv', 'võlg', 'elatis',
+    'hooldus', 'lahutus', 'pärand', 'pension', 'puue',
+    'haigusleh', 'laen', 'pankrot', 'pettu', 'vargus', 'ähvard',
+    // Russian civil/criminal terms
+    'зарплат', 'увольн', 'договор', 'штраф', 'долг', 'алимент',
+    'опека', 'развод', 'наследств', 'пенси', 'инвалид',
+    'больнич', 'декрет', 'ипотек', 'кредит', 'банкрот',
+    'мошенн', 'грабеж', 'кража', 'насили', 'побо', 'угроз',
+    // English civil/criminal terms
+    'salary', 'fired', 'contract', 'fine', 'debt', 'alimony',
+    'custody', 'divorce', 'inheritance', 'pension', 'disability',
+    'loan', 'bankruptcy', 'fraud', 'theft', 'threat',
+    'child support', 'eviction', 'rent', 'landlord',
+    // Finnish legal terms
+    'palkka', 'irtisano', 'sopimus', 'sakko', 'velka', 'elatus',
+    'huoltaj', 'avioero', 'perintö', 'eläke', 'vamma',
   ];
 
   /// Determine the appropriate model for a query.
@@ -204,7 +221,7 @@ class ClaudeService {
       return true;
     }
     // Very short messages without legal content are simple
-    if (query.length < 30) return true;
+    if (query.length < 10) return true;
     return false;
   }
 
@@ -522,26 +539,153 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     return _extractText(response);
   }
 
-  /// Send a streaming chat message. Returns a stream of text chunks.
+  /// Send a message with streaming — returns a Stream of text chunks.
+  /// The stream yields individual text deltas as they arrive from Claude.
   ///
-  /// Note: For MVP we use non-streaming API and simulate streaming by
-  /// yielding the full response at once. True SSE streaming can be added
-  /// later by switching to `responseType: ResponseType.stream`.
+  /// On **Flutter Web**, this uses the browser's native `fetch()` API via
+  /// JS interop (see `web/streaming.js`) because Dio's web adapter uses
+  /// XMLHttpRequest which buffers the entire response — no streaming.
+  ///
+  /// On **mobile/desktop**, this uses Dio with `ResponseType.stream` which
+  /// works correctly with dart:io's HttpClient.
   Stream<String> sendMessageStreaming({
     required List<Map<String, String>> messages,
     required String systemPrompt,
     int maxTokens = 4096,
     String? model,
+    List<Map<String, dynamic>>? tools,
+    double temperature = 0.3,
   }) async* {
-    // For MVP: get the full response and yield it
-    // TODO: Implement true SSE streaming with stream: true parameter
-    final response = await sendMessage(
-      messages: messages,
-      systemPrompt: systemPrompt,
-      maxTokens: maxTokens,
-      model: model,
+    if (!isAvailable) {
+      throw const ClaudeServiceException(
+        'Claude API is not configured. Set SUPABASE_URL or CLAUDE_API_KEY.',
+      );
+    }
+
+    // Rate limiting
+    if (_lastRequestTime != null) {
+      final elapsed =
+          DateTime.now().difference(_lastRequestTime!).inMilliseconds;
+      const throttleMs = 300;
+      final remaining = throttleMs - elapsed;
+      if (remaining > 0) {
+        await Future<void>.delayed(Duration(milliseconds: remaining));
+      }
+    }
+    _lastRequestTime = DateTime.now();
+
+    final body = <String, dynamic>{
+      'model': model ?? modelSonnet,
+      'max_tokens': maxTokens,
+      'temperature': temperature,
+      'system': systemPrompt,
+      'messages': messages,
+      'stream': true,
+    };
+    if (tools != null && tools.isNotEmpty) body['tools'] = tools;
+
+    // ── Web: use browser fetch() for real streaming ──────────────────────
+    if (kIsWeb) {
+      final path = _useProxy ? '/claude-proxy' : '/v1/messages';
+      final baseUrl = _useProxy
+          ? '${AppConfig.supabaseUrl}/functions/v1'
+          : 'https://api.anthropic.com';
+      final fullUrl = '$baseUrl$path';
+      final bodyJson = jsonEncode(body);
+      final authToken = _useProxy ? AppConfig.supabaseAnonKey : '';
+      final apiKey = _useProxy ? '' : AppConfig.claudeApiKey;
+
+      yield* webSendMessageStreaming(
+        url: fullUrl,
+        bodyJson: bodyJson,
+        authToken: authToken,
+        apiKey: apiKey,
+      );
+      return;
+    }
+
+    // ── Native (mobile/desktop): use Dio streaming ──────────────────────
+    final path = _useProxy ? '/claude-proxy' : '/v1/messages';
+
+    final response = await _dio.post<ResponseBody>(
+      path,
+      data: body,
+      options: Options(
+        responseType: ResponseType.stream,
+        headers: _useProxy
+            ? {
+                'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
+              }
+            : {
+                'x-api-key': AppConfig.claudeApiKey,
+                'anthropic-version': '2023-06-01',
+              },
+      ),
     );
-    yield response;
+
+    final byteStream = response.data!.stream;
+    String buffer = '';
+
+    // Stateful UTF-8 decoder — handles multibyte chars (Russian, Estonian)
+    // split across TCP chunks. Accumulate raw bytes, decode in larger batches.
+    final utf8Decoder = Utf8Decoder(allowMalformed: false);
+    final rawBytes = <int>[];
+    await for (final chunk in byteStream) {
+      rawBytes.addAll(chunk);
+      // Try to decode all accumulated bytes
+      String textChunk;
+      try {
+        textChunk = utf8Decoder.convert(rawBytes);
+        rawBytes.clear();
+      } catch (_) {
+        // Incomplete multibyte sequence — wait for more bytes
+        continue;
+      }
+      buffer += textChunk;
+
+      // Process complete SSE lines
+      while (buffer.contains('\n')) {
+        final lineEnd = buffer.indexOf('\n');
+        final line = buffer.substring(0, lineEnd).trim();
+        buffer = buffer.substring(lineEnd + 1);
+
+        // Skip empty lines (SSE event boundaries) and event: lines
+        if (line.isEmpty || line.startsWith('event:')) continue;
+        if (!line.startsWith('data: ')) continue;
+        final data = line.substring(6);
+
+        try {
+          final parsed = jsonDecode(data) as Map<String, dynamic>;
+          final type = parsed['type'] as String?;
+
+          if (type == 'content_block_delta') {
+            final delta = parsed['delta'] as Map<String, dynamic>?;
+            if (delta?['type'] == 'text_delta') {
+              final text = delta!['text'] as String? ?? '';
+              if (text.isNotEmpty) yield text;
+            }
+          } else if (type == 'message_delta') {
+            // usage.output_tokens is CUMULATIVE — assign, not add
+            final usage = parsed['usage'] as Map<String, dynamic>?;
+            if (usage != null) {
+              _sessionOutputTokens =
+                  usage['output_tokens'] as int? ?? _sessionOutputTokens;
+            }
+          } else if (type == 'message_start') {
+            final message = parsed['message'] as Map<String, dynamic>?;
+            final usage = message?['usage'] as Map<String, dynamic>?;
+            if (usage != null) {
+              _sessionInputTokens +=
+                  (usage['input_tokens'] as int? ?? 0);
+            }
+          } else if (type == 'message_stop') {
+            return; // Stream complete
+          }
+        } catch (_) {
+          // Skip unparseable lines
+        }
+      }
+    }
   }
 
   /// Reset session token counters.

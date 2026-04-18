@@ -13,6 +13,16 @@
     "all": "All",
     "alreadyHaveAccount": "Already have an account? ",
     "analyzing": "Analyzing...",
+    "aiAnalyzing": "AI is analyzing",
+    "speakIntoMicHint": "Speak into the microphone. Make sure microphone access is enabled.",
+    "freeLimitReached": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!",
+    "@freeLimitReached": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
     "andWord": " and ",
     "appTitle": "Advocat — Legal Information Tool",
     "appVersion": "App Version",
@@ -112,7 +122,7 @@
     "familyReunification": "Family Reunification",
     "forgotPassword": "Forgot Password?",
     "free": "Free",
-    "fullDefense": "Full Representation",
+    "fullDefense": "Advocat Pro",
     "fullName": "Full Name",
     "gallery": "Gallery",
     "generateAppeal": "Generate Appeal",
@@ -674,6 +684,11 @@
     "gdprFooter": "Your data is encrypted and processed securely. We use trusted service providers (AI processing, cloud database) to deliver the service. See our Privacy Policy for details. You can withdraw consent and delete all data from Settings.",
     "gdprConsentAiProcessing": "I agree to the processing of my data for AI legal assistance (required)",
     "gdprConsentAnalytics": "I agree to analytics to improve the service (optional)",
+    "gdprArt9Intro": "This app processes special category personal data under GDPR Article 9, including:",
+    "gdprSpecialLegalCases": "Your legal case details and court documents",
+    "gdprSpecialNationality": "Nationality and immigration status",
+    "gdprConsentLegalData": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)",
+    "gdprConsentVoice": "I consent to voice recording processing (optional)",
     "gdprViewPrivacyPolicy": "View Privacy Policy",
     "legalInformation": "Legal Information",
     "legalEntityName": "Vorantis OÜ",

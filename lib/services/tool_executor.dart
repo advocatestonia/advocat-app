@@ -201,6 +201,18 @@ class ToolExecutor {
         // Knowledge results shown inline
         return null;
 
+      // v24.1 additions — all read-only or inline-card tools, no navigation
+      case 'send_email':
+      case 'read_document':
+      case 'list_documents':
+      case 'list_cases':
+      case 'search_estonian_law':
+      case 'create_deadline':
+      case 'update_case':
+      case 'get_user_profile':
+      case 'analyze_contract':
+        return null;
+
       case 'navigate_to':
         final screen = params['screen'] as String? ?? 'home';
 

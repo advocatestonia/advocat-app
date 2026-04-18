@@ -225,6 +225,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
 
       await client.from('profiles').update(updates).eq('id', userId);
 
+      ref.invalidate(currentUserProvider);
+
       if (mounted) {
         setState(() {
           _saving = false;
@@ -313,8 +315,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
                                       ? NetworkImage(_pickedImage!.path)
                                       : FileImage(File(_pickedImage!.path)))
                                       as ImageProvider
-                                  : null,
-                              child: _pickedImage == null
+                                  : userAsync.value?.avatarUrl != null
+                                      ? NetworkImage(userAsync.value!.avatarUrl!)
+                                      : null,
+                              child: _pickedImage == null && userAsync.value?.avatarUrl == null
                                   ? Text(
                                       initials,
                                       style: const TextStyle(

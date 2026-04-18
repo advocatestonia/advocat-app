@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
+
+import 'stripe_web_redirect.dart' as web_redirect;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -108,22 +110,12 @@ class StripeCheckoutService {
 
     final uri = Uri.parse(checkoutUrl);
 
-    // On mobile web, skip canLaunchUrl check — it's unreliable.
-    // Just attempt to launch directly.
-    try {
-      final launched = await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
-      if (!launched) {
-        // Fallback: try platformDefault mode
-        await launchUrl(uri, mode: LaunchMode.platformDefault);
-      }
-    } catch (e) {
-      throw Exception(
-        'Could not open payment page: $e. '
-        'Try copying this URL in your browser: $checkoutUrl',
-      );
+    // On web: always redirect current page. Cannot be blocked by any browser.
+    // On native: use url_launcher.
+    if (kIsWeb) {
+      web_redirect.redirectToUrl(checkoutUrl);
+    } else {
+      await launchUrl(uri);
     }
     return true;
   }
@@ -189,19 +181,10 @@ class StripeCheckoutService {
 
     final uri = Uri.parse(checkoutUrl);
 
-    try {
-      final launched = await launchUrl(
-        uri,
-        mode: LaunchMode.externalApplication,
-      );
-      if (!launched) {
-        await launchUrl(uri, mode: LaunchMode.platformDefault);
-      }
-    } catch (e) {
-      throw Exception(
-        'Could not open payment page: $e. '
-        'Try copying this URL in your browser: $checkoutUrl',
-      );
+    if (kIsWeb) {
+      web_redirect.redirectToUrl(checkoutUrl);
+    } else {
+      await launchUrl(uri);
     }
     return true;
   }

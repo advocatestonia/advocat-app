@@ -48,6 +48,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get analyzing => 'Анализируем...';
 
   @override
+  String get aiAnalyzing => 'AI анализирует';
+
+  @override
+  String get speakIntoMicHint =>
+      'Говорите в микрофон. Убедитесь, что доступ к микрофону разрешён.';
+
+  @override
+  String freeLimitReached(int count) {
+    return 'Вы использовали все $count бесплатных AI сообщений. Перейдите на тариф Õigusnõustaja для безлимитной AI помощи!';
+  }
+
+  @override
   String get andWord => ' и ';
 
   @override
@@ -316,7 +328,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get free => 'Бесплатно';
 
   @override
-  String get fullDefense => 'Полная защита';
+  String get fullDefense => 'Advocat Pro';
 
   @override
   String get fullName => 'Полное имя';
@@ -1458,26 +1470,25 @@ class AppLocalizationsRu extends AppLocalizations {
   String get priorityProcessing => 'Приоритетная обработка';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI messages (lifetime)';
+  String get fiveAiMessagesTotal => '5 сообщений ИИ (за всё время)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI messages/day';
+  String get hundredAiMessagesDay => '100 сообщений ИИ/день';
 
   @override
-  String get unlimitedAiMessages => 'Unlimited AI messages';
+  String get unlimitedAiMessages => 'Безлимитные сообщения ИИ';
 
   @override
-  String get voiceInput => 'Voice input';
+  String get voiceInput => 'Голосовой ввод';
 
   @override
-  String get strategyRecommendations => 'Strategy recommendations';
+  String get strategyRecommendations => 'Рекомендации по стратегии';
 
   @override
-  String get foundingMemberNote =>
-      'Founding Member: 9.99€/mo for first 3 months';
+  String get foundingMemberNote => 'Член-основатель: 9,99€/мес первые 3 месяца';
 
   @override
-  String get saveTwentyPercent => 'Save 20%';
+  String get saveTwentyPercent => 'Экономия 20%';
 
   @override
   String get forever => 'навсегда';
@@ -1576,14 +1587,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'Я согласен на обработку моих данных для юридической помощи ИИ (обязательно)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'Я согласен на аналитику для улучшения сервиса (необязательно)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprArt9Intro =>
+      'Это приложение обрабатывает особые категории персональных данных в соответствии со статьёй 9 GDPR, включая:';
+
+  @override
+  String get gdprSpecialLegalCases =>
+      'Данные вашего судебного дела и судебные документы';
+
+  @override
+  String get gdprSpecialNationality => 'Гражданство и иммиграционный статус';
+
+  @override
+  String get gdprConsentLegalData =>
+      'Я даю согласие на обработку данных моего дела, гражданства и иммиграционного статуса с помощью ИИ (обязательно)';
+
+  @override
+  String get gdprConsentVoice =>
+      'Я даю согласие на обработку голосовых записей (необязательно)';
+
+  @override
+  String get gdprViewPrivacyPolicy => 'Политика конфиденциальности';
 
   @override
   String get legalInformation => 'Юридическая информация';
@@ -1923,17 +1953,17 @@ class AppLocalizationsRu extends AppLocalizations {
       'Запретительное предписание — можно подать в любое время';
 
   @override
-  String get contactEmergency => 'Emergency Number';
+  String get contactEmergency => 'Экстренный номер';
 
   @override
-  String get contactShelter => 'Turvakoti (Shelter) Helpline';
+  String get contactShelter => 'Приют (Turvakoti) — телефон доверия';
 
   @override
-  String get contactCrisisHelpline => 'Crisis Helpline (Kriisipuhelin)';
+  String get contactCrisisHelpline => 'Кризисная линия помощи (Kriisipuhelin)';
 
   @override
   String get contactNollaLinja =>
-      'Nollalinja — Violence Against Women Helpline';
+      'Nollalinja — линия помощи пострадавшим от насилия';
 
   @override
   String get inheritance => 'Наследство';
@@ -2007,81 +2037,82 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get consumerProtectionDesc =>
-      'Fraud, defective products, returns, deceptive sellers';
+      'Мошенничество, бракованные товары, возвраты, недобросовестные продавцы';
 
   @override
   String get rightReturnOnline =>
-      'You have 14 days to cancel online purchases without reason (EU right of withdrawal)';
+      'У вас есть 14 дней для отмены онлайн-покупок без объяснения причин (право отказа ЕС)';
 
   @override
   String get rightDefectiveProduct =>
-      'If a product is defective, you have the right to repair, replacement, or refund';
+      'Если товар бракованный, вы имеете право на ремонт, замену или возврат денег';
 
   @override
   String get rightClearPricing =>
-      'Sellers must display clear prices including all fees — hidden costs are illegal';
+      'Продавцы обязаны указывать чёткие цены со всеми сборами — скрытые расходы незаконны';
 
   @override
   String get rightComplainBoard =>
-      'You can file a free complaint with the Consumer Disputes Board';
+      'Вы можете подать бесплатную жалобу в Комиссию по потребительским спорам';
 
   @override
   String get rightProtectionFraud =>
-      'You are protected against unfair commercial practices and fraud';
+      'Вы защищены от недобросовестной коммерческой практики и мошенничества';
 
   @override
   String get mustKeepReceipts =>
-      'Keep all receipts, contracts, and communication with sellers';
+      'Сохраняйте все чеки, договоры и переписку с продавцами';
 
   @override
   String get mustActTimely =>
-      'Report defects to the seller within a reasonable time after discovery';
+      'Сообщайте продавцу о дефектах в разумные сроки после обнаружения';
 
   @override
   String get consumerActionKeepEvidence =>
-      'Keep receipts, screenshots, emails, and all proof of purchase';
+      'Сохраняйте чеки, скриншоты, электронные письма и все доказательства покупки';
 
   @override
   String get consumerActionContactSeller =>
-      'Contact the seller first — explain the problem in writing';
+      'Сначала свяжитесь с продавцом — опишите проблему письменно';
 
   @override
   String get consumerActionFileComplaint =>
-      'File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)';
+      'Подайте жалобу в Комиссию по потребительским спорам (kuluttajariitalautakunta)';
 
   @override
   String get consumerActionContactAuthority =>
-      'Contact the Consumer Advisory Services for free help';
+      'Обратитесь в службу защиты прав потребителей за бесплатной помощью';
 
   @override
   String get consumerActionReportFraud =>
-      'Report fraud to the police and Consumer Ombudsman';
+      'Сообщите о мошенничестве в полицию и омбудсмену по защите прав потребителей';
 
   @override
   String get consumerFactWithdrawal =>
-      'Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.';
+      'Согласно Директиве ЕС о правах потребителей 2011/83/EU, у вас есть 14 дней для отказа от любой онлайн- или дистанционной покупки — без объяснения причин. Продавец обязан вернуть деньги в течение 14 дней.';
 
   @override
   String get consumerFactWarranty =>
-      'In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.';
+      'В Финляндии продавец несёт ответственность за дефекты товара в течение разумного срока (часто 2+ года). Это не зависит от гарантии производителя.';
 
   @override
   String get consumerDeadlineWithdrawal =>
-      'Online purchase withdrawal — 14 days from delivery';
+      'Отмена онлайн-покупки — 14 дней с момента доставки';
 
   @override
   String get consumerDeadlineDefect =>
-      'Report defect to seller — within 2 months of discovery (recommended)';
+      'Сообщите о дефекте продавцу — в течение 2 месяцев после обнаружения (рекомендуется)';
 
   @override
-  String get contactConsumerAdvisory => 'Consumer Advisory Services';
+  String get contactConsumerAdvisory => 'Служба консультирования потребителей';
 
   @override
   String get contactConsumerOmbudsman =>
-      'Consumer Ombudsman (Kuluttaja-asiamies)';
+      'Омбудсмен по защите прав потребителей (Kuluttaja-asiamies)';
 
   @override
-  String get contactConsumerDisputesBoardDirect => 'Consumer Disputes Board';
+  String get contactConsumerDisputesBoardDirect =>
+      'Комиссия по потребительским спорам';
 
   @override
   String get caseTypeStepLabel => 'Тип дела';

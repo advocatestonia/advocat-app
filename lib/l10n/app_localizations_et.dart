@@ -48,6 +48,18 @@ class AppLocalizationsEt extends AppLocalizations {
   String get analyzing => 'Analüüsimine...';
 
   @override
+  String get aiAnalyzing => 'AI analüüsib';
+
+  @override
+  String get speakIntoMicHint =>
+      'Rääkige mikrofoni. Veenduge, et mikrofon on lubatud.';
+
+  @override
+  String freeLimitReached(int count) {
+    return 'Olete kasutanud kõik $count tasuta AI sõnumit. Uuendage Õigusnõustaja paketile piiramatu AI abi saamiseks!';
+  }
+
+  @override
   String get andWord => ' ja ';
 
   @override
@@ -281,7 +293,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get emailPrivacyNote =>
-      'Loeme ainult immigratsiooniga seotud kirju. Teie privaatsus on kaitstud.';
+      'Loeme ainult õiguslike asjadega seotud kirju. Teie privaatsus on kaitstud.';
 
   @override
   String get emailRequired => 'E-posti aadress on kohustuslik';
@@ -315,7 +327,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get free => 'Tasuta';
 
   @override
-  String get fullDefense => 'Täisesindus';
+  String get fullDefense => 'Advocat Pro';
 
   @override
   String get fullName => 'Täisnimi';
@@ -1577,14 +1589,33 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get gdprConsentAiProcessing =>
-      'I agree to the processing of my data for AI legal assistance (required)';
+      'Nõustun oma andmete töötlemisega AI õigusabi jaoks (kohustuslik)';
 
   @override
   String get gdprConsentAnalytics =>
-      'I agree to analytics to improve the service (optional)';
+      'Nõustun analüütikaga teenuse parandamiseks (valikuline)';
 
   @override
-  String get gdprViewPrivacyPolicy => 'View Privacy Policy';
+  String get gdprArt9Intro =>
+      'See rakendus töötleb GDPR artikli 9 alusel erilist liiki isikuandmeid, sealhulgas:';
+
+  @override
+  String get gdprSpecialLegalCases =>
+      'Teie kohtuasja üksikasjad ja kohtudokumendid';
+
+  @override
+  String get gdprSpecialNationality => 'Kodakondsus ja immigratsiooniseisund';
+
+  @override
+  String get gdprConsentLegalData =>
+      'Nõustun oma kohtuasja andmete, kodakondsuse ja immigratsiooniseisundi töötlemisega AI poolt (kohustuslik)';
+
+  @override
+  String get gdprConsentVoice =>
+      'Nõustun häälsalvestuse töötlemisega (valikuline)';
+
+  @override
+  String get gdprViewPrivacyPolicy => 'Vaata privaatsuspoliitikat';
 
   @override
   String get legalInformation => 'Õiguslik teave';

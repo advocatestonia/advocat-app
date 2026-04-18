@@ -44,17 +44,17 @@ const PRICES: Record<string, Record<string, PriceEntry>> = {
     monthly: {
       amount: 2999,
       interval: "month",
-      name: "Full Representation — Monthly",
+      name: "Advocat Pro — Monthly",
     },
     yearly: {
       amount: 24999,
       interval: "year",
-      name: "Full Representation — Yearly",
+      name: "Advocat Pro — Yearly",
     },
     founding: {
       amount: 1999,
       interval: "month",
-      name: "Full Representation — Founding Member",
+      name: "Advocat Pro — Founding Member",
       trialDays: 0,
     },
   },

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,7 @@ import '../../../main.dart';
 import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
+import '../../../shared/widgets/gdpr_consent_dialog.dart';
 import '../../../services/demo_data.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../cases/providers/cases_provider.dart';
@@ -32,7 +34,61 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _checkPaymentReturn();
     _checkFirstTimeOnboarding();
+    _checkGdprConsent();
+  }
+
+  Future<void> _checkGdprConsent() async {
+    try {
+      final isDemo = ref.read(isDemoModeProvider);
+      if (isDemo) return; // Skip GDPR dialog in demo mode
+
+      final hasConsent = await hasGdprConsent();
+      if (!hasConsent && mounted) {
+        // Small delay so the screen renders first
+        await Future.delayed(const Duration(milliseconds: 800));
+        if (mounted) {
+          final accepted = await showGdprConsentDialog(context);
+          if (!accepted && mounted) {
+            // User declined — sign them out
+            ref.read(authControllerProvider.notifier).logout();
+          }
+        }
+      }
+    } catch (_) {
+      // Consent check failure — do not block the user
+    }
+  }
+
+  void _checkPaymentReturn() {
+    try {
+      if (!kIsWeb) return;
+      final fragment = Uri.base.fragment;
+      if (fragment.contains('payment-success')) {
+        // Refresh user profile to get updated subscription
+        ref.invalidate(currentUserProvider);
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: const Text('\u2713'),
+                content: const Text(
+                  'Payment successful! Your subscription is now active.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx),
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          }
+        });
+      }
+    } catch (_) {}
   }
 
   Future<void> _checkFirstTimeOnboarding() async {
@@ -161,7 +217,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   final displayName = isDemo
                       ? (AppLocalizations.of(context)?.guestUser ?? 'Guest')
                       : userAsync.valueOrNull?.fullName;
-                  return _GreetingHeader(userName: displayName);
+                  final avatarUrl = isDemo ? null : userAsync.valueOrNull?.avatarUrl;
+                  return _GreetingHeader(userName: displayName, avatarUrl: avatarUrl);
                 },
               ),
             ),
@@ -269,9 +326,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 // ---------------------------------------------------------------------------
 
 class _GreetingHeader extends ConsumerWidget {
-  const _GreetingHeader({this.userName});
+  const _GreetingHeader({this.userName, this.avatarUrl});
 
   final String? userName;
+  final String? avatarUrl;
 
   String _greeting(AppLocalizations l) {
     final hour = DateTime.now().hour;
@@ -399,23 +457,56 @@ class _GreetingHeader extends ConsumerWidget {
         ),
         child: Row(
           children: [
-            // Shield brand icon
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    AppColors.accent.withValues(alpha: 0.15),
-                    AppColors.primary.withValues(alpha: 0.10),
+            // User avatar or time icon
+            if (avatarUrl != null)
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(avatarUrl!),
+                    fit: BoxFit.cover,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.accent.withValues(alpha: 0.15),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
                   ],
                 ),
-                borderRadius: BorderRadius.circular(12),
+              )
+            else
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: _firstName.isNotEmpty
+                      ? const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [AppColors.primary, AppColors.accent],
+                        )
+                      : null,
+                  color: _firstName.isEmpty
+                      ? AppColors.accent.withValues(alpha: 0.15)
+                      : null,
+                ),
+                child: _firstName.isNotEmpty
+                    ? Center(
+                        child: Text(
+                          _firstName[0].toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      )
+                    : Icon(_timeIcon, color: AppColors.accent, size: 22),
               ),
-              child: Icon(_timeIcon, color: AppColors.accent, size: 22),
-            ),
             const SizedBox(width: 10),
             Expanded(
               child: ShaderMask(

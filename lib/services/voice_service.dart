@@ -95,6 +95,10 @@ class VoiceService {
   /// Whether we are using the native JS Web Speech API fallback.
   bool _useNativeWebSpeech = false;
 
+  /// Whether we are using the Whisper STT fallback path.
+  /// Enabled when Web Speech API is unsupported (iOS Safari, Firefox).
+  bool _useWhisperFallback = false;
+
   /// Whether STT init was attempted on web but failed (needs user gesture).
   bool _webSttDeferred = false;
 
@@ -103,6 +107,9 @@ class VoiceService {
 
   final _partialController = StreamController<String>.broadcast();
   String _finalResult = '';
+
+  /// Last text emitted to the partial stream (to avoid duplicate emissions).
+  String _lastEmittedResult = '';
 
   /// Timer used to poll JS STT recognition state on web.
   Timer? _sttPollTimer;
@@ -117,7 +124,15 @@ class VoiceService {
 
   /// Returns true when STT is ready, OR when running on web (lazy init).
   bool get isSttAvailable =>
-      _sttInitialized || _webSttDeferred || _useNativeWebSpeech;
+      _sttInitialized ||
+      _webSttDeferred ||
+      _useNativeWebSpeech ||
+      _useWhisperFallback;
+
+  /// Current microphone RMS level (0-1) during active Whisper recording.
+  /// Useful for waveform visualisation.  Returns 0 when not recording.
+  double get voiceLevel =>
+      (kIsWeb && _isListening) ? web_speech.webGetVoiceLevel() : 0;
 
   VoiceGender get voiceGender => _voiceGender;
 
@@ -131,21 +146,37 @@ class VoiceService {
   Future<bool> initSpeech() async {
     if (_sttInitialized) return true;
 
-    // On web: ALWAYS use native JS Web Speech API. Skip Flutter plugin entirely.
+    // On web: prefer native Web Speech API, fall back to Whisper via
+    // MediaRecorder (iOS Safari, Firefox, or if owner forces Whisper).
     if (kIsWeb) {
       final nativeSupported = web_speech.webSpeechSupported();
+      final whisperSupported = web_speech.webWhisperSupported() &&
+          AppConfig.supabaseUrl.isNotEmpty &&
+          AppConfig.supabaseAnonKey.isNotEmpty;
+
       if (kDebugMode) {
-        debugPrint('STT: web platform, native Speech API supported = $nativeSupported');
+        debugPrint('STT: web platform, native Speech API = $nativeSupported, '
+            'Whisper fallback = $whisperSupported');
       }
 
       if (nativeSupported) {
         _useNativeWebSpeech = true;
+        _useWhisperFallback = false;
         _webSttDeferred = false;
-        _sttInitialized = false; // Don't use plugin on web
+        _sttInitialized = false;
         return true;
       }
 
-      // Web Speech API not supported (e.g. Firefox, iOS Safari)
+      if (whisperSupported) {
+        // iOS Safari, Firefox, or any browser without Web Speech API but
+        // with MediaRecorder — use Whisper over HTTPS.
+        _useNativeWebSpeech = false;
+        _useWhisperFallback = true;
+        _webSttDeferred = false;
+        _sttInitialized = false;
+        return true;
+      }
+
       _webSttDeferred = false;
       return false;
     }
@@ -300,9 +331,13 @@ class VoiceService {
 
     final sttLocale = _sttLocaleMap[langCode] ?? 'en-US';
 
-    // ── Web: ALWAYS use native JS Speech API ──
+    // ── Web: choose path based on platform support ──
     if (kIsWeb) {
-      _beginNativeWebListening(sttLocale);
+      if (_useWhisperFallback) {
+        _beginWhisperListening(langCode);
+      } else {
+        _beginNativeWebListening(sttLocale);
+      }
       return _partialController.stream;
     }
 
@@ -345,6 +380,7 @@ class VoiceService {
   /// via `getUserMedia` to ensure the permission prompt fires reliably.
   void _beginNativeWebListening(String sttLocale) {
     _finalResult = '';
+    _lastEmittedResult = '';
     _isListening = true;
 
     if (kDebugMode) {
@@ -362,6 +398,110 @@ class VoiceService {
     }).catchError((_) {
       // Fallback: try anyway.
       _startNativeRecognition(sttLocale);
+    });
+  }
+
+  /// Start Whisper STT via MediaRecorder + Supabase whisper-stt function.
+  ///
+  /// This is the iOS-Safari-and-Firefox-compatible path.  Runs entirely
+  /// in JS (see `web/speech.js::advocatWhisperStart`) and sets the same
+  /// `_advocatSpeechResult` / `_advocatSpeechActive` globals that the
+  /// native Web Speech path uses, so the Dart poller treats both paths
+  /// identically.
+  void _beginWhisperListening(String langCode) {
+    _finalResult = '';
+    _lastEmittedResult = '';
+    _isListening = true;
+
+    if (kDebugMode) {
+      debugPrint('STT: starting Whisper fallback (lang=$langCode)');
+    }
+
+    // `language = null` → Whisper auto-detects, which is critical for
+    // users who switch between ET/RU/EN mid-sentence.  Passing a fixed
+    // language locks the model into that locale and hurts WER.  For very
+    // short utterances (single command) the auto-detect works poorly, so
+    // we pass the UI's language as a HINT only.
+    final hint = langCode;
+
+    web_speech
+        .webWhisperStart(
+      supabaseUrl: AppConfig.supabaseUrl,
+      anonKey: AppConfig.supabaseAnonKey,
+      language: hint,
+      maxSeconds: 15,
+      silenceMs: 1500,
+    )
+        .then((started) {
+      if (!started) {
+        _isListening = false;
+        final error = web_speech.webSpeechGetError();
+        _partialController
+            .addError(_humanizeWhisperError(error.isEmpty ? 'start_failed' : error));
+        return;
+      }
+      _pollWhisperResults();
+    }).catchError((e) {
+      _isListening = false;
+      _partialController.addError('Speech error: $e');
+    });
+  }
+
+  String _humanizeWhisperError(String err) {
+    switch (err) {
+      case 'mic_permission_denied':
+        return 'Microphone permission was denied. Please allow microphone '
+            'access in your browser settings.';
+      case 'no_media_devices':
+        return 'This browser cannot access the microphone.';
+      case 'whisper_not_configured':
+        return 'Voice transcription is not configured. Please contact support.';
+      case 'whisper_fetch_failed':
+        return 'Voice transcription service is unreachable. Check your connection.';
+      case 'no_audio':
+        return 'No speech detected. Please try again.';
+      default:
+        return 'Speech error: $err';
+    }
+  }
+
+  /// Poll JS state during Whisper recording.  Whisper produces a single
+  /// final transcript when recording stops (not interim), so this poller
+  /// waits for `_advocatSpeechFinal = true`.
+  void _pollWhisperResults() {
+    _sttPollTimer?.cancel();
+    _sttPollTimer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
+      if (!_isListening) {
+        timer.cancel();
+        return;
+      }
+
+      final isActive = web_speech.webSpeechIsActive();
+      final error = web_speech.webSpeechGetError();
+      final isFinal = web_speech.webSpeechIsFinal();
+      final result = web_speech.webSpeechGetResult();
+
+      // Always mirror interim voice level to partial consumers by
+      // re-emitting the current text (may be empty before final).
+      if (result.isNotEmpty && result != _lastEmittedResult) {
+        _lastEmittedResult = result;
+        _finalResult = result;
+        _partialController.add(result);
+      }
+
+      if (error.isNotEmpty && error != 'done') {
+        _partialController.addError(_humanizeWhisperError(error));
+        _isListening = false;
+        timer.cancel();
+        return;
+      }
+
+      if (isFinal || !isActive) {
+        // Recording complete.
+        _finalResult = result;
+        _isListening = false;
+        timer.cancel();
+      }
     });
   }
 
@@ -427,7 +567,10 @@ class VoiceService {
 
       if (result.isNotEmpty) {
         _finalResult = result;
-        _partialController.add(result);
+        if (result != _lastEmittedResult) {
+          _lastEmittedResult = result;
+          _partialController.add(result);
+        }
       }
 
       // Only stop if JS side has deactivated (real error or user stop).
@@ -452,13 +595,16 @@ class VoiceService {
     _sttPollTimer = null;
 
     if (_isListening) {
-      if (kIsWeb && _useNativeWebSpeech) {
+      if (kIsWeb && _useWhisperFallback) {
+        web_speech.webWhisperStop();
+      } else if (kIsWeb && _useNativeWebSpeech) {
         web_speech.webSpeechStop();
       } else {
         await _stt.stop();
       }
       _isListening = false;
     }
+    _lastEmittedResult = '';
     return _finalResult;
   }
 
@@ -470,12 +616,25 @@ class VoiceService {
       AppConfig.supabaseUrl.isNotEmpty &&
       AppConfig.supabaseAnonKey.isNotEmpty;
 
+  /// Pre-warm the Google TTS Edge Function to avoid cold start delays.
+  /// Fire-and-forget: speaks a dot then immediately stops playback.
+  Future<void> warmUp() async {
+    if (!_googleTtsAvailable || !_ttsInitialized) return;
+    try {
+      final ok = await _speakWithGoogleTTS('.', langCode: 'en');
+      if (ok) {
+        // Stop immediately — we only wanted to wake up the Edge Function.
+        await stopSpeaking();
+      }
+    } catch (_) {}
+  }
+
   /// Speak the given text aloud.
   /// [langCode] should be one of the 17 app language codes.
   ///
   /// Priority order:
   /// 1. Google TTS (cheaper, better Estonian/multilingual support)
-  /// 2. ElevenLabs premium TTS (fallback for premium voice quality)
+  /// 2. Google TTS retry after 500ms (transient error recovery)
   /// 3. Browser SpeechSynthesis (last resort)
   ///
   /// Never fails silently — always resets [_isSpeaking] on exit.
@@ -502,16 +661,17 @@ class VoiceService {
         }
       }
 
-      // 2. Try ElevenLabs as premium fallback.
-      if (_elevenLabsAvailable) {
+      // 2. Retry Google TTS after short delay (transient errors).
+      if (_googleTtsAvailable) {
+        await Future.delayed(const Duration(milliseconds: 500));
         try {
-          final ok = await _speakWithElevenLabs(text, langCode: langCode);
+          final ok = await _speakWithGoogleTTS(text, langCode: langCode);
           if (ok) return;
         } catch (e) {
-          if (kDebugMode) debugPrint('TTS: ElevenLabs exception: $e');
+          if (kDebugMode) debugPrint('TTS: Google TTS retry failed: $e');
         }
         if (kDebugMode) {
-          debugPrint('TTS: ElevenLabs failed, falling back to browser TTS');
+          debugPrint('TTS: Google TTS retry failed, falling back to browser TTS');
         }
       }
 
@@ -574,7 +734,7 @@ class VoiceService {
   void _pollCloudTtsSpeaking() {
     _ttsPollTimer?.cancel();
     _ttsPollTimer =
-        Timer.periodic(const Duration(milliseconds: 200), (timer) {
+        Timer.periodic(const Duration(milliseconds: 100), (timer) {
       if (!web_speech.webTtsIsSpeaking()) {
         _isSpeaking = false;
         timer.cancel();
@@ -628,7 +788,7 @@ class VoiceService {
   void _pollElevenLabsSpeaking() {
     _ttsPollTimer?.cancel();
     _ttsPollTimer =
-        Timer.periodic(const Duration(milliseconds: 200), (timer) {
+        Timer.periodic(const Duration(milliseconds: 100), (timer) {
       if (!web_speech.webTtsIsSpeaking()) {
         _isSpeaking = false;
         timer.cancel();

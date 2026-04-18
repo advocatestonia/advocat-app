@@ -1,0 +1,269 @@
+// =============================================================================
+// Supabase Edge Function: check-vehicle (P0-2)
+// =============================================================================
+//
+// Honest contract:
+//
+//   • Estonia (EE): queries the public LKF (Liikluskindlustuse Fond)
+//     insurance-lookup endpoint by plate number. If successful, returns
+//     insurance validity + inspection portal link. If LKF is unreachable
+//     or the plate is unknown, returns `found:false` with a source link.
+//
+//   • Finland, Latvia, Lithuania, Germany, Poland, Sweden: NO scraping.
+//     Returns `{found:false, isPaidSource, sourceUrl, language}` so the
+//     client can redirect the user to the official registry. Several of
+//     these require authentication or paid access — we tell the truth.
+//
+// The function never fabricates vehicle data. Any make/model/year fields
+// present in the response came from a real registry lookup.
+// =============================================================================
+
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+import {
+  corsHeaders,
+  jsonError,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
+
+interface CountryRegistry {
+  code: string;
+  sourceUrl: string;
+  sourceName: string;
+  language: string;
+  isPaidSource: boolean;
+  note: string;
+}
+
+const REGISTRIES: Record<string, CountryRegistry> = {
+  EE: {
+    code: "EE",
+    sourceUrl: "https://eteenindus.mnt.ee/",
+    sourceName: "Transpordiamet e-teenindus",
+    language: "et",
+    isPaidSource: false,
+    note:
+      "Public LKF insurance lookup + Transpordiamet portal (auth required for full data).",
+  },
+  FI: {
+    code: "FI",
+    sourceUrl: "https://www.traficom.fi/fi/asiointi/ajoneuvon-rekisteritiedot",
+    sourceName: "Traficom — ajoneuvon tiedot",
+    language: "fi",
+    isPaidSource: false,
+    note: "Free lookup on traficom.fi, strong authentication required.",
+  },
+  LV: {
+    code: "LV",
+    sourceUrl: "https://e.csdd.lv/",
+    sourceName: "CSDD e-pakalpojumi",
+    language: "lv",
+    isPaidSource: true,
+    note: "CSDD paid vehicle history report (~€5–10 per check).",
+  },
+  LT: {
+    code: "LT",
+    sourceUrl: "https://www.regitra.lt/",
+    sourceName: "Regitra",
+    language: "lt",
+    isPaidSource: true,
+    note: "Regitra paid technical inspection lookup.",
+  },
+  DE: {
+    code: "DE",
+    sourceUrl:
+      "https://www.kba.de/DE/Themen/ZentraleRegister/ZFZR/zfzr_node.html",
+    sourceName: "KBA Zentrales Fahrzeugregister",
+    language: "de",
+    isPaidSource: true,
+    note:
+      "KBA central registry — licensed access only. Use TÜV/DEKRA portals for inspection status.",
+  },
+  PL: {
+    code: "PL",
+    sourceUrl: "https://historiapojazdu.gov.pl/",
+    sourceName: "Historia Pojazdu",
+    language: "pl",
+    isPaidSource: false,
+    note: "Free government vehicle history lookup, requires VIN.",
+  },
+  SE: {
+    code: "SE",
+    sourceUrl: "https://fu-regnr.transportstyrelsen.se/extweb/",
+    sourceName: "Transportstyrelsen fordonsuppgifter",
+    language: "sv",
+    isPaidSource: false,
+    note: "Free lookup on Transportstyrelsen, registration-number based.",
+  },
+};
+
+// Normalise any country identifier (2-letter code, full name in EN/native)
+// to a canonical ISO-3166-1 alpha-2 key used in REGISTRIES.
+function normalizeCountry(raw: string | undefined | null): string {
+  if (!raw) return "EE";
+  const s = raw.trim().toLowerCase();
+  if (s.length === 2) return s.toUpperCase();
+  const aliases: Record<string, string> = {
+    estonia: "EE", eesti: "EE",
+    finland: "FI", suomi: "FI",
+    latvia: "LV", latvija: "LV",
+    lithuania: "LT", lietuva: "LT",
+    germany: "DE", deutschland: "DE",
+    poland: "PL", polska: "PL",
+    sweden: "SE", sverige: "SE",
+  };
+  return aliases[s] ?? "EE";
+}
+
+// Basic plate validation — we don't accept obviously invalid input.
+function isPlateValid(plate: string): boolean {
+  if (!plate || plate.length < 3 || plate.length > 12) return false;
+  return /^[A-Za-zÅÄÖÕÜа-яА-Я0-9\-\s]+$/.test(plate);
+}
+
+// Estonia-specific: check insurance via the LKF public endpoint.
+// The endpoint is a JSON-RPC style POST. We wrap any error so callers
+// still get a meaningful response.
+async function checkEstonianInsurance(plate: string): Promise<{
+  insuranceValid: boolean | null;
+  insurer: string | null;
+  raw: unknown;
+}> {
+  try {
+    // Public LKF lookup (no auth). Uses a different endpoint than the
+    // private claims portal; returns { data: { insurer, validUntil } }.
+    const url =
+      "https://www.lkf.ee/api/public/insurance-lookup?reg=" +
+      encodeURIComponent(plate.replace(/\s+/g, "").toUpperCase());
+    const response = await fetch(url, {
+      headers: {
+        "Accept": "application/json",
+        "User-Agent":
+          "Mozilla/5.0 (compatible; AdvocatBot/1.0; +https://advocat.ee)",
+      },
+      // Abort after 5 s so we never block the user longer than necessary.
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!response.ok) {
+      return { insuranceValid: null, insurer: null, raw: null };
+    }
+    const body = await response.json();
+    const insurer: string | null = body?.insurer ?? body?.data?.insurer ?? null;
+    const validUntil: string | null =
+      body?.validUntil ?? body?.data?.validUntil ?? null;
+    const stillValid = validUntil
+      ? new Date(validUntil) > new Date()
+      : !!insurer;
+    return {
+      insuranceValid: stillValid,
+      insurer,
+      raw: body,
+    };
+  } catch (_) {
+    return { insuranceValid: null, insurer: null, raw: null };
+  }
+}
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+  if (req.method !== "POST") {
+    return jsonError("Method not allowed", 405);
+  }
+
+  // v24.2 (OMEGA-5): JWT + 30 req/min/user
+  const gate = await requireUserWithRateLimit(req, {
+    bucket: "check-vehicle",
+    maxPerMinute: 30,
+  });
+  if (gate.kind === "deny") return gate.response;
+
+  try {
+    const { plate_number, country } = await req.json().catch(() => ({}));
+
+    if (!plate_number || typeof plate_number !== "string") {
+      return json({ error: "plate_number required" }, 400);
+    }
+    if (!isPlateValid(plate_number)) {
+      return json({
+        error: "Invalid plate format",
+        plate: plate_number,
+      }, 400);
+    }
+
+    const iso = normalizeCountry(country);
+    const registry = REGISTRIES[iso];
+    if (!registry) {
+      return json({
+        found: false,
+        plate: plate_number,
+        country: iso,
+        message:
+          `Country ${iso} is not supported. Use EE, FI, LV, LT, DE, PL, or SE.`,
+        supportedCountries: Object.keys(REGISTRIES),
+      }, 200);
+    }
+
+    // Non-Estonian countries: return redirect info only.
+    if (iso !== "EE") {
+      return json({
+        found: false,
+        plate: plate_number,
+        country: iso,
+        sourceUrl: registry.sourceUrl,
+        sourceName: registry.sourceName,
+        language: registry.language,
+        isPaidSource: registry.isPaidSource,
+        message: registry.note,
+      }, 200);
+    }
+
+    // Estonia — attempt the public LKF insurance lookup.
+    const insurance = await checkEstonianInsurance(plate_number);
+
+    const insuranceLookupSucceeded = insurance.insuranceValid !== null;
+    if (!insuranceLookupSucceeded) {
+      return json({
+        found: false,
+        plate: plate_number,
+        country: iso,
+        sourceUrl: registry.sourceUrl,
+        sourceName: registry.sourceName,
+        language: registry.language,
+        isPaidSource: registry.isPaidSource,
+        message:
+          "Estonian Transpordiamet does not publish a free public vehicle-data API. " +
+          "Insurance status could not be verified automatically — please use the portal " +
+          "links below for manual lookup.",
+        inspectionPortal: "https://eteenindus.mnt.ee/",
+        insurancePortal: "https://www.lkf.ee/kindlustuse-kontroll",
+      }, 200);
+    }
+
+    return json({
+      found: true,
+      plate: plate_number.toUpperCase(),
+      country: iso,
+      insuranceValid: insurance.insuranceValid,
+      insurer: insurance.insurer,
+      sourceUrl: registry.sourceUrl,
+      sourceName: registry.sourceName,
+      language: registry.language,
+      isPaidSource: registry.isPaidSource,
+      inspectionPortal: "https://eteenindus.mnt.ee/",
+      insurancePortal: "https://www.lkf.ee/kindlustuse-kontroll",
+      note:
+        "Insurance status from LKF public lookup. Make / model / year / mileage " +
+        "require authenticated access to Transpordiamet (eteenindus.mnt.ee).",
+    }, 200);
+  } catch (error) {
+    return json({ error: String(error) }, 500);
+  }
+});
+
+function json(obj: unknown, status = 200) {
+  return new Response(JSON.stringify(obj), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}

@@ -48,6 +48,18 @@ class AppLocalizationsSv extends AppLocalizations {
   String get analyzing => 'Analyserar';
 
   @override
+  String get aiAnalyzing => 'AI is analyzing';
+
+  @override
+  String get speakIntoMicHint =>
+      'Speak into the microphone. Make sure microphone access is enabled.';
+
+  @override
+  String freeLimitReached(int count) {
+    return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
+  }
+
+  @override
   String get andWord => ' och ';
 
   @override
@@ -317,7 +329,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get free => 'Gratis';
 
   @override
-  String get fullDefense => 'Fullständigt Försvar';
+  String get fullDefense => 'Advocat Pro';
 
   @override
   String get fullName => 'Fullständigt namn';
@@ -1580,6 +1592,25 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get gdprConsentAnalytics =>
       'I agree to analytics to improve the service (optional)';
+
+  @override
+  String get gdprArt9Intro =>
+      'This app processes special category personal data under GDPR Article 9, including:';
+
+  @override
+  String get gdprSpecialLegalCases =>
+      'Your legal case details and court documents';
+
+  @override
+  String get gdprSpecialNationality => 'Nationality and immigration status';
+
+  @override
+  String get gdprConsentLegalData =>
+      'I consent to the processing of my legal case data, nationality, and immigration status by AI (required)';
+
+  @override
+  String get gdprConsentVoice =>
+      'I consent to voice recording processing (optional)';
 
   @override
   String get gdprViewPrivacyPolicy => 'View Privacy Policy';

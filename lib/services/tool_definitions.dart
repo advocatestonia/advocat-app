@@ -352,6 +352,279 @@ abstract final class ToolDefinitions {
         'required': ['screen'],
       },
     },
+    // ── v24.1 additions: Claude-Code-parity tools ─────────────────────────
+    {
+      'name': 'send_email',
+      'description':
+          'Send an email on behalf of the user. ALWAYS requires explicit user '
+              'approval — a preview dialog is shown and the user must tap '
+              '"Send" before the email is actually dispatched. Never sends '
+              'without confirmation. Use this when the user explicitly asks to '
+              'send an email to someone (authority, court, lawyer, employer).',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'to': {
+            'type': 'string',
+            'description': 'Recipient email address.',
+          },
+          'subject': {
+            'type': 'string',
+            'description': 'Email subject line.',
+          },
+          'body': {
+            'type': 'string',
+            'description':
+                'Full email body in plain text or simple markdown. Include '
+                    'greeting and signature. Use the user\'s language.',
+          },
+          'cc': {
+            'type': 'string',
+            'description': 'Optional Cc address.',
+          },
+          'case_id': {
+            'type': 'string',
+            'description': 'Related case ID for logging to correspondence.',
+          },
+        },
+        'required': ['to', 'subject', 'body'],
+      },
+    },
+    {
+      'name': 'read_document',
+      'description':
+          'Read the full extracted text (OCR or upload) of a document the '
+              'user previously added to their vault or a case. Returns OCR '
+              'text, file name, category and language. Use before '
+              'analyze_contract or whenever the user refers to a document by '
+              'name or asks you to look at it.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'document_id': {
+            'type': 'string',
+            'description':
+                'UUID of the document. Get it via list_documents first if '
+                    'unsure.',
+          },
+        },
+        'required': ['document_id'],
+      },
+    },
+    {
+      'name': 'list_documents',
+      'description':
+          'List the documents the user has uploaded. Optionally filter by '
+              'case_id. Returns file name, short summary, upload date and id '
+              'for each document. Use when the user asks "what documents do I '
+              'have" or you need to pick one before read_document.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'case_id': {
+            'type': 'string',
+            'description':
+                'Optional case ID to filter documents by. Omit for all user '
+                    'documents.',
+          },
+          'limit': {
+            'type': 'integer',
+            'description': 'Maximum number of documents. Default 20.',
+          },
+        },
+        'required': <String>[],
+      },
+    },
+    {
+      'name': 'list_cases',
+      'description':
+          'List all legal cases belonging to the user, newest first. Returns '
+              'id, title, type, status, last_activity for each. Use when the '
+              'user asks about their cases or you need to find a case to act '
+              'on.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'status': {
+            'type': 'string',
+            'description':
+                'Optional filter: active, closed, archived. Omit for all.',
+          },
+        },
+        'required': <String>[],
+      },
+    },
+    {
+      'name': 'search_estonian_law',
+      'description':
+          'Semantic + paragraph lookup in the Estonian legal corpus (HMS, '
+              'HKMS, PKS, TLS, KarS, VMS, VÕS, PärS, VõrdKS, MKS, TuMS, KMS, '
+              'TsMS, KrMS, ÄS, IKS, LS, LKindlS, TsÜS, AsjS). If [paragraph] '
+              'is given (e.g. "§ 121") it returns the exact text of that '
+              'section. Otherwise performs keyword search across the corpus '
+              'and returns the top 5 matching sections with citations.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'query': {
+            'type': 'string',
+            'description':
+                'The legal question or keywords (e.g. "koondamise hüvitis", '
+                    '"срок апелляции deportации", "fraud under criminal code").',
+          },
+          'act': {
+            'type': 'string',
+            'description':
+                'Optional act abbreviation to limit the search (e.g. KarS, '
+                    'HMS, TLS, MKS).',
+          },
+          'paragraph': {
+            'type': 'string',
+            'description':
+                'Optional direct § reference like "§ 121" or "§ 40 lg 3" to '
+                    'retrieve the exact wording.',
+          },
+        },
+        'required': ['query'],
+      },
+    },
+    {
+      'name': 'search_finnish_law',
+      'description':
+          'Semantic + paragraph lookup in the Finnish legal corpus '
+              '(Ulkomaalaislaki, Rikoslaki, Rikosvahinkolaki, '
+              'Oikeudenkäymiskaari including ROL 3:1, Hallintolaki). Use this '
+              'ANY time the case jurisdiction is FI, the user mentions a '
+              'Finnish statute, or the conversation is about a Finnish '
+              'deportation (käännyttäminen), asylum, asianomistaja rights or '
+              'Valtiokonttori compensation claim. The bundled corpus is a '
+              'CURATED subset — if a specific section is not present, say so '
+              'and point the user to finlex.fi.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'query': {
+            'type': 'string',
+            'description':
+                'The legal question or keywords (e.g. "törkeä pahoinpitely", '
+                    '"valitusaika hallinto-oikeuteen", "asianomistajan '
+                    'vaatimus", "Valtiokonttori kärsimys").',
+          },
+          'act': {
+            'type': 'string',
+            'description':
+                'Optional act name to limit search: Ulkomaalaislaki, '
+                    'Rikoslaki, Rikosvahinkolaki, Oikeudenkaymiskaari, '
+                    'Hallintolaki.',
+          },
+          'paragraph': {
+            'type': 'string',
+            'description':
+                'Optional direct paragraph reference like "RL 21:6", '
+                    '"§ 168", or "ROL 3:1".',
+          },
+        },
+        'required': ['query'],
+      },
+    },
+    {
+      'name': 'create_deadline',
+      'description':
+          'Create a new legal deadline in the user\'s agenda. Use when the '
+              'user mentions a date that must not be missed (appeal deadline, '
+              'court hearing, notary appointment). Always ask the user to '
+              'confirm the date you parsed.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'title': {
+            'type': 'string',
+            'description':
+                'Short human-readable title (e.g. "Appeal deadline for '
+                    'deportation decision").',
+          },
+          'due_date': {
+            'type': 'string',
+            'description': 'ISO-8601 date (YYYY-MM-DD) for when it is due.',
+          },
+          'case_id': {
+            'type': 'string',
+            'description': 'Optional case ID to link the deadline to.',
+          },
+          'description': {
+            'type': 'string',
+            'description': 'Optional longer explanation.',
+          },
+          'reminder_days_before': {
+            'type': 'integer',
+            'description':
+                'How many days before the deadline to warn. Default 3.',
+          },
+        },
+        'required': ['title', 'due_date'],
+      },
+    },
+    {
+      'name': 'update_case',
+      'description':
+          'Update an existing case with new metadata (title, description, '
+              'status, court_case_number, migri_reference_number). Use when '
+              'the user gives you new information about a case.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'case_id': {
+            'type': 'string',
+            'description': 'UUID of the case to update.',
+          },
+          'title': {'type': 'string'},
+          'description': {'type': 'string'},
+          'status': {
+            'type': 'string',
+            'description':
+                'One of: active, pending, closed, archived.',
+          },
+          'court_case_number': {'type': 'string'},
+          'migri_reference_number': {'type': 'string'},
+        },
+        'required': ['case_id'],
+      },
+    },
+    {
+      'name': 'get_user_profile',
+      'description':
+          'Return the current user\'s profile: name, email, preferred '
+              'language, country, subscription plan. Useful when the user '
+              'asks "what do you know about me" or when you need to decide '
+              'which jurisdiction to apply.',
+      'input_schema': {
+        'type': 'object',
+        'properties': <String, Object>{},
+        'required': <String>[],
+      },
+    },
+    {
+      'name': 'analyze_contract',
+      'description':
+          'Deep-analyze a contract that the user has uploaded. Extracts '
+              'parties, obligations, payment terms, penalties, duration, '
+              'termination clauses, jurisdiction and flags risky clauses '
+              '(unlimited liability, auto-renewal, unilateral changes). Use '
+              'when the user shares a contract and asks you to "check" or '
+              '"review" it.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'document_id': {
+            'type': 'string',
+            'description':
+                'UUID of the contract document. Use list_documents to find '
+                    'it if unsure.',
+          },
+        },
+        'required': ['document_id'],
+      },
+    },
   ];
 
   /// Returns only the tool names as a list.

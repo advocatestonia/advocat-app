@@ -7,10 +7,12 @@ abstract final class AppColors {
   static const Color primaryLight = Color(0xFF2A4A7F);
   static const Color primaryDark = Color(0xFF0F2240);
 
-  // Accent / teal
-  static const Color accent = Color(0xFF0D9488);
-  static const Color accentLight = Color(0xFF14B8A6);
-  static const Color accentDark = Color(0xFF0A7069);
+  // Accent / teal — shifted darker for WCAG AA (4.5:1 white text on teal)
+  static const Color accent = Color(0xFF0B7A70);        // 4.6:1 white — AA normal
+  static const Color accentLight = Color(0xFF0D9488);   // was "accent" — now AA-large only
+  static const Color accentDark = Color(0xFF074F49);
+  // Tint for non-text decoration only (do NOT place white text on this):
+  static const Color accentTint = Color(0xFF14B8A6);    // bg tints, icons on dark bg
 
   // Neutrals — warm tones matching landing page (#F0EEEB)
   static const Color background = Color(0xFFF0EEEB);
@@ -21,15 +23,23 @@ abstract final class AppColors {
   // Text
   static const Color textPrimary = Color(0xFF0F172A);
   static const Color textSecondary = Color(0xFF475569);
-  static const Color textTertiary = Color(0xFF64748B);
+  // textTertiary raised to match textSecondary (6.54:1 AA). For decorative
+  // labels that need a visually lighter variant, pair with a larger font.
+  static const Color textTertiary = Color(0xFF475569);
   static const Color textOnPrimary = Color(0xFFFFFFFF);
 
-  // Semantic
-  static const Color success = Color(0xFF16A34A);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color error = Color(0xFFDC2626);
-  static const Color info = Color(0xFF2563EB);
+  // Semantic — all shifted for WCAG AA on light bg
+  static const Color success = Color(0xFF14532D);       // 10.5:1
+  static const Color warning = Color(0xFF92400E);       // 7.3:1
+  static const Color error = Color(0xFFB91C1C);         // 5.8:1
+  static const Color info = Color(0xFF1E3A8A);          // 9.1:1
   static const Color infoDark = Color(0xFF1D4ED8);
+
+  // Semantic background tints (safe for colored surface + dark text on top)
+  static const Color successBg = Color(0xFFD1FAE5);
+  static const Color warningBg = Color(0xFFFFFBEB);
+  static const Color errorBg = Color(0xFFFEE2E2);
+  static const Color infoBg = Color(0xFFDBEAFE);
 
   // Dark mode overrides
   static const Color darkBackground = Color(0xFF0F172A);

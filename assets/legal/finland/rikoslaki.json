@@ -1,0 +1,74 @@
+{
+  "act": "Rikoslaki",
+  "name": "Rikoslaki (39/1889)",
+  "source": "https://www.finlex.fi/fi/laki/ajantasa/1889/18890039001",
+  "fetched_at": "2026-04-18T00:00:00Z",
+  "jurisdiction": "FI",
+  "language": "fi",
+  "note": "Curated subset of Finnish Criminal Code sections relevant to the Sulga case (assault, aggravated assault, injured-party rights). For full text, follow the source URL.",
+  "sections": [
+    {
+      "paragraph": "RL 21:1",
+      "title": "Tappo",
+      "body": "Joka tappaa toisen, on tuomittava taposta vankeuteen määräajaksi, vähintään kahdeksaksi vuodeksi. Yritys on rangaistava.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 21:5",
+      "title": "Pahoinpitely",
+      "body": "Joka tekee toiselle ruumiillista väkivaltaa taikka tällaista väkivaltaa tekemättä vahingoittaa toisen terveyttä, aiheuttaa toiselle kipua tai saattaa toisen tiedottomaan tai muuhun vastaavaan tilaan, on tuomittava pahoinpitelystä sakkoon tai vankeuteen enintään kahdeksi vuodeksi. Yritys on rangaistava.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 21:6",
+      "title": "Törkeä pahoinpitely",
+      "body": "Jos pahoinpitelyssä aiheutetaan toiselle vaikea ruumiinvamma, vakava sairaus tai hengenvaarallinen tila, rikos tehdään erityisen raa'alla tai julmalla tavalla, tai käytetään ampuma- tai teräasetta taikka muuta niihin rinnastettavaa hengenvaarallista välinettä, ja rikos on myös kokonaisuutena arvostellen törkeä, rikoksentekijä on tuomittava törkeästä pahoinpitelystä vankeuteen vähintään yhdeksi ja enintään kymmeneksi vuodeksi. Yritys on rangaistava.",
+      "subsections": [
+        {"id": "(1)", "text": "Vaikean ruumiinvamman tunnusmerkki täyttyy esimerkiksi luunmurtumilla, pysyvällä arpeutumisella tai elimen vaurioitumisella."},
+        {"id": "(2)", "text": "Törkeän pahoinpitelyn rangaistuskäytäntö Korkeimmassa oikeudessa: tyypillisesti 1,5–4 vuotta ehdotonta vankeutta riippuen vammojen vakavuudesta ja teon olosuhteista."}
+      ]
+    },
+    {
+      "paragraph": "RL 21:7",
+      "title": "Lievä pahoinpitely",
+      "body": "Jos pahoinpitely, huomioon ottaen väkivallan, ruumiillisen koskemattomuuden loukkauksen tai terveyden vahingoittamisen vähäisyys taikka muut rikokseen liittyvät seikat, on kokonaisuutena arvostellen vähäinen, rikoksentekijä on tuomittava lievästä pahoinpitelystä sakkoon.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 25:7",
+      "title": "Laiton uhkaus",
+      "body": "Joka nostaa aseen toista vastaan tai muulla tavoin uhkaa toista rikoksella sellaisissa olosuhteissa, että uhatulla on perusteltu syy omasta tai toisen puolesta pelätä henkilökohtaisen turvallisuuden tai omaisuuden olevan vakavassa vaarassa, on tuomittava, jollei teosta muualla laissa säädetä ankarampaa rangaistusta, laittomasta uhkauksesta sakkoon tai vankeuteen enintään kahdeksi vuodeksi.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 25:9",
+      "title": "Vapaudenriisto",
+      "body": "Joka sulkemalla sisään, sitomalla, kuljettamalla johonkin tai muulla tavoin oikeudettomasti riistää toiselta liikkumisvapauden tai eristää toisen tämän ympäristöstä, on tuomittava vapaudenriistosta sakkoon tai vankeuteen enintään kahdeksi vuodeksi.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 5:3",
+      "title": "Asianomistaja",
+      "body": "Asianomistaja on se, jota vastaan rikos on kohdistunut tai jolle rikoksen johdosta on välittömästi aiheutunut vahinkoa. Asianomistajalla on oikeus esittää rangaistusvaatimus, yhtyä syyttäjän nostamaan syytteeseen ja esittää yksityisoikeudellisia vaatimuksia.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 5:10",
+      "title": "Asianomistajan syyteoikeus",
+      "body": "Asianomistaja saa nostaa syytteen itse vain, jos syyttäjä on päättänyt jättää syytteen nostamatta tai esitutkinnan toimittamatta. Poikkeuksena ovat asianomistajarikokset, joissa syyttäjä voi nostaa syytteen vain asianomistajan vaatimuksesta.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 6:4",
+      "title": "Rangaistuksen mittaamisen yleinen periaate",
+      "body": "Rangaistus on mitattava niin, että se on oikeudenmukaisessa suhteessa rikoksen vahingollisuuteen ja vaarallisuuteen, teon vaikuttimiin sekä rikoksesta ilmenevään muuhun tekijän syyllisyyteen.",
+      "subsections": []
+    },
+    {
+      "paragraph": "RL 7:3",
+      "title": "Yhteinen rangaistus",
+      "body": "Jos joku on tuomittava samalla kertaa kahdesta tai useammasta rikoksesta, joista on säädetty vankeutta, hänelle tuomitaan yhteinen vankeusrangaistus. Yhteisen rangaistuksen enimmäisaika ei saa ylittää ankarimman rangaistuksen enimmäismäärää enempää kuin kolmella vuodella.",
+      "subsections": []
+    }
+  ]
+}

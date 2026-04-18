@@ -300,7 +300,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             : () => _handlePlanSelect(context, ref, 'basic'),
       ),
 
-      // Full Representation (premium)
+      // Advocat Pro (premium)
       _PlanCard(
         planId: 'premium',
         title: l10n.fullDefense,
@@ -377,11 +377,28 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.checkingPurchases)),
     );
-    await Future<void>.delayed(const Duration(seconds: 1));
+
+    // Re-fetch profile from Supabase to check current subscription
+    ref.invalidate(currentUserProvider);
+
+    // Wait for the profile to reload
+    await Future<void>.delayed(const Duration(seconds: 2));
+
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.noPreviousPurchases)),
-      );
+      final user = ref.read(currentUserProvider).valueOrNull;
+      final tier = user?.subscriptionTier;
+      if (tier != null && tier != SubscriptionTier.free) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Subscription restored: ${tier.name}'),
+            backgroundColor: AppColors.accent,
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.noPreviousPurchases)),
+        );
+      }
     }
   }
 }

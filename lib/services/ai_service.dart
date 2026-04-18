@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
+import 'package:flutter/foundation.dart' show kDebugMode, visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,11 +7,121 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../config/app_config.dart';
 import '../models/case_model.dart';
 import 'claude_service.dart';
+import 'supabase_service.dart';
 import 'system_prompts.dart';
+
+// ---------------------------------------------------------------------------
+// Quota typed response (P0-3)
+// ---------------------------------------------------------------------------
+
+/// Result of a `check-ai-quota` Edge Function call. Used by both the
+/// non-streaming and streaming chat paths before any message is sent to
+/// Claude. The struct is intentionally small so it can be cached in memory
+/// for 60 s without leaking.
+class AiQuota {
+  const AiQuota({
+    required this.allowed,
+    required this.remaining,
+    required this.limit,
+    required this.plan,
+    this.used = 0,
+    this.unlimited = false,
+  });
+
+  final bool allowed;
+
+  /// `null` means unlimited (pro).
+  final int? remaining;
+
+  /// Monthly free-tier limit, or -1 for pro.
+  final int limit;
+
+  /// `'free'` or `'pro'`.
+  final String plan;
+
+  final int used;
+  final bool unlimited;
+
+  bool get isPro => plan == 'pro' || unlimited || limit < 0;
+
+  factory AiQuota.fromApi(Map<String, dynamic> api) {
+    final plan = (api['plan'] as String?) ?? 'free';
+    final unlimited = (api['unlimited'] as bool?) ?? false;
+    final remaining = api['remaining'];
+    return AiQuota(
+      allowed: (api['allowed'] as bool?) ?? false,
+      remaining: remaining is int ? remaining : null,
+      limit: (api['limit'] as int?) ?? 50,
+      plan: plan,
+      used: (api['used'] as int?) ?? 0,
+      unlimited: unlimited,
+    );
+  }
+
+  /// Conservative client-side fallback used when the Edge Function is
+  /// unreachable. We rely on SharedPreferences as a last-resort guard so
+  /// offline clients still see *some* rate-limit — the real enforcement
+  /// happens server-side.
+  factory AiQuota.fromLocal({
+    required int used,
+    required int limit,
+    required bool isPro,
+  }) {
+    return AiQuota(
+      allowed: isPro || used < limit,
+      remaining: isPro ? null : (limit - used).clamp(0, limit),
+      limit: isPro ? -1 : limit,
+      plan: isPro ? 'pro' : 'free',
+      used: used,
+      unlimited: isPro,
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Quota client abstraction (for tests + fallback)
+// ---------------------------------------------------------------------------
+
+abstract class AiQuotaClient {
+  Future<AiQuota?> check();
+  Future<AiQuota?> consume();
+}
+
+/// Production client — talks to the `check-ai-quota` Edge Function via
+/// [SupabaseService.callEdgeFunction]. Returns `null` on transport error so
+/// callers can degrade gracefully.
+class SupabaseAiQuotaClient implements AiQuotaClient {
+  SupabaseAiQuotaClient(this._supabase);
+  final SupabaseService _supabase;
+
+  @override
+  Future<AiQuota?> check() => _call('check');
+
+  @override
+  Future<AiQuota?> consume() => _call('consume');
+
+  Future<AiQuota?> _call(String action) async {
+    try {
+      final resp = await _supabase.callEdgeFunction(
+        'check-ai-quota',
+        body: {'action': action},
+      );
+      if (resp == null) return null;
+      if (resp['error'] != null) return null;
+      return AiQuota.fromApi(resp);
+    } catch (_) {
+      return null;
+    }
+  }
+}
 
 final aiServiceProvider = Provider<AIService>((ref) {
   final claudeService = ref.watch(claudeServiceProvider);
-  return AIService(claudeService: claudeService);
+  final supabase = ref.watch(supabaseServiceProvider);
+  return AIService(
+    claudeService: claudeService,
+    quotaClient: SupabaseAiQuotaClient(supabase),
+  );
 });
 
 /// Service that communicates with the AI backend.
@@ -20,8 +130,11 @@ final aiServiceProvider = Provider<AIService>((ref) {
 /// requests are sent directly to the Claude Messages API via [ClaudeService].
 /// Otherwise, requests go through the backend proxy endpoint (original flow).
 class AIService {
-  AIService({ClaudeService? claudeService})
-      : _claudeService = claudeService ?? ClaudeService(),
+  AIService({
+    ClaudeService? claudeService,
+    AiQuotaClient? quotaClient,
+  })  : _claudeService = claudeService ?? ClaudeService(),
+        _quotaClient = quotaClient,
         _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
@@ -38,8 +151,98 @@ class AIService {
         );
 
   final ClaudeService _claudeService;
+  final AiQuotaClient? _quotaClient;
   final Dio _dio;
   final Logger _log;
+
+  // ── Quota cache (P0-3) ─────────────────────────────────────────────
+  //
+  // Server-side quota is the source of truth, but hitting the Edge
+  // Function on every streamed token would thrash the DB. We cache the
+  // last check-result for 60 s — a single user cannot burn through more
+  // than one message per minute under normal UX flows.
+
+  AiQuota? _cachedQuota;
+  DateTime? _cachedQuotaAt;
+  static const Duration _quotaCacheTtl = Duration(seconds: 60);
+
+  /// Check the server-side AI quota for the current user.
+  ///
+  /// Returns the cached value if younger than 60 s. Falls back to a
+  /// conservative SharedPreferences-based estimate if the Edge Function
+  /// is unreachable (offline mode, misconfigured Supabase, etc.). The
+  /// fallback is logged so operators can see when server enforcement is
+  /// degraded.
+  Future<AiQuota> checkQuota({bool forceRefresh = false}) async {
+    if (isProUser) {
+      return AiQuota.fromLocal(used: 0, limit: -1, isPro: true);
+    }
+
+    // Cache hit within TTL.
+    if (!forceRefresh && _cachedQuota != null && _cachedQuotaAt != null) {
+      if (DateTime.now().difference(_cachedQuotaAt!) < _quotaCacheTtl) {
+        return _cachedQuota!;
+      }
+    }
+
+    final fresh = await _quotaClient?.check();
+    if (fresh != null) {
+      _cachedQuota = fresh;
+      _cachedQuotaAt = DateTime.now();
+      return fresh;
+    }
+
+    _log.w('check-ai-quota unavailable — falling back to local counter');
+    return await _localFallbackQuota();
+  }
+
+  /// Atomically increment the server counter and return the new state.
+  /// Called right before each message is dispatched to Claude. Falls back
+  /// to SharedPreferences increment on Edge Function failure.
+  Future<AiQuota> consumeQuota() async {
+    if (isProUser) {
+      return AiQuota.fromLocal(used: 0, limit: -1, isPro: true);
+    }
+
+    final fresh = await _quotaClient?.consume();
+    if (fresh != null) {
+      _cachedQuota = fresh;
+      _cachedQuotaAt = DateTime.now();
+      return fresh;
+    }
+
+    _log.w('check-ai-quota consume unavailable — incrementing local counter');
+    return await _localFallbackConsume();
+  }
+
+  Future<AiQuota> _localFallbackQuota() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final used = prefs.getInt(_freeTotalKey) ?? 0;
+      return AiQuota.fromLocal(
+          used: used, limit: _freeTotalLimit, isPro: false);
+    } catch (_) {
+      return const AiQuota(
+          allowed: true, remaining: null, limit: 50, plan: 'free');
+    }
+  }
+
+  Future<AiQuota> _localFallbackConsume() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final used = prefs.getInt(_freeTotalKey) ?? 0;
+      if (used >= _freeTotalLimit) {
+        return AiQuota.fromLocal(
+            used: used, limit: _freeTotalLimit, isPro: false);
+      }
+      await prefs.setInt(_freeTotalKey, used + 1);
+      return AiQuota.fromLocal(
+          used: used + 1, limit: _freeTotalLimit, isPro: false);
+    } catch (_) {
+      return const AiQuota(
+          allowed: true, remaining: null, limit: 50, plan: 'free');
+    }
+  }
 
   /// Whether this service instance is using the real Claude API.
   bool get isUsingRealAI => AppConfig.useRealAI && ClaudeService.isAvailable;
@@ -100,24 +303,25 @@ class AIService {
   /// Whether the current user is a Pro subscriber.
   bool isProUser = false;
 
-  /// Check if free user has remaining API calls (lifetime limit).
+  /// Check if free user has remaining API calls, then increment.
+  ///
+  /// Prefers the server-side [consumeQuota] path. Falls back to the
+  /// legacy SharedPreferences counter when no quota client is wired or
+  /// the Edge Function is unreachable.
   Future<bool> _checkAndIncrementDailyLimit() async {
     if (isProUser) return true;
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final count = prefs.getInt(_freeTotalKey) ?? 0;
-      if (count >= _freeTotalLimit) return false;
-      await prefs.setInt(_freeTotalKey, count + 1);
-      return true;
-    } catch (_) {
-      return true;
-    }
+    final q = await consumeQuota();
+    return q.allowed;
   }
 
-  /// Get remaining free calls (lifetime).
+  /// Get remaining free calls. Prefers the server-side counter; falls
+  /// back to SharedPreferences if the Edge Function is unreachable.
   Future<int> getRemainingFreeCalls() async {
     if (isProUser) return -1; // unlimited
     try {
+      final q = await checkQuota();
+      if (q.isPro) return -1;
+      if (q.remaining != null) return q.remaining!;
       final prefs = await SharedPreferences.getInstance();
       final count = prefs.getInt(_freeTotalKey) ?? 0;
       return (_freeTotalLimit - count).clamp(0, _freeTotalLimit);
@@ -193,6 +397,12 @@ class AIService {
     RegExp(r'تجاهل\s+(كل\s+)?التعليمات', caseSensitive: false),
   ];
 
+  /// Unicode tag characters (U+E0000-U+E007F): invisible ASCII-mirror
+  /// code-points abused by 2024+ jailbreaks to smuggle hidden instructions
+  /// inside foreign-script text. Stripped before pattern-matching.
+  static final RegExp _unicodeTagRange =
+      RegExp(r'[\u{E0000}-\u{E007F}]', unicode: true);
+
   /// Map of Cyrillic characters that visually resemble Latin ones.
   ///
   /// Attackers may substitute е→e, а→a, о→o, etc. to bypass regex
@@ -229,13 +439,18 @@ class AIService {
   /// `[removed]` so the user's intent is still partially preserved
   /// without the injection payload.
   ///
-  /// The method first normalises Cyrillic homoglyphs to Latin so that
-  /// mixed-script evasion attempts (e.g. using Cyrillic "а" instead of
-  /// Latin "a") are caught by the English-language patterns.
+  /// Two pre-passes happen before pattern matching:
+  ///   1. Strip Unicode tag characters (U+E0000-U+E007F) that are used
+  ///      to smuggle invisible ASCII instructions inside a foreign-
+  ///      script message.
+  ///   2. Normalise Cyrillic homoglyphs to Latin so mixed-script evasion
+  ///      (e.g. Cyrillic "а" for Latin "a") hits the English patterns.
   static String _sanitizeInput(String text) {
-    // First pass: normalise homoglyphs and check against all patterns
-    final normalised = _normalizeCyrillicHomoglyphs(text);
-    var sanitized = text;
+    // Pass 0: strip invisible Unicode tag characters
+    final stripped = text.replaceAll(_unicodeTagRange, '');
+    // Pass 1: normalise homoglyphs and check against all patterns
+    final normalised = _normalizeCyrillicHomoglyphs(stripped);
+    var sanitized = stripped;
     for (final pattern in _injectionPatterns) {
       // Check against the normalised text to find match positions,
       // then remove from the original text at the same offsets.
@@ -260,6 +475,10 @@ class AIService {
     }
     return sanitized;
   }
+
+  /// Test-only exposure of [_sanitizeInput]. Do not call from production code.
+  @visibleForTesting
+  static String sanitizeForTest(String text) => _sanitizeInput(text);
 
   // ── Conversation history for real AI mode ──────────────────────────────
 
@@ -469,6 +688,7 @@ class AIService {
     String? userLanguage,
     String? userName,
     String? clientContext,
+    String? freeLimitMessage,
   }) async {
     // Sanitize user input before any AI processing
     final sanitizedMessage = _sanitizeInput(message);
@@ -477,9 +697,10 @@ class AIService {
       // ── Free-tier daily limit check ──
       final allowed = await _checkAndIncrementDailyLimit();
       if (!allowed) {
-        return const ChatResponse(
-          message: 'You have used all $_freeTotalLimit free AI messages. '
-              'Upgrade to Legal Counsel for unlimited AI assistance!',
+        return ChatResponse(
+          message: freeLimitMessage ??
+              'You have used all $_freeTotalLimit free AI messages. '
+                  'Upgrade to Legal Counsel for unlimited AI assistance!',
           disclaimer: null,
         );
       }
@@ -662,6 +883,173 @@ class AIService {
           'If the problem persists, restart the app.',
       disclaimer: null,
     );
+  }
+
+  // ── Streaming chat ─────────────────────────────────────────────────────
+
+  /// Streaming version of [sendChatMessage] — yields text chunks as they
+  /// arrive from the Claude API.
+  ///
+  /// For simple queries (greetings, meta-questions) the method falls back to
+  /// the non-streaming path because those replies are too short to benefit
+  /// from incremental rendering.
+  ///
+  /// After the stream completes the full response is saved to conversation
+  /// history exactly as the non-streaming path would.
+  Stream<String> sendChatMessageStreaming({
+    required String caseId,
+    required String message,
+    String? userLanguage,
+    String? userName,
+    String? clientContext,
+    CaseType? caseType,
+    String? country,
+    String? nationality,
+    String? caseDescription,
+    String? freeLimitMessage,
+  }) async* {
+    // Sanitize user input before any AI processing.
+    final sanitizedMessage = _sanitizeInput(message);
+
+    // If real AI is not available, fall back to the regular method.
+    if (!isUsingRealAI) {
+      final response = await sendChatMessage(
+        caseId: caseId,
+        message: message,
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseDescription: caseDescription,
+        userLanguage: userLanguage,
+        userName: userName,
+        clientContext: clientContext,
+        freeLimitMessage: freeLimitMessage,
+      );
+      yield response.message;
+      return;
+    }
+
+    // ── Free-tier lifetime limit check ──
+    final allowed = await _checkAndIncrementDailyLimit();
+    if (!allowed) {
+      yield freeLimitMessage ??
+          'You have used all $_freeTotalLimit free AI messages. '
+              'Upgrade to Legal Counsel for unlimited AI assistance!';
+      return;
+    }
+
+    // ── Response cache check ──
+    if (_responseCache.isNotEmpty) {
+      final cached = _getCachedResponse(sanitizedMessage);
+      if (cached != null) {
+        _log.i('Cache hit for query (streaming path)');
+        _addToHistory(caseId, 'user', sanitizedMessage);
+        _addToHistory(caseId, 'assistant', cached);
+        yield cached;
+        return;
+      }
+    }
+
+    // ── Simple queries: use non-streaming (too fast to benefit) ──
+    final isSimple = ClaudeService.isSimpleQuery(sanitizedMessage);
+    if (isSimple) {
+      final response = await sendChatMessage(
+        caseId: caseId,
+        message: message,
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseDescription: caseDescription,
+        userLanguage: userLanguage,
+        userName: userName,
+        clientContext: clientContext,
+        freeLimitMessage: freeLimitMessage,
+      );
+      yield response.message;
+      return;
+    }
+
+    // ── Complex query — use streaming ──
+    _log.i('Using Claude API for streaming chat');
+    try {
+      final model = ClaudeService.chooseModel(sanitizedMessage);
+      final maxTokens = ClaudeService.maxTokensForModel(model);
+      _log.i('Streaming model routing: $model (maxTokens: $maxTokens)');
+
+      // Build system prompt (same logic as sendChatMessage).
+      String systemPrompt = SystemPrompts.buildChatPrompt(
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseContext: caseDescription,
+        userLanguage: userLanguage,
+        query: sanitizedMessage,
+        useReducedContext: model == ClaudeService.modelHaiku,
+      );
+
+      // Prepend client knowledge base if available.
+      if (clientContext != null && clientContext.isNotEmpty) {
+        systemPrompt =
+            '# CLIENT PERSONAL KNOWLEDGE BASE\n\n$clientContext\n\n$systemPrompt';
+      }
+
+      // Personalize with user name.
+      if (userName != null && userName.isNotEmpty) {
+        systemPrompt += '\n\nThe user\'s name is $userName. '
+            'Use their name naturally in conversation — at least once every 3-4 messages. '
+            'Do not overuse it, just weave it in like a friend would.';
+      }
+
+      // Add user message to history.
+      _addToHistory(caseId, 'user', sanitizedMessage);
+
+      // Build messages with summarized older history.
+      final messages = _buildMessagesForApi(caseId);
+      if (messages.isEmpty) {
+        messages.add({'role': 'user', 'content': sanitizedMessage});
+      }
+
+      // Stream from Claude.
+      final fullResponse = StringBuffer();
+
+      await for (final chunk in _claudeService.sendMessageStreaming(
+        model: model,
+        messages: messages,
+        systemPrompt: systemPrompt,
+        maxTokens: maxTokens,
+        temperature: 0.3,
+      )) {
+        fullResponse.write(chunk);
+        yield chunk;
+      }
+
+      // After stream completes — save to history and cache.
+      final responseText = fullResponse.toString();
+      if (responseText.isNotEmpty) {
+        _addToHistory(caseId, 'assistant', responseText);
+        _cacheResponse(sanitizedMessage, responseText);
+      }
+    } on ClaudeServiceException catch (e) {
+      _log.e('Claude streaming chat failed, falling back to non-streaming',
+          error: e);
+      // Remove the user message we added to history since streaming failed.
+      _conversationHistory[caseId]?.removeLast();
+
+      // Fall back to non-streaming.
+      final response = await sendChatMessage(
+        caseId: caseId,
+        message: message,
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseDescription: caseDescription,
+        userLanguage: userLanguage,
+        userName: userName,
+        clientContext: clientContext,
+        freeLimitMessage: freeLimitMessage,
+      );
+      yield response.message;
+    }
   }
 
   // ── Draft generation ───────────────────────────────────────────────────

@@ -1,5 +1,5 @@
 name: advocat
-description: AI-powered legal defense assistant for immigration and deportation cases.
+description: AI-powered legal assistant for all legal matters.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -93,5 +93,7 @@ flutter:
     - assets/images/illustrations/
     - assets/icons/
     - assets/l10n/
+    - assets/legal/estonia/
+    - assets/legal/finland/
 
   # Fonts loaded via google_fonts package at runtime

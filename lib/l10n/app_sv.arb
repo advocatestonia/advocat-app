@@ -1,826 +1,1427 @@
 {
-    "@@locale": "sv",
-    "about": "Om",
-    "aboutSection": "OM",
-    "accidents": "Olyckor",
-    "active": "Aktiva",
-    "activeCases": "Aktiva ärenden",
-    "addedToAppeal": "Tillagd i överklagande",
-    "agreeToTerms": "Jag godkänner ",
-    "aiAnalysis": "AI-analys",
-    "aiAssistant": "AI Juridisk Assistent",
-    "aiChat": "AI-chatt",
-    "all": "Alla",
-    "alreadyHaveAccount": "Har du redan ett konto? ",
-    "analyzing": "Analyserar",
-    "andWord": " och ",
-    "appTitle": "Advocat — Juridiskt informationsverktyg",
-    "appVersion": "Appversion",
-    "appealFiled": "Överklagande inlämnat",
-    "areYouAbsolutelySure": "Är du helt säker?",
-    "askAboutCase": "Fråga om ärendet",
-    "asylum": "Asyl",
-    "back": "Tillbaka",
-    "basic": "Bas",
-    "beforeYouBuy": "Innan du köper",
-    "beforeYouWork": "Innan du samarbetar med dem",
-    "camera": "Kamera",
-    "cancel": "Avbryt",
-    "caseDescription": "Ärendebeskrivning",
-    "caseDetail": "Ärendedetaljer",
-    "caseOverview": "Ärendeöversikt",
-    "caseTitle": "Ärendetitel",
-    "caseUpdated": "Ärende uppdaterat",
-    "cases": "Ärenden",
-    "checkCompany": "Kontrollera företag",
-    "checkDeadlines": "Kontrollera tidsfrister",
-    "checkVehicle": "Kontrollera fordon",
-    "checkerTitle": "Kontrollör",
-    "checkingErrors": "Kontrollerar fel",
-    "choosePlan": "Välj plan",
-    "closed": "Avslutade",
-    "companyName": "Företagsnamn eller org.nr.",
-    "completed": "Avslutad",
-    "confirm": "Bekräfta",
-    "confirmPassword": "Bekräfta lösenord",
-    "connectEmail": "Anslut e-post",
-    "connectGmail": "Anslut Gmail",
-    "connectOutlook": "Anslut Outlook",
-    "connected": "Ansluten",
-    "contactSupport": "Kontakta support",
-    "continueWithGoogle": "Fortsätt med Google",
-    "copyText": "Kopiera text",
-    "correspondence": "Korrespondens",
-    "couldNotLoadCases": "Kunde inte ladda dina ärenden",
-    "country": "Land",
-    "createAccount": "Skapa konto",
-    "createCase": "Skapa ärende",
-    "criminalCase": "Brottmål",
-    "critical": "Kritiskt",
-    "currentPlan": "Nuvarande plan",
-    "dataAndPrivacy": "DATA OCH INTEGRITET",
-    "dataExportRequested": "Dataexport begärd. Kontrollera din e-post.",
-    "daysRemaining": "{count} dagar",
-    "@daysRemaining": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
+  "@@locale": "sv",
+  "about": "Om",
+  "aboutSection": "OM",
+  "accidents": "Olyckor",
+  "active": "Aktiva",
+  "activeCases": "Aktiva ärenden",
+  "addedToAppeal": "Tillagd i överklagande",
+  "agreeToTerms": "Jag godkänner ",
+  "aiAnalysis": "AI-analys",
+  "aiAssistant": "AI Juridisk Assistent",
+  "aiChat": "AI-chatt",
+  "all": "Alla",
+  "alreadyHaveAccount": "Har du redan ett konto? ",
+  "analyzing": "Analyserar",
+  "andWord": " och ",
+  "appTitle": "Advocat — Juridiskt informationsverktyg",
+  "appVersion": "Appversion",
+  "appealFiled": "Överklagande inlämnat",
+  "areYouAbsolutelySure": "Är du helt säker?",
+  "askAboutCase": "Fråga om ärendet",
+  "asylum": "Asyl",
+  "back": "Tillbaka",
+  "basic": "Bas",
+  "beforeYouBuy": "Innan du köper",
+  "beforeYouWork": "Innan du samarbetar med dem",
+  "camera": "Kamera",
+  "cancel": "Avbryt",
+  "caseDescription": "Ärendebeskrivning",
+  "caseDetail": "Ärendedetaljer",
+  "caseOverview": "Ärendeöversikt",
+  "caseTitle": "Ärendetitel",
+  "caseUpdated": "Ärende uppdaterat",
+  "cases": "Ärenden",
+  "checkCompany": "Kontrollera företag",
+  "checkDeadlines": "Kontrollera tidsfrister",
+  "checkVehicle": "Kontrollera fordon",
+  "checkerTitle": "Kontrollör",
+  "checkingErrors": "Kontrollerar fel",
+  "choosePlan": "Välj plan",
+  "closed": "Avslutade",
+  "companyName": "Företagsnamn eller org.nr.",
+  "completed": "Avslutad",
+  "confirm": "Bekräfta",
+  "confirmPassword": "Bekräfta lösenord",
+  "connectEmail": "Anslut e-post",
+  "connectGmail": "Anslut Gmail",
+  "connectOutlook": "Anslut Outlook",
+  "connected": "Ansluten",
+  "contactSupport": "Kontakta support",
+  "continueWithGoogle": "Fortsätt med Google",
+  "copyText": "Kopiera text",
+  "correspondence": "Korrespondens",
+  "couldNotLoadCases": "Kunde inte ladda dina ärenden",
+  "country": "Land",
+  "createAccount": "Skapa konto",
+  "createCase": "Skapa ärende",
+  "criminalCase": "Brottmål",
+  "critical": "Kritiskt",
+  "currentPlan": "Nuvarande plan",
+  "dataAndPrivacy": "DATA OCH INTEGRITET",
+  "dataExportRequested": "Dataexport begärd. Kontrollera din e-post.",
+  "daysRemaining": "{count} dagar",
+  "@daysRemaining": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deadlineReminders": "Påminnelser om tidsfrister",
+  "deadlineRemindersDesc": "Få påminnelser innan viktiga tidsfrister löper ut",
+  "deadlines": "Tidsfrister",
+  "debtCollection": "Inkasso",
+  "deleteAccount": "Radera konto",
+  "deleteAccountDesc": "Radera permanent ditt konto och alla uppgifter",
+  "deleteAccountDialogContent": "Denna åtgärd är permanent och kan inte ångras. Alla dina uppgifter, ärenden och dokument raderas permanent.",
+  "deleteConfirm": "Är du säker på att du vill radera ditt konto? Denna åtgärd kan inte ångras.",
+  "demoHint": "Demo: prova registreringsnummer \"908FBT\"",
+  "demoModeDesc": "Utforska appen med exempeldata utan att skapa ett konto",
+  "deportation": "Utvisning",
+  "disclaimer": "Enbart AI-vägledning – inte juridisk rådgivning. Rådgör alltid med en jurist.",
+  "disclaimerFull": "Detta är AI-genererad vägledning och utgör inte juridisk rådgivning. Allt material bör granskas av en behörig jurist innan det används i rättsliga sammanhang.",
+  "disconnect": "Koppla från",
+  "discrimination": "Diskriminering",
+  "doNotBuy": "Köp inte",
+  "documents": "Dokument",
+  "documentsCount": "{count} dokument",
+  "@documentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "draftAppeal": "Utkast till överklagande",
+  "editDraft": "Redigera utkast",
+  "editProfile": "Redigera profil",
+  "email": "E-post",
+  "emailConnected": "E-post ansluten",
+  "emailDisconnected": "E-post frånkopplad",
+  "emailIntegration": "E-POSTINTEGRATION",
+  "emailInvalid": "Ange en giltig e-postadress",
+  "emailPrivacyNote": "Din e-post används enbart för ärenderelaterad korrespondens och lagras säkert.",
+  "emailRequired": "E-postadress krävs",
+  "emergencyShield": "Akutskydd",
+  "error": "Fel",
+  "exportDataDesc": "Ladda ner alla dina ärendedata och dokument",
+  "exportDataDialogContent": "Vi förbereder en nedladdning av alla dina uppgifter inklusive ärenden, dokument och korrespondens. Du får ett e-postmeddelande när det är klart.",
+  "exportMyData": "Exportera mina uppgifter",
+  "exportPdf": "Exportera PDF",
+  "familyReunification": "Familjeåterförening",
+  "forgotPassword": "Glömt lösenord?",
+  "free": "Gratis",
+  "fullDefense": "Advocat Pro",
+  "fullName": "Fullständigt namn",
+  "gallery": "Galleri",
+  "generateAppeal": "Generera överklagande",
+  "getStarted": "Kom igång",
+  "goodAfternoon": "God eftermiddag, {name}",
+  "@goodAfternoon": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodEvening": "God kväll, {name}",
+  "@goodEvening": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodMorning": "God morgon, {name}",
+  "@goodMorning": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "goodNight": "God natt, {name}",
+  "@goodNight": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "home": "Hem",
+  "important": "Viktigt",
+  "inProgress": "Pågående",
+  "informational": "Information",
+  "inspection": "Teknisk besiktning",
+  "insurance": "Försäkring",
+  "issuesFound": "{count} problem hittade",
+  "@issuesFound": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "laborDispute": "Arbetsrättsliga tvister",
+  "langEnglish": "Engelska",
+  "langFinnish": "Finska",
+  "langRussian": "Ryska",
+  "language": "Språk",
+  "lastActivity": "Senaste aktivitet: {time}",
+  "@lastActivity": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "legalFighter": "Juridisk Kämpe",
+  "legalSection": "JURIDISKT",
+  "licensePlate": "Registreringsnummer",
+  "loading": "Laddar...",
+  "logIn": "Logga in",
+  "loginFailed": "Ogiltig e-postadress eller lösenord. Försök igen.",
+  "lost": "Förlorat",
+  "markComplete": "Markera som avslutad",
+  "mileage": "Mätarställning",
+  "myCases": "Mina ärenden",
+  "nameRequired": "Fullständigt namn krävs",
+  "newCase": "Nytt ärende",
+  "next": "Nästa",
+  "noAccount": "Har du inget konto? ",
+  "noCases": "Inga ärenden ännu",
+  "noCasesYet": "Inga ärenden ännu",
+  "noDeadlines": "Inga tidsfrister",
+  "noRecentActivity": "Ingen senaste aktivitet",
+  "notifications": "AVISERINGAR",
+  "onboardingDesc1": "Advocat hjälper dig att förstå din juridiska situation. AI-verktyg analyserar dokument, identifierar potentiella problem och förbereder dokumentutkast för din granskning. Inte en advokatbyrå — ett teknikverktyg som stöd för ditt ärende.",
+  "onboardingDesc2": "Fotografera valfritt juridiskt dokument. AI läser det på flera språk, extraherar viktiga detaljer och kontrollerar mot EU-direktiv och nationell lagstiftning för potentiella problem.",
+  "onboardingDesc3": "Våra AI-verktyg kontrollerar över 40 typer av procedurkrav. AI-analysen kan identifiera frågor som kräver uppmärksamhet — såsom delgivningsspråk, procedursteg och juridiska tidsfrister. Verifiera alltid med en kvalificerad jurist.",
+  "onboardingDesc4": "AI förbereder utkast till överklaganden, klagomål och brev med juridiska hänvisningar för din granskning. Du bestämmer vad som ska lämnas in. Varje dokument bör granskas av en kvalificerad jurist innan det lämnas in.",
+  "onboardingNext": "Nästa",
+  "onboardingSkip": "Hoppa över",
+  "onboardingTitle1": "AI-driven juridisk information",
+  "onboardingTitle2": "Skanna och analysera dokument",
+  "onboardingTitle3": "AI kontrollerar potentiella problem",
+  "onboardingTitle4": "Dokumentutkast för din granskning",
+  "openACase": "Öppna ett ärende",
+  "optional": "Valfritt",
+  "orDivider": "eller",
+  "other": "Övrigt",
+  "overdue": "Försenad",
+  "owners": "Tidigare ägare",
+  "password": "Lösenord",
+  "passwordRequired": "Lösenord krävs",
+  "passwordStrengthMedium": "Medel",
+  "passwordStrengthStrong": "Starkt",
+  "passwordStrengthWeak": "Svagt",
+  "passwordTooShort": "Lösenordet måste vara minst 8 tecken",
+  "passwordsDoNotMatch": "Lösenorden stämmer inte överens",
+  "pendingDecision": "Inväntar beslut",
+  "perCheck": "per kontroll",
+  "permanentlyDelete": "Radera permanent",
+  "policeMisconduct": "Polisens agerande",
+  "popular": "Populär",
+  "preferences": "INSTÄLLNINGAR",
+  "preferredLanguage": "Föredraget språk",
+  "pricePerCheck": "4,99 € per kontroll",
+  "privacyPolicy": "Integritetspolicy",
+  "pro": "Pro",
+  "pushNotifications": "Push-notiser",
+  "rateUs": "Betygsätt oss",
+  "readingDocument": "Läser dokument",
+  "recentActivity": "Senaste aktivitet",
+  "referenceNumber": "Referensnummer",
+  "registerFailed": "Registreringen misslyckades. Försök igen.",
+  "reportFraud": "Rapportera bedrägeri",
+  "requestExport": "Begär export",
+  "researchingLaw": "Undersöker lagstiftning",
+  "resetPasswordFailed": "Det gick inte att skicka återställningslänken. Försök igen.",
+  "resetPasswordSent": "Länk för återställning av lösenord har skickats till din e-post.",
+  "residencePermit": "Uppehållstillstånd",
+  "manageSubscription": "Hantera prenumeration",
+  "restorePurchases": "Återställ köp",
+  "retry": "Försök igen",
+  "reviewWarning": "Granska varning",
+  "riskHigh": "Hög risk — undvik",
+  "riskLow": "Säkert att samarbeta med",
+  "riskMedium": "Fortsätt med försiktighet",
+  "safeToBuy": "Säkert att köpa",
+  "saveAndAnalyze": "Spara och analysera",
+  "saveDraft": "Spara utkast",
+  "saveWithAnnual": "Spara med årsbetalning",
+  "scan": "Skanna",
+  "scanDocument": "Skanna dokument",
+  "searchCases": "Sök ärenden",
+  "selectCountry": "Välj land",
+  "selectLanguage": "Välj språk",
+  "sendViaEmail": "Skicka via e-post",
+  "settings": "Inställningar",
+  "signIn": "Logga in",
+  "signInLink": "Logga in",
+  "signInSubtitle": "Logga in för att komma åt dina ärenden",
+  "signOut": "Logga ut",
+  "signOutConfirm": "Är du säker på att du vill logga ut?",
+  "signUp": "Skapa konto",
+  "signUpLink": "Registrera dig",
+  "socialBenefits": "Sociala förmåner",
+  "someConcerns": "Vissa farhågor",
+  "startFirstCase": "Skapa ditt första ärende",
+  "step": "Steg {current} av {total}",
+  "@step": {
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "stolen": "Stöldkontroll",
+  "subscription": "Prenumeration",
+  "syncLegalCorrespondence": "Synkronisera juridisk korrespondens",
+  "syncNow": "Synkronisera nu",
+  "tenantRights": "Hyresgästens rättigheter",
+  "termsOfService": "Användarvillkor",
+  "termsRequired": "Du måste godkänna användarvillkoren",
+  "timeline": "Tidslinje",
+  "tryDemoMode": "Prova demoläge",
+  "typeDeleteToConfirm": "Skriv DELETE för att bekräfta permanent kontoradering.",
+  "typeMessage": "Skriv ett meddelande",
+  "upcoming": "Kommande",
+  "uploadDocument": "Ladda upp dokument",
+  "urgentDeadline": "Brådskande: {title}",
+  "@urgentDeadline": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "useInAppeal": "Använd i överklagande",
+  "vehicleChecker": "Fordonskontroll",
+  "vehicleChecks": "Statuskontroller",
+  "vehicleColor": "Färg",
+  "vehicleMake": "Märke",
+  "vehicleModel": "Modell",
+  "vehicleYear": "Årsmodell",
+  "version": "Version",
+  "victimSupport": "Brottsofferstöd",
+  "viewAll": "Visa alla",
+  "vinNumber": "VIN-nummer",
+  "welcomeBack": "Välkommen tillbaka",
+  "whatAreMyOptions": "Vilka är mina alternativ?",
+  "won": "Vunnet",
+  "activityWillAppear": "Aktivitet visas här när ditt ärende fortskrider.",
+  "addDocument": "Lägg till dokument",
+  "addPage": "Lägg till sida",
+  "aiDisclaimer": "AI-ansvarsfriskrivning",
+  "alignDocument": "Justera dokumentet inom ramen",
+  "allClearDeadlines": "Allt klart! Nya tidsfrister visas här när de sätts.",
+  "analysisFailedRetry": "Analysen misslyckades. Försök igen.",
+  "analyzeSelected": "Analysera valda",
+  "analyzed": "Analyserad",
+  "analyzingContent": "Analyserar innehåll...",
+  "annual": "Årlig",
+  "annualLeave": "Semester (minst 2 dagar per arbetad månad)",
+  "appeal": "Överklagande",
+  "appealDeadline": "Överklagandefrist",
+  "appealDeadlineDesc": "Överklagande måste lämnas in senast {date}.",
+  "@appealDeadlineDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "appealDeadlineSet": "Överklagandefrist satt",
+  "appealDraft": "Utkast till överklagande",
+  "applyLegalAid": "Ansök om rättshjälp vid behov",
+  "assignToCase": "Tilldela ärende",
+  "basicAiAnalysis": "Grundläggande AI-analys",
+  "basicRights": "Grundläggande rättigheter:",
+  "batchAnalysisStarting": "Batchanalys startar...",
+  "calculateEligibility": "Beräkna berättigande",
+  "cameraPermissionDesc": "Ge kameratillgång för att skanna dokument eller använd galleriet.",
+  "cameraPermissionRequired": "Kamerabehörighet krävs",
+  "capturePhotoFailed": "Kunde inte ta foto. Försök igen.",
+  "caseCreated": "Ärende skapat",
+  "caseCreatedDesc": "Ärende \"{title}\" har skapats.",
+  "@caseCreatedDesc": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "caseCreationComingSoon": "Skapa ärende med förifyllda data kommer snart",
+  "caseInfoUpdated": "Ärendeinformation senast uppdaterad.",
+  "caseSummaryCopied": "Ärendesammanfattning kopierad",
+  "caseTimeline": "Ärendetidslinje",
+  "changesSaved": "Ändringar sparade",
+  "chatWelcomeMessage": "Hej! Jag är din juridiska assistent. Berätta vad som hänt — jag analyserar situationen och föreslår vad du ska göra.",
+  "checkEligibility": "Kontrollera din behörighet för rättshjälp: {country}",
+  "checkingPurchases": "Kontrollerar tidigare köp...",
+  "chooseHowToAdd": "Välj hur du vill lägga till ditt dokument",
+  "citizenship": "Medborgarskap",
+  "completedDeadlinesDesc": "Slutförda tidsfrister visas här.",
+  "connectYourEmail": "Anslut din e-post",
+  "connectYourEmailDesc": "Anslut din e-post för att automatiskt upptäcka och organisera juridisk korrespondens.",
+  "connectedTo": "Ansluten till {email}",
+  "@connectedTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "contactLawyerImmediately": "Kontakta omedelbart en advokat",
+  "contactLegalAidOffice": "Kontakta ett rättshjälpskontor",
+  "cookiePolicy": "Cookiepolicy",
+  "copiedToClipboard": "Kopierat till urklipp",
+  "copy": "Kopiera",
+  "copySummary": "Kopiera sammanfattning",
+  "couldNotLoadCase": "Kunde inte ladda ärendedetaljer",
+  "couldNotLoadDeadlines": "Kunde inte ladda tidsfrister",
+  "couldNotLoadTimeline": "Kunde inte ladda tidslinje",
+  "courtCaseNo": "Domstolsärende nr",
+  "createNote": "Skapa anteckning",
+  "createNoteDesc": "Skriv en anteckning eller registrera viktiga detaljer",
+  "created": "Skapad",
+  "dataPrivacyConsent": "Dataskyddssamtycke",
+  "days": "dagar",
+  "daysLate": "dagar försenad",
+  "decisionReceived": "Beslut mottaget",
+  "decisionReceivedDesc": "Ett officiellt beslut har mottagits för detta ärende.",
+  "decline": "Avböj",
+  "delete": "Radera",
+  "deleteCase": "Radera ärende",
+  "deleteCaseConfirm": "Är du säker på att du vill radera \"{title}\"? Åtgärden kan inte ångras.",
+  "@deleteCaseConfirm": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteDocumentsConfirm": "Radera {count} dokument?",
+  "@deleteDocumentsConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteSelected": "Radera valda",
+  "deportationNotice": "Utvisningsbeslut",
+  "deportationNoticeDesc": "Steg för att överklaga ett utvisningsbeslut",
+  "disconnectEmail": "Koppla bort e-post",
+  "disconnectEmailConfirm": "Automatisk e-postsynkronisering stoppas. Tidigare synkroniserade e-postmeddelanden finns kvar.",
+  "discriminationDesc": "Hur man rapporterar och bekämpar diskriminering",
+  "doNotIgnoreNotice": "Ignorera INTE beslutet - tidsfristerna är strikta",
+  "documentAnalysis": "Dokumentanalys",
+  "documentIncident": "Dokumentera händelsen (datum, tid, vittnen)",
+  "documentProcessedOk": "Dokument bearbetat framgångsrikt",
+  "documentUploadedSuccess": "Dokument uppladdat framgångsrikt",
+  "documentVault": "Dokumentvalv",
+  "done": "Klart",
+  "draftCopiedToClipboard": "Utkast kopierat till urklipp",
+  "draftDocument": "Dokumentutkast",
+  "draftGeneration": "Utkastgenerering",
+  "edit": "Redigera",
+  "editDocument": "Redigera dokument",
+  "emailComingSoon": "E-postutskick kommer snart",
+  "emailIntegrationTitle": "E-postintegration",
+  "english": "Engelska",
+  "estimateDisclaimer": "Detta är bara en uppskattning. Faktisk behörighet avgörs av Rättshjälpsbyrån.",
+  "exportAsPdf": "Exportera som PDF",
+  "failed": "Misslyckades",
+  "failedToCreateCaseRetry": "Kunde inte skapa ärende. Försök igen.",
+  "failedToGenerateDraft": "Kunde inte skapa utkast. Försök igen.",
+  "failedToLoadCases": "Kunde inte ladda ärenden",
+  "failedToLoadDocuments": "Kunde inte ladda dokument",
+  "fileComplaintOmbudsman": "Lämna klagomål till Diskrimineringsombudsmannen",
+  "filterByType": "Filtrera efter typ",
+  "finnish": "Finska",
+  "forever": "för alltid",
+  "fromDocument": "Från dokument",
+  "fullAiAnalysis": "Fullständig AI-analys",
+  "fullFreeLegalAid": "Du kvalificerar troligen för full gratis rättshjälp.",
+  "gdprChat": "Bearbetning av chattmeddelanden av AI",
+  "gdprDelete": "Rätt att radera dina data när som helst",
+  "gdprDocs": "Analys av uppladdade dokument",
+  "gdprFooter": "Dina data är krypterade och delas aldrig med tredje part. Du kan återkalla samtycke och radera all data i Inställningar.",
+  "gdprIntro": "För att tillhandahålla AI-juridisk hjälp behandlar vi dina data i enlighet med GDPR (EU 2016/679). Genom att fortsätta godkänner du:",
+  "gdprStorage": "Krypterad lagring av ärendedata",
+  "generateAppealWithIssues": "Generera överklagande ({count} problem)",
+  "@generateAppealWithIssues": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "generatingDraft": "Skapar ditt utkast...",
+  "generatingDraftDesc": "AI förbereder ett juridiskt dokument baserat på dina ärendedetaljer.",
+  "greatJobDeadlines": "Bra jobbat med att hålla tidsfristerna.",
+  "haveQuestionsAi": "Frågor? Fråga AI",
+  "hearingScheduled": "Förhandling planerad",
+  "hearingScheduledDesc": "Förhandling planerad till {date}.",
+  "@hearingScheduledDesc": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "howToAct": "Hur du ska agera:",
+  "iAgree": "Jag godkänner",
+  "iAgreeToThe": "Jag godkänner ",
+  "immediateSteps": "Omedelbara steg:",
+  "immigrationDetention": "Migrationsförvar",
+  "immigrationDetentionDesc": "Rättigheter vid frihetsberövande av myndigheter",
+  "inCourt": "I domstol",
+  "issuesFoundHeader": "Problem hittade",
+  "issuesFoundInDocument": "Hittade {count} problem i ditt dokument",
+  "@issuesFoundInDocument": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "knowYourRights": "Känn dina rättigheter",
+  "landlordNotice": "Hyresvärden måste ge uppsägningstid (3-6 månader)",
+  "lastSynced": "Senast synkroniserat: {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "late": "försenad",
+  "legalAidCalculator": "Rättshjälpskalkylator",
+  "legalAidWithCopay": "Du kan kvalificera för rättshjälp med en egenavgift på {percent}%.",
+  "@legalAidWithCopay": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "legalEmails": "Juridiska e-postmeddelanden",
+  "legalEmailsWillAppear": "E-post klassificerad som juridisk visas här.",
+  "likelyEligible": "Troligen berättigad",
+  "mayNotQualify": "Kanske inte berättigad",
+  "mayNotQualifyDesc": "Baserat på uppskattningen kanske du inte kvalificerar för statlig rättshjälp.",
+  "migriReference": "Migri-referens",
+  "minimumWage": "Minimilön enligt kollektivavtal",
+  "monthly": "Månadsvis",
+  "monthlyIncome": "Månadsinkomst (EUR)",
+  "mostPopular": "POPULÄRAST",
+  "mustNotResist": "Inte göra fysiskt motstånd",
+  "mustProvideName": "Ange ditt namn och födelsedatum",
+  "mustShowId": "Visa legitimation om du har",
+  "nationality": "Nationalitet",
+  "noCasesMatchSearch": "Inga ärenden matchar sökningen",
+  "noCompletedDeadlines": "Inga slutförda tidsfrister",
+  "noContentAvailable": "Inget innehåll tillgängligt",
+  "noDocumentsScanHint": "Inga dokument ännu. Skanna eller ladda upp.",
+  "noDocumentsYet": "Inga dokument uppladdade ännu",
+  "noDocumentsYetScan": "Inga dokument ännu",
+  "noEventsYet": "Inga händelser ännu",
+  "noLegalEmailsYet": "Inga juridiska e-postmeddelanden ännu",
+  "noPreviousPurchases": "Inga tidigare köp hittades.",
+  "noSignificantIssues": "Inga väsentliga problem hittades i detta dokument.",
+  "noUpcomingDeadlines": "Inga kommande tidsfrister",
+  "noUpcomingDeadlinesShort": "Inga kommande tidsfrister",
+  "noteAppealDeadline": "Notera överklagandefristen (vanligtvis 30 dagar)",
+  "nothingOverdue": "Inget förfallet",
+  "numberOfDependents": "Antal beroende",
+  "oneCaseActive": "1 aktivt ärende",
+  "openCase": "Öppna ärende",
+  "openSettings": "Öppna inställningar",
+  "orWord": "eller",
+  "pageCount": "{count} sida/or",
+  "@pageCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pageNumber": "Sida {number}",
+  "@pageNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "pagesUploadedSuccess": "{count} sidor uppladdade framgångsrikt",
+  "@pagesUploadedSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentFailed": "Betalning misslyckades: {error}",
+  "@paymentFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "pdf": "PDF",
+  "pdfExportComingSoon": "PDF-export kommer snart",
+  "pending": "Väntar",
+  "perMonth": "/månad",
+  "perYear": "/år",
+  "preparingUpload": "Förbereder uppladdning...",
+  "preview": "Förhandsvisa",
+  "priorityProcessing": "Prioriterad bearbetning",
+  "processing": "Bearbetar",
+  "protectionUnjustEviction": "Skydd mot orättvis vräkning",
+  "readingText": "Läser text...",
+  "ready": "Klar",
+  "reportAndOpenCase": "Rapportera och öppna ärende",
+  "reportMileageFraud": "Rapportera mätarbedrägeri",
+  "reportMileageFraudDesc": "En bedrägerirapport skapas baserat på fordonskontrolldata.",
+  "reportToPolice": "Anmäl till polisen vid brott (hot, misshandel)",
+  "retake": "Ta om",
+  "retryAnalysis": "Försök igen",
+  "reviewBeforeSending": "Granska noggrant innan du skickar. Du ansvarar för dokumentets innehåll.",
+  "rightAppealAdmin": "Rätt att överklaga till förvaltningsdomstolen",
+  "rightAskInterpreter": "Be om tolk",
+  "rightChallengeDetention": "Rätt att överklaga frihetsberövande i domstol",
+  "rightContactEmbassy": "Rätt att kontakta din ambassad",
+  "rightContactLawyer": "Kontakta advokat innan förhör",
+  "rightContactLawyerDetention": "Rätt att kontakta en advokat",
+  "rightHabitableDwelling": "Rätt till en beboelig bostad",
+  "rightHumaneTreatment": "Rätt till human behandling och sjukvård",
+  "rightInterpreter": "Rätt till tolk",
+  "rightKnowDetentionReason": "Rätt att veta orsaken till frihetsberövande",
+  "rightKnowWhyStopped": "Veta varför du stoppas",
+  "rightLegalRep": "Rätt till juridiskt ombud",
+  "rightRecordEncounter": "Spela in mötet (på offentliga platser)",
+  "rightRemainSilent": "Tiga (du måste identifiera dig)",
+  "rightStayDuringAppeal": "Rätt att stanna under överklagande (i de flesta fall)",
+  "russian": "Ryska",
+  "safeWorkingConditions": "Säkra arbetsförhållanden",
+  "save": "Spara",
+  "saveChanges": "Spara ändringar",
+  "saveTwentyFivePercent": "Spara 25%",
+  "scanDocumentDesc": "Ta ett foto av ditt dokument",
+  "scanFirstDocumentHint": "Skanna ditt första dokument så att AI kan analysera det.",
+  "scanNew": "Ny skanning",
+  "scenarioNotFound": "Scenario hittades inte",
+  "secureDocumentStorage": "Säker dokumentförvaring",
+  "secureDocumentStorageDesc": "Förvara dina viktiga juridiska dokument på ett ställe.",
+  "securityDeposit": "Deposition max 3 månaders hyra",
+  "selected": "{count} valda",
+  "@selected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "severityOverview": "Allvarlighetsöversikt",
+  "sickLeave": "Sjukersättning",
+  "somethingWentWrong": "Något gick fel",
+  "stoppedByPolice": "Stoppad av polisen",
+  "stoppedByPoliceDesc": "Dina rättigheter vid poliskontroll",
+  "successSubscribed": "Prenumeration på {plan} lyckades!",
+  "@successSubscribed": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      }
+    }
+  },
+  "switchToGrid": "Växla till rutnät",
+  "switchToList": "Växla till lista",
+  "takePhotoInstead": "Ta ett foto istället",
+  "tenantRightsDesc": "Bostads- och hyresskydd",
+  "threeCasesActive": "3 aktiva ärenden",
+  "threeDocScans": "3 dokumentskanningar",
+  "totalAssets": "Totala tillgångar (EUR)",
+  "twentyDocScans": "20 dokumentskanningar",
+  "typeLabel": "Typ",
+  "unlimitedCases": "Obegränsade ärenden",
+  "unlimitedDocScans": "Obegränsad dokumentskanning",
+  "unlinkedEmails": "Olänkade e-postmeddelanden",
+  "uploadFailed": "Uppladdning misslyckades. Kontrollera anslutningen.",
+  "uploadFile": "Ladda upp fil",
+  "uploadFileDesc": "Välj en PDF eller bild från din enhet",
+  "uploadingPercent": "Laddar upp... {percent}%",
+  "@uploadingPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "useThisPhoto": "Använd detta foto",
+  "viewFull": "Visa fullständig",
+  "workPermit": "Arbetstillstånd",
+  "workingTimeLimits": "Arbetstidsgränser (max 8t/dag, 40t/vecka)",
+  "workplaceRights": "Arbetsplatsrättigheter",
+  "workplaceRightsDesc": "Arbetsrättsligt skydd i Finland",
+  "writtenRentalAgreement": "Skriftligt hyresavtal krävs",
+  "youHaveRightTo": "Du har rätt att:",
+  "youMust": "Du måste:",
+  "yourRights": "Dina rättigheter:",
+  "yourRightsAsTenant": "Dina rättigheter som hyresgäst:",
+  "yourRightsInDetention": "Dina rättigheter i förvar:",
+  "whatToDo": "Vad ska du göra",
+  "getHelp": "Få hjälp",
+  "share": "Dela",
+  "didYouKnow": "Visste du?",
+  "mustKnow": "Måste veta",
+  "goodToKnow": "Bra att veta",
+  "sentFromAdvocat": "Skickat från Advocat-appen",
+  "policeActionStayCalm": "Håll dig lugn och håll händerna synliga",
+  "policeActionAskWhy": "Fråga polisen varför du stoppas",
+  "policeActionProvideName": "Uppge ditt namn och födelsedatum",
+  "policeActionWantLawyer": "Säg tydligt: \"Jag vill ha en advokat innan några frågor\"",
+  "policeActionAskInterpreter": "Be om tolk vid behov",
+  "policeActionNoteBadge": "Notera polisens namn och tjänstenummer",
+  "policeFactMustTellReason": "I Finland måste polisen berätta varför du stoppas. Om de inte gör det kan du fråga — och de är skyldiga enligt lag att förklara.",
+  "policeFactCanRecord": "Du kan spela in polisinteraktioner på offentliga platser i Finland. Detta skyddas av yttrandefriheten.",
+  "contactFinnishLegalAid": "Finsk rättshjälp",
+  "contactNonDiscriminationOmbudsman": "Diskrimineringsombudsmannen",
+  "deportationDeadlineAppeal": "Överklagande till förvaltningsdomstolen — vanligtvis 30 dagar från delgivning",
+  "deportationDeadlineLegalAid": "Ansök om rättshjälp — gör detta OMEDELBART",
+  "deportationFactStayDuringAppeal": "I Finland har du vanligtvis rätt att stanna i landet medan ditt överklagande behandlas. Utvisning kan inte verkställas under ett pågående överklagande i de flesta fall.",
+  "contactRefugeeAdviceCentre": "Finlands Flyktingrådgivning",
+  "contactAdminCourtHelsinki": "Förvaltningsdomstolen i Helsingfors",
+  "workplaceActionKeepContract": "Spara kopior av ditt anställningsavtal",
+  "workplaceActionTrackHours": "Registrera dina arbetstimmar självständigt",
+  "workplaceActionReportUnsafe": "Anmäl osäkra förhållanden till arbetarskyddsmyndigheten",
+  "workplaceActionJoinUnion": "Gå med i ett fackförbund för skydd",
+  "workplaceActionContactAuthority": "Kontakta Arbetarskyddsmyndigheten vid behov",
+  "workplaceFactCollectiveWage": "I Finland fastställer kollektivavtal minimilöner per bransch — det finns ingen enskild nationell minimilön. Din arbetsgivare måste följa kollektivavtalet för ditt område.",
+  "workplaceFactOralContract": "Även utan skriftligt avtal har du fulla anställningsrättigheter i Finland. Ett muntligt avtal är lika bindande enligt lag.",
+  "contactOccupationalSafety": "Arbetarskyddsmyndigheten",
+  "contactTradeUnionSAK": "Fackföreningsrådgivning (SAK)",
+  "tenantActionWrittenAgreement": "Ha alltid ett skriftligt hyresavtal",
+  "tenantActionDocumentCondition": "Dokumentera lägenhetens skick vid inflyttning (foton)",
+  "tenantActionReportMaintenance": "Anmäl underhållsproblem skriftligt",
+  "tenantActionNoIllegalEviction": "Gå aldrig med på olaglig vräkning — domstolen måste besluta",
+  "tenantActionContactAdvisory": "Kontakta hyresgästföreningen vid tvister",
+  "tenantFactNoEvictionWithoutCourt": "En hyresvärd i Finland kan inte vräka dig utan domstolsbeslut, även om ditt hyresavtal har löpt ut. Att byta lås eller stänga av el/vatten är olagligt.",
+  "contactTenantsAssociation": "Finlands Hyresgästförbund",
+  "contactConsumerDisputesBoard": "Konsumenttvistenämnden",
+  "detentionActionAskDecision": "Be omedelbart om det skriftliga förvarsbeslutet",
+  "detentionActionRequestLawyer": "Begär att få kontakta en advokat",
+  "detentionActionContactEmbassy": "Kontakta din ambassad eller konsulat",
+  "detentionActionAskMedical": "Be om sjukvård vid behov",
+  "detentionActionRequestInterpreter": "Begär tolk vid alla förhandlingar",
+  "detentionDeadlineCourtReview": "Tingsrätten måste pröva förvaret inom 4 dagar",
+  "detentionDeadlineContinuation": "Domstolen prövar förlängning varannan vecka",
+  "detentionFactCourtReview": "Migrationsförvar i Finland måste prövas av en tingsrätt inom 4 dagar. Om det inte görs blir förvaret olagligt.",
+  "contactParliamentaryOmbudsman": "Riksdagens justitieombudsman",
+  "discriminationActionWriteDown": "Skriv ner exakt vad som hände (datum, tid, plats)",
+  "discriminationActionSaveEvidence": "Spara bevis: meddelanden, e-post, vittnen",
+  "discriminationActionFileComplaint": "Lämna in ett klagomål till Diskrimineringsombudsmannen",
+  "discriminationActionContactLegalAid": "Kontakta ett rättshjälpskontor för gratis rådgivning",
+  "discriminationActionReportPolice": "Anmäl till polisen om hot eller våld förekom",
+  "discriminationFactNonDiscriminationAct": "Finlands diskrimineringslag omfattar diskriminering på grund av ålder, ursprung, nationalitet, språk, religion, hälsa, funktionsnedsättning, sexuell läggning och andra personliga egenskaper.",
+  "contactVictimSupportRIKU": "Brottsofferjouren Finland (RIKU)",
+  "domesticViolence": "Våld i hemmet",
+  "inheritance": "Arv",
+  "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
+  "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
+  "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
+  "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
+  "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
+  "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
+  "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
+  "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
+  "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
+  "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
+  "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
+  "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
+  "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
+  "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
+  "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
+  "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
+  "consumerProtection": "Konsumentskydd",
+  "caseTypeStepLabel": "Case Type",
+  "detailsStepLabel": "Details",
+  "documentsStepLabel": "Documents",
+  "whatTypeOfCase": "What type of case is this?",
+  "selectCategoryDescription": "Select the category that best describes your situation.",
+  "tellUsAboutCase": "Tell us about your case",
+  "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
+  "caseTitleHint": "e.g., Residence Permit Appeal 2026",
+  "countryJurisdiction": "Country / Jurisdiction",
+  "selectCountryHint": "Select a country",
+  "referenceNumberHint": "e.g., UMA/12345/2026",
+  "descriptionOptional": "Description (optional)",
+  "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
+  "uploadFirstDocument": "Upload your first document",
+  "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
+  "tapToUploadFile": "Tap to upload a file",
+  "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
+  "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
+  "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
+  "callAI": "Call AI",
+  "comingSoon": "Kommer snart",
+  "encrypted": "Encrypted",
+  "typing": "Typing...",
+  "online": "Online",
+  "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
+  "tapMicrophoneToSpeak": "Tap the microphone to speak",
+  "categoryEssential": "Essential",
+  "categoryPolice": "Police",
+  "categoryWork": "Work",
+  "categoryHousing": "Housing",
+  "categoryConsumer": "Consumer",
+  "rightsInsideCount": "{count} rights inside",
+  "@rightsInsideCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "freeAidThreshold": "Free aid threshold",
+  "partialAidThreshold": "Partial aid threshold",
+  "assetLimit": "Asset limit",
+  "whereToApplyLabel": "Where to apply",
+  "phoneLabel": "Phone",
+  "websiteLabel": "Website",
+  "disclaimerCollapsed": "AI guidance only",
+  "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
+  "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
+  "guestUser": "Gäst",
+  "howToUse": "Hur använda?",
+  "tutorialStep1Title": "AI-juridisk assistent",
+  "tutorialStep1Desc": "Ställ vilken rättslig fråga som helst och få omedelbara svar baserade på estnisk lag.",
+  "tutorialStep2Title": "Känn till dina rättigheter",
+  "tutorialStep2Desc": "Bläddra bland juridisk information efter ämne — arbete, boende, konsumenträttigheter och mer.",
+  "tutorialStep3Title": "Skanna dokument",
+  "tutorialStep3Desc": "Ta bilder av juridiska dokument för AI-analys och säker förvaring.",
+  "tutorialStep4Title": "Kom igång!",
+  "tutorialStep4Desc": "Utforska appen och skydda dina rättigheter. All data förblir privat på din enhet.",
+  "advocatProTitle": "Advocat Pro",
+  "advocatProSubtitle": "Lås upp premiumfunktioner",
+  "voiceDisclaimer": "Röstassistenten fungerar för närvarande bara på dator (Chrome-webbläsare). Mobilstöd kommer snart.",
+  "recommended": "Rekommenderas",
+  "pleaseLogIn": "Vänligen logga in",
+  "subscriptionNotFound": "Prenumeration hittades inte",
+  "errorWithMessage": "Fel: {message}",
+  "redirectingToPayment": "Omdirigerar till betalningssidan...",
+  "cheaperAnnually": "€{amount}/mån billigare med årsprenumeration",
+  "navigatingTo": "Öppnar",
+  "stayInChat": "Stanna i chatten",
+  "backToChat": "Tillbaka till chatten",
+  "aiAnalyzing": "AI is analyzing",
+  "@aiAnalyzing": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "AI is analyzing"
+  },
+  "speakIntoMicHint": "Speak into the microphone. Make sure microphone access is enabled.",
+  "@speakIntoMicHint": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Speak into the microphone. Make sure microphone access is enabled."
+  },
+  "freeLimitReached": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!",
+  "@freeLimitReached": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!"
+  },
+  "rateAppComingSoon": "Coming to app stores soon!",
+  "@rateAppComingSoon": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Coming to app stores soon!"
+  },
+  "dataCopiedToClipboard": "Data copied to clipboard",
+  "@dataCopiedToClipboard": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Data copied to clipboard"
+  },
+  "@checkEligibility": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      }
+    }
+  },
+  "@@checkEligibility": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": {
+      "placeholders": {
+        "country": {
+          "type": "String"
         }
-    },
-    "deadlineReminders": "Påminnelser om tidsfrister",
-    "deadlineRemindersDesc": "Få påminnelser innan viktiga tidsfrister löper ut",
-    "deadlines": "Tidsfrister",
-    "debtCollection": "Inkasso",
-    "deleteAccount": "Radera konto",
-    "deleteAccountDesc": "Radera permanent ditt konto och alla uppgifter",
-    "deleteAccountDialogContent": "Denna åtgärd är permanent och kan inte ångras. Alla dina uppgifter, ärenden och dokument raderas permanent.",
-    "deleteConfirm": "Är du säker på att du vill radera ditt konto? Denna åtgärd kan inte ångras.",
-    "demoHint": "Demo: prova registreringsnummer \"908FBT\"",
-    "demoModeDesc": "Utforska appen med exempeldata utan att skapa ett konto",
-    "deportation": "Utvisning",
-    "disclaimer": "Enbart AI-vägledning – inte juridisk rådgivning. Rådgör alltid med en jurist.",
-    "disclaimerFull": "Detta är AI-genererad vägledning och utgör inte juridisk rådgivning. Allt material bör granskas av en behörig jurist innan det används i rättsliga sammanhang.",
-    "disconnect": "Koppla från",
-    "discrimination": "Diskriminering",
-    "doNotBuy": "Köp inte",
-    "documents": "Dokument",
-    "documentsCount": "{count} dokument",
-    "@documentsCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
+      }
+    }
+  },
+  "fiveAiMessagesTotal": "5 AI messages (lifetime)",
+  "@fiveAiMessagesTotal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "5 AI messages (lifetime)"
+  },
+  "hundredAiMessagesDay": "100 AI messages/day",
+  "@hundredAiMessagesDay": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "100 AI messages/day"
+  },
+  "unlimitedAiMessages": "Unlimited AI messages",
+  "@unlimitedAiMessages": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Unlimited AI messages"
+  },
+  "voiceInput": "Voice input",
+  "@voiceInput": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Voice input"
+  },
+  "strategyRecommendations": "Strategy recommendations",
+  "@strategyRecommendations": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Strategy recommendations"
+  },
+  "foundingMemberNote": "Founding Member: 9.99€/mo for first 3 months",
+  "@foundingMemberNote": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Founding Member: 9.99€/mo for first 3 months"
+  },
+  "saveTwentyPercent": "Save 20%",
+  "@saveTwentyPercent": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Save 20%"
+  },
+  "gdprConsentAiProcessing": "I agree to the processing of my data for AI legal assistance (required)",
+  "@gdprConsentAiProcessing": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I agree to the processing of my data for AI legal assistance (required)"
+  },
+  "gdprConsentAnalytics": "I agree to analytics to improve the service (optional)",
+  "@gdprConsentAnalytics": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I agree to analytics to improve the service (optional)"
+  },
+  "gdprArt9Intro": "This app processes special category personal data under GDPR Article 9, including:",
+  "@gdprArt9Intro": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "This app processes special category personal data under GDPR Article 9, including:"
+  },
+  "gdprSpecialLegalCases": "Your legal case details and court documents",
+  "@gdprSpecialLegalCases": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Your legal case details and court documents"
+  },
+  "gdprSpecialNationality": "Nationality and immigration status",
+  "@gdprSpecialNationality": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Nationality and immigration status"
+  },
+  "gdprConsentLegalData": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)",
+  "@gdprConsentLegalData": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I consent to the processing of my legal case data, nationality, and immigration status by AI (required)"
+  },
+  "gdprConsentVoice": "I consent to voice recording processing (optional)",
+  "@gdprConsentVoice": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "I consent to voice recording processing (optional)"
+  },
+  "gdprViewPrivacyPolicy": "View Privacy Policy",
+  "@gdprViewPrivacyPolicy": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "View Privacy Policy"
+  },
+  "legalInformation": "Legal Information",
+  "@legalInformation": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Legal Information"
+  },
+  "legalEntityName": "Vorantis OÜ",
+  "@legalEntityName": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Vorantis OÜ"
+  },
+  "legalRegistryCode": "Registry code: 17098992",
+  "@legalRegistryCode": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Registry code: 17098992"
+  },
+  "legalAddress": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145",
+  "@legalAddress": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Harju maakond, Tallinn, Kesklinna linnaosa, Tornimäe tn 5, 10145"
+  },
+  "legalEmail": "Email: support@advocat.ee",
+  "@legalEmail": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Email: support@advocat.ee"
+  },
+  "legalRegistry": "Registered in Estonian Commercial Register (Äriregister)",
+  "@legalRegistry": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Registered in Estonian Commercial Register (Äriregister)"
+  },
+  "domesticViolenceDesc": "Victim rights, emergency help, restraining orders",
+  "@domesticViolenceDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Victim rights, emergency help, restraining orders"
+  },
+  "rightCallEmergency": "You have the right to call 112 in any emergency — police, ambulance, fire",
+  "@rightCallEmergency": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to call 112 in any emergency — police, ambulance, fire"
+  },
+  "rightVictimProtection": "As a victim, you have the right to protection, support, and information about your case",
+  "@rightVictimProtection": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "As a victim, you have the right to protection, support, and information about your case"
+  },
+  "rightRestrainingOrder": "You can apply for a restraining order (lähestymiskielto) to keep the abuser away",
+  "@rightRestrainingOrder": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can apply for a restraining order (lähestymiskielto) to keep the abuser away"
+  },
+  "rightVictimInterpreter": "You have the right to an interpreter during all legal proceedings",
+  "@rightVictimInterpreter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to an interpreter during all legal proceedings"
+  },
+  "rightMedicalHelp": "You have the right to immediate medical treatment and documentation of injuries",
+  "@rightMedicalHelp": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to immediate medical treatment and documentation of injuries"
+  },
+  "rightShelter": "You have the right to emergency shelter — contact a shelter or social services",
+  "@rightShelter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to emergency shelter — contact a shelter or social services"
+  },
+  "mustReportDanger": "If someone is in immediate danger, call 112 immediately",
+  "@mustReportDanger": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If someone is in immediate danger, call 112 immediately"
+  },
+  "mustDocumentInjuries": "Document all injuries — photos, medical records, written notes",
+  "@mustDocumentInjuries": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Document all injuries — photos, medical records, written notes"
+  },
+  "domesticActionCallEmergency": "Call 112 if you are in immediate danger",
+  "@domesticActionCallEmergency": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Call 112 if you are in immediate danger"
+  },
+  "domesticActionGoToSafe": "Go to a safe place — shelter, friend, public place",
+  "@domesticActionGoToSafe": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Go to a safe place — shelter, friend, public place"
+  },
+  "domesticActionDocumentEverything": "Document injuries: take photos, get medical records",
+  "@domesticActionDocumentEverything": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Document injuries: take photos, get medical records"
+  },
+  "domesticActionFilePoliceReport": "File a police report — you can do this later too",
+  "@domesticActionFilePoliceReport": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File a police report — you can do this later too"
+  },
+  "domesticActionContactShelter": "Contact a shelter or crisis helpline",
+  "@domesticActionContactShelter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact a shelter or crisis helpline"
+  },
+  "domesticActionApplyRestraining": "Apply for a restraining order through police or court",
+  "@domesticActionApplyRestraining": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Apply for a restraining order through police or court"
+  },
+  "domesticFactRestrainingOrder": "In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you.",
+  "@domesticFactRestrainingOrder": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "In Finland, a restraining order (lähestymiskielto) can be issued even without a criminal case. It prohibits the person from contacting or approaching you."
+  },
+  "domesticFactVictimDirective": "Under EU Victims' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status.",
+  "@domesticFactVictimDirective": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Under EU Victims' Directive 2012/29/EU, you have the right to be treated with respect, to receive information in a language you understand, and to access victim support services — regardless of your residence status."
+  },
+  "domesticDeadlinePoliceReport": "File police report — no strict deadline, but sooner is better for evidence",
+  "@domesticDeadlinePoliceReport": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File police report — no strict deadline, but sooner is better for evidence"
+  },
+  "domesticDeadlineRestraining": "Restraining order — can be applied for at any time",
+  "@domesticDeadlineRestraining": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Restraining order — can be applied for at any time"
+  },
+  "contactEmergency": "Emergency Number",
+  "@contactEmergency": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Emergency Number"
+  },
+  "contactShelter": "Turvakoti (Shelter) Helpline",
+  "@contactShelter": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Turvakoti (Shelter) Helpline"
+  },
+  "contactCrisisHelpline": "Crisis Helpline (Kriisipuhelin)",
+  "@contactCrisisHelpline": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Crisis Helpline (Kriisipuhelin)"
+  },
+  "contactNollaLinja": "Nollalinja — Violence Against Women Helpline",
+  "@contactNollaLinja": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Nollalinja — Violence Against Women Helpline"
+  },
+  "consumerProtectionDesc": "Fraud, defective products, returns, deceptive sellers",
+  "@consumerProtectionDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Fraud, defective products, returns, deceptive sellers"
+  },
+  "rightReturnOnline": "You have 14 days to cancel online purchases without reason (EU right of withdrawal)",
+  "@rightReturnOnline": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have 14 days to cancel online purchases without reason (EU right of withdrawal)"
+  },
+  "rightDefectiveProduct": "If a product is defective, you have the right to repair, replacement, or refund",
+  "@rightDefectiveProduct": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If a product is defective, you have the right to repair, replacement, or refund"
+  },
+  "rightClearPricing": "Sellers must display clear prices including all fees — hidden costs are illegal",
+  "@rightClearPricing": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Sellers must display clear prices including all fees — hidden costs are illegal"
+  },
+  "rightComplainBoard": "You can file a free complaint with the Consumer Disputes Board",
+  "@rightComplainBoard": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can file a free complaint with the Consumer Disputes Board"
+  },
+  "rightProtectionFraud": "You are protected against unfair commercial practices and fraud",
+  "@rightProtectionFraud": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You are protected against unfair commercial practices and fraud"
+  },
+  "mustKeepReceipts": "Keep all receipts, contracts, and communication with sellers",
+  "@mustKeepReceipts": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Keep all receipts, contracts, and communication with sellers"
+  },
+  "mustActTimely": "Report defects to the seller within a reasonable time after discovery",
+  "@mustActTimely": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report defects to the seller within a reasonable time after discovery"
+  },
+  "consumerActionKeepEvidence": "Keep receipts, screenshots, emails, and all proof of purchase",
+  "@consumerActionKeepEvidence": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Keep receipts, screenshots, emails, and all proof of purchase"
+  },
+  "consumerActionContactSeller": "Contact the seller first — explain the problem in writing",
+  "@consumerActionContactSeller": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact the seller first — explain the problem in writing"
+  },
+  "consumerActionFileComplaint": "File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)",
+  "@consumerActionFileComplaint": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File a complaint with the Consumer Disputes Board (kuluttajariitalautakunta)"
+  },
+  "consumerActionContactAuthority": "Contact the Consumer Advisory Services for free help",
+  "@consumerActionContactAuthority": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact the Consumer Advisory Services for free help"
+  },
+  "consumerActionReportFraud": "Report fraud to the police and Consumer Ombudsman",
+  "@consumerActionReportFraud": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report fraud to the police and Consumer Ombudsman"
+  },
+  "consumerFactWithdrawal": "Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days.",
+  "@consumerFactWithdrawal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Under the EU Consumer Rights Directive 2011/83/EU, you have 14 days to withdraw from any online or distance purchase — no questions asked. The seller must refund you within 14 days."
+  },
+  "consumerFactWarranty": "In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty.",
+  "@consumerFactWarranty": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "In Finland, the seller is responsible for product defects for a reasonable time (often 2+ years). This is separate from any manufacturer warranty."
+  },
+  "consumerDeadlineWithdrawal": "Online purchase withdrawal — 14 days from delivery",
+  "@consumerDeadlineWithdrawal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Online purchase withdrawal — 14 days from delivery"
+  },
+  "consumerDeadlineDefect": "Report defect to seller — within 2 months of discovery (recommended)",
+  "@consumerDeadlineDefect": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report defect to seller — within 2 months of discovery (recommended)"
+  },
+  "contactConsumerAdvisory": "Consumer Advisory Services",
+  "@contactConsumerAdvisory": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consumer Advisory Services"
+  },
+  "contactConsumerOmbudsman": "Consumer Ombudsman (Kuluttaja-asiamies)",
+  "@contactConsumerOmbudsman": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consumer Ombudsman (Kuluttaja-asiamies)"
+  },
+  "contactConsumerDisputesBoardDirect": "Consumer Disputes Board",
+  "@contactConsumerDisputesBoardDirect": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consumer Disputes Board"
+  },
+  "categoryChildren": "Children",
+  "@categoryChildren": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Children"
+  },
+  "categoryDigital": "Digital",
+  "@categoryDigital": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Digital"
+  },
+  "childrenRights": "Children's Rights & Alimony",
+  "@childrenRights": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Children's Rights & Alimony"
+  },
+  "childrenRightsDesc": "Child support, alimony, protection, state guarantees",
+  "@childrenRightsDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Child support, alimony, protection, state guarantees"
+  },
+  "cyberbullying": "Cyberbullying & Online Harassment",
+  "@cyberbullying": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Cyberbullying & Online Harassment"
+  },
+  "cyberbullyingDesc": "Threats, privacy violations, defamation online",
+  "@cyberbullyingDesc": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Threats, privacy violations, defamation online"
+  },
+  "rightChildSupport": "Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)",
+  "@rightChildSupport": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Both parents are legally obligated to support their child financially (Perekonnaseadus § 100–102)"
+  },
+  "rightMinimumAlimony": "Minimum child support in Estonia: base amount (€295.86) + 3% of previous year's average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee",
+  "@rightMinimumAlimony": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Minimum child support in Estonia: base amount (€295.86) + 3% of previous year's average gross salary (PKS § 101). From 01.04.2026 — €318.62/month per child. Updated annually on April 1st. Calculator: alimendid.ee"
+  },
+  "rightCourtAlimony": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400",
+  "@rightCourtAlimony": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can apply for alimony through county court (maakohus) — no lawyer required for claims up to €6,400"
+  },
+  "rightBailiffEnforcement": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment",
+  "@rightBailiffEnforcement": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If the parent refuses to pay, a bailiff (kohtutäitur) can enforce the court order, including wage garnishment"
+  },
+  "rightStateAlimonyGuarantee": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child",
+  "@rightStateAlimonyGuarantee": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "If the parent does not pay, the state provides elatisabi (maintenance allowance) through Sotsiaalkindlustusamet — up to €100/month per child"
+  },
+  "rightChildEducation": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)",
+  "@rightChildEducation": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Every child has the right to education, healthcare, and protection from abuse (Lastekaitseseadus § 4–5)"
+  },
+  "rightChildContact": "A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)",
+  "@rightChildContact": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "A child has the right to maintain contact with both parents unless a court decides otherwise (PKS § 143)"
+  },
+  "mustFileCourtClaim": "To receive alimony, you must file a claim at court or agree on the amount in writing",
+  "@mustFileCourtClaim": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "To receive alimony, you must file a claim at court or agree on the amount in writing"
+  },
+  "mustNotifyAddressChange": "Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi",
+  "@mustNotifyAddressChange": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Notify Sotsiaalkindlustusamet of address changes if receiving elatisabi"
+  },
+  "childrenActionGatherDocs": "Gather child's birth certificate, your ID, and proof of expenses",
+  "@childrenActionGatherDocs": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Gather child's birth certificate, your ID, and proof of expenses"
+  },
+  "childrenActionFileCourtClaim": "File an alimony claim at the county court (maakohus) — can be done online via e-toimik",
+  "@childrenActionFileCourtClaim": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File an alimony claim at the county court (maakohus) — can be done online via e-toimik"
+  },
+  "childrenActionApplyElatisabi": "Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won't pay",
+  "@childrenActionApplyElatisabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Apply for state alimony guarantee (elatisabi) at Sotsiaalkindlustusamet if parent won't pay"
+  },
+  "childrenActionContactBailiff": "Contact a bailiff (kohtutäitur) to enforce the court order",
+  "@childrenActionContactBailiff": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact a bailiff (kohtutäitur) to enforce the court order"
+  },
+  "childrenActionCallLasteabi": "Call Lasteabi 116 111 for children's helpline — free, 24/7",
+  "@childrenActionCallLasteabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Call Lasteabi 116 111 for children's helpline — free, 24/7"
+  },
+  "childrenDeadlineElatisabi": "Apply for elatisabi — after court order, no strict deadline but process takes time",
+  "@childrenDeadlineElatisabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Apply for elatisabi — after court order, no strict deadline but process takes time"
+  },
+  "childrenDeadlineCourt": "Alimony can be claimed retroactively for up to 1 year before court filing",
+  "@childrenDeadlineCourt": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Alimony can be claimed retroactively for up to 1 year before court filing"
+  },
+  "childrenFactMinimum": "From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year's average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee",
+  "@childrenFactMinimum": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "From 01.04.2026 minimum child support is €318.62/month per child. Formula: base amount (€295.86) + 3% of previous year's average gross salary. Updated annually on April 1st. A parent cannot agree to pay less. Calculator: alimendid.ee"
+  },
+  "childrenFactElatisabi": "Estonia's state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent.",
+  "@childrenFactElatisabi": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Estonia's state alimony guarantee (elatisabi) was introduced in 2017 to protect children when a parent refuses to pay. The state pays and then recovers the amount from the debtor parent."
+  },
+  "rightReportCybercrime": "You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)",
+  "@rightReportCybercrime": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You have the right to report online threats, harassment, and identity theft to the police (Karistusseadustik § 120, § 157¹)"
+  },
+  "rightContentRemoval": "You can request removal of defamatory or private content from platforms and demand takedown under GDPR",
+  "@rightContentRemoval": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You can request removal of defamatory or private content from platforms and demand takedown under GDPR"
+  },
+  "rightMoralDamageCompensation": "You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)",
+  "@rightMoralDamageCompensation": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "You may claim compensation for moral damage caused by cyberbullying (Võlaõigusseadus § 1043–1055)"
+  },
+  "rightPrivacyProtection": "Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)",
+  "@rightPrivacyProtection": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Your private life is protected — unauthorized sharing of your photos, messages, or personal data is illegal (KarS § 157)"
+  },
+  "rightDataProtection": "Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon",
+  "@rightDataProtection": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report data protection violations (unauthorized use of your data) to Andmekaitse Inspektsioon"
+  },
+  "rightDefamationAction": "Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)",
+  "@rightDefamationAction": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Defamation (laimamine) is a civil offense — you can sue for damages and demand a public retraction (KarS § 247 (repealed), VÕS § 1047)"
+  },
+  "mustCollectEvidence": "Collect and preserve all evidence — screenshots, links, dates, and witness information",
+  "@mustCollectEvidence": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Collect and preserve all evidence — screenshots, links, dates, and witness information"
+  },
+  "mustNotRetaliate": "Do not retaliate or engage in counter-harassment — it may weaken your case",
+  "@mustNotRetaliate": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Do not retaliate or engage in counter-harassment — it may weaken your case"
+  },
+  "cyberActionScreenshots": "Take screenshots of all harassment — save URLs, dates, usernames, and content",
+  "@cyberActionScreenshots": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Take screenshots of all harassment — save URLs, dates, usernames, and content"
+  },
+  "cyberActionReportPolice": "File a police report at the nearest station or online at politsei.ee",
+  "@cyberActionReportPolice": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "File a police report at the nearest station or online at politsei.ee"
+  },
+  "cyberActionReportPlatform": "Report the content to the social media platform for removal",
+  "@cyberActionReportPlatform": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Report the content to the social media platform for removal"
+  },
+  "cyberActionContactDPA": "Contact Andmekaitse Inspektsioon if your personal data was misused",
+  "@cyberActionContactDPA": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Contact Andmekaitse Inspektsioon if your personal data was misused"
+  },
+  "cyberActionConsultLawyer": "Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi",
+  "@cyberActionConsultLawyer": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Consult a lawyer about civil damages — free legal aid is available through Riigi Õigusabi"
+  },
+  "cyberDeadlineCriminal": "Criminal complaint — no strict deadline, but report promptly for best results",
+  "@cyberDeadlineCriminal": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Criminal complaint — no strict deadline, but report promptly for best results"
+  },
+  "cyberDeadlineCivil": "Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)",
+  "@cyberDeadlineCivil": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Civil claim for damages — up to 3 years from when you learned of the violation (TsÜS § 150)"
+  },
+  "cyberFactPrivacy": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy).",
+  "@cyberFactPrivacy": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "In Estonia, unauthorized sharing of someone's intimate images can result in up to 3 years in prison under Karistusseadustik § 157¹ (violation of privacy)."
+  },
+  "cyberFactGDPR": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it.",
+  "@cyberFactGDPR": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": "Under GDPR, you have the 'right to be forgotten' — platforms must delete your personal data upon request if there is no legal basis to keep it."
+  },
+  "@errorWithMessage": {
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "@@errorWithMessage": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": {
+      "placeholders": {
+        "message": {
+          "type": "String"
         }
-    },
-    "draftAppeal": "Utkast till överklagande",
-    "editDraft": "Redigera utkast",
-    "editProfile": "Redigera profil",
-    "email": "E-post",
-    "emailConnected": "E-post ansluten",
-    "emailDisconnected": "E-post frånkopplad",
-    "emailIntegration": "E-POSTINTEGRATION",
-    "emailInvalid": "Ange en giltig e-postadress",
-    "emailPrivacyNote": "Din e-post används enbart för ärenderelaterad korrespondens och lagras säkert.",
-    "emailRequired": "E-postadress krävs",
-    "emergencyShield": "Akutskydd",
-    "error": "Fel",
-    "exportDataDesc": "Ladda ner alla dina ärendedata och dokument",
-    "exportDataDialogContent": "Vi förbereder en nedladdning av alla dina uppgifter inklusive ärenden, dokument och korrespondens. Du får ett e-postmeddelande när det är klart.",
-    "exportMyData": "Exportera mina uppgifter",
-    "exportPdf": "Exportera PDF",
-    "familyReunification": "Familjeåterförening",
-    "forgotPassword": "Glömt lösenord?",
-    "free": "Gratis",
-    "fullDefense": "Fullständigt Försvar",
-    "fullName": "Fullständigt namn",
-    "gallery": "Galleri",
-    "generateAppeal": "Generera överklagande",
-    "getStarted": "Kom igång",
-    "goodAfternoon": "God eftermiddag, {name}",
-    "@goodAfternoon": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
+      }
+    }
+  },
+  "@cheaperAnnually": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "@@cheaperAnnually": {
+    "x-needs-review": "OMEGA-5 v24.2 — English stub",
+    "x-source-value": {
+      "placeholders": {
+        "amount": {
+          "type": "String"
         }
-    },
-    "goodEvening": "God kväll, {name}",
-    "@goodEvening": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodMorning": "God morgon, {name}",
-    "@goodMorning": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "goodNight": "God natt, {name}",
-    "@goodNight": {
-        "placeholders": {
-            "name": {
-                "type": "String"
-            }
-        }
-    },
-    "home": "Hem",
-    "important": "Viktigt",
-    "inProgress": "Pågående",
-    "informational": "Information",
-    "inspection": "Teknisk besiktning",
-    "insurance": "Försäkring",
-    "issuesFound": "{count} problem hittade",
-    "@issuesFound": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "laborDispute": "Arbetsrättsliga tvister",
-    "langEnglish": "Engelska",
-    "langFinnish": "Finska",
-    "langRussian": "Ryska",
-    "language": "Språk",
-    "lastActivity": "Senaste aktivitet: {time}",
-    "@lastActivity": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "legalFighter": "Juridisk Kämpe",
-    "legalSection": "JURIDISKT",
-    "licensePlate": "Registreringsnummer",
-    "loading": "Laddar...",
-    "logIn": "Logga in",
-    "loginFailed": "Ogiltig e-postadress eller lösenord. Försök igen.",
-    "lost": "Förlorat",
-    "markComplete": "Markera som avslutad",
-    "mileage": "Mätarställning",
-    "myCases": "Mina ärenden",
-    "nameRequired": "Fullständigt namn krävs",
-    "newCase": "Nytt ärende",
-    "next": "Nästa",
-    "noAccount": "Har du inget konto? ",
-    "noCases": "Inga ärenden ännu",
-    "noCasesYet": "Inga ärenden ännu",
-    "noDeadlines": "Inga tidsfrister",
-    "noRecentActivity": "Ingen senaste aktivitet",
-    "notifications": "AVISERINGAR",
-    "onboardingDesc1": "Advocat hjälper dig att förstå din juridiska situation. AI-verktyg analyserar dokument, identifierar potentiella problem och förbereder dokumentutkast för din granskning. Inte en advokatbyrå — ett teknikverktyg som stöd för ditt ärende.",
-    "onboardingDesc2": "Fotografera valfritt juridiskt dokument. AI läser det på flera språk, extraherar viktiga detaljer och kontrollerar mot EU-direktiv och nationell lagstiftning för potentiella problem.",
-    "onboardingDesc3": "Våra AI-verktyg kontrollerar över 40 typer av procedurkrav. AI-analysen kan identifiera frågor som kräver uppmärksamhet — såsom delgivningsspråk, procedursteg och juridiska tidsfrister. Verifiera alltid med en kvalificerad jurist.",
-    "onboardingDesc4": "AI förbereder utkast till överklaganden, klagomål och brev med juridiska hänvisningar för din granskning. Du bestämmer vad som ska lämnas in. Varje dokument bör granskas av en kvalificerad jurist innan det lämnas in.",
-    "onboardingNext": "Nästa",
-    "onboardingSkip": "Hoppa över",
-    "onboardingTitle1": "AI-driven juridisk information",
-    "onboardingTitle2": "Skanna och analysera dokument",
-    "onboardingTitle3": "AI kontrollerar potentiella problem",
-    "onboardingTitle4": "Dokumentutkast för din granskning",
-    "openACase": "Öppna ett ärende",
-    "optional": "Valfritt",
-    "orDivider": "eller",
-    "other": "Övrigt",
-    "overdue": "Försenad",
-    "owners": "Tidigare ägare",
-    "password": "Lösenord",
-    "passwordRequired": "Lösenord krävs",
-    "passwordStrengthMedium": "Medel",
-    "passwordStrengthStrong": "Starkt",
-    "passwordStrengthWeak": "Svagt",
-    "passwordTooShort": "Lösenordet måste vara minst 8 tecken",
-    "passwordsDoNotMatch": "Lösenorden stämmer inte överens",
-    "pendingDecision": "Inväntar beslut",
-    "perCheck": "per kontroll",
-    "permanentlyDelete": "Radera permanent",
-    "policeMisconduct": "Polisens agerande",
-    "popular": "Populär",
-    "preferences": "INSTÄLLNINGAR",
-    "preferredLanguage": "Föredraget språk",
-    "pricePerCheck": "4,99 € per kontroll",
-    "privacyPolicy": "Integritetspolicy",
-    "pro": "Pro",
-    "pushNotifications": "Push-notiser",
-    "rateUs": "Betygsätt oss",
-    "readingDocument": "Läser dokument",
-    "recentActivity": "Senaste aktivitet",
-    "referenceNumber": "Referensnummer",
-    "registerFailed": "Registreringen misslyckades. Försök igen.",
-    "reportFraud": "Rapportera bedrägeri",
-    "requestExport": "Begär export",
-    "researchingLaw": "Undersöker lagstiftning",
-    "resetPasswordFailed": "Det gick inte att skicka återställningslänken. Försök igen.",
-    "resetPasswordSent": "Länk för återställning av lösenord har skickats till din e-post.",
-    "residencePermit": "Uppehållstillstånd",
-    "manageSubscription": "Hantera prenumeration",
-    "restorePurchases": "Återställ köp",
-    "retry": "Försök igen",
-    "reviewWarning": "Granska varning",
-    "riskHigh": "Hög risk — undvik",
-    "riskLow": "Säkert att samarbeta med",
-    "riskMedium": "Fortsätt med försiktighet",
-    "safeToBuy": "Säkert att köpa",
-    "saveAndAnalyze": "Spara och analysera",
-    "saveDraft": "Spara utkast",
-    "saveWithAnnual": "Spara med årsbetalning",
-    "scan": "Skanna",
-    "scanDocument": "Skanna dokument",
-    "searchCases": "Sök ärenden",
-    "selectCountry": "Välj land",
-    "selectLanguage": "Välj språk",
-    "sendViaEmail": "Skicka via e-post",
-    "settings": "Inställningar",
-    "signIn": "Logga in",
-    "signInLink": "Logga in",
-    "signInSubtitle": "Logga in för att komma åt dina ärenden",
-    "signOut": "Logga ut",
-    "signOutConfirm": "Är du säker på att du vill logga ut?",
-    "signUp": "Skapa konto",
-    "signUpLink": "Registrera dig",
-    "socialBenefits": "Sociala förmåner",
-    "someConcerns": "Vissa farhågor",
-    "startFirstCase": "Skapa ditt första ärende",
-    "step": "Steg {current} av {total}",
-    "@step": {
-        "placeholders": {
-            "current": {
-                "type": "int"
-            },
-            "total": {
-                "type": "int"
-            }
-        }
-    },
-    "stolen": "Stöldkontroll",
-    "subscription": "Prenumeration",
-    "syncLegalCorrespondence": "Synkronisera juridisk korrespondens",
-    "syncNow": "Synkronisera nu",
-    "tenantRights": "Hyresgästens rättigheter",
-    "termsOfService": "Användarvillkor",
-    "termsRequired": "Du måste godkänna användarvillkoren",
-    "timeline": "Tidslinje",
-    "tryDemoMode": "Prova demoläge",
-    "typeDeleteToConfirm": "Skriv DELETE för att bekräfta permanent kontoradering.",
-    "typeMessage": "Skriv ett meddelande",
-    "upcoming": "Kommande",
-    "uploadDocument": "Ladda upp dokument",
-    "urgentDeadline": "Brådskande: {title}",
-    "@urgentDeadline": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "useInAppeal": "Använd i överklagande",
-    "vehicleChecker": "Fordonskontroll",
-    "vehicleChecks": "Statuskontroller",
-    "vehicleColor": "Färg",
-    "vehicleMake": "Märke",
-    "vehicleModel": "Modell",
-    "vehicleYear": "Årsmodell",
-    "version": "Version",
-    "victimSupport": "Brottsofferstöd",
-    "viewAll": "Visa alla",
-    "vinNumber": "VIN-nummer",
-    "welcomeBack": "Välkommen tillbaka",
-    "whatAreMyOptions": "Vilka är mina alternativ?",
-    "won": "Vunnet",
-    "activityWillAppear": "Aktivitet visas här när ditt ärende fortskrider.",
-    "addDocument": "Lägg till dokument",
-    "addPage": "Lägg till sida",
-    "aiDisclaimer": "AI-ansvarsfriskrivning",
-    "alignDocument": "Justera dokumentet inom ramen",
-    "allClearDeadlines": "Allt klart! Nya tidsfrister visas här när de sätts.",
-    "analysisFailedRetry": "Analysen misslyckades. Försök igen.",
-    "analyzeSelected": "Analysera valda",
-    "analyzed": "Analyserad",
-    "analyzingContent": "Analyserar innehåll...",
-    "annual": "Årlig",
-    "annualLeave": "Semester (minst 2 dagar per arbetad månad)",
-    "appeal": "Överklagande",
-    "appealDeadline": "Överklagandefrist",
-    "appealDeadlineDesc": "Överklagande måste lämnas in senast {date}.",
-    "@appealDeadlineDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "appealDeadlineSet": "Överklagandefrist satt",
-    "appealDraft": "Utkast till överklagande",
-    "applyLegalAid": "Ansök om rättshjälp vid behov",
-    "assignToCase": "Tilldela ärende",
-    "basicAiAnalysis": "Grundläggande AI-analys",
-    "basicRights": "Grundläggande rättigheter:",
-    "batchAnalysisStarting": "Batchanalys startar...",
-    "calculateEligibility": "Beräkna berättigande",
-    "cameraPermissionDesc": "Ge kameratillgång för att skanna dokument eller använd galleriet.",
-    "cameraPermissionRequired": "Kamerabehörighet krävs",
-    "capturePhotoFailed": "Kunde inte ta foto. Försök igen.",
-    "caseCreated": "Ärende skapat",
-    "caseCreatedDesc": "Ärende \"{title}\" har skapats.",
-    "@caseCreatedDesc": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "caseCreationComingSoon": "Skapa ärende med förifyllda data kommer snart",
-    "caseInfoUpdated": "Ärendeinformation senast uppdaterad.",
-    "caseSummaryCopied": "Ärendesammanfattning kopierad",
-    "caseTimeline": "Ärendetidslinje",
-    "changesSaved": "Ändringar sparade",
-    "chatWelcomeMessage": "Hej! Jag är din juridiska assistent. Berätta vad som hänt — jag analyserar situationen och föreslår vad du ska göra.",
-    "checkEligibility": "Kontrollera din behörighet för rättshjälp: {country}",
-    "checkingPurchases": "Kontrollerar tidigare köp...",
-    "chooseHowToAdd": "Välj hur du vill lägga till ditt dokument",
-    "citizenship": "Medborgarskap",
-    "completedDeadlinesDesc": "Slutförda tidsfrister visas här.",
-    "connectYourEmail": "Anslut din e-post",
-    "connectYourEmailDesc": "Anslut din e-post för att automatiskt upptäcka och organisera juridisk korrespondens.",
-    "connectedTo": "Ansluten till {email}",
-    "@connectedTo": {
-        "placeholders": {
-            "email": {
-                "type": "String"
-            }
-        }
-    },
-    "contactLawyerImmediately": "Kontakta omedelbart en advokat",
-    "contactLegalAidOffice": "Kontakta ett rättshjälpskontor",
-    "cookiePolicy": "Cookiepolicy",
-    "copiedToClipboard": "Kopierat till urklipp",
-    "copy": "Kopiera",
-    "copySummary": "Kopiera sammanfattning",
-    "couldNotLoadCase": "Kunde inte ladda ärendedetaljer",
-    "couldNotLoadDeadlines": "Kunde inte ladda tidsfrister",
-    "couldNotLoadTimeline": "Kunde inte ladda tidslinje",
-    "courtCaseNo": "Domstolsärende nr",
-    "createNote": "Skapa anteckning",
-    "createNoteDesc": "Skriv en anteckning eller registrera viktiga detaljer",
-    "created": "Skapad",
-    "dataPrivacyConsent": "Dataskyddssamtycke",
-    "days": "dagar",
-    "daysLate": "dagar försenad",
-    "decisionReceived": "Beslut mottaget",
-    "decisionReceivedDesc": "Ett officiellt beslut har mottagits för detta ärende.",
-    "decline": "Avböj",
-    "delete": "Radera",
-    "deleteCase": "Radera ärende",
-    "deleteCaseConfirm": "Är du säker på att du vill radera \"{title}\"? Åtgärden kan inte ångras.",
-    "@deleteCaseConfirm": {
-        "placeholders": {
-            "title": {
-                "type": "String"
-            }
-        }
-    },
-    "deleteDocumentsConfirm": "Radera {count} dokument?",
-    "@deleteDocumentsConfirm": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "deleteSelected": "Radera valda",
-    "deportationNotice": "Utvisningsbeslut",
-    "deportationNoticeDesc": "Steg för att överklaga ett utvisningsbeslut",
-    "disconnectEmail": "Koppla bort e-post",
-    "disconnectEmailConfirm": "Automatisk e-postsynkronisering stoppas. Tidigare synkroniserade e-postmeddelanden finns kvar.",
-    "discriminationDesc": "Hur man rapporterar och bekämpar diskriminering",
-    "doNotIgnoreNotice": "Ignorera INTE beslutet - tidsfristerna är strikta",
-    "documentAnalysis": "Dokumentanalys",
-    "documentIncident": "Dokumentera händelsen (datum, tid, vittnen)",
-    "documentProcessedOk": "Dokument bearbetat framgångsrikt",
-    "documentUploadedSuccess": "Dokument uppladdat framgångsrikt",
-    "documentVault": "Dokumentvalv",
-    "done": "Klart",
-    "draftCopiedToClipboard": "Utkast kopierat till urklipp",
-    "draftDocument": "Dokumentutkast",
-    "draftGeneration": "Utkastgenerering",
-    "edit": "Redigera",
-    "editDocument": "Redigera dokument",
-    "emailComingSoon": "E-postutskick kommer snart",
-    "emailIntegrationTitle": "E-postintegration",
-    "english": "Engelska",
-    "estimateDisclaimer": "Detta är bara en uppskattning. Faktisk behörighet avgörs av Rättshjälpsbyrån.",
-    "exportAsPdf": "Exportera som PDF",
-    "failed": "Misslyckades",
-    "failedToCreateCaseRetry": "Kunde inte skapa ärende. Försök igen.",
-    "failedToGenerateDraft": "Kunde inte skapa utkast. Försök igen.",
-    "failedToLoadCases": "Kunde inte ladda ärenden",
-    "failedToLoadDocuments": "Kunde inte ladda dokument",
-    "fileComplaintOmbudsman": "Lämna klagomål till Diskrimineringsombudsmannen",
-    "filterByType": "Filtrera efter typ",
-    "finnish": "Finska",
-    "forever": "för alltid",
-    "fromDocument": "Från dokument",
-    "fullAiAnalysis": "Fullständig AI-analys",
-    "fullFreeLegalAid": "Du kvalificerar troligen för full gratis rättshjälp.",
-    "gdprChat": "Bearbetning av chattmeddelanden av AI",
-    "gdprDelete": "Rätt att radera dina data när som helst",
-    "gdprDocs": "Analys av uppladdade dokument",
-    "gdprFooter": "Dina data är krypterade och delas aldrig med tredje part. Du kan återkalla samtycke och radera all data i Inställningar.",
-    "gdprIntro": "För att tillhandahålla AI-juridisk hjälp behandlar vi dina data i enlighet med GDPR (EU 2016/679). Genom att fortsätta godkänner du:",
-    "gdprStorage": "Krypterad lagring av ärendedata",
-    "generateAppealWithIssues": "Generera överklagande ({count} problem)",
-    "@generateAppealWithIssues": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "generatingDraft": "Skapar ditt utkast...",
-    "generatingDraftDesc": "AI förbereder ett juridiskt dokument baserat på dina ärendedetaljer.",
-    "greatJobDeadlines": "Bra jobbat med att hålla tidsfristerna.",
-    "haveQuestionsAi": "Frågor? Fråga AI",
-    "hearingScheduled": "Förhandling planerad",
-    "hearingScheduledDesc": "Förhandling planerad till {date}.",
-    "@hearingScheduledDesc": {
-        "placeholders": {
-            "date": {
-                "type": "String"
-            }
-        }
-    },
-    "howToAct": "Hur du ska agera:",
-    "iAgree": "Jag godkänner",
-    "iAgreeToThe": "Jag godkänner ",
-    "immediateSteps": "Omedelbara steg:",
-    "immigrationDetention": "Migrationsförvar",
-    "immigrationDetentionDesc": "Rättigheter vid frihetsberövande av myndigheter",
-    "inCourt": "I domstol",
-    "issuesFoundHeader": "Problem hittade",
-    "issuesFoundInDocument": "Hittade {count} problem i ditt dokument",
-    "@issuesFoundInDocument": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "knowYourRights": "Känn dina rättigheter",
-    "landlordNotice": "Hyresvärden måste ge uppsägningstid (3-6 månader)",
-    "lastSynced": "Senast synkroniserat: {time}",
-    "@lastSynced": {
-        "placeholders": {
-            "time": {
-                "type": "String"
-            }
-        }
-    },
-    "late": "försenad",
-    "legalAidCalculator": "Rättshjälpskalkylator",
-    "legalAidWithCopay": "Du kan kvalificera för rättshjälp med en egenavgift på {percent}%.",
-    "@legalAidWithCopay": {
-        "placeholders": {
-            "percent": {
-                "type": "String"
-            }
-        }
-    },
-    "legalEmails": "Juridiska e-postmeddelanden",
-    "legalEmailsWillAppear": "E-post klassificerad som juridisk visas här.",
-    "likelyEligible": "Troligen berättigad",
-    "mayNotQualify": "Kanske inte berättigad",
-    "mayNotQualifyDesc": "Baserat på uppskattningen kanske du inte kvalificerar för statlig rättshjälp.",
-    "migriReference": "Migri-referens",
-    "minimumWage": "Minimilön enligt kollektivavtal",
-    "monthly": "Månadsvis",
-    "monthlyIncome": "Månadsinkomst (EUR)",
-    "mostPopular": "POPULÄRAST",
-    "mustNotResist": "Inte göra fysiskt motstånd",
-    "mustProvideName": "Ange ditt namn och födelsedatum",
-    "mustShowId": "Visa legitimation om du har",
-    "nationality": "Nationalitet",
-    "noCasesMatchSearch": "Inga ärenden matchar sökningen",
-    "noCompletedDeadlines": "Inga slutförda tidsfrister",
-    "noContentAvailable": "Inget innehåll tillgängligt",
-    "noDocumentsScanHint": "Inga dokument ännu. Skanna eller ladda upp.",
-    "noDocumentsYet": "Inga dokument uppladdade ännu",
-    "noDocumentsYetScan": "Inga dokument ännu",
-    "noEventsYet": "Inga händelser ännu",
-    "noLegalEmailsYet": "Inga juridiska e-postmeddelanden ännu",
-    "noPreviousPurchases": "Inga tidigare köp hittades.",
-    "noSignificantIssues": "Inga väsentliga problem hittades i detta dokument.",
-    "noUpcomingDeadlines": "Inga kommande tidsfrister",
-    "noUpcomingDeadlinesShort": "Inga kommande tidsfrister",
-    "noteAppealDeadline": "Notera överklagandefristen (vanligtvis 30 dagar)",
-    "nothingOverdue": "Inget förfallet",
-    "numberOfDependents": "Antal beroende",
-    "oneCaseActive": "1 aktivt ärende",
-    "openCase": "Öppna ärende",
-    "openSettings": "Öppna inställningar",
-    "orWord": "eller",
-    "pageCount": "{count} sida/or",
-    "@pageCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "pageNumber": "Sida {number}",
-    "@pageNumber": {
-        "placeholders": {
-            "number": {
-                "type": "int"
-            }
-        }
-    },
-    "pagesUploadedSuccess": "{count} sidor uppladdade framgångsrikt",
-    "@pagesUploadedSuccess": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "paymentFailed": "Betalning misslyckades: {error}",
-    "@paymentFailed": {
-        "placeholders": {
-            "error": {
-                "type": "String"
-            }
-        }
-    },
-    "pdf": "PDF",
-    "pdfExportComingSoon": "PDF-export kommer snart",
-    "pending": "Väntar",
-    "perMonth": "/månad",
-    "perYear": "/år",
-    "preparingUpload": "Förbereder uppladdning...",
-    "preview": "Förhandsvisa",
-    "priorityProcessing": "Prioriterad bearbetning",
-    "processing": "Bearbetar",
-    "protectionUnjustEviction": "Skydd mot orättvis vräkning",
-    "readingText": "Läser text...",
-    "ready": "Klar",
-    "reportAndOpenCase": "Rapportera och öppna ärende",
-    "reportMileageFraud": "Rapportera mätarbedrägeri",
-    "reportMileageFraudDesc": "En bedrägerirapport skapas baserat på fordonskontrolldata.",
-    "reportToPolice": "Anmäl till polisen vid brott (hot, misshandel)",
-    "retake": "Ta om",
-    "retryAnalysis": "Försök igen",
-    "reviewBeforeSending": "Granska noggrant innan du skickar. Du ansvarar för dokumentets innehåll.",
-    "rightAppealAdmin": "Rätt att överklaga till förvaltningsdomstolen",
-    "rightAskInterpreter": "Be om tolk",
-    "rightChallengeDetention": "Rätt att överklaga frihetsberövande i domstol",
-    "rightContactEmbassy": "Rätt att kontakta din ambassad",
-    "rightContactLawyer": "Kontakta advokat innan förhör",
-    "rightContactLawyerDetention": "Rätt att kontakta en advokat",
-    "rightHabitableDwelling": "Rätt till en beboelig bostad",
-    "rightHumaneTreatment": "Rätt till human behandling och sjukvård",
-    "rightInterpreter": "Rätt till tolk",
-    "rightKnowDetentionReason": "Rätt att veta orsaken till frihetsberövande",
-    "rightKnowWhyStopped": "Veta varför du stoppas",
-    "rightLegalRep": "Rätt till juridiskt ombud",
-    "rightRecordEncounter": "Spela in mötet (på offentliga platser)",
-    "rightRemainSilent": "Tiga (du måste identifiera dig)",
-    "rightStayDuringAppeal": "Rätt att stanna under överklagande (i de flesta fall)",
-    "russian": "Ryska",
-    "safeWorkingConditions": "Säkra arbetsförhållanden",
-    "save": "Spara",
-    "saveChanges": "Spara ändringar",
-    "saveTwentyFivePercent": "Spara 25%",
-    "scanDocumentDesc": "Ta ett foto av ditt dokument",
-    "scanFirstDocumentHint": "Skanna ditt första dokument så att AI kan analysera det.",
-    "scanNew": "Ny skanning",
-    "scenarioNotFound": "Scenario hittades inte",
-    "secureDocumentStorage": "Säker dokumentförvaring",
-    "secureDocumentStorageDesc": "Förvara dina viktiga juridiska dokument på ett ställe.",
-    "securityDeposit": "Deposition max 3 månaders hyra",
-    "selected": "{count} valda",
-    "@selected": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "severityOverview": "Allvarlighetsöversikt",
-    "sickLeave": "Sjukersättning",
-    "somethingWentWrong": "Något gick fel",
-    "stoppedByPolice": "Stoppad av polisen",
-    "stoppedByPoliceDesc": "Dina rättigheter vid poliskontroll",
-    "successSubscribed": "Prenumeration på {plan} lyckades!",
-    "@successSubscribed": {
-        "placeholders": {
-            "plan": {
-                "type": "String"
-            }
-        }
-    },
-    "switchToGrid": "Växla till rutnät",
-    "switchToList": "Växla till lista",
-    "takePhotoInstead": "Ta ett foto istället",
-    "tenantRightsDesc": "Bostads- och hyresskydd",
-    "threeCasesActive": "3 aktiva ärenden",
-    "threeDocScans": "3 dokumentskanningar",
-    "totalAssets": "Totala tillgångar (EUR)",
-    "twentyDocScans": "20 dokumentskanningar",
-    "typeLabel": "Typ",
-    "unlimitedCases": "Obegränsade ärenden",
-    "unlimitedDocScans": "Obegränsad dokumentskanning",
-    "unlinkedEmails": "Olänkade e-postmeddelanden",
-    "uploadFailed": "Uppladdning misslyckades. Kontrollera anslutningen.",
-    "uploadFile": "Ladda upp fil",
-    "uploadFileDesc": "Välj en PDF eller bild från din enhet",
-    "uploadingPercent": "Laddar upp... {percent}%",
-    "@uploadingPercent": {
-        "placeholders": {
-            "percent": {
-                "type": "int"
-            }
-        }
-    },
-    "useThisPhoto": "Använd detta foto",
-    "viewFull": "Visa fullständig",
-    "workPermit": "Arbetstillstånd",
-    "workingTimeLimits": "Arbetstidsgränser (max 8t/dag, 40t/vecka)",
-    "workplaceRights": "Arbetsplatsrättigheter",
-    "workplaceRightsDesc": "Arbetsrättsligt skydd i Finland",
-    "writtenRentalAgreement": "Skriftligt hyresavtal krävs",
-    "youHaveRightTo": "Du har rätt att:",
-    "youMust": "Du måste:",
-    "yourRights": "Dina rättigheter:",
-    "yourRightsAsTenant": "Dina rättigheter som hyresgäst:",
-    "yourRightsInDetention": "Dina rättigheter i förvar:",
-    "whatToDo": "Vad ska du göra",
-    "getHelp": "Få hjälp",
-    "share": "Dela",
-    "didYouKnow": "Visste du?",
-    "mustKnow": "Måste veta",
-    "goodToKnow": "Bra att veta",
-    "sentFromAdvocat": "Skickat från Advocat-appen",
-    "policeActionStayCalm": "Håll dig lugn och håll händerna synliga",
-    "policeActionAskWhy": "Fråga polisen varför du stoppas",
-    "policeActionProvideName": "Uppge ditt namn och födelsedatum",
-    "policeActionWantLawyer": "Säg tydligt: \"Jag vill ha en advokat innan några frågor\"",
-    "policeActionAskInterpreter": "Be om tolk vid behov",
-    "policeActionNoteBadge": "Notera polisens namn och tjänstenummer",
-    "policeFactMustTellReason": "I Finland måste polisen berätta varför du stoppas. Om de inte gör det kan du fråga — och de är skyldiga enligt lag att förklara.",
-    "policeFactCanRecord": "Du kan spela in polisinteraktioner på offentliga platser i Finland. Detta skyddas av yttrandefriheten.",
-    "contactFinnishLegalAid": "Finsk rättshjälp",
-    "contactNonDiscriminationOmbudsman": "Diskrimineringsombudsmannen",
-    "deportationDeadlineAppeal": "Överklagande till förvaltningsdomstolen — vanligtvis 30 dagar från delgivning",
-    "deportationDeadlineLegalAid": "Ansök om rättshjälp — gör detta OMEDELBART",
-    "deportationFactStayDuringAppeal": "I Finland har du vanligtvis rätt att stanna i landet medan ditt överklagande behandlas. Utvisning kan inte verkställas under ett pågående överklagande i de flesta fall.",
-    "contactRefugeeAdviceCentre": "Finlands Flyktingrådgivning",
-    "contactAdminCourtHelsinki": "Förvaltningsdomstolen i Helsingfors",
-    "workplaceActionKeepContract": "Spara kopior av ditt anställningsavtal",
-    "workplaceActionTrackHours": "Registrera dina arbetstimmar självständigt",
-    "workplaceActionReportUnsafe": "Anmäl osäkra förhållanden till arbetarskyddsmyndigheten",
-    "workplaceActionJoinUnion": "Gå med i ett fackförbund för skydd",
-    "workplaceActionContactAuthority": "Kontakta Arbetarskyddsmyndigheten vid behov",
-    "workplaceFactCollectiveWage": "I Finland fastställer kollektivavtal minimilöner per bransch — det finns ingen enskild nationell minimilön. Din arbetsgivare måste följa kollektivavtalet för ditt område.",
-    "workplaceFactOralContract": "Även utan skriftligt avtal har du fulla anställningsrättigheter i Finland. Ett muntligt avtal är lika bindande enligt lag.",
-    "contactOccupationalSafety": "Arbetarskyddsmyndigheten",
-    "contactTradeUnionSAK": "Fackföreningsrådgivning (SAK)",
-    "tenantActionWrittenAgreement": "Ha alltid ett skriftligt hyresavtal",
-    "tenantActionDocumentCondition": "Dokumentera lägenhetens skick vid inflyttning (foton)",
-    "tenantActionReportMaintenance": "Anmäl underhållsproblem skriftligt",
-    "tenantActionNoIllegalEviction": "Gå aldrig med på olaglig vräkning — domstolen måste besluta",
-    "tenantActionContactAdvisory": "Kontakta hyresgästföreningen vid tvister",
-    "tenantFactNoEvictionWithoutCourt": "En hyresvärd i Finland kan inte vräka dig utan domstolsbeslut, även om ditt hyresavtal har löpt ut. Att byta lås eller stänga av el/vatten är olagligt.",
-    "contactTenantsAssociation": "Finlands Hyresgästförbund",
-    "contactConsumerDisputesBoard": "Konsumenttvistenämnden",
-    "detentionActionAskDecision": "Be omedelbart om det skriftliga förvarsbeslutet",
-    "detentionActionRequestLawyer": "Begär att få kontakta en advokat",
-    "detentionActionContactEmbassy": "Kontakta din ambassad eller konsulat",
-    "detentionActionAskMedical": "Be om sjukvård vid behov",
-    "detentionActionRequestInterpreter": "Begär tolk vid alla förhandlingar",
-    "detentionDeadlineCourtReview": "Tingsrätten måste pröva förvaret inom 4 dagar",
-    "detentionDeadlineContinuation": "Domstolen prövar förlängning varannan vecka",
-    "detentionFactCourtReview": "Migrationsförvar i Finland måste prövas av en tingsrätt inom 4 dagar. Om det inte görs blir förvaret olagligt.",
-    "contactParliamentaryOmbudsman": "Riksdagens justitieombudsman",
-    "discriminationActionWriteDown": "Skriv ner exakt vad som hände (datum, tid, plats)",
-    "discriminationActionSaveEvidence": "Spara bevis: meddelanden, e-post, vittnen",
-    "discriminationActionFileComplaint": "Lämna in ett klagomål till Diskrimineringsombudsmannen",
-    "discriminationActionContactLegalAid": "Kontakta ett rättshjälpskontor för gratis rådgivning",
-    "discriminationActionReportPolice": "Anmäl till polisen om hot eller våld förekom",
-    "discriminationFactNonDiscriminationAct": "Finlands diskrimineringslag omfattar diskriminering på grund av ålder, ursprung, nationalitet, språk, religion, hälsa, funktionsnedsättning, sexuell läggning och andra personliga egenskaper.",
-    "contactVictimSupportRIKU": "Brottsofferjouren Finland (RIKU)",
-    "domesticViolence": "Våld i hemmet",
-    "inheritance": "Arv",
-    "inheritanceDesc": "Wills, estate, heirs' rights, forced heirship, probate",
-    "rightInheritanceForced": "Forced heirs (children, spouse) are entitled to a compulsory share regardless of the will",
-    "rightInheritanceWill": "You have the right to make a will disposing of your property — notarized wills have the strongest legal force",
-    "rightInheritanceRenounce": "You can renounce an inheritance within 3 months of learning about it",
-    "rightInheritanceInfo": "You have the right to obtain information about the estate from banks and registries",
-    "rightInheritanceDispute": "You can challenge an unfair will in court within the statutory limitation period",
-    "mustFileInheritance": "File for succession proceedings at a notary within a reasonable time",
-    "mustNotifyHeirs": "All known heirs must be notified of the succession proceedings",
-    "inheritanceActionGatherDocs": "Gather all documents: death certificate, will, property records, bank statements",
-    "inheritanceActionContactNotary": "Contact a notary to open succession proceedings",
-    "inheritanceActionCheckDebts": "Check whether the estate has debts before accepting inheritance",
-    "inheritanceActionFileCourt": "If the will is disputed, file a claim in court",
-    "inheritanceDeadlineRenounce": "3 months to renounce inheritance after learning of it",
-    "inheritanceDeadlineDispute": "Statute of limitations for challenging a will: varies by grounds",
-    "inheritanceFactForced": "In Estonia, descendants and spouse have a right to a compulsory share (1/2 of legal share) even if excluded from the will",
-    "inheritanceFactNotary": "All succession proceedings in Estonia must go through a notary — you cannot skip this step",
-    "consumerProtection": "Konsumentskydd",
-    "caseTypeStepLabel": "Case Type",
-    "detailsStepLabel": "Details",
-    "documentsStepLabel": "Documents",
-    "whatTypeOfCase": "What type of case is this?",
-    "selectCategoryDescription": "Select the category that best describes your situation.",
-    "tellUsAboutCase": "Tell us about your case",
-    "aiHelpsUnderstand": "This information helps our AI understand your situation better.",
-    "caseTitleHint": "e.g., Residence Permit Appeal 2026",
-    "countryJurisdiction": "Country / Jurisdiction",
-    "selectCountryHint": "Select a country",
-    "referenceNumberHint": "e.g., UMA/12345/2026",
-    "descriptionOptional": "Description (optional)",
-    "descriptionHint": "Describe your situation briefly. What happened? What decision was made?",
-    "uploadFirstDocument": "Upload your first document",
-    "uploadDocumentDescription": "Upload the decision letter or any relevant document. You can skip this step and add documents later.",
-    "tapToUploadFile": "Tap to upload a file",
-    "fileSizeLimit": "PDF, JPG, PNG up to 25 MB",
-    "addDocumentsLaterHint": "You can always add documents later from the case detail screen.",
-    "aiGeneratedDisclaimer": "AI-generated • Not legal advice",
-    "callAI": "Call AI",
-    "comingSoon": "Kommer snart",
-    "encrypted": "Encrypted",
-    "typing": "Typing...",
-    "online": "Online",
-    "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
-    "tapMicrophoneToSpeak": "Tap the microphone to speak",
-    "categoryEssential": "Essential",
-    "categoryPolice": "Police",
-    "categoryWork": "Work",
-    "categoryHousing": "Housing",
-    "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
-    "@rightsInsideCount": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "freeAidThreshold": "Free aid threshold",
-    "partialAidThreshold": "Partial aid threshold",
-    "assetLimit": "Asset limit",
-    "whereToApplyLabel": "Where to apply",
-    "phoneLabel": "Phone",
-    "websiteLabel": "Website",
-    "disclaimerCollapsed": "AI guidance only",
-    "disclaimerExpanded": "AI assistant — not legal advice. Always verify with a qualified lawyer.",
-    "chatDisclaimerBanner": "AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.",
-    "guestUser": "Gäst",
-    "howToUse": "Hur använda?",
-    "tutorialStep1Title": "AI-juridisk assistent",
-    "tutorialStep1Desc": "Ställ vilken rättslig fråga som helst och få omedelbara svar baserade på estnisk lag.",
-    "tutorialStep2Title": "Känn till dina rättigheter",
-    "tutorialStep2Desc": "Bläddra bland juridisk information efter ämne — arbete, boende, konsumenträttigheter och mer.",
-    "tutorialStep3Title": "Skanna dokument",
-    "tutorialStep3Desc": "Ta bilder av juridiska dokument för AI-analys och säker förvaring.",
-    "tutorialStep4Title": "Kom igång!",
-    "tutorialStep4Desc": "Utforska appen och skydda dina rättigheter. All data förblir privat på din enhet.",
-    "advocatProTitle": "Advocat Pro",
-    "advocatProSubtitle": "Lås upp premiumfunktioner",
-    "voiceDisclaimer": "Röstassistenten fungerar för närvarande bara på dator (Chrome-webbläsare). Mobilstöd kommer snart.",
-    "recommended": "Rekommenderas",
-    "pleaseLogIn": "Vänligen logga in",
-    "subscriptionNotFound": "Prenumeration hittades inte",
-    "errorWithMessage": "Fel: {message}",
-    "redirectingToPayment": "Omdirigerar till betalningssidan...",
-    "cheaperAnnually": "€{amount}/mån billigare med årsprenumeration",
-    "navigatingTo": "Öppnar",
-    "stayInChat": "Stanna i chatten",
-    "backToChat": "Tillbaka till chatten"
+      }
+    }
+  }
 }

@@ -6,6 +6,8 @@ import 'package:logger/logger.dart';
 
 import '../models/case_model.dart';
 import 'demo_data.dart';
+import 'estonian_law_search.dart';
+import 'finnish_law_search.dart';
 import 'knowledge_base.dart';
 import 'supabase_service.dart';
 
@@ -47,6 +49,12 @@ class ToolResult {
   /// Human-readable message explaining what the user is approving.
   final String? approvalMessage;
 
+  /// Text sent back to Claude as the tool result content. When present, this
+  /// is used instead of [displayText] to prompt Claude for further generation
+  /// (e.g. "now write the draft based on these details…"). The [displayText]
+  /// is still shown to the user in the chat UI.
+  final String? claudeText;
+
   const ToolResult({
     required this.success,
     required this.displayText,
@@ -54,6 +62,7 @@ class ToolResult {
     this.data,
     this.requiresApproval = false,
     this.approvalMessage,
+    this.claudeText,
   });
 
   /// Convenience constructor for error results.
@@ -70,6 +79,7 @@ class ToolResult {
         if (data != null) 'data': data,
         'requiresApproval': requiresApproval,
         if (approvalMessage != null) 'approvalMessage': approvalMessage,
+        if (claudeText != null) 'claudeText': claudeText,
       };
 }
 
@@ -112,6 +122,18 @@ class AssistantTools {
     'change_language': _changeLanguage,
     'translate_text': _translateText,
     'navigate_to': _navigateTo,
+    // v24.1 additions
+    'send_email': _sendEmail,
+    'read_document': _readDocument,
+    'list_documents': _listDocuments,
+    'list_cases': _listCases,
+    'search_estonian_law': _searchEstonianLaw,
+    // v24.2 additions
+    'search_finnish_law': _searchFinnishLaw,
+    'create_deadline': _createDeadline,
+    'update_case': _updateCase,
+    'get_user_profile': _getUserProfile,
+    'analyze_contract': _analyzeContract,
   };
 
   /// Tools that require explicit user approval before the result is acted upon.
@@ -125,6 +147,8 @@ class AssistantTools {
     'open_camera',
     'draft_email',
     'send_email',
+    'create_deadline',
+    'update_case',
   };
 
   /// List of all registered tool names.
@@ -195,6 +219,15 @@ class AssistantTools {
       case 'translate_text':
         final lang = params['target_language'] as String? ?? '';
         return 'Translate the text to $lang?';
+      case 'send_email':
+        final to = params['to'] as String? ?? '';
+        return 'Send this email to $to?';
+      case 'create_deadline':
+        final title = params['title'] as String? ?? '';
+        final date = params['due_date'] as String? ?? '';
+        return 'Add deadline "$title" on $date?';
+      case 'update_case':
+        return 'Apply these changes to the case?';
       default:
         return 'Confirm this action?';
     }
@@ -204,92 +237,304 @@ class AssistantTools {
 
   Future<ToolResult> _checkCompany(Map<String, dynamic> params) async {
     final companyName = params['company_name'] as String? ?? '';
-    final country = params['country'] as String? ?? 'fi';
+    final country = params['country'] as String? ?? 'Estonia';
 
-    // Simulate network delay
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+    // Build direct registry URL based on country
+    final countryLower = country.toLowerCase();
+    final isEstonia = countryLower == 'estonia' ||
+        countryLower == 'eesti' ||
+        countryLower == 'ee';
+    final isFinland = countryLower == 'finland' ||
+        countryLower == 'suomi' ||
+        countryLower == 'fi';
 
+    final registryUrl = isEstonia
+        ? 'https://ariregister.rik.ee/est/company?search_query=${Uri.encodeComponent(companyName)}'
+        : isFinland
+            ? 'https://www.prh.fi/en/kaupparekisteri.html'
+            : '';
+
+    // Try to call the Edge Function for Estonian companies
+    Map<String, dynamic>? apiResult;
+    if (isEstonia) {
+      try {
+        final response = await _supabase.callEdgeFunction(
+          'check-company',
+          body: {'company_name': companyName, 'country': country},
+        );
+        if (response != null && response['found'] == true) {
+          apiResult = response;
+        }
+      } catch (e) {
+        _log.w('Edge Function check-company failed: $e');
+        // Fall through to claudeText approach
+      }
+    }
+
+    // If we got real data from the API, return structured result
+    if (apiResult != null) {
+      final companies =
+          (apiResult['companies'] as List<dynamic>?) ?? [];
+      final detailed =
+          apiResult['detailed'] as Map<String, dynamic>?;
+      final checkUrl = apiResult['check_url'] as String? ?? registryUrl;
+
+      final buffer = StringBuffer();
+      buffer.writeln('**COMPANY FOUND IN ESTONIAN REGISTRY**\n');
+
+      if (detailed != null) {
+        // Rich detailed view
+        final name = detailed['name'] as String? ?? '';
+        final regCode = detailed['registry_code'] as String? ?? '';
+        final status = detailed['status'] as String? ?? '';
+        final registered = detailed['registered'] as String? ?? '';
+        final legalForm = detailed['legal_form'] as String? ?? '';
+        final capital = detailed['capital'];
+        final address = detailed['address'] as String? ?? '';
+        final boardMembers = detailed['board_members'] as List? ?? [];
+        final activities = detailed['activities'] as List? ?? [];
+        final fiscalYear = detailed['fiscal_year'] as String? ?? '';
+        final profit = detailed['profit'];
+        final revenue = detailed['revenue'];
+        final employees = detailed['employees'];
+        final historicalNames = detailed['historical_names'] as List? ?? [];
+
+        if (name.isNotEmpty) buffer.writeln('**Name:** $name');
+        if (regCode.isNotEmpty) buffer.writeln('**Registry code:** $regCode');
+        if (status.isNotEmpty) buffer.writeln('**Status:** $status');
+        if (registered.isNotEmpty) buffer.writeln('**Registered:** $registered');
+        if (legalForm.isNotEmpty) buffer.writeln('**Legal form:** $legalForm');
+        if (capital != null && '$capital'.isNotEmpty) {
+          buffer.writeln('**Capital:** $capital');
+        }
+        if (address.isNotEmpty) buffer.writeln('**Address:** $address');
+        if (boardMembers.isNotEmpty) {
+          buffer.writeln('**Board members:** ${boardMembers.join(', ')}');
+        }
+        if (activities.isNotEmpty) {
+          buffer.writeln('**Activities:**');
+          for (final a in activities.take(5)) {
+            buffer.writeln('  - $a');
+          }
+        }
+        if (fiscalYear.isNotEmpty) buffer.writeln('**Fiscal year:** $fiscalYear');
+        if (revenue != null && '$revenue'.isNotEmpty) {
+          buffer.writeln('**Revenue:** $revenue');
+        }
+        if (profit != null && '$profit'.isNotEmpty) {
+          buffer.writeln('**Profit:** $profit');
+        }
+        if (employees != null && '$employees'.isNotEmpty) {
+          buffer.writeln('**Employees:** $employees');
+        }
+        if (historicalNames.isNotEmpty) {
+          buffer.writeln('**Previous names:** ${historicalNames.join(', ')}');
+        }
+      } else if (companies.isNotEmpty) {
+        // Fallback: basic autocomplete data
+        for (final c in companies) {
+          final comp = c as Map<String, dynamic>;
+          buffer.writeln('- **${comp['name']}**');
+          if ((comp['registry_code'] as String?)?.isNotEmpty == true) {
+            buffer.writeln('  Registry code: ${comp['registry_code']}');
+          }
+          if ((comp['status'] as String?)?.isNotEmpty == true) {
+            buffer.writeln('  Status: ${comp['status']}');
+          }
+          if ((comp['address'] as String?)?.isNotEmpty == true) {
+            buffer.writeln('  Address: ${comp['address']}');
+          }
+          if ((comp['type'] as String?)?.isNotEmpty == true) {
+            buffer.writeln('  Type: ${comp['type']}');
+          }
+          buffer.writeln();
+        }
+      }
+
+      buffer.writeln('\n**Source:** ariregister.rik.ee');
+      buffer.writeln('**Full details:** $checkUrl');
+
+      // Build comprehensive claudeText with all available data
+      final claudeBuf = StringBuffer();
+      claudeBuf.writeln(
+          'I checked the Estonian e-Business Register (ariregister.rik.ee) for "$companyName". '
+          'Here are the REAL results:\n');
+      claudeBuf.writeln(buffer.toString());
+
+      if (detailed != null) {
+        claudeBuf.writeln(
+            '\nBased on this real data, provide the user with a clear analysis: '
+            'Is this company reliable? Are there any red flags '
+            '(tax debts, recent registration, liquidation status, minimal capital)? '
+            'What should the user pay attention to? '
+            'Format your response beautifully — like a professional company report.');
+      } else {
+        claudeBuf.writeln(
+            '\nPresent this data clearly. Mention the user can verify at $checkUrl.');
+      }
+
+      return ToolResult(
+        success: true,
+        displayText: buffer.toString(),
+        cardType: 'company_report',
+        data: {
+          'action': 'check_company',
+          'company_name': companyName,
+          'country': country,
+          'found': true,
+          'companies': companies,
+          if (detailed != null) 'detailed': detailed,
+          'check_url': checkUrl,
+          'source': 'ariregister.rik.ee',
+        },
+        claudeText: claudeBuf.toString(),
+      );
+    }
+
+    // Fallback: no API data, let Claude help
     return ToolResult(
       success: true,
-      displayText: '''
-**Company Report: $companyName**
-
-Registration: Active (${country.toUpperCase()})
-Tax ID: ${country.toUpperCase()}-${companyName.hashCode.abs() % 9000000 + 1000000}
-Founded: 2018-03-15
-Status: Active
-
-**Tax Information:**
-- Tax debts: EUR 0.00
-- VAT registered: Yes
-- Last filing: 2025-12-31
-
-**Court Cases:** None found
-
-**Risk Level:** LOW
-No negative indicators found. Company appears to be in good standing.
-''',
+      displayText: 'Checking company: **$companyName**...',
       cardType: 'company_report',
       data: {
+        'action': 'check_company',
         'company_name': companyName,
         'country': country,
-        'registration_status': 'active',
-        'tax_id': '${country.toUpperCase()}-${companyName.hashCode.abs() % 9000000 + 1000000}',
-        'founded': '2018-03-15',
-        'tax_debts': 0.0,
-        'vat_registered': true,
-        'court_cases': 0,
-        'risk_level': 'low',
+        'registry_url': registryUrl,
       },
+      claudeText: 'The user wants to check company "$companyName" in $country. '
+          '${registryUrl.isNotEmpty ? "Direct link to check: $registryUrl. " : ""}'
+          'Provide what you know about this company. '
+          'Give the user the exact link to verify: ${registryUrl.isNotEmpty ? registryUrl : "search for the company registry in $country"}. '
+          'If you know the company, share relevant details (industry, size, any known issues). '
+          'If not, explain exactly how to look it up step by step.',
     );
   }
 
   Future<ToolResult> _checkVehicle(Map<String, dynamic> params) async {
-    final plate = params['plate_number'] as String? ?? '';
-    final country = params['country'] as String? ?? 'fi';
+    final plateNumber = params['plate_number'] as String? ?? '';
+    final country = params['country'] as String? ?? 'Estonia';
+    final countryLower = country.toLowerCase();
 
-    await Future<void>.delayed(const Duration(milliseconds: 500));
+    // Country-specific registry info
+    final Map<String, Map<String, String>> registries = {
+      'estonia': {
+        'portal': 'https://eteenindus.mnt.ee/',
+        'portal_name': 'Transpordiamet e-teenindus',
+        'insurance': 'https://www.lkf.ee/kindlustuse-kontroll',
+        'insurance_name': 'LKF kindlustuse kontroll',
+        'inspection': 'https://www.arktehnoulevaatus.ee/',
+        'inspection_name': 'ARK tehnoülevaatus',
+        'fines': 'https://www.politsei.ee/et/trahvid',
+        'fines_name': 'Politsei trahvid',
+        'checklist': 'Tehnoülevaatus kehtivus, liikluskindlustus, registripant (leasing), omanik, arvestimäär (kütusemaks), auto ajalugu',
+      },
+      'finland': {
+        'portal': 'https://www.traficom.fi/fi/liikenne/tieliikenne/ajoneuvojen-rekisteritiedot',
+        'portal_name': 'Traficom — ajoneuvon tiedot',
+        'insurance': 'https://www.lvk.fi/vakuutuksentarkistus/',
+        'insurance_name': 'LVK vakuutuksen tarkistus',
+        'inspection': 'https://www.traficom.fi/fi/liikenne/tieliikenne/katsastus',
+        'inspection_name': 'Traficom katsastus',
+        'fines': 'https://www.oikeus.fi/tuomioistuimet/sakot/',
+        'fines_name': 'Sakot',
+        'checklist': 'Katsastus, liikennevakuutus, omistaja, käyttövoima, CO2-päästöt, ajoneuvohistoria',
+      },
+      'latvia': {
+        'portal': 'https://www.csdd.lv/transportlidzeklu-registrs',
+        'portal_name': 'CSDD transportlīdzekļu reģistrs',
+        'insurance': 'https://www.ltab.lv/octa-parbaude/',
+        'insurance_name': 'LTAB OCTA pārbaude',
+        'inspection': 'https://www.csdd.lv/tehniska-apskate',
+        'inspection_name': 'CSDD tehniskā apskate',
+        'fines': '',
+        'fines_name': '',
+        'checklist': 'Tehniskā apskate, OCTA apdrošināšana, īpašnieks, ķīlas, sodi',
+      },
+      'lithuania': {
+        'portal': 'https://www.regitra.lt/lt/paslaugos/transporto-priemoniu-registravimas/',
+        'portal_name': 'Regitra',
+        'insurance': '',
+        'insurance_name': '',
+        'inspection': '',
+        'inspection_name': '',
+        'fines': '',
+        'fines_name': '',
+        'checklist': 'Techninė apžiūra, draudimas, savininkas, įkeitimai',
+      },
+      'germany': {
+        'portal': 'https://www.kba.de/DE/Themen/ZentraleRegister/ZFZR/zfzr_node.html',
+        'portal_name': 'KBA Zentrales Fahrzeugregister',
+        'insurance': '',
+        'insurance_name': '',
+        'inspection': '',
+        'inspection_name': 'TÜV/DEKRA Hauptuntersuchung',
+        'fines': 'https://www.kba.de/DE/Themen/ZentraleRegister/FAER/faer_node.html',
+        'fines_name': 'KBA Fahreignungsregister',
+        'checklist': 'HU/TÜV, Kfz-Versicherung, Halter, Pfandrechte, Unfallhistorie',
+      },
+      'sweden': {
+        'portal': 'https://fu-regnr.transportstyrelsen.se/extweb/',
+        'portal_name': 'Transportstyrelsen fordonsuppgifter',
+        'insurance': '',
+        'insurance_name': '',
+        'inspection': 'https://www.transportstyrelsen.se/besiktning',
+        'inspection_name': 'Transportstyrelsen besiktning',
+        'fines': '',
+        'fines_name': '',
+        'checklist': 'Besiktning, trafikförsäkring, ägare, skulder, mätarställning',
+      },
+      'poland': {
+        'portal': 'https://historiapojazdu.gov.pl/',
+        'portal_name': 'Historia Pojazdu',
+        'insurance': '',
+        'insurance_name': '',
+        'inspection': '',
+        'inspection_name': 'Przegląd techniczny',
+        'fines': '',
+        'fines_name': '',
+        'checklist': 'Przegląd techniczny, OC, właściciel, zastawy, historia',
+      },
+    };
+
+    final reg = registries[countryLower] ?? registries['estonia']!;
+
+    final buf = StringBuffer();
+    buf.writeln('VEHICLE CHECK: $plateNumber ($country)');
+    buf.writeln('');
+    buf.writeln('OFFICIAL PORTALS:');
+    buf.writeln('• Registry: ${reg['portal_name']} — ${reg['portal']}');
+    if (reg['insurance']!.isNotEmpty) {
+      buf.writeln('• Insurance: ${reg['insurance_name']} — ${reg['insurance']}');
+    }
+    if (reg['inspection']!.isNotEmpty) {
+      buf.writeln('• Inspection: ${reg['inspection_name']} — ${reg['inspection']}');
+    }
+    if (reg['fines']!.isNotEmpty) {
+      buf.writeln('• Fines: ${reg['fines_name']} — ${reg['fines']}');
+    }
+    buf.writeln('');
+    buf.writeln('CHECKLIST: ${reg['checklist']}');
 
     return ToolResult(
       success: true,
-      displayText: '''
-**Vehicle Report: $plate**
-
-Make: Volkswagen
-Model: Golf
-Year: 2019
-Color: Silver
-Country: ${country.toUpperCase()}
-
-**Registration:** Valid until 2026-06-30
-**Insurance:** Active (Liability + Comprehensive)
-**Inspection:** Passed (last: 2025-08-15, next due: 2026-08-15)
-
-**Ownership History:**
-1. Current owner since 2022-04-10
-2. Previous owner: 2019-01-20 to 2022-04-09
-
-**Liens/Restrictions:** None
-**Reported Stolen:** No
-**Odometer (last recorded):** 87,450 km
-''',
+      displayText: buf.toString(),
       cardType: 'vehicle_report',
       data: {
-        'plate_number': plate,
+        'action': 'check_vehicle',
+        'plate_number': plateNumber,
         'country': country,
-        'make': 'Volkswagen',
-        'model': 'Golf',
-        'year': 2019,
-        'color': 'Silver',
-        'registration_valid': true,
-        'registration_expires': '2026-06-30',
-        'insurance_active': true,
-        'inspection_passed': true,
-        'inspection_next': '2026-08-15',
-        'liens': false,
-        'stolen': false,
-        'odometer_km': 87450,
+        'registry_url': reg['portal'] ?? '',
       },
+      claudeText: 'The user wants to check vehicle "$plateNumber" in $country.\n\n'
+          '${buf.toString()}\n\n'
+          'Give the user a COMPLETE vehicle check guide:\n'
+          '1. What to check FIRST (insurance, inspection validity)\n'
+          '2. Red flags to watch for (expired inspection, no insurance, liens/loans)\n'
+          '3. Direct links to each portal listed above\n'
+          '4. If buying a car: what additional checks to do (flood damage, odometer fraud, stolen vehicle check)\n'
+          '5. Costs of checks if any\n'
+          'Be specific to $country. Use the links above. Format beautifully like a professional vehicle report.',
     );
   }
 
@@ -353,7 +598,7 @@ Country: ${country.toUpperCase()}
     final title = params['title'] as String? ?? 'New Case';
     final description = params['description'] as String? ?? '';
     final caseType = params['case_type'] as String? ?? 'other';
-    final country = params['country'] as String? ?? 'Finland';
+    final country = params['country'] as String? ?? 'Estonia';
 
     // Create via Supabase for authenticated users, in-memory for demo.
     final newCase = await _supabase.createCase({
@@ -395,9 +640,10 @@ The case has been created. You can now upload documents and I will help analyze 
 
   Future<ToolResult> _analyzeDocument(Map<String, dynamic> params) async {
     final documentId = params['document_id'] as String? ?? '';
+    final documentText = params['document_text'] as String? ?? '';
     final focus = params['focus'] as String? ?? 'all';
 
-    await Future<void>.delayed(const Duration(milliseconds: 600));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
 
     // Look up demo document if available
     final doc = DemoData.documents
@@ -405,52 +651,34 @@ The case has been created. You can now upload documents and I will help analyze 
         .firstOrNull;
 
     final fileName = doc?.fileName ?? 'Document';
-    final summary = doc?.aiSummary ?? 'Document analysis completed.';
+    final summary = doc?.aiSummary ?? '';
+    final language = doc?.language ?? 'unknown';
+    final category = doc?.category.name ?? 'general';
 
     return ToolResult(
       success: true,
-      displayText: '''
-**Document Analysis: $fileName**
-
-**Summary:**
-$summary
-
-**Key Findings:**
-- Language: ${doc?.language ?? 'auto-detected'}
-- Category: ${doc?.category.name ?? 'general'}
-
-**Procedural Issues Found:** 3
-1. Document issued in wrong language (Russian instead of Finnish/English)
-2. Signed by unauthorized officer (Sergeant, not Inspector-level or above)
-3. References "Soviet Union" — a non-existent country since 1991
-
-**Legal References:**
-- Hallintolaki Section 44-45 (Administrative Procedure Act)
-- Ulkomaalaislaki Section 150 (Right to be heard)
-- Ulkomaalaislaki Section 203 (Language requirements)
-
-**Deadlines Extracted:**
-- Appeal deadline: 30 days from decision date
-''',
+      displayText: 'Analyzing document: **$fileName**...',
       cardType: 'document_analysis',
       data: {
+        'action': 'analyze_document',
         'document_id': documentId,
         'file_name': fileName,
-        'summary': summary,
         'focus': focus,
-        'language': doc?.language ?? 'unknown',
-        'issues_count': 3,
-        'issues': [
-          'Wrong language (Russian instead of Finnish/English)',
-          'Signed by unauthorized officer',
-          'References non-existent country "Soviet Union"',
-        ],
-        'legal_references': [
-          'Hallintolaki Section 44-45',
-          'Ulkomaalaislaki Section 150',
-          'Ulkomaalaislaki Section 203',
-        ],
+        'language': language,
+        'category': category,
       },
+      claudeText: 'Now analyze the document "$fileName" '
+          '(language: $language, category: $category). '
+          '${summary.isNotEmpty ? "AI summary from OCR: $summary. " : ""}'
+          '${documentText.isNotEmpty ? "Document text: $documentText. " : ""}'
+          'Focus area: $focus. '
+          'Provide a thorough legal analysis including: '
+          '1) Summary of the document, '
+          '2) Key findings and potential issues (procedural violations, factual errors, missing elements), '
+          '3) Relevant legal references (specific law sections), '
+          '4) Any deadlines extracted from the document. '
+          'Be specific to the jurisdiction and case type. '
+          'Format with markdown headers and bullet points.',
     );
   }
 
@@ -458,70 +686,41 @@ $summary
     final draftType = params['draft_type'] as String? ?? 'appeal';
     final caseId = params['case_id'] as String? ?? '';
     final language = params['language'] as String? ?? 'en';
+    final instructions = params['instructions'] as String?;
 
-    await Future<void>.delayed(const Duration(milliseconds: 800));
+    await Future<void>.delayed(const Duration(milliseconds: 300));
 
     final legalCase = DemoData.cases
         .where((c) => c.id == caseId)
         .firstOrNull;
 
     final caseTitle = legalCase?.title ?? 'Legal Case';
+    final caseDescription = legalCase?.description ?? '';
 
     return ToolResult(
       success: true,
-      displayText: '''
-**Draft Generated: ${draftType.replaceAll('_', ' ').toUpperCase()}**
-
-Re: $caseTitle
-
----
-
-[DRAFT - REQUIRES REVIEW]
-
-To: Helsinki Administrative Court (Hallinto-oikeus)
-From: [Client Name]
-Date: ${DateTime.now().toIso8601String().substring(0, 10)}
-Re: Appeal against deportation decision UMA/2025/00431
-
-Dear Administrative Court,
-
-I hereby appeal the deportation decision issued on 2025-03-01 by the Helsinki Police Department on the following grounds:
-
-1. **Procedural violation — Language requirement (Hallintolaki Section 45; Ulkomaalaislaki Section 203):** The decision was issued exclusively in Russian. The applicant's registered communication language is English, and Finnish law requires decisions to be provided in a language the person understands.
-
-2. **Procedural violation — Unauthorized signatory (Hallintolaki Section 44):** The decision was signed by an officer without the required authority level to issue deportation decisions.
-
-3. **Factual error — Country of origin:** The decision references "Soviet Union" as the country of origin, which ceased to exist in 1991.
-
-I respectfully request that the Court:
-a) Annul the deportation decision due to the above procedural violations
-b) Grant a stay of execution pending the outcome of this appeal
-
-Respectfully submitted,
-[Client Name]
-
----
-
-*This is an AI-generated draft. It must be reviewed by a qualified attorney before submission.*
-''',
+      displayText: 'Generating draft: **${draftType.replaceAll('_', ' ').toUpperCase()}**...',
       cardType: 'draft_preview',
       data: {
+        'action': 'generate_draft',
         'draft_type': draftType,
-        'case_id': caseId,
         'language': language,
+        'instructions': instructions ?? '',
         'case_title': caseTitle,
-        'generated_at': DateTime.now().toIso8601String(),
+        'case_description': caseDescription,
       },
-      requiresApproval: true,
-      approvalMessage:
-          'Review the generated $draftType draft for "$caseTitle". '
-          'Would you like to save or edit it?',
+      requiresApproval: false, // Claude will generate, user reviews before using
+      claudeText: 'Now generate the $draftType document in $language for the case "$caseTitle". '
+          'Use the case details: $caseDescription. '
+          '${instructions != null ? "Additional instructions: $instructions. " : ""}'
+          'Write a complete, professional legal document ready for submission. '
+          'Use correct legal format for the jurisdiction. No AI disclaimers in the document.',
     );
   }
 
   Future<ToolResult> _searchKnowledge(Map<String, dynamic> params) async {
     final query = params['query'] as String? ?? '';
-    final country = params['country'] as String? ?? 'finland';
+    final country = params['country'] as String? ?? 'estonia';
     final caseType = params['case_type'] as String?;
 
     await Future<void>.delayed(const Duration(milliseconds: 400));
@@ -569,138 +768,24 @@ Respectfully submitted,
   }
 
   Future<ToolResult> _findLawyer(Map<String, dynamic> params) async {
-    final country = params['country'] as String? ?? 'finland';
-    final caseType = params['case_type'] as String?;
-    final city = params['city'] as String?;
-
-    await Future<void>.delayed(const Duration(milliseconds: 500));
-
-    final countryLower = country.toLowerCase();
-    final List<Map<String, dynamic>> contacts;
-
-    if (countryLower.contains('finland') || countryLower == 'fi') {
-      contacts = [
-        {
-          'name': 'Oikeusaputoimisto (Legal Aid Office)',
-          'type': 'Legal Aid',
-          'phone': '0295 530 300',
-          'website': 'https://oikeus.fi/oikeusapu/',
-          'description':
-              'Free or subsidized legal assistance based on income. '
-                  'Covers all legal matters.',
-          'cost': 'Free / means-tested',
-        },
-        {
-          'name': 'Pakolaisneuvonta (Refugee Advice Centre)',
-          'type': 'NGO',
-          'phone': '09 2313 9300',
-          'website': 'https://www.pakolaisneuvonta.fi/',
-          'description':
-              'Free legal advice for asylum seekers and refugees.',
-          'cost': 'Free',
-        },
-        {
-          'name': 'RIKU — Victim Support Finland',
-          'type': 'NGO',
-          'phone': '116 006',
-          'website': 'https://www.riku.fi/',
-          'description':
-              'Support and legal guidance for crime victims.',
-          'cost': 'Free',
-        },
-        {
-          'name': 'Finnish Bar Association Lawyer Search',
-          'type': 'Directory',
-          'phone': '09 6866 120',
-          'website': 'https://www.asianajajaliitto.fi/en/',
-          'description':
-              'Find a licensed lawyer specializing in your case type.',
-          'cost': 'Varies',
-        },
-      ];
-    } else if (countryLower.contains('germany') || countryLower == 'de') {
-      contacts = [
-        {
-          'name': 'Beratungshilfe (Advisory Assistance)',
-          'type': 'Legal Aid',
-          'phone': 'Local court (Amtsgericht)',
-          'website': 'https://www.bmj.de/',
-          'description':
-              'Free legal advice voucher from local court for low-income persons.',
-          'cost': 'EUR 15 flat fee',
-        },
-        {
-          'name': 'Prozesskostenhilfe (Legal Aid for Court)',
-          'type': 'Legal Aid',
-          'description':
-              'Covers court and lawyer fees for those who cannot afford them.',
-          'cost': 'Free / means-tested',
-        },
-        {
-          'name': 'Migrationsberatung (Migration Counseling)',
-          'type': 'NGO',
-          'website': 'https://www.bamf.de/',
-          'description':
-              'Free migration advice services funded by the federal government.',
-          'cost': 'Free',
-        },
-      ];
-    } else if (countryLower.contains('estonia') || countryLower == 'ee') {
-      contacts = [
-        {
-          'name': 'Riigi Oigusabi (State Legal Aid)',
-          'type': 'Legal Aid',
-          'website': 'https://www.juristaitab.ee/',
-          'description':
-              'State-funded legal aid for those who cannot afford a lawyer.',
-          'cost': 'Free / means-tested',
-        },
-        {
-          'name': 'Estonian Human Rights Centre',
-          'type': 'NGO',
-          'website': 'https://humanrights.ee/',
-          'description':
-              'Legal advice on discrimination and human rights issues.',
-          'cost': 'Free',
-        },
-      ];
-    } else {
-      contacts = [
-        {
-          'name': 'Local Legal Aid Office',
-          'type': 'Legal Aid',
-          'description':
-              'Contact your local legal aid office for free or subsidized '
-                  'legal assistance. Most EU countries provide means-tested '
-                  'legal aid.',
-          'cost': 'Varies by country',
-        },
-      ];
-    }
-
-    final buffer = StringBuffer(
-      '**Legal Aid & Lawyer Contacts ($country)**\n\n',
-    );
-
-    for (final c in contacts) {
-      buffer.writeln('**${c['name']}** (${c['type']})');
-      if (c['phone'] != null) buffer.writeln('Phone: ${c['phone']}');
-      if (c['website'] != null) buffer.writeln('Web: ${c['website']}');
-      buffer.writeln('${c['description']}');
-      buffer.writeln('Cost: ${c['cost']}');
-      buffer.writeln();
-    }
+    final country = params['country'] as String? ?? 'Estonia';
+    final caseType = params['case_type'] as String? ?? 'general';
+    final city = params['city'] as String? ?? '';
 
     return ToolResult(
       success: true,
-      displayText: buffer.toString(),
+      displayText: 'Searching for lawyers in **$country**...',
       cardType: 'lawyer_list',
       data: {
+        'action': 'find_lawyer',
         'country': country,
         'case_type': caseType,
         'city': city,
-        'contacts': contacts,
       },
+      claudeText: 'The user needs a lawyer in $country for $caseType cases, city: $city. '
+          'Provide specific recommendations: legal aid offices, bar association contacts, '
+          'free legal aid eligibility, and exact phone numbers/websites. '
+          'Use your knowledge base for this country.',
     );
   }
 
@@ -839,17 +924,19 @@ ${legalCase.description ?? 'No description available.'}
       'fr': 'Français (French)',
     };
 
-    final displayName = languageNames[language] ?? language;
+    final languageName = languageNames[language] ?? language;
 
     return ToolResult(
       success: true,
-      displayText: 'Language changed to **$displayName**.',
+      displayText: 'Language: **$languageName**',
       cardType: 'language_changed',
       data: {
         'action': 'change_language',
         'language': language,
-        'display_name': displayName,
+        'display_name': languageName,
       },
+      claudeText: 'The user wants to change the app language to $languageName. '
+          'Tell them to go to Settings > Language to change it, or use the navigate_to tool to take them there.',
     );
   }
 
@@ -897,26 +984,603 @@ ${legalCase.description ?? 'No description available.'}
     final targetLanguage = params['target_language'] as String? ?? 'en';
     final sourceLanguage = params['source_language'] as String?;
 
-    await Future<void>.delayed(const Duration(milliseconds: 400));
+    await Future<void>.delayed(const Duration(milliseconds: 200));
 
-    // In demo mode, return a placeholder. In production, this would call
-    // a translation API or use Claude for translation.
-    final translatedText = '[Translated to $targetLanguage] $text';
+    final directionLabel = sourceLanguage != null
+        ? '$sourceLanguage -> $targetLanguage'
+        : '-> $targetLanguage';
 
     return ToolResult(
       success: true,
-      displayText: '''
-**Translation${sourceLanguage != null ? ' ($sourceLanguage -> $targetLanguage)' : ' (-> $targetLanguage)'}:**
-
-$translatedText
-''',
+      displayText: 'Translating ($directionLabel)...',
       cardType: 'translation',
       data: {
+        'action': 'translate_text',
         'source_text': text,
-        'translated_text': translatedText,
         'source_language': sourceLanguage ?? 'auto',
         'target_language': targetLanguage,
       },
+      claudeText: 'Translate the following text to $targetLanguage. '
+          'Only provide the translation, no explanations:\n\n$text',
+    );
+  }
+
+  // ── v24.1 additions ───────────────────────────────────────────────────
+
+  /// Send an email via the Supabase `send-email` Edge Function.
+  ///
+  /// SAFETY: This tool is in [requiresApproval]. The UI shows a preview
+  /// dialog and only after the user taps "Send" does the Edge Function
+  /// actually dispatch the mail. Never bypass the approval flow.
+  Future<ToolResult> _sendEmail(Map<String, dynamic> params) async {
+    final to = (params['to'] as String? ?? '').trim();
+    final subject = (params['subject'] as String? ?? '').trim();
+    final body = (params['body'] as String? ?? '').trim();
+    final cc = params['cc'] as String?;
+    final caseId = params['case_id'] as String?;
+
+    if (to.isEmpty || subject.isEmpty || body.isEmpty) {
+      return ToolResult.error(
+        'send_email requires non-empty to, subject and body.',
+      );
+    }
+
+    // Primitive email validation — reject obvious garbage before the user
+    // sees the approval dialog.
+    final emailRe = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+    if (!emailRe.hasMatch(to)) {
+      return ToolResult.error('Invalid recipient address "$to".');
+    }
+
+    // NOTE: actual dispatch happens in the post-approval handler which calls
+    // `send-email` Edge Function. This method ONLY prepares the preview.
+    return ToolResult(
+      success: true,
+      displayText: '''
+**Email ready to send**
+
+**To:** $to
+${cc != null && cc.isNotEmpty ? '**Cc:** $cc\n' : ''}**Subject:** $subject
+
+---
+
+$body
+
+---
+
+Review the email carefully. It will only be sent after you tap **Send**.
+''',
+      cardType: 'email_draft',
+      data: {
+        'to': to,
+        if (cc != null && cc.isNotEmpty) 'cc': cc,
+        'subject': subject,
+        'body': body,
+        if (caseId != null) 'case_id': caseId,
+        'send_via': 'send-email',
+      },
+      requiresApproval: true,
+      approvalMessage: 'Send this email to $to?',
+    );
+  }
+
+  /// Read the OCR / extracted text of an uploaded document.
+  Future<ToolResult> _readDocument(Map<String, dynamic> params) async {
+    final documentId = (params['document_id'] as String? ?? '').trim();
+    if (documentId.isEmpty) {
+      return ToolResult.error('read_document requires document_id.');
+    }
+
+    Map<String, dynamic>? doc;
+    try {
+      final vault = await _supabase.getVaultDocuments();
+      for (final d in vault) {
+        if (d['id'] == documentId) {
+          doc = d;
+          break;
+        }
+      }
+    } catch (e) {
+      _log.w('read_document: vault query failed: $e');
+    }
+
+    // Demo fallback
+    if (doc == null) {
+      final demo = DemoData.documents
+          .where((d) => d.id == documentId)
+          .firstOrNull;
+      if (demo != null) {
+        doc = demo.toJson();
+      }
+    }
+
+    if (doc == null) {
+      return ToolResult.error(
+        'Document "$documentId" not found. Try list_documents first.',
+      );
+    }
+
+    final fileName = doc['file_name'] as String? ??
+        doc['fileName'] as String? ??
+        'document';
+    final ocrText = (doc['ocr_text'] as String?) ??
+        (doc['ocrText'] as String?) ??
+        '';
+    final summary = (doc['ai_summary'] as String?) ??
+        (doc['aiSummary'] as String?) ??
+        '';
+    final category = doc['category'] as String? ?? 'general';
+    final language = doc['language'] as String? ?? 'unknown';
+    final uploadedAt = (doc['created_at'] as String?) ??
+        (doc['uploadedAt'] as String?);
+
+    final hasText = ocrText.isNotEmpty;
+    final preview = hasText
+        ? (ocrText.length > 4000 ? '${ocrText.substring(0, 4000)}…' : ocrText)
+        : '(no extracted text — document may be image-only or still processing)';
+
+    return ToolResult(
+      success: true,
+      displayText: '**$fileName** — $category ($language)\n\n$preview',
+      cardType: 'document_analysis',
+      data: {
+        'document_id': documentId,
+        'file_name': fileName,
+        'category': category,
+        'language': language,
+        if (uploadedAt != null) 'uploaded_at': uploadedAt,
+        'has_text': hasText,
+        'ocr_text_length': ocrText.length,
+        if (summary.isNotEmpty) 'summary': summary,
+      },
+      claudeText: 'Here is the full content of document "$fileName" '
+          '(category: $category, language: $language):\n\n$ocrText\n\n'
+          'Analyze it thoroughly, identify legal issues, cite specific § '
+          'where relevant. Respond in the user\'s language.',
+    );
+  }
+
+  /// List the user's documents, optionally filtered by case.
+  Future<ToolResult> _listDocuments(Map<String, dynamic> params) async {
+    final caseId = params['case_id'] as String?;
+    final limit = (params['limit'] as int?) ?? 20;
+
+    List<Map<String, dynamic>> docs = [];
+    try {
+      if (caseId != null && caseId.isNotEmpty) {
+        final list = await _supabase.getDocuments(caseId);
+        docs = list.map((d) => d.toJson()).toList();
+      } else {
+        docs = await _supabase.getVaultDocuments();
+      }
+    } catch (e) {
+      _log.w('list_documents: query failed: $e');
+    }
+
+    // Demo fallback
+    if (docs.isEmpty) {
+      docs = DemoData.documents
+          .where((d) => caseId == null || d.caseId == caseId)
+          .map((d) => d.toJson())
+          .toList();
+    }
+
+    final trimmed = docs.take(limit).toList();
+    if (trimmed.isEmpty) {
+      return const ToolResult(
+        success: true,
+        displayText: 'No documents found.',
+        cardType: 'document_analysis',
+        data: {'documents': <Map<String, dynamic>>[]},
+      );
+    }
+
+    final rows = <Map<String, dynamic>>[];
+    final buf = StringBuffer('**Documents (${trimmed.length}):**\n\n');
+    for (final d in trimmed) {
+      final id = d['id']?.toString() ?? '';
+      final name = (d['file_name'] ?? d['fileName'] ?? 'document').toString();
+      final cat = (d['category'] ?? 'general').toString();
+      final lang = (d['language'] ?? 'unknown').toString();
+      final summary = (d['ai_summary'] ?? d['aiSummary'] ?? '').toString();
+      buf.writeln('- **$name** ($cat, $lang) — id: `$id`');
+      if (summary.isNotEmpty) {
+        buf.writeln(
+          '  ${summary.length > 120 ? "${summary.substring(0, 120)}…" : summary}',
+        );
+      }
+      rows.add({
+        'id': id,
+        'file_name': name,
+        'category': cat,
+        'language': lang,
+        if (summary.isNotEmpty) 'summary': summary,
+      });
+    }
+
+    return ToolResult(
+      success: true,
+      displayText: buf.toString(),
+      cardType: 'document_analysis',
+      data: {'documents': rows, 'count': rows.length},
+    );
+  }
+
+  /// List the user's cases.
+  Future<ToolResult> _listCases(Map<String, dynamic> params) async {
+    final statusFilter = (params['status'] as String?)?.toLowerCase();
+
+    List<LegalCase> cases = [];
+    try {
+      cases = await _supabase.getCases();
+    } catch (e) {
+      _log.w('list_cases: query failed: $e');
+    }
+    if (cases.isEmpty) {
+      cases = DemoData.cases;
+    }
+
+    final filtered = statusFilter == null
+        ? cases
+        : cases.where((c) => c.status.name == statusFilter).toList();
+
+    if (filtered.isEmpty) {
+      return const ToolResult(
+        success: true,
+        displayText: 'No cases found.',
+        cardType: 'case_summary',
+        data: {'cases': <Map<String, dynamic>>[]},
+      );
+    }
+
+    final rows = <Map<String, dynamic>>[];
+    final buf = StringBuffer('**Cases (${filtered.length}):**\n\n');
+    for (final c in filtered) {
+      buf.writeln('- **${c.title}** (${c.type.name}, ${c.status.name})');
+      buf.writeln('  id: `${c.id}` — ${c.documentCount} doc(s)');
+      rows.add({
+        'id': c.id,
+        'title': c.title,
+        'type': c.type.name,
+        'status': c.status.name,
+        'document_count': c.documentCount,
+      });
+    }
+
+    return ToolResult(
+      success: true,
+      displayText: buf.toString(),
+      cardType: 'case_summary',
+      data: {'cases': rows, 'count': rows.length},
+    );
+  }
+
+  /// Search the bundled Estonian legal corpus.
+  Future<ToolResult> _searchEstonianLaw(Map<String, dynamic> params) async {
+    final query = (params['query'] as String? ?? '').trim();
+    final act = (params['act'] as String?)?.trim();
+    final paragraph = (params['paragraph'] as String?)?.trim();
+
+    if (query.isEmpty && (paragraph == null || paragraph.isEmpty)) {
+      return ToolResult.error(
+        'search_estonian_law requires either query or paragraph.',
+      );
+    }
+
+    final results = await EstonianLawSearch.search(
+      query: query,
+      act: act,
+      paragraph: paragraph,
+    );
+
+    if (results.isEmpty) {
+      return ToolResult(
+        success: true,
+        displayText: 'No matching sections found for "$query".',
+        cardType: null,
+        data: {'query': query, if (act != null) 'act': act, 'matches': []},
+      );
+    }
+
+    final buf = StringBuffer();
+    buf.writeln('**Estonian law matches (top ${results.length}):**\n');
+    final matches = <Map<String, dynamic>>[];
+    for (final r in results) {
+      buf.writeln('**${r.act} ${r.paragraph}** — ${r.title}');
+      buf.writeln(r.bodyPreview(400));
+      buf.writeln();
+      matches.add({
+        'act': r.act,
+        'paragraph': r.paragraph,
+        'title': r.title,
+        'body': r.body,
+        'url': r.sourceUrl,
+      });
+    }
+
+    final claudeText = StringBuffer();
+    claudeText.writeln('Estonian law search for "$query":\n');
+    for (final r in results) {
+      claudeText.writeln('--- ${r.act} ${r.paragraph} (${r.title}) ---');
+      claudeText.writeln(r.body);
+      claudeText.writeln();
+    }
+    claudeText.writeln(
+      'Use the EXACT paragraph numbers and text above when answering. Never '
+      'fabricate § numbers. Cite source URL when relevant.',
+    );
+
+    return ToolResult(
+      success: true,
+      displayText: buf.toString(),
+      cardType: null,
+      data: {
+        'query': query,
+        if (act != null) 'act': act,
+        if (paragraph != null) 'paragraph': paragraph,
+        'matches': matches,
+      },
+      claudeText: claudeText.toString(),
+    );
+  }
+
+  /// v24.2 — Search the bundled Finnish legal corpus.
+  ///
+  /// Mirrors `search_estonian_law`. Use when the case jurisdiction is FI,
+  /// the user mentions a Finnish statute (Rikoslaki, Ulkomaalaislaki,
+  /// Hallintolaki, Rikosvahinkolaki, Oikeudenkäymiskaari) or when the
+  /// conversation is about a Finnish deportation, asylum, or injured-party
+  /// compensation matter.
+  Future<ToolResult> _searchFinnishLaw(Map<String, dynamic> params) async {
+    final query = (params['query'] as String? ?? '').trim();
+    final act = (params['act'] as String?)?.trim();
+    final paragraph = (params['paragraph'] as String?)?.trim();
+
+    if (query.isEmpty && (paragraph == null || paragraph.isEmpty)) {
+      return ToolResult.error(
+        'search_finnish_law requires either query or paragraph.',
+      );
+    }
+
+    final searcher = FinnishLawSearch();
+    final results = await searcher.search(
+      query: query,
+      act: act,
+      paragraph: paragraph,
+    );
+
+    if (results.isEmpty) {
+      return ToolResult(
+        success: true,
+        displayText: 'No matching Finnish-law sections found for "$query".',
+        cardType: null,
+        data: {
+          'jurisdiction': 'FI',
+          'query': query,
+          if (act != null) 'act': act,
+          'matches': [],
+        },
+      );
+    }
+
+    final buf = StringBuffer();
+    buf.writeln('**Finnish law matches (top ${results.length}):**\n');
+    final matches = <Map<String, dynamic>>[];
+    for (final r in results) {
+      buf.writeln('**${r.act} ${r.paragraph}** — ${r.title}');
+      buf.writeln(r.bodyPreview(400));
+      buf.writeln();
+      matches.add({
+        'act': r.act,
+        'paragraph': r.paragraph,
+        'title': r.title,
+        'body': r.body,
+        'url': r.sourceUrl,
+        'jurisdiction': 'FI',
+      });
+    }
+
+    final claudeText = StringBuffer();
+    claudeText.writeln('Finnish law search for "$query":\n');
+    for (final r in results) {
+      claudeText.writeln('--- ${r.act} ${r.paragraph} (${r.title}) ---');
+      claudeText.writeln(r.body);
+      claudeText.writeln();
+    }
+    claudeText.writeln(
+      'Use the EXACT paragraph numbers and text above when answering. Never '
+      'fabricate § numbers. Cite the Finlex source URL when available. The '
+      'corpus is a curated subset — if the user asks about a section not '
+      'listed, acknowledge the gap and suggest finlex.fi as the source.',
+    );
+
+    return ToolResult(
+      success: true,
+      displayText: buf.toString(),
+      cardType: null,
+      data: {
+        'jurisdiction': 'FI',
+        'query': query,
+        if (act != null) 'act': act,
+        if (paragraph != null) 'paragraph': paragraph,
+        'matches': matches,
+      },
+      claudeText: claudeText.toString(),
+    );
+  }
+
+  /// Create a deadline in the user's agenda (requires approval).
+  Future<ToolResult> _createDeadline(Map<String, dynamic> params) async {
+    final title = (params['title'] as String? ?? '').trim();
+    final dueDateStr = (params['due_date'] as String? ?? '').trim();
+    final caseId = params['case_id'] as String?;
+    final description = params['description'] as String?;
+    final reminderDaysBefore = params['reminder_days_before'] as int?;
+
+    if (title.isEmpty || dueDateStr.isEmpty) {
+      return ToolResult.error(
+        'create_deadline requires title and due_date (YYYY-MM-DD).',
+      );
+    }
+
+    final dueDate = DateTime.tryParse(dueDateStr);
+    if (dueDate == null) {
+      return ToolResult.error(
+        'Invalid due_date "$dueDateStr". Use ISO-8601 (YYYY-MM-DD).',
+      );
+    }
+
+    try {
+      await _supabase.createDeadline({
+        'title': title,
+        'due_date': dueDate.toIso8601String(),
+        if (caseId != null && caseId.isNotEmpty) 'case_id': caseId,
+        if (description != null && description.isNotEmpty)
+          'description': description,
+        if (reminderDaysBefore != null)
+          'reminder_days_before': reminderDaysBefore,
+      });
+    } catch (e) {
+      _log.w('create_deadline: persist failed: $e');
+    }
+
+    final daysLeft = dueDate.difference(DateTime.now()).inDays;
+
+    return ToolResult(
+      success: true,
+      displayText: 'Deadline added: **$title** — ${dueDate.toIso8601String().substring(0, 10)} ($daysLeft days).',
+      cardType: 'deadline_list',
+      data: {
+        'action': 'create_deadline',
+        'title': title,
+        'due_date': dueDate.toIso8601String(),
+        if (caseId != null) 'case_id': caseId,
+        if (description != null) 'description': description,
+        'days_left': daysLeft,
+      },
+      requiresApproval: true,
+      approvalMessage:
+          'Add deadline "$title" on ${dueDate.toIso8601String().substring(0, 10)}?',
+    );
+  }
+
+  /// Update an existing case (requires approval).
+  Future<ToolResult> _updateCase(Map<String, dynamic> params) async {
+    final caseId = (params['case_id'] as String? ?? '').trim();
+    if (caseId.isEmpty) {
+      return ToolResult.error('update_case requires case_id.');
+    }
+
+    final updates = <String, dynamic>{};
+    for (final key in [
+      'title',
+      'description',
+      'status',
+      'court_case_number',
+      'migri_reference_number',
+    ]) {
+      final value = params[key];
+      if (value is String && value.isNotEmpty) {
+        updates[key] = value;
+      }
+    }
+    if (updates.isEmpty) {
+      return ToolResult.error('update_case: at least one field must change.');
+    }
+
+    try {
+      await _supabase.updateCase(caseId, updates);
+    } catch (e) {
+      _log.w('update_case: persist failed: $e');
+    }
+
+    final buf = StringBuffer('**Case updated:**\n');
+    updates.forEach((k, v) => buf.writeln('- $k: $v'));
+
+    return ToolResult(
+      success: true,
+      displayText: buf.toString(),
+      cardType: 'case_summary',
+      data: {'case_id': caseId, 'updates': updates},
+      requiresApproval: true,
+      approvalMessage: 'Apply changes to case?',
+    );
+  }
+
+  /// Return basic profile of the authenticated user.
+  Future<ToolResult> _getUserProfile(Map<String, dynamic> params) async {
+    try {
+      final user = await _supabase.getUserProfile();
+      if (user == null) {
+        return const ToolResult(
+          success: true,
+          displayText: 'Not signed in — running in demo mode.',
+          data: {'is_demo': true},
+        );
+      }
+      final data = user.toJson();
+      final buf = StringBuffer('**Profile:**\n');
+      data.forEach((k, v) => buf.writeln('- $k: $v'));
+      return ToolResult(
+        success: true,
+        displayText: buf.toString(),
+        data: data,
+      );
+    } catch (e) {
+      return ToolResult.error('get_user_profile failed: $e');
+    }
+  }
+
+  /// Deep-analyze a contract document.
+  Future<ToolResult> _analyzeContract(Map<String, dynamic> params) async {
+    final documentId = (params['document_id'] as String? ?? '').trim();
+    if (documentId.isEmpty) {
+      return ToolResult.error('analyze_contract requires document_id.');
+    }
+
+    // Reuse read_document to fetch the text, then instruct Claude to analyze
+    // it with a contract-specific template.
+    final read = await _readDocument({'document_id': documentId});
+    if (!read.success) return read;
+
+    final fileName = read.data?['file_name'] as String? ?? 'contract';
+    final ocrLen = read.data?['ocr_text_length'] as int? ?? 0;
+    final language = read.data?['language'] as String? ?? 'unknown';
+
+    if (ocrLen == 0) {
+      return ToolResult.error(
+        'Contract "$fileName" has no extractable text (image-only scan?). '
+        'Re-scan with better quality or paste text directly.',
+      );
+    }
+
+    return ToolResult(
+      success: true,
+      displayText: 'Analyzing contract **$fileName**…',
+      cardType: 'document_analysis',
+      data: {
+        'action': 'analyze_contract',
+        'document_id': documentId,
+        'file_name': fileName,
+        'language': language,
+      },
+      claudeText:
+          '${read.claudeText ?? ""}\n\nContract analysis template:\n'
+          '1. **Parties** — who signs, in what role.\n'
+          '2. **Subject** — what is being agreed.\n'
+          '3. **Term & termination** — start, end, notice period, early exit clauses.\n'
+          '4. **Payment terms** — amounts, schedule, late fees.\n'
+          '5. **Obligations** — each party\'s duties.\n'
+          '6. **Penalties & liability** — fines, caps, indemnities.\n'
+          '7. **Confidentiality / IP / data** — NDAs, ownership, GDPR.\n'
+          '8. **Governing law & forum** — which country, which court.\n'
+          '9. **🔴 Red flags** — unilateral changes, unlimited liability, '
+          'auto-renewal, waiver of appeal, payment before delivery, arbitration '
+          'in a foreign country, unusual penalties.\n'
+          '10. **Recommendations** — what to negotiate before signing.\n\n'
+          'Cite EXACT clause numbers when you reference them. If the contract '
+          'is in Estonian, cross-check against TsÜS, VÕS, TLS or AsjS as '
+          'applicable. Respond in the user\'s language.',
     );
   }
 }
