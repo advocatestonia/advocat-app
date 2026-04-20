@@ -40,6 +40,7 @@ serve(async (req) => {
   const gate = await requireUserWithRateLimit(req, {
     bucket: "tts-proxy",
     maxPerMinute: 10,
+    anonymousPerMinute: 5,
   });
   if (gate.kind === "deny") return gate.response;
 

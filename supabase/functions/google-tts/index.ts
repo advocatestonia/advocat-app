@@ -72,6 +72,8 @@ serve(async (req) => {
   const gate = await requireUserWithRateLimit(req, {
     bucket: "google-tts",
     maxPerMinute: 10,
+    // Demo users (no JWT) get limited TTS so voices work in demo mode.
+    anonymousPerMinute: 5,
   });
   if (gate.kind === "deny") return gate.response;
 

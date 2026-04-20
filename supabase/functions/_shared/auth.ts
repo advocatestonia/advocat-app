@@ -102,13 +102,19 @@ export async function requireUserWithRateLimit(
       const token = authHeader.replace("Bearer ", "");
       const { data, error } = await supabase.auth.getUser(token);
       if (error || !data?.user) {
-        return {
-          kind: "deny",
-          response: jsonError("Invalid session", 401),
-        };
+        // Token is present but not a valid user session (e.g. plain anon key
+        // from a demo-mode client). If the function allows anonymous traffic,
+        // fall through to IP-based rate limiting instead of rejecting.
+        if ((opts.anonymousPerMinute ?? 0) <= 0) {
+          return {
+            kind: "deny",
+            response: jsonError("Invalid session", 401),
+          };
+        }
+      } else {
+        userId = data.user.id;
+        userEmail = data.user.email ?? undefined;
       }
-      userId = data.user.id;
-      userEmail = data.user.email ?? undefined;
     } catch (e) {
       return {
         kind: "deny",

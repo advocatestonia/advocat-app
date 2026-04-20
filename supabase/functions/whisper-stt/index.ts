@@ -36,6 +36,7 @@ serve(async (req) => {
   const gate = await requireUserWithRateLimit(req, {
     bucket: "whisper-stt",
     maxPerMinute: 10,
+    anonymousPerMinute: 5,
   });
   if (gate.kind === "deny") return gate.response;
 
