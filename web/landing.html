@@ -1,285 +1,1284 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ru" dir="ltr" data-theme="light">
 <head>
-<meta charset="UTF-8"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Advocat — Defend Your Rights</title>
-<meta name="description" content="AI-powered legal defense accessible to everyone. Free, anonymous, no sign-up required.">
-<link rel="icon" href="favicon.png" type="image/png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0D9488" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14B8A6" media="(prefers-color-scheme: dark)">
+
+<title id="page-title">Advocat — Юрист, который отвечает в 3 часа ночи</title>
+<noscript><style>[data-reveal]{opacity:1 !important;transform:none !important}</style></noscript>
+<meta id="meta-desc" name="description" content="AI-юрист-ассистент по эстонскому, финскому и европейскому праву. На 17 языках. Первые 5 вопросов в день — бесплатно, без регистрации.">
+
+<!-- hreflang for SEO -->
+<link rel="alternate" hreflang="ru" href="https://advocat.ee/?lang=ru">
+<link rel="alternate" hreflang="et" href="https://advocat.ee/?lang=et">
+<link rel="alternate" hreflang="en" href="https://advocat.ee/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://advocat.ee/">
+<link rel="canonical" href="https://advocat.ee/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://advocat.ee/">
+<meta property="og:site_name" content="Advocat">
+<meta id="og-title" property="og:title" content="Advocat — Юрист, который отвечает в 3 часа ночи">
+<meta id="og-desc" property="og:description" content="AI-юрист-ассистент по эстонскому, финскому и европейскому праву. На 17 языках. Первые 5 вопросов в день — бесплатно.">
+<meta property="og:image" content="https://advocat.ee/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="et_EE">
+<meta property="og:locale:alternate" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Advocat — Юрист, который отвечает в 3 часа ночи">
+<meta name="twitter:description" content="AI-юрист-ассистент. 17 языков. 5 вопросов в день бесплатно.">
+<meta name="twitter:image" content="https://advocat.ee/og-cover.png">
+
+<!-- Icons -->
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/icons/Icon-192.png">
+<link rel="manifest" href="/manifest.json">
+
+<!-- Fonts (Google CDN for v25.0 — self-hosted subset in v25.1) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#F0EEEB;--text:#1A2B4A;--accent:#0D9488;--card:#FFFFFF;--accent-glow:rgba(13,148,136,0.25);--accent-light:rgba(13,148,136,0.08)}
-html{background:linear-gradient(168deg,#F0EEEB 0%,#E2E0DD 40%,#DCDAE0 100%);min-height:100vh;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text)}
-body{margin:0;padding:0}
-.page{max-width:900px;margin:0 auto;padding:0 20px;text-align:center}
-.logo{margin:0;padding:0;line-height:0}
-.logo img{width:100%;max-width:600px;height:auto;display:block;margin:0 auto}
-.langs{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;padding:0;margin:-50px 0 20px 0}
-.lang-btn{appearance:none;border:1.5px solid rgba(26,43,74,0.2);background:transparent;color:var(--text);font-family:inherit;font-size:13px;font-weight:500;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .2s;white-space:nowrap;box-shadow:0 1px 3px rgba(26,43,74,0.06)}
-.lang-btn:hover{border-color:var(--accent);box-shadow:0 2px 10px var(--accent-glow);transform:translateY(-1px)}
-.lang-btn.active{border-color:var(--accent);background:var(--accent-light);color:var(--accent);font-weight:600;box-shadow:0 2px 10px var(--accent-glow)}
-.mission{font-size:15px;line-height:1.6;color:var(--text);opacity:0.85;max-width:580px;margin:0 auto 16px auto;padding:0 10px}
-.mission-short{display:none}
-.stats{display:flex;justify-content:center;gap:20px;margin:0 0 16px 0}
-.stat-num{font-size:22px;font-weight:700;color:var(--accent)}
-.stat-label{font-size:9px;color:var(--text);opacity:0.6}
-.cta-wrap{margin:0 0 14px 0}
-.cta-btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:12px 32px;border-radius:12px;text-decoration:none;box-shadow:0 4px 20px var(--accent-glow)}
-.cta-sub{display:block;font-size:11px;color:var(--text);opacity:0.5;margin-top:6px}
-.footer{font-size:8px;color:var(--text);opacity:0.35;text-align:center;padding:6px}
-.footer a{color:var(--accent);text-decoration:none}
-@media(max-width:480px){
-  .logo img{max-width:95%}
-  .langs{gap:3px}
-  .lang-btn{font-size:9px;padding:3px 7px}
-  .mission{font-size:12px}
-  .mission-full{display:none}
-  .mission-short{display:inline}
-  .stat-num{font-size:16px}
-  .cta-btn{font-size:13px;padding:10px 24px}
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@1,400&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@1,400&display=swap"></noscript>
+
+<!-- Structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://advocat.ee/#org",
+      "name": "Advocat OÜ",
+      "url": "https://advocat.ee",
+      "logo": "https://advocat.ee/logo.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tallinn",
+        "addressCountry": "EE"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "name": "Advocat",
+      "url": "https://advocat.ee",
+      "applicationCategory": "LegalService",
+      "operatingSystem": "Web",
+      "description": "AI legal assistant covering 20 Estonian codes, Finnish law, and EU directives. Voice and text in 17 languages.",
+      "offers": [
+        {"@type": "Offer", "price": "0", "priceCurrency": "EUR", "description": "Free tier — 5 questions per day"},
+        {"@type": "Offer", "price": "14.99", "priceCurrency": "EUR", "description": "Unlimited — €14.99 per month"}
+      ],
+      "inLanguage": ["et","ru","en","fi","sv","de","pl","fr","uk","ar","fa","tr","lv","lt","es","it","ro"]
+    },
+    {
+      "@type": "LegalService",
+      "name": "Advocat",
+      "url": "https://advocat.ee",
+      "areaServed": [{"@type":"Country","name":"Estonia"},{"@type":"Country","name":"Finland"},{"@type":"AdministrativeArea","name":"European Union"}],
+      "description": "AI-assisted legal information and document preparation. Not a substitute for a licensed attorney."
+    }
+  ]
 }
-html[dir="rtl"] body{direction:rtl}
+</script>
+
+<!-- CRITICAL INLINE CSS -->
+<style>
+/* Reset */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{min-height:100vh;overflow-x:hidden}
+img,svg{max-width:100%;display:block}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit;text-decoration:none}
+
+/* Tokens — light */
+:root{
+  --bg:#FAF9F7; --bg-subtle:#F0EEEB; --surface:#FFFFFF; --surface-elevated:#FFFFFF;
+  --text:#0F1E38; --text-muted:#52607A; --text-subtle:#94A0B8;
+  --accent:#0D9488; --accent-hover:#0F766E; --accent-bg:#E0F2F0;
+  --accent-glow:rgba(13,148,136,0.18); --accent-ring:rgba(13,148,136,0.35);
+  --border:#E5E3DE; --border-strong:#C8C3BC;
+  --success:#16A34A; --warning:#EA580C; --danger:#DC2626;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:24px;
+  --space-6:32px; --space-7:48px; --space-8:64px; --space-9:96px; --space-10:128px;
+  --radius-sm:6px; --radius:12px; --radius-lg:20px; --radius-xl:32px;
+  --shadow-sm:0 1px 2px rgba(15,30,56,0.06);
+  --shadow:0 4px 12px rgba(15,30,56,0.08),0 1px 3px rgba(15,30,56,0.04);
+  --shadow-lg:0 24px 48px rgba(15,30,56,0.12),0 4px 12px rgba(15,30,56,0.06);
+  --font-sans:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --font-serif:'Source Serif 4',Georgia,serif;
+  --ease-out:cubic-bezier(0.16,1,0.3,1);
+  --dur-fast:120ms; --dur:200ms; --dur-slow:400ms;
+  --container:1200px;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0A1020; --bg-subtle:#111A2E; --surface:#1A2340; --surface-elevated:#232D4E;
+    --text:#F0EEEB; --text-muted:#A8B2C8; --text-subtle:#6E7A93;
+    --accent:#14B8A6; --accent-hover:#2DD4BF; --accent-bg:rgba(20,184,166,0.10);
+    --accent-glow:rgba(20,184,166,0.28); --accent-ring:rgba(20,184,166,0.45);
+    --border:#2A3250; --border-strong:#3B456A;
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.30);
+    --shadow:0 4px 12px rgba(0,0,0,0.35),0 1px 3px rgba(0,0,0,0.25);
+    --shadow-lg:0 24px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30);
+  }
+}
+html[data-theme="dark"]{
+  --bg:#0A1020; --bg-subtle:#111A2E; --surface:#1A2340; --surface-elevated:#232D4E;
+  --text:#F0EEEB; --text-muted:#A8B2C8; --text-subtle:#6E7A93;
+  --accent:#14B8A6; --accent-hover:#2DD4BF; --accent-bg:rgba(20,184,166,0.10);
+  --accent-glow:rgba(20,184,166,0.28); --accent-ring:rgba(20,184,166,0.45);
+  --border:#2A3250; --border-strong:#3B456A;
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.30);
+  --shadow:0 4px 12px rgba(0,0,0,0.35),0 1px 3px rgba(0,0,0,0.25);
+  --shadow-lg:0 24px 48px rgba(0,0,0,0.50),0 4px 12px rgba(0,0,0,0.30);
+}
+html[data-theme="light"]{
+  --bg:#FAF9F7; --bg-subtle:#F0EEEB; --surface:#FFFFFF; --surface-elevated:#FFFFFF;
+  --text:#0F1E38; --text-muted:#52607A; --text-subtle:#94A0B8;
+  --accent:#0D9488; --accent-hover:#0F766E; --accent-bg:#E0F2F0;
+  --accent-glow:rgba(13,148,136,0.18); --accent-ring:rgba(13,148,136,0.35);
+  --border:#E5E3DE; --border-strong:#C8C3BC;
+}
+
+body{
+  font:400 16px/1.6 var(--font-sans);
+  color:var(--text);
+  background:var(--bg);
+  transition:background var(--dur) var(--ease-out),color var(--dur) var(--ease-out);
+}
+
+.container{
+  max-width:var(--container);
+  margin:0 auto;
+  padding-inline:var(--space-5);
+}
+@media (min-width: 768px){ .container{ padding-inline:var(--space-7); } }
+@media (min-width: 1200px){ .container{ padding-inline:var(--space-8); } }
+
+/* Skip link */
+.skip-link{position:absolute;top:-100px;left:16px;background:var(--accent);color:#fff;padding:10px 16px;border-radius:var(--radius);z-index:9999;transition:top var(--dur)}
+.skip-link:focus{top:16px}
+
+/* HEADER */
+.site-header{
+  position:sticky;top:0;z-index:100;
+  background:color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter:saturate(180%) blur(12px);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.site-header-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:var(--space-3) 0;gap:var(--space-4);
+}
+.logo-wrap{display:inline-flex;align-items:center;gap:10px;color:var(--text)}
+.logo-icon{width:32px;height:36px;flex-shrink:0}
+.logo-word{font:700 22px/1 var(--font-sans);letter-spacing:-0.02em}
+.header-actions{display:flex;align-items:center;gap:var(--space-3)}
+
+/* LANG SWITCHER */
+.langs{display:flex;gap:var(--space-2);align-items:center}
+.lang-btn{
+  appearance:none;border:1.5px solid var(--border);background:transparent;
+  color:var(--text-muted);padding:6px 12px;border-radius:100px;
+  font:500 13px/1 var(--font-sans);cursor:pointer;
+  transition:all var(--dur) var(--ease-out);
+}
+.lang-btn:hover{border-color:var(--accent);color:var(--accent)}
+.lang-btn[aria-current="true"]{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.lang-more{position:relative}
+.lang-more > summary{list-style:none;cursor:pointer;padding:6px 12px;border:1.5px solid var(--border);border-radius:100px;color:var(--text-muted);font:500 13px/1 var(--font-sans);transition:all var(--dur)}
+.lang-more > summary::-webkit-details-marker{display:none}
+.lang-more > summary::marker{content:''}
+.lang-more[open] > summary{border-color:var(--accent);color:var(--accent)}
+.lang-more-menu{
+  position:absolute;top:calc(100% + 8px);right:0;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-lg);
+  padding:var(--space-2);min-width:180px;
+  display:grid;grid-template-columns:repeat(2,1fr);gap:4px;
+}
+.lang-more-menu .lang-btn{text-align:left;padding:8px 12px;border-radius:var(--radius-sm);border:none}
+.lang-more-menu .lang-btn:hover{background:var(--accent-bg)}
+
+/* THEME TOGGLE */
+.theme-toggle{
+  background:transparent;border:1.5px solid var(--border);cursor:pointer;
+  padding:7px;border-radius:100px;color:var(--text-muted);
+  transition:color var(--dur),background var(--dur),border-color var(--dur);
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.theme-toggle:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-bg)}
+.theme-toggle svg{width:18px;height:18px}
+
+/* Buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);
+  padding:14px 24px;font:600 16px/1 var(--font-sans);
+  border-radius:var(--radius);border:1.5px solid transparent;
+  cursor:pointer;transition:transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out),background var(--dur),color var(--dur),border-color var(--dur);
+  white-space:nowrap;
+}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 4px 20px var(--accent-glow)}
+.btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 8px 28px var(--accent-glow)}
+.btn-primary:active{transform:translateY(0);box-shadow:0 2px 8px var(--accent-glow)}
+.btn-secondary{background:transparent;color:var(--accent);border-color:var(--border-strong)}
+.btn-secondary:hover{background:var(--accent-bg);border-color:var(--accent)}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-ring),0 4px 20px var(--accent-glow)}
+
+/* HERO */
+.hero{padding:var(--space-8) 0 var(--space-9);min-height:auto}
+@media (min-width:1024px){ .hero{min-height:80vh;padding:var(--space-9) 0 var(--space-10)} }
+.hero-grid{display:grid;grid-template-columns:1fr;gap:var(--space-8);align-items:center}
+@media (min-width:1024px){ .hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-8)} }
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  padding:6px 12px;background:var(--accent-bg);color:var(--accent);
+  border-radius:100px;font:500 12px/1.4 var(--font-sans);letter-spacing:0.02em;
+  margin-bottom:var(--space-5);max-width:100%;
+}
+
+.hero h1{
+  font:700 40px/1.05 var(--font-sans);
+  letter-spacing:-0.02em;color:var(--text);
+  margin:0 0 var(--space-5);
+}
+@media (min-width:768px){ .hero h1{font-size:56px;line-height:1.05;letter-spacing:-0.03em} }
+@media (min-width:1200px){ .hero h1{font-size:64px} }
+
+.hero-sub{
+  font:400 18px/1.55 var(--font-sans);
+  color:var(--text-muted);
+  max-width:60ch;margin:0 0 var(--space-6);
+}
+.hero-sub .cite{font-family:var(--font-serif);font-style:italic;color:var(--accent)}
+
+.hero-ctas{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-bottom:var(--space-5)}
+.hero-trust{
+  display:flex;flex-wrap:wrap;gap:var(--space-4);
+  font:500 12px/1.4 var(--font-sans);color:var(--text-subtle);
+  margin-top:var(--space-4);
+}
+.hero-trust span{display:inline-flex;align-items:center;gap:6px}
+.hero-trust span::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--accent);display:inline-block}
+.hero-trust span:first-child::before{display:none}
+
+/* HERO CHAT DEMO */
+.chat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+  padding:var(--space-5);min-height:360px;
+  display:flex;flex-direction:column;gap:var(--space-4);
+  position:relative;overflow:hidden;
+}
+.chat-header{
+  display:flex;align-items:center;gap:var(--space-2);
+  padding-bottom:var(--space-3);border-bottom:1px solid var(--border);
+  font:500 13px/1 var(--font-sans);color:var(--text-muted);
+}
+.chat-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--success);
+  box-shadow:0 0 0 0 var(--success);
+  animation:pulse 2s infinite;
+}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(22,163,74,0.45)}
+  50%{box-shadow:0 0 0 6px rgba(22,163,74,0)}
+}
+.chat-msgs{display:flex;flex-direction:column;gap:var(--space-3);flex:1}
+.msg{display:flex;gap:var(--space-3);animation:msgIn 300ms var(--ease-out)}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg-avatar{
+  width:28px;height:28px;border-radius:50%;flex-shrink:0;
+  display:inline-flex;align-items:center;justify-content:center;
+  font:600 12px/1 var(--font-sans);color:#fff;
+}
+.msg-avatar.user{background:var(--text-subtle)}
+.msg-avatar.bot{background:var(--accent)}
+.msg-body{flex:1;padding:var(--space-3) var(--space-4);background:var(--bg-subtle);border-radius:var(--radius);color:var(--text);font:400 15px/1.5 var(--font-sans)}
+.msg-body.bot{background:var(--accent-bg)}
+.msg-body .pill{
+  display:inline-block;padding:2px 8px;
+  background:var(--accent);color:#fff;
+  border-radius:6px;font:500 italic 13px/1.3 var(--font-serif);
+  margin:0 2px;vertical-align:baseline;
+}
+.msg-body .caret{display:inline-block;width:2px;height:1em;background:var(--accent);vertical-align:middle;margin-left:2px;animation:blink 1s infinite steps(2)}
+@keyframes blink{50%{opacity:0}}
+.chat-action{
+  display:inline-flex;align-items:center;gap:var(--space-2);
+  padding:10px 14px;background:var(--bg-subtle);
+  border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--accent);font:500 14px/1.3 var(--font-sans);
+  margin-top:var(--space-2);align-self:flex-start;cursor:pointer;
+  transition:background var(--dur),border-color var(--dur);
+}
+.chat-action:hover{background:var(--accent-bg);border-color:var(--accent)}
+
+/* Sections */
+section{padding:var(--space-9) 0}
+@media (max-width:768px){ section{padding:var(--space-7) 0} }
+section .section-header{max-width:720px;margin-bottom:var(--space-7)}
+section h2{
+  font:600 32px/1.15 var(--font-sans);letter-spacing:-0.02em;
+  margin:0 0 var(--space-3);color:var(--text);
+}
+@media (min-width:768px){ section h2{font-size:40px} }
+section .section-sub{font:400 18px/1.55 var(--font-sans);color:var(--text-muted);max-width:60ch}
+
+/* HOW IT WORKS */
+.how-steps{display:grid;gap:var(--space-5);grid-template-columns:1fr}
+@media (min-width:768px){ .how-steps{grid-template-columns:repeat(3,1fr);gap:var(--space-6)} }
+.step{display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-5);background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);transition:transform var(--dur),box-shadow var(--dur),border-color var(--dur)}
+.step:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--border-strong)}
+.step-num{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--accent-bg);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+  font:700 16px/1 var(--font-sans);
+}
+.step h3{font:600 20px/1.3 var(--font-sans);color:var(--text)}
+.step p{font:400 15px/1.55 var(--font-sans);color:var(--text-muted)}
+.step p em{font-family:var(--font-serif);font-style:italic;color:var(--accent);font-weight:500}
+
+/* WHAT IT KNOWS */
+.knowledge{display:grid;gap:var(--space-6);grid-template-columns:1fr}
+@media (min-width:1024px){ .knowledge{grid-template-columns:2fr 1fr} }
+.codex-grid{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.codex-chip{
+  display:inline-flex;align-items:center;padding:6px 12px;
+  background:var(--bg-subtle);border:1px solid var(--border);
+  border-radius:100px;font:500 13px/1 var(--font-sans);
+  color:var(--text);
+}
+.codex-chip .abbr{color:var(--accent);font-weight:600;margin-right:6px}
+.knowledge-side{padding:var(--space-5);background:var(--accent-bg);border-radius:var(--radius-lg);border:1px solid var(--accent-glow)}
+.knowledge-side h3{font:600 18px/1.3 var(--font-sans);margin-bottom:var(--space-3);color:var(--text)}
+.knowledge-side ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.knowledge-side li{font:500 14px/1.4 var(--font-sans);color:var(--text);display:flex;align-items:start;gap:8px}
+.knowledge-side li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:8px;flex-shrink:0}
+.knowledge-stats{display:flex;gap:var(--space-4);margin-top:var(--space-5)}
+.knowledge-stats .stat{flex:1}
+.knowledge-stats .stat-n{font:700 28px/1 var(--font-sans);color:var(--accent)}
+.knowledge-stats .stat-l{font:500 12px/1.4 var(--font-sans);color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.02em}
+
+/* BENTO */
+.bento{display:grid;gap:var(--space-4);grid-template-columns:1fr}
+@media (min-width:640px){ .bento{grid-template-columns:repeat(2,1fr);gap:var(--space-5)} }
+@media (min-width:1024px){ .bento{grid-template-columns:repeat(3,1fr)} }
+.bento-card{
+  padding:var(--space-5);background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  transition:transform var(--dur),box-shadow var(--dur),border-color var(--dur);
+  display:flex;flex-direction:column;gap:var(--space-3);
+}
+.bento-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--border-strong)}
+.bento-icon{
+  width:40px;height:40px;border-radius:var(--radius);
+  background:var(--accent-bg);color:var(--accent);
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.bento-icon svg{width:22px;height:22px}
+.bento-card h3{font:600 18px/1.3 var(--font-sans);color:var(--text)}
+.bento-card p{font:400 15px/1.55 var(--font-sans);color:var(--text-muted)}
+
+/* FOUNDER SECTION */
+.founder-body{max-width:720px}
+.founder-body p{font:400 17px/1.7 var(--font-sans);color:var(--text);margin-bottom:var(--space-4)}
+.founder-body p:last-of-type{font-family:var(--font-serif);font-style:italic;color:var(--text-muted);font-size:16px}
+.founder-link{display:inline-flex;align-items:center;gap:var(--space-2);color:var(--accent);font:500 15px/1 var(--font-sans);margin-top:var(--space-4)}
+.founder-link:hover{color:var(--accent-hover);text-decoration:underline}
+
+/* PRICING */
+.pricing-grid{display:grid;gap:var(--space-5);grid-template-columns:1fr}
+@media (min-width:768px){ .pricing-grid{grid-template-columns:repeat(2,1fr)} }
+.price-card{
+  padding:var(--space-6);background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius-lg);display:flex;flex-direction:column;gap:var(--space-4);
+  transition:transform var(--dur),box-shadow var(--dur),border-color var(--dur);
+}
+.price-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.price-card.featured{border:1.5px solid var(--accent);background:linear-gradient(180deg,var(--accent-bg),var(--surface) 30%)}
+.price-name{font:600 16px/1 var(--font-sans);text-transform:uppercase;letter-spacing:0.04em;color:var(--text-muted)}
+.price-value{font:700 48px/1 var(--font-sans);color:var(--text);letter-spacing:-0.02em}
+.price-value .per{font:500 16px/1 var(--font-sans);color:var(--text-muted);margin-left:4px}
+.price-features{list-style:none;padding:0;display:flex;flex-direction:column;gap:var(--space-3);margin:var(--space-4) 0}
+.price-features li{display:flex;align-items:start;gap:10px;font:400 15px/1.5 var(--font-sans);color:var(--text)}
+.price-features li::before{
+  content:'';width:18px;height:18px;flex-shrink:0;margin-top:3px;
+  background:var(--accent);mask:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17l-5-5' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17l-5-5' stroke='black' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+/* TRUST ROW */
+.trust-row{
+  display:flex;gap:var(--space-6);flex-wrap:wrap;justify-content:center;
+  padding:var(--space-5) 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.trust-item{display:inline-flex;align-items:center;gap:var(--space-2);color:var(--text-muted);font:500 13px/1 var(--font-sans)}
+.trust-item svg{width:16px;height:16px;color:var(--text-muted)}
+@media (max-width:640px){
+  .trust-row{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;gap:var(--space-5);padding-left:var(--space-5);padding-right:var(--space-5)}
+}
+
+/* FAQ */
+.faq-list{max-width:800px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--border);padding:var(--space-3) 0}
+.faq-q{list-style:none;cursor:pointer;font:600 17px/1.4 var(--font-sans);color:var(--text);display:flex;justify-content:space-between;align-items:center;padding:var(--space-3) 0;gap:var(--space-4)}
+.faq-q::-webkit-details-marker{display:none}
+.faq-q::marker{content:''}
+.faq-q::after{content:'+';font-weight:300;font-size:28px;color:var(--accent);transition:transform var(--dur) var(--ease-out);flex-shrink:0}
+.faq-item[open] .faq-q::after{transform:rotate(45deg)}
+.faq-a{padding:var(--space-2) 0 var(--space-4);color:var(--text-muted);font:400 15px/1.6 var(--font-sans);max-width:65ch;animation:fadeSlide var(--dur) var(--ease-out)}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+/* FOOTER */
+.site-footer{
+  padding:var(--space-6) 0;border-top:1px solid var(--border);
+  color:var(--text-subtle);font:400 13px/1.6 var(--font-sans);
+  background:var(--bg-subtle);
+}
+.site-footer .footer-inner{display:flex;flex-wrap:wrap;gap:var(--space-3) var(--space-4);align-items:center;justify-content:space-between}
+.site-footer a{color:var(--accent)}
+.site-footer a:hover{text-decoration:underline}
+.footer-disclaimer{max-width:720px}
+
+/* SCROLL REVEAL */
+[data-reveal]{opacity:0;transform:translateY(12px);transition:opacity 500ms var(--ease-out),transform 500ms var(--ease-out);transition-delay:var(--reveal-delay,0ms)}
+[data-reveal].is-visible{opacity:1;transform:translateY(0)}
+
+/* Accessibility helpers */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important}
+  .chat-dot{animation:none}
+  .msg-body .caret{animation:none;opacity:1}
+  [data-reveal]{opacity:1;transform:none}
+}
+
+/* RTL */
+html[dir="rtl"] .msg{flex-direction:row-reverse}
+html[dir="rtl"] .hero-ctas .btn svg{transform:scaleX(-1)}
+
+/* Print */
+@media print{
+  .site-header,.theme-toggle,.langs,.hero-ctas,.chat-card{display:none}
+}
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link" data-i18n="skipLink">Перейти к содержанию</a>
 
-<div class="page">
-  <!-- LOGO -->
-  <div class="logo">
-    <img src="logo.png" alt="Advocat — Defend Your Rights" >
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a class="logo-wrap" href="/" aria-label="Advocat">
+      <svg class="logo-icon" viewBox="0 0 64 72" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="logoG" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--accent)"/>
+            <stop offset="100%" stop-color="var(--accent-hover)"/>
+          </linearGradient>
+        </defs>
+        <path d="M32 4 L8 12 V36 C8 54 22 66 32 68 C42 66 56 54 56 36 V12 Z" fill="url(#logoG)" stroke="currentColor" stroke-width="1" stroke-opacity="0.1"/>
+        <g fill="#FFFFFF" opacity="0.95">
+          <rect x="31" y="18" width="2" height="24" rx="1"/>
+          <line x1="20" y1="22" x2="44" y2="22" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M20 22 L17 32 C17 34 19 35 21 35 L23 35 C25 35 27 34 27 32 Z" opacity="0.9"/>
+          <path d="M44 22 L41 32 C41 34 43 35 45 35 L47 35 C49 35 51 34 51 32 Z" opacity="0.9"/>
+        </g>
+      </svg>
+      <span class="logo-word">Advocat</span>
+    </a>
+
+    <div class="header-actions">
+      <nav class="langs" aria-label="Language" role="group">
+        <button class="lang-btn" data-lang="et" type="button">ET</button>
+        <button class="lang-btn" data-lang="ru" type="button" aria-current="true">RU</button>
+        <button class="lang-btn" data-lang="en" type="button">EN</button>
+        <details class="lang-more">
+          <summary data-i18n="moreLangs">+14</summary>
+          <div class="lang-more-menu">
+            <button class="lang-btn" data-lang="fi" type="button">Suomi</button>
+            <button class="lang-btn" data-lang="sv" type="button">Svenska</button>
+            <button class="lang-btn" data-lang="de" type="button">Deutsch</button>
+            <button class="lang-btn" data-lang="uk" type="button">Українська</button>
+            <button class="lang-btn" data-lang="pl" type="button">Polski</button>
+            <button class="lang-btn" data-lang="fr" type="button">Français</button>
+            <button class="lang-btn" data-lang="es" type="button">Español</button>
+            <button class="lang-btn" data-lang="it" type="button">Italiano</button>
+            <button class="lang-btn" data-lang="ro" type="button">Română</button>
+            <button class="lang-btn" data-lang="lv" type="button">Latviešu</button>
+            <button class="lang-btn" data-lang="lt" type="button">Lietuvių</button>
+            <button class="lang-btn" data-lang="tr" type="button">Türkçe</button>
+            <button class="lang-btn" data-lang="ar" type="button">العربية</button>
+            <button class="lang-btn" data-lang="fa" type="button">فارسی</button>
+          </div>
+        </details>
+      </nav>
+      <button class="theme-toggle" data-theme-toggle type="button" aria-label="Toggle theme">
+        <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </button>
+    </div>
   </div>
+</header>
 
-  <!-- LANGUAGES (once, between logo and mission) -->
-  <div class="langs" role="group" aria-label="Language">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">English</button>
-    <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">Русский</button>
-    <button class="lang-btn" data-lang="uk" onclick="setLang('uk')">Українська</button>
-    <button class="lang-btn" data-lang="fi" onclick="setLang('fi')">Suomi</button>
-    <button class="lang-btn" data-lang="et" onclick="setLang('et')">Eesti</button>
-    <button class="lang-btn" data-lang="sv" onclick="setLang('sv')">Svenska</button>
-    <button class="lang-btn" data-lang="de" onclick="setLang('de')">Deutsch</button>
-    <button class="lang-btn" data-lang="ar" onclick="setLang('ar')">العربية</button>
-    <button class="lang-btn" data-lang="pl" onclick="setLang('pl')">Polski</button>
-    <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">Français</button>
-    <button class="lang-btn" data-lang="fa" onclick="setLang('fa')">فارسی</button>
-    <button class="lang-btn" data-lang="tr" onclick="setLang('tr')">Türkçe</button>
-    <button class="lang-btn" data-lang="lv" onclick="setLang('lv')">Latviešu</button>
-    <button class="lang-btn" data-lang="lt" onclick="setLang('lt')">Lietuvių</button>
-    <button class="lang-btn" data-lang="es" onclick="setLang('es')">Español</button>
-    <button class="lang-btn" data-lang="it" onclick="setLang('it')">Italiano</button>
-    <button class="lang-btn" data-lang="ro" onclick="setLang('ro')">Română</button>
+<main id="main">
+
+<!-- HERO -->
+<section class="hero container" aria-labelledby="hero-h1">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow" data-i18n="eyebrow">01.01.2026 · Эстония прекратила государственное финансирование бесплатной юридической помощи</span>
+      <h1 id="hero-h1" data-i18n="h1">Юрист, который отвечает в 3 часа ночи.</h1>
+      <p class="hero-sub" data-i18n="sub">Advocat — AI-юрист-ассистент по эстонскому, финскому и европейскому праву. Знает <span class="cite">§KarS</span>, <span class="cite">TLS</span>, <span class="cite">KMS</span>. Голос и текст на 17 языках. Первые 5 вопросов в день — бесплатно, без регистрации.</p>
+      <div class="hero-ctas">
+        <a href="/app.html?lang=ru" class="btn btn-primary" data-i18n="ctaPrimary" data-cta-primary>Задать вопрос
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#how-it-works" class="btn btn-secondary" data-i18n="ctaSecondary">Как это работает</a>
+      </div>
+      <div class="hero-trust" aria-label="Trust indicators">
+        <span data-i18n="trust1">GDPR</span>
+        <span data-i18n="trust2">Данные не тренируют модели</span>
+        <span data-i18n="trust3">EU-хостинг</span>
+        <span data-i18n="trust4">Анонимно</span>
+      </div>
+    </div>
+
+    <div class="chat-card" data-hero-chat aria-label="Interactive chat demonstration">
+      <div class="chat-header">
+        <span class="chat-dot" aria-hidden="true"></span>
+        <span>Advocat</span>
+        <span style="color:var(--text-subtle);margin-left:auto;font-size:12px">demo</span>
+      </div>
+      <div class="chat-msgs" id="chat-msgs">
+        <!-- Populated by JS. Static final-frame fallback below. -->
+        <noscript>
+          <div class="msg"><div class="msg-avatar user">В</div><div class="msg-body">Меня уволили без предупреждения, что делать?</div></div>
+          <div class="msg"><div class="msg-avatar bot">А</div><div class="msg-body bot">По <span class="pill">§95 TLS</span> работодатель обязан уведомить за 30 дней и выплатить компенсацию.</div></div>
+        </noscript>
+      </div>
+    </div>
   </div>
+</section>
 
-  <!-- MISSION -->
-  <p class="mission">
-    <span class="mission-full" id="mission-full"></span>
-    <span class="mission-short" id="mission-short"></span>
-  </p>
-
-  <!-- STATS -->
-  <div class="stats">
-    <div class="stat"><div class="stat-num">27</div><div class="stat-label" id="stat-jurisdictions"></div></div>
-    <div class="stat"><div class="stat-num">470+</div><div class="stat-label" id="stat-templates"></div></div>
-    <div class="stat"><div class="stat-num">120+</div><div class="stat-label" id="stat-scenarios"></div></div>
-    <div class="stat"><div class="stat-num">17</div><div class="stat-label" id="stat-languages"></div></div>
+<!-- SECTION 1: HOW IT WORKS -->
+<section id="how-it-works" class="container" aria-labelledby="s-how-h">
+  <div class="section-header" data-reveal>
+    <h2 id="s-how-h" data-i18n="howH">Как это работает</h2>
   </div>
-
-  <!-- CTA -->
-  <div class="cta-wrap">
-    <a class="cta-btn" id="cta-btn" href="/app.html"></a>
-    <span class="cta-sub" id="cta-sub"></span>
+  <div class="how-steps">
+    <div class="step" data-reveal>
+      <span class="step-num">1</span>
+      <h3 data-i18n="howStep1H">Спросите</h3>
+      <p data-i18n="howStep1P">Голосом или текстом. Даже на русском. Даже со сленгом. Advocat переведёт ваш вопрос в юридический язык сам.</p>
+    </div>
+    <div class="step" data-reveal style="--reveal-delay:100ms">
+      <span class="step-num">2</span>
+      <h3 data-i18n="howStep2H">Получите ответ</h3>
+      <p data-i18n="howStep2P">Advocat читает реальный текст закона (например <em>§95 Töölepingu seaduse</em>) и объясняет, что это значит в вашей ситуации. Со ссылкой, которую можно проверить.</p>
+    </div>
+    <div class="step" data-reveal style="--reveal-delay:200ms">
+      <span class="step-num">3</span>
+      <h3 data-i18n="howStep3H">Действуйте</h3>
+      <p data-i18n="howStep3P">Скачайте шаблон. Создайте дедлайн. Проверьте фирму через ariregister. Или — если нужен живой — Advocat поможет найти адвоката.</p>
+    </div>
   </div>
-</div>
+</section>
+
+<!-- SECTION 2: WHAT IT KNOWS -->
+<section class="container" aria-labelledby="s-know-h" style="background:var(--bg-subtle);border-radius:var(--radius-xl);padding-left:var(--space-7);padding-right:var(--space-7)">
+  <div class="section-header" data-reveal>
+    <h2 id="s-know-h" data-i18n="knowH">Advocat читает первоисточники. Не Википедию.</h2>
+    <p class="section-sub" data-i18n="knowSub">Каждый ответ основан на реальном тексте закона, введённом напрямую из Riigi Teataja и Finlex.</p>
+  </div>
+  <div class="knowledge">
+    <div data-reveal>
+      <h3 style="font:600 18px/1.3 var(--font-sans);color:var(--text);margin-bottom:var(--space-4)" data-i18n="knowEstH">20 эстонских кодексов</h3>
+      <div class="codex-grid">
+        <span class="codex-chip"><span class="abbr">KarS</span> Karistusseadustik</span>
+        <span class="codex-chip"><span class="abbr">TLS</span> Töölepingu seadus</span>
+        <span class="codex-chip"><span class="abbr">KMS</span> Käibemaksuseadus</span>
+        <span class="codex-chip"><span class="abbr">TsÜS</span> Tsiviilseadustiku üldosa</span>
+        <span class="codex-chip"><span class="abbr">TsMS</span> Tsiviilkohtumenetlus</span>
+        <span class="codex-chip"><span class="abbr">VÕS</span> Võlaõigusseadus</span>
+        <span class="codex-chip"><span class="abbr">AÕS</span> Asjaõigusseadus</span>
+        <span class="codex-chip"><span class="abbr">PKS</span> Perekonnaseadus</span>
+        <span class="codex-chip"><span class="abbr">ÄS</span> Äriseadustik</span>
+        <span class="codex-chip"><span class="abbr">TuMS</span> Tulumaksuseadus</span>
+        <span class="codex-chip"><span class="abbr">MKS</span> Maksukorraldus</span>
+        <span class="codex-chip"><span class="abbr">LS</span> Liiklusseadus</span>
+        <span class="codex-chip"><span class="abbr">VMS</span> Välismaalaste seadus</span>
+        <span class="codex-chip"><span class="abbr">VõrdKS</span> Võrdne kohtlemine</span>
+        <span class="codex-chip"><span class="abbr">IKS</span> Isikuandmete kaitse</span>
+        <span class="codex-chip" data-i18n="andMore">+ ещё 5 кодексов</span>
+      </div>
+      <div class="knowledge-stats">
+        <div class="stat"><div class="stat-n">5</div><div class="stat-l" data-i18n="fiCodes">финских кодексов</div></div>
+        <div class="stat"><div class="stat-n">120+</div><div class="stat-l" data-i18n="euDir">директив ЕС</div></div>
+        <div class="stat"><div class="stat-n">470+</div><div class="stat-l" data-i18n="cases">решений суда</div></div>
+      </div>
+    </div>
+    <aside class="knowledge-side" data-reveal style="--reveal-delay:100ms">
+      <h3 data-i18n="finlandH">Финское право</h3>
+      <ul>
+        <li><strong>Rikoslaki</strong> <span data-i18n="fi1">уголовный</span></li>
+        <li><strong>Työsopimuslaki</strong> <span data-i18n="fi2">трудовой</span></li>
+        <li><strong>Oikeudenkäymiskaari</strong> <span data-i18n="fi3">процессуальный</span></li>
+        <li><strong>Ulkomaalaislaki</strong> <span data-i18n="fi4">иностранцы</span></li>
+        <li><strong>Vahingonkorvauslaki</strong> <span data-i18n="fi5">возмещение ущерба</span></li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- SECTION 3: WHAT IT DOES -->
+<section class="container" aria-labelledby="s-does-h">
+  <div class="section-header" data-reveal>
+    <h2 id="s-does-h" data-i18n="doesH">Что Advocat умеет</h2>
+    <p class="section-sub" data-i18n="doesSub">Шесть инструментов, с которыми он превращает «не знаю что делать» в «знаю следующий шаг».</p>
+  </div>
+  <div class="bento">
+    <div class="bento-card" data-reveal>
+      <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+      <h3 data-i18n="tool1H">Разобрать</h3>
+      <p data-i18n="tool1P">Прочитайте любой § на вашем языке. Advocat объяснит, в каких случаях он применяется, а в каких — нет.</p>
+    </div>
+    <div class="bento-card" data-reveal style="--reveal-delay:60ms">
+      <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+      <h3 data-i18n="tool2H">Составить</h3>
+      <p data-i18n="tool2P">Напишите жалобу, претензию или письмо. Advocat подберёт шаблон под вашу ситуацию.</p>
+    </div>
+    <div class="bento-card" data-reveal style="--reveal-delay:120ms">
+      <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+      <h3 data-i18n="tool3H">Напомнить</h3>
+      <p data-i18n="tool3P">Создайте дедлайн — Advocat напомнит за 3 дня, за день и в день подачи.</p>
+    </div>
+    <div class="bento-card" data-reveal style="--reveal-delay:60ms">
+      <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+      <h3 data-i18n="tool4H">Проверить</h3>
+      <p data-i18n="tool4P">Любую эстонскую фирму или автомобиль — напрямую через ariregister. Не кеш, не скрейпинг — реальные данные.</p>
+    </div>
+    <div class="bento-card" data-reveal style="--reveal-delay:120ms">
+      <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h7M4 9h7M9 3v18M14 6a4 4 0 1 0 0 8M20 14l-3 5-3-5"/></svg></div>
+      <h3 data-i18n="tool5H">Перевести</h3>
+      <p data-i18n="tool5P">Документ с сохранением юридической точности. Терминология, § и даты остаются на месте.</p>
+    </div>
+    <div class="bento-card" data-reveal style="--reveal-delay:180ms">
+      <div class="bento-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <h3 data-i18n="tool6H">Передать человеку</h3>
+      <p data-i18n="tool6P">Advocat — не лицензированный адвокат. Когда дело становится серьёзным (суд, уголовное, депортация) — поможет найти живого.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: FOUNDER STORY -->
+<section class="container" aria-labelledby="s-found-h" style="background:var(--bg-subtle);border-radius:var(--radius-xl);padding-left:var(--space-7);padding-right:var(--space-7)">
+  <div class="section-header" data-reveal>
+    <h2 id="s-found-h" data-i18n="foundH">Почему мы это сделали</h2>
+  </div>
+  <div class="founder-body" data-reveal style="--reveal-delay:100ms">
+    <p data-i18n="foundP1">В 2024 году один из наших сооснователей столкнулся с делом, которое пересекало эстонско-финскую границу. Депортация из Финляндии. Компенсация за насилие. Разные кодексы, разные сроки, разные языки инстанций.</p>
+    <p data-i18n="foundP2">Мы обошли десяток инструментов. Ни один не знал оба права одновременно. Эстонский юрист не читал финские решения. Финский — не понимал § эстонского. Онлайн-консультации давали общие ответы, которые не подходили к нашему случаю. А у HUGO.legal была очередь на 5 рабочих дней — а дедлайн у нас был через 4.</p>
+    <p data-i18n="foundP3">Мы сделали Advocat для себя. Чтобы AI мог одновременно читать §95 TLS и §Ulkomaalaislaki, помнить даты инстанций, писать письма на двух языках и не брать €300/час за каждый вопрос.</p>
+    <p data-i18n="foundP4">Потом оказалось, что таких случаев много — не только эстонско-финских. Работники, которых уволили без уведомления. Малые предприниматели с разными налоговыми системами. Родители, которым нужно понять § школьного кодекса.</p>
+    <p data-i18n="foundP5">Мы публикуем не что мы сделали — а то, что мы бы хотели иметь сами два года назад. — Команда Advocat</p>
+  </div>
+</section>
+
+<!-- SECTION 5: PRICING -->
+<section class="container" aria-labelledby="s-price-h">
+  <div class="section-header" data-reveal>
+    <h2 id="s-price-h" data-i18n="priceH">Без уловок. Без пробных периодов с картой.</h2>
+    <p class="section-sub" data-i18n="priceSub">Пять вопросов в день — навсегда бесплатно. Если нужно больше — €14.99/мес. Отмена в один клик.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="price-card" data-reveal>
+      <div class="price-name" data-i18n="priceFreeName">Бесплатно</div>
+      <div class="price-value">€0</div>
+      <ul class="price-features">
+        <li data-i18n="priceF1">5 вопросов в день</li>
+        <li data-i18n="priceF2">Все 17 языков, голос и текст</li>
+        <li data-i18n="priceF3">Все инструменты (шаблоны, дедлайны, проверка фирм)</li>
+        <li data-i18n="priceF4">История вопросов — без ограничений по времени</li>
+        <li data-i18n="priceF5">Без привязки карты, без регистрации</li>
+      </ul>
+      <a href="/app.html?lang=ru" class="btn btn-secondary" data-i18n="priceFreeCta">Начать бесплатно</a>
+    </div>
+    <div class="price-card featured" data-reveal style="--reveal-delay:100ms">
+      <div class="price-name" data-i18n="priceProName">Без лимитов</div>
+      <div class="price-value">€14.99<span class="per" data-i18n="perMonth">/мес</span></div>
+      <ul class="price-features">
+        <li data-i18n="priceP1">Всё из бесплатного</li>
+        <li data-i18n="priceP2">Неограниченные вопросы</li>
+        <li data-i18n="priceP3">Приоритетная скорость ответа</li>
+        <li data-i18n="priceP4">Отмена в один клик, в любой момент</li>
+        <li data-i18n="priceP5">Без повышений цены в первый год</li>
+      </ul>
+      <a href="/app.html?lang=ru" class="btn btn-primary" data-i18n="priceProCta">Попробовать</a>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: TRUST ROW -->
+<section class="container" aria-label="Trust and security">
+  <div class="trust-row" data-reveal>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span data-i18n="t1">GDPR-совместимо</span></span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg><span data-i18n="t2">Данные не тренируют модели</span></span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span data-i18n="t3">JWT-защищено</span></span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span data-i18n="t4" title="1063 теста">Тщательно протестировано</span></span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg><span data-i18n="t5">WCAG AA</span></span>
+    <span class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="8" rx="2"/><rect x="2" y="13" width="20" height="8" rx="2"/><line x1="6" y1="7" x2="6.01" y2="7"/><line x1="6" y1="17" x2="6.01" y2="17"/></svg><span data-i18n="t6">EU-хостинг (Frankfurt)</span></span>
+  </div>
+</section>
+
+<!-- SECTION 7: FAQ -->
+<section class="container" aria-labelledby="s-faq-h">
+  <div class="section-header" data-reveal>
+    <h2 id="s-faq-h" data-i18n="faqH">Частые вопросы</h2>
+  </div>
+  <div class="faq-list" data-reveal>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq1Q">Это юридическая консультация?</summary>
+      <div class="faq-a" data-i18n="faq1A">Нет. Advocat предоставляет юридическую информацию — чтобы вы поняли свои варианты. Формальная юридическая консультация требует лицензированного адвоката.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq2Q">Advocat заменяет адвоката?</summary>
+      <div class="faq-a" data-i18n="faq2A">Нет, и мы этого не хотим. Advocat делает первые 80% — разобраться, составить письмо, заполнить форму. Если нужен суд, адвокат, переговоры — Advocat поможет найти живого.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq3Q">Насколько точны ответы?</summary>
+      <div class="faq-a" data-i18n="faq3A">Advocat читает реальный текст закона, поэтому цитаты § точны. Но право — это контекст: ваша ситуация может включать нюансы, о которых мы не знаем. Всегда проверяйте ссылку на § и для важных решений консультируйтесь с адвокатом.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq4Q">Что происходит с моими данными?</summary>
+      <div class="faq-a" data-i18n="faq4A">Вопросы хранятся в вашем аккаунте в Supabase (EU, Франкфурт). Анонимные сессии не сохраняются после выхода. Данные никогда не передаются третьим сторонам и не используются для тренировки AI-моделей.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq5Q">Сколько стоит?</summary>
+      <div class="faq-a" data-i18n="faq5A">5 вопросов в день — бесплатно навсегда, без карты. Неограниченно — €14.99/мес. Без скрытых платежей. Отмена в один клик.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq6Q">Могу ли я отменить?</summary>
+      <div class="faq-a" data-i18n="faq6A">Да, в один клик. Без объяснений. Без звонков. Прямо в настройках.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq7Q">Какие юрисдикции покрыты?</summary>
+      <div class="faq-a" data-i18n="faq7A">Основа — Эстония (20 кодексов) и Финляндия (5 кодексов). Также директивы ЕС и базовый охват других стран. Если ваш вопрос о стране, которую мы покрываем слабо — Advocat честно скажет.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq8Q">Какие языки работают лучше всего?</summary>
+      <div class="faq-a" data-i18n="faq8A">Эстонский, русский, английский, финский — нативное качество. Остальные 13 языков работают, но иногда с машинным переводом. Для важных вопросов мы рекомендуем один из четырёх основных.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq9Q">Как работает голосовой ввод?</summary>
+      <div class="faq-a" data-i18n="faq9A">В основных языках (ET/RU/EN/FI) — очень точно, включая акценты и смешение языков. Мы используем Whisper от OpenAI с нашими настройками для юридической терминологии.</div>
+    </details>
+    <details class="faq-item">
+      <summary class="faq-q" data-i18n="faq10Q">Открытый код?</summary>
+      <div class="faq-a" data-i18n="faq10A">Да, планируем. Эстонский правовой корпус — к Q3 2026, финский — к Q4. Цель: чтобы другие разработчики могли строить юридические AI-инструменты, не начиная с нуля.</div>
+    </details>
+  </div>
+</section>
+
+</main>
 
 <!-- FOOTER -->
-<div class="footer" id="footer"></div>
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>Advocat OÜ · Tallinn, Estonia</span>
+    <span class="footer-disclaimer" data-i18n="footerDisclaimer">Advocat предоставляет правовую информацию, а не юридическую консультацию. Это не замена лицензированного адвоката.</span>
+    <span>
+      <a href="/privacy.html" data-i18n="fPriv">Конфиденциальность</a> ·
+      <a href="/terms.html" data-i18n="fTerms">Условия</a> ·
+      <a href="mailto:hello@advocat.ee">hello@advocat.ee</a>
+    </span>
+  </div>
+</footer>
 
+<!-- Inline JS (i18n + motion + theme) -->
 <script>
-const T={
-en:{
-  mission:"You have legal rights \u2014 even if no one told you. Today, millions of people face legal systems alone, simply because they cannot afford representation. Advocat is working to change that.",
-  missionShort:"You have legal rights \u2014 even if no one told you. Advocat is working to change that.",
-  cta:"Check My Case \u2192",
-  sub:"Free \u2022 Anonymous \u2022 No sign-up required",
-  disclaimer:"Advocat provides legal information, not legal advice. This is not a substitute for a licensed attorney. Information may vary by jurisdiction.",
-  jurisdictions:"Jurisdictions",templates:"Legal templates",scenarios:"Scenarios covered",languages:"Languages"
-},
-pl:{
-  mission:"Masz prawa \u2014 nawet je\u015bli nikt ci o tym nie powiedzia\u0142. Dzi\u015b miliony ludzi staj\u0105 przed systemami prawnymi samotnie, po prostu dlatego, \u017ce nie sta\u0107 ich na reprezentacj\u0119. Advocat pracuje nad zmian\u0105 tego stanu rzeczy.",
-  missionShort:"Masz prawa \u2014 nawet je\u015bli nikt ci o tym nie powiedzia\u0142. Advocat pracuje nad zmian\u0105 tego stanu rzeczy.",
-  cta:"Sprawd\u017a moj\u0105 spraw\u0119 \u2192",
-  sub:"Bezp\u0142atnie \u2022 Anonimowo \u2022 Bez rejestracji",
-  disclaimer:"Advocat to narz\u0119dzie informacji prawnej, nie kancelaria. Zawsze skonsultuj si\u0119 z wykwalifikowanym prawnikiem.",
-  jurisdictions:"Kraj\u00f3w",templates:"Spraw s\u0105dowych",scenarios:"Dyrektyw UE",languages:"J\u0119zyk\u00f3w"
-},
-fr:{
-  mission:"Vous avez des droits \u2014 m\u00eame si personne ne vous l\u2019a dit. Aujourd\u2019hui, des millions de personnes font face seules aux syst\u00e8mes juridiques, simplement parce qu\u2019elles n\u2019ont pas les moyens de se faire repr\u00e9senter. Advocat travaille \u00e0 changer cela.",
-  missionShort:"Vous avez des droits \u2014 m\u00eame si personne ne vous l\u2019a dit. Advocat travaille \u00e0 changer cela.",
-  cta:"V\u00e9rifier mon dossier \u2192",
-  sub:"Gratuit \u2022 Anonyme \u2022 Sans inscription",
-  disclaimer:"Advocat est un outil d\u2019information juridique, pas un cabinet d\u2019avocats. Consultez toujours un avocat qualifi\u00e9.",
-  jurisdictions:"Pays",templates:"Affaires judiciaires",scenarios:"Directives UE",languages:"Langues"
-},
-fa:{
-  mission:"\u0634\u0645\u0627 \u062d\u0642\u0648\u0642 \u0642\u0627\u0646\u0648\u0646\u06cc \u062f\u0627\u0631\u06cc\u062f \u2014 \u062d\u062a\u06cc \u0627\u06af\u0631 \u06a9\u0633\u06cc \u0628\u0647 \u0634\u0645\u0627 \u0646\u06af\u0641\u062a\u0647 \u0628\u0627\u0634\u062f. \u0627\u0645\u0631\u0648\u0632 \u0645\u06cc\u0644\u06cc\u0648\u0646\u200c\u0647\u0627 \u0646\u0641\u0631 \u0628\u0647 \u062a\u0646\u0647\u0627\u06cc\u06cc \u0628\u0627 \u0633\u06cc\u0633\u062a\u0645\u200c\u0647\u0627\u06cc \u062d\u0642\u0648\u0642\u06cc \u0645\u0648\u0627\u062c\u0647 \u0645\u06cc\u200c\u0634\u0648\u0646\u062f\u060c \u0635\u0631\u0641\u0627\u064b \u0628\u0647 \u0627\u06cc\u0646 \u062f\u0644\u06cc\u0644 \u06a9\u0647 \u062a\u0648\u0627\u0646\u0627\u06cc\u06cc \u067e\u0631\u062f\u0627\u062e\u062a \u0647\u0632\u06cc\u0646\u0647 \u0648\u06a9\u06cc\u0644 \u0631\u0627 \u0646\u062f\u0627\u0631\u0646\u062f. Advocat \u062f\u0631 \u062a\u0644\u0627\u0634 \u0627\u0633\u062a \u0627\u06cc\u0646 \u0648\u0636\u0639\u06cc\u062a \u0631\u0627 \u062a\u063a\u06cc\u06cc\u0631 \u062f\u0647\u062f.",
-  missionShort:"\u0634\u0645\u0627 \u062d\u0642\u0648\u0642 \u0642\u0627\u0646\u0648\u0646\u06cc \u062f\u0627\u0631\u06cc\u062f \u2014 \u062d\u062a\u06cc \u0627\u06af\u0631 \u06a9\u0633\u06cc \u0628\u0647 \u0634\u0645\u0627 \u0646\u06af\u0641\u062a\u0647 \u0628\u0627\u0634\u062f. Advocat \u062f\u0631 \u062a\u0644\u0627\u0634 \u0627\u0633\u062a \u0627\u06cc\u0646 \u0648\u0636\u0639\u06cc\u062a \u0631\u0627 \u062a\u063a\u06cc\u06cc\u0631 \u062f\u0647\u062f.",
-  cta:"\u2190 \u0628\u0631\u0631\u0633\u06cc \u067e\u0631\u0648\u0646\u062f\u0647 \u0645\u0646",
-  sub:"\u0631\u0627\u06cc\u06af\u0627\u0646 \u2022 \u0646\u0627\u0634\u0646\u0627\u0633 \u2022 \u0628\u062f\u0648\u0646 \u062b\u0628\u062a\u200c\u0646\u0627\u0645",
-  disclaimer:"Advocat \u06cc\u06a9 \u0627\u0628\u0632\u0627\u0631 \u0627\u0637\u0644\u0627\u0639\u0627\u062a \u062d\u0642\u0648\u0642\u06cc \u0627\u0633\u062a\u060c \u0646\u0647 \u06cc\u06a9 \u062f\u0641\u062a\u0631 \u0648\u06a9\u0627\u0644\u062a. \u0647\u0645\u06cc\u0634\u0647 \u0628\u0627 \u06cc\u06a9 \u0648\u06a9\u06cc\u0644 \u0648\u0627\u062c\u062f \u0634\u0631\u0627\u06cc\u0637 \u0645\u0634\u0648\u0631\u062a \u06a9\u0646\u06cc\u062f.",
-  jurisdictions:"\u06a9\u0634\u0648\u0631",templates:"\u067e\u0631\u0648\u0646\u062f\u0647",scenarios:"\u062f\u0633\u062a\u0648\u0631\u0627\u0644\u0639\u0645\u0644 \u0627\u062a\u062d\u0627\u062f\u06cc\u0647 \u0627\u0631\u0648\u067e\u0627",languages:"\u0632\u0628\u0627\u0646"
-},
-tr:{
-  mission:"Haklar\u0131n\u0131z var \u2014 kimse size s\u00f6ylememi\u015f olsa bile. Bug\u00fcn milyonlarca insan, yaln\u0131zca temsil masraflar\u0131n\u0131 kar\u015f\u0131layamad\u0131klar\u0131 i\u00e7in hukuk sistemleriyle yaln\u0131z y\u00fczle\u015fiyor. Advocat bunu de\u011fi\u015ftirmek i\u00e7in \u00e7al\u0131\u015f\u0131yor.",
-  missionShort:"Haklar\u0131n\u0131z var \u2014 kimse size s\u00f6ylememi\u015f olsa bile. Advocat bunu de\u011fi\u015ftirmek i\u00e7in \u00e7al\u0131\u015f\u0131yor.",
-  cta:"Davam\u0131 kontrol et \u2192",
-  sub:"\u00dccretsiz \u2022 Anonim \u2022 Kay\u0131t gerektirmez",
-  disclaimer:"Advocat bir hukuki bilgi arac\u0131d\u0131r, hukuk b\u00fcrosu de\u011fildir. Her zaman nitelikli bir avukata dan\u0131\u015f\u0131n.",
-  jurisdictions:"\u00dclke",templates:"Dava",scenarios:"AB Direktifi",languages:"Dil"
-},
-ru:{
-  mission:"\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0437\u0430\u0449\u0438\u0442\u0435 \u2014 \u044d\u0442\u043e \u0431\u0430\u0437\u043e\u0432\u0430\u044f \u043f\u043e\u0442\u0440\u0435\u0431\u043d\u043e\u0441\u0442\u044c \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u0430, \u0430 \u043d\u0435 \u0440\u043e\u0441\u043a\u043e\u0448\u044c \u0434\u043b\u044f \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0445. \u0421\u0435\u0433\u043e\u0434\u043d\u044f \u043c\u0438\u043b\u043b\u0438\u043e\u043d\u044b \u043b\u044e\u0434\u0435\u0439 \u0441\u0442\u0430\u043b\u043a\u0438\u0432\u0430\u044e\u0442\u0441\u044f \u0441 \u043f\u0440\u0430\u0432\u043e\u0432\u044b\u043c\u0438 \u0441\u0438\u0441\u0442\u0435\u043c\u0430\u043c\u0438 \u0432 \u043e\u0434\u0438\u043d\u043e\u0447\u043a\u0443, \u043f\u0440\u043e\u0441\u0442\u043e \u043f\u043e\u0442\u043e\u043c\u0443 \u0447\u0442\u043e \u043d\u0435 \u043c\u043e\u0433\u0443\u0442 \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u044c \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u0438\u0442\u0435\u043b\u044c\u0441\u0442\u0432\u043e. Advocat \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043d\u0430\u0434 \u0442\u0435\u043c, \u0447\u0442\u043e\u0431\u044b \u044d\u0442\u043e \u0438\u0437\u043c\u0435\u043d\u0438\u0442\u044c.",
-  missionShort:"\u0414\u043e\u0441\u0442\u0443\u043f \u043a \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u043e\u0439 \u0437\u0430\u0449\u0438\u0442\u0435 \u2014 \u044d\u0442\u043e \u0431\u0430\u0437\u043e\u0432\u0430\u044f \u043f\u043e\u0442\u0440\u0435\u0431\u043d\u043e\u0441\u0442\u044c \u0447\u0435\u043b\u043e\u0432\u0435\u043a\u0430. Advocat \u0440\u0430\u0431\u043e\u0442\u0430\u0435\u0442 \u043d\u0430\u0434 \u0442\u0435\u043c, \u0447\u0442\u043e\u0431\u044b \u044d\u0442\u043e \u0438\u0437\u043c\u0435\u043d\u0438\u0442\u044c.",
-  cta:"\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043c\u043e\u0451 \u0434\u0435\u043b\u043e \u2192",
-  sub:"\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e \u2022 \u0410\u043d\u043e\u043d\u0438\u043c\u043d\u043e \u2022 \u0411\u0435\u0437 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438",
-  disclaimer:"Advocat \u043f\u0440\u0435\u0434\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u0442 \u043f\u0440\u0430\u0432\u043e\u0432\u0443\u044e \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044e. \u042d\u0442\u043e \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u0430 \u043b\u0438\u0446\u0435\u043d\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430.",
-  jurisdictions:"\u042e\u0440\u0438\u0441\u0434\u0438\u043a\u0446\u0438\u0439",templates:"\u0428\u0430\u0431\u043b\u043e\u043d\u043e\u0432",scenarios:"\u0421\u0446\u0435\u043d\u0430\u0440\u0438\u0435\u0432",languages:"\u042f\u0437\u044b\u043a\u043e\u0432"
-},
-uk:{
-  mission:"\u0414\u043e\u0441\u0442\u0443\u043f \u0434\u043e \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u043e\u0433\u043e \u0437\u0430\u0445\u0438\u0441\u0442\u0443 \u2014 \u0446\u0435 \u0431\u0430\u0437\u043e\u0432\u0430 \u043f\u043e\u0442\u0440\u0435\u0431\u0430 \u043b\u044e\u0434\u0438\u043d\u0438, \u0430 \u043d\u0435 \u0440\u043e\u0437\u043a\u0456\u0448 \u0434\u043b\u044f \u043e\u0431\u0440\u0430\u043d\u0438\u0445. \u0421\u044c\u043e\u0433\u043e\u0434\u043d\u0456 \u043c\u0456\u043b\u044c\u0439\u043e\u043d\u0438 \u043b\u044e\u0434\u0435\u0439 \u0441\u0442\u0438\u043a\u0430\u044e\u0442\u044c\u0441\u044f \u0437 \u043f\u0440\u0430\u0432\u043e\u0432\u0438\u043c\u0438 \u0441\u0438\u0441\u0442\u0435\u043c\u0430\u043c\u0438 \u043d\u0430 \u0441\u0430\u043c\u043e\u0442\u0456, \u043f\u0440\u043e\u0441\u0442\u043e \u0442\u043e\u043c\u0443 \u0449\u043e \u043d\u0435 \u043c\u043e\u0436\u0443\u0442\u044c \u043e\u043f\u043b\u0430\u0442\u0438\u0442\u0438 \u043f\u0440\u0435\u0434\u0441\u0442\u0430\u0432\u043d\u0438\u0446\u0442\u0432\u043e. Advocat \u043f\u0440\u0430\u0446\u044e\u0454 \u043d\u0430\u0434 \u0442\u0438\u043c, \u0449\u043e\u0431 \u0446\u0435 \u0437\u043c\u0456\u043d\u0438\u0442\u0438.",
-  missionShort:"\u0414\u043e\u0441\u0442\u0443\u043f \u0434\u043e \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u043e\u0433\u043e \u0437\u0430\u0445\u0438\u0441\u0442\u0443 \u2014 \u0446\u0435 \u0431\u0430\u0437\u043e\u0432\u0430 \u043f\u043e\u0442\u0440\u0435\u0431\u0430 \u043b\u044e\u0434\u0438\u043d\u0438. Advocat \u043f\u0440\u0430\u0446\u044e\u0454 \u043d\u0430\u0434 \u0442\u0438\u043c, \u0449\u043e\u0431 \u0446\u0435 \u0437\u043c\u0456\u043d\u0438\u0442\u0438.",
-  cta:"\u041f\u0435\u0440\u0435\u0432\u0456\u0440\u0438\u0442\u0438 \u043c\u043e\u044e \u0441\u043f\u0440\u0430\u0432\u0443 \u2192",
-  sub:"\u0411\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u043e \u2022 \u0410\u043d\u043e\u043d\u0456\u043c\u043d\u043e \u2022 \u0411\u0435\u0437 \u0440\u0435\u0454\u0441\u0442\u0440\u0430\u0446\u0456\u0457",
-  disclaimer:"Advocat \u043d\u0430\u0434\u0430\u0454 \u043f\u0440\u0430\u0432\u043e\u0432\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u0443 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0456\u044e. \u0426\u0435 \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u0430 \u043b\u0456\u0446\u0435\u043d\u0437\u043e\u0432\u0430\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430.",
-  jurisdictions:"\u042e\u0440\u0438\u0441\u0434\u0438\u043a\u0446\u0456\u0439",templates:"\u0428\u0430\u0431\u043b\u043e\u043d\u0456\u0432",scenarios:"\u0421\u0446\u0435\u043d\u0430\u0440\u0456\u0457\u0432",languages:"\u041c\u043e\u0432"
-},
-fi:{
-  mission:"Oikeudellisen puolustuksen saatavuus on ihmisen perustarve \u2014 ei harvojen ylellisyys. T\u00e4n\u00e4\u00e4n miljoonat ihmiset kohtaavat oikeusjärjestelm\u00e4t yksin, yksinkertaisesti siksi, ettei heill\u00e4 ole varaa edustajaan. Advocat pyrkii muuttamaan t\u00e4m\u00e4n.",
-  missionShort:"Sinulla on oikeuksia — vaikka kukaan ei olisi kertonut. Advocat pyrkii muuttamaan t\u00e4m\u00e4n.",
-  cta:"Tarkista tapaukseni \u2192",
-  sub:"Ilmainen \u2022 Anonyymi \u2022 Ei rekister\u00f6itymist\u00e4",
-  disclaimer:"Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. T\u00e4m\u00e4 ei korvaa laillistettua asianajajaa.",
-  jurisdictions:"Laink\u00e4ytt\u00f6aluetta",templates:"Asiakirjamallia",scenarios:"Skenaariota",languages:"Kielt\u00e4"
-},
-et:{
-  mission:"Juurdep\u00e4\u00e4s \u00f5iguskaitsele on inimese p\u00f5hivajadus \u2014 mitte v\u00e4heste luksus. T\u00e4na seisavad miljonid inimesed \u00f5iguss\u00fcsteemidega silmitsi \u00fcksi, lihtsalt seet\u00f5ttu, et nad ei saa endale esindajat lubada. Advocat t\u00f6\u00f6tab selle muutmise nimel.",
-  missionShort:"Juurdep\u00e4\u00e4s \u00f5iguskaitsele on inimese p\u00f5hivajadus. Advocat t\u00f6\u00f6tab selle muutmise nimel.",
-  cta:"Kontrolli minu asja \u2192",
-  sub:"Tasuta \u2022 Anon\u00fc\u00fcmne \u2022 Ilma registreerimiseta",
-  disclaimer:"Advocat pakub \u00f5igusteavet, mitte \u00f5igusnõustamist. See ei asenda litsentseeritud advokaati.",
-  jurisdictions:"Jurisdiktsiooni",templates:"Malli",scenarios:"Stsenaariumi",languages:"Keelt"
-},
-sv:{
-  mission:"Tillg\u00e5ng till r\u00e4ttsligt f\u00f6rsvar \u00e4r ett grundl\u00e4ggande m\u00e4nskligt behov \u2014 inte en lyx f\u00f6r de f\u00e5. Idag m\u00f6ter miljontals m\u00e4nniskor r\u00e4ttssystem ensamma, helt enkelt f\u00f6r att de inte har r\u00e5d med representation. Advocat arbetar f\u00f6r att f\u00f6r\u00e4ndra detta.",
-  missionShort:"Tillg\u00e5ng till r\u00e4ttsligt f\u00f6rsvar \u00e4r ett grundl\u00e4ggande m\u00e4nskligt behov. Advocat arbetar f\u00f6r att f\u00f6r\u00e4ndra detta.",
-  cta:"Kontrollera mitt \u00e4rende \u2192",
-  sub:"Gratis \u2022 Anonymt \u2022 Ingen registrering",
-  disclaimer:"Advocat tillhandah\u00e5ller juridisk information, inte juridisk r\u00e5dgivning. Detta ers\u00e4tter inte en licensierad advokat.",
-  jurisdictions:"Jurisdiktioner",templates:"Mallar",scenarios:"Scenarier",languages:"Spr\u00e5k"
-},
-de:{
-  mission:"Zugang zu rechtlichem Schutz ist ein grundlegendes menschliches Bed\u00fcrfnis \u2014 kein Luxus f\u00fcr wenige. Heute stehen Millionen von Menschen Rechtssystemen allein gegen\u00fcber, einfach weil sie sich keinen Anwalt leisten k\u00f6nnen. Advocat arbeitet daran, das zu \u00e4ndern.",
-  missionShort:"Zugang zu rechtlichem Schutz ist ein grundlegendes menschliches Bed\u00fcrfnis. Advocat arbeitet daran, das zu \u00e4ndern.",
-  cta:"Meinen Fall pr\u00fcfen \u2192",
-  sub:"Kostenlos \u2022 Anonym \u2022 Ohne Registrierung",
-  disclaimer:"Advocat bietet rechtliche Informationen, keine Rechtsberatung. Dies ersetzt keinen zugelassenen Anwalt.",
-  jurisdictions:"Jurisdiktionen",templates:"Vorlagen",scenarios:"Szenarien",languages:"Sprachen"
-},
-ar:{
-  mission:"\u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a \u062d\u0627\u062c\u0629 \u0625\u0646\u0633\u0627\u0646\u064a\u0629 \u0623\u0633\u0627\u0633\u064a\u0629 \u2014 \u0648\u0644\u064a\u0633 \u062a\u0631\u0641\u064b\u0627 \u0644\u0644\u0642\u0644\u0629. \u0627\u0644\u064a\u0648\u0645\u060c \u064a\u0648\u0627\u062c\u0647 \u0645\u0644\u0627\u064a\u064a\u0646 \u0627\u0644\u0623\u0634\u062e\u0627\u0635 \u0627\u0644\u0623\u0646\u0638\u0645\u0629 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a\u0629 \u0628\u0645\u0641\u0631\u062f\u0647\u0645\u060c \u0628\u0628\u0633\u0627\u0637\u0629 \u0644\u0623\u0646\u0647\u0645 \u0644\u0627 \u064a\u0633\u062a\u0637\u064a\u0639\u0648\u0646 \u062a\u062d\u0645\u0644 \u062a\u0643\u0627\u0644\u064a\u0641 \u0627\u0644\u062a\u0645\u062b\u064a\u0644 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a. \u064a\u0639\u0645\u0644 Advocat \u0639\u0644\u0649 \u062a\u063a\u064a\u064a\u0631 \u0630\u0644\u0643.",
-  missionShort:"\u0627\u0644\u0648\u0635\u0648\u0644 \u0625\u0644\u0649 \u0627\u0644\u062f\u0641\u0627\u0639 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a \u062d\u0627\u062c\u0629 \u0625\u0646\u0633\u0627\u0646\u064a\u0629 \u0623\u0633\u0627\u0633\u064a\u0629. \u064a\u0639\u0645\u0644 Advocat \u0639\u0644\u0649 \u062a\u063a\u064a\u064a\u0631 \u0630\u0644\u0643.",
-  cta:"\u2190 \u062a\u062d\u0642\u0642 \u0645\u0646 \u0642\u0636\u064a\u062a\u064a",
-  sub:"\u0645\u062c\u0627\u0646\u064a \u2022 \u0645\u062c\u0647\u0648\u0644 \u0627\u0644\u0647\u0648\u064a\u0629 \u2022 \u0628\u062f\u0648\u0646 \u062a\u0633\u062c\u064a\u0644",
-  disclaimer:"\u064a\u0642\u062f\u0645 Advocat \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629\u060c \u0648\u0644\u064a\u0633 \u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629. \u0647\u0630\u0627 \u0644\u064a\u0633 \u0628\u062f\u064a\u0644\u0627\u064b \u0639\u0646 \u0645\u062d\u0627\u0645\u064d \u0645\u0631\u062e\u0635.",
-  jurisdictions:"\u0648\u0644\u0627\u064a\u0629 \u0642\u0636\u0627\u0626\u064a\u0629",templates:"\u0646\u0645\u0648\u0630\u062c",scenarios:"\u0633\u064a\u0646\u0627\u0631\u064a\u0648",languages:"\u0644\u063a\u0627\u062a"
-},
-lv:{
-  mission:"Piekl\u016bve juridiskajai aizsardz\u012bbai ir cilv\u0113ka pamatvajadz\u012bba \u2014 nevis grezn\u012bba da\u017eiem. \u0160odien miljoniem cilv\u0113ku saskaras ar ties\u012bbu sist\u0113m\u0101m vientn\u0113 t\u0101p\u0113c, ka vi\u0146i nevar at\u013cauties p\u0101rst\u0101v\u012bbu. Advocat str\u0101d\u0101, lai to main\u012btu.",
-  missionShort:"Piekl\u016bve juridiskajai aizsardz\u012bbai ir cilv\u0113ka pamatvajadz\u012bba. Advocat str\u0101d\u0101, lai to main\u012btu.",
-  cta:"P\u0101rbaud\u012bt manu lietu \u2192",
-  sub:"Bezmaksas \u2022 Anon\u012bmi \u2022 Nav nepiecie\u0161ama re\u0123istr\u0101cija",
-  disclaimer:"Advocat sniedz juridisku inform\u0101ciju, nevis juridiskas konsult\u0101cijas. Tas neaizst\u0101j licenc\u0113tu advok\u0101tu.",
-  jurisdictions:"Jurisdikcijas",templates:"Veidnes",scenarios:"Scen\u0101riji",languages:"Valodas"
-},
-lt:{
-  mission:"Prieiga prie teisin\u0117s gynybos yra pagrindinis \u017emogaus poreikis \u2014 ne prabanga keleriems. \u0160iandien milijonai \u017emoni\u0173 susiduria su teis\u0117s sistemomis vieni, tiesiog tod\u0117l, kad negali sau leisti atstovavimo. Advocat dirba, kad tai pakeist\u0173.",
-  missionShort:"Prieiga prie teisin\u0117s gynybos yra pagrindinis \u017emogaus poreikis. Advocat dirba, kad tai pakeist\u0173.",
-  cta:"Patikrinti mano byl\u0105 \u2192",
-  sub:"Nemokama \u2022 Anonimi\u0161ka \u2022 Nereikia registruotis",
-  disclaimer:"Advocat teikia teisin\u0119 informacij\u0105, o ne teisines konsultacijas. Tai nepakei\u010dia licencijuoto advokato.",
-  jurisdictions:"Jurisdikcijos",templates:"\u0160ablonai",scenarios:"Scenarijai",languages:"Kalbos"
-},
-es:{
-  mission:"El acceso a la defensa legal es una necesidad humana b\u00e1sica \u2014 no un lujo para unos pocos. Hoy, millones de personas enfrentan sistemas legales solas, simplemente porque no pueden pagar representaci\u00f3n. Advocat trabaja para cambiar eso.",
-  missionShort:"El acceso a la defensa legal es una necesidad humana b\u00e1sica. Advocat trabaja para cambiar eso.",
-  cta:"Verificar mi caso \u2192",
-  sub:"Gratis \u2022 An\u00f3nimo \u2022 Sin registro",
-  disclaimer:"Advocat proporciona informaci\u00f3n legal, no asesor\u00eda legal. Esto no sustituye a un abogado licenciado.",
-  jurisdictions:"Jurisdicciones",templates:"Plantillas",scenarios:"Escenarios",languages:"Idiomas"
-},
-it:{
-  mission:"L\u2019accesso alla difesa legale \u00e8 un bisogno umano fondamentale \u2014 non un lusso per pochi. Oggi milioni di persone affrontano i sistemi legali da sole, semplicemente perch\u00e9 non possono permettersi una rappresentanza. Advocat lavora per cambiare questo.",
-  missionShort:"L\u2019accesso alla difesa legale \u00e8 un bisogno umano fondamentale. Advocat lavora per cambiare questo.",
-  cta:"Controlla il mio caso \u2192",
-  sub:"Gratuito \u2022 Anonimo \u2022 Nessuna registrazione",
-  disclaimer:"Advocat fornisce informazioni legali, non consulenza legale. Non sostituisce un avvocato abilitato.",
-  jurisdictions:"Giurisdizioni",templates:"Modelli",scenarios:"Scenari",languages:"Lingue"
-},
-ro:{
-  mission:"Accesul la ap\u0103rarea juridic\u0103 este o nevoie uman\u0103 fundamental\u0103 \u2014 nu un lux pentru c\u00e2\u021biva. Ast\u0103zi, milioane de oameni se confrunt\u0103 singuri cu sistemele juridice, pur \u0219i simplu pentru c\u0103 nu \u00ee\u0219i pot permite reprezentare. Advocat lucreaz\u0103 pentru a schimba acest lucru.",
-  missionShort:"Accesul la ap\u0103rarea juridic\u0103 este o nevoie uman\u0103 fundamental\u0103. Advocat lucreaz\u0103 pentru a schimba acest lucru.",
-  cta:"Verific\u0103 cazul meu \u2192",
-  sub:"Gratuit \u2022 Anonim \u2022 F\u0103r\u0103 \u00eenregistrare",
-  disclaimer:"Advocat ofer\u0103 informa\u021bii juridice, nu consultan\u021b\u0103 juridic\u0103. Nu \u00eenlocuie\u0219te un avocat licen\u021biat.",
-  jurisdictions:"Jurisdic\u021bii",templates:"\u0218abloane",scenarios:"Scenarii",languages:"Limbi"
-}
+(function(){
+'use strict';
+
+// ==== I18N ====
+const I18N = {
+  ru: {
+    pageTitle:'Advocat — Юрист, который отвечает в 3 часа ночи',
+    metaDesc:'AI-юрист-ассистент по эстонскому, финскому и европейскому праву. На 17 языках. Первые 5 вопросов в день — бесплатно, без регистрации.',
+    ogTitle:'Advocat — Юрист, который отвечает в 3 часа ночи',
+    ogDesc:'AI-юрист-ассистент. 17 языков. 5 вопросов в день — бесплатно.',
+    skipLink:'Перейти к содержанию',
+    eyebrow:'01.01.2026 · Эстония прекратила государственное финансирование бесплатной юридической помощи',
+    h1:'Юрист, который отвечает в 3 часа ночи.',
+    subHTML:'Advocat — AI-юрист-ассистент по эстонскому, финскому и европейскому праву. Знает <span class="cite">§KarS</span>, <span class="cite">TLS</span>, <span class="cite">KMS</span>. Голос и текст на 17 языках. Первые 5 вопросов в день — бесплатно, без регистрации.',
+    ctaPrimary:'Задать вопрос',
+    ctaSecondary:'Как это работает',
+    trust1:'GDPR',trust2:'Данные не тренируют модели',trust3:'EU-хостинг',trust4:'Анонимно',
+    moreLangs:'+14',
+    howH:'Как это работает',
+    howStep1H:'Спросите',howStep1P:'Голосом или текстом. Даже на русском. Даже со сленгом. Advocat переведёт ваш вопрос в юридический язык сам.',
+    howStep2H:'Получите ответ',howStep2P_HTML:'Advocat читает реальный текст закона (например <em>§95 Töölepingu seaduse</em>) и объясняет, что это значит в вашей ситуации. Со ссылкой, которую можно проверить.',
+    howStep3H:'Действуйте',howStep3P:'Скачайте шаблон. Создайте дедлайн. Проверьте фирму через ariregister. Или — если нужен живой — Advocat поможет найти адвоката.',
+    knowH:'Advocat читает первоисточники. Не Википедию.',
+    knowSub:'Каждый ответ основан на реальном тексте закона, введённом напрямую из Riigi Teataja и Finlex.',
+    knowEstH:'20 эстонских кодексов',andMore:'+ ещё 5 кодексов',
+    fiCodes:'финских кодексов',euDir:'директив ЕС',cases:'решений суда',
+    finlandH:'Финское право',
+    fi1:'уголовный',fi2:'трудовой',fi3:'процессуальный',fi4:'иностранцы',fi5:'возмещение ущерба',
+    doesH:'Что Advocat умеет',
+    doesSub:'Шесть инструментов, с которыми он превращает «не знаю что делать» в «знаю следующий шаг».',
+    tool1H:'Разобрать',tool1P:'Прочитайте любой § на вашем языке. Advocat объяснит, в каких случаях он применяется, а в каких — нет.',
+    tool2H:'Составить',tool2P:'Напишите жалобу, претензию или письмо. Advocat подберёт шаблон под вашу ситуацию.',
+    tool3H:'Напомнить',tool3P:'Создайте дедлайн — Advocat напомнит за 3 дня, за день и в день подачи.',
+    tool4H:'Проверить',tool4P:'Любую эстонскую фирму или автомобиль — напрямую через ariregister. Не кеш, не скрейпинг — реальные данные.',
+    tool5H:'Перевести',tool5P:'Документ с сохранением юридической точности. Терминология, § и даты остаются на месте.',
+    tool6H:'Передать человеку',tool6P:'Advocat — не лицензированный адвокат. Когда дело становится серьёзным (суд, уголовное, депортация) — поможет найти живого.',
+    foundH:'Почему мы это сделали',
+    foundP1:'В 2024 году один из наших сооснователей столкнулся с делом, которое пересекало эстонско-финскую границу. Депортация из Финляндии. Компенсация за насилие. Разные кодексы, разные сроки, разные языки инстанций.',
+    foundP2:'Мы обошли десяток инструментов. Ни один не знал оба права одновременно. Эстонский юрист не читал финские решения. Финский — не понимал § эстонского. Онлайн-консультации давали общие ответы. А у HUGO.legal была очередь на 5 рабочих дней — а дедлайн у нас был через 4.',
+    foundP3:'Мы сделали Advocat для себя. Чтобы AI мог одновременно читать §95 TLS и §Ulkomaalaislaki, помнить даты инстанций, писать письма на двух языках и не брать €300/час за каждый вопрос.',
+    foundP4:'Потом оказалось, что таких случаев много — не только эстонско-финских. Работники, которых уволили без уведомления. Малые предприниматели с разными налоговыми системами. Родители, которым нужно понять § школьного кодекса.',
+    foundP5:'Мы публикуем не что мы сделали — а то, что мы бы хотели иметь сами два года назад. — Команда Advocat',
+    priceH:'Без уловок. Без пробных периодов с картой.',
+    priceSub:'Пять вопросов в день — навсегда бесплатно. Если нужно больше — €14.99/мес. Отмена в один клик.',
+    priceFreeName:'Бесплатно',priceProName:'Без лимитов',perMonth:'/мес',
+    priceF1:'5 вопросов в день',priceF2:'Все 17 языков, голос и текст',priceF3:'Все инструменты (шаблоны, дедлайны, проверка фирм)',priceF4:'История вопросов — без ограничений',priceF5:'Без привязки карты, без регистрации',
+    priceP1:'Всё из бесплатного',priceP2:'Неограниченные вопросы',priceP3:'Приоритетная скорость ответа',priceP4:'Отмена в один клик',priceP5:'Без повышений цены в первый год',
+    priceFreeCta:'Начать бесплатно',priceProCta:'Попробовать',
+    t1:'GDPR-совместимо',t2:'Данные не тренируют модели',t3:'JWT-защищено',t4:'Тщательно протестировано',t5:'WCAG AA',t6:'EU-хостинг (Frankfurt)',
+    faqH:'Частые вопросы',
+    faq1Q:'Это юридическая консультация?',faq1A:'Нет. Advocat предоставляет юридическую информацию — чтобы вы поняли свои варианты. Формальная юридическая консультация требует лицензированного адвоката.',
+    faq2Q:'Advocat заменяет адвоката?',faq2A:'Нет, и мы этого не хотим. Advocat делает первые 80% — разобраться, составить письмо, заполнить форму. Если нужен суд, адвокат, переговоры — поможет найти живого.',
+    faq3Q:'Насколько точны ответы?',faq3A:'Advocat читает реальный текст закона, поэтому цитаты § точны. Но право — это контекст. Всегда проверяйте ссылку и для важных решений консультируйтесь с адвокатом.',
+    faq4Q:'Что с моими данными?',faq4A:'Вопросы хранятся в вашем аккаунте в Supabase (EU, Франкфурт). Анонимные сессии не сохраняются. Данные не передаются третьим сторонам и не используются для тренировки моделей.',
+    faq5Q:'Сколько стоит?',faq5A:'5 вопросов в день — бесплатно навсегда, без карты. Неограниченно — €14.99/мес. Отмена в один клик.',
+    faq6Q:'Могу ли я отменить?',faq6A:'Да, в один клик. Без объяснений. Без звонков. Прямо в настройках.',
+    faq7Q:'Какие юрисдикции покрыты?',faq7A:'Основа — Эстония (20 кодексов) и Финляндия (5 кодексов). Также директивы ЕС. Если ваш вопрос о стране, которую мы покрываем слабо — Advocat скажет честно.',
+    faq8Q:'Какие языки работают лучше?',faq8A:'Эстонский, русский, английский, финский — нативное качество. Остальные 13 работают, иногда с машинным переводом.',
+    faq9Q:'Как работает голосовой ввод?',faq9A:'В основных языках — очень точно, включая акценты и смешение. Whisper от OpenAI с настройками для юридической терминологии.',
+    faq10Q:'Открытый код?',faq10A:'Да, планируем. Эстонский корпус — к Q3 2026, финский — к Q4.',
+    footerDisclaimer:'Advocat предоставляет правовую информацию, а не юридическую консультацию. Это не замена лицензированного адвоката.',
+    fPriv:'Конфиденциальность',fTerms:'Условия'
+  },
+  et: {
+    pageTitle:'Advocat — Jurist, kes vastab kell kolm öösel',
+    metaDesc:'AI-õigusabiline, kes tunneb 20 Eesti seadustikku, Soome õigust ja ELi direktiive. 17 keelt. Viis esimest küsimust päevas on tasuta.',
+    ogTitle:'Advocat — Jurist, kes vastab kell kolm öösel',
+    ogDesc:'AI-õigusabiline. 17 keelt. 5 küsimust päevas tasuta.',
+    skipLink:'Sisu juurde',
+    eyebrow:'01.01.2026 · Eesti lõpetas tasuta õigusabi riikliku rahastamise',
+    h1:'Jurist, kes vastab kell kolm öösel.',
+    subHTML:'Advocat on AI-õigusabiline, kes tunneb 20 Eesti seadustikku, Soome õigust ja ELi direktiive. Tunneb <span class="cite">§KarS</span>, <span class="cite">TLS</span>, <span class="cite">KMS</span>. Hääl ja tekst 17 keeles. Viis esimest küsimust päevas on tasuta, ilma registreerimiseta.',
+    ctaPrimary:'Küsi nüüd',
+    ctaSecondary:'Kuidas see töötab',
+    trust1:'GDPR',trust2:'Andmed ei treeni mudeleid',trust3:'ELi hosting',trust4:'Anonüümne',
+    moreLangs:'+14',
+    howH:'Kuidas see töötab',
+    howStep1H:'Küsige',howStep1P:'Häälega või tekstiga. Isegi emakeeles. Isegi kõnekeeles. Advocat tõlgib teie küsimuse ise juriidilisse keelde.',
+    howStep2H:'Saage vastus',howStep2P_HTML:'Advocat loeb päris seaduse teksti (näiteks <em>§95 Töölepingu seadusest</em>) ja selgitab, mida see § teie olukorras tähendab. Koos lingiga, mida saate üle kontrollida.',
+    howStep3H:'Tegutsege',howStep3P:'Laadige alla valmis mall. Looge meeldetuletus. Kontrollige äriregistrist ettevõtet. Või — kui vajate päris advokaati — Advocat aitab leida.',
+    knowH:'Advocat loeb algallikaid. Mitte Vikipeediat.',
+    knowSub:'Iga vastus põhineb päris seaduse tekstil, mis on otse loetud Riigi Teatajast ja Finlexist.',
+    knowEstH:'20 Eesti seadustikku',andMore:'+ veel 5 seadustikku',
+    fiCodes:'Soome seadustikku',euDir:'ELi direktiivi',cases:'kohtulahendit',
+    finlandH:'Soome õigus',
+    fi1:'karistusõigus',fi2:'tööõigus',fi3:'menetlusõigus',fi4:'välismaalaste',fi5:'kahju hüvitamine',
+    doesH:'Mida Advocat oskab',
+    doesSub:'Kuus tööriista, millega muutub „ei tea, mida teha" → „tean järgmist sammu".',
+    tool1H:'Mõista',tool1P:'Lugege ükskõik millist § oma keeles. Advocat selgitab, millal see kehtib ja millal mitte.',
+    tool2H:'Koostada',tool2P:'Kirjutage kaebus, nõue või kiri. Advocat valib teie olukorrale sobiva malli.',
+    tool3H:'Meelde tuletada',tool3P:'Looge tähtaeg — Advocat tuletab meelde 3 päeva, 1 päev ja esitamise päeval.',
+    tool4H:'Kontrollida',tool4P:'Iga Eesti ettevõtet või sõidukit — otse äriregistrist. Pole vahemälu ega kraapimine — päris andmed.',
+    tool5H:'Tõlkida',tool5P:'Dokument juriidilise täpsusega. Terminoloogia, § ja kuupäevad jäävad alles.',
+    tool6H:'Anda üle',tool6P:'Advocat ei ole litsentseeritud advokaat. Kui asi muutub tõsiseks (kohus, kriminaalasi, väljasaatmine) — aitab leida päris advokaati.',
+    foundH:'Miks me selle tegime',
+    foundP1:'2024. aastal sattus üks meie asutajaist kohtuasjasse, mis ületas Eesti-Soome piiri. Väljasaatmine Soomest. Hüvitis vägivalla eest. Erinevad seadustikud, tähtajad, keeled.',
+    foundP2:'Me proovisime kümmekond tööriista. Ükski ei tundnud mõlemat õigust korraga. Eesti jurist ei lugenud Soome lahendeid. Soome oma ei mõistnud Eesti §. HUGO.legalil oli 5-tööpäevane järjekord — meie tähtaeg oli 4 päeva pärast.',
+    foundP3:'Me tegime Advocati endile. Et AI saaks korraga lugeda §95 TLS ja §Ulkomaalaislaki, mäletada istungite kuupäevi, kirjutada kirju kahes keeles ja mitte küsida €300/tunnis iga küsimuse eest.',
+    foundP4:'Hiljem selgus, et selliseid juhtumeid on palju — mitte ainult Eesti-Soome. Töötajad, kes vallandati ette teatamata. Väikeettevõtjad erinevate maksusüsteemidega. Lapsevanemad, kes peavad kooli § mõistma.',
+    foundP5:'Me ei avalda seda, mida tegime — vaid seda, mida oleksime ise kaks aastat tagasi tahtnud. — Advocati meeskond',
+    priceH:'Ilma trikkideta. Ilma kaardikohustuseta.',
+    priceSub:'Viis küsimust päevas — alati tasuta. Kui vajate rohkem — €14.99/kuus. Tühistamine ühe klõpsuga.',
+    priceFreeName:'Tasuta',priceProName:'Piiramatu',perMonth:'/kuus',
+    priceF1:'5 küsimust päevas',priceF2:'Kõik 17 keelt, hääl ja tekst',priceF3:'Kõik tööriistad (mallid, tähtajad, kontroll)',priceF4:'Küsimuste ajalugu piiranguteta',priceF5:'Ilma kaardita, ilma registreerimata',
+    priceP1:'Kõik tasuta taseme omadused',priceP2:'Piiramatud küsimused',priceP3:'Prioriteetne vastusekiirus',priceP4:'Tühistamine ühe klõpsuga',priceP5:'Ilma hinnatõusuta esimesel aastal',
+    priceFreeCta:'Alusta tasuta',priceProCta:'Proovi',
+    t1:'GDPR-ga vastavuses',t2:'Andmed ei treeni mudeleid',t3:'JWT-kaitstud',t4:'Põhjalikult testitud',t5:'WCAG AA',t6:'ELi hosting (Frankfurt)',
+    faqH:'Korduma kippuvad küsimused',
+    faq1Q:'Kas see on õigusabi?',faq1A:'Ei. Advocat pakub õiguslikku teavet — et mõistaksite oma võimalusi. Ametlik õigusabi nõuab litsentseeritud advokaati.',
+    faq2Q:'Kas Advocat asendab advokaati?',faq2A:'Ei, ja me ei soovigi. Advocat teeb esimesed 80% tööst odavamalt. Kui vaja kohut, advokaati, läbirääkimisi — aitab leida päris inimest.',
+    faq3Q:'Kui täpsed on vastused?',faq3A:'Advocat loeb päris seaduse teksti, seega § viited on täpsed. Aga õigus on kontekst — kontrollige linki ja oluliste otsuste puhul konsulteerige advokaadiga.',
+    faq4Q:'Mis saab minu andmetest?',faq4A:'Küsimused salvestatakse teie kontosse Supabase is (EL, Frankfurt). Anonüümseid seansse ei säilitata. Andmeid ei edastata kolmandatele ega kasutata mudelite treenimiseks.',
+    faq5Q:'Kui palju maksab?',faq5A:'5 küsimust päevas — alati tasuta, ilma kaardita. Piiramatu — €14.99/kuus. Tühistamine ühe klõpsuga.',
+    faq6Q:'Kas saan tühistada?',faq6A:'Jah, ühe klõpsuga. Ilma selgitusteta. Ilma kõnedeta. Otse seadetes.',
+    faq7Q:'Millised jurisdiktsioonid?',faq7A:'Põhi — Eesti (20 seadustikku) ja Soome (5). Samuti ELi direktiivid. Kui küsimus käib nõrgalt kaetud riigi kohta — Advocat ütleb ausalt.',
+    faq8Q:'Millised keeled töötavad paremini?',faq8A:'Eesti, vene, inglise, soome — emakeele kvaliteet. Ülejäänud 13 töötavad, mõnikord masintõlkega.',
+    faq9Q:'Kuidas töötab hääl?',faq9A:'Peamistes keeltes — väga täpne, sh aktsendid ja keelesegud. Whisper OpenAI-lt juriidilise terminoloogia jaoks.',
+    faq10Q:'Avatud lähtekood?',faq10A:'Jah, plaanime. Eesti õiguskorpus — Q3 2026-ks, Soome — Q4-ks.',
+    footerDisclaimer:'Advocat pakub õiguslikku teavet, mitte õigusabi. See ei asenda litsentseeritud advokaati.',
+    fPriv:'Privaatsus',fTerms:'Tingimused'
+  },
+  en: {
+    pageTitle:'Advocat — The lawyer who answers at 3 a.m.',
+    metaDesc:'AI legal assistant covering 20 Estonian codes, Finnish law, and EU directives. 17 languages. First 5 questions a day are free, no sign-up.',
+    ogTitle:'Advocat — The lawyer who answers at 3 a.m.',
+    ogDesc:'AI legal assistant. 17 languages. 5 questions a day are free.',
+    skipLink:'Skip to content',
+    eyebrow:'Jan 1, 2026 · Estonia ended state-funded free legal aid',
+    h1:'The lawyer who answers at 3 a.m.',
+    subHTML:'Advocat is an AI legal assistant covering 20 Estonian codes, Finnish law, and EU directives. Knows <span class="cite">§KarS</span>, <span class="cite">TLS</span>, <span class="cite">KMS</span>. Voice and text in 17 languages. First five questions a day are free, no sign-up.',
+    ctaPrimary:'Ask now',
+    ctaSecondary:'See how it works',
+    trust1:'GDPR',trust2:'Data never trains models',trust3:'EU-hosted',trust4:'Anonymous',
+    moreLangs:'+14',
+    howH:'How it works',
+    howStep1H:'Ask',howStep1P:'By voice or text. In your language. Advocat translates your question into legal form itself.',
+    howStep2H:'Get an answer',howStep2P_HTML:'Advocat reads the actual statute text (for example <em>§95 of the Employment Contracts Act</em>) and explains what the § means for your situation. With a link you can verify.',
+    howStep3H:'Take action',howStep3P:'Download a template. Set a deadline. Check a company via the business register. Or — if you need a licensed lawyer — Advocat helps you find one.',
+    knowH:'Advocat reads primary sources. Not Wikipedia.',
+    knowSub:'Every answer is grounded in actual statute text, ingested directly from Riigi Teataja and Finlex.',
+    knowEstH:'20 Estonian codes',andMore:'+ 5 more codes',
+    fiCodes:'Finnish codes',euDir:'EU directives',cases:'court rulings',
+    finlandH:'Finnish law',
+    fi1:'criminal',fi2:'employment',fi3:'procedure',fi4:'immigration',fi5:'damages',
+    doesH:'What Advocat does',
+    doesSub:'Six tools that turn "I don\'t know what to do" into "I know the next step".',
+    tool1H:'Understand',tool1P:'Read any § in your language. Advocat explains when it applies — and when it doesn\'t.',
+    tool2H:'Draft',tool2P:'Write a complaint, demand letter, or template. Advocat picks the right one for your case.',
+    tool3H:'Track',tool3P:'Set a deadline — Advocat reminds you 3 days out, 1 day out, and on the day.',
+    tool4H:'Check',tool4P:'Any Estonian company or vehicle — directly from the business register. Not cached, not scraped — live data.',
+    tool5H:'Translate',tool5P:'A document while preserving legal accuracy. Terminology, §, and dates stay intact.',
+    tool6H:'Hand off',tool6P:'Advocat is not a licensed lawyer. When it gets serious (court, criminal, deportation), it helps you find one.',
+    foundH:'Why we built this',
+    foundP1:'In 2024 one of our co-founders faced a case that crossed the Estonian-Finnish border. Deportation from Finland. Assault compensation. Different codes, different deadlines, different languages.',
+    foundP2:'We tried a dozen tools. None knew both systems at once. An Estonian lawyer couldn\'t read Finnish rulings. A Finnish one didn\'t understand the Estonian §. Online consultations gave generic answers. And HUGO.legal had a 5 working-day queue — our deadline was in 4.',
+    foundP3:'We built Advocat for ourselves. So that an AI could read §95 TLS and §Ulkomaalaislaki at the same time, remember hearing dates, write letters in both languages, and not charge €300/hour per question.',
+    foundP4:'It turned out there are many cases like this — not only Estonian-Finnish. Workers dismissed without notice. Small business owners dealing with different tax systems. Parents who need to understand a school code §.',
+    foundP5:'We are publishing not what we built — but what we wished existed for us two years ago. — The Advocat team',
+    priceH:'No tricks. No card-required trials.',
+    priceSub:'Five questions a day — free forever. If you need more, €14.99/month. Cancel in one click.',
+    priceFreeName:'Free',priceProName:'Unlimited',perMonth:'/mo',
+    priceF1:'5 questions per day',priceF2:'All 17 languages, voice and text',priceF3:'All tools (templates, deadlines, register checks)',priceF4:'Unlimited question history',priceF5:'No card, no sign-up required',
+    priceP1:'Everything in Free',priceP2:'Unlimited questions',priceP3:'Priority response speed',priceP4:'Cancel in one click',priceP5:'No price increases in the first year',
+    priceFreeCta:'Start free',priceProCta:'Try it',
+    t1:'GDPR-compliant',t2:'Data never trains models',t3:'JWT-protected',t4:'Extensively tested',t5:'WCAG AA',t6:'EU-hosted (Frankfurt)',
+    faqH:'Frequently asked',
+    faq1Q:'Is this legal advice?',faq1A:'No. Advocat provides legal information — so you understand your options. Formal legal advice requires a licensed lawyer.',
+    faq2Q:'Does Advocat replace a lawyer?',faq2A:'No, and we don\'t want to. Advocat does the first 80% more cheaply. When you need court, a lawyer, or negotiation — it helps you find one.',
+    faq3Q:'How accurate are the answers?',faq3A:'Advocat reads actual statute text, so § citations are accurate. But law is context — always check the link and consult a licensed lawyer for important decisions.',
+    faq4Q:'What happens to my data?',faq4A:'Questions are stored in your account on Supabase (EU, Frankfurt). Anonymous sessions are not kept. Data is never shared with third parties or used to train AI models.',
+    faq5Q:'How much does it cost?',faq5A:'5 questions a day — free forever, no card. Unlimited — €14.99/month. Cancel in one click.',
+    faq6Q:'Can I cancel?',faq6A:'Yes, in one click. No reason required. No calls. Directly in settings.',
+    faq7Q:'Which jurisdictions?',faq7A:'Core — Estonia (20 codes) and Finland (5 codes). Also EU directives. If your question concerns a country we cover weakly, Advocat will say so honestly.',
+    faq8Q:'Which languages work best?',faq8A:'Estonian, Russian, English, Finnish — native quality. The other 13 work but sometimes with machine translation.',
+    faq9Q:'How good is voice?',faq9A:'In main languages — very accurate, including accents and mixed languages. We use OpenAI Whisper with custom settings.',
+    faq10Q:'Open-source?',faq10A:'Yes, we plan to. Estonian corpus by Q3 2026, Finnish by Q4.',
+    footerDisclaimer:'Advocat provides legal information, not legal advice. This is not a substitute for a licensed attorney.',
+    fPriv:'Privacy',fTerms:'Terms'
+  }
 };
 
-function setLang(lang){
-  const t=T[lang];if(!t)return;
-  document.documentElement.lang=lang;
-  document.documentElement.dir=(lang==='ar'||lang==='fa')?'rtl':'ltr';
-  document.getElementById('cta-btn').href='/app.html?lang='+lang;
-  document.getElementById('mission-full').textContent=t.mission;
-  document.getElementById('mission-short').textContent=t.missionShort;
-  document.getElementById('cta-btn').textContent=t.cta;
-  document.getElementById('cta-sub').textContent=t.sub;
-  document.getElementById('footer').textContent=t.disclaimer;
-  document.getElementById('stat-jurisdictions').textContent=t.jurisdictions;
-  document.getElementById('stat-templates').textContent=t.templates;
-  document.getElementById('stat-scenarios').textContent=t.scenarios;
-  document.getElementById('stat-languages').textContent=t.languages;
-  document.querySelectorAll('.lang-btn').forEach(function(b){
-    b.classList.toggle('active',b.dataset.lang===lang);
+// Fallback languages (simpler, map to EN for v25.0; v25.1 adds native)
+const FALLBACK_LANGS = ['fi','sv','de','uk','pl','fr','es','it','ro','lv','lt','tr','ar','fa'];
+FALLBACK_LANGS.forEach(l => { I18N[l] = I18N.en; });
+
+function setLang(lang) {
+  if (!I18N[lang]) lang = 'ru';
+  const t = I18N[lang];
+  document.documentElement.lang = lang;
+  const rtl = ['ar','fa'].includes(lang);
+  document.documentElement.dir = rtl ? 'rtl' : 'ltr';
+
+  document.getElementById('page-title').textContent = t.pageTitle;
+  document.getElementById('meta-desc').setAttribute('content', t.metaDesc);
+  document.getElementById('og-title').setAttribute('content', t.ogTitle);
+  document.getElementById('og-desc').setAttribute('content', t.ogDesc);
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
   });
-  try{localStorage.setItem('advocat-lang',lang)}catch(e){}
+  // HTML fields (with cite spans)
+  const heroSub = document.querySelector('.hero-sub');
+  if (heroSub && t.subHTML) heroSub.innerHTML = t.subHTML;
+  const step2 = document.querySelector('[data-i18n="howStep2P"]');
+  if (step2 && t.howStep2P_HTML) step2.innerHTML = t.howStep2P_HTML;
+
+  // CTA href lang param
+  document.querySelectorAll('a[href*="/app.html"]').forEach(a => {
+    const u = new URL(a.href, location.origin);
+    u.searchParams.set('lang', lang);
+    a.href = u.pathname + u.search;
+  });
+
+  // Mark active button
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.setAttribute('aria-current', b.dataset.lang === lang ? 'true' : 'false');
+  });
+
+  // Persist
+  try { localStorage.setItem('advocat-lang', lang); } catch(e){}
+
+  // Restart chat demo in new lang
+  startChatDemo(lang);
 }
 
-(function(){
-  var lang='en';
-  try{var s=localStorage.getItem('advocat-lang');if(s&&T[s])lang=s;}catch(e){}
-  if(lang==='en'){
-    var nav=(navigator.language||'').toLowerCase();
-    if(nav.startsWith('ru'))lang='ru';
-    else if(nav.startsWith('uk'))lang='uk';
-    else if(nav.startsWith('fi'))lang='fi';
-    else if(nav.startsWith('et'))lang='et';
-    else if(nav.startsWith('sv'))lang='sv';
-    else if(nav.startsWith('de'))lang='de';
-    else if(nav.startsWith('ar'))lang='ar';
-    else if(nav.startsWith('pl'))lang='pl';
-    else if(nav.startsWith('fr'))lang='fr';
-    else if(nav.startsWith('fa'))lang='fa';
-    else if(nav.startsWith('tr'))lang='tr';
-    else if(nav.startsWith('lv'))lang='lv';
-    else if(nav.startsWith('lt'))lang='lt';
-    else if(nav.startsWith('es'))lang='es';
-    else if(nav.startsWith('it'))lang='it';
-    else if(nav.startsWith('ro'))lang='ro';
+// Language detection
+function detectLang() {
+  const urlParam = new URLSearchParams(location.search).get('lang');
+  if (urlParam && I18N[urlParam]) return urlParam;
+  try { const stored = localStorage.getItem('advocat-lang'); if (stored && I18N[stored]) return stored; } catch(e){}
+  const browser = (navigator.language || 'ru').toLowerCase().slice(0,2);
+  if (I18N[browser]) return browser;
+  return 'ru';
+}
+
+// Bind language buttons
+document.querySelectorAll('.lang-btn').forEach(b => {
+  b.addEventListener('click', () => setLang(b.dataset.lang));
+});
+
+// ==== THEME TOGGLE ====
+(function() {
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = (function(){ try { return localStorage.getItem('advocat-theme'); } catch(e){ return null; } })();
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = stored || (systemDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', initial);
+  updateIcon(initial);
+  toggle.addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('advocat-theme', next); } catch(e){}
+    updateIcon(next);
+  });
+  function updateIcon(theme) {
+    const icon = document.getElementById('theme-icon');
+    if (!icon) return;
+    if (theme === 'dark') {
+      icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    } else {
+      icon.innerHTML = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>';
+    }
+    toggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
   }
-  setLang(lang);
+})();
+
+// ==== SCROLL REVEAL ====
+(function() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) {
+    document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('[data-reveal]').forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+})();
+
+// ==== HERO CHAT DEMO ====
+const DEMOS = {
+  ru: [
+    { type:'user', text:'Меня уволили без предупреждения, что делать?' },
+    { type:'bot-stream', pre:'По ', pill:'§95 TLS', post:' работодатель обязан уведомить за 30 дней и выплатить компенсацию.' },
+    { type:'action', text:'↳ Скачать шаблон жалобы в Töövaidluskomisjon' }
+  ],
+  et: [
+    { type:'user', text:'Kas rentnik võib mind välja tõsta ilma ette teatamata?' },
+    { type:'bot-stream', pre:'Ei. ', pill:'§315 VÕS', post:' kohaselt on üürileandjal kohustus teada anda vähemalt 3 kuud ette.' },
+    { type:'action', text:'↳ Koosta ametlik nõue üürileandjale' }
+  ],
+  en: [
+    { type:'user', text:'I was fired without notice. What do I do?' },
+    { type:'bot-stream', pre:'Under ', pill:'§95 TLS', post:', the employer must give 30 days notice and pay compensation.' },
+    { type:'action', text:'↳ Download complaint template for Labour Dispute Committee' }
+  ]
+};
+
+let currentDemoCtrl = null;
+
+async function startChatDemo(lang) {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const container = document.getElementById('chat-msgs');
+  if (!container) return;
+
+  // Abort previous
+  if (currentDemoCtrl) currentDemoCtrl.abort = true;
+  const ctrl = { abort: false };
+  currentDemoCtrl = ctrl;
+
+  container.innerHTML = '';
+  const key = I18N[lang] ? lang : 'en';
+  const demo = DEMOS[key] || DEMOS.en;
+
+  if (reduceMotion) {
+    renderStatic(container, demo);
+    return;
+  }
+
+  await sleep(300);
+  for (const step of demo) {
+    if (ctrl.abort) return;
+    if (step.type === 'user') {
+      const msg = makeMsg('user', 'В');
+      msg.body.textContent = '';
+      container.appendChild(msg.node);
+      await typeText(msg.body, step.text, 20, ctrl);
+      if (ctrl.abort) return;
+      await sleep(500);
+    } else if (step.type === 'bot-stream') {
+      const msg = makeMsg('bot', 'A');
+      msg.body.classList.add('bot');
+      container.appendChild(msg.node);
+      await sleep(600);
+      if (ctrl.abort) return;
+      // pre text
+      await typeText(msg.body, step.pre, 15, ctrl);
+      if (ctrl.abort) return;
+      // pill
+      const pill = document.createElement('span');
+      pill.className = 'pill';
+      pill.textContent = step.pill;
+      msg.body.appendChild(pill);
+      await sleep(200);
+      if (ctrl.abort) return;
+      // post text (append char by char)
+      const caretSpan = document.createElement('span');
+      caretSpan.className = 'caret';
+      msg.body.appendChild(caretSpan);
+      for (const ch of step.post) {
+        if (ctrl.abort) return;
+        caretSpan.insertAdjacentText('beforebegin', ch);
+        await sleep(18);
+      }
+      caretSpan.remove();
+    } else if (step.type === 'action') {
+      const act = document.createElement('button');
+      act.className = 'chat-action';
+      act.type = 'button';
+      act.textContent = step.text;
+      act.style.opacity = '0';
+      act.style.transform = 'translateY(6px)';
+      act.style.transition = 'opacity 400ms var(--ease-out), transform 400ms var(--ease-out)';
+      container.appendChild(act);
+      await sleep(50);
+      act.style.opacity = '1';
+      act.style.transform = 'translateY(0)';
+    }
+  }
+}
+
+function renderStatic(container, demo) {
+  demo.forEach(step => {
+    if (step.type === 'user') {
+      const m = makeMsg('user', 'В');
+      m.body.textContent = step.text;
+      container.appendChild(m.node);
+    } else if (step.type === 'bot-stream') {
+      const m = makeMsg('bot', 'A');
+      m.body.classList.add('bot');
+      m.body.innerHTML = step.pre + '<span class="pill">' + step.pill + '</span>' + step.post;
+      container.appendChild(m.node);
+    } else if (step.type === 'action') {
+      const act = document.createElement('button');
+      act.type = 'button';
+      act.className = 'chat-action';
+      act.textContent = step.text;
+      container.appendChild(act);
+    }
+  });
+}
+
+function makeMsg(role, letter) {
+  const node = document.createElement('div');
+  node.className = 'msg';
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar ' + role;
+  avatar.textContent = letter;
+  const body = document.createElement('div');
+  body.className = 'msg-body';
+  node.appendChild(avatar);
+  node.appendChild(body);
+  return { node, body };
+}
+
+async function typeText(el, text, speed, ctrl) {
+  for (const ch of text) {
+    if (ctrl.abort) return;
+    el.textContent += ch;
+    await sleep(speed);
+  }
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+// Trigger chat demo when hero card visible
+(function() {
+  const card = document.querySelector('[data-hero-chat]');
+  if (!card) return;
+  let started = false;
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !started) {
+        started = true;
+        const lang = document.documentElement.lang || 'ru';
+        startChatDemo(lang);
+        io.unobserve(card);
+      }
+    });
+  }, { threshold: 0.4 });
+  if ('IntersectionObserver' in window) {
+    io.observe(card);
+  } else {
+    const lang = document.documentElement.lang || 'ru';
+    startChatDemo(lang);
+  }
+  // Hover restart
+  card.addEventListener('mouseenter', () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) return;
+    const lang = document.documentElement.lang || 'ru';
+    startChatDemo(lang);
+  });
+})();
+
+// ==== INIT LANG ====
+const initialLang = detectLang();
+setLang(initialLang);
+
 })();
 </script>
 </body>
