@@ -65,11 +65,30 @@ const Map<String, String> _ttsLocaleMap = {
 // ---------------------------------------------------------------------------
 
 /// Premium ElevenLabs voice IDs.
-/// Rachel (female) - warm, professional; Adam (male) - clear, confident.
+/// For Russian and English we prefer voices with a **neutral/European** accent
+/// so multilingual synthesis in eleven_v3 sounds native rather than
+/// American-accented (Rachel/Adam sounded off on Russian per user feedback
+/// 2026-04-21).
+///
+/// Charlotte (Swedish/neutral female, warm) and George (British male, warm)
+/// carry Russian and Ukrainian much better than US-accent premades.
 const _elevenLabsVoices = {
-  VoiceGender.female: '21m00Tcm4TlvDq8ikWAM', // Rachel
-  VoiceGender.male: 'pNInz6obpgDQGcFmaJgB', // Adam
+  VoiceGender.female: 'XB0fDUnXU5powFXDhCwa', // Charlotte — neutral, warm
+  VoiceGender.male: 'JBFqnCBsd6RMkjVDRZzb', // George — British, mature
 };
+
+/// Languages where ElevenLabs (eleven_v3) is noticeably more natural than
+/// Google Chirp3-HD / Gemini 3.1. Keep Estonian on Google — the user is
+/// happy with Chirp3-HD-Kore there and ElevenLabs has no native Estonian
+/// training data.
+const _preferElevenLabsFor = {
+  'en', 'ru', 'uk',
+};
+
+bool _shouldPreferElevenLabs(String langCode) {
+  final base = langCode.toLowerCase().split(RegExp('[-_]')).first;
+  return _preferElevenLabsFor.contains(base);
+}
 
 // ---------------------------------------------------------------------------
 // Voice Service
@@ -647,35 +666,60 @@ class VoiceService {
       return;
     }
 
+    // Language-aware routing: ElevenLabs v3 for RU/EN/UK (sounds native),
+    // Google Chirp3-HD for Estonian and everything else. User confirmed ET
+    // on Chirp3-HD-Kore is great; RU on Gemini/Chirp3 had wrong accent.
+    final preferElevenLabs =
+        _shouldPreferElevenLabs(langCode) && _elevenLabsAvailable;
+
     try {
-      // 1. Try Google TTS first (cheaper, better Estonian support).
-      if (_googleTtsAvailable) {
+      if (preferElevenLabs) {
+        // 1. ElevenLabs v3 first for RU / EN / UK.
         try {
-          final ok = await _speakWithGoogleTTS(text, langCode: langCode);
+          final ok = await _speakWithElevenLabs(text, langCode: langCode);
           if (ok) return;
         } catch (e) {
-          if (kDebugMode) debugPrint('TTS: Google TTS exception: $e');
+          if (kDebugMode) debugPrint('TTS: ElevenLabs exception: $e');
         }
-        if (kDebugMode) {
-          debugPrint('TTS: Google TTS failed, trying ElevenLabs');
+        // 2. Google TTS as fallback.
+        if (_googleTtsAvailable) {
+          try {
+            final ok = await _speakWithGoogleTTS(text, langCode: langCode);
+            if (ok) return;
+          } catch (e) {
+            if (kDebugMode) debugPrint('TTS: Google fallback exception: $e');
+          }
+        }
+      } else {
+        // 1. Google TTS first (Chirp3-HD-Kore for Estonian, Gemini 3.1 for others).
+        if (_googleTtsAvailable) {
+          try {
+            final ok = await _speakWithGoogleTTS(text, langCode: langCode);
+            if (ok) return;
+          } catch (e) {
+            if (kDebugMode) debugPrint('TTS: Google TTS exception: $e');
+          }
+          // Retry once on transient errors.
+          await Future.delayed(const Duration(milliseconds: 500));
+          try {
+            final ok = await _speakWithGoogleTTS(text, langCode: langCode);
+            if (ok) return;
+          } catch (e) {
+            if (kDebugMode) debugPrint('TTS: Google retry exception: $e');
+          }
+        }
+        // 2. ElevenLabs as last resort for non-preferred languages.
+        if (_elevenLabsAvailable) {
+          try {
+            final ok = await _speakWithElevenLabs(text, langCode: langCode);
+            if (ok) return;
+          } catch (e) {
+            if (kDebugMode) debugPrint('TTS: ElevenLabs fallback exception: $e');
+          }
         }
       }
 
-      // 2. Retry Google TTS after short delay (transient errors).
-      if (_googleTtsAvailable) {
-        await Future.delayed(const Duration(milliseconds: 500));
-        try {
-          final ok = await _speakWithGoogleTTS(text, langCode: langCode);
-          if (ok) return;
-        } catch (e) {
-          if (kDebugMode) debugPrint('TTS: Google TTS retry failed: $e');
-        }
-        if (kDebugMode) {
-          debugPrint('TTS: Google TTS retry failed, falling back to browser TTS');
-        }
-      }
-
-      // 3. Browser TTS fallback — try for all languages (better than silence).
+      // 3. Browser TTS fallback — better than silence.
       try {
         await _speakWithBrowserTts(text, langCode: langCode);
       } catch (e) {
@@ -742,16 +786,28 @@ class VoiceService {
     });
   }
 
+  /// Strip Gemini-style expressive tags like `[warmth]`, `[thoughtful]`
+  /// before handing text to ElevenLabs — that engine uses a different
+  /// tag format and would read square brackets literally.
+  static final _geminiTagRegex = RegExp(
+    r'\[(warmth|thoughtful|determination|sigh|reassuring|whispers|laughs|'
+    r'excitement|enthusiasm|shouts|sarcastic|calm|confident|empathetic|'
+    r'serious|gentle|firm|curious|hopeful|concerned)\]\s*',
+    caseSensitive: false,
+  );
+
   /// Attempt to speak using ElevenLabs via the Supabase tts-proxy function.
   /// On web, the entire fetch+play flow runs in JS (speech.js) to avoid
   /// Dart↔JS interop issues with large binary data.
   Future<bool> _speakWithElevenLabs(
-    String text, {
+    String rawText, {
     String langCode = 'en',
   }) async {
     try {
       final voiceId = _elevenLabsVoices[_voiceGender] ??
           _elevenLabsVoices[VoiceGender.female]!;
+
+      final text = rawText.replaceAll(_geminiTagRegex, '');
 
       if (kDebugMode) {
         debugPrint('TTS: calling ElevenLabs, voice=$voiceId, '

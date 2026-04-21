@@ -58,32 +58,50 @@ serve(async (req) => {
         ? language
         : undefined;
 
-    const body: Record<string, unknown> = {
-      text,
-      model_id: "eleven_multilingual_v2",
-      voice_settings: {
-        stability: 0.65,
-        similarity_boost: 0.85,
-        style: 0.15,
-      },
-    };
-    if (langCode) body.language_code = langCode;
+    // Model tier preference: v3 (newest, most natural, 2026) → turbo_v2_5 → multilingual_v2.
+    // Fall back gracefully if a model is not available to this API key.
+    const preferredModels = [
+      "eleven_v3",
+      "eleven_turbo_v2_5",
+      "eleven_multilingual_v2",
+    ];
 
-    const response = await fetch(
-      `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "xi-api-key": ELEVENLABS_API_KEY,
+    let response: Response | null = null;
+    let lastError = "";
+    for (const model of preferredModels) {
+      const body: Record<string, unknown> = {
+        text,
+        model_id: model,
+        voice_settings: {
+          stability: 0.55,
+          similarity_boost: 0.80,
+          style: 0.10,
+          use_speaker_boost: true,
         },
-        body: JSON.stringify(body),
-      },
-    );
+      };
+      if (langCode) body.language_code = langCode;
 
-    if (!response.ok) {
-      const error = await response.text();
-      return jsonError(error, response.status);
+      const r = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "xi-api-key": ELEVENLABS_API_KEY,
+          },
+          body: JSON.stringify(body),
+        },
+      );
+      if (r.ok) {
+        response = r;
+        break;
+      }
+      lastError = `${model}: ${r.status} ${await r.text().catch(() => "")}`;
+      console.warn(`tts-proxy model fallback: ${lastError}`);
+    }
+
+    if (!response) {
+      return jsonError(`All TTS models failed. Last: ${lastError}`, 502);
     }
 
     const audioBuffer = await response.arrayBuffer();
