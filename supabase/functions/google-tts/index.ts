@@ -13,6 +13,18 @@ import {
 
 const GOOGLE_TTS_API_KEY = Deno.env.get("GOOGLE_TTS_API_KEY");
 
+// Gemini 3.1 Flash TTS (released 2026-04-15). Higher quality + expressive
+// controls (audio tags like [warmth], [determination]) vs Chirp3-HD.
+// GA for: en-US, en-GB, ru-RU, fi-FI, de-DE, fr-FR, es-ES, ar-XA, it-IT, pt-BR, sv-SE, pl-PL.
+// Preview (unstable SLA): et-EE, lv-LV, lt-LT, uk-UA, nl-NL, tr-TR, ro-RO.
+// We route preview languages to Chirp3-HD for reliability.
+const GEMINI_TTS_MODEL = "gemini-3.1-flash-tts-preview";
+const GEMINI_GA_LANGS = new Set([
+  "en", "ru", "fi", "de", "fr", "es", "ar", "it", "pt", "sv", "pl",
+]);
+// Allow emergency rollback via Supabase secret: USE_GEMINI_TTS=off
+const USE_GEMINI_TTS = Deno.env.get("USE_GEMINI_TTS") !== "off";
+
 // Language to voice mapping — best available voice per language
 // Uses Chirp3-HD > Wavenet > Standard (in order of quality)
 const VOICE_MAP_FEMALE: Record<string, { name: string; gender: string }> = {
@@ -106,13 +118,34 @@ serve(async (req) => {
         gender: fallbackGender,
       };
 
-    const response = await fetch(
-      `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          input: { text },
+    // Decide which model: Gemini 3.1 for GA languages, Chirp3-HD for preview ones.
+    const useGemini = USE_GEMINI_TTS && GEMINI_GA_LANGS.has(lang);
+
+    // Strip expressive audio tags like [warmth] [thoughtful] when we fall back
+    // to Chirp3-HD — that model would read "bracket warmth bracket" literally.
+    // Gemini 3.1 Flash TTS parses them natively.
+    const EXPRESSIVE_TAGS = /\[(warmth|thoughtful|determination|sigh|reassuring|whispers|laughs|excitement|enthusiasm|shouts|sarcastic|calm|confident|empathetic|serious|gentle|firm|curious|hopeful|concerned)\]\s*/gi;
+    const cleanText = useGemini ? text : text.replace(EXPRESSIVE_TAGS, "");
+
+    const requestBody = useGemini
+      ? {
+          input: { text: cleanText },
+          voice: {
+            languageCode: finalLangCode,
+            name: voice.name,
+            // Gemini uses model_name + voice name; voice name re-used (Kore/Leda/Puck
+            // map 1:1 with Gemini's prebuilt voice list of the same names).
+            model_name: GEMINI_TTS_MODEL,
+          },
+          audioConfig: {
+            audioEncoding: "MP3",
+            speakingRate: 1.0,
+            pitch: 0,
+            sampleRateHertz: 24000,
+          },
+        }
+      : {
+          input: { text: cleanText },
           voice: {
             languageCode: finalLangCode,
             name: voice.name,
@@ -124,9 +157,49 @@ serve(async (req) => {
             pitch: 0,
             sampleRateHertz: 24000,
           },
-        }),
-      },
-    );
+        };
+
+    // Gemini 3.1 Flash TTS is only on the global endpoint.
+    const endpoint = useGemini
+      ? `https://texttospeech.googleapis.com/v1beta1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`
+      : `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`;
+
+    let response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(requestBody),
+    });
+
+    // If Gemini fails (e.g. preview outage, quota, bad request), auto-fallback
+    // to stable Chirp3-HD so the user still hears a voice.
+    if (useGemini && !response.ok) {
+      console.warn(
+        `Gemini TTS failed (${response.status}), falling back to Chirp3-HD for ${lang}`,
+      );
+      // Strip tags before fallback — Chirp3-HD can't parse them.
+      const strippedText = text.replace(EXPRESSIVE_TAGS, "");
+      response = await fetch(
+        `https://texttospeech.googleapis.com/v1/text:synthesize?key=${GOOGLE_TTS_API_KEY}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            input: { text: strippedText },
+            voice: {
+              languageCode: finalLangCode,
+              name: voice.name,
+              ssmlGender: voice.gender,
+            },
+            audioConfig: {
+              audioEncoding: "MP3",
+              speakingRate: 1.0,
+              pitch: 0,
+              sampleRateHertz: 24000,
+            },
+          }),
+        },
+      );
+    }
 
     if (!response.ok) {
       const error = await response.text();
