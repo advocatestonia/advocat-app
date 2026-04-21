@@ -69,7 +69,15 @@ serve(async (req) => {
     // Resolve the user — we need their uid for the plan lookup.
     const { data: userData, error: userErr } = await sb.auth.getUser();
     if (userErr || !userData?.user) {
-      return json({ error: "not authenticated" }, 401);
+      // Demo mode: no real Supabase user, but anon key is valid.
+      // Return a synthetic free-tier payload so the client doesn't block.
+      // No usage is persisted; demo users effectively have a local-only counter.
+      return json(buildPayload({
+        plan: "free",
+        used: 0,
+        limit: FREE_LIMIT,
+        allowed: true,
+      }));
     }
     const uid = userData.user.id;
 

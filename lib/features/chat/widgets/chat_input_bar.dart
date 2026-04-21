@@ -86,9 +86,14 @@ class ChatInputBar extends StatelessWidget {
               child: KeyboardListener(
                 focusNode: FocusNode(),
                 onKeyEvent: (event) {
+                  // Shift+Enter: let TextField handle newline.
+                  // Plain Enter: send. We handle it here because
+                  // textInputAction.send only fires on mobile IME.
                   if (event is KeyDownEvent &&
                       event.logicalKey == LogicalKeyboardKey.enter &&
-                      !HardwareKeyboard.instance.isShiftPressed) {
+                      !HardwareKeyboard.instance.isShiftPressed &&
+                      !isSending &&
+                      messageController.text.trim().isNotEmpty) {
                     onSend();
                   }
                 },
@@ -98,7 +103,12 @@ class ChatInputBar extends StatelessWidget {
                   maxLines: 5,
                   minLines: 1,
                   enabled: !isSending,
-                  textInputAction: TextInputAction.newline,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: (_) {
+                    if (!isSending && messageController.text.trim().isNotEmpty) {
+                      onSend();
+                    }
+                  },
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
                     hintText: AppLocalizations.of(context)?.typeMessage ??

@@ -16,7 +16,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:ai_legal_defense/config/app_config.dart';
+import 'package:advocat/config/app_config.dart';
+
+/// These tests require `--dart-define-from-file=.env.prod`. They PASS on the
+/// real prod build (gate in scripts/build-and-deploy.sh) and are SKIPPED in
+/// plain `flutter test` where defines aren't injected.
+bool get _hasProdDefines => AppConfig.supabaseAnonKey.isNotEmpty;
 
 void main() {
   group('v24.2 FROZEN regression — AppConfig wiring', () {
@@ -31,22 +36,22 @@ void main() {
       );
       expect(AppConfig.supabaseAnonKey.length, greaterThan(100),
           reason: 'anon key JWT is normally ~200+ chars');
-    });
+    }, skip: _hasProdDefines ? null : 'needs --dart-define-from-file=.env.prod');
 
     test('SUPABASE_URL resolves to okgnkucgwsytsondrjye', () {
       expect(AppConfig.supabaseUrl, contains('okgnkucgwsytsondrjye'));
       expect(AppConfig.supabaseUrl, startsWith('https://'));
-    });
+    }, skip: _hasProdDefines ? null : 'needs --dart-define-from-file=.env.prod');
 
     test('useSupabaseProxy is true in prod build', () {
       expect(AppConfig.useSupabaseProxy, isTrue,
           reason: 'Supabase proxy is required — prod chat goes through '
               'claude-proxy Edge Function, not direct Claude API.');
-    });
+    }, skip: _hasProdDefines ? null : 'needs --dart-define-from-file=.env.prod');
 
     test('useRealAI resolves to true when proxy is configured', () {
       expect(AppConfig.useRealAI, isTrue);
-    });
+    }, skip: _hasProdDefines ? null : 'needs --dart-define-from-file=.env.prod');
 
     test('STRIPE_PUBLISHABLE_KEY is baked in for prod (payments work)', () {
       // Acceptable to be empty in dev, but if PRODUCTION=true, Stripe must be set.
@@ -54,7 +59,7 @@ void main() {
         expect(AppConfig.stripePublishableKey, isNotEmpty,
             reason: 'PRODUCTION=true requires STRIPE_PUBLISHABLE_KEY');
       }
-    });
+    }, skip: _hasProdDefines ? null : 'needs --dart-define-from-file=.env.prod');
   });
 
   group('v24.2 FROZEN regression — app.html shell', () {

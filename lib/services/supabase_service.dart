@@ -116,17 +116,38 @@ class SupabaseService {
     return (response as List).map((e) => LegalCase.fromJson(e)).toList();
   }
 
+  // UUID v4-ish sanity check — anything else would make Postgres 400.
+  static final _uuidLike = RegExp(
+    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+  );
+
   Future<LegalCase> getCaseById(String id) async {
     if (isDemo) {
       return DemoData.cases.firstWhere(
         (c) => c.id == id,
-        orElse: () => DemoData.cases.first,
+        orElse: () => DemoData.cases.isNotEmpty
+            ? DemoData.cases.first
+            : _placeholderCase(id),
       );
+    }
+    // Guard against non-UUID ids like "general" — Postgres rejects with 400.
+    if (!_uuidLike.hasMatch(id)) {
+      throw ArgumentError('getCaseById: "$id" is not a UUID');
     }
     final response =
         await _client.from('cases').select().eq('id', id).single();
     return LegalCase.fromJson(response);
   }
+
+  LegalCase _placeholderCase(String id) => LegalCase(
+        id: id,
+        userId: DemoData.user.id,
+        title: 'Demo case',
+        type: CaseType.deportation,
+        status: CaseStatus.active,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
 
   Future<LegalCase> createCase(Map<String, dynamic> caseData) async {
     if (isDemo) {

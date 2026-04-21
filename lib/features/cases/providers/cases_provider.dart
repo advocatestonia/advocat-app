@@ -140,7 +140,17 @@ final caseByIdProvider =
   if (isDemo) {
     return DemoData.cases.firstWhere(
       (c) => c.id == id,
-      orElse: () => DemoData.cases.first,
+      orElse: () => DemoData.cases.isNotEmpty
+          ? DemoData.cases.first
+          : LegalCase(
+              id: id,
+              userId: DemoData.user.id,
+              title: 'Demo case',
+              type: CaseType.deportation,
+              status: CaseStatus.active,
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            ),
     );
   }
   return ref.watch(supabaseServiceProvider).getCaseById(id);
