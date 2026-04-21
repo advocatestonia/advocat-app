@@ -9,6 +9,7 @@ import 'config/app_config.dart';
 import 'config/theme.dart';
 import 'config/router.dart';
 import 'l10n/app_localizations.dart';
+import 'shared/error_boundary.dart';
 
 /// Language data used across the app (onboarding, home, settings).
 class LanguageOption {
@@ -47,6 +48,11 @@ late final SharedPreferences _prefs;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Install the global error boundary FIRST, before any other init. Any
+  // LateInitializationError / async crash during startup lands in a
+  // friendly reload card instead of a permanent grey screen.
+  installErrorBoundary();
+
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -67,11 +73,13 @@ Future<void> main() async {
   // await Firebase.initializeApp();
   // Stripe.publishableKey = AppConfig.stripePublishableKey;
 
-  runApp(
-    const ProviderScope(
-      child: AdvocatApp(),
-    ),
-  );
+  runWithErrorBoundary(() {
+    runApp(
+      const ProviderScope(
+        child: AdvocatApp(),
+      ),
+    );
+  });
 }
 
 class AdvocatApp extends ConsumerWidget {
