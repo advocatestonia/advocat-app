@@ -1,0 +1,58 @@
+{
+  "act": "VSS",
+  "name": "Väljasõidukohustuse ja sissesõidukeelu seadus",
+  "name_en": "Obligation to Leave and Prohibition on Entry Act",
+  "source": "https://www.riigiteataja.ee/akt/VSS",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "consolidated_version": "2025-09-01",
+  "last_amendment": "2024-12-11",
+  "sections": [
+    {
+      "paragraph": "§ 7",
+      "title": "Lahkumisettekirjutus",
+      "body": "Written precept to leave issued to persons residing unlawfully in Estonia. Must specify departure deadline (7-30 days), receiving country, applicable entry ban, and enforcement warnings.",
+      "chapter": "Väljasõidukohustus"
+    },
+    {
+      "paragraph": "§ 14",
+      "title": "Väljasaatmise alused",
+      "body": "Grounds for forced removal – applies when voluntary departure deadline expires; removal may proceed without prior order in specific urgent cases.",
+      "chapter": "Väljasaatmine"
+    },
+    {
+      "paragraph": "§ 17",
+      "title": "Vastuvõttev riik",
+      "body": "Receiving country: (1) country of citizenship, (2) transit country per EU/bilateral agreements, (3) third country with consent. Persons with Schengen residence rights return to that Schengen state.",
+      "chapter": "Väljasaatmine"
+    },
+    {
+      "paragraph": "§ 23",
+      "title": "Kinnipidamiskeskusse paigutamine",
+      "body": "Placement in detention centre – authorised up to 2 months when supervision measures prove ineffective (flight risk, non-cooperation, missing return documents). Extensions possible by court up to 18 months total.",
+      "chapter": "Väljasaatmine"
+    },
+    {
+      "paragraph": "§ 28",
+      "title": "Sissesõidukeelu õiguslikud tagajärjed",
+      "body": "Legal consequences of entry ban: prohibition on entering Estonia and Schengen area, prohibition on residence.",
+      "chapter": "Sissesõidukeeld"
+    },
+    {
+      "paragraph": "§ 29",
+      "title": "Sissesõidukeelu kohaldamise alused",
+      "body": "Grounds for imposing entry ban on third-country nationals: unlawful residence, serious crime, threat to public order/security.",
+      "chapter": "Sissesõidukeeld"
+    },
+    {
+      "paragraph": "§ 72",
+      "title": "Lahkumiskohustuse täitmise tähtaja määramine",
+      "body": "Voluntary departure deadline 7-30 days; extendable up to 30 additional days in hardship cases; immediate enforcement permitted if flight risk or security threat.",
+      "chapter": "Menetlus"
+    }
+  ],
+  "appeal_deadline_days": 10,
+  "appeal_body": "Halduskohus",
+  "critical_for_immigrants": true,
+  "audience_priority": "critical",
+  "cross_references": ["VMS", "KrMS", "HMS"]
+}

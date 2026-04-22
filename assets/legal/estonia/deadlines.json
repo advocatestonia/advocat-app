@@ -1,0 +1,267 @@
+{
+  "jurisdiction": "Estonia",
+  "country_code": "EE",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "note": "All deadlines are statutory defaults. Individual cases may differ. Always verify against current Riigi Teataja text.",
+  "deadlines": [
+    {
+      "category": "civil",
+      "case_type": "general_limitation",
+      "action": "file_claim",
+      "days": 1095,
+      "unit": "calendar_days",
+      "description": "General limitation period for contractual and tort claims",
+      "legal_basis": "TsÜS § 146",
+      "authority": "Maakohus",
+      "working_days": false,
+      "notes": "3 years; for deliberate breach 10 years"
+    },
+    {
+      "category": "civil",
+      "case_type": "appeal_judgment",
+      "action": "appeal",
+      "days": 30,
+      "description": "Appeal against county court judgment",
+      "legal_basis": "TsMS § 632",
+      "authority": "Ringkonnakohus",
+      "working_days": false
+    },
+    {
+      "category": "civil",
+      "case_type": "appeal_ringkonnakohus",
+      "action": "cassation",
+      "days": 30,
+      "description": "Cassation appeal to Riigikohus",
+      "legal_basis": "TsMS § 670",
+      "authority": "Riigikohus",
+      "working_days": false
+    },
+    {
+      "category": "civil",
+      "case_type": "consumer_defect",
+      "action": "complaint",
+      "days": 730,
+      "description": "Consumer complaint for defective goods",
+      "legal_basis": "VÕS § 218",
+      "authority": "Seller first, then Tarbijavaidluste Komisjon or court",
+      "working_days": false,
+      "notes": "2 years from delivery; for construction 5 years"
+    },
+    {
+      "category": "consumer",
+      "case_type": "consumer_dispute",
+      "action": "file_complaint",
+      "days": 1095,
+      "description": "Consumer dispute commission – claims within 3 years of problem",
+      "legal_basis": "TKS (Tarbijakaitseseadus)",
+      "authority": "Tarbijavaidluste Komisjon"
+    },
+    {
+      "category": "employment",
+      "case_type": "wrongful_dismissal",
+      "action": "file_claim",
+      "days": 30,
+      "description": "Challenge dismissal at labour dispute committee or court",
+      "legal_basis": "TLS § 105",
+      "authority": "Töövaidluskomisjon või Maakohus",
+      "working_days": false,
+      "notes": "30 calendar days from receipt of dismissal notice"
+    },
+    {
+      "category": "employment",
+      "case_type": "wage_claim",
+      "action": "file_claim",
+      "days": 1095,
+      "description": "Limitation period for unpaid wages",
+      "legal_basis": "TLS § 74, TsÜS § 146",
+      "authority": "Töövaidluskomisjon või Maakohus",
+      "notes": "3 years from due date"
+    },
+    {
+      "category": "employment",
+      "case_type": "labour_dispute_committee_review",
+      "action": "decision_issued",
+      "days": 45,
+      "description": "Labour dispute committee reviews petition within 45 days",
+      "legal_basis": "TvLS",
+      "authority": "Töövaidluskomisjon"
+    },
+    {
+      "category": "administrative",
+      "case_type": "administrative_decision_appeal",
+      "action": "appeal_hms",
+      "days": 30,
+      "description": "Administrative procedure – challenge of administrative act",
+      "legal_basis": "HMS § 75",
+      "authority": "Vaidemenetlus (higher body) or Halduskohus",
+      "notes": "30 days from notification; some special laws shorter"
+    },
+    {
+      "category": "administrative",
+      "case_type": "halduskohus_filing",
+      "action": "file_complaint",
+      "days": 30,
+      "description": "Administrative court complaint",
+      "legal_basis": "HKMS § 46",
+      "authority": "Halduskohus"
+    },
+    {
+      "category": "criminal",
+      "case_type": "violent_felony_1st",
+      "action": "prosecution_limitation",
+      "days": 3650,
+      "description": "Prosecution limitation – 1st degree offence",
+      "legal_basis": "KarS § 81",
+      "notes": "10 years; murder no limitation"
+    },
+    {
+      "category": "criminal",
+      "case_type": "2nd_degree_offence",
+      "action": "prosecution_limitation",
+      "days": 1825,
+      "description": "Prosecution limitation – 2nd degree offence",
+      "legal_basis": "KarS § 81",
+      "notes": "5 years"
+    },
+    {
+      "category": "criminal",
+      "case_type": "misdemeanour",
+      "action": "prosecution_limitation",
+      "days": 730,
+      "description": "Prosecution limitation for misdemeanours",
+      "legal_basis": "KarS § 81",
+      "notes": "2 years"
+    },
+    {
+      "category": "criminal",
+      "case_type": "criminal_judgment_appeal",
+      "action": "appeal",
+      "days": 30,
+      "description": "Appeal against criminal judgment",
+      "legal_basis": "KrMS § 319",
+      "authority": "Ringkonnakohus"
+    },
+    {
+      "category": "tax",
+      "case_type": "tax_assessment_limitation",
+      "action": "tax_collection",
+      "days": 1095,
+      "description": "Tax assessment limitation",
+      "legal_basis": "MKS § 98",
+      "authority": "MTA",
+      "notes": "3 years; 5 years for intentional concealment"
+    },
+    {
+      "category": "tax",
+      "case_type": "tax_appeal",
+      "action": "appeal",
+      "days": 30,
+      "description": "Appeal MTA decision to Vaidemenetlus or Halduskohus",
+      "legal_basis": "MKS § 137",
+      "authority": "MTA Vaidemenetlus, edasi Halduskohus"
+    },
+    {
+      "category": "immigration",
+      "case_type": "residence_permit_refusal",
+      "action": "appeal",
+      "days": 30,
+      "description": "Appeal against refusal of residence permit or PR",
+      "legal_basis": "VMS § 123",
+      "authority": "PPA Vaidemenetlus, edasi Halduskohus"
+    },
+    {
+      "category": "immigration",
+      "case_type": "deportation_precept",
+      "action": "appeal",
+      "days": 10,
+      "description": "Appeal against precept to leave",
+      "legal_basis": "VSS",
+      "authority": "Halduskohus",
+      "notes": "Critical urgency – do not delay"
+    },
+    {
+      "category": "immigration",
+      "case_type": "asylum_rejection",
+      "action": "appeal",
+      "days": 10,
+      "description": "Appeal against rejection of international protection",
+      "legal_basis": "VRKS § 25¹",
+      "authority": "Halduskohus",
+      "notes": "Expedited procedure has even shorter deadlines"
+    },
+    {
+      "category": "immigration",
+      "case_type": "asylum_examination_by_ppa",
+      "action": "decision",
+      "days": 180,
+      "description": "PPA examination of asylum application",
+      "legal_basis": "VRKS § 18¹",
+      "authority": "PPA",
+      "notes": "Extendable by 270 days for complex cases (21 months total)"
+    },
+    {
+      "category": "data_protection",
+      "case_type": "gdpr_complaint",
+      "action": "file_complaint",
+      "days": 1095,
+      "description": "GDPR violation complaint to AKI (recommended within 3 years)",
+      "legal_basis": "IKS § 56",
+      "authority": "AKI",
+      "notes": "No strict statutory deadline; shorter better"
+    },
+    {
+      "category": "social_benefits",
+      "case_type": "benefit_decision_appeal",
+      "action": "appeal",
+      "days": 30,
+      "description": "Appeal social benefit/pension decision",
+      "legal_basis": "HMS § 75, SHS § 135",
+      "authority": "Issuing body (SKA/KOV), edasi Halduskohus"
+    },
+    {
+      "category": "insurance",
+      "case_type": "motor_insurance_claim",
+      "action": "claim_resolution",
+      "days": 30,
+      "description": "Motor insurance claim resolution deadline",
+      "legal_basis": "LKindlS § 29"
+    },
+    {
+      "category": "housing",
+      "case_type": "detailed_plan_objection",
+      "action": "objection",
+      "days": 30,
+      "description": "Public objection during detailed plan display",
+      "legal_basis": "PlanS § 135",
+      "authority": "KOV"
+    },
+    {
+      "category": "housing",
+      "case_type": "detailed_plan_court_appeal",
+      "action": "appeal",
+      "days": 30,
+      "description": "Court challenge of adopted detailed plan",
+      "legal_basis": "PlanS § 141",
+      "authority": "Halduskohus"
+    },
+    {
+      "category": "corporate",
+      "case_type": "annual_report_submission",
+      "action": "submit",
+      "days": 180,
+      "description": "Annual report deadline (6 months after financial year end)",
+      "legal_basis": "RPS § 14",
+      "authority": "e-Äriregister"
+    },
+    {
+      "category": "constitutional",
+      "case_type": "ombudsman_complaint",
+      "action": "file_complaint",
+      "days": 365,
+      "description": "Complaint to Õiguskantsler",
+      "legal_basis": "ÕKS § 19",
+      "authority": "Õiguskantsler",
+      "notes": "1 year from awareness of violation"
+    }
+  ]
+}
