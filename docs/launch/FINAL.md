@@ -31,7 +31,7 @@ Everything code-side is done, tested, and built. All you need to do before invit
 
 |                                  | Before Wave 1 | After Wave 1 |
 |----------------------------------|---------------|---------------|
-| `flutter test` passing           | 1068          | **1090**      |
+| `flutter test` passing           | 1068          | **1086**      |
 | `flutter test` skipped           | 11            | 11            |
 | `flutter test` failing           | 0             | **0**         |
 | `flutter analyze` errors         | 0             | **0**         |
