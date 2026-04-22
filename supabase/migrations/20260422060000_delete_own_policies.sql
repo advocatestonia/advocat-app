@@ -57,21 +57,25 @@ begin
 end$$;
 
 -- checker_reports: append-only per app design but included for symmetry
--- with the supabase_service.dart purge flow. If owner decides reports
--- should NOT be user-deletable, drop this policy — quota enforcement and
--- the append-only invariant come from the app layer, not RLS.
+-- with the supabase_service.dart purge flow. Guard with pg_tables existence
+-- check since this table may not exist on all environments.
 do $$
 begin
-  if not exists (
+  if exists (
+    select 1 from pg_tables
+    where schemaname = 'public' and tablename = 'checker_reports'
+  ) and not exists (
     select 1 from pg_policies
     where schemaname = 'public'
       and tablename  = 'checker_reports'
       and policyname = 'checker_reports_delete_own'
   ) then
-    create policy "checker_reports_delete_own"
-      on public.checker_reports
-      for delete
-      using (auth.uid() = user_id);
+    execute $policy$
+      create policy "checker_reports_delete_own"
+        on public.checker_reports
+        for delete
+        using (auth.uid() = user_id)
+    $policy$;
   end if;
 end$$;
 

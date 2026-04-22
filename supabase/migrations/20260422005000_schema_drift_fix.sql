@@ -55,6 +55,19 @@ create table if not exists public.profiles (
   updated_at               timestamptz
 );
 
+-- ALTER TABLE ADD COLUMN IF NOT EXISTS for pre-existing profiles tables
+-- (dashboard-created tables may lack some of these columns).
+alter table public.profiles add column if not exists email text;
+alter table public.profiles add column if not exists full_name text;
+alter table public.profiles add column if not exists preferred_language varchar(5);
+alter table public.profiles add column if not exists is_pro boolean not null default false;
+alter table public.profiles add column if not exists stripe_customer_id text;
+alter table public.profiles add column if not exists subscription_tier text not null default 'free';
+alter table public.profiles add column if not exists subscription_expires_at timestamptz;
+alter table public.profiles add column if not exists subscription_status text;
+alter table public.profiles add column if not exists created_at timestamptz not null default now();
+alter table public.profiles add column if not exists updated_at timestamptz;
+
 create index if not exists idx_profiles_stripe_customer
   on public.profiles (stripe_customer_id)
   where stripe_customer_id is not null;
@@ -72,13 +85,21 @@ create index if not exists idx_profiles_email on public.profiles (lower(email));
 create table if not exists public.subscriptions (
   id                       uuid primary key default gen_random_uuid(),
   user_id                  uuid not null references auth.users(id) on delete cascade,
-  status                   text not null,  -- active | trialing | past_due | canceled | unpaid | paused
+  status                   text not null default 'inactive',
   stripe_subscription_id   text,
   tier                     text,
   current_period_end       timestamptz,
   created_at               timestamptz not null default now(),
   updated_at               timestamptz
 );
+
+alter table public.subscriptions add column if not exists user_id uuid references auth.users(id) on delete cascade;
+alter table public.subscriptions add column if not exists status text not null default 'inactive';
+alter table public.subscriptions add column if not exists stripe_subscription_id text;
+alter table public.subscriptions add column if not exists tier text;
+alter table public.subscriptions add column if not exists current_period_end timestamptz;
+alter table public.subscriptions add column if not exists created_at timestamptz not null default now();
+alter table public.subscriptions add column if not exists updated_at timestamptz;
 
 create index if not exists idx_subscriptions_user_active
   on public.subscriptions (user_id, status);
@@ -92,12 +113,19 @@ create index if not exists idx_subscriptions_user_active
 create table if not exists public.notifications (
   id         uuid primary key default gen_random_uuid(),
   user_id    uuid not null references auth.users(id) on delete cascade,
-  type       text not null,
+  type       text not null default 'info',
   title      text,
   body       text,
   read       boolean not null default false,
   created_at timestamptz not null default now()
 );
+
+alter table public.notifications add column if not exists user_id uuid references auth.users(id) on delete cascade;
+alter table public.notifications add column if not exists type text not null default 'info';
+alter table public.notifications add column if not exists title text;
+alter table public.notifications add column if not exists body text;
+alter table public.notifications add column if not exists read boolean not null default false;
+alter table public.notifications add column if not exists created_at timestamptz not null default now();
 
 create index if not exists idx_notifications_user_created
   on public.notifications (user_id, created_at desc);
@@ -111,15 +139,31 @@ create index if not exists idx_notifications_user_created
 create table if not exists public.user_oauth_tokens (
   id            uuid primary key default gen_random_uuid(),
   user_id       uuid not null references auth.users(id) on delete cascade,
-  provider      text not null,  -- gmail | outlook
-  access_token  text not null,
+  provider      text not null default 'gmail',
+  access_token  text not null default '',
   refresh_token text,
   email         text,
   expires_at    timestamptz,
   created_at    timestamptz not null default now(),
-  updated_at    timestamptz,
-  unique (user_id, provider)
+  updated_at    timestamptz
 );
+
+alter table public.user_oauth_tokens add column if not exists user_id uuid references auth.users(id) on delete cascade;
+alter table public.user_oauth_tokens add column if not exists provider text not null default 'gmail';
+alter table public.user_oauth_tokens add column if not exists access_token text not null default '';
+alter table public.user_oauth_tokens add column if not exists refresh_token text;
+alter table public.user_oauth_tokens add column if not exists email text;
+alter table public.user_oauth_tokens add column if not exists expires_at timestamptz;
+alter table public.user_oauth_tokens add column if not exists created_at timestamptz not null default now();
+alter table public.user_oauth_tokens add column if not exists updated_at timestamptz;
+
+do $$
+begin
+  if not exists (select 1 from pg_constraint where conname='user_oauth_tokens_user_provider_key') then
+    alter table public.user_oauth_tokens add constraint user_oauth_tokens_user_provider_key unique (user_id, provider);
+  end if;
+exception when others then null;
+end$$;
 
 create index if not exists idx_user_oauth_tokens_user_provider
   on public.user_oauth_tokens (user_id, provider);
