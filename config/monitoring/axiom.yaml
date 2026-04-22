@@ -1,0 +1,57 @@
+# ============================================================================
+# OMEGA-BULLETPROOF BP-3 — Axiom / Better Stack log shipping config
+# ============================================================================
+#
+# This is a DRAFT config. It is not applied automatically. The owner needs to:
+#   1. Create an Axiom (or Better Stack) account.
+#   2. Create dataset "advocat-prod".
+#   3. Copy the ingest token into `supabase secrets set AXIOM_TOKEN=...`.
+#   4. Deploy `supabase/functions/log-shipper/` (not yet written — one-pager
+#      Edge Function that reads from app_errors via postgres_changes and
+#      forwards to Axiom HTTP ingest API). Effort: ~1 hour.
+#
+# While not applied, this file documents the target topology and the alert
+# rules that `alert_rules.yaml` references.
+
+destination:
+  vendor: axiom           # axiom | better-stack | grafana-cloud
+  dataset: advocat-prod
+  region: eu              # keep logs in EU for GDPR
+  retention_days: 30      # free-tier Axiom quota
+
+source:
+  # Pull app_errors rows via Supabase Realtime (postgres_changes on insert)
+  # and forward them to Axiom with a small Edge Function (log-shipper).
+  supabase:
+    project_ref: okgnkucgwsytsondrjye
+    tables:
+      - public.app_errors
+    mode: realtime        # push as rows land
+    include_columns:
+      - occurred_at
+      - event_kind
+      - route
+      - hint
+      - error_type
+      - error_message
+      - stack_snippet
+      - app_version
+      - platform
+      - locale
+
+pii_scrub:
+  # Double-defence: the Flutter sink already strips PII, but log shipping
+  # strips anything that looks like an email / phone / IBAN as well.
+  regex:
+    - pattern: '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'
+      replacement: '<email>'
+    - pattern: '\+?\d{2,4}[\s-]?\d{3,4}[\s-]?\d{3,4}'
+      replacement: '<phone>'
+    - pattern: 'EE\d{16,20}'
+      replacement: '<iban>'
+
+fields:
+  # Mirror so we can query by these in Axiom APL.
+  severity_from: event_kind
+  service: advocat
+  env: production
