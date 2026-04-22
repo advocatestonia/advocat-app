@@ -771,42 +771,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 }
               });
 
-              // Sentence-level TTS during streaming
+              // Accumulate for end-of-stream full-response TTS.
+              // Sentence-level streaming was rejected by owner (22.04.2026) —
+              // rapid fetch/play cycles sounded choppy and cut words.
+              // Now we speak the whole reply once after streaming finishes,
+              // giving ElevenLabs/Chirp3 the full context for prosody.
               if (_ttsEnabled) {
                 _sentenceBuffer.write(chunk);
-                final bufText = _sentenceBuffer.toString();
-
-                // Detect sentence boundary: . ! ? followed by space or newline,
-                // but NOT inside numbers (e.g. "§ 40.3") or abbreviations.
-                final sentenceEnd = RegExp(
-                  r'(?<!\d)[.!?](?:\s|\n)',
-                ).allMatches(bufText);
-                if (sentenceEnd.isNotEmpty && bufText.length >= 40) {
-                  final lastMatch = sentenceEnd.last;
-                  final sentence = bufText.substring(0, lastMatch.end).trim();
-                  _sentenceBuffer = StringBuffer(bufText.substring(lastMatch.end));
-
-                  if (sentence.isNotEmpty) {
-                    if (!_isSpeakingStreamed) {
-                      _isSpeakingStreamed = true;
-                      _speakSentence(sentence);
-                    } else {
-                      _ttsQueue.add(sentence);
-                    }
-                  }
-                }
               }
             }
 
-            // Speak any remaining text after streaming ends
+            // Speak the full accumulated response once streaming completes.
+            // This gives ElevenLabs / Chirp3-HD the complete text so prosody
+            // and pacing match a single human speaker.
             if (_ttsEnabled && _sentenceBuffer.toString().trim().isNotEmpty) {
-              final remaining = _sentenceBuffer.toString().trim();
-              if (_isSpeakingStreamed) {
-                _ttsQueue.add(remaining);
-              } else {
-                _isSpeakingStreamed = true;
-                _speakSentence(remaining);
-              }
+              final full = _sentenceBuffer.toString().trim();
+              _sentenceBuffer.clear();
+              _isSpeakingStreamed = true;
+              _speakSentence(full);
             }
 
             // Clean up the throttle timer.
