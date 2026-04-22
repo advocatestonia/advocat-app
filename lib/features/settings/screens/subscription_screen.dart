@@ -178,7 +178,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                     } else if (responseData is String) {
                       try {
                         data = Map<String, dynamic>.from(
-                          (responseData as String).isNotEmpty
+                          (responseData).isNotEmpty
                             ? Map.from(Uri.splitQueryString(responseData))
                             : {},
                         );
