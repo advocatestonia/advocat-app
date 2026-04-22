@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:advocat/services/supabase_service.dart';
 import 'package:advocat/services/demo_data.dart';
-import 'package:advocat/models/user.dart';
 
 /// Tests for [SupabaseService] — demo mode fallbacks, data export,
 /// and helper methods.
