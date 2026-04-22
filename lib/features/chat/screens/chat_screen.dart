@@ -15,6 +15,7 @@ import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
+import '../../../services/chat_attachment_service.dart';
 import '../../../services/client_knowledge_service.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
@@ -2744,29 +2745,107 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // Capture locale before async gap
     final lang = Localizations.localeOf(context).languageCode;
     try {
+      // Always request bytes so we can actually read / upload the file,
+      // not just see its name. Without withData: true the Claude pipeline
+      // would only see "Document attached: foo.pdf" — the actual bug we
+      // are fixing on fix/ai-quality.
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pdf', 'doc', 'docx', 'txt', 'png', 'jpg', 'jpeg', 'heic'],
-        withData: kIsWeb, // on web we need bytes
+        allowedExtensions: [
+          'pdf', 'doc', 'docx', 'txt', 'md', 'csv',
+          'png', 'jpg', 'jpeg', 'heic', 'webp',
+        ],
+        withData: true,
       );
       if (result == null || result.files.isEmpty) return;
 
       final file = result.files.first;
       final fileName = file.name;
+      final bytes = file.bytes;
 
-      // Add a user message indicating a file was attached
-      String attachLabel;
-      switch (lang) {
-        case 'et': attachLabel = 'Dokument lisatud: $fileName'; break;
-        case 'ru': attachLabel = 'Документ прикреплён: $fileName'; break;
-        default: attachLabel = 'Document attached: $fileName'; break;
+      if (bytes == null) {
+        _sendMessage(_attachFallbackLabel(lang, fileName));
+        return;
       }
 
-      // Send as a chat message so the AI knows about it
-      _sendMessage(attachLabel);
+      final classification = ChatAttachmentService.classify(
+        fileName: fileName,
+        mimeType: null,
+      );
+      if (!classification.isSupported) {
+        _sendMessage(_attachUnsupportedLabel(lang, fileName));
+        return;
+      }
+
+      // For binary attachments (PDF / images) we first upload to the vault so
+      // the AI can call the existing read_document tool against the resulting
+      // id. For plain-text attachments we inline the decoded body directly
+      // into the chat message — Claude will see the content immediately.
+      String? documentId;
+      if (classification.kind == AttachmentKind.pdf ||
+          classification.kind == AttachmentKind.image) {
+        try {
+          final supabase = ref.read(supabaseServiceProvider);
+          documentId = await supabase.uploadDocument(
+            caseId: widget.caseId,
+            fileName: fileName,
+            fileBytes: bytes,
+            mimeType: classification.resolvedMimeType,
+          );
+        } catch (e) {
+          debugPrint('Chat attachment upload failed: $e');
+          // Continue with documentId == null — buildUserMessage will produce
+          // a user-friendly "upload failed, use scan screen" hint.
+        }
+      }
+
+      final attachment = await ChatAttachmentService.build(
+        fileName: fileName,
+        mimeType: classification.resolvedMimeType,
+        bytes: bytes,
+        documentId: documentId,
+      );
+
+      final aiVisibleMessage = ChatAttachmentService.buildUserMessage(
+        attachment: attachment,
+        language: lang,
+      );
+
+      // Send through the normal chat pipeline — the AI now receives either
+      // the inlined text body (for .txt) or a "use read_document with id X"
+      // instruction (for PDF / image), instead of just the bare file name.
+      _sendMessage(aiVisibleMessage);
     } catch (e) {
       // Silently fail — the user can try again
       debugPrint('File picker error: $e');
+    }
+  }
+
+  String _attachFallbackLabel(String lang, String fileName) {
+    switch (lang) {
+      case 'et':
+        return 'Dokument lisatud: $fileName (ei õnnestunud sisu lugeda, '
+            'palun proovi uuesti).';
+      case 'ru':
+        return 'Документ прикреплён: $fileName (не удалось прочитать '
+            'содержимое, попробуй ещё раз).';
+      default:
+        return 'Document attached: $fileName (content unavailable, please '
+            'try again).';
+    }
+  }
+
+  String _attachUnsupportedLabel(String lang, String fileName) {
+    switch (lang) {
+      case 'et':
+        return 'Fail "$fileName" pole toetatud — palun lae üles PDF, pilt '
+            'või tekstifail.';
+      case 'ru':
+        return 'Файл «$fileName» не поддерживается — загрузи PDF, '
+            'изображение или текст.';
+      default:
+        return 'File "$fileName" is not supported — please upload a PDF, '
+            'image, or text file.';
     }
   }
 
