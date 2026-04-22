@@ -1,5 +1,10 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+  PLAN_MAPPING,
+  routeSubscriptionUpdate,
+  scrubPIIFromLog,
+} from "./subscription_router.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
@@ -23,12 +28,6 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 // Stripe recommends rejecting events older than 5 minutes to block replays.
 const MAX_WEBHOOK_AGE_SEC = 300;
-
-// Plan mapping from Stripe to our tiers
-const PLAN_MAPPING: Record<string, string> = {
-  counsel: "basic",
-  representation: "premium",
-};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -142,9 +141,17 @@ serve(async (req) => {
             stripe_customer_id: session.customer,
           }).eq("id", userId);
 
-          console.log(`Updated user ${customerEmail}: tier=${tier}, expires=${expiresAt.toISOString()}`);
+          // FIX-6 (Sprint 0): log the customer id, never the email. Emails
+          // in logs are a common GDPR violation — we don't need them for
+          // debugging since stripe_customer_id is the canonical handle.
+          console.log(
+            `checkout.completed: customer=${session.customer} tier=${tier}`,
+          );
         } else {
-          console.error(`User not found: ${customerEmail}`);
+          // Even on the error path, avoid leaking the email.
+          console.error(
+            `checkout.completed: no profile row for customer=${session.customer}`,
+          );
         }
         break;
       }
@@ -152,24 +159,69 @@ serve(async (req) => {
       case "customer.subscription.updated": {
         const subscription = event.data.object;
         const stripeCustomerId = subscription.customer;
-        const status = subscription.status; // "active", "canceled", "past_due"
 
-        if (status === "canceled" || status === "unpaid") {
-          // Downgrade to free
+        // FIX-6 (Sprint 0): route by status.
+        //   active/trialing -> extend (FIXES the 30-day-lockout bug)
+        //   past_due        -> flag, do not downgrade yet (grace period)
+        //   canceled/unpaid -> downgrade
+        //   anything else   -> ignore (Stripe has ~30 subscription statuses)
+        const action = routeSubscriptionUpdate(subscription);
+
+        if (action.kind === "extend") {
           const { data: users } = await supabase
             .from("profiles")
             .select("id")
             .eq("stripe_customer_id", stripeCustomerId)
             .limit(1);
-
+          if (users && users.length > 0) {
+            await supabase.from("profiles").update({
+              subscription_tier: action.tier,
+              subscription_expires_at: action.expires_at,
+            }).eq("id", users[0].id);
+            console.log(
+              `subscription.updated: extended customer=${stripeCustomerId} ` +
+                `tier=${action.tier} until=${action.expires_at}`,
+            );
+          }
+        } else if (action.kind === "mark_past_due") {
+          // Best-effort column update — if the profiles table doesn't have
+          // a `subscription_status` column yet (schema drift — see FIX-3),
+          // the query returns an error which we swallow to avoid breaking
+          // the webhook. The flag is diagnostic, not security-critical.
+          const { data: users } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("stripe_customer_id", stripeCustomerId)
+            .limit(1);
+          if (users && users.length > 0) {
+            await supabase.from("profiles").update({
+              subscription_status: "past_due",
+            }).eq("id", users[0].id);
+          }
+          console.log(
+            `subscription.updated: past_due customer=${stripeCustomerId}`,
+          );
+        } else if (action.kind === "downgrade") {
+          const { data: users } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("stripe_customer_id", stripeCustomerId)
+            .limit(1);
           if (users && users.length > 0) {
             await supabase.from("profiles").update({
               subscription_tier: "free",
               subscription_expires_at: null,
             }).eq("id", users[0].id);
-
-            console.log(`Downgraded customer ${stripeCustomerId} to free`);
+            console.log(
+              `subscription.updated: downgraded customer=${stripeCustomerId}`,
+            );
           }
+        } else {
+          // ignore
+          console.log(
+            `subscription.updated: ignored customer=${stripeCustomerId} ` +
+              `reason=${action.reason}`,
+          );
         }
         break;
       }
@@ -190,16 +242,19 @@ serve(async (req) => {
             subscription_expires_at: null,
           }).eq("id", users[0].id);
 
-          console.log(`Subscription deleted for customer ${stripeCustomerId}`);
+          console.log(
+            `subscription.deleted: customer=${stripeCustomerId}`,
+          );
         }
         break;
       }
 
       case "invoice.payment_failed": {
+        // FIX-6 (Sprint 0): reference customer.id only, never customer_email.
         const invoice = event.data.object;
-        const customerEmail = invoice.customer_email;
-        console.log(`Payment failed for ${customerEmail}`);
-        // Could send notification email here
+        console.log(
+          `invoice.payment_failed: customer=${invoice.customer ?? "unknown"}`,
+        );
         break;
       }
 
@@ -212,8 +267,10 @@ serve(async (req) => {
       headers: responseHeaders,
     });
   } catch (error) {
-    console.error("Webhook error:", error);
-    return new Response(JSON.stringify({ error: String(error) }), {
+    // Scrub any email-shaped substrings before logging.
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("Webhook error:", scrubPIIFromLog(msg).slice(0, 300));
+    return new Response(JSON.stringify({ error: "Internal error" }), {
       status: 500,
       headers: responseHeaders,
     });
