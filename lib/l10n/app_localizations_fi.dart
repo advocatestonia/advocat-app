@@ -2471,16 +2471,16 @@ class AppLocalizationsFi extends AppLocalizations {
   String get backToChat => 'Takaisin chattiin';
 
   @override
-  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+  String get upgradeBannerTitle => 'Päivitä rajattomiin konsultaatioihin';
 
   @override
-  String get upgradeBannerCta => 'Upgrade';
+  String get upgradeBannerCta => 'Päivitä';
 
   @override
-  String get paymentSuccessTitle => 'Payment successful';
+  String get paymentSuccessTitle => 'Maksu onnistui';
 
   @override
-  String get paymentSuccessBody => 'Your subscription is now active.';
+  String get paymentSuccessBody => 'Tilauksesi on nyt aktiivinen.';
 
   @override
   String get commonOk => 'OK';

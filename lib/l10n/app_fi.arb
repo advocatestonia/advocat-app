@@ -939,5 +939,10 @@
   "speakIntoMicHint": "Puhu mikrofoniin. Varmista, että mikrofonin käyttöoikeus on sallittu.",
   "strategyRecommendations": "Strategiasuositukset",
   "unlimitedAiMessages": "Rajattomat tekoälyviestit",
-  "voiceInput": "Äänitulo"
+  "voiceInput": "Äänitulo",
+  "upgradeBannerTitle": "Päivitä rajattomiin konsultaatioihin",
+  "upgradeBannerCta": "Päivitä",
+  "paymentSuccessTitle": "Maksu onnistui",
+  "paymentSuccessBody": "Tilauksesi on nyt aktiivinen.",
+  "commonOk": "OK"
 }
