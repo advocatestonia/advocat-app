@@ -121,12 +121,18 @@ export function validateSystemPrompt(system: unknown): GuardResult {
 }
 
 function startsWithMarker(text: string): boolean {
-  // Trim leading whitespace only — don't lowercase, because our markers
-  // are proper nouns and "You are advocat" (lowercase a) would be an
-  // attempted evasion, not a legitimate prompt.
-  const trimmed = text.replace(/^\s+/, "");
+  // Trim leading whitespace and common markdown/section headers that legit
+  // Advocat prompts may include (e.g. "# ROLE\n\nYou are Advocat...").
+  // Don't lowercase — our markers are proper nouns and "You are advocat"
+  // (lowercase a) would be an attempted evasion.
+  //
+  // Strategy: look for a marker anywhere in the first 500 chars. That
+  // gives us leeway for "# ROLE", "## SYSTEM PROMPT", blank lines, etc.
+  // 500 chars is small enough that a rogue prompt can't hide an attack
+  // before the marker.
+  const head = text.slice(0, 500);
   for (const marker of ADVOCAT_IDENTITY_MARKERS) {
-    if (trimmed.startsWith(marker)) return true;
+    if (head.includes(marker)) return true;
   }
   return false;
 }

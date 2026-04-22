@@ -200,20 +200,40 @@ function advocatPlayBlob(blob) {
   audio.onended = function() {
     console.log('[Advocat TTS] Audio playback ended');
     URL.revokeObjectURL(url);
-    window._advocatCurrentAudio = null;
-    window._advocatTtsSpeaking = false;
+    if (window._advocatCurrentAudio === audio) {
+      window._advocatCurrentAudio = null;
+      window._advocatTtsSpeaking = false;
+    }
   };
   audio.onerror = function(e) {
     console.error('[Advocat TTS] Audio playback error:', e.type || e);
     URL.revokeObjectURL(url);
-    window._advocatCurrentAudio = null;
-    window._advocatTtsSpeaking = false;
+    if (window._advocatCurrentAudio === audio) {
+      window._advocatCurrentAudio = null;
+      window._advocatTtsSpeaking = false;
+    }
   };
-  audio.play().catch(function(err) {
-    console.error('[Advocat TTS] Audio play() rejected:', err.message || err);
-    window._advocatCurrentAudio = null;
-    window._advocatTtsSpeaking = false;
-  });
+  // Tiny delay lets the previous audio's pause() settle on the event
+  // loop before we start a new .play(), which prevents the browser
+  // firing "play() was interrupted by pause()" AbortError.
+  setTimeout(function() {
+    // Ignore if a newer audio element has replaced us in the meantime.
+    if (window._advocatCurrentAudio !== audio) return;
+    audio.play().catch(function(err) {
+      var msg = err && err.message ? err.message : String(err);
+      // AbortError from rapid start/stop cycles is expected when the user
+      // cancels or a new sentence arrives — don't treat it as fatal.
+      if (err && (err.name === 'AbortError' || /interrupted/i.test(msg))) {
+        console.log('[Advocat TTS] play() aborted (expected):', msg);
+      } else {
+        console.error('[Advocat TTS] Audio play() rejected:', msg);
+      }
+      if (window._advocatCurrentAudio === audio) {
+        window._advocatCurrentAudio = null;
+        window._advocatTtsSpeaking = false;
+      }
+    });
+  }, 30);
 }
 
 /**

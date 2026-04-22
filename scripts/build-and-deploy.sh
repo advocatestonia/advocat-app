@@ -157,6 +157,8 @@ LANDING_FILES=(
   landing_polished.html
   landing_premium.html
   landing-v24-backup.html
+  app.html
+  speech.js
   blog
   privacy.html
   terms.html
