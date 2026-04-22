@@ -70,7 +70,7 @@ class ChatMessageBubble extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (_isUser)
-                Text(
+                SelectableText(
                   message.content,
                   style: const TextStyle(
                     color: Colors.white,
@@ -104,6 +104,28 @@ class ChatMessageBubble extends StatelessWidget {
                         fontSize: 10,
                         color: AppColors.textTertiary,
                         fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    const Spacer(),
+                    // fix/ai-quality: copy icon writes raw content to clipboard
+                    // and invokes onCopy callback. Inline with meta row to keep
+                    // a minimum-size hit target next to the timestamp.
+                    InkWell(
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        Clipboard.setData(
+                          ClipboardData(text: message.content),
+                        );
+                        onCopy?.call(message.content);
+                      },
+                      borderRadius: BorderRadius.circular(AppRadius.sm),
+                      child: const Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Icon(
+                          Icons.copy_rounded,
+                          size: 14,
+                          color: AppColors.textTertiary,
+                        ),
                       ),
                     ),
                   ],
