@@ -14,6 +14,7 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.14.0?target=deno";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
   corsHeaders,
   jsonError,
@@ -24,6 +25,74 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2023-10-16",
   httpClient: Stripe.createFetchHttpClient(),
 });
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+/**
+ * Enforces the Founder's Beta 25-paying-user cap configured in
+ * public.app_config. Returns `null` when checkout is allowed, or a ready
+ * 403 Response (with waitlist URL in the body) when the cap is reached.
+ *
+ * The cap is "soft" from the Stripe perspective — we block creation of
+ * the Checkout Session, not the subscription itself. The race-window
+ * between "under cap" + "session created" + "webhook marks subscription
+ * active" is handled by the webhook as a second gate (not yet implemented
+ * here — tracked for Phase 4.x).
+ */
+async function enforceBetaCap(): Promise<Response | null> {
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+  // Config row missing = cap disabled (dev / pre-seed). Fail open so the
+  // migration rollout can't accidentally lock out paying users.
+  const { data: cfg } = await supabase
+    .from("app_config")
+    .select("value")
+    .eq("key", "beta_cap")
+    .maybeSingle();
+
+  if (!cfg) return null;
+
+  const value = cfg.value as {
+    max_paying_users?: number;
+    active?: boolean;
+  } | null;
+  if (!value || value.active !== true) return null;
+
+  const cap = typeof value.max_paying_users === "number"
+    ? value.max_paying_users
+    : 25;
+
+  // Count currently-paying users. Trialing users are excluded on purpose:
+  // the cap is about paid-seat capacity, and a trial doesn't bill.
+  const { count, error } = await supabase
+    .from("subscriptions")
+    .select("id", { head: true, count: "exact" })
+    .eq("status", "active");
+
+  if (error) {
+    // DB failure → fail open. Logging only.
+    console.error(
+      "beta-cap count error:",
+      String(error.message ?? error).slice(0, 200),
+    );
+    return null;
+  }
+
+  const paying = count ?? 0;
+  if (paying < cap) return null;
+
+  return jsonError(
+    "Founder's Beta is full. Join the waitlist.",
+    403,
+    {
+      beta_cap_full: true,
+      waitlist_url: "https://advocat.ee/waitlist",
+      max_paying_users: cap,
+      current_paying_users: paying,
+    },
+  );
+}
 
 // ── Price lookup table (EUR cents) ──────────────────────────────────────
 
@@ -87,6 +156,12 @@ serve(async (req: Request) => {
     maxPerMinute: 5,
   });
   if (gate.kind === "deny") return gate.response;
+
+  // Founder's Beta 25-user cap — must run AFTER the JWT gate (anonymous
+  // probes shouldn't leak the counter state) but BEFORE the Stripe call
+  // (no point burning Stripe quota if we'll reject).
+  const capResp = await enforceBetaCap();
+  if (capResp) return capResp;
 
   try {
     // FIX-7: ignore `customer_email` from the body entirely. We use only

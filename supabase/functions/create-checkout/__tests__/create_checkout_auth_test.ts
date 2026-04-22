@@ -120,3 +120,54 @@ Deno.test("F7-T09 — log sanitises PII (truncates message, no full stack)", () 
       "from leaking into log files",
   );
 });
+
+// ── Phase 4: Founder's Beta cap enforcement ────────────────────────────
+
+Deno.test("F7-T10 — reads beta_cap config from app_config table", () => {
+  assertStringIncludes(stripped, 'from("app_config")');
+  assertStringIncludes(stripped, '"beta_cap"');
+});
+
+Deno.test("F7-T11 — beta cap check runs AFTER the JWT gate", () => {
+  // Match the CALL site specifically (awaited invocation), not the
+  // function declaration above.
+  const gateIdx = stripped.indexOf("requireUserWithRateLimit(");
+  const capCallIdx = stripped.indexOf("await enforceBetaCap(");
+  assert(gateIdx !== -1 && capCallIdx !== -1);
+  assert(
+    gateIdx < capCallIdx,
+    "Cap check must run after the JWT gate so anonymous probes cannot " +
+      "leak current paying-user counts.",
+  );
+});
+
+Deno.test("F7-T12 — beta cap check runs BEFORE Stripe session creation", () => {
+  const capCallIdx = stripped.indexOf("await enforceBetaCap(");
+  const stripeIdx = stripped.indexOf("stripe.checkout.sessions.create(");
+  assert(capCallIdx !== -1 && stripeIdx !== -1);
+  assert(
+    capCallIdx < stripeIdx,
+    "Cap must be checked before Stripe call — no quota burn on rejections.",
+  );
+});
+
+Deno.test("F7-T13 — cap-full response surfaces beta_cap_full flag + waitlist url", () => {
+  // The client needs a machine-readable signal (beta_cap_full) to know
+  // it should route the user to the waitlist instead of the Stripe error
+  // toast.
+  assertStringIncludes(stripped, "beta_cap_full");
+  assertStringIncludes(stripped, "waitlist_url");
+});
+
+Deno.test("F7-T14 — cap counts only 'active' subscriptions (not trialing)", () => {
+  // A trialing subscription doesn't bill — excluding it from the 25-seat
+  // cap is the intended business rule.
+  assertStringIncludes(stripped, '.eq("status", "active")');
+});
+
+Deno.test("F7-T15 — missing beta_cap row fails OPEN (does not block)", () => {
+  // In a fresh dev DB the migration might not have seeded the row yet.
+  // Blocking all checkouts would be a disaster; fail-open is documented
+  // policy.
+  assertStringIncludes(stripped, "if (!cfg) return null");
+});
