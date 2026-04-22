@@ -311,7 +311,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   /// Strip markdown formatting for natural TTS speech.
   String _cleanTextForTTS(String text) {
-    var clean = text;
+    // Post-launch bug 2 (2026-04-22): Remove Gemini-style expressive tags
+    // like [warmth], [thoughtful] before TTS. VoiceService.speak() also
+    // strips them as defence-in-depth; we do it here too so the log line
+    // "TTS: speaking ..." shows the real text that reaches the engine.
+    var clean = VoiceService.stripExpressiveTags(text);
     // Remove bold/italic markers
     clean = clean.replaceAll(RegExp(r'\*{1,3}'), '');
     // Remove headers
