@@ -730,8 +730,20 @@ class AIService {
         final model = isSimple
             ? ClaudeService.modelHaiku
             : ClaudeService.chooseModel(sanitizedMessage);
-        final maxTokens = isSimple ? 200 : ClaudeService.maxTokensForModel(model);
-        _log.i('Model routing: $model (simple: $isSimple, maxTokens: $maxTokens)');
+        // Adaptive length (fix/ai-quality bug 2): short questions (yes/no,
+        // list, command) get a tight token budget so Claude cannot pad a
+        // one-line answer into a five-paragraph essay.
+        final bool isShort =
+            !isSimple && ClaudeService.isShortQuery(sanitizedMessage);
+        final int maxTokens;
+        if (isSimple) {
+          maxTokens = 200;
+        } else if (isShort) {
+          maxTokens = ClaudeService.maxTokensForShortQuery();
+        } else {
+          maxTokens = ClaudeService.maxTokensForModel(model);
+        }
+        _log.i('Model routing: $model (simple: $isSimple, short: $isShort, maxTokens: $maxTokens)');
 
         // Add user message to history
         _addToHistory(caseId, 'user', sanitizedMessage);
@@ -973,8 +985,11 @@ class AIService {
     _log.i('Using Claude API for streaming chat');
     try {
       final model = ClaudeService.chooseModel(sanitizedMessage);
-      final maxTokens = ClaudeService.maxTokensForModel(model);
-      _log.i('Streaming model routing: $model (maxTokens: $maxTokens)');
+      final bool isShort = ClaudeService.isShortQuery(sanitizedMessage);
+      final int maxTokens = isShort
+          ? ClaudeService.maxTokensForShortQuery()
+          : ClaudeService.maxTokensForModel(model);
+      _log.i('Streaming model routing: $model (short: $isShort, maxTokens: $maxTokens)');
 
       // Build system prompt (same logic as sendChatMessage).
       String systemPrompt = SystemPrompts.buildChatPrompt(
