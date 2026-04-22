@@ -1,6 +1,10 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { validateSystemPrompt } from "./system_prompt_guard.ts";
+import {
+  applyPromptCaching,
+  buildAnthropicHeaders,
+} from "./prompt_caching.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -120,15 +124,17 @@ serve(async (req) => {
       });
     }
 
+    // FIX-1 (Sprint 0): enable prompt caching. Wraps body.system in the
+    // content-block shape with cache_control: ephemeral for blocks large
+    // enough to pay back the 1.25x write cost. Flips unit economics from
+    // −€0.11/user to +€2.39/user — see docs/performance/05-cost.md §2.5.
+    applyPromptCaching(body);
+
     // Streaming mode — pipe SSE events from Claude directly to client
     if (body.stream) {
       const claudeStreamResponse = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CLAUDE_API_KEY,
-          "anthropic-version": "2023-06-01",
-        },
+        headers: buildAnthropicHeaders(CLAUDE_API_KEY),
         body: JSON.stringify(body),
       });
 
@@ -156,11 +162,7 @@ serve(async (req) => {
     // Non-streaming mode (existing behavior)
     const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": CLAUDE_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
+      headers: buildAnthropicHeaders(CLAUDE_API_KEY),
       body: JSON.stringify(body),
     });
 

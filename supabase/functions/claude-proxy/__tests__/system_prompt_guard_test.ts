@@ -180,12 +180,18 @@ Deno.test("F4-T21 — claude-proxy index.ts rejects with 400 on guard failure", 
 });
 
 Deno.test("F4-T22 — claude-proxy still supports anthropic-version header", async () => {
-  // Contract: FIX-1 will add `anthropic-beta: prompt-caching-2024-07-31`
-  // but `anthropic-version` must stay. This test locks that in.
-  const source = await Deno.readTextFile(
+  // Contract: FIX-1 adds `anthropic-beta: prompt-caching-2024-07-31`
+  // but `anthropic-version` must stay. After FIX-1, the header constant
+  // moved from index.ts into prompt_caching.ts (buildAnthropicHeaders()),
+  // so check either location.
+  const indexSource = await Deno.readTextFile(
     new URL("../index.ts", import.meta.url),
   );
-  assertStringIncludes(source, "anthropic-version");
+  const cachingSource = await Deno.readTextFile(
+    new URL("../prompt_caching.ts", import.meta.url),
+  );
+  const combined = indexSource + "\n" + cachingSource;
+  assertStringIncludes(combined, "anthropic-version");
 });
 
 Deno.test("F4-T23 — guard runs BEFORE the fetch to Anthropic", async () => {
