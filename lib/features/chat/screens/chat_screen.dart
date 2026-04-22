@@ -23,6 +23,7 @@ import '../../../services/tool_executor.dart';
 import '../../../services/voice_service.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../services/chat_tool_bridge.dart';
+import '../utils/message_speaker.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 import '../widgets/welcome_chips.dart';
@@ -118,10 +119,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _voiceInitialized = false;
   StreamSubscription<String>? _speechSub;
 
-  // -- Sentence-level TTS during streaming --
-  List<String> _ttsQueue = [];
-  StringBuffer _sentenceBuffer = StringBuffer();
-  bool _isSpeakingStreamed = false;
+  /// Single source of truth for speaking AI replies. Rebuilt per reply
+  /// so that each AI message produces exactly ONE voiceService.speak()
+  /// call — see docs/tts-audit/02-voice-switching-root-cause.md.
+  MessageSpeaker? _messageSpeaker;
 
   // -- Post-launch BUG 3 fix (2026-04-22): first-conversation prompt --
   //
@@ -318,62 +319,39 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  /// Strip markdown formatting for natural TTS speech.
-  String _cleanTextForTTS(String text) {
-    // Post-launch bug 2 (2026-04-22): Remove Gemini-style expressive tags
-    // like [warmth], [thoughtful] before TTS. VoiceService.speak() also
-    // strips them as defence-in-depth; we do it here too so the log line
-    // "TTS: speaking ..." shows the real text that reaches the engine.
-    var clean = VoiceService.stripExpressiveTags(text);
-    // Remove bold/italic markers
-    clean = clean.replaceAll(RegExp(r'\*{1,3}'), '');
-    // Remove headers
-    clean = clean.replaceAll(RegExp(r'^#{1,6}\s*', multiLine: true), '');
-    // Remove bullet points
-    clean = clean.replaceAll(RegExp(r'^[-•]\s*', multiLine: true), '');
-    // Remove numbered lists (keep text after number)
-    clean = clean.replaceAll(RegExp(r'^\d+\.\s*', multiLine: true), '');
-    // Remove code blocks
-    clean = clean.replaceAll(RegExp(r'```\w*\n?'), '');
-    // Remove inline code
-    clean = clean.replaceAll(RegExp(r'`([^`]+)`'), r'$1');
-    // Remove blockquotes
-    clean = clean.replaceAll(RegExp(r'^>\s*', multiLine: true), '');
-    // Remove markdown links, keep text
-    clean = clean.replaceAll(RegExp(r'\[([^\]]+)\]\([^\)]+\)'), r'$1');
-    // Remove emoji severity markers
-    clean = clean.replaceAll(RegExp(r'[🔴🟡🔵🟢⚠️📋🔍🚗📷📅📝✉️⚖️📊🌐⚙️✅❌ℹ️]'), '');
-    // Convert section markers to spoken form
-    clean = clean.replaceAll(RegExp(r'§\s*'), 'paragrahv ');
-    // Collapse multiple spaces/newlines into natural pauses
-    clean = clean.replaceAll(RegExp(r'\n{2,}'), '. ');
-    clean = clean.replaceAll(RegExp(r'\n'), '. ');
-    clean = clean.replaceAll(RegExp(r'\s{2,}'), ' ');
-    return clean.trim();
-  }
-
+  /// Speak a full (non-streaming) AI reply. Used by the welcome message,
+  /// tool-use follow-ups, and the non-streaming LLM fallback.
+  ///
+  /// Contract: exactly ONE voiceService.speak() per call. The routing
+  /// (ElevenLabs vs Google) is decided once by langCode — no mid-reply
+  /// engine switch. See docs/tts-audit/02-voice-switching-root-cause.md.
   Future<void> _speakResponse(String text) async {
     if (!_ttsEnabled) return;
 
     final voice = ref.read(voiceServiceProvider);
     final langCode = Localizations.localeOf(context).languageCode;
 
-    // Stop STT before TTS to prevent echo (AI voice being recognized as user input)
+    // Stop STT before TTS to prevent echo (AI voice being recognized
+    // as user input).
     if (_voiceState == VoiceButtonState.listening) {
       _voiceSilenceTimer?.cancel();
       _speechSub?.cancel();
       await voice.stopListening();
     }
 
-    // Clear any text that might have been echoed into the input field
+    // Clear any text that might have been echoed into the input field.
     _messageController.clear();
 
     setState(() => _voiceState = VoiceButtonState.speaking);
 
-    try {
-      await voice.speak(_cleanTextForTTS(text), langCode: langCode);
+    final speaker = MessageSpeaker(
+      speaker: VoiceServiceSpeaker(voice),
+      langCode: langCode,
+    );
 
-      // Wait for audio to finish, with a safety timeout (30s max).
+    try {
+      await speaker.speakFullResponse(text);
+      // Wait for audio to actually finish playing (safety timeout 30s).
       var waited = 0;
       while (voice.isSpeaking && waited < 150) {
         await Future.delayed(const Duration(milliseconds: 200));
@@ -386,51 +364,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     if (mounted) {
       setState(() => _voiceState = VoiceButtonState.idle);
-    }
-  }
-
-  /// Speak a single sentence from the streaming TTS queue, then proceed
-  /// to the next queued sentence when done.
-  Future<void> _speakSentence(String sentence) async {
-    final voice = ref.read(voiceServiceProvider);
-    final langCode = Localizations.localeOf(context).languageCode;
-    final cleaned = _cleanTextForTTS(sentence);
-    if (cleaned.isEmpty) {
-      _playNextFromQueue();
-      return;
-    }
-
-    // Ensure voice state reflects speaking
-    if (mounted && _voiceState != VoiceButtonState.speaking) {
-      setState(() => _voiceState = VoiceButtonState.speaking);
-    }
-
-    try {
-      await voice.speak(cleaned, langCode: langCode);
-      // Wait for speech to finish
-      var waited = 0;
-      while (voice.isSpeaking && waited < 150) {
-        await Future.delayed(const Duration(milliseconds: 100));
-        waited++;
-        if (!mounted) return;
-      }
-    } catch (e) {
-      debugPrint('TTS: _speakSentence error: $e');
-    }
-
-    _playNextFromQueue();
-  }
-
-  /// Play the next sentence from the TTS queue, or mark streaming TTS as done.
-  void _playNextFromQueue() {
-    if (_ttsQueue.isNotEmpty) {
-      final next = _ttsQueue.removeAt(0);
-      _speakSentence(next);
-    } else {
-      _isSpeakingStreamed = false;
-      if (mounted) {
-        setState(() => _voiceState = VoiceButtonState.idle);
-      }
     }
   }
 
@@ -733,10 +666,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             });
             _scrollToBottom(force: true);
 
-            // Reset sentence-level TTS state for this streaming response
-            _ttsQueue = [];
-            _sentenceBuffer = StringBuffer();
-            _isSpeakingStreamed = false;
+            // Fresh MessageSpeaker for this reply — guarantees exactly
+            // one speak() call once streaming completes, regardless of
+            // how many chunks arrive. See message_speaker.dart.
+            final voice = ref.read(voiceServiceProvider);
+            _messageSpeaker = MessageSpeaker(
+              speaker: VoiceServiceSpeaker(voice),
+              langCode: Localizations.localeOf(context).languageCode,
+              enabled: _ttsEnabled,
+            );
 
             final fullText = StringBuffer();
 
@@ -771,24 +709,26 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 }
               });
 
-              // Accumulate for end-of-stream full-response TTS.
-              // Sentence-level streaming was rejected by owner (22.04.2026) —
-              // rapid fetch/play cycles sounded choppy and cut words.
-              // Now we speak the whole reply once after streaming finishes,
-              // giving ElevenLabs/Chirp3 the full context for prosody.
-              if (_ttsEnabled) {
-                _sentenceBuffer.write(chunk);
-              }
+              // Stream the chunk into the speaker's buffer. No audio is
+              // produced here — MessageSpeaker speaks the FULL accumulated
+              // reply once onStreamComplete() fires, so ElevenLabs /
+              // Chirp3 / Gemini receive one continuous text and return
+              // one continuous voice. Sentence-level streaming was
+              // rejected by owner 22.04.2026.
+              _messageSpeaker?.onChunk(chunk);
             }
 
-            // Speak the full accumulated response once streaming completes.
-            // This gives ElevenLabs / Chirp3-HD the complete text so prosody
-            // and pacing match a single human speaker.
-            if (_ttsEnabled && _sentenceBuffer.toString().trim().isNotEmpty) {
-              final full = _sentenceBuffer.toString().trim();
-              _sentenceBuffer.clear();
-              _isSpeakingStreamed = true;
-              _speakSentence(full);
+            // Speak the full accumulated reply exactly once now that
+            // streaming is finished. Fire-and-forget — the audio will
+            // play while the UI continues (history save, typing-off,
+            // scroll). `await` here would block the UI behind TTS.
+            if (_ttsEnabled) {
+              setState(() => _voiceState = VoiceButtonState.speaking);
+              unawaited(_messageSpeaker!.onStreamComplete().then((_) {
+                if (mounted) {
+                  setState(() => _voiceState = VoiceButtonState.idle);
+                }
+              }));
             }
 
             // Clean up the throttle timer.

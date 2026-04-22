@@ -15,6 +15,26 @@ import 'web_speech.dart' as web_speech;
 
 enum VoiceGender { female, male }
 
+/// Which cloud TTS engine owns a particular language.
+///
+/// The routing decision is **deterministic per language** and must be made
+/// BEFORE `speak()` starts playing audio. Within a single AI reply we never
+/// switch engines — that's what caused the owner-reported "разные голоса
+/// посреди ответа" regression (2026-04-22..23).
+///
+/// See `docs/tts-audit/02-voice-switching-root-cause.md`.
+enum TtsEngine {
+  /// ElevenLabs v3 via Supabase `tts-proxy`. Used for RU / EN / UK where
+  /// owner confirmed the neutral-European voices (Charlotte / George)
+  /// sound native. FROZEN 2026-04-21.
+  elevenLabs,
+
+  /// Google TTS via Supabase `google-tts` (Chirp3-HD for Estonian + preview
+  /// languages; Gemini 3.1 Flash TTS for GA languages). Used for every
+  /// language NOT in `VoiceService.preferElevenLabsSet`.
+  google,
+}
+
 // ---------------------------------------------------------------------------
 // Locale mapping for 17 supported languages
 // ---------------------------------------------------------------------------
@@ -81,14 +101,18 @@ const _elevenLabsVoices = {
 /// Google Chirp3-HD / Gemini 3.1. Keep Estonian on Google — the user is
 /// happy with Chirp3-HD-Kore there and ElevenLabs has no native Estonian
 /// training data.
+///
+/// Exposed as `VoiceService.preferElevenLabsSet` for the routing audit
+/// tests. FROZEN by owner choice 2026-04-21.
 const _preferElevenLabsFor = {
   'en', 'ru', 'uk',
 };
 
-bool _shouldPreferElevenLabs(String langCode) {
-  final base = langCode.toLowerCase().split(RegExp('[-_]')).first;
-  return _preferElevenLabsFor.contains(base);
-}
+/// Normalises `en-US` / `RU` / `et_EE` style language codes to their
+/// lowercase base (`en`, `ru`, `et`) so routing is consistent regardless
+/// of how the UI passes the locale.
+String _normaliseLangBase(String langCode) =>
+    langCode.toLowerCase().split(RegExp('[-_]')).first;
 
 // ---------------------------------------------------------------------------
 // Voice Service
@@ -96,6 +120,31 @@ bool _shouldPreferElevenLabs(String langCode) {
 
 class VoiceService {
   VoiceService();
+
+  // ── Public routing API ─────────────────────────────────────────────────
+  //
+  // `ttsEngineFor` returns which cloud TTS engine owns a given app locale.
+  // The decision is a pure function of the language code — NOT runtime
+  // state — so the whole AI reply can be synthesised by one engine in one
+  // fetch, avoiding the "voice switches mid-response" regression.
+  //
+  // Contract locked by test/services/voice_routing_matrix_test.dart.
+
+  /// The frozen set of languages that route to ElevenLabs. RU / EN / UK
+  /// chosen by owner on 2026-04-21 — do not flip without explicit
+  /// approval (red-line change, see `docs/tts-audit/02-…`).
+  static Set<String> get preferElevenLabsSet => _preferElevenLabsFor;
+
+  /// Which cloud TTS engine owns [langCode]. Accepts both base codes
+  /// ("ru") and BCP-47 styles ("ru-RU", "en_US"). Unknown codes fall
+  /// back to [TtsEngine.google] because Google Chirp3-HD / Gemini
+  /// covers more languages than ElevenLabs SUPPORTED_LANGS.
+  static TtsEngine ttsEngineFor(String langCode) {
+    final base = _normaliseLangBase(langCode);
+    return _preferElevenLabsFor.contains(base)
+        ? TtsEngine.elevenLabs
+        : TtsEngine.google;
+  }
 
   final SpeechToText _stt = SpeechToText();
   final FlutterTts _tts = FlutterTts();
@@ -649,14 +698,25 @@ class VoiceService {
   }
 
   /// Speak the given text aloud.
-  /// [langCode] should be one of the 17 app language codes.
   ///
-  /// Priority order:
-  /// 1. Google TTS (cheaper, better Estonian/multilingual support)
-  /// 2. Google TTS retry after 500ms (transient error recovery)
-  /// 3. Browser SpeechSynthesis (last resort)
+  /// Contract (locked 2026-04-21, rewritten after owner-reported
+  /// "voice switches mid-response" regression):
   ///
-  /// Never fails silently — always resets [_isSpeaking] on exit.
+  ///   ONE reply → ONE engine → ONE fetch → ONE audio blob → ONE voice.
+  ///
+  /// The engine is picked *up front* by [ttsEngineFor] based on
+  /// [langCode]. We attempt the primary engine. If and ONLY if the
+  /// primary engine failed to start audio (returned false without
+  /// playing a single sample), we fall back to the other cloud engine.
+  /// Once audio is actually playing, we never switch — even if the
+  /// `<audio>` element errors mid-playback.
+  ///
+  /// Fallback order:
+  ///   RU/EN/UK:  ElevenLabs → (if never started) Google → Browser
+  ///   others:    Google     → (if never started) ElevenLabs → Browser
+  ///
+  /// Never throws — always exits with [_isSpeaking] correctly reflecting
+  /// whether an engine is actively playing.
   Future<void> speak(String text, {String langCode = 'en'}) async {
     // Post-bug-2 safety: even if the caller forgot to clean the text,
     // we strip the expressive tags here too so every route is safe.
@@ -670,75 +730,60 @@ class VoiceService {
     }
     text = cleaned;
 
-    // Language-aware routing: ElevenLabs v3 for RU/EN/UK (sounds native),
-    // Google Chirp3-HD for Estonian and everything else. User confirmed ET
-    // on Chirp3-HD-Kore is great; RU on Gemini/Chirp3 had wrong accent.
-    final preferElevenLabs =
-        _shouldPreferElevenLabs(langCode) && _elevenLabsAvailable;
+    // Stop any audio still playing from a previous reply before we start
+    // a new one. This is defence-in-depth — `advocatPlayBlob` also does
+    // it — and plugs the race where two fetches from rapid sends both
+    // complete and both try to play.
+    await stopSpeaking();
 
+    final engine = ttsEngineFor(langCode);
+
+    // Primary: the engine that owns this language.
+    final primaryStarted = await _tryEngine(engine, text, langCode: langCode);
+    if (primaryStarted) return;
+
+    // Primary never started audio — safe to try the other cloud engine
+    // as a fallback. This is NOT mid-response switching: no sample has
+    // been produced yet, so the user hears one engine start to finish.
+    final other = engine == TtsEngine.elevenLabs
+        ? TtsEngine.google
+        : TtsEngine.elevenLabs;
+    final otherStarted = await _tryEngine(other, text, langCode: langCode);
+    if (otherStarted) return;
+
+    // Last resort: browser SpeechSynthesis. Better than silence.
     try {
-      if (preferElevenLabs) {
-        // 1. ElevenLabs v3 first for RU / EN / UK.
+      await _speakWithBrowserTts(text, langCode: langCode);
+    } catch (e) {
+      if (kDebugMode) debugPrint('TTS: Browser TTS exception: $e');
+    }
+  }
+
+  /// Attempts to start audio on [engine]. Returns true only if the engine
+  /// successfully launched playback. Swallows exceptions so the caller
+  /// can decide whether to fall back.
+  Future<bool> _tryEngine(
+    TtsEngine engine,
+    String text, {
+    required String langCode,
+  }) async {
+    switch (engine) {
+      case TtsEngine.elevenLabs:
+        if (!_elevenLabsAvailable) return false;
         try {
-          final ok = await _speakWithElevenLabs(text, langCode: langCode);
-          if (ok) return;
+          return await _speakWithElevenLabs(text, langCode: langCode);
         } catch (e) {
           if (kDebugMode) debugPrint('TTS: ElevenLabs exception: $e');
+          return false;
         }
-        // 2. Google TTS as fallback.
-        if (_googleTtsAvailable) {
-          try {
-            final ok = await _speakWithGoogleTTS(text, langCode: langCode);
-            if (ok) return;
-          } catch (e) {
-            if (kDebugMode) debugPrint('TTS: Google fallback exception: $e');
-          }
+      case TtsEngine.google:
+        if (!_googleTtsAvailable) return false;
+        try {
+          return await _speakWithGoogleTTS(text, langCode: langCode);
+        } catch (e) {
+          if (kDebugMode) debugPrint('TTS: Google TTS exception: $e');
+          return false;
         }
-      } else {
-        // 1. Google TTS first (Chirp3-HD-Kore for Estonian, Gemini 3.1 for others).
-        if (_googleTtsAvailable) {
-          try {
-            final ok = await _speakWithGoogleTTS(text, langCode: langCode);
-            if (ok) return;
-          } catch (e) {
-            if (kDebugMode) debugPrint('TTS: Google TTS exception: $e');
-          }
-          // Retry once on transient errors.
-          await Future.delayed(const Duration(milliseconds: 500));
-          try {
-            final ok = await _speakWithGoogleTTS(text, langCode: langCode);
-            if (ok) return;
-          } catch (e) {
-            if (kDebugMode) debugPrint('TTS: Google retry exception: $e');
-          }
-        }
-        // 2. ElevenLabs as last resort for non-preferred languages.
-        if (_elevenLabsAvailable) {
-          try {
-            final ok = await _speakWithElevenLabs(text, langCode: langCode);
-            if (ok) return;
-          } catch (e) {
-            if (kDebugMode) debugPrint('TTS: ElevenLabs fallback exception: $e');
-          }
-        }
-      }
-
-      // 3. Browser TTS fallback — better than silence.
-      try {
-        await _speakWithBrowserTts(text, langCode: langCode);
-      } catch (e) {
-        if (kDebugMode) debugPrint('TTS: Browser TTS exception: $e');
-      }
-    } finally {
-      // Ensure _isSpeaking is eventually reset even if all engines fail.
-      // The polling timers or completion handlers will reset it normally,
-      // but if none of the engines started, we must reset it here.
-      if (!_isSpeaking) {
-        // Already false — no engine started successfully.
-      } else {
-        // An engine started; the polling timer / completion handler will
-        // handle resetting _isSpeaking. Nothing to do here.
-      }
     }
   }
 
