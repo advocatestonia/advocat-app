@@ -225,6 +225,76 @@ class ClaudeService {
     return false;
   }
 
+  /// Patterns that indicate the user wants a SHORT answer (yes/no, list, or
+  /// direct command). Used by [isShortQuery] to trigger a tight max_tokens
+  /// budget and an "adaptive response length" instruction in the system
+  /// prompt — fixing the "AI always writes 5-paragraph essays" bug.
+  //
+  // NOTE on matching: Dart RegExp treats `\b` as ASCII word-boundary only,
+  // so after a Cyrillic letter `\b` does not fire. Also `caseSensitive: false`
+  // does not perform Unicode case-folding by default. We therefore lowercase
+  // the input in [isShortQuery] before matching, use `(\s|$)` after non-ASCII
+  // tokens, and enable the unicode flag on patterns that touch Cyrillic or
+  // Estonian letters.
+  static final List<RegExp> _shortQueryPatterns = [
+    // "Yes or no:" / "Да или нет:" phrasings.
+    RegExp(r'\byes\s+or\s+no\b'),
+    RegExp(r'да\s+или\s+нет', unicode: true),
+    // Pure yes/no questions by prefix.
+    RegExp(r'^(can|is|are|do|does|will|should|may|am)\b'),
+    RegExp(r'^(могу|можно|это|будет|надо)(\s|$)', unicode: true),
+    RegExp(r'^kas\b'),
+    RegExp(r'^(voi|voiko|voinko)\b'),
+    // List / checklist requests.
+    RegExp(r'\b(list|checklist)\b'),
+    RegExp(r'^(составь|сделай|дай)\s+(список|чеклист|перечень)',
+        unicode: true),
+    RegExp(r'^(koosta|anna)\s+nimekiri\b'),
+    RegExp(r'^give\s+me\s+(a\s+)?(list|checklist)\b'),
+    // Direct commands.
+    RegExp(r'^(extend|postpone|cancel|open|close)\b'),
+    RegExp(r'^(продли|отмени|открой|закрой)(\s|$)', unicode: true),
+    RegExp(r'^(pikenda|tühista|ava|sulge)(\s|$)', unicode: true),
+  ];
+
+  /// Whether the query deserves a short (<= ~200 tokens) answer.
+  ///
+  /// Complements [isSimpleQuery]: a query can be complex legally but still
+  /// want a short answer (e.g. "Yes or no: can I appeal this decision?").
+  /// Explicit verbosity markers ("in detail", "подробно", "üksikasjalikult")
+  /// override the short classification.
+  static bool isShortQuery(String query) {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) return false;
+    final lower = trimmed.toLowerCase();
+
+    const verbosityMarkers = [
+      'in detail', 'thoroughly', 'walk me through',
+      'step by step', 'step-by-step',
+      'подробно', 'в деталях',
+      'üksikasjalikult', 'samm-sammult',
+      'yksityiskohtaisesti',
+    ];
+    for (final m in verbosityMarkers) {
+      if (lower.contains(m)) return false;
+    }
+
+    if (trimmed.length > 180) return false;
+
+    for (final pattern in _shortQueryPatterns) {
+      if (pattern.hasMatch(lower)) return true;
+    }
+
+    if (trimmed.length <= 40 && trimmed.endsWith('?')) {
+      return true;
+    }
+    return false;
+  }
+
+  /// Tight token budget for short queries. Prevents Claude from padding a
+  /// one-sentence answer into a five-paragraph essay.
+  static int maxTokensForShortQuery() => 200;
+
   /// Maximum retries on transient failures.
   static const int _maxRetries = 1;
 
