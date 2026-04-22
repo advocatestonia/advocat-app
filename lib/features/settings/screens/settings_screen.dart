@@ -101,6 +101,19 @@ class SettingsScreen extends ConsumerWidget {
 
           // ── Data & Privacy ────────────────────────────────────────────
           _SectionHeader(title: l.dataAndPrivacy),
+          // ADR-001 Tier 1 — let users review & wipe what the AI has
+          // learned about them (GDPR Art. 17). Copy is inline English for
+          // now; ARB keys land once the translation pass is scheduled.
+          _SettingsTile(
+            icon: Icons.psychology_outlined,
+            title: 'AI memory',
+            subtitle: 'Review and forget what the AI remembers about you',
+            trailing: const Icon(
+              AppIcons.chevronRight,
+              color: AppColors.textTertiary,
+            ),
+            onTap: () => context.push(AppRoutes.aiMemory),
+          ),
           _SettingsTile(
             icon: AppIcons.dataExport,
             title: l.exportMyData,
