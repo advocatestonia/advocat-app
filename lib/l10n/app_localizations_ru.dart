@@ -2411,7 +2411,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get howToUse => 'Как пользоваться?';
 
   @override
-  String get tutorialStep1Title => 'ИИ-юрист';
+  String get tutorialStep1Title => 'ИИ-помощник по праву';
 
   @override
   String get tutorialStep1Desc =>

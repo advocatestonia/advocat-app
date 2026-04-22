@@ -2404,7 +2404,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get howToUse => 'Як користуватися?';
 
   @override
-  String get tutorialStep1Title => 'ШІ-юрист';
+  String get tutorialStep1Title => 'ШІ-помічник із права';
 
   @override
   String get tutorialStep1Desc =>
