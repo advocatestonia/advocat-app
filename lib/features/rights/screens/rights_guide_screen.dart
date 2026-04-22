@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/advocat_gradient_header.dart';
 
 class RightsGuideScreen extends StatefulWidget {
   const RightsGuideScreen({super.key});
@@ -173,16 +174,8 @@ class _RightsGuideScreenState extends State<RightsGuideScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(
-          l10n.knowYourRights,
-          style: const TextStyle(
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.3,
-          ),
-        ),
-        backgroundColor: AppColors.surface,
-        elevation: 0,
+      appBar: AdvocatGradientHeader(
+        title: l10n.knowYourRights,
       ),
       body: CustomScrollView(
         slivers: [

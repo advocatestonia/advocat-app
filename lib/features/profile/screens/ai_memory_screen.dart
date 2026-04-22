@@ -19,6 +19,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../models/user_memory.dart';
 import '../../../services/user_memory_service.dart';
+import '../../../shared/widgets/advocat_gradient_header.dart';
 
 /// Riverpod-managed list of memories — refetched on demand.
 final aiMemoriesProvider = FutureProvider.autoDispose<List<UserMemory>>((ref) {
@@ -37,9 +38,8 @@ class AiMemoryScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('What we remember'),
-        backgroundColor: AppColors.surface,
+      appBar: const AdvocatGradientHeader(
+        title: 'What we remember',
       ),
       body: memoriesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),

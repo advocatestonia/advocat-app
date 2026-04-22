@@ -16,6 +16,7 @@ import '../../../main.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../../shared/constants/app_icons.dart';
+import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/status_chip.dart';
 import '../../auth/providers/auth_provider.dart';
@@ -34,9 +35,8 @@ class SettingsScreen extends ConsumerWidget {
     final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(l.settings),
-        backgroundColor: AppColors.surface,
+      appBar: AdvocatGradientHeader(
+        title: l.settings,
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),

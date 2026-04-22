@@ -10,6 +10,7 @@ import '../../../l10n/app_localizations.dart';
 import '../../../models/user.dart';
 import '../../../services/stripe_checkout_service.dart';
 import '../../../shared/constants/app_icons.dart';
+import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../auth/providers/auth_provider.dart';
 
 // ── Providers ────────────────────────────────────────────────────────────
@@ -73,10 +74,8 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(l10n.subscription),
-        backgroundColor: AppColors.surface,
-        elevation: 0,
+      appBar: AdvocatGradientHeader(
+        title: l10n.subscription,
       ),
       body: FadeTransition(
         opacity: _fadeAnimation,
