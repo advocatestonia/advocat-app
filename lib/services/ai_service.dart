@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../config/app_config.dart';
 import '../models/case_model.dart';
 import 'claude_service.dart';
+import 'language_detector.dart';
 import 'supabase_service.dart';
 import 'system_prompts.dart';
 
@@ -693,6 +694,15 @@ class AIService {
     // Sanitize user input before any AI processing
     final sanitizedMessage = _sanitizeInput(message);
 
+    // Post-launch BUG 1 fix (2026-04-22): per-message language override.
+    // If the current message is clearly in a different language than the
+    // user's profile preference, respond in the language of the message.
+    // See lib/services/language_detector.dart for the heuristic.
+    final effectiveUserLanguage = LanguageDetector.resolveUserLanguage(
+      profileLanguage: userLanguage,
+      message: sanitizedMessage,
+    );
+
     if (isUsingRealAI) {
       // ── Free-tier daily limit check ──
       final allowed = await _checkAndIncrementDailyLimit();
@@ -752,7 +762,7 @@ class AIService {
         String systemPrompt;
         if (isSimple) {
           systemPrompt = SystemPrompts.buildLightPrompt(
-            userLanguage: userLanguage,
+            userLanguage: effectiveUserLanguage,
           );
         } else {
           systemPrompt = SystemPrompts.buildChatPrompt(
@@ -760,7 +770,7 @@ class AIService {
             country: country,
             nationality: nationality,
             caseContext: caseDescription,
-            userLanguage: userLanguage,
+            userLanguage: effectiveUserLanguage,
             query: sanitizedMessage,
             useReducedContext: model == ClaudeService.modelHaiku,
           );
@@ -923,6 +933,14 @@ class AIService {
     // Sanitize user input before any AI processing.
     final sanitizedMessage = _sanitizeInput(message);
 
+    // Post-launch BUG 1 fix (2026-04-22): per-message language override.
+    // Same logic as sendChatMessage — honour the language of THIS message
+    // rather than the profile preference when they disagree.
+    final effectiveUserLanguage = LanguageDetector.resolveUserLanguage(
+      profileLanguage: userLanguage,
+      message: sanitizedMessage,
+    );
+
     // If real AI is not available, fall back to the regular method.
     if (!isUsingRealAI) {
       final response = await sendChatMessage(
@@ -997,7 +1015,7 @@ class AIService {
         country: country,
         nationality: nationality,
         caseContext: caseDescription,
-        userLanguage: userLanguage,
+        userLanguage: effectiveUserLanguage,
         query: sanitizedMessage,
         useReducedContext: model == ClaudeService.modelHaiku,
       );
