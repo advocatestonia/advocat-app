@@ -252,13 +252,16 @@ Deno.test("T13 — whisper-stt enforces MAX_AUDIO_B64 at 20 MB", () => {
   assertStringIncludes(src, "20 * 1024 * 1024");
 });
 
-Deno.test("T14 — all 5 billable functions import the shared gate", () => {
+Deno.test("T14 — all 6 billable functions import the shared gate", () => {
   const functions = [
     "whisper-stt",
     "tts-proxy",
     "google-tts",
     "check-company",
     "check-vehicle",
+    // Sprint 0 — FIX-7: create-checkout now requires JWT to prevent
+    // phishing via arbitrary customer_email values.
+    "create-checkout",
   ];
   for (const fn of functions) {
     const src = Deno.readTextFileSync(

@@ -1,16 +1,29 @@
+// create-checkout Edge Function
+// -----------------------------------------------------------------------------
+// Sprint 0 — FIX-7 (HIGH): Require JWT and force customer_email from the
+// authenticated user's session, never from the request body. Rate-limit to
+// 5 req/min per user.
+//
+// Ref: docs/security/02-auth-authz.md H2 — the pre-FIX-7 function accepted
+// `customer_email` from the client, which enabled:
+//   - Phishing: send `victim@bank.com` a legitimate-looking Stripe checkout
+//     URL; victim pays; we take the blame via chargebacks
+//   - Email enumeration against our user base
+//   - Email bombardment via Stripe receipt emails
+// -----------------------------------------------------------------------------
+
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.14.0?target=deno";
+import {
+  corsHeaders,
+  jsonError,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2023-10-16",
   httpClient: Stripe.createFetchHttpClient(),
 });
-
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://advocat.ee",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
 
 // ── Price lookup table (EUR cents) ──────────────────────────────────────
 
@@ -61,38 +74,41 @@ const PRICES: Record<string, Record<string, PriceEntry>> = {
 };
 
 serve(async (req: Request) => {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
+  if (req.method !== "POST") {
+    return jsonError("Method not allowed", 405);
   }
 
+  // FIX-7: JWT required + 5 req/min/user cap.
+  const gate = await requireUserWithRateLimit(req, {
+    bucket: "create-checkout",
+    maxPerMinute: 5,
+  });
+  if (gate.kind === "deny") return gate.response;
+
   try {
-    const { plan_id, billing_period, success_url, cancel_url, customer_email } =
-      await req.json();
+    // FIX-7: ignore `customer_email` from the body entirely. We use only
+    // the JWT-verified email. Destructure the remaining fields only.
+    const { plan_id, billing_period, success_url, cancel_url } = await req
+      .json();
 
     // Validate inputs
     if (!plan_id || !billing_period) {
-      return new Response(
-        JSON.stringify({ error: "plan_id and billing_period are required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return jsonError("plan_id and billing_period are required", 400);
     }
 
     const planPrices = PRICES[plan_id];
     if (!planPrices) {
-      return new Response(
-        JSON.stringify({ error: `Unknown plan_id: ${plan_id}` }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return jsonError(`Unknown plan_id: ${plan_id}`, 400);
     }
 
     const priceEntry = planPrices[billing_period];
     if (!priceEntry) {
-      return new Response(
-        JSON.stringify({
-          error: `Unknown billing_period: ${billing_period} for plan ${plan_id}`,
-        }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      return jsonError(
+        `Unknown billing_period: ${billing_period} for plan ${plan_id}`,
+        400,
       );
     }
 
@@ -117,18 +133,24 @@ serve(async (req: Request) => {
       metadata: {
         plan_id,
         billing_period,
+        // Record the authenticated user ID so the webhook can resolve the
+        // row in `profiles` even if the email later changes.
+        user_id: gate.user.id,
       },
     };
 
-    // Founding member: 3-month subscription schedule
-    // The founding price itself is already discounted; we use metadata
-    // so the webhook can enforce the 3-month limit.
+    // Founding member: metadata flag so the webhook enforces the 3-month
+    // limit. The price itself is already discounted.
     if (billing_period === "founding") {
       sessionParams.metadata!.founding_months = "3";
     }
 
-    if (customer_email) {
-      sessionParams.customer_email = customer_email;
+    // FIX-7: email comes from the JWT session, never from the body.
+    // A user without an email on their auth record cannot check out —
+    // that's the correct behaviour: Stripe Checkout needs an email and
+    // accepting one from the client re-opens the phishing vector.
+    if (gate.user.email) {
+      sessionParams.customer_email = gate.user.email;
     }
 
     const session = await stripe.checkout.sessions.create(sessionParams);
@@ -142,13 +164,9 @@ serve(async (req: Request) => {
     );
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error("Checkout error:", message);
-    return new Response(
-      JSON.stringify({ error: message }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
-    );
+    // Do NOT include user email or full message in the log — Stripe errors
+    // sometimes surface the customer object which contains PII.
+    console.error("create-checkout failed:", message.slice(0, 200));
+    return jsonError(message, 500);
   }
 });
