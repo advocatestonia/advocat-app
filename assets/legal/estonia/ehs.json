@@ -1,0 +1,63 @@
+{
+  "act": "EhS",
+  "name": "Ehitusseadustik",
+  "name_en": "Building Code",
+  "source": "https://www.riigiteataja.ee/akt/EhS",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "consolidated_version": "2026-03-28",
+  "sections": [
+    {
+      "paragraph": "§ 11",
+      "title": "Ehitisele esitatavad nõuded",
+      "body": "Building requirements: mechanical resistance, fire safety, hygiene, accessibility, acoustic protection, energy efficiency per EU Regulation 305/2011.",
+      "chapter": "2 Põhimõtted ja nõuded"
+    },
+    {
+      "paragraph": "§ 24",
+      "title": "Pädevus",
+      "body": "Qualified person competence evidenced by vocational/professional qualification or statutory competency certification in designated construction fields.",
+      "chapter": "3 Projekteerimise tingimused"
+    },
+    {
+      "paragraph": "§ 26",
+      "title": "Projekteerimistingimused",
+      "body": "Preliminary design conditions required when no detailed plan exists.",
+      "chapter": "3 Projekteerimise tingimused"
+    },
+    {
+      "paragraph": "§ 35",
+      "title": "Ehitusteatis",
+      "body": "Construction notification – simpler procedure for smaller buildings and alterations.",
+      "chapter": "4 Ehitamine"
+    },
+    {
+      "paragraph": "§ 38",
+      "title": "Ehitusluba",
+      "body": "Building permit required for major construction. Issued by local government. Valid 5 years.",
+      "chapter": "4 Ehitamine"
+    },
+    {
+      "paragraph": "§ 42",
+      "title": "Ehitusloa taotluse menetlemise tähtaeg",
+      "body": "Building permit application processed within 30 days; extendable in complex cases.",
+      "chapter": "4 Ehitamine"
+    },
+    {
+      "paragraph": "§ 47",
+      "title": "Kasutusteatis",
+      "body": "Use notification – for smaller completed works.",
+      "chapter": "5 Kasutamine"
+    },
+    {
+      "paragraph": "§ 50",
+      "title": "Kasutusluba",
+      "body": "Use permit for major completed buildings.",
+      "chapter": "5 Kasutamine"
+    }
+  ],
+  "appeal_deadline_days": 30,
+  "appeal_body": "Halduskohus",
+  "critical_for_immigrants": false,
+  "audience_priority": "medium",
+  "cross_references": ["PlanS", "HMS"]
+}

@@ -1,0 +1,177 @@
+{
+  "jurisdiction": "Estonia",
+  "country_code": "EE",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "source": "https://www.emta.ee",
+  "tax_rates_2026": {
+    "personal_income_tax": {
+      "rate_percent": 22,
+      "effective_date": "2025-01-01",
+      "basic_exemption_monthly_eur": 700,
+      "basic_exemption_annual_eur": 8400,
+      "basic_exemption_pension_age_monthly_eur": 776,
+      "basic_exemption_pension_age_annual_eur": 9312,
+      "legal_basis": "TuMS",
+      "notes": "Basic exemption no longer depends on income level from 2024"
+    },
+    "corporate_income_tax": {
+      "standard_rate_distributed_fraction": "22/78",
+      "effective_rate_percent": 22,
+      "reduced_dividend_rate_abolished": true,
+      "abolition_date": "2025-01-01",
+      "note": "Estonia taxes profits only on distribution. Reinvested profits untaxed. Previous 14/86 rate for regular dividends abolished from 2025.",
+      "legal_basis": "TuMS"
+    },
+    "vat": {
+      "standard_rate_percent": 24,
+      "reduced_rates_percent": [13, 9, 0],
+      "reduced_rates_applied_to": {
+        "13_percent": ["Accommodation services"],
+        "9_percent": ["Books", "Pharmaceuticals", "Newspapers/periodicals"],
+        "0_percent": ["Exports", "Intra-EU supplies", "International transport"]
+      },
+      "registration_threshold_eur": 40000,
+      "declaration_deadline": "20th of following month",
+      "legal_basis": "KMS"
+    },
+    "social_tax": {
+      "rate_percent": 33,
+      "min_monthly_base_eur_2026": 886,
+      "min_monthly_base_eur_2025": 820,
+      "employer_only": true,
+      "legal_basis": "SMS",
+      "use": "Funds state pension and health insurance"
+    },
+    "unemployment_insurance": {
+      "employee_rate_percent": 1.6,
+      "employer_rate_percent": 0.8,
+      "pension_age_employer_rate_percent": 0,
+      "pension_age_employee_rate_percent": 0,
+      "legal_basis": "TKindlS"
+    },
+    "funded_pension": {
+      "rates_percent": [2, 4, 6],
+      "default_rate_percent": 2,
+      "change_effective_dates": ["January 1", "May 1", "September 1"],
+      "legal_basis": "Kogumispensionide seadus"
+    },
+    "minimum_wage": {
+      "effective_date": "2026-04-01",
+      "hourly_eur": 5.67,
+      "monthly_fulltime_eur": 946
+    },
+    "land_tax": {
+      "note": "Rates set by local governments; generally 0.1-2.5% of taxable value"
+    }
+  },
+  "business_entities": {
+    "oü_private_limited_company": {
+      "name_et": "Osaühing",
+      "name_en": "Private Limited Company",
+      "min_share_capital_eur": 0,
+      "note_on_capital": "Since 2023, no minimum capital required. Previously €2500.",
+      "min_directors": 1,
+      "director_residency_required": false,
+      "registration_fee_eur": 265,
+      "registration_portal": "https://ariregister.rik.ee/",
+      "registration_time_minutes": "minutes (if digitally signed by all founders)",
+      "requires_estonian_address": true,
+      "legal_address_service_recommended_for_non_residents": true
+    },
+    "as_public_limited_company": {
+      "name_et": "Aktsiaselts",
+      "name_en": "Public Limited Company",
+      "min_share_capital_eur": 25000,
+      "min_directors": 1,
+      "min_supervisory_board_members": 3
+    },
+    "fie_sole_proprietor": {
+      "name_et": "Füüsilisest isikust ettevõtja",
+      "name_en": "Sole Proprietor",
+      "registration_fee_eur": 20,
+      "personal_liability": "unlimited",
+      "taxation": "Income tax 22% on profits; social tax min base applies"
+    },
+    "mtü_non_profit": {
+      "name_et": "Mittetulundusühing",
+      "name_en": "Non-profit Association",
+      "min_members": 2,
+      "registration_fee_eur": 20
+    }
+  },
+  "e_residency": {
+    "programme_name": "e-Residency",
+    "url": "https://www.e-resident.gov.ee",
+    "issuing_authority": "PPA",
+    "gives_right_to": [
+      "Access e-services",
+      "Digital signature",
+      "Establish Estonian company online",
+      "Access banking (subject to bank's KYC)"
+    ],
+    "does_not_give_right_to": [
+      "Residence in Estonia",
+      "Travel to Estonia",
+      "Schengen entry",
+      "Citizenship"
+    ],
+    "state_fee_eur": 120
+  },
+  "digital_nomad_visa": {
+    "name_et": "Digitaalse nomaadi viisa",
+    "issuing_authority": "PPA",
+    "url": "https://www.politsei.ee/en/instructions/visa-and-extending-period-of-stay/long-term-visa",
+    "min_monthly_income_eur": 4500,
+    "max_duration_days": 365,
+    "target": "Remote workers for foreign employers/clients"
+  },
+  "annual_reporting": {
+    "deadline_months_after_year_end": 6,
+    "submission_portal": "https://ariregister.rik.ee/",
+    "legal_basis": "RPS § 14",
+    "penalty_for_late_submission": "Up to €3200 fine; dissolution of company after repeated failure"
+  },
+  "employee_vs_contractor": {
+    "substance_over_form": true,
+    "authority": "MTA, Tööinspektsioon",
+    "tests_applied": [
+      "Control and supervision",
+      "Integration into business",
+      "Economic dependence",
+      "Provision of tools and equipment",
+      "Right to substitute",
+      "Financial risk"
+    ],
+    "misclassification_consequences": [
+      "Retroactive social tax",
+      "Income tax withholding",
+      "Employment rights (vacation, sick pay)",
+      "Penalties"
+    ]
+  },
+  "invoice_requirements_vat": {
+    "mandatory_fields": [
+      "'Arve' (invoice)",
+      "Date issued",
+      "Sequential number",
+      "Seller name, address, VAT number",
+      "Buyer name, address, VAT number (if B2B EU)",
+      "Goods/services description",
+      "Quantity",
+      "Date of supply",
+      "Price without VAT",
+      "VAT rate",
+      "VAT amount",
+      "Total"
+    ],
+    "legal_basis": "KMS § 37"
+  },
+  "estonia_specific_advantages": [
+    "0% corporate tax on reinvested profits",
+    "Fully digital government",
+    "e-Residency available globally",
+    "EU member state",
+    "English widely used in business",
+    "Flat 22% income tax"
+  ]
+}

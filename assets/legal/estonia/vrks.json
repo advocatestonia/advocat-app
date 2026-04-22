@@ -1,0 +1,101 @@
+{
+  "act": "VRKS",
+  "name": "Välismaalasele rahvusvahelise kaitse andmise seadus",
+  "name_en": "Act on Granting International Protection to Aliens",
+  "source": "https://www.riigiteataja.ee/akt/VRKS",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "consolidated_version": "2025-09-01",
+  "last_amendment": "2025-06-26",
+  "sections": [
+    {
+      "paragraph": "§ 3",
+      "title": "Rahvusvahelise kaitse mõisted",
+      "body": "Definitions: refugee status, subsidiary protection, temporary protection. Key EU directives: 2011/95/EU (qualification), 2013/32/EU (procedures), 2013/33/EU (reception conditions).",
+      "chapter": "1 Üldsätted"
+    },
+    {
+      "paragraph": "§ 14",
+      "title": "Rahvusvahelise kaitse taotluse esitamine",
+      "body": "Application for international protection must be submitted to PPA (border or territorial). Applicant registered, biometric data collected.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 18",
+      "title": "Taotluse läbivaatamine",
+      "body": "Examination of application by PPA. Determines refugee status or subsidiary protection.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 18¹",
+      "title": "Taotluse läbivaatamise tähtaeg",
+      "body": "Examination deadline: 6 months from acceptance; extendable up to 9 additional months for complex cases; maximum 21 months total.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 20",
+      "title": "Ilmselgelt põhjendamatu taotlus",
+      "body": "Unfounded applications – specific grounds for summary rejection.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 20¹",
+      "title": "Ilmselgelt põhjendamatu taotlus kiirendatud menetluses",
+      "body": "Manifestly unfounded application in accelerated procedure – shorter deadlines, limited appeal rights.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 22",
+      "title": "Välistamise alused",
+      "body": "Exclusion grounds: war crimes, crimes against humanity, serious non-political crimes, acts against UN purposes.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 25",
+      "title": "Taotluse rahuldamata jätmine",
+      "body": "Rejection decision. Appeal to halduskohus.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 25¹",
+      "title": "Otsuse vaidlustamise tähtaeg",
+      "body": "Appeal deadline: 10 days from notification of rejection decision. Expedited procedure: even shorter deadlines apply.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 36",
+      "title": "Kinnipidamine",
+      "body": "Detention of asylum seekers – grounds include identity verification, protection of national security, risk of absconding. Up to 18 months with court approval.",
+      "chapter": "2 Menetlus"
+    },
+    {
+      "paragraph": "§ 37",
+      "title": "Elamisloa andmine",
+      "body": "Residence permit granted to refugees (3 years initial, renewable) and to subsidiary protection beneficiaries (1 year initial, renewable).",
+      "chapter": "3 Elamisluba"
+    },
+    {
+      "paragraph": "§ 46",
+      "title": "Perekonna taasühinemine",
+      "body": "Family reunification rights for recognised refugees and subsidiary protection beneficiaries.",
+      "chapter": "3 Elamisluba"
+    },
+    {
+      "paragraph": "§ 50",
+      "title": "Tagasisaatmise keeld",
+      "body": "Non-refoulement principle – absolute prohibition of return to persecution or serious harm.",
+      "chapter": "4 Staatuse lõpetamine"
+    },
+    {
+      "paragraph": "§ 52",
+      "title": "Ajutise kaitse kindlaksmääramine",
+      "body": "Temporary protection determined by Government of Estonia following EU Council decision (e.g. Ukraine 2022+).",
+      "chapter": "5 Ajutine kaitse"
+    }
+  ],
+  "appeal_deadline_days": 10,
+  "appeal_body": "Halduskohus",
+  "max_examination_months": 21,
+  "critical_for_immigrants": true,
+  "audience_priority": "critical",
+  "cross_references": ["VMS", "VSS"]
+}

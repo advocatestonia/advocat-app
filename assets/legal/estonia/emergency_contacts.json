@@ -1,0 +1,202 @@
+{
+  "jurisdiction": "Estonia",
+  "country_code": "EE",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "emergency": [
+    {
+      "number": "112",
+      "service": "Üldine hädaabi",
+      "service_en": "General emergency (police, ambulance, fire)",
+      "service_ru": "Общая служба экстренной помощи",
+      "hours": "24/7",
+      "languages": ["et", "en", "ru"],
+      "cost": "free",
+      "when_to_call": "Life-threatening situations, active crime, fire, medical emergency"
+    },
+    {
+      "number": "1247",
+      "number_abroad": "+372 600 1247",
+      "service": "Riigiinfotelefon / Kriisitelefon",
+      "service_en": "State Information / Crisis Hotline",
+      "service_ru": "Государственная информационная / кризисная линия",
+      "hours": "24/7",
+      "languages": ["et", "en", "ru"],
+      "cost": "free",
+      "source_url": "https://www.sotsiaalkindlustusamet.ee/en/news/crisis-hotline-1247-now-offers-psychological-first-aid",
+      "authority": "Päästeamet (Rescue Board), Sotsiaalkindlustusamet",
+      "services_provided": [
+        "General state information",
+        "Psychological first aid (since 2023)",
+        "Crisis counselling",
+        "Information on government services",
+        "First responders stress support"
+      ],
+      "cooperation": "Works with 116 006 Victim Support Crisis Hotline"
+    },
+    {
+      "number": "116 006",
+      "number_abroad": "+372 614 7393",
+      "service": "Ohvriabi kriisitelefon",
+      "service_en": "Victim Support Crisis Helpline",
+      "service_ru": "Кризисный телефон помощи жертвам преступлений",
+      "hours": "24/7",
+      "languages": ["et", "en", "ru"],
+      "cost": "free",
+      "anonymous": true,
+      "chat_url": "https://www.palunabi.ee",
+      "source_url": "https://sotsiaalkindlustusamet.ee/en/child-and-adult-need-help/support-victims/victim-support-crisis-helpline",
+      "authority": "Sotsiaalkindlustusamet",
+      "services_provided": [
+        "Victim support (crime victims)",
+        "Domestic violence support",
+        "Sexual violence support",
+        "Human trafficking victims",
+        "Hate crime victims",
+        "Psychological first aid",
+        "Referral to further help"
+      ]
+    },
+    {
+      "number": "116 123",
+      "service": "Vaimse tervise tugiliin / Hingeabi telefon",
+      "service_en": "Emotional Support / Pastoral Care Helpline",
+      "service_ru": "Линия эмоциональной поддержки",
+      "hours": "various (see website)",
+      "languages": ["et"],
+      "cost": "free",
+      "source_url": "https://sotsiaalkindlustusamet.ee/en/child-and-adult-need-help/mental-health-crisis/emotional-support-and-pastoral-care-helpline-116-123"
+    },
+    {
+      "number": "116 111",
+      "service": "Lasteabi",
+      "service_en": "Child Helpline",
+      "service_ru": "Детская линия помощи",
+      "hours": "24/7",
+      "languages": ["et", "en", "ru"],
+      "cost": "free",
+      "source_url": "https://sotsiaalkindlustusamet.ee/en/child-and-adult-need-help/child-protection-and-family-support/child-helpline-116111",
+      "services_provided": [
+        "Child protection concerns",
+        "Report child abuse or neglect",
+        "Support for children in crisis",
+        "Support for adults worried about a child"
+      ]
+    }
+  ],
+  "sectoral_helplines": [
+    {
+      "number": "+372 640 6000",
+      "service": "Tööinspektsiooni nõustamine",
+      "service_en": "Labour Inspectorate consultation",
+      "service_ru": "Консультация трудовой инспекции",
+      "hours": "Mon-Fri 09:00-15:00",
+      "cost": "free",
+      "authority": "Tööinspektsioon",
+      "services_provided": [
+        "Employment law advice",
+        "Wage claim information",
+        "Working conditions complaints",
+        "Reporting labour violations"
+      ]
+    },
+    {
+      "number": "+372 5620 2341",
+      "service": "Andmekaitse Inspektsiooni nõuandetelefon",
+      "service_en": "Data Protection Inspectorate advisory line",
+      "service_ru": "Консультация по защите данных",
+      "hours": "Mon-Thu 13:00-16:00",
+      "email": "info@aki.ee",
+      "address": "Tatari 39, 10134 Tallinn",
+      "authority": "Andmekaitse Inspektsioon (AKI)",
+      "services_provided": [
+        "GDPR questions",
+        "How to file privacy complaint",
+        "Rights under data protection law"
+      ]
+    },
+    {
+      "number": "800 9999",
+      "number_abroad": "+372 6599 025",
+      "service": "Integratsiooni infotelefon",
+      "service_en": "Integration Info Line",
+      "service_ru": "Инфотелефон интеграции",
+      "cost": "free",
+      "email": "info@integratsiooniinfo.ee",
+      "authority": "Integratsiooni Sihtasutus (MISA / INSA)",
+      "languages": ["et", "en", "ru"],
+      "services_provided": [
+        "Language course information",
+        "Citizenship preparation",
+        "Settle in Estonia programme info",
+        "Legal information for new immigrants"
+      ]
+    },
+    {
+      "number": "+372 612 3000",
+      "service": "PPA infotelefon",
+      "service_en": "Police and Border Guard info line",
+      "service_ru": "Инфотелефон Департамента полиции и пограничной охраны",
+      "hours": "Mon-Fri",
+      "authority": "PPA",
+      "services_provided": [
+        "Residence permit questions",
+        "Document information",
+        "Non-emergency police matters"
+      ]
+    }
+  ],
+  "legal_aid": [
+    {
+      "service": "Riigi õigusabi",
+      "service_en": "State Legal Aid",
+      "service_ru": "Государственная правовая помощь",
+      "authority": "Eesti Advokatuur",
+      "url": "https://www.advokatuur.ee/en/state-legal-aid",
+      "eligibility": "Natural person residing in Estonia or EU Member State, or citizen of Estonia/EU",
+      "cost_structure": [
+        "Free (no reimbursement obligation)",
+        "Partially reimbursable in installments",
+        "Fully reimbursable (but upfront covered by state)"
+      ],
+      "application": "To county court (maakohus) of applicant's residence; financial situation notice required except criminal defence"
+    },
+    {
+      "service": "HUGO.legal / JURIST AITAB",
+      "url": "https://www.juristaitab.ee",
+      "description": "2 hours of free legal consultation for persons in Estonia with average gross monthly income up to €1200",
+      "authority": "Justiitsministeerium grant, delivered by HUGO.legal",
+      "languages": ["et", "en", "ru"]
+    }
+  ],
+  "specialised_crisis_centres": [
+    {
+      "category": "domestic_violence_women",
+      "name": "Naiste tugikeskused",
+      "name_en": "Women's Support Centres",
+      "url": "https://sotsiaalkindlustusamet.ee/en/child-and-adult-need-help/support-victims/womens-support-centers",
+      "services": ["Shelter", "Psychological help", "Legal counselling"]
+    },
+    {
+      "category": "child_sexual_abuse",
+      "name": "Laste Maja",
+      "name_en": "Children's House (Barnahus)",
+      "url": "https://sotsiaalkindlustusamet.ee/en/childrens-house"
+    }
+  ],
+  "ombudsman": {
+    "name": "Õiguskantsler",
+    "name_en": "Chancellor of Justice",
+    "url": "https://www.oiguskantsler.ee/",
+    "phone": "+372 693 8404",
+    "address": "Kohtu 8, 15193 Tallinn",
+    "languages": ["et", "en", "ru"],
+    "competence": [
+      "Review constitutionality of laws",
+      "Review of public authority actions",
+      "Human rights ombudsman",
+      "Children's rights ombudsman",
+      "National Preventive Mechanism (torture prevention)"
+    ],
+    "complaint_deadline_years": 1
+  }
+}
