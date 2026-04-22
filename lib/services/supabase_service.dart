@@ -378,6 +378,34 @@ class SupabaseService {
 
   // ── Edge Functions ──────────────────────────────────────────────────
 
+  /// Calls the `increment_message_count` Postgres RPC (added in the
+  /// 20260422_increment_message_count migration).
+  ///
+  /// The RPC is SECURITY DEFINER and scoped to `auth.uid()`; it atomically
+  /// bumps `subscriptions.messages_used_count` on the user's active or
+  /// trialing subscription and returns the new value. Free-tier users
+  /// hit the "no active subscription" branch and receive 0 back.
+  ///
+  /// Returns `null` when the RPC cannot be reached (offline, demo mode,
+  /// not signed in). Callers should treat `null` and `0` the same —
+  /// "no paid subscription touched", no UI reaction needed.
+  ///
+  /// This is a best-effort fire-and-forget call. Callers must NOT await
+  /// it on the hot path of an AI response — wrap it in `unawaited()` so
+  /// chat UX is not delayed by the database round-trip.
+  Future<int?> incrementMessageCount() async {
+    if (isDemo) return null;
+    try {
+      final res = await _client.rpc('increment_message_count');
+      if (res is int) return res;
+      if (res is num) return res.toInt();
+      if (res is String) return int.tryParse(res);
+      return null;
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Call a Supabase Edge Function by [functionName] with an optional JSON
   /// [body]. Returns the decoded JSON response, or `null` on failure.
   Future<Map<String, dynamic>?> callEdgeFunction(

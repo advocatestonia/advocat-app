@@ -115,12 +115,32 @@ class SupabaseAiQuotaClient implements AiQuotaClient {
   }
 }
 
+/// Abstraction over the `increment_message_count` RPC so tests can inject
+/// a fake and assert the hook fires exactly once per AI response without
+/// a live Supabase instance.
+abstract class MessageCounter {
+  /// Increment the signed-in user's AI response count. Returns the new
+  /// count, or `null` on transport failure / offline / demo mode. Never
+  /// throws.
+  Future<int?> increment();
+}
+
+/// Production [MessageCounter] backed by [SupabaseService.incrementMessageCount].
+class SupabaseMessageCounter implements MessageCounter {
+  SupabaseMessageCounter(this._supabase);
+  final SupabaseService _supabase;
+
+  @override
+  Future<int?> increment() => _supabase.incrementMessageCount();
+}
+
 final aiServiceProvider = Provider<AIService>((ref) {
   final claudeService = ref.watch(claudeServiceProvider);
   final supabase = ref.watch(supabaseServiceProvider);
   return AIService(
     claudeService: claudeService,
     quotaClient: SupabaseAiQuotaClient(supabase),
+    messageCounter: SupabaseMessageCounter(supabase),
   );
 });
 
@@ -133,8 +153,10 @@ class AIService {
   AIService({
     ClaudeService? claudeService,
     AiQuotaClient? quotaClient,
+    MessageCounter? messageCounter,
   })  : _claudeService = claudeService ?? ClaudeService(),
         _quotaClient = quotaClient,
+        _messageCounter = messageCounter,
         _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
@@ -152,8 +174,45 @@ class AIService {
 
   final ClaudeService _claudeService;
   final AiQuotaClient? _quotaClient;
+
+  /// Optional hook that increments the Supabase `subscriptions.
+  /// messages_used_count` via the `increment_message_count` RPC. Fires
+  /// fire-and-forget after each successful AI response so the refund
+  /// window (14 days OR 7 responses) closes correctly.
+  ///
+  /// Injectable so tests can assert call-count without a live Supabase.
+  final MessageCounter? _messageCounter;
+
   final Dio _dio;
   final Logger _log;
+
+  /// Fires the `increment_message_count` RPC on a background microtask
+  /// so an AI response is never blocked by the counter round-trip.
+  ///
+  /// - Counts EXACTLY ONE call per completed AI response (streaming and
+  ///   non-streaming paths both end here after the response is saved to
+  ///   history).
+  /// - Errors are swallowed by [MessageCounter.increment] (returns
+  ///   `null`); we do not want a flaky DB to degrade chat UX.
+  /// - Free-tier users: the SECURITY DEFINER RPC returns 0 when no
+  ///   active subscription exists, so this call is safe to issue
+  ///   unconditionally from the client.
+  void _bumpMessageCounter() {
+    final counter = _messageCounter;
+    if (counter == null) return;
+    // Intentionally not awaited — fire-and-forget. We attach a catchError
+    // so a rejected future (network failure, RPC error) cannot surface as
+    // an unhandled async error in the zone.
+    try {
+      // ignore: discarded_futures
+      counter.increment().catchError((Object e) {
+        _log.w('message counter hook rejected: $e');
+        return null;
+      });
+    } catch (e) {
+      _log.w('message counter hook threw synchronously: $e');
+    }
+  }
 
   // ── Quota cache (P0-3) ─────────────────────────────────────────────
   //
@@ -480,6 +539,21 @@ class AIService {
   @visibleForTesting
   static String sanitizeForTest(String text) => _sanitizeInput(text);
 
+  /// Test-only: seed the response cache so cache-hit paths can be exercised
+  /// without hitting Claude. Used by message-counter hook tests.
+  @visibleForTesting
+  void debugCacheResponse(String query, String response) {
+    _cacheResponse(query, response);
+  }
+
+  /// Test-only: directly invoke the message-counter hook. Used by tests
+  /// that verify the hook's defensive behaviour (null counter, throwing
+  /// counter) in isolation.
+  @visibleForTesting
+  void debugBumpMessageCounter() {
+    _bumpMessageCounter();
+  }
+
   // ── Conversation history for real AI mode ──────────────────────────────
 
   /// Per-case conversation history for Claude context.
@@ -712,6 +786,9 @@ class AIService {
           _log.i('Cache hit for query');
           _addToHistory(caseId, 'user', sanitizedMessage);
           _addToHistory(caseId, 'assistant', cached);
+          // Founder's Beta: a cache hit is still a billable response
+          // from the user's perspective (they got an answer). Count it.
+          _bumpMessageCounter();
           return ChatResponse(
             message: cached,
             disclaimer:
@@ -803,6 +880,7 @@ class AIService {
           // Add to history and return immediately — no tool processing needed.
           _addToHistory(caseId, 'assistant', textOnly);
           _cacheResponse(sanitizedMessage, textOnly);
+          _bumpMessageCounter();
           return ChatResponse(
             message: textOnly,
             disclaimer:
@@ -835,6 +913,10 @@ class AIService {
             _addToHistory(caseId, 'assistant', textContent);
           }
 
+          // Tool-use path: user still receives a response (either text
+          // or a tool-invocation result the caller will surface). Count
+          // it so the refund window reflects reality.
+          _bumpMessageCounter();
           return ChatResponse(
             message: textContent.isNotEmpty
                 ? textContent
@@ -854,6 +936,8 @@ class AIService {
 
         // Cache the response for future identical queries
         _cacheResponse(sanitizedMessage, responseText);
+
+        _bumpMessageCounter();
 
         return ChatResponse(
           message: responseText,
@@ -957,6 +1041,8 @@ class AIService {
         _log.i('Cache hit for query (streaming path)');
         _addToHistory(caseId, 'user', sanitizedMessage);
         _addToHistory(caseId, 'assistant', cached);
+        // Streaming cache-hit path: user receives an answer → count it.
+        _bumpMessageCounter();
         yield cached;
         return;
       }
@@ -1043,6 +1129,10 @@ class AIService {
       if (responseText.isNotEmpty) {
         _addToHistory(caseId, 'assistant', responseText);
         _cacheResponse(sanitizedMessage, responseText);
+        // Streaming completion is the user-facing success event for this
+        // path. Bump the counter here (and NOT in the fallback branch
+        // below — that delegates to sendChatMessage which counts itself).
+        _bumpMessageCounter();
       }
     } on ClaudeServiceException catch (e) {
       _log.e('Claude streaming chat failed, falling back to non-streaming',
