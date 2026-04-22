@@ -2493,4 +2493,35 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get commonOk => 'ОК';
+
+  @override
+  String get founderBetaBadge => 'Founder\'s Beta v1.0 • Ограничено';
+
+  @override
+  String get refundPolicyShort => 'Возврат 14 дней или 7 ответов AI';
+
+  @override
+  String get consentModalTitle => 'Прежде чем начать';
+
+  @override
+  String get consentModalBody =>
+      'Ты можешь вернуть деньги в течение 14 дней после подписки или до 7-го ответа AI — что наступит раньше. После 7-го ответа 14-дневный срок сгорает (Директива ЕС о правах потребителей, ст. 16m — отказ от права для цифрового контента).';
+
+  @override
+  String get consentModalCheckbox =>
+      'Я понимаю и согласен начать использование';
+
+  @override
+  String get consentModalButton => 'Начать';
+
+  @override
+  String get betaCapFull =>
+      'Founder\'s Beta заполнена. Встань в лист ожидания.';
+
+  @override
+  String get waitlistJoinedTitle => 'Ты в списке';
+
+  @override
+  String get waitlistJoinedBody =>
+      'Мы напишем, как только освободится место Founder.';
 }

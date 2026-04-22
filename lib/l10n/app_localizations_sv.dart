@@ -2483,4 +2483,34 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get founderBetaBadge => 'Founder\'s Beta v1.0 • Limited spots';
+
+  @override
+  String get refundPolicyShort => '14-day refund or 7 AI responses';
+
+  @override
+  String get consentModalTitle => 'Before you begin';
+
+  @override
+  String get consentModalBody =>
+      'You can request a refund within 14 days of subscribing, or up to your 7th AI response — whichever comes first. After the 7th answer, the 14-day right expires (EU CRD Art. 16m — digital content waiver).';
+
+  @override
+  String get consentModalCheckbox =>
+      'I understand and agree to begin using the service';
+
+  @override
+  String get consentModalButton => 'Begin';
+
+  @override
+  String get betaCapFull => 'Founder\'s Beta is full. Join the waitlist.';
+
+  @override
+  String get waitlistJoinedTitle => 'You\'re on the list';
+
+  @override
+  String get waitlistJoinedBody =>
+      'We\'ll email you the moment a Founder seat opens.';
 }

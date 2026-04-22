@@ -944,5 +944,14 @@
     "upgradeBannerCta": "Uuenda",
     "paymentSuccessTitle": "Makse õnnestus",
     "paymentSuccessBody": "Teie tellimus on nüüd aktiivne.",
-    "commonOk": "OK"
+    "commonOk": "OK",
+    "founderBetaBadge": "Founder's Beta v1.0 • Piiratud kohtade arv",
+    "refundPolicyShort": "14-päevane tagasimakse või 7 AI vastust",
+    "consentModalTitle": "Enne alustamist",
+    "consentModalBody": "Võid taotleda tagasimakset 14 päeva jooksul pärast tellimust või kuni 7. AI vastuseni — kumb esimesena saabub. Pärast 7. vastust 14-päevane õigus aegub (ELi tarbijaõiguste direktiivi art 16m — digitaalse sisu loobumine).",
+    "consentModalCheckbox": "Mõistan ja nõustun teenuse kasutamist alustama",
+    "consentModalButton": "Alusta",
+    "betaCapFull": "Founder's Beta on täis. Liitu ootenimekirjaga.",
+    "waitlistJoinedTitle": "Oled nimekirjas",
+    "waitlistJoinedBody": "Saadame sulle e-kirja kohe, kui avaneb Founderi koht."
 }

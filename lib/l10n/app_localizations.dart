@@ -4561,6 +4561,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get commonOk;
+
+  /// No description provided for @founderBetaBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Founder\'s Beta v1.0 • Limited spots'**
+  String get founderBetaBadge;
+
+  /// No description provided for @refundPolicyShort.
+  ///
+  /// In en, this message translates to:
+  /// **'14-day refund or 7 AI responses'**
+  String get refundPolicyShort;
+
+  /// No description provided for @consentModalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you begin'**
+  String get consentModalTitle;
+
+  /// No description provided for @consentModalBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You can request a refund within 14 days of subscribing, or up to your 7th AI response — whichever comes first. After the 7th answer, the 14-day right expires (EU CRD Art. 16m — digital content waiver).'**
+  String get consentModalBody;
+
+  /// No description provided for @consentModalCheckbox.
+  ///
+  /// In en, this message translates to:
+  /// **'I understand and agree to begin using the service'**
+  String get consentModalCheckbox;
+
+  /// No description provided for @consentModalButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin'**
+  String get consentModalButton;
+
+  /// No description provided for @betaCapFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Founder\'s Beta is full. Join the waitlist.'**
+  String get betaCapFull;
+
+  /// No description provided for @waitlistJoinedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re on the list'**
+  String get waitlistJoinedTitle;
+
+  /// No description provided for @waitlistJoinedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll email you the moment a Founder seat opens.'**
+  String get waitlistJoinedBody;
 }
 
 class _AppLocalizationsDelegate

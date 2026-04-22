@@ -965,5 +965,14 @@
     "upgradeBannerCta": "Upgrade",
     "paymentSuccessTitle": "Payment successful",
     "paymentSuccessBody": "Your subscription is now active.",
-    "commonOk": "OK"
+    "commonOk": "OK",
+    "founderBetaBadge": "Founder's Beta v1.0 • Limited spots",
+    "refundPolicyShort": "14-day refund or 7 AI responses",
+    "consentModalTitle": "Before you begin",
+    "consentModalBody": "You can request a refund within 14 days of subscribing, or up to your 7th AI response — whichever comes first. After the 7th answer, the 14-day right expires (EU CRD Art. 16m — digital content waiver).",
+    "consentModalCheckbox": "I understand and agree to begin using the service",
+    "consentModalButton": "Begin",
+    "betaCapFull": "Founder's Beta is full. Join the waitlist.",
+    "waitlistJoinedTitle": "You're on the list",
+    "waitlistJoinedBody": "We'll email you the moment a Founder seat opens."
 }

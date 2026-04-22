@@ -944,5 +944,14 @@
   "upgradeBannerCta": "Päivitä",
   "paymentSuccessTitle": "Maksu onnistui",
   "paymentSuccessBody": "Tilauksesi on nyt aktiivinen.",
-  "commonOk": "OK"
+  "commonOk": "OK",
+  "founderBetaBadge": "Founder's Beta v1.0 • Rajallinen",
+  "refundPolicyShort": "14 päivän palautus tai 7 AI-vastausta",
+  "consentModalTitle": "Ennen kuin aloitat",
+  "consentModalBody": "Voit pyytää palautusta 14 päivän kuluessa tilauksesta tai 7. AI-vastaukseen asti — kumpi tulee ensin. 7. vastauksen jälkeen 14 päivän oikeus raukeaa (EU:n kuluttajaoikeusdirektiivi 16m — digitaalisen sisällön luopuminen).",
+  "consentModalCheckbox": "Ymmärrän ja suostun aloittamaan palvelun käytön",
+  "consentModalButton": "Aloita",
+  "betaCapFull": "Founder's Beta on täynnä. Liity jonotuslistalle.",
+  "waitlistJoinedTitle": "Olet listalla",
+  "waitlistJoinedBody": "Lähetämme sähköpostia heti, kun Founder-paikka vapautuu."
 }

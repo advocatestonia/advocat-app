@@ -944,5 +944,14 @@
   "upgradeBannerCta": "Обновить",
   "paymentSuccessTitle": "Оплата прошла",
   "paymentSuccessBody": "Подписка активирована.",
-  "commonOk": "ОК"
+  "commonOk": "ОК",
+  "founderBetaBadge": "Founder's Beta v1.0 • Ограничено",
+  "refundPolicyShort": "Возврат 14 дней или 7 ответов AI",
+  "consentModalTitle": "Прежде чем начать",
+  "consentModalBody": "Ты можешь вернуть деньги в течение 14 дней после подписки или до 7-го ответа AI — что наступит раньше. После 7-го ответа 14-дневный срок сгорает (Директива ЕС о правах потребителей, ст. 16m — отказ от права для цифрового контента).",
+  "consentModalCheckbox": "Я понимаю и согласен начать использование",
+  "consentModalButton": "Начать",
+  "betaCapFull": "Founder's Beta заполнена. Встань в лист ожидания.",
+  "waitlistJoinedTitle": "Ты в списке",
+  "waitlistJoinedBody": "Мы напишем, как только освободится место Founder."
 }

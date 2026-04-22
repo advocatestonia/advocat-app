@@ -2484,4 +2484,34 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get founderBetaBadge => 'Founder\'s Beta v1.0 • Rajallinen';
+
+  @override
+  String get refundPolicyShort => '14 päivän palautus tai 7 AI-vastausta';
+
+  @override
+  String get consentModalTitle => 'Ennen kuin aloitat';
+
+  @override
+  String get consentModalBody =>
+      'Voit pyytää palautusta 14 päivän kuluessa tilauksesta tai 7. AI-vastaukseen asti — kumpi tulee ensin. 7. vastauksen jälkeen 14 päivän oikeus raukeaa (EU:n kuluttajaoikeusdirektiivi 16m — digitaalisen sisällön luopuminen).';
+
+  @override
+  String get consentModalCheckbox =>
+      'Ymmärrän ja suostun aloittamaan palvelun käytön';
+
+  @override
+  String get consentModalButton => 'Aloita';
+
+  @override
+  String get betaCapFull => 'Founder\'s Beta on täynnä. Liity jonotuslistalle.';
+
+  @override
+  String get waitlistJoinedTitle => 'Olet listalla';
+
+  @override
+  String get waitlistJoinedBody =>
+      'Lähetämme sähköpostia heti, kun Founder-paikka vapautuu.';
 }

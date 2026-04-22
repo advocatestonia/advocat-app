@@ -2482,4 +2482,34 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get founderBetaBadge => 'Founder\'s Beta v1.0 • Piiratud kohtade arv';
+
+  @override
+  String get refundPolicyShort => '14-päevane tagasimakse või 7 AI vastust';
+
+  @override
+  String get consentModalTitle => 'Enne alustamist';
+
+  @override
+  String get consentModalBody =>
+      'Võid taotleda tagasimakset 14 päeva jooksul pärast tellimust või kuni 7. AI vastuseni — kumb esimesena saabub. Pärast 7. vastust 14-päevane õigus aegub (ELi tarbijaõiguste direktiivi art 16m — digitaalse sisu loobumine).';
+
+  @override
+  String get consentModalCheckbox =>
+      'Mõistan ja nõustun teenuse kasutamist alustama';
+
+  @override
+  String get consentModalButton => 'Alusta';
+
+  @override
+  String get betaCapFull => 'Founder\'s Beta on täis. Liitu ootenimekirjaga.';
+
+  @override
+  String get waitlistJoinedTitle => 'Oled nimekirjas';
+
+  @override
+  String get waitlistJoinedBody =>
+      'Saadame sulle e-kirja kohe, kui avaneb Founderi koht.';
 }
