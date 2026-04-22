@@ -1,0 +1,204 @@
+{
+  "source_portal": "https://www.eesti.ee/en",
+  "languages_available": ["et", "en", "ru"],
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "categories": [
+    {
+      "category": "citizenship_and_residence",
+      "name_et": "Kodakondsus ja dokumendid",
+      "name_en": "Citizenship and documents",
+      "authority": "PPA (Politsei- ja Piirivalveamet)",
+      "portal_url": "https://www.politsei.ee/en/instructions",
+      "services": [
+        {
+          "service": "D-type long-term visa",
+          "url": "https://www.politsei.ee/en/instructions/visa-and-extending-period-of-stay/long-term-visa",
+          "description": "Long-stay (D-type) visa up to 365 days. Must apply at PPA at least 30 days before current stay expires, not earlier than 2 months.",
+          "processing_days": 30,
+          "required_documents": ["valid travel document", "basis (employment, study, family)", "health insurance", "means of subsistence"]
+        },
+        {
+          "service": "Residence permit for employment",
+          "url": "https://www.politsei.ee/en/instructions/residence-permit-for-employment",
+          "description": "Temporary residence permit for working in Estonia. Up to 5 years, extendable up to 10 years at a time.",
+          "max_duration_years": 5,
+          "extension_max_years": 10
+        },
+        {
+          "service": "Residence permit for family member (spouse)",
+          "url": "https://www.politsei.ee/en/instructions/residence-permit-for-a-family-member/for-a-spouse",
+          "description": "Residence permit to settle with family member living in Estonia. Up to 5 years, not longer than inviter's permit validity.",
+          "max_duration_years": 5
+        },
+        {
+          "service": "Residence permit for family member (parent/grandparent)",
+          "url": "https://www.politsei.ee/en/instructions/residence-permit-for-a-family-member/for-a-parent-or-grandparent"
+        },
+        {
+          "service": "Long-term resident's residence permit",
+          "url": "https://www.politsei.ee/en/instructions/residence-permit-for-a-permanent-resident/long-term-resident-s-residence-permit",
+          "description": "Permanent residence. Requires 5 years on temporary permit immediately before application.",
+          "residence_years_required": 5
+        },
+        {
+          "service": "International protection (asylum)",
+          "url": "https://www.politsei.ee/en/instructions/international-protection",
+          "description": "Application for refugee status or subsidiary protection",
+          "appeal_deadline_days": 10
+        },
+        {
+          "service": "Estonian citizenship application",
+          "authority": "PPA",
+          "url": "https://www.politsei.ee/en/instructions/obtaining-estonian-citizenship",
+          "residence_years_required": 8,
+          "continuous_residence_years": 5
+        }
+      ]
+    },
+    {
+      "category": "taxes",
+      "name_et": "Maksud",
+      "name_en": "Taxes",
+      "authority": "MTA (Maksu- ja Tolliamet)",
+      "portal_url": "https://www.emta.ee/en",
+      "e_service": "https://maasikas.emta.ee (e-MTA)",
+      "services": [
+        {
+          "service": "Annual income tax return",
+          "form": "TSD (employer), individual declaration",
+          "deadline": "30 April",
+          "url": "https://www.emta.ee/en/private-client/taxes-and-payment/declaration-income"
+        },
+        {
+          "service": "VAT registration and declarations",
+          "form": "KMD",
+          "deadline": "20th of following month",
+          "threshold_eur": 40000
+        },
+        {
+          "service": "Payroll declaration",
+          "form": "TSD",
+          "deadline": "10th of following month"
+        }
+      ]
+    },
+    {
+      "category": "business_registration",
+      "name_et": "Ettevõtlus",
+      "name_en": "Business",
+      "authority": "RIK (Registrite ja Infosüsteemide Keskus)",
+      "portal_url": "https://www.rik.ee/en",
+      "services": [
+        {
+          "service": "Register private limited company (OÜ)",
+          "url": "https://www.rik.ee/en/e-business-register/e-business-register-portal",
+          "state_fee_eur": 265,
+          "min_share_capital_eur": 0,
+          "processing": "Online via e-Business Register (instant if digitally signed)"
+        },
+        {
+          "service": "Register sole proprietor (FIE)",
+          "state_fee_eur": 20
+        },
+        {
+          "service": "Annual report submission",
+          "deadline_months_after_year_end": 6,
+          "authority": "e-Business Register"
+        }
+      ]
+    },
+    {
+      "category": "social_benefits",
+      "name_et": "Sotsiaaltoetused",
+      "name_en": "Social benefits",
+      "authority": "Sotsiaalkindlustusamet (SKA)",
+      "portal_url": "https://sotsiaalkindlustusamet.ee/en",
+      "self_service": "https://iseteenindus.sotsiaalkindlustusamet.ee/",
+      "services": [
+        {
+          "service": "Pension application",
+          "url": "https://sotsiaalkindlustusamet.ee/en/pension-and-benefits/"
+        },
+        {
+          "service": "Family benefits",
+          "url": "https://sotsiaalkindlustusamet.ee/en/family-benefits-and-allowances/"
+        },
+        {
+          "service": "Disability determination",
+          "url": "https://sotsiaalkindlustusamet.ee/en/disability-and-welfare-services/"
+        },
+        {
+          "service": "Victim support",
+          "url": "https://sotsiaalkindlustusamet.ee/en/child-and-adult-need-help/support-victims/"
+        },
+        {
+          "service": "Child maintenance support (elatisabi)",
+          "description": "State-paid support when parent fails to pay court-ordered child maintenance."
+        }
+      ]
+    },
+    {
+      "category": "employment",
+      "name_et": "Töö",
+      "name_en": "Work and employment",
+      "authority": "Eesti Töötukassa",
+      "portal_url": "https://www.tootukassa.ee/en",
+      "services": [
+        {
+          "service": "Register as unemployed",
+          "url": "https://www.tootukassa.ee/en/services/unemployment-allowance"
+        },
+        {
+          "service": "Unemployment insurance benefit",
+          "url": "https://www.tootukassa.ee/en/services/unemployment-insurance-benefit/payment-period-unemployment-insurance-benefit",
+          "duration_days_min": 180,
+          "duration_days_max": 300,
+          "requires_contribution_months": 12
+        },
+        {
+          "service": "Labour dispute resolution",
+          "authority": "Tööinspektsioon",
+          "url": "https://www.ti.ee/en/labour-relations-labour-disputes/settlement-of-labour-disputes/",
+          "processing_days": 45,
+          "wage_claim_limitation_years": 3,
+          "hotline": "+372 640 6000"
+        }
+      ]
+    },
+    {
+      "category": "data_protection",
+      "name_et": "Andmekaitse",
+      "name_en": "Data protection (GDPR)",
+      "authority": "Andmekaitse Inspektsioon (AKI)",
+      "portal_url": "https://www.aki.ee/en",
+      "services": [
+        {
+          "service": "GDPR complaint",
+          "description": "Complaint to AKI for violations of personal data protection.",
+          "email": "info@aki.ee",
+          "phone": "+372 5620 2341",
+          "phone_hours": "Mon-Thu 13:00-16:00",
+          "address": "Tatari 39, 10134 Tallinn",
+          "url": "https://www.aki.ee/en"
+        }
+      ]
+    },
+    {
+      "category": "housing_and_real_estate",
+      "name_et": "Eluase ja kinnisvara",
+      "name_en": "Housing and real estate",
+      "authorities": ["Maa-amet", "Kinnistusregister (via RIK)"],
+      "services": [
+        {
+          "service": "Land register search",
+          "url": "https://kinnistusraamat.rik.ee/"
+        },
+        {
+          "service": "Detailed plan objection",
+          "basis": "PlanS § 141",
+          "deadline_days": 30
+        }
+      ]
+    }
+  ]
+}

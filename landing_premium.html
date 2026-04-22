@@ -124,18 +124,6 @@ body{font-family:'Inter',system-ui,sans-serif;color:var(--text);background:var(-
 }
 html[dir="rtl"] body{direction:rtl}
 html[dir="rtl"] .trust-badge{flex-direction:row-reverse}
-/* Articles section */
-.articles{margin-bottom:40px}
-.articles-title{text-align:center;font-size:clamp(18px,2.5vw,24px);font-weight:600;margin-bottom:24px;opacity:0.8}
-.articles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.article-card{background:var(--surface);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:16px;padding:24px 20px;border:1px solid rgba(255,255,255,0.6);box-shadow:0 2px 12px rgba(26,53,93,0.04);transition:all .3s ease;text-decoration:none;color:var(--text);display:block}
-.article-card:hover{transform:translateY(-4px);box-shadow:0 8px 28px rgba(13,148,136,0.12);border-color:rgba(13,148,136,0.2)}
-.article-tag{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;padding:3px 8px;border-radius:12px;margin-bottom:10px;background:rgba(13,148,136,0.08);color:var(--accent)}
-.article-card h3{font-size:15px;font-weight:700;line-height:1.4;margin-bottom:6px}
-.article-card p{font-size:13px;opacity:0.6;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.articles-all{display:block;text-align:center;margin-top:20px;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none}
-.articles-all:hover{text-decoration:underline}
-@media(max-width:768px){.articles-grid{grid-template-columns:1fr;gap:12px}}
 </style>
 </head>
 <body>
@@ -218,20 +206,13 @@ html[dir="rtl"] .trust-badge{flex-direction:row-reverse}
     <span class="cta-sub" id="cta-sub"></span>
   </section>
 
-  <!-- ARTICLES -->
-  <section class="articles fade-up">
-    <h2 class="articles-title" id="articles-title"></h2>
-    <div class="articles-grid" id="articles-grid"></div>
-    <a class="articles-all" id="articles-all" href="/blog/"></a>
-  </section>
-
 </div>
 
 <!-- FOOTER -->
 <footer class="footer">
   <div id="footer-disclaimer"></div>
   <div style="margin-top:8px">hello@advocat.ee</div>
-  <div class="footer-links"><a href="/blog/" id="footer-blog">Blog</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+  <div class="footer-links"><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
   <div style="margin-top:4px">&copy; 2026 Vorantis O&Uuml;</div>
 </footer>
 
@@ -249,11 +230,7 @@ en:{
   ctaHeading:"Start Your Free Consultation",
   cta:"Check My Case \u2192",
   sub:"No sign-up \u2022 Free \u2022 Anonymous \u2022 Instant",
-  disclaimer:"Advocat provides legal information, not legal advice. This is not a substitute for a licensed attorney.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat provides legal information, not legal advice. This is not a substitute for a licensed attorney."
 },
 ru:{
   headline:"\u0412\u0430\u0448 AI-\u0449\u0438\u0442 \u043f\u0440\u0430\u0432\u043e\u0432\u043e\u0439 \u0437\u0430\u0449\u0438\u0442\u044b \u0432 \u0415\u0432\u0440\u043e\u043f\u0435",
@@ -267,11 +244,7 @@ ru:{
   ctaHeading:"\u041d\u0430\u0447\u043d\u0438\u0442\u0435 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u0443\u044e \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044e",
   cta:"\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043c\u043e\u0451 \u0434\u0435\u043b\u043e \u2192",
   sub:"\u0411\u0435\u0437 \u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0430\u0446\u0438\u0438 \u2022 \u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e \u2022 \u0410\u043d\u043e\u043d\u0438\u043c\u043d\u043e \u2022 \u041c\u0433\u043d\u043e\u0432\u0435\u043d\u043d\u043e",
-  disclaimer:"\u0410dvocat \u043f\u0440\u0435\u0434\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u0442 \u043f\u0440\u0430\u0432\u043e\u0432\u0443\u044e \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044e. \u042d\u0442\u043e \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u0430 \u043b\u0438\u0446\u0435\u043d\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430.",
-  articlesTitle:"\u041f\u043e\u043b\u0435\u0437\u043d\u044b\u0435 \u043f\u0440\u0430\u0432\u043e\u0432\u044b\u0435 \u0441\u0442\u0430\u0442\u044c\u0438",articlesAll:"\u0412\u0441\u0435 \u0441\u0442\u0430\u0442\u044c\u0438 \u2192",
-  art1Tag:"\u0414\u0435\u043f\u043e\u0440\u0442\u0430\u0446\u0438\u044f",art1Title:"\u0414\u0435\u043f\u043e\u0440\u0442\u0430\u0446\u0438\u044f \u2014 \u043a\u0430\u043a \u043e\u0431\u0436\u0430\u043b\u043e\u0432\u0430\u0442\u044c?",art1Desc:"\u041f\u043e\u0448\u0430\u0433\u043e\u0432\u043e\u0435 \u0440\u0443\u043a\u043e\u0432\u043e\u0434\u0441\u0442\u0432\u043e \u043f\u043e \u043e\u0431\u0436\u0430\u043b\u043e\u0432\u0430\u043d\u0438\u044e \u0440\u0435\u0448\u0435\u043d\u0438\u044f \u043e \u0434\u0435\u043f\u043e\u0440\u0442\u0430\u0446\u0438\u0438. \u0421\u0440\u043e\u043a\u0438, \u0441\u0443\u0434\u044b, \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c.",art1Url:"/blog/ru/deportaciya-obzhalovanie.html",
-  art2Tag:"\u0422\u0440\u0443\u0434\u043e\u0432\u043e\u0435 \u043f\u0440\u0430\u0432\u043e",art2Title:"\u041d\u0435\u0437\u0430\u043a\u043e\u043d\u043d\u043e\u0435 \u0443\u0432\u043e\u043b\u044c\u043d\u0435\u043d\u0438\u0435 \u2014 \u0432\u0430\u0448\u0438 \u043f\u0440\u0430\u0432\u0430",art2Desc:"\u0427\u0442\u043e \u0434\u0435\u043b\u0430\u0442\u044c \u043f\u0440\u0438 \u043d\u0435\u0437\u0430\u043a\u043e\u043d\u043d\u043e\u043c \u0443\u0432\u043e\u043b\u044c\u043d\u0435\u043d\u0438\u0438? \u041a\u043e\u043c\u043f\u0435\u043d\u0441\u0430\u0446\u0438\u0438, \u0441\u0440\u043e\u043a\u0438, \u0442\u0440\u0443\u0434\u043e\u0432\u0430\u044f \u043a\u043e\u043c\u0438\u0441\u0441\u0438\u044f.",art2Url:"/blog/ru/nezakonnoe-uvolnenie.html",
-  art3Tag:"\u042e\u0440\u043f\u043e\u043c\u043e\u0449\u044c",art3Title:"\u0411\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u0430\u044f \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c 2026",art3Desc:"\u0412\u0441\u0435 \u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e\u0441\u0442\u0438 \u043f\u043e\u043b\u0443\u0447\u0438\u0442\u044c \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u0443\u044e \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043f\u043e\u043c\u043e\u0449\u044c \u0432 \u042d\u0441\u0442\u043e\u043d\u0438\u0438.",art3Url:"/blog/ru/besplatnaya-pomosh.html"
+  disclaimer:"\u0410dvocat \u043f\u0440\u0435\u0434\u043e\u0441\u0442\u0430\u0432\u043b\u044f\u0435\u0442 \u043f\u0440\u0430\u0432\u043e\u0432\u0443\u044e \u0438\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0438\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u0435\u0441\u043a\u0443\u044e \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044e. \u042d\u0442\u043e \u043d\u0435 \u0437\u0430\u043c\u0435\u043d\u0430 \u043b\u0438\u0446\u0435\u043d\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430."
 },
 uk:{
   headline:"\u0412\u0430\u0448 AI-\u0449\u0438\u0442 \u043f\u0440\u0430\u0432\u043e\u0432\u043e\u0433\u043e \u0437\u0430\u0445\u0438\u0441\u0442\u0443 \u0432 \u0404\u0432\u0440\u043e\u043f\u0456",
@@ -285,11 +258,7 @@ uk:{
   ctaHeading:"\u041f\u043e\u0447\u043d\u0456\u0442\u044c \u0431\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u0443 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0456\u044e",
   cta:"\u041f\u0435\u0440\u0435\u0432\u0456\u0440\u0438\u0442\u0438 \u043c\u043e\u044e \u0441\u043f\u0440\u0430\u0432\u0443 \u2192",
   sub:"\u0411\u0435\u0437 \u0440\u0435\u0454\u0441\u0442\u0440\u0430\u0446\u0456\u0457 \u2022 \u0411\u0435\u0437\u043a\u043e\u0448\u0442\u043e\u0432\u043d\u043e \u2022 \u0410\u043d\u043e\u043d\u0456\u043c\u043d\u043e \u2022 \u041c\u0438\u0442\u0442\u0454\u0432\u043e",
-  disclaimer:"Advocat \u043d\u0430\u0434\u0430\u0454 \u043f\u0440\u0430\u0432\u043e\u0432\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u0443 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0456\u044e. \u0426\u0435 \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u0430 \u043b\u0456\u0446\u0435\u043d\u0437\u043e\u0432\u0430\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat \u043d\u0430\u0434\u0430\u0454 \u043f\u0440\u0430\u0432\u043e\u0432\u0443 \u0456\u043d\u0444\u043e\u0440\u043c\u0430\u0446\u0456\u044e, \u0430 \u043d\u0435 \u044e\u0440\u0438\u0434\u0438\u0447\u043d\u0443 \u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0456\u044e. \u0426\u0435 \u043d\u0435 \u0437\u0430\u043c\u0456\u043d\u0430 \u043b\u0456\u0446\u0435\u043d\u0437\u043e\u0432\u0430\u043d\u043e\u0433\u043e \u0430\u0434\u0432\u043e\u043a\u0430\u0442\u0430."
 },
 fi:{
   headline:"AI-oikeussuojasi Euroopassa",
@@ -303,11 +272,7 @@ fi:{
   ctaHeading:"Aloita ilmainen konsultaatio",
   cta:"Tarkista tapaukseni \u2192",
   sub:"Ei rekister\u00f6itymist\u00e4 \u2022 Ilmainen \u2022 Anonyymi \u2022 V\u00e4lit\u00f6n",
-  disclaimer:"Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. T\u00e4m\u00e4 ei korvaa laillistettua asianajajaa.",
-  articlesTitle:"Hy\u00f6dyllisi\u00e4 oikeusartikkeleita",articlesAll:"Kaikki artikkelit \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. T\u00e4m\u00e4 ei korvaa laillistettua asianajajaa."
 },
 et:{
   headline:"Sinu AI-\u00f5iguskaitse Euroopas",
@@ -321,11 +286,7 @@ et:{
   ctaHeading:"Alusta tasuta konsultatsiooni",
   cta:"Kontrolli minu asja \u2192",
   sub:"Ilma registreerimiseta \u2022 Tasuta \u2022 Anon\u00fc\u00fcmne \u2022 Kohene",
-  disclaimer:"Advocat pakub \u00f5igusteavet, mitte \u00f5igusnoustamist. See ei asenda litsentseeritud advokaati.",
-  articlesTitle:"Kasulikud \u00f5igusartiklid",articlesAll:"K\u00f5ik artiklid \u2192",
-  art1Tag:"Deporteerimine",art1Title:"V\u00e4ljasaatmine \u2014 kuidas vaidlustada?",art1Desc:"Samm-sammuline juhend deporteerimisotsuse vaidlustamiseks. T\u00e4htajad, kohtud, tasuta abi.",art1Url:"/blog/valjasaatmine-vaidlustamine.html",
-  art2Tag:"T\u00f6\u00f6\u00f5igus",art2Title:"Vallandamine \u2014 sinu \u00f5igused",art2Desc:"Mida teha ebaseadusliku vallandamise korral? H\u00fcvitised, t\u00e4htajad, t\u00f6\u00f6vaidluskomisjon.",art2Url:"/blog/toooigus-vallandamine.html",
-  art3Tag:"\u00d5igusabi",art3Title:"Tasuta \u00f5igusabi Eestis 2026",art3Desc:"K\u00f5ik v\u00f5imalused tasuta juriidilise abi saamiseks. Riigi \u00f5igusabi, MT\u00dc-d, veebiportaalid.",art3Url:"/blog/tasuta-oigusabi.html"
+  disclaimer:"Advocat pakub \u00f5igusteavet, mitte \u00f5igusnoustamist. See ei asenda litsentseeritud advokaati."
 },
 sv:{
   headline:"Ditt AI-r\u00e4ttsskydd i Europa",
@@ -339,11 +300,7 @@ sv:{
   ctaHeading:"Starta din kostnadsfria konsultation",
   cta:"Kontrollera mitt \u00e4rende \u2192",
   sub:"Ingen registrering \u2022 Gratis \u2022 Anonymt \u2022 Omedelbart",
-  disclaimer:"Advocat tillhandah\u00e5ller juridisk information, inte juridisk r\u00e5dgivning. Detta ers\u00e4tter inte en licensierad advokat.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat tillhandah\u00e5ller juridisk information, inte juridisk r\u00e5dgivning. Detta ers\u00e4tter inte en licensierad advokat."
 },
 de:{
   headline:"Ihr AI-Rechtsschutz in Europa",
@@ -357,11 +314,7 @@ de:{
   ctaHeading:"Starten Sie Ihre kostenlose Beratung",
   cta:"Meinen Fall pr\u00fcfen \u2192",
   sub:"Keine Registrierung \u2022 Kostenlos \u2022 Anonym \u2022 Sofort",
-  disclaimer:"Advocat bietet rechtliche Informationen, keine Rechtsberatung. Dies ersetzt keinen zugelassenen Anwalt.",
-  articlesTitle:"Hilfreiche Rechtsartikel",articlesAll:"Alle Artikel \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat bietet rechtliche Informationen, keine Rechtsberatung. Dies ersetzt keinen zugelassenen Anwalt."
 },
 ar:{
   headline:"\u062f\u0631\u0639\u0643 \u0627\u0644\u0642\u0627\u0646\u0648\u0646\u064a \u0628\u0627\u0644\u0630\u0643\u0627\u0621 \u0627\u0644\u0627\u0635\u0637\u0646\u0627\u0639\u064a \u0641\u064a \u0623\u0648\u0631\u0648\u0628\u0627",
@@ -375,11 +328,7 @@ ar:{
   ctaHeading:"\u0627\u0628\u062f\u0623 \u0627\u0633\u062a\u0634\u0627\u0631\u062a\u0643 \u0627\u0644\u0645\u062c\u0627\u0646\u064a\u0629",
   cta:"\u2190 \u062a\u062d\u0642\u0642 \u0645\u0646 \u0642\u0636\u064a\u062a\u064a",
   sub:"\u0628\u062f\u0648\u0646 \u062a\u0633\u062c\u064a\u0644 \u2022 \u0645\u062c\u0627\u0646\u064a \u2022 \u0645\u062c\u0647\u0648\u0644 \u2022 \u0641\u0648\u0631\u064a",
-  disclaimer:"\u064a\u0642\u062f\u0645 Advocat \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629\u060c \u0648\u0644\u064a\u0633 \u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629. \u0647\u0630\u0627 \u0644\u064a\u0633 \u0628\u062f\u064a\u0644\u0627\u064b \u0639\u0646 \u0645\u062d\u0627\u0645\u064d \u0645\u0631\u062e\u0635.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"\u064a\u0642\u062f\u0645 Advocat \u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629\u060c \u0648\u0644\u064a\u0633 \u0627\u0633\u062a\u0634\u0627\u0631\u0627\u062a \u0642\u0627\u0646\u0648\u0646\u064a\u0629. \u0647\u0630\u0627 \u0644\u064a\u0633 \u0628\u062f\u064a\u0644\u0627\u064b \u0639\u0646 \u0645\u062d\u0627\u0645\u064d \u0645\u0631\u062e\u0635."
 },
 pl:{
   headline:"Tw\u00f3j AI-tarcza prawna w Europie",
@@ -393,11 +342,7 @@ pl:{
   ctaHeading:"Rozpocznij bezp\u0142atn\u0105 konsultacj\u0119",
   cta:"Sprawd\u017a moj\u0105 spraw\u0119 \u2192",
   sub:"Bez rejestracji \u2022 Bezp\u0142atnie \u2022 Anonimowo \u2022 Natychmiast",
-  disclaimer:"Advocat to narz\u0119dzie informacji prawnej, nie kancelaria. Zawsze skonsultuj si\u0119 z wykwalifikowanym prawnikiem.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat to narz\u0119dzie informacji prawnej, nie kancelaria. Zawsze skonsultuj si\u0119 z wykwalifikowanym prawnikiem."
 },
 fr:{
   headline:"Votre bouclier juridique IA en Europe",
@@ -411,11 +356,7 @@ fr:{
   ctaHeading:"Commencez votre consultation gratuite",
   cta:"V\u00e9rifier mon dossier \u2192",
   sub:"Sans inscription \u2022 Gratuit \u2022 Anonyme \u2022 Instantan\u00e9",
-  disclaimer:"Advocat est un outil d'information juridique, pas un cabinet d'avocats. Consultez toujours un avocat qualifi\u00e9.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat est un outil d'information juridique, pas un cabinet d'avocats. Consultez toujours un avocat qualifi\u00e9."
 },
 fa:{
   headline:"\u0633\u067e\u0631 \u062d\u0642\u0648\u0642\u06cc \u0647\u0648\u0634 \u0645\u0635\u0646\u0648\u0639\u06cc \u0634\u0645\u0627 \u062f\u0631 \u0627\u0631\u0648\u067e\u0627",
@@ -429,11 +370,7 @@ fa:{
   ctaHeading:"\u0645\u0634\u0627\u0648\u0631\u0647 \u0631\u0627\u06cc\u06af\u0627\u0646 \u062e\u0648\u062f \u0631\u0627 \u0634\u0631\u0648\u0639 \u06a9\u0646\u06cc\u062f",
   cta:"\u2190 \u0628\u0631\u0631\u0633\u06cc \u067e\u0631\u0648\u0646\u062f\u0647 \u0645\u0646",
   sub:"\u0628\u062f\u0648\u0646 \u062b\u0628\u062a\u200c\u0646\u0627\u0645 \u2022 \u0631\u0627\u06cc\u06af\u0627\u0646 \u2022 \u0646\u0627\u0634\u0646\u0627\u0633 \u2022 \u0641\u0648\u0631\u06cc",
-  disclaimer:"Advocat \u06cc\u06a9 \u0627\u0628\u0632\u0627\u0631 \u0627\u0637\u0644\u0627\u0639\u0627\u062a \u062d\u0642\u0648\u0642\u06cc \u0627\u0633\u062a\u060c \u0646\u0647 \u06cc\u06a9 \u062f\u0641\u062a\u0631 \u0648\u06a9\u0627\u0644\u062a. \u0647\u0645\u06cc\u0634\u0647 \u0628\u0627 \u06cc\u06a9 \u0648\u06a9\u06cc\u0644 \u0648\u0627\u062c\u062f \u0634\u0631\u0627\u06cc\u0637 \u0645\u0634\u0648\u0631\u062a \u06a9\u0646\u06cc\u062f.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat \u06cc\u06a9 \u0627\u0628\u0632\u0627\u0631 \u0627\u0637\u0644\u0627\u0639\u0627\u062a \u062d\u0642\u0648\u0642\u06cc \u0627\u0633\u062a\u060c \u0646\u0647 \u06cc\u06a9 \u062f\u0641\u062a\u0631 \u0648\u06a9\u0627\u0644\u062a. \u0647\u0645\u06cc\u0634\u0647 \u0628\u0627 \u06cc\u06a9 \u0648\u06a9\u06cc\u0644 \u0648\u0627\u062c\u062f \u0634\u0631\u0627\u06cc\u0637 \u0645\u0634\u0648\u0631\u062a \u06a9\u0646\u06cc\u062f."
 },
 tr:{
   headline:"Avrupa'da AI Hukuki Kalkan\u0131n\u0131z",
@@ -447,11 +384,7 @@ tr:{
   ctaHeading:"\u00dccretsiz dan\u0131\u015fmanl\u0131\u011f\u0131n\u0131z\u0131 ba\u015flat\u0131n",
   cta:"Davam\u0131 kontrol et \u2192",
   sub:"Kay\u0131t yok \u2022 \u00dccretsiz \u2022 Anonim \u2022 Anl\u0131k",
-  disclaimer:"Advocat bir hukuki bilgi arac\u0131d\u0131r, hukuk b\u00fcrosu de\u011fildir. Her zaman nitelikli bir avukata dan\u0131\u015f\u0131n.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat bir hukuki bilgi arac\u0131d\u0131r, hukuk b\u00fcrosu de\u011fildir. Her zaman nitelikli bir avukata dan\u0131\u015f\u0131n."
 },
 lv:{
   headline:"J\u016bsu AI juridiskais v\u0101rogs Eirop\u0101",
@@ -465,11 +398,7 @@ lv:{
   ctaHeading:"S\u0101ciet savu bezmaksas konsult\u0101ciju",
   cta:"P\u0101rbaud\u012bt manu lietu \u2192",
   sub:"Bez re\u011fistr\u0101cijas \u2022 Bezmaksas \u2022 Anon\u012bmi \u2022 T\u016bl\u012bt\u0113ji",
-  disclaimer:"Advocat sniedz juridisku inform\u0101ciju, nevis juridiskas konsult\u0101cijas. Tas neaizst\u0101j licenc\u0113tu advok\u0101tu.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat sniedz juridisku inform\u0101ciju, nevis juridiskas konsult\u0101cijas. Tas neaizst\u0101j licenc\u0113tu advok\u0101tu."
 },
 lt:{
   headline:"J\u016bs\u0173 AI teisinis skydas Europoje",
@@ -483,11 +412,7 @@ lt:{
   ctaHeading:"Prad\u0117kite nemokam\u0105 konsultacij\u0105",
   cta:"Patikrinti mano byl\u0105 \u2192",
   sub:"Be registracijos \u2022 Nemokama \u2022 Anonimi\u0161ka \u2022 I\u0161 karto",
-  disclaimer:"Advocat teikia teisin\u0119 informacij\u0105, o ne teisines konsultacijas. Tai nepakei\u010dia licencijuoto advokato.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat teikia teisin\u0119 informacij\u0105, o ne teisines konsultacijas. Tai nepakei\u010dia licencijuoto advokato."
 },
 es:{
   headline:"Tu escudo legal IA en Europa",
@@ -501,11 +426,7 @@ es:{
   ctaHeading:"Inicia tu consulta gratuita",
   cta:"Verificar mi caso \u2192",
   sub:"Sin registro \u2022 Gratis \u2022 An\u00f3nimo \u2022 Instant\u00e1neo",
-  disclaimer:"Advocat proporciona informaci\u00f3n legal, no asesor\u00eda legal. Esto no sustituye a un abogado licenciado.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat proporciona informaci\u00f3n legal, no asesor\u00eda legal. Esto no sustituye a un abogado licenciado."
 },
 it:{
   headline:"Il tuo scudo legale IA in Europa",
@@ -519,11 +440,7 @@ it:{
   ctaHeading:"Inizia la tua consulenza gratuita",
   cta:"Controlla il mio caso \u2192",
   sub:"Nessuna registrazione \u2022 Gratuito \u2022 Anonimo \u2022 Istantaneo",
-  disclaimer:"Advocat fornisce informazioni legali, non consulenza legale. Non sostituisce un avvocato abilitato.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat fornisce informazioni legali, non consulenza legale. Non sostituisce un avvocato abilitato."
 },
 ro:{
   headline:"Scutul t\u0103u juridic IA \u00een Europa",
@@ -537,11 +454,7 @@ ro:{
   ctaHeading:"\u00cencepe consulta\u021bia ta gratuit\u0103",
   cta:"Verific\u0103 cazul meu \u2192",
   sub:"F\u0103r\u0103 \u00eenregistrare \u2022 Gratuit \u2022 Anonim \u2022 Instant",
-  disclaimer:"Advocat ofer\u0103 informa\u021bii juridice, nu consultan\u021b\u0103 juridic\u0103. Nu \u00eenlocuie\u0219te un avocat licen\u021biat.",
-  articlesTitle:"Helpful Legal Articles",articlesAll:"All articles \u2192",
-  art1Tag:"Deportation",art1Title:"Deportation Appeal \u2014 Step by Step",art1Desc:"Complete guide to challenging a deportation order in Estonia. Deadlines, courts, free legal aid.",art1Url:"/blog/en/deportation-appeal-estonia.html",
-  art2Tag:"Labor Law",art2Title:"Wrongful Dismissal \u2014 Your Rights",art2Desc:"What to do if you\u2019ve been unfairly fired. Compensation, deadlines, labor dispute committee.",art2Url:"/blog/en/employee-rights-estonia.html",
-  art3Tag:"Legal Aid",art3Title:"Free Legal Aid in Estonia 2026",art3Desc:"All options for getting free legal assistance in Estonia. State aid, NGOs, online portals.",art3Url:"/blog/en/free-legal-aid-estonia.html"
+  disclaimer:"Advocat ofer\u0103 informa\u021bii juridice, nu consultan\u021b\u0103 juridic\u0103. Nu \u00eenlocuie\u0219te un avocat licen\u021biat."
 }
 };
 
@@ -573,27 +486,6 @@ function setLang(lang){
   document.getElementById('cta-btn').href='/app.html?lang='+lang+'#/login';
   document.getElementById('cta-sub').textContent=t.sub;
   document.getElementById('footer-disclaimer').textContent=t.disclaimer;
-  // Articles section
-  document.getElementById('articles-title').textContent=t.articlesTitle||T.en.articlesTitle;
-  var allLink=document.getElementById('articles-all');
-  allLink.textContent=t.articlesAll||T.en.articlesAll;
-  var blogMap={et:'/blog/',ru:'/blog/ru/',en:'/blog/en/'};
-  allLink.href=blogMap[lang]||'/blog/en/';
-  var grid=document.getElementById('articles-grid');
-  grid.innerHTML='';
-  for(var i=1;i<=3;i++){
-    var tag=t['art'+i+'Tag']||T.en['art'+i+'Tag'];
-    var title=t['art'+i+'Title']||T.en['art'+i+'Title'];
-    var desc=t['art'+i+'Desc']||T.en['art'+i+'Desc'];
-    var url=t['art'+i+'Url']||T.en['art'+i+'Url'];
-    var card=document.createElement('a');
-    card.className='article-card';
-    card.href=url;
-    card.innerHTML='<span class="article-tag">'+tag+'</span><h3>'+title+'</h3><p>'+desc+'</p>';
-    grid.appendChild(card);
-  }
-  var fb=document.getElementById('footer-blog');
-  if(fb)fb.href=blogMap[lang]||'/blog/en/';
   document.querySelectorAll('.lang-btn').forEach(function(b){
     b.classList.toggle('active',b.dataset.lang===lang);
   });

@@ -24,7 +24,70 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/blog/style.css">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.7; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+        .logo span { color: #0A8F6C; }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+
+        .breadcrumb { max-width: 800px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
+        .breadcrumb a { color: #0A8F6C; }
+
+        .article { max-width: 800px; margin: 0 auto; padding: 0 20px 60px; }
+        .article-header { margin: 24px 0 36px; }
+        .article-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; background: #EBF8FF; color: #2B6CB0; margin-bottom: 16px; }
+        .article-header h1 { font-size: 34px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; color: #1A2B4A; }
+        .article-meta { font-size: 14px; color: #8A9AAA; display: flex; gap: 20px; flex-wrap: wrap; }
+
+        .toc { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 24px 28px; margin-bottom: 36px; }
+        .toc h2 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #1A2B4A; }
+        .toc ol { padding-left: 20px; }
+        .toc li { margin-bottom: 6px; font-size: 14px; }
+        .toc a { color: #0A8F6C; font-weight: 500; }
+
+        .article-body h2 { font-size: 24px; font-weight: 700; margin: 40px 0 16px; color: #1A2B4A; padding-top: 16px; border-top: 1px solid #E2E8F0; }
+        .article-body h3 { font-size: 18px; font-weight: 600; margin: 28px 0 12px; color: #1A2B4A; }
+        .article-body p { margin-bottom: 16px; font-size: 16px; color: #2D3748; }
+        .article-body ul, .article-body ol { margin-bottom: 16px; padding-left: 24px; }
+        .article-body li { margin-bottom: 8px; font-size: 16px; color: #2D3748; }
+        .article-body strong { color: #1A2B4A; }
+
+        .law-box { background: #F0FDFA; border-left: 4px solid #0A8F6C; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 15px; }
+        .law-box strong { color: #0A8F6C; }
+
+        .warning-box { background: #FFFBEB; border-left: 4px solid #ECC94B; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 20px 0; font-size: 15px; }
+        .warning-box strong { color: #B7791F; }
+
+        .emergency-box { background: #FFF5F5; border-left: 4px solid #E53E3E; padding: 20px 24px; border-radius: 0 8px 8px 0; margin: 24px 0; font-size: 16px; }
+        .emergency-box strong { color: #E53E3E; }
+
+        .cta-box { background: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%); border: 2px solid #0A8F6C; border-radius: 12px; padding: 28px; margin: 36px 0; text-align: center; }
+        .cta-box h3 { color: #0A8F6C; font-size: 20px; margin-bottom: 10px; }
+        .cta-box p { color: #2D3748; margin-bottom: 16px; }
+        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 12px 32px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: background 0.2s; }
+        .cta-btn:hover { background: #078a63; text-decoration: none; }
+
+        .related { background: #fff; border-radius: 12px; padding: 28px; margin: 40px 0; border: 1px solid #E2E8F0; }
+        .related h3 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+        .related ul { list-style: none; padding: 0; }
+        .related li { margin-bottom: 10px; }
+        .related a { font-weight: 500; font-size: 15px; }
+
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); }
+
+        @media (max-width: 600px) {
+            .article-header h1 { font-size: 26px; }
+            .article-meta { flex-direction: column; gap: 6px; }
+        }
+    </style>
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -45,12 +108,11 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <a href="https://advocat.ee" class="header-logo">Advo<span class="accent">cat</span></a>
+            <a href="https://advocat.ee" class="logo">Advo<span>cat</span></a>
             <nav class="header-nav">
                 <a href="https://advocat.ee">Avaleht</a>
                 <a href="/blog/">Blogi</a>
-                <a href="/blog/ru/" class="lang-link">RU</a>
-                <a href="/blog/en/" class="lang-link">EN</a>
+                <a href="/app.html">Proovi tasuta</a>
             </nav>
         </div>
     </header>
@@ -278,17 +340,8 @@
     </main>
 
     <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-links">
-                <a href="https://advocat.ee">Avaleht</a>
-                <a href="/blog/">Blogi</a>
-                <a href="/blog/ru/">RU</a>
-                <a href="/blog/en/">EN</a>
-                <a href="mailto:hello@advocat.ee">hello@advocat.ee</a>
-            </div>
-            <p class="footer-disclaimer">Advocat ei ole advokaadib&uuml;roo. Meie artiklid on &uuml;ldise iseloomuga ega asenda professionaalset &otilde;igusn&otilde;u.</p>
-            <p class="footer-copy">&copy; 2026 Vorantis O&Uuml;. K&otilde;ik &otilde;igused kaitstud.</p>
-        </div>
+        <p>&copy; 2026 Advocat. Koik oigused kaitstud. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;">See artikkel on ueldise iseloomuga ega asenda professionaalset oigusnouou. Konkreetses olukorras poordu advokaadi poole.</p>
     </footer>
 </body>
 </html>

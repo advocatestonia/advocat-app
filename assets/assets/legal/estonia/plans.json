@@ -1,0 +1,64 @@
+{
+  "act": "PlanS",
+  "name": "Planeerimisseadus",
+  "name_en": "Planning Act",
+  "source": "https://www.riigiteataja.ee/akt/PlanS",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "consolidated_version": "2026-01-01",
+  "sections": [
+    {
+      "paragraph": "§ 74",
+      "title": "Üldplaneering",
+      "body": "Comprehensive (municipal) plan – strategic land use planning at municipal level.",
+      "chapter": "6 Üldplaneering"
+    },
+    {
+      "paragraph": "§ 77",
+      "title": "Keskkonnamõju strateegiline hindamine",
+      "body": "Strategic environmental assessment mandatory for comprehensive plans.",
+      "chapter": "6 Üldplaneering"
+    },
+    {
+      "paragraph": "§ 82",
+      "title": "Avalikustamine",
+      "body": "Public display of comprehensive plan – minimum 30 days.",
+      "chapter": "6 Üldplaneering"
+    },
+    {
+      "paragraph": "§ 92",
+      "title": "Üldplaneeringu ülevaatamine",
+      "body": "Comprehensive plan must be reviewed at least every 5 years.",
+      "chapter": "6 Üldplaneering"
+    },
+    {
+      "paragraph": "§ 124",
+      "title": "Detailplaneering",
+      "body": "Detailed plan – site-specific planning defining building rights, land use, public space.",
+      "chapter": "8 Detailplaneering"
+    },
+    {
+      "paragraph": "§ 127",
+      "title": "Avalik kaasamine",
+      "body": "Public participation requirements for detailed plans.",
+      "chapter": "8 Detailplaneering"
+    },
+    {
+      "paragraph": "§ 135",
+      "title": "Avalik väljapanek",
+      "body": "Public display of detailed plan – minimum 30 days.",
+      "chapter": "8 Detailplaneering"
+    },
+    {
+      "paragraph": "§ 141",
+      "title": "Vaidlustamise õigus",
+      "body": "Right to challenge adopted plan – 30 days from publication to file appeal to halduskohus.",
+      "chapter": "8 Detailplaneering"
+    }
+  ],
+  "appeal_deadline_days": 30,
+  "appeal_body": "Halduskohus",
+  "public_display_days": 30,
+  "critical_for_immigrants": false,
+  "audience_priority": "medium",
+  "cross_references": ["EhS", "HMS"]
+}
