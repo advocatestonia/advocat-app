@@ -282,5 +282,97 @@ function setLang(lang){
   setLang(lang);
 })();
 </script>
+
+<!-- ========================================================== -->
+<!-- GDPR Cookie Banner (v24.2.3 launch) — minimal, no dark      -->
+<!-- patterns. Accept and Reject are visually equal.             -->
+<!-- ========================================================== -->
+<style>
+  #advCookieBanner {
+    position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 9999;
+    max-width: 780px; margin: 0 auto;
+    background: #111; color: #f5f5f5;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    padding: 18px 20px;
+    font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    display: none;
+  }
+  #advCookieBanner.show { display: block; }
+  #advCookieBanner p { margin: 0 0 12px; }
+  #advCookieBanner a { color: #8fd; text-decoration: underline; }
+  #advCookieBanner .advCookieRow { display: flex; gap: 10px; flex-wrap: wrap; }
+  #advCookieBanner button {
+    flex: 1; min-width: 120px;
+    padding: 10px 14px; border-radius: 10px; border: 0;
+    font: inherit; font-weight: 600; cursor: pointer;
+  }
+  #advCookieBanner .advCookieAccept {
+    background: #8fd; color: #0a1613;
+  }
+  #advCookieBanner .advCookieReject {
+    background: transparent; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.25);
+  }
+  #advCookieBanner .advCookiePrefs {
+    background: transparent; color: #8fd; border: 1px solid rgba(143,221,221,0.35);
+  }
+  @media (max-width: 480px) {
+    #advCookieBanner { left: 8px; right: 8px; bottom: 8px; padding: 14px; }
+  }
+</style>
+
+<div id="advCookieBanner" role="dialog" aria-labelledby="advCookieTitle" aria-describedby="advCookieBody">
+  <p id="advCookieTitle" style="font-weight:700;margin-bottom:4px;">Cookies &amp; privacy</p>
+  <p id="advCookieBody">
+    We use strictly necessary cookies to keep you signed in. We do
+    <strong>not</strong> use advertising or cross-site tracking cookies.
+    See our <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+  </p>
+  <div class="advCookieRow">
+    <button class="advCookieAccept" type="button" onclick="advCookieConsent('accept')">Accept</button>
+    <button class="advCookieReject" type="button" onclick="advCookieConsent('reject')">Reject non-essential</button>
+    <button class="advCookiePrefs" type="button" onclick="window.open('/privacy','_blank')">Learn more</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEY = 'advocat_cookie_consent_v1';
+  var banner = document.getElementById('advCookieBanner');
+  if (!banner) return;
+  try {
+    // Respect "Do Not Track" — treat as implicit reject, do not pester.
+    if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
+      localStorage.setItem(KEY, JSON.stringify({choice:'dnt', ts: Date.now()}));
+      return;
+    }
+    var existing = null;
+    try { existing = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(_){}
+    if (!existing || !existing.choice) {
+      banner.classList.add('show');
+    }
+  } catch(_){
+    // localStorage blocked (private browsing, iframe sandbox) — show banner
+    // but do not crash.
+    banner.classList.add('show');
+  }
+  window.advCookieConsent = function(choice) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        choice: choice,
+        ts: Date.now(),
+        version: 1
+      }));
+    } catch(_){}
+    banner.classList.remove('show');
+    // When / if we add analytics later, gate their script injection on
+    // JSON.parse(localStorage.getItem('advocat_cookie_consent_v1'))?.choice === 'accept'.
+    // Right now we ship zero analytics — this banner is the framework for
+    // the day we do.
+  };
+})();
+</script>
+
 </body>
 </html>

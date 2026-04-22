@@ -2411,7 +2411,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get howToUse => 'Как пользоваться?';
 
   @override
-  String get tutorialStep1Title => 'ИИ-юрист';
+  String get tutorialStep1Title => 'ИИ-помощник по праву';
 
   @override
   String get tutorialStep1Desc =>
@@ -2478,4 +2478,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get backToChat => 'Назад в чат';
+
+  @override
+  String get upgradeBannerTitle => 'Откройте безлимитные консультации';
+
+  @override
+  String get upgradeBannerCta => 'Обновить';
+
+  @override
+  String get paymentSuccessTitle => 'Оплата прошла';
+
+  @override
+  String get paymentSuccessBody => 'Подписка активирована.';
+
+  @override
+  String get commonOk => 'ОК';
 }

@@ -2493,4 +2493,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get backToChat => 'Volver al chat';
+
+  @override
+  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+
+  @override
+  String get upgradeBannerCta => 'Upgrade';
+
+  @override
+  String get paymentSuccessTitle => 'Payment successful';
+
+  @override
+  String get paymentSuccessBody => 'Your subscription is now active.';
+
+  @override
+  String get commonOk => 'OK';
 }

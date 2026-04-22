@@ -2404,7 +2404,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get howToUse => 'Як користуватися?';
 
   @override
-  String get tutorialStep1Title => 'ШІ-юрист';
+  String get tutorialStep1Title => 'ШІ-помічник із права';
 
   @override
   String get tutorialStep1Desc =>
@@ -2471,4 +2471,19 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get backToChat => 'Назад до чату';
+
+  @override
+  String get upgradeBannerTitle => 'Upgrade for unlimited consultations';
+
+  @override
+  String get upgradeBannerCta => 'Upgrade';
+
+  @override
+  String get paymentSuccessTitle => 'Payment successful';
+
+  @override
+  String get paymentSuccessBody => 'Your subscription is now active.';
+
+  @override
+  String get commonOk => 'OK';
 }

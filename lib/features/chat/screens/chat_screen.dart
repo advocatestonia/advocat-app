@@ -1774,10 +1774,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             color: AppColors.accent,
           ),
           const SizedBox(width: 8),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Upgrade for unlimited consultations',
-              style: TextStyle(
+              // v24.2.3 UX-Tier-A: localised (was hardcoded EN)
+              AppLocalizations.of(context)?.upgradeBannerTitle ??
+                  'Upgrade for unlimited consultations',
+              style: const TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: AppColors.accent,
@@ -1801,7 +1803,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              child: const Text('Upgrade'),
+              child: Text(
+                // v24.2.3 UX-Tier-A: localised
+                AppLocalizations.of(context)?.upgradeBannerCta ?? 'Upgrade',
+              ),
             ),
           ),
           const SizedBox(width: 4),

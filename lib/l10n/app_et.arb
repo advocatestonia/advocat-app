@@ -939,5 +939,10 @@
     "cheaperAnnually": "€{amount}/kuus soodsam aastamaksega",
     "navigatingTo": "Avan",
     "stayInChat": "Jää vestlusesse",
-    "backToChat": "Tagasi vestlusesse"
+    "backToChat": "Tagasi vestlusesse",
+    "upgradeBannerTitle": "Uuenda piiramatute konsultatsioonide jaoks",
+    "upgradeBannerCta": "Uuenda",
+    "paymentSuccessTitle": "Makse õnnestus",
+    "paymentSuccessBody": "Teie tellimus on nüüd aktiivne.",
+    "commonOk": "OK"
 }

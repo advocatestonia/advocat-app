@@ -2469,4 +2469,19 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get backToChat => 'Takaisin chattiin';
+
+  @override
+  String get upgradeBannerTitle => 'Päivitä rajattomiin konsultaatioihin';
+
+  @override
+  String get upgradeBannerCta => 'Päivitä';
+
+  @override
+  String get paymentSuccessTitle => 'Maksu onnistui';
+
+  @override
+  String get paymentSuccessBody => 'Tilauksesi on nyt aktiivinen.';
+
+  @override
+  String get commonOk => 'OK';
 }

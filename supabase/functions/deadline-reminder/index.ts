@@ -55,12 +55,24 @@ serve(async (req) => {
     const now = new Date();
     const threeDaysFromNow = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
 
-    const { data: urgentDeadlines } = await supabase
+    // Active deadlines are those not yet completed or cancelled.
+    // The deadline_status enum is: 'upcoming' | 'overdue' | 'completed' | 'cancelled'.
+    // Previous code used "pending" which does not exist in the enum, so the
+    // query silently returned zero rows and reminders were never generated.
+    const { data: urgentDeadlines, error: fetchError } = await supabase
       .from("deadlines")
       .select("*, cases(title, user_id)")
       .gte("due_date", now.toISOString())
       .lte("due_date", threeDaysFromNow.toISOString())
-      .eq("status", "pending");
+      .in("status", ["upcoming", "overdue"]);
+
+    if (fetchError) {
+      console.error("deadline-reminder: fetch failed:", fetchError);
+      return new Response(
+        JSON.stringify({ error: "fetch_failed", detail: fetchError.message }),
+        { status: 500, headers: { "Content-Type": "application/json" } },
+      );
+    }
 
     if (!urgentDeadlines || urgentDeadlines.length === 0) {
       // Still return the terse shape so the cron caller can rely on it.

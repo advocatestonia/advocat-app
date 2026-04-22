@@ -1423,7 +1423,7 @@ Review the email carefully. It will only be sent after you tap **Send**.
       );
     }
 
-    final dueDate = DateTime.tryParse(dueDateStr);
+    final dueDate = _parseDueDateSafe(dueDateStr);
     if (dueDate == null) {
       return ToolResult.error(
         'Invalid due_date "$dueDateStr". Use ISO-8601 (YYYY-MM-DD).',
@@ -1440,8 +1440,16 @@ Review the email carefully. It will only be sent after you tap **Send**.
         if (reminderDaysBefore != null)
           'reminder_days_before': reminderDaysBefore,
       });
-    } catch (e) {
-      _log.w('create_deadline: persist failed: $e');
+    } catch (e, stack) {
+      // v24.2.3: do NOT silently swallow — the user must know that
+      // their deadline was NOT saved, otherwise they rely on a
+      // reminder that will never fire. Returning a failure also
+      // lets the AI retry or offer to save locally.
+      _log.e('create_deadline: persist failed', error: e, stackTrace: stack);
+      return ToolResult.error(
+        'Could not save deadline "$title": ${_friendlyPersistError(e)}. '
+        'Please try again or add it manually from the Deadlines screen.',
+      );
     }
 
     final daysLeft = dueDate.difference(DateTime.now()).inDays;
@@ -1582,5 +1590,47 @@ Review the email carefully. It will only be sent after you tap **Send**.
           'is in Estonian, cross-check against TsÜS, VÕS, TLS or AsjS as '
           'applicable. Respond in the user\'s language.',
     );
+  }
+
+  /// Parse a due_date string ("YYYY-MM-DD" or full ISO-8601) into a
+  /// timezone-safe DateTime.
+  ///
+  /// Why: the AI typically sends "2026-05-01" (no time). `DateTime.tryParse`
+  /// interprets this as local midnight, and `.toIso8601String()` then emits
+  /// a UTC-shifted timestamp that lands on 2026-04-30 for users east of UTC
+  /// (e.g. Tallinn UTC+3 → 2026-04-30T21:00:00.000Z). The deadline then
+  /// appears one day early and the reminder fires a day late.
+  ///
+  /// Fix: for date-only input we lock to UTC noon, which is safely inside
+  /// the intended day for every timezone offset between -12 and +14.
+  static DateTime? _parseDueDateSafe(String raw) {
+    final trimmed = raw.trim();
+    if (trimmed.isEmpty) return null;
+    // Date-only pattern YYYY-MM-DD
+    final dateOnly = RegExp(r'^(\d{4})-(\d{2})-(\d{2})$').firstMatch(trimmed);
+    if (dateOnly != null) {
+      final y = int.parse(dateOnly.group(1)!);
+      final m = int.parse(dateOnly.group(2)!);
+      final d = int.parse(dateOnly.group(3)!);
+      return DateTime.utc(y, m, d, 12, 0, 0);
+    }
+    // Full ISO-8601 — trust it
+    return DateTime.tryParse(trimmed)?.toUtc();
+  }
+
+  /// Convert a persist exception into a short, user-safe message.
+  /// Never leak raw Postgres errors or auth tokens to the AI / user.
+  static String _friendlyPersistError(Object e) {
+    final s = e.toString();
+    if (s.contains('JWT') || s.contains('401') || s.contains('unauthorized')) {
+      return 'you need to sign in again';
+    }
+    if (s.contains('RLS') || s.contains('permission') || s.contains('42501')) {
+      return 'permission denied (please reload the app)';
+    }
+    if (s.contains('network') || s.contains('SocketException') || s.contains('timeout')) {
+      return 'network issue — check your connection';
+    }
+    return 'a temporary server error';
   }
 }

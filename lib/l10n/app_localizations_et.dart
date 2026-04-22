@@ -2467,4 +2467,19 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get backToChat => 'Tagasi vestlusesse';
+
+  @override
+  String get upgradeBannerTitle => 'Uuenda piiramatute konsultatsioonide jaoks';
+
+  @override
+  String get upgradeBannerCta => 'Uuenda';
+
+  @override
+  String get paymentSuccessTitle => 'Makse õnnestus';
+
+  @override
+  String get paymentSuccessBody => 'Teie tellimus on nüüd aktiivne.';
+
+  @override
+  String get commonOk => 'OK';
 }
