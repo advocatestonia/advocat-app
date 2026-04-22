@@ -84,10 +84,10 @@ void main() {
     });
 
     testWidgets('5. custom curve is accepted', (tester) async {
-      await tester.pumpWidget(MaterialApp(
+      await tester.pumpWidget(const MaterialApp(
         home: AnimatedFadeIn(
           curve: Curves.bounceOut,
-          child: const Text('bouncy'),
+          child: Text('bouncy'),
         ),
       ));
       await tester.pump(const Duration(milliseconds: 500));
