@@ -658,13 +658,17 @@ class VoiceService {
   ///
   /// Never fails silently — always resets [_isSpeaking] on exit.
   Future<void> speak(String text, {String langCode = 'en'}) async {
-    if (!_ttsInitialized || text.isEmpty) {
+    // Post-bug-2 safety: even if the caller forgot to clean the text,
+    // we strip the expressive tags here too so every route is safe.
+    final cleaned = stripExpressiveTags(text).trim();
+    if (!_ttsInitialized || cleaned.isEmpty) {
       if (kDebugMode) {
         debugPrint('TTS: speak() skipped — initialized=$_ttsInitialized, '
-            'textEmpty=${text.isEmpty}');
+            'textEmpty=${cleaned.isEmpty}');
       }
       return;
     }
+    text = cleaned;
 
     // Language-aware routing: ElevenLabs v3 for RU/EN/UK (sounds native),
     // Google Chirp3-HD for Estonian and everything else. User confirmed ET
@@ -740,10 +744,16 @@ class VoiceService {
 
   /// Attempt to speak using Google TTS via the Supabase google-tts function.
   Future<bool> _speakWithGoogleTTS(
-    String text, {
+    String rawText, {
     String langCode = 'en',
   }) async {
     try {
+      // Strip expressive tags (post-launch bug 2 fix). Google Chirp3-HD
+      // does not parse [warmth], [thoughtful] etc and would speak the
+      // literal bracket text, breaking the voice output for Estonian /
+      // Finnish / and every other non-ElevenLabs language.
+      final text = stripExpressiveTags(rawText);
+
       if (kDebugMode) {
         debugPrint('TTS: calling Google TTS, '
             'lang=$langCode, textLen=${text.length}');
@@ -787,14 +797,30 @@ class VoiceService {
   }
 
   /// Strip Gemini-style expressive tags like `[warmth]`, `[thoughtful]`
-  /// before handing text to ElevenLabs — that engine uses a different
-  /// tag format and would read square brackets literally.
+  /// before handing text to any TTS engine that does not natively support
+  /// them (ElevenLabs, Google Chirp3-HD, browser SpeechSynthesis). The tag
+  /// vocabulary is kept in sync with system_prompts.dart so every tag the
+  /// LLM is permitted to emit is stripped here.
+  ///
+  /// Public so the chat UI can call it before building TTS-safe text and
+  /// so tests can pin the contract.
   static final _geminiTagRegex = RegExp(
     r'\[(warmth|thoughtful|determination|sigh|reassuring|whispers|laughs|'
     r'excitement|enthusiasm|shouts|sarcastic|calm|confident|empathetic|'
     r'serious|gentle|firm|curious|hopeful|concerned)\]\s*',
     caseSensitive: false,
   );
+
+  /// Public helper: removes every expressive audio tag from [text] and
+  /// collapses any resulting double-whitespace.  Idempotent — a second
+  /// call returns the same string.
+  static String stripExpressiveTags(String text) {
+    if (text.isEmpty) return text;
+    final stripped = text.replaceAll(_geminiTagRegex, '');
+    // Clean up residual double spaces that can appear after the regex
+    // removes a leading tag followed by a space.
+    return stripped.replaceAll(RegExp(r'  +'), ' ');
+  }
 
   /// Attempt to speak using ElevenLabs via the Supabase tts-proxy function.
   /// On web, the entire fetch+play flow runs in JS (speech.js) to avoid
@@ -807,7 +833,7 @@ class VoiceService {
       final voiceId = _elevenLabsVoices[_voiceGender] ??
           _elevenLabsVoices[VoiceGender.female]!;
 
-      final text = rawText.replaceAll(_geminiTagRegex, '');
+      final text = stripExpressiveTags(rawText);
 
       if (kDebugMode) {
         debugPrint('TTS: calling ElevenLabs, voice=$voiceId, '
@@ -854,9 +880,11 @@ class VoiceService {
 
   /// Fallback: speak using browser SpeechSynthesis / native TTS.
   Future<void> _speakWithBrowserTts(
-    String text, {
+    String rawText, {
     String langCode = 'en',
   }) async {
+    // Browser TTS also cannot parse expressive tags — strip them.
+    final text = stripExpressiveTags(rawText);
     final ttsLocale = _ttsLocaleMap[langCode] ?? 'en-US';
     if (kDebugMode) {
       debugPrint(

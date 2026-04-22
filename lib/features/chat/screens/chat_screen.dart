@@ -25,6 +25,7 @@ import '../../auth/providers/auth_provider.dart';
 import '../services/chat_tool_bridge.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
+import '../widgets/welcome_chips.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -121,6 +122,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   List<String> _ttsQueue = [];
   StringBuffer _sentenceBuffer = StringBuffer();
   bool _isSpeakingStreamed = false;
+
+  // -- Post-launch BUG 3 fix (2026-04-22): first-conversation prompt --
+  //
+  // When the user opens a brand-new case chat for the first time, show
+  // five category chips under the welcome message so they can pick what
+  // kind of help they need.  Hidden after first tap or after the user
+  // sends any message manually.
+  bool _showWelcomeChips = false;
 
   @override
   void initState() {
@@ -311,7 +320,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   /// Strip markdown formatting for natural TTS speech.
   String _cleanTextForTTS(String text) {
-    var clean = text;
+    // Post-launch bug 2 (2026-04-22): Remove Gemini-style expressive tags
+    // like [warmth], [thoughtful] before TTS. VoiceService.speak() also
+    // strips them as defence-in-depth; we do it here too so the log line
+    // "TTS: speaking ..." shows the real text that reaches the engine.
+    var clean = VoiceService.stripExpressiveTags(text);
     // Remove bold/italic markers
     clean = clean.replaceAll(RegExp(r'\*{1,3}'), '');
     // Remove headers
@@ -492,8 +505,44 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     setState(() {
       _messages.add(welcome);
       _chatPhase = _ChatPhase.newCase;
+      // BUG 3 fix: show first-conversation category chips below the
+      // welcome message so the user knows how to start.
+      _showWelcomeChips = true;
     });
     _scrollToBottom();
+  }
+
+  /// Bug 3 handler: user tapped one of the five welcome category chips.
+  /// Pre-fills the text field and, after a short delay so they can see
+  /// the pre-filled text, sends it automatically.
+  void _onWelcomeCategoryPicked(
+    WelcomeCategory category,
+    String prefill,
+  ) {
+    setState(() {
+      _showWelcomeChips = false;
+      _messageController.text = prefill;
+      _messageController.selection = TextSelection.fromPosition(
+        TextPosition(offset: prefill.length),
+      );
+    });
+    // Give the user 350 ms to see the pre-filled text before we send it;
+    // this makes the transition less jarring than sending instantly.
+    Future.delayed(const Duration(milliseconds: 350), () {
+      if (!mounted) return;
+      final text = _messageController.text.trim();
+      if (text.isEmpty) return;
+      _messageController.clear();
+      _sendMessage(text);
+    });
+  }
+
+  /// Bug 3 handler: user tapped "skip" on the welcome chips — they just
+  /// want to start typing themselves. Hide the chips.
+  void _onWelcomeSkip() {
+    setState(() {
+      _showWelcomeChips = false;
+    });
   }
 
   /// Check for deadlines within 3 days and show a system-level warning.
@@ -619,6 +668,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _messages.add(userMessage);
       _isSending = true;
       _isTyping = true;
+      // BUG 3: the user has engaged — hide the welcome chips regardless
+      // of whether they tapped one or typed their own starter.
+      _showWelcomeChips = false;
     });
     _scrollToBottom(force: true);
 
@@ -1835,15 +1887,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       return _buildEmptyState();
     }
 
+    // BUG 3: add one trailing slot for the welcome chips when active.
+    final chipsSlot = _showWelcomeChips ? 1 : 0;
+    final typingSlot = _isTyping ? 1 : 0;
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.sm,
       ),
-      itemCount: _messages.length + (_isTyping ? 1 : 0),
+      itemCount: _messages.length + chipsSlot + typingSlot,
       itemBuilder: (context, index) {
-        if (index == _messages.length && _isTyping) {
+        // Order: messages → welcome chips (if active) → typing indicator.
+        if (_showWelcomeChips && index == _messages.length) {
+          final locale = Localizations.localeOf(context).languageCode;
+          return ChatWelcomeChips(
+            locale: locale,
+            onCategorySelected: _onWelcomeCategoryPicked,
+            onSkip: _onWelcomeSkip,
+          );
+        }
+        final messagesAndChips = _messages.length + chipsSlot;
+        if (index == messagesAndChips && _isTyping) {
           return _buildTypingIndicator();
         }
 
