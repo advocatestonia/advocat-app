@@ -70,17 +70,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ref.invalidate(currentUserProvider);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
+            // v24.2.3 UX-Tier-A: localise payment-success dialog (was EN).
+            final l = AppLocalizations.of(context);
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                title: const Text('\u2713'),
-                content: const Text(
-                  'Payment successful! Your subscription is now active.',
+                title: Text(l?.paymentSuccessTitle ?? 'Payment successful'),
+                content: Text(
+                  l?.paymentSuccessBody ?? 'Your subscription is now active.',
                 ),
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(ctx),
-                    child: const Text('OK'),
+                    child: Text(l?.commonOk ?? 'OK'),
                   ),
                 ],
               ),

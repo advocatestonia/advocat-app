@@ -960,5 +960,10 @@
     },
     "navigatingTo": "Opening",
     "stayInChat": "Stay in chat",
-    "backToChat": "Back to chat"
+    "backToChat": "Back to chat",
+    "upgradeBannerTitle": "Upgrade for unlimited consultations",
+    "upgradeBannerCta": "Upgrade",
+    "paymentSuccessTitle": "Payment successful",
+    "paymentSuccessBody": "Your subscription is now active.",
+    "commonOk": "OK"
 }

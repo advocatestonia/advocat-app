@@ -4531,6 +4531,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to chat'**
   String get backToChat;
+
+  /// No description provided for @upgradeBannerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade for unlimited consultations'**
+  String get upgradeBannerTitle;
+
+  /// No description provided for @upgradeBannerCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get upgradeBannerCta;
+
+  /// No description provided for @paymentSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment successful'**
+  String get paymentSuccessTitle;
+
+  /// No description provided for @paymentSuccessBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription is now active.'**
+  String get paymentSuccessBody;
+
+  /// No description provided for @commonOk.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get commonOk;
 }
 
 class _AppLocalizationsDelegate

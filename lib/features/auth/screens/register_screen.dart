@@ -362,6 +362,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                       focusNode: _passwordFocus,
                       obscureText: _obscurePassword,
                       textInputAction: TextInputAction.next,
+                      // v24.2.3 UX-Tier-A: hint password manager to
+                      // offer "Save password" flow on submit.
+                      autofillHints: const [AutofillHints.newPassword],
                       onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(
                         labelText: l.password,
@@ -404,6 +407,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                       focusNode: _confirmPasswordFocus,
                       obscureText: _obscureConfirmPassword,
                       textInputAction: TextInputAction.done,
+                      // v24.2.3 UX-Tier-A: same newPassword hint for
+                      // password managers that auto-fill twice.
+                      autofillHints: const [AutofillHints.newPassword],
                       decoration: InputDecoration(
                         labelText: l.confirmPassword,
                         prefixIcon: const Icon(Icons.lock_outlined),

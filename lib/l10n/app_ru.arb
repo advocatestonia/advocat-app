@@ -939,5 +939,10 @@
   "saveTwentyPercent": "Экономия 20%",
   "strategyRecommendations": "Рекомендации по стратегии",
   "unlimitedAiMessages": "Безлимитные сообщения ИИ",
-  "voiceInput": "Голосовой ввод"
+  "voiceInput": "Голосовой ввод",
+  "upgradeBannerTitle": "Откройте безлимитные консультации",
+  "upgradeBannerCta": "Обновить",
+  "paymentSuccessTitle": "Оплата прошла",
+  "paymentSuccessBody": "Подписка активирована.",
+  "commonOk": "ОК"
 }
