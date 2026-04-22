@@ -123,6 +123,7 @@ void main() {
           AppRoutes.rights,
           AppRoutes.rightsDetail,
           AppRoutes.legalAid,
+          AppRoutes.aiMemory,
         ];
 
         for (final route in routes) {
@@ -202,8 +203,8 @@ void main() {
         // caseDocuments, caseTimeline, caseCreate, scan, chat,
         // deadlines, settings, subscription, email,
         // checker, checkerCompany, checkerVehicle,
-        // vault, vaultAdd, rights, rightsDetail, legalAid
-        // = 23 routes total
+        // vault, vaultAdd, rights, rightsDetail, legalAid, aiMemory
+        // = 24 routes total
         final allRoutes = [
           AppRoutes.onboarding,
           AppRoutes.login,
@@ -228,8 +229,9 @@ void main() {
           AppRoutes.rights,
           AppRoutes.rightsDetail,
           AppRoutes.legalAid,
+          AppRoutes.aiMemory,
         ];
-        expect(allRoutes, hasLength(23));
+        expect(allRoutes, hasLength(24));
       });
     });
   });

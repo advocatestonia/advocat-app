@@ -27,6 +27,7 @@ import '../features/vault/screens/add_vault_document_screen.dart';
 import '../features/rights/screens/rights_guide_screen.dart';
 import '../features/rights/screens/rights_detail_screen.dart';
 import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
+import '../features/profile/screens/ai_memory_screen.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -53,6 +54,7 @@ abstract final class AppRoutes {
   static const String rights = '/rights';
   static const String rightsDetail = '/rights/:id';
   static const String legalAid = '/legal-aid';
+  static const String aiMemory = '/profile/ai-memory';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -225,6 +227,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.legalAid,
         name: 'legalAid',
         builder: (context, state) => const LegalAidCalculatorScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.aiMemory,
+        name: 'aiMemory',
+        builder: (context, state) => const AiMemoryScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(
