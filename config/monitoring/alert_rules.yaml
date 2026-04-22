@@ -1,0 +1,98 @@
+# ============================================================================
+# OMEGA-BULLETPROOF BP-3 — Alert rules
+# ============================================================================
+#
+# Rules are evaluated against the `app_errors` table (and its Axiom-forwarded
+# mirror). Each rule has an owner channel (email / telegram) and a severity.
+#
+# Thresholds are chosen to:
+#   - avoid false positives under a 25-seat founder beta (~500 writes/day
+#     total so a single error burst won't trip alerts on its own),
+#   - catch the Apr-18 / Apr-20 incident classes within 10 min,
+#   - catch the >1% chargeback threshold that would freeze Stripe payouts.
+#
+# Channels are referenced by id; wire them up in `notification_channels.yaml`
+# (draft) or a single-pane-of-glass dashboard.
+
+rules:
+
+  - id: error_rate_high
+    description: >
+      Overall client-side error rate above 5 % of sessions in the last 10 min.
+      Proxy via app_errors row count vs. an approximate traffic baseline of
+      200 sessions/hr during beta.
+    when: |
+      count_over(app_errors where event_kind = 'error', 10m) > 10
+    severity: page
+    channels: [email_owner, telegram_owner]
+
+  - id: ai_response_failures
+    description: AI failures (blank, timeout, non-200) above baseline.
+    when: |
+      count_over(app_errors where event_kind = 'ai_failure', 15m) > 5
+    severity: page
+    channels: [email_owner, telegram_owner]
+
+  - id: stripe_webhook_failures
+    description: Any stripe_failure event in the last 30 min.
+    when: |
+      count_over(app_errors where event_kind = 'stripe_failure', 30m) > 0
+    severity: page
+    channels: [email_owner, telegram_owner]
+
+  - id: deadline_cron_failure
+    description: Scheduled deadline-reminder missed its window.
+    when: |
+      count_over(app_errors where event_kind = 'cron_failure', 1h) > 0
+    severity: ticket
+    channels: [email_owner]
+
+  - id: rls_violation_spike
+    description: >
+      More than 3 rls_violation events in 10 min usually means a buggy
+      client or an attack probe — either way, the owner should look.
+    when: |
+      count_over(app_errors where event_kind = 'rls_violation', 10m) > 3
+    severity: page
+    channels: [email_owner, telegram_owner]
+
+  - id: founder_cap_80pct
+    description: >
+      Info alert when founder seats reach 80 % (20/25). Lets the owner
+      decide to raise the cap or close signups before the 26th arrives.
+    when: |
+      count(subscriptions where plan = 'founder' and status = 'active') >= 20
+    severity: info
+    channels: [email_owner]
+
+  - id: founder_cap_full
+    description: Founder beta capped; new sign-ups now 403.
+    when: |
+      count(subscriptions where plan = 'founder' and status = 'active') >= 25
+    severity: ticket
+    channels: [email_owner, telegram_owner]
+
+  - id: claude_cost_daily
+    description: >
+      Daily Claude spend estimate above €20. Not an emergency but the
+      margin on a €14.99 sub is tight so the owner wants visibility.
+    when: |
+      sum(ai_usage.cost_eur where date_trunc('day', created_at) = current_date) > 20
+    severity: info
+    channels: [email_owner]
+
+  - id: chargeback_rate_high
+    description: Chargeback rate > 1 % will freeze Stripe payouts.
+    when: |
+      (count(chargebacks where created_at > now() - 7 * interval '1 day') * 100.0 /
+       nullif(count(payments where created_at > now() - 7 * interval '1 day'), 0)) > 1
+    severity: page
+    channels: [email_owner, telegram_owner]
+
+channels:
+  email_owner:
+    type: email
+    to: aiplacest@gmail.com   # owner — see MEMORY.md
+  telegram_owner:
+    type: telegram
+    placeholder: true          # owner to wire up bot token
