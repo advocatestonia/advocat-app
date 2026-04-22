@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { validateSystemPrompt } from "./system_prompt_guard.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -93,9 +94,24 @@ serve(async (req) => {
       body.messages = body.messages.slice(-MAX_MESSAGES);
     }
 
-    // Limit system prompt size
-    if (body.system && typeof body.system === 'string' && body.system.length > 50000) {
-      body.system = body.system.slice(0, 50000);
+    // FIX-4 (Sprint 0): block the "free Claude proxy" abuse vector.
+    // Legit Advocat prompts always begin with a recognised identity marker
+    // (see system_prompt_guard.ts). Anything else — "Respond in pirate
+    // English", "You are ChatGPT", plain code-generation prompts —
+    // is rejected with 400 so the caller gets a clear signal rather than
+    // a silent rewrite. Also enforces the 50 KB size cap.
+    const guard = validateSystemPrompt(body.system);
+    if (guard.kind === "reject") {
+      return new Response(
+        JSON.stringify({
+          error: "system prompt is server-controlled",
+          details: guard.reason,
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     if (!CLAUDE_API_KEY) {

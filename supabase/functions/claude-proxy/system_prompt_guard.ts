@@ -1,0 +1,132 @@
+// System-prompt guard for claude-proxy (Sprint 0 — FIX-4).
+// -----------------------------------------------------------------------------
+// Ref: docs/security/05-code-security.md H1, docs/security/07-business-logic.md
+// H1 — "Custom system-prompt bypass enables free Claude proxy". An authenticated
+// Advocat user can set body.system to anything (e.g. "You are a pirate"), and
+// the Edge Function forwards it to Anthropic verbatim. That turns Advocat into
+// a free Claude API proxy: $450-$2250/mo burn per rogue Pro user.
+//
+// FIX-4 approach (non-breaking):
+//   - We do NOT move legal-corpus construction server-side — that's a much
+//     bigger refactor and would break 1068 passing tests.
+//   - Instead we enforce a STRUCTURAL invariant on body.system: the content
+//     must begin with a recognised Advocat identity marker. Every legit
+//     system prompt the client builds (see lib/services/system_prompts.dart)
+//     already starts with "You are Advocat" or a pinned variant. A "You are
+//     a pirate" style rogue prompt has no way to satisfy this check.
+//   - The guard also handles the Anthropic content-block shape where
+//     body.system is an array (used for prompt caching — see FIX-1).
+//
+// If the check fails, the caller gets 400 "system prompt is server-
+// controlled" rather than having their prompt silently rewritten — this
+// surfaces the error in logs so we can investigate and tune the whitelist.
+// -----------------------------------------------------------------------------
+
+/** Recognised identity markers. Legit Advocat prompts must START with one. */
+export const ADVOCAT_IDENTITY_MARKERS: readonly string[] = [
+  // Primary: English base role used by lib/services/system_prompts.dart.
+  "You are Advocat",
+  // Shorter variant for light prompts.
+  "You are an expert legal",
+  // Document-analysis specialist prompt (claude_service.dart:456).
+  "You are analyzing a legal document",
+  // Draft-generation specialist prompt (system_prompts.dart:413).
+  "You are generating a legal document draft",
+  // Warm/friendly tone specialist prompt (system_prompts.dart:232).
+  "You are a warm, experienced friend",
+  // Tool-aware prompt (system_prompts.dart:188).
+  "You are a powerful AI legal assistant",
+  // Fallback Advocat identity used in some flows.
+  "Advocat, an AI",
+  "Advocat, a legal",
+];
+
+export type GuardResult =
+  | { kind: "allow" }
+  | { kind: "reject"; reason: string };
+
+/** Max bytes allowed for a serialised system prompt. Existing limit. */
+export const MAX_SYSTEM_BYTES = 50_000;
+
+/**
+ * Validate that body.system (if present) is a legitimate Advocat prompt.
+ * Accepts:
+ *   - undefined / null / empty (no system prompt — Anthropic default)
+ *   - string starting with an Advocat marker
+ *   - array of content blocks where the FIRST text block starts with a
+ *     marker (enables FIX-1 prompt caching without losing the guard)
+ * Rejects everything else with a stable error string.
+ */
+export function validateSystemPrompt(system: unknown): GuardResult {
+  if (system === undefined || system === null) return { kind: "allow" };
+
+  // String form.
+  if (typeof system === "string") {
+    if (system.length === 0) return { kind: "allow" };
+    if (system.length > MAX_SYSTEM_BYTES) {
+      return {
+        kind: "reject",
+        reason: "system prompt too large (max 50 KB)",
+      };
+    }
+    if (startsWithMarker(system)) return { kind: "allow" };
+    return {
+      kind: "reject",
+      reason:
+        "system prompt is server-controlled — must begin with a recognised " +
+        "Advocat identity marker",
+    };
+  }
+
+  // Array form (Anthropic content-block system prompt, used for caching).
+  if (Array.isArray(system)) {
+    if (system.length === 0) return { kind: "allow" };
+    // Find the first block with a non-empty text field.
+    let firstText = "";
+    let totalBytes = 0;
+    for (const block of system) {
+      if (block && typeof block === "object" && typeof (block as { text?: unknown }).text === "string") {
+        const t = (block as { text: string }).text;
+        totalBytes += t.length;
+        if (!firstText && t.length > 0) firstText = t;
+      }
+    }
+    if (totalBytes > MAX_SYSTEM_BYTES) {
+      return {
+        kind: "reject",
+        reason: "system prompt too large (max 50 KB across all blocks)",
+      };
+    }
+    if (!firstText) {
+      // Array with no text content — Anthropic would reject this anyway.
+      return {
+        kind: "reject",
+        reason: "system prompt array must contain at least one text block",
+      };
+    }
+    if (startsWithMarker(firstText)) return { kind: "allow" };
+    return {
+      kind: "reject",
+      reason:
+        "system prompt is server-controlled — first text block must begin " +
+        "with a recognised Advocat identity marker",
+    };
+  }
+
+  // Any other shape (object, number, boolean) is a protocol error.
+  return {
+    kind: "reject",
+    reason: "system prompt must be a string or an array of content blocks",
+  };
+}
+
+function startsWithMarker(text: string): boolean {
+  // Trim leading whitespace only — don't lowercase, because our markers
+  // are proper nouns and "You are advocat" (lowercase a) would be an
+  // attempted evasion, not a legitimate prompt.
+  const trimmed = text.replace(/^\s+/, "");
+  for (const marker of ADVOCAT_IDENTITY_MARKERS) {
+    if (trimmed.startsWith(marker)) return true;
+  }
+  return false;
+}
