@@ -114,10 +114,6 @@ const _preferElevenLabsFor = {
 String _normaliseLangBase(String langCode) =>
     langCode.toLowerCase().split(RegExp('[-_]')).first;
 
-bool _shouldPreferElevenLabs(String langCode) {
-  return _preferElevenLabsFor.contains(_normaliseLangBase(langCode));
-}
-
 // ---------------------------------------------------------------------------
 // Voice Service
 // ---------------------------------------------------------------------------
