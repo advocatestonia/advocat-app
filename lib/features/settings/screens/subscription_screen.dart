@@ -87,7 +87,12 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             // ── Current Plan Compact ─────────────────────────────────
             _CompactCurrentPlan(tier: currentTier),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 12),
+
+            // ── Founder's Beta badge + refund policy short text ─────
+            _FounderBetaBadge(l10n: l10n),
+
+            const SizedBox(height: 12),
 
             // ── Annual / Monthly Toggle ──────────────────────────────
             _BillingToggle(
@@ -300,29 +305,17 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             : () => _handlePlanSelect(context, ref, 'basic'),
       ),
 
-      // Advocat Pro (premium)
-      _PlanCard(
-        planId: 'premium',
-        title: l10n.fullDefense,
-        tierLabel: 'PRO',
-        monthlyPrice: 29.99,
-        annualPrice: 249.99,
-        isAnnual: isAnnual,
-        isCurrent: currentTier == SubscriptionTier.premium,
-        isLoading: loadingPlan == 'premium',
-        cardStyle: _CardStyle.premium,
-        features: [
-          _Feature(l10n.unlimitedAiMessages, true),
-          _Feature(l10n.unlimitedCases, true),
-          _Feature(l10n.unlimitedDocScans, true),
-          _Feature(l10n.fullAiAnalysis, true),
-          _Feature(l10n.draftGeneration, true),
-          _Feature(l10n.priorityProcessing, true),
-        ],
-        onSelect: currentTier == SubscriptionTier.premium
-            ? null
-            : () => _handlePlanSelect(context, ref, 'premium'),
-      ),
+      // ── Advocat Pro (premium) — HIDDEN during Founder's Beta v1.0 ──
+      //
+      // The premium (€29.99) tier is intentionally NOT listed while the
+      // 25-seat Founder's Beta is running. The feature flag / config
+      // value in app_config.beta_cap governs when this comes back; for
+      // now only the €14.99 Basic plan is offered.
+      //
+      // Users who already subscribed to premium before the beta (if any
+      // exist from pre-release testing) still see their current-plan
+      // card via _CompactCurrentPlan at the top of the screen — we only
+      // hide the *upgrade* path here.
     ];
   }
 
@@ -1261,5 +1254,91 @@ class _PageIndicatorState extends State<_PageIndicator> {
         );
       }),
     );
+  }
+}
+
+// ── Founder's Beta badge + refund policy callout ────────────────────────
+
+/// Small badge + policy line displayed above the plan cards during the
+/// Founder's Beta v1.0 window. Copies the localised badge text and the
+/// short refund-policy summary from AppLocalizations; falls back to
+/// sensible English defaults when the locale bundle is missing keys.
+class _FounderBetaBadge extends StatelessWidget {
+  const _FounderBetaBadge({required this.l10n});
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    // Defensive access — `AppLocalizations` is a generated class where
+    // each getter returns a non-null String, but locales that missed
+    // gen_l10n regeneration may throw. Static `.toString` ensures we
+    // always render *something*.
+    final badgeText = _safe(() => l10n.founderBetaBadge,
+        'Founder\'s Beta v1.0 • Limited spots');
+    final policyText = _safe(
+        () => l10n.refundPolicyShort, '14-day refund or 7 AI responses');
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 6,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.accent.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(AppRadius.full),
+              border: Border.all(
+                color: AppColors.accent.withValues(alpha: 0.35),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.verified_user_outlined,
+                  size: 14,
+                  color: AppColors.accent,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  badgeText,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.accent,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            policyText,
+            style: const TextStyle(
+              fontFamily: 'Inter',
+              fontSize: 11,
+              color: AppColors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  static String _safe(String Function() read, String fallback) {
+    try {
+      return read();
+    } catch (_) {
+      return fallback;
+    }
   }
 }
