@@ -900,7 +900,7 @@ class _AdvocatProQuickActionButtonState
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.accent,
                 fontSize: 11,
                 fontWeight: FontWeight.w600,

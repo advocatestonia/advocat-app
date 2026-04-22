@@ -8,9 +8,7 @@ import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
-import '../../../shared/widgets/app_card.dart';
 import '../../../shared/widgets/empty_state.dart';
-import '../../../shared/widgets/status_chip.dart';
 
 // ── State ────────────────────────────────────────────────────────────────
 
@@ -498,7 +496,7 @@ class _ProviderCardState extends ConsumerState<_ProviderCard> {
             Text(
               'Email sync for ${info.name} is coming soon.\nWe\'re working on bringing this integration to you!',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 15,
                 color: AppColors.textSecondary,
@@ -518,7 +516,7 @@ class _ProviderCardState extends ConsumerState<_ProviderCard> {
                   color: AppColors.warning.withValues(alpha: 0.2),
                 ),
               ),
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
@@ -526,7 +524,7 @@ class _ProviderCardState extends ConsumerState<_ProviderCard> {
                     size: 16,
                     color: AppColors.warning,
                   ),
-                  const SizedBox(width: 6),
+                  SizedBox(width: 6),
                   Text(
                     'Coming Soon',
                     style: TextStyle(
@@ -700,7 +698,7 @@ class _ConnectedView extends ConsumerWidget {
             border: Border.all(
                 color: AppColors.warning.withValues(alpha: 0.15)),
           ),
-          child: Row(
+          child: const Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Icon(
@@ -708,7 +706,7 @@ class _ConnectedView extends ConsumerWidget {
                 size: 20,
                 color: AppColors.warning,
               ),
-              const SizedBox(width: AppSpacing.sm),
+              SizedBox(width: AppSpacing.sm),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -722,7 +720,7 @@ class _ConnectedView extends ConsumerWidget {
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: 4),
                     Text(
                       'Your Gmail account is connected. Email sync and automatic legal email detection will be available in an upcoming update.',
                       style: TextStyle(
@@ -858,7 +856,7 @@ class _AnimatedConnectionCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 2),
-                    Text(
+                    const Text(
                       'Gmail',
                       style: TextStyle(
                         fontFamily: 'Inter',

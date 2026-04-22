@@ -143,7 +143,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                   Expanded(
                     child: Text(
                       l10n.voiceDisclaimer,
-                      style: TextStyle(fontSize: 12, color: Color(0xFF1976D2)),
+                      style: const TextStyle(fontSize: 12, color: Color(0xFF1976D2)),
                     ),
                   ),
                 ],
@@ -178,7 +178,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                     } else if (responseData is String) {
                       try {
                         data = Map<String, dynamic>.from(
-                          (responseData as String).isNotEmpty
+                          (responseData).isNotEmpty
                             ? Map.from(Uri.splitQueryString(responseData))
                             : {},
                         );
@@ -212,7 +212,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                 ),
                 style: OutlinedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 44),
-                  side: BorderSide(color: AppColors.border),
+                  side: const BorderSide(color: AppColors.border),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),
                   ),
@@ -1041,7 +1041,7 @@ class _PlanCardState extends State<_PlanCard>
   Widget _buildCta(AppLocalizations l10n) {
     final label = widget.isCurrent ? l10n.currentPlan : l10n.choosePlan;
 
-    final Widget loader = const SizedBox(
+    const Widget loader = SizedBox(
       width: 18,
       height: 18,
       child: CircularProgressIndicator(strokeWidth: 2),

@@ -286,7 +286,7 @@ void main() {
     });
 
     test('returns Sonnet for queries with multiple complex keywords', () {
-      final complexQuery = 'I need help with my deportation appeal. '
+      const complexQuery = 'I need help with my deportation appeal. '
           'The court hearing is next week.';
       expect(ClaudeService.chooseModel(complexQuery), ClaudeService.modelSonnet);
     });

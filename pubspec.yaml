@@ -84,6 +84,7 @@ dev_dependencies:
   integration_test:
     sdk: flutter
 
+  firebase_core_platform_interface: any
 flutter:
   uses-material-design: true
   generate: true

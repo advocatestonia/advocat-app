@@ -26,7 +26,7 @@ Set<String> _metadataKeys(Map<String, dynamic> arb) {
 void main() {
   // Resolve path relative to the test file location
   // Tests run from the project root, so lib/l10n/ is accessible directly
-  final basePath = 'lib/l10n';
+  const basePath = 'lib/l10n';
 
   late Map<String, dynamic> enArb;
   late Map<String, dynamic> fiArb;

@@ -55,7 +55,7 @@ void main() {
   // 10 golden prompts in Estonian.
   // ---------------------------------------------------------------------------
   final prompts = <_Prompt>[
-    _Prompt(
+    const _Prompt(
       id: '01_labor_termination',
       et:
           'Tööandja ütles mu töölepingu üles ilma etteteatamiseta. '
@@ -64,7 +64,7 @@ void main() {
       expectedModel: ClaudeService.modelSonnet,
       mustContain: ['TLS', '30'],
     ),
-    _Prompt(
+    const _Prompt(
       id: '02_contract_review',
       et: 'Palun vaata see tööleping üle, kas seal on midagi kahtlast.',
       expectSimple: false,
@@ -72,7 +72,7 @@ void main() {
       mustContain: ['TLS'],
       knownRoutingGap: true, // Bug: Estonian "tööleping" not in keyword list
     ),
-    _Prompt(
+    const _Prompt(
       id: '03_tax_debt',
       et: 'Mul on võlg maksuametile, mis juhtub kui ei maksa?',
       expectSimple: false,
@@ -80,7 +80,7 @@ void main() {
       expectedModel: '',
       mustContain: ['Estonia'],
     ),
-    _Prompt(
+    const _Prompt(
       id: '04_rental_deposit',
       et:
           'Üürileandja ei tagasta tagatisraha, mis võtta aega, '
@@ -91,7 +91,7 @@ void main() {
       // Bug: "üürileandja"/"tagatisraha"/"kohus" not in chooseModel keywords
       knownRoutingGap: true,
     ),
-    _Prompt(
+    const _Prompt(
       id: '05_oy_registration',
       et: 'Kuidas OÜ registreerida, mis dokumendid on vaja?',
       expectSimple: false,
@@ -101,14 +101,14 @@ void main() {
       // auto-surface the Estonian e-Business Register URL.
       knownKnowledgeGap: true,
     ),
-    _Prompt(
+    const _Prompt(
       id: '06_divorce',
       et: 'Soovin lahutust, naisel ühine laps. Kuidas elatist määratakse?',
       expectSimple: false,
       expectedModel: ClaudeService.modelSonnet,
       mustContain: ['PKS', '318'],
     ),
-    _Prompt(
+    const _Prompt(
       id: '07_sulga_deportation',
       et:
           'Sain lahkumisettekirjutuse Soomes — mul on 10 päeva aega, '
@@ -119,7 +119,7 @@ void main() {
       // still know about 10-day window (shared knowledge).
       mustContain: [],
     ),
-    _Prompt(
+    const _Prompt(
       id: '08_gdpr_violation',
       et:
           'Ettevõte töötleb minu isikuandmeid ilma nõusolekuta, '
@@ -129,7 +129,7 @@ void main() {
       mustContain: ['Estonia'],
       knownRoutingGap: true, // GDPR / isikuandmed not in keyword list
     ),
-    _Prompt(
+    const _Prompt(
       id: '09_speeding_fine',
       et: 'Sain kiiruse ületamise eest trahvi 160 eurot, kas saan vaidlustada?',
       expectSimple: false,
@@ -137,7 +137,7 @@ void main() {
       mustContain: [],
       knownRoutingGap: true, // trahv is in list but only 1 match; needs >=2
     ),
-    _Prompt(
+    const _Prompt(
       id: '10_inheritance',
       et:
           'Isa suri, ta elas Saksamaal aga oli eesti kodanik, '

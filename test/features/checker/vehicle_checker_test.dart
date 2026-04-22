@@ -43,7 +43,7 @@ void main() {
     });
 
     test('copyWith(clearReport: true) removes report', () {
-      final s = VehicleCheckerState(
+      const s = VehicleCheckerState(
         report: VehicleReport(
           plate: 'X',
           vin: 'Y',

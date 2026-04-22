@@ -628,7 +628,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
 
     // Stateful UTF-8 decoder — handles multibyte chars (Russian, Estonian)
     // split across TCP chunks. Accumulate raw bytes, decode in larger batches.
-    final utf8Decoder = Utf8Decoder(allowMalformed: false);
+    const utf8Decoder = Utf8Decoder(allowMalformed: false);
     final rawBytes = <int>[];
     await for (final chunk in byteStream) {
       rawBytes.addAll(chunk);

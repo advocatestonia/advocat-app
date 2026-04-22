@@ -316,7 +316,7 @@ void main() {
     });
 
     test('copyWith preserves error when explicitly passed', () {
-      final state = ChatState(
+      const state = ChatState(
         isLoading: false,
         error: 'some error',
       );
@@ -325,7 +325,7 @@ void main() {
     });
 
     test('error field can be set to null via copyWith', () {
-      final state = ChatState(error: 'old error');
+      const state = ChatState(error: 'old error');
       // Note: ChatState.copyWith sets error directly (nullable), so passing null clears it
       final updated = state.copyWith(error: null);
       expect(updated.error, isNull);
@@ -548,7 +548,7 @@ void main() {
 
   group('ChatNotifier — clearError state transition', () {
     test('clearError sets error to null', () {
-      final state = ChatState(
+      const state = ChatState(
         isLoading: false,
         error: 'Some error',
       );
@@ -918,7 +918,7 @@ void main() {
     });
 
     test('successive errors replace previous error message', () {
-      var state = ChatState(
+      var state = const ChatState(
         isLoading: false,
         error: 'First error',
       );

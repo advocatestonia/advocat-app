@@ -331,7 +331,7 @@ void main() {
       final controller = container.read(authControllerProvider.notifier);
 
       fake.signInHandler = (_, __) =>
-          throw AuthException('Invalid login credentials');
+          throw const AuthException('Invalid login credentials');
 
       await controller.login('test@test.ee', 'wrong');
 
@@ -434,7 +434,7 @@ void main() {
       final controller = container.read(authControllerProvider.notifier);
 
       fake.signUpHandler = (_, __, ___) =>
-          throw AuthException('User already registered');
+          throw const AuthException('User already registered');
 
       await controller.register(
         name: 'Test',
@@ -554,7 +554,7 @@ void main() {
       final controller = container.read(authControllerProvider.notifier);
 
       fake.resetPasswordHandler = (_) =>
-          throw AuthException('User not found');
+          throw const AuthException('User not found');
 
       final result = await controller.resetPassword('nobody@test.ee');
 
@@ -610,7 +610,7 @@ void main() {
 
       // Put controller into error state
       fake.signInHandler = (_, __) =>
-          throw AuthException('Bad credentials');
+          throw const AuthException('Bad credentials');
       await controller.login('test@test.ee', 'wrong');
 
       expect(container.read(authControllerProvider).hasError, isTrue);
@@ -690,7 +690,7 @@ void main() {
       final controller = container.read(authControllerProvider.notifier);
 
       fake.signInHandler = (_, __) =>
-          throw AuthException('Invalid email');
+          throw const AuthException('Invalid email');
 
       await controller.login('', 'password123');
 
@@ -706,7 +706,7 @@ void main() {
       final controller = container.read(authControllerProvider.notifier);
 
       fake.signInHandler = (_, __) =>
-          throw AuthException('Password required');
+          throw const AuthException('Password required');
 
       await controller.login('test@test.ee', '');
 
@@ -741,7 +741,7 @@ void main() {
       final controller = container.read(authControllerProvider.notifier);
 
       fake.signInHandler = (_, __) =>
-          throw AuthException('Error');
+          throw const AuthException('Error');
 
       // Fire multiple logins sequentially
       await controller.login('a@b.com', 'p1');
@@ -760,7 +760,7 @@ void main() {
 
       fake.signOutHandler = () async {};
       fake.signInHandler = (_, __) =>
-          throw AuthException('Bad credentials');
+          throw const AuthException('Bad credentials');
 
       await controller.logout();
       expect(container.read(authControllerProvider).status,
@@ -788,7 +788,7 @@ void main() {
       final controller = container.read(authControllerProvider.notifier);
 
       fake.signInHandler = (_, __) =>
-          throw AuthException('Specific error message');
+          throw const AuthException('Specific error message');
 
       await controller.login('a@b.com', 'p');
 
@@ -810,14 +810,14 @@ void main() {
 
       // First: trigger a login error
       fake.signInHandler = (_, __) =>
-          throw AuthException('Login error');
+          throw const AuthException('Login error');
       await controller.login('a@b.com', 'p');
       expect(container.read(authControllerProvider).errorMessage,
           'Login error');
 
       // Then: trigger a register error
       fake.signUpHandler = (_, __, ___) =>
-          throw AuthException('Register error');
+          throw const AuthException('Register error');
       await controller.register(
         name: 'X',
         email: 'x@x.com',

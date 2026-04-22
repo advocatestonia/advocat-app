@@ -65,7 +65,7 @@ void main() {
 }
 ''';
 
-  final manifestJson =
+  const manifestJson =
       '{"assets/legal/estonia/mks.json":[], "assets/legal/estonia/kars.json":[]}';
 
   setUp(() {

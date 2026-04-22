@@ -26,7 +26,7 @@ import 'package:advocat/services/estonian_legal_database.dart';
 void main() {
   group('Estonian legal acts — 10 codes must be present', () {
     test('PKS family law section exists with alimony + divorce anchors', () {
-      final t = EstonianLegalDatabase.familyLaw;
+      const t = EstonianLegalDatabase.familyLaw;
       expect(t, contains('PKS'));
       expect(t, contains('PEREKONNASEADUS'));
       expect(t, contains('§ 100'));
@@ -37,7 +37,7 @@ void main() {
     });
 
     test('KarS criminal law with key offences', () {
-      final t = EstonianLegalDatabase.criminalLaw;
+      const t = EstonianLegalDatabase.criminalLaw;
       expect(t, contains('KARISTUSSEADUSTIK'));
       expect(t, contains('KarS'));
       expect(t, contains('§ 120')); // threats
@@ -50,7 +50,7 @@ void main() {
     });
 
     test('TLS employment law: notice periods + €886 min wage', () {
-      final t = EstonianLegalDatabase.employmentLaw;
+      const t = EstonianLegalDatabase.employmentLaw;
       expect(t, contains('TÖÖLEPINGU SEADUS'));
       expect(t, contains('TLS'));
       expect(t, contains('15 days')); // <1y notice
@@ -62,7 +62,7 @@ void main() {
     });
 
     test('VÕS rental law section covers deposit cap + 3mo notice', () {
-      final t = EstonianLegalDatabase.rentalLaw;
+      const t = EstonianLegalDatabase.rentalLaw;
       expect(t, contains('VÕS'));
       expect(t, contains('§ 311'));
       expect(t, contains('§ 308'));
@@ -70,7 +70,7 @@ void main() {
     });
 
     test('VMS immigration: 10-day deportation appeal deadline', () {
-      final t = EstonianLegalDatabase.immigrationLaw;
+      const t = EstonianLegalDatabase.immigrationLaw;
       expect(t, contains('VÄLISMAALASTE SEADUS'));
       expect(t, contains('VMS'));
       expect(t.toLowerCase(), contains('deportation'));
@@ -79,7 +79,7 @@ void main() {
     });
 
     test('HMS administrative procedure: vaie 30 days + §40/§56/§75', () {
-      final t = EstonianLegalDatabase.administrativeLaw;
+      const t = EstonianLegalDatabase.administrativeLaw;
       expect(t, contains('HALDUSMENETLUSE SEADUS'));
       expect(t, contains('HMS'));
       expect(t, contains('§ 40'));
@@ -89,7 +89,7 @@ void main() {
     });
 
     test('HKMS referenced for 30-day court action', () {
-      final t = EstonianLegalDatabase.administrativeLaw +
+      const t = EstonianLegalDatabase.administrativeLaw +
           EstonianLegalDatabase.deadlines +
           EstonianLegalDatabase.immigrationLaw;
       expect(t, contains('HKMS'));
@@ -97,7 +97,7 @@ void main() {
     });
 
     test('PärS inheritance: 3 months renounce window', () {
-      final t = EstonianLegalDatabase.inheritanceLaw;
+      const t = EstonianLegalDatabase.inheritanceLaw;
       expect(t, contains('PÄRIMISSEADUS'));
       expect(t, contains('PärS'));
       expect(t, contains('§ 119'));
@@ -106,7 +106,7 @@ void main() {
     });
 
     test('VõrdKS equal treatment: 1-year deadline + burden of proof', () {
-      final t = EstonianLegalDatabase.discriminationLaw;
+      const t = EstonianLegalDatabase.discriminationLaw;
       expect(t, contains('VÕRDSE KOHTLEMISE SEADUS'));
       expect(t, contains('VõrdKS'));
       expect(t, contains('§ 25'));
@@ -114,7 +114,7 @@ void main() {
     });
 
     test('Consumer protection (TarKS scope) covers 14-day withdrawal', () {
-      final t = EstonianLegalDatabase.consumerLaw;
+      const t = EstonianLegalDatabase.consumerLaw;
       expect(t.toLowerCase(), contains('warranty'));
       expect(t, contains('14-day'));
       expect(t, contains('2 years'));
@@ -124,7 +124,7 @@ void main() {
 
   group('Estonian emergency numbers', () {
     test('all 5 critical phone lines present', () {
-      final t = EstonianLegalDatabase.contacts;
+      const t = EstonianLegalDatabase.contacts;
       for (final num in ['112', '116 006', '116 111', '1247', '620 0100']) {
         expect(t, contains(num), reason: 'Emergency number $num missing');
       }
@@ -133,7 +133,7 @@ void main() {
 
   group('Estonian self-service portals', () {
     test('all 8 official portals referenced', () {
-      final t = EstonianLegalDatabase.portals;
+      const t = EstonianLegalDatabase.portals;
       const required = [
         'etoimik.rik.ee',
         'etaotlus.politsei.ee',
@@ -152,7 +152,7 @@ void main() {
 
   group('Critical deadlines summary', () {
     test('deadlines block cites 30-day vaie and 10-day deportation', () {
-      final t = EstonianLegalDatabase.deadlines;
+      const t = EstonianLegalDatabase.deadlines;
       expect(t.toLowerCase(), contains('vaie'));
       expect(t, contains('30 days'));
       expect(t, contains('10 days'));

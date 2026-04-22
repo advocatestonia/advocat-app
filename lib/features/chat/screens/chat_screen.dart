@@ -1774,10 +1774,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             color: AppColors.accent,
           ),
           const SizedBox(width: 8),
-          Expanded(
+          const Expanded(
             child: Text(
               'Upgrade for unlimited consultations',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: AppColors.accent,
