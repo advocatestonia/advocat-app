@@ -987,12 +987,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // Guard against empty responses (e.g. tool_use only).
           if (responseText.trim().isEmpty) {
-            responseText = _getDemoResponse(text);
+            responseText = 'Ошибка: AI вернул пустой ответ. Попробуйте ещё раз или перезагрузите страницу.';
           }
         } else {
-          // No AI backend configured — use canned demo responses.
-          await Future.delayed(const Duration(milliseconds: 800));
-          responseText = _getDemoResponse(text);
+          // No AI backend configured — this is a real configuration issue,
+          // not a demo mode. Surface it so the owner can fix it.
+          responseText = 'Ошибка: AI не настроен (SUPABASE_URL/ANON_KEY не baked в сборку). Свяжитесь с поддержкой support@advocat.ee';
         }
 
         await supabase.saveChatMessage(
@@ -1031,14 +1031,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     } catch (e, stackTrace) {
       debugPrint('ChatScreen._sendMessage error: $e\n$stackTrace');
       if (mounted) {
-        // When AI fails, fall back to demo response so user always gets an answer.
-        final fallback = _getDemoResponse(text);
+        // Show real error instead of demo fallback — hiding errors caused
+        // users to see "кража в магазине" when real AI was failing.
+        final errorMsg = e.toString().toLowerCase();
+        String userFacingMessage;
+        if (errorMsg.contains('rate limit') || errorMsg.contains('429')) {
+          userFacingMessage = 'Слишком много запросов подряд. Подождите минуту и попробуйте снова.';
+        } else if (errorMsg.contains('unauthorized') || errorMsg.contains('401')) {
+          userFacingMessage = 'Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.';
+        } else if (errorMsg.contains('quota') || errorMsg.contains('free limit')) {
+          userFacingMessage = 'Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.';
+        } else {
+          userFacingMessage = 'Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.';
+        }
         setState(() {
           _isTyping = false;
           _messages.add(ChatMessage(
-            id: 'ai_fallback_${DateTime.now().millisecondsSinceEpoch}',
+            id: 'ai_error_${DateTime.now().millisecondsSinceEpoch}',
             role: MessageRole.assistant,
-            content: fallback,
+            content: userFacingMessage,
             timestamp: DateTime.now(),
           ));
         });

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +12,7 @@ import 'claude_service.dart';
 import 'language_detector.dart';
 import 'supabase_service.dart';
 import 'system_prompts.dart';
+import 'user_memory_service.dart';
 
 // ---------------------------------------------------------------------------
 // Quota typed response (P0-3)
@@ -119,9 +122,11 @@ class SupabaseAiQuotaClient implements AiQuotaClient {
 final aiServiceProvider = Provider<AIService>((ref) {
   final claudeService = ref.watch(claudeServiceProvider);
   final supabase = ref.watch(supabaseServiceProvider);
+  final memoryService = ref.watch(userMemoryServiceProvider);
   return AIService(
     claudeService: claudeService,
     quotaClient: SupabaseAiQuotaClient(supabase),
+    memoryService: memoryService,
   );
 });
 
@@ -134,8 +139,10 @@ class AIService {
   AIService({
     ClaudeService? claudeService,
     AiQuotaClient? quotaClient,
+    UserMemoryService? memoryService,
   })  : _claudeService = claudeService ?? ClaudeService(),
         _quotaClient = quotaClient,
+        _memoryService = memoryService,
         _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
@@ -153,8 +160,78 @@ class AIService {
 
   final ClaudeService _claudeService;
   final AiQuotaClient? _quotaClient;
+
+  /// Optional ADR-001 Tier 1 memory service. When wired, chat calls
+  /// inject the user's memory block into the system prompt and trigger
+  /// extraction after the assistant finishes streaming.
+  ///
+  /// Null-safe: every memory path degrades to a plain chat call when
+  /// this is null, which keeps tests and the proxy fallback simple.
+  final UserMemoryService? _memoryService;
   final Dio _dio;
   final Logger _log;
+
+  // ── ADR-001 Tier 1 — user memory integration ──────────────────────────
+  //
+  // Minimum number of messages in the current session before we bother
+  // calling the extract-memory Edge Function. Extracting from a one-turn
+  // exchange is expensive for no signal.
+  static const int _memoryExtractionMinMessages = 4;
+
+  /// Fetches the current user's top memories and formats them into a
+  /// system-prompt block. Returns an empty string when no memory service
+  /// is wired, when the user is not signed in, or on any transport error.
+  ///
+  /// Called from the chat paths right before [SystemPrompts.buildChatPrompt]
+  /// is invoked. The [UserMemoryService.getMemories] call itself already
+  /// swallows errors, but we keep an extra guard here so future changes
+  /// to that contract never crash the chat pipeline.
+  Future<String> _fetchMemoryBlock() async {
+    final mem = _memoryService;
+    if (mem == null) return '';
+    try {
+      final memories = await mem.getMemories(limit: 20);
+      return UserMemoryService.buildMemoryBlock(memories);
+    } catch (e) {
+      _log.w('User memory fetch failed — continuing without it: $e');
+      return '';
+    }
+  }
+
+  /// Kicks off the extract-memory Edge Function for a chat session.
+  ///
+  /// Fire-and-forget by convention: callers use `unawaited(...)`. We do
+  /// not wait for the result because extraction is best-effort and the
+  /// user should never block on it. Short sessions (<4 messages) are
+  /// skipped to avoid burning Haiku calls on greetings.
+  Future<void> _triggerMemoryExtraction({
+    required String sessionId,
+    required List<({String role, String content})> messages,
+  }) async {
+    final mem = _memoryService;
+    if (mem == null) return;
+    if (messages.length < _memoryExtractionMinMessages) return;
+    try {
+      await mem.extractFromSession(
+        messages: messages,
+        sessionId: sessionId,
+      );
+    } catch (e) {
+      _log.w('User memory extraction failed: $e');
+    }
+  }
+
+  /// Test seam for the memory-fetch path. Not for production use.
+  @visibleForTesting
+  Future<String> fetchMemoryBlockForTest() => _fetchMemoryBlock();
+
+  /// Test seam for the memory-extraction path. Not for production use.
+  @visibleForTesting
+  Future<void> triggerMemoryExtractionForTest({
+    required String sessionId,
+    required List<({String role, String content})> messages,
+  }) =>
+      _triggerMemoryExtraction(sessionId: sessionId, messages: messages);
 
   // ── Quota cache (P0-3) ─────────────────────────────────────────────
   //
@@ -543,6 +620,23 @@ class AIService {
     return result;
   }
 
+  /// Snapshot the current in-memory history for a case as the tuple
+  /// shape expected by [UserMemoryService.extractFromSession]. We copy
+  /// the list so the fire-and-forget extraction call cannot observe
+  /// later mutations (e.g. the next user turn).
+  List<({String role, String content})> _snapshotHistoryForExtraction(
+    String caseId,
+  ) {
+    final history = _conversationHistory[caseId];
+    if (history == null || history.isEmpty) return const [];
+    return history
+        .map((m) => (
+              role: m['role'] ?? 'user',
+              content: m['content'] ?? '',
+            ))
+        .toList(growable: false);
+  }
+
   /// Clear conversation history for a case (e.g., on new session).
   void clearHistory(String caseId) {
     _conversationHistory.remove(caseId);
@@ -765,6 +859,9 @@ class AIService {
             userLanguage: effectiveUserLanguage,
           );
         } else {
+          // ADR-001 Tier 1 — inject the user's memory block ahead of
+          // the legal knowledge base. Safe no-op when not signed in.
+          final memoryBlock = await _fetchMemoryBlock();
           systemPrompt = SystemPrompts.buildChatPrompt(
             caseType: caseType,
             country: country,
@@ -773,6 +870,7 @@ class AIService {
             userLanguage: effectiveUserLanguage,
             query: sanitizedMessage,
             useReducedContext: model == ClaudeService.modelHaiku,
+            memoryBlock: memoryBlock,
           );
         }
 
@@ -864,6 +962,13 @@ class AIService {
 
         // Cache the response for future identical queries
         _cacheResponse(sanitizedMessage, responseText);
+
+        // ADR-001 Tier 1 — fire-and-forget memory extraction. Safe no-op
+        // when no memory service is wired, short conversations, or errors.
+        unawaited(_triggerMemoryExtraction(
+          sessionId: caseId,
+          messages: _snapshotHistoryForExtraction(caseId),
+        ));
 
         return ChatResponse(
           message: responseText,
@@ -1009,6 +1114,9 @@ class AIService {
           : ClaudeService.maxTokensForModel(model);
       _log.i('Streaming model routing: $model (short: $isShort, maxTokens: $maxTokens)');
 
+      // ADR-001 Tier 1 — inject user memory block ahead of the KB.
+      final memoryBlock = await _fetchMemoryBlock();
+
       // Build system prompt (same logic as sendChatMessage).
       String systemPrompt = SystemPrompts.buildChatPrompt(
         caseType: caseType,
@@ -1018,6 +1126,7 @@ class AIService {
         userLanguage: effectiveUserLanguage,
         query: sanitizedMessage,
         useReducedContext: model == ClaudeService.modelHaiku,
+        memoryBlock: memoryBlock,
       );
 
       // Prepend client knowledge base if available.
@@ -1061,6 +1170,13 @@ class AIService {
       if (responseText.isNotEmpty) {
         _addToHistory(caseId, 'assistant', responseText);
         _cacheResponse(sanitizedMessage, responseText);
+
+        // ADR-001 Tier 1 — fire-and-forget memory extraction. Runs in
+        // the background so we never block the user on the Edge call.
+        unawaited(_triggerMemoryExtraction(
+          sessionId: caseId,
+          messages: _snapshotHistoryForExtraction(caseId),
+        ));
       }
     } on ClaudeServiceException catch (e) {
       _log.e('Claude streaming chat failed, falling back to non-streaming',

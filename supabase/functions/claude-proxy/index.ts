@@ -59,7 +59,8 @@ serve(async (req) => {
 
     // Allow anon key for backward compatibility but rate-limit more aggressively
     const isAuthenticated = !!user && !authError;
-    const effectiveRateLimit = isAuthenticated ? RATE_LIMIT_MAX : 3;
+    // Anon users: 10/min (was 3 — too aggressive, caused demo fallback after 3 msgs).
+    const effectiveRateLimit = isAuthenticated ? RATE_LIMIT_MAX : 10;
 
     // O(1) rate limiting — sliding window counter, keyed by user ID or IP
     const clientIp = req.headers.get("x-forwarded-for") || "unknown";

@@ -50,6 +50,11 @@ abstract final class SystemPrompts {
   /// [caseType] and [country] control which knowledge base sections to include.
   /// [caseContext] is a free-text description of the user's current case.
   /// [userLanguage] is the ISO 639-1 language the user prefers.
+  /// [memoryBlock] is an optional ADR-001 Tier 1 block (produced by
+  /// [UserMemoryService.buildMemoryBlock]). When present it is injected
+  /// BEFORE the legal knowledge base and per-case context so the model
+  /// reads "who you are talking to" before "what the law says". Pass `''`
+  /// (the default) to opt out cleanly without a dangling header.
   static String buildChatPrompt({
     CaseType? caseType,
     String? country,
@@ -58,6 +63,7 @@ abstract final class SystemPrompts {
     String? userLanguage,
     String? query,
     bool useReducedContext = false,
+    String memoryBlock = '',
   }) {
     final buffer = StringBuffer();
 
@@ -80,6 +86,15 @@ abstract final class SystemPrompts {
     // Adaptive response length (fix/ai-quality bug 2).
     buffer.writeln(_adaptiveLength);
     buffer.writeln();
+
+    // === WHAT WE KNOW ABOUT YOU === (ADR-001 Tier 1).
+    // Injected ahead of the legal knowledge base so the model anchors on
+    // the user's persona before the law. The block already carries its
+    // own header + guidance when non-empty; we only append it verbatim.
+    if (memoryBlock.isNotEmpty) {
+      buffer.writeln(memoryBlock);
+      buffer.writeln();
+    }
 
     // Knowledge base (includes specialty database context via KnowledgeRouter)
     final knowledge = KnowledgeBase.buildContext(
