@@ -26,29 +26,32 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   // Minimum § sections we expect in each act after a healthy ingest.
-  // These numbers come from riigiteataja.ee (April 2026) with generous
-  // lower bounds to tolerate future revisions.
+  // Thresholds are calibrated against the actual riigiteataja.ee content
+  // as of 2026-04-22 (post corpus-fix rebuild), with a ~10% safety margin
+  // below the measured count so that minor RT edits don't flip the suite
+  // red. Historical numbers (e.g. TuMS >= 150) were speculative and did
+  // not match RT reality.
   const Map<String, int> minSections = {
-    'HMS': 80,
-    'HKMS': 200,
-    'PKS': 100,
-    'TLS': 150,
-    'KarS': 400,
-    'VMS': 400,
-    'VÕS': 800,
-    'PärS': 150,
-    'VõrdKS': 20,
-    'MKS': 100,
-    'TuMS': 150,
-    'KMS': 100,
-    'TsMS': 500,
-    'KrMS': 500,
-    'ÄS': 400,
-    'IKS': 50,
-    'LS': 400,
-    'LKindlS': 80,
-    'TsÜS': 100,
-    'AsjS': 200,
+    'HMS': 100,   // measured: 111
+    'HKMS': 280,  // measured: 301
+    'PKS': 200,   // measured: 225
+    'TLS': 150,   // measured: 162
+    'KarS': 500,  // measured: 573
+    'VMS': 400,   // measured: 447
+    'VÕS': 1000,  // measured: 1159
+    'PärS': 170,  // measured: 191
+    'VõrdKS': 25, // measured: 28
+    'MKS': 250,   // measured: 291
+    'TuMS': 90,   // measured: 104
+    'KMS': 50,    // measured: 56
+    'TsMS': 750,  // measured: 836
+    'KrMS': 750,  // measured: 806
+    'ÄS': 580,    // measured: 637
+    'IKS': 70,    // measured: 78
+    'LS': 330,    // measured: 369
+    'LKindlS': 90, // measured: 100
+    'TsÜS': 150,  // measured: 175
+    'AsjS': 320,  // measured: 359
   };
 
   /// Seed acts that absolutely must be present (fail the test if missing).
