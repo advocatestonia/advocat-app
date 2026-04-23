@@ -35,8 +35,27 @@
 
         .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
         .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
-        .logo { color: #fff; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; display: inline-flex; align-items: center; }
-        .logo span { color: #0A8F6C; }
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+        .logo img {
+            height: 80px;
+            width: auto;
+        }
+        .logo-text {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B8E6D9 60%, #0A8F6C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
         .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
         .header-nav a:hover { color: #fff; text-decoration: none; }
 
@@ -90,6 +109,10 @@
             .article-header h1 { font-size: 26px; }
             .article-meta { flex-direction: column; gap: 6px; }
         }
+        @media (max-width: 600px) {
+            .logo img, .header-logo img { height: 56px; }
+            .logo-text, .header-logo span { font-size: 26px; }
+        }
     </style>
     <script type="application/ld+json">
     {
@@ -111,7 +134,7 @@
 <body>
     <header class="header">
         <div class="header-inner">
-            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat" style="height: 32px; width: auto; vertical-align: middle; margin-right: 8px;">Advo<span>cat</span></a>
+            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
             <nav class="header-nav">
                 <a href="https://advocat.ee">Home</a>
                 <a href="/blog/en/">Blog</a>
