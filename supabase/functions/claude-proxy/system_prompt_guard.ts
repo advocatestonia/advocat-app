@@ -39,6 +39,11 @@ export const ADVOCAT_IDENTITY_MARKERS: readonly string[] = [
   // Fallback Advocat identity used in some flows.
   "Advocat, an AI",
   "Advocat, a legal",
+  // Memory-prefixed prompts (ai_service.dart:879 + :1135). When a user has
+  // Tier 1 memory, the client wraps the base system prompt with this header.
+  // The actual Advocat identity sits after the memory block — which can be
+  // longer than the 500-char head we search — so whitelist the prefix itself.
+  "# CLIENT PERSONAL KNOWLEDGE BASE",
 ];
 
 export type GuardResult =
