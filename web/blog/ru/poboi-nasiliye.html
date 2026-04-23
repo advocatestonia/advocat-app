@@ -70,12 +70,25 @@
         .header-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             text-decoration: none;
-            color: var(--white);
         }
-        .header-logo img { height: 36px; width: auto; }
-        .header-logo span { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+        .header-logo img {
+            height: 80px;
+            width: auto;
+            border-radius: 0;
+        }
+        .header-logo span {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.8px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #B8E6D9 60%, #0A8F6C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
         .header-nav { display: flex; gap: 20px; align-items: center; }
         .header-nav a {
             color: rgba(255,255,255,0.8);
@@ -311,6 +324,10 @@
             max-width: 600px;
             margin: 16px auto 0;
             line-height: 1.6;
+        }
+        @media (max-width: 600px) {
+            .logo img, .header-logo img { height: 56px; }
+            .logo-text, .header-logo span { font-size: 26px; }
         }
     </style>
     <script type="application/ld+json">
