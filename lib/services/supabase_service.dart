@@ -182,6 +182,9 @@ class SupabaseService {
     if (isDemo) {
       return DemoData.documents.where((d) => d.caseId == caseId).toList();
     }
+    // Synthetic 'general' chat (non-UUID) has no real case — return empty
+    // instead of hitting Postgres with case_id='general' (400 error).
+    if (!_isRealUuid(caseId)) return [];
     final response = await _client
         .from('documents')
         .select()
@@ -258,6 +261,8 @@ class SupabaseService {
           .where((c) => c.caseId == caseId)
           .toList();
     }
+    // Synthetic 'general' chat — no case → empty list.
+    if (!_isRealUuid(caseId)) return [];
     final response = await _client
         .from('correspondence')
         .select()
@@ -279,7 +284,7 @@ class SupabaseService {
     final uid = _client.auth.currentUser?.id;
     if (uid == null) return [];
     var query = _client.from('deadlines').select().eq('user_id', uid);
-    if (caseId != null) {
+    if (caseId != null && _isRealUuid(caseId)) {
       query = query.eq('case_id', caseId);
     }
     final response = await query.order('due_date', ascending: true);
