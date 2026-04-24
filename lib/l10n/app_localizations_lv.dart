@@ -45,7 +45,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get alreadyHaveAccount => 'Jau ir konts? ';
 
   @override
-  String get analyzing => 'Analizē...';
+  String get analyzing => 'Analizē…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get checkerTitle => 'Pārbaudītājs';
 
   @override
-  String get checkingErrors => 'Pārbauda kļūdas...';
+  String get checkingErrors => 'Pārbauda kļūdas…';
 
   @override
   String get choosePlan => 'Izvēlēties plānu';
@@ -233,7 +233,7 @@ class AppLocalizationsLv extends AppLocalizations {
       'Vai esat pārliecināts? Tas neatsaucami izdzēsīs visus jūsu datus.';
 
   @override
-  String get demoHint => 'Demo: izmēģiniet numuru \"908FBT\"';
+  String get demoHint => 'Demo: izmēģiniet numuru „908FBT“';
 
   @override
   String get demoModeDesc =>
@@ -414,7 +414,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get licensePlate => 'Numura zīme';
 
   @override
-  String get loading => 'Ielādē...';
+  String get loading => 'Ielādē…';
 
   @override
   String get logIn => 'Ienākt';
@@ -578,7 +578,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'Lasa dokumentu...';
+  String get readingDocument => 'Lasa dokumentu…';
 
   @override
   String get recentActivity => 'Nesenā darbība';
@@ -597,7 +597,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get requestExport => 'Pieprasīt eksportu';
 
   @override
-  String get researchingLaw => 'Pēta piemērojamos likumus...';
+  String get researchingLaw => 'Pēta piemērojamos likumus…';
 
   @override
   String get resetPasswordFailed =>
@@ -651,7 +651,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get scanDocument => 'Skenēt dokumentu';
 
   @override
-  String get searchCases => 'Meklēt lietas...';
+  String get searchCases => 'Meklēt lietas…';
 
   @override
   String get selectCountry => 'Izvēlēties valsti';
@@ -732,7 +732,7 @@ class AppLocalizationsLv extends AppLocalizations {
       'Ievadiet DELETE, lai apstiprinātu pastāvīgu konta dzēšanu.';
 
   @override
-  String get typeMessage => 'Ierakstiet ziņojumu...';
+  String get typeMessage => 'Ierakstiet ziņojumu…';
 
   @override
   String get upcoming => 'Gaidāms';
@@ -1158,7 +1158,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Lieta \"$title\" tika izveidota.';
+    return 'Lieta „$title“ tika izveidota.';
   }
 
   @override
@@ -1216,7 +1216,7 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Analizē saturu...';
+  String get analyzingContent => 'Analizē saturu…';
 
   @override
   String get documentProcessedOk => 'Dokuments veiksmīgi apstrādāts';
@@ -1265,11 +1265,11 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Augšupielādē... $percent%';
+    return 'Augšupielādē… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Gatavo augšupielādi...';
+  String get preparingUpload => 'Gatavo augšupielādi…';
 
   @override
   String get documentUploadedSuccess => 'Dokuments veiksmīgi augšupielādēts';
@@ -1288,7 +1288,7 @@ class AppLocalizationsLv extends AppLocalizations {
       'Neizdevās uzņemt fotoattēlu. Lūdzu, mēģiniet vēlreiz.';
 
   @override
-  String get readingText => 'Lasa tekstu...';
+  String get readingText => 'Lasa tekstu…';
 
   @override
   String get draftDocument => 'Dokumenta projekts';
@@ -1300,7 +1300,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get editDocument => 'Rediģēt dokumentu';
 
   @override
-  String get generatingDraft => 'Ģenerē jūsu projektu...';
+  String get generatingDraft => 'Ģenerē jūsu projektu…';
 
   @override
   String get generatingDraftDesc =>
@@ -1361,7 +1361,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get analyzeSelected => 'Analizēt atlasītos';
 
   @override
-  String get batchAnalysisStarting => 'Sākas pakešu analīze...';
+  String get batchAnalysisStarting => 'Sākas pakešu analīze…';
 
   @override
   String get switchToList => 'Pārslēgt uz sarakstu';
@@ -1508,7 +1508,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get perYear => '/gadā';
 
   @override
-  String get checkingPurchases => 'Pārbauda iepriekšējos pirkumus...';
+  String get checkingPurchases => 'Pārbauda iepriekšējos pirkumus…';
 
   @override
   String get noPreviousPurchases => 'Iepriekšēji pirkumi nav atrasti.';
@@ -1558,7 +1558,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Vai tiešām vēlaties dzēst \"$title\"? Šo darbību nevar atcelt.';
+    return 'Vai tiešām vēlaties dzēst „$title“? Šo darbību nevar atcelt.';
   }
 
   @override
@@ -1711,7 +1711,7 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Skaidri paziņojiet: \"Es vēlos advokātu pirms jebkādiem jautājumiem\"';
+      'Skaidri paziņojiet: „Es vēlos advokātu pirms jebkādiem jautājumiem“';
 
   @override
   String get policeActionAskInterpreter => 'Ja nepieciešams, lūdziet tulku';
@@ -2185,7 +2185,7 @@ class AppLocalizationsLv extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2465,7 +2465,7 @@ class AppLocalizationsLv extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Pārvirzīšana uz maksājumu lapu...';
+  String get redirectingToPayment => 'Pārvirzīšana uz maksājumu lapu…';
 
   @override
   String cheaperAnnually(String amount) {

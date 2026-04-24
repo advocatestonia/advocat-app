@@ -45,7 +45,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alreadyHaveAccount => 'لديك حساب بالفعل؟ ';
 
   @override
-  String get analyzing => 'جارٍ التحليل...';
+  String get analyzing => 'جارٍ التحليل…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get checkerTitle => 'المدقق';
 
   @override
-  String get checkingErrors => 'جارٍ التحقق من الأخطاء...';
+  String get checkingErrors => 'جارٍ التحقق من الأخطاء…';
 
   @override
   String get choosePlan => 'اختر خطتك';
@@ -234,7 +234,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'هل أنت متأكد؟ لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع قضاياك ومستنداتك بشكل دائم.';
 
   @override
-  String get demoHint => 'تجريبي: جرب اللوحة \"908FBT\"';
+  String get demoHint => 'تجريبي: جرب اللوحة «908FBT»';
 
   @override
   String get demoModeDesc => 'استكشف التطبيق بقضية تجريبية دون إنشاء حساب';
@@ -414,7 +414,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get licensePlate => 'لوحة الترخيص';
 
   @override
-  String get loading => 'جارٍ التحميل...';
+  String get loading => 'جارٍ التحميل…';
 
   @override
   String get logIn => 'الدخول';
@@ -578,7 +578,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'جارٍ قراءة المستند...';
+  String get readingDocument => 'جارٍ قراءة المستند…';
 
   @override
   String get recentActivity => 'النشاط الأخير';
@@ -596,7 +596,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get requestExport => 'طلب التصدير';
 
   @override
-  String get researchingLaw => 'جارٍ البحث في القانون...';
+  String get researchingLaw => 'جارٍ البحث في القانون…';
 
   @override
   String get resetPasswordFailed =>
@@ -729,7 +729,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get typeDeleteToConfirm => 'اكتب DELETE لتأكيد حذف الحساب نهائياً.';
 
   @override
-  String get typeMessage => 'اكتب رسالتك...';
+  String get typeMessage => 'اكتب رسالتك…';
 
   @override
   String get upcoming => 'قادم';
@@ -1143,7 +1143,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'تم إنشاء القضية \"$title\".';
+    return 'تم إنشاء القضية «$title».';
   }
 
   @override
@@ -1200,7 +1200,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'جارٍ تحليل المحتوى...';
+  String get analyzingContent => 'جارٍ تحليل المحتوى…';
 
   @override
   String get documentProcessedOk => 'تمت معالجة المستند بنجاح';
@@ -1249,11 +1249,11 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'جارٍ الرفع... $percent%';
+    return 'جارٍ الرفع… $percent%';
   }
 
   @override
-  String get preparingUpload => 'جارٍ تحضير الرفع...';
+  String get preparingUpload => 'جارٍ تحضير الرفع…';
 
   @override
   String get documentUploadedSuccess => 'تم رفع المستند بنجاح';
@@ -1271,7 +1271,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get capturePhotoFailed => 'فشل التقاط الصورة. يرجى المحاولة مرة أخرى.';
 
   @override
-  String get readingText => 'جارٍ قراءة النص...';
+  String get readingText => 'جارٍ قراءة النص…';
 
   @override
   String get draftDocument => 'مسودة المستند';
@@ -1283,7 +1283,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get editDocument => 'تعديل المستند';
 
   @override
-  String get generatingDraft => 'جارٍ إنشاء مسودتك...';
+  String get generatingDraft => 'جارٍ إنشاء مسودتك…';
 
   @override
   String get generatingDraftDesc =>
@@ -1344,7 +1344,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get analyzeSelected => 'تحليل المحدد';
 
   @override
-  String get batchAnalysisStarting => 'بدء التحليل الدُفعي...';
+  String get batchAnalysisStarting => 'بدء التحليل الدُفعي…';
 
   @override
   String get switchToList => 'التبديل إلى القائمة';
@@ -1490,7 +1490,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get perYear => '/سنة';
 
   @override
-  String get checkingPurchases => 'جارٍ التحقق من المشتريات السابقة...';
+  String get checkingPurchases => 'جارٍ التحقق من المشتريات السابقة…';
 
   @override
   String get noPreviousPurchases => 'لم يتم العثور على مشتريات سابقة.';
@@ -1539,7 +1539,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'هل أنت متأكد من حذف \"$title\"؟ لا يمكن التراجع عن هذا.';
+    return 'هل أنت متأكد من حذف «$title»؟ لا يمكن التراجع عن هذا.';
   }
 
   @override
@@ -1690,7 +1690,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'صرّح بوضوح: \"أريد محامياً قبل أي أسئلة\"';
+      'صرّح بوضوح: «أريد محامياً قبل أي أسئلة»';
 
   @override
   String get policeActionAskInterpreter => 'اطلب مترجماً عند الحاجة';
@@ -2158,7 +2158,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2377,7 +2377,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.';
 
   @override
   String get guestUser => 'ضيف';
@@ -2438,7 +2438,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'جارٍ التوجيه إلى صفحة الدفع...';
+  String get redirectingToPayment => 'جارٍ التوجيه إلى صفحة الدفع…';
 
   @override
   String cheaperAnnually(String amount) {

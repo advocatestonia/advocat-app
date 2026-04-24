@@ -45,7 +45,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get alreadyHaveAccount => 'Onko sinulla jo tili? ';
 
   @override
-  String get analyzing => 'Analysoidaan...';
+  String get analyzing => 'Analysoidaan…';
 
   @override
   String get aiAnalyzing => 'Tekoäly analysoi';
@@ -129,7 +129,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get checkerTitle => 'Tarkistaja';
 
   @override
-  String get checkingErrors => 'Tarkistetaan virheitä...';
+  String get checkingErrors => 'Tarkistetaan virheitä…';
 
   @override
   String get choosePlan => 'Valitse paketti';
@@ -234,7 +234,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Haluatko varmasti poistaa tilisi? Tätä toimintoa ei voi peruuttaa.';
 
   @override
-  String get demoHint => 'Demo: kokeile rekisterinumeroa \"908FBT\"';
+  String get demoHint => 'Demo: kokeile rekisterinumeroa ”908FBT”';
 
   @override
   String get demoModeDesc => 'Tutustu sovellukseen ilman rekisteröitymistä';
@@ -414,7 +414,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get licensePlate => 'Rekisterinumero';
 
   @override
-  String get loading => 'Ladataan...';
+  String get loading => 'Ladataan…';
 
   @override
   String get logIn => 'Kirjaudu sisään';
@@ -578,7 +578,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get dataCopiedToClipboard => 'Tiedot kopioitu leikepöydälle';
 
   @override
-  String get readingDocument => 'Luetaan asiakirjaa...';
+  String get readingDocument => 'Luetaan asiakirjaa…';
 
   @override
   String get recentActivity => 'Viimeaikainen toiminta';
@@ -596,7 +596,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get requestExport => 'Pyydä vientiä';
 
   @override
-  String get researchingLaw => 'Tutkitaan lainsäädäntöä...';
+  String get researchingLaw => 'Tutkitaan lainsäädäntöä…';
 
   @override
   String get resetPasswordFailed =>
@@ -730,7 +730,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Kirjoita DELETE vahvistaaksesi tilin pysyvän poistamisen.';
 
   @override
-  String get typeMessage => 'Kirjoita viesti...';
+  String get typeMessage => 'Kirjoita viesti…';
 
   @override
   String get upcoming => 'Tulossa';
@@ -957,7 +957,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get landlordNotice =>
-      'Vuokranantajan on annettava irtisanomisilmoitus (3-6 kuukautta)';
+      'Vuokranantajan on annettava irtisanomisilmoitus (3–6 kuukautta)';
 
   @override
   String get rightHabitableDwelling => 'Oikeus asuttavaan asuntoon';
@@ -1153,7 +1153,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Asia \"$title\" luotiin.';
+    return 'Asia ”$title” luotiin.';
   }
 
   @override
@@ -1211,7 +1211,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Analysoidaan sisältöä...';
+  String get analyzingContent => 'Analysoidaan sisältöä…';
 
   @override
   String get documentProcessedOk => 'Asiakirja käsitelty onnistuneesti';
@@ -1260,11 +1260,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Ladataan... $percent%';
+    return 'Ladataan… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Valmistellaan latausta...';
+  String get preparingUpload => 'Valmistellaan latausta…';
 
   @override
   String get documentUploadedSuccess => 'Asiakirja ladattu onnistuneesti';
@@ -1283,7 +1283,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Kuvan ottaminen epäonnistui. Yritä uudelleen.';
 
   @override
-  String get readingText => 'Luetaan tekstiä...';
+  String get readingText => 'Luetaan tekstiä…';
 
   @override
   String get draftDocument => 'Asiakirjaluonnos';
@@ -1295,7 +1295,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get editDocument => 'Muokkaa asiakirjaa';
 
   @override
-  String get generatingDraft => 'Luodaan luonnosta...';
+  String get generatingDraft => 'Luodaan luonnosta…';
 
   @override
   String get generatingDraftDesc =>
@@ -1356,7 +1356,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get analyzeSelected => 'Analysoi valitut';
 
   @override
-  String get batchAnalysisStarting => 'Eräanalyysi alkaa...';
+  String get batchAnalysisStarting => 'Eräanalyysi alkaa…';
 
   @override
   String get switchToList => 'Vaihda listanäkymään';
@@ -1503,7 +1503,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get perYear => '/v';
 
   @override
-  String get checkingPurchases => 'Tarkistetaan aiempia ostoksia...';
+  String get checkingPurchases => 'Tarkistetaan aiempia ostoksia…';
 
   @override
   String get noPreviousPurchases => 'Aiempia ostoksia ei löytynyt.';
@@ -1553,7 +1553,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Haluatko varmasti poistaa \"$title\"? Toimintoa ei voi kumota.';
+    return 'Haluatko varmasti poistaa ”$title”? Toimintoa ei voi kumota.';
   }
 
   @override
@@ -1706,7 +1706,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Sano selvästi: \"Haluan asianajajan ennen kysymyksiä\"';
+      'Sano selvästi: ”Haluan asianajajan ennen kysymyksiä”';
 
   @override
   String get policeActionAskInterpreter => 'Pyydä tarvittaessa tulkki';
@@ -2175,7 +2175,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get encrypted => 'Salattu';
 
   @override
-  String get typing => 'Kirjoittaa...';
+  String get typing => 'Kirjoittaa…';
 
   @override
   String get online => 'Paikalla';
@@ -2454,7 +2454,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Siirrytään maksusivulle...';
+  String get redirectingToPayment => 'Siirrytään maksusivulle…';
 
   @override
   String cheaperAnnually(String amount) {

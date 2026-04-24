@@ -33,7 +33,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get aiAnalysis => 'Tehisintellekti analüüs';
 
   @override
-  String get aiAssistant => 'Tehisintellekt-õigusabi';
+  String get aiAssistant => 'Tehisintellekti õigusabi';
 
   @override
   String get aiChat => 'Tehisintellekti vestlus';
@@ -42,10 +42,10 @@ class AppLocalizationsEt extends AppLocalizations {
   String get all => 'Kõik';
 
   @override
-  String get alreadyHaveAccount => 'Teil on juba konto? ';
+  String get alreadyHaveAccount => 'Kas teil on juba konto? ';
 
   @override
-  String get analyzing => 'Analüüsimine...';
+  String get analyzing => 'Analüüsimine…';
 
   @override
   String get aiAnalyzing => 'AI analüüsib';
@@ -56,7 +56,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String freeLimitReached(int count) {
-    return 'Olete kasutanud kõik $count tasuta AI sõnumit. Uuendage Õigusnõustaja paketile piiramatu AI abi saamiseks!';
+    return 'Olete kasutanud ära kõik $count tasuta AI sõnumit. Uuendage Õigusnõustaja paketile, et saada piiramatut AI abi.';
   }
 
   @override
@@ -129,7 +129,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get checkerTitle => 'Kontrollija';
 
   @override
-  String get checkingErrors => 'Vigade kontrollimine...';
+  String get checkingErrors => 'Vigade kontrollimine…';
 
   @override
   String get choosePlan => 'Vali pakett';
@@ -234,7 +234,7 @@ class AppLocalizationsEt extends AppLocalizations {
       'Kas olete kindel, et soovite konto kustutada? Seda toimingut ei saa tagasi võtta.';
 
   @override
-  String get demoHint => 'Demo: proovi numbrimärki \"908FBT\"';
+  String get demoHint => 'Demo: proovige numbrimärki „908FBT“';
 
   @override
   String get demoModeDesc => 'Tutvuge rakendusega ilma registreerimata';
@@ -414,7 +414,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get licensePlate => 'Numbrimärk';
 
   @override
-  String get loading => 'Laadimine...';
+  String get loading => 'Laadimine…';
 
   @override
   String get logIn => 'Logi sisse';
@@ -444,7 +444,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get next => 'Järgmine';
 
   @override
-  String get noAccount => 'Teil pole kontot? ';
+  String get noAccount => 'Kas teil pole kontot? ';
 
   @override
   String get noCases => 'Asju pole veel';
@@ -578,7 +578,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get dataCopiedToClipboard => 'Andmed kopeeritud lõikelauale';
 
   @override
-  String get readingDocument => 'Dokumendi lugemine...';
+  String get readingDocument => 'Dokumendi lugemine…';
 
   @override
   String get recentActivity => 'Viimane tegevus';
@@ -596,7 +596,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get requestExport => 'Taotle eksporti';
 
   @override
-  String get researchingLaw => 'Seaduste uurimine...';
+  String get researchingLaw => 'Kohaldatava õiguse uurimine…';
 
   @override
   String get resetPasswordFailed =>
@@ -730,7 +730,7 @@ class AppLocalizationsEt extends AppLocalizations {
       'Sisestage DELETE konto püsiva kustutamise kinnitamiseks.';
 
   @override
-  String get typeMessage => 'Sisestage sõnum...';
+  String get typeMessage => 'Sisestage sõnum…';
 
   @override
   String get upcoming => 'Tulemas';
@@ -907,7 +907,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get doNotIgnoreNotice =>
-      'ÄRGE ignoreerige teadet - tähtajad on ranged';
+      'ÄRGE ignoreerige teadet — tähtajad on ranged';
 
   @override
   String get noteAppealDeadline =>
@@ -936,7 +936,8 @@ class AppLocalizationsEt extends AppLocalizations {
   String get minimumWage => 'Miinimumpalk vastavalt kollektiivlepingule';
 
   @override
-  String get workingTimeLimits => 'Tööaja piirangud (max 8t/päev, 40t/nädal)';
+  String get workingTimeLimits =>
+      'Tööaja piirangud (kuni 8 t/päev, 40 t/nädal)';
 
   @override
   String get annualLeave => 'Põhipuhkus (vähemalt 2 päeva töötatud kuu kohta)';
@@ -954,7 +955,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get securityDeposit => 'Tagatisraha max 3 kuu üür';
 
   @override
-  String get landlordNotice => 'Üürileandja peab andma teate (3-6 kuud)';
+  String get landlordNotice => 'Üürileandja peab andma teate (3–6 kuud)';
 
   @override
   String get rightHabitableDwelling => 'Õigus elamiskõlblikule eluasemele';
@@ -1153,7 +1154,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Juhtum \"$title\" on loodud.';
+    return 'Juhtum „$title“ on loodud.';
   }
 
   @override
@@ -1211,7 +1212,7 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Sisu analüüsimine...';
+  String get analyzingContent => 'Sisu analüüsimine…';
 
   @override
   String get documentProcessedOk => 'Dokument edukalt töödeldud';
@@ -1260,11 +1261,11 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Üleslaadimine... $percent%';
+    return 'Üleslaadimine… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Üleslaadimise ettevalmistamine...';
+  String get preparingUpload => 'Üleslaadimise ettevalmistamine…';
 
   @override
   String get documentUploadedSuccess => 'Dokument edukalt üles laetud';
@@ -1283,7 +1284,7 @@ class AppLocalizationsEt extends AppLocalizations {
       'Foto tegemine ebaõnnestus. Palun proovige uuesti.';
 
   @override
-  String get readingText => 'Teksti lugemine...';
+  String get readingText => 'Teksti lugemine…';
 
   @override
   String get draftDocument => 'Dokumendi mustand';
@@ -1295,7 +1296,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get editDocument => 'Muuda dokumenti';
 
   @override
-  String get generatingDraft => 'Teie mustandi loomine...';
+  String get generatingDraft => 'Teie mustandi loomine…';
 
   @override
   String get generatingDraftDesc =>
@@ -1356,7 +1357,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get analyzeSelected => 'Analüüsi valitud';
 
   @override
-  String get batchAnalysisStarting => 'Pakettanalüüs algab...';
+  String get batchAnalysisStarting => 'Pakettanalüüs algab…';
 
   @override
   String get switchToList => 'Lülitu loendivaatele';
@@ -1487,7 +1488,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get strategyRecommendations => 'Strateegilised soovitused';
 
   @override
-  String get foundingMemberNote => 'Asutajaliige: 9.99€/kuu esimesed 3 kuud';
+  String get foundingMemberNote => 'Asutajaliige: 9,99 €/kuu esimesed 3 kuud';
 
   @override
   String get saveTwentyPercent => 'Säästa 20%';
@@ -1502,14 +1503,14 @@ class AppLocalizationsEt extends AppLocalizations {
   String get perYear => '/aastas';
 
   @override
-  String get checkingPurchases => 'Eelmiste ostude kontroll...';
+  String get checkingPurchases => 'Eelmiste ostude kontroll…';
 
   @override
   String get noPreviousPurchases => 'Eelmisi oste ei leitud.';
 
   @override
   String get chatWelcomeMessage =>
-      'Tere! Olen teie õigusabi assistent. Rääkige, mis juhtus — analüüsin olukorda ja soovitan, mida teha.';
+      'Tere. Olen teie õigusabi assistent. Kirjeldage, mis juhtus — analüüsin olukorda ja soovitan, mida teha.';
 
   @override
   String get copySummary => 'Kopeeri kokkuvõte';
@@ -1552,7 +1553,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Kas olete kindel, et soovite kustutada \"$title\"? Seda toimingut ei saa tagasi võtta.';
+    return 'Kas olete kindel, et soovite kustutada „$title“? Seda toimingut ei saa tagasi võtta.';
   }
 
   @override
@@ -1703,7 +1704,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Öelge selgelt: \"Ma soovin advokaati enne küsimustele vastamist\"';
+      'Öelge selgelt: „Ma soovin advokaati enne küsimustele vastamist.“';
 
   @override
   String get policeActionAskInterpreter => 'Vajadusel paluge tõlki';
@@ -2172,7 +2173,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get encrypted => 'Krüpteeritud';
 
   @override
-  String get typing => 'Kirjutab...';
+  String get typing => 'Kirjutab…';
 
   @override
   String get online => 'Võrgus';
@@ -2391,7 +2392,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'GDPR-i kohaselt on teil \'õigus olla unustatud\' — platvormid peavad teie isikuandmed kustutama, kui puudub seaduslik alus nende säilitamiseks.';
+      'GDPR-i kohaselt on teil „õigus olla unustatud“ — platvormid peavad teie isikuandmed kustutama, kui puudub seaduslik alus nende säilitamiseks.';
 
   @override
   String get guestUser => 'Külaline';
@@ -2400,7 +2401,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get howToUse => 'Kuidas kasutada?';
 
   @override
-  String get tutorialStep1Title => 'Tehisintellekt-õigusabi';
+  String get tutorialStep1Title => 'Tehisintellekti õigusabi';
 
   @override
   String get tutorialStep1Desc =>
@@ -2452,7 +2453,7 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Suunatakse makseleheküljele...';
+  String get redirectingToPayment => 'Suunatakse makseleheküljele…';
 
   @override
   String cheaperAnnually(String amount) {

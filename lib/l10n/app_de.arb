@@ -76,7 +76,7 @@
   "deleteAccountDesc": "Löschen Sie Ihr Konto und alle Daten dauerhaft",
   "deleteAccountDialogContent": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden. Alle Ihre Daten, Verfahren und Dokumente werden dauerhaft gelöscht.",
   "deleteConfirm": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
-  "demoHint": "Demo: Kennzeichen \"908FBT\" ausprobieren",
+  "demoHint": "Demo: Kennzeichen „908FBT“ ausprobieren",
   "demoModeDesc": "Erkunden Sie die App mit Beispieldaten, ohne ein Konto zu erstellen",
   "deportation": "Abschiebung",
   "disclaimer": "Nur KI-gestützte Orientierung – keine Rechtsberatung. Konsultieren Sie stets einen Anwalt.",
@@ -179,7 +179,7 @@
   "legalFighter": "Rechtskämpfer",
   "legalSection": "RECHTLICHES",
   "licensePlate": "Kennzeichen",
-  "loading": "Wird geladen...",
+  "loading": "Wird geladen…",
   "logIn": "Anmelden",
   "loginFailed": "Ungültige E-Mail-Adresse oder ungültiges Passwort. Bitte versuchen Sie es erneut.",
   "lost": "Verloren",
@@ -323,7 +323,7 @@
   "analysisFailedRetry": "Analyse fehlgeschlagen. Bitte erneut versuchen.",
   "analyzeSelected": "Ausgewählte analysieren",
   "analyzed": "Analysiert",
-  "analyzingContent": "Inhalt wird analysiert...",
+  "analyzingContent": "Inhalt wird analysiert…",
   "annual": "Jährlich",
   "annualLeave": "Jahresurlaub (mindestens 2 Tage pro gearbeitetem Monat)",
   "appeal": "Einspruch",
@@ -342,13 +342,13 @@
   "assignToCase": "Dem Fall zuordnen",
   "basicAiAnalysis": "Basis-KI-Analyse",
   "basicRights": "Grundrechte:",
-  "batchAnalysisStarting": "Stapelanalyse wird gestartet...",
+  "batchAnalysisStarting": "Stapelanalyse wird gestartet…",
   "calculateEligibility": "Anspruch berechnen",
   "cameraPermissionDesc": "Kamerazugriff zum Scannen von Dokumenten gewähren oder die Galerie verwenden.",
   "cameraPermissionRequired": "Kameraberechtigung erforderlich",
   "capturePhotoFailed": "Foto konnte nicht aufgenommen werden. Bitte erneut versuchen.",
   "caseCreated": "Fall erstellt",
-  "caseCreatedDesc": "Fall \"{title}\" wurde erstellt.",
+  "caseCreatedDesc": "Fall „{title}“ wurde erstellt.",
   "@caseCreatedDesc": {
     "placeholders": {
       "title": {
@@ -363,7 +363,7 @@
   "changesSaved": "Änderungen gespeichert",
   "chatWelcomeMessage": "Hallo! Ich bin Ihr Rechtsassistent. Erzählen Sie mir, was passiert ist — ich analysiere die Situation und schlage vor, was zu tun ist.",
   "checkEligibility": "Prüfen Sie Ihren Anspruch auf Prozesskostenhilfe: {country}",
-  "checkingPurchases": "Frühere Käufe werden geprüft...",
+  "checkingPurchases": "Frühere Käufe werden geprüft…",
   "chooseHowToAdd": "Wählen Sie, wie Sie Ihr Dokument hinzufügen möchten",
   "citizenship": "Staatsangehörigkeit",
   "completedDeadlinesDesc": "Erledigte Fristen werden hier angezeigt.",
@@ -398,7 +398,7 @@
   "decline": "Ablehnen",
   "delete": "Löschen",
   "deleteCase": "Fall löschen",
-  "deleteCaseConfirm": "Möchten Sie \"{title}\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "deleteCaseConfirm": "Möchten Sie „{title}“ wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
   "@deleteCaseConfirm": {
     "placeholders": {
       "title": {
@@ -420,7 +420,7 @@
   "disconnectEmail": "E-Mail trennen",
   "disconnectEmailConfirm": "Die automatische E-Mail-Synchronisierung wird gestoppt. Zuvor synchronisierte E-Mails bleiben in Ihren Fällen.",
   "discriminationDesc": "Wie man Diskriminierung meldet und bekämpft",
-  "doNotIgnoreNotice": "Den Bescheid NICHT ignorieren - Fristen sind streng",
+  "doNotIgnoreNotice": "Den Bescheid NICHT ignorieren – Fristen sind streng",
   "documentAnalysis": "Dokumentenanalyse",
   "documentIncident": "Vorfall dokumentieren (Datum, Uhrzeit, Zeugen)",
   "documentProcessedOk": "Dokument erfolgreich verarbeitet",
@@ -463,7 +463,7 @@
       }
     }
   },
-  "generatingDraft": "Ihr Entwurf wird erstellt...",
+  "generatingDraft": "Ihr Entwurf wird erstellt…",
   "generatingDraftDesc": "KI bereitet ein Rechtsdokument basierend auf Ihren Falldetails und ausgewählten Problemen vor.",
   "greatJobDeadlines": "Gut gemacht, Sie behalten Ihre Fristen im Blick.",
   "haveQuestionsAi": "Fragen? Fragen Sie die KI",
@@ -493,7 +493,7 @@
     }
   },
   "knowYourRights": "Kennen Sie Ihre Rechte",
-  "landlordNotice": "Vermieter muss kündigen (3-6 Monate)",
+  "landlordNotice": "Vermieter muss kündigen (3–6 Monate)",
   "lastSynced": "Zuletzt synchronisiert: {time}",
   "@lastSynced": {
     "placeholders": {
@@ -582,12 +582,12 @@
   "pending": "Ausstehend",
   "perMonth": "/Monat",
   "perYear": "/Jahr",
-  "preparingUpload": "Upload wird vorbereitet...",
+  "preparingUpload": "Upload wird vorbereitet…",
   "preview": "Vorschau",
   "priorityProcessing": "Prioritätsbearbeitung",
   "processing": "Verarbeitung",
   "protectionUnjustEviction": "Schutz vor ungerechtfertigter Räumung",
-  "readingText": "Text wird gelesen...",
+  "readingText": "Text wird gelesen…",
   "ready": "Bereit",
   "reportAndOpenCase": "Melden und Fall eröffnen",
   "reportMileageFraud": "Kilometerbetrug melden",
@@ -659,7 +659,7 @@
   "uploadFailed": "Upload fehlgeschlagen. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
   "uploadFile": "Datei hochladen",
   "uploadFileDesc": "Wählen Sie eine PDF- oder Bilddatei von Ihrem Gerät",
-  "uploadingPercent": "Hochladen... {percent}%",
+  "uploadingPercent": "Hochladen… {percent}%",
   "@uploadingPercent": {
     "placeholders": {
       "percent": {
@@ -689,7 +689,7 @@
   "policeActionStayCalm": "Bleiben Sie ruhig und halten Sie die Hände sichtbar",
   "policeActionAskWhy": "Fragen Sie den Beamten, warum Sie angehalten werden",
   "policeActionProvideName": "Nennen Sie Ihren Namen und Ihr Geburtsdatum",
-  "policeActionWantLawyer": "Sagen Sie deutlich: \"Ich möchte einen Anwalt, bevor ich Fragen beantworte\"",
+  "policeActionWantLawyer": "Sagen Sie deutlich: „Ich möchte einen Anwalt, bevor ich Fragen beantworte.“",
   "policeActionAskInterpreter": "Bitten Sie bei Bedarf um einen Dolmetscher",
   "policeActionNoteBadge": "Notieren Sie den Namen und die Dienstnummer des Beamten",
   "policeFactMustTellReason": "In Finnland muss die Polizei Ihnen den Grund für das Anhalten nennen. Wenn sie es nicht tun, können Sie fragen — und sie sind gesetzlich verpflichtet, es zu erklären.",
@@ -775,7 +775,7 @@
   "callAI": "KI anrufen",
   "comingSoon": "Kommt bald",
   "encrypted": "Verschlüsselt",
-  "typing": "Tippt...",
+  "typing": "Tippt…",
   "online": "Online",
   "chatWelcomeSubtitle": "Ich analysiere die Situation, prüfe Dokumente, finde Fehler und schlage vor, was zu tun ist.",
   "tapMicrophoneToSpeak": "Tippen Sie auf das Mikrofon zum Sprechen",
@@ -818,7 +818,7 @@
   "pleaseLogIn": "Bitte melden Sie sich an",
   "subscriptionNotFound": "Abonnement nicht gefunden",
   "errorWithMessage": "Fehler: {message}",
-  "redirectingToPayment": "Weiterleitung zur Zahlungsseite...",
+  "redirectingToPayment": "Weiterleitung zur Zahlungsseite…",
   "cheaperAnnually": "€{amount}/Monat günstiger im Jahresabo",
   "navigatingTo": "Öffne",
   "stayInChat": "Im Chat bleiben",

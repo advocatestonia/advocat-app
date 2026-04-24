@@ -45,7 +45,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get alreadyHaveAccount => 'Already have an account? ';
 
   @override
-  String get analyzing => 'Analyzing...';
+  String get analyzing => 'Analyzing…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get checkerTitle => 'Checker';
 
   @override
-  String get checkingErrors => 'Checking for errors...';
+  String get checkingErrors => 'Checking for errors…';
 
   @override
   String get choosePlan => 'Choose Plan';
@@ -413,7 +413,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get licensePlate => 'License plate';
 
   @override
-  String get loading => 'Loading...';
+  String get loading => 'Loading…';
 
   @override
   String get logIn => 'Log In';
@@ -443,7 +443,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get next => 'Next';
 
   @override
-  String get noAccount => 'Don\'t have an account? ';
+  String get noAccount => 'Don’t have an account? ';
 
   @override
   String get noCases => 'No cases yet';
@@ -452,7 +452,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noCasesYet => 'No cases yet';
 
   @override
-  String get noDeadlines => 'No deadlines — you\'re all clear!';
+  String get noDeadlines => 'No deadlines — you’re all clear.';
 
   @override
   String get noRecentActivity => 'No recent activity';
@@ -576,7 +576,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'Reading document...';
+  String get readingDocument => 'Reading document…';
 
   @override
   String get recentActivity => 'Recent Activity';
@@ -594,7 +594,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get requestExport => 'Request Export';
 
   @override
-  String get researchingLaw => 'Researching applicable law...';
+  String get researchingLaw => 'Researching applicable law…';
 
   @override
   String get resetPasswordFailed =>
@@ -647,7 +647,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get scanDocument => 'Scan Document';
 
   @override
-  String get searchCases => 'Search cases...';
+  String get searchCases => 'Search cases…';
 
   @override
   String get selectCountry => 'Select country';
@@ -728,7 +728,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Type DELETE to confirm permanent account removal.';
 
   @override
-  String get typeMessage => 'Type a message...';
+  String get typeMessage => 'Type a message…';
 
   @override
   String get upcoming => 'Upcoming';
@@ -900,7 +900,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get doNotIgnoreNotice =>
-      'Do NOT ignore the notice - deadlines are strict';
+      'Do NOT ignore the notice — deadlines are strict';
 
   @override
   String get noteAppealDeadline => 'Note the appeal deadline (usually 30 days)';
@@ -946,7 +946,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get securityDeposit => 'Security deposit max 3 months rent';
 
   @override
-  String get landlordNotice => 'Landlord must give notice (3-6 months)';
+  String get landlordNotice => 'Landlord must give notice (3–6 months)';
 
   @override
   String get rightHabitableDwelling => 'Right to a habitable dwelling';
@@ -1036,13 +1036,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allClearDeadlines =>
-      'You are all clear! New deadlines will appear here when they are set.';
+      'You are all caught up. New deadlines will appear here when they are set.';
 
   @override
   String get nothingOverdue => 'Nothing overdue';
 
   @override
-  String get greatJobDeadlines => 'Great job staying on top of your deadlines.';
+  String get greatJobDeadlines => 'You are on top of your deadlines.';
 
   @override
   String get noCompletedDeadlines => 'No completed deadlines';
@@ -1202,7 +1202,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Analyzing content...';
+  String get analyzingContent => 'Analyzing content…';
 
   @override
   String get documentProcessedOk => 'Document processed successfully';
@@ -1251,11 +1251,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Uploading... $percent%';
+    return 'Uploading… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Preparing upload...';
+  String get preparingUpload => 'Preparing upload…';
 
   @override
   String get documentUploadedSuccess => 'Document uploaded successfully';
@@ -1273,7 +1273,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get capturePhotoFailed => 'Failed to capture photo. Please try again.';
 
   @override
-  String get readingText => 'Reading text...';
+  String get readingText => 'Reading text…';
 
   @override
   String get draftDocument => 'Draft Document';
@@ -1285,7 +1285,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editDocument => 'Edit document';
 
   @override
-  String get generatingDraft => 'Generating your draft...';
+  String get generatingDraft => 'Generating your draft…';
 
   @override
   String get generatingDraftDesc =>
@@ -1346,7 +1346,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get analyzeSelected => 'Analyze selected';
 
   @override
-  String get batchAnalysisStarting => 'Batch analysis starting...';
+  String get batchAnalysisStarting => 'Batch analysis starting…';
 
   @override
   String get switchToList => 'Switch to list';
@@ -1493,7 +1493,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get perYear => '/year';
 
   @override
-  String get checkingPurchases => 'Checking for previous purchases...';
+  String get checkingPurchases => 'Checking for previous purchases…';
 
   @override
   String get noPreviousPurchases => 'No previous purchases found.';
@@ -1705,7 +1705,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get policeFactMustTellReason =>
-      'In Finland, police must tell you the reason for stopping you. If they don\'t, you can ask — and they are legally required to explain.';
+      'In Finland, the police must tell you the reason for stopping you. If they do not, you may ask — they are legally required to explain.';
 
   @override
   String get policeFactCanRecord =>
@@ -2168,7 +2168,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2387,7 +2387,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.';
 
   @override
   String get guestUser => 'Guest';
@@ -2448,7 +2448,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Redirecting to payment page...';
+  String get redirectingToPayment => 'Redirecting to payment page…';
 
   @override
   String cheaperAnnually(String amount) {

@@ -45,7 +45,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get alreadyHaveAccount => 'Hai già un account? ';
 
   @override
-  String get analyzing => 'Analisi in corso...';
+  String get analyzing => 'Analisi in corso…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get checkerTitle => 'Verificatore';
 
   @override
-  String get checkingErrors => 'Controllo errori...';
+  String get checkingErrors => 'Controllo errori…';
 
   @override
   String get choosePlan => 'Scegli piano';
@@ -233,7 +233,7 @@ class AppLocalizationsIt extends AppLocalizations {
       'Sei sicuro? Tutti i tuoi dati verranno eliminati permanentemente.';
 
   @override
-  String get demoHint => 'Demo: prova la targa \"908FBT\"';
+  String get demoHint => 'Demo: prova la targa «908FBT»';
 
   @override
   String get demoModeDesc =>
@@ -414,7 +414,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get licensePlate => 'Targa';
 
   @override
-  String get loading => 'Caricamento...';
+  String get loading => 'Caricamento…';
 
   @override
   String get logIn => 'Entra';
@@ -577,7 +577,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'Lettura documento...';
+  String get readingDocument => 'Lettura documento…';
 
   @override
   String get recentActivity => 'Attività recente';
@@ -595,7 +595,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get requestExport => 'Richiedi esportazione';
 
   @override
-  String get researchingLaw => 'Ricerca della legge applicabile...';
+  String get researchingLaw => 'Ricerca della legge applicabile…';
 
   @override
   String get resetPasswordFailed => 'Invio del link non riuscito. Riprova.';
@@ -648,7 +648,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get scanDocument => 'Scansiona documento';
 
   @override
-  String get searchCases => 'Cerca casi...';
+  String get searchCases => 'Cerca casi…';
 
   @override
   String get selectCountry => 'Seleziona paese';
@@ -729,7 +729,7 @@ class AppLocalizationsIt extends AppLocalizations {
       'Digita DELETE per confermare la rimozione permanente dell’account.';
 
   @override
-  String get typeMessage => 'Scrivi un messaggio...';
+  String get typeMessage => 'Scrivi un messaggio…';
 
   @override
   String get upcoming => 'In arrivo';
@@ -959,7 +959,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get securityDeposit => 'Deposito cauzionale max 3 mesi di affitto';
 
   @override
-  String get landlordNotice => 'Il proprietario deve dare preavviso (3-6 mesi)';
+  String get landlordNotice => 'Il proprietario deve dare preavviso (3–6 mesi)';
 
   @override
   String get rightHabitableDwelling => 'Diritto a un\'abitazione abitabile';
@@ -1162,7 +1162,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Il caso \"$title\" è stato creato.';
+    return 'Il caso «$title» è stato creato.';
   }
 
   @override
@@ -1221,7 +1221,7 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Analisi del contenuto...';
+  String get analyzingContent => 'Analisi del contenuto…';
 
   @override
   String get documentProcessedOk => 'Documento elaborato con successo';
@@ -1270,11 +1270,11 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Caricamento... $percent%';
+    return 'Caricamento… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Preparazione caricamento...';
+  String get preparingUpload => 'Preparazione caricamento…';
 
   @override
   String get documentUploadedSuccess => 'Documento caricato con successo';
@@ -1292,7 +1292,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get capturePhotoFailed => 'Impossibile scattare la foto. Riprova.';
 
   @override
-  String get readingText => 'Lettura del testo...';
+  String get readingText => 'Lettura del testo…';
 
   @override
   String get draftDocument => 'Bozza documento';
@@ -1304,7 +1304,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get editDocument => 'Modifica documento';
 
   @override
-  String get generatingDraft => 'Generazione della bozza...';
+  String get generatingDraft => 'Generazione della bozza…';
 
   @override
   String get generatingDraftDesc =>
@@ -1364,7 +1364,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get analyzeSelected => 'Analizza selezionati';
 
   @override
-  String get batchAnalysisStarting => 'Avvio analisi in batch...';
+  String get batchAnalysisStarting => 'Avvio analisi in batch…';
 
   @override
   String get switchToList => 'Passa alla lista';
@@ -1511,7 +1511,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get perYear => '/anno';
 
   @override
-  String get checkingPurchases => 'Verifica acquisti precedenti...';
+  String get checkingPurchases => 'Verifica acquisti precedenti…';
 
   @override
   String get noPreviousPurchases => 'Nessun acquisto precedente trovato.';
@@ -1560,7 +1560,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Sei sicuro di voler eliminare \"$title\"? Questa azione non può essere annullata.';
+    return 'Sei sicuro di voler eliminare «$title»? Questa azione non può essere annullata.';
   }
 
   @override
@@ -1715,7 +1715,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Dichiara chiaramente: \"Voglio un avvocato prima di qualsiasi domanda\"';
+      'Dichiara chiaramente: «Voglio un avvocato prima di qualsiasi domanda»';
 
   @override
   String get policeActionAskInterpreter =>
@@ -2198,7 +2198,7 @@ class AppLocalizationsIt extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2417,7 +2417,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.';
 
   @override
   String get guestUser => 'Ospite';
@@ -2479,7 +2479,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get redirectingToPayment =>
-      'Reindirizzamento alla pagina di pagamento...';
+      'Reindirizzamento alla pagina di pagamento…';
 
   @override
   String cheaperAnnually(String amount) {

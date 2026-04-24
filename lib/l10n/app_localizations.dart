@@ -203,7 +203,7 @@ abstract class AppLocalizations {
   /// No description provided for @analyzing.
   ///
   /// In en, this message translates to:
-  /// **'Analyzing...'**
+  /// **'Analyzing…'**
   String get analyzing;
 
   /// No description provided for @aiAnalyzing.
@@ -365,7 +365,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkingErrors.
   ///
   /// In en, this message translates to:
-  /// **'Checking for errors...'**
+  /// **'Checking for errors…'**
   String get checkingErrors;
 
   /// No description provided for @choosePlan.
@@ -887,7 +887,7 @@ abstract class AppLocalizations {
   /// No description provided for @loading.
   ///
   /// In en, this message translates to:
-  /// **'Loading...'**
+  /// **'Loading…'**
   String get loading;
 
   /// No description provided for @logIn.
@@ -947,7 +947,7 @@ abstract class AppLocalizations {
   /// No description provided for @noAccount.
   ///
   /// In en, this message translates to:
-  /// **'Don\'t have an account? '**
+  /// **'Don’t have an account? '**
   String get noAccount;
 
   /// No description provided for @noCases.
@@ -965,7 +965,7 @@ abstract class AppLocalizations {
   /// No description provided for @noDeadlines.
   ///
   /// In en, this message translates to:
-  /// **'No deadlines — you\'re all clear!'**
+  /// **'No deadlines — you’re all clear.'**
   String get noDeadlines;
 
   /// No description provided for @noRecentActivity.
@@ -1205,7 +1205,7 @@ abstract class AppLocalizations {
   /// No description provided for @readingDocument.
   ///
   /// In en, this message translates to:
-  /// **'Reading document...'**
+  /// **'Reading document…'**
   String get readingDocument;
 
   /// No description provided for @recentActivity.
@@ -1241,7 +1241,7 @@ abstract class AppLocalizations {
   /// No description provided for @researchingLaw.
   ///
   /// In en, this message translates to:
-  /// **'Researching applicable law...'**
+  /// **'Researching applicable law…'**
   String get researchingLaw;
 
   /// No description provided for @resetPasswordFailed.
@@ -1343,7 +1343,7 @@ abstract class AppLocalizations {
   /// No description provided for @searchCases.
   ///
   /// In en, this message translates to:
-  /// **'Search cases...'**
+  /// **'Search cases…'**
   String get searchCases;
 
   /// No description provided for @selectCountry.
@@ -1499,7 +1499,7 @@ abstract class AppLocalizations {
   /// No description provided for @typeMessage.
   ///
   /// In en, this message translates to:
-  /// **'Type a message...'**
+  /// **'Type a message…'**
   String get typeMessage;
 
   /// No description provided for @upcoming.
@@ -1835,7 +1835,7 @@ abstract class AppLocalizations {
   /// No description provided for @doNotIgnoreNotice.
   ///
   /// In en, this message translates to:
-  /// **'Do NOT ignore the notice - deadlines are strict'**
+  /// **'Do NOT ignore the notice — deadlines are strict'**
   String get doNotIgnoreNotice;
 
   /// No description provided for @noteAppealDeadline.
@@ -1925,7 +1925,7 @@ abstract class AppLocalizations {
   /// No description provided for @landlordNotice.
   ///
   /// In en, this message translates to:
-  /// **'Landlord must give notice (3-6 months)'**
+  /// **'Landlord must give notice (3–6 months)'**
   String get landlordNotice;
 
   /// No description provided for @rightHabitableDwelling.
@@ -2081,7 +2081,7 @@ abstract class AppLocalizations {
   /// No description provided for @allClearDeadlines.
   ///
   /// In en, this message translates to:
-  /// **'You are all clear! New deadlines will appear here when they are set.'**
+  /// **'You are all caught up. New deadlines will appear here when they are set.'**
   String get allClearDeadlines;
 
   /// No description provided for @nothingOverdue.
@@ -2093,7 +2093,7 @@ abstract class AppLocalizations {
   /// No description provided for @greatJobDeadlines.
   ///
   /// In en, this message translates to:
-  /// **'Great job staying on top of your deadlines.'**
+  /// **'You are on top of your deadlines.'**
   String get greatJobDeadlines;
 
   /// No description provided for @noCompletedDeadlines.
@@ -2387,7 +2387,7 @@ abstract class AppLocalizations {
   /// No description provided for @analyzingContent.
   ///
   /// In en, this message translates to:
-  /// **'Analyzing content...'**
+  /// **'Analyzing content…'**
   String get analyzingContent;
 
   /// No description provided for @documentProcessedOk.
@@ -2471,13 +2471,13 @@ abstract class AppLocalizations {
   /// No description provided for @uploadingPercent.
   ///
   /// In en, this message translates to:
-  /// **'Uploading... {percent}%'**
+  /// **'Uploading… {percent}%'**
   String uploadingPercent(int percent);
 
   /// No description provided for @preparingUpload.
   ///
   /// In en, this message translates to:
-  /// **'Preparing upload...'**
+  /// **'Preparing upload…'**
   String get preparingUpload;
 
   /// No description provided for @documentUploadedSuccess.
@@ -2507,7 +2507,7 @@ abstract class AppLocalizations {
   /// No description provided for @readingText.
   ///
   /// In en, this message translates to:
-  /// **'Reading text...'**
+  /// **'Reading text…'**
   String get readingText;
 
   /// No description provided for @draftDocument.
@@ -2531,7 +2531,7 @@ abstract class AppLocalizations {
   /// No description provided for @generatingDraft.
   ///
   /// In en, this message translates to:
-  /// **'Generating your draft...'**
+  /// **'Generating your draft…'**
   String get generatingDraft;
 
   /// No description provided for @generatingDraftDesc.
@@ -2639,7 +2639,7 @@ abstract class AppLocalizations {
   /// No description provided for @batchAnalysisStarting.
   ///
   /// In en, this message translates to:
-  /// **'Batch analysis starting...'**
+  /// **'Batch analysis starting…'**
   String get batchAnalysisStarting;
 
   /// No description provided for @switchToList.
@@ -2915,7 +2915,7 @@ abstract class AppLocalizations {
   /// No description provided for @checkingPurchases.
   ///
   /// In en, this message translates to:
-  /// **'Checking for previous purchases...'**
+  /// **'Checking for previous purchases…'**
   String get checkingPurchases;
 
   /// No description provided for @noPreviousPurchases.
@@ -3293,7 +3293,7 @@ abstract class AppLocalizations {
   /// No description provided for @policeFactMustTellReason.
   ///
   /// In en, this message translates to:
-  /// **'In Finland, police must tell you the reason for stopping you. If they don\'t, you can ask — and they are legally required to explain.'**
+  /// **'In Finland, the police must tell you the reason for stopping you. If they do not, you may ask — they are legally required to explain.'**
   String get policeFactMustTellReason;
 
   /// No description provided for @policeFactCanRecord.
@@ -4043,7 +4043,7 @@ abstract class AppLocalizations {
   /// No description provided for @typing.
   ///
   /// In en, this message translates to:
-  /// **'Typing...'**
+  /// **'Typing…'**
   String get typing;
 
   /// No description provided for @online.
@@ -4397,7 +4397,7 @@ abstract class AppLocalizations {
   /// No description provided for @cyberFactGDPR.
   ///
   /// In en, this message translates to:
-  /// **'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.'**
+  /// **'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.'**
   String get cyberFactGDPR;
 
   /// No description provided for @guestUser.
@@ -4505,7 +4505,7 @@ abstract class AppLocalizations {
   /// No description provided for @redirectingToPayment.
   ///
   /// In en, this message translates to:
-  /// **'Redirecting to payment page...'**
+  /// **'Redirecting to payment page…'**
   String get redirectingToPayment;
 
   /// No description provided for @cheaperAnnually.

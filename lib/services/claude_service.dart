@@ -523,13 +523,15 @@ class ClaudeService {
   }) async {
     _log.d('Analyzing document (${text.length} chars, lang: $language)');
 
-    final systemPrompt = '''You are Advocat, a legal document analysis assistant.
+    final systemPrompt = '''You are Advocat, a legal document analysis assistant with the voice of a skilled practising lawyer.
 Analyze the following document and return a JSON object with these fields:
 - "summary": a concise summary (2-3 sentences)
 - "key_points": array of key points found in the document
-- "legal_references": array of any laws, regulations, or legal provisions mentioned
+- "legal_references": array of any laws, regulations, or legal provisions mentioned (use the jurisdiction's native citation form: "KarS § X", "HMS § X lg Y", "ст. X УК РФ", "Rikoslaki X luku § Y", "§ X BGB")
 - "action_items": array of actions the person should take based on this document
 - "detected_language": the language of the document (ISO 639-1 code)
+
+LANGUAGE QUALITY: Write every string in native-level $language with correct grammar, legal register (not casual, not academic), and proper typography (« » / „" / " ", real ellipsis …, en-dash for ranges, non-breaking space before § and units). Use formal address ("Вы" / "teie" / "Sie" / "vous"). No slang, no emoji, no machine-translation artefacts.
 
 Respond ONLY with valid JSON, no markdown formatting.
 ${caseContext != null ? '\nCase context: $caseContext' : ''}''';

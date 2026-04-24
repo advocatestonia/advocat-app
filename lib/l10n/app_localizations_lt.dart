@@ -45,7 +45,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get alreadyHaveAccount => 'Jau turite paskyrą? ';
 
   @override
-  String get analyzing => 'Analizuojama...';
+  String get analyzing => 'Analizuojama…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get checkerTitle => 'Tikrintojas';
 
   @override
-  String get checkingErrors => 'Tikrinamos klaidos...';
+  String get checkingErrors => 'Tikrinamos klaidos…';
 
   @override
   String get choosePlan => 'Pasirinkti planą';
@@ -233,7 +233,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Ar tikrai? Tai neatstatomai ištrins visus jūsų duomenis.';
 
   @override
-  String get demoHint => 'Demo: išbandykite numerį \"908FBT\"';
+  String get demoHint => 'Demo: išbandykite numerį „908FBT“';
 
   @override
   String get demoModeDesc =>
@@ -414,7 +414,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get licensePlate => 'Valstybinis numeris';
 
   @override
-  String get loading => 'Kraunama...';
+  String get loading => 'Kraunama…';
 
   @override
   String get logIn => 'Prisijungti';
@@ -578,7 +578,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'Skaitomas dokumentas...';
+  String get readingDocument => 'Skaitomas dokumentas…';
 
   @override
   String get recentActivity => 'Naujausia veikla';
@@ -596,7 +596,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get requestExport => 'Prašyti eksporto';
 
   @override
-  String get researchingLaw => 'Tiriami taikytini įstatymai...';
+  String get researchingLaw => 'Tiriami taikytini įstatymai…';
 
   @override
   String get resetPasswordFailed =>
@@ -650,7 +650,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get scanDocument => 'Nuskaityti dokumentą';
 
   @override
-  String get searchCases => 'Ieškoti bylų...';
+  String get searchCases => 'Ieškoti bylų…';
 
   @override
   String get selectCountry => 'Pasirinkite šalį';
@@ -732,7 +732,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Įveskite DELETE, kad patvirtintumėte nuolatinį paskyros pašalinimą.';
 
   @override
-  String get typeMessage => 'Įveskite žinutę...';
+  String get typeMessage => 'Įveskite žinutę…';
 
   @override
   String get upcoming => 'Artėjanti';
@@ -1158,7 +1158,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Byla \"$title\" buvo sukurta.';
+    return 'Byla „$title“ buvo sukurta.';
   }
 
   @override
@@ -1215,7 +1215,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Analizuojamas turinys...';
+  String get analyzingContent => 'Analizuojamas turinys…';
 
   @override
   String get documentProcessedOk => 'Dokumentas sėkmingai apdorotas';
@@ -1264,11 +1264,11 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Įkeliama... $percent%';
+    return 'Įkeliama… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Ruošiamas įkėlimas...';
+  String get preparingUpload => 'Ruošiamas įkėlimas…';
 
   @override
   String get documentUploadedSuccess => 'Dokumentas sėkmingai įkeltas';
@@ -1287,7 +1287,7 @@ class AppLocalizationsLt extends AppLocalizations {
       'Nepavyko nufotografuoti. Bandykite dar kartą.';
 
   @override
-  String get readingText => 'Skaitomas tekstas...';
+  String get readingText => 'Skaitomas tekstas…';
 
   @override
   String get draftDocument => 'Dokumento projektas';
@@ -1299,7 +1299,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get editDocument => 'Redaguoti dokumentą';
 
   @override
-  String get generatingDraft => 'Generuojamas jūsų projektas...';
+  String get generatingDraft => 'Generuojamas jūsų projektas…';
 
   @override
   String get generatingDraftDesc =>
@@ -1360,7 +1360,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get analyzeSelected => 'Analizuoti pasirinktus';
 
   @override
-  String get batchAnalysisStarting => 'Pradedama paketinė analizė...';
+  String get batchAnalysisStarting => 'Pradedama paketinė analizė…';
 
   @override
   String get switchToList => 'Perjungti į sąrašą';
@@ -1507,7 +1507,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get perYear => '/m.';
 
   @override
-  String get checkingPurchases => 'Tikrinami ankstesni pirkimai...';
+  String get checkingPurchases => 'Tikrinami ankstesni pirkimai…';
 
   @override
   String get noPreviousPurchases => 'Ankstesnių pirkimų nerasta.';
@@ -1557,7 +1557,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Ar tikrai norite ištrinti \"$title\"? Šio veiksmo negalima atšaukti.';
+    return 'Ar tikrai norite ištrinti „$title“? Šio veiksmo negalima atšaukti.';
   }
 
   @override
@@ -1710,7 +1710,7 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Aiškiai pasakykite: \"Noriu advokato prieš bet kokius klausimus\"';
+      'Aiškiai pasakykite: „Noriu advokato prieš bet kokius klausimus“';
 
   @override
   String get policeActionAskInterpreter => 'Jei reikia, paprašykite vertėjo';
@@ -2186,7 +2186,7 @@ class AppLocalizationsLt extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2466,7 +2466,7 @@ class AppLocalizationsLt extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Nukreipiama į mokėjimo puslapį...';
+  String get redirectingToPayment => 'Nukreipiama į mokėjimo puslapį…';
 
   @override
   String cheaperAnnually(String amount) {

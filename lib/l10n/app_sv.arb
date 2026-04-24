@@ -76,7 +76,7 @@
   "deleteAccountDesc": "Radera permanent ditt konto och alla uppgifter",
   "deleteAccountDialogContent": "Denna åtgärd är permanent och kan inte ångras. Alla dina uppgifter, ärenden och dokument raderas permanent.",
   "deleteConfirm": "Är du säker på att du vill radera ditt konto? Denna åtgärd kan inte ångras.",
-  "demoHint": "Demo: prova registreringsnummer \"908FBT\"",
+  "demoHint": "Demo: prova registreringsnummer ”908FBT”",
   "demoModeDesc": "Utforska appen med exempeldata utan att skapa ett konto",
   "deportation": "Utvisning",
   "disclaimer": "Enbart AI-vägledning – inte juridisk rådgivning. Rådgör alltid med en jurist.",
@@ -179,7 +179,7 @@
   "legalFighter": "Juridisk Kämpe",
   "legalSection": "JURIDISKT",
   "licensePlate": "Registreringsnummer",
-  "loading": "Laddar...",
+  "loading": "Laddar…",
   "logIn": "Logga in",
   "loginFailed": "Ogiltig e-postadress eller lösenord. Försök igen.",
   "lost": "Förlorat",
@@ -323,7 +323,7 @@
   "analysisFailedRetry": "Analysen misslyckades. Försök igen.",
   "analyzeSelected": "Analysera valda",
   "analyzed": "Analyserad",
-  "analyzingContent": "Analyserar innehåll...",
+  "analyzingContent": "Analyserar innehåll…",
   "annual": "Årlig",
   "annualLeave": "Semester (minst 2 dagar per arbetad månad)",
   "appeal": "Överklagande",
@@ -342,13 +342,13 @@
   "assignToCase": "Tilldela ärende",
   "basicAiAnalysis": "Grundläggande AI-analys",
   "basicRights": "Grundläggande rättigheter:",
-  "batchAnalysisStarting": "Batchanalys startar...",
+  "batchAnalysisStarting": "Batchanalys startar…",
   "calculateEligibility": "Beräkna berättigande",
   "cameraPermissionDesc": "Ge kameratillgång för att skanna dokument eller använd galleriet.",
   "cameraPermissionRequired": "Kamerabehörighet krävs",
   "capturePhotoFailed": "Kunde inte ta foto. Försök igen.",
   "caseCreated": "Ärende skapat",
-  "caseCreatedDesc": "Ärende \"{title}\" har skapats.",
+  "caseCreatedDesc": "Ärende ”{title}” har skapats.",
   "@caseCreatedDesc": {
     "placeholders": {
       "title": {
@@ -363,7 +363,7 @@
   "changesSaved": "Ändringar sparade",
   "chatWelcomeMessage": "Hej! Jag är din juridiska assistent. Berätta vad som hänt — jag analyserar situationen och föreslår vad du ska göra.",
   "checkEligibility": "Kontrollera din behörighet för rättshjälp: {country}",
-  "checkingPurchases": "Kontrollerar tidigare köp...",
+  "checkingPurchases": "Kontrollerar tidigare köp…",
   "chooseHowToAdd": "Välj hur du vill lägga till ditt dokument",
   "citizenship": "Medborgarskap",
   "completedDeadlinesDesc": "Slutförda tidsfrister visas här.",
@@ -398,7 +398,7 @@
   "decline": "Avböj",
   "delete": "Radera",
   "deleteCase": "Radera ärende",
-  "deleteCaseConfirm": "Är du säker på att du vill radera \"{title}\"? Åtgärden kan inte ångras.",
+  "deleteCaseConfirm": "Är du säker på att du vill radera ”{title}”? Åtgärden kan inte ångras.",
   "@deleteCaseConfirm": {
     "placeholders": {
       "title": {
@@ -463,7 +463,7 @@
       }
     }
   },
-  "generatingDraft": "Skapar ditt utkast...",
+  "generatingDraft": "Skapar ditt utkast…",
   "generatingDraftDesc": "AI förbereder ett juridiskt dokument baserat på dina ärendedetaljer.",
   "greatJobDeadlines": "Bra jobbat med att hålla tidsfristerna.",
   "haveQuestionsAi": "Frågor? Fråga AI",
@@ -493,7 +493,7 @@
     }
   },
   "knowYourRights": "Känn dina rättigheter",
-  "landlordNotice": "Hyresvärden måste ge uppsägningstid (3-6 månader)",
+  "landlordNotice": "Hyresvärden måste ge uppsägningstid (3–6 månader)",
   "lastSynced": "Senast synkroniserat: {time}",
   "@lastSynced": {
     "placeholders": {
@@ -582,12 +582,12 @@
   "pending": "Väntar",
   "perMonth": "/månad",
   "perYear": "/år",
-  "preparingUpload": "Förbereder uppladdning...",
+  "preparingUpload": "Förbereder uppladdning…",
   "preview": "Förhandsvisa",
   "priorityProcessing": "Prioriterad bearbetning",
   "processing": "Bearbetar",
   "protectionUnjustEviction": "Skydd mot orättvis vräkning",
-  "readingText": "Läser text...",
+  "readingText": "Läser text…",
   "ready": "Klar",
   "reportAndOpenCase": "Rapportera och öppna ärende",
   "reportMileageFraud": "Rapportera mätarbedrägeri",
@@ -659,7 +659,7 @@
   "uploadFailed": "Uppladdning misslyckades. Kontrollera anslutningen.",
   "uploadFile": "Ladda upp fil",
   "uploadFileDesc": "Välj en PDF eller bild från din enhet",
-  "uploadingPercent": "Laddar upp... {percent}%",
+  "uploadingPercent": "Laddar upp… {percent}%",
   "@uploadingPercent": {
     "placeholders": {
       "percent": {
@@ -689,7 +689,7 @@
   "policeActionStayCalm": "Håll dig lugn och håll händerna synliga",
   "policeActionAskWhy": "Fråga polisen varför du stoppas",
   "policeActionProvideName": "Uppge ditt namn och födelsedatum",
-  "policeActionWantLawyer": "Säg tydligt: \"Jag vill ha en advokat innan några frågor\"",
+  "policeActionWantLawyer": "Säg tydligt: ”Jag vill ha en advokat innan några frågor”",
   "policeActionAskInterpreter": "Be om tolk vid behov",
   "policeActionNoteBadge": "Notera polisens namn och tjänstenummer",
   "policeFactMustTellReason": "I Finland måste polisen berätta varför du stoppas. Om de inte gör det kan du fråga — och de är skyldiga enligt lag att förklara.",
@@ -775,7 +775,7 @@
   "callAI": "Call AI",
   "comingSoon": "Kommer snart",
   "encrypted": "Encrypted",
-  "typing": "Typing...",
+  "typing": "Typing…",
   "online": "Online",
   "chatWelcomeSubtitle": "I will analyze the situation, check documents, find errors, and suggest what to do.",
   "tapMicrophoneToSpeak": "Tap the microphone to speak",
@@ -818,7 +818,7 @@
   "pleaseLogIn": "Vänligen logga in",
   "subscriptionNotFound": "Prenumeration hittades inte",
   "errorWithMessage": "Fel: {message}",
-  "redirectingToPayment": "Omdirigerar till betalningssidan...",
+  "redirectingToPayment": "Omdirigerar till betalningssidan…",
   "cheaperAnnually": "€{amount}/mån billigare med årsprenumeration",
   "navigatingTo": "Öppnar",
   "stayInChat": "Stanna i chatten",

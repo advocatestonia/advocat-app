@@ -235,7 +235,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.';
 
   @override
-  String get demoHint => 'Demo: Kennzeichen \"908FBT\" ausprobieren';
+  String get demoHint => 'Demo: Kennzeichen „908FBT“ ausprobieren';
 
   @override
   String get demoModeDesc =>
@@ -417,7 +417,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get licensePlate => 'Kennzeichen';
 
   @override
-  String get loading => 'Wird geladen...';
+  String get loading => 'Wird geladen…';
 
   @override
   String get logIn => 'Anmelden';
@@ -918,7 +918,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get doNotIgnoreNotice =>
-      'Den Bescheid NICHT ignorieren - Fristen sind streng';
+      'Den Bescheid NICHT ignorieren – Fristen sind streng';
 
   @override
   String get noteAppealDeadline =>
@@ -967,7 +967,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get securityDeposit => 'Kaution max. 3 Monatsmieten';
 
   @override
-  String get landlordNotice => 'Vermieter muss kündigen (3-6 Monate)';
+  String get landlordNotice => 'Vermieter muss kündigen (3–6 Monate)';
 
   @override
   String get rightHabitableDwelling => 'Recht auf eine bewohnbare Wohnung';
@@ -1171,7 +1171,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Fall \"$title\" wurde erstellt.';
+    return 'Fall „$title“ wurde erstellt.';
   }
 
   @override
@@ -1231,7 +1231,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Inhalt wird analysiert...';
+  String get analyzingContent => 'Inhalt wird analysiert…';
 
   @override
   String get documentProcessedOk => 'Dokument erfolgreich verarbeitet';
@@ -1280,11 +1280,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Hochladen... $percent%';
+    return 'Hochladen… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Upload wird vorbereitet...';
+  String get preparingUpload => 'Upload wird vorbereitet…';
 
   @override
   String get documentUploadedSuccess => 'Dokument erfolgreich hochgeladen';
@@ -1303,7 +1303,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Foto konnte nicht aufgenommen werden. Bitte erneut versuchen.';
 
   @override
-  String get readingText => 'Text wird gelesen...';
+  String get readingText => 'Text wird gelesen…';
 
   @override
   String get draftDocument => 'Dokument entwerfen';
@@ -1315,7 +1315,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editDocument => 'Dokument bearbeiten';
 
   @override
-  String get generatingDraft => 'Ihr Entwurf wird erstellt...';
+  String get generatingDraft => 'Ihr Entwurf wird erstellt…';
 
   @override
   String get generatingDraftDesc =>
@@ -1376,7 +1376,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get analyzeSelected => 'Ausgewählte analysieren';
 
   @override
-  String get batchAnalysisStarting => 'Stapelanalyse wird gestartet...';
+  String get batchAnalysisStarting => 'Stapelanalyse wird gestartet…';
 
   @override
   String get switchToList => 'Zur Listenansicht wechseln';
@@ -1523,7 +1523,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get perYear => '/Jahr';
 
   @override
-  String get checkingPurchases => 'Frühere Käufe werden geprüft...';
+  String get checkingPurchases => 'Frühere Käufe werden geprüft…';
 
   @override
   String get noPreviousPurchases => 'Keine früheren Käufe gefunden.';
@@ -1573,7 +1573,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Möchten Sie \"$title\" wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.';
+    return 'Möchten Sie „$title“ wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.';
   }
 
   @override
@@ -1727,7 +1727,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Sagen Sie deutlich: \"Ich möchte einen Anwalt, bevor ich Fragen beantworte\"';
+      'Sagen Sie deutlich: „Ich möchte einen Anwalt, bevor ich Fragen beantworte.“';
 
   @override
   String get policeActionAskInterpreter =>
@@ -2205,7 +2205,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get encrypted => 'Verschlüsselt';
 
   @override
-  String get typing => 'Tippt...';
+  String get typing => 'Tippt…';
 
   @override
   String get online => 'Online';
@@ -2485,7 +2485,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Weiterleitung zur Zahlungsseite...';
+  String get redirectingToPayment => 'Weiterleitung zur Zahlungsseite…';
 
   @override
   String cheaperAnnually(String amount) {

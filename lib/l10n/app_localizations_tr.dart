@@ -45,7 +45,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get alreadyHaveAccount => 'Zaten hesabınız var mı? ';
 
   @override
-  String get analyzing => 'Analiz ediliyor...';
+  String get analyzing => 'Analiz ediliyor…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get checkerTitle => 'Denetleyici';
 
   @override
-  String get checkingErrors => 'Hatalar kontrol ediliyor...';
+  String get checkingErrors => 'Hatalar kontrol ediliyor…';
 
   @override
   String get choosePlan => 'Plan Seç';
@@ -233,7 +233,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Emin misiniz? Tüm verileriniz kalıcı olarak silinecektir.';
 
   @override
-  String get demoHint => 'Demo: \"908FBT\" plakasını deneyin';
+  String get demoHint => 'Demo: “908FBT” plakasını deneyin';
 
   @override
   String get demoModeDesc =>
@@ -414,7 +414,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get licensePlate => 'Plaka';
 
   @override
-  String get loading => 'Yükleniyor...';
+  String get loading => 'Yükleniyor…';
 
   @override
   String get logIn => 'Giriş Yap';
@@ -578,7 +578,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'Belge okunuyor...';
+  String get readingDocument => 'Belge okunuyor…';
 
   @override
   String get recentActivity => 'Son Aktivite';
@@ -596,7 +596,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get requestExport => 'Dışa Aktarma Talep Et';
 
   @override
-  String get researchingLaw => 'Uygulanabilir yasa araştırılıyor...';
+  String get researchingLaw => 'Uygulanabilir yasa araştırılıyor…';
 
   @override
   String get resetPasswordFailed =>
@@ -650,7 +650,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get scanDocument => 'Belge Tara';
 
   @override
-  String get searchCases => 'Dava ara...';
+  String get searchCases => 'Dava ara…';
 
   @override
   String get selectCountry => 'Ülke seçin';
@@ -731,7 +731,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Hesabın kalıcı olarak kaldırılmasını onaylamak için DELETE yazın.';
 
   @override
-  String get typeMessage => 'Bir mesaj yazın...';
+  String get typeMessage => 'Bir mesaj yazın…';
 
   @override
   String get upcoming => 'Yaklaşan';
@@ -954,7 +954,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get securityDeposit => 'Depozito max 3 aylık kira';
 
   @override
-  String get landlordNotice => 'Ev sahibi ihbar süresi vermeli (3-6 ay)';
+  String get landlordNotice => 'Ev sahibi ihbar süresi vermeli (3–6 ay)';
 
   @override
   String get rightHabitableDwelling => 'Yaşanabilir bir konuta hak';
@@ -1150,7 +1150,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return '\"$title\" davası oluşturuldu.';
+    return '“$title” davası oluşturuldu.';
   }
 
   @override
@@ -1207,7 +1207,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'İçerik analiz ediliyor...';
+  String get analyzingContent => 'İçerik analiz ediliyor…';
 
   @override
   String get documentProcessedOk => 'Belge başarıyla işlendi';
@@ -1255,11 +1255,11 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Yükleniyor... %$percent';
+    return 'Yükleniyor… %$percent';
   }
 
   @override
-  String get preparingUpload => 'Yükleme hazırlanıyor...';
+  String get preparingUpload => 'Yükleme hazırlanıyor…';
 
   @override
   String get documentUploadedSuccess => 'Belge başarıyla yüklendi';
@@ -1277,7 +1277,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Fotoğraf çekilemedi. Lütfen tekrar deneyin.';
 
   @override
-  String get readingText => 'Metin okunuyor...';
+  String get readingText => 'Metin okunuyor…';
 
   @override
   String get draftDocument => 'Taslak belge';
@@ -1289,7 +1289,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get editDocument => 'Belgeyi düzenle';
 
   @override
-  String get generatingDraft => 'Taslağınız oluşturuluyor...';
+  String get generatingDraft => 'Taslağınız oluşturuluyor…';
 
   @override
   String get generatingDraftDesc =>
@@ -1350,7 +1350,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get analyzeSelected => 'Seçilenleri analiz et';
 
   @override
-  String get batchAnalysisStarting => 'Toplu analiz başlıyor...';
+  String get batchAnalysisStarting => 'Toplu analiz başlıyor…';
 
   @override
   String get switchToList => 'Liste görünümüne geç';
@@ -1497,7 +1497,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get perYear => '/yıl';
 
   @override
-  String get checkingPurchases => 'Önceki satın almalar kontrol ediliyor...';
+  String get checkingPurchases => 'Önceki satın almalar kontrol ediliyor…';
 
   @override
   String get noPreviousPurchases => 'Önceki satın alma bulunamadı.';
@@ -1547,7 +1547,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return '\"$title\" silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
+    return '“$title” silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.';
   }
 
   @override
@@ -1698,7 +1698,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Açıkça belirtin: \"Sorulardan önce bir avukat istiyorum\"';
+      'Açıkça belirtin: “Sorulardan önce bir avukat istiyorum”';
 
   @override
   String get policeActionAskInterpreter => 'Gerekirse tercüman isteyin';
@@ -2173,7 +2173,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2392,7 +2392,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.';
 
   @override
   String get guestUser => 'Misafir';
@@ -2453,7 +2453,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Ödeme sayfasına yönlendiriliyor...';
+  String get redirectingToPayment => 'Ödeme sayfasına yönlendiriliyor…';
 
   @override
   String cheaperAnnually(String amount) {

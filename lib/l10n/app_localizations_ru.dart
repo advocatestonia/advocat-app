@@ -45,10 +45,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alreadyHaveAccount => 'Уже есть аккаунт? ';
 
   @override
-  String get analyzing => 'Анализируем...';
+  String get analyzing => 'Анализ…';
 
   @override
-  String get aiAnalyzing => 'AI анализирует';
+  String get aiAnalyzing => 'ИИ анализирует';
 
   @override
   String get speakIntoMicHint =>
@@ -56,7 +56,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String freeLimitReached(int count) {
-    return 'Вы использовали все $count бесплатных AI сообщений. Перейдите на тариф Õigusnõustaja для безлимитной AI помощи!';
+    return 'Вы использовали все $count бесплатных сообщений ИИ. Перейдите на тариф «Юридический советник» для безлимитной помощи ИИ.';
   }
 
   @override
@@ -129,7 +129,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get checkerTitle => 'Проверка';
 
   @override
-  String get checkingErrors => 'Проверяем на ошибки...';
+  String get checkingErrors => 'Проверка на ошибки…';
 
   @override
   String get choosePlan => 'Выбрать тариф';
@@ -234,7 +234,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Вы уверены? Все ваши данные будут удалены безвозвратно.';
 
   @override
-  String get demoHint => 'Демо: введите номер \"908FBT\"';
+  String get demoHint => 'Демо: введите номер «908FBT»';
 
   @override
   String get demoModeDesc =>
@@ -406,7 +406,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get legalFighter => 'Правовой боец';
+  String get legalFighter => 'Юридический советник';
 
   @override
   String get legalSection => 'ПРАВОВАЯ ИНФОРМАЦИЯ';
@@ -415,7 +415,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get licensePlate => 'Номерной знак';
 
   @override
-  String get loading => 'Загрузка...';
+  String get loading => 'Загрузка…';
 
   @override
   String get logIn => 'Войти';
@@ -557,7 +557,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get preferredLanguage => 'Предпочитаемый язык';
 
   @override
-  String get pricePerCheck => '€4,99 за проверку';
+  String get pricePerCheck => '4,99 € за проверку';
 
   @override
   String get privacyPolicy => 'Политику конфиденциальности';
@@ -578,7 +578,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dataCopiedToClipboard => 'Данные скопированы в буфер обмена';
 
   @override
-  String get readingDocument => 'Читаем документ...';
+  String get readingDocument => 'Чтение документа…';
 
   @override
   String get recentActivity => 'Последние действия';
@@ -597,7 +597,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get requestExport => 'Запросить экспорт';
 
   @override
-  String get researchingLaw => 'Исследуем применимое законодательство...';
+  String get researchingLaw => 'Изучение применимого законодательства…';
 
   @override
   String get resetPasswordFailed =>
@@ -651,7 +651,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get scanDocument => 'Сканировать документ';
 
   @override
-  String get searchCases => 'Поиск дел...';
+  String get searchCases => 'Поиск дел…';
 
   @override
   String get selectCountry => 'Выберите страну';
@@ -732,7 +732,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Введите DELETE для подтверждения удаления аккаунта.';
 
   @override
-  String get typeMessage => 'Введите сообщение...';
+  String get typeMessage => 'Введите сообщение…';
 
   @override
   String get upcoming => 'Предстоящие';
@@ -934,7 +934,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get workingTimeLimits =>
-      'Ограничения рабочего времени (макс. 8ч/день, 40ч/неделя)';
+      'Ограничения рабочего времени (не более 8 ч/день, 40 ч/неделя)';
 
   @override
   String get annualLeave =>
@@ -953,7 +953,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get securityDeposit => 'Залог — максимум 3 месяца аренды';
 
   @override
-  String get landlordNotice => 'Арендодатель обязан уведомить за 3-6 месяцев';
+  String get landlordNotice => 'Арендодатель обязан уведомить за 3–6 месяцев';
 
   @override
   String get rightHabitableDwelling => 'Право на пригодное для жизни жильё';
@@ -1210,7 +1210,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Анализируем содержание...';
+  String get analyzingContent => 'Анализ содержания…';
 
   @override
   String get documentProcessedOk => 'Документ обработан успешно';
@@ -1259,11 +1259,11 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Загрузка... $percent%';
+    return 'Загрузка… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Подготовка загрузки...';
+  String get preparingUpload => 'Подготовка загрузки…';
 
   @override
   String get documentUploadedSuccess => 'Документ успешно загружен';
@@ -1281,7 +1281,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get capturePhotoFailed => 'Не удалось сделать фото. Попробуйте снова.';
 
   @override
-  String get readingText => 'Распознаём текст...';
+  String get readingText => 'Распознавание текста…';
 
   @override
   String get draftDocument => 'Черновик документа';
@@ -1293,7 +1293,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get editDocument => 'Редактировать документ';
 
   @override
-  String get generatingDraft => 'Генерируем черновик...';
+  String get generatingDraft => 'Подготовка черновика…';
 
   @override
   String get generatingDraftDesc =>
@@ -1354,7 +1354,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get analyzeSelected => 'Анализировать выбранные';
 
   @override
-  String get batchAnalysisStarting => 'Начинаем пакетный анализ...';
+  String get batchAnalysisStarting => 'Запуск пакетного анализа…';
 
   @override
   String get switchToList => 'Переключить на список';
@@ -1485,7 +1485,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get strategyRecommendations => 'Рекомендации по стратегии';
 
   @override
-  String get foundingMemberNote => 'Член-основатель: 9,99€/мес первые 3 месяца';
+  String get foundingMemberNote =>
+      'Член-основатель: 9,99 €/мес первые 3 месяца';
 
   @override
   String get saveTwentyPercent => 'Экономия 20%';
@@ -1500,14 +1501,14 @@ class AppLocalizationsRu extends AppLocalizations {
   String get perYear => '/год';
 
   @override
-  String get checkingPurchases => 'Проверка предыдущих покупок...';
+  String get checkingPurchases => 'Проверка предыдущих покупок…';
 
   @override
   String get noPreviousPurchases => 'Предыдущие покупки не найдены.';
 
   @override
   String get chatWelcomeMessage =>
-      'Привет! Я ваш юридический помощник. Расскажите, что у вас случилось — я проанализирую ситуацию и подскажу что делать.';
+      'Здравствуйте. Я ваш юридический помощник. Опишите, что произошло — я проанализирую ситуацию и подскажу, что делать.';
 
   @override
   String get copySummary => 'Скопировать сводку';
@@ -1550,7 +1551,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Вы уверены, что хотите удалить \"$title\"? Это действие нельзя отменить.';
+    return 'Вы уверены, что хотите удалить «$title»? Это действие нельзя отменить.';
   }
 
   @override
@@ -1560,7 +1561,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get cookiePolicy => 'Политика cookie';
 
   @override
-  String get aiDisclaimer => 'Отказ от ответственности ИИ';
+  String get aiDisclaimer => 'Оговорка об ответственности ИИ';
 
   @override
   String get dataPrivacyConsent => 'Согласие на обработку данных';
@@ -1704,7 +1705,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Чётко скажите: \"Я хочу адвоката перед любыми вопросами\"';
+      'Чётко заявите: «Я хочу адвоката до начала любых допросов»';
 
   @override
   String get policeActionAskInterpreter =>
@@ -1882,7 +1883,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rightCallEmergency =>
-      'Вы имеете право позвонить 112 в любой экстренной ситуации — полиция, скорая, пожарные';
+      'Вы имеете право позвонить по номеру 112 в любой экстренной ситуации — полиция, скорая, пожарная';
 
   @override
   String get rightVictimProtection =>
@@ -1906,7 +1907,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mustReportDanger =>
-      'Если кто-то в непосредственной опасности, звоните 112 немедленно';
+      'Если кто-то в непосредственной опасности, немедленно звоните 112';
 
   @override
   String get mustDocumentInjuries =>
@@ -1982,7 +1983,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get rightInheritanceRenounce =>
-      'От наследства можно отказаться в течение 3 месяцев после получе��ия информации о нём';
+      'От наследства можно отказаться в течение 3 месяцев после получения информации о нём';
 
   @override
   String get rightInheritanceInfo =>
@@ -1994,7 +1995,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mustFileInheritance =>
-      'Начните наследств��нное производство у нотариуса в разумный срок';
+      'Начните наследственное производство у нотариуса в разумный срок';
 
   @override
   String get mustNotifyHeirs =>
@@ -2002,7 +2003,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get inheritanceActionGatherDocs =>
-      'Соберите докуме��ты: свидетельство о смерти, завещание, документы на имущество, выписки из банка';
+      'Соберите документы: свидетельство о смерти, завещание, документы на имущество, выписки из банка';
 
   @override
   String get inheritanceActionContactNotary =>
@@ -2183,7 +2184,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get encrypted => 'Зашифровано';
 
   @override
-  String get typing => 'Печатает...';
+  String get typing => 'Печатает…';
 
   @override
   String get online => 'Онлайн';
@@ -2402,7 +2403,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'По GDPR у вас есть «право быть забытым» — платформы обязаны удалить ваши данные по запросу, если нет законного основания их хранить.';
+      'Согласно GDPR у вас есть «право быть забытым» — платформы обязаны удалить ваши данные по запросу, если нет законного основания их хранить.';
 
   @override
   String get guestUser => 'Гость';
@@ -2463,7 +2464,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Перенаправление на страницу оплаты...';
+  String get redirectingToPayment => 'Перенаправление на страницу оплаты…';
 
   @override
   String cheaperAnnually(String amount) {

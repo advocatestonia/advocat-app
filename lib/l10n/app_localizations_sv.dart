@@ -235,7 +235,7 @@ class AppLocalizationsSv extends AppLocalizations {
       'Är du säker på att du vill radera ditt konto? Denna åtgärd kan inte ångras.';
 
   @override
-  String get demoHint => 'Demo: prova registreringsnummer \"908FBT\"';
+  String get demoHint => 'Demo: prova registreringsnummer ”908FBT”';
 
   @override
   String get demoModeDesc =>
@@ -416,7 +416,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get licensePlate => 'Registreringsnummer';
 
   @override
-  String get loading => 'Laddar...';
+  String get loading => 'Laddar…';
 
   @override
   String get logIn => 'Logga in';
@@ -956,7 +956,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get landlordNotice =>
-      'Hyresvärden måste ge uppsägningstid (3-6 månader)';
+      'Hyresvärden måste ge uppsägningstid (3–6 månader)';
 
   @override
   String get rightHabitableDwelling => 'Rätt till en beboelig bostad';
@@ -1153,7 +1153,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Ärende \"$title\" har skapats.';
+    return 'Ärende ”$title” har skapats.';
   }
 
   @override
@@ -1211,7 +1211,7 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Analyserar innehåll...';
+  String get analyzingContent => 'Analyserar innehåll…';
 
   @override
   String get documentProcessedOk => 'Dokument bearbetat framgångsrikt';
@@ -1260,11 +1260,11 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Laddar upp... $percent%';
+    return 'Laddar upp… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Förbereder uppladdning...';
+  String get preparingUpload => 'Förbereder uppladdning…';
 
   @override
   String get documentUploadedSuccess => 'Dokument uppladdat framgångsrikt';
@@ -1282,7 +1282,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get capturePhotoFailed => 'Kunde inte ta foto. Försök igen.';
 
   @override
-  String get readingText => 'Läser text...';
+  String get readingText => 'Läser text…';
 
   @override
   String get draftDocument => 'Dokumentutkast';
@@ -1294,7 +1294,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get editDocument => 'Redigera dokument';
 
   @override
-  String get generatingDraft => 'Skapar ditt utkast...';
+  String get generatingDraft => 'Skapar ditt utkast…';
 
   @override
   String get generatingDraftDesc =>
@@ -1354,7 +1354,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get analyzeSelected => 'Analysera valda';
 
   @override
-  String get batchAnalysisStarting => 'Batchanalys startar...';
+  String get batchAnalysisStarting => 'Batchanalys startar…';
 
   @override
   String get switchToList => 'Växla till lista';
@@ -1501,7 +1501,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get perYear => '/år';
 
   @override
-  String get checkingPurchases => 'Kontrollerar tidigare köp...';
+  String get checkingPurchases => 'Kontrollerar tidigare köp…';
 
   @override
   String get noPreviousPurchases => 'Inga tidigare köp hittades.';
@@ -1550,7 +1550,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'Är du säker på att du vill radera \"$title\"? Åtgärden kan inte ångras.';
+    return 'Är du säker på att du vill radera ”$title”? Åtgärden kan inte ångras.';
   }
 
   @override
@@ -1701,7 +1701,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'Säg tydligt: \"Jag vill ha en advokat innan några frågor\"';
+      'Säg tydligt: ”Jag vill ha en advokat innan några frågor”';
 
   @override
   String get policeActionAskInterpreter => 'Be om tolk vid behov';
@@ -2173,7 +2173,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2453,7 +2453,7 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Omdirigerar till betalningssidan...';
+  String get redirectingToPayment => 'Omdirigerar till betalningssidan…';
 
   @override
   String cheaperAnnually(String amount) {

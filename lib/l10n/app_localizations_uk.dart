@@ -45,7 +45,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get alreadyHaveAccount => 'Вже є обліковий запис? ';
 
   @override
-  String get analyzing => 'Аналізується...';
+  String get analyzing => 'Аналізується…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get checkerTitle => 'Перевірка';
 
   @override
-  String get checkingErrors => 'Перевірка помилок...';
+  String get checkingErrors => 'Перевірка помилок…';
 
   @override
   String get choosePlan => 'Обрати план';
@@ -234,7 +234,7 @@ class AppLocalizationsUk extends AppLocalizations {
       'Ви впевнені? Це назавжди видалить усі ваші дані.';
 
   @override
-  String get demoHint => 'Демо: спробуйте номер \"908FBT\"';
+  String get demoHint => 'Демо: спробуйте номер «908FBT»';
 
   @override
   String get demoModeDesc =>
@@ -406,7 +406,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get legalFighter => 'Юридичний боєць';
+  String get legalFighter => 'Юридичний радник';
 
   @override
   String get legalSection => 'ЮРИДИЧНЕ';
@@ -415,7 +415,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get licensePlate => 'Номерний знак';
 
   @override
-  String get loading => 'Завантаження...';
+  String get loading => 'Завантаження…';
 
   @override
   String get logIn => 'Увійти';
@@ -455,7 +455,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get noCasesYet => 'Справ ще немає';
 
   @override
-  String get noDeadlines => 'Немає строків — все чисто!';
+  String get noDeadlines => 'Строків немає — усе в порядку.';
 
   @override
   String get noRecentActivity => 'Немає останньої активності';
@@ -579,7 +579,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'Читання документа...';
+  String get readingDocument => 'Читання документа…';
 
   @override
   String get recentActivity => 'Остання активність';
@@ -597,7 +597,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get requestExport => 'Запит на експорт';
 
   @override
-  String get researchingLaw => 'Дослідження законодавства...';
+  String get researchingLaw => 'Дослідження законодавства…';
 
   @override
   String get resetPasswordFailed =>
@@ -651,7 +651,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get scanDocument => 'Сканувати документ';
 
   @override
-  String get searchCases => 'Пошук справ...';
+  String get searchCases => 'Пошук справ…';
 
   @override
   String get selectCountry => 'Оберіть країну';
@@ -733,7 +733,7 @@ class AppLocalizationsUk extends AppLocalizations {
       'Введіть DELETE для підтвердження видалення облікового запису.';
 
   @override
-  String get typeMessage => 'Введіть повідомлення...';
+  String get typeMessage => 'Введіть повідомлення…';
 
   @override
   String get upcoming => 'Найближчі';
@@ -955,7 +955,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get securityDeposit => 'Застава макс. 3 місяці оренди';
 
   @override
-  String get landlordNotice => 'Орендодавець має попередити (3-6 місяців)';
+  String get landlordNotice => 'Орендодавець має попередити (3–6 місяців)';
 
   @override
   String get rightHabitableDwelling => 'Право на придатне для проживання житло';
@@ -1152,7 +1152,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'Справу \"$title\" створено.';
+    return 'Справу «$title» створено.';
   }
 
   @override
@@ -1209,7 +1209,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'Аналіз вмісту...';
+  String get analyzingContent => 'Аналіз вмісту…';
 
   @override
   String get documentProcessedOk => 'Документ успішно оброблено';
@@ -1257,11 +1257,11 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'Завантаження... $percent%';
+    return 'Завантаження… $percent%';
   }
 
   @override
-  String get preparingUpload => 'Підготовка завантаження...';
+  String get preparingUpload => 'Підготовка завантаження…';
 
   @override
   String get documentUploadedSuccess => 'Документ успішно завантажено';
@@ -1278,7 +1278,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get capturePhotoFailed => 'Не вдалося зробити фото. Спробуйте знову.';
 
   @override
-  String get readingText => 'Читання тексту...';
+  String get readingText => 'Читання тексту…';
 
   @override
   String get draftDocument => 'Чернетка документа';
@@ -1290,7 +1290,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get editDocument => 'Редагувати документ';
 
   @override
-  String get generatingDraft => 'Створення чернетки...';
+  String get generatingDraft => 'Створення чернетки…';
 
   @override
   String get generatingDraftDesc =>
@@ -1351,7 +1351,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get analyzeSelected => 'Аналізувати вибрані';
 
   @override
-  String get batchAnalysisStarting => 'Пакетний аналіз починається...';
+  String get batchAnalysisStarting => 'Пакетний аналіз починається…';
 
   @override
   String get switchToList => 'Перемкнути на список';
@@ -1498,14 +1498,14 @@ class AppLocalizationsUk extends AppLocalizations {
   String get perYear => '/рік';
 
   @override
-  String get checkingPurchases => 'Перевірка попередніх покупок...';
+  String get checkingPurchases => 'Перевірка попередніх покупок…';
 
   @override
   String get noPreviousPurchases => 'Попередні покупки не знайдено.';
 
   @override
   String get chatWelcomeMessage =>
-      'Привіт! Я ваш юридичний помічник. Розкажіть, що сталося — я проаналізую ситуацію та підкажу, що робити.';
+      'Вітаю. Я ваш юридичний помічник. Опишіть, що сталося — я проаналізую ситуацію та підкажу, що робити.';
 
   @override
   String get copySummary => 'Копіювати зведення';
@@ -2176,7 +2176,7 @@ class AppLocalizationsUk extends AppLocalizations {
   String get encrypted => 'Зашифровано';
 
   @override
-  String get typing => 'Друкує...';
+  String get typing => 'Друкує…';
 
   @override
   String get online => 'Онлайн';
@@ -2395,7 +2395,7 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.';
 
   @override
   String get guestUser => 'Гість';
@@ -2456,7 +2456,7 @@ class AppLocalizationsUk extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Перенаправлення на сторінку оплати...';
+  String get redirectingToPayment => 'Перенаправлення на сторінку оплати…';
 
   @override
   String cheaperAnnually(String amount) {

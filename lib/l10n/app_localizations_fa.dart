@@ -45,7 +45,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get alreadyHaveAccount => 'قبلاً حساب دارید؟ ';
 
   @override
-  String get analyzing => 'در حال تحلیل...';
+  String get analyzing => 'در حال تحلیل…';
 
   @override
   String get aiAnalyzing => 'AI is analyzing';
@@ -129,7 +129,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get checkerTitle => 'بررسی‌کننده';
 
   @override
-  String get checkingErrors => 'بررسی خطاها...';
+  String get checkingErrors => 'بررسی خطاها…';
 
   @override
   String get choosePlan => 'انتخاب طرح';
@@ -233,7 +233,7 @@ class AppLocalizationsFa extends AppLocalizations {
       'آیا مطمئن هستید؟ تمام داده‌های شما برای همیشه حذف خواهد شد.';
 
   @override
-  String get demoHint => 'نسخه نمایشی: پلاک \"908FBT\" را امتحان کنید';
+  String get demoHint => 'نسخه نمایشی: پلاک «908FBT» را امتحان کنید';
 
   @override
   String get demoModeDesc =>
@@ -414,7 +414,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get licensePlate => 'پلاک';
 
   @override
-  String get loading => 'در حال بارگذاری...';
+  String get loading => 'در حال بارگذاری…';
 
   @override
   String get logIn => 'ورود';
@@ -578,7 +578,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get dataCopiedToClipboard => 'Data copied to clipboard';
 
   @override
-  String get readingDocument => 'در حال خواندن سند...';
+  String get readingDocument => 'در حال خواندن سند…';
 
   @override
   String get recentActivity => 'فعالیت اخیر';
@@ -596,7 +596,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get requestExport => 'درخواست خروجی';
 
   @override
-  String get researchingLaw => 'تحقیق قانون قابل اعمال...';
+  String get researchingLaw => 'تحقیق قانون قابل اعمال…';
 
   @override
   String get resetPasswordFailed =>
@@ -650,7 +650,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get scanDocument => 'اسکن سند';
 
   @override
-  String get searchCases => 'جستجوی پرونده‌ها...';
+  String get searchCases => 'جستجوی پرونده‌ها…';
 
   @override
   String get selectCountry => 'انتخاب کشور';
@@ -731,7 +731,7 @@ class AppLocalizationsFa extends AppLocalizations {
       'برای تأیید حذف دائمی حساب، DELETE را تایپ کنید.';
 
   @override
-  String get typeMessage => 'پیام بنویسید...';
+  String get typeMessage => 'پیام بنویسید…';
 
   @override
   String get upcoming => 'آینده';
@@ -1148,7 +1148,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String caseCreatedDesc(String title) {
-    return 'پرونده \"$title\" ایجاد شد.';
+    return 'پرونده «$title» ایجاد شد.';
   }
 
   @override
@@ -1205,7 +1205,7 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get analyzingContent => 'در حال تحلیل محتوا...';
+  String get analyzingContent => 'در حال تحلیل محتوا…';
 
   @override
   String get documentProcessedOk => 'سند با موفقیت پردازش شد';
@@ -1253,11 +1253,11 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String uploadingPercent(int percent) {
-    return 'در حال بارگذاری... $percent%';
+    return 'در حال بارگذاری… $percent%';
   }
 
   @override
-  String get preparingUpload => 'آماده‌سازی بارگذاری...';
+  String get preparingUpload => 'آماده‌سازی بارگذاری…';
 
   @override
   String get documentUploadedSuccess => 'سند با موفقیت بارگذاری شد';
@@ -1276,7 +1276,7 @@ class AppLocalizationsFa extends AppLocalizations {
       'گرفتن عکس ناموفق بود. لطفاً دوباره تلاش کنید.';
 
   @override
-  String get readingText => 'در حال خواندن متن...';
+  String get readingText => 'در حال خواندن متن…';
 
   @override
   String get draftDocument => 'پیش‌نویس سند';
@@ -1288,7 +1288,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get editDocument => 'ویرایش سند';
 
   @override
-  String get generatingDraft => 'در حال تولید پیش‌نویس شما...';
+  String get generatingDraft => 'در حال تولید پیش‌نویس شما…';
 
   @override
   String get generatingDraftDesc =>
@@ -1349,7 +1349,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get analyzeSelected => 'تحلیل انتخاب شده‌ها';
 
   @override
-  String get batchAnalysisStarting => 'شروع تحلیل دسته‌ای...';
+  String get batchAnalysisStarting => 'شروع تحلیل دسته‌ای…';
 
   @override
   String get switchToList => 'تغییر به فهرست';
@@ -1496,7 +1496,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get perYear => '/سال';
 
   @override
-  String get checkingPurchases => 'بررسی خریدهای قبلی...';
+  String get checkingPurchases => 'بررسی خریدهای قبلی…';
 
   @override
   String get noPreviousPurchases => 'خرید قبلی یافت نشد.';
@@ -1546,7 +1546,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String deleteCaseConfirm(String title) {
-    return 'آیا مطمئنید که می‌خواهید \"$title\" را حذف کنید؟ این عمل قابل بازگشت نیست.';
+    return 'آیا مطمئنید که می‌خواهید «$title» را حذف کنید؟ این عمل قابل بازگشت نیست.';
   }
 
   @override
@@ -1698,7 +1698,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get policeActionWantLawyer =>
-      'واضح بگویید: \"من قبل از هر سؤالی وکیل می‌خواهم\"';
+      'واضح بگویید: «من قبل از هر سؤالی وکیل می‌خواهم»';
 
   @override
   String get policeActionAskInterpreter => 'در صورت نیاز مترجم بخواهید';
@@ -2173,7 +2173,7 @@ class AppLocalizationsFa extends AppLocalizations {
   String get encrypted => 'Encrypted';
 
   @override
-  String get typing => 'Typing...';
+  String get typing => 'Typing…';
 
   @override
   String get online => 'Online';
@@ -2392,7 +2392,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get cyberFactGDPR =>
-      'Under GDPR, you have the \'right to be forgotten\' — platforms must delete your personal data upon request if there is no legal basis to keep it.';
+      'Under GDPR, you have the “right to be forgotten” — platforms must delete your personal data upon request if there is no legal basis to keep it.';
 
   @override
   String get guestUser => 'مهمان';
@@ -2453,7 +2453,7 @@ class AppLocalizationsFa extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'در حال انتقال به صفحه پرداخت...';
+  String get redirectingToPayment => 'در حال انتقال به صفحه پرداخت…';
 
   @override
   String cheaperAnnually(String amount) {
