@@ -83,7 +83,7 @@ _read_lock() {
 cmd_check() {
   local wt info
   wt=$(_mk_worktree)
-  trap '_cleanup_worktree "$wt"' EXIT
+  trap "_cleanup_worktree '$wt'" EXIT
   info=$(_read_lock "$wt" || true)
   if [[ -z "$info" ]]; then
     echo "free"
@@ -104,7 +104,7 @@ cmd_acquire() {
   [[ -n "$agent" ]] || die "agent-id required for acquire"
   local wt info
   wt=$(_mk_worktree)
-  trap '_cleanup_worktree "$wt"' EXIT
+  trap "_cleanup_worktree '$wt'" EXIT
 
   info=$(_read_lock "$wt" || true)
   if [[ -n "$info" ]]; then
@@ -136,7 +136,7 @@ cmd_release() {
   [[ -n "$agent" ]] || die "agent-id required for release"
   local wt info holder
   wt=$(_mk_worktree)
-  trap '_cleanup_worktree "$wt"' EXIT
+  trap "_cleanup_worktree '$wt'" EXIT
 
   info=$(_read_lock "$wt" || true)
   if [[ -z "$info" ]]; then
