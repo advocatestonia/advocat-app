@@ -29,6 +29,11 @@ set -euo pipefail
 
 PROJECT_REF="okgnkucgwsytsondrjye"
 BASE_URL="${SMOKE_BASE_URL:-https://advocat.ee}"
+# Landing/blog/static files always live at the site root (never in a
+# subdirectory) — canary staging only bundles the Flutter app, not the
+# landing/blog HTML. So smoke checks for those files must ignore
+# SMOKE_BASE_URL and always hit the root.
+ROOT_URL="https://advocat.ee"
 FUNCTIONS_URL="https://${PROJECT_REF}.supabase.co/functions/v1"
 TIMEOUT="${SMOKE_TIMEOUT:-15}"
 
@@ -82,11 +87,11 @@ echo ""
 # ---------------------------------------------------------------------------
 echo "[1] HTTP endpoints"
 check "landing / is 200" \
-  "curl_code $BASE_URL/" \
+  "curl_code $ROOT_URL/" \
   "200"
 
 check "landing contains 'блог' or 'blog'" \
-  "curl_body $BASE_URL/ | grep -ciE 'блог|blog' | head -1" \
+  "curl_body $ROOT_URL/ | grep -ciE 'блог|blog' | head -1" \
   "[1-9][0-9]*"
 
 check "app.html is 200" \
@@ -113,22 +118,22 @@ check "flutter_bootstrap.js is 200" \
   "200"
 
 check "speech.js is 200" \
-  "curl_code $BASE_URL/speech.js" \
+  "curl_code $ROOT_URL/speech.js" \
   "200"
 
 echo ""
 echo "[1b] Landing content safety (BP-2)"
 
 check "landing contains disclaimer (not legal advice)" \
-  "curl_body $BASE_URL/ | grep -ciE 'not legal advice|не является юридич|ei ole õigusnõ' | head -1" \
+  "curl_body $ROOT_URL/ | grep -ciE 'not legal advice|не является юридич|ei ole õigusnõ' | head -1" \
   "[1-9][0-9]*"
 
 check "privacy page is 200" \
-  "curl_code $BASE_URL/privacy.html" \
+  "curl_code $ROOT_URL/privacy.html" \
   "200"
 
 check "terms page is 200" \
-  "curl_code $BASE_URL/terms.html" \
+  "curl_code $ROOT_URL/terms.html" \
   "200"
 
 check "app.html contains disclaimer meta/text" \
@@ -225,20 +230,20 @@ echo "[4] Deploy integrity (BP-2)"
 
 # robots.txt and sitemap.xml should be present for SEO & crawler hygiene
 check "robots.txt is 200" \
-  "curl_code $BASE_URL/robots.txt" \
+  "curl_code $ROOT_URL/robots.txt" \
   "200"
 
 check "sitemap.xml is 200" \
-  "curl_code $BASE_URL/sitemap.xml" \
+  "curl_code $ROOT_URL/sitemap.xml" \
   "200"
 
 # payment-success landing must remain reachable (Stripe redirect destination)
 check "payment-success.html is 200" \
-  "curl_code $BASE_URL/payment-success.html" \
+  "curl_code $ROOT_URL/payment-success.html" \
   "200"
 
 check "payment-cancel.html is 200" \
-  "curl_code $BASE_URL/payment-cancel.html" \
+  "curl_code $ROOT_URL/payment-cancel.html" \
   "200"
 
 # .nojekyll must be served so GitHub Pages doesn't strip dot-directories
@@ -351,7 +356,8 @@ for path in \
   /blog/index.html \
   /blog/logo_shield.png \
   /favicon.png; do
-  URL="$BASE_URL$path"
+  # Seam C files live at site root regardless of canary staging path.
+  URL="$ROOT_URL$path"
   if retry seam_c_url "$URL"; then
     CODE=200
     printf "\033[1;32m  ✓\033[0m %-55s [200]\n" "Seam C: $path"
