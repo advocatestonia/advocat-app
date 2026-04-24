@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+#
+# pre-commit — run the fast test subset before every commit.
+#
+# Budget: ≤60s wall clock. Only tests tagged with `@Tags(['fast'])` are run
+# (see test files' header annotations). These are pure unit tests with no
+# network, Supabase, or heavy IO.
+#
+# Bypass in an emergency with: git commit --no-verify   (NOT recommended)
+
+set -u
+
+START_TIME=$(date +%s)
+
+# If flutter isn't installed on this machine (e.g. docs-only edit on a box
+# without the SDK), print a warning and let the commit through.
+if ! command -v flutter >/dev/null 2>&1; then
+  echo "⚠ pre-commit: 'flutter' not found in PATH — skipping fast tests."
+  echo "   Install Flutter or commit from a dev machine to run the guard."
+  exit 0
+fi
+
+echo "▶ pre-commit: running fast tests (budget 60s)…"
+
+# Tail last 20 lines so failures are visible but huge passing output doesn't
+# spam the terminal. Preserve the real exit code of `flutter test` via
+# PIPESTATUS (the tail will always succeed).
+flutter test --tags=fast --concurrency=4 2>&1 | tail -20
+EXIT_CODE=${PIPESTATUS[0]}
+
+END_TIME=$(date +%s)
+ELAPSED=$((END_TIME - START_TIME))
+
+if [[ ${EXIT_CODE} -ne 0 ]]; then
+  echo ""
+  echo "✗ Pre-commit: fast tests failed (elapsed ${ELAPSED}s)."
+  echo "  Fix before committing. Skip only via --no-verify (NOT recommended)."
+  exit 1
+fi
+
+echo "✓ Pre-commit: fast tests passed (elapsed ${ELAPSED}s)."
+exit 0

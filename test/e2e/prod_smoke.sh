@@ -36,6 +36,23 @@ PASS=0
 FAIL=0
 FAILURES=()
 
+# retry: run cmd up to 3× with 5s backoff. Used for seam checks against
+# Supabase Edge (cold-start can make first call flaky) and GitHub Pages.
+retry() {
+  local tries=3 delay=5 i
+  for i in $(seq 1 $tries); do
+    if "$@"; then return 0; fi
+    sleep $delay
+  done
+  return 1
+}
+
+die() {
+  printf "\033[1;31m  ✗\033[0m %s\n" "$*" >&2
+  FAIL=$((FAIL+1))
+  FAILURES+=("$*")
+}
+
 check() {
   local name="$1"
   local cmd="$2"
@@ -228,6 +245,122 @@ check "payment-cancel.html is 200" \
 # (content won't appear in headers but .nojekyll presence means /flutter_*.js
 #  assets are not filtered; we just probe main.dart.js which IS served).
 # Already covered by main.dart.js 200 above; kept as invariant note.
+
+echo ""
+echo "[5] Contract tests — known-seam regressions (anti-regression sprint)"
+# These three probes defend against silent chat breakages we already shipped
+# fixes for. Each failure prints "regression of YYYY-MM-DD FIX" so the on-call
+# knows which prior incident to consult.
+
+ENV_PROD_PATH="$(dirname "$0")/../../.env.prod"
+SMOKE_ANON_KEY=""
+if [[ -f "$ENV_PROD_PATH" ]]; then
+  SMOKE_ANON_KEY=$(grep '^SUPABASE_ANON_KEY=' "$ENV_PROD_PATH" | cut -d= -f2- | tr -d '\r\n"' || true)
+fi
+
+# --- Seam A: system prompt guard accepts memory-prefixed prompts ---
+# Regression of 2026-04-23: guard's ADVOCAT_IDENTITY_MARKERS whitelist didn't
+# cover `# CLIENT PERSONAL KNOWLEDGE BASE` (Tier 1 memory prefix) → guard
+# returned 400 "system prompt is server-controlled" → chat dead for memory users.
+seam_a() {
+  local body resp code
+  body='{"model":"claude-haiku-4-5","max_tokens":10,"system":"# CLIENT PERSONAL KNOWLEDGE BASE\n\nThe user'"'"'s name is TestUser.\n\nYou are Advocat, a legal assistant.","messages":[{"role":"user","content":"hi"}]}'
+  # Capture body + HTTP code in one call (body then code separated by sentinel)
+  resp=$(curl -s --max-time "$TIMEOUT" -X POST "$FUNCTIONS_URL/claude-proxy" \
+    -H "Authorization: Bearer ${SMOKE_ANON_KEY}" \
+    -H "apikey: ${SMOKE_ANON_KEY}" \
+    -H "Content-Type: application/json" \
+    -w $'\n__HTTP__%{http_code}' \
+    --data-binary "$body" 2>&1 || true)
+  code=$(printf '%s' "$resp" | awk -F'__HTTP__' 'END{print $2}')
+  local payload
+  payload=$(printf '%s' "$resp" | sed 's/__HTTP__.*$//')
+  # Fail ONLY if guard specifically rejected the memory-prefixed prompt.
+  # 200 / 401 / 429 / other 5xx are acceptable — we're not testing auth here.
+  if [[ "$code" == "400" ]] && echo "$payload" | grep -qi 'system prompt is server-controlled'; then
+    return 1
+  fi
+  printf "\033[1;32m  ✓\033[0m %-55s [code=%s]\n" "Seam A: guard accepts memory-prefixed system" "$code"
+  return 0
+}
+
+if [[ -z "$SMOKE_ANON_KEY" ]]; then
+  printf "\033[1;33m  ⚠\033[0m %-55s [SUPABASE_ANON_KEY missing — skip]\n" "Seam A: guard memory-prefix probe"
+else
+  if retry seam_a; then
+    PASS=$((PASS+1))
+  else
+    die "Seam A: guard rejected memory-prefixed prompt — regression of 2026-04-23 FIX"
+  fi
+fi
+
+# --- Seam B: PostgREST schema cache has AI-usage RPCs ---
+# Regression of 2026-04-23: `get_ai_usage` / `increment_ai_usage` disappeared
+# from the PGRST schema cache (migration applied but cache lost them) →
+# check-ai-quota 500'd. PGRST202 = "Could not find function … in schema cache".
+seam_b_rpc() {
+  local rpc="$1" resp code payload
+  resp=$(curl -s --max-time "$TIMEOUT" -X POST \
+    "https://${PROJECT_REF}.supabase.co/rest/v1/rpc/${rpc}" \
+    -H "apikey: ${SMOKE_ANON_KEY}" \
+    -H "Authorization: Bearer ${SMOKE_ANON_KEY}" \
+    -H "Content-Type: application/json" \
+    -w $'\n__HTTP__%{http_code}' \
+    -d '{}' 2>&1 || true)
+  code=$(printf '%s' "$resp" | awk -F'__HTTP__' 'END{print $2}')
+  payload=$(printf '%s' "$resp" | sed 's/__HTTP__.*$//')
+  # Healthy state: 400 with "authentication required" (anon → auth.uid() null).
+  # Broken state: 404 + code PGRST202 (function missing from cache).
+  if echo "$payload" | grep -q 'PGRST202'; then
+    return 1
+  fi
+  if [[ "$code" == "404" ]]; then
+    return 1
+  fi
+  printf "\033[1;32m  ✓\033[0m %-55s [code=%s]\n" "Seam B: ${rpc} RPC registered" "$code"
+  return 0
+}
+
+if [[ -z "$SMOKE_ANON_KEY" ]]; then
+  printf "\033[1;33m  ⚠\033[0m %-55s [SUPABASE_ANON_KEY missing — skip]\n" "Seam B: RPC schema cache probe"
+else
+  for rpc in get_ai_usage increment_ai_usage; do
+    if retry seam_b_rpc "$rpc"; then
+      PASS=$((PASS+1))
+    else
+      die "Seam B: ${rpc} RPC missing from schema cache — regression of 2026-04-23 FIX"
+    fi
+  done
+fi
+
+# --- Seam C: gh-pages required files present ---
+# Redundant with guard-gh-pages-files.sh but catches post-deploy drift from
+# the smoke side. Covers landing/app/blog assets that have silently vanished
+# in prior wipes. Uses 3× retry against GH Pages edge.
+seam_c_url() {
+  local url="$1" code
+  code=$(curl_code "$url")
+  [[ "$code" == "200" ]]
+}
+
+for path in \
+  /app.html \
+  /landing.html \
+  /speech.js \
+  /flutter_bootstrap.js \
+  /blog/index.html \
+  /blog/logo_shield.png \
+  /favicon.png; do
+  URL="$BASE_URL$path"
+  if retry seam_c_url "$URL"; then
+    CODE=200
+    printf "\033[1;32m  ✓\033[0m %-55s [200]\n" "Seam C: $path"
+    PASS=$((PASS+1))
+  else
+    CODE=$(curl_code "$URL" || echo "000")
+    die "Seam C: $URL returned $CODE — landing/blog file wiped"
+  fi
+done
 
 echo ""
 echo "==============================================="

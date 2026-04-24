@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // Overnight isolated test suite — DOES NOT modify production code.
 // Widget smoke tests for StatusChip.
 import 'package:flutter/material.dart';

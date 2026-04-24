@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // voice_tts_tag_strip_test.dart
 //
 // Post-launch BUG 2 fix (2026-04-22):

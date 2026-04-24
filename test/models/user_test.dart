@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 import 'package:advocat/models/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 

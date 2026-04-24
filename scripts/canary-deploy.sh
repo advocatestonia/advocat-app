@@ -33,6 +33,23 @@
 
 set -euo pipefail
 
+# Rule 8: no production deploys 22:00-09:00 Tallinn, no weekends.
+# Override with FORCE_DEPLOY_REASON env var.
+if [[ -z "${FORCE_DEPLOY_REASON:-}" ]]; then
+  TS_LOCAL=$(TZ='Europe/Tallinn' date +%u%H)
+  DOW=${TS_LOCAL:0:1}
+  HOUR=${TS_LOCAL:1:2}
+  HOUR=$((10#$HOUR))
+  if [[ "$DOW" -ge 6 ]]; then
+    echo "✗ Weekend deploy blocked. Set FORCE_DEPLOY_REASON=\"...\" to override." >&2
+    exit 1
+  fi
+  if [[ "$HOUR" -ge 22 ]] || [[ "$HOUR" -lt 9 ]]; then
+    echo "✗ Night deploy blocked (22:00-09:00 Tallinn). Set FORCE_DEPLOY_REASON=\"...\" to override." >&2
+    exit 1
+  fi
+fi
+
 STAGING_ONLY=0
 DRY_RUN=0
 for arg in "$@"; do
@@ -75,6 +92,11 @@ notify() {
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 REPO_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 cd "$REPO_ROOT"
+
+# Rule 9: acquire prod lock before touching gh-pages.
+PROD_LOCK_AGENT="canary-$$-$(hostname)"
+trap './scripts/prod-lock.sh release "'"$PROD_LOCK_AGENT"'" >/dev/null 2>&1 || true' EXIT
+./scripts/prod-lock.sh acquire "$PROD_LOCK_AGENT"
 
 ROLLBACK_TAG="${ROLLBACK_TAG:-v24.2-frozen-2026-04-20}"
 STAGING_URL="https://advocat.ee/staging"
@@ -120,7 +142,7 @@ ok "main.dart.js OK ($MAIN_SIZE bytes)"
 log "Deploying canary to gh-pages:/staging/"
 
 WORKTREE=$(mktemp -d -t advocat-canary.XXXXXX)
-trap 'git worktree remove --force "$WORKTREE" 2>/dev/null || true; rm -rf "$WORKTREE"' EXIT
+trap 'git worktree remove --force "$WORKTREE" 2>/dev/null || true; rm -rf "$WORKTREE"; ./scripts/prod-lock.sh release "'"$PROD_LOCK_AGENT"'" >/dev/null 2>&1 || true' EXIT
 
 run "git fetch github gh-pages"
 run "git worktree add \"$WORKTREE\" github/gh-pages"
@@ -165,7 +187,7 @@ log "Promoting canary to prod root"
 run "git worktree remove --force \"$WORKTREE\" 2>/dev/null || true"
 rm -rf "$WORKTREE"
 WORKTREE=$(mktemp -d -t advocat-promote.XXXXXX)
-trap 'git worktree remove --force "$WORKTREE" 2>/dev/null || true; rm -rf "$WORKTREE"' EXIT
+trap 'git worktree remove --force "$WORKTREE" 2>/dev/null || true; rm -rf "$WORKTREE"; ./scripts/prod-lock.sh release "'"$PROD_LOCK_AGENT"'" >/dev/null 2>&1 || true' EXIT
 
 run "git worktree add \"$WORKTREE\" github/gh-pages"
 
@@ -194,6 +216,11 @@ for f in "${LANDING_FILES[@]}"; do
   RSYNC_EXCLUDE+=(--exclude="$f")
 done
 run "rsync -av ${RSYNC_EXCLUDE[*]} build/web/ \"$WORKTREE/\""
+
+# Guard: required gh-pages files must exist and be non-empty before commit.
+if [[ $DRY_RUN -eq 0 ]]; then
+  "$REPO_ROOT/scripts/guard-gh-pages-files.sh" "$WORKTREE"
+fi
 
 cd "$WORKTREE"
 if git diff --quiet; then

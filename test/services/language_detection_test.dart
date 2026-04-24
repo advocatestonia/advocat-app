@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // language_detection_test.dart
 //
 // Tests for post-launch BUG 1: AI responded in the user's PROFILE language

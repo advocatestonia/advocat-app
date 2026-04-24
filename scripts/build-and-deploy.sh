@@ -8,7 +8,6 @@
 # Usage:
 #   ./scripts/build-and-deploy.sh                 # full: build + push gh-pages + deploy functions + smoke
 #   ./scripts/build-and-deploy.sh --skip-functions  # skip edge functions (web-only deploy)
-#   ./scripts/build-and-deploy.sh --skip-smoke      # skip final prod smoke
 #   ./scripts/build-and-deploy.sh --dry-run         # print what would happen, don't push
 #
 # Requirements (asserted in preflight):
@@ -24,12 +23,10 @@ set -euo pipefail
 
 # -- flags --------------------------------------------------------------------
 SKIP_FUNCTIONS=0
-SKIP_SMOKE=0
 DRY_RUN=0
 for arg in "$@"; do
   case "$arg" in
     --skip-functions) SKIP_FUNCTIONS=1 ;;
-    --skip-smoke)     SKIP_SMOKE=1 ;;
     --dry-run)        DRY_RUN=1 ;;
     --help|-h)
       grep -E '^#' "$0" | head -30
@@ -187,6 +184,9 @@ else
   BUILD_VER=$(grep -E '^version:' "$REPO_ROOT/pubspec.yaml" | awk '{print $2}' || echo "unknown")
   run "git add -A"
   run "git commit -m \"deploy: $BUILD_VER build from $BUILD_HASH\""
+  if [[ $DRY_RUN -eq 0 && "${VIA_CANARY:-}" != "OK" ]]; then
+    die "Direct prod push is forbidden. Use ./scripts/canary-deploy.sh (it sets VIA_CANARY=OK)."
+  fi
   run "git push github gh-pages"
   ok "pushed to github/gh-pages"
 fi
@@ -229,42 +229,38 @@ fi
 # ============================================================================
 # 4. PROD SMOKE TESTS
 # ============================================================================
-if [[ $SKIP_SMOKE -eq 0 ]]; then
-  log "Running prod smoke tests"
-  if [[ -x "test/e2e/prod_smoke.sh" ]]; then
-    run "test/e2e/prod_smoke.sh"
-  else
-    warn "test/e2e/prod_smoke.sh not found; running inline basic checks"
-
-    # landing
-    CODE=$(curl -s -o /dev/null -w "%{http_code}" https://advocat.ee/)
-    [[ "$CODE" == "200" ]] || die "landing returned $CODE"
-    ok "advocat.ee/ → 200"
-
-    # app shell
-    CODE=$(curl -s -o /dev/null -w "%{http_code}" https://advocat.ee/app.html)
-    [[ "$CODE" == "200" ]] || die "app.html returned $CODE"
-    ok "advocat.ee/app.html → 200"
-
-    # main.dart.js size
-    LIVE_SIZE=$(curl -sI https://advocat.ee/main.dart.js | grep -i '^content-length' | awk '{print $2}' | tr -d '\r')
-    if [[ -z "$LIVE_SIZE" || "$LIVE_SIZE" -lt 5000000 || "$LIVE_SIZE" -gt 8500000 ]]; then
-      die "prod main.dart.js size ($LIVE_SIZE) outside 5-8.5 MB"
-    fi
-    ok "advocat.ee/main.dart.js size $LIVE_SIZE (in range)"
-
-    # google-tts CORS
-    CODE=$(curl -s -X OPTIONS "https://okgnkucgwsytsondrjye.supabase.co/functions/v1/google-tts" \
-      -H "Origin: https://advocat.ee" \
-      -H "Access-Control-Request-Method: POST" \
-      -o /dev/null -w "%{http_code}")
-    [[ "$CODE" =~ ^(200|204)$ ]] || die "google-tts CORS returned $CODE"
-    ok "google-tts CORS → $CODE"
-  fi
-  ok "smoke tests passed"
+log "Running prod smoke tests"
+if [[ -x "test/e2e/prod_smoke.sh" ]]; then
+  run "test/e2e/prod_smoke.sh"
 else
-  warn "Smoke tests skipped (--skip-smoke)"
+  warn "test/e2e/prod_smoke.sh not found; running inline basic checks"
+
+  # landing
+  CODE=$(curl -s -o /dev/null -w "%{http_code}" https://advocat.ee/)
+  [[ "$CODE" == "200" ]] || die "landing returned $CODE"
+  ok "advocat.ee/ → 200"
+
+  # app shell
+  CODE=$(curl -s -o /dev/null -w "%{http_code}" https://advocat.ee/app.html)
+  [[ "$CODE" == "200" ]] || die "app.html returned $CODE"
+  ok "advocat.ee/app.html → 200"
+
+  # main.dart.js size
+  LIVE_SIZE=$(curl -sI https://advocat.ee/main.dart.js | grep -i '^content-length' | awk '{print $2}' | tr -d '\r')
+  if [[ -z "$LIVE_SIZE" || "$LIVE_SIZE" -lt 5000000 || "$LIVE_SIZE" -gt 8500000 ]]; then
+    die "prod main.dart.js size ($LIVE_SIZE) outside 5-8.5 MB"
+  fi
+  ok "advocat.ee/main.dart.js size $LIVE_SIZE (in range)"
+
+  # google-tts CORS
+  CODE=$(curl -s -X OPTIONS "https://okgnkucgwsytsondrjye.supabase.co/functions/v1/google-tts" \
+    -H "Origin: https://advocat.ee" \
+    -H "Access-Control-Request-Method: POST" \
+    -o /dev/null -w "%{http_code}")
+  [[ "$CODE" =~ ^(200|204)$ ]] || die "google-tts CORS returned $CODE"
+  ok "google-tts CORS → $CODE"
 fi
+ok "smoke tests passed"
 
 log "Deploy complete."
 echo ""

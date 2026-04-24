@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 import 'package:advocat/config/theme.dart';
 import 'package:advocat/models/case_model.dart';
 import 'package:advocat/shared/utils/case_helpers.dart';

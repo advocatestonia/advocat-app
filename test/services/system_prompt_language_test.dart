@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // system_prompt_language_test.dart
 //
 // Post-launch BUG 1 fix (2026-04-22): ensure both the full and light

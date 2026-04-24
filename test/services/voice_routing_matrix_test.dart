@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // voice_routing_matrix_test.dart
 //
 // TTS routing audit (2026-04-21) — task from owner: "весь ответ на любом

@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 import 'package:advocat/models/correspondence.dart';
 import 'package:flutter_test/flutter_test.dart';
 

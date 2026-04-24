@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // Overnight isolated test suite — DOES NOT modify production code.
 // Additional edge-case coverage for AppUser model.
 import 'package:flutter_test/flutter_test.dart';

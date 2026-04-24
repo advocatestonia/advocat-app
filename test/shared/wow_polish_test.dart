@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // wow_polish_test.dart
 //
 // Tests the v24.1 "WOW polish" shared widgets: AnimatedFadeIn, Haptic,

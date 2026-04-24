@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -10,6 +11,7 @@ import '../models/correspondence.dart';
 import '../models/deadline.dart';
 import '../models/user.dart';
 import 'demo_data.dart';
+import 'errors/invalid_case_id_error.dart';
 
 final supabaseServiceProvider = Provider<SupabaseService>((ref) {
   return SupabaseService();
@@ -41,8 +43,31 @@ class SupabaseService {
   /// Convenience accessor; only call when [_isInitialized] is `true`.
   SupabaseClient get _client => Supabase.instance.client;
 
-  /// Returns true for real Supabase UUIDs (contains dashes and length > 10).
-  bool _isRealUuid(String id) => id.contains('-') && id.length > 10;
+  /// Strict UUID regex (8-4-4-4-12 hex groups). Rejects synthetic ids like
+  /// 'general', 'case-new-<ts>', empty string, etc.
+  static final _uuidRegex = RegExp(
+    r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+    caseSensitive: false,
+  );
+
+  /// Returns true only for real Supabase UUIDs matching the strict
+  /// 8-4-4-4-12 hex format. Synthetic ids (e.g. 'general') return false so
+  /// callers can short-circuit before hitting Postgres.
+  bool _isRealUuid(String id) => _uuidRegex.hasMatch(id);
+
+  /// Test-only exposure of [_isRealUuid]. Do not call from production code.
+  @visibleForTesting
+  bool isRealUuidForTest(String id) => _isRealUuid(id);
+
+  /// Use when a UUID is REQUIRED (e.g. inserting a row with a FK).
+  /// Throws [InvalidCaseIdError] for synthetic ids like 'general'.
+  ///
+  /// Most read paths (getChatMessages / getDocuments / etc.) deliberately
+  /// short-circuit with empty results instead of throwing — only call this
+  /// when a non-UUID truly cannot be handled.
+  void requireUuid(String id, String context) {
+    if (!_isRealUuid(id)) throw InvalidCaseIdError(id, context);
+  }
 
   // ── Auth shortcuts ──────────────────────────────────────────────────
 

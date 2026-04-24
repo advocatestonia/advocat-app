@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // Overnight isolated test suite — DOES NOT modify production code.
 // Pure-Dart tests for AppDateUtils.
 import 'package:flutter_test/flutter_test.dart';

@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // TDD tests for AIService ↔ UserMemoryService integration (ADR-001 Tier 1).
 // -----------------------------------------------------------------------------
 // Ref: docs/memory-tier1/integration_patch.md §2-3

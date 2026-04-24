@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 import 'package:advocat/shared/utils/date_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 

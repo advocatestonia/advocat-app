@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // Overnight isolated test suite — DOES NOT modify production code.
 // Edge-case coverage for CaseDocument model.
 import 'package:flutter_test/flutter_test.dart';

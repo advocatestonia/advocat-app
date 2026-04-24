@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // Tests for AI Service prompt-injection sanitizer (v24.2 hardening).
 //
 // Covers patch 06 from .consilium-17042026/overnight: Unicode tag characters

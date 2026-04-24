@@ -856,12 +856,28 @@ class VoiceService {
     caseSensitive: false,
   );
 
+  /// Generic safety net for voice-engine tags NOT in the named whitelist
+  /// above — e.g. ElevenLabs v3 extras like `[pause]`, `[tone:soft]`,
+  /// `[emphasis:high]`, or any future tag the model invents.
+  ///
+  /// Intentionally narrow: `[A-Za-z][A-Za-z0-9_:]*` only, no spaces, no
+  /// hyphens. This protects legal-citation brackets such as `[section 26]`
+  /// or `[HMS § 40]` (they contain spaces / non-ASCII) — pinned by
+  /// voice_tts_tag_strip_test.dart's "preserves non-tag brackets" test.
+  ///
+  /// Pinned by test/services/no_leaked_voice_tags_test.dart (2026-04-23).
+  static final _genericVoiceTagRegex = RegExp(
+    r'\[[A-Za-z][A-Za-z0-9_:]*\]\s*',
+  );
+
   /// Public helper: removes every expressive audio tag from [text] and
   /// collapses any resulting double-whitespace.  Idempotent — a second
   /// call returns the same string.
   static String stripExpressiveTags(String text) {
     if (text.isEmpty) return text;
-    final stripped = text.replaceAll(_geminiTagRegex, '');
+    final stripped = text
+        .replaceAll(_geminiTagRegex, '')
+        .replaceAll(_genericVoiceTagRegex, '');
     // Clean up residual double spaces that can appear after the regex
     // removes a leading tag followed by a space.
     return stripped.replaceAll(RegExp(r'  +'), ' ');

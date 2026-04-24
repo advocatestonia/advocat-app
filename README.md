@@ -2,6 +2,15 @@
 
 A new Flutter project.
 
+## Git hooks (run once after cloning)
+
+```sh
+./scripts/install-hooks.sh
+```
+
+This points `git` at `.githooks/`, enabling a fast-test guard on every
+commit (~15s) and a full `analyze + test` gate on every push.
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

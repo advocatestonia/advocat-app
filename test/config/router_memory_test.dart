@@ -1,3 +1,6 @@
+@Tags(['fast'])
+library;
+
 // TDD test for the AI-memory route (ADR-001 Tier 1 integration).
 // -----------------------------------------------------------------------------
 // Ref: docs/memory-tier1/integration_patch.md §4

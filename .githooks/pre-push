@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#
+# pre-push — full safety net before pushing to the remote.
+#
+# Runs (in order):
+#   1. flutter analyze --no-fatal-infos        (lint / type check)
+#   2. flutter test --concurrency=4            (full suite)
+#
+# Budget: ≤5 min wall clock. Either failure blocks the push.
+#
+# Bypass in an emergency with: git push --no-verify   (NOT recommended)
+
+set -u
+
+START_TIME=$(date +%s)
+
+if ! command -v flutter >/dev/null 2>&1; then
+  echo "⚠ pre-push: 'flutter' not found in PATH — skipping checks."
+  echo "   Push from a dev machine with the Flutter SDK installed."
+  exit 0
+fi
+
+# ---- 1. Static analysis -----------------------------------------------------
+echo "▶ pre-push: flutter analyze…"
+flutter analyze --no-fatal-infos 2>&1 | tail -10
+ANALYZE_EXIT=${PIPESTATUS[0]}
+
+if [[ ${ANALYZE_EXIT} -ne 0 ]]; then
+  ELAPSED=$(( $(date +%s) - START_TIME ))
+  echo ""
+  echo "✗ Pre-push: flutter analyze failed (elapsed ${ELAPSED}s)."
+  echo "  Fix lint/type errors before pushing. Skip only via --no-verify (NOT recommended)."
+  exit 1
+fi
+
+# ---- 2. Full test suite -----------------------------------------------------
+echo "▶ pre-push: flutter test (full suite)…"
+flutter test --concurrency=4 2>&1 | tail -30
+TEST_EXIT=${PIPESTATUS[0]}
+
+END_TIME=$(date +%s)
+ELAPSED=$((END_TIME - START_TIME))
+
+if [[ ${TEST_EXIT} -ne 0 ]]; then
+  echo ""
+  echo "✗ Pre-push: test suite failed (elapsed ${ELAPSED}s)."
+  echo "  Fix failing tests before pushing. Skip only via --no-verify (NOT recommended)."
+  exit 1
+fi
+
+echo "✓ Pre-push: analyze + tests passed (elapsed ${ELAPSED}s)."
+exit 0
