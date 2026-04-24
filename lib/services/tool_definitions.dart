@@ -627,6 +627,41 @@ abstract final class ToolDefinitions {
     },
   ];
 
+  // ── Anthropic server tools (executed on Anthropic's infrastructure) ───
+  //
+  // These tools are NOT implemented by the client — Anthropic runs them
+  // server-side and returns results inline. They use a different schema
+  // than user-defined tools: `type` + `name` only, no `input_schema`.
+  //
+  // See: https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference
+  //
+  // `web_search_20250305` (GA, shipped 2025-03-05) gives Claude the ability
+  // to look up real-time information with source citations. We cap at
+  // `max_uses: 3` per request — our users mostly need a single lookup
+  // ("kohtutäitur contacts", "notar in Tallinn", "current Euribor"),
+  // and capping limits cost (Anthropic bills $10/1K searches).
+
+  /// Anthropic-executed server tools (web_search, etc.).
+  ///
+  /// These are sent alongside [toolDefinitions] in the `tools` array to the
+  /// Claude API. The API handles execution; the client never sees a
+  /// `tool_use` block for them — only the final assistant response with
+  /// inline `web_search_tool_result` blocks and citations.
+  static const List<Map<String, dynamic>> serverTools = [
+    {
+      'type': 'web_search_20250305',
+      'name': 'web_search',
+      'max_uses': 3,
+    },
+  ];
+
+  /// All tools (client-executed + Anthropic-executed) in one array, ready
+  /// to send to the Claude API `tools` parameter.
+  static List<Map<String, dynamic>> get allTools => [
+        ...toolDefinitions,
+        ...serverTools,
+      ];
+
   /// Returns only the tool names as a list.
   static List<String> get toolNames =>
       toolDefinitions.map((t) => t['name'] as String).toList();

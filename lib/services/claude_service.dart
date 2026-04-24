@@ -313,6 +313,7 @@ class ClaudeService {
     double temperature = 0.3,
     bool includeTools = false,
     String? model,
+    List<Map<String, dynamic>>? multimodalMessages,
   }) async {
     if (!isAvailable) {
       throw const ClaudeServiceException(
@@ -334,13 +335,22 @@ class ClaudeService {
     }
     _lastRequestTime = DateTime.now();
 
+    // multimodalMessages wins when provided — used by the vision path so the
+    // last user turn can carry image blocks alongside text. When null we
+    // forward the plain text-only list as before (backwards compatible).
+    final List<dynamic> outgoingMessages =
+        multimodalMessages ?? messages;
+
     final body = {
       'model': model ?? modelSonnet,
       'max_tokens': maxTokens,
       'temperature': temperature,
       'system': systemPrompt,
-      'messages': messages,
-      if (includeTools) 'tools': ToolDefinitions.toolDefinitions,
+      'messages': outgoingMessages,
+      // Includes both client-executed tools (check_company, etc.) and
+      // Anthropic server tools (web_search). The proxy forwards them
+      // as-is; Anthropic handles web_search server-side.
+      if (includeTools) 'tools': ToolDefinitions.allTools,
     };
 
     Exception? lastError;
@@ -496,13 +506,21 @@ class ClaudeService {
   ///
   /// Returns the raw Claude API response so the caller can inspect
   /// `stop_reason` and handle both text-only and tool_use responses.
+  ///
+  /// When [multimodalMessages] is supplied, it overrides [messages] on the
+  /// wire — used for the vision path where the last user turn carries an
+  /// image content block. [messages] remains the authoritative typed
+  /// argument for the text-only case and for callers that do not care
+  /// about vision.
   Future<Map<String, dynamic>> sendMessageWithTools({
     required List<Map<String, String>> messages,
     required String systemPrompt,
     int maxTokens = 4096,
     String? model,
+    List<Map<String, dynamic>>? multimodalMessages,
   }) async {
-    _log.d('Sending message with tools to Claude (${messages.length} messages, '
+    _log.d('Sending message with tools to Claude '
+        '(${(multimodalMessages ?? messages).length} messages, '
         'model: ${model ?? modelSonnet})');
 
     return _callApi(
@@ -512,6 +530,7 @@ class ClaudeService {
       temperature: 0.3,
       includeTools: true,
       model: model,
+      multimodalMessages: multimodalMessages,
     );
   }
 

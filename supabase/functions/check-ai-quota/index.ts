@@ -12,7 +12,7 @@
 //   {
 //     allowed: bool,        // true if the user may send another message
 //     remaining: number,    // messages left this month (Infinity for pro)
-//     limit: number,        // monthly limit (50 for free, -1 for pro)
+//     limit: number,        // monthly limit (7 for free, -1 for pro)
 //     plan: "free" | "pro",
 //     used: number,
 //     resetAt: string       // ISO timestamp of next month boundary
@@ -39,7 +39,10 @@ const corsHeaders = {
     "Authorization, Content-Type, apikey, x-client-info",
 };
 
-const FREE_LIMIT = 50;
+// Founder's Beta refund policy: 14 days OR 7 AI responses, whichever comes
+// first. The free tier must enforce the 7-response ceiling so users cannot
+// rack up unlimited Claude calls on the free plan.
+const FREE_LIMIT = 7;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {

@@ -175,11 +175,14 @@ void main() {
           reason: 'Pro shortcut must not hit the quota client');
     });
 
-    test('6. Edge Function unavailable → SharedPreferences fallback',
+    test('6. Edge Function unavailable → fall-closed (denied)',
         () async {
+      // Revenue-critical rule (2026-04-23): when check-ai-quota fails we
+      // deny the request instead of trusting a local counter. Otherwise a
+      // free user could force unlimited messages by simulating a 500.
       SharedPreferences.setMockInitialValues({'ai_total_free_count': 7});
       final q = _FakeQuotaClient(
-        limit: 50,
+        limit: 7,
         plan: 'free',
         nullOnCheck: true,
       );
@@ -189,9 +192,9 @@ void main() {
       );
       final result = await svc.checkQuota(forceRefresh: true);
       expect(result.plan, 'free');
-      expect(result.used, 7);
-      expect(result.allowed, isTrue);
-      expect(result.remaining, 43);
+      expect(result.allowed, isFalse,
+          reason: 'Fall-closed: 500 must deny, not allow');
+      expect(result.remaining, 0);
     });
 
     test('7. cache hit within 60 s does not hit client again', () async {
@@ -257,11 +260,15 @@ void main() {
           reason: 'Each consume must produce a unique monotonic count');
     });
 
-    test('11. consume falls back to local increment when Edge Function down',
+    test('11. consume fall-closed when Edge Function down',
         () async {
+      // Previous behaviour (local SharedPreferences increment) was the
+      // root cause of the "free tier has no message limit" bug — a free
+      // user with Supabase unreachable would get unlimited messages. The
+      // new contract is: transport failure → denied.
       SharedPreferences.setMockInitialValues({'ai_total_free_count': 10});
       final q = _FakeQuotaClient(
-        limit: 50,
+        limit: 7,
         plan: 'free',
         nullOnConsume: true,
       );
@@ -270,8 +277,7 @@ void main() {
         quotaClient: q,
       );
       final r = await svc.consumeQuota();
-      expect(r.used, 11);
-      expect(r.allowed, isTrue);
+      expect(r.allowed, isFalse);
       expect(r.plan, 'free');
     });
   });

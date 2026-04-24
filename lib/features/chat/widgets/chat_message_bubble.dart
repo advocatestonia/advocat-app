@@ -36,6 +36,10 @@ class ChatMessageBubble extends StatelessWidget {
             : MediaQuery.of(context).size.width * 0.82 - 32,
       ),
       child: GestureDetector(
+        // fix/copy-selection: translucent hit-test so drag-to-select pan
+        // events propagate to SelectableText/SelectionArea underneath
+        // (Flutter Web fix — long-press recognizer stays intact).
+        behavior: HitTestBehavior.translucent,
         onLongPress: () {
           HapticFeedback.mediumImpact();
           onCopy?.call(message.content);

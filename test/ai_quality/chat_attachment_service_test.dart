@@ -110,8 +110,14 @@ void main() {
       expect(msg.toLowerCase(), contains('read_document'));
     });
 
-    test('image attachment with documentId → same read_document instruction',
+    test(
+        'image attachment → vision caption (no read_document reference)',
         () async {
+      // Vision rework (2026-04-23): images are sent inline as Anthropic
+      // content blocks, NOT via the read_document tool. The caption stays
+      // human-readable with the file name, but must no longer reference
+      // read_document or expose the vault document_id to the model — those
+      // belong to the PDF/text path, which still works as before.
       final attachment = await ChatAttachmentService.build(
         fileName: 'summons.jpg',
         mimeType: 'image/jpeg',
@@ -123,7 +129,8 @@ void main() {
         language: 'ru',
       );
       expect(msg, contains('summons.jpg'));
-      expect(msg, contains('img-9'));
+      expect(msg.toLowerCase(), isNot(contains('read_document')));
+      expect(msg, contains('Проанализируй приложенное изображение'));
     });
   });
 

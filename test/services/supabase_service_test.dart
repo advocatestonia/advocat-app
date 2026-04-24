@@ -221,4 +221,22 @@ void main() {
       expect(DemoData.mainCaseId, isNotEmpty);
     });
   });
+
+  // ── Edge Function wrapper ────────────────────────────────────────────
+  //
+  // `callEdgeFunction` is used by the `send_email` flow (and others).
+  // In demo mode it must short-circuit with null so the UI can fall back
+  // to mock behaviour. In real mode it must surface error details (never
+  // swallow) so the AI can report failures honestly to the user.
+
+  group('SupabaseService — callEdgeFunction', () {
+    test('returns null in demo mode so UI can mock the dispatch', () async {
+      final resp = await service.callEdgeFunction(
+        'send-email',
+        body: {'to': 'x@y.z', 'subject': 's', 'body': 'b'},
+      );
+      expect(resp, isNull,
+          reason: 'demo mode must not attempt a network call');
+    });
+  });
 }

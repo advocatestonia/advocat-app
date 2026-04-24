@@ -95,6 +95,17 @@ class ChatScreen extends ConsumerStatefulWidget {
   ConsumerState<ChatScreen> createState() => _ChatScreenState();
 }
 
+/// Thrown inside _sendMessage to short-circuit the streaming try-block and
+/// fall through to the non-streaming path. Used for turns that carry an
+/// inline image attachment — streaming does not yet support vision content
+/// blocks, and we need the multimodal-capable non-streaming path instead.
+class _SkipStreamingForVision implements Exception {
+  const _SkipStreamingForVision();
+  @override
+  String toString() =>
+      'skip streaming: image attachment requires non-streaming vision path';
+}
+
 class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
@@ -110,7 +121,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _knowledgeService = ClientKnowledgeService();
   bool _upgradeBannerDismissed = false;
   int _freeMessagesUsed = 0;
-  int _freeMessagesTotal = 50;
+  // Mirrors AIService.freeTotalLimit (7, per Founder's Beta refund policy).
+  // Updated at runtime from the server response so the UI never drifts from
+  // the real quota.
+  int _freeMessagesTotal = AIService.freeTotalLimit;
+  int _freeMessagesRemaining = AIService.freeTotalLimit;
   LegalCase? _currentCase;
 
   // -- Voice state --
@@ -132,6 +147,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // sends any message manually.
   bool _showWelcomeChips = false;
 
+  // -- Image-vision staging (2026-04-23) --
+  // Staged when the user picks an image; consumed (cleared) on next
+  // _sendMessage so the image is forwarded to Claude as an inline vision
+  // content block. Streaming does not yet support vision — turns with
+  // _pendingImageAttachment set skip the streaming path.
+  ChatAttachment? _pendingImageAttachment;
+
   @override
   void initState() {
     super.initState();
@@ -146,13 +168,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     try {
       final ai = ref.read(aiServiceProvider);
       final remaining = await ai.getRemainingFreeCalls();
-      if (remaining >= 0 && mounted) {
-        setState(() {
-          _freeMessagesTotal = 50;
-          _freeMessagesUsed = _freeMessagesTotal - remaining;
-        });
-      }
-    } catch (_) {}
+      if (!mounted) return;
+      setState(() {
+        _freeMessagesTotal = AIService.freeTotalLimit;
+        _freeMessagesRemaining = remaining < 0 ? -1 : remaining;
+        _freeMessagesUsed = remaining < 0
+            ? 0
+            : (_freeMessagesTotal - remaining).clamp(0, _freeMessagesTotal);
+      });
+    } catch (_) {
+      // On error, assume quota is exhausted (fall-closed UI matches
+      // fall-closed service behaviour).
+      if (!mounted) return;
+      setState(() {
+        _freeMessagesTotal = AIService.freeTotalLimit;
+        _freeMessagesRemaining = 0;
+        _freeMessagesUsed = _freeMessagesTotal;
+      });
+    }
   }
 
   Future<void> _loadCase() async {
@@ -587,6 +620,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final text = (overrideText ?? _messageController.text).trim();
     if (text.isEmpty || _isSending) return;
 
+    // Revenue-critical gate (2026-04-23): if the server quota is known to
+    // be exhausted for this free user, show the upgrade dialog instead of
+    // hitting claude-proxy. The server also enforces this, but refusing
+    // at the UI layer saves a round-trip and prevents the user from
+    // seeing "you've used all messages" text bubbles.
+    if (_isQuotaExhausted) {
+      HapticFeedback.mediumImpact();
+      _showUpgradeDialog();
+      return;
+    }
+
     _messageController.clear();
     HapticFeedback.lightImpact();
 
@@ -649,9 +693,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // ── Try streaming first for word-by-word UI ──────────────
           // Throttle timer declared outside try so catch can clean it up.
+          //
+          // EXCEPTION: turns that carry an inline image attachment skip
+          // streaming. The vision content block must be injected into the
+          // last user message in the outgoing API payload, which the
+          // current streaming path does not support. Falling through to
+          // the non-streaming block below keeps vision correctness and
+          // the user still sees "typing…" while Claude analyses the
+          // picture.
           Timer? streamUITimer;
           bool streamUIDirty = false;
+          final bool hasPendingImage =
+              _pendingImageAttachment?.hasInlineImage == true;
           try {
+            if (hasPendingImage) {
+              // Force the non-streaming fallback below.
+              throw const _SkipStreamingForVision();
+            }
             final streamingMessageId = 'ai_stream_${DateTime.now().millisecondsSinceEpoch}';
             final streamingMessage = ChatMessage(
               id: streamingMessageId,
@@ -687,7 +745,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               caseType: _currentCase?.type,
               country: 'estonia',
               nationality: _currentCase?.nationality,
-              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(50),
+              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit),
             )) {
               fullText.write(chunk);
               streamUIDirty = true;
@@ -771,6 +829,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // ── Fallback: non-streaming path (also handles tool_use) ──
           if (!usedStreaming) {
+            // Consume the staged image attachment exactly once per turn.
+            final ChatAttachment? imageAttachment = _pendingImageAttachment;
+            _pendingImageAttachment = null;
+
             final response = await ai.sendChatMessage(
               caseId: widget.caseId,
               message: text,
@@ -780,7 +842,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               caseType: _currentCase?.type,
               country: 'estonia',
               nationality: _currentCase?.nationality,
-              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(50),
+              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit),
+              imageAttachment: imageAttachment,
             );
             _knowledgeService.notifyMessageSent();
 
@@ -870,7 +933,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     caseType: _currentCase?.type,
                     country: 'estonia',
                     nationality: _currentCase?.nationality,
-                    freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(50),
+                    freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit),
                   );
 
                   if (mounted && followUp.message.trim().isNotEmpty) {
@@ -1730,6 +1793,43 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
+  // -- Upgrade dialog (quota exhausted) --
+
+  /// Shown when a free user tries to send while
+  /// `allowed == false` (i.e. the server quota is exhausted). Gives them
+  /// a single primary action: go to the subscription page.
+  void _showUpgradeDialog() {
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        key: const Key('quota_exhausted_dialog'),
+        title: const Text('Лимит бесплатных сообщений'),
+        content: Text(
+          'Вы использовали все ${AIService.freeTotalLimit} бесплатных '
+          'сообщений. Оформите Advocat Pro за €14.99/мес для неограниченного '
+          'доступа к AI-консультациям.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Позже'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.accent,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              context.push(AppRoutes.subscription);
+            },
+            child: const Text('Advocat Pro — €14.99/мес'),
+          ),
+        ],
+      ),
+    );
+  }
+
   // -- Upgrade banner --
 
   Widget _buildUpgradeBanner() {
@@ -1823,42 +1923,48 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // BUG 3: add one trailing slot for the welcome chips when active.
     final chipsSlot = _showWelcomeChips ? 1 : 0;
     final typingSlot = _isTyping ? 1 : 0;
-    return ListView.builder(
-      controller: _scrollController,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.sm,
-      ),
-      itemCount: _messages.length + chipsSlot + typingSlot,
-      itemBuilder: (context, index) {
-        // Order: messages → welcome chips (if active) → typing indicator.
-        if (_showWelcomeChips && index == _messages.length) {
-          final locale = Localizations.localeOf(context).languageCode;
-          return ChatWelcomeChips(
-            locale: locale,
-            onCategorySelected: _onWelcomeCategoryPicked,
-            onSkip: _onWelcomeSkip,
-          );
-        }
-        final messagesAndChips = _messages.length + chipsSlot;
-        if (index == messagesAndChips && _isTyping) {
-          return _buildTypingIndicator();
-        }
-
-        final message = _messages[index];
-        final showDate = index == 0 ||
-            !_isSameDay(
-              _messages[index - 1].timestamp,
-              message.timestamp,
+    // fix/copy-selection: wrap the message list in SelectionArea so users
+    // can drag-select text across bubbles on Flutter Web without the
+    // per-bubble GestureDetector swallowing pan events. This is the
+    // Flutter-recommended pattern (docs: SelectionArea, Flutter 3.3+).
+    return SelectionArea(
+      child: ListView.builder(
+        controller: _scrollController,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md,
+          vertical: AppSpacing.sm,
+        ),
+        itemCount: _messages.length + chipsSlot + typingSlot,
+        itemBuilder: (context, index) {
+          // Order: messages → welcome chips (if active) → typing indicator.
+          if (_showWelcomeChips && index == _messages.length) {
+            final locale = Localizations.localeOf(context).languageCode;
+            return ChatWelcomeChips(
+              locale: locale,
+              onCategorySelected: _onWelcomeCategoryPicked,
+              onSkip: _onWelcomeSkip,
             );
+          }
+          final messagesAndChips = _messages.length + chipsSlot;
+          if (index == messagesAndChips && _isTyping) {
+            return _buildTypingIndicator();
+          }
 
-        return Column(
-          children: [
-            if (showDate) _buildDateSeparator(message.timestamp),
-            _buildMessageBubble(message, index),
-          ],
-        );
-      },
+          final message = _messages[index];
+          final showDate = index == 0 ||
+              !_isSameDay(
+                _messages[index - 1].timestamp,
+                message.timestamp,
+              );
+
+          return Column(
+            children: [
+              if (showDate) _buildDateSeparator(message.timestamp),
+              _buildMessageBubble(message, index),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -2154,20 +2260,23 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   );
                   if (!mounted) return;
                   if (resp != null && resp['ok'] == true) {
+                    final provider = resp['provider'] ?? 'provider';
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          'Email sent via ${resp['provider'] ?? 'provider'}.',
-                        ),
+                        content: Text('Email sent via $provider.'),
                         backgroundColor: AppColors.success,
                       ),
                     );
+                    // Report success back so Claude can confirm in-chat
+                    // and proceed with the next step.
                     _sendMessage(
-                        'The email was sent successfully. Please confirm '
-                        'and tell me the next step.');
+                        '[system] send_email succeeded via $provider '
+                        'to ${data['to']}. Confirm to the user briefly '
+                        'in their language and ask what is next.');
                   } else {
-                    final err = resp?['error'] as String? ??
-                        'email dispatch failed';
+                    final err = (resp?['error'] as String?) ??
+                        'email dispatch failed (no response from server)';
+                    final details = resp?['details'] as String?;
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Email not sent: $err'),
@@ -2175,6 +2284,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         duration: const Duration(seconds: 6),
                       ),
                     );
+                    // Feed the error back so Claude can explain to the user
+                    // instead of silently failing.
+                    _sendMessage(
+                        '[system] send_email FAILED: $err'
+                        '${details != null ? ' — $details' : ''}. '
+                        'Apologise to the user in their language, explain '
+                        'the email was NOT sent, and offer to try again or '
+                        'open the email client via draft_email (mailto:).');
                   }
                 } else {
                   // Legacy draft_email path: open mailto:
@@ -2797,21 +2914,40 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         }
       }
 
-      final attachment = await ChatAttachmentService.build(
-        fileName: fileName,
-        mimeType: classification.resolvedMimeType,
-        bytes: bytes,
-        documentId: documentId,
-      );
+      final ChatAttachment attachment;
+      try {
+        attachment = await ChatAttachmentService.build(
+          fileName: fileName,
+          mimeType: classification.resolvedMimeType,
+          bytes: bytes,
+          documentId: documentId,
+        );
+      } on ChatAttachmentException catch (e) {
+        // Most commonly: image > 5 MB — Claude's inline cap. Show the
+        // localized explanation as a user message so it surfaces in the
+        // conversation, and do NOT call the AI (there is nothing useful
+        // for it to analyse).
+        _sendMessage(e.localized(lang));
+        return;
+      }
+
+      // For images, stage the attachment so _sendMessage can forward it
+      // to Claude as an inline vision content block. PDF / text paths stay
+      // unchanged (read_document / inlined body).
+      if (attachment.kind == AttachmentKind.image &&
+          attachment.hasInlineImage) {
+        _pendingImageAttachment = attachment;
+      }
 
       final aiVisibleMessage = ChatAttachmentService.buildUserMessage(
         attachment: attachment,
         language: lang,
       );
 
-      // Send through the normal chat pipeline — the AI now receives either
-      // the inlined text body (for .txt) or a "use read_document with id X"
-      // instruction (for PDF / image), instead of just the bare file name.
+      // Send through the normal chat pipeline — the AI now receives
+      // - for .txt: the inlined body,
+      // - for PDF: a "use read_document with id X" instruction,
+      // - for image: the caption alongside an inline image content block.
       _sendMessage(aiVisibleMessage);
     } catch (e) {
       // Silently fail — the user can try again
@@ -2849,8 +2985,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   // -- Input bar --
 
+  /// Whether the user's free-tier AI quota is exhausted. Pro users are
+  /// reported with `_freeMessagesRemaining == -1` (unlimited) by
+  /// [_loadFreeMessageCount].
+  bool get _isQuotaExhausted {
+    final ai = ref.read(aiServiceProvider);
+    if (ai.isProUser) return false;
+    return _freeMessagesRemaining == 0;
+  }
+
   Widget _buildInputBar() {
     final isListening = _voiceState == VoiceButtonState.listening;
+    final ai = ref.read(aiServiceProvider);
+    final isFreeUser = !ai.isProUser;
+    final quotaExhausted = _isQuotaExhausted;
 
     return Container(
       padding: EdgeInsets.only(
@@ -2880,132 +3028,224 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
         ],
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Attach button — file picker (web-compatible) with scan fallback
-          SizedBox(
-            width: 40,
-            height: 44,
-            child: IconButton(
-              icon: const Icon(Icons.add_circle_outline_rounded, size: 22),
-              color: AppColors.textTertiary,
-              onPressed: () => _showAttachOptions(),
-              padding: EdgeInsets.zero,
-            ),
-          ),
+          // Quota exhausted → replace the composer with an "Upgrade to Pro"
+          // CTA so the free user cannot submit another message.
+          if (quotaExhausted)
+            _buildUpgradeToProCta()
+          else
+            _buildComposerRow(isListening),
 
-          const SizedBox(width: 4),
-
-          // Text field with premium focus glow — takes most width
-          Expanded(
-            child: _PremiumTextField(
-              controller: _messageController,
-              focusNode: _focusNode,
-              onSend: _isSending ? null : () => _sendMessage(),
-            ),
-          ),
-
-          const SizedBox(width: 6),
-
-          // Mic + Send buttons — same size (44x44), aligned in a row
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Mic button — 44x44, circular with shadow
-              if (_voiceInitialized)
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: isListening
-                        ? AppColors.error.withValues(alpha: 0.12)
-                        : AppColors.surface,
-                    border: Border.all(
-                      color: isListening
-                          ? AppColors.error.withValues(alpha: 0.3)
-                          : AppColors.border.withValues(alpha: 0.3),
-                      width: 0.5,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: isListening
-                            ? AppColors.error.withValues(alpha: 0.2)
-                            : Colors.black.withValues(alpha: 0.06),
-                        blurRadius: isListening ? 12 : 6,
-                        offset: const Offset(0, 2),
-                      ),
-                      if (!isListening)
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.02),
-                          blurRadius: 2,
-                          offset: const Offset(0, 1),
-                        ),
-                    ],
-                  ),
-                  child: IconButton(
-                    onPressed: _isSending ? null : _onVoiceTap,
-                    icon: Icon(
-                      isListening ? Icons.stop_rounded : Icons.mic_rounded,
-                      color: isListening ? AppColors.error : AppColors.textSecondary,
-                      size: 22,
-                    ),
-                    padding: EdgeInsets.zero,
-                  ),
+          // Remaining-messages hint — small, subtle, only shown for free
+          // users with at least one message consumed and still some quota
+          // left. Hidden at 0 (the CTA itself conveys exhaustion).
+          if (isFreeUser &&
+              !quotaExhausted &&
+              _freeMessagesRemaining >= 0 &&
+              _freeMessagesUsed > 0) ...[
+            const SizedBox(height: 6),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                'Осталось $_freeMessagesRemaining '
+                '${_freeMessagesRemaining == 1 ? "бесплатное сообщение" : "бесплатных сообщений"}',
+                key: const Key('free_messages_remaining_text'),
+                style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w500,
+                  color: _freeMessagesRemaining <= 2
+                      ? AppColors.warning
+                      : AppColors.textTertiary,
                 ),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
 
-              if (_voiceInitialized) const SizedBox(width: 6),
+  /// CTA that replaces the chat composer when the free-tier quota is
+  /// exhausted. Navigates to the subscription page on tap.
+  Widget _buildUpgradeToProCta() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Text(
+              'Вы использовали все ${AIService.freeTotalLimit} бесплатных '
+              'сообщений. Оформите Advocat Pro за €14.99/мес.',
+              key: const Key('quota_exhausted_message'),
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          SizedBox(
+            height: 48,
+            child: ElevatedButton.icon(
+              key: const Key('upgrade_to_pro_cta'),
+              onPressed: () => context.push(AppRoutes.subscription),
+              icon: const Icon(Icons.workspace_premium_rounded, size: 18),
+              label: const Text(
+                'Оформить Advocat Pro — €14.99/мес',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accent,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-              // Send button — 44x44, circular, accent with glow
+  /// Normal composer row — attach button, text field, mic, send.
+  Widget _buildComposerRow(bool isListening) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        // Attach button — file picker (web-compatible) with scan fallback
+        SizedBox(
+          width: 40,
+          height: 44,
+          child: IconButton(
+            icon: const Icon(Icons.add_circle_outline_rounded, size: 22),
+            color: AppColors.textTertiary,
+            onPressed: () => _showAttachOptions(),
+            padding: EdgeInsets.zero,
+          ),
+        ),
+
+        const SizedBox(width: 4),
+
+        // Text field with premium focus glow — takes most width
+        Expanded(
+          child: _PremiumTextField(
+            controller: _messageController,
+            focusNode: _focusNode,
+            onSend: _isSending ? null : () => _sendMessage(),
+          ),
+        ),
+
+        const SizedBox(width: 6),
+
+        // Mic + Send buttons — same size (44x44), aligned in a row
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Mic button — 44x44, circular with shadow
+            if (_voiceInitialized)
               Container(
                 width: 44,
                 height: 44,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: _isSending
-                      ? null
-                      : const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [AppColors.accent, AppColors.accentLight],
-                        ),
-                  color: _isSending
-                      ? AppColors.accent.withValues(alpha: 0.5)
-                      : null,
+                  color: isListening
+                      ? AppColors.error.withValues(alpha: 0.12)
+                      : AppColors.surface,
+                  border: Border.all(
+                    color: isListening
+                        ? AppColors.error.withValues(alpha: 0.3)
+                        : AppColors.border.withValues(alpha: 0.3),
+                    width: 0.5,
+                  ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 3),
+                      color: isListening
+                          ? AppColors.error.withValues(alpha: 0.2)
+                          : Colors.black.withValues(alpha: 0.06),
+                      blurRadius: isListening ? 12 : 6,
+                      offset: const Offset(0, 2),
                     ),
-                    BoxShadow(
-                      color: AppColors.accent.withValues(alpha: 0.1),
-                      blurRadius: 4,
-                      spreadRadius: 1,
-                    ),
+                    if (!isListening)
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.02),
+                        blurRadius: 2,
+                        offset: const Offset(0, 1),
+                      ),
                   ],
                 ),
                 child: IconButton(
-                  onPressed: _isSending ? null : () => _sendMessage(),
-                  icon: _isSending
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Icon(Icons.arrow_upward_rounded, size: 22),
-                  color: Colors.white,
+                  onPressed: _isSending ? null : _onVoiceTap,
+                  icon: Icon(
+                    isListening ? Icons.stop_rounded : Icons.mic_rounded,
+                    color: isListening ? AppColors.error : AppColors.textSecondary,
+                    size: 22,
+                  ),
                   padding: EdgeInsets.zero,
                 ),
               ),
-            ],
-          ),
-        ],
-      ),
+
+            if (_voiceInitialized) const SizedBox(width: 6),
+
+            // Send button — 44x44, circular, accent with glow
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: _isSending
+                    ? null
+                    : const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [AppColors.accent, AppColors.accentLight],
+                      ),
+                color: _isSending
+                    ? AppColors.accent.withValues(alpha: 0.5)
+                    : null,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: IconButton(
+                onPressed: _isSending ? null : () => _sendMessage(),
+                icon: _isSending
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Icon(Icons.arrow_upward_rounded, size: 22),
+                color: Colors.white,
+                padding: EdgeInsets.zero,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 

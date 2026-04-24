@@ -409,7 +409,17 @@ class SupabaseService {
   // ── Edge Functions ──────────────────────────────────────────────────
 
   /// Call a Supabase Edge Function by [functionName] with an optional JSON
-  /// [body]. Returns the decoded JSON response, or `null` on failure.
+  /// [body].
+  ///
+  /// Returns the decoded JSON response on any response that contains a JSON
+  /// body — INCLUDING non-200 responses. Callers should inspect the returned
+  /// map for `ok`/`error` keys to decide success. This is deliberate: Edge
+  /// Functions use standard HTTP semantics (400/401/429/503) and their JSON
+  /// bodies carry actionable error details that must reach the user and the
+  /// AI (so the AI can apologise and suggest a retry / provider switch).
+  ///
+  /// Only returns `null` in demo mode or when no JSON body could be decoded
+  /// (network dead, malformed response). Never swallows errors silently.
   Future<Map<String, dynamic>?> callEdgeFunction(
     String functionName, {
     Map<String, dynamic>? body,
@@ -420,18 +430,38 @@ class SupabaseService {
         functionName,
         body: body,
       );
-      if (response.status == 200 && response.data != null) {
-        if (response.data is Map<String, dynamic>) {
-          return response.data as Map<String, dynamic>;
-        }
-        // Some versions return a string that needs decoding
-        if (response.data is String) {
-          return jsonDecode(response.data as String) as Map<String, dynamic>;
+      final data = response.data;
+      if (data is Map<String, dynamic>) {
+        return data;
+      }
+      if (data is String && data.isNotEmpty) {
+        try {
+          final decoded = jsonDecode(data);
+          if (decoded is Map<String, dynamic>) return decoded;
+        } catch (_) {
+          return {'error': 'Malformed response from $functionName: $data'};
         }
       }
+      if (response.status >= 400) {
+        return {
+          'error': 'Edge function $functionName returned HTTP ${response.status}',
+        };
+      }
       return null;
-    } catch (_) {
-      return null;
+    } on FunctionException catch (e) {
+      // Supabase SDK throws FunctionException for non-2xx — surface the body.
+      final details = e.details;
+      if (details is Map<String, dynamic>) return details;
+      if (details is String && details.isNotEmpty) {
+        try {
+          final decoded = jsonDecode(details);
+          if (decoded is Map<String, dynamic>) return decoded;
+        } catch (_) {/* fall through */}
+        return {'error': details};
+      }
+      return {'error': 'Edge function $functionName failed: ${e.toString()}'};
+    } catch (e) {
+      return {'error': 'Edge function $functionName failed: $e'};
     }
   }
 

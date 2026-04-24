@@ -4,10 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../config/app_config.dart';
 import '../models/case_model.dart';
+import 'chat_attachment_service.dart';
 import 'claude_service.dart';
 import 'language_detector.dart';
 import 'supabase_service.dart';
@@ -55,10 +54,25 @@ class AiQuota {
     return AiQuota(
       allowed: (api['allowed'] as bool?) ?? false,
       remaining: remaining is int ? remaining : null,
-      limit: (api['limit'] as int?) ?? 50,
+      limit: (api['limit'] as int?) ?? 7,
       plan: plan,
       used: (api['used'] as int?) ?? 0,
       unlimited: unlimited,
+    );
+  }
+
+  /// Fall-closed response used when the `check-ai-quota` Edge Function is
+  /// unreachable. Revenue-critical rule (see task 2026-04-23): deny by
+  /// default rather than letting a free user fall back to an unbounded
+  /// local counter. Pro users skip this path entirely.
+  factory AiQuota.denied({int limit = 7}) {
+    return AiQuota(
+      allowed: false,
+      remaining: 0,
+      limit: limit,
+      plan: 'free',
+      used: limit,
+      unlimited: false,
     );
   }
 
@@ -246,11 +260,12 @@ class AIService {
 
   /// Check the server-side AI quota for the current user.
   ///
-  /// Returns the cached value if younger than 60 s. Falls back to a
-  /// conservative SharedPreferences-based estimate if the Edge Function
-  /// is unreachable (offline mode, misconfigured Supabase, etc.). The
-  /// fallback is logged so operators can see when server enforcement is
-  /// degraded.
+  /// Returns the cached value if younger than 60 s. **Fall-closed**: when
+  /// the Edge Function is unreachable we deny the request rather than
+  /// trust an unauthenticated local counter — this is the only way to
+  /// prevent a free user from sending unlimited messages by simulating a
+  /// 500 (or running the app offline). See task "Free tier has NO message
+  /// limit" (2026-04-23).
   Future<AiQuota> checkQuota({bool forceRefresh = false}) async {
     if (isProUser) {
       return AiQuota.fromLocal(used: 0, limit: -1, isPro: true);
@@ -270,13 +285,17 @@ class AIService {
       return fresh;
     }
 
-    _log.w('check-ai-quota unavailable — falling back to local counter');
-    return await _localFallbackQuota();
+    _log.w('check-ai-quota unavailable — denying request (fall-closed)');
+    return AiQuota.denied(limit: _freeTotalLimit);
   }
 
   /// Atomically increment the server counter and return the new state.
-  /// Called right before each message is dispatched to Claude. Falls back
-  /// to SharedPreferences increment on Edge Function failure.
+  /// Called right before each message is dispatched to Claude.
+  ///
+  /// **Fall-closed**: on Edge Function failure we deny the request so a
+  /// broken server does not effectively hand free users unlimited AI.
+  /// The previous behaviour (local SharedPreferences increment) was the
+  /// root cause of the "free tier has no message limit" bug.
   Future<AiQuota> consumeQuota() async {
     if (isProUser) {
       return AiQuota.fromLocal(used: 0, limit: -1, isPro: true);
@@ -289,37 +308,8 @@ class AIService {
       return fresh;
     }
 
-    _log.w('check-ai-quota consume unavailable — incrementing local counter');
-    return await _localFallbackConsume();
-  }
-
-  Future<AiQuota> _localFallbackQuota() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final used = prefs.getInt(_freeTotalKey) ?? 0;
-      return AiQuota.fromLocal(
-          used: used, limit: _freeTotalLimit, isPro: false);
-    } catch (_) {
-      return const AiQuota(
-          allowed: true, remaining: null, limit: 50, plan: 'free');
-    }
-  }
-
-  Future<AiQuota> _localFallbackConsume() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final used = prefs.getInt(_freeTotalKey) ?? 0;
-      if (used >= _freeTotalLimit) {
-        return AiQuota.fromLocal(
-            used: used, limit: _freeTotalLimit, isPro: false);
-      }
-      await prefs.setInt(_freeTotalKey, used + 1);
-      return AiQuota.fromLocal(
-          used: used + 1, limit: _freeTotalLimit, isPro: false);
-    } catch (_) {
-      return const AiQuota(
-          allowed: true, remaining: null, limit: 50, plan: 'free');
-    }
+    _log.w('check-ai-quota consume unavailable — denying request (fall-closed)');
+    return AiQuota.denied(limit: _freeTotalLimit);
   }
 
   /// Whether this service instance is using the real Claude API.
@@ -367,44 +357,58 @@ class AIService {
     _responseCache[key] = _CachedResponse(response, DateTime.now());
   }
 
-  // ── Free-tier TOTAL limit (5 messages ever, not per day) ──────────────
+  // ── Free-tier TOTAL limit (7 AI responses, per Founder's Beta policy) ──
   //
-  // TODO(production): Enforce server-side in Supabase Edge Function.
+  // Enforced server-side in the `check-ai-quota` Edge Function. This
+  // constant is the fallback limit used when building fall-closed
+  // denials and must match `FREE_LIMIT` in
+  // supabase/functions/check-ai-quota/index.ts.
   //
 
-  /// Maximum free API calls TOTAL (lifetime, not per day).
-  static const int _freeTotalLimit = 50;
+  /// Maximum free AI responses per user (aligned with the Founder's Beta
+  /// refund policy: 14 days OR 7 AI responses).
+  static const int _freeTotalLimit = 7;
 
-  /// Key for storing total free message count.
-  static const String _freeTotalKey = 'ai_total_free_count';
+  /// Public accessor for [_freeTotalLimit] so UI layers can render the
+  /// current limit without duplicating the constant. Matches the server
+  /// `FREE_LIMIT` in `supabase/functions/check-ai-quota/index.ts`.
+  static int get freeTotalLimit => _freeTotalLimit;
 
   /// Whether the current user is a Pro subscriber.
   bool isProUser = false;
 
-  /// Check if free user has remaining API calls, then increment.
+  /// Check if the free user has remaining AI messages, then atomically
+  /// increment the server-side counter.
   ///
-  /// Prefers the server-side [consumeQuota] path. Falls back to the
-  /// legacy SharedPreferences counter when no quota client is wired or
-  /// the Edge Function is unreachable.
+  /// Returns `false` when the Edge Function is unreachable (fall-closed) so
+  /// the caller **must not** proceed to call Claude. Callers should show the
+  /// upgrade CTA instead.
   Future<bool> _checkAndIncrementDailyLimit() async {
     if (isProUser) return true;
     final q = await consumeQuota();
     return q.allowed;
   }
 
-  /// Get remaining free calls. Prefers the server-side counter; falls
-  /// back to SharedPreferences if the Edge Function is unreachable.
+  /// Public test-only wrapper around [_checkAndIncrementDailyLimit] so the
+  /// enforcement test can verify the gate without instantiating a real
+  /// ClaudeService / network stack.
+  @visibleForTesting
+  Future<bool> checkAndIncrementDailyLimitForTest() =>
+      _checkAndIncrementDailyLimit();
+
+  /// Get remaining free AI responses. Server-side is the source of truth.
+  ///
+  /// Returns `-1` for unlimited (pro) users. Returns `0` on fall-closed so
+  /// the UI shows the upgrade CTA rather than an optimistic count derived
+  /// from an untrusted local counter.
   Future<int> getRemainingFreeCalls() async {
     if (isProUser) return -1; // unlimited
     try {
       final q = await checkQuota();
       if (q.isPro) return -1;
-      if (q.remaining != null) return q.remaining!;
-      final prefs = await SharedPreferences.getInstance();
-      final count = prefs.getInt(_freeTotalKey) ?? 0;
-      return (_freeTotalLimit - count).clamp(0, _freeTotalLimit);
+      return q.remaining ?? 0;
     } catch (_) {
-      return _freeTotalLimit;
+      return 0;
     }
   }
 
@@ -620,6 +624,76 @@ class AIService {
     return result;
   }
 
+  /// When the current user turn carries an image attachment, build a
+  /// multimodal messages list that swaps the last `role: user` entry for
+  /// an Anthropic content-block array:
+  ///
+  ///   [
+  ///     {type: "image", source: {type: "base64", media_type: ..., data: ...}},
+  ///     {type: "text",  text: "<user prompt> …Проанализируй приложенное..."}
+  ///   ]
+  ///
+  /// Returns `null` when there is nothing to do (no attachment, non-image,
+  /// or missing bytes) so callers can keep the plain text-only path.
+  ///
+  /// Static-only — no instance state needed. Exposed as `_maybe…` to keep
+  /// it private; see [buildMultimodalMessagesForTest] for tests.
+  List<Map<String, dynamic>>? _maybeBuildMultimodalMessages({
+    required List<Map<String, String>> messages,
+    required String userMessage,
+    required ChatAttachment? imageAttachment,
+  }) {
+    if (imageAttachment == null || !imageAttachment.hasInlineImage) {
+      return null;
+    }
+    final imageBlock = ChatAttachmentService.buildImageBlock(imageAttachment);
+    if (imageBlock == null) return null;
+
+    // Build the nudge the text block will carry alongside the image. We
+    // intentionally include BOTH the original user prompt AND an explicit
+    // Russian instruction: the system prompt is multilingual, but the
+    // imperative "analyse the attached image" reliably forces the model to
+    // treat the visual block as the primary subject rather than drift to
+    // generic legal text.
+    final textPart = userMessage.trim().isEmpty
+        ? 'Проанализируй приложенное изображение.'
+        : '$userMessage\n\nПроанализируй приложенное изображение.';
+
+    final multimodal = <Map<String, dynamic>>[];
+    // Copy all but the last message as-is (text history stays compact).
+    for (var i = 0; i < messages.length - 1; i++) {
+      multimodal.add({
+        'role': messages[i]['role'] ?? 'user',
+        'content': messages[i]['content'] ?? '',
+      });
+    }
+
+    // Replace the last message (expected to be the current user turn) with
+    // the multimodal content list. Defensive fallback: if the history is
+    // empty for some reason, inject a single user turn instead.
+    multimodal.add({
+      'role': 'user',
+      'content': [
+        imageBlock,
+        {'type': 'text', 'text': textPart},
+      ],
+    });
+    return multimodal;
+  }
+
+  /// Test seam for the multimodal-builder. Not for production use.
+  @visibleForTesting
+  List<Map<String, dynamic>>? buildMultimodalMessagesForTest({
+    required List<Map<String, String>> messages,
+    required String userMessage,
+    required ChatAttachment? imageAttachment,
+  }) =>
+      _maybeBuildMultimodalMessages(
+        messages: messages,
+        userMessage: userMessage,
+        imageAttachment: imageAttachment,
+      );
+
   /// Snapshot the current in-memory history for a case as the tuple
   /// shape expected by [UserMemoryService.extractFromSession]. We copy
   /// the list so the fire-and-forget extraction call cannot observe
@@ -688,6 +762,15 @@ class AIService {
     String? country,
   }) async {
     if (isUsingRealAI && ocrText != null && ocrText.isNotEmpty) {
+      // Document analysis is a billable Claude call — gate it with the
+      // same server-side quota as chat/draft. Fall-closed on 500.
+      final allowed = await _checkAndIncrementDailyLimit();
+      if (!allowed) {
+        throw const AIServiceException(
+          'Free-tier AI quota exhausted. Upgrade to Advocat Pro to continue '
+          'analyzing documents.',
+        );
+      }
       _log.i('Using Claude API for document analysis');
       try {
         final result = await _claudeService.analyzeDocument(
@@ -784,6 +867,7 @@ class AIService {
     String? userName,
     String? clientContext,
     String? freeLimitMessage,
+    ChatAttachment? imageAttachment,
   }) async {
     // Sanitize user input before any AI processing
     final sanitizedMessage = _sanitizeInput(message);
@@ -919,11 +1003,24 @@ class AIService {
           );
         }
 
+        // Vision path: when the current user turn carries an image, swap the
+        // last user message in the outgoing request for a multimodal content
+        // block list so Claude actually SEES the picture. read_document only
+        // returns text, so it cannot analyse images — the visual channel is
+        // the authoritative input for photos/screenshots.
+        final List<Map<String, dynamic>>? multimodal =
+            _maybeBuildMultimodalMessages(
+          messages: messages,
+          userMessage: sanitizedMessage,
+          imageAttachment: imageAttachment,
+        );
+
         rawResponse = await _claudeService.sendMessageWithTools(
           messages: messages,
           systemPrompt: systemPrompt,
           maxTokens: maxTokens,
           model: model,
+          multimodalMessages: multimodal,
         );
 
         // Log token usage
@@ -1214,6 +1311,15 @@ class AIService {
     String language = 'en',
   }) async {
     if (isUsingRealAI) {
+      // Draft generation is a billable Claude call — gate it with the
+      // same server-side quota as chat. Fall-closed on 500.
+      final allowed = await _checkAndIncrementDailyLimit();
+      if (!allowed) {
+        throw const AIServiceException(
+          'Free-tier AI quota exhausted. Upgrade to Advocat Pro to continue '
+          'generating drafts.',
+        );
+      }
       _log.i('Using Claude API for draft generation');
       try {
         final systemPrompt = SystemPrompts.buildDraftPrompt(
@@ -1276,6 +1382,15 @@ class AIService {
     required String text,
   }) async {
     if (isUsingRealAI) {
+      // Deadline extraction is a billable Claude call — gate it with the
+      // same server-side quota. Fall-closed on 500.
+      final allowed = await _checkAndIncrementDailyLimit();
+      if (!allowed) {
+        throw const AIServiceException(
+          'Free-tier AI quota exhausted. Upgrade to Advocat Pro to continue '
+          'extracting deadlines.',
+        );
+      }
       _log.i('Using Claude API for deadline extraction');
       try {
         final result = await _claudeService.analyzeDocument(
