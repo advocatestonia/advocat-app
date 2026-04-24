@@ -128,8 +128,8 @@ serve(async (req: Request) => {
           quantity: 1,
         },
       ],
-      success_url: success_url || "https://advocat.ee/payment-success",
-      cancel_url: cancel_url || "https://advocat.ee/payment-cancel",
+      success_url: success_url || "https://advocat.ee/payment-success.html",
+      cancel_url: cancel_url || "https://advocat.ee/payment-cancel.html",
       metadata: {
         plan_id,
         billing_period,
@@ -137,7 +137,19 @@ serve(async (req: Request) => {
         // row in `profiles` even if the email later changes.
         user_id: gate.user.id,
       },
+      // In subscription mode Stripe auto-generates an invoice per billing
+      // cycle; putting a human-readable description on the subscription
+      // makes the invoice PDF legible.
+      subscription_data: {
+        description: priceEntry.name,
+      },
     };
+
+    // Note: the "invoice PDF + receipt email" behaviour depends on the
+    // Stripe Dashboard setting *Settings → Customer emails →
+    // "Successful payments"* being ON. If it's OFF, customers won't get
+    // an email even though the invoice exists. We also send our own
+    // confirmation via the `send-email` Edge Function from stripe-webhook.
 
     // Founding member: metadata flag so the webhook enforces the 3-month
     // limit. The price itself is already discounted.

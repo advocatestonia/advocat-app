@@ -103,11 +103,7 @@ serve(async (req) => {
         const metadata = session.metadata || {};
         const planId = metadata.plan_id; // "counsel" or "representation"
         const billingPeriod = metadata.billing_period; // "monthly", "yearly", "founding"
-
-        if (!customerEmail) {
-          console.error("No customer email in checkout session");
-          break;
-        }
+        const metaUserId = metadata.user_id; // set by create-checkout (authenticated caller)
 
         const tier = PLAN_MAPPING[planId] || "basic";
 
@@ -124,35 +120,85 @@ serve(async (req) => {
           expiresAt.setMonth(expiresAt.getMonth() + 1);
         }
 
-        // Find user by email
-        const { data: users } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("email", customerEmail)
-          .limit(1);
-
-        if (users && users.length > 0) {
-          const userId = users[0].id;
-
-          // Update subscription
-          await supabase.from("profiles").update({
-            subscription_tier: tier,
-            subscription_expires_at: expiresAt.toISOString(),
-            stripe_customer_id: session.customer,
-          }).eq("id", userId);
-
-          // FIX-6 (Sprint 0): log the customer id, never the email. Emails
-          // in logs are a common GDPR violation — we don't need them for
-          // debugging since stripe_customer_id is the canonical handle.
-          console.log(
-            `checkout.completed: customer=${session.customer} tier=${tier}`,
-          );
-        } else {
-          // Even on the error path, avoid leaking the email.
-          console.error(
-            `checkout.completed: no profile row for customer=${session.customer}`,
-          );
+        // Resolve user. Prefer the authenticated user_id from create-checkout
+        // metadata; fall back to email lookup for legacy sessions.
+        let userId: string | null = null;
+        if (metaUserId) {
+          userId = metaUserId;
+        } else if (customerEmail) {
+          const { data: users } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("email", customerEmail)
+            .limit(1);
+          if (users && users.length > 0) userId = users[0].id;
         }
+
+        if (!userId) {
+          console.error(
+            `checkout.completed: no user_id in metadata and no profile for customer=${session.customer}`,
+          );
+          break;
+        }
+
+        // Upsert — if the profile row doesn't exist yet (trigger gap), create
+        // it. This eliminates the silent-failure class where a paying user
+        // had no profile row and their Pro never activated.
+        await supabase.from("profiles").upsert({
+          id: userId,
+          subscription_tier: tier,
+          subscription_expires_at: expiresAt.toISOString(),
+          stripe_customer_id: session.customer,
+        }, { onConflict: "id" });
+
+        // Send our own confirmation email so customers always get one,
+        // regardless of Stripe Dashboard "Customer emails" toggle.
+        // Best-effort: failure here does not block activation.
+        if (customerEmail) {
+          try {
+            const amount = (session.amount_total ?? 0) / 100;
+            const currency = (session.currency ?? "eur").toUpperCase();
+            const subject = tier === "premium"
+              ? "Ваша подписка Advocat Pro активна"
+              : "Оплата Advocat получена";
+            const body =
+              `Здравствуйте!\n\n` +
+              `Спасибо за оплату. Ваша подписка активирована.\n\n` +
+              `План: ${planId} (${billingPeriod})\n` +
+              `Сумма: ${amount.toFixed(2)} ${currency}\n` +
+              `Действует до: ${expiresAt.toISOString().slice(0, 10)}\n\n` +
+              `Счёт и квитанцию вы также получите от Stripe.\n\n` +
+              `Управление подпиской: https://advocat.ee/app.html#/subscription\n\n` +
+              `С уважением,\nКоманда Advocat\nhttps://advocat.ee`;
+
+            await fetch(`${SUPABASE_URL}/functions/v1/send-email`, {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                to: customerEmail,
+                subject,
+                body,
+                // skip_gmail_oauth: true — webhook has no user OAuth context,
+                // always use Resend fallback.
+                force_provider: "resend",
+              }),
+            }).catch((e) => {
+              console.error(`confirm-email send failed: ${e}`);
+            });
+          } catch (e) {
+            console.error(`confirm-email build failed: ${e}`);
+          }
+        }
+
+        // FIX-6 (Sprint 0): log the customer id, never the email. Emails
+        // in logs are a common GDPR violation — we don't need them for
+        // debugging since stripe_customer_id is the canonical handle.
+        console.log(
+          `checkout.completed: customer=${session.customer} tier=${tier} user=${userId}`,
+        );
         break;
       }
 
