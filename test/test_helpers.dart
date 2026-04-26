@@ -26,12 +26,16 @@ AppUser makeUser({
   String? phone,
   String? avatarUrl,
   String preferredLanguage = 'et',
+  bool? isPro,
   SubscriptionTier subscriptionTier = SubscriptionTier.free,
   DateTime? subscriptionExpiresAt,
   DateTime? createdAt,
   DateTime? updatedAt,
   DateTime? gdprConsentAt,
 }) {
+  // Default isPro to mirror legacy tier-based behaviour so pre-existing
+  // fixtures keep their semantics: anything non-free was implicitly Pro.
+  final resolvedIsPro = isPro ?? (subscriptionTier != SubscriptionTier.free);
   return AppUser(
     id: id,
     email: email,
@@ -39,6 +43,7 @@ AppUser makeUser({
     phone: phone,
     avatarUrl: avatarUrl,
     preferredLanguage: preferredLanguage,
+    isPro: resolvedIsPro,
     subscriptionTier: subscriptionTier,
     subscriptionExpiresAt: subscriptionExpiresAt,
     createdAt: createdAt ?? fixtureNow,

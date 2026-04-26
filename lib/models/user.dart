@@ -5,6 +5,22 @@ class AppUser {
   final String? phone;
   final String? avatarUrl;
   final String preferredLanguage;
+
+  /// Authoritative Pro flag, mirrors `profiles.is_pro` boolean column.
+  ///
+  /// This is the SINGLE source of truth for Pro access decisions on the
+  /// client. The server's `check-ai-quota` Edge Function reads the same
+  /// `is_pro` column, so the frontend and backend now agree.
+  ///
+  /// Use [isProActive] (not [isPro]) for guard checks — it also verifies
+  /// the subscription has not expired.
+  ///
+  /// [subscriptionTier] is retained for UI labelling only ("Basic plan",
+  /// "Premium plan") and for choosing which features within Pro are
+  /// available (basic = unlimited chat; premium = unlimited chat + draft
+  /// generation + lawyer matching).
+  final bool isPro;
+
   final SubscriptionTier subscriptionTier;
   final DateTime? subscriptionExpiresAt;
   final DateTime createdAt;
@@ -18,6 +34,7 @@ class AppUser {
     this.phone,
     this.avatarUrl,
     this.preferredLanguage = 'en',
+    this.isPro = false,
     this.subscriptionTier = SubscriptionTier.free,
     this.subscriptionExpiresAt,
     required this.createdAt,
@@ -25,6 +42,24 @@ class AppUser {
     this.gdprConsentAt,
   });
 
+  /// Whether this user currently has active Pro access.
+  ///
+  /// Requires BOTH:
+  ///   - [isPro] is true (server-confirmed Pro flag), AND
+  ///   - [subscriptionExpiresAt] is set and in the future.
+  ///
+  /// Use this for ALL access-decision branches (quota visibility, Pro
+  /// feature unlocks, upgrade-button visibility). Use [subscriptionTier]
+  /// only for UI labelling.
+  bool get isProActive {
+    if (!isPro) return false;
+    if (subscriptionExpiresAt == null) return false;
+    return subscriptionExpiresAt!.isAfter(DateTime.now());
+  }
+
+  /// DEPRECATED: pre-unification getter that branched on tier alone.
+  /// Kept for backwards compatibility with older tests; new code MUST
+  /// use [isProActive].
   bool get isSubscriptionActive {
     if (subscriptionTier == SubscriptionTier.free) return false;
     if (subscriptionExpiresAt == null) return true; // no expiry set = active
@@ -38,6 +73,7 @@ class AppUser {
     String? phone,
     String? avatarUrl,
     String? preferredLanguage,
+    bool? isPro,
     SubscriptionTier? subscriptionTier,
     DateTime? subscriptionExpiresAt,
     DateTime? createdAt,
@@ -51,6 +87,7 @@ class AppUser {
       phone: phone ?? this.phone,
       avatarUrl: avatarUrl ?? this.avatarUrl,
       preferredLanguage: preferredLanguage ?? this.preferredLanguage,
+      isPro: isPro ?? this.isPro,
       subscriptionTier: subscriptionTier ?? this.subscriptionTier,
       subscriptionExpiresAt: subscriptionExpiresAt ?? this.subscriptionExpiresAt,
       createdAt: createdAt ?? this.createdAt,
@@ -60,6 +97,19 @@ class AppUser {
   }
 
   factory AppUser.fromJson(Map<String, dynamic> json) {
+    final tier = _subscriptionTierFromJson(json['subscription_tier'] as String?);
+
+    // Backwards-compat: older payloads (before profiles.is_pro existed) did
+    // not include `is_pro`. For those, infer Pro from a non-free tier so
+    // existing fixtures and cached profiles keep working until they are
+    // refreshed from the server.
+    final bool isPro;
+    if (json.containsKey('is_pro') && json['is_pro'] != null) {
+      isPro = json['is_pro'] as bool;
+    } else {
+      isPro = tier != SubscriptionTier.free;
+    }
+
     return AppUser(
       id: json['id'] as String,
       email: json['email'] as String? ?? '',
@@ -67,7 +117,8 @@ class AppUser {
       phone: json['phone'] as String?,
       avatarUrl: json['avatar_url'] as String?,
       preferredLanguage: json['preferred_language'] as String? ?? 'et',
-      subscriptionTier: _subscriptionTierFromJson(json['subscription_tier'] as String?),
+      isPro: isPro,
+      subscriptionTier: tier,
       subscriptionExpiresAt: json['subscription_expires_at'] != null
           ? DateTime.parse(json['subscription_expires_at'] as String)
           : null,
@@ -89,6 +140,7 @@ class AppUser {
       'phone': phone,
       if (avatarUrl != null) 'avatar_url': avatarUrl,
       'preferred_language': preferredLanguage,
+      'is_pro': isPro,
       'subscription_tier': subscriptionTier.name,
       'subscription_expires_at': subscriptionExpiresAt?.toIso8601String(),
       'created_at': createdAt.toIso8601String(),

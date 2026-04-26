@@ -21,8 +21,27 @@
 #   - GDPR delete endpoint presence probe
 #
 # Optional env:
-#   SMOKE_AUTH_JWT   if set, enables authenticated POST probes (AI quality)
-#   SMOKE_TIMEOUT    curl --max-time seconds, default 15
+#   SMOKE_AUTH_JWT             if set, enables authenticated POST probes (AI quality)
+#   SMOKE_TIMEOUT              curl --max-time seconds, default 15
+#
+#   --- Section [6] payment activation contract test (skipped unless ALL set) ---
+#   STRIPE_TEST_WEBHOOK_KEY    Stripe webhook signing secret (whsec_…) used to
+#                              sign synthetic checkout.session.completed events.
+#                              MUST be a *test mode* secret. Never commit.
+#   SMOKE_TEST_UID             uuid of a designated test user (admin-created in
+#                              Supabase auth.users). Section [6] mutates this
+#                              user's profiles+subscriptions rows on every run.
+#   SMOKE_TEST_JWT             JWT for SMOKE_TEST_UID, minted via Supabase
+#                              admin (service-role -> generateLink or
+#                              admin.createUser then sign-in). Used to probe
+#                              check-ai-quota as the upgraded user.
+#   SUPABASE_SERVICE_ROLE_KEY  service-role key for cleanup (DELETE rows from
+#                              profiles/subscriptions for SMOKE_TEST_UID).
+#
+#   WARNING: Section [6] fires REAL webhook calls at the prod stripe-webhook
+#   endpoint (with synthetic test data). It mutates real DB rows for the
+#   designated test user, then cleans them up. Do NOT set these env vars
+#   on hosts where production runs that aren't gated behind a feature flag.
 # ============================================================================
 
 set -euo pipefail
@@ -367,6 +386,158 @@ for path in \
     die "Seam C: $URL returned $CODE — landing/blog file wiped"
   fi
 done
+
+echo ""
+echo "[6] Payment activation contract (skipped unless STRIPE_TEST_WEBHOOK_KEY set)"
+# ---------------------------------------------------------------------------
+# Contract test: simulates a checkout.session.completed webhook signed with
+# the Stripe test webhook secret and asserts that within 5 seconds:
+#   (a) profiles row for SMOKE_TEST_UID has is_pro=true and subscription_tier
+#       set to the value PLAN_MAPPING.counsel resolves to (currently "basic").
+#   (b) subscriptions row for SMOKE_TEST_UID has status='active'.
+#   (c) check-ai-quota called with SMOKE_TEST_JWT returns plan='pro' and
+#       unlimited=true.
+#
+# This is a CONTRACT TEST against prod. It writes synthetic test data to the
+# real DB for SMOKE_TEST_UID, then cleans it up. Must be skippable in CI
+# without test creds (warns + passes).
+#
+# Regression class this defends: "Sofia paid €X but is_pro stayed false" —
+# the silent-activation-failure mode. If any of (a)/(b)/(c) drift, this
+# section fails loudly so the next paying customer is not the canary.
+# ---------------------------------------------------------------------------
+
+if [[ -z "${STRIPE_TEST_WEBHOOK_KEY:-}" ]] \
+  || [[ -z "${SMOKE_TEST_UID:-}" ]] \
+  || [[ -z "${SMOKE_TEST_JWT:-}" ]] \
+  || [[ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]]; then
+  printf "\033[1;33m  ⚠\033[0m %-55s [skip — set STRIPE_TEST_WEBHOOK_KEY+SMOKE_TEST_UID+SMOKE_TEST_JWT+SUPABASE_SERVICE_ROLE_KEY]\n" \
+    "Payment activation contract test"
+else
+  REST_URL="https://${PROJECT_REF}.supabase.co/rest/v1"
+  SIGNER="$(dirname "$0")/sign_stripe_event.py"
+
+  if [[ ! -x "$SIGNER" ]]; then
+    die "Section [6]: sign_stripe_event.py missing or not executable"
+  else
+    # ----- helpers (scoped to section [6]) -----
+    sb_delete_profile() {
+      curl -s --max-time "$TIMEOUT" -X DELETE \
+        "$REST_URL/profiles?id=eq.${SMOKE_TEST_UID}" \
+        -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+        -o /dev/null -w '%{http_code}'
+    }
+    sb_delete_subscription() {
+      curl -s --max-time "$TIMEOUT" -X DELETE \
+        "$REST_URL/subscriptions?user_id=eq.${SMOKE_TEST_UID}" \
+        -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+        -o /dev/null -w '%{http_code}'
+    }
+    sb_select_profile() {
+      curl -s --max-time "$TIMEOUT" \
+        "$REST_URL/profiles?id=eq.${SMOKE_TEST_UID}&select=is_pro,subscription_tier" \
+        -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}"
+    }
+    sb_select_subscription() {
+      curl -s --max-time "$TIMEOUT" \
+        "$REST_URL/subscriptions?user_id=eq.${SMOKE_TEST_UID}&select=status" \
+        -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}"
+    }
+
+    # Always clean up — even on early failure — so consecutive runs are
+    # idempotent and we don't leave Pro-flagged test rows in prod.
+    cleanup_section6() {
+      sb_delete_subscription >/dev/null 2>&1 || true
+      sb_delete_profile      >/dev/null 2>&1 || true
+    }
+    trap cleanup_section6 EXIT
+
+    # ----- step 1: reset test user state -----
+    cleanup_section6
+    printf "\033[1;36m  …\033[0m %-55s\n" "Section [6] step 1: reset test user state"
+
+    # ----- step 2: build + sign synthetic checkout.session.completed -----
+    # Body matches the shape stripe-webhook/index.ts reads from event.data.object:
+    #   customer, customer_email, metadata.{plan_id,billing_period,user_id}
+    BODY=$(cat <<EOF
+{"id":"evt_smoke_$(date +%s)","type":"checkout.session.completed","data":{"object":{"id":"cs_test_smoke_$(date +%s)","customer":"cus_test_smoke_${SMOKE_TEST_UID:0:8}","customer_email":"smoke-test@advocat.ee","amount_total":2900,"currency":"eur","subscription":null,"metadata":{"plan_id":"counsel","billing_period":"monthly","user_id":"${SMOKE_TEST_UID}"}}}}
+EOF
+)
+    SIG=$(STRIPE_TEST_WEBHOOK_KEY="$STRIPE_TEST_WEBHOOK_KEY" \
+          python3 "$SIGNER" "$BODY" 2>/dev/null || echo "")
+    if [[ -z "$SIG" ]]; then
+      die "Section [6]: failed to sign synthetic event"
+    else
+      printf "\033[1;32m  ✓\033[0m %-55s [sig=%s…]\n" \
+        "Section [6] step 2: signed event" "${SIG:0:24}"
+      PASS=$((PASS+1))
+
+      # ----- step 3: POST signed event to stripe-webhook -----
+      WH_CODE=$(curl -s --max-time "$TIMEOUT" -X POST \
+        "$FUNCTIONS_URL/stripe-webhook" \
+        -H "stripe-signature: $SIG" \
+        -H "Content-Type: application/json" \
+        --data-binary "$BODY" \
+        -o /dev/null -w '%{http_code}')
+      if [[ "$WH_CODE" == "200" ]]; then
+        printf "\033[1;32m  ✓\033[0m %-55s [200]\n" \
+          "Section [6] step 3: webhook accepted signed event"
+        PASS=$((PASS+1))
+      else
+        die "Section [6] step 3: webhook returned $WH_CODE (expected 200)"
+      fi
+
+      # ----- step 4: wait for activation (≤5s budget) -----
+      sleep 3
+
+      # ----- step 5: assert profile.is_pro=true, tier='basic' -----
+      PROFILE=$(sb_select_profile)
+      if echo "$PROFILE" | grep -q '"is_pro":true' \
+         && echo "$PROFILE" | grep -q '"subscription_tier":"basic"'; then
+        printf "\033[1;32m  ✓\033[0m %-55s\n" \
+          "Section [6] step 5: profile is_pro=true tier=basic"
+        PASS=$((PASS+1))
+      else
+        die "Section [6] step 5: profile not activated. payload=${PROFILE:0:160}"
+      fi
+
+      # ----- step 6: assert subscriptions.status='active' -----
+      SUBROW=$(sb_select_subscription)
+      if echo "$SUBROW" | grep -q '"status":"active"'; then
+        printf "\033[1;32m  ✓\033[0m %-55s\n" \
+          "Section [6] step 6: subscriptions.status=active"
+        PASS=$((PASS+1))
+      else
+        die "Section [6] step 6: subscriptions row missing/inactive. payload=${SUBROW:0:160}"
+      fi
+
+      # ----- step 7: assert check-ai-quota returns plan=pro, unlimited -----
+      QUOTA=$(curl -s --max-time "$TIMEOUT" -X POST \
+        "$FUNCTIONS_URL/check-ai-quota" \
+        -H "Authorization: Bearer ${SMOKE_TEST_JWT}" \
+        -H "Content-Type: application/json" \
+        -d '{"action":"check"}')
+      if echo "$QUOTA" | grep -q '"plan":"pro"' \
+         && echo "$QUOTA" | grep -q '"unlimited":true'; then
+        printf "\033[1;32m  ✓\033[0m %-55s\n" \
+          "Section [6] step 7: check-ai-quota plan=pro unlimited=true"
+        PASS=$((PASS+1))
+      else
+        die "Section [6] step 7: quota not Pro. payload=${QUOTA:0:160}"
+      fi
+    fi
+
+    # ----- step 8: cleanup (also runs via trap on any earlier exit) -----
+    cleanup_section6
+    trap - EXIT
+    printf "\033[1;32m  ✓\033[0m %-55s\n" "Section [6] step 8: test user state cleaned up"
+    PASS=$((PASS+1))
+  fi
+fi
 
 echo ""
 echo "==============================================="

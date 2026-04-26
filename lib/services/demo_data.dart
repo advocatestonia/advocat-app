@@ -26,6 +26,7 @@ abstract final class DemoData {
     fullName: 'Guest',
     phone: '+372 5123 4567',
     preferredLanguage: 'en',
+    isPro: true,
     subscriptionTier: SubscriptionTier.premium,
     subscriptionExpiresAt: DateTime.now().add(const Duration(days: 365)),
     createdAt: DateTime.now().subtract(const Duration(days: 90)),

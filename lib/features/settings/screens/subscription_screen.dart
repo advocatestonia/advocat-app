@@ -385,11 +385,12 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
 
     if (context.mounted) {
       final user = ref.read(currentUserProvider).valueOrNull;
-      final tier = user?.subscriptionTier;
-      if (tier != null && tier != SubscriptionTier.free) {
+      // Access decision: rely on isProActive (is_pro && not expired), not
+      // on subscriptionTier alone. Tier is still used below for the label.
+      if (user != null && user.isProActive) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Subscription restored: ${tier.name}'),
+            content: Text('Subscription restored: ${user.subscriptionTier.name}'),
             backgroundColor: AppColors.accent,
           ),
         );

@@ -5,6 +5,13 @@ import {
   routeSubscriptionUpdate,
   scrubPIIFromLog,
 } from "./subscription_router.ts";
+import {
+  checkAndMarkProcessing,
+  markError,
+  markOk,
+  verifyProfileWrite,
+  verifySubscriptionWrite,
+} from "./idempotency.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
@@ -92,9 +99,42 @@ serve(async (req) => {
       return new Response("Invalid JSON", { status: 400 });
     }
 
-    console.log(`Stripe webhook: ${event.type}`);
+    console.log(`Stripe webhook: ${event.type} id=${event.id}`);
 
     const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+    // Idempotency gate (silent-failure mode #4). If we already returned ok for
+    // this event.id, return 200 without touching the DB again. Stripe retries
+    // are common — duplicate processing would double-extend subscriptions.
+    if (!event.id) {
+      // Defensive: every real Stripe event has an id. If we got here without
+      // one, fail loudly rather than skip the idempotency layer.
+      return new Response(JSON.stringify({ error: "Missing event id" }), {
+        status: 400, headers: responseHeaders,
+      });
+    }
+    const decision = await checkAndMarkProcessing(
+      supabase,
+      event.id,
+      event.type,
+    );
+    if (decision.kind === "skip") {
+      console.log(`webhook: event ${event.id} already processed, skipping`);
+      return new Response(
+        JSON.stringify({ received: true, idempotent: true }),
+        { status: 200, headers: responseHeaders },
+      );
+    }
+
+    // Track the resolved user across the switch so we can stamp it onto the
+    // webhook_events row when we mark ok.
+    let resolvedUserId: string | null = null;
+
+    // Inner try: surfaces DB write/verification failures so the outer catch
+    // marks status='error' and returns 500 (Stripe will retry). Without this,
+    // a thrown verification error would still bubble to the outer catch, but
+    // we want the markError side-effect to fire with event.id in scope.
+    try {
 
     switch (event.type) {
       case "checkout.session.completed": {
@@ -141,15 +181,47 @@ serve(async (req) => {
           break;
         }
 
+        resolvedUserId = userId;
+
         // Upsert — if the profile row doesn't exist yet (trigger gap), create
         // it. This eliminates the silent-failure class where a paying user
         // had no profile row and their Pro never activated.
-        await supabase.from("profiles").upsert({
+        //
+        // is_pro = true is REQUIRED — check-ai-quota Edge Function reads
+        // is_pro to decide if quota is enforced; subscription_tier alone is
+        // not enough. Sofia's manual activation 2026-04-26 surfaced this.
+        const { error: profUpErr } = await supabase.from("profiles").upsert({
           id: userId,
           subscription_tier: tier,
           subscription_expires_at: expiresAt.toISOString(),
           stripe_customer_id: session.customer,
+          is_pro: true,
         }, { onConflict: "id" });
+        if (profUpErr) {
+          throw new Error(`profiles upsert failed: ${profUpErr.message}`);
+        }
+        // Read-after-write verification — catches the silent-failure mode
+        // where the upsert "succeeded" but the row didn't actually update
+        // (RLS surprise, trigger error swallowed, etc.).
+        await verifyProfileWrite(supabase, userId, {
+          is_pro: true,
+          subscription_tier: tier,
+        });
+
+        // Also write to subscriptions table (separate source of truth that
+        // check-ai-quota also probes). status='active' is what unlocks Pro.
+        const { error: subUpErr } = await supabase.from("subscriptions").upsert({
+          user_id: userId,
+          status: "active",
+          tier: tier,
+          current_period_end: expiresAt.toISOString(),
+          stripe_subscription_id: session.subscription || null,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "user_id" });
+        if (subUpErr) {
+          throw new Error(`subscriptions upsert failed: ${subUpErr.message}`);
+        }
+        await verifySubscriptionWrite(supabase, userId, { status: "active" });
 
         // Send our own confirmation email so customers always get one,
         // regardless of Stripe Dashboard "Customer emails" toggle.
@@ -220,10 +292,32 @@ serve(async (req) => {
             .eq("stripe_customer_id", stripeCustomerId)
             .limit(1);
           if (users && users.length > 0) {
-            await supabase.from("profiles").update({
+            const userId = users[0].id;
+            resolvedUserId = userId;
+            const { error: pErr } = await supabase.from("profiles").update({
               subscription_tier: action.tier,
               subscription_expires_at: action.expires_at,
-            }).eq("id", users[0].id);
+              is_pro: true,
+            }).eq("id", userId);
+            if (pErr) {
+              throw new Error(`profiles update (extend) failed: ${pErr.message}`);
+            }
+            await verifyProfileWrite(supabase, userId, {
+              is_pro: true,
+              subscription_tier: action.tier,
+            });
+            const { error: sErr } = await supabase.from("subscriptions").upsert({
+              user_id: userId,
+              status: "active",
+              tier: action.tier,
+              current_period_end: action.expires_at,
+              stripe_subscription_id: subscription.id,
+              updated_at: new Date().toISOString(),
+            }, { onConflict: "user_id" });
+            if (sErr) {
+              throw new Error(`subscriptions upsert (extend) failed: ${sErr.message}`);
+            }
+            await verifySubscriptionWrite(supabase, userId, { status: "active" });
             console.log(
               `subscription.updated: extended customer=${stripeCustomerId} ` +
                 `tier=${action.tier} until=${action.expires_at}`,
@@ -240,6 +334,9 @@ serve(async (req) => {
             .eq("stripe_customer_id", stripeCustomerId)
             .limit(1);
           if (users && users.length > 0) {
+            resolvedUserId = users[0].id;
+            // No verification: the column may not exist (schema drift); the
+            // flag is diagnostic, not security-critical, so we don't throw.
             await supabase.from("profiles").update({
               subscription_status: "past_due",
             }).eq("id", users[0].id);
@@ -254,10 +351,25 @@ serve(async (req) => {
             .eq("stripe_customer_id", stripeCustomerId)
             .limit(1);
           if (users && users.length > 0) {
-            await supabase.from("profiles").update({
+            const userId = users[0].id;
+            resolvedUserId = userId;
+            const { error: pErr } = await supabase.from("profiles").update({
               subscription_tier: "free",
               subscription_expires_at: null,
-            }).eq("id", users[0].id);
+              is_pro: false,
+            }).eq("id", userId);
+            if (pErr) {
+              throw new Error(`profiles update (downgrade) failed: ${pErr.message}`);
+            }
+            await verifyProfileWrite(supabase, userId, { is_pro: false });
+            const { error: sErr } = await supabase.from("subscriptions").update({
+              status: "canceled",
+              updated_at: new Date().toISOString(),
+            }).eq("user_id", userId);
+            if (sErr) {
+              throw new Error(`subscriptions update (downgrade) failed: ${sErr.message}`);
+            }
+            await verifySubscriptionWrite(supabase, userId, { status: "canceled" });
             console.log(
               `subscription.updated: downgraded customer=${stripeCustomerId}`,
             );
@@ -283,10 +395,25 @@ serve(async (req) => {
           .limit(1);
 
         if (users && users.length > 0) {
-          await supabase.from("profiles").update({
+          const userId = users[0].id;
+          resolvedUserId = userId;
+          const { error: pErr } = await supabase.from("profiles").update({
             subscription_tier: "free",
             subscription_expires_at: null,
-          }).eq("id", users[0].id);
+            is_pro: false,
+          }).eq("id", userId);
+          if (pErr) {
+            throw new Error(`profiles update (deleted) failed: ${pErr.message}`);
+          }
+          await verifyProfileWrite(supabase, userId, { is_pro: false });
+          const { error: sErr } = await supabase.from("subscriptions").update({
+            status: "canceled",
+            updated_at: new Date().toISOString(),
+          }).eq("user_id", userId);
+          if (sErr) {
+            throw new Error(`subscriptions update (deleted) failed: ${sErr.message}`);
+          }
+          await verifySubscriptionWrite(supabase, userId, { status: "canceled" });
 
           console.log(
             `subscription.deleted: customer=${stripeCustomerId}`,
@@ -308,10 +435,21 @@ serve(async (req) => {
         console.log(`Unhandled event type: ${event.type}`);
     }
 
+    // All DB writes for this event succeeded AND verification passed.
+    await markOk(supabase, event.id, resolvedUserId);
+
     return new Response(JSON.stringify({ received: true }), {
       status: 200,
       headers: responseHeaders,
     });
+
+    } catch (innerErr) {
+      // A write or verification threw. Mark webhook_events.status='error',
+      // increment retry_count, and re-throw so the outer catch returns 500
+      // and Stripe retries.
+      await markError(supabase, event.id, innerErr);
+      throw innerErr;
+    }
   } catch (error) {
     // Scrub any email-shaped substrings before logging.
     const msg = error instanceof Error ? error.message : String(error);
