@@ -53,7 +53,7 @@ img, svg { display: block; max-width: 100%; }
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 32px; }
 .nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; color: var(--navy); letter-spacing: -0.02em; }
-.nav-logo svg, .nav-logo img { width: 28px; height: 28px; object-fit: contain; }
+.nav-logo svg, .nav-logo img { width: 32px; height: 32px; object-fit: contain; }
 .nav-links { display: flex; gap: 28px; list-style: none; }
 .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
 .nav-links a:hover { color: var(--text); }
@@ -89,16 +89,16 @@ img, svg { display: block; max-width: 100%; }
 .promo-banner a { color: var(--teal3); text-decoration: underline; font-weight: 700; }
 
 /* ── HERO ── */
-.hero { padding: 32px 0 72px; }
-.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-.hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 20px; }
+.hero { padding: 24px 0 48px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
 .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 2px rgba(13,148,136,.2); }
-.hero h1 { font-size: clamp(36px, 5.2vw, 64px); font-weight: 900; color: var(--navy); letter-spacing: -0.04em; line-height: 1.06; margin-bottom: 20px; }
+.hero h1 { font-size: clamp(32px, 4.4vw, 56px); font-weight: 900; color: var(--navy); letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 16px; }
 .hero h1 em { font-style: italic; color: var(--teal); }
-.hero-sub { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: var(--muted); margin-bottom: 32px; max-width: 460px; }
-.hero-cta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 32px; }
-.hero-trust { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
-.hero-trust span { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--faint); }
+.hero-sub { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.55; color: var(--muted); margin-bottom: 20px; max-width: 460px; }
+.hero-cta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 24px; }
+.hero-trust { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.hero-trust span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--faint); }
 .hero-trust span::before { content: '✓'; color: var(--teal); font-weight: 800; }
 
 /* ── CHAT CARD ── */
@@ -142,7 +142,7 @@ img, svg { display: block; max-width: 100%; }
 .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 48px; position: relative; }
 .steps::before { content: ''; position: absolute; top: 24px; left: calc(100%/6); right: calc(100%/6); height: 1px; background: var(--line); }
 .step { display: flex; flex-direction: column; align-items: flex-start; padding: 0 24px; }
-.step-num { width: 48px; height: 48px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; margin-bottom: 20px; position: relative; z-index: 1; box-shadow: 0 0 0 4px var(--bg2); }
+.step-num { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(140deg, var(--navy) 0%, var(--teal) 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; margin-bottom: 20px; position: relative; z-index: 1; box-shadow: 0 0 0 4px var(--bg2); }
 .section:not(.section-alt) .step-num { box-shadow: 0 0 0 4px #fff; }
 .step h3 { font-size: 18px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; margin-bottom: 8px; }
 .step p { font-size: 14px; color: var(--muted); line-height: 1.55; }
@@ -183,25 +183,126 @@ img, svg { display: block; max-width: 100%; }
 .compare-foot .btn-disabled { background: var(--bg2); color: var(--muted); border: 1.5px solid var(--line); cursor: default; }
 
 /* ── PRICING ── */
-.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
-.plan { border-radius: 18px; padding: 28px; border: 1px solid var(--line); background: #fff; display: flex; flex-direction: column; position: relative; }
-.plan.featured { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(13,148,136,.06); }
-.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--teal); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; padding: 4px 14px; white-space: nowrap; }
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 56px; }
+.plan {
+  --plan-ease: cubic-bezier(.2,.8,.3,1);
+  border-radius: 20px; padding: 30px 28px 28px; border: 1.5px solid var(--line); background: #fff;
+  display: flex; flex-direction: column; position: relative; cursor: pointer;
+  box-shadow: 0 2px 12px rgba(15,27,53,.04), 0 8px 24px -10px rgba(13,148,136,.08);
+  transition: transform .32s var(--plan-ease), box-shadow .32s var(--plan-ease), border-color .25s var(--plan-ease);
+  will-change: transform, box-shadow;
+}
+.plan::before {
+  /* subtle ambient glow ring (animated only on featured) */
+  content: ''; position: absolute; inset: -1px; border-radius: 20px; pointer-events: none;
+  box-shadow: 0 0 0 0 rgba(13,148,136,0); transition: box-shadow .35s var(--plan-ease);
+}
+.plan.featured {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(13,148,136,.07), 0 12px 36px -10px rgba(13,148,136,.22);
+  transform: translateY(-4px);
+}
+.plan.featured::before { box-shadow: 0 0 28px 2px rgba(13,148,136,.18); }
+.plan:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow: 0 0 0 1.5px var(--teal), 0 24px 48px -12px rgba(13,148,136,.22), 0 8px 18px -6px rgba(15,27,53,.08);
+  border-color: var(--teal);
+}
+.plan.featured:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 0 0 2px var(--teal), 0 32px 60px -14px rgba(13,148,136,.32), 0 10px 22px -6px rgba(15,27,53,.1);
+}
+.plan:active { transform: translateY(-4px) scale(.985); transition-duration: .15s; }
+.plan.featured:active { transform: translateY(-8px) scale(.99); }
+
+.plan-badge {
+  position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+  background: var(--navy); color: var(--teal3);
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  border-radius: 999px; padding: 5px 16px; white-space: nowrap;
+  box-shadow: 0 6px 18px -4px rgba(13,148,136,.4), 0 0 0 1px rgba(13,148,136,.3);
+  overflow: hidden;
+}
+.plan-badge::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(20,184,166,.45) 50%, transparent 70%);
+  background-size: 200% 100%; background-position: 200% 0;
+  pointer-events: none;
+}
+
+.plan-save-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: rgba(5,150,105,.1); color: var(--green);
+  font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  border-radius: 999px; padding: 3px 9px; margin-left: 8px;
+  border: 1px solid rgba(5,150,105,.22); vertical-align: middle;
+}
+
 .plan-name { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
 .plan-price { display: flex; align-items: baseline; gap: 4px; margin: 12px 0 6px; }
-.plan-price .amount { font-size: 48px; font-weight: 900; color: var(--navy); letter-spacing: -0.05em; line-height: 1; }
-.plan-price .currency { font-size: 22px; font-weight: 700; color: var(--navy); }
-.plan-price .per { font-size: 14px; color: var(--muted); }
-.plan-annual { font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 10px; }
+.plan-price .amount { font-size: 52px; font-weight: 900; color: var(--navy); letter-spacing: -0.05em; line-height: 1; }
+.plan-price .currency { font-size: 20px; font-weight: 700; color: var(--navy); align-self: flex-start; margin-top: 6px; opacity: .75; }
+.plan-price .per { font-size: 13px; color: var(--faint); font-weight: 500; }
+.plan-price .strike { font-size: 13px; color: var(--faint); text-decoration: line-through; margin-left: 6px; font-weight: 500; }
+.plan-annual { font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 .plan-desc { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--line); line-height: 1.5; }
 .plan-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 24px; flex: 1; }
-.plan-features li { display: flex; gap: 10px; font-size: 13.5px; color: var(--text); line-height: 1.45; }
-.plan-features li::before { content: '✓'; color: var(--teal); font-weight: 800; flex-shrink: 0; }
-.plan .btn { width: 100%; height: 46px; border-radius: 10px; font-size: 14px; }
+.plan-features li {
+  display: flex; gap: 10px; font-size: 13.5px; color: var(--text); line-height: 1.45;
+  transition: transform .25s var(--plan-ease), color .2s var(--plan-ease);
+}
+.plan-features li::before {
+  content: '✓'; color: var(--teal); font-weight: 800; flex-shrink: 0;
+  transition: transform .25s var(--plan-ease);
+}
+.plan:hover .plan-features li::before { transform: scale(1.15); }
+
+.plan .btn {
+  width: 100%; height: 48px; border-radius: 10px; font-size: 14.5px; font-weight: 700;
+  transition: transform .25s var(--plan-ease), box-shadow .25s var(--plan-ease), background .2s var(--plan-ease);
+}
 .plan:not(.featured) .btn-primary { background: var(--navy); }
-.plan:not(.featured) .btn-primary:hover { background: #1a3a6e; box-shadow: 0 4px 16px rgba(15,27,53,.2); }
-.pricing-note { text-align: center; margin-top: 24px; font-size: 13px; color: var(--muted); }
+.plan:not(.featured) .btn-primary:hover { background: #1a3a6e; box-shadow: 0 8px 22px -4px rgba(15,27,53,.28); transform: translateY(-1px); }
+.plan.featured .btn-primary { box-shadow: 0 6px 18px -4px rgba(13,148,136,.35); }
+.plan:hover .btn-primary { transform: translateY(-1px) scale(1.02); box-shadow: 0 10px 26px -6px rgba(13,148,136,.4); }
+.plan.featured:hover .btn-primary { box-shadow: 0 12px 30px -6px rgba(13,148,136,.5); }
+
+.pricing-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--muted); }
 .pricing-note strong { color: var(--teal); }
+
+/* Idle floating + glow animations (motion-friendly) */
+@media (prefers-reduced-motion: no-preference) {
+  .plan { animation: planFloat 5.5s ease-in-out infinite; }
+  .plan:nth-child(2) { animation-delay: -1.8s; }
+  .plan:nth-child(3) { animation-delay: -3.6s; }
+  .plan:hover { animation-play-state: paused; }
+  .plan.featured::before { animation: planGlowPulse 3.2s ease-in-out infinite; }
+  .plan-badge::after { animation: planBadgeShimmer 3.2s linear infinite; }
+}
+@keyframes planFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-1.5px); }
+}
+.plan.featured { animation-name: planFloatFeatured !important; }
+@keyframes planFloatFeatured {
+  0%, 100% { transform: translateY(-4px); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes planGlowPulse {
+  0%, 100% { box-shadow: 0 0 22px 1px rgba(13,148,136,.14); }
+  50%      { box-shadow: 0 0 34px 4px rgba(13,148,136,.28); }
+}
+@keyframes planBadgeShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Touch / mobile: lift via :active instead of hover */
+@media (hover: none) {
+  .plan:hover { transform: none; box-shadow: 0 2px 12px rgba(15,27,53,.04), 0 8px 24px -10px rgba(13,148,136,.08); border-color: var(--line); }
+  .plan.featured:hover { transform: translateY(-4px); border-color: var(--teal); box-shadow: 0 0 0 4px rgba(13,148,136,.07), 0 12px 36px -10px rgba(13,148,136,.22); }
+  .plan:active { transform: translateY(-4px) scale(.99); box-shadow: 0 0 0 1.5px var(--teal), 0 18px 36px -10px rgba(13,148,136,.22); transition-duration: .12s; }
+}
 
 /* ── FAQ ── */
 .faq { max-width: 720px; margin: 48px auto 0; }
@@ -237,6 +338,7 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
 .foot-bot { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 12px; }
 .foot-bot-l { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 .cert-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--faint); background: var(--bg2); border-radius: 6px; padding: 4px 10px; border: 1px solid var(--line); }
+.cert-badge .cert-shield { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; opacity: .85; }
 .foot-copy { font-size: 12px; color: var(--faint); }
 
 /* ── ANIMATIONS ── */
@@ -249,8 +351,11 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .nav-links { display: none; }
   .nav-actions { gap: 6px; }
   .lang-btn { padding: 5px 8px; font-size: 11px; }
-  .hero { padding: 20px 0 48px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero { padding: 16px 0 40px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .hero h1 { font-size: clamp(28px, 7.5vw, 36px); margin-bottom: 12px; }
+  .hero-sub { margin-bottom: 16px; }
+  .hero-cta { margin-bottom: 18px; }
   .section { padding: 64px 0; }
   .steps, .pricing-grid, .foot-grid { grid-template-columns: 1fr; gap: 32px; }
   .steps::before { display: none; }
@@ -503,7 +608,10 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="plan-price">
           <span class="currency">€</span><span class="amount">14.99</span><span class="per" data-i18n="plan2.per">/ month</span>
         </div>
-        <div class="plan-annual" data-i18n="plan2.annual">or €119.99/year — save 33%</div>
+        <div class="plan-annual">
+          <span data-i18n="plan2.annual">or €119.99/year — save 33%</span>
+          <span class="plan-save-badge">SAVE 33%</span>
+        </div>
         <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. Unlimited AI, full document drafting.</div>
         <ul class="plan-features">
           <li data-i18n="plan2.f1">100 AI messages / day</li>
@@ -522,7 +630,10 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="plan-price">
           <span class="currency">€</span><span class="amount">29.99</span><span class="per" data-i18n="plan3.per">/ month</span>
         </div>
-        <div class="plan-annual" data-i18n="plan3.annual">or €249.99/year — save 30%</div>
+        <div class="plan-annual">
+          <span data-i18n="plan3.annual">or €249.99/year — save 30%</span>
+          <span class="plan-save-badge">SAVE 30%</span>
+        </div>
         <div class="plan-desc" data-i18n="plan3.desc">Full defense — unlimited everything, priority response, all features.</div>
         <ul class="plan-features">
           <li data-i18n="plan3.f1">Unlimited AI messages</li>
@@ -592,7 +703,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
       </div>
       <div class="foot-col">
         <h5 data-i18n="foot.company">Company</h5>
-        <a href="mailto:hello@advocat.ee">hello@advocat.ee</a>
+        <a href="mailto:support@advocat.ee">support@advocat.ee</a>
         <a href="/blog/" data-i18n="foot.news">News</a>
       </div>
       <div class="foot-col">
@@ -604,7 +715,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     </div>
     <div class="foot-bot">
       <div class="foot-bot-l">
-        <span class="cert-badge" data-i18n="foot.gdpr_badge">GDPR · EU servers (Frankfurt)</span>
+        <span class="cert-badge"><img src="/blog/logo_shield.png" alt="" class="cert-shield"><span data-i18n="foot.gdpr_badge">GDPR · EU servers (Frankfurt)</span></span>
         <span class="cert-badge">Vorantis OÜ · Reg 17098992</span>
         <span class="cert-badge">Tallinn, Estonia</span>
       </div>
@@ -651,6 +762,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     We use strictly necessary cookies to keep you signed in. We do
     <strong>not</strong> use advertising or cross-site tracking cookies.
     See our <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+    Questions: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.
   </p>
   <div class="advCookieRow">
     <button class="advCookieAccept" type="button" onclick="advCookieConsent('accept')">Accept</button>
@@ -760,7 +872,7 @@ const I18N = {
       { q: 'Is this legal? Can I really use AI for legal questions?', a: 'Yes. Advocat is a legal information service — it explains laws and helps you draft documents. It does not replace a licensed attorney for court representation, but for understanding your situation and writing letters it works fine. The same way reading legal articles online is legal, using a tool that does it for you is legal.' },
       { q: 'Is my data safe?', a: 'Yes. Encrypted at rest, hosted on EU servers (Frankfurt). Conversations are never used to train AI models. We are GDPR-compliant and follow strict data minimization. You can delete your data at any time.' },
       { q: 'Why is this better than ChatGPT?', a: 'Advocat is specialized for Estonian and EU law: it cites specific statutes (e.g. VÕS § 308), remembers your case across sessions, and can write formal letters in the right legal format. ChatGPT can hallucinate fake citations — Advocat cites real ones from Riigi Teataja.' },
-      { q: 'Can I get a refund?', a: 'Yes. Cancel anytime in one click — no questions. Under EU consumer law, you have 14 days from purchase to get a full refund. After that, your subscription stays active until the end of the billing period.' },
+      { q: 'Can I get a refund?', a: 'Yes. Cancel anytime in one click — no questions. Under EU consumer law, you have 14 days from purchase to get a full refund. After that, your subscription stays active until the end of the billing period. Need help? Write to support@advocat.ee.' },
       { q: 'Are these documents legally binding?', a: 'The documents Advocat drafts are templates and starting points. They become legally meaningful when you sign and send them. For documents going to court, we strongly recommend a licensed attorney review them first. Advocat is your draft author, not your lawyer in court.' },
       { q: 'Will Advocat represent me in court?', a: 'No. Advocat is for preparation, not representation. We help you understand your rights, write to the other party, and prepare your case file. For appearing in court itself, you need a licensed Estonian advocate (vandeadvokaat). We can help you find one when needed.' },
     ],
@@ -836,7 +948,7 @@ const I18N = {
       { q: 'Kas see on seaduslik? Kas tõesti saab AI-d õigusküsimuste jaoks kasutada?', a: 'Jah. Advocat on õigusinfo teenus — selgitab seadusi ja aitab koostada dokumente. See ei asenda litsentseeritud advokaati kohtus, kuid olukorra mõistmiseks ja kirjade kirjutamiseks see töötab. Sama nagu õigusartiklite lugemine internetis on seaduslik, on ka tööriista kasutamine seaduslik.' },
       { q: 'Kas mu andmed on turvalised?', a: 'Jah. Krüpteeritud, hoitakse EL serverites (Frankfurt). Vestlusi ei kasutata mudelite treenimiseks. Oleme GDPR-iga kooskõlas ja järgime andmete minimeerimist. Saad oma andmed igal ajal kustutada.' },
       { q: 'Miks see on parem kui ChatGPT?', a: 'Advocat on spetsialiseerunud Eesti ja EL õigusele: tsiteerib konkreetseid paragrahve (nt VÕS § 308), mäletab sinu asja sessioonide vahel ja oskab kirjutada ametlikke kirju õiges juriidilises vormis. ChatGPT võib välja mõelda võltstsitaate — Advocat tsiteerib päris allikaid Riigi Teatajast.' },
-      { q: 'Kas saan raha tagasi?', a: 'Jah. Tühista millal iganes ühe klikiga — ilma küsimusteta. EL tarbijaõiguse järgi on sul 14 päeva ostust täielikuks tagasimakseks. Pärast seda jääb tellimus aktiivseks arveldusperioodi lõpuni.' },
+      { q: 'Kas saan raha tagasi?', a: 'Jah. Tühista millal iganes ühe klikiga — ilma küsimusteta. EL tarbijaõiguse järgi on sul 14 päeva ostust täielikuks tagasimakseks. Pärast seda jääb tellimus aktiivseks arveldusperioodi lõpuni. Vajad abi? Kirjuta support@advocat.ee.' },
       { q: 'Kas need dokumendid on juriidiliselt siduvad?', a: 'Advocati koostatud dokumendid on mallid ja lähtepunktid. Need muutuvad õiguslikult oluliseks, kui sa neid allkirjastad ja saadad. Kohtusse minevatele dokumentidele soovitame tugevalt litsentseeritud advokaadi ülevaatust. Advocat on sinu mustandi autor, mitte sinu kohtuesindaja.' },
       { q: 'Kas Advocat esindab mind kohtus?', a: 'Ei. Advocat on ettevalmistuseks, mitte esindamiseks. Aitame sul mõista oma õigusi, kirjutada teisele poolele ja koostada toimikut. Kohtus esinemiseks vajad litsentseeritud Eesti vandeadvokaati. Vajadusel saame aidata leida.' },
     ],
@@ -912,7 +1024,7 @@ const I18N = {
       { q: 'Это законно? Можно ли вообще использовать ИИ для юридических вопросов?', a: 'Да. Advocat — это сервис правовой информации: объясняет законы и помогает составлять документы. Не заменяет лицензированного адвоката в суде, но для понимания ситуации и написания писем — работает. Так же как чтение юридических статей в интернете легально, использование инструмента, который делает то же самое за тебя, — тоже легально.' },
       { q: 'Безопасны ли мои данные?', a: 'Да. Шифрование, хранение на серверах ЕС (Франкфурт). Разговоры никогда не используются для обучения моделей. Соблюдаем GDPR и принцип минимизации данных. Свои данные можно удалить в любой момент.' },
       { q: 'Чем это лучше ChatGPT?', a: 'Advocat специализирован на эстонском и европейском праве: цитирует конкретные статьи (например VÕS § 308), помнит твоё дело между сессиями и умеет писать официальные письма в правильном юридическом формате. ChatGPT может выдумывать ссылки — Advocat ссылается на реальные источники из Riigi Teataja.' },
-      { q: 'Можно ли вернуть деньги?', a: 'Да. Отмена в один клик в любое время — без вопросов. По закону ЕС о потребителях у тебя есть 14 дней с покупки на полный возврат. После этого подписка действует до конца расчётного периода.' },
+      { q: 'Можно ли вернуть деньги?', a: 'Да. Отмена в один клик в любое время — без вопросов. По закону ЕС о потребителях у тебя есть 14 дней с покупки на полный возврат. После этого подписка действует до конца расчётного периода. Нужна помощь? Напишите на support@advocat.ee.' },
       { q: 'Эти документы юридически обязательны?', a: 'Документы, которые составляет Advocat, — это шаблоны и отправные точки. Они становятся юридически значимыми, когда ты их подписываешь и отправляешь. Документы для суда настоятельно рекомендуем показать лицензированному адвокату. Advocat — автор твоего черновика, а не твой представитель в суде.' },
       { q: 'Будет ли Advocat представлять меня в суде?', a: 'Нет. Advocat для подготовки, не для представления. Помогаем понять права, написать другой стороне и собрать дело. Для выступления в суде нужен лицензированный эстонский присяжный адвокат (vandeadvokaat). При необходимости поможем найти.' },
     ],
@@ -988,7 +1100,7 @@ const I18N = {
       { q: 'Це законно? Чи можна використовувати ШІ для юридичних питань?', a: 'Так. Advocat — це сервіс правової інформації: пояснює закони і допомагає складати документи. Не замінює ліцензованого адвоката в суді, але для розуміння ситуації і написання листів — працює. Так само як читання юридичних статей в інтернеті легальне, використання інструмента, який робить те саме, — теж легально.' },
       { q: 'Чи безпечні мої дані?', a: 'Так. Шифрування, зберігання на серверах ЄС (Франкфурт). Розмови ніколи не використовуються для навчання моделей. Дотримуємося GDPR і принципу мінімізації даних. Свої дані можна видалити в будь-який момент.' },
       { q: 'Чим це краще за ChatGPT?', a: 'Advocat спеціалізований на естонському та європейському праві: цитує конкретні статті (наприклад VÕS § 308), пам\'ятає твою справу між сесіями, вміє писати офіційні листи в правильному юридичному форматі. ChatGPT може вигадувати посилання — Advocat посилається на реальні джерела з Riigi Teataja.' },
-      { q: 'Чи можна повернути гроші?', a: 'Так. Скасування в один клік будь-коли — без питань. За законом ЄС про споживачів у тебе є 14 днів від покупки на повне повернення. Після цього підписка діє до кінця розрахункового періоду.' },
+      { q: 'Чи можна повернути гроші?', a: 'Так. Скасування в один клік будь-коли — без питань. За законом ЄС про споживачів у тебе є 14 днів від покупки на повне повернення. Після цього підписка діє до кінця розрахункового періоду. Потрібна допомога? Напиши на support@advocat.ee.' },
       { q: 'Чи юридично обов\'язкові ці документи?', a: 'Документи, які складає Advocat, — це шаблони та відправні точки. Вони стають юридично значущими, коли ти їх підписуєш і надсилаєш. Документи для суду настійно рекомендуємо показати ліцензованому адвокату. Advocat — автор твого чернетки, а не твій представник у суді.' },
       { q: 'Чи представлятиме Advocat мене в суді?', a: 'Ні. Advocat для підготовки, не для представництва. Допомагаємо зрозуміти права, написати іншій стороні та зібрати справу. Для виступу в суді потрібен ліцензований естонський присяжний адвокат (vandeadvokaat). За потреби допоможемо знайти.' },
     ],
@@ -1064,7 +1176,7 @@ const I18N = {
       { q: 'Onko tämä laillista? Voiko tekoälyä käyttää lakikysymyksiin?', a: 'Kyllä. Advocat on lakitiedotuspalvelu — selittää lakeja ja auttaa laatimaan asiakirjoja. Se ei korvaa lisensoitua asianajajaa oikeudessa, mutta tilanteen ymmärtämiseen ja kirjeiden kirjoittamiseen se toimii.' },
       { q: 'Ovatko tietoni turvassa?', a: 'Kyllä. Salattu, EU-palvelimilla (Frankfurt). Keskusteluja ei käytetä mallin koulutukseen. GDPR-yhteensopiva ja noudatamme tietojen minimointia.' },
       { q: 'Miksi tämä on parempi kuin ChatGPT?', a: 'Advocat on erikoistunut Viron ja EU:n lakiin: siteeraa konkreettisia pykäliä (esim. VÕS § 308), muistaa tapauksesi ja osaa kirjoittaa virallisia kirjeitä oikeassa juridisessa muodossa. ChatGPT voi keksiä viittauksia — Advocat siteeraa oikeita lähteitä Riigi Teatajasta.' },
-      { q: 'Saanko rahat takaisin?', a: 'Kyllä. Peruutus yhdellä klikkauksella milloin tahansa. EU-kuluttajalain mukaan sinulla on 14 päivää oston jälkeen täyteen palautukseen.' },
+      { q: 'Saanko rahat takaisin?', a: 'Kyllä. Peruutus yhdellä klikkauksella milloin tahansa. EU-kuluttajalain mukaan sinulla on 14 päivää oston jälkeen täyteen palautukseen. Tarvitsetko apua? Kirjoita osoitteeseen support@advocat.ee.' },
       { q: 'Ovatko nämä asiakirjat juridisesti sitovia?', a: 'Advocatin laatimat asiakirjat ovat malleja ja lähtökohtia. Niistä tulee juridisesti merkityksellisiä, kun allekirjoitat ja lähetät ne. Oikeuteen meneville asiakirjoille suosittelemme vahvasti lisensoidun asianajajan tarkastusta.' },
       { q: 'Edustaako Advocat minua oikeudessa?', a: 'Ei. Advocat on valmistautumiseen, ei edustamiseen. Autamme ymmärtämään oikeuksiasi, kirjoittamaan toiselle osapuolelle ja kokoamaan asiakirjasi. Oikeudessa tarvitset lisensoidun virolaisen asianajajan.' },
     ],
