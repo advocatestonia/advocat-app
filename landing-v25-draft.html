@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="et" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Advocat — AI õigusabi · Defend Your Rights</title>
+<meta name="description" content="AI-powered legal assistant for Estonia and the EU. Cited sources, 17 languages, GDPR-compliant. Free to start, €14.99/mo for unlimited access — vs €100-200/h at a traditional law firm.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=7">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=7">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=7">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:   #0F1B35;
+  --navy2:  #1A2B4A;
+  --teal:   #0D9488;
+  --teal2:  #0B7A70;
+  --teal3:  #14B8A6;
+  --bg:     #FFFFFF;
+  --bg2:    #F8F9FA;
+  --bg3:    #F1F3F5;
+  --line:   #E5E7EB;
+  --text:   #111827;
+  --muted:  #6B7280;
+  --faint:  #9CA3AF;
+  --error:  #DC2626;
+  --warn:   #D97706;
+  --green:  #059669;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; line-height: 1.5; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+img, svg { display: block; max-width: 100%; }
+
+.container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+.container-sm { max-width: 780px; margin: 0 auto; padding: 0 24px; }
+
+/* ── NAV ── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 32px; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; color: var(--navy); letter-spacing: -0.02em; }
+.nav-logo svg, .nav-logo img { width: 28px; height: 28px; object-fit: contain; }
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
+.nav-links a:hover { color: var(--text); }
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+
+/* ── BUTTONS ── */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 8px; font-weight: 600; font-size: 14px; transition: all .15s; white-space: nowrap; text-decoration: none; }
+.btn-primary { background: var(--teal); color: #fff; padding: 0 18px; height: 38px; }
+.btn-primary:hover { background: var(--teal2); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(13,148,136,.3); }
+.btn-ghost { color: var(--muted); padding: 0 14px; height: 38px; }
+.btn-ghost:hover { color: var(--text); background: var(--bg2); border-radius: 8px; }
+.btn-outline { border: 1.5px solid var(--line); color: var(--text); padding: 0 18px; height: 38px; }
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+.btn-hero { height: 50px; padding: 0 28px; font-size: 15px; border-radius: 10px; box-shadow: 0 4px 20px rgba(13,148,136,.25); }
+.btn-hero-out { height: 50px; padding: 0 28px; font-size: 15px; border-radius: 10px; border: 1.5px solid var(--line); color: var(--text); background: #fff; }
+.btn-hero-out:hover { border-color: var(--teal); color: var(--teal); }
+
+/* Language dropdown */
+.lang-wrap { position: relative; }
+.lang-btn { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; transition: all .15s; background: #fff; display: inline-flex; align-items: center; gap: 6px; }
+.lang-btn:hover { border-color: var(--teal); color: var(--teal); }
+.lang-btn .caret { font-size: 9px; opacity: .55; }
+.lang-menu { position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 180px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; }
+.lang-menu.open { display: block; }
+.lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 6px; font-size: 13.5px; color: var(--text); font-weight: 500; transition: background .15s; }
+.lang-menu button:hover { background: var(--bg2); }
+.lang-menu button.active { background: rgba(13,148,136,.08); color: var(--teal); }
+.lang-menu .lang-code { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--faint); }
+
+/* ── PROMO BANNER ── */
+.promo-banner { background: linear-gradient(135deg, var(--navy), #1a3a6e); color: #fff; padding: 9px 16px; text-align: center; font-size: 13px; font-weight: 500; }
+.promo-banner strong { color: var(--teal3); font-weight: 800; }
+.promo-banner a { color: var(--teal3); text-decoration: underline; font-weight: 700; }
+
+/* ── HERO ── */
+.hero { padding: 72px 0 88px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 20px; }
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 2px rgba(13,148,136,.2); }
+.hero h1 { font-size: clamp(36px, 5.2vw, 64px); font-weight: 900; color: var(--navy); letter-spacing: -0.04em; line-height: 1.06; margin-bottom: 20px; }
+.hero h1 em { font-style: italic; color: var(--teal); }
+.hero-sub { font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; color: var(--muted); margin-bottom: 32px; max-width: 460px; }
+.hero-cta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 32px; }
+.hero-trust { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+.hero-trust span { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--faint); }
+.hero-trust span::before { content: '✓'; color: var(--teal); font-weight: 800; }
+
+/* ── CHAT CARD ── */
+.chat-card { background: #fff; border-radius: 20px; box-shadow: 0 24px 64px -16px rgba(15,27,53,.16), 0 4px 16px -4px rgba(15,27,53,.08); overflow: hidden; border: 1px solid var(--line); }
+.chat-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--line); background: #fff; }
+.chat-header-l { display: flex; align-items: center; gap: 10px; }
+.chat-avatar { width: 36px; height: 36px; border-radius: 10px; background: var(--bg2); display: flex; align-items: center; justify-content: center; padding: 2px; overflow: hidden; }
+.chat-avatar img, .chat-avatar svg { width: 100%; height: 100%; object-fit: contain; }
+.chat-name { font-weight: 700; font-size: 14px; color: var(--text); }
+.chat-online { font-size: 11px; color: var(--green); display: flex; align-items: center; gap: 4px; font-weight: 500; }
+.chat-online::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.chat-lang-tag { font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--faint); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; }
+.chat-body { padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 280px; max-height: 320px; overflow-y: auto; background: var(--bg2); }
+.chat-msg { max-width: 86%; padding: 10px 14px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; animation: fadeUp .35s cubic-bezier(.2,.7,.3,1) both; word-wrap: break-word; }
+.chat-msg.bot { background: #fff; color: var(--text); border-bottom-left-radius: 3px; box-shadow: 0 1px 4px rgba(0,0,0,.06); align-self: flex-start; }
+.chat-msg.user { background: linear-gradient(135deg, var(--navy), #1a3a6e); color: #fff; border-bottom-right-radius: 3px; align-self: flex-end; }
+.cite-tag { display: inline-flex; align-items: center; gap: 4px; background: rgba(13,148,136,.1); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; color: var(--teal2); margin-top: 6px; }
+.typing { display: inline-flex; gap: 4px; padding: 12px 14px; background: #fff; border-radius: 14px; border-bottom-left-radius: 3px; align-self: flex-start; box-shadow: 0 1px 4px rgba(0,0,0,.06); }
+.typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); animation: bounce .9s infinite; }
+.typing span:nth-child(2) { animation-delay: .15s; }
+.typing span:nth-child(3) { animation-delay: .3s; }
+.chat-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px 4px; }
+.chip { font-size: 12px; font-weight: 600; padding: 6px 12px; border: 1.5px solid var(--line); border-radius: 999px; color: var(--muted); background: #fff; cursor: pointer; transition: all .15s; }
+.chip:hover { border-color: var(--teal); color: var(--teal); }
+.chat-input-row { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); background: #fff; }
+.chat-input-row input { flex: 1; border: none; outline: none; font: inherit; font-size: 13.5px; color: var(--text); background: none; }
+.chat-input-row input::placeholder { color: var(--faint); }
+.chat-send { width: 34px; height: 34px; border-radius: 8px; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; border: none; }
+.chat-send:hover { background: var(--teal2); transform: scale(1.05); }
+
+/* ── SECTION ── */
+.section { padding: 88px 0; }
+.section-alt { background: var(--bg2); }
+.section-label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal2); margin-bottom: 12px; }
+.section-label::before { content: ''; width: 16px; height: 2px; background: var(--teal); border-radius: 1px; }
+.section h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 900; color: var(--navy); letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px; }
+.section h2 em { color: var(--teal); font-style: italic; }
+.section-sub { font-size: 16px; color: var(--muted); max-width: 580px; line-height: 1.6; }
+
+/* ── HOW IT WORKS ── */
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 48px; position: relative; }
+.steps::before { content: ''; position: absolute; top: 24px; left: calc(100%/6); right: calc(100%/6); height: 1px; background: var(--line); }
+.step { display: flex; flex-direction: column; align-items: flex-start; padding: 0 24px; }
+.step-num { width: 48px; height: 48px; border-radius: 50%; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; margin-bottom: 20px; position: relative; z-index: 1; box-shadow: 0 0 0 4px var(--bg2); }
+.section:not(.section-alt) .step-num { box-shadow: 0 0 0 4px #fff; }
+.step h3 { font-size: 18px; font-weight: 700; color: var(--navy); letter-spacing: -0.02em; margin-bottom: 8px; }
+.step p { font-size: 14px; color: var(--muted); line-height: 1.55; }
+.step-meta { margin-top: 12px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); }
+
+/* ── COMPARE ── */
+.compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch; max-width: 960px; margin: 56px auto 0; }
+.compare-vs { display: flex; align-items: center; justify-content: center; padding: 0 16px; }
+.compare-vs-circle { width: 40px; height: 40px; border-radius: 50%; background: #fff; border: 2px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: var(--muted); box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.compare-col { border-radius: 20px; overflow: hidden; }
+.compare-col-us { background: linear-gradient(160deg,#0a1628 0%,#0D2137 50%,#0B3340 100%); box-shadow: 0 24px 64px -16px rgba(10,22,40,.5); }
+.compare-col-them { background: #fff; border: 1px solid var(--line); }
+.compare-head { padding: 28px; text-align: center; }
+.compare-col-us .compare-head { border-bottom: 1px solid rgba(255,255,255,.08); }
+.compare-col-them .compare-head { border-bottom: 1px solid var(--line); background: var(--bg2); }
+.compare-head .logo-mark { width: 64px; height: 64px; margin: 0 auto 10px; }
+.compare-head .icon-stack { width: 64px; height: 64px; border-radius: 16px; background: var(--bg3); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+.compare-title { font-size: 20px; font-weight: 900; letter-spacing: -0.03em; }
+.compare-col-us .compare-title { color: #fff; }
+.compare-col-them .compare-title { color: var(--navy); }
+.compare-sub { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; margin-top: 4px; font-weight: 600; }
+.compare-col-us .compare-sub { color: rgba(255,255,255,.45); }
+.compare-col-them .compare-sub { color: var(--faint); }
+.compare-rows { padding: 8px 0; }
+.compare-row { display: flex; gap: 12px; padding: 14px 24px; align-items: flex-start; font-size: 14px; line-height: 1.45; }
+.compare-col-us .compare-row { color: rgba(255,255,255,.9); border-bottom: 1px solid rgba(255,255,255,.06); }
+.compare-col-them .compare-row { color: var(--muted); border-bottom: 1px solid var(--line); }
+.compare-row:last-child { border-bottom: none; }
+.icon-tick, .icon-x { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.icon-tick { background: rgba(13,148,136,.2); color: var(--teal3); }
+.icon-x { background: rgba(220,38,38,.08); color: var(--error); }
+.compare-row strong { color: var(--teal3); }
+.compare-col-them .compare-row strong { color: var(--error); }
+.compare-foot { padding: 18px 24px; }
+.compare-col-us .compare-foot { border-top: 1px solid rgba(255,255,255,.08); }
+.compare-col-them .compare-foot { border-top: 1px solid var(--line); }
+.compare-foot .btn { width: 100%; height: 46px; border-radius: 10px; font-size: 14px; }
+.compare-foot .btn-disabled { background: var(--bg2); color: var(--muted); border: 1.5px solid var(--line); cursor: default; }
+
+/* ── PRICING ── */
+.pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 48px; }
+.plan { border-radius: 18px; padding: 28px; border: 1px solid var(--line); background: #fff; display: flex; flex-direction: column; position: relative; }
+.plan.featured { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(13,148,136,.06); }
+.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--teal); color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; padding: 4px 14px; white-space: nowrap; }
+.plan-name { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.plan-price { display: flex; align-items: baseline; gap: 4px; margin: 12px 0 6px; }
+.plan-price .amount { font-size: 48px; font-weight: 900; color: var(--navy); letter-spacing: -0.05em; line-height: 1; }
+.plan-price .currency { font-size: 22px; font-weight: 700; color: var(--navy); }
+.plan-price .per { font-size: 14px; color: var(--muted); }
+.plan-annual { font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 10px; }
+.plan-desc { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--line); line-height: 1.5; }
+.plan-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 24px; flex: 1; }
+.plan-features li { display: flex; gap: 10px; font-size: 13.5px; color: var(--text); line-height: 1.45; }
+.plan-features li::before { content: '✓'; color: var(--teal); font-weight: 800; flex-shrink: 0; }
+.plan .btn { width: 100%; height: 46px; border-radius: 10px; font-size: 14px; }
+.plan:not(.featured) .btn-primary { background: var(--navy); }
+.plan:not(.featured) .btn-primary:hover { background: #1a3a6e; box-shadow: 0 4px 16px rgba(15,27,53,.2); }
+.pricing-note { text-align: center; margin-top: 24px; font-size: 13px; color: var(--muted); }
+.pricing-note strong { color: var(--teal); }
+
+/* ── FAQ ── */
+.faq { max-width: 720px; margin: 48px auto 0; }
+.faq-item { border-top: 1px solid var(--line); }
+.faq-item:last-child { border-bottom: 1px solid var(--line); }
+.faq-q { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 20px 0; cursor: pointer; font-size: 16px; font-weight: 600; color: var(--navy); letter-spacing: -0.01em; user-select: none; }
+.faq-q .plus { font-size: 24px; font-weight: 300; color: var(--muted); transition: transform .25s, color .15s; line-height: 1; flex-shrink: 0; }
+.faq-item.open .faq-q .plus { transform: rotate(45deg); color: var(--teal); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .3s; font-size: 15px; color: var(--muted); line-height: 1.65; }
+.faq-item.open .faq-a { max-height: 320px; padding-bottom: 20px; }
+
+/* ── FINAL CTA ── */
+.final-cta { padding: 100px 0; text-align: center; background: var(--navy); position: relative; overflow: hidden; }
+.final-cta::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(13,148,136,.2) 0%, transparent 65%); pointer-events: none; }
+.final-cta h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 900; color: #fff; letter-spacing: -0.04em; margin: 0 auto 18px; max-width: 720px; line-height: 1.08; }
+.final-cta h2 em { color: var(--teal3); font-style: italic; }
+.final-cta p { font-size: 16px; color: rgba(255,255,255,.65); margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.final-cta .btn-primary { height: 56px; padding: 0 36px; font-size: 16px; border-radius: 12px; box-shadow: 0 8px 32px rgba(13,148,136,.45); }
+.final-cta .micro { display: block; font-size: 12px; color: rgba(255,255,255,.45); margin-top: 14px; letter-spacing: .04em; }
+
+/* ── DISCLAIMER STRIP ── */
+.disclaimer-strip { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; }
+.disclaimer-strip p { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.55; max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+/* ── FOOTER ── */
+footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--line); }
+.foot-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+.foot-col h5 { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.foot-col a { display: block; font-size: 13.5px; color: var(--text); padding: 4px 0; transition: color .15s; }
+.foot-col a:hover { color: var(--teal); }
+.foot-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: 800; color: var(--navy); font-size: 17px; letter-spacing: -0.02em; }
+.foot-brand img, .foot-brand svg { width: 30px; height: 30px; }
+.foot-bot { display: flex; justify-content: space-between; align-items: center; padding-top: 22px; border-top: 1px solid var(--line); flex-wrap: wrap; gap: 12px; }
+.foot-bot-l { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.cert-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--faint); background: var(--bg2); border-radius: 6px; padding: 4px 10px; border: 1px solid var(--line); }
+.foot-copy { font-size: 12px; color: var(--faint); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounce { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav-inner { gap: 12px; height: 56px; }
+  .nav-links { display: none; }
+  .nav-actions { gap: 6px; }
+  .lang-btn { padding: 5px 8px; font-size: 11px; }
+  .hero { padding: 48px 0 64px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .section { padding: 64px 0; }
+  .steps, .pricing-grid, .foot-grid { grid-template-columns: 1fr; gap: 32px; }
+  .steps::before { display: none; }
+  .step { padding: 0; }
+  .compare-grid { grid-template-columns: 1fr; gap: 16px; }
+  .compare-vs { padding: 8px 0; }
+  .compare-vs-circle { transform: rotate(90deg); }
+  .foot-bot { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .final-cta { padding: 72px 0; }
+}
+@media (max-width: 480px) {
+  .promo-banner { font-size: 12px; padding: 8px 12px; }
+  .container { padding: 0 18px; }
+  .nav-logo { font-size: 15px; }
+  .nav-logo span { display: none; }
+}
+
+/* ── RTL ── */
+html[dir="rtl"] body { direction: rtl; }
+html[dir="rtl"] .chat-msg.user { align-self: flex-start; border-bottom-right-radius: 14px; border-bottom-left-radius: 3px; }
+html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius: 14px; border-bottom-right-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ── PROMO BANNER (Founding Member) ── -->
+<div class="promo-banner" id="promo-banner">
+  <span data-i18n="promo">Founding Member: <strong>€9.99/mo</strong> for the first 3 months. Limited spots — <a href="/app.html#pricing">claim yours →</a></span>
+</div>
+
+<!-- ── NAV ── -->
+<header class="nav">
+  <div class="container">
+    <nav class="nav-inner">
+      <a class="nav-logo" href="#top">
+        <img src="logo-shield.svg" alt="Advocat" onerror="this.onerror=null;this.src='/assets/images/logo_shield.png';">
+        <span>Advocat</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#how" data-i18n="nav.how">How it works</a></li>
+        <li><a href="#compare" data-i18n="nav.compare">Compare</a></li>
+        <li><a href="#pricing" data-i18n="nav.pricing">Pricing</a></li>
+        <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="lang-wrap">
+          <button class="lang-btn" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+            <span id="lang-current">EN</span><span class="caret">▾</span>
+          </button>
+          <div class="lang-menu" id="lang-menu" role="menu"></div>
+        </div>
+        <a class="btn btn-ghost" href="/app.html" data-i18n="nav.login">Sign in</a>
+        <a class="btn btn-primary" href="/app.html" data-i18n="nav.cta">Try free</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ── HERO ── -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow" data-i18n="hero.eyebrow">AI LEGAL ASSISTANT · 2026</div>
+        <h1 data-i18n-html="hero.title">Defend your <em>rights</em> — in minutes, not months.</h1>
+        <p class="hero-sub" data-i18n="hero.sub">Advocat is an AI legal assistant trained on Estonian and EU law. It explains the law in your own language, drafts your documents, and points you to a real lawyer when stakes get high.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-hero" href="/app.html" data-i18n="hero.primary">Try free →</a>
+          <a class="btn btn-hero-out" href="#how" data-i18n="hero.secondary">See an example</a>
+        </div>
+        <div class="hero-trust">
+          <span data-i18n="hero.trust1">7 free messages — no card</span>
+          <span data-i18n="hero.trust2">Cited sources</span>
+          <span data-i18n="hero.trust3">EU GDPR · servers in Frankfurt</span>
+        </div>
+      </div>
+
+      <!-- CHAT DEMO -->
+      <div class="chat-card" aria-label="Advocat chat preview">
+        <div class="chat-header">
+          <div class="chat-header-l">
+            <div class="chat-avatar">
+              <img src="logo-shield.svg" alt="" onerror="this.onerror=null;this.src='/assets/images/logo_shield.png';">
+            </div>
+            <div>
+              <div class="chat-name">Advocat</div>
+              <div class="chat-online" id="chat-status" data-i18n="chat.status">Online · avg. response 12s</div>
+            </div>
+          </div>
+          <div class="chat-lang-tag" id="chat-lang-tag">EN</div>
+        </div>
+        <div class="chat-body" id="chat-body" role="log" aria-live="polite"></div>
+        <div class="chat-chips" id="chat-chips" style="display:none"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Type your legal question…" aria-label="Demo chat input" data-i18n-placeholder="chat.placeholder">
+          <button class="chat-send" onclick="advocatDemoSend()" aria-label="Send">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22 11 13 2 9l20-7z"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="section section-alt" id="how">
+  <div class="container">
+    <div class="section-label" data-i18n="how.label">THREE STEPS</div>
+    <h2 data-i18n-html="how.title">Legal help that actually <em>works</em>.</h2>
+    <p class="section-sub" data-i18n="how.sub">No seven-page sign-up. Speak naturally, attach the docs, get a clear next step.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3 data-i18n="how.s1h">Ask your question</h3>
+        <p data-i18n="how.s1p">Talk like you would to a friend — in any of 17 languages. Advocat asks follow-ups like a good lawyer would.</p>
+        <div class="step-meta" data-i18n="how.s1m">~ 90 seconds</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3 data-i18n="how.s2h">AI cites the law</h3>
+        <p data-i18n="how.s2p">Every answer cites the exact statute (e.g. VÕS § 308 lg 4). You can verify it in Riigi Teataja yourself.</p>
+        <div class="step-meta" data-i18n="how.s2m">PDF · DOCX · images</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3 data-i18n="how.s3h">Get a letter or plan</h3>
+        <p data-i18n="how.s3p">Receive a tailored complaint, response, or letter you can send today. For court, take it to a licensed lawyer.</p>
+        <div class="step-meta" data-i18n="how.s3m">Ready to send</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPARE ── -->
+<section class="section" id="compare">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label" style="justify-content:center" data-i18n="compare.label">COMPARISON</div>
+      <h2 data-i18n-html="compare.title">Why pay a <em>law firm</em> €100-200 / hour?</h2>
+      <p class="section-sub" style="margin:0 auto" data-i18n="compare.sub">A lawyer is the right answer for court. For the other 95% of legal life, there's a faster way.</p>
+    </div>
+
+    <div class="compare-grid">
+      <!-- ADVOCAT -->
+      <div class="compare-col compare-col-us">
+        <div class="compare-head">
+          <img src="logo-shield.svg" alt="Advocat" class="logo-mark" onerror="this.onerror=null;this.src='/assets/images/logo_shield.png';">
+          <div class="compare-title">Advocat</div>
+          <div class="compare-sub" data-i18n="compare.us_tag">AI legal assistant</div>
+        </div>
+        <div class="compare-rows">
+          <div class="compare-row">
+            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span data-i18n="compare.u1">Answer in 30 seconds, 24/7</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span data-i18n-html="compare.u2">From <strong>€14.99/month</strong> — unlimited Pro</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span data-i18n="compare.u3">17 languages — incl. Russian, Ukrainian</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span data-i18n="compare.u4">Every claim cites the law</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <span data-i18n="compare.u5">Cancel anytime — EU 14-day refund</span>
+          </div>
+        </div>
+        <div class="compare-foot">
+          <a class="btn btn-primary" href="/app.html" data-i18n="compare.cta_us">Start free →</a>
+        </div>
+      </div>
+
+      <!-- VS -->
+      <div class="compare-vs"><div class="compare-vs-circle">VS</div></div>
+
+      <!-- TRADITIONAL -->
+      <div class="compare-col compare-col-them">
+        <div class="compare-head">
+          <div class="icon-stack">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0v2M12 12v4M10 14h4"/></svg>
+          </div>
+          <div class="compare-title" data-i18n="compare.them_h">Law firm</div>
+          <div class="compare-sub" data-i18n="compare.them_tag">Traditional</div>
+        </div>
+        <div class="compare-rows">
+          <div class="compare-row">
+            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+            <span data-i18n="compare.t1">Consultation 1-2 weeks out</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+            <span data-i18n-html="compare.t2"><strong>€100-200 / hour</strong>, 1h minimum</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+            <span data-i18n="compare.t3">Often only Estonian or English</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+            <span data-i18n="compare.t4">From memory — verbal advice, no log</span>
+          </div>
+          <div class="compare-row">
+            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+            <span data-i18n="compare.t5">Every question = a new invoice</span>
+          </div>
+        </div>
+        <div class="compare-foot">
+          <button class="btn btn-disabled" disabled data-i18n="compare.cta_them">Book in 2 weeks…</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section class="section section-alt" id="pricing">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label" style="justify-content:center" data-i18n="pricing.label">PRICING</div>
+      <h2 data-i18n-html="pricing.title">Clear price. No <em>surprises</em>.</h2>
+      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.sub">Cancel anytime. Full refund within the first 14 days under EU consumer law.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="plan">
+        <div class="plan-name" data-i18n="plan1.name">FREE</div>
+        <div class="plan-price">
+          <span class="currency">€</span><span class="amount">0</span><span class="per" data-i18n="plan1.per">/ forever</span>
+        </div>
+        <div class="plan-desc" data-i18n="plan1.desc">Try the system. Get a real answer with cited law before you decide.</div>
+        <ul class="plan-features">
+          <li data-i18n="plan1.f1">7 AI messages total</li>
+          <li data-i18n="plan1.f2">1 active case</li>
+          <li data-i18n="plan1.f3">Document scanning (3 docs)</li>
+          <li data-i18n="plan1.f4">Cited sources from EU & EE law</li>
+          <li data-i18n="plan1.f5">No card required</li>
+        </ul>
+        <a class="btn btn-primary" href="/app.html" data-i18n="plan1.cta">Start free</a>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan featured">
+        <div class="plan-badge" data-i18n="plan2.badge">Most popular</div>
+        <div class="plan-name" data-i18n="plan2.name">PRO</div>
+        <div class="plan-price">
+          <span class="currency">€</span><span class="amount">14.99</span><span class="per" data-i18n="plan2.per">/ month</span>
+        </div>
+        <div class="plan-annual" data-i18n="plan2.annual">or €119.99/year — save 33%</div>
+        <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. Unlimited AI, full document drafting.</div>
+        <ul class="plan-features">
+          <li data-i18n="plan2.f1">100 AI messages / day</li>
+          <li data-i18n="plan2.f2">3 active cases</li>
+          <li data-i18n="plan2.f3">Document scanning (20 docs)</li>
+          <li data-i18n="plan2.f4">Full document drafting (letters, complaints)</li>
+          <li data-i18n="plan2.f5">Voice input</li>
+          <li data-i18n="plan2.f6">Web search for fresh law</li>
+        </ul>
+        <a class="btn btn-primary" href="/app.html#pricing" data-i18n="plan2.cta">Choose Pro</a>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="plan">
+        <div class="plan-name" data-i18n="plan3.name">PREMIUM</div>
+        <div class="plan-price">
+          <span class="currency">€</span><span class="amount">29.99</span><span class="per" data-i18n="plan3.per">/ month</span>
+        </div>
+        <div class="plan-annual" data-i18n="plan3.annual">or €249.99/year — save 30%</div>
+        <div class="plan-desc" data-i18n="plan3.desc">Full defense — unlimited everything, priority response, all features.</div>
+        <ul class="plan-features">
+          <li data-i18n="plan3.f1">Unlimited AI messages</li>
+          <li data-i18n="plan3.f2">Unlimited cases</li>
+          <li data-i18n="plan3.f3">Unlimited document scans</li>
+          <li data-i18n="plan3.f4">Priority processing</li>
+          <li data-i18n="plan3.f5">Everything in Pro</li>
+          <li data-i18n="plan3.f6">Email & document export</li>
+        </ul>
+        <a class="btn btn-primary" href="/app.html#pricing" data-i18n="plan3.cta">Choose Premium</a>
+      </div>
+    </div>
+    <p class="pricing-note">
+      <span data-i18n-html="pricing.note">Founding member promo: <strong>€9.99/mo for the first 3 months</strong> — limited spots. Save 20-33% with annual billing.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="section" id="faq">
+  <div class="container-sm">
+    <div style="text-align:center">
+      <div class="section-label" style="justify-content:center" data-i18n="faq.label">FAQ</div>
+      <h2 data-i18n-html="faq.title">Honest <em>answers</em> to common questions.</h2>
+    </div>
+    <div class="faq" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ── -->
+<section class="final-cta">
+  <div class="container" style="position:relative;z-index:1;text-align:center">
+    <h2 data-i18n-html="cta.title">Don't face your rights <em>alone</em>.</h2>
+    <p data-i18n="cta.sub">Ask the first question. Cited answer in 30 seconds. No card required.</p>
+    <a class="btn btn-primary" href="/app.html" data-i18n="cta.btn">Open the chat →</a>
+    <span class="micro" data-i18n="cta.micro">7 messages free · cancel anytime · EU 14-day refund</span>
+  </div>
+</section>
+
+<!-- ── DISCLAIMER STRIP ── -->
+<div class="disclaimer-strip">
+  <p data-i18n="disclaimer.full"><strong>Advocat provides legal information, not legal advice.</strong> This service does not replace a licensed attorney. For court representation, judgments, or binding legal opinions, consult a qualified lawyer. Information may vary by jurisdiction.</p>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <a href="#top" class="foot-brand">
+          <img src="logo-shield.svg" alt="Advocat" onerror="this.onerror=null;this.src='/assets/images/logo_shield.png';">
+          <span>Advocat</span>
+        </a>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.55;max-width:280px;margin-top:4px" data-i18n="foot.about">
+          AI-powered legal assistant for Estonia and the EU. Built in Tallinn by Vorantis OÜ.
+        </p>
+        <p style="font-size:11px;color:var(--faint);margin-top:10px;letter-spacing:.04em">
+          <span data-i18n="foot.powered">Powered by Claude (Anthropic)</span>
+        </p>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot.product">Product</h5>
+        <a href="#how" data-i18n="foot.how">How it works</a>
+        <a href="#pricing" data-i18n="foot.pricing">Pricing</a>
+        <a href="/app.html" data-i18n="foot.app">Open the app</a>
+        <a href="/blog/" data-i18n="foot.blog">Blog</a>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot.company">Company</h5>
+        <a href="mailto:hello@advocat.ee">hello@advocat.ee</a>
+        <a href="/blog/" data-i18n="foot.news">News</a>
+      </div>
+      <div class="foot-col">
+        <h5 data-i18n="foot.legal">Legal</h5>
+        <a href="/terms.html" data-i18n="foot.terms">Terms</a>
+        <a href="/privacy.html" data-i18n="foot.privacy">Privacy</a>
+        <a href="/privacy.html#gdpr" data-i18n="foot.gdpr">GDPR</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-bot-l">
+        <span class="cert-badge" data-i18n="foot.gdpr_badge">GDPR · EU servers (Frankfurt)</span>
+        <span class="cert-badge">Vorantis OÜ · Reg 17098992</span>
+        <span class="cert-badge">Tallinn, Estonia</span>
+      </div>
+      <span class="foot-copy">© 2026 Vorantis OÜ</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ========================================================== -->
+<!-- GDPR Cookie Banner (carried over from prod landing.html)    -->
+<!-- ========================================================== -->
+<style>
+  #advCookieBanner {
+    position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 9999;
+    max-width: 780px; margin: 0 auto;
+    background: #111; color: #f5f5f5;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    padding: 18px 20px;
+    font: 14px/1.45 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    display: none;
+  }
+  #advCookieBanner.show { display: block; }
+  #advCookieBanner p { margin: 0 0 12px; }
+  #advCookieBanner a { color: #8fd; text-decoration: underline; }
+  #advCookieBanner .advCookieRow { display: flex; gap: 10px; flex-wrap: wrap; }
+  #advCookieBanner button {
+    flex: 1; min-width: 120px;
+    padding: 10px 14px; border-radius: 10px; border: 0;
+    font: inherit; font-weight: 600; cursor: pointer;
+  }
+  #advCookieBanner .advCookieAccept { background: #8fd; color: #0a1613; }
+  #advCookieBanner .advCookieReject { background: transparent; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.25); }
+  #advCookieBanner .advCookiePrefs { background: transparent; color: #8fd; border: 1px solid rgba(143,221,221,0.35); }
+  @media (max-width: 480px) {
+    #advCookieBanner { left: 8px; right: 8px; bottom: 8px; padding: 14px; }
+  }
+</style>
+
+<div id="advCookieBanner" role="dialog" aria-labelledby="advCookieTitle" aria-describedby="advCookieBody">
+  <p id="advCookieTitle" style="font-weight:700;margin-bottom:4px;">Cookies &amp; privacy</p>
+  <p id="advCookieBody">
+    We use strictly necessary cookies to keep you signed in. We do
+    <strong>not</strong> use advertising or cross-site tracking cookies.
+    See our <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
+  </p>
+  <div class="advCookieRow">
+    <button class="advCookieAccept" type="button" onclick="advCookieConsent('accept')">Accept</button>
+    <button class="advCookieReject" type="button" onclick="advCookieConsent('reject')">Reject non-essential</button>
+    <button class="advCookiePrefs" type="button" onclick="window.open('/privacy.html','_blank')">Learn more</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var KEY = 'advocat_cookie_consent_v1';
+  var banner = document.getElementById('advCookieBanner');
+  if (!banner) return;
+  try {
+    if (navigator.doNotTrack === '1' || window.doNotTrack === '1') {
+      localStorage.setItem(KEY, JSON.stringify({choice:'dnt', ts: Date.now()}));
+      return;
+    }
+    var existing = null;
+    try { existing = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(_){}
+    if (!existing || !existing.choice) {
+      banner.classList.add('show');
+    }
+  } catch(_){
+    banner.classList.add('show');
+  }
+  window.advCookieConsent = function(choice) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({ choice: choice, ts: Date.now(), version: 1 }));
+    } catch(_){}
+    banner.classList.remove('show');
+  };
+})();
+</script>
+
+<!-- ── i18n + chat demo ── -->
+<script>
+const LANGS = [
+  { code: 'en', label: 'English' },
+  { code: 'et', label: 'Eesti' },
+  { code: 'ru', label: 'Русский' },
+  { code: 'uk', label: 'Українська' },
+  { code: 'fi', label: 'Suomi' },
+  { code: 'sv', label: 'Svenska' },
+  { code: 'de', label: 'Deutsch' },
+  { code: 'fr', label: 'Français' },
+  { code: 'es', label: 'Español' },
+  { code: 'it', label: 'Italiano' },
+  { code: 'pl', label: 'Polski' },
+  { code: 'lv', label: 'Latviešu' },
+  { code: 'lt', label: 'Lietuvių' },
+  { code: 'ro', label: 'Română' },
+  { code: 'tr', label: 'Türkçe' },
+  { code: 'ar', label: 'العربية' },
+  { code: 'fa', label: 'فارسی' },
+];
+
+const RTL = { ar: true, fa: true };
+
+const I18N = {
+  en: {
+    'promo': 'Founding Member: <strong>€9.99/mo</strong> for the first 3 months. Limited spots — <a href="/app.html#pricing">claim yours →</a>',
+    'nav.how': 'How it works', 'nav.compare': 'Compare', 'nav.pricing': 'Pricing', 'nav.faq': 'FAQ',
+    'nav.login': 'Sign in', 'nav.cta': 'Try free',
+    'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
+    'hero.title': 'Defend your <em>rights</em> — in minutes, not months.',
+    'hero.sub': "Advocat is an AI legal assistant trained on Estonian and EU law. It explains the law in your own language, drafts your documents, and points you to a real lawyer when stakes get high.",
+    'hero.primary': 'Try free →', 'hero.secondary': 'See an example',
+    'hero.trust1': '7 free messages — no card', 'hero.trust2': 'Cited sources', 'hero.trust3': 'EU GDPR · servers in Frankfurt',
+    'how.label': 'THREE STEPS', 'how.title': 'Legal help that actually <em>works</em>.',
+    'how.sub': 'No seven-page sign-up. Speak naturally, attach the docs, get a clear next step.',
+    'how.s1h': 'Ask your question', 'how.s1p': 'Talk like you would to a friend — in any of 17 languages. Advocat asks follow-ups like a good lawyer would.', 'how.s1m': '~ 90 seconds',
+    'how.s2h': 'AI cites the law', 'how.s2p': 'Every answer cites the exact statute (e.g. VÕS § 308 lg 4). You can verify it in Riigi Teataja yourself.', 'how.s2m': 'PDF · DOCX · images',
+    'how.s3h': 'Get a letter or plan', 'how.s3p': 'Receive a tailored complaint, response, or letter you can send today. For court, take it to a licensed lawyer.', 'how.s3m': 'Ready to send',
+    'compare.label': 'COMPARISON', 'compare.title': 'Why pay a <em>law firm</em> €100-200 / hour?',
+    'compare.sub': 'A lawyer is the right answer for court. For the other 95% of legal life, there\'s a faster way.',
+    'compare.us_tag': 'AI legal assistant',
+    'compare.u1': 'Answer in 30 seconds, 24/7',
+    'compare.u2': 'From <strong>€14.99/month</strong> — unlimited Pro',
+    'compare.u3': '17 languages — incl. Russian, Ukrainian',
+    'compare.u4': 'Every claim cites the law',
+    'compare.u5': 'Cancel anytime — EU 14-day refund',
+    'compare.cta_us': 'Start free →',
+    'compare.them_h': 'Law firm', 'compare.them_tag': 'Traditional',
+    'compare.t1': 'Consultation 1-2 weeks out', 'compare.t2': '<strong>€100-200 / hour</strong>, 1h minimum',
+    'compare.t3': 'Often only Estonian or English', 'compare.t4': 'From memory — verbal advice, no log', 'compare.t5': 'Every question = a new invoice',
+    'compare.cta_them': 'Book in 2 weeks…',
+    'pricing.label': 'PRICING', 'pricing.title': 'Clear price. No <em>surprises</em>.',
+    'pricing.sub': 'Cancel anytime. Full refund within the first 14 days under EU consumer law.',
+    'plan1.name': 'FREE', 'plan1.per': '/ forever',
+    'plan1.desc': 'Try the system. Get a real answer with cited law before you decide.',
+    'plan1.f1': '7 AI messages total', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
+    'plan1.cta': 'Start free',
+    'plan2.badge': 'Most popular', 'plan2.name': 'PRO', 'plan2.per': '/ month', 'plan2.annual': 'or €119.99/year — save 33%',
+    'plan2.desc': 'Daily legal help for you and your family. Unlimited AI, full document drafting.',
+    'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
+    'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
+    'plan2.cta': 'Choose Pro',
+    'plan3.name': 'PREMIUM', 'plan3.per': '/ month', 'plan3.annual': 'or €249.99/year — save 30%',
+    'plan3.desc': 'Full defense — unlimited everything, priority response, all features.',
+    'plan3.f1': 'Unlimited AI messages', 'plan3.f2': 'Unlimited cases', 'plan3.f3': 'Unlimited document scans',
+    'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
+    'plan3.cta': 'Choose Premium',
+    'pricing.note': 'Founding member promo: <strong>€9.99/mo for the first 3 months</strong> — limited spots. Save 20-33% with annual billing.',
+    'faq.label': 'FAQ', 'faq.title': 'Honest <em>answers</em> to common questions.',
+    'faq.items': [
+      { q: 'Is this legal? Can I really use AI for legal questions?', a: 'Yes. Advocat is a legal information service — it explains laws and helps you draft documents. It does not replace a licensed attorney for court representation, but for understanding your situation and writing letters it works fine. The same way reading legal articles online is legal, using a tool that does it for you is legal.' },
+      { q: 'Is my data safe?', a: 'Yes. Encrypted at rest, hosted on EU servers (Frankfurt). Conversations are never used to train AI models. We are GDPR-compliant and follow strict data minimization. You can delete your data at any time.' },
+      { q: 'Why is this better than ChatGPT?', a: 'Advocat is specialized for Estonian and EU law: it cites specific statutes (e.g. VÕS § 308), remembers your case across sessions, and can write formal letters in the right legal format. ChatGPT can hallucinate fake citations — Advocat cites real ones from Riigi Teataja.' },
+      { q: 'Can I get a refund?', a: 'Yes. Cancel anytime in one click — no questions. Under EU consumer law, you have 14 days from purchase to get a full refund. After that, your subscription stays active until the end of the billing period.' },
+      { q: 'Are these documents legally binding?', a: 'The documents Advocat drafts are templates and starting points. They become legally meaningful when you sign and send them. For documents going to court, we strongly recommend a licensed attorney review them first. Advocat is your draft author, not your lawyer in court.' },
+      { q: 'Will Advocat represent me in court?', a: 'No. Advocat is for preparation, not representation. We help you understand your rights, write to the other party, and prepare your case file. For appearing in court itself, you need a licensed Estonian advocate (vandeadvokaat). We can help you find one when needed.' },
+    ],
+    'cta.title': "Don't face your rights <em>alone</em>.",
+    'cta.sub': 'Ask the first question. Cited answer in 30 seconds. No card required.',
+    'cta.btn': 'Open the chat →',
+    'cta.micro': '7 messages free · cancel anytime · EU 14-day refund',
+    'disclaimer.full': '<strong>Advocat provides legal information, not legal advice.</strong> This service does not replace a licensed attorney. For court representation, judgments, or binding legal opinions, consult a qualified lawyer. Information may vary by jurisdiction.',
+    'foot.about': 'AI-powered legal assistant for Estonia and the EU. Built in Tallinn by Vorantis OÜ.',
+    'foot.powered': 'Powered by Claude (Anthropic)',
+    'foot.product': 'Product', 'foot.how': 'How it works', 'foot.pricing': 'Pricing', 'foot.app': 'Open the app', 'foot.blog': 'Blog',
+    'foot.company': 'Company', 'foot.news': 'News',
+    'foot.legal': 'Legal', 'foot.terms': 'Terms', 'foot.privacy': 'Privacy', 'foot.gdpr': 'GDPR',
+    'foot.gdpr_badge': 'GDPR · EU servers (Frankfurt)',
+    'chat.status': 'Online · avg. response 12s',
+    'chat.placeholder': 'Type your legal question…',
+    'chat.welcome': 'Hi! I\'m Advocat — your AI legal assistant.\nWhat legal question can I help with?',
+    'chat.sample': [
+      { who: 'user', t: 'My landlord hasn\'t returned my deposit for 3 weeks.' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord must return the deposit within 14 days of lease end, unless damage is proven.', cite: 'VÕS § 308(4)' },
+      { who: 'bot', t: 'I can draft a formal demand letter for you. Estonian or English?' },
+    ],
+    'chat.chips': ['Tenancy deposit', 'Work dispute', 'Deportation', 'Other'],
+    'chat.reply': 'Got it. I can draft the formal demand letter right now — would you like that?',
+  },
+
+  et: {
+    'promo': 'Asutajaliige: <strong>€9.99/kuu</strong> esimese 3 kuu jooksul. Piiratud kohti — <a href="/app.html#pricing">vali oma pakett →</a>',
+    'nav.how': 'Kuidas töötab', 'nav.compare': 'Võrdlus', 'nav.pricing': 'Hinnad', 'nav.faq': 'KKK',
+    'nav.login': 'Logi sisse', 'nav.cta': 'Alusta tasuta',
+    'hero.eyebrow': 'AI ÕIGUSABI · 2026',
+    'hero.title': 'Kaitse oma <em>õigusi</em> — minutitega, mitte kuudega.',
+    'hero.sub': 'Advocat on tehisintellektil põhinev õigusassistent, mis on koolitatud Eesti ja EL-i õigusel. Ta selgitab seadusi sinu emakeeles, koostab dokumendid ja juhatab päris advokaadi juurde, kui asi läheb keeruliseks.',
+    'hero.primary': 'Alusta tasuta →', 'hero.secondary': 'Vaata näidet',
+    'hero.trust1': '7 tasuta sõnumit — ilma kaardita', 'hero.trust2': 'Allikatega', 'hero.trust3': 'EL GDPR · serverid Frankfurdis',
+    'how.label': 'KOLM SAMMU', 'how.title': 'Õigusabi, mis <em>tegelikult töötab</em>.',
+    'how.sub': 'Ei mingit registreerimist seitsmel lehel. Räägi loomulikus keeles, lae dokumendid, saa selge järgmine samm.',
+    'how.s1h': 'Esita küsimus', 'how.s1p': 'Räägi nagu sõbrale — eesti, vene, ukraina või mis tahes 17 keelest. Advocat küsib täpsustusi nagu hea jurist.', 'how.s1m': '~ 90 sek',
+    'how.s2h': 'AI tsiteerib seadust', 'how.s2p': 'Iga vastus viitab konkreetsele paragrahvile (nt VÕS § 308 lg 4). Saad kontrollida Riigi Teatajast ise.', 'how.s2m': 'PDF · DOCX · pildid',
+    'how.s3h': 'Saa kiri või plaan', 'how.s3p': 'Saad kohandatud avalduse, vastuse või kaebuse, mille saad täna ära saata. Kohtus — alati litsentseeritud advokaat.', 'how.s3m': 'Valmis saatma',
+    'compare.label': 'VÕRDLUS', 'compare.title': 'Miks maksta <em>advokaadibüroole</em> €100-200 / tund?',
+    'compare.sub': 'Kohtus on advokaat õige vastus. Ülejäänud 95% õiguselust — on kiirem viis.',
+    'compare.us_tag': 'AI õigusabi',
+    'compare.u1': 'Vastus 30 sekundi jooksul, 24/7',
+    'compare.u2': 'Alates <strong>€14.99/kuu</strong> — piiramatu Pro',
+    'compare.u3': '17 keelt — sh vene ja ukraina',
+    'compare.u4': 'Iga väide tsiteerib seadust',
+    'compare.u5': 'Tühista millal iganes — EL 14-päevane tagasimakse',
+    'compare.cta_us': 'Alusta tasuta →',
+    'compare.them_h': 'Advokaadibüroo', 'compare.them_tag': 'Traditsiooniline',
+    'compare.t1': 'Konsultatsioon 1-2 nädala pärast', 'compare.t2': '<strong>€100-200 / tund</strong>, miinimum 1h',
+    'compare.t3': 'Tihti ainult eesti või inglise', 'compare.t4': 'Mälu järgi — suuline nõu, jälgi pole', 'compare.t5': 'Iga küsimus = uus arve',
+    'compare.cta_them': 'Broneeri 2 nädalaks…',
+    'pricing.label': 'HINNAKIRI', 'pricing.title': 'Selge hind. Ilma <em>üllatusteta</em>.',
+    'pricing.sub': 'Tühista millal iganes. EL tarbijaõiguse järgi täielik tagasimakse esimese 14 päeva jooksul.',
+    'plan1.name': 'TASUTA', 'plan1.per': '/ igavesti',
+    'plan1.desc': 'Tutvu süsteemiga. Saa esimene allikatega vastus enne otsustamist.',
+    'plan1.f1': '7 AI-sõnumit kokku', 'plan1.f2': '1 aktiivne asi', 'plan1.f3': 'Dokumendi skannimine (3 dok)', 'plan1.f4': 'Allikad EE & EL õigusest', 'plan1.f5': 'Ilma kaardita',
+    'plan1.cta': 'Alusta tasuta',
+    'plan2.badge': 'Soovitatav', 'plan2.name': 'PRO', 'plan2.per': '/ kuu', 'plan2.annual': 'või €119.99/aastas — säästa 33%',
+    'plan2.desc': 'Igapäevane õigusabi sulle ja perele. Piiramatud AI-sõnumid, dokumentide koostamine.',
+    'plan2.f1': '100 AI-sõnumit päevas', 'plan2.f2': '3 aktiivset asja', 'plan2.f3': 'Dokumendi skannimine (20 dok)',
+    'plan2.f4': 'Dokumentide täisvormistus (kirjad, kaebused)', 'plan2.f5': 'Häälsisend', 'plan2.f6': 'Veebiotsing värske õiguse jaoks',
+    'plan2.cta': 'Vali Pro',
+    'plan3.name': 'PREMIUM', 'plan3.per': '/ kuu', 'plan3.annual': 'või €249.99/aastas — säästa 30%',
+    'plan3.desc': 'Täielik kaitse — piiramatu kõik, prioriteetne vastus, kõik funktsioonid.',
+    'plan3.f1': 'Piiramatud AI-sõnumid', 'plan3.f2': 'Piiramatud asjad', 'plan3.f3': 'Piiramatud skaneerimised',
+    'plan3.f4': 'Prioriteetne töötlemine', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirja ja dokumendi eksport',
+    'plan3.cta': 'Vali Premium',
+    'pricing.note': 'Asutajaliikme pakkumine: <strong>€9.99/kuu esimese 3 kuu jooksul</strong> — piiratud kohti. Säästa 20-33% aastamaksega.',
+    'faq.label': 'KKK', 'faq.title': 'Ausad <em>vastused</em> sagedastele küsimustele.',
+    'faq.items': [
+      { q: 'Kas see on seaduslik? Kas tõesti saab AI-d õigusküsimuste jaoks kasutada?', a: 'Jah. Advocat on õigusinfo teenus — selgitab seadusi ja aitab koostada dokumente. See ei asenda litsentseeritud advokaati kohtus, kuid olukorra mõistmiseks ja kirjade kirjutamiseks see töötab. Sama nagu õigusartiklite lugemine internetis on seaduslik, on ka tööriista kasutamine seaduslik.' },
+      { q: 'Kas mu andmed on turvalised?', a: 'Jah. Krüpteeritud, hoitakse EL serverites (Frankfurt). Vestlusi ei kasutata mudelite treenimiseks. Oleme GDPR-iga kooskõlas ja järgime andmete minimeerimist. Saad oma andmed igal ajal kustutada.' },
+      { q: 'Miks see on parem kui ChatGPT?', a: 'Advocat on spetsialiseerunud Eesti ja EL õigusele: tsiteerib konkreetseid paragrahve (nt VÕS § 308), mäletab sinu asja sessioonide vahel ja oskab kirjutada ametlikke kirju õiges juriidilises vormis. ChatGPT võib välja mõelda võltstsitaate — Advocat tsiteerib päris allikaid Riigi Teatajast.' },
+      { q: 'Kas saan raha tagasi?', a: 'Jah. Tühista millal iganes ühe klikiga — ilma küsimusteta. EL tarbijaõiguse järgi on sul 14 päeva ostust täielikuks tagasimakseks. Pärast seda jääb tellimus aktiivseks arveldusperioodi lõpuni.' },
+      { q: 'Kas need dokumendid on juriidiliselt siduvad?', a: 'Advocati koostatud dokumendid on mallid ja lähtepunktid. Need muutuvad õiguslikult oluliseks, kui sa neid allkirjastad ja saadad. Kohtusse minevatele dokumentidele soovitame tugevalt litsentseeritud advokaadi ülevaatust. Advocat on sinu mustandi autor, mitte sinu kohtuesindaja.' },
+      { q: 'Kas Advocat esindab mind kohtus?', a: 'Ei. Advocat on ettevalmistuseks, mitte esindamiseks. Aitame sul mõista oma õigusi, kirjutada teisele poolele ja koostada toimikut. Kohtus esinemiseks vajad litsentseeritud Eesti vandeadvokaati. Vajadusel saame aidata leida.' },
+    ],
+    'cta.title': 'Ära jää oma õigustega <em>üksi</em>.',
+    'cta.sub': 'Esita esimene küsimus. Allikatega vastus 30 sekundiga. Ilma kaardita.',
+    'cta.btn': 'Avab vestluse →',
+    'cta.micro': '7 sõnumit tasuta · tühista millal iganes · EL 14-päevane tagasimakse',
+    'disclaimer.full': '<strong>Advocat pakub õigusteavet, mitte õigusnõustamist.</strong> Teenus ei asenda litsentseeritud advokaati. Kohtuesinduseks, kohtuotsusteks või siduvateks õigusarvamusteks pöördu kvalifitseeritud juristi poole. Teave võib jurisdiktsiooniti erineda.',
+    'foot.about': 'Tehisintellektil põhinev õigusabi Eestile ja EL-ile. Tehtud Tallinnas, Vorantis OÜ.',
+    'foot.powered': 'Toetatud Claude\'iga (Anthropic)',
+    'foot.product': 'Toode', 'foot.how': 'Kuidas töötab', 'foot.pricing': 'Hinnad', 'foot.app': 'Ava rakendus', 'foot.blog': 'Blogi',
+    'foot.company': 'Ettevõte', 'foot.news': 'Uudised',
+    'foot.legal': 'Õigus', 'foot.terms': 'Tingimused', 'foot.privacy': 'Privaatsus', 'foot.gdpr': 'GDPR',
+    'foot.gdpr_badge': 'GDPR · EL serverid (Frankfurt)',
+    'chat.status': 'Online · vastab keskmiselt 12 sek',
+    'chat.placeholder': 'Kirjuta oma õiguslik küsimus…',
+    'chat.welcome': 'Tere! Olen Advocat — sinu AI-jurist.\nMis on sinu õiguslik küsimus?',
+    'chat.sample': [
+      { who: 'user', t: 'Üürileandja ei tagasta tagatisraha 3 nädalat.' },
+      { who: 'bot', t: 'Mõistlik küsimus. VÕS § 308 kohaselt peab üürileandja tagatisraha tagastama 14 päeva jooksul pärast üürilepingu lõppu, kui kahju ei ole tõendatud.', cite: 'VÕS § 308 lg 4' },
+      { who: 'bot', t: 'Saan sulle koostada ametliku nõudekirja. Eesti või vene keeles?' },
+    ],
+    'chat.chips': ['Üüritagatis', 'Töövaidlus', 'Väljasaatmine', 'Muu'],
+    'chat.reply': 'Selge. Saan sulle nõudekirja kohe koostada — kas soovid?',
+  },
+
+  ru: {
+    'promo': 'Founding Member: <strong>€9.99/мес</strong> первые 3 месяца. Ограниченное число мест — <a href="/app.html#pricing">забрать своё →</a>',
+    'nav.how': 'Как это работает', 'nav.compare': 'Сравнение', 'nav.pricing': 'Тарифы', 'nav.faq': 'FAQ',
+    'nav.login': 'Войти', 'nav.cta': 'Попробовать',
+    'hero.eyebrow': 'AI ЮРПОМОЩНИК · 2026',
+    'hero.title': 'Защити свои <em>права</em> — за минуты, а не месяцы.',
+    'hero.sub': 'Advocat — юридический ассистент на ИИ, обученный на эстонском и европейском праве. Объясняет законы на твоём родном языке, готовит документы и направляет к живому адвокату, когда дело становится серьёзным.',
+    'hero.primary': 'Попробовать →', 'hero.secondary': 'Посмотреть пример',
+    'hero.trust1': '7 бесплатных сообщений — без карты', 'hero.trust2': 'Со ссылками на закон', 'hero.trust3': 'EU GDPR · серверы во Франкфурте',
+    'how.label': 'ТРИ ШАГА', 'how.title': 'Юрпомощь, которая <em>работает</em>.',
+    'how.sub': 'Никакой регистрации на семь экранов. Говори естественно, прикрепи документы, получи понятный план.',
+    'how.s1h': 'Задай вопрос', 'how.s1p': 'Говори как с другом — на русском, эстонском, украинском или любом из 17 языков. Advocat задаёт уточнения как хороший юрист.', 'how.s1m': '~ 90 сек',
+    'how.s2h': 'ИИ цитирует закон', 'how.s2p': 'Каждый ответ ссылается на конкретную статью (например VÕS § 308 ч. 4). Можно проверить в Riigi Teataja самому.', 'how.s2m': 'PDF · DOCX · фото',
+    'how.s3h': 'Получи письмо или план', 'how.s3p': 'Получишь готовое заявление, ответ или жалобу, которые можно отправить сегодня. Для суда — лицензированный адвокат.', 'how.s3m': 'Готово к отправке',
+    'compare.label': 'СРАВНЕНИЕ', 'compare.title': 'Зачем платить <em>адвокатскому бюро</em> €100-200 / час?',
+    'compare.sub': 'В суде адвокат — правильный ответ. Для остальных 95% юридической жизни — есть способ быстрее.',
+    'compare.us_tag': 'AI юрпомощник',
+    'compare.u1': 'Ответ за 30 секунд, 24/7',
+    'compare.u2': 'От <strong>€14.99/мес</strong> — безлимит Pro',
+    'compare.u3': '17 языков — вкл. русский и украинский',
+    'compare.u4': 'Каждое утверждение со ссылкой на закон',
+    'compare.u5': 'Отмена в любой момент — EU 14-дн возврат',
+    'compare.cta_us': 'Попробовать →',
+    'compare.them_h': 'Адв. бюро', 'compare.them_tag': 'Традиционно',
+    'compare.t1': 'Консультация через 1-2 недели', 'compare.t2': '<strong>€100-200 / час</strong>, минимум 1ч',
+    'compare.t3': 'Часто только эстонский или английский', 'compare.t4': 'По памяти — устно, без записи', 'compare.t5': 'Каждый вопрос = новый счёт',
+    'compare.cta_them': 'Записаться через 2 недели…',
+    'pricing.label': 'ТАРИФЫ', 'pricing.title': 'Прозрачная цена. Без <em>сюрпризов</em>.',
+    'pricing.sub': 'Отмени в любой момент. По закону ЕС — полный возврат в первые 14 дней.',
+    'plan1.name': 'БЕСПЛАТНО', 'plan1.per': '/ навсегда',
+    'plan1.desc': 'Попробуй систему. Получи реальный ответ со ссылками на закон, прежде чем решать.',
+    'plan1.f1': '7 AI-сообщений всего', 'plan1.f2': '1 активное дело', 'plan1.f3': 'Сканирование документов (3 шт)', 'plan1.f4': 'Ссылки на EE и ЕС законы', 'plan1.f5': 'Без карты',
+    'plan1.cta': 'Начать',
+    'plan2.badge': 'Популярный', 'plan2.name': 'PRO', 'plan2.per': '/ месяц', 'plan2.annual': 'или €119.99/год — экономия 33%',
+    'plan2.desc': 'Ежедневная юрпомощь тебе и семье. Безлимит ИИ, полное составление документов.',
+    'plan2.f1': '100 AI-сообщений в день', 'plan2.f2': '3 активных дела', 'plan2.f3': 'Сканирование документов (20 шт)',
+    'plan2.f4': 'Полное составление документов (письма, жалобы)', 'plan2.f5': 'Голосовой ввод', 'plan2.f6': 'Веб-поиск свежего права',
+    'plan2.cta': 'Выбрать Pro',
+    'plan3.name': 'PREMIUM', 'plan3.per': '/ месяц', 'plan3.annual': 'или €249.99/год — экономия 30%',
+    'plan3.desc': 'Полная защита — безлимит во всём, приоритетный ответ, все функции.',
+    'plan3.f1': 'Безлимит AI-сообщений', 'plan3.f2': 'Безлимит дел', 'plan3.f3': 'Безлимит сканирований',
+    'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Экспорт писем и документов',
+    'plan3.cta': 'Выбрать Premium',
+    'pricing.note': 'Промо для founding member: <strong>€9.99/мес первые 3 месяца</strong> — мест ограничено. Экономия 20-33% с годовой оплатой.',
+    'faq.label': 'FAQ', 'faq.title': 'Честные <em>ответы</em> на частые вопросы.',
+    'faq.items': [
+      { q: 'Это законно? Можно ли вообще использовать ИИ для юридических вопросов?', a: 'Да. Advocat — это сервис правовой информации: объясняет законы и помогает составлять документы. Не заменяет лицензированного адвоката в суде, но для понимания ситуации и написания писем — работает. Так же как чтение юридических статей в интернете легально, использование инструмента, который делает то же самое за тебя, — тоже легально.' },
+      { q: 'Безопасны ли мои данные?', a: 'Да. Шифрование, хранение на серверах ЕС (Франкфурт). Разговоры никогда не используются для обучения моделей. Соблюдаем GDPR и принцип минимизации данных. Свои данные можно удалить в любой момент.' },
+      { q: 'Чем это лучше ChatGPT?', a: 'Advocat специализирован на эстонском и европейском праве: цитирует конкретные статьи (например VÕS § 308), помнит твоё дело между сессиями и умеет писать официальные письма в правильном юридическом формате. ChatGPT может выдумывать ссылки — Advocat ссылается на реальные источники из Riigi Teataja.' },
+      { q: 'Можно ли вернуть деньги?', a: 'Да. Отмена в один клик в любое время — без вопросов. По закону ЕС о потребителях у тебя есть 14 дней с покупки на полный возврат. После этого подписка действует до конца расчётного периода.' },
+      { q: 'Эти документы юридически обязательны?', a: 'Документы, которые составляет Advocat, — это шаблоны и отправные точки. Они становятся юридически значимыми, когда ты их подписываешь и отправляешь. Документы для суда настоятельно рекомендуем показать лицензированному адвокату. Advocat — автор твоего черновика, а не твой представитель в суде.' },
+      { q: 'Будет ли Advocat представлять меня в суде?', a: 'Нет. Advocat для подготовки, не для представления. Помогаем понять права, написать другой стороне и собрать дело. Для выступления в суде нужен лицензированный эстонский присяжный адвокат (vandeadvokaat). При необходимости поможем найти.' },
+    ],
+    'cta.title': 'Не оставайся со своими правами <em>один</em>.',
+    'cta.sub': 'Задай первый вопрос. Ответ со ссылками на закон за 30 секунд. Без карты.',
+    'cta.btn': 'Открыть чат →',
+    'cta.micro': '7 сообщений бесплатно · отмена в один клик · EU 14-дн возврат',
+    'disclaimer.full': '<strong>Advocat предоставляет правовую информацию, а не юридическую консультацию.</strong> Сервис не заменяет лицензированного адвоката. Для представления в суде, судебных решений или обязывающих юридических заключений обратитесь к квалифицированному юристу. Информация может различаться в зависимости от юрисдикции.',
+    'foot.about': 'Юридический ассистент на ИИ для Эстонии и ЕС. Сделано в Таллинне, Vorantis OÜ.',
+    'foot.powered': 'На основе Claude (Anthropic)',
+    'foot.product': 'Продукт', 'foot.how': 'Как работает', 'foot.pricing': 'Тарифы', 'foot.app': 'Открыть приложение', 'foot.blog': 'Блог',
+    'foot.company': 'Компания', 'foot.news': 'Новости',
+    'foot.legal': 'Юридическое', 'foot.terms': 'Условия', 'foot.privacy': 'Приватность', 'foot.gdpr': 'GDPR',
+    'foot.gdpr_badge': 'GDPR · серверы ЕС (Франкфурт)',
+    'chat.status': 'Онлайн · ответ за 12 сек',
+    'chat.placeholder': 'Напиши свой юридический вопрос…',
+    'chat.welcome': 'Привет! Я Advocat — твой AI-юрист.\nКакой у тебя юридический вопрос?',
+    'chat.sample': [
+      { who: 'user', t: 'Арендодатель не возвращает залог уже 3 недели.' },
+      { who: 'bot', t: 'Понятная ситуация. По закону (VÕS § 308) арендодатель обязан вернуть залог в течение 14 дней после окончания аренды, если нет доказанного ущерба.', cite: 'VÕS § 308 ч. 4' },
+      { who: 'bot', t: 'Могу подготовить официальное письмо-требование. На русском или эстонском?' },
+    ],
+    'chat.chips': ['Залог за аренду', 'Трудовой спор', 'Депортация', 'Другое'],
+    'chat.reply': 'Понял. Могу прямо сейчас подготовить официальное письмо-требование — хочешь?',
+  },
+
+  uk: {
+    'promo': 'Founding Member: <strong>€9.99/міс</strong> перші 3 місяці. Обмежена кількість місць — <a href="/app.html#pricing">забрати своє →</a>',
+    'nav.how': 'Як працює', 'nav.compare': 'Порівняння', 'nav.pricing': 'Тарифи', 'nav.faq': 'FAQ',
+    'nav.login': 'Увійти', 'nav.cta': 'Спробувати',
+    'hero.eyebrow': 'AI ЮРИДИЧНИЙ ПОМІЧНИК · 2026',
+    'hero.title': 'Захисти свої <em>права</em> — за хвилини, не місяці.',
+    'hero.sub': 'Advocat — юридичний асистент на ШІ, навчений естонському та європейському праву. Пояснює закони твоєю рідною мовою, готує документи та скеровує до адвоката, коли справа стає серйозною.',
+    'hero.primary': 'Спробувати →', 'hero.secondary': 'Подивитися приклад',
+    'hero.trust1': '7 безкоштовних повідомлень — без картки', 'hero.trust2': 'З посиланнями на закон', 'hero.trust3': 'EU GDPR · сервери у Франкфурті',
+    'how.label': 'ТРИ КРОКИ', 'how.title': 'Юрдопомога, яка <em>справді працює</em>.',
+    'how.sub': 'Ніякої реєстрації на сім екранів. Говори природно, прикріпи документи, отримай чіткий наступний крок.',
+    'how.s1h': 'Постав питання', 'how.s1p': 'Говори як із другом — українською, російською, естонською чи будь-якою з 17 мов. Advocat ставить уточнюючі питання як хороший юрист.', 'how.s1m': '~ 90 сек',
+    'how.s2h': 'ШІ цитує закон', 'how.s2p': 'Кожна відповідь посилається на конкретну статтю (напр. VÕS § 308). Можна перевірити в Riigi Teataja самому.', 'how.s2m': 'PDF · DOCX · фото',
+    'how.s3h': 'Отримай лист або план', 'how.s3p': 'Отримуєш готову заяву, відповідь або скаргу, яку можна надіслати сьогодні. Для суду — ліцензований адвокат.', 'how.s3m': 'Готово до відправки',
+    'compare.label': 'ПОРІВНЯННЯ', 'compare.title': 'Навіщо платити <em>адвокатському бюро</em> €100-200 / год?',
+    'compare.sub': 'У суді адвокат — правильна відповідь. Для решти 95% юридичного життя — є швидший спосіб.',
+    'compare.us_tag': 'AI юрпомічник',
+    'compare.u1': 'Відповідь за 30 секунд, 24/7',
+    'compare.u2': 'Від <strong>€14.99/міс</strong> — безліміт Pro',
+    'compare.u3': '17 мов — вкл. українську та російську',
+    'compare.u4': 'Кожне твердження з посиланням на закон',
+    'compare.u5': 'Скасування будь-коли — EU 14-дн повернення',
+    'compare.cta_us': 'Спробувати →',
+    'compare.them_h': 'Адв. бюро', 'compare.them_tag': 'Традиційно',
+    'compare.t1': 'Консультація через 1-2 тижні', 'compare.t2': '<strong>€100-200 / год</strong>, мінімум 1 год',
+    'compare.t3': 'Часто лише естонська або англійська', 'compare.t4': 'По пам\'яті — усно, без запису', 'compare.t5': 'Кожне питання = новий рахунок',
+    'compare.cta_them': 'Записатися через 2 тижні…',
+    'pricing.label': 'ТАРИФИ', 'pricing.title': 'Прозора ціна. Без <em>сюрпризів</em>.',
+    'pricing.sub': 'Скасуй будь-коли. За законом ЄС — повне повернення в перші 14 днів.',
+    'plan1.name': 'БЕЗКОШТОВНО', 'plan1.per': '/ назавжди',
+    'plan1.desc': 'Спробуй систему. Отримай реальну відповідь із посиланнями на закон.',
+    'plan1.f1': '7 AI-повідомлень загалом', 'plan1.f2': '1 активна справа', 'plan1.f3': 'Сканування документів (3 шт)', 'plan1.f4': 'Посилання на EE та ЄС закони', 'plan1.f5': 'Без картки',
+    'plan1.cta': 'Почати',
+    'plan2.badge': 'Популярний', 'plan2.name': 'PRO', 'plan2.per': '/ місяць', 'plan2.annual': 'або €119.99/рік — економія 33%',
+    'plan2.desc': 'Щоденна юрдопомога тобі та родині. Безліміт ШІ, повне складання документів.',
+    'plan2.f1': '100 AI-повідомлень на день', 'plan2.f2': '3 активні справи', 'plan2.f3': 'Сканування документів (20 шт)',
+    'plan2.f4': 'Повне складання документів', 'plan2.f5': 'Голосовий ввід', 'plan2.f6': 'Веб-пошук свіжого права',
+    'plan2.cta': 'Обрати Pro',
+    'plan3.name': 'PREMIUM', 'plan3.per': '/ місяць', 'plan3.annual': 'або €249.99/рік — економія 30%',
+    'plan3.desc': 'Повний захист — безліміт у всьому, пріоритетна відповідь, усі функції.',
+    'plan3.f1': 'Безліміт AI-повідомлень', 'plan3.f2': 'Безліміт справ', 'plan3.f3': 'Безліміт сканувань',
+    'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Експорт листів і документів',
+    'plan3.cta': 'Обрати Premium',
+    'pricing.note': 'Промо для founding member: <strong>€9.99/міс перші 3 місяці</strong> — місць обмежено. Економія 20-33% з річною оплатою.',
+    'faq.label': 'FAQ', 'faq.title': 'Чесні <em>відповіді</em> на часті питання.',
+    'faq.items': [
+      { q: 'Це законно? Чи можна використовувати ШІ для юридичних питань?', a: 'Так. Advocat — це сервіс правової інформації: пояснює закони і допомагає складати документи. Не замінює ліцензованого адвоката в суді, але для розуміння ситуації і написання листів — працює. Так само як читання юридичних статей в інтернеті легальне, використання інструмента, який робить те саме, — теж легально.' },
+      { q: 'Чи безпечні мої дані?', a: 'Так. Шифрування, зберігання на серверах ЄС (Франкфурт). Розмови ніколи не використовуються для навчання моделей. Дотримуємося GDPR і принципу мінімізації даних. Свої дані можна видалити в будь-який момент.' },
+      { q: 'Чим це краще за ChatGPT?', a: 'Advocat спеціалізований на естонському та європейському праві: цитує конкретні статті (наприклад VÕS § 308), пам\'ятає твою справу між сесіями, вміє писати офіційні листи в правильному юридичному форматі. ChatGPT може вигадувати посилання — Advocat посилається на реальні джерела з Riigi Teataja.' },
+      { q: 'Чи можна повернути гроші?', a: 'Так. Скасування в один клік будь-коли — без питань. За законом ЄС про споживачів у тебе є 14 днів від покупки на повне повернення. Після цього підписка діє до кінця розрахункового періоду.' },
+      { q: 'Чи юридично обов\'язкові ці документи?', a: 'Документи, які складає Advocat, — це шаблони та відправні точки. Вони стають юридично значущими, коли ти їх підписуєш і надсилаєш. Документи для суду настійно рекомендуємо показати ліцензованому адвокату. Advocat — автор твого чернетки, а не твій представник у суді.' },
+      { q: 'Чи представлятиме Advocat мене в суді?', a: 'Ні. Advocat для підготовки, не для представництва. Допомагаємо зрозуміти права, написати іншій стороні та зібрати справу. Для виступу в суді потрібен ліцензований естонський присяжний адвокат (vandeadvokaat). За потреби допоможемо знайти.' },
+    ],
+    'cta.title': 'Не залишайся зі своїми правами <em>сам</em>.',
+    'cta.sub': 'Постав перше питання. Відповідь із посиланнями на закон за 30 секунд. Без картки.',
+    'cta.btn': 'Відкрити чат →',
+    'cta.micro': '7 повідомлень безкоштовно · скасування в один клік · EU 14-дн повернення',
+    'disclaimer.full': '<strong>Advocat надає правову інформацію, а не юридичну консультацію.</strong> Сервіс не замінює ліцензованого адвоката. Для представництва в суді, судових рішень або обов\'язкових юридичних висновків зверніться до кваліфікованого юриста. Інформація може відрізнятися залежно від юрисдикції.',
+    'foot.about': 'Юридичний асистент на ШІ для Естонії та ЄС. Створено в Таллінні, Vorantis OÜ.',
+    'foot.powered': 'На основі Claude (Anthropic)',
+    'foot.product': 'Продукт', 'foot.how': 'Як працює', 'foot.pricing': 'Тарифи', 'foot.app': 'Відкрити застосунок', 'foot.blog': 'Блог',
+    'foot.company': 'Компанія', 'foot.news': 'Новини',
+    'foot.legal': 'Юридичне', 'foot.terms': 'Умови', 'foot.privacy': 'Приватність', 'foot.gdpr': 'GDPR',
+    'foot.gdpr_badge': 'GDPR · сервери ЄС (Франкфурт)',
+    'chat.status': 'Онлайн · відповідь за 12 сек',
+    'chat.placeholder': 'Напиши своє юридичне питання…',
+    'chat.welcome': 'Привіт! Я Advocat — твій AI-юрист.\nЯке в тебе юридичне питання?',
+    'chat.sample': [
+      { who: 'user', t: 'Орендодавець не повертає заставу вже 3 тижні.' },
+      { who: 'bot', t: 'Зрозуміла ситуація. За VÕS § 308 орендодавець зобов\'язаний повернути заставу протягом 14 днів після завершення оренди, якщо немає доведеної шкоди.', cite: 'VÕS § 308 ч. 4' },
+      { who: 'bot', t: 'Можу підготувати офіційний лист-вимогу. Українською чи естонською?' },
+    ],
+    'chat.chips': ['Застава за оренду', 'Трудовий спір', 'Депортація', 'Інше'],
+    'chat.reply': 'Зрозуміло. Можу прямо зараз підготувати офіційний лист-вимогу — хочеш?',
+  },
+
+  fi: {
+    'promo': 'Founding Member: <strong>€9.99/kk</strong> ensimmäiset 3 kuukautta. Rajoitettu määrä paikkoja — <a href="/app.html#pricing">varaa omasi →</a>',
+    'nav.how': 'Miten toimii', 'nav.compare': 'Vertailu', 'nav.pricing': 'Hinnat', 'nav.faq': 'UKK',
+    'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
+    'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
+    'hero.title': 'Puolusta <em>oikeuksiasi</em> — minuuteissa, ei kuukausissa.',
+    'hero.sub': 'Advocat on tekoälyyn perustuva lakiassistentti, joka on koulutettu Viron ja EU:n lainsäädännöllä. Se selittää lakeja äidinkielelläsi, laatii asiakirjat ja ohjaa oikealle asianajajalle, kun panokset nousevat.',
+    'hero.primary': 'Kokeile ilmaiseksi →', 'hero.secondary': 'Katso esimerkki',
+    'hero.trust1': '7 ilmaista viestiä — ei korttia', 'hero.trust2': 'Lähteet siteerattuna', 'hero.trust3': 'EU GDPR · palvelimet Frankfurtissa',
+    'how.label': 'KOLME VAIHETTA', 'how.title': 'Lakiapua, joka <em>todella toimii</em>.',
+    'how.sub': 'Ei seitsemän sivun rekisteröitymistä. Puhu luonnollisesti, lataa dokumentit, saat selkeän seuraavan askeleen.',
+    'how.s1h': 'Esitä kysymyksesi', 'how.s1p': 'Puhu kuten ystävälle — millä tahansa 17 kielellä. Advocat esittää tarkentavia kysymyksiä kuten hyvä juristi.', 'how.s1m': '~ 90 sek',
+    'how.s2h': 'Tekoäly siteeraa lakia', 'how.s2p': 'Jokainen vastaus viittaa tarkkaan pykälään (esim. VÕS § 308). Voit tarkistaa sen Riigi Teatajasta itse.', 'how.s2m': 'PDF · DOCX · kuvat',
+    'how.s3h': 'Saa kirje tai suunnitelma', 'how.s3p': 'Saat räätälöidyn vetoomuksen, vastauksen tai valituksen, jonka voit lähettää tänään. Oikeuteen — lisensoitu asianajaja.', 'how.s3m': 'Valmis lähetettäväksi',
+    'compare.label': 'VERTAILU', 'compare.title': 'Miksi maksaa <em>lakitoimistolle</em> €100-200 / tunti?',
+    'compare.sub': 'Oikeudessa asianajaja on oikea vastaus. Lakielämän muille 95 %:lle — on nopeampi tapa.',
+    'compare.us_tag': 'AI-lakiapu',
+    'compare.u1': 'Vastaus 30 sekunnissa, 24/7',
+    'compare.u2': 'Alkaen <strong>€14.99/kk</strong> — rajaton Pro',
+    'compare.u3': '17 kieltä — ml. venäjä ja ukraina',
+    'compare.u4': 'Jokainen väite siteeraa lakia',
+    'compare.u5': 'Peruuta milloin tahansa — EU 14-pv palautus',
+    'compare.cta_us': 'Kokeile ilmaiseksi →',
+    'compare.them_h': 'Lakitoimisto', 'compare.them_tag': 'Perinteinen',
+    'compare.t1': 'Konsultaatio 1-2 viikon päästä', 'compare.t2': '<strong>€100-200 / tunti</strong>, min 1 t',
+    'compare.t3': 'Usein vain viroa tai englantia', 'compare.t4': 'Muistista — suullinen, ei kirjattu', 'compare.t5': 'Jokainen kysymys = uusi lasku',
+    'compare.cta_them': 'Varaa 2 viikon päähän…',
+    'pricing.label': 'HINNAT', 'pricing.title': 'Selkeä hinta. Ei <em>yllätyksiä</em>.',
+    'pricing.sub': 'Peruuta milloin tahansa. EU-kuluttajalain mukaan täysi palautus 14 päivän sisällä.',
+    'plan1.name': 'ILMAINEN', 'plan1.per': '/ ikuisesti',
+    'plan1.desc': 'Kokeile järjestelmää. Saat oikean vastauksen lähteineen ennen päätöstä.',
+    'plan1.f1': '7 AI-viestiä yhteensä', 'plan1.f2': '1 aktiivinen tapaus', 'plan1.f3': 'Asiakirjojen skannaus (3 kpl)', 'plan1.f4': 'Lähteet EE & EU-laista', 'plan1.f5': 'Ei korttia',
+    'plan1.cta': 'Aloita',
+    'plan2.badge': 'Suosituin', 'plan2.name': 'PRO', 'plan2.per': '/ kuukausi', 'plan2.annual': 'tai €119.99/vuosi — säästä 33%',
+    'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. Rajaton AI, täysi asiakirjojen laadinta.',
+    'plan2.f1': '100 AI-viestiä päivässä', 'plan2.f2': '3 aktiivista tapausta', 'plan2.f3': 'Asiakirjojen skannaus (20 kpl)',
+    'plan2.f4': 'Täysi asiakirjojen laadinta', 'plan2.f5': 'Äänisyöte', 'plan2.f6': 'Verkkohaku tuoreesta laista',
+    'plan2.cta': 'Valitse Pro',
+    'plan3.name': 'PREMIUM', 'plan3.per': '/ kuukausi', 'plan3.annual': 'tai €249.99/vuosi — säästä 30%',
+    'plan3.desc': 'Täysi puolustus — rajaton kaikki, prioriteetti, kaikki ominaisuudet.',
+    'plan3.f1': 'Rajattomat AI-viestit', 'plan3.f2': 'Rajattomat tapaukset', 'plan3.f3': 'Rajattomat skannaukset',
+    'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköposti- ja asiakirjavienti',
+    'plan3.cta': 'Valitse Premium',
+    'pricing.note': 'Founding member -tarjous: <strong>€9.99/kk ensimmäiset 3 kuukautta</strong> — paikkoja rajoitetusti. Säästä 20-33% vuosilaskutuksella.',
+    'faq.label': 'UKK', 'faq.title': 'Rehellisiä <em>vastauksia</em> yleisiin kysymyksiin.',
+    'faq.items': [
+      { q: 'Onko tämä laillista? Voiko tekoälyä käyttää lakikysymyksiin?', a: 'Kyllä. Advocat on lakitiedotuspalvelu — selittää lakeja ja auttaa laatimaan asiakirjoja. Se ei korvaa lisensoitua asianajajaa oikeudessa, mutta tilanteen ymmärtämiseen ja kirjeiden kirjoittamiseen se toimii.' },
+      { q: 'Ovatko tietoni turvassa?', a: 'Kyllä. Salattu, EU-palvelimilla (Frankfurt). Keskusteluja ei käytetä mallin koulutukseen. GDPR-yhteensopiva ja noudatamme tietojen minimointia.' },
+      { q: 'Miksi tämä on parempi kuin ChatGPT?', a: 'Advocat on erikoistunut Viron ja EU:n lakiin: siteeraa konkreettisia pykäliä (esim. VÕS § 308), muistaa tapauksesi ja osaa kirjoittaa virallisia kirjeitä oikeassa juridisessa muodossa. ChatGPT voi keksiä viittauksia — Advocat siteeraa oikeita lähteitä Riigi Teatajasta.' },
+      { q: 'Saanko rahat takaisin?', a: 'Kyllä. Peruutus yhdellä klikkauksella milloin tahansa. EU-kuluttajalain mukaan sinulla on 14 päivää oston jälkeen täyteen palautukseen.' },
+      { q: 'Ovatko nämä asiakirjat juridisesti sitovia?', a: 'Advocatin laatimat asiakirjat ovat malleja ja lähtökohtia. Niistä tulee juridisesti merkityksellisiä, kun allekirjoitat ja lähetät ne. Oikeuteen meneville asiakirjoille suosittelemme vahvasti lisensoidun asianajajan tarkastusta.' },
+      { q: 'Edustaako Advocat minua oikeudessa?', a: 'Ei. Advocat on valmistautumiseen, ei edustamiseen. Autamme ymmärtämään oikeuksiasi, kirjoittamaan toiselle osapuolelle ja kokoamaan asiakirjasi. Oikeudessa tarvitset lisensoidun virolaisen asianajajan.' },
+    ],
+    'cta.title': 'Älä jää oikeuksiesi kanssa <em>yksin</em>.',
+    'cta.sub': 'Esitä ensimmäinen kysymys. Lähteistetty vastaus 30 sekunnissa. Ei korttia.',
+    'cta.btn': 'Avaa chat →',
+    'cta.micro': '7 viestiä ilmaiseksi · peruutus milloin tahansa · EU 14-pv palautus',
+    'disclaimer.full': '<strong>Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa.</strong> Tämä palvelu ei korvaa lisensoitua asianajajaa. Tuomioistuinedustusta, tuomioita tai sitovia oikeudellisia lausuntoja varten käänny pätevän juristin puoleen. Tiedot voivat vaihdella oikeudenkäyntialueittain.',
+    'foot.about': 'Tekoälyyn perustuva lakiapu Virolle ja EU:lle. Tehty Tallinnassa, Vorantis OÜ.',
+    'foot.powered': 'Powered by Claude (Anthropic)',
+    'foot.product': 'Tuote', 'foot.how': 'Miten toimii', 'foot.pricing': 'Hinnat', 'foot.app': 'Avaa sovellus', 'foot.blog': 'Blogi',
+    'foot.company': 'Yritys', 'foot.news': 'Uutiset',
+    'foot.legal': 'Juridinen', 'foot.terms': 'Ehdot', 'foot.privacy': 'Tietosuoja', 'foot.gdpr': 'GDPR',
+    'foot.gdpr_badge': 'GDPR · EU-palvelimet (Frankfurt)',
+    'chat.status': 'Online · keskimäärin 12 s',
+    'chat.placeholder': 'Kirjoita oikeudellinen kysymyksesi…',
+    'chat.welcome': 'Hei! Olen Advocat — AI-juristisi.\nMikä on oikeudellinen kysymyksesi?',
+    'chat.sample': [
+      { who: 'user', t: 'Vuokranantaja ei palauta vakuutta jo 3 viikon ajan.' },
+      { who: 'bot', t: 'Ymmärrettävä tilanne. VÕS § 308 mukaan vuokranantajan on palautettava vakuus 14 päivän kuluessa vuokrasopimuksen päättymisestä, jos vahinkoa ei ole näytetty toteen.', cite: 'VÕS § 308 lg 4' },
+      { who: 'bot', t: 'Voin laatia virallisen vaatimuskirjeen. Suomeksi vai viroksi?' },
+    ],
+    'chat.chips': ['Vuokravakuus', 'Työriita', 'Karkotus', 'Muu'],
+    'chat.reply': 'Selvä. Voin laatia vaatimuskirjeen heti — haluatko?',
+  },
+};
+
+const TR = {};
+function tr(key) { return (TR[key] !== undefined) ? TR[key] : (I18N.en[key] !== undefined ? I18N.en[key] : key); }
+
+let CUR_LANG = 'en';
+
+// Build lang dropdown
+(function buildLangs(){
+  const menu = document.getElementById('lang-menu');
+  LANGS.forEach(function(l){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.dataset.lang = l.code;
+    b.innerHTML = '<span>' + l.label + '</span><span class="lang-code">' + l.code.toUpperCase() + '</span>';
+    b.onclick = function(){ setLang(l.code); document.getElementById('lang-menu').classList.remove('open'); };
+    menu.appendChild(b);
+  });
+  const tog = document.getElementById('lang-toggle');
+  tog.addEventListener('click', function(e){
+    e.stopPropagation();
+    const m = document.getElementById('lang-menu');
+    m.classList.toggle('open');
+    tog.setAttribute('aria-expanded', m.classList.contains('open') ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(){ document.getElementById('lang-menu').classList.remove('open'); });
+})();
+
+function applyTranslations() {
+  // Build TR from English fallback merged with chosen lang
+  const en = I18N.en;
+  const cur = I18N[CUR_LANG] || {};
+  Object.keys(TR).forEach(function(k){ delete TR[k]; });
+  Object.keys(en).forEach(function(k){ TR[k] = (cur[k] !== undefined ? cur[k] : en[k]); });
+
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    const k = el.getAttribute('data-i18n');
+    el.textContent = tr(k);
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    const k = el.getAttribute('data-i18n-html');
+    el.innerHTML = tr(k);
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){
+    const k = el.getAttribute('data-i18n-placeholder');
+    el.setAttribute('placeholder', tr(k));
+  });
+
+  // promo banner span (uses i18n-html through outer span)
+  const promoSpan = document.querySelector('#promo-banner [data-i18n="promo"]');
+  if (promoSpan) promoSpan.innerHTML = tr('promo');
+
+  // Top label
+  document.getElementById('lang-current').textContent = CUR_LANG.toUpperCase();
+  document.querySelectorAll('#lang-menu button').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang === CUR_LANG);
+  });
+
+  // FAQ items
+  renderFaq();
+
+  // Chat
+  document.getElementById('chat-lang-tag').textContent = CUR_LANG.toUpperCase();
+  restartChat();
+}
+
+function setLang(code) {
+  if (!I18N[code]) {
+    // Fallback to EN for codes we don't have full strings for, but still mark
+    CUR_LANG = 'en';
+  } else {
+    CUR_LANG = code;
+  }
+  document.documentElement.lang = code;
+  document.documentElement.dir = RTL[code] ? 'rtl' : 'ltr';
+  try { localStorage.setItem('advocat-landing-lang', code); } catch(e){}
+  applyTranslations();
+}
+
+function renderFaq() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = '';
+  const items = (I18N[CUR_LANG] && I18N[CUR_LANG]['faq.items']) || I18N.en['faq.items'];
+  items.forEach(function(f){
+    const item = document.createElement('div');
+    item.className = 'faq-item';
+    const q = document.createElement('div');
+    q.className = 'faq-q';
+    q.innerHTML = '<span>' + f.q + '</span><span class="plus">+</span>';
+    const a = document.createElement('div');
+    a.className = 'faq-a';
+    a.textContent = f.a;
+    item.appendChild(q); item.appendChild(a);
+    q.addEventListener('click', function(){ item.classList.toggle('open'); });
+    list.appendChild(item);
+  });
+}
+
+// ── CHAT DEMO ──
+let chatTimer = null;
+function chatAddMsg(who, text, cite){
+  const body = document.getElementById('chat-body');
+  const div = document.createElement('div');
+  div.className = 'chat-msg ' + who;
+  div.innerHTML = (text || '').replace(/\n/g, '<br>');
+  if (cite) {
+    const tag = document.createElement('div');
+    tag.className = 'cite-tag';
+    tag.innerHTML = '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg> § ' + cite;
+    div.appendChild(tag);
+  }
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+function chatTyping(on){
+  const body = document.getElementById('chat-body');
+  const existing = document.getElementById('typing-ind');
+  if (on && !existing) {
+    const t = document.createElement('div');
+    t.className = 'typing'; t.id = 'typing-ind';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    body.appendChild(t); body.scrollTop = body.scrollHeight;
+  } else if (!on && existing) {
+    existing.remove();
+  }
+}
+function restartChat(){
+  if (chatTimer) clearTimeout(chatTimer);
+  const body = document.getElementById('chat-body');
+  const chips = document.getElementById('chat-chips');
+  body.innerHTML = '';
+  chips.innerHTML = '';
+  chips.style.display = 'none';
+
+  const langData = I18N[CUR_LANG] || I18N.en;
+  const sample = langData['chat.sample'] || I18N.en['chat.sample'];
+  const welcome = langData['chat.welcome'] || I18N.en['chat.welcome'];
+  const chipLabels = langData['chat.chips'] || I18N.en['chat.chips'];
+
+  let i = 0;
+  function next(){
+    if (i === 0) {
+      chatAddMsg('bot', welcome);
+      i++; chatTimer = setTimeout(next, 900);
+    } else if (i <= sample.length) {
+      const m = sample[i-1];
+      if (m.who === 'bot') {
+        chatTyping(true);
+        chatTimer = setTimeout(function(){
+          chatTyping(false);
+          chatAddMsg('bot', m.t, m.cite);
+          i++; chatTimer = setTimeout(next, 1100);
+        }, 800);
+      } else {
+        chatAddMsg('user', m.t);
+        i++; chatTimer = setTimeout(next, 700);
+      }
+    } else {
+      // show chips
+      chipLabels.forEach(function(label){
+        const b = document.createElement('button');
+        b.className = 'chip';
+        b.textContent = label;
+        b.onclick = function(){ window.location.href = '/app.html'; };
+        chips.appendChild(b);
+      });
+      chips.style.display = 'flex';
+    }
+  }
+  chatTimer = setTimeout(next, 400);
+}
+
+window.advocatDemoSend = function(){
+  const input = document.getElementById('chat-input');
+  const msg = (input.value || '').trim();
+  if (!msg) return;
+  input.value = '';
+  chatAddMsg('user', msg);
+  chatTyping(true);
+  setTimeout(function(){
+    chatTyping(false);
+    const reply = (I18N[CUR_LANG] && I18N[CUR_LANG]['chat.reply']) || I18N.en['chat.reply'];
+    chatAddMsg('bot', reply);
+    // After demo reply, gently nudge to app
+    setTimeout(function(){
+      const cta = document.createElement('div');
+      cta.className = 'chat-msg bot';
+      cta.style.background = 'rgba(13,148,136,.08)';
+      cta.style.border = '1px solid rgba(13,148,136,.18)';
+      cta.innerHTML = '<a href="/app.html" style="color:#0B7A70;font-weight:700;text-decoration:none">→ ' + (CUR_LANG === 'et' ? 'Ava päris vestlus' : CUR_LANG === 'ru' ? 'Открыть настоящий чат' : CUR_LANG === 'uk' ? 'Відкрити справжній чат' : CUR_LANG === 'fi' ? 'Avaa oikea chat' : 'Open the real chat') + '</a>';
+      document.getElementById('chat-body').appendChild(cta);
+    }, 700);
+  }, 900);
+};
+
+document.getElementById('chat-input').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') window.advocatDemoSend();
+});
+
+// ── INIT ──
+(function init(){
+  let lang = 'en';
+  try {
+    const saved = localStorage.getItem('advocat-landing-lang');
+    if (saved && (I18N[saved] || LANGS.find(function(l){ return l.code === saved; }))) {
+      lang = saved;
+    }
+  } catch(e){}
+  if (!I18N[lang]) {
+    // Browser auto-detect for languages we have full strings for
+    const nav = (navigator.language || '').toLowerCase();
+    if (nav.startsWith('et')) lang = 'et';
+    else if (nav.startsWith('ru')) lang = 'ru';
+    else if (nav.startsWith('uk')) lang = 'uk';
+    else if (nav.startsWith('fi')) lang = 'fi';
+    else lang = 'en';
+  }
+  setLang(lang);
+})();
+</script>
+
+</body>
+</html>
