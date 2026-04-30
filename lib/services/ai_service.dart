@@ -617,6 +617,44 @@ class AIService {
   @visibleForTesting
   static String sanitizeForTest(String text) => _sanitizeInput(text);
 
+  // ── Proxy fallback response parser ─────────────────────────────────────
+  //
+  // Production bug (2026-04-29): the `/ai/chat` proxy used to return a
+  // legacy `{message, suggested_actions, disclaimer}` body, but is now
+  // pass-through to the Anthropic Messages API which returns
+  // `{content: [{type:"text", text:"..."}], stop_reason, usage, ...}`.
+  //
+  // The previous `ChatResponse.fromJson(response.data)` cast threw on
+  // every fallback hit, the catch swallowed the exception, and users
+  // received the hardcoded English "AI assistant is temporarily
+  // unavailable…" string — even Russian-speaking ones — making the
+  // chat appear broken. This parser handles BOTH shapes so we degrade
+  // gracefully no matter which version of the proxy is deployed.
+  //
+  // Exposed via `@visibleForTesting` so we can unit-test the parser
+  // without spinning up the full Dio + Claude pipeline.
+  @visibleForTesting
+  static ChatResponse parseProxyChatResponseForTest(
+    Map<String, dynamic> data,
+  ) {
+    // New (raw Anthropic) shape: {content: [{type:"text", text:"..."}]}
+    if (data.containsKey('content') && data['content'] is List) {
+      final blocks = data['content'] as List<dynamic>;
+      final text = blocks
+          .whereType<Map<String, dynamic>>()
+          .where((b) => b['type'] == 'text')
+          .map((b) => (b['text'] as String?) ?? '')
+          .where((s) => s.isNotEmpty)
+          .join('\n');
+      return ChatResponse(
+        message: text,
+        disclaimer: data['disclaimer'] as String?,
+      );
+    }
+    // Legacy shape: {message, suggested_actions, disclaimer}
+    return ChatResponse.fromJson(data);
+  }
+
   // ── Conversation history for real AI mode ──────────────────────────────
 
   /// Per-case conversation history for Claude context.
@@ -1167,7 +1205,9 @@ class AIService {
             if (attachmentIds != null) 'attachment_ids': attachmentIds,
           },
         );
-        return ChatResponse.fromJson(response.data as Map<String, dynamic>);
+        return parseProxyChatResponseForTest(
+          response.data as Map<String, dynamic>,
+        );
       } on DioException catch (e) {
         _log.e('Chat proxy fallback also failed', error: e);
         // Fall through to demo fallback below
