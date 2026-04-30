@@ -199,12 +199,12 @@ img, svg { display: block; max-width: 100%; }
 
 /* ── COMPARE — KINEMATIK SPLIT-SCREEN v2 ── */
 :root { --cmp-ease: cubic-bezier(.2,.8,.3,1); --cmp-radius: 28px; }
-#compare { padding-top: 72px; padding-bottom: 80px; overflow: hidden; }
+#compare { padding-top: 48px; padding-bottom: 56px; overflow: hidden; }
 #compare .container { max-width: 1280px; }
 
 /* The stage holds the entire split-screen + the diagonal divider + the orb */
 .cmp-stage {
-  position: relative; margin: 44px auto 0;
+  position: relative; margin: 28px auto 0;
   border-radius: var(--cmp-radius);
   overflow: hidden;
   isolation: isolate;
@@ -217,14 +217,14 @@ img, svg { display: block; max-width: 100%; }
 }
 .cmp-split {
   display: grid; grid-template-columns: 1fr 1fr;
-  min-height: 480px;
+  min-height: 380px;
   position: relative;
 }
 
 /* ─── LEFT: ADVOCAT (premium navy world) ─── */
 .cmp-side {
   position: relative;
-  padding: 44px 48px 40px;
+  padding: 32px 40px 28px;
   display: flex; flex-direction: column;
   transition: filter .55s var(--cmp-ease), opacity .55s var(--cmp-ease);
 }
@@ -387,10 +387,10 @@ img, svg { display: block; max-width: 100%; }
 .cmp-side--them .cmp-price-note { color: var(--faint); }
 
 /* Features list */
-.cmp-list { list-style: none; margin-top: 16px; display: flex; flex-direction: column; gap: 2px; position: relative; z-index: 2; }
+.cmp-list { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 0; position: relative; z-index: 2; }
 .cmp-list li {
-  display: flex; gap: 14px; padding: 10px 0;
-  align-items: flex-start; font-size: 14.5px; line-height: 1.5;
+  display: flex; gap: 12px; padding: 7px 0;
+  align-items: flex-start; font-size: 13.5px; line-height: 1.45;
   border-bottom: 1px solid rgba(255,255,255,.07);
   opacity: 0; transform: translateY(8px);
 }
@@ -517,10 +517,10 @@ img, svg { display: block; max-width: 100%; }
 
 /* ─── SAVINGS BANNER (counters) ─── */
 .cmp-savings {
-  margin: 24px auto 0; max-width: 1100px;
+  margin: 16px auto 0; max-width: 1100px;
   background: linear-gradient(135deg, #0F1B35 0%, #1A2B4A 60%, #0E3540 100%);
-  border-radius: 22px;
-  padding: 22px 36px;
+  border-radius: 18px;
+  padding: 14px 28px;
   display: grid;
   grid-template-columns: 1fr 1fr 1.2fr;
   align-items: center; gap: 24px;
