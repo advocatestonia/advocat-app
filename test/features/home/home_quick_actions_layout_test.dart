@@ -7,6 +7,13 @@
 // below the tiles), move the pulsing AI Assistant tile from row1#2 to row2#3,
 // and put a new Checker tile in the freed row1#2 slot.
 //
+// Later same day: the owner asked to keep the "shield" visual on the AI
+// Assistant tile (the look that used to belong to the removed Pro tile —
+// scale animation + accent shadow + shield_pro.png). We restored that visual
+// as a parameterized widget `_ShieldPulsingButton` that routes to /chat/general
+// instead of /subscription. The original `_AdvocatProQuickActionButton` class
+// stays deleted; tests below assert on the new `_ShieldPulsingButton`.
+//
 // We don't boot HomeScreen widget here — Riverpod + Supabase + GoRouter
 // scaffolding is heavy and the change is purely structural. Instead we read
 // the source file and assert the order of widget invocations inside the
@@ -64,12 +71,13 @@ void main() {
           reason: 'Checker tile should use verified_user_rounded icon');
     });
 
-    test('row2#3 is the pulsing AI Assistant tile (moved from row1#2)', () {
-      // The single remaining _PulsingQuickActionButton invocation must point
-      // at /chat/general and sit between email and callAI tiles.
-      final pulsingIdx = source.indexOf('_PulsingQuickActionButton(');
+    test('row2#3 is the shield-pulsing AI Assistant tile (moved from row1#2)',
+        () {
+      // The single _ShieldPulsingButton invocation must point at /chat/general
+      // and sit between email and callAI tiles.
+      final pulsingIdx = source.indexOf('_ShieldPulsingButton(');
       expect(pulsingIdx, greaterThan(0),
-          reason: 'Pulsing AI tile must still exist');
+          reason: 'Shield-pulsing AI tile must still exist');
 
       // It must come after the email tile and before the callAI tile.
       final emailIdx = source.indexOf('label: l.email');
@@ -77,17 +85,32 @@ void main() {
       expect(emailIdx, greaterThan(0));
       expect(callAIIdx, greaterThan(emailIdx));
       expect(pulsingIdx, greaterThan(emailIdx),
-          reason: 'Pulsing AI tile must come after email tile');
+          reason: 'Shield-pulsing AI tile must come after email tile');
       expect(pulsingIdx, lessThan(callAIIdx),
-          reason: 'Pulsing AI tile must come before callAI tile (row2#3)');
+          reason:
+              'Shield-pulsing AI tile must come before callAI tile (row2#3)');
 
       // It must still route to /chat/general and use aiAssistant label.
       final pulsingEnd = source.indexOf('),', pulsingIdx);
       final pulsingBlock = source.substring(pulsingIdx, pulsingEnd + 2);
       expect(pulsingBlock, contains("'/chat/general'"),
-          reason: 'Pulsing AI tile must keep its /chat/general route');
+          reason:
+              'Shield-pulsing AI tile must keep its /chat/general route');
       expect(pulsingBlock, contains('l.aiAssistant'),
-          reason: 'Pulsing AI tile must keep aiAssistant label');
+          reason: 'Shield-pulsing AI tile must keep aiAssistant label');
+    });
+
+    test('shield-pulsing tile uses shield_pro.png artwork', () {
+      // The _ShieldPulsingButton implementation must render the shield image —
+      // that is the entire point of restoring this visual.
+      final classStart = source.indexOf('class _ShieldPulsingButton');
+      expect(classStart, greaterThan(0),
+          reason: '_ShieldPulsingButton class must exist');
+      final classBody = source.substring(classStart);
+      expect(classBody, contains("'assets/images/shield_pro.png'"),
+          reason:
+              '_ShieldPulsingButton must render shield_pro.png — that is the '
+              'whole reason it exists (owner wanted the shield visual back)');
     });
 
     test(
@@ -99,16 +122,27 @@ void main() {
               'Pro tile is gone, Pro CTA lives only in _PremiumUpgradeCard');
     });
 
-    test('exactly one _PulsingQuickActionButton invocation in the grid', () {
-      // Class definition + state class + single invocation = 3 occurrences
-      // of the literal string. If anyone re-adds a second pulsing tile this
-      // count goes up.
-      final allMatches = '_PulsingQuickActionButton('.allMatches(source);
-      // 1 invocation site + 1 constructor signature
+    test(
+        '_PulsingQuickActionButton is gone (replaced by _ShieldPulsingButton)',
+        () {
+      // The intermediate widget that briefly held this slot (with a balance
+      // icon) was replaced by _ShieldPulsingButton on the same day. Make sure
+      // nobody re-introduces it accidentally.
+      expect(source.contains('_PulsingQuickActionButton'), isFalse,
+          reason:
+              '_PulsingQuickActionButton must be removed — the AI Assistant '
+              'tile uses _ShieldPulsingButton (shield artwork) now');
+    });
+
+    test('exactly one _ShieldPulsingButton invocation in the grid', () {
+      // Constructor signature + invocation site = 2 occurrences of the
+      // literal string `_ShieldPulsingButton(`. The state class and class
+      // header use the bare name without `(` so they don't count.
+      final allMatches = '_ShieldPulsingButton('.allMatches(source);
       expect(allMatches.length, 2,
           reason:
-              'Expected exactly one _PulsingQuickActionButton invocation '
-              'plus its constructor; found ${allMatches.length} matches');
+              'Expected exactly one _ShieldPulsingButton invocation plus its '
+              'constructor; found ${allMatches.length} matches');
     });
   });
 }

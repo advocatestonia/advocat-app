@@ -677,10 +677,8 @@ class _QuickActions extends StatelessWidget {
                 color: AppColors.info,
                 onTap: () => context.push(AppRoutes.email),
               ),
-              _PulsingQuickActionButton(
-                icon: Icons.support_agent_rounded,
+              _ShieldPulsingButton(
                 label: l.aiAssistant,
-                color: AppColors.accent,
                 onTap: () => context.push('/chat/general'),
               ),
               _QuickActionButton(
@@ -707,27 +705,29 @@ class _QuickActions extends StatelessWidget {
   }
 }
 
-class _PulsingQuickActionButton extends StatefulWidget {
-  const _PulsingQuickActionButton({
-    required this.icon,
+// _ShieldPulsingButton — restored shield-icon pulsing tile (formerly the
+// AdvocatPro quick-action design from commit 2e6b19a~1) with the same
+// scale animation, soft shadow, accent ring, and shield_pro.png artwork —
+// but parameterized: caller controls label and onTap. Used on the home grid
+// to make the AI Assistant tile visually pop with the brand shield while
+// still routing to /chat/general.
+class _ShieldPulsingButton extends StatefulWidget {
+  const _ShieldPulsingButton({
     required this.label,
-    required this.color,
     required this.onTap,
   });
 
-  final IconData icon;
   final String label;
-  final Color color;
   final VoidCallback onTap;
 
   @override
-  State<_PulsingQuickActionButton> createState() => _PulsingQuickActionButtonState();
+  State<_ShieldPulsingButton> createState() => _ShieldPulsingButtonState();
 }
 
-class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
+class _ShieldPulsingButtonState extends State<_ShieldPulsingButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  late final Animation<double> _pulseAnimation;
+  late final Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -736,7 +736,7 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
       vsync: this,
       duration: const Duration(milliseconds: 2000),
     )..repeat(reverse: true);
-    _pulseAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
   }
@@ -756,65 +756,53 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              width: 64,
-              height: 64,
-            child: AnimatedBuilder(
-              animation: _pulseAnimation,
-              builder: (context, child) {
-                return Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Пульсирующее кольцо снаружи
-                    Container(
-                      width: 56 + _pulseAnimation.value * 12,
-                      height: 56 + _pulseAnimation.value * 12,
+              width: 72,
+              height: 72,
+              child: AnimatedBuilder(
+                animation: _scaleAnimation,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _scaleAnimation.value,
+                    child: Container(
+                      width: 64,
+                      height: 64,
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.accent.withValues(alpha: 0.4 - _pulseAnimation.value * 0.35),
-                          width: 2,
-                        ),
-                      ),
-                    ),
-                    // Основная кнопка — чёткая, не размытая
-                    Container(
-                      width: 56,
-                      height: 56,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [AppColors.accent, AppColors.accentLight],
-                        ),
+                        color: AppColors.accent.withValues(alpha: 0.08),
                         shape: BoxShape.circle,
                         boxShadow: [
                           BoxShadow(
-                            color: AppColors.accent.withValues(alpha: 0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 3),
+                            color: AppColors.accent.withValues(alpha: 0.2),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
                           ),
                         ],
                       ),
-                      child: const Icon(Icons.balance_rounded, color: Colors.white, size: 26),
+                      child: Center(
+                        child: Image.asset(
+                          'assets/images/shield_pro.png',
+                          width: 44,
+                          height: 44,
+                          filterQuality: FilterQuality.high,
+                        ),
+                      ),
                     ),
-                  ],
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            widget.label,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: widget.color,
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              height: 1.2,
+            const SizedBox(height: 6),
+            Text(
+              widget.label,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: AppColors.accent,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                height: 1.2,
+              ),
             ),
-          ),
           ],
         ),
       ),
