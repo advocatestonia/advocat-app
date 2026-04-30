@@ -15,6 +15,8 @@
     "analyzing": "Analyzing…",
     "aiAnalyzing": "AI is analyzing",
     "speakIntoMicHint": "Speak into the microphone. Make sure microphone access is enabled.",
+    "aiErrorRateLimit": "The service is temporarily overloaded. Please try again in 1-2 minutes.",
+    "aiErrorOverload": "The AI is busy right now, please try again in a minute.",
     "freeLimitReached": "You have used all {count} free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!",
     "@freeLimitReached": {
         "placeholders": {

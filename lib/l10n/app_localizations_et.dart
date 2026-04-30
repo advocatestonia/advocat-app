@@ -55,6 +55,14 @@ class AppLocalizationsEt extends AppLocalizations {
       'Rääkige mikrofoni. Veenduge, et mikrofon on lubatud.';
 
   @override
+  String get aiErrorRateLimit =>
+      'Teenus on ajutiselt ülekoormatud. Proovige 1-2 minuti pärast uuesti.';
+
+  @override
+  String get aiErrorOverload =>
+      'AI on praegu hõivatud, proovige minuti pärast uuesti.';
+
+  @override
   String freeLimitReached(int count) {
     return 'Olete kasutanud ära kõik $count tasuta AI sõnumit. Uuendage Õigusnõustaja paketile, et saada piiramatut AI abi.';
   }

@@ -55,6 +55,13 @@ class AppLocalizationsUk extends AppLocalizations {
       'Speak into the microphone. Make sure microphone access is enabled.';
 
   @override
+  String get aiErrorRateLimit =>
+      'Сервіс тимчасово перевантажений. Спробуйте через 1-2 хвилини.';
+
+  @override
+  String get aiErrorOverload => 'ШІ зараз зайнятий, спробуйте через хвилину.';
+
+  @override
   String freeLimitReached(int count) {
     return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
   }

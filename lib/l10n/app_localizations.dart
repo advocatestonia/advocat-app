@@ -218,6 +218,18 @@ abstract class AppLocalizations {
   /// **'Speak into the microphone. Make sure microphone access is enabled.'**
   String get speakIntoMicHint;
 
+  /// No description provided for @aiErrorRateLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'The service is temporarily overloaded. Please try again in 1-2 minutes.'**
+  String get aiErrorRateLimit;
+
+  /// No description provided for @aiErrorOverload.
+  ///
+  /// In en, this message translates to:
+  /// **'The AI is busy right now, please try again in a minute.'**
+  String get aiErrorOverload;
+
   /// No description provided for @freeLimitReached.
   ///
   /// In en, this message translates to:

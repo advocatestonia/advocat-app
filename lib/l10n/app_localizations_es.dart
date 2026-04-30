@@ -55,6 +55,14 @@ class AppLocalizationsEs extends AppLocalizations {
       'Speak into the microphone. Make sure microphone access is enabled.';
 
   @override
+  String get aiErrorRateLimit =>
+      'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+
+  @override
+  String get aiErrorOverload =>
+      'The AI is busy right now, please try again in a minute.';
+
+  @override
   String freeLimitReached(int count) {
     return 'You have used all $count free AI messages. Upgrade to Legal Counsel for unlimited AI assistance!';
   }

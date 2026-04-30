@@ -289,6 +289,44 @@ class AIService {
     return AiQuota.denied(limit: _freeTotalLimit);
   }
 
+  /// Pre-launch fix (2026-04-29): refund the local quota cache after a
+  /// rate-limit (429) or overload (529) from Anthropic.
+  ///
+  /// We don't have a server refund endpoint — the `check-ai-quota` Edge
+  /// Function only exposes `check` and `consume`. Mutating the cache is
+  /// the next-best mitigation: the UI shows the correct count immediately,
+  /// and the next server `check` (cache TTL = 60s) brings the two back in
+  /// sync. Net effect for the user: one fewer free message lost when
+  /// Anthropic was momentarily unavailable.
+  ///
+  /// No-op for pro users (no quota to refund) and bounded so refund
+  /// cannot push remaining above the monthly limit or used below zero.
+  void _refundLocalQuota() {
+    if (isProUser) return;
+    final cached = _cachedQuota;
+    if (cached == null || cached.isPro) return;
+    final newUsed = (cached.used - 1).clamp(0, cached.limit);
+    final newRemaining =
+        (cached.limit - newUsed).clamp(0, cached.limit);
+    _cachedQuota = AiQuota(
+      allowed: newUsed < cached.limit,
+      remaining: newRemaining,
+      limit: cached.limit,
+      plan: cached.plan,
+      used: newUsed,
+      unlimited: cached.unlimited,
+    );
+    _cachedQuotaAt = DateTime.now();
+    _log.i('Local quota refunded after rate-limit/overload: '
+        'remaining=$newRemaining/$newUsed used');
+  }
+
+  /// Test-only seam mirroring [_refundLocalQuota]. Production callers
+  /// trigger the refund through the catch handler in [sendChatMessage] /
+  /// [sendChatMessageStreaming] — this is purely a contract pin for tests.
+  @visibleForTesting
+  void refundLocalQuotaForTest() => _refundLocalQuota();
+
   /// Atomically increment the server counter and return the new state.
   /// Called right before each message is dispatched to Claude.
   ///
@@ -1105,6 +1143,15 @@ class AIService {
         _log.e('Claude chat failed, falling back to proxy', error: e);
         // Remove the message we added to history since it failed
         _conversationHistory[caseId]?.removeLast();
+        // Pre-launch fix (2026-04-29): on rate-limit (429) / overload
+        // (529) from Anthropic, refund the local quota and re-throw so
+        // the UI can show a localized friendly message instead of the
+        // generic «Временная ошибка AI». Other errors still fall
+        // through to the proxy fallback as before.
+        if (e.errorCode == 'rate_limit' || e.errorCode == 'overload') {
+          _refundLocalQuota();
+          rethrow;
+        }
         // Fall through to proxy
       }
     }
@@ -1308,6 +1355,15 @@ class AIService {
           error: e);
       // Remove the user message we added to history since streaming failed.
       _conversationHistory[caseId]?.removeLast();
+
+      // Pre-launch fix (2026-04-29): on rate-limit (429) / overload
+      // (529), refund the local quota and rethrow so chat_screen can
+      // show a localized friendly message — there is no point retrying
+      // the same Anthropic call right now.
+      if (e.errorCode == 'rate_limit' || e.errorCode == 'overload') {
+        _refundLocalQuota();
+        rethrow;
+      }
 
       // Fall back to non-streaming. Pass quotaAlreadyConsumed=true so
       // the fallback does NOT charge the user a second quota slot for

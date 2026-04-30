@@ -5,6 +5,7 @@ import {
   applyPromptCaching,
   buildAnthropicHeaders,
 } from "./prompt_caching.ts";
+import { mapAnthropicError } from "./error_mapping.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -141,8 +142,18 @@ serve(async (req) => {
 
       if (!claudeStreamResponse.ok) {
         const errorText = await claudeStreamResponse.text();
-        return new Response(JSON.stringify({ error: errorText }), {
+        // Pre-launch (2026-04-29): translate 429 / 529 into a friendly
+        // shape so the Flutter client can show a localized message
+        // ("service is temporarily overloaded, try again in 1-2 min")
+        // instead of the generic «Временная ошибка AI». All other
+        // statuses keep the legacy { error: <text> } body.
+        const mapped = mapAnthropicError({
           status: claudeStreamResponse.status,
+          body: errorText,
+          retryAfter: claudeStreamResponse.headers.get("retry-after"),
+        });
+        return new Response(JSON.stringify(mapped.body), {
+          status: mapped.status,
           headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
@@ -167,9 +178,26 @@ serve(async (req) => {
       body: JSON.stringify(body),
     });
 
-    const result = await claudeResponse.json();
-    return new Response(JSON.stringify(result), {
+    // Happy path: forward Anthropic's JSON unchanged.
+    if (claudeResponse.ok) {
+      const result = await claudeResponse.json();
+      return new Response(JSON.stringify(result), {
+        status: claudeResponse.status,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // Error path: map 429 / 529 to the friendly shape (see comment in
+    // streaming branch above). Other 4xx/5xx keep the legacy body so
+    // upstream callers (auth/quota/etc.) keep working unchanged.
+    const errorText = await claudeResponse.text();
+    const mapped = mapAnthropicError({
       status: claudeResponse.status,
+      body: errorText,
+      retryAfter: claudeResponse.headers.get("retry-after"),
+    });
+    return new Response(JSON.stringify(mapped.body), {
+      status: mapped.status,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {

@@ -15,6 +15,8 @@
     "analyzing": "Analüüsimine…",
     "aiAnalyzing": "AI analüüsib",
     "speakIntoMicHint": "Rääkige mikrofoni. Veenduge, et mikrofon on lubatud.",
+    "aiErrorRateLimit": "Teenus on ajutiselt ülekoormatud. Proovige 1-2 minuti pärast uuesti.",
+    "aiErrorOverload": "AI on praegu hõivatud, proovige minuti pärast uuesti.",
     "freeLimitReached": "Olete kasutanud ära kõik {count} tasuta AI sõnumit. Uuendage Õigusnõustaja paketile, et saada piiramatut AI abi.",
     "@freeLimitReached": {
         "placeholders": {

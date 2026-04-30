@@ -390,11 +390,25 @@ class ClaudeService {
         lastError = e;
         final statusCode = e.response?.statusCode;
 
-        // Don't retry on client errors (except 429 rate limit and 529 overload)
+        // Pre-launch fix (2026-04-29): when the proxy returns the
+        // structured rate_limit (429) / overload (529) shape, propagate
+        // the error code to callers immediately — no retry, no swallowed
+        // message. Callers (AIService) refund the quota and the UI shows
+        // a localized friendly message.
+        if (statusCode == 429 || statusCode == 529) {
+          throw ClaudeServiceException.fromProxyError(
+            e.response?.data,
+            statusCode: statusCode!,
+            cause: e,
+          );
+        }
+
+        // Don't retry on client errors (other than 429, already handled
+        // above). Anthropic 5xx and network errors fall through to the
+        // retry loop.
         if (statusCode != null &&
             statusCode >= 400 &&
-            statusCode < 500 &&
-            statusCode != 429) {
+            statusCode < 500) {
           final errorBody = e.response?.data;
           final errorMsg = errorBody is Map
               ? (errorBody['error']?['message'] as String? ??
@@ -403,7 +417,7 @@ class ClaudeService {
           throw ClaudeServiceException(errorMsg, e);
         }
 
-        // Retry on 429, 5xx, or network errors
+        // Retry on 5xx or network errors.
         if (attempt == _maxRetries) {
           throw ClaudeServiceException(
             'Claude API call failed after ${_maxRetries + 1} attempts',
@@ -799,7 +813,74 @@ class ClaudeServiceException implements Exception {
   final String message;
   final Exception? cause;
 
-  const ClaudeServiceException(this.message, [this.cause]);
+  /// Pre-launch fix (2026-04-29): structured error code forwarded by the
+  /// `claude-proxy` Edge Function for retry-friendly Anthropic statuses.
+  ///
+  /// Possible values:
+  ///   • `'rate_limit'` — Anthropic 429 (Tier 1 50 RPM cap hit)
+  ///   • `'overload'`   — Anthropic 529 (transient capacity issue)
+  ///   • `null`         — any other 4xx/5xx (legacy / generic)
+  ///
+  /// Callers MUST check this code before deciding whether to refund a
+  /// quota slot or surface a localized friendly message.
+  final String? errorCode;
+
+  /// Localization key the UI should look up when [errorCode] is set.
+  /// Mirrors the `user_message_key` field returned by the Edge Function.
+  final String? userMessageKey;
+
+  /// Optional hint from Anthropic's `Retry-After` header (seconds). Null
+  /// when absent or non-numeric.
+  final int? retryAfterSeconds;
+
+  const ClaudeServiceException(
+    this.message, [
+    this.cause,
+  ])  : errorCode = null,
+        userMessageKey = null,
+        retryAfterSeconds = null;
+
+  /// Internal constructor used by [fromProxyError]. Public constructor
+  /// stays positional so existing call-sites are unaffected.
+  const ClaudeServiceException._coded({
+    required this.message,
+    required this.errorCode,
+    required this.userMessageKey,
+    required this.retryAfterSeconds,
+    this.cause,
+  });
+
+  /// Build an exception from a `claude-proxy` error body. Recognises the
+  /// new structured shape (`{error:'rate_limit'|'overload', ...}`) and
+  /// falls back to the legacy `{error:<string>}` shape for everything
+  /// else, so older proxy versions keep working.
+  factory ClaudeServiceException.fromProxyError(
+    Object? body, {
+    required int statusCode,
+    Exception? cause,
+  }) {
+    if (body is Map) {
+      final raw = body['error'];
+      if (raw is String &&
+          (raw == 'rate_limit' || raw == 'overload')) {
+        final retry = body['retry_after_seconds'];
+        return ClaudeServiceException._coded(
+          message: 'Anthropic returned $statusCode ($raw)',
+          errorCode: raw,
+          userMessageKey: body['user_message_key'] as String?,
+          retryAfterSeconds: retry is int ? retry : null,
+          cause: cause,
+        );
+      }
+      if (raw is String) {
+        return ClaudeServiceException(raw, cause);
+      }
+    }
+    return ClaudeServiceException(
+      'Anthropic returned $statusCode',
+      cause,
+    );
+  }
 
   @override
   String toString() => 'ClaudeServiceException: $message';

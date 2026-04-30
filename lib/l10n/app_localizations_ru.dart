@@ -55,6 +55,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Говорите в микрофон. Убедитесь, что доступ к микрофону разрешён.';
 
   @override
+  String get aiErrorRateLimit =>
+      'Сервис временно перегружен. Попробуйте через 1-2 минуты.';
+
+  @override
+  String get aiErrorOverload => 'AI сейчас занят, попробуйте через минуту.';
+
+  @override
   String freeLimitReached(int count) {
     return 'Вы использовали все $count бесплатных сообщений ИИ. Перейдите на тариф «Юридический советник» для безлимитной помощи ИИ.';
   }

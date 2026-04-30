@@ -15,6 +15,7 @@ import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
+import '../../../services/claude_service.dart' show ClaudeServiceException;
 import '../../../services/chat_attachment_service.dart';
 import '../../../services/client_knowledge_service.dart';
 import '../../../services/demo_data.dart';
@@ -1021,16 +1022,36 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       if (mounted) {
         // Show real error instead of demo fallback — hiding errors caused
         // users to see "кража в магазине" when real AI was failing.
-        final errorMsg = e.toString().toLowerCase();
+        final l10n = AppLocalizations.of(context);
         String userFacingMessage;
-        if (errorMsg.contains('rate limit') || errorMsg.contains('429')) {
-          userFacingMessage = 'Слишком много запросов подряд. Подождите минуту и попробуйте снова.';
-        } else if (errorMsg.contains('unauthorized') || errorMsg.contains('401')) {
-          userFacingMessage = 'Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.';
-        } else if (errorMsg.contains('quota') || errorMsg.contains('free limit')) {
-          userFacingMessage = 'Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.';
+
+        // Pre-launch (2026-04-29): the proxy now forwards a structured
+        // error code for Anthropic 429 / 529. Prefer the typed channel
+        // over substring matching when available.
+        if (e is ClaudeServiceException && e.errorCode == 'rate_limit') {
+          userFacingMessage = l10n?.aiErrorRateLimit ??
+              'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+        } else if (e is ClaudeServiceException && e.errorCode == 'overload') {
+          userFacingMessage = l10n?.aiErrorOverload ??
+              'The AI is busy right now, please try again in a minute.';
         } else {
-          userFacingMessage = 'Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.';
+          // Legacy substring fallback for code paths that have not been
+          // migrated to typed errors yet.
+          final errorMsg = e.toString().toLowerCase();
+          if (errorMsg.contains('rate limit') || errorMsg.contains('429')) {
+            userFacingMessage = l10n?.aiErrorRateLimit ??
+                'Слишком много запросов подряд. Подождите минуту и попробуйте снова.';
+          } else if (errorMsg.contains('overload') ||
+              errorMsg.contains('529')) {
+            userFacingMessage = l10n?.aiErrorOverload ??
+                'AI сейчас занят, попробуйте через минуту.';
+          } else if (errorMsg.contains('unauthorized') || errorMsg.contains('401')) {
+            userFacingMessage = 'Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.';
+          } else if (errorMsg.contains('quota') || errorMsg.contains('free limit')) {
+            userFacingMessage = 'Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.';
+          } else {
+            userFacingMessage = 'Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.';
+          }
         }
         setState(() {
           _isTyping = false;

@@ -911,6 +911,8 @@
   "domesticViolenceDesc": "Uhrin oikeudet, hätäapu, lähestymiskiellot",
   "fiveAiMessagesTotal": "5 tekoälyviestiä (koko käyttöaika)",
   "foundingMemberNote": "Perustajajäsen: 9,99€/kk ensimmäiset 3 kuukautta",
+  "aiErrorRateLimit": "Palvelu on tilapäisesti ylikuormitettu. Yritä 1-2 minuutin kuluttua uudelleen.",
+  "aiErrorOverload": "Tekoäly on juuri nyt varattu, yritä minuutin kuluttua uudelleen.",
   "freeLimitReached": "Olet käyttänyt kaikki {count} ilmaista tekoälyviestiä. Päivitä Oikeusneuvoja-tilaukseen saadaksesi rajattoman tekoälyavun!",
   "@freeLimitReached": {
     "placeholders": {

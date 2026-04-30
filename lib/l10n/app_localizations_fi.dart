@@ -55,6 +55,14 @@ class AppLocalizationsFi extends AppLocalizations {
       'Puhu mikrofoniin. Varmista, että mikrofonin käyttöoikeus on sallittu.';
 
   @override
+  String get aiErrorRateLimit =>
+      'Palvelu on tilapäisesti ylikuormitettu. Yritä 1-2 minuutin kuluttua uudelleen.';
+
+  @override
+  String get aiErrorOverload =>
+      'Tekoäly on juuri nyt varattu, yritä minuutin kuluttua uudelleen.';
+
+  @override
   String freeLimitReached(int count) {
     return 'Olet käyttänyt kaikki $count ilmaista tekoälyviestiä. Päivitä Oikeusneuvoja-tilaukseen saadaksesi rajattoman tekoälyavun!';
   }
@@ -2486,17 +2494,17 @@ class AppLocalizationsFi extends AppLocalizations {
   String get commonOk => 'OK';
 
   @override
-  String get feedbackThumbsUpLabel => 'Helpful';
+  String get feedbackThumbsUpLabel => 'Hyödyllinen';
 
   @override
-  String get feedbackThumbsDownLabel => 'Not helpful';
+  String get feedbackThumbsDownLabel => 'Ei hyödyllinen';
 
   @override
-  String get feedbackCommentPrompt => 'What was wrong?';
+  String get feedbackCommentPrompt => 'Mikä meni pieleen?';
 
   @override
-  String get feedbackSend => 'Send';
+  String get feedbackSend => 'Lähetä';
 
   @override
-  String get feedbackCancel => 'Cancel';
+  String get feedbackCancel => 'Peruuta';
 }
