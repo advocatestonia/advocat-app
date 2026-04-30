@@ -188,8 +188,10 @@ img, svg { display: block; max-width: 100%; }
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 56px; }
 .plan {
   --plan-ease: cubic-bezier(.2,.8,.3,1);
-  border-radius: 20px; padding: 30px 28px 28px; border: 1.5px solid var(--line); background: #fff;
+  border-radius: 20px; padding: 30px 28px 28px; border: 1.5px solid var(--line);
+  background: linear-gradient(180deg, #FAFCFB 0%, #F1F8F5 100%);
   display: flex; flex-direction: column; position: relative; cursor: pointer;
+  /* note: no overflow:hidden — would clip the absolute "MOST POPULAR" badge */
   box-shadow: 0 2px 12px rgba(15,27,53,.04), 0 8px 24px -10px rgba(13,148,136,.08);
   transition: transform .32s var(--plan-ease), box-shadow .32s var(--plan-ease), border-color .25s var(--plan-ease);
   will-change: transform, box-shadow;
@@ -199,11 +201,63 @@ img, svg { display: block; max-width: 100%; }
   content: ''; position: absolute; inset: -1px; border-radius: 20px; pointer-events: none;
   box-shadow: 0 0 0 0 rgba(13,148,136,0); transition: box-shadow .35s var(--plan-ease);
 }
+
+/* Plan-specific tinted backgrounds (premium feel without overload) */
 .plan.featured {
-  border-color: var(--teal);
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0FAF8 100%);
+  border-color: var(--teal); border-width: 2px;
   box-shadow: 0 0 0 4px rgba(13,148,136,.07), 0 12px 36px -10px rgba(13,148,136,.22);
   transform: translateY(-4px);
 }
+.plan.plan-premium {
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F0 100%);
+}
+
+/* Brand watermark — decorative iconmark in top-right corner */
+.plan-watermark {
+  position: absolute; top: 18px; right: 18px;
+  width: 38px; height: 38px;
+  pointer-events: none; user-select: none;
+  opacity: 0.10;
+  transition: opacity .35s var(--plan-ease), transform .45s var(--plan-ease);
+  transform: rotate(-8deg);
+}
+.plan.featured .plan-watermark {
+  width: 60px; height: 60px;
+  top: 16px; right: 16px;
+  opacity: 0.08;
+}
+.plan.plan-premium .plan-watermark {
+  /* gold-tinted via filter to match warm bg */
+  filter: sepia(.4) hue-rotate(-15deg) saturate(1.3);
+}
+.plan:hover .plan-watermark { opacity: 0.18; transform: rotate(0deg); }
+.plan.featured:hover .plan-watermark { opacity: 0.22; transform: rotate(0deg) scale(1.05); }
+
+/* Premium gold accent ring on Premium plan hover */
+.plan.plan-premium:hover {
+  box-shadow: 0 0 0 1.5px #C9A35B, 0 24px 48px -12px rgba(201,163,91,.28), 0 8px 18px -6px rgba(15,27,53,.08) !important;
+  border-color: #C9A35B !important;
+}
+
+/* Subtle ambient pulse glow inside hovered card (CSS-only, no images) */
+.plan::after {
+  content: ''; position: absolute; pointer-events: none;
+  inset: auto 12px 12px 12px; height: 110px; border-radius: 16px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(13,148,136,.18) 0%, transparent 65%);
+  opacity: 0; transition: opacity .45s var(--plan-ease);
+  z-index: 0;
+}
+.plan:hover::after { opacity: 1; }
+.plan.plan-premium:hover::after {
+  background: radial-gradient(ellipse at 50% 100%, rgba(201,163,91,.22) 0%, transparent 65%);
+}
+/* Lift textual content above the bottom glow without touching .plan-badge / .plan-watermark which are absolute */
+.plan-name-eyebrow, .plan-name, .plan-price, .plan-annual,
+.plan-intro, .plan-desc, .plan-features, .plan .btn { position: relative; z-index: 1; }
+/* Keep absolute decorations layered correctly */
+.plan-badge { z-index: 3; }
+.plan-watermark { z-index: 0; }
 .plan.featured::before { box-shadow: 0 0 28px 2px rgba(13,148,136,.18); }
 .plan:hover {
   transform: translateY(-8px) scale(1.015);
@@ -240,7 +294,17 @@ img, svg { display: block; max-width: 100%; }
   border: 1px solid rgba(5,150,105,.22); vertical-align: middle;
 }
 
-.plan-name { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.plan-name {
+  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; text-transform: none;
+  color: var(--navy); margin-bottom: 4px; line-height: 1.1;
+}
+.plan-name-eyebrow {
+  display: block; font-size: 10.5px; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 8px; opacity: .85;
+}
+.plan.featured .plan-name-eyebrow { color: var(--teal2); }
+.plan.plan-premium .plan-name-eyebrow { color: #B8893A; }
+.plan-features { font-size: 14px; line-height: 1.6; }
 .plan-price { display: flex; align-items: baseline; gap: 4px; margin: 12px 0 6px; }
 .plan-price .amount { font-size: 52px; font-weight: 900; color: var(--navy); letter-spacing: -0.05em; line-height: 1; }
 .plan-price .currency { font-size: 20px; font-weight: 700; color: var(--navy); align-self: flex-start; margin-top: 6px; opacity: .75; }
@@ -252,7 +316,7 @@ img, svg { display: block; max-width: 100%; }
 .plan-desc { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--line); line-height: 1.5; }
 .plan-features { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 24px; flex: 1; }
 .plan-features li {
-  display: flex; gap: 10px; font-size: 13.5px; color: var(--text); line-height: 1.45;
+  display: flex; gap: 10px; font-size: 14px; color: var(--text); line-height: 1.6;
   transition: transform .25s var(--plan-ease), color .2s var(--plan-ease);
 }
 .plan-features li::before {
@@ -363,6 +427,9 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .hero-cta { margin-bottom: 20px; }
   .section { padding: 64px 0; }
   .steps, .pricing-grid, .foot-grid { grid-template-columns: 1fr; gap: 32px; }
+  /* Hide decorative watermarks on mobile to avoid visual clutter on narrow cards */
+  .plan-watermark { display: none; }
+  .plan.featured .plan-watermark { display: block; width: 44px; height: 44px; opacity: 0.06; }
   .steps::before { display: none; }
   .step { padding: 0; }
   .compare-grid { grid-template-columns: 1fr; gap: 16px; }
@@ -589,7 +656,13 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="pricing-grid">
       <!-- FREE -->
       <div class="plan">
-        <div class="plan-name" data-i18n="plan1.name">FREE</div>
+        <!-- Decorative iconmark watermark (simple shield outline for Free tier) -->
+        <svg class="plan-watermark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M32 4 L56 14 V32 C56 46 44 56 32 60 C20 56 8 46 8 32 V14 Z"
+                stroke="#0D9488" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        </svg>
+        <span class="plan-name-eyebrow" data-i18n="plan1.eyebrow">Starter</span>
+        <div class="plan-name" data-i18n="plan1.name">Free</div>
         <div class="plan-price">
           <span class="currency">€</span><span class="amount">0</span><span class="per" data-i18n="plan1.per">/ forever</span>
         </div>
@@ -607,7 +680,10 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
       <!-- PRO -->
       <div class="plan featured">
         <div class="plan-badge" data-i18n="plan2.badge">Most popular</div>
-        <div class="plan-name" data-i18n="plan2.name">PRO</div>
+        <!-- Brand shield watermark (uses official logo_shield.png) -->
+        <img class="plan-watermark" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy">
+        <span class="plan-name-eyebrow" data-i18n="plan2.eyebrow">For families</span>
+        <div class="plan-name" data-i18n="plan2.name">Pro</div>
         <div class="plan-price">
           <span class="currency">€</span><span class="amount">19.99</span><span class="per" data-i18n="plan2.per">/ month</span>
         </div>
@@ -629,8 +705,20 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
       </div>
 
       <!-- PREMIUM -->
-      <div class="plan">
-        <div class="plan-name" data-i18n="plan3.name">PREMIUM</div>
+      <div class="plan plan-premium">
+        <!-- Decorative iconmark — shield with crown accent (gold-tinted via CSS filter) -->
+        <svg class="plan-watermark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M32 10 L52 18 V34 C52 46 42 54 32 58 C22 54 12 46 12 34 V18 Z"
+                stroke="#0D9488" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+          <!-- Crown above shield -->
+          <path d="M22 8 L26 4 L32 8 L38 4 L42 8 L42 12 L22 12 Z"
+                stroke="#0D9488" stroke-width="2" fill="none" stroke-linejoin="round"/>
+          <!-- Inner star accent -->
+          <path d="M32 26 L34 32 L40 32 L35 36 L37 42 L32 38 L27 42 L29 36 L24 32 L30 32 Z"
+                stroke="#0D9488" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+        </svg>
+        <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
+        <div class="plan-name" data-i18n="plan3.name">Premium</div>
         <div class="plan-price">
           <span class="currency">€</span><span class="amount">29.99</span><span class="per" data-i18n="plan3.per">/ month</span>
         </div>
@@ -855,17 +943,17 @@ const I18N = {
     'compare.cta_them': 'Book in 2 weeks…',
     'pricing.label': 'PRICING', 'pricing.title': 'Clear price. No <em>surprises</em>.',
     'pricing.sub': 'Cancel anytime. Full refund within the first 14 days under EU consumer law.',
-    'plan1.name': 'FREE', 'plan1.per': '/ forever',
+    'plan1.eyebrow': 'Starter', 'plan1.name': 'Free', 'plan1.per': '/ forever',
     'plan1.desc': 'Try the system. Get a real answer with cited law before you decide.',
     'plan1.f1': '7 AI messages total', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
     'plan1.cta': 'Start free',
-    'plan2.badge': 'Most popular', 'plan2.name': 'PRO', 'plan2.per': '/ month', 'plan2.annual': 'or €159.99/year — save 33%',
+    'plan2.badge': 'Most popular', 'plan2.eyebrow': 'For families', 'plan2.name': 'Pro', 'plan2.per': '/ month', 'plan2.annual': 'or €159.99/year — save 33%',
     'plan2.intro': 'Early Access: €14.99/mo for 3 months',
     'plan2.desc': 'Daily legal help for you and your family. Unlimited AI, full document drafting.',
     'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
     'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
     'plan2.cta': 'Start Early Access',
-    'plan3.name': 'PREMIUM', 'plan3.per': '/ month', 'plan3.annual': 'or €249.99/year — save 30%',
+    'plan3.eyebrow': 'Full defense', 'plan3.name': 'Premium', 'plan3.per': '/ month', 'plan3.annual': 'or €249.99/year — save 30%',
     'plan3.desc': 'Full defense — unlimited everything, priority response, all features.',
     'plan3.f1': 'Unlimited AI messages', 'plan3.f2': 'Unlimited cases', 'plan3.f3': 'Unlimited document scans',
     'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
@@ -932,17 +1020,17 @@ const I18N = {
     'compare.cta_them': 'Broneeri 2 nädalaks…',
     'pricing.label': 'HINNAKIRI', 'pricing.title': 'Selge hind. Ilma <em>üllatusteta</em>.',
     'pricing.sub': 'Tühista millal iganes. EL tarbijaõiguse järgi täielik tagasimakse esimese 14 päeva jooksul.',
-    'plan1.name': 'TASUTA', 'plan1.per': '/ igavesti',
+    'plan1.eyebrow': 'Algus', 'plan1.name': 'Tasuta', 'plan1.per': '/ igavesti',
     'plan1.desc': 'Tutvu süsteemiga. Saa esimene allikatega vastus enne otsustamist.',
     'plan1.f1': '7 AI-sõnumit kokku', 'plan1.f2': '1 aktiivne asi', 'plan1.f3': 'Dokumendi skannimine (3 dok)', 'plan1.f4': 'Allikad EE & EL õigusest', 'plan1.f5': 'Ilma kaardita',
     'plan1.cta': 'Alusta tasuta',
-    'plan2.badge': 'Soovitatav', 'plan2.name': 'PRO', 'plan2.per': '/ kuu', 'plan2.annual': 'või €159.99/aastas — säästa 33%',
+    'plan2.badge': 'Soovitatav', 'plan2.eyebrow': 'Peredele', 'plan2.name': 'Pro', 'plan2.per': '/ kuu', 'plan2.annual': 'või €159.99/aastas — säästa 33%',
     'plan2.intro': 'Varajane juurdepääs: €14.99/kuu 3 kuud',
     'plan2.desc': 'Igapäevane õigusabi sulle ja perele. Piiramatud AI-sõnumid, dokumentide koostamine.',
     'plan2.f1': '100 AI-sõnumit päevas', 'plan2.f2': '3 aktiivset asja', 'plan2.f3': 'Dokumendi skannimine (20 dok)',
     'plan2.f4': 'Dokumentide täisvormistus (kirjad, kaebused)', 'plan2.f5': 'Häälsisend', 'plan2.f6': 'Veebiotsing värske õiguse jaoks',
     'plan2.cta': 'Liitu varajase juurdepääsuga',
-    'plan3.name': 'PREMIUM', 'plan3.per': '/ kuu', 'plan3.annual': 'või €249.99/aastas — säästa 30%',
+    'plan3.eyebrow': 'Täiskaitse', 'plan3.name': 'Premium', 'plan3.per': '/ kuu', 'plan3.annual': 'või €249.99/aastas — säästa 30%',
     'plan3.desc': 'Täielik kaitse — piiramatu kõik, prioriteetne vastus, kõik funktsioonid.',
     'plan3.f1': 'Piiramatud AI-sõnumid', 'plan3.f2': 'Piiramatud asjad', 'plan3.f3': 'Piiramatud skaneerimised',
     'plan3.f4': 'Prioriteetne töötlemine', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirja ja dokumendi eksport',
@@ -1009,17 +1097,17 @@ const I18N = {
     'compare.cta_them': 'Записаться через 2 недели…',
     'pricing.label': 'ТАРИФЫ', 'pricing.title': 'Прозрачная цена. Без <em>сюрпризов</em>.',
     'pricing.sub': 'Отмени в любой момент. По закону ЕС — полный возврат в первые 14 дней.',
-    'plan1.name': 'БЕСПЛАТНО', 'plan1.per': '/ навсегда',
+    'plan1.eyebrow': 'Старт', 'plan1.name': 'Бесплатно', 'plan1.per': '/ навсегда',
     'plan1.desc': 'Попробуй систему. Получи реальный ответ со ссылками на закон, прежде чем решать.',
     'plan1.f1': '7 AI-сообщений всего', 'plan1.f2': '1 активное дело', 'plan1.f3': 'Сканирование документов (3 шт)', 'plan1.f4': 'Ссылки на EE и ЕС законы', 'plan1.f5': 'Без карты',
     'plan1.cta': 'Начать',
-    'plan2.badge': 'Популярный', 'plan2.name': 'PRO', 'plan2.per': '/ месяц', 'plan2.annual': 'или €159.99/год — экономия 33%',
+    'plan2.badge': 'Популярный', 'plan2.eyebrow': 'Для семьи', 'plan2.name': 'Pro', 'plan2.per': '/ месяц', 'plan2.annual': 'или €159.99/год — экономия 33%',
     'plan2.intro': 'Ранний доступ: €14.99/мес на 3 месяца',
     'plan2.desc': 'Ежедневная юридическая помощь тебе и семье. Безлимит ИИ, полное составление документов.',
     'plan2.f1': '100 AI-сообщений в день', 'plan2.f2': '3 активных дела', 'plan2.f3': 'Сканирование документов (20 шт)',
     'plan2.f4': 'Полное составление документов (письма, жалобы)', 'plan2.f5': 'Голосовой ввод', 'plan2.f6': 'Веб-поиск свежего права',
     'plan2.cta': 'Начать ранний доступ',
-    'plan3.name': 'PREMIUM', 'plan3.per': '/ месяц', 'plan3.annual': 'или €249.99/год — экономия 30%',
+    'plan3.eyebrow': 'Полная защита', 'plan3.name': 'Premium', 'plan3.per': '/ месяц', 'plan3.annual': 'или €249.99/год — экономия 30%',
     'plan3.desc': 'Полная защита — безлимит во всём, приоритетный ответ, все функции.',
     'plan3.f1': 'Безлимит AI-сообщений', 'plan3.f2': 'Безлимит дел', 'plan3.f3': 'Безлимит сканирований',
     'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Экспорт писем и документов',
@@ -1086,17 +1174,17 @@ const I18N = {
     'compare.cta_them': 'Записатися через 2 тижні…',
     'pricing.label': 'ТАРИФИ', 'pricing.title': 'Прозора ціна. Без <em>сюрпризів</em>.',
     'pricing.sub': 'Скасуй будь-коли. За законом ЄС — повне повернення в перші 14 днів.',
-    'plan1.name': 'БЕЗКОШТОВНО', 'plan1.per': '/ назавжди',
+    'plan1.eyebrow': 'Старт', 'plan1.name': 'Безкоштовно', 'plan1.per': '/ назавжди',
     'plan1.desc': 'Спробуй систему. Отримай реальну відповідь із посиланнями на закон.',
     'plan1.f1': '7 AI-повідомлень загалом', 'plan1.f2': '1 активна справа', 'plan1.f3': 'Сканування документів (3 шт)', 'plan1.f4': 'Посилання на EE та ЄС закони', 'plan1.f5': 'Без картки',
     'plan1.cta': 'Почати',
-    'plan2.badge': 'Популярний', 'plan2.name': 'PRO', 'plan2.per': '/ місяць', 'plan2.annual': 'або €159.99/рік — економія 33%',
+    'plan2.badge': 'Популярний', 'plan2.eyebrow': 'Для сім\'ї', 'plan2.name': 'Pro', 'plan2.per': '/ місяць', 'plan2.annual': 'або €159.99/рік — економія 33%',
     'plan2.intro': 'Ранній доступ: €14.99/міс на 3 місяці',
     'plan2.desc': 'Щоденна юридична допомога тобі та родині. Безліміт ШІ, повне складання документів.',
     'plan2.f1': '100 AI-повідомлень на день', 'plan2.f2': '3 активні справи', 'plan2.f3': 'Сканування документів (20 шт)',
     'plan2.f4': 'Повне складання документів', 'plan2.f5': 'Голосовий ввід', 'plan2.f6': 'Веб-пошук свіжого права',
     'plan2.cta': 'Почати ранній доступ',
-    'plan3.name': 'PREMIUM', 'plan3.per': '/ місяць', 'plan3.annual': 'або €249.99/рік — економія 30%',
+    'plan3.eyebrow': 'Повний захист', 'plan3.name': 'Premium', 'plan3.per': '/ місяць', 'plan3.annual': 'або €249.99/рік — економія 30%',
     'plan3.desc': 'Повний захист — безліміт у всьому, пріоритетна відповідь, усі функції.',
     'plan3.f1': 'Безліміт AI-повідомлень', 'plan3.f2': 'Безліміт справ', 'plan3.f3': 'Безліміт сканувань',
     'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Експорт листів і документів',
@@ -1163,17 +1251,17 @@ const I18N = {
     'compare.cta_them': 'Varaa 2 viikon päähän…',
     'pricing.label': 'HINNAT', 'pricing.title': 'Selkeä hinta. Ei <em>yllätyksiä</em>.',
     'pricing.sub': 'Peruuta milloin tahansa. EU-kuluttajalain mukaan täysi palautus 14 päivän sisällä.',
-    'plan1.name': 'ILMAINEN', 'plan1.per': '/ ikuisesti',
+    'plan1.eyebrow': 'Aloitus', 'plan1.name': 'Ilmainen', 'plan1.per': '/ ikuisesti',
     'plan1.desc': 'Kokeile järjestelmää. Saat oikean vastauksen lähteineen ennen päätöstä.',
     'plan1.f1': '7 AI-viestiä yhteensä', 'plan1.f2': '1 aktiivinen tapaus', 'plan1.f3': 'Asiakirjojen skannaus (3 kpl)', 'plan1.f4': 'Lähteet EE & EU-laista', 'plan1.f5': 'Ei korttia',
     'plan1.cta': 'Aloita',
-    'plan2.badge': 'Suosituin', 'plan2.name': 'PRO', 'plan2.per': '/ kuukausi', 'plan2.annual': 'tai €159.99/vuosi — säästä 33%',
+    'plan2.badge': 'Suosituin', 'plan2.eyebrow': 'Perheille', 'plan2.name': 'Pro', 'plan2.per': '/ kuukausi', 'plan2.annual': 'tai €159.99/vuosi — säästä 33%',
     'plan2.intro': 'Varhainen pääsy: €14.99/kk 3 kuukautta',
     'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. Rajaton AI, täysi asiakirjojen laadinta.',
     'plan2.f1': '100 AI-viestiä päivässä', 'plan2.f2': '3 aktiivista tapausta', 'plan2.f3': 'Asiakirjojen skannaus (20 kpl)',
     'plan2.f4': 'Täysi asiakirjojen laadinta', 'plan2.f5': 'Äänisyöte', 'plan2.f6': 'Verkkohaku tuoreesta laista',
     'plan2.cta': 'Hanki varhainen pääsy',
-    'plan3.name': 'PREMIUM', 'plan3.per': '/ kuukausi', 'plan3.annual': 'tai €249.99/vuosi — säästä 30%',
+    'plan3.eyebrow': 'Täysi puolustus', 'plan3.name': 'Premium', 'plan3.per': '/ kuukausi', 'plan3.annual': 'tai €249.99/vuosi — säästä 30%',
     'plan3.desc': 'Täysi puolustus — rajaton kaikki, prioriteetti, kaikki ominaisuudet.',
     'plan3.f1': 'Rajattomat AI-viestit', 'plan3.f2': 'Rajattomat tapaukset', 'plan3.f3': 'Rajattomat skannaukset',
     'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköposti- ja asiakirjavienti',
