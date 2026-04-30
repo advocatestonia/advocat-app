@@ -253,20 +253,22 @@ img, svg { display: block; max-width: 100%; }
   margin-bottom: 28px;
 }
 .cmp-hero-mark {
-  position: relative; width: 200px; height: 200px;
+  position: relative; width: 360px; max-width: 100%; height: auto;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 .cmp-hero-mark img {
   position: relative; z-index: 3;
-  width: 200px; height: 200px;
+  width: 100%; height: auto; display: block;
   filter:
     drop-shadow(0 20px 40px rgba(13,148,136,.40))
-    drop-shadow(0 0 28px rgba(20,184,166,.35));
+    drop-shadow(0 0 28px rgba(20,184,166,.35))
+    brightness(1.05);
   transition: transform .5s var(--cmp-ease), filter .5s var(--cmp-ease);
 }
 .cmp-rings {
   position: absolute; inset: -30px; pointer-events: none; z-index: 1;
+  display: none; /* hidden when using wordmark logo (rectangle doesn't fit circles) */
 }
 .cmp-rings circle { fill: none; stroke: rgba(20,184,166,.35); stroke-width: 1; transform-origin: center; }
 .cmp-rings .r1 { stroke: rgba(20,184,166,.45); }
@@ -1057,10 +1059,9 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
                 <circle class="r2" cx="130" cy="130" r="110"/>
                 <circle class="r3" cx="130" cy="130" r="110"/>
               </svg>
-              <img src="/blog/logo_shield.png" alt="Advocat shield">
+              <img src="/logo.png" alt="Advocat — AI Legal Assistant">
             </div>
             <div class="cmp-eyebrow" data-i18n="compare.us_tag">AI LEGAL ASSISTANT</div>
-            <div class="cmp-title">Advocat</div>
           </div>
 
           <div class="cmp-price">
