@@ -183,7 +183,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     final screenHeight = MediaQuery.of(context).size.height;
     final isCompact = screenHeight < 750;
     final logoSize = isCompact ? 160.0 : 240.0;
-    final glowSize = isCompact ? 200.0 : 280.0;
 
     return Form(
       key: _formKey,
