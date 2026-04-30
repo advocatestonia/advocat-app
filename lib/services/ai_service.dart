@@ -12,6 +12,7 @@ import 'language_detector.dart';
 import 'supabase_service.dart';
 import 'system_prompts.dart';
 import 'user_memory_service.dart';
+import 'voice_service.dart';
 
 // ---------------------------------------------------------------------------
 // Quota typed response (P0-3)
@@ -646,13 +647,23 @@ class AIService {
           .map((b) => (b['text'] as String?) ?? '')
           .where((s) => s.isNotEmpty)
           .join('\n');
+      // Voice-tag scrub (2026-04-29): Claude is permitted to emit
+      // `[warmth]`, `[thoughtful]`, etc. for the TTS pipeline, but those
+      // tags MUST be stripped before the chat UI renders the bubble.
+      // See test/services/ai_service_voice_tag_strip_test.dart.
       return ChatResponse(
-        message: text,
+        message: VoiceService.stripVoiceTags(text),
         disclaimer: data['disclaimer'] as String?,
       );
     }
     // Legacy shape: {message, suggested_actions, disclaimer}
-    return ChatResponse.fromJson(data);
+    final legacy = ChatResponse.fromJson(data);
+    return ChatResponse(
+      message: VoiceService.stripVoiceTags(legacy.message),
+      disclaimer: legacy.disclaimer,
+      suggestedActions: legacy.suggestedActions,
+      toolUseResponse: legacy.toolUseResponse,
+    );
   }
 
   // ── Conversation history for real AI mode ──────────────────────────────
@@ -1365,6 +1376,13 @@ class AIService {
 
       // Stream from Claude.
       final fullResponse = StringBuffer();
+      // Voice-tag scrub buffer (2026-04-29): voice tags such as
+      // `[warmth]` MUST NOT reach the chat UI. Tags can also span
+      // chunk boundaries (e.g. "[war" then "mth] Привет"), so we hold
+      // an unflushed tail starting at the last `[` until either the
+      // closing `]` arrives or the tag turns out to be a legal-citation
+      // bracket (contains a space → not a voice tag, safe to flush).
+      var pending = '';
 
       await for (final chunk in _claudeService.sendMessageStreaming(
         model: model,
@@ -1374,11 +1392,32 @@ class AIService {
         temperature: 0.3,
       )) {
         fullResponse.write(chunk);
-        yield chunk;
+        pending += chunk;
+        final lastOpen = pending.lastIndexOf('[');
+        String emit;
+        if (lastOpen < 0 ||
+            pending.substring(lastOpen).contains(']') ||
+            pending.substring(lastOpen).contains(' ')) {
+          emit = VoiceService.stripVoiceTags(pending);
+          pending = '';
+        } else {
+          emit = VoiceService.stripVoiceTags(pending.substring(0, lastOpen));
+          pending = pending.substring(lastOpen);
+        }
+        if (emit.isNotEmpty) yield emit;
+      }
+      // Flush any remaining pending text (e.g. trailing `[` that never
+      // closed). Strip and emit unconditionally so nothing is dropped.
+      if (pending.isNotEmpty) {
+        final tailFlush = VoiceService.stripVoiceTags(pending);
+        if (tailFlush.isNotEmpty) yield tailFlush;
       }
 
       // After stream completes — save to history and cache.
-      final responseText = fullResponse.toString();
+      // Also strip voice tags from the persisted text so subsequent
+      // turns (which feed history back into the prompt) don't carry
+      // `[warmth]` artefacts that could confuse the model.
+      final responseText = VoiceService.stripVoiceTags(fullResponse.toString());
       if (responseText.isNotEmpty) {
         _addToHistory(caseId, 'assistant', responseText);
         _cacheResponse(sanitizedMessage, responseText);

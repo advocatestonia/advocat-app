@@ -883,6 +883,14 @@ class VoiceService {
     return stripped.replaceAll(RegExp(r'  +'), ' ');
   }
 
+  /// Alias for [stripExpressiveTags] — preferred name when called from
+  /// the chat-text pipeline (ai_service.dart) where the intent is "make
+  /// this safe for UI rendering" rather than "prepare for TTS".
+  ///
+  /// Both names point at the same regex set so the contract pinned by
+  /// `test/services/no_leaked_voice_tags_test.dart` is preserved.
+  static String stripVoiceTags(String text) => stripExpressiveTags(text);
+
   /// Attempt to speak using ElevenLabs via the Supabase tts-proxy function.
   /// On web, the entire fetch+play flow runs in JS (speech.js) to avoid
   /// Dart↔JS interop issues with large binary data.
