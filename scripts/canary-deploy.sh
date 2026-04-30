@@ -151,11 +151,11 @@ mkdir -p "$WORKTREE/staging"
 run "rsync -av --delete build/web/ \"$WORKTREE/staging/\""
 
 cd "$WORKTREE"
-if git diff --quiet; then
+git add -A staging/
+if git diff --cached --quiet; then
   warn "No changes in staging/ — skipping commit"
 else
   BUILD_HASH=$(cd "$REPO_ROOT" && git rev-parse --short HEAD)
-  run "git add -A staging/"
   run "git commit -m \"canary: staging build from $BUILD_HASH\""
   run "git push github gh-pages"
   ok "staging pushed"
