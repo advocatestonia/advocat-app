@@ -21,6 +21,17 @@ class _PlanMapping {
     'premium': 'representation',
   };
 
+  /// The set of `billing_period` strings the edge function accepts.
+  ///
+  /// Kept in sync with `supabase/functions/create-checkout/index.ts`. If a
+  /// new billing tier is added there (or removed), update this set too —
+  /// otherwise startCheckoutRaw will silently forward unknown values.
+  static const Set<String> validBillingPeriods = {
+    'monthly',
+    'yearly',
+    'early-access',
+  };
+
   /// Determine the billing_period string for the edge function.
   static String billingPeriod({required bool isAnnual}) {
     return isAnnual ? 'yearly' : 'monthly';
@@ -112,6 +123,89 @@ class StripeCheckoutService {
 
     // On web: always redirect current page. Cannot be blocked by any browser.
     // On native: use url_launcher.
+    if (kIsWeb) {
+      web_redirect.redirectToUrl(checkoutUrl);
+    } else {
+      await launchUrl(uri);
+    }
+    return true;
+  }
+
+  /// Opens a Stripe Checkout using a Stripe-side plan id (`counsel` or
+  /// `representation`) and an exact `billing_period` string. Used by the
+  /// landing-page deep-link flow (`/app.html?plan=counsel&billing=early-access`).
+  ///
+  /// Unlike [startCheckout], this does NOT translate UI plan ids and accepts
+  /// `early-access` as a billing period (in addition to `monthly` / `yearly`).
+  /// Throws [ArgumentError] for an unknown plan or billing period — the
+  /// landing always controls the URL, so an invalid value is a bug.
+  Future<bool> startCheckoutWithBilling({
+    required String stripePlanId,
+    required String billingPeriod,
+    String? customerEmail,
+  }) async {
+    if (!_isInitialized) {
+      throw Exception(
+        'Supabase is not initialised. Cannot create checkout session.',
+      );
+    }
+
+    if (!_PlanMapping.toPlanId.values.contains(stripePlanId)) {
+      throw ArgumentError(
+        'Unknown stripe plan id "$stripePlanId" (expected one of '
+        '${_PlanMapping.toPlanId.values.toList()})',
+      );
+    }
+
+    if (!_PlanMapping.validBillingPeriods.contains(billingPeriod)) {
+      throw ArgumentError(
+        'Unknown billing_period "$billingPeriod" (expected one of '
+        '${_PlanMapping.validBillingPeriods.toList()})',
+      );
+    }
+
+    final body = <String, dynamic>{
+      'plan_id': stripePlanId,
+      'billing_period': billingPeriod,
+      'success_url': 'https://advocat.ee/payment-success',
+      'cancel_url': 'https://advocat.ee/payment-cancel',
+    };
+    if (customerEmail != null && customerEmail.isNotEmpty) {
+      body['customer_email'] = customerEmail;
+    }
+
+    final dynamic response;
+    try {
+      response = await Supabase.instance.client.functions.invoke(
+        'create-checkout',
+        body: body,
+      );
+    } catch (e) {
+      throw Exception(
+        'Network error calling checkout: $e. '
+        'Please check your connection and try again.',
+      );
+    }
+
+    if (response.status != 200) {
+      final errorMsg = response.data is Map
+          ? (response.data['error'] ?? 'Unknown error')
+          : 'Edge function returned status ${response.status}';
+      throw Exception('Failed to create checkout session: $errorMsg');
+    }
+
+    final data = response.data;
+    if (data is! Map<String, dynamic>) {
+      throw Exception(
+        'Unexpected response format from checkout: ${data.runtimeType}',
+      );
+    }
+    final checkoutUrl = data['url'] as String?;
+    if (checkoutUrl == null || checkoutUrl.isEmpty) {
+      throw Exception('Checkout URL was empty');
+    }
+
+    final uri = Uri.parse(checkoutUrl);
     if (kIsWeb) {
       web_redirect.redirectToUrl(checkoutUrl);
     } else {

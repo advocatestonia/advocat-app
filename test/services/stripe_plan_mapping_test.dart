@@ -108,6 +108,97 @@ void main() {
     });
   });
 
+  group('startCheckoutWithBilling — direct Stripe-id + billing period', () {
+    // The deep-link flow (landing → /app.html?plan=...&billing=...) uses
+    // raw Stripe ids and must accept `early-access` in addition to
+    // monthly/yearly. ArgumentError is raised before reaching Supabase
+    // for any unknown value.
+
+    test('counsel + early-access reaches init-check', () async {
+      try {
+        await service.startCheckoutWithBilling(
+          stripePlanId: 'counsel',
+          billingPeriod: 'early-access',
+        );
+        fail('expected exception');
+      } catch (e) {
+        expect(e.toString(), contains('not initialised'));
+        expect(e, isNot(isA<ArgumentError>()));
+      }
+    });
+
+    test('counsel + monthly reaches init-check', () async {
+      try {
+        await service.startCheckoutWithBilling(
+          stripePlanId: 'counsel',
+          billingPeriod: 'monthly',
+        );
+        fail('expected exception');
+      } catch (e) {
+        expect(e.toString(), contains('not initialised'));
+        expect(e, isNot(isA<ArgumentError>()));
+      }
+    });
+
+    test('representation + yearly reaches init-check', () async {
+      try {
+        await service.startCheckoutWithBilling(
+          stripePlanId: 'representation',
+          billingPeriod: 'yearly',
+        );
+        fail('expected exception');
+      } catch (e) {
+        expect(e.toString(), contains('not initialised'));
+        expect(e, isNot(isA<ArgumentError>()));
+      }
+    });
+
+    test('unknown stripe plan id is rejected (ArgumentError)', () async {
+      expect(
+        () => service.startCheckoutWithBilling(
+          stripePlanId: 'enterprise',
+          billingPeriod: 'monthly',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('UI plan id "basic" is rejected (ArgumentError)', () async {
+      // This method takes Stripe-side ids only — `basic` is a UI label.
+      expect(
+        () => service.startCheckoutWithBilling(
+          stripePlanId: 'basic',
+          billingPeriod: 'monthly',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('unknown billing period is rejected (ArgumentError)', () async {
+      expect(
+        () => service.startCheckoutWithBilling(
+          stripePlanId: 'counsel',
+          billingPeriod: 'biennial',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+
+    test('founding billing period is rejected (renamed to early-access)',
+        () async {
+      // Regression guard: the old `founding` value was retired in favour
+      // of `early-access` on 2026-04-29. Calling with the old value must
+      // fail loudly so we catch any stale callers.
+      expect(
+        () => service.startCheckoutWithBilling(
+          stripePlanId: 'counsel',
+          billingPeriod: 'founding',
+        ),
+        throwsA(isA<Exception>()),
+      );
+    });
+  });
+
   group('Stripe plan mapping — founding checkout shares the same map', () {
     // Regression guard: the founding-member flow previously duplicated the
     // plan map. Now both paths share `_PlanMapping.toPlanId`, so the same

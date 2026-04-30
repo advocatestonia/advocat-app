@@ -13,7 +13,9 @@ import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
 import '../../../shared/widgets/gdpr_consent_dialog.dart';
+import '../../../shared/pending_checkout.dart';
 import '../../../services/demo_data.dart';
+import '../../../services/stripe_checkout_service.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../cases/providers/cases_provider.dart';
 import '../../cases/widgets/case_card.dart';
@@ -37,6 +39,62 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _checkPaymentReturn();
     _checkFirstTimeOnboarding();
     _checkGdprConsent();
+    _checkPendingCheckout();
+  }
+
+  /// If the landing redirected here with `?plan=...&billing=...`, kick off
+  /// a Stripe Checkout once we are sure the user is signed in. We rely on
+  /// the GoRouter redirect to bounce un-authed users to /login, so by the
+  /// time HomeScreen renders the user is authenticated.
+  ///
+  /// Already-Pro users skip checkout (no double-billing). The pending
+  /// checkout is consumed exactly once per session — page reload re-reads
+  /// the URL, but a successful in-app navigation will not retrigger it.
+  Future<void> _checkPendingCheckout() async {
+    if (!kIsWeb) return;
+    // Wait one frame so providers and the layout are settled.
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    if (!mounted) return;
+
+    final pending = ref.read(pendingCheckoutProvider);
+    if (pending == null) return;
+
+    // If already Pro, drop the pending checkout silently — they don't need
+    // to pay again. Show a small toast so the click isn't a no-op.
+    final user = ref.read(currentUserProvider).valueOrNull;
+    if (user != null && user.isProActive) {
+      ref.read(pendingCheckoutProvider.notifier).clear();
+      if (mounted) {
+        final l = AppLocalizations.of(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l?.currentPlan != null
+                ? '${l!.currentPlan}: ${user.subscriptionTier.name}'
+                : 'You already have an active subscription.'),
+          ),
+        );
+      }
+      return;
+    }
+
+    final consumed =
+        ref.read(pendingCheckoutProvider.notifier).consume();
+    if (consumed == null) return;
+
+    try {
+      final stripe = ref.read(stripeCheckoutServiceProvider);
+      await stripe.startCheckoutWithBilling(
+        stripePlanId: consumed.planId,
+        billingPeriod: consumed.billingPeriod,
+        customerEmail: user?.email,
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Checkout failed: $e')),
+        );
+      }
+    }
   }
 
   Future<void> _checkGdprConsent() async {
