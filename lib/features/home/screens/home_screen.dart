@@ -641,11 +641,11 @@ class _QuickActions extends StatelessWidget {
                 color: AppColors.accent,
                 onTap: () => context.push(AppRoutes.scan),
               ),
-              _PulsingQuickActionButton(
-                icon: Icons.support_agent_rounded,
-                label: l.aiAssistant,
-                color: AppColors.accent,
-                onTap: () => context.push('/chat/general'),
+              _QuickActionButton(
+                icon: Icons.verified_user_rounded,
+                label: l.checkerTitle,
+                color: AppColors.primary,
+                onTap: () => context.push(AppRoutes.checker),
               ),
               _QuickActionButton(
                 icon: Icons.gavel_outlined,
@@ -677,8 +677,11 @@ class _QuickActions extends StatelessWidget {
                 color: AppColors.info,
                 onTap: () => context.push(AppRoutes.email),
               ),
-              _AdvocatProQuickActionButton(
-                onTap: () => context.push(AppRoutes.subscription),
+              _PulsingQuickActionButton(
+                icon: Icons.support_agent_rounded,
+                label: l.aiAssistant,
+                color: AppColors.accent,
+                onTap: () => context.push('/chat/general'),
               ),
               _QuickActionButton(
                 icon: Icons.phone_in_talk_outlined,
@@ -812,103 +815,6 @@ class _PulsingQuickActionButtonState extends State<_PulsingQuickActionButton>
               height: 1.2,
             ),
           ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _AdvocatProQuickActionButton extends StatefulWidget {
-  const _AdvocatProQuickActionButton({required this.onTap});
-
-  final VoidCallback onTap;
-
-  @override
-  State<_AdvocatProQuickActionButton> createState() =>
-      _AdvocatProQuickActionButtonState();
-}
-
-class _AdvocatProQuickActionButtonState
-    extends State<_AdvocatProQuickActionButton>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _scaleAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2000),
-    )..repeat(reverse: true);
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: widget.onTap,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              width: 72,
-              height: 72,
-              child: AnimatedBuilder(
-                animation: _scaleAnimation,
-                builder: (context, child) {
-                  return Transform.scale(
-                    scale: _scaleAnimation.value,
-                    child: Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: AppColors.accent.withValues(alpha: 0.08),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.accent.withValues(alpha: 0.2),
-                            blurRadius: 10,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: Image.asset(
-                          'assets/images/shield_pro.png',
-                          width: 44,
-                          height: 44,
-                          filterQuality: FilterQuality.high,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 6),
-            Text(
-              AppLocalizations.of(context)?.advocatProTitle ?? 'Advocat Pro',
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                color: AppColors.accent,
-                fontSize: 11,
-                fontWeight: FontWeight.w600,
-                height: 1.2,
-              ),
-            ),
           ],
         ),
       ),
