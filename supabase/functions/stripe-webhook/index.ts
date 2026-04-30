@@ -432,7 +432,13 @@ serve(async (req) => {
       }
 
       default:
-        console.log(`Unhandled event type: ${event.type}`);
+        // Launch-week observability: warn so unhandled events are visible in
+        // Supabase Dashboard logs (filtered above info level). We still
+        // return 200 — Stripe must not retry types we deliberately don't
+        // handle. Schema: callers/tests grep for "[stripe-webhook] unhandled".
+        console.warn(
+          `[stripe-webhook] unhandled event type: ${event.type} id=${event.id}`,
+        );
     }
 
     // All DB writes for this event succeeded AND verification passed.

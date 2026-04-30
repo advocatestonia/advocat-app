@@ -222,3 +222,64 @@ Deno.test("F6-T20 — imports PLAN_MAPPING from router (no drift)", async () => 
       "subscription_router.ts)",
   );
 });
+
+// ---- Launch-week observability: unhandled events are surfaced ------------
+// Reviewer noted (pre-launch): the `default` branch of the event-type switch
+// silently absorbed every Stripe event we don't model. During launch week we
+// want those visible in Supabase Dashboard logs without paging anyone — so
+// `console.warn` (not `console.log`), with a stable prefix that owner can
+// grep / dashboard-filter on.
+
+Deno.test("F6-T21 — unhandled Stripe events are warn-logged with stable prefix", async () => {
+  const source = await Deno.readTextFile(
+    new URL("../index.ts", import.meta.url),
+  );
+  // Strip comments so the explanatory comment block above the warn() doesn't
+  // false-positive the regex.
+  const stripped = source
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*\/\/.*$/gm, "");
+  // Must use console.warn (Dashboard log-level filter relies on this).
+  assert(
+    /console\.warn\([^)]*\[stripe-webhook\] unhandled event type/.test(
+      stripped,
+    ),
+    "default branch must console.warn with the '[stripe-webhook] unhandled " +
+      "event type' prefix so launch-week ops can grep Supabase logs",
+  );
+  // Must include event.type and event.id so log lines are actionable.
+  assertStringIncludes(stripped, "${event.type}");
+  assert(
+    /\[stripe-webhook\] unhandled event type[^`]*\$\{event\.id\}/.test(stripped),
+    "warn line must template event.id alongside event.type",
+  );
+});
+
+Deno.test("F6-T22 — unhandled-event default branch must NOT throw or 5xx", async () => {
+  // Stripe retries on 5xx forever (with exponential backoff). If we 500 on
+  // event types we don't model, retries pile up and mask real failures.
+  // The default branch should `break` out of the switch normally so the
+  // outer flow returns 200. We assert this structurally: the line right
+  // after the warn call is `break` (no throw, no return non-200).
+  const source = await Deno.readTextFile(
+    new URL("../index.ts", import.meta.url),
+  );
+  const stripped = source.replace(/\/\*[\s\S]*?\*\//g, "");
+  // Find the default: block.
+  const defaultMatch = stripped.match(
+    /default:\s*[\s\S]*?console\.warn\([^;]*;\s*([\s\S]*?)(?:case |\}\s*\/\/|\})/,
+  );
+  assert(defaultMatch, "could not locate default: branch in switch");
+  const tail = defaultMatch[1];
+  // Anything between the warn and the closing brace must NOT throw or return
+  // a non-2xx — we accept either nothing (falls through to markOk + 200) or
+  // an explicit `break`.
+  assertFalse(
+    /\bthrow\b/.test(tail),
+    "default branch must not throw (Stripe would retry forever on 5xx)",
+  );
+  assertFalse(
+    /return new Response[^)]*status:\s*5/.test(tail),
+    "default branch must not return 5xx",
+  );
+});
