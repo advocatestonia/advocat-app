@@ -2486,4 +2486,19 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get feedbackThumbsUpLabel => 'Корисно';
+
+  @override
+  String get feedbackThumbsDownLabel => 'Не корисно';
+
+  @override
+  String get feedbackCommentPrompt => 'Що не так?';
+
+  @override
+  String get feedbackSend => 'Надіслати';
+
+  @override
+  String get feedbackCancel => 'Скасувати';
 }

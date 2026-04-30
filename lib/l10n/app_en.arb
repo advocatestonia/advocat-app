@@ -965,5 +965,10 @@
     "upgradeBannerCta": "Upgrade",
     "paymentSuccessTitle": "Payment successful",
     "paymentSuccessBody": "Your subscription is now active.",
-    "commonOk": "OK"
+    "commonOk": "OK",
+    "feedbackThumbsUpLabel": "Helpful",
+    "feedbackThumbsDownLabel": "Not helpful",
+    "feedbackCommentPrompt": "What was wrong?",
+    "feedbackSend": "Send",
+    "feedbackCancel": "Cancel"
 }

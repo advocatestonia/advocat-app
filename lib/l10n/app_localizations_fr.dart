@@ -2518,4 +2518,19 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get feedbackThumbsUpLabel => 'Helpful';
+
+  @override
+  String get feedbackThumbsDownLabel => 'Not helpful';
+
+  @override
+  String get feedbackCommentPrompt => 'What was wrong?';
+
+  @override
+  String get feedbackSend => 'Send';
+
+  @override
+  String get feedbackCancel => 'Cancel';
 }

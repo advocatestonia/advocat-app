@@ -944,5 +944,10 @@
     "upgradeBannerCta": "Uuenda",
     "paymentSuccessTitle": "Makse õnnestus",
     "paymentSuccessBody": "Teie tellimus on nüüd aktiivne.",
-    "commonOk": "OK"
+    "commonOk": "OK",
+    "feedbackThumbsUpLabel": "Kasulik",
+    "feedbackThumbsDownLabel": "Pole kasulik",
+    "feedbackCommentPrompt": "Mis oli valesti?",
+    "feedbackSend": "Saada",
+    "feedbackCancel": "Tühista"
 }

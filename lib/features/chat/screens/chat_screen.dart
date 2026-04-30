@@ -20,7 +20,10 @@ import '../../../services/client_knowledge_service.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../../services/tool_executor.dart';
+import '../../../services/feedback_service.dart';
+import '../../../services/language_detector.dart';
 import '../../../services/voice_service.dart';
+import '../../../widgets/feedback_buttons.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../services/chat_tool_bridge.dart';
 import '../utils/message_speaker.dart';
@@ -1325,6 +1328,85 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
+  // ── Feedback (👍 / 👎) ────────────────────────────────────────────────
+
+  /// Cache of stored ratings so we don't re-fetch on every rebuild.
+  /// Key = ChatMessage.id. -2 sentinel means "not loaded yet".
+  final Map<String, int?> _feedbackCache = <String, int?>{};
+
+  /// True if [message] looks like an AI message that is still streaming
+  /// content in (id starts with `ai_stream_`). We hide the feedback
+  /// buttons until the response is complete so users don't rate a
+  /// half-typed answer.
+  bool _isStreamingMessage(ChatMessage message) {
+    return message.id.startsWith('ai_stream_');
+  }
+
+  /// Find the user message that immediately preceded [aiMessage] so we
+  /// can store a 500-char preview of the actual question alongside the
+  /// rating. Returns null if no user message was found before the AI msg.
+  String? _previousUserMessage(ChatMessage aiMessage) {
+    final idx = _messages.indexWhere((m) => m.id == aiMessage.id);
+    if (idx <= 0) return null;
+    for (int i = idx - 1; i >= 0; i--) {
+      if (_messages[i].role == MessageRole.user) {
+        return _messages[i].content;
+      }
+    }
+    return null;
+  }
+
+  Widget _buildFeedbackButtons(ChatMessage aiMessage) {
+    final messageId = aiMessage.id;
+    final feedbackService = ref.read(feedbackServiceProvider);
+
+    // Lazy first-load: kick off a fetch for the stored rating exactly
+    // once per message id, then cache the result.
+    if (!_feedbackCache.containsKey(messageId)) {
+      _feedbackCache[messageId] = null; // optimistic placeholder
+      // Fire-and-forget; result is folded into the cache and we rebuild.
+      feedbackService.getFeedback(messageId).then((rec) {
+        if (!mounted) return;
+        if (rec != null && _feedbackCache[messageId] != rec.rating) {
+          setState(() => _feedbackCache[messageId] = rec.rating);
+        }
+      }).catchError((_) {
+        // Silent — feedback is non-critical.
+      });
+    }
+
+    final initialRating = _feedbackCache[messageId];
+
+    return FeedbackButtons(
+      key: ValueKey('feedback_$messageId'),
+      messageId: messageId,
+      initialRating: initialRating,
+      onSubmit: (rating, comment) async {
+        // Locale -> 'et' / 'en' / 'ru' / 'uk' / etc.
+        final locale = Localizations.localeOf(context).languageCode;
+        // Cheap secondary detect on the AI text — useful when user
+        // overrode their profile language for this turn.
+        final detected = LanguageDetector.detect(aiMessage.content) ?? locale;
+
+        await feedbackService.submitFeedback(
+          messageId: messageId,
+          rating: rating,
+          caseId: widget.caseId,
+          comment: comment,
+          aiResponse: aiMessage.content,
+          userMessage: _previousUserMessage(aiMessage),
+          language: detected,
+          // Model is not currently surfaced on the message; leaving null
+          // so the column stores the DB default. Wire-through can be
+          // added when ai_service exposes it on ChatMessage.metadata.
+        );
+
+        if (!mounted) return;
+        setState(() => _feedbackCache[messageId] = rating);
+      },
+    );
+  }
+
   void _shareCaseSummary() {
     final buffer = StringBuffer();
     buffer.writeln('=== CASE SUMMARY ===');
@@ -2206,6 +2288,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         color: AppColors.textTertiary,
                       ),
                     ),
+                    // Feedback thumbs (👍/👎) for completed AI messages.
+                    // Hidden while the message is still streaming in.
+                    if (!_isStreamingMessage(message)) ...[
+                      const SizedBox(width: 8),
+                      _buildFeedbackButtons(message),
+                    ],
                   ],
                 ],
               ),

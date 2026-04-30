@@ -2494,4 +2494,19 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get commonOk => 'ОК';
+
+  @override
+  String get feedbackThumbsUpLabel => 'Полезно';
+
+  @override
+  String get feedbackThumbsDownLabel => 'Не полезно';
+
+  @override
+  String get feedbackCommentPrompt => 'Что не так?';
+
+  @override
+  String get feedbackSend => 'Отправить';
+
+  @override
+  String get feedbackCancel => 'Отмена';
 }

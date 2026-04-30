@@ -822,5 +822,10 @@
     "cheaperAnnually": "€{amount}/міс. дешевше з річною підпискою",
     "navigatingTo": "Відкриваю",
     "stayInChat": "Залишитися в чаті",
-    "backToChat": "Назад до чату"
+    "backToChat": "Назад до чату",
+    "feedbackThumbsUpLabel": "Корисно",
+    "feedbackThumbsDownLabel": "Не корисно",
+    "feedbackCommentPrompt": "Що не так?",
+    "feedbackSend": "Надіслати",
+    "feedbackCancel": "Скасувати"
 }

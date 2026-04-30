@@ -944,5 +944,10 @@
   "upgradeBannerCta": "Päivitä",
   "paymentSuccessTitle": "Maksu onnistui",
   "paymentSuccessBody": "Tilauksesi on nyt aktiivinen.",
-  "commonOk": "OK"
+  "commonOk": "OK",
+  "feedbackThumbsUpLabel": "Hyödyllinen",
+  "feedbackThumbsDownLabel": "Ei hyödyllinen",
+  "feedbackCommentPrompt": "Mikä meni pieleen?",
+  "feedbackSend": "Lähetä",
+  "feedbackCancel": "Peruuta"
 }

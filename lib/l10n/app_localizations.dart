@@ -4561,6 +4561,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get commonOk;
+
+  /// No description provided for @feedbackThumbsUpLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Helpful'**
+  String get feedbackThumbsUpLabel;
+
+  /// No description provided for @feedbackThumbsDownLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Not helpful'**
+  String get feedbackThumbsDownLabel;
+
+  /// No description provided for @feedbackCommentPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'What was wrong?'**
+  String get feedbackCommentPrompt;
+
+  /// No description provided for @feedbackSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get feedbackSend;
+
+  /// No description provided for @feedbackCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get feedbackCancel;
 }
 
 class _AppLocalizationsDelegate

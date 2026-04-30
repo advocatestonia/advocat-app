@@ -2483,4 +2483,19 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get commonOk => 'OK';
+
+  @override
+  String get feedbackThumbsUpLabel => 'Kasulik';
+
+  @override
+  String get feedbackThumbsDownLabel => 'Pole kasulik';
+
+  @override
+  String get feedbackCommentPrompt => 'Mis oli valesti?';
+
+  @override
+  String get feedbackSend => 'Saada';
+
+  @override
+  String get feedbackCancel => 'Tühista';
 }

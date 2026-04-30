@@ -944,5 +944,10 @@
   "upgradeBannerCta": "Обновить",
   "paymentSuccessTitle": "Оплата прошла",
   "paymentSuccessBody": "Подписка активирована.",
-  "commonOk": "ОК"
+  "commonOk": "ОК",
+  "feedbackThumbsUpLabel": "Полезно",
+  "feedbackThumbsDownLabel": "Не полезно",
+  "feedbackCommentPrompt": "Что не так?",
+  "feedbackSend": "Отправить",
+  "feedbackCancel": "Отмена"
 }
