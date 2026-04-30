@@ -9,9 +9,9 @@
 <title>Advocat — AI õigusabi · Defend Your Rights</title>
 <meta name="description" content="AI-powered legal assistant for Estonia and the EU. Cited sources, 17 languages, GDPR-compliant. Free to start, €19.99/mo for unlimited access (Early Access €14.99/mo) — vs €100-200/h at a traditional law firm.">
 <meta name="robots" content="noindex,nofollow">
-<link rel="icon" type="image/x-icon" href="favicon.ico?v=7">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=7">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=7">
+<link rel="icon" type="image/x-icon" href="favicon.ico?v=premium">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=premium">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=premium">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -91,7 +91,9 @@ img, svg { display: block; max-width: 100%; }
 /* ── HERO ── */
 .hero { padding: 24px 0 48px; }
 .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-.hero-eyebrow { display: inline-flex; align-items: center; gap: 6px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 5px 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
+.hero-grid > div { min-width: 0; }
+.hero-grid > div:first-child { align-self: center; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 6px 12px; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 16px; }
 .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 2px rgba(13,148,136,.2); }
 .hero h1 { font-size: clamp(32px, 4.4vw, 56px); font-weight: 900; color: var(--navy); letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 16px; }
 .hero h1 em { font-style: italic; color: var(--teal); }
@@ -102,9 +104,9 @@ img, svg { display: block; max-width: 100%; }
 .hero-trust span::before { content: '✓'; color: var(--teal); font-weight: 800; }
 
 /* ── CHAT CARD ── */
-.chat-card { background: #fff; border-radius: 20px; box-shadow: 0 24px 64px -16px rgba(15,27,53,.16), 0 4px 16px -4px rgba(15,27,53,.08); overflow: hidden; border: 1px solid var(--line); }
-.chat-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid var(--line); background: #fff; }
-.chat-header-l { display: flex; align-items: center; gap: 10px; }
+.chat-card { background: #fff; border-radius: 16px; box-shadow: 0 24px 64px -16px rgba(15,27,53,.16), 0 4px 16px -4px rgba(15,27,53,.08); overflow: hidden; border: 1px solid var(--line); }
+.chat-header { display: flex; align-items: center; justify-content: space-between; padding: 14px; border-bottom: 1px solid var(--line); background: #fff; }
+.chat-header-l { display: flex; align-items: center; gap: 12px; }
 .chat-avatar { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .chat-avatar img, .chat-avatar svg { width: 100%; height: 100%; object-fit: contain; }
 .chat-name { font-weight: 700; font-size: 14px; color: var(--text); }
@@ -120,10 +122,10 @@ img, svg { display: block; max-width: 100%; }
 .typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); animation: bounce .9s infinite; }
 .typing span:nth-child(2) { animation-delay: .15s; }
 .typing span:nth-child(3) { animation-delay: .3s; }
-.chat-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px 4px; }
+.chat-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px 4px; }
 .chip { font-size: 12px; font-weight: 600; padding: 6px 12px; border: 1.5px solid var(--line); border-radius: 999px; color: var(--muted); background: #fff; cursor: pointer; transition: all .15s; }
 .chip:hover { border-color: var(--teal); color: var(--teal); }
-.chat-input-row { display: flex; gap: 8px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); background: #fff; }
+.chat-input-row { display: flex; gap: 8px; align-items: center; padding: 12px 14px; border-top: 1px solid var(--line); background: #fff; }
 .chat-input-row input { flex: 1; border: none; outline: none; font: inherit; font-size: 13.5px; color: var(--text); background: none; }
 .chat-input-row input::placeholder { color: var(--faint); }
 .chat-send { width: 34px; height: 34px; border-radius: 8px; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; border: none; }
@@ -354,10 +356,11 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .nav-actions { gap: 6px; }
   .lang-btn { padding: 5px 8px; font-size: 11px; }
   .hero { padding: 16px 0 40px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 32px; align-items: stretch; }
+  .hero-grid > div:first-child { align-self: stretch; }
   .hero h1 { font-size: clamp(28px, 7.5vw, 36px); margin-bottom: 12px; }
   .hero-sub { margin-bottom: 16px; }
-  .hero-cta { margin-bottom: 18px; }
+  .hero-cta { margin-bottom: 20px; }
   .section { padding: 64px 0; }
   .steps, .pricing-grid, .foot-grid { grid-template-columns: 1fr; gap: 32px; }
   .steps::before { display: none; }
