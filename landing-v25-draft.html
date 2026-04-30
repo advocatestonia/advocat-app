@@ -8,7 +8,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Advocat — AI õigusabi · Defend Your Rights</title>
 <meta name="description" content="AI-powered legal assistant for Estonia and the EU. Cited sources, 17 languages, GDPR-compliant. Free to start, €19.99/mo for unlimited access (Early Access €14.99/mo) — vs €100-200/h at a traditional law firm.">
-<meta name="robots" content="noindex,nofollow">
+<meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://advocat.ee/">
+  <meta property="og:title" content="Advocat — AI Legal Assistant for Estonia & EU">
+  <meta property="og:description" content="Защити свои права за минуты, не месяцы. AI юрист, помнит дело, пишет письма. От €14.99/мес.">
+  <meta property="og:image" content="https://advocat.ee/logo.png">
+  <meta property="og:url" content="https://advocat.ee/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Advocat — AI Legal Assistant">
+  <meta name="twitter:description" content="Защити свои права за минуты. AI юрист на эстонском, английском, русском. От €14.99/мес.">
+  <meta name="twitter:image" content="https://advocat.ee/logo.png">
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=premium">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=premium">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=premium">
@@ -54,12 +64,74 @@ img, svg { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--line);
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 32px; }
-.nav-logo { display: flex; align-items: center; }
-.nav-logo img { height: 36px; width: auto; object-fit: contain; display: block; }
+.nav-logo { display: flex; align-items: center; flex-shrink: 0; min-width: 0; }
+.nav-logo img { height: 36px; width: auto; max-width: 100%; object-fit: contain; display: block; }
 .nav-links { display: flex; gap: 28px; list-style: none; }
 .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
 .nav-links a:hover { color: var(--text); }
 .nav-actions { display: flex; gap: 10px; align-items: center; }
+
+/* Burger menu — visible only on mobile (≤900px) */
+.nav-burger {
+  display: none;
+  width: 44px; height: 44px;
+  align-items: center; justify-content: center;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.nav-burger:active { background: var(--bg2); border-color: var(--teal); }
+.nav-burger svg { width: 20px; height: 20px; display: block; }
+.nav-burger .icon-close { display: none; }
+.nav-burger.is-open .icon-open { display: none; }
+.nav-burger.is-open .icon-close { display: block; }
+
+/* Mobile menu drawer */
+.mobile-menu {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 99;
+  background: rgba(15,27,53,.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.mobile-menu.is-open { display: block; }
+.mobile-menu-panel {
+  position: absolute; top: 60px; left: 0; right: 0;
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 16px 32px -12px rgba(15,27,53,.18);
+  padding: 12px 18px 22px;
+  /* iOS safe-area */
+  padding-bottom: max(22px, env(safe-area-inset-bottom));
+}
+.mobile-menu-panel a.menu-link {
+  display: flex; align-items: center;
+  min-height: 52px; padding: 0 6px;
+  font-size: 16px; font-weight: 600;
+  color: var(--navy);
+  border-bottom: 1px solid var(--line);
+  letter-spacing: -0.01em;
+}
+.mobile-menu-panel a.menu-link:active { color: var(--teal); background: var(--bg2); }
+.mobile-menu-panel a.menu-link:last-of-type { border-bottom: none; }
+.mobile-menu-panel .menu-cta {
+  display: flex; gap: 10px; margin-top: 14px;
+}
+.mobile-menu-panel .menu-cta a {
+  flex: 1;
+  display: flex; align-items: center; justify-content: center;
+  height: 48px; border-radius: 10px;
+  font-size: 15px; font-weight: 700;
+}
+.mobile-menu-panel .menu-cta .btn-primary { background: var(--teal); color: #fff; }
+.mobile-menu-panel .menu-cta .btn-primary:active { background: var(--teal2); transform: scale(.98); }
+.mobile-menu-panel .menu-cta .btn-outline { border: 1.5px solid var(--line); color: var(--text); }
+.mobile-menu-panel .menu-cta .btn-outline:active { border-color: var(--teal); color: var(--teal); }
 
 /* ── BUTTONS ── */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; border-radius: 8px; font-weight: 600; font-size: 14px; transition: all .15s; white-space: nowrap; text-decoration: none; }
@@ -944,8 +1016,12 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
 @media (max-width: 900px) {
   .nav-inner { gap: 12px; height: 56px; }
   .nav-links { display: none; }
-  .nav-actions { gap: 6px; }
-  .lang-btn { padding: 5px 8px; font-size: 11px; }
+  .nav-action-desktop { display: none; }
+  .nav-burger { display: inline-flex; }
+  .nav-actions { gap: 8px; }
+  .lang-btn { padding: 8px 10px; font-size: 11px; min-height: 36px; }
+  /* Reduce nav backdrop blur on mobile (cheap) */
+  .nav { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   .hero {
     /* On mobile, drop full-viewport — let content set the height naturally */
     min-height: 0;
@@ -969,12 +1045,118 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .step { padding: 0; }
   /* compare-* mobile rules are now handled inside the kinematik split-screen block above */
   .foot-bot { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .foot-bot-l { gap: 8px; }
+  .cert-badge { font-size: 10.5px; padding: 4px 8px; }
   .final-cta { padding: 72px 0; }
+  /* Touch-target pad for hero buttons + chat send */
+  .btn-hero, .btn-hero-out { min-height: 48px; height: 48px; }
+  .chat-send { width: 40px; height: 40px; }
 }
+
+/* ── MOBILE-SPECIFIC (≤700px) — phones in portrait ── */
+@media (max-width: 700px) {
+  .hero-trust { gap: 10px; }
+  .hero-trust span { font-size: 10px; }
+  /* Hero CTA buttons full-width — premium feel on phones */
+  .hero-cta { flex-direction: column; align-items: stretch; gap: 10px; }
+  .hero-cta .btn-hero, .hero-cta .btn-hero-out {
+    width: 100%; min-height: 50px; height: 50px;
+    font-size: 15px;
+  }
+  /* Hero eyebrow smaller */
+  .hero-eyebrow { font-size: 10.5px; padding: 4px 10px; }
+  /* Final CTA button — wide tap target */
+  .final-cta .btn-primary { min-height: 56px; padding: 0 28px; }
+  /* Steps cards — readable */
+  .step h3 { font-size: 17px; }
+  /* Compare title smaller */
+  #compare h2 { font-size: clamp(22px, 6vw, 28px); }
+  /* Compare orb (VS) — sit at the seam between stacked cards */
+  .cmp-orb {
+    top: 50% !important; left: 50% !important;
+    width: 60px; height: 60px; font-size: 16px;
+  }
+  /* Compare watermark — pull tighter to avoid horizontal overflow on narrow screens */
+  .cmp-side--us > .cmp-watermark { width: 200px; height: 200px; right: -28px; bottom: -28px; }
+  .cmp-side--them > .cmp-watermark { width: 180px; height: 180px; left: -20px; bottom: -16px; }
+  /* Savings counter — tighter */
+  .cmp-savings { padding: 22px 18px; }
+  .cmp-save-num { font-size: 32px; }
+  .cmp-save-cell--big .cmp-save-num { font-size: 42px; }
+  /* Pro plan price — slight reduction so currency + amount + per fit cleanly */
+  .plan-price .amount { font-size: 44px; }
+  .plan-price .currency { font-size: 18px; }
+  .plan-name { font-size: 20px; }
+  .plan { padding: 26px 22px 24px; }
+  /* Pricing card CTA height */
+  .plan .btn { height: 50px; font-size: 14.5px; }
+  /* FAQ tap target */
+  .faq-q { padding: 22px 0; min-height: 56px; font-size: 15.5px; }
+  .faq-q .plus { font-size: 22px; }
+  /* Compare side padding compact */
+  .cmp-side--us, .cmp-side--them { padding: 36px 22px !important; }
+  .cmp-side--us { padding-bottom: 50px !important; }
+  .cmp-side--them { padding-top: 50px !important; }
+  .cmp-title { font-size: 24px; }
+  .cmp-list li { font-size: 13px; }
+  .cmp-cta { height: 52px; font-size: 15px; }
+}
+
+/* ── EXTRA-SMALL (≤480px) — iPhone SE territory ── */
 @media (max-width: 480px) {
-  .promo-banner { font-size: 12px; padding: 8px 12px; }
+  .promo-banner { font-size: 12px; padding: 8px 12px; line-height: 1.4; }
   .container { padding: 0 18px; }
+  .container-sm { padding: 0 18px; }
   .nav-logo img { height: 30px; }
+  .nav-inner { gap: 8px; }
+  .nav-actions { gap: 6px; }
+  /* Trust pills — allow wrap */
+  .hero-trust { gap: 8px 12px; }
+  /* Pricing cards — tighter padding */
+  .plan { padding: 24px 20px 22px; }
+  .plan-features { gap: 10px; }
+  .plan-features li { font-size: 13.5px; }
+  .plan-desc { font-size: 13px; padding-bottom: 18px; margin-bottom: 18px; }
+  /* Pro shield watermark — taming on narrowest screens */
+  .plan.featured .plan-watermark { width: 38px; height: 38px; top: 12px; right: 12px; }
+  .hero-scroll-hint { display: none; }
+  .section { padding: 56px 0; }
+  /* Compare savings ultra-compact */
+  .cmp-save-num { font-size: 28px; }
+  .cmp-save-cell--big .cmp-save-num { font-size: 38px; }
+  /* Reduce particles further */
+  .cmp-particles span:nth-child(n+4) { display: none; }
+  /* Final CTA */
+  .final-cta { padding: 60px 0; }
+  .final-cta h2 { font-size: clamp(26px, 7vw, 32px); }
+  /* Footer brand logo size */
+  .foot-brand img { height: 32px; }
+  /* Cert badges — stack to avoid overflow */
+  .foot-bot-l { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+
+/* ── REDUCED MOTION — disable heavy mobile animations ── */
+@media (prefers-reduced-motion: reduce) {
+  .plan, .plan.featured { animation: none !important; }
+  .cmp-side--us { animation: none !important; }
+  .cmp-orb { animation: none !important; }
+  .cmp-rings .r1, .cmp-rings .r2, .cmp-rings .r3 { animation: none !important; }
+  .cmp-particles span { animation: none !important; }
+  .plan-badge::after { animation: none !important; }
+}
+
+/* ── TOUCH FEEDBACK — :active tap states ── */
+@media (hover: none) {
+  .btn-primary:active { background: var(--teal2); transform: scale(.98); }
+  .btn-outline:active { border-color: var(--teal); color: var(--teal); background: var(--bg2); }
+  .btn-ghost:active { background: var(--bg2); color: var(--text); }
+  .btn-hero:active { transform: scale(.98); box-shadow: 0 2px 12px rgba(13,148,136,.2); }
+  .btn-hero-out:active { background: var(--bg2); border-color: var(--teal); color: var(--teal); }
+  .lang-btn:active { background: var(--bg2); border-color: var(--teal); color: var(--teal); }
+  .chat-send:active { background: var(--teal2); transform: scale(.95); }
+  .chip:active { background: var(--bg2); border-color: var(--teal); color: var(--teal); }
+  .faq-q:active { color: var(--teal); }
+  .cmp-cta:active { transform: scale(.98); }
 }
 
 /* ── RTL ── */
@@ -987,7 +1169,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 
 <!-- ── PROMO BANNER (Early Access) ── -->
 <div class="promo-banner" id="promo-banner">
-  <span data-i18n="promo">Early Access: €14.99/mo for the first 3 months. Then €19.99/mo — <a href="/app.html#pricing">claim yours →</a></span>
+  <span data-i18n="promo">Early Access: €14.99/mo for the first 3 months. Then €19.99/mo — <a href="/app.html?plan=counsel&amp;billing=early-access">claim yours →</a></span>
 </div>
 
 <!-- ── NAV ── -->
@@ -1010,10 +1192,27 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           </button>
           <div class="lang-menu" id="lang-menu" role="menu"></div>
         </div>
-        <a class="btn btn-ghost" href="/app.html" data-i18n="nav.login">Sign in</a>
-        <a class="btn btn-primary" href="/app.html" data-i18n="nav.cta">Try free</a>
+        <a class="btn btn-ghost nav-action-desktop" href="/app.html" data-i18n="nav.login">Sign in</a>
+        <a class="btn btn-primary nav-action-desktop" href="/app.html" data-i18n="nav.cta">Try free</a>
+        <button class="nav-burger" id="nav-burger" aria-label="Open menu" aria-controls="mobile-menu" aria-expanded="false">
+          <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
     </nav>
+  </div>
+  <!-- Mobile menu drawer -->
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <div class="mobile-menu-panel">
+      <a class="menu-link" href="#how" data-i18n="nav.how">How it works</a>
+      <a class="menu-link" href="#compare" data-i18n="nav.compare">Compare</a>
+      <a class="menu-link" href="#pricing" data-i18n="nav.pricing">Pricing</a>
+      <a class="menu-link" href="#faq" data-i18n="nav.faq">FAQ</a>
+      <div class="menu-cta">
+        <a class="btn-outline" href="/app.html" data-i18n="nav.login">Sign in</a>
+        <a class="btn-primary" href="/app.html" data-i18n="nav.cta">Try free</a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -1357,7 +1556,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
         </ul>
-        <a class="btn btn-primary" href="/app.html#pricing" data-i18n="plan2.cta">Start Early Access</a>
+        <a class="btn btn-primary" href="/app.html?plan=counsel&amp;billing=early-access" data-i18n="plan2.cta">Start Early Access</a>
       </div>
 
       <!-- PREMIUM -->
@@ -1391,7 +1590,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f5">Everything in Pro</li>
           <li data-i18n="plan3.f6">Email & document export</li>
         </ul>
-        <a class="btn btn-primary" href="/app.html#pricing" data-i18n="plan3.cta">Choose Premium</a>
+        <a class="btn btn-primary" href="/app.html?plan=representation&amp;billing=monthly" data-i18n="plan3.cta">Choose Premium</a>
       </div>
     </div>
     <p class="pricing-note">
@@ -1499,7 +1698,12 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   #advCookieBanner .advCookieReject { background: transparent; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.25); }
   #advCookieBanner .advCookiePrefs { background: transparent; color: #8fd; border: 1px solid rgba(143,221,221,0.35); }
   @media (max-width: 480px) {
-    #advCookieBanner { left: 8px; right: 8px; bottom: 8px; padding: 14px; }
+    #advCookieBanner {
+      left: 8px; right: 8px;
+      bottom: max(8px, env(safe-area-inset-bottom));
+      padding: 14px;
+    }
+    #advCookieBanner button { min-height: 44px; }
   }
 </style>
 
@@ -1571,7 +1775,7 @@ const RTL = { ar: true, fa: true };
 
 const I18N = {
   en: {
-    'promo': 'Early Access: €14.99/mo for the first 3 months. Then €19.99/mo — <a href="/app.html#pricing">claim yours →</a>',
+    'promo': 'Early Access: €14.99/mo for the first 3 months. Then €19.99/mo — <a href="/app.html?plan=counsel&amp;billing=early-access">claim yours →</a>',
     'nav.how': 'How it works', 'nav.compare': 'Compare', 'nav.pricing': 'Pricing', 'nav.faq': 'FAQ',
     'nav.login': 'Sign in', 'nav.cta': 'Try free',
     'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
@@ -1658,7 +1862,7 @@ const I18N = {
   },
 
   et: {
-    'promo': 'Varajane juurdepääs: €14.99/kuu esimese 3 kuu jooksul. Seejärel €19.99/kuu — <a href="/app.html#pricing">vali oma pakett →</a>',
+    'promo': 'Varajane juurdepääs: €14.99/kuu esimese 3 kuu jooksul. Seejärel €19.99/kuu — <a href="/app.html?plan=counsel&amp;billing=early-access">vali oma pakett →</a>',
     'nav.how': 'Kuidas töötab', 'nav.compare': 'Võrdlus', 'nav.pricing': 'Hinnad', 'nav.faq': 'KKK',
     'nav.login': 'Logi sisse', 'nav.cta': 'Alusta tasuta',
     'hero.eyebrow': 'AI ÕIGUSABI · 2026',
@@ -1745,7 +1949,7 @@ const I18N = {
   },
 
   ru: {
-    'promo': 'Ранний доступ: €14.99/мес первые 3 месяца. Затем €19.99/мес — <a href="/app.html#pricing">забрать своё →</a>',
+    'promo': 'Ранний доступ: €14.99/мес первые 3 месяца. Затем €19.99/мес — <a href="/app.html?plan=counsel&amp;billing=early-access">забрать своё →</a>',
     'nav.how': 'Как это работает', 'nav.compare': 'Сравнение', 'nav.pricing': 'Тарифы', 'nav.faq': 'FAQ',
     'nav.login': 'Войти', 'nav.cta': 'Попробовать',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
@@ -1832,7 +2036,7 @@ const I18N = {
   },
 
   uk: {
-    'promo': 'Ранній доступ: €14.99/міс перші 3 місяці. Потім €19.99/міс — <a href="/app.html#pricing">забрати своє →</a>',
+    'promo': 'Ранній доступ: €14.99/міс перші 3 місяці. Потім €19.99/міс — <a href="/app.html?plan=counsel&amp;billing=early-access">забрати своє →</a>',
     'nav.how': 'Як працює', 'nav.compare': 'Порівняння', 'nav.pricing': 'Тарифи', 'nav.faq': 'FAQ',
     'nav.login': 'Увійти', 'nav.cta': 'Спробувати',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
@@ -1919,7 +2123,7 @@ const I18N = {
   },
 
   fi: {
-    'promo': 'Varhainen pääsy: €14.99/kk ensimmäiset 3 kuukautta. Sen jälkeen €19.99/kk — <a href="/app.html#pricing">varaa omasi →</a>',
+    'promo': 'Varhainen pääsy: €14.99/kk ensimmäiset 3 kuukautta. Sen jälkeen €19.99/kk — <a href="/app.html?plan=counsel&amp;billing=early-access">varaa omasi →</a>',
     'nav.how': 'Miten toimii', 'nav.compare': 'Vertailu', 'nav.pricing': 'Hinnat', 'nav.faq': 'UKK',
     'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
     'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
@@ -2202,6 +2406,47 @@ window.advocatDemoSend = function(){
 document.getElementById('chat-input').addEventListener('keydown', function(e){
   if (e.key === 'Enter') window.advocatDemoSend();
 });
+
+// ── MOBILE BURGER MENU ──
+(function(){
+  var burger = document.getElementById('nav-burger');
+  var menu = document.getElementById('mobile-menu');
+  if (!burger || !menu) return;
+  function close(){
+    burger.classList.remove('is-open');
+    menu.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  function open(){
+    burger.classList.add('is-open');
+    menu.classList.add('is-open');
+    burger.setAttribute('aria-expanded', 'true');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  burger.addEventListener('click', function(e){
+    e.stopPropagation();
+    if (menu.classList.contains('is-open')) close(); else open();
+  });
+  // Close on link tap
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', close);
+  });
+  // Close on overlay tap
+  menu.addEventListener('click', function(e){
+    if (e.target === menu) close();
+  });
+  // Close on resize-to-desktop
+  window.addEventListener('resize', function(){
+    if (window.innerWidth > 900 && menu.classList.contains('is-open')) close();
+  });
+  // Close on Escape
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && menu.classList.contains('is-open')) close();
+  });
+})();
 
 // ── HERO SCROLL HINT — fade on first scroll ──
 (function(){
