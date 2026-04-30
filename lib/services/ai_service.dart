@@ -396,6 +396,23 @@ class AIService {
   Future<bool> checkAndIncrementDailyLimitForTest() =>
       _checkAndIncrementDailyLimit();
 
+  /// Test-only seam mirroring the quota gate at the top of
+  /// [sendChatMessage]. Lets the double-decrement regression test pin
+  /// down the fix without requiring `AppConfig.useRealAI` to be true
+  /// in unit tests (which would need Supabase env vars).
+  ///
+  /// Contract:
+  ///   - quotaAlreadyConsumed=false → consume once, return allowed
+  ///   - quotaAlreadyConsumed=true  → skip consume, return true
+  ///   - isProUser=true            → skip consume, return true
+  @visibleForTesting
+  Future<bool> sendChatMessageQuotaGateForTest({
+    required bool quotaAlreadyConsumed,
+  }) async {
+    if (quotaAlreadyConsumed) return true;
+    return _checkAndIncrementDailyLimit();
+  }
+
   /// Get remaining free AI responses. Server-side is the source of truth.
   ///
   /// Returns `-1` for unlimited (pro) users. Returns `0` on fall-closed so
@@ -868,6 +885,13 @@ class AIService {
     String? clientContext,
     String? freeLimitMessage,
     ChatAttachment? imageAttachment,
+    // Pre-launch fix (2026-04-29): when the streaming path has already
+    // consumed quota for this turn and falls back here on a transient
+    // ClaudeServiceException, the caller passes `true` so we skip a
+    // second consume. Otherwise a single network blip costs the user
+    // two free-tier slots. Pro users are unaffected (consumeQuota is a
+    // no-op for them).
+    bool quotaAlreadyConsumed = false,
   }) async {
     // Sanitize user input before any AI processing
     final sanitizedMessage = _sanitizeInput(message);
@@ -883,14 +907,18 @@ class AIService {
 
     if (isUsingRealAI) {
       // ── Free-tier daily limit check ──
-      final allowed = await _checkAndIncrementDailyLimit();
-      if (!allowed) {
-        return ChatResponse(
-          message: freeLimitMessage ??
-              'You have used all $_freeTotalLimit free AI messages. '
-                  'Upgrade to Legal Counsel for unlimited AI assistance!',
-          disclaimer: null,
-        );
+      // Skip when the streaming path has already paid for this turn
+      // (see [sendChatMessageStreaming] catch handler).
+      if (!quotaAlreadyConsumed) {
+        final allowed = await _checkAndIncrementDailyLimit();
+        if (!allowed) {
+          return ChatResponse(
+            message: freeLimitMessage ??
+                'You have used all $_freeTotalLimit free AI messages. '
+                    'Upgrade to Legal Counsel for unlimited AI assistance!',
+            disclaimer: null,
+          );
+        }
       }
 
       // ── Response cache check (skip map lookup if cache is empty) ──
@@ -1281,7 +1309,10 @@ class AIService {
       // Remove the user message we added to history since streaming failed.
       _conversationHistory[caseId]?.removeLast();
 
-      // Fall back to non-streaming.
+      // Fall back to non-streaming. Pass quotaAlreadyConsumed=true so
+      // the fallback does NOT charge the user a second quota slot for
+      // this same turn — a transient ClaudeServiceException must cost
+      // exactly one free-tier message, not two (pre-launch fix).
       final response = await sendChatMessage(
         caseId: caseId,
         message: message,
@@ -1293,6 +1324,7 @@ class AIService {
         userName: userName,
         clientContext: clientContext,
         freeLimitMessage: freeLimitMessage,
+        quotaAlreadyConsumed: true,
       );
       yield response.message;
     }
