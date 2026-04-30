@@ -34,22 +34,37 @@ interface PriceEntry {
   trialDays?: number;
 }
 
+// Pricing model (2026-04-29):
+//   - Pro:           €19.99/mo  or  €159.99/yr
+//   - Early Access:  €14.99/mo  (intro pricing — see note below)
+//   - Premium:       €29.99/mo  or  €249.99/yr
+//
+// "Early Access" replaces the old "Founding Member" naming. It is sold as a
+// flat €14.99/mo recurring subscription with no automatic step-up after
+// 3 months. Auto-conversion to regular Pro pricing after 3 billing cycles
+// would require Stripe Pricing Phases or a fixed-duration Coupon, both of
+// which are intentionally deferred for the MVP launch — see the spec note
+// in the pricing-update task.
+//
+// Plan-key mapping kept for backwards-compatibility with existing callers:
+//   plan_id="counsel"        → Pro tier  (€19.99 / €159.99 / €14.99 ea)
+//   plan_id="representation" → Premium   (€29.99 / €249.99, no early access)
 const PRICES: Record<string, Record<string, PriceEntry>> = {
   counsel: {
     monthly: {
-      amount: 1499,
+      amount: 1999,
       interval: "month",
-      name: "Legal Counsel — Monthly",
+      name: "Advocat Pro — Monthly",
     },
     yearly: {
-      amount: 11999,
+      amount: 15999,
       interval: "year",
-      name: "Legal Counsel — Yearly",
+      name: "Advocat Pro — Yearly",
     },
-    founding: {
-      amount: 999,
+    "early-access": {
+      amount: 1499,
       interval: "month",
-      name: "Legal Counsel — Founding Member",
+      name: "Advocat Pro — Early Access",
       trialDays: 0,
     },
   },
@@ -57,18 +72,12 @@ const PRICES: Record<string, Record<string, PriceEntry>> = {
     monthly: {
       amount: 2999,
       interval: "month",
-      name: "Advocat Pro — Monthly",
+      name: "Advocat Premium — Monthly",
     },
     yearly: {
       amount: 24999,
       interval: "year",
-      name: "Advocat Pro — Yearly",
-    },
-    founding: {
-      amount: 1999,
-      interval: "month",
-      name: "Advocat Pro — Founding Member",
-      trialDays: 0,
+      name: "Advocat Premium — Yearly",
     },
   },
 };
@@ -151,10 +160,12 @@ serve(async (req: Request) => {
     // an email even though the invoice exists. We also send our own
     // confirmation via the `send-email` Edge Function from stripe-webhook.
 
-    // Founding member: metadata flag so the webhook enforces the 3-month
-    // limit. The price itself is already discounted.
-    if (billing_period === "founding") {
-      sessionParams.metadata!.founding_months = "3";
+    // Early Access (intro pricing): metadata flag so the webhook can
+    // recognize these subscriptions if/when we layer on a 3-month
+    // auto-conversion to regular Pro pricing. For the MVP launch the
+    // subscription simply renews at €14.99/mo until the user cancels.
+    if (billing_period === "early-access") {
+      sessionParams.metadata!.early_access = "true";
     }
 
     // FIX-7: email comes from the JWT session, never from the body.
