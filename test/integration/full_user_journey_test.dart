@@ -274,8 +274,8 @@ void main() {
       final d = FakeDeadline(
         id: 'dl-1',
         userId: u.id,
-        title: 'Notar 28.04',
-        dueDate: DateTime(2026, 4, 28, 10, 0),
+        title: 'Notar in 7 days',
+        dueDate: DateTime.now().add(const Duration(days: 7)),
       );
       w.deadlines.putIfAbsent(u.id, () => []).add(d);
 
