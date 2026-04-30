@@ -200,9 +200,9 @@ img, svg { display: block; max-width: 100%; }
 /* ── COMPARE — KINEMATIK SPLIT-SCREEN v2 ── */
 :root { --cmp-ease: cubic-bezier(.2,.8,.3,1); --cmp-radius: 28px; }
 #compare {
-  padding-top: 32px; padding-bottom: 32px; overflow: hidden;
+  padding-top: 24px; padding-bottom: 24px; overflow: hidden;
   min-height: calc(100vh - var(--nav-h, 60px));
-  max-height: 900px;
+  max-height: 960px;
   display: flex; align-items: center;
 }
 #compare > .container { width: 100%; max-width: 1280px; }
@@ -525,10 +525,10 @@ img, svg { display: block; max-width: 100%; }
 
 /* ─── SAVINGS BANNER (counters) ─── */
 .cmp-savings {
-  margin: 14px auto 0; max-width: 1100px;
+  margin: 20px auto 0; max-width: 1100px;
   background: linear-gradient(135deg, #0F1B35 0%, #1A2B4A 60%, #0E3540 100%);
-  border-radius: 16px;
-  padding: 12px 24px;
+  border-radius: 20px;
+  padding: 22px 36px;
   display: grid;
   grid-template-columns: 1fr 1fr 1.2fr;
   align-items: center; gap: 24px;
@@ -550,19 +550,19 @@ img, svg { display: block; max-width: 100%; }
   position: relative; z-index: 1;
 }
 .cmp-save-num {
-  font-size: 32px; font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+  font-size: 42px; font-weight: 900; letter-spacing: -0.04em; line-height: 1;
   color: #fff; font-variant-numeric: tabular-nums;
   position: relative; z-index: 1;
 }
 .cmp-save-cell--big .cmp-save-num {
-  font-size: 46px;
+  font-size: 60px;
   background: linear-gradient(135deg, #FFD988 0%, #F4B860 50%, #C9A35B 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 30px rgba(244,184,96,.35);
 }
 .cmp-save-sub {
-  font-size: 11px; color: rgba(255,255,255,.6); margin-top: 2px;
+  font-size: 13px; color: rgba(255,255,255,.65); margin-top: 4px;
   position: relative; z-index: 1;
 }
 .cmp-save-cell--bureau .cmp-save-num { color: #ff9a9a; }
