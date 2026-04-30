@@ -52,8 +52,8 @@ img, svg { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--line);
 }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 32px; }
-.nav-logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; color: var(--navy); letter-spacing: -0.02em; }
-.nav-logo svg, .nav-logo img { width: 32px; height: 32px; object-fit: contain; }
+.nav-logo { display: flex; align-items: center; }
+.nav-logo img { height: 36px; width: auto; object-fit: contain; display: block; }
 .nav-links { display: flex; gap: 28px; list-style: none; }
 .nav-links a { font-size: 14px; font-weight: 500; color: var(--muted); transition: color .15s; }
 .nav-links a:hover { color: var(--text); }
@@ -371,8 +371,7 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
 @media (max-width: 480px) {
   .promo-banner { font-size: 12px; padding: 8px 12px; }
   .container { padding: 0 18px; }
-  .nav-logo { font-size: 15px; }
-  .nav-logo span { display: none; }
+  .nav-logo img { height: 30px; }
 }
 
 /* ── RTL ── */
@@ -393,8 +392,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   <div class="container">
     <nav class="nav-inner">
       <a class="nav-logo" href="#top">
-        <img src="/blog/logo_shield.png" alt="Advocat">
-        <span>Advocat</span>
+        <img src="/logo.png" alt="Advocat">
       </a>
       <ul class="nav-links">
         <li><a href="#how" data-i18n="nav.how">How it works</a></li>
