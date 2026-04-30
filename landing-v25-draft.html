@@ -150,248 +150,508 @@ img, svg { display: block; max-width: 100%; }
 .step p { font-size: 14px; color: var(--muted); line-height: 1.55; }
 .step-meta { margin-top: 12px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--teal); }
 
-/* ── COMPARE ── */
-:root { --cmp-ease: cubic-bezier(.2,.8,.3,1); }
-#compare { padding-top: 96px; padding-bottom: 96px; }
-.compare-grid {
-  display: grid; grid-template-columns: 1fr auto 1fr; gap: 0;
-  align-items: stretch; max-width: 960px; margin: 56px auto 0;
-  position: relative;
-}
-/* Vertical gradient connector line behind VS — navy→teal→navy */
-.compare-grid::before {
-  content: ''; position: absolute; top: 14%; bottom: 14%;
-  left: 50%; width: 1.5px; transform: translateX(-50%);
-  background: linear-gradient(180deg, transparent 0%, rgba(13,148,136,.0) 8%, rgba(13,148,136,.55) 50%, rgba(13,148,136,.0) 92%, transparent 100%);
-  pointer-events: none; z-index: 0;
-  opacity: .85;
-}
-.compare-grid:hover::before {
-  background: linear-gradient(180deg, transparent 0%, rgba(13,148,136,.0) 8%, rgba(20,184,166,.85) 50%, rgba(13,148,136,.0) 92%, transparent 100%);
-  box-shadow: 0 0 12px rgba(20,184,166,.35);
-}
+/* ── COMPARE — KINEMATIK SPLIT-SCREEN v2 ── */
+:root { --cmp-ease: cubic-bezier(.2,.8,.3,1); --cmp-radius: 28px; }
+#compare { padding-top: 96px; padding-bottom: 112px; overflow: hidden; }
+#compare .container { max-width: 1280px; }
 
-/* VS badge — premium gradient circle with pulsing glow */
-.compare-vs { display: flex; align-items: center; justify-content: center; padding: 0 18px; position: relative; z-index: 2; }
-.compare-vs-circle {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: linear-gradient(140deg, var(--navy) 0%, var(--navy2) 50%, var(--teal) 100%);
-  border: none;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 900; letter-spacing: .08em; color: #fff;
+/* The stage holds the entire split-screen + the diagonal divider + the orb */
+.cmp-stage {
+  position: relative; margin: 64px auto 0;
+  border-radius: var(--cmp-radius);
+  overflow: hidden;
+  isolation: isolate;
+  /* Background visible in the diagonal seam between the two clipped panels */
+  background:
+    linear-gradient(180deg, #0F1B35 0%, #14243F 50%, #1A2B4A 100%);
   box-shadow:
-    0 0 0 4px rgba(13,148,136,.12),
-    0 0 24px rgba(13,148,136,.4),
-    0 8px 24px rgba(0,0,0,.25);
+    0 40px 100px -32px rgba(10,22,40,.45),
+    0 0 0 1px rgba(15,27,53,.06);
+}
+.cmp-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 640px;
   position: relative;
-  transition: transform .35s var(--cmp-ease), box-shadow .35s var(--cmp-ease);
 }
 
-/* Compare columns */
-.compare-col {
-  border-radius: 20px; overflow: hidden; position: relative;
-  transition: transform .4s var(--cmp-ease), box-shadow .4s var(--cmp-ease), opacity .35s var(--cmp-ease);
+/* ─── LEFT: ADVOCAT (premium navy world) ─── */
+.cmp-side {
+  position: relative;
+  padding: 64px 56px 56px;
+  display: flex; flex-direction: column;
+  transition: filter .55s var(--cmp-ease), opacity .55s var(--cmp-ease);
+}
+.cmp-side--us {
+  background:
+    radial-gradient(80% 60% at 18% 22%, rgba(20,184,166,.32) 0%, transparent 60%),
+    radial-gradient(70% 60% at 82% 78%, rgba(13,148,136,.22) 0%, transparent 60%),
+    radial-gradient(50% 50% at 50% 50%, rgba(11,122,112,.10) 0%, transparent 70%),
+    linear-gradient(155deg, #08111F 0%, #0C1F33 38%, #0E2C3D 70%, #0A2F36 100%);
+  background-size: 180% 180%, 180% 180%, 140% 140%, 100% 100%;
+  background-position: 18% 22%, 82% 78%, 50% 50%, 0 0;
+  color: #fff;
+  /* Right edge tucks under the diagonal divider */
+  clip-path: polygon(0 0, 100% 0, calc(100% - 110px) 100%, 0 100%);
+  padding-right: 130px;
+}
+.cmp-side--us::before {
+  /* Subtle radial gleam in upper-left */
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(60% 40% at 20% 0%, rgba(255,255,255,.06) 0%, transparent 70%);
   z-index: 1;
 }
-
-/* ADVOCAT side — animated mesh gradient */
-.compare-col-us {
-  background:
-    radial-gradient(at 20% 30%, rgba(13,148,136,.25) 0%, transparent 50%),
-    radial-gradient(at 80% 70%, rgba(13,148,136,.15) 0%, transparent 50%),
-    linear-gradient(160deg,#0a1628 0%,#0D2137 50%,#0B3340 100%);
-  background-size: 140% 140%, 140% 140%, 100% 100%;
-  background-position: 20% 30%, 80% 70%, 0 0;
-  box-shadow: 0 24px 64px -16px rgba(10,22,40,.5), 0 0 0 1px rgba(13,148,136,.08);
+.cmp-side--us::after {
+  /* Floating particles via background-image of multiple radial-gradients */
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background-image:
+    radial-gradient(circle at 12% 20%, rgba(20,184,166,.55) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 28% 70%, rgba(20,184,166,.45) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 70% 28%, rgba(20,184,166,.5) 0 1.4px, transparent 2px),
+    radial-gradient(circle at 55% 88%, rgba(20,184,166,.35) 0 1px, transparent 2px),
+    radial-gradient(circle at 80% 60%, rgba(20,184,166,.4) 0 1.2px, transparent 2px),
+    radial-gradient(circle at 38% 38%, rgba(20,184,166,.3) 0 1px, transparent 2px);
+  filter: blur(.3px);
+  opacity: .85;
 }
-/* Watermark shield — large, subtle, behind content */
-.compare-col-us::before {
-  content: '';
-  position: absolute; right: -80px; bottom: -40px;
-  width: 320px; height: 320px;
+
+/* Animated particle layer — independent floating dots */
+.cmp-particles {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+}
+.cmp-particles span {
+  position: absolute; width: 6px; height: 6px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(20,184,166,.95) 0%, rgba(20,184,166,0) 70%);
+  opacity: .7;
+  filter: blur(.4px);
+}
+.cmp-particles span:nth-child(1) { left: 8%;  top: 18%; width: 8px; height: 8px; }
+.cmp-particles span:nth-child(2) { left: 22%; top: 66%; width: 5px; height: 5px; }
+.cmp-particles span:nth-child(3) { left: 34%; top: 30%; width: 4px; height: 4px; }
+.cmp-particles span:nth-child(4) { left: 18%; top: 84%; width: 6px; height: 6px; }
+.cmp-particles span:nth-child(5) { left: 44%; top: 16%; width: 5px; height: 5px; }
+.cmp-particles span:nth-child(6) { left: 50%; top: 72%; width: 4px; height: 4px; }
+.cmp-particles span:nth-child(7) { left: 12%; top: 52%; width: 7px; height: 7px; }
+.cmp-particles span:nth-child(8) { left: 38%; top: 90%; width: 4px; height: 4px; }
+
+/* Watermark shield deep in the corner */
+.cmp-side--us > .cmp-watermark {
+  position: absolute; right: 4%; bottom: -40px;
+  width: 360px; height: 360px;
   background: url('/blog/logo_shield.png') center/contain no-repeat;
-  opacity: .04; transform: rotate(8deg);
+  opacity: .035;
+  transform: rotate(8deg);
   pointer-events: none; z-index: 0;
-  transition: opacity .5s var(--cmp-ease), transform .6s var(--cmp-ease);
+  transition: opacity .6s var(--cmp-ease), transform .8s var(--cmp-ease);
   filter: drop-shadow(0 0 24px rgba(13,148,136,.5));
 }
-.compare-col-us > * { position: relative; z-index: 1; }
 
-/* THEM side — slight desaturated old-school feel */
-.compare-col-them {
-  background: linear-gradient(180deg, #FFFFFF 0%, #FAFBFC 100%);
-  border: 1px solid var(--line);
-  box-shadow: 0 12px 32px -10px rgba(15,27,53,.08);
+/* Header block (shield + concentric rings + title) */
+.cmp-hero {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 28px;
 }
-
-/* Header */
-.compare-head { padding: 32px 28px 26px; text-align: center; position: relative; }
-.compare-col-us .compare-head {
-  border-bottom: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(12px);
-  background: linear-gradient(180deg, rgba(255,255,255,.02) 0%, rgba(255,255,255,0) 100%);
-}
-.compare-col-them .compare-head {
-  border-bottom: 1px solid var(--line);
-  background: linear-gradient(180deg, #F5F6F8 0%, #ECEEF2 100%);
-}
-.compare-head .logo-mark {
-  width: 80px; height: 80px; margin: 0 auto 12px;
-  filter: drop-shadow(0 0 18px rgba(20,184,166,.35)) drop-shadow(0 4px 12px rgba(0,0,0,.25));
-  transition: transform .4s var(--cmp-ease), filter .4s var(--cmp-ease);
-}
-.compare-head .icon-stack {
-  width: 72px; height: 72px; border-radius: 16px;
-  background: linear-gradient(160deg, #E5E7EB 0%, #C9CDD4 100%);
+.cmp-hero-mark {
+  position: relative; width: 200px; height: 200px;
   display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 12px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 6px rgba(15,27,53,.08);
-  filter: saturate(.7);
+  margin-bottom: 4px;
 }
-.compare-title { font-size: 22px; font-weight: 900; letter-spacing: -0.03em; }
-.compare-col-us .compare-title {
-  color: #fff;
-  background: linear-gradient(180deg, #fff 0%, #d8f3ef 100%);
+.cmp-hero-mark img {
+  position: relative; z-index: 3;
+  width: 200px; height: 200px;
+  filter:
+    drop-shadow(0 20px 40px rgba(13,148,136,.40))
+    drop-shadow(0 0 28px rgba(20,184,166,.35));
+  transition: transform .5s var(--cmp-ease), filter .5s var(--cmp-ease);
+}
+.cmp-rings {
+  position: absolute; inset: -30px; pointer-events: none; z-index: 1;
+}
+.cmp-rings circle { fill: none; stroke: rgba(20,184,166,.35); stroke-width: 1; transform-origin: center; }
+.cmp-rings .r1 { stroke: rgba(20,184,166,.45); }
+.cmp-rings .r2 { stroke: rgba(20,184,166,.30); }
+.cmp-rings .r3 { stroke: rgba(20,184,166,.18); }
+
+.cmp-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(20,184,166,.95);
+  padding: 6px 12px; border-radius: 999px;
+  background: rgba(20,184,166,.10);
+  border: 1px solid rgba(20,184,166,.28);
+  backdrop-filter: blur(8px);
+}
+.cmp-eyebrow::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal3);
+  box-shadow: 0 0 8px var(--teal3);
+}
+.cmp-side--them .cmp-eyebrow::before {
+  background: #9CA3AF;
+  box-shadow: none;
+}
+.cmp-title {
+  font-size: 38px; font-weight: 900; letter-spacing: -0.035em; line-height: 1.05;
+  background: linear-gradient(180deg, #fff 0%, #c8eee8 100%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.compare-col-them .compare-title { color: var(--navy); }
-.compare-sub { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; margin-top: 4px; font-weight: 600; }
-.compare-col-us .compare-sub { color: rgba(255,255,255,.55); }
-.compare-col-them .compare-sub { color: var(--faint); }
+.cmp-side--them .cmp-title {
+  background: none;
+  -webkit-text-fill-color: var(--navy);
+  color: var(--navy);
+}
+.cmp-tag {
+  font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.55); margin-top: -6px;
+}
+.cmp-side--them .cmp-tag { color: var(--faint); }
 
-/* Price chip below header */
-.compare-price-chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 14px;
-  padding: 6px 12px; border-radius: 999px;
-  font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+/* Big bold price chip */
+.cmp-price {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  padding: 14px 22px; border-radius: 16px;
+  margin: 8px 0 6px;
+  font-weight: 900; letter-spacing: -0.03em;
 }
-.compare-col-us .compare-price-chip {
-  background: rgba(13,148,136,.18);
-  color: var(--teal3);
-  border: 1px solid rgba(20,184,166,.35);
-  box-shadow: 0 0 18px rgba(13,148,136,.18);
+.cmp-side--us .cmp-price {
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal3) 100%);
+  color: #fff;
+  box-shadow:
+    0 0 0 1px rgba(20,184,166,.45),
+    0 18px 40px -10px rgba(13,148,136,.55),
+    0 0 32px rgba(20,184,166,.35);
 }
-.compare-col-them .compare-price-chip {
-  background: rgba(220,38,38,.07);
-  color: var(--error);
-  border: 1px solid rgba(220,38,38,.2);
+.cmp-side--them .cmp-price {
+  background: #fff;
+  color: #4B5563;
+  border: 1.5px solid var(--line);
+  box-shadow: 0 2px 6px rgba(15,27,53,.04);
 }
+.cmp-price .cmp-price-num { font-size: 48px; line-height: 1; }
+.cmp-price .cmp-price-unit { font-size: 16px; font-weight: 700; opacity: .85; }
+.cmp-price-note {
+  font-size: 13px; color: rgba(255,255,255,.65); font-weight: 500; letter-spacing: .01em;
+  margin-top: 2px;
+}
+.cmp-side--them .cmp-price-note { color: var(--faint); }
 
-/* Rows */
-.compare-rows { padding: 8px 0; }
-.compare-row {
-  display: flex; gap: 12px; padding: 14px 24px;
-  align-items: flex-start; font-size: 14px; line-height: 1.45;
-  opacity: 0;
+/* Features list */
+.cmp-list { list-style: none; margin-top: 22px; display: flex; flex-direction: column; gap: 4px; position: relative; z-index: 2; }
+.cmp-list li {
+  display: flex; gap: 14px; padding: 12px 0;
+  align-items: flex-start; font-size: 15px; line-height: 1.5;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  opacity: 0; transform: translateY(8px);
 }
-.compare-col-us .compare-row { color: rgba(255,255,255,.9); border-bottom: 1px solid rgba(255,255,255,.06); }
-.compare-col-them .compare-row { color: var(--muted); border-bottom: 1px solid var(--line); }
-.compare-row:last-child { border-bottom: none; }
-
-.icon-tick, .icon-x {
-  width: 22px; height: 22px; border-radius: 50%;
+.cmp-list li:last-child { border-bottom: none; }
+.cmp-side--us .cmp-list li { color: rgba(255,255,255,.92); }
+.cmp-side--them .cmp-list li {
+  color: var(--muted);
+  border-bottom-color: var(--line);
+}
+.cmp-list .cmp-icon {
+  width: 24px; height: 24px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; margin-top: 1px;
 }
-.icon-tick {
-  background: rgba(13,148,136,.22);
+.cmp-side--us .cmp-icon {
+  background: rgba(20,184,166,.22);
   color: var(--teal3);
-  box-shadow: 0 0 0 1px rgba(20,184,166,.35), 0 0 12px rgba(20,184,166,.25);
+  box-shadow: 0 0 0 1px rgba(20,184,166,.4), 0 0 14px rgba(20,184,166,.25);
 }
-.icon-x {
-  background: rgba(220,38,38,.08);
-  color: var(--error);
-  box-shadow: 0 0 0 1px rgba(220,38,38,.18);
+.cmp-side--them .cmp-icon {
+  background: rgba(156,163,175,.12);
+  color: #9CA3AF;
+  box-shadow: inset 0 0 0 1px rgba(156,163,175,.25);
 }
-.compare-row strong { color: var(--teal3); }
-.compare-col-them .compare-row strong { color: var(--error); }
+.cmp-list strong { color: var(--teal3); font-weight: 700; }
+.cmp-side--them .cmp-list strong { color: #6B7280; font-weight: 700; }
 
-/* Footer */
-.compare-foot { padding: 18px 24px 22px; }
-.compare-col-us .compare-foot { border-top: 1px solid rgba(255,255,255,.08); }
-.compare-col-them .compare-foot { border-top: 1px solid var(--line); }
-.compare-foot .btn { width: 100%; height: 46px; border-radius: 10px; font-size: 14px; }
-.compare-col-us .compare-foot .btn-primary {
-  box-shadow: 0 8px 24px -6px rgba(13,148,136,.55), 0 0 0 1px rgba(20,184,166,.4);
+/* Footer CTA */
+.cmp-cta-wrap { margin-top: auto; padding-top: 28px; position: relative; z-index: 2; }
+.cmp-cta {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; height: 56px; border-radius: 14px;
+  font-size: 16px; font-weight: 800; letter-spacing: -0.005em;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal3) 100%);
+  color: #fff;
+  box-shadow:
+    0 16px 40px -10px rgba(13,148,136,.6),
+    0 0 0 1px rgba(20,184,166,.4),
+    inset 0 1px 0 rgba(255,255,255,.18);
+  transition: transform .35s var(--cmp-ease), box-shadow .35s var(--cmp-ease);
 }
-.compare-col-us .compare-foot .btn-primary:hover {
-  box-shadow: 0 14px 32px -8px rgba(13,148,136,.7), 0 0 0 1px rgba(20,184,166,.55);
-  transform: translateY(-1px);
+.cmp-cta:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 22px 50px -10px rgba(13,148,136,.75),
+    0 0 0 1px rgba(20,184,166,.55),
+    inset 0 1px 0 rgba(255,255,255,.22);
 }
-.compare-foot .btn-disabled {
-  background: var(--bg2); color: var(--muted);
-  border: 1.5px solid var(--line); cursor: default;
+.cmp-cta .cmp-arrow {
+  display: inline-block;
+  transition: transform .35s var(--cmp-ease);
+}
+.cmp-cta:hover .cmp-arrow { transform: translateX(4px); }
+.cmp-cta-disabled {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 56px; border-radius: 14px;
+  font-size: 15px; font-weight: 700;
+  background: #F3F4F6; color: #9CA3AF;
+  border: 1.5px solid var(--line);
+  cursor: not-allowed;
+  letter-spacing: .01em;
 }
 
-/* Hover storytelling — Advocat lifts, Bureau dims, Bureau-hover restores */
+/* ─── RIGHT: BUREAU (cool grey old-world) ─── */
+.cmp-side--them {
+  background: #F8F9FA;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(15,27,53,.018) 0 1px, transparent 1px 8px),
+    radial-gradient(60% 50% at 80% 30%, rgba(15,27,53,.04) 0%, transparent 60%),
+    linear-gradient(180deg, #F5F6F8 0%, #ECEEF2 100%);
+  /* Slightly drained */
+  filter: saturate(.85);
+  /* Tucks under from the left */
+  clip-path: polygon(110px 0, 100% 0, 100% 100%, 0 100%);
+  padding-left: 130px;
+}
+.cmp-side--them::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.4) 0%, transparent 30%, rgba(15,27,53,.04) 100%);
+  z-index: 1;
+}
+
+/* Big monochrome briefcase/scales SVG illustration on Bureau side */
+.cmp-side--them > .cmp-watermark {
+  position: absolute; left: 2%; bottom: -20px;
+  width: 320px; height: 320px;
+  opacity: .07;
+  pointer-events: none; z-index: 0;
+  transform: rotate(-4deg);
+  filter: grayscale(1);
+}
+
+/* ─── DIAGONAL DIVIDER & VS ORB ─── */
+.cmp-divider {
+  position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 220px; transform: translateX(-50%);
+  pointer-events: none; z-index: 3;
+}
+.cmp-divider svg { width: 100%; height: 100%; display: block; }
+.cmp-divider svg path { stroke-dasharray: 1; }
+
+.cmp-orb {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 96px; height: 96px; border-radius: 50%;
+  z-index: 4;
+  background: linear-gradient(140deg, var(--navy) 0%, var(--navy2) 45%, var(--teal) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 900; letter-spacing: .04em; color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,.4);
+  box-shadow:
+    0 0 0 6px rgba(13,148,136,.10),
+    0 0 0 12px rgba(13,148,136,.06),
+    0 0 0 18px rgba(13,148,136,.03),
+    0 0 38px rgba(20,184,166,.55),
+    0 16px 40px rgba(0,0,0,.32);
+}
+.cmp-orb::before {
+  /* Inner gleam */
+  content: ''; position: absolute; inset: 4px; border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.25) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ─── SAVINGS BANNER (counters) ─── */
+.cmp-savings {
+  margin: 32px auto 0; max-width: 1100px;
+  background: linear-gradient(135deg, #0F1B35 0%, #1A2B4A 60%, #0E3540 100%);
+  border-radius: 22px;
+  padding: 36px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  align-items: center; gap: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 24px 64px -18px rgba(15,27,53,.5),
+    0 0 0 1px rgba(20,184,166,.18);
+}
+.cmp-savings::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(50% 80% at 100% 50%, rgba(20,184,166,.18) 0%, transparent 65%),
+    radial-gradient(60% 80% at 0% 50%, rgba(13,148,136,.10) 0%, transparent 65%);
+}
+.cmp-save-label {
+  font-size: 11px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  color: rgba(255,255,255,.55); margin-bottom: 8px;
+  position: relative; z-index: 1;
+}
+.cmp-save-num {
+  font-size: 44px; font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+  color: #fff; font-variant-numeric: tabular-nums;
+  position: relative; z-index: 1;
+}
+.cmp-save-cell--big .cmp-save-num {
+  font-size: 64px;
+  background: linear-gradient(135deg, #FFD988 0%, #F4B860 50%, #C9A35B 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(244,184,96,.35);
+}
+.cmp-save-sub {
+  font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px;
+  position: relative; z-index: 1;
+}
+.cmp-save-cell--bureau .cmp-save-num { color: #ff9a9a; }
+.cmp-save-cell {
+  position: relative;
+  padding-right: 24px;
+  border-right: 1px solid rgba(255,255,255,.10);
+}
+.cmp-save-cell:last-child { border-right: none; padding-right: 0; padding-left: 16px; }
+
+/* ─── HOVER STORYTELLING ─── */
 @media (hover: hover) {
-  .compare-grid:hover .compare-col-them { opacity: .68; filter: saturate(.75); }
-  .compare-grid:hover .compare-col-them:hover { opacity: 1; filter: saturate(1); }
-
-  .compare-col-us:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 32px 80px -18px rgba(10,22,40,.65), 0 0 0 1px rgba(20,184,166,.25), 0 0 60px -10px rgba(13,148,136,.35);
+  .cmp-stage:hover .cmp-side--them {
+    filter: grayscale(.55) saturate(.65);
+    opacity: .82;
   }
-  .compare-col-us:hover::before { opacity: .08; transform: rotate(4deg) scale(1.05); }
-  .compare-col-us:hover .logo-mark { transform: scale(1.05); filter: drop-shadow(0 0 28px rgba(20,184,166,.55)) drop-shadow(0 6px 14px rgba(0,0,0,.3)); }
-
-  .compare-col-them:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 48px -14px rgba(15,27,53,.18);
+  .cmp-stage:hover .cmp-side--them:hover {
+    filter: saturate(1);
+    opacity: 1;
   }
-
-  .compare-grid:hover .compare-vs-circle {
-    transform: scale(1.06);
-    box-shadow:
-      0 0 0 6px rgba(13,148,136,.18),
-      0 0 32px rgba(13,148,136,.55),
-      0 10px 28px rgba(0,0,0,.3);
+  .cmp-stage:hover .cmp-side--us > .cmp-watermark { opacity: .07; transform: rotate(4deg) scale(1.04); }
+  .cmp-stage:hover .cmp-hero-mark img {
+    transform: scale(1.04);
+    filter:
+      drop-shadow(0 26px 50px rgba(13,148,136,.55))
+      drop-shadow(0 0 36px rgba(20,184,166,.5));
   }
+  .cmp-stage:hover .cmp-particles span { animation-duration: 4s !important; }
 }
 
-/* Animations — only when motion is OK */
+/* ─── ANIMATIONS ─── */
 @media (prefers-reduced-motion: no-preference) {
-  .compare-col-us {
-    animation: meshShift 12s ease-in-out infinite;
-  }
-  .compare-vs-circle { animation: vsPulse 2.5s ease-in-out infinite; }
-  .compare-row {
-    animation: fadeUp .55s var(--cmp-ease) forwards;
-  }
-  .compare-col-us .compare-row:nth-child(1) { animation-delay: .05s; }
-  .compare-col-us .compare-row:nth-child(2) { animation-delay: .12s; }
-  .compare-col-us .compare-row:nth-child(3) { animation-delay: .19s; }
-  .compare-col-us .compare-row:nth-child(4) { animation-delay: .26s; }
-  .compare-col-us .compare-row:nth-child(5) { animation-delay: .33s; }
-  .compare-col-them .compare-row:nth-child(1) { animation-delay: .08s; }
-  .compare-col-them .compare-row:nth-child(2) { animation-delay: .15s; }
-  .compare-col-them .compare-row:nth-child(3) { animation-delay: .22s; }
-  .compare-col-them .compare-row:nth-child(4) { animation-delay: .29s; }
-  .compare-col-them .compare-row:nth-child(5) { animation-delay: .36s; }
+  .cmp-side--us { animation: cmpMesh 14s ease-in-out infinite; }
+  .cmp-orb { animation: cmpOrbPulse 3.2s ease-in-out infinite; }
+  .cmp-rings .r1 { animation: cmpRing 3.5s ease-out infinite; }
+  .cmp-rings .r2 { animation: cmpRing 3.5s ease-out .8s infinite; }
+  .cmp-rings .r3 { animation: cmpRing 3.5s ease-out 1.6s infinite; }
+
+  .cmp-particles span:nth-child(1) { animation: cmpFloat 7.2s ease-in-out infinite; }
+  .cmp-particles span:nth-child(2) { animation: cmpFloat 6.4s ease-in-out -1.2s infinite reverse; }
+  .cmp-particles span:nth-child(3) { animation: cmpFloat 8.6s ease-in-out -2.4s infinite; }
+  .cmp-particles span:nth-child(4) { animation: cmpFloat 5.8s ease-in-out -.6s infinite reverse; }
+  .cmp-particles span:nth-child(5) { animation: cmpFloat 9.2s ease-in-out -3.0s infinite; }
+  .cmp-particles span:nth-child(6) { animation: cmpFloat 6.8s ease-in-out -1.8s infinite reverse; }
+  .cmp-particles span:nth-child(7) { animation: cmpFloat 7.6s ease-in-out -.9s infinite; }
+  .cmp-particles span:nth-child(8) { animation: cmpFloat 5.2s ease-in-out -2.1s infinite reverse; }
+
+  .cmp-list li { animation: cmpFadeUp .55s var(--cmp-ease) forwards; }
+  .cmp-side--us .cmp-list li:nth-child(1) { animation-delay: .10s; }
+  .cmp-side--us .cmp-list li:nth-child(2) { animation-delay: .18s; }
+  .cmp-side--us .cmp-list li:nth-child(3) { animation-delay: .26s; }
+  .cmp-side--us .cmp-list li:nth-child(4) { animation-delay: .34s; }
+  .cmp-side--us .cmp-list li:nth-child(5) { animation-delay: .42s; }
+  .cmp-side--them .cmp-list li:nth-child(1) { animation-delay: .14s; }
+  .cmp-side--them .cmp-list li:nth-child(2) { animation-delay: .22s; }
+  .cmp-side--them .cmp-list li:nth-child(3) { animation-delay: .30s; }
+  .cmp-side--them .cmp-list li:nth-child(4) { animation-delay: .38s; }
+  .cmp-side--them .cmp-list li:nth-child(5) { animation-delay: .46s; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .compare-row { opacity: 1; }
+  .cmp-list li { opacity: 1; transform: none; }
 }
 
-@keyframes meshShift {
-  0%, 100% { background-position: 20% 30%, 80% 70%, 0 0; }
-  50%      { background-position: 28% 38%, 72% 62%, 0 0; }
+@keyframes cmpMesh {
+  0%, 100% { background-position: 18% 22%, 82% 78%, 50% 50%, 0 0; }
+  50%      { background-position: 26% 30%, 74% 70%, 55% 55%, 0 0; }
 }
-@keyframes vsPulse {
+@keyframes cmpOrbPulse {
   0%, 100% {
     box-shadow:
-      0 0 0 4px rgba(13,148,136,.12),
-      0 0 24px rgba(13,148,136,.4),
-      0 8px 24px rgba(0,0,0,.25);
+      0 0 0 6px rgba(13,148,136,.10),
+      0 0 0 12px rgba(13,148,136,.06),
+      0 0 0 18px rgba(13,148,136,.03),
+      0 0 38px rgba(20,184,166,.55),
+      0 16px 40px rgba(0,0,0,.32);
   }
   50% {
     box-shadow:
-      0 0 0 8px rgba(13,148,136,.06),
-      0 0 36px rgba(13,148,136,.55),
-      0 8px 24px rgba(0,0,0,.25);
+      0 0 0 10px rgba(13,148,136,.08),
+      0 0 0 20px rgba(13,148,136,.04),
+      0 0 0 30px rgba(13,148,136,.02),
+      0 0 56px rgba(20,184,166,.75),
+      0 20px 48px rgba(0,0,0,.36);
   }
+}
+@keyframes cmpRing {
+  0%   { transform: scale(.85); opacity: .55; }
+  80%  { opacity: 0; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+@keyframes cmpFloat {
+  0%, 100% { transform: translate(0, 0); opacity: .55; }
+  50%      { transform: translate(8px, -12px); opacity: .9; }
+}
+@keyframes cmpFadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 900px) {
+  #compare { padding-top: 64px; padding-bottom: 72px; }
+  .cmp-stage { border-radius: 22px; margin-top: 40px; }
+  .cmp-split { grid-template-columns: 1fr; min-height: 0; }
+  .cmp-side { padding: 44px 28px; clip-path: none !important; }
+  .cmp-side--us { padding: 44px 28px 64px !important; }
+  .cmp-side--them { padding: 64px 28px 44px !important; }
+
+  /* Hide diagonal divider on mobile — orb sits at the seam between stacked panels */
+  .cmp-divider { display: none; }
+  .cmp-orb {
+    top: 50%; left: 50%;
+    width: 72px; height: 72px; font-size: 18px;
+    /* Slimmer ring set on mobile */
+    box-shadow:
+      0 0 0 4px rgba(13,148,136,.10),
+      0 0 0 8px rgba(13,148,136,.05),
+      0 0 28px rgba(20,184,166,.55),
+      0 12px 28px rgba(0,0,0,.32);
+  }
+
+  .cmp-title { font-size: 28px; }
+  .cmp-hero-mark { width: 140px; height: 140px; }
+  .cmp-hero-mark img { width: 140px; height: 140px; }
+  .cmp-rings { inset: -16px; }
+  .cmp-price { padding: 12px 18px; }
+  .cmp-price .cmp-price-num { font-size: 36px; }
+  .cmp-price .cmp-price-unit { font-size: 14px; }
+  .cmp-side--us > .cmp-watermark { width: 240px; height: 240px; right: -40px; bottom: -40px; }
+  .cmp-side--them > .cmp-watermark { width: 220px; height: 220px; left: -30px; bottom: -20px; }
+  /* Reduce particles for mobile clarity */
+  .cmp-particles span:nth-child(n+5) { display: none; }
+
+  /* Savings banner on mobile */
+  .cmp-savings {
+    grid-template-columns: 1fr;
+    padding: 24px 22px;
+    gap: 18px;
+  }
+  .cmp-save-cell {
+    padding: 0 0 16px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+  .cmp-save-cell:last-child { border-bottom: none; padding: 12px 0 0; }
+  .cmp-save-num { font-size: 36px; }
+  .cmp-save-cell--big .cmp-save-num { font-size: 48px; }
 }
 
 /* ── PRICING ── */
@@ -642,18 +902,7 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .plan.featured .plan-watermark { display: block; width: 44px; height: 44px; opacity: 0.06; }
   .steps::before { display: none; }
   .step { padding: 0; }
-  .compare-grid { grid-template-columns: 1fr; gap: 16px; }
-  .compare-grid::before { display: none; }
-  .compare-vs { padding: 6px 0; position: relative; }
-  .compare-vs::before {
-    content: ''; position: absolute; left: 12%; right: 12%; top: 50%;
-    height: 1px; transform: translateY(-50%);
-    background: linear-gradient(90deg, transparent 0%, rgba(13,148,136,.45) 50%, transparent 100%);
-    z-index: 0;
-  }
-  .compare-vs-circle { width: 48px; height: 48px; font-size: 12px; position: relative; z-index: 1; }
-  .compare-col-us::before { width: 220px; height: 220px; right: -60px; bottom: -30px; opacity: .035; }
-  #compare { padding-top: 64px; padding-bottom: 64px; }
+  /* compare-* mobile rules are now handled inside the kinematik split-screen block above */
   .foot-bot { flex-direction: column; align-items: flex-start; gap: 10px; }
   .final-cta { padding: 72px 0; }
 }
@@ -787,82 +1036,203 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
       <p class="section-sub" style="margin:0 auto" data-i18n="compare.sub">A lawyer is the right answer for court. For the other 95% of legal life, there's a faster way.</p>
     </div>
 
-    <div class="compare-grid">
-      <!-- ADVOCAT -->
-      <div class="compare-col compare-col-us">
-        <div class="compare-head">
-          <img src="/blog/logo_shield.png" alt="Advocat" class="logo-mark">
-          <div class="compare-title">Advocat</div>
-          <div class="compare-sub" data-i18n="compare.us_tag">AI legal assistant</div>
-          <div class="compare-price-chip">FROM €14.99/MO</div>
-        </div>
-        <div class="compare-rows">
-          <div class="compare-row">
-            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span data-i18n="compare.u1">Answer in 30 seconds, 24/7</span>
-          </div>
-          <div class="compare-row">
-            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span data-i18n-html="compare.u2">From €19.99/month — unlimited Pro</span>
-          </div>
-          <div class="compare-row">
-            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span data-i18n="compare.u3">17 languages — incl. Russian, Ukrainian</span>
-          </div>
-          <div class="compare-row">
-            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span data-i18n="compare.u4">Every claim cites the law</span>
-          </div>
-          <div class="compare-row">
-            <span class="icon-tick"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-            <span data-i18n="compare.u5">Cancel anytime — EU 14-day refund</span>
-          </div>
-        </div>
-        <div class="compare-foot">
-          <a class="btn btn-primary" href="/app.html" data-i18n="compare.cta_us">Start free →</a>
-        </div>
-      </div>
+    <div class="cmp-stage" id="cmpStage">
+      <div class="cmp-split">
 
-      <!-- VS -->
-      <div class="compare-vs"><div class="compare-vs-circle">VS</div></div>
+        <!-- ─── LEFT: ADVOCAT ─── -->
+        <div class="cmp-side cmp-side--us">
+          <!-- Floating particles -->
+          <div class="cmp-particles" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <!-- Watermark shield -->
+          <div class="cmp-watermark" aria-hidden="true"></div>
 
-      <!-- TRADITIONAL -->
-      <div class="compare-col compare-col-them">
-        <div class="compare-head">
-          <div class="icon-stack">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0v2M12 12v4M10 14h4"/></svg>
+          <div class="cmp-hero">
+            <div class="cmp-hero-mark">
+              <!-- Concentric pulsing rings -->
+              <svg class="cmp-rings" viewBox="0 0 260 260" aria-hidden="true">
+                <circle class="r1" cx="130" cy="130" r="110"/>
+                <circle class="r2" cx="130" cy="130" r="110"/>
+                <circle class="r3" cx="130" cy="130" r="110"/>
+              </svg>
+              <img src="/blog/logo_shield.png" alt="Advocat shield">
+            </div>
+            <div class="cmp-eyebrow" data-i18n="compare.us_tag">AI LEGAL ASSISTANT</div>
+            <div class="cmp-title">Advocat</div>
           </div>
-          <div class="compare-title" data-i18n="compare.them_h">Law firm</div>
-          <div class="compare-sub" data-i18n="compare.them_tag">Traditional</div>
-          <div class="compare-price-chip">FROM €100-200/HR</div>
+
+          <div class="cmp-price">
+            <span class="cmp-price-num" data-i18n="compare.us_price_num">€0.49</span>
+            <span class="cmp-price-unit" data-i18n="compare.us_price_unit">/ hour</span>
+          </div>
+          <div class="cmp-price-note" data-i18n="compare.us_price_note">First 7 messages free · Cancel anytime</div>
+
+          <ul class="cmp-list">
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span data-i18n="compare.u1">Answer in 30 seconds, 24/7</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span data-i18n-html="compare.u2">From €19.99/month — unlimited Pro</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span data-i18n="compare.u3">17 languages — incl. Russian, Ukrainian</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span data-i18n="compare.u4">Every claim cites the law</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+              <span data-i18n="compare.u5">Cancel anytime — EU 14-day refund</span>
+            </li>
+          </ul>
+
+          <div class="cmp-cta-wrap">
+            <a class="cmp-cta" href="/app.html">
+              <span data-i18n="compare.cta_us">Start free</span>
+              <span class="cmp-arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
-        <div class="compare-rows">
-          <div class="compare-row">
-            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
-            <span data-i18n="compare.t1">Consultation 1-2 weeks out</span>
+
+        <!-- ─── DIAGONAL DIVIDER + ORB ─── -->
+        <div class="cmp-divider" aria-hidden="true">
+          <svg viewBox="0 0 220 640" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="cmpDivGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%"   stop-color="#0F1B35" stop-opacity="0"/>
+                <stop offset="20%"  stop-color="#0F1B35" stop-opacity=".6"/>
+                <stop offset="50%"  stop-color="#14B8A6" stop-opacity=".95"/>
+                <stop offset="80%"  stop-color="#0F1B35" stop-opacity=".6"/>
+                <stop offset="100%" stop-color="#0F1B35" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M165,0 L55,640" stroke="url(#cmpDivGrad)" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+        <div class="cmp-orb" aria-hidden="true">VS</div>
+
+        <!-- ─── RIGHT: BUREAU ─── -->
+        <div class="cmp-side cmp-side--them">
+          <!-- Watermark — scales of justice (monochrome) -->
+          <svg class="cmp-watermark" viewBox="0 0 200 200" aria-hidden="true">
+            <g fill="none" stroke="#0F1B35" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".85">
+              <line x1="100" y1="22" x2="100" y2="172"/>
+              <circle cx="100" cy="22" r="6" fill="#0F1B35"/>
+              <line x1="40" y1="50" x2="160" y2="50"/>
+              <!-- Left scale -->
+              <line x1="40" y1="50" x2="22" y2="100"/>
+              <line x1="40" y1="50" x2="58" y2="100"/>
+              <path d="M18,100 Q40,128 62,100"/>
+              <!-- Right scale -->
+              <line x1="160" y1="50" x2="142" y2="100"/>
+              <line x1="160" y1="50" x2="178" y2="100"/>
+              <path d="M138,100 Q160,128 182,100"/>
+              <!-- Base -->
+              <rect x="68" y="172" width="64" height="6" fill="#0F1B35"/>
+              <rect x="80" y="166" width="40" height="6" fill="#0F1B35"/>
+            </g>
+          </svg>
+
+          <div class="cmp-hero">
+            <div class="cmp-hero-mark">
+              <!-- Bureau illustration: stylised briefcase / vault -->
+              <svg viewBox="0 0 200 200" width="160" height="160" aria-hidden="true">
+                <defs>
+                  <linearGradient id="cmpBureauGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%"  stop-color="#D9DCE2"/>
+                    <stop offset="100%" stop-color="#A8AEB8"/>
+                  </linearGradient>
+                  <linearGradient id="cmpBureauGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%"  stop-color="#C5CAD3"/>
+                    <stop offset="100%" stop-color="#8E95A1"/>
+                  </linearGradient>
+                </defs>
+                <!-- Briefcase body -->
+                <rect x="30" y="62" width="140" height="106" rx="10" fill="url(#cmpBureauGrad)" stroke="#7B828F" stroke-width="2"/>
+                <!-- Handle -->
+                <path d="M75,62 V44 a8,8 0 0 1 8,-8 h34 a8,8 0 0 1 8,8 V62"
+                      fill="none" stroke="#7B828F" stroke-width="3.5" stroke-linecap="round"/>
+                <!-- Center seam / lock plate -->
+                <rect x="84" y="100" width="32" height="22" rx="3" fill="url(#cmpBureauGrad2)" stroke="#7B828F" stroke-width="1.5"/>
+                <circle cx="100" cy="111" r="3" fill="#5C6371"/>
+                <!-- Subtle horizontal divide -->
+                <line x1="30" y1="116" x2="170" y2="116" stroke="#7B828F" stroke-width="1.2" opacity=".6"/>
+                <!-- Tiny ledger lines (old-world vibe) -->
+                <line x1="46" y1="138" x2="80" y2="138" stroke="#7B828F" stroke-width="1.2" opacity=".5"/>
+                <line x1="46" y1="148" x2="74" y2="148" stroke="#7B828F" stroke-width="1.2" opacity=".5"/>
+                <line x1="120" y1="138" x2="154" y2="138" stroke="#7B828F" stroke-width="1.2" opacity=".5"/>
+                <line x1="120" y1="148" x2="148" y2="148" stroke="#7B828F" stroke-width="1.2" opacity=".5"/>
+              </svg>
+            </div>
+            <div class="cmp-eyebrow" style="background:rgba(15,27,53,.05);border-color:rgba(15,27,53,.12);color:#6B7280">
+              <span data-i18n="compare.them_tag">TRADITIONAL</span>
+            </div>
+            <div class="cmp-title" data-i18n="compare.them_h">Law firm</div>
           </div>
-          <div class="compare-row">
-            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
-            <span data-i18n-html="compare.t2">€100-200 / hour, 1h minimum</span>
+
+          <div class="cmp-price">
+            <span class="cmp-price-num" data-i18n="compare.them_price_num">€100–200</span>
+            <span class="cmp-price-unit" data-i18n="compare.them_price_unit">/ hour</span>
           </div>
-          <div class="compare-row">
-            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
-            <span data-i18n="compare.t3">Often only Estonian or English</span>
-          </div>
-          <div class="compare-row">
-            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
-            <span data-i18n="compare.t4">From memory — verbal advice, no log</span>
-          </div>
-          <div class="compare-row">
-            <span class="icon-x"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
-            <span data-i18n="compare.t5">Every question = a new invoice</span>
+          <div class="cmp-price-note" data-i18n="compare.them_price_note">1-hour minimum · Appointments only</div>
+
+          <ul class="cmp-list">
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              <span data-i18n="compare.t1">Consultation 1-2 weeks out</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              <span data-i18n-html="compare.t2">€100-200 / hour, 1h minimum</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              <span data-i18n="compare.t3">Often only Estonian or English</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              <span data-i18n="compare.t4">From memory — verbal advice, no log</span>
+            </li>
+            <li>
+              <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+              <span data-i18n="compare.t5">Every question = a new invoice</span>
+            </li>
+          </ul>
+
+          <div class="cmp-cta-wrap">
+            <div class="cmp-cta-disabled" data-i18n="compare.cta_them">Book a consultation</div>
           </div>
         </div>
-        <div class="compare-foot">
-          <button class="btn btn-disabled" disabled data-i18n="compare.cta_them">Book in 2 weeks…</button>
-        </div>
+
       </div>
     </div>
+
+    <!-- ─── SAVINGS COUNTER BANNER ─── -->
+    <div class="cmp-savings" id="cmpSavings"
+         data-us-target="180" data-them-target="18000" data-save-target="17820">
+      <div class="cmp-save-cell">
+        <div class="cmp-save-label" data-i18n="compare.year_advocat">Advocat · per year</div>
+        <div class="cmp-save-num" data-counter="us">€0</div>
+        <div class="cmp-save-sub" data-i18n="compare.year_advocat_sub">€14.99 × 12 months</div>
+      </div>
+      <div class="cmp-save-cell cmp-save-cell--bureau">
+        <div class="cmp-save-label" data-i18n="compare.year_bureau">Law firm · per year</div>
+        <div class="cmp-save-num" data-counter="them">€0</div>
+        <div class="cmp-save-sub" data-i18n="compare.year_bureau_sub">€150 × 120h average</div>
+      </div>
+      <div class="cmp-save-cell cmp-save-cell--big">
+        <div class="cmp-save-label" data-i18n="compare.year_save">You save</div>
+        <div class="cmp-save-num" data-counter="save">€0</div>
+        <div class="cmp-save-sub" data-i18n="compare.year_save_sub">Every single year.</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1157,11 +1527,21 @@ const I18N = {
     'compare.u3': '17 languages — incl. Russian, Ukrainian',
     'compare.u4': 'Every claim cites the law',
     'compare.u5': 'Cancel anytime — EU 14-day refund',
-    'compare.cta_us': 'Start free →',
+    'compare.cta_us': 'Start free',
+    'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ hour',
+    'compare.us_price_note': 'First 7 messages free · Cancel anytime',
     'compare.them_h': 'Law firm', 'compare.them_tag': 'Traditional',
+    'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ hour',
+    'compare.them_price_note': '1-hour minimum · Appointments only',
     'compare.t1': 'Consultation 1-2 weeks out', 'compare.t2': '€100-200 / hour, 1h minimum',
     'compare.t3': 'Often only Estonian or English', 'compare.t4': 'From memory — verbal advice, no log', 'compare.t5': 'Every question = a new invoice',
-    'compare.cta_them': 'Book in 2 weeks…',
+    'compare.cta_them': 'Book a consultation',
+    'compare.year_advocat': 'Advocat · per year',
+    'compare.year_advocat_sub': '€14.99 × 12 months',
+    'compare.year_bureau': 'Law firm · per year',
+    'compare.year_bureau_sub': '€150 × 120h average',
+    'compare.year_save': 'You save',
+    'compare.year_save_sub': 'Every single year.',
     'pricing.label': 'PRICING', 'pricing.title': 'Clear price. No <em>surprises</em>.',
     'pricing.sub': 'Cancel anytime. Full refund within the first 14 days under EU consumer law.',
     'plan1.eyebrow': 'Starter', 'plan1.name': 'Free', 'plan1.per': '/ forever',
@@ -1234,11 +1614,21 @@ const I18N = {
     'compare.u3': '17 keelt — sh vene ja ukraina',
     'compare.u4': 'Iga väide on seadusega põhjendatud',
     'compare.u5': 'Tühista millal iganes — EL 14-päevane tagasimakse',
-    'compare.cta_us': 'Alusta tasuta →',
+    'compare.cta_us': 'Alusta tasuta',
+    'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ tund',
+    'compare.us_price_note': 'Esimesed 7 sõnumit tasuta · Tühista millal iganes',
     'compare.them_h': 'Advokaadibüroo', 'compare.them_tag': 'Traditsiooniline',
+    'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ tund',
+    'compare.them_price_note': 'Miinimum 1 tund · Ainult kohtumisega',
     'compare.t1': 'Konsultatsioon 1-2 nädala pärast', 'compare.t2': '€100-200 / tund, miinimum 1 h',
     'compare.t3': 'Tihti ainult eesti või inglise keel', 'compare.t4': 'Mälu järgi — suuline nõu, kirjalikku jälge ei jää', 'compare.t5': 'Iga küsimus = uus arve',
-    'compare.cta_them': 'Broneeri 2 nädalaks…',
+    'compare.cta_them': 'Broneeri konsultatsioon',
+    'compare.year_advocat': 'Advocat · aastas',
+    'compare.year_advocat_sub': '€14.99 × 12 kuud',
+    'compare.year_bureau': 'Advokaadibüroo · aastas',
+    'compare.year_bureau_sub': '€150 × 120 t keskmiselt',
+    'compare.year_save': 'Sa säästad',
+    'compare.year_save_sub': 'Iga aasta.',
     'pricing.label': 'HINNAKIRI', 'pricing.title': 'Selge hind. Ilma <em>üllatusteta</em>.',
     'pricing.sub': 'Tühista millal iganes. EL tarbijaõiguse järgi täielik tagasimakse esimese 14 päeva jooksul.',
     'plan1.eyebrow': 'Algus', 'plan1.name': 'Tasuta', 'plan1.per': '/ igavesti',
@@ -1311,11 +1701,21 @@ const I18N = {
     'compare.u3': '17 языков — вкл. русский и украинский',
     'compare.u4': 'Каждое утверждение со ссылкой на закон',
     'compare.u5': 'Отмена в любой момент — возврат за 14 дней по закону ЕС',
-    'compare.cta_us': 'Попробовать →',
+    'compare.cta_us': 'Попробовать бесплатно',
+    'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ час',
+    'compare.us_price_note': 'Первые 7 сообщений бесплатно · Отмена в любой момент',
     'compare.them_h': 'Адв. бюро', 'compare.them_tag': 'Традиционно',
+    'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ час',
+    'compare.them_price_note': 'Минимум 1 час · Только по записи',
     'compare.t1': 'Консультация через 1-2 недели', 'compare.t2': '€100-200 / час, минимум 1 ч',
     'compare.t3': 'Часто только эстонский или английский', 'compare.t4': 'По памяти — устно, без записи', 'compare.t5': 'Каждый вопрос = новый счёт',
-    'compare.cta_them': 'Записаться через 2 недели…',
+    'compare.cta_them': 'Записаться на консультацию',
+    'compare.year_advocat': 'Advocat · в год',
+    'compare.year_advocat_sub': '€14.99 × 12 мес',
+    'compare.year_bureau': 'Адв. бюро · в год',
+    'compare.year_bureau_sub': '€150 × 120 ч в среднем',
+    'compare.year_save': 'Вы экономите',
+    'compare.year_save_sub': 'Каждый год.',
     'pricing.label': 'ТАРИФЫ', 'pricing.title': 'Прозрачная цена. Без <em>сюрпризов</em>.',
     'pricing.sub': 'Отмени в любой момент. По закону ЕС — полный возврат в первые 14 дней.',
     'plan1.eyebrow': 'Старт', 'plan1.name': 'Бесплатно', 'plan1.per': '/ навсегда',
@@ -1388,11 +1788,21 @@ const I18N = {
     'compare.u3': '17 мов — вкл. українську та російську',
     'compare.u4': 'Кожне твердження з посиланням на закон',
     'compare.u5': 'Скасування будь-коли — повернення за 14 днів за законом ЄС',
-    'compare.cta_us': 'Спробувати →',
+    'compare.cta_us': 'Спробувати безкоштовно',
+    'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ год',
+    'compare.us_price_note': 'Перші 7 повідомлень безкоштовно · Скасування будь-коли',
     'compare.them_h': 'Адв. бюро', 'compare.them_tag': 'Традиційно',
+    'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ год',
+    'compare.them_price_note': 'Мінімум 1 година · Лише за записом',
     'compare.t1': 'Консультація через 1-2 тижні', 'compare.t2': '€100-200 / год, мінімум 1 год',
     'compare.t3': 'Часто лише естонська або англійська', 'compare.t4': 'З пам\'яті — усно, без запису', 'compare.t5': 'Кожне питання = новий рахунок',
-    'compare.cta_them': 'Записатися через 2 тижні…',
+    'compare.cta_them': 'Записатися на консультацію',
+    'compare.year_advocat': 'Advocat · на рік',
+    'compare.year_advocat_sub': '€14.99 × 12 місяців',
+    'compare.year_bureau': 'Адв. бюро · на рік',
+    'compare.year_bureau_sub': '€150 × 120 год у середньому',
+    'compare.year_save': 'Ви економите',
+    'compare.year_save_sub': 'Щороку.',
     'pricing.label': 'ТАРИФИ', 'pricing.title': 'Прозора ціна. Без <em>сюрпризів</em>.',
     'pricing.sub': 'Скасуй будь-коли. За законом ЄС — повне повернення в перші 14 днів.',
     'plan1.eyebrow': 'Старт', 'plan1.name': 'Безкоштовно', 'plan1.per': '/ назавжди',
@@ -1465,11 +1875,21 @@ const I18N = {
     'compare.u3': '17 kieltä — ml. venäjä ja ukraina',
     'compare.u4': 'Jokainen väite lähteineen',
     'compare.u5': 'Peruuta milloin tahansa — EU:n 14 pv:n palautusoikeus',
-    'compare.cta_us': 'Kokeile ilmaiseksi →',
+    'compare.cta_us': 'Kokeile ilmaiseksi',
+    'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ tunti',
+    'compare.us_price_note': 'Ensimmäiset 7 viestiä ilmaiseksi · Peru milloin tahansa',
     'compare.them_h': 'Lakitoimisto', 'compare.them_tag': 'Perinteinen',
+    'compare.them_price_num': '€100–200', 'compare.them_price_unit': '/ tunti',
+    'compare.them_price_note': 'Vähintään 1 tunti · Vain ajanvarauksella',
     'compare.t1': 'Konsultaatio 1-2 viikon päästä', 'compare.t2': '€100-200 / tunti, min. 1 t',
     'compare.t3': 'Usein vain viroa tai englantia', 'compare.t4': 'Muistista — suullinen, ei kirjattu', 'compare.t5': 'Jokainen kysymys = uusi lasku',
-    'compare.cta_them': 'Varaa 2 viikon päähän…',
+    'compare.cta_them': 'Varaa konsultaatio',
+    'compare.year_advocat': 'Advocat · vuodessa',
+    'compare.year_advocat_sub': '€14.99 × 12 kk',
+    'compare.year_bureau': 'Lakitoimisto · vuodessa',
+    'compare.year_bureau_sub': '€150 × 120 t keskimäärin',
+    'compare.year_save': 'Säästät',
+    'compare.year_save_sub': 'Joka vuosi.',
     'pricing.label': 'HINNAT', 'pricing.title': 'Selkeä hinta. Ei <em>yllätyksiä</em>.',
     'pricing.sub': 'Peruuta milloin tahansa. EU-kuluttajalain mukaan täysi palautus 14 päivän sisällä.',
     'plan1.eyebrow': 'Aloitus', 'plan1.name': 'Ilmainen', 'plan1.per': '/ ikuisesti',
@@ -1737,6 +2157,82 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
     else lang = 'en';
   }
   setLang(lang);
+})();
+</script>
+
+<!-- ── Compare savings counter (IntersectionObserver + RAF) ── -->
+<script>
+(function () {
+  var node = document.getElementById('cmpSavings');
+  if (!node) return;
+
+  var prefersReduced = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var targets = {
+    us:   parseInt(node.getAttribute('data-us-target'),   10) || 180,
+    them: parseInt(node.getAttribute('data-them-target'), 10) || 18000,
+    save: parseInt(node.getAttribute('data-save-target'), 10) || 17820
+  };
+
+  var slots = {
+    us:   node.querySelector('[data-counter="us"]'),
+    them: node.querySelector('[data-counter="them"]'),
+    save: node.querySelector('[data-counter="save"]')
+  };
+
+  function fmt(v) {
+    // Thousands separator with thin space (works in all langs)
+    var n = Math.round(v);
+    return '€' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u202F');
+  }
+
+  function paint(values) {
+    if (slots.us)   slots.us.textContent   = fmt(values.us);
+    if (slots.them) slots.them.textContent = fmt(values.them);
+    if (slots.save) slots.save.textContent = fmt(values.save);
+  }
+
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+  var hasRun = false;
+  function runCounter() {
+    if (hasRun) return;
+    hasRun = true;
+    if (prefersReduced) { paint(targets); return; }
+
+    var duration = 1800; // ms
+    var start = null;
+
+    function step(ts) {
+      if (start === null) start = ts;
+      var elapsed = ts - start;
+      var t = Math.min(1, elapsed / duration);
+      var e = easeOutCubic(t);
+      paint({
+        us:   targets.us   * e,
+        them: targets.them * e,
+        save: targets.save * e
+      });
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          runCounter();
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.35 });
+    io.observe(node);
+  } else {
+    // Fallback: just set final values
+    paint(targets);
+  }
 })();
 </script>
 
