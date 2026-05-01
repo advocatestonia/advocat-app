@@ -142,8 +142,13 @@ serve(async (req) => {
         const customerEmail = session.customer_email || session.customer_details?.email;
         const metadata = session.metadata || {};
         const planId = metadata.plan_id; // "counsel" or "representation"
-        const billingPeriod = metadata.billing_period; // "monthly", "yearly", "founding"
+        const billingPeriod = metadata.billing_period; // "monthly", "yearly", "founding", "early-access"
         const metaUserId = metadata.user_id; // set by create-checkout (authenticated caller)
+        // Founder program: create-checkout sets intro_type='early-access-100'
+        // when billing_period='early-access'. NULL for all other flows.
+        // The cap re-check below may downgrade this to NULL if the user lost
+        // the race for the 100th slot.
+        let introType: string | null = metadata.intro_type ?? null;
 
         const tier = PLAN_MAPPING[planId] || "basic";
 
@@ -183,6 +188,43 @@ serve(async (req) => {
 
         resolvedUserId = userId;
 
+        // ── Founder cap race guard ───────────────────────────────────────
+        // Between create-checkout's cap probe and this webhook arriving,
+        // another user may have claimed the 100th slot. We re-check the
+        // count and, if it's already at 100, drop intro_type back to NULL
+        // so we don't oversell the founder guarantee. The user still gets
+        // their €14.99 charge for the current period (Stripe already took
+        // payment); they just won't carry the lifetime guarantee.
+        //
+        // Idempotency note: if Stripe redelivers this event after we've
+        // already recorded the row with intro_type='early-access-100',
+        // the count below INCLUDES our own row (status='active' from the
+        // previous successful run). We therefore allow count <= FOUNDER_TOTAL
+        // (not <), so re-processing our own seat doesn't strip the flag.
+        const FOUNDER_TOTAL = 100;
+        if (introType === "early-access-100") {
+          const { count: founderCount, error: capErr } = await supabase
+            .from("subscriptions")
+            .select("*", { count: "exact", head: true })
+            .eq("intro_type", "early-access-100")
+            .in("status", ["active", "trialing"])
+            .neq("user_id", userId); // exclude our own row for idempotent re-processing
+          if (capErr) {
+            // If we can't check, prefer to still grant the founder flag —
+            // the create-checkout side already verified at session-create
+            // time. Better to honour the user's expectation than to strip
+            // it on a transient DB blip.
+            console.warn(
+              `webhook: founder cap recheck failed, granting flag: ${capErr.message.slice(0, 200)}`,
+            );
+          } else if ((founderCount ?? 0) >= FOUNDER_TOTAL) {
+            console.warn(
+              `webhook: founder slot lost in race for user=${userId} (${founderCount} active founders) — recording without intro_type`,
+            );
+            introType = null;
+          }
+        }
+
         // Upsert — if the profile row doesn't exist yet (trigger gap), create
         // it. This eliminates the silent-failure class where a paying user
         // had no profile row and their Pro never activated.
@@ -210,12 +252,15 @@ serve(async (req) => {
 
         // Also write to subscriptions table (separate source of truth that
         // check-ai-quota also probes). status='active' is what unlocks Pro.
+        // intro_type carries the founder flag (or NULL for regular flows /
+        // race-loss cases — see cap recheck above).
         const { error: subUpErr } = await supabase.from("subscriptions").upsert({
           user_id: userId,
           status: "active",
           tier: tier,
           current_period_end: expiresAt.toISOString(),
           stripe_subscription_id: session.subscription || null,
+          intro_type: introType,
           updated_at: new Date().toISOString(),
         }, { onConflict: "user_id" });
         if (subUpErr) {

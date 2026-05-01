@@ -14,6 +14,7 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.14.0?target=deno";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
   corsHeaders,
   jsonError,
@@ -24,6 +25,13 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2023-10-16",
   httpClient: Stripe.createFetchHttpClient(),
 });
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
+// Founder program — must mirror founder-spots/index.ts and stripe-webhook.
+export const FOUNDER_INTRO_TYPE = "early-access-100";
+export const FOUNDER_TOTAL = 100;
 
 // ── Price lookup table (EUR cents) ──────────────────────────────────────
 
@@ -121,6 +129,49 @@ serve(async (req: Request) => {
       );
     }
 
+    // ── Founder cap check ───────────────────────────────────────────────
+    // For Early Access (€14.99/mo lifetime): only the first 100 paying
+    // users get the founder rate. After that, the option must refuse —
+    // the landing page also hides the CTA but a power-user could still
+    // hit this endpoint directly with billing_period="early-access".
+    //
+    // Slot accounting: "taken" = subscriptions rows where
+    // intro_type='early-access-100' AND status IN ('active','trialing').
+    // A canceled subscription releases its slot back to the pool — that
+    // matches the user-visible promise on the landing page.
+    //
+    // Race window between this check and the webhook write is tiny but
+    // non-zero. The webhook re-checks the cap and downgrades intro_type
+    // to NULL if the slot was taken by a parallel checkout — see
+    // stripe-webhook/index.ts.
+    if (billing_period === "early-access") {
+      const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+      const { count, error: capErr } = await supabase
+        .from("subscriptions")
+        .select("*", { count: "exact", head: true })
+        .eq("intro_type", FOUNDER_INTRO_TYPE)
+        .in("status", ["active", "trialing"]);
+      if (capErr) {
+        // Fail closed: if we can't check the cap, do NOT create a €14.99
+        // session — surface a generic error and let the user retry.
+        console.error("create-checkout cap probe failed:", capErr.message.slice(0, 200));
+        return jsonError("Could not verify Early Access availability", 503);
+      }
+      if ((count ?? 0) >= FOUNDER_TOTAL) {
+        return new Response(
+          JSON.stringify({
+            error: "early_access_full",
+            message:
+              "All 100 founder seats are taken. Pro €19.99/mo is available.",
+          }),
+          {
+            status: 410, // Gone — slot offer has been withdrawn
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
+    }
+
     // Build Stripe Checkout Session parameters
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ["card", "link"],
@@ -161,11 +212,13 @@ serve(async (req: Request) => {
     // confirmation via the `send-email` Edge Function from stripe-webhook.
 
     // Early Access (intro pricing): metadata flag so the webhook can
-    // recognize these subscriptions if/when we layer on a 3-month
-    // auto-conversion to regular Pro pricing. For the MVP launch the
-    // subscription simply renews at €14.99/mo until the user cancels.
+    // recognize these subscriptions and record the founder intro_type on
+    // the subscriptions row. The webhook re-checks the 100-slot cap before
+    // recording — if a race lost the slot, intro_type stays NULL and the
+    // user pays €14.99 without the lifetime guarantee (the founder claim).
     if (billing_period === "early-access") {
       sessionParams.metadata!.early_access = "true";
+      sessionParams.metadata!.intro_type = FOUNDER_INTRO_TYPE;
     }
 
     // FIX-7: email comes from the JWT session, never from the body.
