@@ -814,6 +814,38 @@ img, svg { display: block; max-width: 100%; }
 }
 .plan.plan-premium {
   background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F0 100%);
+  padding-top: 96px;
+}
+/* Centered hero shield on Premium card — premium identity mark */
+.plan-hero-shield {
+  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+  width: 76px; height: 76px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 8px 24px rgba(201,163,91,.45))
+    drop-shadow(0 0 18px rgba(212,175,108,.30));
+  transition: transform .5s var(--cmp-ease, cubic-bezier(.2,.8,.3,1)), filter .5s var(--cmp-ease, cubic-bezier(.2,.8,.3,1));
+  z-index: 2;
+  pointer-events: none;
+}
+.plan.plan-premium:hover .plan-hero-shield {
+  transform: translateX(-50%) scale(1.06);
+  filter:
+    drop-shadow(0 12px 32px rgba(201,163,91,.65))
+    drop-shadow(0 0 28px rgba(212,175,108,.50));
+}
+@media (prefers-reduced-motion: no-preference) {
+  .plan.plan-premium .plan-hero-shield {
+    animation: planShieldFloat 5.5s ease-in-out infinite;
+  }
+  @keyframes planShieldFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(-3px); }
+  }
+}
+@media (max-width: 700px) {
+  .plan-hero-shield { width: 60px; height: 60px; top: 16px; }
+  .plan.plan-premium { padding-top: 84px; }
 }
 
 /* Brand watermark — decorative iconmark in top-right corner */
@@ -1565,17 +1597,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 
       <!-- PREMIUM -->
       <div class="plan plan-premium">
-        <!-- Decorative iconmark — shield with crown accent (gold-tinted via CSS filter) -->
-        <svg class="plan-watermark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-          <path d="M32 10 L52 18 V34 C52 46 42 54 32 58 C22 54 12 46 12 34 V18 Z"
-                stroke="#0D9488" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
-          <!-- Crown above shield -->
-          <path d="M22 8 L26 4 L32 8 L38 4 L42 8 L42 12 L22 12 Z"
-                stroke="#0D9488" stroke-width="2" fill="none" stroke-linejoin="round"/>
-          <!-- Inner star accent -->
-          <path d="M32 26 L34 32 L40 32 L35 36 L37 42 L32 38 L27 42 L29 36 L24 32 L30 32 Z"
-                stroke="#0D9488" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
-        </svg>
+        <!-- Real Advocat shield centered as premium identity mark -->
+        <img class="plan-hero-shield" src="/blog/logo_shield.png" alt="Advocat shield" aria-hidden="true">
         <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
         <div class="plan-name" data-i18n="plan3.name">Premium</div>
         <div class="plan-price">
