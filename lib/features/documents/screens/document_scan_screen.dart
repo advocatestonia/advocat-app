@@ -393,13 +393,10 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
             backgroundColor: AppColors.success,
           ),
         );
-        // Navigate to documents list so user can see and analyze the upload,
-        // or pop back if no case context.
-        if (caseId != null) {
-          context.go('/cases/$caseId/documents');
-        } else {
-          context.pop(true);
-        }
+        // caseId is non-null here — the early return above handles the
+        // null path. Navigate to documents list so user can see and
+        // analyze the upload.
+        context.go('/cases/$caseId/documents');
       }
     } catch (e) {
       if (!mounted) return;

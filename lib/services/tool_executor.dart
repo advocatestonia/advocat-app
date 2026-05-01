@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -114,7 +116,11 @@ class ToolExecutor {
     if (navigation.route == '__pop__') {
       GoRouter.of(context).pop();
     } else {
-      GoRouter.of(context).push(navigation.route, extra: navigation.extra);
+      // push() returns Future<T?> for the pop-back result; we don't care
+      // about it here, so make the fire-and-forget intent explicit.
+      unawaited(
+        GoRouter.of(context).push(navigation.route, extra: navigation.extra),
+      );
     }
   }
 

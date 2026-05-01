@@ -28,6 +28,7 @@
 // used from anywhere — law search, AI tool handlers, test fixtures.
 // -----------------------------------------------------------------------------
 
+import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 
@@ -175,7 +176,11 @@ class LegalLoader {
       }
       return parsed;
     } finally {
-      _inFlight.remove(key);
+      // Map.remove returns the removed Future<LegalAct?>?; we have already
+      // awaited it via `await future` above, so it's safe to discard.
+      // Make intent explicit to silence unawaited_futures lint.
+      final removed = _inFlight.remove(key);
+      if (removed != null) unawaited(removed);
     }
   }
 
