@@ -1065,19 +1065,19 @@ img, svg { display: block; max-width: 100%; }
     radial-gradient(40% 60% at 50% 50%, rgba(13,148,136,.18) 0%, transparent 70%);
   filter: blur(40px);
   animation: ctaMeshDrift 18s ease-in-out infinite alternate;
-  z-index: 0;
+  z-index: 1;
 }
-/* Layer 2 — diagonal light-beam sweep */
+/* Layer 5 — diagonal light-beam sweep */
 .final-cta::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(105deg, transparent 30%, rgba(20,184,166,.10) 50%, transparent 70%);
   animation: ctaBeamSweep 12s linear infinite;
-  z-index: 0;
+  z-index: 5;
   mix-blend-mode: screen;
 }
-/* Layer 3 — floating particle field */
+/* Layer 6 — floating particle field */
 .cta-particles {
-  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  position: absolute; inset: 0; pointer-events: none; z-index: 6;
   overflow: hidden;
 }
 .cta-particles span {
@@ -1101,6 +1101,60 @@ img, svg { display: block; max-width: 100%; }
 .cta-particles span:nth-child(11) { left: 12%; animation-duration: 13s; animation-delay: -9s;   width: 4px; height: 4px; }
 .cta-particles span:nth-child(12) { left: 72%; animation-duration:  8s; animation-delay: -6s;   width: 3px; height: 3px; }
 
+/* Layer 2 — rotating scales-of-justice watermark (subtle, behind everything) */
+.cta-scales {
+  position: absolute; pointer-events: none; z-index: 2;
+  width: 240px; height: 240px;
+  right: 6%; top: 12%;
+  opacity: .055;
+  animation: ctaScalesRotate 60s linear infinite, ctaScalesFloat 5s ease-in-out infinite alternate;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+.cta-scales svg { width: 100%; height: 100%; display: block; }
+
+/* Layer 3 — drifting legal-document silhouettes */
+.cta-docs {
+  position: absolute; inset: 0; pointer-events: none; z-index: 3;
+  overflow: hidden;
+}
+.cta-docs .doc {
+  position: absolute;
+  width: 60px; height: 80px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.cta-docs .doc svg { width: 100%; height: 100%; display: block; }
+.cta-docs .doc--1 { top: 22%; animation: ctaDocDrift 48s linear infinite; animation-delay: 0s; opacity: .09; }
+.cta-docs .doc--2 { top: 58%; animation: ctaDocDriftReverse 56s linear infinite; animation-delay: -12s; opacity: .07; }
+.cta-docs .doc--3 { top: 38%; animation: ctaDocDrift 60s linear infinite; animation-delay: -28s; opacity: .08; }
+.cta-docs .doc--4 { top: 74%; animation: ctaDocDriftReverse 44s linear infinite; animation-delay: -36s; opacity: .06; }
+
+/* Layer 4 — soft teal shimmer orbs (radial-gradient glow drifting on a diagonal) */
+.cta-orbs {
+  position: absolute; inset: 0; pointer-events: none; z-index: 4;
+  overflow: hidden;
+}
+.cta-orbs .orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+.cta-orbs .orb--a {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(94,234,212,.55) 0%, rgba(20,184,166,.20) 45%, transparent 75%);
+  opacity: .15;
+  animation: ctaOrbDriftA 30s ease-in-out infinite;
+}
+.cta-orbs .orb--b {
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(45,212,191,.50) 0%, rgba(13,148,136,.18) 50%, transparent 80%);
+  opacity: .12;
+  animation: ctaOrbDriftB 38s ease-in-out infinite;
+}
+
 .final-cta h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 900; color: #fff; letter-spacing: -0.04em; margin: 0 auto 18px; max-width: 720px; line-height: 1.08; }
 .final-cta h2 em { color: var(--teal3); font-style: italic; }
 .final-cta p { font-size: 16px; color: rgba(255,255,255,.65); margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.5; }
@@ -1122,6 +1176,46 @@ img, svg { display: block; max-width: 100%; }
   50%  { transform: translateY(50%)  translateX(8px);  opacity: .9; }
   90%  { opacity: .7; }
   100% { transform: translateY(-10%) translateX(-6px); opacity: 0; }
+}
+/* Scales-of-justice watermark rotation + gentle vertical float */
+@keyframes ctaScalesRotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes ctaScalesFloat {
+  0%   { translate: 0 -6px; }
+  100% { translate: 0  6px; }
+}
+/* Floating legal-doc silhouettes — left→right drift */
+@keyframes ctaDocDrift {
+  0%   { transform: translateX(-12vw) translateY(0)    rotate(-4deg); opacity: 0; }
+  8%   { opacity: 1; }
+  50%  { transform: translateX(50vw)  translateY(-14px) rotate(2deg); }
+  92%  { opacity: 1; }
+  100% { transform: translateX(112vw) translateY(8px)   rotate(6deg); opacity: 0; }
+}
+/* Right→left drift for organic variety */
+@keyframes ctaDocDriftReverse {
+  0%   { transform: translateX(112vw) translateY(0)     rotate(5deg);  opacity: 0; }
+  8%   { opacity: 1; }
+  50%  { transform: translateX(50vw)  translateY(12px)  rotate(-3deg); }
+  92%  { opacity: 1; }
+  100% { transform: translateX(-12vw) translateY(-6px)  rotate(-7deg); opacity: 0; }
+}
+/* Shimmer orbs — diagonal slow drift */
+@keyframes ctaOrbDriftA {
+  0%   { transform: translate(-15%, 110%); opacity: 0; }
+  15%  { opacity: .15; }
+  50%  { transform: translate(60%, 30%);   opacity: .18; }
+  85%  { opacity: .12; }
+  100% { transform: translate(115%, -20%); opacity: 0; }
+}
+@keyframes ctaOrbDriftB {
+  0%   { transform: translate(110%, -20%); opacity: 0; }
+  15%  { opacity: .12; }
+  50%  { transform: translate(40%, 50%);   opacity: .14; }
+  85%  { opacity: .10; }
+  100% { transform: translate(-20%, 110%); opacity: 0; }
 }
 
 /* ── DISCLAIMER STRIP ── */
@@ -1263,6 +1357,11 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   /* Final CTA */
   .final-cta { padding: 60px 0; }
   .final-cta h2 { font-size: clamp(26px, 7vw, 32px); }
+  /* Final CTA — drop heavy decorative layers on small screens */
+  .cta-docs { display: none; } /* skip floating documents (perf) */
+  .cta-scales { width: 160px; height: 160px; right: -10px; top: 8%; opacity: .035; }
+  .cta-orbs .orb--b { display: none; } /* keep one shimmer orb only */
+  .cta-particles span:nth-child(n+7) { display: none; } /* halve particle count */
   /* Footer brand logo size */
   .foot-brand img { height: 32px; }
   /* Cert badges — stack to avoid overflow */
@@ -1284,6 +1383,10 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .final-cta::before { animation: none !important; }
   .final-cta::after { animation: none !important; opacity: 0.4; }
   .cta-particles span { animation: none !important; opacity: 0; }
+  /* New cinematic layers — freeze (still visible as static decoration) */
+  .cta-scales { animation: none !important; }
+  .cta-docs .doc { animation: none !important; opacity: 0; }
+  .cta-orbs .orb { animation: none !important; opacity: 0.08; }
 }
 
 /* ── TOUCH FEEDBACK — :active tap states ── */
@@ -1786,12 +1889,92 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 
 <!-- ── FINAL CTA ── -->
 <section class="final-cta">
+  <!-- Layer 2 — rotating scales-of-justice watermark -->
+  <div class="cta-scales" aria-hidden="true">
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(94,234,212,1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <!-- vertical staff -->
+      <line x1="120" y1="34" x2="120" y2="206"/>
+      <!-- top knob -->
+      <circle cx="120" cy="30" r="6"/>
+      <!-- base -->
+      <line x1="92" y1="206" x2="148" y2="206"/>
+      <line x1="100" y1="214" x2="140" y2="214"/>
+      <!-- horizontal arm -->
+      <line x1="50" y1="74" x2="190" y2="74"/>
+      <!-- left chains -->
+      <line x1="62" y1="74" x2="50" y2="118"/>
+      <line x1="80" y1="74" x2="92" y2="118"/>
+      <!-- right chains -->
+      <line x1="160" y1="74" x2="148" y2="118"/>
+      <line x1="178" y1="74" x2="190" y2="118"/>
+      <!-- left plate -->
+      <path d="M40 118 Q71 138 102 118 Q86 132 71 132 Q56 132 40 118 Z"/>
+      <line x1="40" y1="118" x2="102" y2="118"/>
+      <!-- right plate -->
+      <path d="M138 118 Q169 138 200 118 Q184 132 169 132 Q154 132 138 118 Z"/>
+      <line x1="138" y1="118" x2="200" y2="118"/>
+    </svg>
+  </div>
+
+  <!-- Layer 3 — drifting legal-document silhouettes -->
+  <div class="cta-docs" aria-hidden="true">
+    <div class="doc doc--1">
+      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(255,255,255,1)" stroke-width="1.6" stroke-linecap="round">
+        <path d="M6 4 H44 L54 14 V76 H6 Z" fill="rgba(255,255,255,0.06)"/>
+        <path d="M44 4 V14 H54"/>
+        <line x1="14" y1="28" x2="46" y2="28"/>
+        <line x1="14" y1="36" x2="46" y2="36"/>
+        <line x1="14" y1="44" x2="40" y2="44"/>
+        <line x1="14" y1="52" x2="46" y2="52"/>
+        <line x1="14" y1="60" x2="34" y2="60"/>
+      </svg>
+    </div>
+    <div class="doc doc--2">
+      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(94,234,212,1)" stroke-width="1.6" stroke-linecap="round">
+        <path d="M6 4 H44 L54 14 V76 H6 Z" fill="rgba(94,234,212,0.05)"/>
+        <path d="M44 4 V14 H54"/>
+        <line x1="14" y1="28" x2="46" y2="28"/>
+        <line x1="14" y1="36" x2="42" y2="36"/>
+        <line x1="14" y1="44" x2="46" y2="44"/>
+        <line x1="14" y1="52" x2="38" y2="52"/>
+        <line x1="14" y1="60" x2="44" y2="60"/>
+      </svg>
+    </div>
+    <div class="doc doc--3">
+      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(255,255,255,1)" stroke-width="1.6" stroke-linecap="round">
+        <path d="M6 4 H44 L54 14 V76 H6 Z" fill="rgba(255,255,255,0.05)"/>
+        <path d="M44 4 V14 H54"/>
+        <line x1="14" y1="28" x2="44" y2="28"/>
+        <line x1="14" y1="36" x2="46" y2="36"/>
+        <line x1="14" y1="44" x2="36" y2="44"/>
+        <line x1="14" y1="52" x2="44" y2="52"/>
+        <line x1="14" y1="60" x2="40" y2="60"/>
+      </svg>
+    </div>
+    <div class="doc doc--4">
+      <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="rgba(94,234,212,1)" stroke-width="1.6" stroke-linecap="round">
+        <path d="M6 4 H44 L54 14 V76 H6 Z" fill="rgba(94,234,212,0.04)"/>
+        <path d="M44 4 V14 H54"/>
+        <line x1="14" y1="28" x2="46" y2="28"/>
+        <line x1="14" y1="36" x2="40" y2="36"/>
+        <line x1="14" y1="44" x2="46" y2="44"/>
+        <line x1="14" y1="52" x2="36" y2="52"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Layer 4 — soft teal shimmer orbs -->
+  <div class="cta-orbs" aria-hidden="true">
+    <div class="orb orb--a"></div>
+    <div class="orb orb--b"></div>
+  </div>
+
   <div class="cta-particles" aria-hidden="true">
     <span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span>
   </div>
-  <div class="container" style="position:relative;z-index:1;text-align:center">
+  <div class="container" style="position:relative;z-index:10;text-align:center">
     <h2 data-i18n-html="cta.title">Don't face your rights <em>alone</em>.</h2>
     <p data-i18n="cta.sub">Ask the first question. Cited answer in 30 seconds. No card required.</p>
     <a class="btn btn-primary" href="/app.html" data-i18n="cta.btn">Open the chat →</a>
