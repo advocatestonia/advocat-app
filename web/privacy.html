@@ -153,7 +153,7 @@
     </div>
 
     <div class="callout-key">
-        <strong>Lühidalt:</strong> Teie andmed on majutatud EL-is (Supabase EU-West-2). AI-vestluste sisu saadetakse Anthropic'ile (Claude API) standardsete lepingusätete alusel. Teil on täielikud GDPR õigused — kustutamine, ülekandmine, juurdepääs. Ei reklaamiküpsiseid, ei jälgimisreklaame.
+        <strong>Lühidalt:</strong> Teie andmed asuvad EL-i serverites (Supabase EU-West-2). AI-vestluste sisu edastatakse Anthropicule (Claude API) Euroopa Komisjoni standardsete lepingusätete alusel. Teil on kõik GDPR-i õigused — kustutamine, ülekandmine, juurdepääs. Reklaamiküpsiseid ega kolmandate osapoolte jälgimist me ei kasuta.
     </div>
 
     <h2>1. Vastutav töötleja</h2>
@@ -169,18 +169,18 @@
     <ul>
         <li><strong>Konto andmed:</strong> e-posti aadress, nimi (vabatahtlik), keele-eelistus, autentimisinfo (krüpteeritud).</li>
         <li><strong>Vestluste sisu:</strong> teie sõnumid AI-le ja AI vastused.</li>
-        <li><strong>Üleslaaditud dokumendid:</strong> failid, mille olete teadlikult Teenusele esitanud analüüsi jaoks.</li>
-        <li><strong>Maksete metaandmed:</strong> tellimuse staatus, tasud, kuupäevad. <em>Kaardiandmeid me ei näe ega salvesta</em> — neid töötleb Stripe (PCI DSS Level 1).</li>
+        <li><strong>Üleslaaditud dokumendid:</strong> failid, mille olete teadlikult analüüsiks Teenusele edastanud.</li>
+        <li><strong>Maksete metaandmed:</strong> tellimuse staatus, summad, kuupäevad. <em>Kaardiandmeid me ei näe ega säilita</em> — neid töötleb Stripe (PCI DSS Level 1).</li>
         <li><strong>Tehnilised logid:</strong> IP-aadress, brauser, sessiooni-ID, vea- ja turbelogid.</li>
-        <li><strong>Kasutusstatistika:</strong> sõnumite arv, funktsioonide kasutamine (agregeeritud).</li>
+        <li><strong>Kasutusstatistika:</strong> sõnumite arv, funktsioonide kasutamine (üldistatud kujul).</li>
     </ul>
 
     <h2>3. Õiguslikud alused (GDPR artikkel 6)</h2>
     <ul>
-        <li><strong>Lepingu täitmine</strong> (art 6(1)(b)) — tellimuse osutamine, AI-päringute töötlemine.</li>
-        <li><strong>Õigustatud huvi</strong> (art 6(1)(f)) — turvalisus, pettuste tõkestamine, teenuse kvaliteedi parandamine.</li>
-        <li><strong>Nõusolek</strong> (art 6(1)(a)) — analüütika ja teavitused, mille saate igal ajal tagasi võtta.</li>
-        <li><strong>Õigusaktist tulenev kohustus</strong> (art 6(1)(c)) — raamatupidamine, maksuseadusandlus.</li>
+        <li><strong>Lepingu täitmine</strong> (art 6(1)(b)) — tellimuse osutamine ja AI-päringute töötlemine.</li>
+        <li><strong>Õigustatud huvi</strong> (art 6(1)(f)) — turvalisuse tagamine, pettuste tõkestamine ja teenuse kvaliteedi parandamine.</li>
+        <li><strong>Nõusolek</strong> (art 6(1)(a)) — analüütika ja teavitused, mille võite igal ajal tagasi võtta.</li>
+        <li><strong>Seadusest tulenev kohustus</strong> (art 6(1)(c)) — raamatupidamine ja maksuõigus.</li>
     </ul>
 
     <h2>4. Kellega me andmeid jagame (alamtöötlejad)</h2>
@@ -197,14 +197,14 @@
         </tbody>
     </table>
     </div>
-    <p>Kõik alamtöötlejad on lepinguliselt kohustatud andmeid kaitsma vähemalt sama tasemel kui meie ise.</p>
+    <p>Kõik alamtöötlejad on lepingu alusel kohustatud andmeid kaitsma vähemalt samal tasemel kui meie ise.</p>
 
     <h2>5. Säilitusajad</h2>
     <ul>
         <li><strong>Konto andmed</strong> — kuni konto kustutamiseni.</li>
         <li><strong>Vestluste ajalugu</strong> — kuni 24 kuud, kui te ei kustuta varem.</li>
         <li><strong>Üleslaaditud dokumendid</strong> — kuni teie poolt kustutamiseni või konto kustutamiseni.</li>
-        <li><strong>Maksedokumendid</strong> — <strong>7 aastat</strong> Eesti raamatupidamise seaduse alusel.</li>
+        <li><strong>Maksedokumendid</strong> — <strong>7 aastat</strong> raamatupidamise seaduse alusel.</li>
         <li><strong>Turvalogid</strong> — 12 kuud.</li>
     </ul>
 
@@ -226,10 +226,10 @@
     </div>
 
     <h2>7. Küpsised</h2>
-    <p>Me kasutame ainult <strong>tehniliselt vajalikke küpsiseid</strong> (sessiooni säilitamine, autentimine, eelistused). <strong>Me ei kasuta turundusküpsiseid ega kolmandate osapoolte jälgimist</strong> vaikimisi. Kui mõni analüütika lubatakse tulevikus, küsime selleks selget nõusolekut küpsisebänneri kaudu.</p>
+    <p>Kasutame ainult <strong>tehniliselt vajalikke küpsiseid</strong> (sessiooni säilitamine, autentimine, eelistused). <strong>Turundusküpsiseid ega kolmandate osapoolte jälgimist me vaikimisi ei kasuta.</strong> Kui tulevikus võtame analüütika kasutusele, küsime selleks selget nõusolekut küpsisebänneri kaudu.</p>
 
     <h2>8. Rahvusvahelised andmeedastused</h2>
-    <p>Mõned alamtöötlejad (Anthropic, Stripe, ElevenLabs) asuvad väljaspool EL-i. Edastused toimuvad Euroopa Komisjoni heakskiidetud <strong>standardsete lepingusätete (SCC)</strong> alusel ning vajadusel täiendavate kaitsemeetmetega.</p>
+    <p>Mõned alamtöötlejad (Anthropic, Stripe, ElevenLabs) asuvad väljaspool EL-i. Edastused toimuvad Euroopa Komisjoni kinnitatud <strong>standardsete lepingusätete (SCC)</strong> alusel ja vajaduse korral täiendavate kaitsemeetmetega.</p>
 
     <h2>9. Turvalisus</h2>
     <ul>
@@ -241,10 +241,10 @@
     </ul>
 
     <h2>10. Lapsed</h2>
-    <p>Teenus ei ole mõeldud alla <strong>18-aastastele</strong>. Me ei kogu teadlikult andmeid alaealistelt. Kui saame teada, et selliseid andmeid on kogutud, kustutame need viivitamata.</p>
+    <p>Teenus ei ole mõeldud alla <strong>18-aastastele</strong>. Me ei kogu teadlikult andmeid alaealistelt. Kui saame teada, et selliseid andmeid on kogutud, kustutame need põhjendamatu viivituseta.</p>
 
     <h2>11. Muudatused</h2>
-    <p>Olulistest privaatsuspoliitika muudatustest teavitame e-posti teel ja avalikkuse esilehel. Versiooni number ja kuupäev ülal näitavad alati uusimat.</p>
+    <p>Olulistest privaatsuspoliitika muudatustest anname teada e-posti teel ja avalikul esilehel. Versiooni number ja kuupäev ülal näitavad alati kehtivat versiooni.</p>
 
     <h2>12. Kontakt</h2>
     <div class="contact-box">

@@ -21,7 +21,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get active => 'Aktiivsed';
 
   @override
-  String get activeCases => 'Aktiivsed asjad';
+  String get activeCases => 'Aktiivsed juhtumid';
 
   @override
   String get addedToAppeal => 'Kaebusele lisatud';
@@ -30,13 +30,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String get agreeToTerms => 'Nõustun ';
 
   @override
-  String get aiAnalysis => 'Tehisintellekti analüüs';
+  String get aiAnalysis => 'AI analüüs';
 
   @override
-  String get aiAssistant => 'Tehisintellekti õigusabi';
+  String get aiAssistant => 'AI õigusabi';
 
   @override
-  String get aiChat => 'Tehisintellekti vestlus';
+  String get aiChat => 'AI vestlus';
 
   @override
   String get all => 'Kõik';
@@ -52,26 +52,26 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get speakIntoMicHint =>
-      'Rääkige mikrofoni. Veenduge, et mikrofon on lubatud.';
+      'Rääkige mikrofoni. Veenduge, et mikrofon on sisse lülitatud.';
 
   @override
   String get aiErrorRateLimit =>
-      'Teenus on ajutiselt ülekoormatud. Proovige 1-2 minuti pärast uuesti.';
+      'Teenus on hetkel ülekoormatud. Proovige 1–2 minuti pärast uuesti.';
 
   @override
   String get aiErrorOverload =>
-      'AI on praegu hõivatud, proovige minuti pärast uuesti.';
+      'AI on praegu hõivatud — proovige minuti pärast uuesti.';
 
   @override
   String freeLimitReached(int count) {
-    return 'Olete kasutanud ära kõik $count tasuta AI sõnumit. Uuendage Õigusnõustaja paketile, et saada piiramatut AI abi.';
+    return 'Teie $count tasuta AI-sõnumit on otsas. Uuendage Õigusnõustaja paketile, et saada piiramatu juurdepääs.';
   }
 
   @override
   String get andWord => ' ja ';
 
   @override
-  String get appTitle => 'Advocat — Õigusalane teabetööriist';
+  String get appTitle => 'Advocat — AI õigusabi';
 
   @override
   String get appVersion => 'Rakenduse versioon';
@@ -83,7 +83,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get areYouAbsolutelySure => 'Kas olete täiesti kindel?';
 
   @override
-  String get askAboutCase => 'Küsige oma asja kohta';
+  String get askAboutCase => 'Küsige oma juhtumi kohta';
 
   @override
   String get asylum => 'Varjupaik';
@@ -107,22 +107,22 @@ class AppLocalizationsEt extends AppLocalizations {
   String get cancel => 'Tühista';
 
   @override
-  String get caseDescription => 'Asja kirjeldus';
+  String get caseDescription => 'Juhtumi kirjeldus';
 
   @override
-  String get caseDetail => 'Asja üksikasjad';
+  String get caseDetail => 'Juhtumi üksikasjad';
 
   @override
-  String get caseOverview => 'Asjade ülevaade';
+  String get caseOverview => 'Juhtumite ülevaade';
 
   @override
-  String get caseTitle => 'Asja pealkiri';
+  String get caseTitle => 'Juhtumi pealkiri';
 
   @override
-  String get caseUpdated => 'Asi uuendatud';
+  String get caseUpdated => 'Juhtum uuendatud';
 
   @override
-  String get cases => 'Asjad';
+  String get cases => 'Juhtumid';
 
   @override
   String get checkCompany => 'Kontrolli ettevõtet';
@@ -170,7 +170,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get connected => 'Ühendatud';
 
   @override
-  String get contactSupport => 'Võtke ühendust toega';
+  String get contactSupport => 'Võtke ühendust kasutajatoega';
 
   @override
   String get continueWithGoogle => 'Jätka Google\'iga';
@@ -182,7 +182,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get correspondence => 'Kirjavahetus';
 
   @override
-  String get couldNotLoadCases => 'Asjade laadimine ebaõnnestus';
+  String get couldNotLoadCases => 'Juhtumite laadimine ebaõnnestus';
 
   @override
   String get country => 'Riik';
@@ -191,7 +191,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get createAccount => 'Loo konto';
 
   @override
-  String get createCase => 'Loo asi';
+  String get createCase => 'Loo juhtum';
 
   @override
   String get criminalCase => 'Kriminaalasi';
@@ -231,11 +231,11 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get deleteAccountDesc =>
-      'Kustutage oma konto ja kõik andmed jäädavalt';
+      'Kustutage konto ja kõik andmed jäädavalt';
 
   @override
   String get deleteAccountDialogContent =>
-      'See toiming on pöördumatu. Kõik teie andmed, asjad ja dokumendid kustutatakse jäädavalt.';
+      'See toiming on pöördumatu. Kõik teie andmed, juhtumid ja dokumendid kustutatakse jäädavalt.';
 
   @override
   String get deleteConfirm =>
@@ -245,18 +245,18 @@ class AppLocalizationsEt extends AppLocalizations {
   String get demoHint => 'Demo: proovige numbrimärki „908FBT“';
 
   @override
-  String get demoModeDesc => 'Tutvuge rakendusega ilma registreerimata';
+  String get demoModeDesc => 'Tutvuge rakendusega ilma kontot loomata';
 
   @override
   String get deportation => 'Väljasaatmine';
 
   @override
   String get disclaimer =>
-      'Ainult tehisintellekti suunised — mitte õigusnõuanne. Konsulteerige alati juristiga.';
+      'AI suunised — mitte õigusnõuanne. Pidage olulistel teemadel nõu juristiga.';
 
   @override
   String get disclaimerFull =>
-      'See dokument on loodud tehisintellekti abil ja on mõeldud ainult juhisena. See ei ole õigusnõuanne. Soovitame alati konsulteerida juristiga enne kaebuse esitamist.';
+      'See dokument on koostatud AI abil ja on mõeldud üksnes mustandiks. See ei ole õigusnõuanne. Enne kaebuse esitamist soovitame pidada nõu kvalifitseeritud juristiga.';
 
   @override
   String get disconnect => 'Katkesta ühendus';
@@ -301,7 +301,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get emailPrivacyNote =>
-      'Loeme ainult õiguslike asjadega seotud kirju. Teie privaatsus on kaitstud.';
+      'Loeme ainult juhtumitega seotud kirju. Teie privaatsus on kaitstud.';
 
   @override
   String get emailRequired => 'E-posti aadress on kohustuslik';
@@ -313,11 +313,11 @@ class AppLocalizationsEt extends AppLocalizations {
   String get error => 'Viga';
 
   @override
-  String get exportDataDesc => 'Laadige alla kõik oma andmed JSON-vormingus';
+  String get exportDataDesc => 'Laadige kõik oma andmed alla JSON-vormingus';
 
   @override
   String get exportDataDialogContent =>
-      'Valmistame ette kõigi teie andmete allalaadimise, sealhulgas asjad, dokumendid ja kirjavahetus. Saate e-kirja, kui see on valmis.';
+      'Valmistame ette kõigi teie andmete allalaadimise — juhtumid, dokumendid ja kirjavahetus. Saadame teile e-kirja, kui kõik on valmis.';
 
   @override
   String get exportMyData => 'Ekspordi minu andmed';
@@ -396,13 +396,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String get laborDispute => 'Töövaidlus';
 
   @override
-  String get langEnglish => 'Inglise';
+  String get langEnglish => 'Inglise keel';
 
   @override
-  String get langFinnish => 'Soome';
+  String get langFinnish => 'Soome keel';
 
   @override
-  String get langRussian => 'Vene';
+  String get langRussian => 'Vene keel';
 
   @override
   String get language => 'Keel';
@@ -440,13 +440,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String get mileage => 'Läbisõit';
 
   @override
-  String get myCases => 'Minu asjad';
+  String get myCases => 'Minu juhtumid';
 
   @override
   String get nameRequired => 'Täisnimi on kohustuslik';
 
   @override
-  String get newCase => 'Uus asi';
+  String get newCase => 'Uus juhtum';
 
   @override
   String get next => 'Järgmine';
@@ -455,10 +455,10 @@ class AppLocalizationsEt extends AppLocalizations {
   String get noAccount => 'Kas teil pole kontot? ';
 
   @override
-  String get noCases => 'Asju pole veel';
+  String get noCases => 'Juhtumeid pole veel';
 
   @override
-  String get noCasesYet => 'Asju pole veel';
+  String get noCasesYet => 'Juhtumeid pole veel';
 
   @override
   String get noDeadlines => 'Tähtaegu pole';
@@ -471,19 +471,19 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get onboardingDesc1 =>
-      'Advocat aitab teil mõista oma õiguslikku olukorda. Tehisintellekti tööriistad analüüsivad dokumente, tuvastavad võimalikke probleeme ja valmistavad ette dokumendikavandeid teie ülevaatamiseks. Mitte advokaadibüroo — tehnoloogiatööriist teie asja toetamiseks.';
+      'Advocat aitab teil oma õiguslikku olukorda paremini mõista. AI analüüsib dokumente, juhib tähelepanu võimalikele probleemidele ja koostab dokumendimustandeid teie ülevaatamiseks. Tegemist ei ole advokaadibürooga — see on tehnoloogiline tööriist, mis aitab teie juhtumi ette valmistada.';
 
   @override
   String get onboardingDesc2 =>
-      'Pildistage mis tahes õigusdokument. Tehisintellekt loeb seda mitmes keeles, eraldab põhiandmed ja kontrollib EL-i direktiivide ja riigisiseste seaduste alusel võimalikke probleeme.';
+      'Pildistage iga õigusdokument. AI loeb seda mitmes keeles, võtab välja olulised andmed ning kontrollib EL-i direktiivide ja Eesti seaduste põhjal võimalikke vigu.';
 
   @override
   String get onboardingDesc3 =>
-      'Meie tehisintellekti tööriistad kontrollivad üle 40 menetlusnõude tüübi. Tehisintellekti analüüs võib tuvastada tähelepanu vajavaid küsimusi — nagu teeninduskeel, menetlusetapid ja õiguslikud tähtajad. Kontrollige alati kvalifitseeritud juristiga.';
+      'Meie AI vaatab läbi üle 40 menetlusnõude. Analüüs võib esile tuua tähelepanu vajavaid kohti — näiteks menetluse keel, menetlusetapid ja seadusjärgsed tähtajad. Olulistel juhtudel pidage alati nõu kvalifitseeritud juristiga.';
 
   @override
   String get onboardingDesc4 =>
-      'Tehisintellekt valmistab ette kaebuste, avalduste ja kirjade kavandeid koos õiguslike viidetega teie ülevaatamiseks. Teie otsustate, mida esitada. Iga dokument tuleks enne esitamist lasta üle vaadata kvalifitseeritud õigusspetsialistil.';
+      'AI koostab kaebuste, avalduste ja kirjade mustandid koos seaduseviidetega — teie ülevaatamiseks. Lõpliku otsuse esitamise üle teete teie. Iga dokument tasub enne esitamist lasta üle vaadata kvalifitseeritud juristil.';
 
   @override
   String get onboardingNext => 'Järgmine';
@@ -492,17 +492,17 @@ class AppLocalizationsEt extends AppLocalizations {
   String get onboardingSkip => 'Jäta vahele';
 
   @override
-  String get onboardingTitle1 => 'Tehisintellektil põhinev õigusalane teave';
+  String get onboardingTitle1 => 'AI-põhine õigusteave';
 
   @override
-  String get onboardingTitle2 => 'Skannige ja analüüsige dokumente';
+  String get onboardingTitle2 => 'Skaneerige ja analüüsige dokumente';
 
   @override
   String get onboardingTitle3 =>
-      'Tehisintellekt kontrollib võimalikke probleeme';
+      'AI tuvastab võimalikud vead';
 
   @override
-  String get onboardingTitle4 => 'Dokumendikavandid teie ülevaatamiseks';
+  String get onboardingTitle4 => 'Dokumendimustandid teie ülevaatamiseks';
 
   @override
   String get openACase => 'Ava juhtum';
@@ -520,7 +520,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get overdue => 'Tähtaeg möödas';
 
   @override
-  String get owners => 'Eelmised omanikud';
+  String get owners => 'Varasemad omanikud';
 
   @override
   String get password => 'Parool';
@@ -580,7 +580,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get rateUs => 'Hinda rakendust';
 
   @override
-  String get rateAppComingSoon => 'Saadaval peagi rakenduste poodides!';
+  String get rateAppComingSoon => 'Tuleb peagi rakenduste poodidesse!';
 
   @override
   String get dataCopiedToClipboard => 'Andmed kopeeritud lõikelauale';
@@ -648,7 +648,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get saveDraft => 'Salvesta mustand';
 
   @override
-  String get saveWithAnnual => 'Säästa aastatellimisega';
+  String get saveWithAnnual => 'Säästa aastatellimusega';
 
   @override
   String get scan => 'Skaneeri';
@@ -657,7 +657,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get scanDocument => 'Skaneeri dokument';
 
   @override
-  String get searchCases => 'Otsi asju';
+  String get searchCases => 'Otsi juhtumeid';
 
   @override
   String get selectCountry => 'Vali riik';
@@ -678,7 +678,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get signInLink => 'Logige sisse';
 
   @override
-  String get signInSubtitle => 'Logige sisse oma asjade juurde pääsemiseks';
+  String get signInSubtitle => 'Logige sisse, et pääseda oma juhtumite juurde';
 
   @override
   String get signOut => 'Logi välja';
@@ -699,7 +699,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get someConcerns => 'Mõned mured';
 
   @override
-  String get startFirstCase => 'Looge oma esimene asi';
+  String get startFirstCase => 'Looge oma esimene juhtum';
 
   @override
   String step(int current, int total) {
@@ -713,7 +713,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get subscription => 'Tellimus';
 
   @override
-  String get syncLegalCorrespondence => 'Sünkrooni õigusalane kirjavahetus';
+  String get syncLegalCorrespondence => 'Sünkrooni juriidiline kirjavahetus';
 
   @override
   String get syncNow => 'Sünkrooni kohe';
@@ -895,14 +895,14 @@ class AppLocalizationsEt extends AppLocalizations {
   String get rightRemainSilent => 'Vaikige (peate end identifitseerima)';
 
   @override
-  String get rightAskInterpreter => 'Paluge tõlki';
+  String get rightAskInterpreter => 'Paluge endale tõlki';
 
   @override
   String get rightContactLawyer =>
       'Võtke enne ülekuulamist advokaadiga ühendust';
 
   @override
-  String get rightRecordEncounter => 'Salvestage kohtumist (avalikes kohtades)';
+  String get rightRecordEncounter => 'Salvestage suhtlust (avalikes kohtades)';
 
   @override
   String get mustProvideName => 'Öelge oma nimi ja sünniaeg';
@@ -931,14 +931,14 @@ class AppLocalizationsEt extends AppLocalizations {
   String get rightAppealAdmin => 'Õigus esitada kaebus halduskohtusse';
 
   @override
-  String get rightLegalRep => 'Õigus õiguslikule esindusele';
+  String get rightLegalRep => 'Õigus õigusabi esindajale';
 
   @override
   String get rightInterpreter => 'Õigus tõlgile';
 
   @override
   String get rightStayDuringAppeal =>
-      'Õigus jääda kaebuse menetluse ajaks (enamikul juhtudel)';
+      'Õigus jääda riiki kaebuse menetluse ajaks (enamikul juhtudel)';
 
   @override
   String get minimumWage => 'Miinimumpalk vastavalt kollektiivlepingule';
@@ -1000,7 +1000,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get reportToPolice =>
-      'Teatage politseile, kui tegemist on kuriteoga (ähvardus, kallaletung)';
+      'Esitage politseile avaldus, kui tegu on kuriteoga (ähvardus, kallaletung)';
 
   @override
   String get legalAidCalculator => 'Õigusabi kalkulaator';
@@ -1015,7 +1015,7 @@ class AppLocalizationsEt extends AppLocalizations {
       'See on ainult hinnang. Tegeliku sobivuse määrab õigusabibüroo.';
 
   @override
-  String get monthlyIncome => 'Igakuine sissetulek (EUR)';
+  String get monthlyIncome => 'Kuusissetulek (EUR)';
 
   @override
   String get totalAssets => 'Vara kokku (EUR)';
@@ -1139,7 +1139,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get noDocumentsScanHint =>
-      'Dokumente pole veel. Skannige või laadige üles.';
+      'Dokumente pole veel. Skaneerige või laadige üles.';
 
   @override
   String get inCourt => 'Kohtus';
@@ -1325,7 +1325,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get reviewBeforeSending =>
-      'Vaadake enne saatmist hoolikalt üle. Teie vastutate selle dokumendi sisu eest.';
+      'Vaadake enne saatmist hoolikalt üle. Vastutate dokumendi sisu eest teie ise.';
 
   @override
   String get noContentAvailable => 'Sisu pole saadaval';
@@ -1381,7 +1381,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get scanFirstDocumentHint =>
-      'Skannige oma esimene dokument, et AI saaks seda vigade suhtes analüüsida ja kaebusi koostada.';
+      'Skaneerige oma esimene dokument, et AI saaks selle vigade suhtes üle vaadata ja kaebuse mustandi koostada.';
 
   @override
   String get failedToLoadDocuments => 'Dokumentide laadimine ebaõnnestus';
@@ -1394,20 +1394,20 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get connectYourEmailDesc =>
-      'Ühendage oma e-post, et automaatselt tuvastada ja korraldada teie juhtumitega seotud õiguskirjavahetust.';
+      'Ühendage oma e-post, et tuvastada ja korraldada juhtumitega seotud juriidiline kirjavahetus automaatselt.';
 
   @override
-  String get legalEmails => 'Õiguslikud e-kirjad';
+  String get legalEmails => 'Juriidilised e-kirjad';
 
   @override
   String get unlinkedEmails => 'Seostamata e-kirjad';
 
   @override
-  String get noLegalEmailsYet => 'Õiguslikke e-kirju pole veel';
+  String get noLegalEmailsYet => 'Juriidilisi e-kirju pole veel';
 
   @override
   String get legalEmailsWillAppear =>
-      'Õiguslikuks liigitatud e-kirjad kuvatakse siin.';
+      'Juriidiliseks liigitatud e-kirjad kuvatakse siin.';
 
   @override
   String get assignToCase => 'Määra juhtumile';
@@ -1439,7 +1439,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get failedToLoadCases => 'Juhtumite laadimine ebaõnnestus';
 
   @override
-  String get monthly => 'Igakuine';
+  String get monthly => 'Kuine';
 
   @override
   String get annual => 'Aastane';
@@ -1463,7 +1463,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get threeDocScans => '3 dokumendi skannimist (kokku)';
 
   @override
-  String get twentyDocScans => '20 dokumendi skannimist/kuu';
+  String get twentyDocScans => '20 dokumendiskannimist kuus';
 
   @override
   String get unlimitedDocScans => 'Piiramatu dokumendiskannimine';
@@ -1481,10 +1481,10 @@ class AppLocalizationsEt extends AppLocalizations {
   String get priorityProcessing => 'Prioriteetne töötlemine';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI sõnumit (kogu eluea jooksul)';
+  String get fiveAiMessagesTotal => '5 AI sõnumit (kokku, kogu kasutusaja jooksul)';
 
   @override
-  String get hundredAiMessagesDay => '100 AI sõnumit/päev';
+  String get hundredAiMessagesDay => '100 AI sõnumit päevas';
 
   @override
   String get unlimitedAiMessages => 'Piiramatu AI sõnumid';
@@ -1496,7 +1496,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get strategyRecommendations => 'Strateegilised soovitused';
 
   @override
-  String get foundingMemberNote => 'Asutajaliige: 9,99 €/kuu esimesed 3 kuud';
+  String get foundingMemberNote => 'Asutajaliige: 9,99 € kuus esimesed 3 kuud';
 
   @override
   String get saveTwentyPercent => 'Säästa 20%';
@@ -1505,20 +1505,20 @@ class AppLocalizationsEt extends AppLocalizations {
   String get forever => 'igavesti';
 
   @override
-  String get perMonth => '/kuu';
+  String get perMonth => '/kuus';
 
   @override
   String get perYear => '/aastas';
 
   @override
-  String get checkingPurchases => 'Eelmiste ostude kontroll…';
+  String get checkingPurchases => 'Varasemate ostude kontrollimine…';
 
   @override
-  String get noPreviousPurchases => 'Eelmisi oste ei leitud.';
+  String get noPreviousPurchases => 'Varasemaid oste ei leitud.';
 
   @override
   String get chatWelcomeMessage =>
-      'Tere. Olen teie õigusabi assistent. Kirjeldage, mis juhtus — analüüsin olukorda ja soovitan, mida teha.';
+      'Tere. Olen teie õigusabi assistent. Kirjeldage, mis juhtus, ja ma analüüsin olukorda ning soovitan, mida edasi teha.';
 
   @override
   String get copySummary => 'Kopeeri kokkuvõte';
@@ -1540,7 +1540,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get reportMileageFraudDesc =>
-      'Luuakse pettuseraport sõiduki kontrollimise andmete põhjal. Saate avada ka õigusliku juhtumi.';
+      'Koostame pettuseraporti sõiduki kontrolli andmete põhjal. Soovi korral saate avada ka juhtumi.';
 
   @override
   String get reportAndOpenCase => 'Teata ja ava juhtum';
@@ -1574,7 +1574,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get aiDisclaimer => 'AI vastutuse välistamine';
 
   @override
-  String get dataPrivacyConsent => 'Andmekaitse nõusolek';
+  String get dataPrivacyConsent => 'Andmekaitsenõusolek';
 
   @override
   String get gdprIntro =>
@@ -1647,7 +1647,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get aiGeneratedDisclaimer =>
-      'Tehisintellekti loodud • Mitte õigusnõuanne';
+      'AI loodud • Mitte õigusnõuanne';
 
   @override
   String get decline => 'Keeldu';
@@ -1662,13 +1662,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String get orWord => 'või';
 
   @override
-  String get english => 'Inglise';
+  String get english => 'Inglise keel';
 
   @override
-  String get russian => 'Vene';
+  String get russian => 'Vene keel';
 
   @override
-  String get finnish => 'Soome';
+  String get finnish => 'Soome keel';
 
   @override
   String successSubscribed(String plan) {
@@ -1737,15 +1737,15 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get deportationDeadlineAppeal =>
-      'Kaebus halduskohtule — tavaliselt 30 päeva pärast teatavakstegemist';
+      'Kaebus halduskohtule — tavaliselt 30 päeva alates otsuse kättesaamisest';
 
   @override
   String get deportationDeadlineLegalAid =>
-      'Taotlege õigusabi — tehke seda KOHE';
+      'Taotlege riigi õigusabi — tehke seda KOHE';
 
   @override
   String get deportationFactStayDuringAppeal =>
-      'Eestis on teil tavaliselt õigus jääda riiki, kuni teie kaebus on menetluses. Väljasaatmist ei saa enamikul juhtudel teostada aktiivse kaebuse ajal.';
+      'Eestis on teil enamasti õigus jääda riiki, kuni kaebus on menetluses. Aktiivse kaebuse ajal väljasaatmist üldjuhul ei viida läbi.';
 
   @override
   String get contactRefugeeAdviceCentre => 'Eesti Pagulasabi';
@@ -1757,14 +1757,14 @@ class AppLocalizationsEt extends AppLocalizations {
   String get workplaceActionKeepContract => 'Hoidke alles töölepingu koopiad';
 
   @override
-  String get workplaceActionTrackHours => 'Jälgige oma tööaegu iseseisvalt';
+  String get workplaceActionTrackHours => 'Pidage ise oma tööaja kohta arvestust';
 
   @override
   String get workplaceActionReportUnsafe =>
-      'Teavitage ohtlikest tingimustest töötervishoiu ametit';
+      'Teatage ohtlikest töötingimustest Tööinspektsioonile';
 
   @override
-  String get workplaceActionJoinUnion => 'Liituge ametiühinguga kaitseks';
+  String get workplaceActionJoinUnion => 'Liituge enda kaitseks ametiühinguga';
 
   @override
   String get workplaceActionContactAuthority =>
@@ -1772,11 +1772,11 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get workplaceFactCollectiveWage =>
-      'Eestis kehtestab Vabariigi Valitsus riikliku miinimumpalga. Tööandja peab maksma vähemalt seaduses sätestatud miinimumpalka.';
+      'Eestis kehtestab riikliku miinimumpalga Vabariigi Valitsus. Tööandja peab maksma vähemalt seaduses kehtestatud miinimumpalka.';
 
   @override
   String get workplaceFactOralContract =>
-      'Isegi ilma kirjaliku lepinguta on teil Eestis täielikud töötaja õigused. Suuline kokkulepe on seaduse järgi sama siduv.';
+      'Eestis kehtivad töötaja õigused täies ulatuses ka ilma kirjaliku lepinguta. Suuline kokkulepe on seaduse järgi sama siduv.';
 
   @override
   String get contactOccupationalSafety => 'Tööinspektsioon';
@@ -1790,7 +1790,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get tenantActionDocumentCondition =>
-      'Dokumenteerige korteri seisukord sissekolimisel (fotod)';
+      'Dokumenteerige korteri seisund sissekolimisel (tehke fotod)';
 
   @override
   String get tenantActionReportMaintenance =>
@@ -1798,15 +1798,15 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get tenantActionNoIllegalEviction =>
-      'Ärge kunagi nõustuge ebaseadusliku väljatõstmisega — otsustab kohus';
+      'Ärge kunagi nõustuge seadusvastase väljatõstmisega — otsuse teeb kohus';
 
   @override
   String get tenantActionContactAdvisory =>
-      'Vaidluste korral võtke ühendust üürnike nõustamisteenusega';
+      'Vaidluste korral pöörduge üürnike nõustamisteenuse poole';
 
   @override
   String get tenantFactNoEvictionWithoutCourt =>
-      'Eestis ei saa üürileandja teid välja tõsta ilma kohtumääruseta, isegi kui üürileping on lõppenud. Lukkude vahetamine või kommunaalteenuste katkestamine on ebaseaduslik.';
+      'Eestis ei tohi üürileandja üürnikku välja tõsta ilma kohtumääruseta, isegi kui üürileping on lõppenud. Lukkude vahetamine või kommunaalteenuste katkestamine on seadusvastane.';
 
   @override
   String get contactTenantsAssociation => 'Eesti Üürnike Liit';
@@ -1919,7 +1919,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get domesticActionGoToSafe =>
-      'Minge turvalisse kohta — varjupaik, sõber, avalik koht';
+      'Minge turvalisse kohta — naiste tugikeskus, sõbra juurde või rahvarohkesse kohta';
 
   @override
   String get domesticActionDocumentEverything =>
@@ -2081,7 +2081,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get consumerActionContactAuthority =>
-      'Võtke ühendust tarbijakaitseametiga tasuta abi saamiseks';
+      'Tasuta abi saamiseks pöörduge Tarbijakaitse ja Tehnilise Järelevalve Ameti poole';
 
   @override
   String get consumerActionReportFraud =>
@@ -2089,7 +2089,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get consumerFactWithdrawal =>
-      'EL-i tarbijaõiguste direktiivi 2011/83/EL kohaselt on teil 14 päeva igast veebi- või kaugostust taganemiseks — küsimusi ei esitata. Müüja peab teile raha tagastama 14 päeva jooksul.';
+      'EL-i tarbijaõiguste direktiivi 2011/83/EL kohaselt on teil õigus 14 päeva jooksul igast veebi- või kaugostust põhjust nimetamata taganeda. Müüja peab raha tagastama samuti 14 päeva jooksul.';
 
   @override
   String get consumerFactWarranty =>
@@ -2104,10 +2104,10 @@ class AppLocalizationsEt extends AppLocalizations {
       'Defektist müüjale teatamine — 2 kuu jooksul pärast avastamist (soovitatav)';
 
   @override
-  String get contactConsumerAdvisory => 'Tarbijakaitseamet';
+  String get contactConsumerAdvisory => 'Tarbijakaitse ja Tehnilise Järelevalve Amet';
 
   @override
-  String get contactConsumerOmbudsman => 'Tarbijakaitse ombudsman';
+  String get contactConsumerOmbudsman => 'Tarbijaombudsman';
 
   @override
   String get contactConsumerDisputesBoardDirect => 'Tarbijavaidluste komisjon';
@@ -2133,7 +2133,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get aiHelpsUnderstand =>
-      'See teave aitab meie tehisintellektil teie olukorda paremini mõista.';
+      'See teave aitab meie AI-l teie olukorda paremini mõista.';
 
   @override
   String get caseTitleHint => 'nt Elamisloa kaebuse 2026';
@@ -2232,15 +2232,15 @@ class AppLocalizationsEt extends AppLocalizations {
   String get websiteLabel => 'Veebileht';
 
   @override
-  String get disclaimerCollapsed => 'Ainult teabeks';
+  String get disclaimerCollapsed => 'Üksnes teadmiseks';
 
   @override
   String get disclaimerExpanded =>
-      'Tehisintellekti assistent — mitte õigusnõuanne. Kontrollige alati kvalifitseeritud juristiga.';
+      'AI-assistent — mitte õigusnõuanne. Olulistel teemadel pidage nõu kvalifitseeritud juristiga.';
 
   @override
   String get chatDisclaimerBanner =>
-      'Tehisintellekti assistent pakub õigusteavet, mitte õigusnõuannet. Konsulteerige alati kvalifitseeritud juristiga.';
+      'AI-assistent pakub õigusteavet, mitte õigusnõuannet. Olulistel teemadel pidage nõu kvalifitseeritud juristiga.';
 
   @override
   String get categoryChildren => 'Lapsed';
@@ -2409,32 +2409,32 @@ class AppLocalizationsEt extends AppLocalizations {
   String get howToUse => 'Kuidas kasutada?';
 
   @override
-  String get tutorialStep1Title => 'Tehisintellekti õigusabi';
+  String get tutorialStep1Title => 'AI õigusabi';
 
   @override
   String get tutorialStep1Desc =>
-      'Küsige mis tahes õigusküsimus ja saage kohesed vastused Eesti seaduste põhjal.';
+      'Küsige mis tahes õigusküsimus ja saage kohe vastus Eesti seaduste põhjal.';
 
   @override
   String get tutorialStep2Title => 'Tunne oma õigusi';
 
   @override
   String get tutorialStep2Desc =>
-      'Sirvige õigusteavet teemade kaupa — töö, eluase, tarbijaõigused ja palju muud.';
+      'Sirvige õigusteavet teemade kaupa — töö, eluase, tarbijakaitse ja palju muud.';
 
   @override
   String get tutorialStep3Title => 'Skaneeri dokumente';
 
   @override
   String get tutorialStep3Desc =>
-      'Pildistage õigusdokumente tehisintellekti analüüsiks ja turvaliseks hoidmiseks.';
+      'Pildistage õigusdokumente AI analüüsiks ja hoidke neid turvaliselt ühes kohas.';
 
   @override
   String get tutorialStep4Title => 'Alustame!';
 
   @override
   String get tutorialStep4Desc =>
-      'Avastage rakendust ja kaitske oma õigusi. Kõik andmed jäävad privaatselt teie seadmesse.';
+      'Avastage rakendust ja kaitske oma õigusi. Andmed jäävad privaatseks teie seadmes.';
 
   @override
   String get advocatProTitle => 'Advocat Pro';
@@ -2444,7 +2444,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get voiceDisclaimer =>
-      'Häälassistent töötab praegu ainult arvutis (Chrome\'i brauser). Mobiilitugi tuleb peagi.';
+      'Häälassistent töötab praegu ainult lauaarvutis (Chrome\'i brauseris). Mobiilirakenduses tuleb tugi peagi.';
 
   @override
   String get recommended => 'Soovitatud';
@@ -2461,11 +2461,11 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String get redirectingToPayment => 'Suunatakse makseleheküljele…';
+  String get redirectingToPayment => 'Suuname makselehele…';
 
   @override
   String cheaperAnnually(String amount) {
-    return '€$amount/kuus soodsam aastamaksega';
+    return '€$amount kuus soodsam aastamaksuga';
   }
 
   @override
@@ -2478,10 +2478,10 @@ class AppLocalizationsEt extends AppLocalizations {
   String get backToChat => 'Tagasi vestlusesse';
 
   @override
-  String get upgradeBannerTitle => 'Uuenda piiramatute konsultatsioonide jaoks';
+  String get upgradeBannerTitle => 'Vali Pro piiramatuteks konsultatsioonideks';
 
   @override
-  String get upgradeBannerCta => 'Uuenda';
+  String get upgradeBannerCta => 'Uuenda Pro-le';
 
   @override
   String get paymentSuccessTitle => 'Makse õnnestus';
@@ -2496,10 +2496,10 @@ class AppLocalizationsEt extends AppLocalizations {
   String get feedbackThumbsUpLabel => 'Kasulik';
 
   @override
-  String get feedbackThumbsDownLabel => 'Pole kasulik';
+  String get feedbackThumbsDownLabel => 'Ei aidanud';
 
   @override
-  String get feedbackCommentPrompt => 'Mis oli valesti?';
+  String get feedbackCommentPrompt => 'Mis läks valesti?';
 
   @override
   String get feedbackSend => 'Saada';
