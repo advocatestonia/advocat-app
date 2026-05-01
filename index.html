@@ -812,35 +812,72 @@ img, svg { display: block; max-width: 100%; }
   background: linear-gradient(180deg, #FFFFFF 0%, #FFF9F0 100%);
   padding-top: 96px;
 }
-/* Centered hero shield on Premium card — premium identity mark */
-.plan-hero-shield {
-  position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
-  width: 76px; height: 76px;
+/* Premium pulsing icon — mirror of the in-app legal-assistant tile (shield + concentric rings) */
+.plan-pulse-icon {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 96px; height: 96px;
+  pointer-events: none;
+  z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+}
+.plan-pulse-icon .pulse-rings {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+}
+.plan-pulse-icon .pulse-rings circle {
+  fill: none;
+  stroke: var(--teal, #0D9488);
+  stroke-width: 1.5;
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+  opacity: 0;
+}
+.plan-pulse-shield {
+  position: relative;
+  width: 64px; height: 64px;
   object-fit: contain;
   filter:
     drop-shadow(0 8px 24px rgba(201,163,91,.45))
-    drop-shadow(0 0 18px rgba(212,175,108,.30));
-  transition: transform .5s var(--cmp-ease, cubic-bezier(.2,.8,.3,1)), filter .5s var(--cmp-ease, cubic-bezier(.2,.8,.3,1));
-  z-index: 2;
-  pointer-events: none;
+    drop-shadow(0 0 18px rgba(212,175,108,.32));
+  transition: transform .5s cubic-bezier(.2,.8,.3,1), filter .5s cubic-bezier(.2,.8,.3,1);
+  z-index: 1;
 }
-.plan.plan-premium:hover .plan-hero-shield {
-  transform: translateX(-50%) scale(1.06);
+.plan.plan-premium:hover .plan-pulse-shield {
+  transform: scale(1.06);
   filter:
     drop-shadow(0 12px 32px rgba(201,163,91,.65))
     drop-shadow(0 0 28px rgba(212,175,108,.50));
 }
 @media (prefers-reduced-motion: no-preference) {
-  .plan.plan-premium .plan-hero-shield {
+  .plan.plan-premium .plan-pulse-icon .r1 { animation: planPulseRing 2.5s ease-out infinite; animation-delay: 0s; }
+  .plan.plan-premium .plan-pulse-icon .r2 { animation: planPulseRing 2.5s ease-out infinite; animation-delay: 0.83s; }
+  .plan.plan-premium .plan-pulse-icon .r3 { animation: planPulseRing 2.5s ease-out infinite; animation-delay: 1.66s; }
+  .plan.plan-premium:hover .plan-pulse-icon .r1,
+  .plan.plan-premium:hover .plan-pulse-icon .r2,
+  .plan.plan-premium:hover .plan-pulse-icon .r3 {
+    animation-duration: 1.5s;
+  }
+  .plan.plan-premium .plan-pulse-shield {
     animation: planShieldFloat 5.5s ease-in-out infinite;
   }
+  @keyframes planPulseRing {
+    0%   { transform: scale(0.55); opacity: 0; }
+    20%  { opacity: 0.6; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
   @keyframes planShieldFloat {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(-3px); }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+  .plan.plan-premium:hover .plan-pulse-shield {
+    /* hover state takes over — disable float to avoid transform conflict */
+    animation: none;
   }
 }
 @media (max-width: 700px) {
-  .plan-hero-shield { width: 60px; height: 60px; top: 16px; }
+  .plan-pulse-icon { width: 80px; height: 80px; top: 12px; }
+  .plan-pulse-shield { width: 52px; height: 52px; }
   .plan.plan-premium { padding-top: 84px; }
 }
 
@@ -1013,14 +1050,79 @@ img, svg { display: block; max-width: 100%; }
 .faq-a { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .3s; font-size: 15px; color: var(--muted); line-height: 1.65; }
 .faq-item.open .faq-a { max-height: 320px; padding-bottom: 20px; }
 
-/* ── FINAL CTA ── */
-.final-cta { padding: 100px 0; text-align: center; background: var(--navy); position: relative; overflow: hidden; }
-.final-cta::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(13,148,136,.2) 0%, transparent 65%); pointer-events: none; }
+/* ── FINAL CTA — premium video-like animated background ── */
+.final-cta {
+  padding: 100px 0; text-align: center; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #0F1B35 0%, #14243F 50%, #0E3540 100%);
+  isolation: isolate;
+}
+/* Layer 1 — drifting teal mesh (radial blobs) */
+.final-cta::before {
+  content: ''; position: absolute; inset: -10%; pointer-events: none;
+  background:
+    radial-gradient(60% 80% at 20% 30%, rgba(13,148,136,.35) 0%, transparent 60%),
+    radial-gradient(50% 70% at 80% 70%, rgba(20,184,166,.25) 0%, transparent 65%),
+    radial-gradient(40% 60% at 50% 50%, rgba(13,148,136,.18) 0%, transparent 70%);
+  filter: blur(40px);
+  animation: ctaMeshDrift 18s ease-in-out infinite alternate;
+  z-index: 0;
+}
+/* Layer 2 — diagonal light-beam sweep */
+.final-cta::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 30%, rgba(20,184,166,.10) 50%, transparent 70%);
+  animation: ctaBeamSweep 12s linear infinite;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+/* Layer 3 — floating particle field */
+.cta-particles {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+.cta-particles span {
+  position: absolute;
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(94, 234, 212, .55);
+  box-shadow: 0 0 8px 1px rgba(94,234,212,.45);
+  opacity: 0;
+  animation: ctaParticleRise 9s linear infinite;
+}
+.cta-particles span:nth-child(1)  { left:  8%; animation-duration: 11s; animation-delay: 0s;    width: 3px; height: 3px; }
+.cta-particles span:nth-child(2)  { left: 18%; animation-duration:  8s; animation-delay: -2s;   width: 5px; height: 5px; }
+.cta-particles span:nth-child(3)  { left: 28%; animation-duration: 13s; animation-delay: -5s;   }
+.cta-particles span:nth-child(4)  { left: 38%; animation-duration:  9s; animation-delay: -1s;   width: 3px; height: 3px; }
+.cta-particles span:nth-child(5)  { left: 48%; animation-duration: 12s; animation-delay: -7s;   width: 5px; height: 5px; }
+.cta-particles span:nth-child(6)  { left: 58%; animation-duration: 10s; animation-delay: -3s;   }
+.cta-particles span:nth-child(7)  { left: 68%; animation-duration: 14s; animation-delay: -6s;   width: 3px; height: 3px; }
+.cta-particles span:nth-child(8)  { left: 78%; animation-duration:  9s; animation-delay: -4s;   }
+.cta-particles span:nth-child(9)  { left: 88%; animation-duration: 12s; animation-delay: -8s;   width: 5px; height: 5px; }
+.cta-particles span:nth-child(10) { left: 95%; animation-duration: 11s; animation-delay: -10s;  width: 3px; height: 3px; }
+.cta-particles span:nth-child(11) { left: 12%; animation-duration: 13s; animation-delay: -9s;   width: 4px; height: 4px; }
+.cta-particles span:nth-child(12) { left: 72%; animation-duration:  8s; animation-delay: -6s;   width: 3px; height: 3px; }
+
 .final-cta h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 900; color: #fff; letter-spacing: -0.04em; margin: 0 auto 18px; max-width: 720px; line-height: 1.08; }
 .final-cta h2 em { color: var(--teal3); font-style: italic; }
 .final-cta p { font-size: 16px; color: rgba(255,255,255,.65); margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.5; }
 .final-cta .btn-primary { height: 56px; padding: 0 36px; font-size: 16px; border-radius: 12px; box-shadow: 0 8px 32px rgba(13,148,136,.45); }
 .final-cta .micro { display: block; font-size: 12px; color: rgba(255,255,255,.45); margin-top: 14px; letter-spacing: .04em; }
+
+@keyframes ctaMeshDrift {
+  0%   { transform: translate(0, 0)       scale(1); }
+  50%  { transform: translate(-30px, 20px) scale(1.10); }
+  100% { transform: translate(20px, -10px) scale(1.05); }
+}
+@keyframes ctaBeamSweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes ctaParticleRise {
+  0%   { transform: translateY(110%) translateX(0);    opacity: 0; }
+  10%  { opacity: .9; }
+  50%  { transform: translateY(50%)  translateX(8px);  opacity: .9; }
+  90%  { opacity: .7; }
+  100% { transform: translateY(-10%) translateX(-6px); opacity: 0; }
+}
 
 /* ── DISCLAIMER STRIP ── */
 .disclaimer-strip { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; }
@@ -1175,6 +1277,13 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .cmp-rings .r1, .cmp-rings .r2, .cmp-rings .r3 { animation: none !important; }
   .cmp-particles span { animation: none !important; }
   .plan-badge::after { animation: none !important; }
+  /* Premium pulse icon — hold static */
+  .plan-pulse-icon .r1, .plan-pulse-icon .r2, .plan-pulse-icon .r3 { animation: none !important; opacity: 0.25; }
+  .plan-pulse-shield { animation: none !important; }
+  /* Final CTA video-like layers — hold static gradient only */
+  .final-cta::before { animation: none !important; }
+  .final-cta::after { animation: none !important; opacity: 0.4; }
+  .cta-particles span { animation: none !important; opacity: 0; }
 }
 
 /* ── TOUCH FEEDBACK — :active tap states ── */
@@ -1628,8 +1737,15 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 
       <!-- PREMIUM -->
       <div class="plan plan-premium">
-        <!-- Real Advocat shield centered as premium identity mark -->
-        <img class="plan-hero-shield" src="/blog/logo_shield.png" alt="Advocat shield" aria-hidden="true">
+        <!-- Pulsing legal-assistant icon — mirrors in-app home tile (shield + 3 animated rings) -->
+        <div class="plan-pulse-icon" aria-hidden="true">
+          <svg class="pulse-rings" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <circle class="r1" cx="50" cy="50" r="38"/>
+            <circle class="r2" cx="50" cy="50" r="38"/>
+            <circle class="r3" cx="50" cy="50" r="38"/>
+          </svg>
+          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true">
+        </div>
         <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
         <div class="plan-name" data-i18n="plan3.name">Premium</div>
         <div class="plan-price">
@@ -1670,6 +1786,11 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 
 <!-- ── FINAL CTA ── -->
 <section class="final-cta">
+  <div class="cta-particles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
   <div class="container" style="position:relative;z-index:1;text-align:center">
     <h2 data-i18n-html="cta.title">Don't face your rights <em>alone</em>.</h2>
     <p data-i18n="cta.sub">Ask the first question. Cited answer in 30 seconds. No card required.</p>
