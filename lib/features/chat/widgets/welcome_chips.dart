@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../config/theme.dart';
 import '../../../models/case_model.dart';
-import 'action_chip.dart';
 
 // ---------------------------------------------------------------------------
 // Post-launch BUG 3 fix (2026-04-22): first-conversation category prompt
@@ -306,6 +306,8 @@ class ChatWelcomeChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const categories = WelcomeCategory.values;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(
         AppSpacing.md,
@@ -314,24 +316,20 @@ class ChatWelcomeChips extends StatelessWidget {
         AppSpacing.md,
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final cat in WelcomeCategory.values)
-                ChatActionChip(
-                  label: cat.chipLabel(locale),
-                  icon: cat.icon,
-                  onTap: () => onCategorySelected(
-                    cat,
-                    cat.prefillMessage(locale),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xs),
+          for (var i = 0; i < categories.length; i++) ...[
+            if (i > 0) const SizedBox(height: 12),
+            _WelcomeSuggestionCard(
+              label: categories[i].chipLabel(locale),
+              icon: categories[i].icon,
+              onTap: () => onCategorySelected(
+                categories[i],
+                categories[i].prefillMessage(locale),
+              ),
+            ),
+          ],
+          const SizedBox(height: AppSpacing.sm),
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton(
@@ -355,6 +353,77 @@ class ChatWelcomeChips extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Suggestion card
+// ---------------------------------------------------------------------------
+//
+// Full-width card-style starter button used on the chat empty state.
+// Replaces the previous tiny pill chips: padding 16/14, radius 14, text 16px
+// — gives the suggestions a more readable, premium feel while still hitting
+// a >= 44px touch target on mobile. Inline (not exported) to avoid disturbing
+// the inline ChatActionChip used inside rich_message.dart.
+
+class _WelcomeSuggestionCard extends StatelessWidget {
+  const _WelcomeSuggestionCard({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        borderRadius: BorderRadius.circular(14),
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: AppColors.accent.withValues(alpha: 0.5),
+            ),
+            color: AppColors.accent.withValues(alpha: 0.06),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 20,
+                color: AppColors.accent,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.accent,
+                    height: 1.3,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

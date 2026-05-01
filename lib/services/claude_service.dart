@@ -680,12 +680,16 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
           auth: SupabaseAuthShim(),
         );
       } on JwtRefreshException catch (e) {
-        // Surface as ClaudeServiceException so the existing chat error
-        // handler routes to login instead of swallowing the failure.
+        // Genuine auth refresh failure — surface to login flow.
         throw ClaudeServiceException(
           'Session expired and refresh failed — please log in again',
           e,
         );
+      } catch (e) {
+        // Supabase not initialized / shim construction fail / unexpected —
+        // skip JWT refresh; proxy handles auth via anon JWT.
+        // Without this catch, any non-JwtRefreshException bubbles up to the
+        // chat handler and shows "напишите в поддержку" fallback.
       }
     }
 
