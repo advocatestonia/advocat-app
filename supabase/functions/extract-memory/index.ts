@@ -50,6 +50,7 @@ import {
 import {
   ALLOWED_KEYS,
   buildHaikuRequest,
+  partitionFactsForUpsert,
   parseHaikuFacts,
   TEXT_MAX_LEN,
 } from "./memory_schema.ts";
@@ -170,69 +171,91 @@ serve(async (req: Request) => {
   // Upsert into user_ai_memory. Unique constraint is
   // (user_id, key, value->>'text') so reinforcement becomes an UPDATE of
   // last_reinforced_at + confidence.
+  //
+  // BUG#1 fix (2026-04-29): the legacy code ran SELECT + INSERT/UPDATE
+  // PER FACT — 10 facts = 21 round-trips. The new code batches:
+  //   1) one SELECT with `.in("key", […])` to pull all candidate
+  //      collisions for this user;
+  //   2) `partitionFactsForUpsert` decides reinforce-vs-new in memory
+  //      while preserving the max-confidence rule;
+  //   3) one UPSERT with `onConflict: "user_id,key,value->>text"`.
+  // Total DB round-trips: 2, regardless of fact count.
   // -------------------------------------------------------------------------
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+  // Trim & filter facts up-front (matches legacy guard behaviour).
+  const cleanFacts = facts
+    .filter((f) => ALLOWED_KEYS.has(f.key))
+    .map((f) => ({
+      key: f.key,
+      value: f.value.slice(0, TEXT_MAX_LEN),
+      confidence: f.confidence,
+    }))
+    .filter((f) => f.value.length > 0);
+
+  if (cleanFacts.length === 0) {
+    return jsonOk({ extracted: facts.length, stored: 0, duplicates: 0 });
+  }
+
+  // Step 1 — single batched SELECT for every key Haiku returned.
+  const candidateKeys = Array.from(new Set(cleanFacts.map((f) => f.key)));
+  const { data: existingRows, error: selectError } = await supabase
+    .from("user_ai_memory")
+    .select("id, key, confidence, value")
+    .eq("user_id", gate.user.id)
+    .in("key", candidateKeys);
+
+  if (selectError) {
+    console.error(
+      "extract-memory: batch select error:",
+      String(selectError.message ?? selectError).slice(0, 200),
+    );
+    return jsonError("Database error during fact lookup", 502);
+  }
+
+  // Coerce to the helper's input shape — pull the embedded `text` out
+  // of the JSON column.
+  const existing = (existingRows ?? [])
+    .map((r) => {
+      const v = (r as { value?: { text?: unknown } }).value;
+      const text = v && typeof v.text === "string" ? v.text : "";
+      return {
+        id: (r as { id: string }).id,
+        key: (r as { key: string }).key,
+        text,
+        confidence: (r as { confidence: number }).confidence,
+      };
+    })
+    .filter((r) => r.text.length > 0);
+
+  // Step 2 — partition in memory.
+  const partition = partitionFactsForUpsert({
+    facts: cleanFacts,
+    existing,
+    userId: gate.user.id,
+    sessionId,
+  });
+
+  // Step 3 — single batched UPSERT.
   let stored = 0;
-  let duplicates = 0;
-
-  for (const fact of facts) {
-    if (!ALLOWED_KEYS.has(fact.key)) continue;
-    const text = fact.value.slice(0, TEXT_MAX_LEN);
-    if (text.length === 0) continue;
-
-    // Does a row with the same (user, key, text) already exist?
-    const { data: existing, error: selectError } = await supabase
+  let duplicates = partition.duplicates;
+  if (partition.rows.length > 0) {
+    const { error: upsertError } = await supabase
       .from("user_ai_memory")
-      .select("id, confidence")
-      .eq("user_id", gate.user.id)
-      .eq("key", fact.key)
-      .eq("value->>text", text)
-      .limit(1);
-
-    if (selectError) {
-      console.error(
-        "extract-memory: select error:",
-        String(selectError.message ?? selectError).slice(0, 200),
-      );
-      continue;
-    }
-
-    if (existing && existing.length > 0) {
-      // Reinforce — bump last_reinforced_at and take max(confidence).
-      const current = existing[0] as { id: string; confidence: number };
-      const newConfidence = Math.max(current.confidence, fact.confidence);
-      const { error: updateError } = await supabase
-        .from("user_ai_memory")
-        .update({
-          last_reinforced_at: new Date().toISOString(),
-          confidence: newConfidence,
-        })
-        .eq("id", current.id);
-      if (!updateError) duplicates++;
-      continue;
-    }
-
-    const { error: insertError } = await supabase
-      .from("user_ai_memory")
-      .insert({
-        user_id: gate.user.id,
-        key: fact.key,
-        value: {
-          text,
-          confidence: fact.confidence,
-          extracted_from: sessionId,
-        },
-        confidence: fact.confidence,
-        source_session_id: sessionId,
+      .upsert(partition.rows, {
+        onConflict: "user_id,key,value->>text",
+        ignoreDuplicates: false,
       });
-    if (insertError) {
+    if (upsertError) {
       console.error(
-        "extract-memory: insert error:",
-        String(insertError.message ?? insertError).slice(0, 200),
+        "extract-memory: batch upsert error:",
+        String(upsertError.message ?? upsertError).slice(0, 200),
       );
-      continue;
+      return jsonError("Database error during memory upsert", 502);
     }
-    stored++;
+    stored = partition.newCount;
+  } else {
+    duplicates = 0;
   }
 
   return jsonOk({

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -7,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/assistant_tools.dart';
+import 'approval_outcome.dart';
 
 // ---------------------------------------------------------------------------
 // Main dispatcher widget
@@ -23,6 +26,8 @@ class ToolResultCard extends StatelessWidget {
     this.onAction,
     this.onApprove,
     this.onReject,
+    this.onRejectWithReason,
+    this.approvalTimeout = ToolApprovalOutcome.defaultTimeout,
   });
 
   final ToolResult result;
@@ -33,8 +38,20 @@ class ToolResultCard extends StatelessWidget {
   /// Called when the user approves a pending action.
   final VoidCallback? onApprove;
 
-  /// Called when the user rejects a pending action.
+  /// Legacy reject callback. Kept for backwards compatibility with
+  /// existing call-sites; new code should prefer [onRejectWithReason]
+  /// for structured outcome routing (BUG#4 fix, 2026-04-29).
   final VoidCallback? onReject;
+
+  /// Structured reject callback. Fires for both explicit Cancel taps
+  /// and the [approvalTimeout] auto-reject. Carries a typed
+  /// [ToolApprovalOutcome] the chat layer can hand to Claude as a
+  /// proper tool_result shape.
+  final ValueChanged<ToolApprovalOutcome>? onRejectWithReason;
+
+  /// How long the approval bar waits for user input before auto-firing
+  /// a [ToolApprovalKind.timeout] outcome. Defaults to 5 min.
+  final Duration approvalTimeout;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +103,8 @@ class ToolResultCard extends StatelessWidget {
             message: result.approvalMessage ?? 'Confirm this action?',
             onApprove: onApprove,
             onReject: onReject,
+            onRejectWithReason: onRejectWithReason,
+            timeout: approvalTimeout,
           ),
         ],
       ],
@@ -1264,16 +1283,76 @@ class _TranslationCard extends StatelessWidget {
 // Approval bar
 // ---------------------------------------------------------------------------
 
-class _ApprovalBar extends StatelessWidget {
+/// Stateful approval bar.
+///
+/// BUG#4 fix (2026-04-29). Adds two guarantees on top of the legacy
+/// stateless bar:
+///   1. Timeout: if the user doesn't respond within [timeout] (default
+///      5 min), the bar auto-fires [onRejectWithReason] with a
+///      [ToolApprovalKind.timeout] outcome. Without this, navigating
+///      away left the AI hanging on a tool_use with no result, and
+///      every subsequent message in the case would dangle.
+///   2. Single-shot reject: once any reject fires (manual Cancel or
+///      timer), all later events are ignored. Prevents double-rejection
+///      after Cancel-then-timeout races.
+class _ApprovalBar extends StatefulWidget {
   const _ApprovalBar({
     required this.message,
     this.onApprove,
     this.onReject,
+    this.onRejectWithReason,
+    required this.timeout,
   });
 
   final String message;
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
+  final ValueChanged<ToolApprovalOutcome>? onRejectWithReason;
+  final Duration timeout;
+
+  @override
+  State<_ApprovalBar> createState() => _ApprovalBarState();
+}
+
+class _ApprovalBarState extends State<_ApprovalBar> {
+  Timer? _timeoutTimer;
+  bool _settled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _timeoutTimer = Timer(widget.timeout, _handleTimeout);
+  }
+
+  @override
+  void dispose() {
+    _timeoutTimer?.cancel();
+    super.dispose();
+  }
+
+  void _handleTimeout() {
+    if (_settled) return;
+    _settled = true;
+    widget.onRejectWithReason?.call(ToolApprovalOutcome.timeout());
+    // Legacy callback still fires for older call-sites that don't yet
+    // wire the structured variant.
+    widget.onReject?.call();
+  }
+
+  void _handleCancel() {
+    if (_settled) return;
+    _settled = true;
+    _timeoutTimer?.cancel();
+    widget.onRejectWithReason?.call(ToolApprovalOutcome.userRejected());
+    widget.onReject?.call();
+  }
+
+  void _handleApprove() {
+    if (_settled) return;
+    _settled = true;
+    _timeoutTimer?.cancel();
+    widget.onApprove?.call();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1294,7 +1373,7 @@ class _ApprovalBar extends StatelessWidget {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  message,
+                  widget.message,
                   style: const TextStyle(
                     fontSize: 13,
                     color: AppColors.textPrimary,
@@ -1309,7 +1388,7 @@ class _ApprovalBar extends StatelessWidget {
             children: [
               Expanded(
                 child: OutlinedButton(
-                  onPressed: onReject,
+                  onPressed: _handleCancel,
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.textTertiary,
                     side: const BorderSide(color: AppColors.border),
@@ -1323,7 +1402,7 @@ class _ApprovalBar extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: onApprove,
+                  onPressed: _handleApprove,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.accent,
                     foregroundColor: Colors.white,

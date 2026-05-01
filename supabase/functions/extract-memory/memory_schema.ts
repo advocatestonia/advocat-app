@@ -37,6 +37,140 @@ export interface ExtractedFact {
 }
 
 /**
+ * Row already present in `user_ai_memory` for this (user_id, key, text)
+ * triple — used by [partitionFactsForUpsert] to decide whether each
+ * incoming fact is a "new" insert or a "reinforcement" of an existing row.
+ */
+export interface ExistingMemoryRow {
+  id: string;
+  key: string;
+  text: string;
+  confidence: number;
+}
+
+/**
+ * Row shape ready for `supabase.from("user_ai_memory").upsert(rows, …)`.
+ *
+ * - `last_reinforced_at` is set ONLY for reinforcements, so on a fresh
+ *   insert the database default fires.
+ * - `value` is the JSON column; `confidence` is the numeric column kept
+ *   in sync at the row level (the JSON copy is informational).
+ */
+export interface MemoryUpsertRow {
+  user_id: string;
+  key: string;
+  value: {
+    text: string;
+    confidence: number;
+    extracted_from: string | null;
+  };
+  confidence: number;
+  source_session_id: string | null;
+  last_reinforced_at?: string;
+}
+
+export interface PartitionResult {
+  rows: MemoryUpsertRow[];
+  /** Number of facts that match an existing row (= reinforcements). */
+  duplicates: number;
+  /** Number of facts that have no existing row (= new inserts). */
+  newCount: number;
+}
+
+/**
+ * Pure helper — split [BUG#1, 2026-04-29].
+ *
+ * Replaces the legacy per-fact loop in index.ts that ran SELECT then
+ * INSERT/UPDATE per fact (= O(N) round-trips). Caller now does:
+ *   1) one batched SELECT to pull rows whose `key` is in the new keyset
+ *   2) call this helper to decide which rows go to which path
+ *   3) one batched UPSERT with `onConflict: "user_id,key,value->>text"`
+ *
+ * Confidence rule (preserved from legacy code, see index.ts:201-208):
+ *   reinforced.confidence = max(existing.confidence, fact.confidence)
+ * — a weaker reinforcement must NEVER lower a stronger stored confidence.
+ *
+ * Duplicate-input rule (NEW):
+ *   if Haiku emits the same (key, text) twice in one batch, we collapse
+ *   to one row with the max confidence. Without this, the upsert would
+ *   conflict-on-itself and Postgres would error.
+ */
+export function partitionFactsForUpsert(args: {
+  facts: ExtractedFact[];
+  existing: ExistingMemoryRow[];
+  userId: string;
+  sessionId: string | null;
+}): PartitionResult {
+  const { facts, existing, userId, sessionId } = args;
+
+  // Index existing rows by their (key, text) tuple so we can look up in O(1).
+  // Multiple existing rows for the same key are possible (different texts);
+  // a Map keyed on `${key}\u0000${text}` keeps them apart.
+  const existingByTuple = new Map<string, ExistingMemoryRow>();
+  for (const row of existing) {
+    existingByTuple.set(`${row.key}\u0000${row.text}`, row);
+  }
+
+  // Collapse duplicate (key, text) inputs to a single row carrying max
+  // confidence. Insertion order is preserved so the test assertion on
+  // "first 5 reinforced, last 5 new" holds.
+  const collapsedByTuple = new Map<string, ExtractedFact>();
+  for (const fact of facts) {
+    const tk = `${fact.key}\u0000${fact.value}`;
+    const prev = collapsedByTuple.get(tk);
+    if (prev === undefined || fact.confidence > prev.confidence) {
+      collapsedByTuple.set(tk, fact);
+    }
+  }
+
+  const rows: MemoryUpsertRow[] = [];
+  let duplicates = 0;
+  let newCount = 0;
+  const nowIso = new Date().toISOString();
+
+  for (const fact of collapsedByTuple.values()) {
+    const tk = `${fact.key}\u0000${fact.value}`;
+    const existingRow = existingByTuple.get(tk);
+
+    if (existingRow !== undefined) {
+      // Reinforcement: keep stronger confidence, bump last_reinforced_at.
+      const finalConfidence = Math.max(
+        existingRow.confidence,
+        fact.confidence,
+      );
+      rows.push({
+        user_id: userId,
+        key: fact.key,
+        value: {
+          text: fact.value,
+          confidence: finalConfidence,
+          extracted_from: sessionId,
+        },
+        confidence: finalConfidence,
+        source_session_id: sessionId,
+        last_reinforced_at: nowIso,
+      });
+      duplicates++;
+    } else {
+      rows.push({
+        user_id: userId,
+        key: fact.key,
+        value: {
+          text: fact.value,
+          confidence: fact.confidence,
+          extracted_from: sessionId,
+        },
+        confidence: fact.confidence,
+        source_session_id: sessionId,
+      });
+      newCount++;
+    }
+  }
+
+  return { rows, duplicates, newCount };
+}
+
+/**
  * System prompt seen by Haiku — tuned to suppress invention and stay
  * within the bounded vocabulary.
  */

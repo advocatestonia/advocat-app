@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 import '../config/app_config.dart';
+import 'jwt_refresh_policy.dart';
 import 'tool_definitions.dart';
 import 'web_streaming_stub.dart' if (dart.library.js_interop) 'web_streaming_impl.dart';
 
@@ -665,6 +666,27 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
       throw const ClaudeServiceException(
         'Claude API is not configured. Set SUPABASE_URL or CLAUDE_API_KEY.',
       );
+    }
+
+    // BUG#3 fix (2026-04-29): refresh the Supabase JWT BEFORE opening
+    // the SSE pipe when we're about to authenticate via the proxy.
+    // Sonnet streams can run 30-90s; if the access token expires
+    // mid-stream the proxy returns 401 and the user sees a truncated
+    // reply with no error surface. The policy is a no-op when the
+    // token has plenty of life left, so the happy path is free.
+    if (_useProxy) {
+      try {
+        await JwtRefreshPolicy.ensureFreshSession(
+          auth: SupabaseAuthShim(),
+        );
+      } on JwtRefreshException catch (e) {
+        // Surface as ClaudeServiceException so the existing chat error
+        // handler routes to login instead of swallowing the failure.
+        throw ClaudeServiceException(
+          'Session expired and refresh failed — please log in again',
+          e,
+        );
+      }
     }
 
     // Rate limiting

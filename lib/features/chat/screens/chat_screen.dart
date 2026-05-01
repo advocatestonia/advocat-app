@@ -2422,9 +2422,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 executor.performNavigation(message.navigation!);
               }
             },
-            onReject: () {
-              // Cancelled -- just acknowledge in chat
-              _sendMessage('Cancel the action.');
+            // BUG#4 fix (2026-04-29): structured tool_result reply.
+            // Cancel and timeout produce different `type` values so the
+            // AI can branch on the outcome (apologise vs offer
+            // alternative vs retry). The 5-min auto-timeout in the
+            // approval bar prevents indefinite dangling tool_use turns.
+            onRejectWithReason: (outcome) {
+              _sendMessage(outcome.toSystemMessage());
             },
           ),
         ],

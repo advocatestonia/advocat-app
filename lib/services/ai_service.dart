@@ -13,6 +13,7 @@ import 'supabase_service.dart';
 import 'system_prompts.dart';
 import 'user_memory_service.dart';
 import 'voice_service.dart';
+import 'voice_tag_stream_scrubber.dart';
 
 // ---------------------------------------------------------------------------
 // Quota typed response (P0-3)
@@ -1376,13 +1377,15 @@ class AIService {
 
       // Stream from Claude.
       final fullResponse = StringBuffer();
-      // Voice-tag scrub buffer (2026-04-29): voice tags such as
-      // `[warmth]` MUST NOT reach the chat UI. Tags can also span
-      // chunk boundaries (e.g. "[war" then "mth] Привет"), so we hold
-      // an unflushed tail starting at the last `[` until either the
-      // closing `]` arrives or the tag turns out to be a legal-citation
-      // bracket (contains a space → not a voice tag, safe to flush).
-      var pending = '';
+      // BUG#2 fix (2026-04-29): voice tags like `[warmth]` MUST NOT
+      // reach the chat UI. Tags can span chunk boundaries
+      // (e.g. "[war" then "mth] Привет"), and legal-citation brackets
+      // like `[Article 26]` MUST be preserved verbatim. The legacy
+      // condition-based logic broke on three real prod inputs (cross-
+      // chunk, mid-tag-space, and unclosed-tag-at-EOF). Replaced with
+      // an explicit two-state scrubber pinned by
+      // test/services/voice_tag_state_machine_test.dart.
+      final scrubber = VoiceTagStreamScrubber();
 
       await for (final chunk in _claudeService.sendMessageStreaming(
         model: model,
@@ -1392,26 +1395,14 @@ class AIService {
         temperature: 0.3,
       )) {
         fullResponse.write(chunk);
-        pending += chunk;
-        final lastOpen = pending.lastIndexOf('[');
-        String emit;
-        if (lastOpen < 0 ||
-            pending.substring(lastOpen).contains(']') ||
-            pending.substring(lastOpen).contains(' ')) {
-          emit = VoiceService.stripVoiceTags(pending);
-          pending = '';
-        } else {
-          emit = VoiceService.stripVoiceTags(pending.substring(0, lastOpen));
-          pending = pending.substring(lastOpen);
-        }
+        final emit = scrubber.feed(chunk);
         if (emit.isNotEmpty) yield emit;
       }
-      // Flush any remaining pending text (e.g. trailing `[` that never
-      // closed). Strip and emit unconditionally so nothing is dropped.
-      if (pending.isNotEmpty) {
-        final tailFlush = VoiceService.stripVoiceTags(pending);
-        if (tailFlush.isNotEmpty) yield tailFlush;
-      }
+      // Flush any unclosed `[` tail verbatim — better visible truncation
+      // than a silent drop. Matches the legacy guarantee that no user
+      // text is ever lost on stream end.
+      final tail = scrubber.flush();
+      if (tail.isNotEmpty) yield tail;
 
       // After stream completes — save to history and cache.
       // Also strip voice tags from the persisted text so subsequent
