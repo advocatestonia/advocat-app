@@ -736,52 +736,56 @@ img, svg { display: block; max-width: 100%; }
 
 /* ─── MOBILE ─── */
 @media (max-width: 900px) {
-  #compare { padding-top: 64px; padding-bottom: 72px; }
-  .cmp-stage { border-radius: 22px; margin-top: 40px; }
+  /* Relax viewport-lock on phone — stacked cards don't need to fill 100vh */
+  #compare { padding-top: 56px; padding-bottom: 64px; min-height: 0; max-height: none; display: block; }
+  .cmp-stage { border-radius: 22px; margin-top: 32px; }
   .cmp-split { grid-template-columns: 1fr; min-height: 0; }
-  .cmp-side { padding: 44px 28px; clip-path: none !important; }
-  .cmp-side--us { padding: 44px 28px 64px !important; }
-  .cmp-side--them { padding: 64px 28px 44px !important; }
+  .cmp-side { padding: 28px 20px; clip-path: none !important; }
+  .cmp-side--us { padding: 28px 20px 36px !important; }
+  .cmp-side--them { padding: 36px 20px 28px !important; }
 
-  /* Hide diagonal divider on mobile — orb sits at the seam between stacked panels */
+  /* Hide diagonal divider AND orb on mobile — the stacked split itself is the divider */
   .cmp-divider { display: none; }
-  .cmp-orb {
-    top: 50%; left: 50%;
-    width: 72px; height: 72px; font-size: 18px;
-    /* Slimmer ring set on mobile */
-    box-shadow:
-      0 0 0 4px rgba(13,148,136,.10),
-      0 0 0 8px rgba(13,148,136,.05),
-      0 0 28px rgba(20,184,166,.55),
-      0 12px 28px rgba(0,0,0,.32);
-  }
+  .cmp-orb { display: none; }
 
   .cmp-title { font-size: 28px; }
   .cmp-hero-mark { width: 140px; height: 140px; }
   .cmp-hero-mark img { width: 140px; height: 140px; }
   .cmp-rings { inset: -16px; }
   .cmp-price { padding: 12px 18px; }
-  .cmp-price .cmp-price-num { font-size: 36px; }
-  .cmp-price .cmp-price-unit { font-size: 14px; }
-  .cmp-side--us > .cmp-watermark { width: 240px; height: 240px; right: -40px; bottom: -40px; }
-  .cmp-side--them > .cmp-watermark { width: 220px; height: 220px; left: -30px; bottom: -20px; }
+  .cmp-price .cmp-price-num { font-size: 32px; }
+  .cmp-price .cmp-price-unit { font-size: 13px; }
+  /* Watermarks: smaller, lower opacity, kept inside frame */
+  .cmp-side--us > .cmp-watermark { width: 200px; height: 200px; right: -30px; bottom: -30px; opacity: .025; }
+  .cmp-side--them > .cmp-watermark { width: 180px; height: 180px; left: -24px; bottom: -16px; opacity: .05; }
   /* Reduce particles for mobile clarity */
   .cmp-particles span:nth-child(n+5) { display: none; }
+  /* Kill the mesh/gradient animation on phones — scroll perf + readability */
+  .cmp-side--us { animation: none !important; background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100% !important; }
+  .cmp-particles span { animation: none !important; opacity: .45; }
+  .cmp-side--us::after { opacity: .35; }
 
   /* Savings banner on mobile */
   .cmp-savings {
     grid-template-columns: 1fr;
-    padding: 24px 22px;
-    gap: 18px;
+    padding: 22px 20px;
+    gap: 16px;
+    padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
   }
   .cmp-save-cell {
-    padding: 0 0 16px;
+    padding: 0 0 14px;
     border-right: none;
     border-bottom: 1px solid rgba(255,255,255,.10);
   }
-  .cmp-save-cell:last-child { border-bottom: none; padding: 12px 0 0; }
-  .cmp-save-num { font-size: 36px; }
-  .cmp-save-cell--big .cmp-save-num { font-size: 48px; }
+  .cmp-save-cell:last-child { border-bottom: none; padding: 10px 0 0; }
+  .cmp-save-num { font-size: 34px; }
+  .cmp-save-cell--big .cmp-save-num { font-size: 44px; }
+  .cmp-save-label { font-size: 10.5px; margin-bottom: 6px; }
+  .cmp-save-sub { font-size: 12px; }
+
+  /* Touch-target safety for CTA inside Advocat card */
+  .cmp-cta { min-height: 48px; }
+  .cmp-cta-disabled { min-height: 48px; }
 }
 
 /* ── PRICING ── */
@@ -1190,18 +1194,17 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .step h3 { font-size: 17px; }
   /* Compare title smaller */
   #compare h2 { font-size: clamp(22px, 6vw, 28px); }
-  /* Compare orb (VS) — sit at the seam between stacked cards */
-  .cmp-orb {
-    top: 50% !important; left: 50% !important;
-    width: 60px; height: 60px; font-size: 16px;
-  }
+  /* Compare orb stays hidden on phones — set in 900px breakpoint */
   /* Compare watermark — pull tighter to avoid horizontal overflow on narrow screens */
-  .cmp-side--us > .cmp-watermark { width: 200px; height: 200px; right: -28px; bottom: -28px; }
-  .cmp-side--them > .cmp-watermark { width: 180px; height: 180px; left: -20px; bottom: -16px; }
+  .cmp-side--us > .cmp-watermark { width: 170px; height: 170px; right: -24px; bottom: -24px; opacity: .025; }
+  .cmp-side--them > .cmp-watermark { width: 150px; height: 150px; left: -18px; bottom: -14px; opacity: .05; }
+  /* Hero shield — smaller on phones */
+  .cmp-hero-mark { width: 120px; height: 120px; }
+  .cmp-hero-mark img { width: 120px; height: 120px; }
   /* Savings counter — tighter */
-  .cmp-savings { padding: 22px 18px; }
-  .cmp-save-num { font-size: 32px; }
-  .cmp-save-cell--big .cmp-save-num { font-size: 42px; }
+  .cmp-savings { padding: 20px 16px; }
+  .cmp-save-num { font-size: 30px; }
+  .cmp-save-cell--big .cmp-save-num { font-size: 40px; }
   /* Pro plan price — slight reduction so currency + amount + per fit cleanly */
   .plan-price .amount { font-size: 44px; }
   .plan-price .currency { font-size: 18px; }
@@ -1213,12 +1216,19 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .faq-q { padding: 22px 0; min-height: 56px; font-size: 15.5px; }
   .faq-q .plus { font-size: 22px; }
   /* Compare side padding compact */
-  .cmp-side--us, .cmp-side--them { padding: 36px 22px !important; }
-  .cmp-side--us { padding-bottom: 50px !important; }
-  .cmp-side--them { padding-top: 50px !important; }
+  .cmp-side--us, .cmp-side--them { padding: 24px 16px !important; }
+  .cmp-side--us { padding-bottom: 28px !important; }
+  .cmp-side--them { padding-top: 28px !important; }
   .cmp-title { font-size: 24px; }
-  .cmp-list li { font-size: 13px; }
-  .cmp-cta { height: 52px; font-size: 15px; }
+  .cmp-list li { font-size: 13px; padding: 6px 0; line-height: 1.4; gap: 8px; }
+  .cmp-list .cmp-icon { width: 20px; height: 20px; }
+  .cmp-eyebrow { font-size: 10px; padding: 5px 10px; }
+  .cmp-tag { font-size: 11px; }
+  .cmp-cta { height: 52px; font-size: 15px; min-height: 48px; }
+  .cmp-cta-disabled { height: 52px; font-size: 14.5px; min-height: 48px; }
+  .cmp-price-note { font-size: 12px; }
+  /* Hero block tighter spacing */
+  .cmp-hero { gap: 8px; margin-bottom: 14px; }
 }
 
 /* ── EXTRA-SMALL (≤480px) — iPhone SE territory ── */
@@ -1241,10 +1251,17 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .hero-scroll-hint { display: none; }
   .section { padding: 56px 0; }
   /* Compare savings ultra-compact */
-  .cmp-save-num { font-size: 28px; }
-  .cmp-save-cell--big .cmp-save-num { font-size: 38px; }
-  /* Reduce particles further */
-  .cmp-particles span:nth-child(n+4) { display: none; }
+  .cmp-save-num { font-size: 26px; }
+  .cmp-save-cell--big .cmp-save-num { font-size: 34px; }
+  .cmp-savings { padding: 18px 14px; }
+  /* Compare side ultra-compact */
+  .cmp-side--us, .cmp-side--them { padding: 20px 14px !important; }
+  .cmp-hero-mark { width: 104px; height: 104px; }
+  .cmp-hero-mark img { width: 104px; height: 104px; }
+  .cmp-title { font-size: 22px; }
+  .cmp-price .cmp-price-num { font-size: 28px; }
+  /* Reduce particles further — calm on cramped screens */
+  .cmp-particles span:nth-child(n+3) { display: none; }
   /* Final CTA */
   .final-cta { padding: 60px 0; }
   .final-cta h2 { font-size: clamp(26px, 7vw, 32px); }
