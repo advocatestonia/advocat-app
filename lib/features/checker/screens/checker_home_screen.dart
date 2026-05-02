@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
@@ -84,12 +85,13 @@ class CheckerHomeScreen extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.xl),
 
-              // Check a Company card
+              // Check a Company card — cinematic video background
               _CheckerCard(
                 icon: Icons.business_center_rounded,
                 title: l10n.checkCompany,
                 subtitle: l10n.beforeYouWork,
-                gradient: const [AppColors.accent, AppColors.accentDark],
+                videoAsset: 'assets/videos/checker_company.mp4',
+                fallbackGradient: const [AppColors.accent, AppColors.accentDark],
                 onTap: () => context.push(AppRoutes.checkerCompany),
               )
                   .animate()
@@ -98,12 +100,13 @@ class CheckerHomeScreen extends StatelessWidget {
 
               const SizedBox(height: AppSpacing.md),
 
-              // Check a Vehicle card
+              // Check a Vehicle card — cinematic video background
               _CheckerCard(
                 icon: Icons.directions_car_rounded,
                 title: l10n.checkVehicle,
                 subtitle: l10n.beforeYouBuy,
-                gradient: const [AppColors.info, AppColors.infoDark],
+                videoAsset: 'assets/videos/checker_vehicle.mp4',
+                fallbackGradient: const [AppColors.info, AppColors.infoDark],
                 onTap: () => context.push(AppRoutes.checkerVehicle),
               )
                   .animate()
@@ -151,7 +154,7 @@ class CheckerHomeScreen extends StatelessWidget {
 }
 
 // ---------------------------------------------------------------------------
-// Checker Card with premium press animation
+// Checker Card with cinematic video background + premium press animation
 // ---------------------------------------------------------------------------
 
 class _CheckerCard extends StatefulWidget {
@@ -159,14 +162,16 @@ class _CheckerCard extends StatefulWidget {
     required this.icon,
     required this.title,
     required this.subtitle,
-    required this.gradient,
+    required this.videoAsset,
+    required this.fallbackGradient,
     required this.onTap,
   });
 
   final IconData icon;
   final String title;
   final String subtitle;
-  final List<Color> gradient;
+  final String videoAsset;
+  final List<Color> fallbackGradient;
   final VoidCallback onTap;
 
   @override
@@ -175,9 +180,45 @@ class _CheckerCard extends StatefulWidget {
 
 class _CheckerCardState extends State<_CheckerCard> {
   bool _isPressed = false;
+  VideoPlayerController? _controller;
+  bool _videoReady = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initVideo();
+  }
+
+  Future<void> _initVideo() async {
+    try {
+      final c = VideoPlayerController.asset(widget.videoAsset);
+      await c.initialize();
+      await c.setLooping(true);
+      await c.setVolume(0);
+      await c.play();
+      if (!mounted) {
+        await c.dispose();
+        return;
+      }
+      setState(() {
+        _controller = c;
+        _videoReady = true;
+      });
+    } catch (_) {
+      // Asset missing or codec unsupported — gracefully fall back to gradient.
+      if (mounted) setState(() => _videoReady = false);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final shadowColor = widget.fallbackGradient.first;
     return GestureDetector(
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
@@ -192,73 +233,117 @@ class _CheckerCardState extends State<_CheckerCard> {
         curve: Curves.easeOut,
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          height: 112,
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: widget.gradient,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
             borderRadius: BorderRadius.circular(AppRadius.lg),
             boxShadow: [
               BoxShadow(
-                color: widget.gradient.first.withValues(alpha: _isPressed ? 0.15 : 0.35),
+                color: shadowColor.withValues(alpha: _isPressed ? 0.15 : 0.35),
                 blurRadius: _isPressed ? 8 : 20,
                 offset: Offset(0, _isPressed ? 3 : 8),
                 spreadRadius: _isPressed ? -2 : 0,
               ),
             ],
           ),
-          child: Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                ),
-                child: Icon(widget.icon, color: Colors.white, size: 28),
-              ),
-              const SizedBox(width: AppSpacing.md),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.3,
-                      ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                // Layer 1: gradient (always visible — fallback + safety net while video loads)
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: widget.fallbackGradient,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      widget.subtitle,
-                      style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.8),
-                        fontSize: 14,
-                      ),
+                  ),
+                ),
+
+                // Layer 2: cinematic video (covers the card when ready)
+                if (_videoReady && _controller != null)
+                  FittedBox(
+                    fit: BoxFit.cover,
+                    child: SizedBox(
+                      width: _controller!.value.size.width,
+                      height: _controller!.value.size.height,
+                      child: VideoPlayer(_controller!),
                     ),
-                  ],
+                  ),
+
+                // Layer 3: brand-tinted scrim — preserves card identity + AA contrast on white text
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        widget.fallbackGradient.first.withValues(alpha: 0.55),
+                        widget.fallbackGradient.last.withValues(alpha: 0.75),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              Container(
-                width: 32,
-                height: 32,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  shape: BoxShape.circle,
+
+                // Layer 4: original content (icon, title, subtitle, arrow)
+                Padding(
+                  padding: const EdgeInsets.all(AppSpacing.lg),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.2),
+                          borderRadius: BorderRadius.circular(AppRadius.md),
+                        ),
+                        child: Icon(widget.icon, color: Colors.white, size: 28),
+                      ),
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: -0.3,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              widget.subtitle,
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: 0.9),
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.18),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.arrow_forward_rounded,
+                          color: Colors.white.withValues(alpha: 0.9),
+                          size: 18,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: Icon(
-                  Icons.arrow_forward_rounded,
-                  color: Colors.white.withValues(alpha: 0.8),
-                  size: 18,
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

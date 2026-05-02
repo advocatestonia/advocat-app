@@ -51,6 +51,9 @@ dependencies:
   # Sharing
   share_plus: ^10.0.0
 
+  # Video playback (for cinematic Checker card backgrounds)
+  video_player: ^2.9.1
+
   # UI Utilities
   flutter_svg: ^2.0.10+1
   cached_network_image: ^3.3.1
@@ -97,5 +100,6 @@ flutter:
     - assets/l10n/
     - assets/legal/estonia/
     - assets/legal/finland/
+    - assets/videos/
 
   # Fonts loaded via google_fonts package at runtime
