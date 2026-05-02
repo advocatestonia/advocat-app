@@ -180,10 +180,11 @@ img, svg { display: block; max-width: 100%; }
 .hero-grid > div:first-child { align-self: center; }
 .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 5px 11px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
 .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 2px rgba(13,148,136,.2); }
-.hero h1 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 900; color: var(--navy); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; max-width: 880px; }
+.hero h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 900; color: var(--navy); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 16px; max-width: 620px; }
 .hero h1 em { font-style: italic; color: var(--teal); }
-.hero-sub { font-size: clamp(14px, 1.2vw, 16px); line-height: 1.55; color: var(--muted); margin-bottom: 18px; max-width: 380px; }
-.hero-cta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
+.hero-sub { font-size: 17px; line-height: 1.55; color: var(--muted); margin-bottom: 24px; max-width: 560px; }
+.hero-cta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.hero-disclaimer { font-size: 12px; line-height: 1.5; color: var(--faint); margin: 0 0 18px; max-width: 560px; opacity: .85; }
 .hero-trust { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 .hero-trust span { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 600; color: var(--faint); }
 .hero-trust span::before { content: '✓'; color: var(--teal); font-weight: 800; }
@@ -1148,9 +1149,10 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   }
   .hero-grid { grid-template-columns: 1fr; gap: 28px; align-items: stretch; }
   .hero-grid > div:first-child { align-self: stretch; }
-  .hero h1 { font-size: clamp(28px, 7.5vw, 36px); margin-bottom: 12px; }
-  .hero-sub { margin-bottom: 16px; max-width: none; }
-  .hero-cta { margin-bottom: 18px; }
+  .hero h1 { font-size: clamp(28px, 6vw, 36px); margin-bottom: 12px; max-width: none; line-height: 1.12; }
+  .hero-sub { font-size: 15px; margin-bottom: 16px; max-width: none; }
+  .hero-cta { margin-bottom: 14px; }
+  .hero-disclaimer { font-size: 11.5px; max-width: none; margin-bottom: 16px; }
   .hero-scroll-hint { display: none; }
   .chat-card { max-height: none; }
   .section { padding: 64px 0; }
@@ -1376,12 +1378,13 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="hero-grid">
       <div>
         <div class="hero-eyebrow" data-i18n="hero.eyebrow">AI LEGAL ASSISTANT · 2026</div>
-        <h1 data-i18n-html="hero.title">Domain-specific <em>legal AI</em> for Estonia and the EU: citations to statutes and case law, draft correspondence ready for your review, and case material organization with multilingual support.</h1>
-        <p class="hero-sub" data-i18n="hero.sub">Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.</p>
+        <h1 data-i18n-html="hero.title">Legal <em>AI</em> built for Estonia and the EU.</h1>
+        <p class="hero-sub" data-i18n="hero.sub">Citations to statutes and case law, draft correspondence ready for your review, and case material organization — with multilingual support.</p>
         <div class="hero-cta">
           <a class="btn btn-primary btn-hero" href="/app.html" data-i18n="hero.primary">Try free →</a>
           <a class="btn btn-hero-out" href="#how" data-i18n="hero.secondary">See an example</a>
         </div>
+        <p class="hero-disclaimer" data-i18n="hero.disclaimer">Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.</p>
         <div class="hero-trust">
           <span data-i18n="hero.trust1">7 free messages — no card</span>
           <span data-i18n="hero.trust2">Cited sources</span>
@@ -1953,8 +1956,9 @@ const I18N = {
     'nav.how': 'How it works', 'nav.compare': 'Compare', 'nav.pricing': 'Pricing', 'nav.faq': 'FAQ',
     'nav.login': 'Sign in', 'nav.cta': 'Try free',
     'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
-    'hero.title': 'Domain-specific <em>legal AI</em> for Estonia and the EU: citations to statutes and case law, draft correspondence ready for your review, and case material organization with multilingual support.',
-    'hero.sub': "Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.",
+    'hero.title': 'Legal <em>AI</em> built for Estonia and the EU.',
+    'hero.sub': 'Citations to statutes and case law, draft correspondence ready for your review, and case material organization — with multilingual support.',
+    'hero.disclaimer': "Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.",
     'hero.primary': 'Try free →', 'hero.secondary': 'See an example',
     'hero.trust1': '7 free messages — no card', 'hero.trust2': 'Cited sources', 'hero.trust3': 'EU GDPR · servers in Frankfurt',
     'how.label': 'THREE STEPS', 'how.title': 'Legal help that actually <em>works</em>.',
@@ -2045,8 +2049,9 @@ const I18N = {
     'nav.how': 'Kuidas see töötab', 'nav.compare': 'Võrdlus', 'nav.pricing': 'Hinnad', 'nav.faq': 'KKK',
     'nav.login': 'Logi sisse', 'nav.cta': 'Proovi tasuta',
     'hero.eyebrow': 'AI-ÕIGUSABI · 2026',
-    'hero.title': '<em>AI-assistent</em> Eesti ja Euroopa õiguses: saa struktureeritud vastuseid õigusküsimustele, koosta kirjade mustandeid ja korralda juhtumi materjale ühes vestluses.',
-    'hero.sub': 'Infoteenus. Ei ole õigusabi Advokatuuriseaduse tähenduses ega asenda vandeadvokaati.',
+    'hero.title': '<em>AI-assistent</em> Eesti ja EL õiguses.',
+    'hero.sub': 'Struktureeritud vastused õigusküsimustele, kirjade mustandid sinu ülevaatuseks ja juhtumi materjalide korraldus — kõik ühes vestluses.',
+    'hero.disclaimer': 'Infoteenus. Ei ole õigusabi Advokatuuriseaduse tähenduses ega asenda vandeadvokaati.',
     'hero.primary': 'Proovi tasuta →', 'hero.secondary': 'Vaata näidet',
     'hero.trust1': '7 sõnumit tasuta — kaarti pole vaja', 'hero.trust2': 'Viited Riigi Teatajale', 'hero.trust3': 'EL GDPR · serverid Frankfurdis',
     'how.label': 'KOLM SAMMU', 'how.title': 'Õigusabi, mis <em>päriselt aitab</em>.',
@@ -2137,8 +2142,9 @@ const I18N = {
     'nav.how': 'Как это работает', 'nav.compare': 'Сравнение', 'nav.pricing': 'Тарифы', 'nav.faq': 'FAQ',
     'nav.login': 'Войти', 'nav.cta': 'Попробовать',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
-    'hero.title': 'Advocat — <em>AI-ассистент</em> по праву: отвечает на юридические вопросы, готовит черновики писем и помогает систематизировать материалы дела по эстонскому и европейскому праву.',
-    'hero.sub': 'Информационный сервис. Не заменяет присяжного адвоката (vandeadvokaat) и не оказывает юридическую помощь в смысле Advokatuuriseadus.',
+    'hero.title': '<em>AI-ассистент</em> по эстонскому и европейскому праву.',
+    'hero.sub': 'Отвечает на юридические вопросы, готовит черновики писем для вашей проверки и помогает систематизировать материалы дела.',
+    'hero.disclaimer': 'Информационный сервис. Не заменяет присяжного адвоката (vandeadvokaat) и не оказывает юридическую помощь в смысле Advokatuuriseadus.',
     'hero.primary': 'Попробовать →', 'hero.secondary': 'Посмотреть пример',
     'hero.trust1': '7 бесплатных сообщений — без карты', 'hero.trust2': 'Со ссылками на закон', 'hero.trust3': 'EU GDPR · серверы во Франкфурте',
     'how.label': 'ТРИ ШАГА', 'how.title': 'Юридическая помощь, которая <em>работает</em>.',
@@ -2229,8 +2235,9 @@ const I18N = {
     'nav.how': 'Як працює', 'nav.compare': 'Порівняння', 'nav.pricing': 'Тарифи', 'nav.faq': 'FAQ',
     'nav.login': 'Увійти', 'nav.cta': 'Спробувати',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
-    'hero.title': 'Advocat — <em>AI-асистент</em> з права: відповідає на юридичні запитання, готує чернетки листів і допомагає систематизувати матеріали справи за естонським та європейським правом.',
-    'hero.sub': 'Інформаційний сервіс. Не замінює присяжного адвоката (vandeadvokaat) і не надає правової допомоги у розумінні Advokatuuriseadus.',
+    'hero.title': '<em>AI-асистент</em> з естонського та європейського права.',
+    'hero.sub': 'Відповідає на юридичні запитання, готує чернетки листів для вашої перевірки та допомагає систематизувати матеріали справи.',
+    'hero.disclaimer': 'Інформаційний сервіс. Не замінює присяжного адвоката (vandeadvokaat) і не надає правової допомоги у розумінні Advokatuuriseadus.',
     'hero.primary': 'Спробувати →', 'hero.secondary': 'Подивитися приклад',
     'hero.trust1': '7 безкоштовних повідомлень — без картки', 'hero.trust2': 'З посиланнями на закон', 'hero.trust3': 'EU GDPR · сервери у Франкфурті',
     'how.label': 'ТРИ КРОКИ', 'how.title': 'Юридична допомога, яка <em>справді працює</em>.',
@@ -2321,8 +2328,9 @@ const I18N = {
     'nav.how': 'Miten toimii', 'nav.compare': 'Vertailu', 'nav.pricing': 'Hinnat', 'nav.faq': 'UKK',
     'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
     'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
-    'hero.title': 'Advocat — <em>tekoälyavustaja</em> oikeudellisiin kysymyksiin: vastaa juridisiin kysymyksiin, laatii kirjeluonnoksia ja auttaa järjestämään asiakirja-aineistoa Viron ja EU:n oikeuden mukaan.',
-    'hero.sub': 'Tietopalvelu. Ei ole oikeudellista neuvontaa eikä korvaa asianajajaa (vandeadvokaat), jonka toimintaa säätelee Viron asianajajalaki (Advokatuuriseadus).',
+    'hero.title': '<em>Tekoälyavustaja</em> Viron ja EU:n oikeuteen.',
+    'hero.sub': 'Vastaa juridisiin kysymyksiin, laatii kirjeluonnoksia tarkastettavaksesi ja auttaa järjestämään asiakirja-aineistoa.',
+    'hero.disclaimer': 'Tietopalvelu. Ei ole oikeudellista neuvontaa eikä korvaa asianajajaa (vandeadvokaat), jonka toimintaa säätelee Viron asianajajalaki (Advokatuuriseadus).',
     'hero.primary': 'Kokeile ilmaiseksi →', 'hero.secondary': 'Katso esimerkki',
     'hero.trust1': '7 ilmaista viestiä — ei korttia', 'hero.trust2': 'Lähdeviitteet mukana', 'hero.trust3': 'EU GDPR · palvelimet Frankfurtissa',
     'how.label': 'KOLME VAIHETTA', 'how.title': 'Lakiapua, joka <em>todella toimii</em>.',
@@ -2413,8 +2421,9 @@ const I18N = {
     'nav.how': 'So funktioniert\'s', 'nav.compare': 'Vergleich', 'nav.pricing': 'Preise', 'nav.faq': 'FAQ',
     'nav.login': 'Anmelden', 'nav.cta': 'Kostenlos testen',
     'hero.eyebrow': 'KI-RECHTSASSISTENT · 2026',
-    'hero.title': 'Advocat — <em>KI-Assistent</em> für Recht: beantwortet rechtliche Fragen, erstellt Schreiben-Entwürfe und hilft beim Ordnen Ihrer Fallunterlagen nach estnischem und europäischem Recht.',
-    'hero.sub': 'Informationsdienst. Keine Rechtsberatung und kein Ersatz für einen vereidigten Rechtsanwalt (vandeadvokaat) im Sinne des estnischen Anwaltsgesetzes (Advokatuuriseadus).',
+    'hero.title': '<em>KI-Assistent</em> für estnisches und europäisches Recht.',
+    'hero.sub': 'Beantwortet rechtliche Fragen, erstellt Schreiben-Entwürfe zu Ihrer Prüfung und hilft beim Ordnen Ihrer Fallunterlagen.',
+    'hero.disclaimer': 'Informationsdienst. Keine Rechtsberatung und kein Ersatz für einen vereidigten Rechtsanwalt (vandeadvokaat) im Sinne des estnischen Anwaltsgesetzes (Advokatuuriseadus).',
     'hero.primary': 'Kostenlos testen →', 'hero.secondary': 'Beispiel ansehen',
     'hero.trust1': '7 Nachrichten gratis — keine Karte nötig', 'hero.trust2': 'Mit Quellenangaben', 'hero.trust3': 'EU-DSGVO · Server in Frankfurt',
     'how.label': 'DREI SCHRITTE', 'how.title': 'Rechtshilfe, die <em>wirklich funktioniert</em>.',
@@ -2505,8 +2514,9 @@ const I18N = {
     'nav.how': 'Comment ça marche', 'nav.compare': 'Comparer', 'nav.pricing': 'Tarifs', 'nav.faq': 'FAQ',
     'nav.login': 'Se connecter', 'nav.cta': 'Essai gratuit',
     'hero.eyebrow': 'ASSISTANT JURIDIQUE IA · 2026',
-    'hero.title': 'Advocat — <em>assistant IA</em> en droit : répond à vos questions juridiques, rédige des projets de courriers et aide à organiser votre dossier selon le droit estonien et européen.',
-    'hero.sub': 'Service d\'information. Ne constitue pas un conseil juridique et ne remplace pas un avocat assermenté (vandeadvokaat) au sens de la loi estonienne sur le barreau (Advokatuuriseadus).',
+    'hero.title': '<em>Assistant IA</em> en droit estonien et européen.',
+    'hero.sub': 'Répond à vos questions juridiques, rédige des projets de courriers à votre relecture et aide à organiser votre dossier.',
+    'hero.disclaimer': 'Service d\'information. Ne constitue pas un conseil juridique et ne remplace pas un avocat assermenté (vandeadvokaat) au sens de la loi estonienne sur le barreau (Advokatuuriseadus).',
     'hero.primary': 'Essai gratuit →', 'hero.secondary': 'Voir un exemple',
     'hero.trust1': '7 messages gratuits — sans carte', 'hero.trust2': 'Sources citées', 'hero.trust3': 'RGPD · serveurs à Francfort',
     'how.label': 'TROIS ÉTAPES', 'how.title': 'Une aide juridique qui <em>fonctionne vraiment</em>.',
@@ -2597,8 +2607,9 @@ const I18N = {
     'nav.how': 'Cómo funciona', 'nav.compare': 'Comparar', 'nav.pricing': 'Precios', 'nav.faq': 'FAQ',
     'nav.login': 'Iniciar sesión', 'nav.cta': 'Probar gratis',
     'hero.eyebrow': 'ASISTENTE JURÍDICO IA · 2026',
-    'hero.title': 'Advocat — <em>asistente de IA</em> jurídico: responde a sus preguntas legales, prepara borradores de escritos y le ayuda a organizar el material de su caso conforme al Derecho estonio y europeo.',
-    'hero.sub': 'Servicio de información. No constituye asesoramiento jurídico ni sustituye a un abogado colegiado (vandeadvokaat) en el sentido de la Ley de la Abogacía de Estonia (Advokatuuriseadus).',
+    'hero.title': '<em>Asistente de IA</em> en Derecho estonio y europeo.',
+    'hero.sub': 'Responde a sus preguntas legales, prepara borradores de escritos para su revisión y le ayuda a organizar el material de su caso.',
+    'hero.disclaimer': 'Servicio de información. No constituye asesoramiento jurídico ni sustituye a un abogado colegiado (vandeadvokaat) en el sentido de la Ley de la Abogacía de Estonia (Advokatuuriseadus).',
     'hero.primary': 'Probar gratis →', 'hero.secondary': 'Ver un ejemplo',
     'hero.trust1': '7 mensajes gratis — sin tarjeta', 'hero.trust2': 'Con fuentes citadas', 'hero.trust3': 'RGPD · servidores en Fráncfort',
     'how.label': 'TRES PASOS', 'how.title': 'Asistencia jurídica que <em>de verdad funciona</em>.',
@@ -2689,8 +2700,9 @@ const I18N = {
     'nav.how': 'Come funziona', 'nav.compare': 'Confronto', 'nav.pricing': 'Prezzi', 'nav.faq': 'FAQ',
     'nav.login': 'Accedi', 'nav.cta': 'Prova gratis',
     'hero.eyebrow': 'ASSISTENTE LEGALE IA · 2026',
-    'hero.title': 'Advocat — <em>assistente IA</em> in materia legale: risponde a quesiti giuridici, redige bozze di lettere e aiuta a organizzare il materiale del Suo caso secondo il diritto estone ed europeo.',
-    'hero.sub': 'Servizio informativo. Non costituisce consulenza legale e non sostituisce un avvocato giurato iscritto all\'albo (vandeadvokaat) ai sensi della Legge sull\'avvocatura estone (Advokatuuriseadus).',
+    'hero.title': '<em>Assistente IA</em> in diritto estone ed europeo.',
+    'hero.sub': 'Risponde a quesiti giuridici, redige bozze di lettere per la Sua revisione e aiuta a organizzare il materiale del Suo caso.',
+    'hero.disclaimer': 'Servizio informativo. Non costituisce consulenza legale e non sostituisce un avvocato giurato iscritto all\'albo (vandeadvokaat) ai sensi della Legge sull\'avvocatura estone (Advokatuuriseadus).',
     'hero.primary': 'Prova gratis →', 'hero.secondary': 'Vedi un esempio',
     'hero.trust1': '7 messaggi gratuiti — senza carta', 'hero.trust2': 'Fonti citate', 'hero.trust3': 'GDPR · server a Francoforte',
     'how.label': 'TRE PASSI', 'how.title': 'Assistenza legale che <em>funziona davvero</em>.',
@@ -2781,8 +2793,9 @@ const I18N = {
     'nav.how': 'Jak to działa', 'nav.compare': 'Porównanie', 'nav.pricing': 'Cennik', 'nav.faq': 'FAQ',
     'nav.login': 'Zaloguj się', 'nav.cta': 'Wypróbuj za darmo',
     'hero.eyebrow': 'ASYSTENT PRAWNY AI · 2026',
-    'hero.title': 'Advocat — <em>asystent AI</em> w sprawach prawnych: odpowiada na pytania prawne, przygotowuje projekty pism i pomaga porządkować materiały sprawy zgodnie z prawem estońskim i europejskim.',
-    'hero.sub': 'Usługa informacyjna. Nie stanowi pomocy prawnej i nie zastępuje adwokata przysięgłego (vandeadvokaat) w rozumieniu estońskiej ustawy o adwokaturze (Advokatuuriseadus).',
+    'hero.title': '<em>Asystent AI</em> w prawie estońskim i europejskim.',
+    'hero.sub': 'Odpowiada na pytania prawne, przygotowuje projekty pism do Twojej weryfikacji i pomaga porządkować materiały sprawy.',
+    'hero.disclaimer': 'Usługa informacyjna. Nie stanowi pomocy prawnej i nie zastępuje adwokata przysięgłego (vandeadvokaat) w rozumieniu estońskiej ustawy o adwokaturze (Advokatuuriseadus).',
     'hero.primary': 'Wypróbuj za darmo →', 'hero.secondary': 'Zobacz przykład',
     'hero.trust1': '7 wiadomości za darmo — bez karty', 'hero.trust2': 'Z cytatami z ustaw', 'hero.trust3': 'RODO · serwery we Frankfurcie',
     'how.label': 'TRZY KROKI', 'how.title': 'Pomoc prawna, która <em>naprawdę działa</em>.',
@@ -2873,8 +2886,9 @@ const I18N = {
     'nav.how': 'Så funkar det', 'nav.compare': 'Jämför', 'nav.pricing': 'Priser', 'nav.faq': 'Vanliga frågor',
     'nav.login': 'Logga in', 'nav.cta': 'Prova gratis',
     'hero.eyebrow': 'AI-JURISTASSISTENT · 2026',
-    'hero.title': 'Advocat — <em>AI-assistent</em> för juridik: besvarar juridiska frågor, skriver utkast till brev och hjälper dig organisera ärendematerialet enligt estnisk och europeisk rätt.',
-    'hero.sub': 'Informationstjänst. Utgör inte juridisk rådgivning och ersätter inte en edsvuren advokat (vandeadvokaat) i den mening som avses i den estniska advokatlagen (Advokatuuriseadus).',
+    'hero.title': '<em>AI-assistent</em> i estnisk och europeisk rätt.',
+    'hero.sub': 'Besvarar juridiska frågor, skriver utkast till brev för din granskning och hjälper dig organisera ärendematerialet.',
+    'hero.disclaimer': 'Informationstjänst. Utgör inte juridisk rådgivning och ersätter inte en edsvuren advokat (vandeadvokaat) i den mening som avses i den estniska advokatlagen (Advokatuuriseadus).',
     'hero.primary': 'Prova gratis →', 'hero.secondary': 'Se ett exempel',
     'hero.trust1': '7 gratismeddelanden — inget kort', 'hero.trust2': 'Källor citeras', 'hero.trust3': 'GDPR · servrar i Frankfurt',
     'how.label': 'TRE STEG', 'how.title': 'Juridisk hjälp som <em>faktiskt funkar</em>.',
@@ -2965,8 +2979,9 @@ const I18N = {
     'nav.how': 'Kā tas darbojas', 'nav.compare': 'Salīdzinājums', 'nav.pricing': 'Cenas', 'nav.faq': 'BUJ',
     'nav.login': 'Pieslēgties', 'nav.cta': 'Izmēģināt',
     'hero.eyebrow': 'MI JURIDISKAIS ASISTENTS · 2026',
-    'hero.title': 'Advocat — <em>MI asistents</em> juridiskos jautājumos: atbild uz tiesību jautājumiem, sagatavo vēstuļu uzmetumus un palīdz sakārtot lietas materiālus saskaņā ar Igaunijas un Eiropas tiesībām.',
-    'hero.sub': 'Informācijas pakalpojums. Tas nav juridiskā palīdzība un neaizstāj zvērinātu advokātu (vandeadvokaat) Igaunijas Advokatūras likuma (Advokatuuriseadus) izpratnē.',
+    'hero.title': '<em>MI asistents</em> Igaunijas un Eiropas tiesībās.',
+    'hero.sub': 'Atbild uz tiesību jautājumiem, sagatavo vēstuļu uzmetumus jūsu pārbaudei un palīdz sakārtot lietas materiālus.',
+    'hero.disclaimer': 'Informācijas pakalpojums. Tas nav juridiskā palīdzība un neaizstāj zvērinātu advokātu (vandeadvokaat) Igaunijas Advokatūras likuma (Advokatuuriseadus) izpratnē.',
     'hero.primary': 'Izmēģināt bez maksas →', 'hero.secondary': 'Apskatīt piemēru',
     'hero.trust1': '7 ziņas bez maksas — bez kartes', 'hero.trust2': 'Ar atsaucēm uz likumu', 'hero.trust3': 'VDAR · serveri Frankfurtē',
     'how.label': 'TRĪS SOĻI', 'how.title': 'Juridiska palīdzība, kas <em>tiešām strādā</em>.',
@@ -3057,8 +3072,9 @@ const I18N = {
     'nav.how': 'Kaip veikia', 'nav.compare': 'Palyginimas', 'nav.pricing': 'Kainos', 'nav.faq': 'DUK',
     'nav.login': 'Prisijungti', 'nav.cta': 'Išbandyti nemokamai',
     'hero.eyebrow': 'DI TEISĖS ASISTENTAS · 2026',
-    'hero.title': 'Advocat — <em>DI asistentas</em> teisės klausimais: atsako į teisinius klausimus, rengia raštų projektus ir padeda sutvarkyti bylos medžiagą pagal Estijos ir Europos teisę.',
-    'hero.sub': 'Informacinė paslauga. Tai nėra teisinė pagalba ir nepakeičia prisiekusiojo advokato (vandeadvokaat), kaip tai apibrėžta Estijos advokatūros įstatyme (Advokatuuriseadus).',
+    'hero.title': '<em>DI asistentas</em> Estijos ir Europos teisėje.',
+    'hero.sub': 'Atsako į teisinius klausimus, rengia raštų projektus jūsų peržiūrai ir padeda sutvarkyti bylos medžiagą.',
+    'hero.disclaimer': 'Informacinė paslauga. Tai nėra teisinė pagalba ir nepakeičia prisiekusiojo advokato (vandeadvokaat), kaip tai apibrėžta Estijos advokatūros įstatyme (Advokatuuriseadus).',
     'hero.primary': 'Išbandyti nemokamai →', 'hero.secondary': 'Pamatyti pavyzdį',
     'hero.trust1': '7 nemokamos žinutės — be kortelės', 'hero.trust2': 'Su nuorodomis į įstatymą', 'hero.trust3': 'BDAR · serveriai Frankfurte',
     'how.label': 'TRYS ŽINGSNIAI', 'how.title': 'Teisinė pagalba, kuri <em>tikrai veikia</em>.',
@@ -3149,8 +3165,9 @@ const I18N = {
     'nav.how': 'Cum funcționează', 'nav.compare': 'Comparație', 'nav.pricing': 'Prețuri', 'nav.faq': 'Întrebări frecvente',
     'nav.login': 'Autentificare', 'nav.cta': 'Încearcă gratuit',
     'hero.eyebrow': 'ASISTENT JURIDIC AI · 2026',
-    'hero.title': 'Advocat — <em>asistent AI</em> în domeniul juridic: răspunde la întrebări de drept, redactează proiecte de scrisori și vă ajută să organizați materialele dosarului conform dreptului estonian și european.',
-    'hero.sub': 'Serviciu de informare. Nu constituie asistență juridică și nu înlocuiește un avocat jurat (vandeadvokaat) în sensul Legii estoniene privind Baroul (Advokatuuriseadus).',
+    'hero.title': '<em>Asistent AI</em> în dreptul estonian și european.',
+    'hero.sub': 'Răspunde la întrebări de drept, redactează proiecte de scrisori pentru verificarea dvs. și vă ajută să organizați materialele dosarului.',
+    'hero.disclaimer': 'Serviciu de informare. Nu constituie asistență juridică și nu înlocuiește un avocat jurat (vandeadvokaat) în sensul Legii estoniene privind Baroul (Advokatuuriseadus).',
     'hero.primary': 'Încearcă gratuit →', 'hero.secondary': 'Vezi un exemplu',
     'hero.trust1': '7 mesaje gratuite — fără card', 'hero.trust2': 'Cu surse citate', 'hero.trust3': 'GDPR · servere la Frankfurt',
     'how.label': 'TREI PAȘI', 'how.title': 'Asistență juridică ce <em>chiar funcționează</em>.',
@@ -3241,8 +3258,9 @@ const I18N = {
     'nav.how': 'Nasıl çalışır', 'nav.compare': 'Karşılaştır', 'nav.pricing': 'Fiyatlar', 'nav.faq': 'SSS',
     'nav.login': 'Giriş yap', 'nav.cta': 'Ücretsiz dene',
     'hero.eyebrow': 'YAPAY ZEKÂ HUKUK ASİSTANI · 2026',
-    'hero.title': 'Advocat — hukuk alanında <em>yapay zekâ asistanı</em>: hukuki sorularınızı yanıtlar, yazışma taslakları hazırlar ve dosya materyallerinizi Estonya ve Avrupa hukukuna göre düzenlemenize yardımcı olur.',
-    'hero.sub': 'Bilgilendirme hizmetidir. Hukuki danışmanlık niteliği taşımaz ve Estonya Barolar Kanunu (Advokatuuriseadus) anlamında yeminli avukatın (vandeadvokaat) yerini almaz.',
+    'hero.title': 'Estonya ve Avrupa hukukuna özel <em>yapay zekâ asistanı</em>.',
+    'hero.sub': 'Hukuki sorularınızı yanıtlar, incelemeniz için yazışma taslakları hazırlar ve dosya materyallerinizi düzenlemenize yardımcı olur.',
+    'hero.disclaimer': 'Bilgilendirme hizmetidir. Hukuki danışmanlık niteliği taşımaz ve Estonya Barolar Kanunu (Advokatuuriseadus) anlamında yeminli avukatın (vandeadvokaat) yerini almaz.',
     'hero.primary': 'Ücretsiz dene →', 'hero.secondary': 'Örneği gör',
     'hero.trust1': '7 mesaj ücretsiz — kart gerekmez', 'hero.trust2': 'Yasal kaynak gösterimli', 'hero.trust3': 'KVKK/GDPR · sunucular Frankfurt\'ta',
     'how.label': 'ÜÇ ADIM', 'how.title': '<em>Gerçekten işe yarayan</em> hukuki yardım.',
@@ -3333,8 +3351,9 @@ const I18N = {
     'nav.how': 'كيف يعمل', 'nav.compare': 'المقارنة', 'nav.pricing': 'الأسعار', 'nav.faq': 'الأسئلة الشائعة',
     'nav.login': 'تسجيل الدخول', 'nav.cta': 'جرّب مجاناً',
     'hero.eyebrow': 'مساعد قانوني بالذكاء الاصطناعي · 2026',
-    'hero.title': 'Advocat — <em>مساعد ذكاء اصطناعي</em> في الشؤون القانونية: يجيب عن الأسئلة القانونية، ويُعدّ مسودات المراسلات، ويساعد على تنظيم مواد القضية وفق القانون الإستوني والأوروبي.',
-    'hero.sub': 'خدمة معلوماتية. لا تُعدّ استشارة قانونية ولا تحلّ محل المحامي المُحلَّف (vandeadvokaat) بالمعنى المقصود في قانون نقابة المحامين الإستوني (Advokatuuriseadus).',
+    'hero.title': '<em>مساعد ذكاء اصطناعي</em> للقانون الإستوني والأوروبي.',
+    'hero.sub': 'يجيب عن الأسئلة القانونية، ويُعدّ مسودات المراسلات لمراجعتك، ويساعد على تنظيم مواد القضية.',
+    'hero.disclaimer': 'خدمة معلوماتية. لا تُعدّ استشارة قانونية ولا تحلّ محل المحامي المُحلَّف (vandeadvokaat) بالمعنى المقصود في قانون نقابة المحامين الإستوني (Advokatuuriseadus).',
     'hero.primary': 'جرّب مجاناً ←', 'hero.secondary': 'انظر مثالاً',
     'hero.trust1': '7 رسائل مجانية — بدون بطاقة', 'hero.trust2': 'مع توثيق المصادر', 'hero.trust3': 'GDPR · خوادم في فرانكفورت',
     'how.label': 'ثلاث خطوات', 'how.title': 'مساعدة قانونية <em>تنجز فعلاً</em>.',
@@ -3425,8 +3444,9 @@ const I18N = {
     'nav.how': 'چگونه کار می‌کند', 'nav.compare': 'مقایسه', 'nav.pricing': 'قیمت‌ها', 'nav.faq': 'سؤالات متداول',
     'nav.login': 'ورود', 'nav.cta': 'امتحان رایگان',
     'hero.eyebrow': 'دستیار حقوقی هوش مصنوعی · ۲۰۲۶',
-    'hero.title': 'Advocat — <em>دستیار هوش مصنوعی</em> در امور حقوقی: به پرسش‌های حقوقی پاسخ می‌دهد، پیش‌نویس نامه‌ها را آماده می‌کند و در نظم‌دهی به مواد پرونده بر اساس حقوق استونی و اروپایی یاری می‌رساند.',
-    'hero.sub': 'خدمت اطلاع‌رسانی است. مشاوره حقوقی محسوب نمی‌شود و جایگزین وکیل سوگندخورده (vandeadvokaat) بر اساس قانون کانون وکلای استونی (Advokatuuriseadus) نیست.',
+    'hero.title': '<em>دستیار هوش مصنوعی</em> در حقوق استونی و اروپایی.',
+    'hero.sub': 'به پرسش‌های حقوقی پاسخ می‌دهد، پیش‌نویس نامه‌ها را برای بازبینی شما آماده می‌کند و در نظم‌دهی به مواد پرونده یاری می‌رساند.',
+    'hero.disclaimer': 'خدمت اطلاع‌رسانی است. مشاوره حقوقی محسوب نمی‌شود و جایگزین وکیل سوگندخورده (vandeadvokaat) بر اساس قانون کانون وکلای استونی (Advokatuuriseadus) نیست.',
     'hero.primary': 'امتحان رایگان ←', 'hero.secondary': 'یک نمونه ببینید',
     'hero.trust1': '۷ پیام رایگان — بدون کارت', 'hero.trust2': 'با ذکر منبع قانونی', 'hero.trust3': 'GDPR · سرورها در فرانکفورت',
     'how.label': 'سه گام', 'how.title': 'کمک حقوقی که <em>واقعاً نتیجه می‌دهد</em>.',
