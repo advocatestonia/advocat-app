@@ -180,7 +180,7 @@ img, svg { display: block; max-width: 100%; }
 .hero-grid > div:first-child { align-self: center; }
 .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 5px 11px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
 .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 2px rgba(13,148,136,.2); }
-.hero h1 { font-size: clamp(30px, 3.6vw, 48px); font-weight: 900; color: var(--navy); letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 14px; }
+.hero h1 { font-size: clamp(28px, 3.4vw, 44px); font-weight: 900; color: var(--navy); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 14px; max-width: 880px; }
 .hero h1 em { font-style: italic; color: var(--teal); }
 .hero-sub { font-size: clamp(14px, 1.2vw, 16px); line-height: 1.55; color: var(--muted); margin-bottom: 18px; max-width: 380px; }
 .hero-cta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
@@ -255,7 +255,7 @@ img, svg { display: block; max-width: 100%; }
 .section-alt { background: var(--bg2); }
 .section-label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--teal2); margin-bottom: 12px; }
 .section-label::before { content: ''; width: 16px; height: 2px; background: var(--teal); border-radius: 1px; }
-.section h2 { font-size: clamp(28px, 4vw, 48px); font-weight: 900; color: var(--navy); letter-spacing: -0.04em; line-height: 1.08; margin-bottom: 16px; }
+.section h2 { font-size: clamp(26px, 3.2vw, 40px); font-weight: 900; color: var(--navy); letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 16px; }
 .section h2 em { color: var(--teal); font-style: italic; }
 .section-sub { font-size: 16px; color: var(--muted); max-width: 580px; line-height: 1.6; }
 
@@ -1092,7 +1092,7 @@ img, svg { display: block; max-width: 100%; }
   z-index: 5;
   mix-blend-mode: screen;
 }
-.final-cta h2 { font-size: clamp(32px, 5vw, 56px); font-weight: 900; color: #fff; letter-spacing: -0.04em; margin: 0 auto 18px; max-width: 720px; line-height: 1.08; }
+.final-cta h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 900; color: #fff; letter-spacing: -0.02em; margin: 0 auto 18px; max-width: 720px; line-height: 1.15; }
 .final-cta h2 em { color: var(--teal3); font-style: italic; }
 .final-cta p { font-size: 16px; color: rgba(255,255,255,.65); margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.5; }
 .final-cta .btn-primary { height: 56px; padding: 0 36px; font-size: 16px; border-radius: 12px; box-shadow: 0 8px 32px rgba(13,148,136,.45); }
@@ -2963,7 +2963,7 @@ const I18N = {
     'pricing.founder_closed': 'Agrīnā piekļuve slēgta — pieejams Pro 19,99 €/mēn.',
     'plan2.cta_closed': 'Izvēlēties Pro 19,99 €/mēn.',
     'nav.how': 'Kā tas darbojas', 'nav.compare': 'Salīdzinājums', 'nav.pricing': 'Cenas', 'nav.faq': 'BUJ',
-    'nav.login': 'Pieslēgties', 'nav.cta': 'Izmēģināt bez maksas',
+    'nav.login': 'Pieslēgties', 'nav.cta': 'Izmēģināt',
     'hero.eyebrow': 'MI JURIDISKAIS ASISTENTS · 2026',
     'hero.title': 'Advocat — <em>MI asistents</em> juridiskos jautājumos: atbild uz tiesību jautājumiem, sagatavo vēstuļu uzmetumus un palīdz sakārtot lietas materiālus saskaņā ar Igaunijas un Eiropas tiesībām.',
     'hero.sub': 'Informācijas pakalpojums. Tas nav juridiskā palīdzība un neaizstāj zvērinātu advokātu (vandeadvokaat) Igaunijas Advokatūras likuma (Advokatuuriseadus) izpratnē.',
