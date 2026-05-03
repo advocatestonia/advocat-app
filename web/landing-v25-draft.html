@@ -99,6 +99,8 @@ img, svg { display: block; max-width: 100%; }
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--line);
 }
+/* When mobile menu is open, raise the close (X) button above the overlay so it stays tappable */
+.nav-burger.is-open { position: relative; z-index: 10001; }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 32px; }
 .nav-logo { display: flex; align-items: center; flex-shrink: 0; min-width: 0; }
 .nav-logo img { height: 36px; width: auto; max-width: 100%; object-fit: contain; display: block; }
