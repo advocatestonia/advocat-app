@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="et" dir="ltr">
-<head><script async src="https://www.googletagmanager.com/gtag/js?id=G-J5LGKRTMJ7"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-J5LGKRTMJ7");</script>
+<head>
 <meta charset="UTF-8">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -25,6 +25,34 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- GA4 LOAD: do NOT inject googletagmanager script tag here at deploy time. GA is loaded conditionally via the consent-gating script below (GDPR Art 6 / ePrivacy Art 5(3)). -->
+<script>
+/* GA4 deferred until cookie consent. Storage key matches the existing
+   cookie banner: 'advocat_cookie_consent_v1' with shape { choice: 'accept'|'reject'|'dnt', ts, version }.
+   Banner accept handler dispatches 'advocat:cookie-consent' (detail.accepted=true). */
+(function(){
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
+  function loadGA(){
+    if (window.__advGaLoaded) return; window.__advGaLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-J5LGKRTMJ7';
+    document.head.appendChild(s);
+    gtag('js', new Date());
+    gtag('config', 'G-J5LGKRTMJ7', { 'anonymize_ip': true });
+  }
+  // Honour an existing accept stored from a prior visit.
+  try {
+    var c = JSON.parse(localStorage.getItem('advocat_cookie_consent_v1') || 'null');
+    if (c && c.choice === 'accept') loadGA();
+  } catch (e) {}
+  // Listen for new consent decisions from the banner.
+  window.addEventListener('advocat:cookie-consent', function(e){
+    if (e && e.detail && e.detail.accepted) loadGA();
+  });
+})();
+</script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -1989,6 +2017,12 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     try {
       localStorage.setItem(KEY, JSON.stringify({ choice: choice, ts: Date.now(), version: 1 }));
     } catch(_){}
+    // Notify the GA loader (and any other consent-gated scripts) about the new decision.
+    try {
+      window.dispatchEvent(new CustomEvent('advocat:cookie-consent', {
+        detail: { accepted: choice === 'accept', choice: choice }
+      }));
+    } catch(_){}
     banner.classList.remove('show');
   };
 })();
@@ -2106,7 +2140,7 @@ const I18N = {
     'chat.welcome': 'Hi! I\'m Advocat — your AI legal assistant.\nWhat legal question can I help with?',
     'chat.sample': [
       { who: 'user', t: 'My landlord hasn\'t returned my deposit for 3 weeks.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord must return the deposit within 14 days of lease end, unless damage is proven.', cite: 'VÕS § 308(4)' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'I can draft a formal demand letter for you. Estonian or English?' },
     ],
     'chat.chips': ['Tenancy deposit', 'Work dispute', 'Deportation', 'Other'],
@@ -2200,7 +2234,7 @@ const I18N = {
     'chat.welcome': 'Tere! Mina olen Advocat — sinu AI-jurist.\nMis sind õiguslikult vaevab?',
     'chat.sample': [
       { who: 'user', t: 'Üürileandja ei ole tagatisraha juba 3 nädalat tagastanud.' },
-      { who: 'bot', t: 'Selge. VÕS § 308 lg 4 järgi peab üürileandja tagatisraha tagastama 14 päeva jooksul pärast lepingu lõppu, kui ta ei suuda kahju tõendada.', cite: 'VÕS § 308 lg 4' },
+      { who: 'bot', t: 'Selge. VÕS § 308 järgi võib üürileandja tagatisrahast kinni pidada vaid põhjendatud nõude. Ta peab oma nõude esitama kahe kuu jooksul pärast lepingu lõppu — pärast seda saad kogu tagatisraha tagasi nõuda.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Saan sulle ametliku nõudekirja kohe paberile panna. Eesti või vene keeles?' },
     ],
     'chat.chips': ['Üüritagatis', 'Töövaidlus', 'Väljasaatmine', 'Muu'],
@@ -2294,7 +2328,7 @@ const I18N = {
     'chat.welcome': 'Привет! Я Advocat — твой AI-ассистент по праву.\nКакой у тебя юридический вопрос?',
     'chat.sample': [
       { who: 'user', t: 'Арендодатель не возвращает залог уже 3 недели.' },
-      { who: 'bot', t: 'Понятная ситуация. По закону (VÕS § 308) арендодатель обязан вернуть залог в течение 14 дней после окончания аренды, если нет доказанного ущерба.', cite: 'VÕS § 308 ч. 4' },
+      { who: 'bot', t: 'Понятная ситуация. По VÕS § 308 арендодатель вправе удержать залог только под обоснованное требование. Своё требование он должен заявить в течение двух месяцев после окончания договора — после этого вы вправе требовать возврата всего залога.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Могу подготовить официальную претензию. На русском или эстонском?' },
     ],
     'chat.chips': ['Залог за аренду', 'Трудовой спор', 'Депортация', 'Другое'],
@@ -2388,7 +2422,7 @@ const I18N = {
     'chat.welcome': 'Привіт! Я Advocat — твій AI-асистент із права.\nЯке в тебе юридичне питання?',
     'chat.sample': [
       { who: 'user', t: 'Орендодавець не повертає заставу вже 3 тижні.' },
-      { who: 'bot', t: 'Зрозуміла ситуація. За VÕS § 308 орендодавець зобов\'язаний повернути заставу протягом 14 днів після завершення оренди, якщо немає доведеної шкоди.', cite: 'VÕS § 308 ч. 4' },
+      { who: 'bot', t: 'Зрозуміла ситуація. За VÕS § 308 орендодавець може утримати заставу лише під обґрунтовану вимогу. Свою вимогу він повинен заявити протягом двох місяців після завершення договору — після цього ви маєте право вимагати повернення всієї застави.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Можу підготувати офіційну претензію. Українською чи естонською?' },
     ],
     'chat.chips': ['Застава за оренду', 'Трудовий спір', 'Депортація', 'Інше'],
@@ -2482,7 +2516,7 @@ const I18N = {
     'chat.welcome': 'Hei! Olen Advocat — AI-juristisi.\nMikä on oikeudellinen kysymyksesi?',
     'chat.sample': [
       { who: 'user', t: 'Vuokranantaja ei palauta vakuutta jo 3 viikon ajan.' },
-      { who: 'bot', t: 'Ymmärrettävä tilanne. VÕS § 308 mukaan vuokranantajan on palautettava vakuus 14 päivän kuluessa vuokrasopimuksen päättymisestä, jos vahinkoa ei ole näytetty toteen.', cite: 'VÕS § 308 lg 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Voin laatia virallisen vaatimuskirjeen. Suomeksi vai viroksi?' },
     ],
     'chat.chips': ['Vuokravakuus', 'Työriita', 'Karkotus', 'Muu'],
@@ -2576,7 +2610,7 @@ const I18N = {
     'chat.welcome': 'Hallo! Ich bin Advocat — Ihr KI-Rechtsassistent.\nWobei kann ich rechtlich helfen?',
     'chat.sample': [
       { who: 'user', t: 'Mein Vermieter hat die Kaution seit 3 Wochen nicht zurückgezahlt.' },
-      { who: 'bot', t: 'Verstanden. Nach VÕS § 308 muss der Vermieter die Kaution innerhalb von 14 Tagen nach Mietende zurückzahlen, sofern kein Schaden nachgewiesen wird.', cite: 'VÕS § 308 Abs. 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Ich kann Ihnen sofort ein förmliches Aufforderungsschreiben aufsetzen. Auf Deutsch oder Estnisch?' },
     ],
     'chat.chips': ['Mietkaution', 'Arbeitsstreit', 'Abschiebung', 'Anderes'],
@@ -2670,7 +2704,7 @@ const I18N = {
     'chat.welcome': 'Bonjour ! Je suis Advocat — votre assistant juridique IA.\nQuelle question juridique puis-je traiter ?',
     'chat.sample': [
       { who: 'user', t: 'Mon propriétaire ne me rend pas la caution depuis 3 semaines.' },
-      { who: 'bot', t: 'Compris. Selon VÕS § 308, le bailleur doit restituer la caution dans les 14 jours suivant la fin du bail, sauf preuve d\'un dommage.', cite: 'VÕS § 308 al. 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Je peux rédiger une mise en demeure formelle. En français ou en estonien ?' },
     ],
     'chat.chips': ['Caution de loyer', 'Litige du travail', 'Expulsion', 'Autre'],
@@ -2764,7 +2798,7 @@ const I18N = {
     'chat.welcome': '¡Hola! Soy Advocat — su asistente jurídico con IA.\n¿En qué cuestión legal puedo ayudarle?',
     'chat.sample': [
       { who: 'user', t: 'Mi casero no me devuelve la fianza desde hace 3 semanas.' },
-      { who: 'bot', t: 'Entendido. Según VÕS § 308, el casero debe devolver la fianza en un plazo de 14 días desde el fin del contrato, salvo que se demuestre un daño.', cite: 'VÕS § 308 ap. 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Puedo redactarle una reclamación formal ahora mismo. ¿En español o estonio?' },
     ],
     'chat.chips': ['Fianza de alquiler', 'Conflicto laboral', 'Expulsión', 'Otro'],
@@ -2858,7 +2892,7 @@ const I18N = {
     'chat.welcome': 'Salve! Sono Advocat — il Suo assistente legale IA.\nCon quale questione legale posso aiutarLa?',
     'chat.sample': [
       { who: 'user', t: 'Il mio locatore non mi restituisce la cauzione da 3 settimane.' },
-      { who: 'bot', t: 'Capito. Ai sensi del VÕS § 308, il locatore deve restituire la cauzione entro 14 giorni dalla fine del contratto, salvo prova di un danno.', cite: 'VÕS § 308 c. 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Posso preparare subito una diffida formale. In italiano o in estone?' },
     ],
     'chat.chips': ['Cauzione affitto', 'Vertenza di lavoro', 'Espulsione', 'Altro'],
@@ -2952,7 +2986,7 @@ const I18N = {
     'chat.welcome': 'Cześć! Jestem Advocat — Twój asystent prawny AI.\nW jakiej sprawie prawnej mogę pomóc?',
     'chat.sample': [
       { who: 'user', t: 'Wynajmujący nie zwraca mi kaucji od 3 tygodni.' },
-      { who: 'bot', t: 'Rozumiem. Zgodnie z VÕS § 308 wynajmujący ma obowiązek zwrócić kaucję w ciągu 14 dni od zakończenia najmu, chyba że udowodni szkodę.', cite: 'VÕS § 308 ust. 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Mogę od razu przygotować formalne wezwanie do zapłaty. Po polsku czy po estońsku?' },
     ],
     'chat.chips': ['Kaucja najmu', 'Spór pracowniczy', 'Wydalenie', 'Inne'],
@@ -3046,7 +3080,7 @@ const I18N = {
     'chat.welcome': 'Hej! Jag är Advocat — din AI-juristassistent.\nVilken juridisk fråga kan jag hjälpa till med?',
     'chat.sample': [
       { who: 'user', t: 'Min hyresvärd har inte återbetalat depositionen på 3 veckor.' },
-      { who: 'bot', t: 'Förstått. Enligt VÕS § 308 ska hyresvärden återbetala depositionen inom 14 dagar efter att hyresavtalet upphört, om ingen skada bevisas.', cite: 'VÕS § 308 st. 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Jag kan skriva ett formellt kravbrev åt dig nu. På svenska eller estniska?' },
     ],
     'chat.chips': ['Hyresdeposition', 'Arbetstvist', 'Utvisning', 'Annat'],
@@ -3140,7 +3174,7 @@ const I18N = {
     'chat.welcome': 'Sveiki! Es esmu Advocat — jūsu MI juridiskais asistents.\nKāds juridisks jautājums jums ir?',
     'chat.sample': [
       { who: 'user', t: 'Izīrētājs jau 3 nedēļas neatdod drošības naudu.' },
-      { who: 'bot', t: 'Saprotu. Saskaņā ar VÕS § 308 izīrētājam drošības nauda jāatdod 14 dienu laikā pēc nomas līguma beigām, ja vien nav pierādīti zaudējumi.', cite: 'VÕS § 308 4. d.' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Varu uzreiz sagatavot oficiālu prasības vēstuli. Latviski vai igauniski?' },
     ],
     'chat.chips': ['Īres drošības nauda', 'Darba strīds', 'Izraidīšana', 'Cits'],
@@ -3234,7 +3268,7 @@ const I18N = {
     'chat.welcome': 'Sveiki! Aš Advocat — jūsų DI teisės asistentas.\nKuo galiu padėti teisiniame klausime?',
     'chat.sample': [
       { who: 'user', t: 'Nuomotojas jau 3 savaites negrąžina užstato.' },
-      { who: 'bot', t: 'Aišku. Pagal VÕS § 308, nuomotojas užstatą turi grąžinti per 14 dienų po nuomos pabaigos, jei nėra įrodyta žala.', cite: 'VÕS § 308 4 d.' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Galiu iš karto parengti oficialų reikalavimo raštą. Lietuviškai ar estiškai?' },
     ],
     'chat.chips': ['Nuomos užstatas', 'Darbo ginčas', 'Išsiuntimas', 'Kita'],
@@ -3328,7 +3362,7 @@ const I18N = {
     'chat.welcome': 'Bună! Sunt Advocat — asistentul dumneavoastră juridic AI.\nCu ce întrebare juridică vă pot ajuta?',
     'chat.sample': [
       { who: 'user', t: 'Proprietarul nu mi-a returnat garanția de 3 săptămâni.' },
-      { who: 'bot', t: 'Am înțeles. Conform VÕS § 308, locatorul trebuie să restituie garanția în termen de 14 zile de la încetarea contractului, dacă nu se face dovada unui prejudiciu.', cite: 'VÕS § 308 alin. 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Pot să redactez chiar acum o somație formală. În română sau estoniană?' },
     ],
     'chat.chips': ['Garanție de chirie', 'Conflict de muncă', 'Expulzare', 'Altul'],
@@ -3422,7 +3456,7 @@ const I18N = {
     'chat.welcome': 'Merhaba! Ben Advocat — yapay zekâ hukuk asistanınız.\nHangi hukuki konuda yardımcı olabilirim?',
     'chat.sample': [
       { who: 'user', t: 'Ev sahibim 3 haftadır depozitomu iade etmiyor.' },
-      { who: 'bot', t: 'Anlaşıldı. VÕS § 308 uyarınca, hasar ispatlanmadığı sürece kira sözleşmesi sona erdikten sonraki 14 gün içinde ev sahibi depozitoyu iade etmek zorundadır.', cite: 'VÕS § 308 fıkra 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'Hemen resmi bir ihtarname hazırlayabilirim. Türkçe mi Estonca mı?' },
     ],
     'chat.chips': ['Kira depozitosu', 'İş uyuşmazlığı', 'Sınır dışı', 'Diğer'],
@@ -3516,7 +3550,7 @@ const I18N = {
     'chat.welcome': 'مرحباً! أنا Advocat — مساعدك القانوني بالذكاء الاصطناعي.\nبأي مسألة قانونية أستطيع المساعدة؟',
     'chat.sample': [
       { who: 'user', t: 'لم يردّ المؤجِّر التأمين منذ 3 أسابيع.' },
-      { who: 'bot', t: 'مفهوم. وفق VÕS § 308، يلزم المؤجّر بإعادة التأمين خلال 14 يوماً من انتهاء العقد، ما لم يُثبت الضرر.', cite: 'VÕS § 308 الفقرة 4' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'يمكنني فوراً صياغة إنذار رسمي. بالعربية أم بالإستونية؟' },
     ],
     'chat.chips': ['تأمين الإيجار', 'نزاع عمل', 'إبعاد', 'أخرى'],
@@ -3610,7 +3644,7 @@ const I18N = {
     'chat.welcome': 'سلام! من Advocat هستم — دستیار حقوقی هوش مصنوعی شما.\nدر چه پرسش حقوقی می‌توانم کمک کنم؟',
     'chat.sample': [
       { who: 'user', t: 'موجر سه هفته است که ودیعه‌ام را بازپس نداده.' },
-      { who: 'bot', t: 'متوجه شدم. طبق VÕS § 308، چنانچه خسارتی اثبات نشود، موجر باید ودیعه را ظرف ۱۴ روز پس از پایان قرارداد بازگرداند.', cite: 'VÕS § 308 بند ۴' },
+      { who: 'bot', t: 'Understood. Under VÕS § 308, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308' },
       { who: 'bot', t: 'هم‌اکنون می‌توانم یک اظهارنامه‌ی رسمی تنظیم کنم. به فارسی یا استونی؟' },
     ],
     'chat.chips': ['ودیعه‌ی اجاره', 'اختلاف کاری', 'اخراج از کشور', 'سایر'],
