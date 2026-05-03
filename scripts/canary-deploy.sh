@@ -157,7 +157,7 @@ if git diff --cached --quiet; then
 else
   BUILD_HASH=$(cd "$REPO_ROOT" && git rev-parse --short HEAD)
   run "git commit -m \"canary: staging build from $BUILD_HASH\""
-  run "git push github gh-pages"
+  run "git push github HEAD:gh-pages"
   ok "staging pushed"
 fi
 cd "$REPO_ROOT"
@@ -229,7 +229,7 @@ else
   BUILD_HASH=$(cd "$REPO_ROOT" && git rev-parse --short HEAD)
   run "git add -A"
   run "git commit -m \"deploy: promoted canary $BUILD_HASH\""
-  run "git push github gh-pages"
+  run "git push github HEAD:gh-pages"
   ok "prod updated"
 fi
 cd "$REPO_ROOT"
