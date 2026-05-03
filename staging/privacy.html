@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privaatsuspoliitika — Privacy Policy | Advocat</title>
+    <meta name="description" content="Advocat privaatsuspoliitika — GDPR-compliant Privacy Policy. How Vorantis OÜ processes your data: Supabase EU, Stripe, Anthropic Claude, Google Cloud, ElevenLabs.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/privacy.html">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Header — same Pattern A as /blog/index.html (.logo + .logo-text) */
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 900px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text {
+            font-size: 28px; font-weight: 700; letter-spacing: -0.3px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; color: transparent;
+            line-height: 1; margin-left: -4px; transform: translateY(2px);
+        }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, #1A2B4A 0%, #0A8F6C 100%); padding: 56px 20px 48px; text-align: center; color: #fff; }
+        .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .hero p { font-size: 15px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+
+        /* Lang switch */
+        .lang-switch { background: #fff; border-bottom: 1px solid #E5E8EE; padding: 14px 20px; text-align: center; position: sticky; top: 112px; z-index: 50; }
+        .lang-switch button {
+            display: inline-block; margin: 0 4px; padding: 7px 18px; border-radius: 999px;
+            font-family: inherit; font-size: 13px; font-weight: 600;
+            background: transparent; color: #1A2B4A; border: 1.5px solid #E5E8EE;
+            cursor: pointer; transition: all .15s;
+        }
+        .lang-switch button:hover { border-color: #0A8F6C; color: #0A8F6C; }
+        .lang-switch button.active { background: #1A2B4A; color: #fff; border-color: #1A2B4A; }
+
+        /* Body */
+        .container { max-width: 800px; margin: 0 auto; padding: 36px 20px 60px; }
+        .doc-meta { font-size: 13px; color: #5A6A7A; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #E5E8EE; }
+        .doc-meta strong { color: #1A2B4A; }
+
+        h2 { font-size: 22px; font-weight: 700; color: #1A2B4A; margin: 36px 0 14px; letter-spacing: -0.2px; }
+        h2:first-of-type { margin-top: 8px; }
+        h3 { font-size: 16px; font-weight: 600; color: #1A2B4A; margin: 20px 0 8px; }
+        p { font-size: 15px; color: #2C3E50; margin-bottom: 12px; }
+        ul, ol { padding-left: 22px; margin-bottom: 14px; }
+        li { font-size: 15px; color: #2C3E50; margin-bottom: 6px; }
+        strong { color: #1A2B4A; }
+
+        .callout {
+            background: #E8F5E9; border-left: 4px solid #0A8F6C;
+            padding: 16px 18px; border-radius: 0 8px 8px 0; margin: 18px 0;
+        }
+        .callout strong { color: #0A6E54; }
+        .callout-warn {
+            background: #FFF4E5; border-left: 4px solid #E07B00;
+            padding: 16px 18px; border-radius: 0 8px 8px 0; margin: 18px 0;
+        }
+        .callout-warn strong { color: #B25E00; }
+        .callout-key {
+            background: #1A2B4A; color: #fff;
+            padding: 18px 20px; border-radius: 10px; margin: 18px 0;
+        }
+        .callout-key strong { color: #B8E6D9; }
+
+        .contact-box { background: #fff; border: 1px solid #E5E8EE; border-radius: 10px; padding: 18px 20px; margin: 18px 0; }
+        .contact-box strong { display: block; margin-bottom: 4px; }
+
+        /* Processor table */
+        .table-wrap { overflow-x: auto; margin: 14px 0; border-radius: 10px; border: 1px solid #E5E8EE; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; }
+        th, td { padding: 12px 14px; border-bottom: 1px solid #E5E8EE; text-align: left; vertical-align: top; }
+        th { background: #F2F4F7; font-weight: 600; color: #1A2B4A; }
+        tr:last-child td { border-bottom: 0; }
+
+        /* Lang content visibility */
+        [data-lang]:not(.active-lang) { display: none; }
+
+        /* Footer */
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.55); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.85); margin: 0 10px; }
+        .footer a:hover { color: #B8E6D9; text-decoration: none; }
+        .footer-links { margin-bottom: 10px; }
+
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 24px; }
+            .hero { padding: 44px 20px 36px; }
+            .lang-switch { top: 96px; padding: 10px 12px; }
+            .lang-switch button { font-size: 12px; padding: 6px 12px; margin: 0 2px; }
+            h2 { font-size: 19px; }
+            .container { padding: 28px 18px 48px; }
+            th, td { padding: 10px 10px; font-size: 13px; }
+        }
+        @media (max-width: 600px) {
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .header-nav a { margin-left: 14px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="/" class="logo" aria-label="Advocat home">
+            <img src="/blog/logo_shield.png" alt="Advocat shield" width="80" height="80">
+            <span class="logo-text">Advocat</span>
+        </a>
+        <nav class="header-nav">
+            <a href="/">Home</a>
+            <a href="/blog/">Blog</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <h1 data-lang="et" class="active-lang">Privaatsuspoliitika</h1>
+    <h1 data-lang="en">Privacy Policy</h1>
+    <h1 data-lang="ru">Политика конфиденциальности</h1>
+    <p data-lang="et" class="active-lang">Kuidas Vorantis OÜ kogub, kasutab ja kaitseb teie andmeid (GDPR)</p>
+    <p data-lang="en">How Vorantis OÜ collects, uses and protects your data (GDPR)</p>
+    <p data-lang="ru">Как Vorantis OÜ собирает, использует и защищает ваши данные (GDPR)</p>
+</section>
+
+<div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" class="active" data-lang-btn="et" onclick="switchLang('et')">Eesti</button>
+    <button type="button" data-lang-btn="en" onclick="switchLang('en')">English</button>
+    <button type="button" data-lang-btn="ru" onclick="switchLang('ru')">Русский</button>
+</div>
+
+<!-- ============================================================== -->
+<!-- ESTONIAN — primary                                              -->
+<!-- ============================================================== -->
+<main class="container" data-lang="et">
+    <div class="doc-meta">
+        <p><strong>Jõustub:</strong> 29. aprill 2026</p>
+        <p><strong>Viimati uuendatud:</strong> 29. aprill 2026</p>
+        <p><strong>Versioon:</strong> 3.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Lühidalt:</strong> Teie andmed asuvad EL-i serverites (Supabase EU-West-2). AI-vestluste sisu edastatakse Anthropicule (Claude API) Euroopa Komisjoni standardsete lepingusätete alusel. Teil on kõik GDPR-i õigused — kustutamine, ülekandmine, juurdepääs. Reklaamiküpsiseid ega kolmandate osapoolte jälgimist me ei kasuta.
+    </div>
+
+    <h2>1. Vastutav töötleja</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Registrikood: 17098992<br>
+        Aadress: Tornimäe tn 5, 15010 Tallinn, Eesti<br>
+        E-post: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Andmekaitse kontakt (DPO): <a href="mailto:support@advocat.ee">support@advocat.ee</a>
+    </div>
+
+    <h2>2. Milliseid andmeid me töötleme</h2>
+    <ul>
+        <li><strong>Konto andmed:</strong> e-posti aadress, nimi (vabatahtlik), keele-eelistus, autentimisinfo (krüpteeritud).</li>
+        <li><strong>Vestluste sisu:</strong> teie sõnumid AI-le ja AI vastused.</li>
+        <li><strong>Üleslaaditud dokumendid:</strong> failid, mille olete teadlikult analüüsiks Teenusele edastanud.</li>
+        <li><strong>Maksete metaandmed:</strong> tellimuse staatus, summad, kuupäevad. <em>Kaardiandmeid me ei näe ega säilita</em> — neid töötleb Stripe (PCI DSS Level 1).</li>
+        <li><strong>Tehnilised logid:</strong> IP-aadress, brauser, sessiooni-ID, vea- ja turbelogid.</li>
+        <li><strong>Kasutusstatistika:</strong> sõnumite arv, funktsioonide kasutamine (üldistatud kujul).</li>
+    </ul>
+
+    <h2>3. Õiguslikud alused (GDPR artikkel 6)</h2>
+    <ul>
+        <li><strong>Lepingu täitmine</strong> (art 6(1)(b)) — tellimuse osutamine ja AI-päringute töötlemine.</li>
+        <li><strong>Õigustatud huvi</strong> (art 6(1)(f)) — turvalisuse tagamine, pettuste tõkestamine ja teenuse kvaliteedi parandamine.</li>
+        <li><strong>Nõusolek</strong> (art 6(1)(a)) — analüütika ja teavitused, mille võite igal ajal tagasi võtta.</li>
+        <li><strong>Seadusest tulenev kohustus</strong> (art 6(1)(c)) — raamatupidamine ja maksuõigus.</li>
+    </ul>
+
+    <h2>4. Kellega me andmeid jagame (alamtöötlejad)</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Töötleja</th><th>Eesmärk</th><th>Asukoht</th><th>Kaitse</th></tr></thead>
+        <tbody>
+        <tr><td><strong>Supabase</strong></td><td>Andmete majutus (kasutajad, vestlused)</td><td>EL (eu-west-2)</td><td>EL-sisene, RLS, krüpteeritud</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>AI töötlemine (Claude API)</td><td>USA</td><td>EL standardsed lepingusätted (SCC)</td></tr>
+        <tr><td><strong>Stripe</strong></td><td>Maksed</td><td>USA / EL</td><td>PCI DSS Level 1, SCC</td></tr>
+        <tr><td><strong>Google Cloud</strong></td><td>Kõnesüntees (TTS)</td><td>EL piirkond</td><td>EL-sisene töötlus</td></tr>
+        <tr><td><strong>ElevenLabs</strong></td><td>Kõnesüntees (mõned keeled)</td><td>USA</td><td>SCC</td></tr>
+        <tr><td><strong>Resend / Gmail</strong></td><td>Tehnilised e-kirjad</td><td>EL / USA</td><td>SCC</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>Kõik alamtöötlejad on lepingu alusel kohustatud andmeid kaitsma vähemalt samal tasemel kui meie ise.</p>
+
+    <h2>5. Säilitusajad</h2>
+    <ul>
+        <li><strong>Konto andmed</strong> — kuni konto kustutamiseni.</li>
+        <li><strong>Vestluste ajalugu</strong> — kuni 24 kuud, kui te ei kustuta varem.</li>
+        <li><strong>Üleslaaditud dokumendid</strong> — kuni teie poolt kustutamiseni või konto kustutamiseni.</li>
+        <li><strong>Maksedokumendid</strong> — <strong>7 aastat</strong> raamatupidamise seaduse alusel.</li>
+        <li><strong>Turvalogid</strong> — 12 kuud.</li>
+    </ul>
+
+    <h2 id="gdpr">6. Teie GDPR õigused</h2>
+    <p>Teil on õigus:</p>
+    <ul>
+        <li>saada <strong>juurdepääsu</strong> oma andmetele (art 15);</li>
+        <li>nõuda <strong>parandamist</strong> (art 16);</li>
+        <li>nõuda <strong>kustutamist</strong> ("õigus olla unustatud", art 17);</li>
+        <li>nõuda töötlemise <strong>piiramist</strong> (art 18);</li>
+        <li>saada andmed <strong>masinloetavas formaadis</strong> (õigus andmete ülekandmisele, art 20);</li>
+        <li>esitada <strong>vastuväide</strong> töötlemisele õigustatud huvi alusel (art 21);</li>
+        <li>võtta tagasi <strong>nõusolek</strong> igal ajal (art 7).</li>
+    </ul>
+    <p>Õiguste teostamiseks kirjutage <a href="mailto:support@advocat.ee">support@advocat.ee</a>. Vastame 30 päeva jooksul.</p>
+
+    <div class="callout">
+        <strong>Õigus esitada kaebus:</strong> Teil on õigus pöörduda Eesti Andmekaitse Inspektsiooni (AKI) poole — <a href="mailto:aki@aki.ee">aki@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">aki.ee</a>.
+    </div>
+
+    <h2>7. Küpsised</h2>
+    <p>Kasutame ainult <strong>tehniliselt vajalikke küpsiseid</strong> (sessiooni säilitamine, autentimine, eelistused). <strong>Turundusküpsiseid ega kolmandate osapoolte jälgimist me vaikimisi ei kasuta.</strong> Kui tulevikus võtame analüütika kasutusele, küsime selleks selget nõusolekut küpsisebänneri kaudu.</p>
+
+    <h2>8. Rahvusvahelised andmeedastused</h2>
+    <p>Mõned alamtöötlejad (Anthropic, Stripe, ElevenLabs) asuvad väljaspool EL-i. Edastused toimuvad Euroopa Komisjoni kinnitatud <strong>standardsete lepingusätete (SCC)</strong> alusel ja vajaduse korral täiendavate kaitsemeetmetega.</p>
+
+    <h2>9. Turvalisus</h2>
+    <ul>
+        <li>HTTPS / TLS 1.3 kogu liikluse jaoks;</li>
+        <li>krüpteerimine andmebaasi tasemel (encryption at rest);</li>
+        <li>Supabase Row-Level Security (RLS) — kasutaja näeb ainult oma andmeid;</li>
+        <li>juurdepääsulogid ja kõrvalekallete tuvastus;</li>
+        <li>regulaarsed turvauuendused ja sõltuvuste audit.</li>
+    </ul>
+
+    <h2>10. Lapsed</h2>
+    <p>Teenus ei ole mõeldud alla <strong>18-aastastele</strong>. Me ei kogu teadlikult andmeid alaealistelt. Kui saame teada, et selliseid andmeid on kogutud, kustutame need põhjendamatu viivituseta.</p>
+
+    <h2>11. Muudatused</h2>
+    <p>Olulistest privaatsuspoliitika muudatustest anname teada e-posti teel ja avalikul esilehel. Versiooni number ja kuupäev ülal näitavad alati kehtivat versiooni.</p>
+
+    <h2>12. Kontakt</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        E-post: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Andmekaitse kontakt: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Aadress: Tornimäe tn 5, 15010 Tallinn, Eesti
+    </div>
+</main>
+
+<!-- ============================================================== -->
+<!-- ENGLISH                                                         -->
+<!-- ============================================================== -->
+<main class="container" data-lang="en">
+    <div class="doc-meta">
+        <p><strong>Effective:</strong> 29 April 2026</p>
+        <p><strong>Last updated:</strong> 29 April 2026</p>
+        <p><strong>Version:</strong> 3.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>In short:</strong> Your data is hosted in the EU (Supabase EU-West-2). AI chat content is sent to Anthropic's Claude API under EU Standard Contractual Clauses. You have full GDPR rights — deletion, portability, access. No advertising cookies, no third-party tracking.
+    </div>
+
+    <h2>1. Data controller</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Company number: 17098992<br>
+        Address: Tornimäe tn 5, 15010 Tallinn, Estonia<br>
+        Email: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Data protection contact (DPO): <a href="mailto:support@advocat.ee">support@advocat.ee</a>
+    </div>
+
+    <h2>2. What data we process</h2>
+    <ul>
+        <li><strong>Account data:</strong> email address, name (optional), language preference, authentication data (encrypted).</li>
+        <li><strong>Chat content:</strong> your messages to the AI and the AI's responses.</li>
+        <li><strong>Uploaded documents:</strong> files you knowingly submit to the Service for analysis.</li>
+        <li><strong>Payment metadata:</strong> subscription status, charges, dates. <em>We never see or store full card numbers</em> — those are handled by Stripe (PCI DSS Level 1).</li>
+        <li><strong>Technical logs:</strong> IP address, browser, session ID, error and security logs.</li>
+        <li><strong>Usage stats:</strong> message count, feature usage (aggregated).</li>
+    </ul>
+
+    <h2>3. Legal bases (GDPR Article 6)</h2>
+    <ul>
+        <li><strong>Performance of a contract</strong> (art 6(1)(b)) — providing the subscription, processing AI requests.</li>
+        <li><strong>Legitimate interest</strong> (art 6(1)(f)) — security, fraud prevention, service quality improvements.</li>
+        <li><strong>Consent</strong> (art 6(1)(a)) — analytics and notifications, which you can withdraw at any time.</li>
+        <li><strong>Legal obligation</strong> (art 6(1)(c)) — accounting and tax law.</li>
+    </ul>
+
+    <h2>4. Who we share data with (sub-processors)</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Processor</th><th>Purpose</th><th>Location</th><th>Safeguard</th></tr></thead>
+        <tbody>
+        <tr><td><strong>Supabase</strong></td><td>Data hosting (users, chats)</td><td>EU (eu-west-2)</td><td>In-EU, RLS, encrypted</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>AI processing (Claude API)</td><td>USA</td><td>EU Standard Contractual Clauses (SCC)</td></tr>
+        <tr><td><strong>Stripe</strong></td><td>Payments</td><td>USA / EU</td><td>PCI DSS Level 1, SCC</td></tr>
+        <tr><td><strong>Google Cloud</strong></td><td>Voice synthesis (TTS)</td><td>EU region</td><td>In-EU processing</td></tr>
+        <tr><td><strong>ElevenLabs</strong></td><td>Voice synthesis (some languages)</td><td>USA</td><td>SCC</td></tr>
+        <tr><td><strong>Resend / Gmail</strong></td><td>Transactional email</td><td>EU / USA</td><td>SCC</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>All sub-processors are contractually bound to protect data at least to the same level as we do.</p>
+
+    <h2>5. Retention</h2>
+    <ul>
+        <li><strong>Account data</strong> — until you delete the account.</li>
+        <li><strong>Chat history</strong> — up to 24 months, unless you delete it earlier.</li>
+        <li><strong>Uploaded documents</strong> — until you delete them or the account.</li>
+        <li><strong>Payment records</strong> — <strong>7 years</strong> as required by Estonian Accounting Act.</li>
+        <li><strong>Security logs</strong> — 12 months.</li>
+    </ul>
+
+    <h2 id="gdpr-en">6. Your GDPR rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+        <li><strong>access</strong> your data (art 15);</li>
+        <li><strong>rectification</strong> of inaccurate data (art 16);</li>
+        <li><strong>erasure</strong> ("right to be forgotten", art 17);</li>
+        <li><strong>restriction</strong> of processing (art 18);</li>
+        <li><strong>portability</strong> — receive your data in a machine-readable format (art 20);</li>
+        <li><strong>object</strong> to processing based on legitimate interest (art 21);</li>
+        <li><strong>withdraw consent</strong> at any time (art 7).</li>
+    </ul>
+    <p>To exercise these rights, email <a href="mailto:support@advocat.ee">support@advocat.ee</a>. We respond within 30 days.</p>
+
+    <div class="callout">
+        <strong>Right to lodge a complaint:</strong> You have the right to complain to the Estonian Data Protection Inspectorate (AKI) — <a href="mailto:aki@aki.ee">aki@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">aki.ee</a>.
+    </div>
+
+    <h2>7. Cookies</h2>
+    <p>We use only <strong>strictly necessary cookies</strong> (session, authentication, preferences). <strong>We do not use marketing cookies or third-party tracking</strong> by default. If we add any analytics in the future, we will request explicit consent through a cookie banner.</p>
+
+    <h2>8. International data transfers</h2>
+    <p>Some sub-processors (Anthropic, Stripe, ElevenLabs) are located outside the EU. Transfers are carried out under <strong>European Commission Standard Contractual Clauses (SCC)</strong>, with supplementary measures where needed.</p>
+
+    <h2>9. Security</h2>
+    <ul>
+        <li>HTTPS / TLS 1.3 for all traffic;</li>
+        <li>encryption at rest at the database level;</li>
+        <li>Supabase Row-Level Security (RLS) — each user sees only their own data;</li>
+        <li>access logs and anomaly detection;</li>
+        <li>regular security updates and dependency audits.</li>
+    </ul>
+
+    <h2>10. Children</h2>
+    <p>The Service is not intended for users under <strong>18</strong>. We do not knowingly collect data from minors. If we discover such data, we will delete it without undue delay.</p>
+
+    <h2>11. Changes</h2>
+    <p>We notify you by email and on the public homepage of any material change to this Privacy Policy. The version number and date above always show the current version.</p>
+
+    <h2>12. Contact</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Email: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Data protection contact: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Address: Tornimäe tn 5, 15010 Tallinn, Estonia
+    </div>
+</main>
+
+<!-- ============================================================== -->
+<!-- RUSSIAN                                                         -->
+<!-- ============================================================== -->
+<main class="container" data-lang="ru">
+    <div class="doc-meta">
+        <p><strong>Вступает в силу:</strong> 29 апреля 2026</p>
+        <p><strong>Последнее обновление:</strong> 29 апреля 2026</p>
+        <p><strong>Версия:</strong> 3.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Коротко:</strong> Ваши данные хранятся в ЕС (Supabase EU-West-2). Содержание AI-чата отправляется в Anthropic (Claude API) на основании стандартных договорных условий ЕС. У вас есть все права GDPR — удаление, переносимость, доступ. Никакой рекламы, никакой сторонней аналитики.
+    </div>
+
+    <h2>1. Контролёр данных</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        Рег. номер: 17098992<br>
+        Адрес: Tornimäe tn 5, 15010 Tallinn, Эстония<br>
+        E-mail: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Контакт по защите данных (DPO): <a href="mailto:support@advocat.ee">support@advocat.ee</a>
+    </div>
+
+    <h2>2. Какие данные мы обрабатываем</h2>
+    <ul>
+        <li><strong>Данные аккаунта:</strong> e-mail, имя (по желанию), языковые настройки, данные аутентификации (зашифровано).</li>
+        <li><strong>Содержимое чата:</strong> ваши сообщения AI и ответы AI.</li>
+        <li><strong>Загруженные документы:</strong> файлы, которые вы осознанно отправляете Сервису для анализа.</li>
+        <li><strong>Метаданные платежей:</strong> статус подписки, суммы, даты. <em>Полные номера карт мы не видим и не храним</em> — их обрабатывает Stripe (PCI DSS Level 1).</li>
+        <li><strong>Технические логи:</strong> IP-адрес, браузер, ID сессии, логи ошибок и безопасности.</li>
+        <li><strong>Статистика использования:</strong> количество сообщений, использование функций (агрегировано).</li>
+    </ul>
+
+    <h2>3. Правовые основания (GDPR ст. 6)</h2>
+    <ul>
+        <li><strong>Исполнение договора</strong> (ст. 6(1)(b)) — предоставление подписки, обработка AI-запросов.</li>
+        <li><strong>Законный интерес</strong> (ст. 6(1)(f)) — безопасность, борьба с мошенничеством, улучшение качества Сервиса.</li>
+        <li><strong>Согласие</strong> (ст. 6(1)(a)) — аналитика и уведомления, которые можно отозвать в любой момент.</li>
+        <li><strong>Юридическое обязательство</strong> (ст. 6(1)(c)) — бухгалтерия и налоговое право.</li>
+    </ul>
+
+    <h2>4. С кем мы делимся данными (субобработчики)</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Обработчик</th><th>Цель</th><th>Локация</th><th>Защита</th></tr></thead>
+        <tbody>
+        <tr><td><strong>Supabase</strong></td><td>Хранение данных (пользователи, чаты)</td><td>ЕС (eu-west-2)</td><td>Внутри ЕС, RLS, шифрование</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>Обработка AI (Claude API)</td><td>США</td><td>Стандартные договорные условия ЕС (SCC)</td></tr>
+        <tr><td><strong>Stripe</strong></td><td>Платежи</td><td>США / ЕС</td><td>PCI DSS Level 1, SCC</td></tr>
+        <tr><td><strong>Google Cloud</strong></td><td>Синтез речи (TTS)</td><td>Регион ЕС</td><td>Обработка внутри ЕС</td></tr>
+        <tr><td><strong>ElevenLabs</strong></td><td>Синтез речи (некоторые языки)</td><td>США</td><td>SCC</td></tr>
+        <tr><td><strong>Resend / Gmail</strong></td><td>Транзакционные e-mail</td><td>ЕС / США</td><td>SCC</td></tr>
+        </tbody>
+    </table>
+    </div>
+    <p>Все субобработчики договорно обязаны защищать данные не ниже нашего собственного уровня.</p>
+
+    <h2>5. Сроки хранения</h2>
+    <ul>
+        <li><strong>Данные аккаунта</strong> — до удаления аккаунта.</li>
+        <li><strong>История чатов</strong> — до 24 месяцев, если вы не удалите раньше.</li>
+        <li><strong>Загруженные документы</strong> — до удаления вами или удаления аккаунта.</li>
+        <li><strong>Платёжные документы</strong> — <strong>7 лет</strong> в соответствии с Законом Эстонии о бухгалтерском учёте.</li>
+        <li><strong>Логи безопасности</strong> — 12 месяцев.</li>
+    </ul>
+
+    <h2>6. Ваши права по GDPR</h2>
+    <p>У вас есть право:</p>
+    <ul>
+        <li>на <strong>доступ</strong> к вашим данным (ст. 15);</li>
+        <li>на <strong>исправление</strong> неточных данных (ст. 16);</li>
+        <li>на <strong>удаление</strong> ("право быть забытым", ст. 17);</li>
+        <li>на <strong>ограничение</strong> обработки (ст. 18);</li>
+        <li>на <strong>переносимость</strong> — получить данные в машиночитаемом формате (ст. 20);</li>
+        <li>на <strong>возражение</strong> против обработки на основании законного интереса (ст. 21);</li>
+        <li><strong>отозвать согласие</strong> в любой момент (ст. 7).</li>
+    </ul>
+    <p>Чтобы воспользоваться этими правами, напишите на <a href="mailto:support@advocat.ee">support@advocat.ee</a>. Мы отвечаем в течение 30 дней.</p>
+
+    <div class="callout">
+        <strong>Право на жалобу:</strong> Вы имеете право обратиться в Эстонскую инспекцию по защите данных (AKI) — <a href="mailto:aki@aki.ee">aki@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">aki.ee</a>.
+    </div>
+
+    <h2>7. Cookies</h2>
+    <p>Мы используем только <strong>строго необходимые cookies</strong> (сессия, аутентификация, настройки). <strong>Мы не используем рекламные cookies и стороннее отслеживание</strong> по умолчанию. Если в будущем будет добавлена аналитика, мы запросим явное согласие через cookie-баннер.</p>
+
+    <h2>8. Международная передача данных</h2>
+    <p>Некоторые субобработчики (Anthropic, Stripe, ElevenLabs) находятся вне ЕС. Передачи осуществляются на основании <strong>стандартных договорных условий Европейской комиссии (SCC)</strong>, при необходимости — с дополнительными мерами защиты.</p>
+
+    <h2>9. Безопасность</h2>
+    <ul>
+        <li>HTTPS / TLS 1.3 для всего трафика;</li>
+        <li>шифрование данных в покое (encryption at rest);</li>
+        <li>Supabase Row-Level Security (RLS) — пользователь видит только свои данные;</li>
+        <li>журналы доступа и обнаружение аномалий;</li>
+        <li>регулярные обновления безопасности и аудит зависимостей.</li>
+    </ul>
+
+    <h2>10. Дети</h2>
+    <p>Сервис не предназначен для лиц младше <strong>18 лет</strong>. Мы сознательно не собираем данные несовершеннолетних. Если такие данные обнаружатся, мы удалим их без неоправданной задержки.</p>
+
+    <h2>11. Изменения</h2>
+    <p>О существенных изменениях этой Политики мы уведомляем по e-mail и на главной странице. Номер версии и дата вверху всегда показывают актуальную редакцию.</p>
+
+    <h2>12. Контакт</h2>
+    <div class="contact-box">
+        <strong>Vorantis OÜ</strong>
+        E-mail: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Контакт по защите данных: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Адрес: Tornimäe tn 5, 15010 Tallinn, Эстония
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/blog/">Blog</a>
+    </div>
+    <div>&copy; 2026 Vorantis OÜ. Reg 17098992. Tornimäe tn 5, 15010 Tallinn, Estonia.</div>
+</footer>
+
+<script>
+function switchLang(lang) {
+    document.querySelectorAll('[data-lang]').forEach(function(el) {
+        el.classList.toggle('active-lang', el.getAttribute('data-lang') === lang);
+    });
+    document.querySelectorAll('[data-lang-btn]').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);
+    });
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('advocat-legal-lang', lang); } catch (e) {}
+}
+(function() {
+    var lang = 'et';
+    try {
+        var saved = localStorage.getItem('advocat-legal-lang');
+        if (saved && ['et', 'en', 'ru'].indexOf(saved) !== -1) {
+            lang = saved;
+        } else {
+            var nav = (navigator.language || '').toLowerCase();
+            if (nav.startsWith('ru')) lang = 'ru';
+            else if (nav.startsWith('et')) lang = 'et';
+            else lang = 'en';
+        }
+    } catch (e) {}
+    if (lang !== 'et') switchLang(lang);
+})();
+</script>
+
+</body>
+</html>

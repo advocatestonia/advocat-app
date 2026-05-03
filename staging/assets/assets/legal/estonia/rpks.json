@@ -1,0 +1,73 @@
+{
+  "act": "RPKS",
+  "name": "Riikliku pensionikindlustuse seadus",
+  "name_en": "State Pension Insurance Act",
+  "source": "https://www.riigiteataja.ee/akt/RPKS",
+  "fetched_at": "2026-04-21T00:00:00Z",
+  "consolidated_version": "2025-11-01",
+  "last_amendment": "2025-06-12",
+  "sections": [
+    {
+      "paragraph": "§ 7",
+      "title": "Vanaduspensioni tingimused",
+      "body": "Old-age pension eligibility: age 65 + minimum 15 years of pension-qualifying service in Estonia. From 2027, age adjusts annually based on life expectancy.",
+      "chapter": "2 Vanaduspension"
+    },
+    {
+      "paragraph": "§ 8",
+      "title": "Paindlik pension",
+      "body": "Flexible retirement: may claim up to 5 years early (with reduced amount) or delay (with increased amount).",
+      "chapter": "2 Vanaduspension"
+    },
+    {
+      "paragraph": "§ 9",
+      "title": "Soodustingimustel vanaduspension",
+      "body": "Early retirement for 40+ years of contributions: up to 5 years before standard age, without reduction.",
+      "chapter": "2 Vanaduspension"
+    },
+    {
+      "paragraph": "§ 11",
+      "title": "Pensioni arvutamine",
+      "body": "Pension components: base part, service-years component, insurance portion, combined portion. Annual indexing applies.",
+      "chapter": "3 Pensioni arvutamine"
+    },
+    {
+      "paragraph": "§ 22",
+      "title": "Rahvapension",
+      "body": "Universal pension (national pension) for elderly with insufficient contributions. Requires 5 years immediate residence in Estonia before claim.",
+      "chapter": "4 Rahvapension"
+    },
+    {
+      "paragraph": "§ 24",
+      "title": "Töövõimetuspension",
+      "body": "Disability pension (now replaced by work ability allowance under Töövõimetoetuse seadus for new claims since 2016).",
+      "chapter": "5 Töövõimetuspension"
+    },
+    {
+      "paragraph": "§ 28",
+      "title": "Toitjakaotuspension",
+      "body": "Survivor pension: 50-100% of deceased's theoretical benefit, depending on household size.",
+      "chapter": "6 Toitjakaotuspension"
+    },
+    {
+      "paragraph": "§ 40",
+      "title": "Pensioni määramine",
+      "body": "Pension determined by Sotsiaalkindlustusamet (Social Insurance Board).",
+      "chapter": "7 Määramine"
+    },
+    {
+      "paragraph": "§ 45",
+      "title": "Otsuse vaidlustamine",
+      "body": "Appeal pension decision within 30 days to Sotsiaalkindlustusamet; further to halduskohus.",
+      "chapter": "8 Vaidlustamine"
+    }
+  ],
+  "retirement_age_2026": 65,
+  "minimum_service_years": 15,
+  "national_pension_residence_years": 5,
+  "appeal_deadline_days": 30,
+  "appeal_body": "Sotsiaalkindlustusamet, edasi halduskohus",
+  "critical_for_immigrants": true,
+  "audience_priority": "high",
+  "cross_references": ["SHS", "HMS"]
+}
