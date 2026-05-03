@@ -95,7 +95,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/images/illustrations/
     - assets/icons/
     - assets/l10n/
     - assets/legal/estonia/

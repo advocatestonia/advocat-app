@@ -48,7 +48,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get analyzing => 'Analüüsimine…';
 
   @override
-  String get aiAnalyzing => 'AI analüüsib';
+  String get aiAnalyzing => 'AI analüüsib…';
 
   @override
   String get speakIntoMicHint =>
@@ -230,8 +230,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get deleteAccount => 'Kustuta konto';
 
   @override
-  String get deleteAccountDesc =>
-      'Kustutage konto ja kõik andmed jäädavalt';
+  String get deleteAccountDesc => 'Kustutage konto ja kõik andmed jäädavalt';
 
   @override
   String get deleteAccountDialogContent =>
@@ -498,8 +497,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get onboardingTitle2 => 'Skaneerige ja analüüsige dokumente';
 
   @override
-  String get onboardingTitle3 =>
-      'AI tuvastab võimalikud vead';
+  String get onboardingTitle3 => 'AI tuvastab võimalikud vead';
 
   @override
   String get onboardingTitle4 => 'Dokumendimustandid teie ülevaatamiseks';
@@ -1481,7 +1479,8 @@ class AppLocalizationsEt extends AppLocalizations {
   String get priorityProcessing => 'Prioriteetne töötlemine';
 
   @override
-  String get fiveAiMessagesTotal => '5 AI sõnumit (kokku, kogu kasutusaja jooksul)';
+  String get fiveAiMessagesTotal =>
+      '5 AI sõnumit (kokku, kogu kasutusaja jooksul)';
 
   @override
   String get hundredAiMessagesDay => '100 AI sõnumit päevas';
@@ -1646,8 +1645,7 @@ class AppLocalizationsEt extends AppLocalizations {
   String get legalRegistry => 'Registreeritud Eesti äriregistris';
 
   @override
-  String get aiGeneratedDisclaimer =>
-      'AI loodud • Mitte õigusnõuanne';
+  String get aiGeneratedDisclaimer => 'AI loodud • Mitte õigusnõuanne';
 
   @override
   String get decline => 'Keeldu';
@@ -1757,7 +1755,8 @@ class AppLocalizationsEt extends AppLocalizations {
   String get workplaceActionKeepContract => 'Hoidke alles töölepingu koopiad';
 
   @override
-  String get workplaceActionTrackHours => 'Pidage ise oma tööaja kohta arvestust';
+  String get workplaceActionTrackHours =>
+      'Pidage ise oma tööaja kohta arvestust';
 
   @override
   String get workplaceActionReportUnsafe =>
@@ -2104,7 +2103,8 @@ class AppLocalizationsEt extends AppLocalizations {
       'Defektist müüjale teatamine — 2 kuu jooksul pärast avastamist (soovitatav)';
 
   @override
-  String get contactConsumerAdvisory => 'Tarbijakaitse ja Tehnilise Järelevalve Amet';
+  String get contactConsumerAdvisory =>
+      'Tarbijakaitse ja Tehnilise Järelevalve Amet';
 
   @override
   String get contactConsumerOmbudsman => 'Tarbijaombudsman';
