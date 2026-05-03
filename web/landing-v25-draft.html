@@ -19,13 +19,13 @@
   <link rel="alternate" hreflang="lt" href="https://advocat.ee/?lang=lt">
   <link rel="alternate" hreflang="x-default" href="https://advocat.ee/">
   <meta property="og:title" content="Advocat — AI Legal Assistant for Estonia & EU">
-  <meta property="og:description" content="AI-ассистент по эстонскому и европейскому праву: отвечает на вопросы, готовит черновики писем, помогает с материалами дела. От €14.99/мес. Не заменяет присяжного адвоката.">
+  <meta property="og:description" content="AI-powered legal information for Estonia and the EU. Cited sources, 17 languages, GDPR-aligned. Early Access €14.99/mo (then €19.99) — vs €100-200/h at a law firm.">
   <meta property="og:image" content="https://advocat.ee/logo.png">
   <meta property="og:url" content="https://advocat.ee/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Advocat — AI Legal Assistant">
-  <meta name="twitter:description" content="AI-ассистент по праву: эстонский, английский, русский. Отвечает на вопросы, готовит черновики. От €14.99/мес. Информационный сервис, не заменяет адвоката.">
+  <meta name="twitter:description" content="AI legal info for Estonia & EU. Cited sources, 17 languages. €14.99/mo Early Access. Informational service — not a substitute for a sworn advocate.">
   <meta name="twitter:image" content="https://advocat.ee/logo.png">
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=premium">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=premium">
@@ -1991,17 +1991,17 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 </style>
 
 <div id="advCookieBanner" role="dialog" aria-labelledby="advCookieTitle" aria-describedby="advCookieBody">
-  <p id="advCookieTitle" style="font-weight:700;margin-bottom:4px;">Cookies &amp; privacy</p>
-  <p id="advCookieBody">
+  <p id="advCookieTitle" style="font-weight:700;margin-bottom:4px;" data-i18n="cookie.title">Cookies &amp; privacy</p>
+  <p id="advCookieBody" data-i18n-html="cookie.body">
     We use strictly necessary cookies to keep you signed in. We do
     not use advertising or cross-site tracking cookies.
     See our <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.
     Questions: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.
   </p>
   <div class="advCookieRow">
-    <button class="advCookieAccept" type="button" onclick="advCookieConsent('accept')">Accept</button>
-    <button class="advCookieReject" type="button" onclick="advCookieConsent('reject')">Reject non-essential</button>
-    <button class="advCookiePrefs" type="button" onclick="window.open('/privacy.html','_blank')">Learn more</button>
+    <button class="advCookieAccept" type="button" onclick="advCookieConsent('accept')" data-i18n="cookie.accept">Accept</button>
+    <button class="advCookieReject" type="button" onclick="advCookieConsent('reject')" data-i18n="cookie.reject">Reject non-essential</button>
+    <button class="advCookiePrefs" type="button" onclick="window.open('/privacy.html','_blank')" data-i18n="cookie.learn">Learn more</button>
   </div>
 </div>
 
@@ -2068,6 +2068,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 founder seats remaining',
     'pricing.founder_closed': 'Early Access closed — Pro €19.99/mo available',
     'plan2.cta_closed': 'Choose Pro €19.99/mo',
+    'cookie.title': 'Cookies & privacy',
+    'cookie.body': 'We use strictly necessary cookies to keep you signed in. We do not use advertising or cross-site tracking cookies. See our <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>. Questions: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Accept',
+    'cookie.reject': 'Reject non-essential',
+    'cookie.learn': 'Learn more',
     'nav.how': 'How it works', 'nav.compare': 'Compare', 'nav.pricing': 'Pricing', 'nav.faq': 'FAQ',
     'nav.login': 'Sign in', 'nav.cta': 'Try free',
     'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
@@ -2162,6 +2167,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 asutajakohast veel vaba',
     'pricing.founder_closed': 'Asutajahind on välja müüdud — Pro €19.99/kuu',
     'plan2.cta_closed': 'Vali Pro €19.99/kuu',
+    'cookie.title': 'Küpsised ja privaatsus',
+    'cookie.body': 'Kasutame ainult rangelt vajalikke küpsiseid, et hoida sind sisse logituna. Me ei kasuta reklaami- ega lehtedeüleseid jälgimisküpsiseid. Vaata <a href="/privacy.html" target="_blank" rel="noopener">privaatsuspoliitikat</a>. Küsimused: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Nõustu',
+    'cookie.reject': 'Keeldu mittevajalikest',
+    'cookie.learn': 'Loe rohkem',
     'nav.how': 'Kuidas see töötab', 'nav.compare': 'Võrdlus', 'nav.pricing': 'Hinnad', 'nav.faq': 'KKK',
     'nav.login': 'Logi sisse', 'nav.cta': 'Proovi tasuta',
     'hero.eyebrow': 'AI-ÕIGUSABI · 2026',
@@ -2256,6 +2266,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 мест для основателей осталось',
     'pricing.founder_closed': 'Ранний доступ закрыт — доступен Pro €19.99/мес',
     'plan2.cta_closed': 'Выбрать Pro €19.99/мес',
+    'cookie.title': 'Файлы cookie и конфиденциальность',
+    'cookie.body': 'Мы используем строго необходимые файлы cookie, чтобы поддерживать ваш вход в систему. Мы не используем рекламные или межсайтовые отслеживающие cookie. Подробнее в <a href="/privacy.html" target="_blank" rel="noopener">Политике конфиденциальности</a>. Вопросы: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Принять',
+    'cookie.reject': 'Отклонить необязательные',
+    'cookie.learn': 'Подробнее',
     'nav.how': 'Как это работает', 'nav.compare': 'Сравнение', 'nav.pricing': 'Тарифы', 'nav.faq': 'FAQ',
     'nav.login': 'Войти', 'nav.cta': 'Попробовать',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
@@ -2350,6 +2365,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 місць для засновників залишилось',
     'pricing.founder_closed': 'Ранній доступ закрито — доступний Pro €19.99/міс',
     'plan2.cta_closed': 'Обрати Pro €19.99/міс',
+    'cookie.title': 'Файли cookie та конфіденційність',
+    'cookie.body': 'Ми використовуємо лише суворо необхідні файли cookie, щоб підтримувати ваш вхід у систему. Ми не використовуємо рекламні або міжсайтові відстежувальні cookie. Докладніше в <a href="/privacy.html" target="_blank" rel="noopener">Політиці конфіденційності</a>. Питання: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Прийняти',
+    'cookie.reject': 'Відхилити необов\'язкові',
+    'cookie.learn': 'Докладніше',
     'nav.how': 'Як працює', 'nav.compare': 'Порівняння', 'nav.pricing': 'Тарифи', 'nav.faq': 'FAQ',
     'nav.login': 'Увійти', 'nav.cta': 'Спробувати',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
@@ -2444,6 +2464,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 perustajapaikkaa jäljellä',
     'pricing.founder_closed': 'Varhainen pääsy suljettu — Pro €19.99/kk saatavilla',
     'plan2.cta_closed': 'Valitse Pro €19.99/kk',
+    'cookie.title': 'Evästeet ja yksityisyys',
+    'cookie.body': 'Käytämme vain ehdottoman välttämättömiä evästeitä pitääksemme sinut kirjautuneena. Emme käytä mainos- tai sivustojen välisiä seurantaevästeitä. Lue <a href="/privacy.html" target="_blank" rel="noopener">tietosuojakäytäntömme</a>. Kysymykset: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Hyväksy',
+    'cookie.reject': 'Hylkää ei-välttämättömät',
+    'cookie.learn': 'Lue lisää',
     'nav.how': 'Miten toimii', 'nav.compare': 'Vertailu', 'nav.pricing': 'Hinnat', 'nav.faq': 'UKK',
     'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
     'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
@@ -2538,6 +2563,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 Founder-Plätze noch frei',
     'pricing.founder_closed': 'Frühzugang geschlossen — Pro 19,99 €/Monat verfügbar',
     'plan2.cta_closed': 'Pro 19,99 €/Monat wählen',
+    'cookie.title': 'Cookies und Datenschutz',
+    'cookie.body': 'Wir verwenden ausschließlich unbedingt erforderliche Cookies, um Sie angemeldet zu halten. Wir setzen keine Werbe- oder seitenübergreifenden Tracking-Cookies ein. Siehe unsere <a href="/privacy.html" target="_blank" rel="noopener">Datenschutzerklärung</a>. Fragen: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Akzeptieren',
+    'cookie.reject': 'Nicht notwendige ablehnen',
+    'cookie.learn': 'Mehr erfahren',
     'nav.how': 'So funktioniert\'s', 'nav.compare': 'Vergleich', 'nav.pricing': 'Preise', 'nav.faq': 'FAQ',
     'nav.login': 'Anmelden', 'nav.cta': 'Kostenlos testen',
     'hero.eyebrow': 'KI-RECHTSASSISTENT · 2026',
@@ -2632,6 +2662,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 places fondateur restantes',
     'pricing.founder_closed': 'Accès anticipé clos — Pro 19,99 €/mois disponible',
     'plan2.cta_closed': 'Choisir Pro 19,99 €/mois',
+    'cookie.title': 'Cookies et confidentialité',
+    'cookie.body': 'Nous utilisons uniquement des cookies strictement nécessaires pour vous maintenir connecté. Nous n\'utilisons pas de cookies publicitaires ni de cookies de suivi inter-sites. Consultez notre <a href="/privacy.html" target="_blank" rel="noopener">politique de confidentialité</a>. Questions : <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Accepter',
+    'cookie.reject': 'Refuser les non essentiels',
+    'cookie.learn': 'En savoir plus',
     'nav.how': 'Comment ça marche', 'nav.compare': 'Comparer', 'nav.pricing': 'Tarifs', 'nav.faq': 'FAQ',
     'nav.login': 'Se connecter', 'nav.cta': 'Essai gratuit',
     'hero.eyebrow': 'ASSISTANT JURIDIQUE IA · 2026',
@@ -2726,6 +2761,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 plazas de fundador disponibles',
     'pricing.founder_closed': 'Acceso anticipado cerrado — Pro 19,99 €/mes disponible',
     'plan2.cta_closed': 'Elegir Pro 19,99 €/mes',
+    'cookie.title': 'Cookies y privacidad',
+    'cookie.body': 'Utilizamos únicamente cookies estrictamente necesarias para mantener tu sesión iniciada. No utilizamos cookies publicitarias ni de seguimiento entre sitios. Consulta nuestra <a href="/privacy.html" target="_blank" rel="noopener">Política de privacidad</a>. Consultas: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Aceptar',
+    'cookie.reject': 'Rechazar las no esenciales',
+    'cookie.learn': 'Más información',
     'nav.how': 'Cómo funciona', 'nav.compare': 'Comparar', 'nav.pricing': 'Precios', 'nav.faq': 'FAQ',
     'nav.login': 'Iniciar sesión', 'nav.cta': 'Probar gratis',
     'hero.eyebrow': 'ASISTENTE JURÍDICO IA · 2026',
@@ -2820,6 +2860,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 posti founder ancora disponibili',
     'pricing.founder_closed': 'Accesso anticipato chiuso — Pro 19,99 €/mese disponibile',
     'plan2.cta_closed': 'Scegli Pro 19,99 €/mese',
+    'cookie.title': 'Cookie e privacy',
+    'cookie.body': 'Utilizziamo solo cookie strettamente necessari per mantenerti connesso. Non utilizziamo cookie pubblicitari né di tracciamento tra siti. Consulta la nostra <a href="/privacy.html" target="_blank" rel="noopener">Informativa sulla privacy</a>. Domande: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Accetta',
+    'cookie.reject': 'Rifiuta i non essenziali',
+    'cookie.learn': 'Scopri di più',
     'nav.how': 'Come funziona', 'nav.compare': 'Confronto', 'nav.pricing': 'Prezzi', 'nav.faq': 'FAQ',
     'nav.login': 'Accedi', 'nav.cta': 'Prova gratis',
     'hero.eyebrow': 'ASSISTENTE LEGALE IA · 2026',
@@ -2914,6 +2959,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / pozostało 100 miejsc dla founderów',
     'pricing.founder_closed': 'Wczesny dostęp zamknięty — dostępny Pro 19,99 €/mies.',
     'plan2.cta_closed': 'Wybierz Pro 19,99 €/mies.',
+    'cookie.title': 'Pliki cookie i prywatność',
+    'cookie.body': 'Używamy wyłącznie ściśle niezbędnych plików cookie, aby utrzymać Cię zalogowanego. Nie stosujemy reklamowych ani międzywitrynowych plików śledzących. Zobacz naszą <a href="/privacy.html" target="_blank" rel="noopener">Politykę prywatności</a>. Pytania: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Akceptuję',
+    'cookie.reject': 'Odrzuć opcjonalne',
+    'cookie.learn': 'Dowiedz się więcej',
     'nav.how': 'Jak to działa', 'nav.compare': 'Porównanie', 'nav.pricing': 'Cennik', 'nav.faq': 'FAQ',
     'nav.login': 'Zaloguj się', 'nav.cta': 'Wypróbuj za darmo',
     'hero.eyebrow': 'ASYSTENT PRAWNY AI · 2026',
@@ -3008,6 +3058,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 founder-platser kvar',
     'pricing.founder_closed': 'Tidig åtkomst stängd — Pro 19,99 €/mån tillgängligt',
     'plan2.cta_closed': 'Välj Pro 19,99 €/mån',
+    'cookie.title': 'Cookies och integritet',
+    'cookie.body': 'Vi använder endast strikt nödvändiga cookies för att hålla dig inloggad. Vi använder inga annons- eller webbplatsövergripande spårningscookies. Läs vår <a href="/privacy.html" target="_blank" rel="noopener">integritetspolicy</a>. Frågor: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Acceptera',
+    'cookie.reject': 'Avvisa icke-nödvändiga',
+    'cookie.learn': 'Läs mer',
     'nav.how': 'Så funkar det', 'nav.compare': 'Jämför', 'nav.pricing': 'Priser', 'nav.faq': 'Vanliga frågor',
     'nav.login': 'Logga in', 'nav.cta': 'Prova gratis',
     'hero.eyebrow': 'AI-JURISTASSISTENT · 2026',
@@ -3102,6 +3157,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / atlikušas 100 dibinātāja vietas',
     'pricing.founder_closed': 'Agrīnā piekļuve slēgta — pieejams Pro 19,99 €/mēn.',
     'plan2.cta_closed': 'Izvēlēties Pro 19,99 €/mēn.',
+    'cookie.title': 'Sīkdatnes un privātums',
+    'cookie.body': 'Mēs izmantojam tikai stingri nepieciešamās sīkdatnes, lai jūs saglabātu pieteikušos. Mēs neizmantojam reklāmas vai starpvietņu izsekošanas sīkdatnes. Skatiet mūsu <a href="/privacy.html" target="_blank" rel="noopener">Privātuma politiku</a>. Jautājumi: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Piekrītu',
+    'cookie.reject': 'Noraidīt neobligātās',
+    'cookie.learn': 'Uzzināt vairāk',
     'nav.how': 'Kā tas darbojas', 'nav.compare': 'Salīdzinājums', 'nav.pricing': 'Cenas', 'nav.faq': 'BUJ',
     'nav.login': 'Pieslēgties', 'nav.cta': 'Izmēģināt',
     'hero.eyebrow': 'MI JURIDISKAIS ASISTENTS · 2026',
@@ -3196,6 +3256,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / liko 100 steigėjo vietų',
     'pricing.founder_closed': 'Ankstyvoji prieiga uždaryta — galima Pro 19,99 €/mėn.',
     'plan2.cta_closed': 'Pasirinkti Pro 19,99 €/mėn.',
+    'cookie.title': 'Slapukai ir privatumas',
+    'cookie.body': 'Naudojame tik griežtai būtinus slapukus, kad išliktumėte prisijungę. Nenaudojame reklamos ar tarpsvetainių stebėjimo slapukų. Žr. mūsų <a href="/privacy.html" target="_blank" rel="noopener">Privatumo politiką</a>. Klausimai: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Sutinku',
+    'cookie.reject': 'Atmesti neprivalomus',
+    'cookie.learn': 'Sužinoti daugiau',
     'nav.how': 'Kaip veikia', 'nav.compare': 'Palyginimas', 'nav.pricing': 'Kainos', 'nav.faq': 'DUK',
     'nav.login': 'Prisijungti', 'nav.cta': 'Išbandyti nemokamai',
     'hero.eyebrow': 'DI TEISĖS ASISTENTAS · 2026',
@@ -3290,6 +3355,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 locuri de fondator rămase',
     'pricing.founder_closed': 'Acces anticipat închis — Pro 19,99 €/lună disponibil',
     'plan2.cta_closed': 'Alege Pro 19,99 €/lună',
+    'cookie.title': 'Cookie-uri și confidențialitate',
+    'cookie.body': 'Folosim doar cookie-uri strict necesare pentru a vă menține autentificat. Nu folosim cookie-uri publicitare sau de urmărire între site-uri. Consultați <a href="/privacy.html" target="_blank" rel="noopener">Politica de confidențialitate</a>. Întrebări: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Accept',
+    'cookie.reject': 'Refuz cele neesențiale',
+    'cookie.learn': 'Aflați mai multe',
     'nav.how': 'Cum funcționează', 'nav.compare': 'Comparație', 'nav.pricing': 'Prețuri', 'nav.faq': 'Întrebări frecvente',
     'nav.login': 'Autentificare', 'nav.cta': 'Încearcă gratuit',
     'hero.eyebrow': 'ASISTENT JURIDIC AI · 2026',
@@ -3384,6 +3454,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / 100 kurucu yerinden geriye',
     'pricing.founder_closed': 'Erken erişim kapandı — Pro 19,99 €/ay mevcut',
     'plan2.cta_closed': 'Pro 19,99 €/ay seç',
+    'cookie.title': 'Çerezler ve gizlilik',
+    'cookie.body': 'Yalnızca oturumunuzu açık tutmak için kesinlikle gerekli çerezleri kullanıyoruz. Reklam veya siteler arası izleme çerezleri kullanmıyoruz. <a href="/privacy.html" target="_blank" rel="noopener">Gizlilik Politikamıza</a> bakın. Sorular: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'Kabul et',
+    'cookie.reject': 'Zorunlu olmayanları reddet',
+    'cookie.learn': 'Daha fazla bilgi',
     'nav.how': 'Nasıl çalışır', 'nav.compare': 'Karşılaştır', 'nav.pricing': 'Fiyatlar', 'nav.faq': 'SSS',
     'nav.login': 'Giriş yap', 'nav.cta': 'Ücretsiz dene',
     'hero.eyebrow': 'YAPAY ZEKÂ HUKUK ASİSTANI · 2026',
@@ -3478,6 +3553,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / تبقّى 100 مقعد للمؤسسين',
     'pricing.founder_closed': 'الوصول المبكر مغلق — Pro 19٫99 €/شهر متاح',
     'plan2.cta_closed': 'اختر Pro 19٫99 €/شهر',
+    'cookie.title': 'ملفات تعريف الارتباط والخصوصية',
+    'cookie.body': 'نستخدم فقط ملفات تعريف الارتباط الضرورية للغاية للحفاظ على تسجيل دخولك. لا نستخدم ملفات تعريف ارتباط للإعلانات أو للتتبع عبر المواقع. اطّلع على <a href="/privacy.html" target="_blank" rel="noopener">سياسة الخصوصية</a>. للاستفسارات: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'موافق',
+    'cookie.reject': 'رفض غير الضرورية',
+    'cookie.learn': 'معرفة المزيد',
     'nav.how': 'كيف يعمل', 'nav.compare': 'المقارنة', 'nav.pricing': 'الأسعار', 'nav.faq': 'الأسئلة الشائعة',
     'nav.login': 'تسجيل الدخول', 'nav.cta': 'جرّب مجاناً',
     'hero.eyebrow': 'مساعد قانوني بالذكاء الاصطناعي · 2026',
@@ -3572,6 +3652,11 @@ const I18N = {
     'pricing.founder_counter_tail': ' / ۱۰۰ صندلی بنیان‌گذاری باقی‌مانده',
     'pricing.founder_closed': 'دسترسی زودهنگام بسته شد — Pro با ۱۹٫۹۹ €/ماه در دسترس است',
     'plan2.cta_closed': 'انتخاب Pro با ۱۹٫۹۹ €/ماه',
+    'cookie.title': 'کوکی‌ها و حریم خصوصی',
+    'cookie.body': 'ما فقط از کوکی‌های کاملاً ضروری برای حفظ ورود شما استفاده می‌کنیم. از کوکی‌های تبلیغاتی یا ردیابی بین‌سایتی استفاده نمی‌کنیم. <a href="/privacy.html" target="_blank" rel="noopener">سیاست حریم خصوصی</a> ما را ببینید. سؤالات: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
+    'cookie.accept': 'پذیرفتن',
+    'cookie.reject': 'رد موارد غیرضروری',
+    'cookie.learn': 'اطلاعات بیشتر',
     'nav.how': 'چگونه کار می‌کند', 'nav.compare': 'مقایسه', 'nav.pricing': 'قیمت‌ها', 'nav.faq': 'سؤالات متداول',
     'nav.login': 'ورود', 'nav.cta': 'امتحان رایگان',
     'hero.eyebrow': 'دستیار حقوقی هوش مصنوعی · ۲۰۲۶',
