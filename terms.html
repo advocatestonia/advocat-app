@@ -34,7 +34,7 @@
 
         /* Hero */
         .hero { background: linear-gradient(135deg, #1A2B4A 0%, #0A8F6C 100%); padding: 56px 20px 48px; text-align: center; color: #fff; }
-        .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .hero h1, .hero .hero-title { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2; }
         .hero p { font-size: 15px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
 
         /* Lang switch */
@@ -121,8 +121,8 @@
 
 <section class="hero">
     <h1 data-lang="et" class="active-lang">Kasutustingimused</h1>
-    <h1 data-lang="en">Terms of Service</h1>
-    <h1 data-lang="ru">Условия использования</h1>
+    <div class="hero-title" data-lang="en" role="heading" aria-level="1">Terms of Service</div>
+    <div class="hero-title" data-lang="ru" role="heading" aria-level="1">Условия использования</div>
     <p data-lang="et" class="active-lang">Advocat — AI-õigusabi platvormi tingimused</p>
     <p data-lang="en">Terms governing use of the Advocat AI legal assistant</p>
     <p data-lang="ru">Условия использования AI-юридического ассистента Advocat</p>

@@ -34,7 +34,7 @@
 
         /* Hero */
         .hero { background: linear-gradient(135deg, #1A2B4A 0%, #0A8F6C 100%); padding: 56px 20px 48px; text-align: center; color: #fff; }
-        .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
+        .hero h1, .hero .hero-title { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2; }
         .hero p { font-size: 15px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
 
         /* Lang switch */
@@ -129,8 +129,8 @@
 
 <section class="hero">
     <h1 data-lang="et" class="active-lang">Privaatsuspoliitika</h1>
-    <h1 data-lang="en">Privacy Policy</h1>
-    <h1 data-lang="ru">Политика конфиденциальности</h1>
+    <div class="hero-title" data-lang="en" role="heading" aria-level="1">Privacy Policy</div>
+    <div class="hero-title" data-lang="ru" role="heading" aria-level="1">Политика конфиденциальности</div>
     <p data-lang="et" class="active-lang">Kuidas Vorantis OÜ kogub, kasutab ja kaitseb teie andmeid (GDPR)</p>
     <p data-lang="en">How Vorantis OÜ collects, uses and protects your data (GDPR)</p>
     <p data-lang="ru">Как Vorantis OÜ собирает, использует и защищает ваши данные (GDPR)</p>
