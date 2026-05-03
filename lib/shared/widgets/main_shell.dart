@@ -8,6 +8,7 @@ import '../../config/router.dart';
 import '../../config/theme.dart';
 import '../../l10n/app_localizations.dart';
 import '../constants/app_icons.dart';
+import 'max_width_wrapper.dart';
 
 /// Provider that exposes the count of urgent deadlines for the badge.
 /// Replace with actual provider from deadlines feature when available.
@@ -92,7 +93,10 @@ class MainShell extends ConsumerWidget {
     ];
 
     return Scaffold(
-      body: child,
+      // Constrain mobile-first UI to phone width on desktop viewports.
+      // Without this the home grid stretches to 1440px with huge dead
+      // gutters between tiles — see QA report 2026-05-03 (P0 blocker).
+      body: MaxWidthWrapper(child: child),
       bottomNavigationBar: ClipRRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),

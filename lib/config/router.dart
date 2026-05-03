@@ -233,6 +233,36 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'aiMemory',
         builder: (context, state) => const AiMemoryScreen(),
       ),
+
+      // ── 404 recovery redirects ─────────────────────────────────────
+      // QA report 2026-05-03 flagged these dead-end routes:
+      //   /profile      → /settings  (profile lives inside settings)
+      //   /chat         → /home      (chat needs a caseId; bare path is invalid)
+      //   /documents    → /home      (TODO: dedicated documents listing screen)
+      //   /case/<id>    → /home      (TODO: alias to /cases/<id> once the
+      //                              cases router accepts singular form)
+      // These give users a graceful destination instead of a bare
+      // "Page not found:" message with no recovery affordance.
+      GoRoute(
+        path: '/profile',
+        name: 'profileRedirect',
+        redirect: (context, state) => AppRoutes.settings,
+      ),
+      GoRoute(
+        path: '/chat',
+        name: 'chatRedirect',
+        redirect: (context, state) => AppRoutes.home,
+      ),
+      GoRoute(
+        path: '/documents',
+        name: 'documentsRedirect',
+        redirect: (context, state) => AppRoutes.home,
+      ),
+      GoRoute(
+        path: '/case/:id',
+        name: 'caseSingularRedirect',
+        redirect: (context, state) => AppRoutes.home,
+      ),
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(

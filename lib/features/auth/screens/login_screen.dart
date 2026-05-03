@@ -6,6 +6,7 @@ import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/gdpr_consent_dialog.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../providers/auth_provider.dart';
 
 /// Clean, minimal login screen for Advocat.
@@ -151,26 +152,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             stops: [0.0, 0.5, 1.0],
           ),
         ),
-        child: SafeArea(
-          child: AnimatedOpacity(
-            opacity: _opacity,
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.easeOut,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final content = _buildContent(context, l, authState);
-                // Always use SingleChildScrollView so keyboard doesn't push content off
-                return SingleChildScrollView(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minHeight: constraints.maxHeight,
+        // Constrain mobile-first UI to phone width on desktop viewports
+        // — same reason as MainShell. QA report 2026-05-03 P0 blocker.
+        child: MaxWidthWrapper(
+          child: SafeArea(
+            child: AnimatedOpacity(
+              opacity: _opacity,
+              duration: const Duration(milliseconds: 600),
+              curve: Curves.easeOut,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final content = _buildContent(context, l, authState);
+                  // Always use SingleChildScrollView so keyboard doesn't push content off
+                  return SingleChildScrollView(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: IntrinsicHeight(child: content),
                     ),
-                    child: IntrinsicHeight(child: content),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),
