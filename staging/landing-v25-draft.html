@@ -94,7 +94,7 @@ img, svg { display: block; max-width: 100%; }
 .mobile-menu {
   display: none;
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 99;
+  z-index: 10000;
   background: rgba(15,27,53,.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -184,7 +184,7 @@ img, svg { display: block; max-width: 100%; }
 .hero h1 em { font-style: italic; color: var(--teal); }
 .hero-sub { font-size: 17px; line-height: 1.55; color: var(--muted); margin-bottom: 24px; max-width: 560px; }
 .hero-cta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
-.hero-disclaimer { font-size: 12px; line-height: 1.5; color: var(--faint); margin: 0 0 18px; max-width: 560px; opacity: .85; }
+.hero-disclaimer { font-size: 12px; line-height: 1.5; color: #6B7280; margin: 0 0 18px; max-width: 560px; }
 .hero-trust { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 .hero-trust span { display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 600; color: var(--faint); }
 .hero-trust span::before { content: '✓'; color: var(--teal); font-weight: 800; }
@@ -528,9 +528,9 @@ img, svg { display: block; max-width: 100%; }
 .cmp-cta-disabled {
   display: flex; align-items: center; justify-content: center;
   width: 100%; height: 56px; border-radius: 14px;
-  font-size: 15px; font-weight: 700;
-  background: #F3F4F6; color: #9CA3AF;
-  border: 1.5px solid var(--line);
+  font-size: 14px; font-weight: 500; font-style: italic;
+  background: transparent; color: #6B7280;
+  border: 1px solid #6B7280;
   cursor: not-allowed;
   letter-spacing: .01em;
 }
@@ -795,7 +795,7 @@ img, svg { display: block; max-width: 100%; }
   --plan-ease: cubic-bezier(.2,.8,.3,1);
   border-radius: 20px; padding: 30px 28px 28px; border: 1.5px solid var(--line);
   background: linear-gradient(180deg, #FAFCFB 0%, #F1F8F5 100%);
-  display: flex; flex-direction: column; position: relative; cursor: pointer;
+  display: flex; flex-direction: column; position: relative;
   /* note: no overflow:hidden — would clip the absolute "MOST POPULAR" badge */
   box-shadow: 0 2px 12px rgba(15,27,53,.04), 0 8px 24px -10px rgba(13,148,136,.08);
   transition: transform .32s var(--plan-ease), box-shadow .32s var(--plan-ease), border-color .25s var(--plan-ease);
@@ -1155,7 +1155,7 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .nav-action-desktop { display: none; }
   .nav-burger { display: inline-flex; }
   .nav-actions { gap: 8px; }
-  .lang-btn { padding: 8px 10px; font-size: 11px; min-height: 36px; }
+  .lang-btn { padding: 10px 12px; font-size: 11px; min-height: 44px; }
   /* Reduce nav backdrop blur on mobile (cheap) */
   .nav { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   .hero {
