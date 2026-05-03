@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Advocat — AI õigusabi · Defend Your Rights</title>
-<meta name="description" content="AI-powered legal assistant for Estonia and the EU. Cited sources, 17 languages, GDPR-compliant. Free to start, €19.99/mo for unlimited access (Early Access €14.99/mo) — vs €100-200/h at a traditional law firm.">
+<meta name="description" content="AI-powered legal assistant for Estonia and the EU. Cited sources, 17 languages, GDPR-compliant. Free to start. Early Access €14.99/mo forever (then €19.99/mo) — vs €100-200/h at a traditional law firm.">
 <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://advocat.ee/">
   <meta property="og:title" content="Advocat — AI Legal Assistant for Estonia & EU">
@@ -749,8 +749,9 @@ img, svg { display: block; max-width: 100%; }
   .cmp-orb { display: none; }
 
   .cmp-title { font-size: 28px; }
-  .cmp-hero-mark { width: 140px; height: 140px; }
-  .cmp-hero-mark img { width: 140px; height: 140px; }
+  /* Logo is a horizontal wordmark (~3.1:1) — let aspect ratio drive height */
+  .cmp-hero-mark { width: 200px; height: auto; }
+  .cmp-hero-mark img { width: 100%; height: auto; }
   .cmp-rings { inset: -16px; }
   .cmp-price { padding: 12px 18px; }
   .cmp-price .cmp-price-num { font-size: 32px; }
@@ -978,11 +979,24 @@ img, svg { display: block; max-width: 100%; }
 .plan.featured .plan-name-eyebrow { color: var(--teal2); }
 .plan.plan-premium .plan-name-eyebrow { color: #B8893A; }
 .plan-features { font-size: 14px; line-height: 1.6; }
-.plan-price { display: flex; align-items: baseline; gap: 4px; margin: 12px 0 6px; }
+.plan-price { display: flex; align-items: baseline; gap: 4px; margin: 12px 0 6px; flex-wrap: wrap; }
 .plan-price .amount { font-size: 52px; font-weight: 900; color: var(--navy); letter-spacing: -0.05em; line-height: 1; }
 .plan-price .currency { font-size: 20px; font-weight: 700; color: var(--navy); align-self: flex-start; margin-top: 6px; opacity: .75; }
 .plan-price .per { font-size: 13px; color: var(--faint); font-weight: 500; }
 .plan-price .strike { font-size: 13px; color: var(--faint); text-decoration: line-through; margin-left: 6px; font-weight: 500; }
+/* Early-access dual-price display: struck-through original sits inline-left of the founder price */
+.plan-price .plan-price-old {
+  font-size: 22px; font-weight: 700; color: var(--faint);
+  text-decoration: line-through; text-decoration-thickness: 2px;
+  margin-right: 6px; line-height: 1; opacity: .7;
+  align-self: center;
+}
+.plan-price-tag {
+  display: inline-block; margin: 2px 0 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--teal);
+  background: rgba(13,148,136,0.10); padding: 4px 9px; border-radius: 999px;
+}
 .plan-annual { font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 .plan-intro { font-size: 12px; color: var(--teal2); font-weight: 600; margin: 4px 0 12px; padding: 6px 10px; background: rgba(13,148,136,0.08); border-radius: 6px; display: inline-block; }
 .plan-intro strong { color: var(--teal); font-weight: 700; }
@@ -1198,9 +1212,9 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   /* Compare watermark — pull tighter to avoid horizontal overflow on narrow screens */
   .cmp-side--us > .cmp-watermark { width: 170px; height: 170px; right: -24px; bottom: -24px; opacity: .025; }
   .cmp-side--them > .cmp-watermark { width: 150px; height: 150px; left: -18px; bottom: -14px; opacity: .05; }
-  /* Hero shield — smaller on phones */
-  .cmp-hero-mark { width: 120px; height: 120px; }
-  .cmp-hero-mark img { width: 120px; height: 120px; }
+  /* Hero shield — smaller on phones (preserve wordmark aspect) */
+  .cmp-hero-mark { width: 180px; height: auto; }
+  .cmp-hero-mark img { width: 100%; height: auto; }
   /* Savings counter — tighter */
   .cmp-savings { padding: 20px 16px; }
   .cmp-save-num { font-size: 30px; }
@@ -1208,6 +1222,9 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   /* Pro plan price — slight reduction so currency + amount + per fit cleanly */
   .plan-price .amount { font-size: 44px; }
   .plan-price .currency { font-size: 18px; }
+  /* Strike-through old price scales down with the headline */
+  .plan-price .plan-price-old { font-size: 18px; }
+  .plan-price-tag { font-size: 10.5px; padding: 3px 8px; }
   .plan-name { font-size: 20px; }
   .plan { padding: 26px 22px 24px; }
   /* Pricing card CTA height */
@@ -1256,8 +1273,9 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .cmp-savings { padding: 18px 14px; }
   /* Compare side ultra-compact */
   .cmp-side--us, .cmp-side--them { padding: 20px 14px !important; }
-  .cmp-hero-mark { width: 104px; height: 104px; }
-  .cmp-hero-mark img { width: 104px; height: 104px; }
+  /* Preserve wordmark aspect ratio on smallest screens */
+  .cmp-hero-mark { width: 160px; height: auto; }
+  .cmp-hero-mark img { width: 100%; height: auto; }
   .cmp-title { font-size: 22px; }
   .cmp-price .cmp-price-num { font-size: 28px; }
   /* Reduce particles further — calm on cramped screens */
@@ -1336,6 +1354,18 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     font-weight: 600;
     text-align: center;
   }
+
+  /* ── EARLY ACCESS visibility state machine ─────────────────────────
+     Default page state = Early Access OPEN: show .early-access-only,
+     hide .early-access-only-closed. When founder-spots fetch returns
+     {closed:true}, JS adds `body.ea-closed`, which flips visibility.
+     Using !important + explicit display values to defeat sibling
+     rules (.plan-price{display:flex}, .promo-banner padding, etc.). */
+  .early-access-only-closed { display: none !important; }
+
+  body.ea-closed .early-access-only { display: none !important; }
+  body.ea-closed #plan2-price-closed { display: flex !important; }
+  body.ea-closed #founder-closed-badge { display: block !important; }
 </style>
 </head>
 <body>
@@ -1467,15 +1497,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 </section>
 
 <!-- ── CASES & DOCUMENTS ── -->
-<section class="section" id="cases">
-  <div class="container">
-    <div style="text-align:center">
-      <div class="section-label" style="justify-content:center" data-i18n="cases.label">CASES &amp; DOCUMENTS</div>
-      <h2 data-i18n-html="cases.title">Your case <em>files</em>, organized.</h2>
-      <p class="section-sub" style="margin:0 auto" data-i18n="cases.sub">Upload case documents — AI reads PDFs, remembers dates and context across sessions.</p>
-    </div>
-  </div>
-</section>
+<!-- ── CASES section removed 2026-05-03: header-only stub, content TBD. -->
 
 <!-- ── COMPARE ── -->
 <section class="section" id="compare">
@@ -1724,18 +1746,25 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <img class="plan-watermark" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy">
         <span class="plan-name-eyebrow" data-i18n="plan2.eyebrow">For families</span>
         <div class="plan-name" data-i18n="plan2.name">Pro</div>
-        <div class="plan-price">
+        <!-- EARLY ACCESS price (€14.99 with €19.99 struck through) — shown while founder seats remain -->
+        <div class="plan-price early-access-only" id="plan2-price-open">
+          <s class="plan-price-old" aria-label="Regular price 19.99">€19.99</s>
+          <span class="currency">€</span><span class="amount">14.99</span><span class="per" data-i18n="plan2.per">/ month</span>
+        </div>
+        <span class="plan-price-tag early-access-only" data-i18n="plan2.price_tag">Founder price · forever</span>
+        <!-- POST-EARLY-ACCESS price (€19.99) — revealed once seats sell out (visibility via body.ea-closed CSS) -->
+        <div class="plan-price early-access-only-closed" id="plan2-price-closed">
           <span class="currency">€</span><span class="amount">19.99</span><span class="per" data-i18n="plan2.per">/ month</span>
         </div>
         <div class="plan-annual">
           <span data-i18n="plan2.annual">or €159.99/year — save 33%</span>
           <span class="plan-save-badge">SAVE 33%</span>
         </div>
-        <div class="plan-intro" data-i18n-html="plan2.intro">Early Access: €14.99/mo for the first 100 founders</div>
+        <div class="plan-intro" data-i18n-html="plan2.intro">Locked in for life · cancel anytime</div>
         <div class="founder-counter early-access-only" id="founder-counter" aria-live="polite">
           <span class="founder-spots-num" id="founder-spots-num">—</span><span class="founder-counter-tail" data-i18n="pricing.founder_counter_tail"> / 100 founder seats remaining</span>
         </div>
-        <div class="founder-closed-badge early-access-only-closed" id="founder-closed-badge" hidden data-i18n="pricing.founder_closed">Early Access closed — Pro €19.99/mo available</div>
+        <div class="founder-closed-badge early-access-only-closed" id="founder-closed-badge" data-i18n="pricing.founder_closed">Early Access closed — Pro €19.99/mo available</div>
         <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. Unlimited AI, full document drafting.</div>
         <ul class="plan-features">
           <li data-i18n="plan2.f1">100 AI messages / day</li>
@@ -1888,13 +1917,20 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   #advCookieBanner .advCookieAccept { background: #8fd; color: #0a1613; }
   #advCookieBanner .advCookieReject { background: transparent; color: #f5f5f5; border: 1px solid rgba(255,255,255,0.25); }
   #advCookieBanner .advCookiePrefs { background: transparent; color: #8fd; border: 1px solid rgba(143,221,221,0.35); }
-  @media (max-width: 480px) {
+  @media (max-width: 700px) {
     #advCookieBanner {
       left: 8px; right: 8px;
       bottom: max(8px, env(safe-area-inset-bottom));
-      padding: 14px;
+      padding: 10px 12px;
+      font-size: 12.5px; line-height: 1.4;
+      border-radius: 12px;
     }
-    #advCookieBanner button { min-height: 44px; }
+    #advCookieBanner p { margin: 0 0 8px; }
+    #advCookieBanner .advCookieRow { gap: 6px; }
+    #advCookieBanner button {
+      min-height: 40px; min-width: 0; padding: 8px 10px;
+      font-size: 12.5px; border-radius: 8px;
+    }
   }
 </style>
 
@@ -2014,7 +2050,8 @@ const I18N = {
     'plan1.f1': '7 AI messages total', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
     'plan1.cta': 'Start free',
     'plan2.badge': 'Most popular', 'plan2.eyebrow': 'For families', 'plan2.name': 'Pro', 'plan2.per': '/ month', 'plan2.annual': 'or €159.99/year — save 33%',
-    'plan2.intro': 'Early Access: <strong>€14.99/mo forever</strong> — first 100 founders only',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Daily legal help for you and your family. Unlimited AI, full document drafting.',
     'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
     'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
@@ -2107,7 +2144,8 @@ const I18N = {
     'plan1.f1': '7 AI-sõnumit kokku', 'plan1.f2': '1 aktiivne juhtum', 'plan1.f3': 'Dokumendiskann (3 faili)', 'plan1.f4': 'Viited Eesti ja EL õigusele', 'plan1.f5': 'Pangakaarti pole vaja',
     'plan1.cta': 'Alusta tasuta',
     'plan2.badge': 'POPULAARSEIM', 'plan2.eyebrow': 'Perele', 'plan2.name': 'Pro', 'plan2.per': '/ kuus', 'plan2.annual': 'või €159.99 aastas — säästad 33%',
-    'plan2.intro': 'Asutajahind: <strong>€14.99/kuu eluaegselt</strong> — ainult esimesele 100 kasutajale',
+    'plan2.intro': 'Hind kinnitatud eluaegselt · tühista igal ajal',
+    'plan2.price_tag': 'Asutajahind · eluaegselt',
     'plan2.desc': 'Igapäevane õigustugi sulle ja perele. Piiranguteta vestlused, dokumentide koostamine algusest lõpuni.',
     'plan2.f1': '100 AI-sõnumit päevas', 'plan2.f2': '3 aktiivset juhtumit', 'plan2.f3': 'Dokumendiskann (20 faili)',
     'plan2.f4': 'Kirjade ja kaebuste täisvormistus', 'plan2.f5': 'Häälsisestus', 'plan2.f6': 'Veebiotsing värske kohtupraktika jaoks',
@@ -2200,7 +2238,8 @@ const I18N = {
     'plan1.f1': '7 AI-сообщений всего', 'plan1.f2': '1 активное дело', 'plan1.f3': 'Сканирование документов (3 шт)', 'plan1.f4': 'Ссылки на EE и ЕС законы', 'plan1.f5': 'Без карты',
     'plan1.cta': 'Начать',
     'plan2.badge': 'Популярный', 'plan2.eyebrow': 'Для семьи', 'plan2.name': 'Pro', 'plan2.per': '/ месяц', 'plan2.annual': 'или €159.99/год — экономия 33%',
-    'plan2.intro': 'Ранний доступ: <strong>€14.99/мес навсегда</strong> — только первые 100 фаундеров',
+    'plan2.intro': 'Цена зафиксирована навсегда · отмена в любой момент',
+    'plan2.price_tag': 'Цена фаундера · навсегда',
     'plan2.desc': 'Ежедневная юридическая помощь тебе и семье. Безлимит ИИ, полное составление документов.',
     'plan2.f1': '100 AI-сообщений в день', 'plan2.f2': '3 активных дела', 'plan2.f3': 'Сканирование документов (20 шт)',
     'plan2.f4': 'Полное составление документов (письма, жалобы)', 'plan2.f5': 'Голосовой ввод', 'plan2.f6': 'Веб-поиск свежего права',
@@ -2293,7 +2332,8 @@ const I18N = {
     'plan1.f1': '7 AI-повідомлень загалом', 'plan1.f2': '1 активна справа', 'plan1.f3': 'Сканування документів (3 шт)', 'plan1.f4': 'Посилання на EE та ЄС закони', 'plan1.f5': 'Без картки',
     'plan1.cta': 'Почати',
     'plan2.badge': 'Популярний', 'plan2.eyebrow': 'Для сім\'ї', 'plan2.name': 'Pro', 'plan2.per': '/ місяць', 'plan2.annual': 'або €159.99/рік — економія 33%',
-    'plan2.intro': 'Ранній доступ: <strong>€14.99/міс назавжди</strong> — тільки перші 100 фаундерів',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Щоденна юридична допомога тобі та родині. Безліміт ШІ, повне складання документів.',
     'plan2.f1': '100 AI-повідомлень на день', 'plan2.f2': '3 активні справи', 'plan2.f3': 'Сканування документів (20 шт)',
     'plan2.f4': 'Повне складання документів', 'plan2.f5': 'Голосовий ввід', 'plan2.f6': 'Веб-пошук свіжого права',
@@ -2386,7 +2426,8 @@ const I18N = {
     'plan1.f1': '7 AI-viestiä yhteensä', 'plan1.f2': '1 aktiivinen tapaus', 'plan1.f3': 'Asiakirjojen skannaus (3 kpl)', 'plan1.f4': 'Lähteet EE & EU-laista', 'plan1.f5': 'Ei korttia',
     'plan1.cta': 'Aloita',
     'plan2.badge': 'Suosituin', 'plan2.eyebrow': 'Perheille', 'plan2.name': 'Pro', 'plan2.per': '/ kuukausi', 'plan2.annual': 'tai €159.99/vuosi — säästä 33%',
-    'plan2.intro': 'Varhainen pääsy: <strong>€14.99/kk ikuisesti</strong> — vain ensimmäiset 100 perustajaa',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. Rajaton AI, täysi asiakirjojen laadinta.',
     'plan2.f1': '100 AI-viestiä päivässä', 'plan2.f2': '3 aktiivista tapausta', 'plan2.f3': 'Asiakirjojen skannaus (20 kpl)',
     'plan2.f4': 'Täysi asiakirjojen laadinta', 'plan2.f5': 'Äänisyöte', 'plan2.f6': 'Verkkohaku tuoreesta laista',
@@ -2479,7 +2520,8 @@ const I18N = {
     'plan1.f1': '7 KI-Nachrichten insgesamt', 'plan1.f2': '1 aktiver Fall', 'plan1.f3': 'Dokumentenscan (3 Stück)', 'plan1.f4': 'Quellen aus EE- und EU-Recht', 'plan1.f5': 'Keine Kreditkarte nötig',
     'plan1.cta': 'Kostenlos starten',
     'plan2.badge': 'Am beliebtesten', 'plan2.eyebrow': 'Für Familien', 'plan2.name': 'Pro', 'plan2.per': '/ Monat', 'plan2.annual': 'oder 159,99 €/Jahr — 33 % sparen',
-    'plan2.intro': 'Frühzugang: <strong>14,99 €/Monat auf Lebenszeit</strong> — nur die ersten 100 Founder',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Tägliche Rechtshilfe für Sie und Ihre Familie. Unbegrenzte KI, vollständige Dokumentenerstellung.',
     'plan2.f1': '100 KI-Nachrichten / Tag', 'plan2.f2': '3 aktive Fälle', 'plan2.f3': 'Dokumentenscan (20 Stück)',
     'plan2.f4': 'Vollständige Dokumentenerstellung (Schreiben, Beschwerden)', 'plan2.f5': 'Spracheingabe', 'plan2.f6': 'Websuche nach aktueller Rechtsprechung',
@@ -2572,7 +2614,8 @@ const I18N = {
     'plan1.f1': '7 messages IA au total', 'plan1.f2': '1 dossier actif', 'plan1.f3': 'Lecture de documents (3 fichiers)', 'plan1.f4': 'Sources du droit estonien et UE', 'plan1.f5': 'Sans carte bancaire',
     'plan1.cta': 'Commencer',
     'plan2.badge': 'Le plus populaire', 'plan2.eyebrow': 'Pour la famille', 'plan2.name': 'Pro', 'plan2.per': '/ mois', 'plan2.annual': 'ou 159,99 €/an — économisez 33 %',
-    'plan2.intro': 'Accès anticipé : <strong>14,99 €/mois à vie</strong> — réservé aux 100 premiers fondateurs',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Aide juridique quotidienne pour vous et votre famille. IA illimitée, rédaction complète des documents.',
     'plan2.f1': '100 messages IA / jour', 'plan2.f2': '3 dossiers actifs', 'plan2.f3': 'Lecture de documents (20 fichiers)',
     'plan2.f4': 'Rédaction complète (courriers, plaintes)', 'plan2.f5': 'Saisie vocale', 'plan2.f6': 'Recherche web sur la jurisprudence à jour',
@@ -2665,7 +2708,8 @@ const I18N = {
     'plan1.f1': '7 mensajes IA en total', 'plan1.f2': '1 caso activo', 'plan1.f3': 'Escaneo de documentos (3)', 'plan1.f4': 'Fuentes de derecho EE y UE', 'plan1.f5': 'Sin tarjeta',
     'plan1.cta': 'Empezar gratis',
     'plan2.badge': 'El más popular', 'plan2.eyebrow': 'Para familias', 'plan2.name': 'Pro', 'plan2.per': '/ mes', 'plan2.annual': 'o 159,99 €/año — ahorre 33 %',
-    'plan2.intro': 'Acceso anticipado: <strong>14,99 €/mes de por vida</strong> — solo los 100 primeros fundadores',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Asistencia jurídica diaria para usted y su familia. IA ilimitada, redacción completa de documentos.',
     'plan2.f1': '100 mensajes IA / día', 'plan2.f2': '3 casos activos', 'plan2.f3': 'Escaneo de documentos (20)',
     'plan2.f4': 'Redacción completa (cartas, reclamaciones)', 'plan2.f5': 'Entrada por voz', 'plan2.f6': 'Búsqueda web de jurisprudencia reciente',
@@ -2758,7 +2802,8 @@ const I18N = {
     'plan1.f1': '7 messaggi IA in totale', 'plan1.f2': '1 caso attivo', 'plan1.f3': 'Scansione documenti (3)', 'plan1.f4': 'Fonti dal diritto EE e UE', 'plan1.f5': 'Senza carta',
     'plan1.cta': 'Inizia gratis',
     'plan2.badge': 'Il più scelto', 'plan2.eyebrow': 'Per le famiglie', 'plan2.name': 'Pro', 'plan2.per': '/ mese', 'plan2.annual': 'oppure 159,99 €/anno — risparmio 33 %',
-    'plan2.intro': 'Accesso anticipato: <strong>14,99 €/mese a vita</strong> — solo i primi 100 founder',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Assistenza legale quotidiana per Lei e la Sua famiglia. IA illimitata, redazione completa dei documenti.',
     'plan2.f1': '100 messaggi IA / giorno', 'plan2.f2': '3 casi attivi', 'plan2.f3': 'Scansione documenti (20)',
     'plan2.f4': 'Redazione completa (lettere, reclami)', 'plan2.f5': 'Dettatura vocale', 'plan2.f6': 'Ricerca web della giurisprudenza più recente',
@@ -2851,7 +2896,8 @@ const I18N = {
     'plan1.f1': '7 wiadomości AI łącznie', 'plan1.f2': '1 aktywna sprawa', 'plan1.f3': 'Skanowanie dokumentów (3)', 'plan1.f4': 'Źródła z prawa EE i UE', 'plan1.f5': 'Bez karty',
     'plan1.cta': 'Zacznij za darmo',
     'plan2.badge': 'Najpopularniejszy', 'plan2.eyebrow': 'Dla rodzin', 'plan2.name': 'Pro', 'plan2.per': '/ mies.', 'plan2.annual': 'lub 159,99 €/rok — oszczędność 33 %',
-    'plan2.intro': 'Wczesny dostęp: <strong>14,99 €/mies. na zawsze</strong> — tylko pierwszych 100 founderów',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Codzienna pomoc prawna dla Pana/Pani i rodziny. AI bez limitu, pełne pisanie dokumentów.',
     'plan2.f1': '100 wiadomości AI / dzień', 'plan2.f2': '3 aktywne sprawy', 'plan2.f3': 'Skanowanie dokumentów (20)',
     'plan2.f4': 'Pełne pisma (wezwania, skargi)', 'plan2.f5': 'Dyktowanie głosem', 'plan2.f6': 'Wyszukiwanie aktualnego orzecznictwa',
@@ -2944,7 +2990,8 @@ const I18N = {
     'plan1.f1': '7 AI-meddelanden totalt', 'plan1.f2': '1 aktivt ärende', 'plan1.f3': 'Dokumentskanning (3 st)', 'plan1.f4': 'Källor från EE- och EU-rätt', 'plan1.f5': 'Inget kort behövs',
     'plan1.cta': 'Börja gratis',
     'plan2.badge': 'Mest populär', 'plan2.eyebrow': 'För familjer', 'plan2.name': 'Pro', 'plan2.per': '/ månad', 'plan2.annual': 'eller 159,99 €/år — spara 33 %',
-    'plan2.intro': 'Tidig åtkomst: <strong>14,99 €/mån för alltid</strong> — endast de första 100 founders',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Daglig juridisk hjälp för dig och familjen. Obegränsad AI, full dokumentskrivning.',
     'plan2.f1': '100 AI-meddelanden / dag', 'plan2.f2': '3 aktiva ärenden', 'plan2.f3': 'Dokumentskanning (20 st)',
     'plan2.f4': 'Full skrivning (brev, klagomål)', 'plan2.f5': 'Röstinmatning', 'plan2.f6': 'Webbsökning efter färsk rättspraxis',
@@ -3037,7 +3084,8 @@ const I18N = {
     'plan1.f1': '7 MI ziņas kopā', 'plan1.f2': '1 aktīva lieta', 'plan1.f3': 'Dokumentu skenēšana (3)', 'plan1.f4': 'Atsauces uz EE un ES tiesībām', 'plan1.f5': 'Bez kartes',
     'plan1.cta': 'Sākt bez maksas',
     'plan2.badge': 'Populārākais', 'plan2.eyebrow': 'Ģimenēm', 'plan2.name': 'Pro', 'plan2.per': '/ mēnesī', 'plan2.annual': 'vai 159,99 €/gadā — ietaupiet 33 %',
-    'plan2.intro': 'Agrīnā piekļuve: <strong>14,99 €/mēn. uz mūžu</strong> — tikai pirmajiem 100 dibinātājiem',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Ikdienas juridiskā palīdzība jums un ģimenei. Neierobežots MI, pilna dokumentu sagatavošana.',
     'plan2.f1': '100 MI ziņu dienā', 'plan2.f2': '3 aktīvas lietas', 'plan2.f3': 'Dokumentu skenēšana (20)',
     'plan2.f4': 'Pilna sagatavošana (vēstules, sūdzības)', 'plan2.f5': 'Balss ievade', 'plan2.f6': 'Tīmekļa meklēšana aktuālajai praksei',
@@ -3130,7 +3178,8 @@ const I18N = {
     'plan1.f1': '7 DI žinutės iš viso', 'plan1.f2': '1 aktyvi byla', 'plan1.f3': 'Dokumentų skenavimas (3)', 'plan1.f4': 'Šaltiniai iš EE ir ES teisės', 'plan1.f5': 'Be kortelės',
     'plan1.cta': 'Pradėti nemokamai',
     'plan2.badge': 'Populiariausias', 'plan2.eyebrow': 'Šeimoms', 'plan2.name': 'Pro', 'plan2.per': '/ mėn.', 'plan2.annual': 'arba 159,99 €/metus — sutaupote 33 %',
-    'plan2.intro': 'Ankstyvoji prieiga: <strong>14,99 €/mėn. visam laikui</strong> — tik pirmiesiems 100 steigėjų',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Kasdienė teisinė pagalba jums ir šeimai. Neribotas DI, pilnas dokumentų rengimas.',
     'plan2.f1': '100 DI žinučių per dieną', 'plan2.f2': '3 aktyvios bylos', 'plan2.f3': 'Dokumentų skenavimas (20)',
     'plan2.f4': 'Pilnas dokumentų rengimas (raštai, skundai)', 'plan2.f5': 'Balso įvestis', 'plan2.f6': 'Žiniatinklio paieška šviežiai praktikai',
@@ -3223,7 +3272,8 @@ const I18N = {
     'plan1.f1': '7 mesaje AI în total', 'plan1.f2': '1 caz activ', 'plan1.f3': 'Scanare documente (3)', 'plan1.f4': 'Surse din dreptul EE și UE', 'plan1.f5': 'Fără card',
     'plan1.cta': 'Începe gratuit',
     'plan2.badge': 'Cel mai popular', 'plan2.eyebrow': 'Pentru familii', 'plan2.name': 'Pro', 'plan2.per': '/ lună', 'plan2.annual': 'sau 159,99 €/an — economisiți 33 %',
-    'plan2.intro': 'Acces anticipat: <strong>14,99 €/lună pe viață</strong> — doar primii 100 fondatori',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Asistență juridică zilnică pentru dumneavoastră și familie. AI nelimitat, redactare completă a documentelor.',
     'plan2.f1': '100 mesaje AI / zi', 'plan2.f2': '3 cazuri active', 'plan2.f3': 'Scanare documente (20)',
     'plan2.f4': 'Redactare completă (somații, plângeri)', 'plan2.f5': 'Dictare vocală', 'plan2.f6': 'Căutare web pentru jurisprudență recentă',
@@ -3316,7 +3366,8 @@ const I18N = {
     'plan1.f1': 'Toplam 7 YZ mesajı', 'plan1.f2': '1 aktif dosya', 'plan1.f3': 'Belge tarama (3 adet)', 'plan1.f4': 'EE ve AB hukukundan kaynaklar', 'plan1.f5': 'Kart gerekmez',
     'plan1.cta': 'Ücretsiz başla',
     'plan2.badge': 'En çok tercih edilen', 'plan2.eyebrow': 'Aileler için', 'plan2.name': 'Pro', 'plan2.per': '/ ay', 'plan2.annual': 'veya 159,99 €/yıl — %33 tasarruf',
-    'plan2.intro': 'Erken erişim: <strong>14,99 €/ay ömür boyu</strong> — yalnızca ilk 100 kurucu',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Sizin ve aileniz için günlük hukuki destek. Sınırsız YZ, eksiksiz belge yazımı.',
     'plan2.f1': 'Günde 100 YZ mesajı', 'plan2.f2': '3 aktif dosya', 'plan2.f3': 'Belge tarama (20 adet)',
     'plan2.f4': 'Eksiksiz belge yazımı (mektup, şikâyet)', 'plan2.f5': 'Sesli giriş', 'plan2.f6': 'Güncel içtihat için web araması',
@@ -3409,7 +3460,8 @@ const I18N = {
     'plan1.f1': '7 رسائل ذكاء اصطناعي بالمجمل', 'plan1.f2': 'قضية فعّالة واحدة', 'plan1.f3': 'مسح المستندات (3)', 'plan1.f4': 'مصادر من القانون الإستوني والأوروبي', 'plan1.f5': 'بدون بطاقة',
     'plan1.cta': 'ابدأ مجاناً',
     'plan2.badge': 'الأكثر شيوعاً', 'plan2.eyebrow': 'للعائلات', 'plan2.name': 'Pro', 'plan2.per': '/ شهر', 'plan2.annual': 'أو 159٫99 €/سنة — وفّر 33%',
-    'plan2.intro': 'الوصول المبكر: <strong>14٫99 €/شهر مدى الحياة</strong> — لأول 100 مؤسس فقط',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'دعم قانوني يومي لك ولعائلتك. ذكاء اصطناعي بلا حدود، صياغة مستندات كاملة.',
     'plan2.f1': '100 رسالة ذكاء اصطناعي / يوم', 'plan2.f2': '3 قضايا فعّالة', 'plan2.f3': 'مسح المستندات (20)',
     'plan2.f4': 'صياغة كاملة (خطابات، شكاوى)', 'plan2.f5': 'إدخال صوتي', 'plan2.f6': 'بحث على الويب عن السوابق الحديثة',
@@ -3502,7 +3554,8 @@ const I18N = {
     'plan1.f1': 'مجموعاً ۷ پیام هوش مصنوعی', 'plan1.f2': 'یک پرونده فعّال', 'plan1.f3': 'اسکن سند (۳ مورد)', 'plan1.f4': 'منابع از حقوق استونی و اتحادیه اروپا', 'plan1.f5': 'بدون نیاز به کارت',
     'plan1.cta': 'رایگان شروع کنید',
     'plan2.badge': 'محبوب‌ترین', 'plan2.eyebrow': 'برای خانواده‌ها', 'plan2.name': 'Pro', 'plan2.per': '/ ماه', 'plan2.annual': 'یا ۱۵۹٫۹۹ €/سال — ۳۳٪ صرفه‌جویی',
-    'plan2.intro': 'دسترسی زودهنگام: <strong>۱۴٫۹۹ €/ماه مادام‌العمر</strong> — تنها برای ۱۰۰ بنیان‌گذار نخست',
+    'plan2.intro': 'Locked in for life · cancel anytime',
+    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'پشتیبانی حقوقی روزانه برای شما و خانواده. هوش مصنوعی نامحدود، تنظیم کامل اسناد.',
     'plan2.f1': 'روزانه ۱۰۰ پیام هوش مصنوعی', 'plan2.f2': 'سه پرونده فعّال', 'plan2.f3': 'اسکن سند (۲۰ مورد)',
     'plan2.f4': 'تنظیم کامل (نامه، شکایت)', 'plan2.f5': 'ورودی صوتی', 'plan2.f6': 'جستجوی وب برای رویه‌ی روز',
@@ -3926,17 +3979,19 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
   }
 
   function applyClosedState() {
+    // Primary mechanism: flip CSS state machine via body class.
+    // CSS rules (search "EARLY ACCESS visibility state machine") then
+    // hide every .early-access-only and reveal #plan2-price-closed +
+    // #founder-closed-badge with !important. This is the ONE source of
+    // truth — no inline display juggling, no `hidden` attribute races.
+    document.body.classList.add('ea-closed');
+
     var badge = document.getElementById('founder-closed-badge');
-    var counter = document.getElementById('founder-counter');
-    var promo = document.getElementById('promo-banner');
     var cta = document.getElementById('plan2-cta');
     if (badge) {
       var msg = tr('pricing.founder_closed');
       if (msg) badge.textContent = msg;
-      badge.hidden = false;
     }
-    if (counter) counter.style.display = 'none';
-    if (promo) promo.style.display = 'none';
     if (cta) {
       var altHref = cta.getAttribute('data-href-closed');
       if (altHref) cta.setAttribute('href', altHref);
