@@ -145,7 +145,7 @@ img, svg { display: block; max-width: 100%; }
 
 /* Language dropdown */
 .lang-wrap { position: relative; }
-.lang-btn { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; transition: all .15s; background: #fff; display: inline-flex; align-items: center; gap: 6px; }
+.lang-btn { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 40px; transition: all .15s; background: #fff; display: inline-flex; align-items: center; gap: 6px; }
 .lang-btn:hover { border-color: var(--teal); color: var(--teal); }
 .lang-btn .caret { font-size: 9px; opacity: .55; }
 .lang-menu { position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 180px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; }
@@ -168,16 +168,17 @@ img, svg { display: block; max-width: 100%; }
   max-height: 800px;
   padding: 16px 0 24px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   overflow: hidden;
   background:
     radial-gradient(60% 50% at 82% 18%, rgba(13,148,136,.07) 0%, transparent 65%),
     radial-gradient(50% 40% at 8% 90%, rgba(20,184,166,.05) 0%, transparent 70%);
 }
 .hero > .container { width: 100%; }
-.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
 .hero-grid > div { min-width: 0; }
-.hero-grid > div:first-child { align-self: center; }
+.hero-grid > div:first-child { align-self: start; padding-top: 56px; }
+@media (min-width: 1440px) { .hero-grid > div:first-child { padding-top: 88px; } }
 .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(13,148,136,.08); color: var(--teal2); border: 1px solid rgba(13,148,136,.18); border-radius: 999px; padding: 5px 11px; font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
 .hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 0 2px rgba(13,148,136,.2); }
 .hero h1 { font-size: clamp(32px, 4vw, 52px); font-weight: 900; color: var(--navy); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 16px; max-width: 620px; }
@@ -748,6 +749,23 @@ img, svg { display: block; max-width: 100%; }
   .cmp-divider { display: none; }
   .cmp-orb { display: none; }
 
+  /* Mobile "vs" badge — preserves head-to-head framing without taking the desktop orb's space */
+  .cmp-split { position: relative; }
+  .cmp-split::after {
+    content: 'vs';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(140deg, #0F1B35 0%, #1A2B4A 60%, #14B8A6 100%);
+    color: #fff;
+    font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 14px rgba(15,27,53,.35), 0 0 0 4px rgba(255,255,255,.95);
+    z-index: 5;
+    pointer-events: none;
+  }
+
   .cmp-title { font-size: 28px; }
   /* Logo is a horizontal wordmark (~3.1:1) — let aspect ratio drive height */
   .cmp-hero-mark { width: 200px; height: auto; }
@@ -1127,7 +1145,7 @@ img, svg { display: block; max-width: 100%; }
   100% { transform: translateX(100%); }
 }
 /* ── DISCLAIMER STRIP ── */
-.disclaimer-strip { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; }
+.disclaimer-strip { background: #fff; border-top: none; border-bottom: 1px solid var(--line); padding: 20px 0 16px; }
 .disclaimer-strip p { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.55; max-width: 880px; margin: 0 auto; padding: 0 24px; }
 
 /* ── FOOTER ── */
@@ -1166,7 +1184,7 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
     align-items: stretch;
   }
   .hero-grid { grid-template-columns: 1fr; gap: 28px; align-items: stretch; }
-  .hero-grid > div:first-child { align-self: stretch; }
+  .hero-grid > div:first-child { align-self: stretch; padding-top: 0; }
   .hero h1 { font-size: clamp(28px, 6vw, 36px); margin-bottom: 12px; max-width: none; line-height: 1.12; }
   .hero-sub { font-size: 15px; margin-bottom: 16px; max-width: none; }
   .hero-cta { margin-bottom: 14px; }
@@ -1689,17 +1707,17 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
          data-us-target="180" data-them-target="18000" data-save-target="17820">
       <div class="cmp-save-cell">
         <div class="cmp-save-label" data-i18n="compare.year_advocat">Advocat · per year</div>
-        <div class="cmp-save-num" data-counter="us">€0</div>
+        <div class="cmp-save-num" data-counter="us">€180</div>
         <div class="cmp-save-sub" data-i18n="compare.year_advocat_sub">€14.99 × 12 months</div>
       </div>
       <div class="cmp-save-cell cmp-save-cell--bureau">
         <div class="cmp-save-label" data-i18n="compare.year_bureau">Law firm · per year</div>
-        <div class="cmp-save-num" data-counter="them">€0</div>
+        <div class="cmp-save-num" data-counter="them">€18 000</div>
         <div class="cmp-save-sub" data-i18n="compare.year_bureau_sub">€150 × 120h average</div>
       </div>
       <div class="cmp-save-cell cmp-save-cell--big">
         <div class="cmp-save-label" data-i18n="compare.year_save">You save</div>
-        <div class="cmp-save-num" data-counter="save">€0</div>
+        <div class="cmp-save-num" data-counter="save">€17 820</div>
         <div class="cmp-save-sub" data-i18n="compare.year_save_sub">Every single year.</div>
       </div>
     </div>
@@ -1829,7 +1847,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 <!-- ── FINAL CTA ── -->
 <section class="final-cta">
   <!-- Layer 0.5 — AI-generated cinematic video background (Replicate minimax/video-01) -->
-  <video class="cta-video-bg" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+  <video class="cta-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
     <source src="/cta-bg.mp4" type="video/mp4">
   </video>
   <div class="container" style="position:relative;z-index:10;text-align:center">
