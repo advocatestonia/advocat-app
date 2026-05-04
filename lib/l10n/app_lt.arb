@@ -583,7 +583,7 @@
   "basicAiAnalysis": "Pagrindinė DI analizė",
   "caseCreationComingSoon": "Bylos kūrimas su iš anksto užpildytais duomenimis netrukus",
   "caseSummaryCopied": "Bylos santrauka nukopijuota",
-  "chatWelcomeMessage": "Sveiki! Aš jūsų teisinis padėjėjas. Papasakokite, kas nutiko — išanalizuosiu situaciją ir patarsiu, ką daryti.",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
   "checkingPurchases": "Tikrinami ankstesni pirkimai…",
   "connectYourEmail": "Prijunkite el. paštą",
   "connectYourEmailDesc": "Prijunkite el. paštą, kad automatiškai aptiktumėte ir tvarkytumėte su bylomis susijusią teisinę korespondenciją.",

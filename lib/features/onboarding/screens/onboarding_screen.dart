@@ -10,6 +10,7 @@ import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../main.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../widgets/onboarding_page.dart';
 
 /// Five-page onboarding: language selection first, then four feature pages.
@@ -136,7 +137,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             colors: _gradientColors[_currentPage],
           ),
         ),
-        child: Stack(
+        // Constrain mobile-first UI to phone width on desktop viewports.
+        // QA report 2026-05-03 P0 ship blocker.
+        child: MaxWidthWrapper(
+          child: Stack(
           children: [
             // Subtle particle/shimmer background
             _ParticleBackground(controller: _particleController),
@@ -273,6 +277,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
               ),
             ),
           ],
+        ),
         ),
       ),
     );

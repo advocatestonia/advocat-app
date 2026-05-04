@@ -583,7 +583,7 @@
   "basicAiAnalysis": "Pamata MI analīze",
   "caseCreationComingSoon": "Lietas izveide ar aizpildītiem datiem drīzumā",
   "caseSummaryCopied": "Lietas kopsavilkums nokopēts",
-  "chatWelcomeMessage": "Sveiki! Es esmu jūsu juridiskais palīgs. Pastāstiet, kas notika — es analizēšu situāciju un ieteikšu, ko darīt.",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
   "checkingPurchases": "Pārbauda iepriekšējos pirkumus…",
   "connectYourEmail": "Pievienojiet e-pastu",
   "connectYourEmailDesc": "Pievienojiet e-pastu, lai automātiski noteiktu un sakārtotu ar jūsu lietām saistīto juridisko saraksti.",

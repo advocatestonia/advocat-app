@@ -1516,7 +1516,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Hej! Jag är din juridiska assistent. Berätta vad som hänt — jag analyserar situationen och föreslår vad du ska göra.';
+      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
 
   @override
   String get copySummary => 'Kopiera sammanfattning';

@@ -7,6 +7,7 @@ import '../../../config/router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../config/theme.dart';
 import '../../../shared/widgets/gdpr_consent_dialog.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../providers/auth_provider.dart';
 
 /// Registration screen with full name, email, password with strength
@@ -286,7 +287,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
             stops: [0.0, 0.5, 1.0],
           ),
         ),
-        child: SafeArea(
+        // Constrain mobile-first UI to phone width on desktop viewports
+        // — same pattern as LoginScreen / MainShell. QA report 2026-05-03 P0.
+        child: MaxWidthWrapper(
+          child: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
           child: SingleChildScrollView(
@@ -727,6 +731,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
             ),
           ),
         ),
+      ),
       ),
       ),
     );

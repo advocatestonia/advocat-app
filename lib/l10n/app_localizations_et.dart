@@ -1517,7 +1517,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Tere. Olen teie õigusabi assistent. Kirjeldage, mis juhtus, ja ma analüüsin olukorda ning soovitan, mida edasi teha.';
+      'Tere! Ma olen Advocat — sinu AI-õigusassistent. Annan õigusinformatsiooni, mitte õigusabi. Mille üle sind õiguslikult vaevab?';
 
   @override
   String get copySummary => 'Kopeeri kokkuvõte';

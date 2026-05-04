@@ -10,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../config/theme.dart';
 import '../../../shared/widgets/app_button.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../../auth/providers/auth_provider.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
@@ -268,7 +269,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Stack(
+      // Constrain mobile-first UI to phone width on desktop viewports.
+      // QA report 2026-05-03 P0 ship blocker.
+      body: MaxWidthWrapper(
+        child: Stack(
         children: [
           FadeTransition(
             opacity: _fadeAnimation,
@@ -459,6 +463,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
               ),
             ),
         ],
+      ),
       ),
     );
   }

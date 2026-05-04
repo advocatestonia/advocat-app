@@ -1515,7 +1515,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Здравствуйте. Я ваш юридический помощник. Опишите, что произошло — я проанализирую ситуацию и подскажу, что делать.';
+      'Привет! Я Advocat — твой AI-юридический ассистент. Я предоставляю правовую информацию, а не юридический совет. С чем я могу помочь?';
 
   @override
   String get copySummary => 'Скопировать сводку';

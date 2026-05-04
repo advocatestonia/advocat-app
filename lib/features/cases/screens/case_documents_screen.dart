@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/document.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../../documents/providers/documents_provider.dart';
 
 class CaseDocumentsScreen extends ConsumerWidget {
@@ -18,7 +19,9 @@ class CaseDocumentsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.documents)),
-      body: docsAsync.when(
+      // Constrain mobile-first UI to phone width on desktop viewports.
+      body: MaxWidthWrapper(
+        child: docsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('${l10n.error}: $e')),
         data: (docs) {
@@ -47,6 +50,7 @@ class CaseDocumentsScreen extends ConsumerWidget {
             },
           );
         },
+      ),
       ),
     );
   }

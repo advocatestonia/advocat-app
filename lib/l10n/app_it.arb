@@ -361,7 +361,7 @@
     "caseSummaryCopied": "Riepilogo del caso copiato",
     "caseTimeline": "Cronologia del caso",
     "changesSaved": "Modifiche salvate",
-    "chatWelcomeMessage": "Ciao! Sono il tuo assistente legale. Raccontami cosa è successo — analizzerò la situazione e suggerirò cosa fare.",
+    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
     "checkEligibility": "Verifica la tua idoneità al patrocinio a spese dello Stato: {country}",
     "checkingPurchases": "Verifica acquisti precedenti…",
     "chooseHowToAdd": "Scegli come aggiungere il tuo documento",

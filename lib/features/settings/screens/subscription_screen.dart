@@ -11,6 +11,7 @@ import '../../../models/user.dart';
 import '../../../services/stripe_checkout_service.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../../auth/providers/auth_provider.dart';
 
 // ── Providers ────────────────────────────────────────────────────────────
@@ -77,7 +78,10 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       appBar: AdvocatGradientHeader(
         title: l10n.subscription,
       ),
-      body: FadeTransition(
+      // Constrain mobile-first UI to phone width on desktop viewports.
+      // QA report 2026-05-03 P0 ship blocker.
+      body: MaxWidthWrapper(
+        child: FadeTransition(
         opacity: _fadeAnimation,
         child: Column(
           children: [
@@ -238,6 +242,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             ),
           ],
         ),
+      ),
       ),
     );
   }

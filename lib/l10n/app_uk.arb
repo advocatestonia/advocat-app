@@ -363,7 +363,7 @@
     "caseSummaryCopied": "Зведення справи скопійовано",
     "caseTimeline": "Хронологія справи",
     "changesSaved": "Зміни збережено",
-    "chatWelcomeMessage": "Вітаю. Я ваш юридичний помічник. Опишіть, що сталося — я проаналізую ситуацію та підкажу, що робити.",
+    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
     "checkEligibility": "Перевірте право на правову допомогу: {country}",
     "checkingPurchases": "Перевірка попередніх покупок…",
     "chooseHowToAdd": "Оберіть спосіб додавання документа",

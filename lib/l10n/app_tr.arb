@@ -361,7 +361,7 @@
     "caseSummaryCopied": "Dava özeti kopyalandı",
     "caseTimeline": "Dava zaman çizelgesi",
     "changesSaved": "Değişiklikler kaydedildi",
-    "chatWelcomeMessage": "Merhaba! Hukuki asistanınızım. Ne olduğunu anlatın — durumu analiz edip ne yapmanız gerektiğini önereceğim.",
+    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
     "checkEligibility": "{country} adli yardım uygunluğunuzu kontrol edin",
     "checkingPurchases": "Önceki satın almalar kontrol ediliyor…",
     "chooseHowToAdd": "Belgenizi nasıl eklemek istediğinizi seçin",

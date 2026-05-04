@@ -469,7 +469,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       id: 'welcome_${DateTime.now().millisecondsSinceEpoch}',
       role: MessageRole.assistant,
       content: l10n?.chatWelcomeMessage ??
-          'Hello! I am your legal assistant. Tell me what happened — I will analyze the situation and suggest what to do.',
+          // AI Act Art. 50 transparency: fallback also explicit about AI + disclaimer.
+          "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
       timestamp: DateTime.now(),
     );
     setState(() {

@@ -10,6 +10,8 @@ library;
 // viewports (mobile) it must NOT artificially shrink the child below
 // what the surrounding constraint already allows.
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -102,5 +104,58 @@ void main() {
       final childSize = tester.getSize(find.byKey(const Key('child')));
       expect(childSize.width, 600);
     });
+  });
+
+  // ===========================================================================
+  // Regression: every non-shell top-level Scaffold must wrap its body in
+  // MaxWidthWrapper so it does not stretch full-width on desktop.
+  //
+  // Shell routes (home/cases/deadlines/settings) are wrapped via MainShell.
+  // LoginScreen was wrapped previously. This batch wraps everything else
+  // outside the shell so the entire app behaves consistently on wide
+  // viewports.
+  //
+  // We don't render these screens in widget tests (they pull a heavy
+  // graph of providers); a source-grep is sufficient and keeps the test
+  // fast & resilient.
+  // ===========================================================================
+  group('MaxWidthWrapper source-grep regression', () {
+    final wrappedScreens = <String>[
+      'lib/features/auth/screens/login_screen.dart',
+      'lib/features/auth/screens/register_screen.dart',
+      'lib/features/onboarding/screens/onboarding_screen.dart',
+      'lib/features/settings/screens/subscription_screen.dart',
+      'lib/features/settings/screens/edit_profile_screen.dart',
+      'lib/features/cases/screens/case_detail_screen.dart',
+      'lib/features/cases/screens/case_create_screen.dart',
+      'lib/features/cases/screens/case_documents_screen.dart',
+      'lib/features/cases/screens/case_timeline_screen.dart',
+      'lib/shared/widgets/main_shell.dart',
+    ];
+
+    for (final relPath in wrappedScreens) {
+      test('$relPath imports + uses MaxWidthWrapper', () {
+        final file = File(relPath);
+        expect(file.existsSync(), isTrue,
+            reason: 'expected $relPath to exist');
+        final content = file.readAsStringSync();
+
+        expect(
+          content.contains('max_width_wrapper.dart'),
+          isTrue,
+          reason: '$relPath must import MaxWidthWrapper '
+              '(found no `max_width_wrapper.dart` import). '
+              'Wrap the top-level Scaffold body so the screen does not '
+              'stretch full-width on desktop.',
+        );
+        expect(
+          content.contains('MaxWidthWrapper('),
+          isTrue,
+          reason: '$relPath must instantiate MaxWidthWrapper(...) '
+              '— wrap the Scaffold body to keep the desktop layout '
+              'phone-width.',
+        );
+      });
+    }
   });
 }

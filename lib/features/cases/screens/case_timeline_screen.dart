@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/utils/date_utils.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../providers/cases_provider.dart';
 
 // ---------------------------------------------------------------------------
@@ -144,7 +145,9 @@ class CaseTimelineScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.caseTimeline)),
-      body: timelineAsync.when(
+      // Constrain mobile-first UI to phone width on desktop viewports.
+      body: MaxWidthWrapper(
+        child: timelineAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(
           child: Column(
@@ -205,6 +208,7 @@ class CaseTimelineScreen extends ConsumerWidget {
             },
           );
         },
+      ),
       ),
     );
   }

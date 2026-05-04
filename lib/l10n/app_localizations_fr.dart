@@ -1539,7 +1539,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Bonjour ! Je suis votre assistant juridique. Dites-moi ce qui s\'est passé — j\'analyserai la situation et vous suggérerai quoi faire.';
+      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
 
   @override
   String get copySummary => 'Copier le résumé';

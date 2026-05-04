@@ -11,6 +11,7 @@ import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/case_model.dart';
 import '../../../services/supabase_service.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../providers/cases_provider.dart';
 
 // ---------------------------------------------------------------------------
@@ -305,7 +306,10 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Column(
+      // Constrain mobile-first UI to phone width on desktop viewports.
+      // QA report 2026-05-03 P0 ship blocker.
+      body: MaxWidthWrapper(
+        child: Column(
         children: [
           // ── Progress indicator ──────────────────────────────────────
           _StepProgressBar(
@@ -334,6 +338,7 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
             onNext: _currentStep == _totalSteps - 1 ? _createCase : _nextStep,
           ),
         ],
+      ),
       ),
     );
   }

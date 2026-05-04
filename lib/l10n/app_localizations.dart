@@ -2939,7 +2939,7 @@ abstract class AppLocalizations {
   /// No description provided for @chatWelcomeMessage.
   ///
   /// In en, this message translates to:
-  /// **'Hello! I am your legal assistant. Tell me what happened — I will analyze the situation and suggest what to do.'**
+  /// **'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?'**
   String get chatWelcomeMessage;
 
   /// No description provided for @copySummary.

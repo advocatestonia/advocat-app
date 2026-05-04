@@ -361,7 +361,7 @@
   "caseSummaryCopied": "Fallzusammenfassung kopiert",
   "caseTimeline": "Fallzeitleiste",
   "changesSaved": "Änderungen gespeichert",
-  "chatWelcomeMessage": "Hallo! Ich bin Ihr Rechtsassistent. Erzählen Sie mir, was passiert ist — ich analysiere die Situation und schlage vor, was zu tun ist.",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
   "checkEligibility": "Prüfen Sie Ihren Anspruch auf Prozesskostenhilfe: {country}",
   "checkingPurchases": "Frühere Käufe werden geprüft…",
   "chooseHowToAdd": "Wählen Sie, wie Sie Ihr Dokument hinzufügen möchten",

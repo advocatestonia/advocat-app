@@ -585,7 +585,7 @@
   "basicAiAnalysis": "Perus tekoälyanalyysi",
   "caseCreationComingSoon": "Tapauksen luominen esitäytetyillä tiedoilla tulossa pian",
   "caseSummaryCopied": "Tapauksen yhteenveto kopioitu",
-  "chatWelcomeMessage": "Hei! Olen oikeudellinen avustajasi. Kerro mitä tapahtui — analysoin tilanteen ja neuvon mitä tehdä.",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
   "checkingPurchases": "Tarkistetaan aiempia ostoksia…",
   "connectYourEmail": "Yhdistä sähköpostisi",
   "connectYourEmailDesc": "Yhdistä sähköpostisi tunnistaaksesi ja järjestääksesi automaattisesti tapauksiisi liittyvän oikeudellisen kirjeenvaihdon.",

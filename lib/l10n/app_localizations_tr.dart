@@ -1512,7 +1512,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'Merhaba! Hukuki asistanınızım. Ne olduğunu anlatın — durumu analiz edip ne yapmanız gerektiğini önereceğim.';
+      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
 
   @override
   String get copySummary => 'Özeti kopyala';

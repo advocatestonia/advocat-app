@@ -379,7 +379,7 @@
     "caseSummaryCopied": "Juhtumi kokkuvõte kopeeritud",
     "caseTimeline": "Juhtumi ajajoon",
     "changesSaved": "Muudatused salvestatud",
-    "chatWelcomeMessage": "Tere. Olen teie õigusabi assistent. Kirjeldage, mis juhtus, ja ma analüüsin olukorda ning soovitan, mida edasi teha.",
+    "chatWelcomeMessage": "Tere! Ma olen Advocat — sinu AI-õigusassistent. Annan õigusinformatsiooni, mitte õigusabi. Mille üle sind õiguslikult vaevab?",
     "checkEligibility": "Kontrollige oma sobivust õigusabile: {country}",
     "checkingPurchases": "Varasemate ostude kontrollimine…",
     "chooseHowToAdd": "Valige, kuidas dokumenti lisada",

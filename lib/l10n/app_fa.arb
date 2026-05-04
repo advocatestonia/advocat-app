@@ -583,7 +583,7 @@
     "basicAiAnalysis": "تحلیل پایه هوش مصنوعی",
     "caseCreationComingSoon": "ایجاد پرونده با داده‌های از پیش پر شده به زودی",
     "caseSummaryCopied": "خلاصه پرونده کپی شد",
-    "chatWelcomeMessage": "سلام! من دستیار حقوقی شما هستم. بگویید چه اتفاقی افتاده — وضعیت را تحلیل می‌کنم و پیشنهاد می‌دهم.",
+    "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
     "checkingPurchases": "بررسی خریدهای قبلی…",
     "connectYourEmail": "ایمیل خود را متصل کنید",
     "connectYourEmailDesc": "ایمیل خود را متصل کنید تا مکاتبات حقوقی مرتبط با پرونده‌هایتان به طور خودکار شناسایی شود.",

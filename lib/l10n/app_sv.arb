@@ -361,7 +361,7 @@
   "caseSummaryCopied": "Ärendesammanfattning kopierad",
   "caseTimeline": "Ärendetidslinje",
   "changesSaved": "Ändringar sparade",
-  "chatWelcomeMessage": "Hej! Jag är din juridiska assistent. Berätta vad som hänt — jag analyserar situationen och föreslår vad du ska göra.",
+  "chatWelcomeMessage": "Hi! I'm Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?",
   "checkEligibility": "Kontrollera din behörighet för rättshjälp: {country}",
   "checkingPurchases": "Kontrollerar tidigare köp…",
   "chooseHowToAdd": "Välj hur du vill lägga till ditt dokument",

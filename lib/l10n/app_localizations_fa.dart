@@ -1511,7 +1511,7 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get chatWelcomeMessage =>
-      'سلام! من دستیار حقوقی شما هستم. بگویید چه اتفاقی افتاده — وضعیت را تحلیل می‌کنم و پیشنهاد می‌دهم.';
+      'Hi! I\'m Advocat — your AI legal assistant. I provide legal information, not legal advice. What legal question can I help with?';
 
   @override
   String get copySummary => 'کپی خلاصه';

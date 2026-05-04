@@ -10,6 +10,7 @@ import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../models/document.dart';
 import '../../../shared/utils/date_utils.dart';
+import '../../../shared/widgets/max_width_wrapper.dart';
 import '../providers/cases_provider.dart';
 import '../../deadlines/providers/deadlines_provider.dart';
 import '../../documents/providers/documents_provider.dart';
@@ -53,7 +54,10 @@ class CaseDetailScreen extends ConsumerWidget {
         ),
       ),
       data: (legalCase) => Scaffold(
-        body: CustomScrollView(
+        // Constrain mobile-first UI to phone width on desktop viewports.
+        // QA report 2026-05-03 P0 ship blocker.
+        body: MaxWidthWrapper(
+          child: CustomScrollView(
           slivers: [
             // ── Sliver app bar with glow effect ──────────────────────
             SliverAppBar(
@@ -136,6 +140,7 @@ class CaseDetailScreen extends ConsumerWidget {
               ),
             ),
           ],
+        ),
         ),
       ),
     );
