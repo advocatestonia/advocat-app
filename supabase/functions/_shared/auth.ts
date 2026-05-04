@@ -112,8 +112,31 @@ export async function requireUserWithRateLimit(
           };
         }
       } else {
-        userId = data.user.id;
-        userEmail = data.user.email ?? undefined;
+        // Defence-in-depth (SECURITY 2026-05-04 U1): even when getUser
+        // returns a user object, refuse anything that isn't a real
+        // authenticated end-user session. The anonymous Supabase JWT
+        // carries `role: "anon"` and Supabase will not return a user for
+        // it (so this branch is normally unreachable for the anon key) —
+        // but a forged or service-role JWT could otherwise slip through.
+        // Service-role tokens carry `role: "service_role"`; user JWTs
+        // always carry `role: "authenticated"` and `aud: "authenticated"`.
+        const userRole = (data.user as { role?: string }).role;
+        const userAud = (data.user as { aud?: string }).aud;
+        const looksAuthenticated =
+          (!userRole || userRole === "authenticated") &&
+          (!userAud || userAud === "authenticated");
+        if (!looksAuthenticated) {
+          if ((opts.anonymousPerMinute ?? 0) <= 0) {
+            return {
+              kind: "deny",
+              response: jsonError("Invalid session", 401),
+            };
+          }
+          // Function allows anon traffic — treat as anonymous (IP-rate-limited).
+        } else {
+          userId = data.user.id;
+          userEmail = data.user.email ?? undefined;
+        }
       }
     } catch (e) {
       return {

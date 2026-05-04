@@ -1,5 +1,9 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+  corsHeaders,
+  jsonError,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
 import { validateSystemPrompt } from "./system_prompt_guard.ts";
 import {
   applyPromptCaching,
@@ -9,13 +13,29 @@ import { mapAnthropicError } from "./error_mapping.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
 
-// O(1) rate limiting: sliding window counter per IP.
-// Stores { count, windowStart } instead of an array of timestamps.
-const rateLimits = new Map<string, { count: number; windowStart: number }>();
+// SECURITY 2026-05-04 U1+U2+U3 — claude-proxy hardening.
+// -----------------------------------------------------------------------------
+// BEFORE: this function had its own inline auth that called
+//   supabase.auth.getUser(token) and, when the token was the public
+//   Supabase anon key (i.e. no associated end-user), set
+//   `effectiveRateLimit = 10` and FORWARDED to Anthropic anyway.
+// That made the function a free Claude proxy: anyone who pulled the
+// anon key out of `main.dart.js` could burn unlimited credits.
+//
+// AFTER:
+//   1) requireUserWithRateLimit (no anonymousPerMinute) — only real
+//      end-user JWTs (role: "authenticated") may call this function.
+//      Anon-key requests now get 401 instead of a Claude response.
+//   2) Server-side `check-ai-quota` round-trip — even authenticated
+//      free-tier users cannot exceed the 7-message free cap by
+//      curl-ing the proxy directly (the cap was previously enforced
+//      only by the polite Flutter client).
+//   3) The legacy in-process rate-limit Map is removed in favour of
+//      the shared helper's bucket. Cloudflare WAF (planned tomorrow)
+//      adds the IP-level cap that survives Edge Function cold-starts.
+// -----------------------------------------------------------------------------
 
-const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 10;
 
 const ALLOWED_MODELS = new Set([
@@ -28,62 +48,43 @@ const ALLOWED_MODELS = new Set([
 const MAX_TOKENS_LIMIT = 4096;
 const MAX_MESSAGES = 20;
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://advocat.ee",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Authorization, Content-Type, apikey, x-client-info",
-};
-
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), {
-      status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" }
-    });
+    return jsonError("Method not allowed", 405);
   }
 
   try {
-    // Verify user authentication
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" }
-      });
-    }
+    // ── 1. AuthN + per-user rate limit ────────────────────────────────────
+    // No `anonymousPerMinute` — anon-key callers get 401.
+    const gate = await requireUserWithRateLimit(req, {
+      bucket: "claude-proxy",
+      maxPerMinute: RATE_LIMIT_MAX,
+    });
+    if (gate.kind === "deny") return gate.response;
 
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-    const token = authHeader.replace("Bearer ", "");
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
-
-    // Allow anon key for backward compatibility but rate-limit more aggressively
-    const isAuthenticated = !!user && !authError;
-    // Anon users: 10/min (was 3 — too aggressive, caused demo fallback after 3 msgs).
-    const effectiveRateLimit = isAuthenticated ? RATE_LIMIT_MAX : 10;
-
-    // O(1) rate limiting — sliding window counter, keyed by user ID or IP
-    const clientIp = req.headers.get("x-forwarded-for") || "unknown";
-    const rateLimitKey = user?.id || clientIp;
-    const now = Date.now();
-    const bucket = rateLimits.get(rateLimitKey);
-
-    if (bucket) {
-      if (now - bucket.windowStart < RATE_LIMIT_WINDOW_MS) {
-        if (bucket.count >= effectiveRateLimit) {
-          return new Response(JSON.stringify({ error: "Rate limit exceeded. Try again in a minute." }), {
-            status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" }
-          });
-        }
-        bucket.count++;
-      } else {
-        // Window expired — reset
-        bucket.count = 1;
-        bucket.windowStart = now;
-      }
-    } else {
-      rateLimits.set(rateLimitKey, { count: 1, windowStart: now });
+    // ── 2. Server-side quota check (SECURITY U3) ──────────────────────────
+    // Even an authenticated free-tier user cannot bypass the 7-message cap
+    // by calling this endpoint directly. We forward the caller's JWT so
+    // check-ai-quota's RLS-aware `auth.uid()` resolves correctly.
+    const authHeader = req.headers.get("Authorization")!; // gate guarantees presence
+    const quotaAllowed = await checkQuota(authHeader);
+    if (!quotaAllowed.ok) {
+      // 402 Payment Required — semantic match for "out of free quota".
+      // Body shape mirrors check-ai-quota for client compatibility.
+      return new Response(
+        JSON.stringify({
+          error: "AI quota exceeded",
+          quota: quotaAllowed.payload ?? null,
+        }),
+        {
+          status: 402,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     const body = await req.json();
@@ -121,9 +122,7 @@ serve(async (req) => {
     }
 
     if (!CLAUDE_API_KEY) {
-      return new Response(JSON.stringify({ error: "API key not configured" }), {
-        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" }
-      });
+      return jsonError("API key not configured", 500);
     }
 
     // FIX-1 (Sprint 0): enable prompt caching. Wraps body.system in the
@@ -206,3 +205,50 @@ serve(async (req) => {
     });
   }
 });
+
+/**
+ * Server-side quota check (SECURITY 2026-05-04 U3).
+ *
+ * Calls `check-ai-quota` with action=consume so the counter only increments
+ * when we actually proceed to forward to Anthropic. Returns:
+ *   { ok: true,  payload }       — caller may proceed.
+ *   { ok: false, payload }       — caller is over the free-tier cap.
+ *
+ * Failure modes (network error, quota service down, malformed response)
+ * intentionally fail OPEN: we log and let the request through. Rationale:
+ * a quota outage should not also take chat down. The much-bigger U1 (anon
+ * key cost burn) is already neutralised by the auth gate above; this
+ * function exists only to stop authenticated free-tier users from
+ * curl-bypassing the 7-msg cap, which is a strictly smaller blast radius
+ * than killing chat for everyone during a partial outage.
+ */
+async function checkQuota(
+  authHeader: string,
+): Promise<{ ok: boolean; payload: Record<string, unknown> | null }> {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/check-ai-quota`, {
+      method: "POST",
+      headers: {
+        "Authorization": authHeader,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ action: "consume" }),
+    });
+    if (!res.ok) {
+      console.warn(
+        `claude-proxy: check-ai-quota returned ${res.status}; failing open`,
+      );
+      return { ok: true, payload: null };
+    }
+    const payload = await res.json() as Record<string, unknown>;
+    const allowed = payload?.allowed === true;
+    return { ok: allowed, payload };
+  } catch (e) {
+    console.warn(
+      `claude-proxy: check-ai-quota fetch threw; failing open: ${
+        String(e).slice(0, 200)
+      }`,
+    );
+    return { ok: true, payload: null };
+  }
+}

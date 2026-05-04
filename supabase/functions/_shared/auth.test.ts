@@ -245,11 +245,27 @@ Deno.test("T12 — jsonOk returns 200 + CORS by default", async () => {
 
 // ---- source-level contract --------------------------------------------------
 
-Deno.test("T13 — whisper-stt enforces MAX_AUDIO_B64 at 20 MB", () => {
+Deno.test("T13 — whisper-stt enforces 10 MB binary cap (≈ 14 MB base64)", () => {
+  // v24.3 (2026-05-02): tightened from 20 MB → 10 MB binary as part of
+  // the OpenAI Whisper cost-control hardening. See cost_control.ts for the
+  // canonical constants and migration 20260502100000_voice_usage.sql for
+  // the per-user monthly minute quota that enforces the same budget at a
+  // longer time horizon.
+  const constants = Deno.readTextFileSync(
+    new URL("../whisper-stt/cost_control.ts", import.meta.url),
+  );
+  assertStringIncludes(constants, "10 * 1024 * 1024");
+  assertStringIncludes(constants, "MAX_BINARY_BYTES");
+  assertStringIncludes(constants, "MAX_AUDIO_B64");
+  assertStringIncludes(constants, "SECONDS_PER_CALL_MAX");
+
+  // index.ts must wire those constants into its handler.
   const src = Deno.readTextFileSync(
     new URL("../whisper-stt/index.ts", import.meta.url),
   );
-  assertStringIncludes(src, "20 * 1024 * 1024");
+  assertStringIncludes(src, "MAX_BINARY_BYTES");
+  assertStringIncludes(src, "MAX_AUDIO_B64");
+  assertStringIncludes(src, "SECONDS_PER_CALL_MAX");
 });
 
 Deno.test("T14 — all 6 billable functions import the shared gate", () => {
@@ -308,10 +324,50 @@ Deno.test("T17 — send-email scrubs CRLF from headers (patch 05)", () => {
   assertStringIncludes(src, "From: ${scrubHeaderText(input.from)}");
 });
 
-Deno.test("T18 — claude-proxy still has user rate-limit (not regressed)", () => {
+Deno.test("T18 — claude-proxy uses shared gate + has rate-limit (SECURITY 2026-05-04 U1)", () => {
+  // After the U1 hardening (2026-05-04), claude-proxy delegates auth to
+  // the shared `requireUserWithRateLimit` helper instead of running its
+  // own inline `supabase.auth.getUser` block. The bucket name pins the
+  // rate-limit namespace; absence of `anonymousPerMinute` is what locks
+  // anon-key callers out (this is checked structurally below).
   const src = Deno.readTextFileSync(
     new URL("../claude-proxy/index.ts", import.meta.url),
   );
   assertStringIncludes(src, "RATE_LIMIT_MAX");
-  assertStringIncludes(src, "supabase.auth.getUser");
+  assertStringIncludes(src, "requireUserWithRateLimit");
+  assertStringIncludes(src, '_shared/auth.ts');
+  assertStringIncludes(src, 'bucket: "claude-proxy"');
+});
+
+Deno.test("T19 — claude-proxy does NOT allow anonymous traffic (SECURITY 2026-05-04 U1)", () => {
+  // The U1 fix is "no anonymousPerMinute on the gate call". A regression
+  // that re-introduces anonymous chat would also re-introduce the cost-burn
+  // vector, so freeze the contract here.
+  const src = Deno.readTextFileSync(
+    new URL("../claude-proxy/index.ts", import.meta.url),
+  );
+  // Strip comments so we don't trip on the explanatory text that mentions
+  // the option name in passing.
+  const stripped = src
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*\/\/.*$/gm, "");
+  if (stripped.includes("anonymousPerMinute")) {
+    throw new Error(
+      "claude-proxy must NOT pass anonymousPerMinute — would re-open " +
+        "the anon-key cost-burn vector (security audit 2026-05-04 U1).",
+    );
+  }
+});
+
+Deno.test("T20 — claude-proxy calls check-ai-quota server-side (SECURITY 2026-05-04 U3)", () => {
+  // Even authenticated free-tier users must not bypass the 7-message cap
+  // by curl-ing the proxy directly. The fix is a server-side quota probe
+  // BEFORE forwarding to Anthropic.
+  const src = Deno.readTextFileSync(
+    new URL("../claude-proxy/index.ts", import.meta.url),
+  );
+  assertStringIncludes(src, "check-ai-quota");
+  // Either the literal source string or the value passed to JSON.stringify
+  // would satisfy this — match the source representation we wrote.
+  assertStringIncludes(src, 'action: "consume"');
 });
