@@ -44,6 +44,12 @@ export const ADVOCAT_IDENTITY_MARKERS: readonly string[] = [
   // The actual Advocat identity sits after the memory block — which can be
   // longer than the 500-char head we search — so whitelist the prefix itself.
   "# CLIENT PERSONAL KNOWLEDGE BASE",
+  // Auto-Timeline extractor prompt (assets/prompts/case_file_extractor.txt).
+  // Fired as a second POST per chat turn to extract structured legal-case
+  // metadata (events / parties / deadlines / documents / key_facts) as JSON.
+  // Without this marker the guard 400'd the call and Sofia's Timeline silently
+  // never built. Fixed 2026-05-05.
+  "You are a legal-information extractor",
 ];
 
 export type GuardResult =
