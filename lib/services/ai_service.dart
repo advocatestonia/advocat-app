@@ -220,6 +220,47 @@ class AIService {
   final Dio _dio;
   final Logger _log;
 
+  // ── Case Memory (Pkg 1.B, 2026-05-06) ──────────────────────────────────
+  //
+  // The active case id is the UUID of the user's currently-selected case
+  // file (`public.user_cases.id`). When non-null, every chat call passes
+  // it through to claude-proxy via the `case_id` field on the request body.
+  // The proxy then loads the case via the `load_active_case` RPC (RLS-
+  // bound) and folds an `<active_case>...</active_case>` block into the
+  // system prompt server-side.
+  //
+  // Pkg 1.D (Flutter "Мои дела" UI) is responsible for calling
+  // [setActiveCaseId] when the user opens a case-aware chat session, and
+  // for clearing it via [clearActiveCaseId] when they leave. Today no UI
+  // populates this — the field stays null and chat behaves exactly as
+  // before. The plumbing is ready so 1.D can ship without touching
+  // claude_service.dart again.
+  String? _activeCaseId;
+
+  /// Read-only accessor for the current active case id. Null when no case
+  /// is selected (or in demo mode).
+  String? get currentActiveCaseId => _activeCaseId;
+
+  /// Set the active case id. Pass `null` to clear. UUID-only — non-UUID
+  /// values are silently coerced to `null` so synthetic ids like
+  /// `'general'` cannot leak into a `case_id` field on the wire (would
+  /// cause a 400 from the proxy).
+  void setActiveCaseId(String? caseId) {
+    if (caseId == null || caseId.isEmpty) {
+      _activeCaseId = null;
+      return;
+    }
+    // Match SupabaseService.isRealUuidForTest contract — strict UUID v4.
+    final ok = RegExp(
+      r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
+    ).hasMatch(caseId);
+    _activeCaseId = ok ? caseId : null;
+  }
+
+  /// Convenience: clear the active case id. Equivalent to
+  /// `setActiveCaseId(null)`.
+  void clearActiveCaseId() => _activeCaseId = null;
+
   // ── ADR-001 Tier 1 — user memory integration ──────────────────────────
   //
   // Minimum number of messages in the current session before we bother
@@ -1235,6 +1276,7 @@ class AIService {
             systemPrompt: systemPrompt,
             maxTokens: maxTokens,
             model: model,
+            caseId: _activeCaseId,
           );
           // Add to history and return immediately — no tool processing needed.
           _addToHistory(caseId, 'assistant', textOnly);
@@ -1265,6 +1307,7 @@ class AIService {
           maxTokens: maxTokens,
           model: model,
           multimodalMessages: multimodal,
+          caseId: _activeCaseId,
         );
 
         // Log token usage
@@ -1343,6 +1386,7 @@ class AIService {
               maxTokens: maxTokens,
               model: model,
               multimodalMessages: wireMessages,
+              caseId: _activeCaseId,
             );
           }
 
@@ -1634,6 +1678,7 @@ class AIService {
         systemPrompt: systemPrompt,
         maxTokens: maxTokens,
         temperature: 0.3,
+        caseId: _activeCaseId,
       )) {
         fullResponse.write(chunk);
         final emit = scrubber.feed(chunk);
@@ -1851,6 +1896,7 @@ class AIService {
         systemPrompt: systemPrompt,
         maxTokens: maxTokens,
         temperature: 0.3,
+        caseId: _activeCaseId,
       )) {
         if (event is TextDelta) {
           fullResponse.write(event.text);

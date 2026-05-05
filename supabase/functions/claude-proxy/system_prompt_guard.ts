@@ -50,6 +50,13 @@ export const ADVOCAT_IDENTITY_MARKERS: readonly string[] = [
   // Without this marker the guard 400'd the call and Sofia's Timeline silently
   // never built. Fixed 2026-05-05.
   "You are a legal-information extractor",
+  // Case-memory aware role marker (Pkg 1.B, 2026-05-06). Today the
+  // <active_case> block is INJECTED in the middle of the prompt by
+  // claude-proxy itself, so the leading "You are Advocat" marker still
+  // satisfies the guard. We pre-whitelist this case-memory-led opener so
+  // Pkg 1.D (UI) can ship a client-side variant where the model leads
+  // with case context without rewriting the guard.
+  "# ROLE — Advocat: Estonian-EU legal AI assistant with case memory",
 ];
 
 export type GuardResult =

@@ -477,6 +477,7 @@ class ClaudeService {
     bool includeTools = false,
     String? model,
     List<Map<String, dynamic>>? multimodalMessages,
+    String? caseId,
   }) async {
     if (!isAvailable) {
       throw const ClaudeServiceException(
@@ -514,6 +515,12 @@ class ClaudeService {
       // Anthropic server tools (web_search). The proxy forwards them
       // as-is; Anthropic handles web_search server-side.
       if (includeTools) 'tools': ToolDefinitions.allTools,
+      // Case Memory (Pkg 1.B, 2026-05-06): when the user has an active case
+      // selected, the proxy folds an <active_case> block into the system
+      // prompt server-side. UUID-only — synthetic ids like 'general' MUST
+      // not be passed (call sites are expected to filter via
+      // SupabaseService.isRealUuidForTest beforehand).
+      if (caseId != null && caseId.isNotEmpty) 'case_id': caseId,
     };
 
     Exception? lastError;
@@ -659,11 +666,14 @@ class ClaudeService {
   /// [messages] is the conversation history as a list of
   /// `{'role': 'user'|'assistant', 'content': '...'}` maps.
   /// [systemPrompt] is the system instruction for Claude.
+  /// [caseId] (optional) — when set, the proxy injects the user's active
+  /// case as an `<active_case>` block in the system prompt (Pkg 1.B).
   Future<String> sendMessage({
     required List<Map<String, String>> messages,
     required String systemPrompt,
     int maxTokens = 4096,
     String? model,
+    String? caseId,
   }) async {
     _log.d('Sending message to Claude (${messages.length} messages, '
         'model: ${model ?? modelSonnet})');
@@ -674,6 +684,7 @@ class ClaudeService {
       maxTokens: maxTokens,
       temperature: 0.3,
       model: model,
+      caseId: caseId,
     );
 
     return _extractText(response);
@@ -695,6 +706,7 @@ class ClaudeService {
     int maxTokens = 4096,
     String? model,
     List<Map<String, dynamic>>? multimodalMessages,
+    String? caseId,
   }) async {
     _log.d('Sending message with tools to Claude '
         '(${(multimodalMessages ?? messages).length} messages, '
@@ -708,6 +720,7 @@ class ClaudeService {
       includeTools: true,
       model: model,
       multimodalMessages: multimodalMessages,
+      caseId: caseId,
     );
   }
 
@@ -821,6 +834,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     List<Map<String, dynamic>>? tools,
     double temperature = 0.3,
     Map<String, dynamic>? thinking,
+    String? caseId,
   }) {
     return sendMessageStreamingEvents(
       messages: messages,
@@ -830,6 +844,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
       tools: tools,
       temperature: temperature,
       thinking: thinking,
+      caseId: caseId,
     ).toTextStream();
   }
 
@@ -855,6 +870,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     List<Map<String, dynamic>>? tools,
     double temperature = 0.3,
     Map<String, dynamic>? thinking,
+    String? caseId,
   }) async* {
     if (!isAvailable) {
       throw const ClaudeServiceException(
@@ -913,6 +929,9 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     // its own based on message complexity — we forward the user's explicit
     // setting unchanged so callers retain control.
     if (thinking != null) body['thinking'] = thinking;
+    // Case Memory (Pkg 1.B, 2026-05-06): pass `case_id` through to the
+    // proxy when present. Proxy strips it before forwarding to Anthropic.
+    if (caseId != null && caseId.isNotEmpty) body['case_id'] = caseId;
 
     // ── Web: use browser fetch() for real streaming ──────────────────────
     if (kIsWeb) {

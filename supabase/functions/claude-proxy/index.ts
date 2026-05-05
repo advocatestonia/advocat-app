@@ -11,6 +11,11 @@ import {
 } from "./prompt_caching.ts";
 import { mapAnthropicError } from "./error_mapping.ts";
 import { classifyComplexity } from "./classify_complexity.ts";
+import {
+  applyActiveCaseToBody,
+  isValidCaseId,
+  loadActiveCase,
+} from "./active_case_injection.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -142,6 +147,37 @@ serve(async (req) => {
       if (inferred !== null) {
         body.thinking = inferred;
       }
+    }
+
+    // ── Case Memory injection (Pkg 1.B, 2026-05-06) ──────────────────────
+    // When the chat call carries `case_id`, load the user's active case via
+    // RLS-bound RPC and fold an <active_case> block into the system prompt.
+    // The model now reasons against a real case file (parties, timeline,
+    // open questions, recent docs) instead of stateless turns.
+    //
+    // - Missing/invalid case_id → silent no-op (chat continues unchanged).
+    // - Non-UUID case_id → 400 BadRequest, callers must pass a real UUID
+    //   (matches the SupabaseService.requireUuid contract on the client).
+    // - RPC returns null (case missing or RLS-blocked) → silent no-op.
+    // - Total system-prompt size guard runs AFTER injection so the 200 KB
+    //   cap covers base + RAG + memory + active_case combined.
+    if (body.case_id !== undefined && body.case_id !== null) {
+      if (typeof body.case_id !== "string" || !isValidCaseId(body.case_id)) {
+        return new Response(
+          JSON.stringify({ error: "case_id must be a UUID" }),
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
+        );
+      }
+      // Authenticated callers only — anon callers cannot own a case.
+      if (!isAnon) {
+        const payload = await loadActiveCase(body.case_id, authHeader);
+        applyActiveCaseToBody(body, payload);
+      }
+      // Strip the field before forwarding — Anthropic does not know it.
+      delete body.case_id;
     }
 
     // FIX-4 (Sprint 0): block the "free Claude proxy" abuse vector.
