@@ -4681,6 +4681,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'tap to see steps'**
   String get reasoningExpandHint;
+
+  /// No description provided for @caseFileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Case File'**
+  String get caseFileTitle;
+
+  /// No description provided for @caseFileTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get caseFileTimeline;
+
+  /// No description provided for @caseFileParties.
+  ///
+  /// In en, this message translates to:
+  /// **'Parties'**
+  String get caseFileParties;
+
+  /// No description provided for @caseFileDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadlines'**
+  String get caseFileDeadlines;
+
+  /// No description provided for @caseFileExportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Download dossier (PDF)'**
+  String get caseFileExportPdf;
+
+  /// No description provided for @caseFileEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with the AI about your case — your timeline will build itself.'**
+  String get caseFileEmpty;
+
+  /// No description provided for @caseFileDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'This dossier is auto-extracted from your chat. It is not legal advice.'**
+  String get caseFileDisclaimer;
+
+  /// No description provided for @caseFileTabLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Case'**
+  String get caseFileTabLabel;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
 }
 
 class _AppLocalizationsDelegate

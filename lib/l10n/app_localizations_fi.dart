@@ -2548,4 +2548,33 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get reasoningExpandHint => 'napauta nähdäksesi vaiheet';
+
+  @override
+  String get caseFileTitle => 'Tapauskansio';
+
+  @override
+  String get caseFileTimeline => 'Aikajana';
+
+  @override
+  String get caseFileParties => 'Osapuolet';
+
+  @override
+  String get caseFileDeadlines => 'Määräajat';
+
+  @override
+  String get caseFileExportPdf => 'Lataa kansio (PDF)';
+
+  @override
+  String get caseFileEmpty =>
+      'Keskustele AI:n kanssa tapauksestasi — aikajana rakentuu itsestään.';
+
+  @override
+  String get caseFileDisclaimer =>
+      'Tämä kansio on automaattisesti poimittu chatistäsi. Se ei ole oikeudellinen neuvo.';
+
+  @override
+  String get caseFileTabLabel => 'Kansio';
+
+  @override
+  String get refresh => 'Päivitä';
 }

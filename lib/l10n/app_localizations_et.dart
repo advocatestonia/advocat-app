@@ -2547,4 +2547,33 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get reasoningExpandHint => 'vajuta sammude nägemiseks';
+
+  @override
+  String get caseFileTitle => 'Toimik';
+
+  @override
+  String get caseFileTimeline => 'Ajatelg';
+
+  @override
+  String get caseFileParties => 'Osalised';
+
+  @override
+  String get caseFileDeadlines => 'Tähtajad';
+
+  @override
+  String get caseFileExportPdf => 'Lae alla toimik (PDF)';
+
+  @override
+  String get caseFileEmpty =>
+      'Vestle AI-ga oma juhtumist — ajatelg ehitub ise.';
+
+  @override
+  String get caseFileDisclaimer =>
+      'See toimik on automaatselt vestlusest koostatud. See ei ole õigusnõuanne.';
+
+  @override
+  String get caseFileTabLabel => 'Toimik';
+
+  @override
+  String get refresh => 'Värskenda';
 }

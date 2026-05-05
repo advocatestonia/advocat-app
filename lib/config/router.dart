@@ -28,6 +28,7 @@ import '../features/rights/screens/rights_guide_screen.dart';
 import '../features/rights/screens/rights_detail_screen.dart';
 import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
 import '../features/profile/screens/ai_memory_screen.dart';
+import '../features/case_file/screens/case_file_screen.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -55,6 +56,10 @@ abstract final class AppRoutes {
   static const String rightsDetail = '/rights/:id';
   static const String legalAid = '/legal-aid';
   static const String aiMemory = '/profile/ai-memory';
+
+  /// Case File — auto-built dossier. Optional `?caseId=` query param scopes
+  /// to one case; without it the screen shows the cross-case view.
+  static const String caseFile = '/case-file';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -232,6 +237,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.aiMemory,
         name: 'aiMemory',
         builder: (context, state) => const AiMemoryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.caseFile,
+        name: 'caseFile',
+        builder: (context, state) {
+          final caseId = state.uri.queryParameters['caseId'];
+          return CaseFileScreen(caseId: caseId);
+        },
       ),
 
       // ── 404 recovery redirects ─────────────────────────────────────

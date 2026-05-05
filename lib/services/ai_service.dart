@@ -8,6 +8,8 @@ import '../config/app_config.dart';
 import '../models/case_model.dart';
 import 'agentic_loop.dart';
 import 'assistant_tools.dart';
+import 'case_file_extractor.dart';
+import 'case_file_service.dart';
 import 'chat_attachment_service.dart';
 import 'chat_stream_event.dart';
 import 'citation_verifier.dart';
@@ -144,11 +146,15 @@ final aiServiceProvider = Provider<AIService>((ref) {
   final supabase = ref.watch(supabaseServiceProvider);
   final memoryService = ref.watch(userMemoryServiceProvider);
   final assistantTools = ref.watch(assistantToolsProvider);
+  final caseFileExtractor = ref.watch(caseFileExtractorProvider);
+  final caseFileService = ref.watch(caseFileServiceProvider);
   return AIService(
     claudeService: claudeService,
     quotaClient: SupabaseAiQuotaClient(supabase),
     memoryService: memoryService,
     assistantTools: assistantTools,
+    caseFileExtractor: caseFileExtractor,
+    caseFileService: caseFileService,
   );
 });
 
@@ -163,10 +169,14 @@ class AIService {
     AiQuotaClient? quotaClient,
     UserMemoryService? memoryService,
     AssistantTools? assistantTools,
+    CaseFileExtractor? caseFileExtractor,
+    CaseFileService? caseFileService,
   })  : _claudeService = claudeService ?? ClaudeService(),
         _quotaClient = quotaClient,
         _memoryService = memoryService,
         _assistantTools = assistantTools,
+        _caseFileExtractor = caseFileExtractor,
+        _caseFileService = caseFileService,
         _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
@@ -199,6 +209,14 @@ class AIService {
   /// Null-safe: every memory path degrades to a plain chat call when
   /// this is null, which keeps tests and the proxy fallback simple.
   final UserMemoryService? _memoryService;
+
+  /// Optional Case File extractor + storage. When wired, every successful
+  /// chat turn fires a fire-and-forget Haiku extraction of structured legal
+  /// metadata (events, parties, deadlines, ...) which is persisted via
+  /// [_caseFileService]. The chat response NEVER waits for it.
+  final CaseFileExtractor? _caseFileExtractor;
+  final CaseFileService? _caseFileService;
+
   final Dio _dio;
   final Logger _log;
 
@@ -263,6 +281,47 @@ class AIService {
     required List<({String role, String content})> messages,
   }) =>
       _triggerMemoryExtraction(sessionId: sessionId, messages: messages);
+
+  /// Fire-and-forget Case File extraction. Runs in the background after a
+  /// successful turn — the chat reply has already been delivered to the user.
+  ///
+  /// Hard rule: this method NEVER throws and NEVER awaits anything the
+  /// caller cares about. Always invoke as `unawaited(_triggerCaseFile...)`.
+  Future<void> _triggerCaseFileExtraction({
+    required String userMessage,
+    required String aiResponse,
+    String? caseId,
+  }) async {
+    final extractor = _caseFileExtractor;
+    final service = _caseFileService;
+    if (extractor == null || service == null) return;
+    // Only meaningful for real cases, not the synthetic 'general' bucket.
+    final realCaseId = (caseId == null || caseId == 'general') ? null : caseId;
+    try {
+      final extraction = await extractor.extractFromTurn(
+        userMessage: userMessage,
+        aiResponse: aiResponse,
+        caseId: realCaseId,
+      );
+      if (extraction.isEmpty) return;
+      await service.upsertExtraction(extraction, caseId: realCaseId);
+    } catch (e) {
+      _log.w('Case File extraction failed (best-effort, ignored): $e');
+    }
+  }
+
+  /// Test seam — exercises the same private path tests can pin against.
+  @visibleForTesting
+  Future<void> triggerCaseFileExtractionForTest({
+    required String userMessage,
+    required String aiResponse,
+    String? caseId,
+  }) =>
+      _triggerCaseFileExtraction(
+        userMessage: userMessage,
+        aiResponse: aiResponse,
+        caseId: caseId,
+      );
 
   /// Smart Agent v2 — Verified Citations post-processor.
   ///
@@ -1317,6 +1376,13 @@ class AIService {
             messages: _snapshotHistoryForExtraction(caseId),
           ));
 
+          // Case File auto-extraction. Pure background, never blocks.
+          unawaited(_triggerCaseFileExtraction(
+            userMessage: sanitizedMessage,
+            aiResponse: finalText,
+            caseId: caseId,
+          ));
+
           return ChatResponse(
             message: finalText,
             disclaimer:
@@ -1339,6 +1405,13 @@ class AIService {
         unawaited(_triggerMemoryExtraction(
           sessionId: caseId,
           messages: _snapshotHistoryForExtraction(caseId),
+        ));
+
+        // Case File auto-extraction. Background, never blocks.
+        unawaited(_triggerCaseFileExtraction(
+          userMessage: sanitizedMessage,
+          aiResponse: responseText,
+          caseId: caseId,
         ));
 
         return ChatResponse(
@@ -1577,6 +1650,13 @@ class AIService {
           sessionId: caseId,
           messages: _snapshotHistoryForExtraction(caseId),
         ));
+
+        // Case File auto-extraction. Background, never blocks.
+        unawaited(_triggerCaseFileExtraction(
+          userMessage: sanitizedMessage,
+          aiResponse: responseText,
+          caseId: caseId,
+        ));
       }
     } on ClaudeServiceException catch (e) {
       _log.e('Claude streaming chat failed, falling back to non-streaming',
@@ -1778,6 +1858,13 @@ class AIService {
         unawaited(_triggerMemoryExtraction(
           sessionId: caseId,
           messages: _snapshotHistoryForExtraction(caseId),
+        ));
+
+        // Case File auto-extraction. Background, never blocks.
+        unawaited(_triggerCaseFileExtraction(
+          userMessage: sanitizedMessage,
+          aiResponse: responseText,
+          caseId: caseId,
         ));
       }
     } on ClaudeServiceException catch (e) {

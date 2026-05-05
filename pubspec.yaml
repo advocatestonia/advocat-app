@@ -103,6 +103,7 @@ flutter:
     - assets/l10n/
     - assets/legal/estonia/
     - assets/legal/finland/
+    - assets/prompts/
     - assets/videos/
 
   # Fonts loaded via google_fonts package at runtime

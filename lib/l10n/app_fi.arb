@@ -970,5 +970,14 @@
       "sources": {"type": "int"}
     }
   },
-  "reasoningExpandHint": "napauta nähdäksesi vaiheet"
+  "reasoningExpandHint": "napauta nähdäksesi vaiheet",
+  "caseFileTitle": "Tapauskansio",
+  "caseFileTimeline": "Aikajana",
+  "caseFileParties": "Osapuolet",
+  "caseFileDeadlines": "Määräajat",
+  "caseFileExportPdf": "Lataa kansio (PDF)",
+  "caseFileEmpty": "Keskustele AI:n kanssa tapauksestasi — aikajana rakentuu itsestään.",
+  "caseFileDisclaimer": "Tämä kansio on automaattisesti poimittu chatistäsi. Se ei ole oikeudellinen neuvo.",
+  "caseFileTabLabel": "Kansio",
+  "refresh": "Päivitä"
 }

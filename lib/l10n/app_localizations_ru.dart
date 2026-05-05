@@ -2557,4 +2557,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get reasoningExpandHint => 'коснитесь, чтобы увидеть шаги';
+
+  @override
+  String get caseFileTitle => 'Досье';
+
+  @override
+  String get caseFileTimeline => 'Хронология';
+
+  @override
+  String get caseFileParties => 'Стороны';
+
+  @override
+  String get caseFileDeadlines => 'Сроки';
+
+  @override
+  String get caseFileExportPdf => 'Скачать досье (PDF)';
+
+  @override
+  String get caseFileEmpty =>
+      'Поговорите с AI о вашем деле — хронология построится сама.';
+
+  @override
+  String get caseFileDisclaimer =>
+      'Это досье автоматически извлечено из вашего чата. Это не юридическая консультация.';
+
+  @override
+  String get caseFileTabLabel => 'Дело';
+
+  @override
+  String get refresh => 'Обновить';
 }

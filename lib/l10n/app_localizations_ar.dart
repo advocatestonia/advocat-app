@@ -2532,4 +2532,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reasoningExpandHint => 'tap to see steps';
+
+  @override
+  String get caseFileTitle => 'Case File';
+
+  @override
+  String get caseFileTimeline => 'Timeline';
+
+  @override
+  String get caseFileParties => 'Parties';
+
+  @override
+  String get caseFileDeadlines => 'Deadlines';
+
+  @override
+  String get caseFileExportPdf => 'Download dossier (PDF)';
+
+  @override
+  String get caseFileEmpty =>
+      'Chat with the AI about your case — your timeline will build itself.';
+
+  @override
+  String get caseFileDisclaimer =>
+      'This dossier is auto-extracted from your chat. It is not legal advice.';
+
+  @override
+  String get caseFileTabLabel => 'Case';
+
+  @override
+  String get refresh => 'Refresh';
 }

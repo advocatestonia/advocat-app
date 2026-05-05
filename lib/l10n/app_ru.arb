@@ -970,5 +970,14 @@
       "sources": {"type": "int"}
     }
   },
-  "reasoningExpandHint": "коснитесь, чтобы увидеть шаги"
+  "reasoningExpandHint": "коснитесь, чтобы увидеть шаги",
+  "caseFileTitle": "Досье",
+  "caseFileTimeline": "Хронология",
+  "caseFileParties": "Стороны",
+  "caseFileDeadlines": "Сроки",
+  "caseFileExportPdf": "Скачать досье (PDF)",
+  "caseFileEmpty": "Поговорите с AI о вашем деле — хронология построится сама.",
+  "caseFileDisclaimer": "Это досье автоматически извлечено из вашего чата. Это не юридическая консультация.",
+  "caseFileTabLabel": "Дело",
+  "refresh": "Обновить"
 }

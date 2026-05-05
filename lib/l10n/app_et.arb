@@ -970,5 +970,14 @@
         "sources": {"type": "int"}
       }
     },
-    "reasoningExpandHint": "vajuta sammude nägemiseks"
+    "reasoningExpandHint": "vajuta sammude nägemiseks",
+    "caseFileTitle": "Toimik",
+    "caseFileTimeline": "Ajatelg",
+    "caseFileParties": "Osalised",
+    "caseFileDeadlines": "Tähtajad",
+    "caseFileExportPdf": "Lae alla toimik (PDF)",
+    "caseFileEmpty": "Vestle AI-ga oma juhtumist — ajatelg ehitub ise.",
+    "caseFileDisclaimer": "See toimik on automaatselt vestlusest koostatud. See ei ole õigusnõuanne.",
+    "caseFileTabLabel": "Toimik",
+    "refresh": "Värskenda"
 }
