@@ -1153,10 +1153,15 @@ class AIService {
         // Determine if this is a simple query (greetings, meta-questions)
         final isSimple = ClaudeService.isSimpleQuery(sanitizedMessage);
 
-        // Choose model based on query complexity
+        // Choose model based on query complexity. P0-3 (2026-05-05): pass
+        // effectiveUserLanguage so legal turns in ru/et/en/uk escalate to
+        // Sonnet via the looksLegalish() detector.
         final model = isSimple
             ? ClaudeService.modelHaiku
-            : ClaudeService.chooseModel(sanitizedMessage);
+            : ClaudeService.chooseModel(
+                sanitizedMessage,
+                userLanguage: effectiveUserLanguage,
+              );
         // Adaptive length (fix/ai-quality bug 2): short questions (yes/no,
         // list, command) get a tight token budget so Claude cannot pad a
         // one-line answer into a five-paragraph essay.
@@ -1562,7 +1567,12 @@ class AIService {
     // ── Complex query — use streaming ──
     _log.i('Using Claude API for streaming chat');
     try {
-      final model = ClaudeService.chooseModel(sanitizedMessage);
+      // P0-3 (2026-05-05): pass effectiveUserLanguage so legal turns in
+      // ru/et/en/uk escalate to Sonnet via the looksLegalish() detector.
+      final model = ClaudeService.chooseModel(
+        sanitizedMessage,
+        userLanguage: effectiveUserLanguage,
+      );
       final bool isShort = ClaudeService.isShortQuery(sanitizedMessage);
       final int maxTokens = isShort
           ? ClaudeService.maxTokensForShortQuery()
@@ -1785,7 +1795,12 @@ class AIService {
 
     _log.i('Using Claude API for streaming chat (events surface)');
     try {
-      final model = ClaudeService.chooseModel(sanitizedMessage);
+      // P0-3 (2026-05-05): pass effectiveUserLanguage so legal turns in
+      // ru/et/en/uk escalate to Sonnet via the looksLegalish() detector.
+      final model = ClaudeService.chooseModel(
+        sanitizedMessage,
+        userLanguage: effectiveUserLanguage,
+      );
       final bool isShort = ClaudeService.isShortQuery(sanitizedMessage);
       final int maxTokens = isShort
           ? ClaudeService.maxTokensForShortQuery()

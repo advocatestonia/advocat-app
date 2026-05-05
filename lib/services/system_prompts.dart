@@ -1,5 +1,6 @@
 import '../models/case_model.dart';
 import 'knowledge_base.dart';
+import 'law_search_client.dart';
 
 // ---------------------------------------------------------------------------
 // System prompts for the Advocat legal assistant
@@ -154,6 +155,91 @@ abstract final class SystemPrompts {
     buffer.writeln(_outputFormat);
 
     return buffer.toString();
+  }
+
+  /// Maximum total system-prompt size we'll send to Claude before trimming
+  /// the lowest-similarity RAG chunks (P0-3, 2026-05-05). Mirrors the
+  /// 200 KB cap raised on claude-proxy (lesson_50kb_system_prompt_cap.md).
+  /// We leave 8 KB of headroom for the post-injection wrappers added by
+  /// callers (CLIENT PERSONAL KNOWLEDGE BASE, user-name suffix, etc.).
+  static const int ragBudgetBytes = 200 * 1024 - 8 * 1024;
+
+  /// Inject RAG retrieval results above an existing system prompt (P0-3).
+  ///
+  /// When [chunks] is empty, returns [existingPrompt] verbatim — never adds
+  /// a placeholder header. When chunks are present, prepends a "RELEVANT
+  /// ESTONIAN LAW" block with a verbatim-cite directive and the formatted
+  /// paragraphs.
+  ///
+  /// Budget: if the combined size of [existingPrompt] + the RAG block would
+  /// exceed [ragBudgetBytes], chunks are dropped lowest-similarity-first
+  /// until the result fits. If even one chunk doesn't fit (existingPrompt
+  /// alone is over budget), the prompt is returned unchanged — RAG is the
+  /// thing we sacrifice, never user/legal context.
+  ///
+  /// Contract pinned by `test/contract/rag_injection_contract_test.dart`.
+  static String injectLawContext(
+    String existingPrompt,
+    List<LawChunk> chunks, {
+    int budgetBytes = ragBudgetBytes,
+  }) {
+    if (chunks.isEmpty) return existingPrompt;
+
+    // Sort by similarity desc so dropping from the tail removes the
+    // lowest-similarity chunks first.
+    final sorted = List<LawChunk>.from(chunks)
+      ..sort((a, b) => b.similarity.compareTo(a.similarity));
+
+    // Try the full set; if oversize, drop one chunk at a time from the tail.
+    var working = sorted;
+    while (working.isNotEmpty) {
+      final block = formatLawContext(working);
+      final combined = '$block\n\n$existingPrompt';
+      if (combined.length <= budgetBytes) {
+        return combined;
+      }
+      working = working.sublist(0, working.length - 1);
+    }
+    // Even the existing prompt alone is over budget — sacrifice RAG.
+    return existingPrompt;
+  }
+
+  /// Format a non-empty list of [LawChunk]s as the RAG header block.
+  /// Pure formatter, no budget logic. Used by [injectLawContext]; exposed
+  /// so the contract test can pin the wire format directly.
+  static String formatLawContext(List<LawChunk> chunks) {
+    final buf = StringBuffer();
+    buf.writeln('## RELEVANT ESTONIAN LAW '
+        '(cite verbatim, do NOT paraphrase paragraph numbers)');
+    buf.writeln();
+    for (final c in chunks) {
+      // Header line keeps act + paragraph anchored together so the model
+      // cannot drift the § number from the act it belongs to.
+      final paragraph = c.paragraph.trim();
+      final actName = c.actName.trim();
+      final headerSuffix = paragraph.isEmpty ? '' : ' $paragraph';
+      buf.writeln('### $actName$headerSuffix');
+      // Body as a blockquote — visually separates the verbatim text from
+      // the surrounding instructions for the model.
+      for (final line in c.body.split('\n')) {
+        buf.writeln('> $line');
+      }
+      if (c.sourceUrl != null && c.sourceUrl!.isNotEmpty) {
+        buf.writeln('[source: ${c.sourceUrl}]');
+      }
+      buf.writeln();
+    }
+    buf.writeln(
+        'WARNING — RULES (RAG-cited paragraphs above):');
+    buf.writeln(
+        '- Cite ONLY the paragraphs above. If the user\'s question isn\'t '
+        'covered, say so.');
+    buf.writeln(
+        '- Do NOT invent § numbers. Do NOT cite acts not listed above.');
+    buf.writeln(
+        '- If law is in another language than user\'s, translate the cited '
+        'text but keep the § number.');
+    return buf.toString().trimRight();
   }
 
   /// Build a system prompt for document analysis.

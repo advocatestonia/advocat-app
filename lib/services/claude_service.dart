@@ -9,6 +9,7 @@ import 'package:logger/logger.dart';
 import '../config/app_config.dart';
 import 'chat_stream_event.dart';
 import 'jwt_refresh_policy.dart';
+import 'law_search_client.dart';
 import 'tool_definitions.dart';
 import 'web_streaming_stub.dart' if (dart.library.js_interop) 'web_streaming_impl.dart';
 
@@ -174,18 +175,87 @@ class ClaudeService {
     'huoltaj', 'avioero', 'perintö', 'eläke', 'vamma',
   ];
 
+  /// Broader legal-domain stems used by [looksLegalish] (P0-3, 2026-05-05).
+  /// Non-overlapping with [_complexKeywords] to avoid double counting in the
+  /// match-count branches above. These cover RU/ET/EN/UK court/dispute/claim/
+  /// contract vocabulary that users actually type when asking a legal
+  /// question — the keyword-only `_complexKeywords` heuristic missed many
+  /// short, plain-language legal turns ("can I appeal" / "kas ma saan
+  /// vaidlustada" / "хочу подать иск") and routed them to Haiku.
+  ///
+  /// Substring matching, lower-cased input. Case folding on the input side
+  /// keeps the list short.
+  static const List<String> _legalishStems = [
+    // RU broad (unique vs _complexKeywords).
+    'иск', 'позов', 'подсуд', 'юридическ', 'правов', 'правонаруш',
+    'трудово', 'арендодат', 'арендатор', 'выселени', 'возврат',
+    // UK (Ukrainian) — not previously covered.
+    'звільн', 'оскарж', 'скарг', 'позивач', 'відповідач',
+    'трудов', 'спір', 'позовн', 'договір',
+    // ET — Estonian legal-domain vocabulary missed by _complexKeywords.
+    // Stems chosen to match common case-form variants while avoiding
+    // collision with the bare adverb "vaid" (= only): we use the genitive
+    // "vaide" and partitive "vaiet", plus the dispute family "vaidlus"
+    // (covers vaidlustada / vaidlustamine). "hagi" matches hagi /
+    // hagiavaldus. "kohtu" matches kohtu / kohtusse / kohtuasi /
+    // kohtumäärus.
+    'vaide', 'vaiet', 'vaidlus', 'hagi', 'töövaidlus', 'kohtu',
+    'rikkumi', 'töölepingu', 'üürilepin', 'üüriand', 'üürnik',
+    'koondami', 'tarbija', 'rahuldamata',
+    // EN — broader civil/criminal terms not in _complexKeywords.
+    'dispute', 'claim', 'plaintiff', 'defendant', 'tenant',
+    'landlord', 'employer', 'employee', 'wrongful', 'breach',
+    'sue ', 'suing', 'lawsuit', 'liable', 'compensation',
+    'appeal ', 'appealing',
+  ];
+
+  /// Whether the message looks like a legal question.
+  ///
+  /// Keyword-based, no API call. Used by [chooseModel] to escalate to
+  /// [modelSonnet] for legal turns even when the legacy keyword
+  /// heuristic ([_complexKeywords] match-count) wouldn't have triggered.
+  ///
+  /// Coordinates with the RU-stem quick-win merged in 1c39ea8 — those stems
+  /// stay in [_complexKeywords]; this list adds broader legal-domain
+  /// vocabulary in RU/ET/EN/UK without duplicating them.
+  static bool looksLegalish(String query) {
+    final lower = query.toLowerCase();
+    // First: any complex-keyword hit is a strong legal signal.
+    if (_complexKeywords.any((kw) => lower.contains(kw))) return true;
+    // Then: broader legal-domain stems (court/dispute/claim/contract).
+    for (final stem in _legalishStems) {
+      if (lower.contains(stem)) return true;
+    }
+    return false;
+  }
+
   /// Determine the appropriate model for a query.
   ///
   /// Aggressively defaults to [modelHaiku] (3x faster) unless the query
   /// is clearly complex legal analysis requiring [modelSonnet].
-  static String chooseModel(String query) {
+  ///
+  /// P0-3 (2026-05-05): when [userLanguage] is one of `ru/et/en/uk` and
+  /// the query [looksLegalish], escalate to Sonnet even if the legacy
+  /// keyword heuristic wouldn't have triggered. Legal questions deserve
+  /// the Sonnet headroom regardless of message length / keyword count.
+  /// Languages outside that set fall back to legacy behaviour exactly
+  /// (no regression for FI/DE/SV/etc.).
+  static String chooseModel(String query, {String? userLanguage}) {
     final lower = query.toLowerCase();
 
     // Short messages (< 150 chars) without complex keywords -> always Haiku
+    // — UNLESS the message looks legal-ish for a covered language. Without
+    // this gate the new legal-detection path would never fire on short
+    // queries like "can I appeal this".
     if (query.length < 150) {
       final hasComplexKeyword =
           _complexKeywords.any((kw) => lower.contains(kw));
-      if (!hasComplexKeyword) return modelHaiku;
+      if (!hasComplexKeyword) {
+        if (_isLegalishLanguage(userLanguage) && looksLegalish(query)) {
+          return modelSonnet;
+        }
+        return modelHaiku;
+      }
     }
 
     // Only use Sonnet if MULTIPLE complex keywords found (truly complex query)
@@ -196,13 +266,53 @@ class ClaudeService {
     // Very long messages (> 300 chars) with at least one keyword -> Sonnet
     if (query.length > 300 && matchCount >= 1) return modelSonnet;
 
+    // P0-3: legal-question escalation for ru/et/en/uk users.
+    if (_isLegalishLanguage(userLanguage) && looksLegalish(query)) {
+      return modelSonnet;
+    }
+
     // Default: Haiku for speed
     return modelHaiku;
+  }
+
+  /// Whether [userLanguage] is in the set covered by the legal-question
+  /// escalation rule. Null means "unknown" — keep legacy behaviour
+  /// (no escalation) so existing call-sites that don't yet pass language
+  /// remain byte-equal to pre-P0-3.
+  static bool _isLegalishLanguage(String? userLanguage) {
+    if (userLanguage == null) return false;
+    return userLanguage == 'ru' ||
+        userLanguage == 'et' ||
+        userLanguage == 'en' ||
+        userLanguage == 'uk';
   }
 
   /// Get the recommended max tokens for a given model.
   static int maxTokensForModel(String model) {
     return model == modelHaiku ? _maxTokensHaiku : _maxTokensSonnet;
+  }
+
+  /// Retrieve relevant law paragraphs for a user query (P0-3, 2026-05-05).
+  ///
+  /// Wraps [LawSearchClient.search] with the chat-turn budget (3 s) and
+  /// soft-fail semantics: any error / timeout / empty result returns an
+  /// empty list, and the caller skips RAG injection. Never let a search
+  /// failure break a chat turn.
+  ///
+  /// Until P0-2 deploys the `law-search` Edge Function, this returns []
+  /// after a single quick failure. That's the graceful fallback contract.
+  static Future<List<LawChunk>> retrieveLawContext({
+    required String query,
+    required String lang,
+    int matchCount = LawSearchClient.defaultMatchCount,
+    double similarityThreshold = LawSearchClient.defaultSimilarityThreshold,
+  }) async {
+    return LawSearchClient.search(
+      query: query,
+      lang: lang,
+      matchCount: matchCount,
+      similarityThreshold: similarityThreshold,
+    );
   }
 
   /// Choose a model for a tool-eligible turn (Anthropic engineer consilium,
@@ -232,10 +342,11 @@ class ClaudeService {
     String query, {
     required bool hasTools,
     required bool isAuthenticated,
+    String? userLanguage,
   }) {
     // Non-tool turns keep legacy behaviour exactly. Pin via direct delegation.
     if (!hasTools) {
-      return chooseModel(query);
+      return chooseModel(query, userLanguage: userLanguage);
     }
     // Cost-control invariant: anon never reaches Sonnet.
     if (!isAuthenticated) {
