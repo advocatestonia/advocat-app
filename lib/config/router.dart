@@ -29,6 +29,15 @@ import '../features/rights/screens/rights_detail_screen.dart';
 import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
 import '../features/profile/screens/ai_memory_screen.dart';
 import '../features/case_file/screens/case_file_screen.dart';
+// Pkg 1.D — new "Мои дела" / Case Memory screens. Live alongside the
+// legacy /cases routes; gradually replacing them.
+import '../features/case_memory/screens/cases_list_screen.dart'
+    as cm_list;
+import '../features/case_memory/screens/case_create_screen.dart'
+    as cm_create;
+import '../features/case_memory/screens/case_detail_screen.dart'
+    as cm_detail;
+import '../features/case_memory/screens/case_edit_screen.dart' as cm_edit;
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -60,6 +69,13 @@ abstract final class AppRoutes {
   /// Case File — auto-built dossier. Optional `?caseId=` query param scopes
   /// to one case; without it the screen shows the cross-case view.
   static const String caseFile = '/case-file';
+
+  // Pkg 1.D — Case Memory ("Мои дела"). Lives alongside legacy /cases
+  // until the legacy deportation-only screen is retired.
+  static const String casesV2 = '/cases-v2';
+  static const String caseV2New = '/cases-v2/new';
+  static const String caseV2Detail = '/cases-v2/:id';
+  static const String caseV2Edit = '/cases-v2/:id/edit';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -171,6 +187,36 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.scan,
         name: 'scan',
         builder: (context, state) => const DocumentScanScreen(),
+      ),
+
+      // ── Pkg 1.D — Case Memory routes (/cases-v2) ──────────────────
+      GoRoute(
+        path: AppRoutes.casesV2,
+        name: 'casesV2',
+        builder: (context, state) => const cm_list.CasesListScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.caseV2New,
+        name: 'caseV2New',
+        builder: (context, state) => const cm_create.CaseCreateScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.caseV2Detail,
+        name: 'caseV2Detail',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return cm_detail.CaseDetailScreen(caseId: id);
+        },
+        routes: [
+          GoRoute(
+            path: 'edit',
+            name: 'caseV2Edit',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return cm_edit.CaseEditScreen(caseId: id);
+            },
+          ),
+        ],
       ),
       GoRoute(
         path: AppRoutes.chat,

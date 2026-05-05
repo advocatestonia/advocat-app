@@ -4807,6 +4807,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Got it. Now, what\'s your question?'**
   String get quickProfileSavedAck;
+
+  /// No description provided for @caseTitleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Case title'**
+  String get caseTitleLabel;
+
+  /// No description provided for @jurisdictionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Jurisdiction'**
+  String get jurisdictionLabel;
+
+  /// No description provided for @caseTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Case type'**
+  String get caseTypeLabel;
+
+  /// No description provided for @caseLanguageLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get caseLanguageLabel;
+
+  /// No description provided for @caseNumbersSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Case numbers'**
+  String get caseNumbersSection;
+
+  /// No description provided for @partiesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Parties'**
+  String get partiesSection;
+
+  /// No description provided for @authoritiesSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Authorities'**
+  String get authoritiesSection;
+
+  /// No description provided for @timelineSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get timelineSection;
+
+  /// No description provided for @openQuestionsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Open questions'**
+  String get openQuestionsSection;
+
+  /// No description provided for @nextActionsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Next actions'**
+  String get nextActionsSection;
+
+  /// No description provided for @summarySection.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summarySection;
+
+  /// No description provided for @addRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Add row'**
+  String get addRow;
+
+  /// No description provided for @removeRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get removeRow;
+
+  /// No description provided for @archiveCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive case'**
+  String get archiveCase;
+
+  /// No description provided for @closeCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Close case'**
+  String get closeCase;
+
+  /// No description provided for @continueChatAboutCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue chat about this case'**
+  String get continueChatAboutCase;
+
+  /// No description provided for @linkChatToCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Link to case'**
+  String get linkChatToCase;
+
+  /// No description provided for @clearActiveCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear active case'**
+  String get clearActiveCase;
+
+  /// No description provided for @caseSavedAck.
+  ///
+  /// In en, this message translates to:
+  /// **'Case saved'**
+  String get caseSavedAck;
+
+  /// No description provided for @caseArchivedAck.
+  ///
+  /// In en, this message translates to:
+  /// **'Case archived'**
+  String get caseArchivedAck;
 }
 
 class _AppLocalizationsDelegate

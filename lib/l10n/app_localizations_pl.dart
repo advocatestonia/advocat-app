@@ -2629,4 +2629,64 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get quickProfileSavedAck => 'Got it. Now, what\'s your question?';
+
+  @override
+  String get caseTitleLabel => 'Case title';
+
+  @override
+  String get jurisdictionLabel => 'Jurisdiction';
+
+  @override
+  String get caseTypeLabel => 'Case type';
+
+  @override
+  String get caseLanguageLabel => 'Language';
+
+  @override
+  String get caseNumbersSection => 'Case numbers';
+
+  @override
+  String get partiesSection => 'Parties';
+
+  @override
+  String get authoritiesSection => 'Authorities';
+
+  @override
+  String get timelineSection => 'Timeline';
+
+  @override
+  String get openQuestionsSection => 'Open questions';
+
+  @override
+  String get nextActionsSection => 'Next actions';
+
+  @override
+  String get summarySection => 'Summary';
+
+  @override
+  String get addRow => 'Add row';
+
+  @override
+  String get removeRow => 'Remove';
+
+  @override
+  String get archiveCase => 'Archive case';
+
+  @override
+  String get closeCase => 'Close case';
+
+  @override
+  String get continueChatAboutCase => 'Continue chat about this case';
+
+  @override
+  String get linkChatToCase => 'Link to case';
+
+  @override
+  String get clearActiveCase => 'Clear active case';
+
+  @override
+  String get caseSavedAck => 'Case saved';
+
+  @override
+  String get caseArchivedAck => 'Case archived';
 }

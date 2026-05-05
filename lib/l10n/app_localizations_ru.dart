@@ -2626,4 +2626,64 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get quickProfileSavedAck => 'Понял. Теперь — какой у вас вопрос?';
+
+  @override
+  String get caseTitleLabel => 'Название дела';
+
+  @override
+  String get jurisdictionLabel => 'Юрисдикция';
+
+  @override
+  String get caseTypeLabel => 'Тип дела';
+
+  @override
+  String get caseLanguageLabel => 'Язык';
+
+  @override
+  String get caseNumbersSection => 'Номера дел';
+
+  @override
+  String get partiesSection => 'Стороны';
+
+  @override
+  String get authoritiesSection => 'Органы';
+
+  @override
+  String get timelineSection => 'Хронология';
+
+  @override
+  String get openQuestionsSection => 'Открытые вопросы';
+
+  @override
+  String get nextActionsSection => 'Следующие шаги';
+
+  @override
+  String get summarySection => 'Краткое описание';
+
+  @override
+  String get addRow => 'Добавить';
+
+  @override
+  String get removeRow => 'Удалить';
+
+  @override
+  String get archiveCase => 'Архивировать';
+
+  @override
+  String get closeCase => 'Закрыть дело';
+
+  @override
+  String get continueChatAboutCase => 'Продолжить чат по этому делу';
+
+  @override
+  String get linkChatToCase => 'Связать с делом';
+
+  @override
+  String get clearActiveCase => 'Сбросить активное дело';
+
+  @override
+  String get caseSavedAck => 'Дело сохранено';
+
+  @override
+  String get caseArchivedAck => 'Дело архивировано';
 }

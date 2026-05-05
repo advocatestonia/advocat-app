@@ -38,6 +38,7 @@ import '../widgets/welcome_chips.dart';
 import '../quick_profile/quick_profile_gate.dart';
 import '../quick_profile/quick_profile_intake.dart';
 import '../../../services/user_memory_service.dart';
+import '../../case_memory/widgets/active_case_chip.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -1808,6 +1809,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // Quick action chips
           if (!_isSending) _buildQuickActions(),
+
+          // Pkg 1.D — Case Memory composer chip. Shows the active case
+          // badge (or a "Link to case" chip) above the input bar so the
+          // user always knows whether the next message will be folded
+          // into a case file by claude-proxy (Pkg 1.B).
+          const ActiveCaseChip(),
 
           // Input bar with voice button
           _buildInputBar(),

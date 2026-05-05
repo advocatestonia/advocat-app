@@ -2616,4 +2616,64 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get quickProfileSavedAck => 'Selge. Mis on su küsimus?';
+
+  @override
+  String get caseTitleLabel => 'Juhtumi pealkiri';
+
+  @override
+  String get jurisdictionLabel => 'Jurisdiktsioon';
+
+  @override
+  String get caseTypeLabel => 'Juhtumi tüüp';
+
+  @override
+  String get caseLanguageLabel => 'Keel';
+
+  @override
+  String get caseNumbersSection => 'Juhtumi numbrid';
+
+  @override
+  String get partiesSection => 'Osapooled';
+
+  @override
+  String get authoritiesSection => 'Asutused';
+
+  @override
+  String get timelineSection => 'Ajajoon';
+
+  @override
+  String get openQuestionsSection => 'Lahtised küsimused';
+
+  @override
+  String get nextActionsSection => 'Järgmised sammud';
+
+  @override
+  String get summarySection => 'Kokkuvõte';
+
+  @override
+  String get addRow => 'Lisa';
+
+  @override
+  String get removeRow => 'Eemalda';
+
+  @override
+  String get archiveCase => 'Arhiveeri';
+
+  @override
+  String get closeCase => 'Sulge juhtum';
+
+  @override
+  String get continueChatAboutCase => 'Jätka selle juhtumi vestlust';
+
+  @override
+  String get linkChatToCase => 'Seo juhtumiga';
+
+  @override
+  String get clearActiveCase => 'Tühjenda aktiivne juhtum';
+
+  @override
+  String get caseSavedAck => 'Juhtum salvestatud';
+
+  @override
+  String get caseArchivedAck => 'Juhtum arhiveeritud';
 }

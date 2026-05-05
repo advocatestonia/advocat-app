@@ -2580,24 +2580,25 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get demoLimitReached =>
-      'Demo limit reached. Sign up for free to continue.';
+      'Demoraja saavutettu. Rekisteröidy ilmaiseksi jatkaaksesi.';
 
   @override
-  String get demoLimitSignUpCta => 'Sign up';
+  String get demoLimitSignUpCta => 'Rekisteröidy';
 
   @override
   String get freeQuotaExhausted =>
-      'You\'ve used all 7 free messages this month.';
+      'Olet käyttänyt kaikki 7 ilmaista viestiä tässä kuussa.';
 
   @override
-  String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
+  String get upgradeForUnlimited =>
+      'Päivitä Pro-tilaan saadaksesi rajattomat viestit';
 
   @override
-  String get upgradeCta => 'Upgrade';
+  String get upgradeCta => 'Päivitä';
 
   @override
   String get rateLimitTryAgain =>
-      'Sending too fast. Try again in a few seconds.';
+      'Lähetät liian nopeasti. Yritä uudelleen muutaman sekunnin kuluttua.';
 
   @override
   String get quickProfilePrompt =>
@@ -2617,4 +2618,64 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get quickProfileSavedAck => 'Selvä. Mikä on kysymyksesi?';
+
+  @override
+  String get caseTitleLabel => 'Asian otsikko';
+
+  @override
+  String get jurisdictionLabel => 'Lainkäyttöalue';
+
+  @override
+  String get caseTypeLabel => 'Asian tyyppi';
+
+  @override
+  String get caseLanguageLabel => 'Kieli';
+
+  @override
+  String get caseNumbersSection => 'Asianumerot';
+
+  @override
+  String get partiesSection => 'Osapuolet';
+
+  @override
+  String get authoritiesSection => 'Viranomaiset';
+
+  @override
+  String get timelineSection => 'Aikajana';
+
+  @override
+  String get openQuestionsSection => 'Avoimet kysymykset';
+
+  @override
+  String get nextActionsSection => 'Seuraavat askeleet';
+
+  @override
+  String get summarySection => 'Yhteenveto';
+
+  @override
+  String get addRow => 'Lisää';
+
+  @override
+  String get removeRow => 'Poista';
+
+  @override
+  String get archiveCase => 'Arkistoi';
+
+  @override
+  String get closeCase => 'Sulje asia';
+
+  @override
+  String get continueChatAboutCase => 'Jatka tämän asian keskustelua';
+
+  @override
+  String get linkChatToCase => 'Liitä asiaan';
+
+  @override
+  String get clearActiveCase => 'Tyhjennä aktiivinen asia';
+
+  @override
+  String get caseSavedAck => 'Asia tallennettu';
+
+  @override
+  String get caseArchivedAck => 'Asia arkistoitu';
 }
