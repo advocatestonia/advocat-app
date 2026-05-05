@@ -11,22 +11,36 @@
 // -----------------------------------------------------------------------------
 
 import 'dart:async';
+import 'dart:typed_data';
 import 'dart:ui' as ui show FontFeature;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:printing/printing.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/case_file.dart';
 import '../../../services/case_file_service.dart';
+import '../../../services/ics_export_service.dart';
 import '../../../services/pdf_service.dart';
 import '../case_file_providers.dart';
 import '../widgets/deadline_countdown_card.dart';
 
+/// Test-only seam — receives the rendered .ics body and is expected to
+/// dispatch it to the platform's share/download surface. Production
+/// callers leave this null and the screen uses [_defaultIcsHandler].
+typedef IcsHandler = Future<void> Function(String icsBody);
+
 class CaseFileScreen extends ConsumerStatefulWidget {
-  const CaseFileScreen({super.key, this.caseId, this.pdfServiceOverride});
+  const CaseFileScreen({
+    super.key,
+    this.caseId,
+    this.pdfServiceOverride,
+    this.icsHandlerOverride,
+  });
 
   /// Optional case scoping. When null we show every Case-File row across
   /// all of the user's cases (cross-case dossier).
@@ -34,6 +48,10 @@ class CaseFileScreen extends ConsumerStatefulWidget {
 
   /// Test-only seam — production callers leave this null.
   final PdfService? pdfServiceOverride;
+
+  /// Test-only seam — production callers leave this null and the screen
+  /// uses the platform share-sheet to deliver the .ics file.
+  final IcsHandler? icsHandlerOverride;
 
   @override
   ConsumerState<CaseFileScreen> createState() => _CaseFileScreenState();
@@ -92,7 +110,14 @@ class _CaseFileScreenState extends ConsumerState<CaseFileScreen> {
                 padding: const EdgeInsets.all(16),
                 children: [
                   if (urgent != null) ...[
-                    DeadlineCountdownCard(deadline: urgent, today: today),
+                    _DeadlineRowWithCalendar(
+                      deadline: urgent,
+                      today: today,
+                      iconKey: const Key(
+                          'case_file_calendar_export_urgent'),
+                      onAddToCalendar: () =>
+                          _exportDeadlineToCalendar(urgent),
+                    ),
                     const SizedBox(height: 20),
                   ],
                   if (activeDeadlines.length > 1)
@@ -104,8 +129,14 @@ class _CaseFileScreenState extends ConsumerState<CaseFileScreen> {
                             .map((d) => Padding(
                                   padding:
                                       const EdgeInsets.only(bottom: 8),
-                                  child: DeadlineCountdownCard(
-                                      deadline: d, today: today),
+                                  child: _DeadlineRowWithCalendar(
+                                    deadline: d,
+                                    today: today,
+                                    iconKey: Key(
+                                        'case_file_calendar_export_${d.dedupeKey}'),
+                                    onAddToCalendar: () =>
+                                        _exportDeadlineToCalendar(d),
+                                  ),
                                 ))
                             .toList(),
                       ),
@@ -178,6 +209,54 @@ class _CaseFileScreenState extends ConsumerState<CaseFileScreen> {
     );
   }
 
+  /// Build an .ics body for [deadline] and hand it to the platform share
+  /// sheet (mobile) / browser download (web). The handler can be
+  /// overridden in tests via [CaseFileScreen.icsHandlerOverride].
+  Future<void> _exportDeadlineToCalendar(CaseDeadline deadline) async {
+    final law = (deadline.law ?? '').trim();
+    final descriptionParts = <String>[
+      if (law.isNotEmpty) '${deadline.title} — $law' else deadline.title,
+      'Open in Advocat: https://advocat.ee/case-file',
+    ];
+    final ics = IcsExportService.renderEvent(
+      title: deadline.title,
+      startDate: deadline.date,
+      allDay: true,
+      description: descriptionParts.join('\n'),
+    );
+
+    final handler = widget.icsHandlerOverride ?? _defaultIcsHandler;
+    try {
+      await handler(ics);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Calendar export failed: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+  }
+
+  Future<void> _defaultIcsHandler(String icsBody) async {
+    final bytes = Uint8List.fromList(icsBody.codeUnits);
+    final filename =
+        'advocat_deadline_${DateTime.now().millisecondsSinceEpoch}.ics';
+    final xfile = XFile.fromData(
+      bytes,
+      name: filename,
+      mimeType: 'text/calendar',
+    );
+    if (kIsWeb) {
+      // share_plus on web triggers a browser download via blob URL.
+      await Share.shareXFiles([xfile], subject: 'Advocat — deadline');
+    } else {
+      // Mobile/desktop — system share sheet (Calendar.app, etc.).
+      await Share.shareXFiles([xfile], subject: 'Advocat — deadline');
+    }
+  }
+
   Future<void> _exportPdf() async {
     if (_exporting) return;
     setState(() => _exporting = true);
@@ -208,6 +287,47 @@ class _CaseFileScreenState extends ConsumerState<CaseFileScreen> {
     } finally {
       if (mounted) setState(() => _exporting = false);
     }
+  }
+}
+
+// ── Deadline + add-to-calendar icon ──────────────────────────────────────────
+
+/// Lays out a [DeadlineCountdownCard] with an "add to calendar" icon button
+/// on the trailing edge. Tapping the icon hands the deadline to the
+/// parent screen's .ics export pipeline.
+class _DeadlineRowWithCalendar extends StatelessWidget {
+  const _DeadlineRowWithCalendar({
+    required this.deadline,
+    required this.today,
+    required this.onAddToCalendar,
+    required this.iconKey,
+  });
+
+  final CaseDeadline deadline;
+  final DateTime today;
+  final VoidCallback onAddToCalendar;
+  final Key iconKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: DeadlineCountdownCard(deadline: deadline, today: today),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: IconButton(
+            key: iconKey,
+            icon: const Icon(Icons.calendar_today),
+            color: AppColors.accent,
+            tooltip: 'Add to calendar',
+            onPressed: onAddToCalendar,
+          ),
+        ),
+      ],
+    );
   }
 }
 

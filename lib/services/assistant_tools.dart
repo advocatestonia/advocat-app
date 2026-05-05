@@ -8,6 +8,7 @@ import '../models/case_model.dart';
 import 'demo_data.dart';
 import 'estonian_law_search.dart';
 import 'finnish_law_search.dart';
+import 'ics_export_service.dart';
 import 'knowledge_base.dart';
 import 'supabase_service.dart';
 
@@ -1469,6 +1470,21 @@ Review the email carefully. It will only be sent after you tap **Send**.
 
     final daysLeft = dueDate.difference(DateTime.now()).inDays;
 
+    // .ics payload — lets the chat-card UI offer an "Add to calendar"
+    // button without re-deriving the event details. The same payload
+    // works for Google Calendar, Outlook, Apple Calendar, etc.
+    final descriptionForIcs = <String>[
+      title,
+      if (description != null && description.isNotEmpty) description,
+      'Open in Advocat: https://advocat.ee/case-file',
+    ].join('\n');
+    final icsPayload = IcsExportService.renderEvent(
+      title: title,
+      startDate: dueDate,
+      allDay: true,
+      description: descriptionForIcs,
+    );
+
     return ToolResult(
       success: true,
       displayText: 'Deadline added: **$title** — ${dueDate.toIso8601String().substring(0, 10)} ($daysLeft days).',
@@ -1480,6 +1496,7 @@ Review the email carefully. It will only be sent after you tap **Send**.
         if (caseId != null) 'case_id': caseId,
         if (description != null) 'description': description,
         'days_left': daysLeft,
+        'ics_payload': icsPayload,
       },
       requiresApproval: true,
       approvalMessage:
