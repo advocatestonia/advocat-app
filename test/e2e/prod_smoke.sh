@@ -113,8 +113,15 @@ check "landing contains 'блог' or 'blog'" \
   "curl_body $ROOT_URL/ | grep -ciE 'блог|blog' | head -1" \
   "[1-9][0-9]*"
 
-check "app.html is 200" \
-  "curl_code $BASE_URL/app.html" \
+# Flutter app shell: prod serves it as /app.html (alongside landing /index.html);
+# staging serves the Flutter build at /staging/index.html (no separate app.html).
+# Accept either so the same smoke runs against both.
+APP_SHELL_PATH="app.html"
+if [[ "$(curl_code "$BASE_URL/app.html")" != "200" ]] && [[ "$(curl_code "$BASE_URL/index.html")" == "200" ]]; then
+  APP_SHELL_PATH="index.html"
+fi
+check "app shell ($APP_SHELL_PATH) is 200" \
+  "curl_code $BASE_URL/$APP_SHELL_PATH" \
   "200"
 
 check "main.dart.js is 200" \
@@ -155,8 +162,8 @@ check "terms page is 200" \
   "curl_code $ROOT_URL/terms.html" \
   "200"
 
-check "app.html contains disclaimer meta/text" \
-  "curl_body $BASE_URL/app.html | grep -ciE 'disclaimer|legal|advocat' | head -1" \
+check "app shell contains disclaimer meta/text" \
+  "curl_body $BASE_URL/$APP_SHELL_PATH | grep -ciE 'disclaimer|legal|advocat' | head -1" \
   "[1-9][0-9]*"
 
 echo ""

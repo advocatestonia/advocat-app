@@ -121,6 +121,33 @@ ok ".env.prod present"
 
 command -v flutter >/dev/null || die "flutter not installed"
 command -v curl >/dev/null || die "curl not installed"
+command -v supabase >/dev/null || die "supabase CLI not installed"
+
+# ---------------------------------------------------------------------------
+# 0. deploy any changed Edge Functions BEFORE the frontend build, so the
+#    staging smoke (which hits the same Supabase project as prod) probes the
+#    new server-side logic alongside the new client. Skipped when no
+#    supabase/functions/*/index.ts has changed since the last gh-pages tip.
+# ---------------------------------------------------------------------------
+log "Checking for changed Edge Functions"
+PROJECT_REF="${SUPABASE_PROJECT_REF:-okgnkucgwsytsondrjye}"
+LAST_PROD=$(git rev-parse github/gh-pages 2>/dev/null || echo "")
+CHANGED_FNS=()
+if [[ -n "$LAST_PROD" ]]; then
+  while IFS= read -r fn; do
+    [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
+  done < <(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null \
+            | awk -F/ '/supabase\/functions\/[^_][^/]+\//{print $3}' | sort -u)
+fi
+if [[ ${#CHANGED_FNS[@]} -eq 0 ]]; then
+  ok "No Edge Function changes detected"
+else
+  for fn in "${CHANGED_FNS[@]}"; do
+    log "Deploying Edge Function: $fn"
+    run "supabase functions deploy \"$fn\" --project-ref \"$PROJECT_REF\""
+  done
+  ok "Deployed ${#CHANGED_FNS[@]} Edge Function(s): ${CHANGED_FNS[*]}"
+fi
 
 # ---------------------------------------------------------------------------
 # 1. build once (we'll rsync twice — to /staging/ then to /)
