@@ -50,6 +50,7 @@ import {
 import {
   ALLOWED_KEYS,
   buildHaikuRequest,
+  buildQuickProfileHaikuRequest,
   partitionFactsForUpsert,
   parseHaikuFacts,
   TEXT_MAX_LEN,
@@ -128,10 +129,19 @@ serve(async (req: Request) => {
     ? raw.session_id
     : null;
 
+  // Quick Profile intake variant (2026-05-05) — when the body has
+  // `intake: 'quick_profile'`, use a focused extraction prompt that
+  // pulls ONLY legal_status / nationality / residence_status. This
+  // avoids polluting memory with tone/preference noise from a one-line
+  // intake answer like "I'm an Estonian citizen".
+  const isQuickProfileIntake = raw.intake === "quick_profile";
+
   // -------------------------------------------------------------------------
   // Ask Haiku for facts. Strict JSON schema via tool_use "extract_facts".
   // -------------------------------------------------------------------------
-  const haikuBody = buildHaikuRequest(messages, HAIKU_MODEL);
+  const haikuBody = isQuickProfileIntake
+    ? buildQuickProfileHaikuRequest(messages, HAIKU_MODEL)
+    : buildHaikuRequest(messages, HAIKU_MODEL);
 
   let haikuResponse: Response;
   try {

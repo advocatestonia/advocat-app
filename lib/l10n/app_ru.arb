@@ -985,5 +985,11 @@
   "freeQuotaExhausted": "Вы использовали все 7 бесплатных сообщений в этом месяце.",
   "upgradeForUnlimited": "Оформите Pro для безлимитного доступа",
   "upgradeCta": "Оформить",
-  "rateLimitTryAgain": "Слишком частые запросы. Попробуйте через пару секунд."
+  "rateLimitTryAgain": "Слишком частые запросы. Попробуйте через пару секунд.",
+  "quickProfilePrompt": "Чтобы я мог помочь точнее: вы гражданин Эстонии, гражданин ЕС из другой страны, или у вас вид на жительство (ВНЖ)?",
+  "quickProfileChipEstonianCitizen": "Гражданин Эстонии",
+  "quickProfileChipEuCitizen": "Гражданин ЕС (другая страна)",
+  "quickProfileChipResidencePermit": "ВНЖ / временный",
+  "quickProfileSkipBtn": "Пропустить",
+  "quickProfileSavedAck": "Понял. Теперь — какой у вас вопрос?"
 }

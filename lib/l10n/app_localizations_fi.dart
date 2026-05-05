@@ -2598,4 +2598,23 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get rateLimitTryAgain =>
       'Sending too fast. Try again in a few seconds.';
+
+  @override
+  String get quickProfilePrompt =>
+      'Jotta voin auttaa tarkemmin: oletko Viron kansalainen, toisen EU-maan kansalainen, vai onko sinulla oleskelulupa?';
+
+  @override
+  String get quickProfileChipEstonianCitizen => 'Viron kansalainen';
+
+  @override
+  String get quickProfileChipEuCitizen => 'EU-kansalainen (muu)';
+
+  @override
+  String get quickProfileChipResidencePermit => 'Oleskelulupa';
+
+  @override
+  String get quickProfileSkipBtn => 'Ohita';
+
+  @override
+  String get quickProfileSavedAck => 'Selvä. Mikä on kysymyksesi?';
 }

@@ -179,6 +179,20 @@ export function partitionFactsForUpsert(args: {
 }
 
 /**
+ * Quick Profile intake — bounded vocabulary subset (2026-05-05).
+ *
+ * The intake message is a one-shot question on first chat. We constrain
+ * extraction to the legal-status trio so a one-line answer like
+ * "I'm an Estonian citizen" cannot pollute memory with junk facts
+ * (tone, emotional_state, etc.). Must be a strict subset of [ALLOWED_KEYS].
+ */
+export const QUICK_PROFILE_ALLOWED_KEYS: Set<string> = new Set([
+  "legal_status",
+  "nationality",
+  "residence_status",
+]);
+
+/**
  * System prompt seen by Haiku — tuned to suppress invention and stay
  * within the bounded vocabulary.
  */
@@ -210,6 +224,112 @@ export const SYSTEM_PROMPT = [
   "law applies. Extract them whenever the user mentions citizenship, a ",
   "residence permit, asylum, or which country they hold a passport from.\n",
 ].join("");
+
+/**
+ * Quick Profile intake system prompt (2026-05-05).
+ *
+ * Used when the request body has `intake: 'quick_profile'`. The user's
+ * single answer is a status declaration ("Estonian citizen", "EU citizen",
+ * "I have a residence permit") — we extract ONLY the legal-status trio
+ * and nothing else. Pollution from this turn would teach the model
+ * spurious tone/preference facts from a one-line reply.
+ */
+export const QUICK_PROFILE_SYSTEM_PROMPT = [
+  "You are processing a one-shot intake answer where the user has just ",
+  "told us their legal/citizenship status. Extract ONLY these three keys, ",
+  "nothing else:\n",
+  "  • legal_status — one of: citizen | eu_citizen | 3rd_country | ",
+  "asylum_seeker | refugee | stateless | other.\n",
+  "  • nationality — ISO country code (RU, EE, FI, UA, …) when stated.\n",
+  "  • residence_status — one of: permanent | temporary | humanitarian | ",
+  "undefined, when the user mentions a residence permit.\n\n",
+  "Rules:\n",
+  "1. Output JSON only via the extract_facts tool.\n",
+  "2. Do NOT extract tone, emotional_state, preference, known_party, ",
+  "case_focus, or any other key — even if the answer hints at them. ",
+  "Pollution from a one-line reply teaches the model spurious facts.\n",
+  "3. Keep each `value` under 500 characters and write in the second ",
+  "person (\"You are an Estonian citizen\").\n",
+  "4. Confidence 0.9+ only when the user states the status directly. ",
+  "0.5-0.8 for inference. Below 0.5 — drop.\n",
+  "5. If the user skipped or gave a non-status answer, return an empty ",
+  "facts array.\n",
+].join("");
+
+/**
+ * Builds the Anthropic Messages API request for the Quick Profile intake.
+ *
+ * Differs from [buildHaikuRequest] in two ways:
+ *   - the tool schema's `key` enum is restricted to
+ *     [QUICK_PROFILE_ALLOWED_KEYS] (the legal-status trio);
+ *   - the system prompt is [QUICK_PROFILE_SYSTEM_PROMPT], which forbids
+ *     extracting tone/preference/etc. from the intake reply.
+ *
+ * Everything else (max_tokens, temperature=0, tool_choice, transcript
+ * formatting) is identical so the caller in index.ts can swap builders
+ * with no other change.
+ */
+export function buildQuickProfileHaikuRequest(
+  messages: Array<{ role: string; content: string }>,
+  model: string,
+): Record<string, unknown> {
+  const transcript = messages
+    .map((m) => `[${m.role}]: ${m.content}`)
+    .join("\n");
+
+  return {
+    model,
+    max_tokens: 512, // Smaller — we expect 0..3 facts.
+    temperature: 0,
+    system: QUICK_PROFILE_SYSTEM_PROMPT,
+    tools: [
+      {
+        name: "extract_facts",
+        description:
+          "Record between 0 and 3 legal-status facts about the user. " +
+          "Return an empty array if the user skipped or gave no usable answer.",
+        input_schema: {
+          type: "object",
+          properties: {
+            facts: {
+              type: "array",
+              maxItems: 3,
+              items: {
+                type: "object",
+                required: ["key", "value", "confidence"],
+                properties: {
+                  key: {
+                    type: "string",
+                    enum: Array.from(QUICK_PROFILE_ALLOWED_KEYS),
+                  },
+                  value: {
+                    type: "string",
+                    maxLength: TEXT_MAX_LEN,
+                  },
+                  confidence: {
+                    type: "number",
+                    minimum: 0,
+                    maximum: 1,
+                  },
+                },
+              },
+            },
+          },
+          required: ["facts"],
+        },
+      },
+    ],
+    tool_choice: { type: "tool", name: "extract_facts" },
+    messages: [
+      {
+        role: "user",
+        content:
+          "Here is the intake answer — extract the legal-status facts.\n\n" +
+          transcript,
+      },
+    ],
+  };
+}
 
 /**
  * Builds the Anthropic Messages API request for Haiku, with the

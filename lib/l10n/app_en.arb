@@ -1006,5 +1006,11 @@
     "freeQuotaExhausted": "You've used all 7 free messages this month.",
     "upgradeForUnlimited": "Upgrade to Pro for unlimited",
     "upgradeCta": "Upgrade",
-    "rateLimitTryAgain": "Sending too fast. Try again in a few seconds."
+    "rateLimitTryAgain": "Sending too fast. Try again in a few seconds.",
+    "quickProfilePrompt": "So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?",
+    "quickProfileChipEstonianCitizen": "Estonian citizen",
+    "quickProfileChipEuCitizen": "EU citizen (other)",
+    "quickProfileChipResidencePermit": "Residence permit",
+    "quickProfileSkipBtn": "Skip",
+    "quickProfileSavedAck": "Got it. Now, what's your question?"
 }

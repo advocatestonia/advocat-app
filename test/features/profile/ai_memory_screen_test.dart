@@ -50,6 +50,7 @@ class _FakeUserMemoryService implements UserMemoryService {
   Future<Map<String, int>?> extractFromSession({
     required List<({String role, String content})> messages,
     String? sessionId,
+    String? intake,
   }) async =>
       null;
 

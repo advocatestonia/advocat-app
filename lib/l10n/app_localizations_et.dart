@@ -2597,4 +2597,23 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get rateLimitTryAgain =>
       'Saadate liiga kiiresti. Proovige paari sekundi pärast uuesti.';
+
+  @override
+  String get quickProfilePrompt =>
+      'Et saaksin täpsemalt aidata: kas oled Eesti kodanik, mõne teise EL riigi kodanik, või on sul elamisluba?';
+
+  @override
+  String get quickProfileChipEstonianCitizen => 'Eesti kodanik';
+
+  @override
+  String get quickProfileChipEuCitizen => 'EL kodanik (muu)';
+
+  @override
+  String get quickProfileChipResidencePermit => 'Elamisluba';
+
+  @override
+  String get quickProfileSkipBtn => 'Jäta vahele';
+
+  @override
+  String get quickProfileSavedAck => 'Selge. Mis on su küsimus?';
 }

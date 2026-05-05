@@ -985,5 +985,11 @@
     "freeQuotaExhausted": "Olete kasutanud kõik 7 tasuta sõnumit selles kuus.",
     "upgradeForUnlimited": "Uuenda Pro-le piiramatuks kasutamiseks",
     "upgradeCta": "Uuenda",
-    "rateLimitTryAgain": "Saadate liiga kiiresti. Proovige paari sekundi pärast uuesti."
+    "rateLimitTryAgain": "Saadate liiga kiiresti. Proovige paari sekundi pärast uuesti.",
+    "quickProfilePrompt": "Et saaksin täpsemalt aidata: kas oled Eesti kodanik, mõne teise EL riigi kodanik, või on sul elamisluba?",
+    "quickProfileChipEstonianCitizen": "Eesti kodanik",
+    "quickProfileChipEuCitizen": "EL kodanik (muu)",
+    "quickProfileChipResidencePermit": "Elamisluba",
+    "quickProfileSkipBtn": "Jäta vahele",
+    "quickProfileSavedAck": "Selge. Mis on su küsimus?"
 }

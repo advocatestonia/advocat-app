@@ -36,6 +36,9 @@ import '../widgets/reasoning_trail.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 import '../widgets/welcome_chips.dart';
+import '../quick_profile/quick_profile_gate.dart';
+import '../quick_profile/quick_profile_intake.dart';
+import '../../../services/user_memory_service.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -180,6 +183,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // kind of help they need.  Hidden after first tap or after the user
   // sends any message manually.
   bool _showWelcomeChips = false;
+
+  // -- Quick Profile intake (2026-05-05) --
+  //
+  // First-chat one-shot intake that asks the user's legal status once
+  // (citizen / EU citizen / 3rd-country with permit). Without this the
+  // AI re-asks the same question every session, and the answer never
+  // settles into long-term memory. Decision logic + persistence lives in
+  // [QuickProfileGate]; render is in [QuickProfileIntake]. We gate on
+  // BOTH user_ai_memory (any legal-status fact already there) AND a
+  // SharedPreferences flag (advocat_quick_profile_completed_at) so a
+  // user who tapped Skip is never re-asked.
+  bool _showQuickProfile = false;
 
   // -- Image-vision staging (2026-04-23) --
   // Staged when the user picks an image; consumed (cleared) on next
@@ -552,6 +567,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         // Preload context so the first AI response doesn't block on Supabase queries
         unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
 
+        // Quick Profile intake (2026-05-05): on first chat with no
+        // legal-status memory and no completion flag, show a one-shot
+        // intake question. Best-effort — never blocks chat.
+        unawaited(_loadQuickProfileGate());
+
         // Check for urgent deadlines and notify the user
         _checkUrgentDeadlines();
 
@@ -564,6 +584,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _messages = [];
         });
         _sendWelcomeMessage();
+        // Even on a load error — the user is starting fresh, so the
+        // intake is more relevant than usual.
+        unawaited(_loadQuickProfileGate());
       }
     }
   }
@@ -635,6 +658,78 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     setState(() {
       _showWelcomeChips = false;
     });
+  }
+
+  // -- Quick Profile intake handlers (2026-05-05) --
+
+  /// Decide whether to show the intake on this mount and update state.
+  /// Best-effort — any error (auth not ready, RLS, network) just leaves
+  /// _showQuickProfile=false so chat works for everyone.
+  Future<void> _loadQuickProfileGate() async {
+    try {
+      final memoryService = ref.read(userMemoryServiceProvider);
+      final memories = await memoryService.getMemories(limit: 20);
+      final show = await QuickProfileGate.shouldShow(memories: memories);
+      if (!mounted) return;
+      setState(() => _showQuickProfile = show);
+    } catch (_) {
+      // Fail closed — don't block chat on intake gating.
+    }
+  }
+
+  /// User tapped a status chip — persist the flag, echo the answer back
+  /// as a "user" message, and ask extract-memory to upsert the structured
+  /// facts via the focused intake prompt (`intake: 'quick_profile'`).
+  /// Intake never blocks the user — they can keep typing immediately.
+  Future<void> _onQuickProfileAnswer(QuickProfileAnswer answer) async {
+    final locale = Localizations.localeOf(context).languageCode;
+    final label = quickProfileAnswerLabel(answer, locale);
+
+    // Echo the tap back as a user message so the chat reads naturally
+    // ("you said X, here's the rest"). Stays in the local list only —
+    // we deliberately do NOT save to Supabase chat_messages, the intake
+    // is a side-channel.
+    final echo = ChatMessage(
+      id: 'quick_profile_${DateTime.now().millisecondsSinceEpoch}',
+      role: MessageRole.user,
+      content: label,
+      timestamp: DateTime.now(),
+    );
+
+    setState(() {
+      _showQuickProfile = false;
+      _messages.add(echo);
+    });
+    _scrollToBottom();
+
+    // Persist the flag immediately so navigating away mid-extract still
+    // suppresses the intake on next mount.
+    unawaited(QuickProfileGate.markCompleted());
+
+    // Fire-and-forget extraction. The Edge Function will see
+    // intake='quick_profile' and use the focused prompt that pulls only
+    // legal_status / nationality / residence_status — no tone/preference
+    // pollution from a one-line reply.
+    final facts = answer.toFacts();
+    if (facts.isEmpty) return;
+    final memoryService = ref.read(userMemoryServiceProvider);
+    final intakeMessage = facts
+        .map((f) => '${f.key}: ${f.value}')
+        .join('\n');
+    unawaited(
+      memoryService.extractFromSession(
+        messages: [(role: 'user', content: intakeMessage)],
+        sessionId: 'quick_profile_intake',
+        intake: 'quick_profile',
+      ),
+    );
+  }
+
+  /// User tapped Skip — hide intake, persist the flag so we never ask
+  /// again, and do NOT call extract-memory (no facts to upsert).
+  void _onQuickProfileSkip() {
+    setState(() => _showQuickProfile = false);
+    unawaited(QuickProfileGate.markCompleted());
   }
 
   /// Check for deadlines within 3 days and show a system-level warning.
@@ -2339,6 +2434,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // BUG 3: add one trailing slot for the welcome chips when active.
     final chipsSlot = _showWelcomeChips ? 1 : 0;
+    // Quick Profile intake slot (2026-05-05): rendered just after the
+    // welcome chips slot when both are simultaneously active. In
+    // practice they don't usually co-render — the intake is a global
+    // first-launch prompt while welcome chips are per-empty-case — but
+    // the layout supports it cleanly.
+    final intakeSlot = _showQuickProfile ? 1 : 0;
     final typingSlot = _isTyping ? 1 : 0;
     // Reasoning Trail v1 (2026-05-05): when a streaming turn is active
     // (controller is non-null), render the visible-thinking pill in its own
@@ -2355,9 +2456,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
-        itemCount: _messages.length + chipsSlot + typingSlot + trailSlot,
+        itemCount: _messages.length +
+            chipsSlot +
+            intakeSlot +
+            typingSlot +
+            trailSlot,
         itemBuilder: (context, index) {
-          // Order: messages → welcome chips (if active) → typing indicator → reasoning trail.
+          // Order: messages → welcome chips (if active) → quick-profile
+          // intake (if active) → typing indicator → reasoning trail.
           if (_showWelcomeChips && index == _messages.length) {
             final locale = Localizations.localeOf(context).languageCode;
             return ChatWelcomeChips(
@@ -2367,13 +2473,22 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             );
           }
           final messagesAndChips = _messages.length + chipsSlot;
-          if (index == messagesAndChips && _isTyping) {
+          if (_showQuickProfile && index == messagesAndChips) {
+            final locale = Localizations.localeOf(context).languageCode;
+            return QuickProfileIntake(
+              locale: locale,
+              onAnswer: _onQuickProfileAnswer,
+              onSkip: _onQuickProfileSkip,
+            );
+          }
+          final messagesChipsIntake = messagesAndChips + intakeSlot;
+          if (index == messagesChipsIntake && _isTyping) {
             return _buildTypingIndicator();
           }
           // ReasoningTrail slot: appended right after typing/messages so
           // it sits immediately below the streaming assistant bubble.
           if (_trailController != null &&
-              index == messagesAndChips + typingSlot) {
+              index == messagesChipsIntake + typingSlot) {
             return ReasoningTrail(
               key: ValueKey(_trailController.hashCode),
               events: _trailController!.stream,

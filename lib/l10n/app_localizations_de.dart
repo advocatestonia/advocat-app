@@ -2629,4 +2629,23 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get rateLimitTryAgain =>
       'Sending too fast. Try again in a few seconds.';
+
+  @override
+  String get quickProfilePrompt =>
+      'Damit ich genauer helfen kann: Bist du estnischer Staatsbürger, EU-Bürger aus einem anderen Land, oder hast du einen Aufenthaltstitel?';
+
+  @override
+  String get quickProfileChipEstonianCitizen => 'Estnischer Staatsbürger';
+
+  @override
+  String get quickProfileChipEuCitizen => 'EU-Bürger (anderes Land)';
+
+  @override
+  String get quickProfileChipResidencePermit => 'Aufenthaltstitel';
+
+  @override
+  String get quickProfileSkipBtn => 'Überspringen';
+
+  @override
+  String get quickProfileSavedAck => 'Verstanden. Wie kann ich helfen?';
 }

@@ -979,5 +979,11 @@
   "caseFileEmpty": "Keskustele AI:n kanssa tapauksestasi — aikajana rakentuu itsestään.",
   "caseFileDisclaimer": "Tämä kansio on automaattisesti poimittu chatistäsi. Se ei ole oikeudellinen neuvo.",
   "caseFileTabLabel": "Kansio",
-  "refresh": "Päivitä"
+  "refresh": "Päivitä",
+  "quickProfilePrompt": "Jotta voin auttaa tarkemmin: oletko Viron kansalainen, toisen EU-maan kansalainen, vai onko sinulla oleskelulupa?",
+  "quickProfileChipEstonianCitizen": "Viron kansalainen",
+  "quickProfileChipEuCitizen": "EU-kansalainen (muu)",
+  "quickProfileChipResidencePermit": "Oleskelulupa",
+  "quickProfileSkipBtn": "Ohita",
+  "quickProfileSavedAck": "Selvä. Mikä on kysymyksesi?"
 }

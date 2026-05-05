@@ -2597,4 +2597,23 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get rateLimitTryAgain =>
       'Sending too fast. Try again in a few seconds.';
+
+  @override
+  String get quickProfilePrompt =>
+      'So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?';
+
+  @override
+  String get quickProfileChipEstonianCitizen => 'Estonian citizen';
+
+  @override
+  String get quickProfileChipEuCitizen => 'EU citizen (other)';
+
+  @override
+  String get quickProfileChipResidencePermit => 'Residence permit';
+
+  @override
+  String get quickProfileSkipBtn => 'Skip';
+
+  @override
+  String get quickProfileSavedAck => 'Got it. Now, what\'s your question?';
 }

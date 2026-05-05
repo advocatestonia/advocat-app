@@ -191,6 +191,7 @@ class UserMemoryService {
   Future<Map<String, int>?> extractFromSession({
     required List<({String role, String content})> messages,
     String? sessionId,
+    String? intake,
   }) async {
     final uid = _currentUserId;
     if (uid == null) return null;
@@ -200,6 +201,10 @@ class UserMemoryService {
         'extract-memory',
         body: {
           if (sessionId != null) 'session_id': sessionId,
+          // Quick Profile intake variant (2026-05-05): the server uses a
+          // focused prompt that pulls only legal_status / nationality /
+          // residence_status when this flag is 'quick_profile'.
+          if (intake != null) 'intake': intake,
           'messages': messages
               .map((m) => {'role': m.role, 'content': m.content})
               .toList(),

@@ -1423,5 +1423,11 @@
         }
       }
     }
-  }
+  },
+  "quickProfilePrompt": "Damit ich genauer helfen kann: Bist du estnischer Staatsbürger, EU-Bürger aus einem anderen Land, oder hast du einen Aufenthaltstitel?",
+  "quickProfileChipEstonianCitizen": "Estnischer Staatsbürger",
+  "quickProfileChipEuCitizen": "EU-Bürger (anderes Land)",
+  "quickProfileChipResidencePermit": "Aufenthaltstitel",
+  "quickProfileSkipBtn": "Überspringen",
+  "quickProfileSavedAck": "Verstanden. Wie kann ich helfen?"
 }

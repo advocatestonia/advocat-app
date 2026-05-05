@@ -4771,6 +4771,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sending too fast. Try again in a few seconds.'**
   String get rateLimitTryAgain;
+
+  /// No description provided for @quickProfilePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'So I can help more precisely, what is your legal status: are you an Estonian citizen, an EU citizen from another country, or do you have a residence permit?'**
+  String get quickProfilePrompt;
+
+  /// No description provided for @quickProfileChipEstonianCitizen.
+  ///
+  /// In en, this message translates to:
+  /// **'Estonian citizen'**
+  String get quickProfileChipEstonianCitizen;
+
+  /// No description provided for @quickProfileChipEuCitizen.
+  ///
+  /// In en, this message translates to:
+  /// **'EU citizen (other)'**
+  String get quickProfileChipEuCitizen;
+
+  /// No description provided for @quickProfileChipResidencePermit.
+  ///
+  /// In en, this message translates to:
+  /// **'Residence permit'**
+  String get quickProfileChipResidencePermit;
+
+  /// No description provided for @quickProfileSkipBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get quickProfileSkipBtn;
+
+  /// No description provided for @quickProfileSavedAck.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it. Now, what\'s your question?'**
+  String get quickProfileSavedAck;
 }
 
 class _AppLocalizationsDelegate

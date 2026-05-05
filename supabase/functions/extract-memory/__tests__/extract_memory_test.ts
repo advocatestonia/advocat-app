@@ -21,8 +21,11 @@ import {
 import {
   ALLOWED_KEYS,
   buildHaikuRequest,
+  buildQuickProfileHaikuRequest,
   MAX_FACTS,
   parseHaikuFacts,
+  QUICK_PROFILE_ALLOWED_KEYS,
+  QUICK_PROFILE_SYSTEM_PROMPT,
   SYSTEM_PROMPT,
   TEXT_MAX_LEN,
 } from "../memory_schema.ts";
@@ -337,3 +340,144 @@ Deno.test("EM-T20 — response exposes extracted + stored + duplicates", () => {
   assertStringIncludes(stripped, "stored");
   assertStringIncludes(stripped, "duplicates");
 });
+
+// ---------------------------------------------------------------------------
+// Quick Profile intake variant — 2026-05-05
+// ---------------------------------------------------------------------------
+// One-shot intake on first chat. We need a focused extraction surface that
+// pulls ONLY legal_status / nationality / residence_status — no tone, no
+// emotional_state, no known_party — so a one-line answer like "I'm an
+// Estonian citizen" doesn't pollute memory with junk facts.
+//
+// Contract: when the request body has `intake: 'quick_profile'`, the Edge
+// Function uses [buildQuickProfileHaikuRequest] which constrains the tool
+// schema's `key` enum to QUICK_PROFILE_ALLOWED_KEYS (the legal-status
+// trio) and uses a tighter system prompt.
+// ---------------------------------------------------------------------------
+
+Deno.test("EM-T21 — QUICK_PROFILE_ALLOWED_KEYS = legal_status trio", () => {
+  // Must be exactly the three legal-status keys, no more, no less.
+  // Drift here means the intake either misses the priority keys (too few)
+  // or pollutes memory with tone/preference/etc. (too many).
+  assertEquals(QUICK_PROFILE_ALLOWED_KEYS.size, 3);
+  assert(QUICK_PROFILE_ALLOWED_KEYS.has("legal_status"));
+  assert(QUICK_PROFILE_ALLOWED_KEYS.has("nationality"));
+  assert(QUICK_PROFILE_ALLOWED_KEYS.has("residence_status"));
+});
+
+Deno.test("EM-T22 — QUICK_PROFILE_ALLOWED_KEYS is a subset of ALLOWED_KEYS", () => {
+  // Defence-in-depth: the focused prompt must never widen the bounded
+  // vocabulary. Every quick-profile key has to live in ALLOWED_KEYS too.
+  for (const k of QUICK_PROFILE_ALLOWED_KEYS) {
+    assert(
+      ALLOWED_KEYS.has(k),
+      `quick-profile key "${k}" leaked outside ALLOWED_KEYS`,
+    );
+  }
+});
+
+Deno.test("EM-T23 — buildQuickProfileHaikuRequest restricts the `key` enum", () => {
+  // The schema's enum is what physically prevents Haiku from emitting
+  // out-of-vocabulary keys for this turn. If we forget to narrow it, the
+  // generic system prompt's "extract these aggressively" instructions
+  // bleed in and the intake message grows tone/preference noise.
+  const req = buildQuickProfileHaikuRequest(
+    [{ role: "user", content: "I'm an Estonian citizen." }],
+    "claude-haiku-4-5-20251001",
+  );
+  const tools = req.tools as Array<Record<string, unknown>>;
+  const schema = tools[0].input_schema as Record<string, unknown>;
+  const props = schema.properties as Record<string, unknown>;
+  const facts = props.facts as Record<string, unknown>;
+  const items = facts.items as Record<string, unknown>;
+  const itemProps = items.properties as Record<string, unknown>;
+  const keyEnum = (itemProps.key as Record<string, unknown>).enum as string[];
+  assertEquals(
+    new Set(keyEnum).size,
+    QUICK_PROFILE_ALLOWED_KEYS.size,
+    "quick-profile schema must constrain `key` enum to the legal trio",
+  );
+  for (const k of keyEnum) {
+    assert(
+      QUICK_PROFILE_ALLOWED_KEYS.has(k),
+      `key enum leaked non-legal key: ${k}`,
+    );
+  }
+});
+
+Deno.test("EM-T24 — buildQuickProfileHaikuRequest uses focused system prompt", () => {
+  const req = buildQuickProfileHaikuRequest(
+    [{ role: "user", content: "EU citizen" }],
+    "claude-haiku-4-5-20251001",
+  );
+  assertEquals(req.system, QUICK_PROFILE_SYSTEM_PROMPT);
+  assertEquals(req.temperature, 0, "Intake must stay deterministic — temp=0");
+  // Forces the tool — same as the generic path.
+  assertEquals(
+    (req.tool_choice as Record<string, unknown>).type,
+    "tool",
+  );
+});
+
+Deno.test("EM-T25 — quick-profile system prompt names the legal trio", () => {
+  // The reviewer must keep the prompt anchored on the three keys. If a
+  // future edit drops one, the model silently stops extracting it.
+  assertStringIncludes(QUICK_PROFILE_SYSTEM_PROMPT, "legal_status");
+  assertStringIncludes(QUICK_PROFILE_SYSTEM_PROMPT, "nationality");
+  assertStringIncludes(QUICK_PROFILE_SYSTEM_PROMPT, "residence_status");
+});
+
+Deno.test("EM-T26 — quick-profile system prompt forbids extra keys", () => {
+  // Pin the anti-pollution rule. Without this assertion a future edit that
+  // says "and any tone you can infer" would silently widen the surface.
+  const lower = QUICK_PROFILE_SYSTEM_PROMPT.toLowerCase();
+  assert(
+    lower.includes("only") || lower.includes("nothing else"),
+    "intake prompt must forbid extracting facts beyond the legal trio",
+  );
+});
+
+Deno.test("EM-T27 — parseHaikuFacts still works with quick-profile output", () => {
+  // The same parser is used for both the generic and intake paths — its
+  // ALLOWED_KEYS check tolerates the legal trio, and confidence/text
+  // validation is identical.
+  const facts = parseHaikuFacts({
+    content: [
+      {
+        type: "tool_use",
+        name: "extract_facts",
+        input: {
+          facts: [
+            {
+              key: "legal_status",
+              value: "Estonian citizen",
+              confidence: 0.95,
+            },
+            { key: "nationality", value: "EE", confidence: 0.95 },
+          ],
+        },
+      },
+    ],
+  });
+  assertEquals(facts.length, 2);
+  assertEquals(facts[0].key, "legal_status");
+  assertEquals(facts[1].key, "nationality");
+});
+
+Deno.test("EM-T28 — index.ts wires the quick-profile branch", () => {
+  // Source-contract check: the request handler must inspect the body's
+  // `intake` flag and route to buildQuickProfileHaikuRequest when set.
+  // We assert the symbol is imported and the dispatch branch exists.
+  assertStringIncludes(indexSource, "buildQuickProfileHaikuRequest");
+  assertStringIncludes(stripped, '"quick_profile"');
+});
+
+// Sanity check: the unused-import lint isn't going to fire on the new
+// symbols because the tests above reference them. Importing without using
+// would still compile under Deno, but TypeScript-strict environments would
+// flag it — pin the contract here.
+assertFalse(
+  indexSource.includes("buildQuickProfileHaikuRequest") &&
+    !indexSource.includes("import"),
+  "buildQuickProfileHaikuRequest is referenced — import line must exist",
+);

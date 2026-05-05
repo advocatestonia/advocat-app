@@ -2607,4 +2607,23 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get rateLimitTryAgain =>
       'Слишком частые запросы. Попробуйте через пару секунд.';
+
+  @override
+  String get quickProfilePrompt =>
+      'Чтобы я мог помочь точнее: вы гражданин Эстонии, гражданин ЕС из другой страны, или у вас вид на жительство (ВНЖ)?';
+
+  @override
+  String get quickProfileChipEstonianCitizen => 'Гражданин Эстонии';
+
+  @override
+  String get quickProfileChipEuCitizen => 'Гражданин ЕС (другая страна)';
+
+  @override
+  String get quickProfileChipResidencePermit => 'ВНЖ / временный';
+
+  @override
+  String get quickProfileSkipBtn => 'Пропустить';
+
+  @override
+  String get quickProfileSavedAck => 'Понял. Теперь — какой у вас вопрос?';
 }

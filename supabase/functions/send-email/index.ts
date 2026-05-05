@@ -20,6 +20,13 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+  buildRefreshRequestBody,
+  computeNewExpiry,
+  type GoogleRefreshResponse,
+  shouldRefresh,
+  type TokenRow,
+} from "./token_refresh.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -27,6 +34,8 @@ const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const GMAIL_FALLBACK_ONLY = Deno.env.get("SEND_EMAIL_FALLBACK_ONLY") === "1";
 const DEFAULT_FROM =
   Deno.env.get("SEND_EMAIL_DEFAULT_FROM") || "no-reply@advocat.ee";
+const GOOGLE_CLIENT_ID = Deno.env.get("GOOGLE_CLIENT_ID");
+const GOOGLE_CLIENT_SECRET = Deno.env.get("GOOGLE_CLIENT_SECRET");
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "https://advocat.ee",
@@ -113,6 +122,74 @@ async function sendViaGmail(params: {
   }
   const data = await resp.json();
   return { id: data.id as string };
+}
+
+/**
+ * Refresh a Gmail access token via Google's OAuth endpoint and persist the
+ * new token + expiry back to user_oauth_tokens. Returns the new access_token
+ * on success, or null on failure (caller falls back to Resend).
+ *
+ * Side effect: updates public.user_oauth_tokens row keyed by (user_id, gmail).
+ */
+async function tryRefreshGmailToken(
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
+  userId: string,
+  refreshToken: string,
+): Promise<string | null> {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
+    console.warn(
+      "send-email: cannot refresh — GOOGLE_CLIENT_ID/SECRET not configured.",
+    );
+    return null;
+  }
+  let resp: Response;
+  try {
+    resp = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: buildRefreshRequestBody({
+        clientId: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET,
+        refreshToken,
+      }),
+    });
+  } catch (e) {
+    console.warn("send-email: refresh fetch failed:", String(e));
+    return null;
+  }
+  if (!resp.ok) {
+    const body = await resp.text();
+    console.warn(`send-email: refresh ${resp.status} — ${body}`);
+    return null;
+  }
+  let data: GoogleRefreshResponse;
+  try {
+    data = await resp.json();
+  } catch (e) {
+    console.warn("send-email: refresh JSON parse failed:", String(e));
+    return null;
+  }
+  if (!data.access_token) {
+    console.warn("send-email: refresh response missing access_token", data);
+    return null;
+  }
+  const newExpiresAt = computeNewExpiry(data, Date.now());
+  try {
+    await supabase
+      .from("user_oauth_tokens")
+      .update({
+        access_token: data.access_token,
+        expires_at: newExpiresAt,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("user_id", userId)
+      .eq("provider", "gmail");
+  } catch (e) {
+    console.warn("send-email: failed to persist refreshed token:", String(e));
+    // Token still works for this request even if persistence failed.
+  }
+  return data.access_token;
 }
 
 async function sendViaResend(params: {
@@ -230,7 +307,7 @@ serve(async (req) => {
   try {
     const { data: tokRow } = await supabase
       .from("user_oauth_tokens")
-      .select("access_token, email")
+      .select("access_token, refresh_token, email, expires_at")
       .eq("user_id", user.id)
       .eq("provider", "gmail")
       .maybeSingle();
@@ -238,6 +315,28 @@ serve(async (req) => {
       gmailToken = tokRow.access_token as string;
       if (tokRow.email) {
         userFromAddress = tokRow.email as string;
+      }
+      // Refresh proactively if the token is expired or expiring soon. We do
+      // this BEFORE the Gmail API call so a slow refresh doesn't burn the
+      // user's send-attempt with a 401 and make us look broken.
+      const row: TokenRow = {
+        access_token: tokRow.access_token as string,
+        refresh_token: (tokRow.refresh_token as string | null) ?? null,
+        expires_at: (tokRow.expires_at as string | null) ?? null,
+      };
+      if (shouldRefresh(row, Date.now())) {
+        const refreshed = await tryRefreshGmailToken(
+          supabase,
+          user.id,
+          row.refresh_token as string,
+        );
+        if (refreshed) {
+          gmailToken = refreshed;
+        } else {
+          // Refresh failed — drop the token so we fall back to Resend rather
+          // than calling Gmail with a known-stale bearer.
+          gmailToken = null;
+        }
       }
     }
   } catch (_) {
@@ -263,9 +362,23 @@ serve(async (req) => {
     ? `${userFromName} <${userFromAddress}>`
     : userFromAddress;
 
-  // Dispatch
+  // Dispatch.
+  //
+  // The `provider` value below is what we write to the correspondence audit
+  // log. We intentionally distinguish:
+  //
+  //   - "gmail_user"     — sent via the user's own Gmail OAuth token.
+  //                        GDPR posture: Advocat is a *processor* (the user
+  //                        is the controller of their own outbound mail).
+  //   - "resend_fallback" — sent via Advocat's Resend account.
+  //                        GDPR posture: Advocat is a *controller*. The user
+  //                        is informed via the "Sent on behalf of" footer.
+  //
+  // This split is load-bearing for compliance: a future audit must be able
+  // to tell which messages we processed for the user vs which we sent
+  // ourselves.
   let providerId: string | null = null;
-  let provider: "gmail" | "resend" = "resend";
+  let provider: "gmail_user" | "resend_fallback" = "resend_fallback";
   let dispatchError: string | null = null;
 
   if (gmailToken && !GMAIL_FALLBACK_ONLY) {
@@ -279,7 +392,7 @@ serve(async (req) => {
         body,
       });
       providerId = r.id;
-      provider = "gmail";
+      provider = "gmail_user";
     } catch (e) {
       dispatchError = String(e);
       console.warn("send-email: Gmail failed, trying Resend:", dispatchError);
@@ -312,7 +425,7 @@ serve(async (req) => {
           `Reply directly to this email to reach the sender.`,
       });
       providerId = r.id;
-      provider = "resend";
+      provider = "resend_fallback";
     } catch (e) {
       return jsonResponse(
         { error: "Email dispatch failed", details: String(e) },
