@@ -4735,6 +4735,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Refresh'**
   String get refresh;
+
+  /// No description provided for @demoLimitReached.
+  ///
+  /// In en, this message translates to:
+  /// **'Demo limit reached. Sign up for free to continue.'**
+  String get demoLimitReached;
+
+  /// No description provided for @demoLimitSignUpCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign up'**
+  String get demoLimitSignUpCta;
+
+  /// No description provided for @freeQuotaExhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used all 7 free messages this month.'**
+  String get freeQuotaExhausted;
+
+  /// No description provided for @upgradeForUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro for unlimited'**
+  String get upgradeForUnlimited;
+
+  /// No description provided for @upgradeCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade'**
+  String get upgradeCta;
+
+  /// No description provided for @rateLimitTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending too fast. Try again in a few seconds.'**
+  String get rateLimitTryAgain;
 }
 
 class _AppLocalizationsDelegate

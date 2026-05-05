@@ -31,6 +31,7 @@ import '../../../widgets/feedback_buttons.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../services/chat_tool_bridge.dart';
 import '../utils/message_speaker.dart';
+import '../widgets/quota_error_snackbar.dart';
 import '../widgets/reasoning_trail.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
@@ -750,8 +751,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // hitting claude-proxy. The server also enforces this, but refusing
     // at the UI layer saves a round-trip and prevents the user from
     // seeing "you've used all messages" text bubbles.
+    //
+    // Bug 1 fix (2026-05-05): also surface a visible SnackBar so the user
+    // never thinks the send button "silently no-op'd". The dialog is
+    // intrusive but easy to dismiss; the snackbar is the visible error
+    // the QA agent expected to see when a send was blocked.
     if (_isQuotaExhausted) {
       HapticFeedback.mediumImpact();
+      _showQuotaErrorSnackBar();
       _showUpgradeDialog();
       return;
     }
@@ -1220,6 +1227,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         if (e is ClaudeServiceException && e.errorCode == 'rate_limit') {
           userFacingMessage = l10n?.aiErrorRateLimit ??
               'The service is temporarily overloaded. Please try again in 1-2 minutes.';
+          // Bug 1 fix (2026-05-05): also surface a visible SnackBar so
+          // the user gets immediate feedback at the input bar, not just
+          // an assistant chat bubble that scrolls away.
+          _showQuotaErrorSnackBar(
+              reasonOverride: QuotaDenialReason.rateLimit);
         } else if (e is ClaudeServiceException && e.errorCode == 'overload') {
           userFacingMessage = l10n?.aiErrorOverload ??
               'The AI is busy right now, please try again in a minute.';
@@ -2151,6 +2163,49 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // -- Quota error snackbar (Bug 1 fix, 2026-05-05) --
+
+  /// Surface a visible SnackBar when a send is denied. Differentiates
+  /// between anon (demo limit), logged-in free (free quota exhausted),
+  /// and rate-limit (transient). See `quota_error_snackbar.dart` for the
+  /// pure helper this delegates to.
+  ///
+  /// QA agent observation today: "After Pro upgrade banner appeared
+  /// mid-session, my next 2 send-button clicks silently no-op'd." Without
+  /// this snackbar the user got no feedback at all — they assumed the
+  /// app was broken.
+  void _showQuotaErrorSnackBar({QuotaDenialReason? reasonOverride}) {
+    if (!mounted) return;
+
+    final QuotaDenialReason reason;
+    if (reasonOverride != null) {
+      reason = reasonOverride;
+    } else {
+      final authState = ref.read(authControllerProvider);
+      final ai = ref.read(aiServiceProvider);
+      final isAnon = authState.appUser == null;
+      final inferred = QuotaDenialReason.fromQuota(
+        isAnon: isAnon,
+        remaining: _freeMessagesRemaining < 0 ? 1 : _freeMessagesRemaining,
+        isPro: ai.isProUser,
+      );
+      // Defensive: if nothing was inferred (e.g. pro user somehow
+      // arrived here), bail rather than show a misleading message.
+      if (inferred == null) return;
+      reason = inferred;
+    }
+
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      buildQuotaErrorSnackBar(
+        context: context,
+        reason: reason,
+        onSignUp: () => context.push(AppRoutes.register),
+        onUpgrade: () => context.push(AppRoutes.subscription),
       ),
     );
   }

@@ -2576,4 +2576,25 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get refresh => 'Värskenda';
+
+  @override
+  String get demoLimitReached =>
+      'Demoversiooni limiit on täis. Registreeru tasuta, et jätkata.';
+
+  @override
+  String get demoLimitSignUpCta => 'Registreeru';
+
+  @override
+  String get freeQuotaExhausted =>
+      'Olete kasutanud kõik 7 tasuta sõnumit selles kuus.';
+
+  @override
+  String get upgradeForUnlimited => 'Uuenda Pro-le piiramatuks kasutamiseks';
+
+  @override
+  String get upgradeCta => 'Uuenda';
+
+  @override
+  String get rateLimitTryAgain =>
+      'Saadate liiga kiiresti. Proovige paari sekundi pärast uuesti.';
 }

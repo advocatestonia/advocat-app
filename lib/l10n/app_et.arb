@@ -979,5 +979,11 @@
     "caseFileEmpty": "Vestle AI-ga oma juhtumist — ajatelg ehitub ise.",
     "caseFileDisclaimer": "See toimik on automaatselt vestlusest koostatud. See ei ole õigusnõuanne.",
     "caseFileTabLabel": "Toimik",
-    "refresh": "Värskenda"
+    "refresh": "Värskenda",
+    "demoLimitReached": "Demoversiooni limiit on täis. Registreeru tasuta, et jätkata.",
+    "demoLimitSignUpCta": "Registreeru",
+    "freeQuotaExhausted": "Olete kasutanud kõik 7 tasuta sõnumit selles kuus.",
+    "upgradeForUnlimited": "Uuenda Pro-le piiramatuks kasutamiseks",
+    "upgradeCta": "Uuenda",
+    "rateLimitTryAgain": "Saadate liiga kiiresti. Proovige paari sekundi pärast uuesti."
 }

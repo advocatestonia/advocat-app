@@ -2586,4 +2586,25 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get refresh => 'Обновить';
+
+  @override
+  String get demoLimitReached =>
+      'Демо-лимит исчерпан. Зарегистрируйтесь бесплатно, чтобы продолжить.';
+
+  @override
+  String get demoLimitSignUpCta => 'Регистрация';
+
+  @override
+  String get freeQuotaExhausted =>
+      'Вы использовали все 7 бесплатных сообщений в этом месяце.';
+
+  @override
+  String get upgradeForUnlimited => 'Оформите Pro для безлимитного доступа';
+
+  @override
+  String get upgradeCta => 'Оформить';
+
+  @override
+  String get rateLimitTryAgain =>
+      'Слишком частые запросы. Попробуйте через пару секунд.';
 }

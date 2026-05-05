@@ -1000,5 +1000,11 @@
     "caseFileEmpty": "Chat with the AI about your case — your timeline will build itself.",
     "caseFileDisclaimer": "This dossier is auto-extracted from your chat. It is not legal advice.",
     "caseFileTabLabel": "Case",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "demoLimitReached": "Demo limit reached. Sign up for free to continue.",
+    "demoLimitSignUpCta": "Sign up",
+    "freeQuotaExhausted": "You've used all 7 free messages this month.",
+    "upgradeForUnlimited": "Upgrade to Pro for unlimited",
+    "upgradeCta": "Upgrade",
+    "rateLimitTryAgain": "Sending too fast. Try again in a few seconds."
 }

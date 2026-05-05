@@ -2589,4 +2589,25 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get refresh => 'Refresh';
+
+  @override
+  String get demoLimitReached =>
+      'Demo limit reached. Sign up for free to continue.';
+
+  @override
+  String get demoLimitSignUpCta => 'Sign up';
+
+  @override
+  String get freeQuotaExhausted =>
+      'You\'ve used all 7 free messages this month.';
+
+  @override
+  String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';
+
+  @override
+  String get upgradeCta => 'Upgrade';
+
+  @override
+  String get rateLimitTryAgain =>
+      'Sending too fast. Try again in a few seconds.';
 }
