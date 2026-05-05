@@ -95,26 +95,6 @@ class FakeAIService {
 /// The simplest approach: since ChatNotifier is the class under test, we
 /// test the *state transitions* it produces. We subclass it to inject fakes.
 
-class _TestChatNotifier extends ChatNotifier {
-  _TestChatNotifier({
-    required this.fakeSupabase,
-    required this.fakeAI,
-    required super.caseId,
-    required super.isDemo,
-    super.caseType,
-    super.country,
-    super.nationality,
-  }) : super(
-          // We pass the fakes as dynamic because the constructor expects
-          // concrete types. This works in Dart test environments.
-          supabaseService: fakeSupabase as dynamic,
-          aiService: fakeAI as dynamic,
-        );
-
-  final FakeSupabaseService fakeSupabase;
-  final FakeAIService fakeAI;
-}
-
 // ---------------------------------------------------------------------------
 // Helper to wait for async state transitions
 // ---------------------------------------------------------------------------
@@ -988,6 +968,7 @@ void main() {
     test('non-demo mode always uses AI service', () {
       const isDemo = false;
       const isUsingRealAI = true;
+      // ignore: dead_code
       expect(isDemo && !isUsingRealAI, isFalse);
     });
   });

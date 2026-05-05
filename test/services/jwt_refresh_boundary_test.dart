@@ -32,6 +32,7 @@ class _FakeSession {
 }
 
 class _FakeAuth implements JwtAuthShim {
+  // ignore: unused_element_parameter
   _FakeAuth({this.session, this.refreshShouldFail = false, this.bumpSec = 3600});
 
   _FakeSession? session;

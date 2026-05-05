@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -233,7 +234,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
           _saving = false;
           _showSuccess = true;
         });
-        _successController.forward();
+        unawaited(_successController.forward());
         await Future.delayed(const Duration(milliseconds: 1200));
         if (mounted) {
           Navigator.pop(context);

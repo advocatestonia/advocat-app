@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -216,7 +218,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
       if (accepted) {
         context.go(AppRoutes.home);
       } else {
-        ref.read(authControllerProvider.notifier).logout();
+        unawaited(ref.read(authControllerProvider.notifier).logout());
       }
     } finally {
       _navigating = false;

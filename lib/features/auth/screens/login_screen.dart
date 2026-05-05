@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -115,7 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       if (accepted) {
         context.go(AppRoutes.home);
       } else {
-        ref.read(authControllerProvider.notifier).logout();
+        unawaited(ref.read(authControllerProvider.notifier).logout());
       }
     } finally {
       _navigating = false;

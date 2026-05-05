@@ -49,9 +49,9 @@ void main() {
       // URLs contain Latin chars but no keywords. Detector should fall
       // through to "no signal" and return null (best-score == 0).
       final r = LanguageDetector.detect('https://example.com/path');
-      // Either null (preferred) or some best-effort, but NEVER crash.
-      // Pin: it's deterministic.
-      expect(r == null || r is String, isTrue);
+      // Either null (preferred) or some best-effort String, but NEVER crash.
+      // r is typed String?, so reaching this line at all is the assertion.
+      expect(r, anyOf(isNull, isA<String>()));
     });
 
     test('transliterated Russian "privet, pomogi" is not silently EN', () {

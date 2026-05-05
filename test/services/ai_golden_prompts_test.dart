@@ -47,6 +47,7 @@ class _Prompt {
     required this.expectSimple,
     required this.expectedModel,
     required this.mustContain,
+    // ignore: unused_element_parameter
     this.mustNotContain = const [],
     this.knownRoutingGap = false,
     this.knownKnowledgeGap = false,

@@ -179,6 +179,7 @@ class CasesListScreen extends ConsumerWidget {
     return result;
   }
 
+  // ignore: unused_element
   void _showFilterSheet(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
       context: context,

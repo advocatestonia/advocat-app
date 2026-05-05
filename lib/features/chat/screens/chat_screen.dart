@@ -20,7 +20,6 @@ import '../../../services/chat_stream_event.dart';
 import '../../../services/claude_service.dart' show ClaudeServiceException;
 import '../../../services/chat_attachment_service.dart';
 import '../../../services/client_knowledge_service.dart';
-import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../../services/tool_executor.dart';
 import '../../../services/feedback_service.dart';
@@ -463,7 +462,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Future<void> _stopVoiceInput({bool autoSend = false}) async {
     _voiceSilenceTimer?.cancel();
-    _speechSub?.cancel();
+    unawaited(_speechSub?.cancel());
     final voice = ref.read(voiceServiceProvider);
     final finalText = await voice.stopListening();
 
@@ -481,7 +480,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     if (textToSend.isNotEmpty) {
       if (autoSend) {
         _messageController.clear();
-        _sendMessage(textToSend);
+        unawaited(_sendMessage(textToSend));
       } else {
         _messageController.text = textToSend;
         _messageController.selection = TextSelection.fromPosition(
@@ -508,7 +507,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // as user input).
     if (_voiceState == VoiceButtonState.listening) {
       _voiceSilenceTimer?.cancel();
-      _speechSub?.cancel();
+      unawaited(_speechSub?.cancel());
       await voice.stopListening();
     }
 
@@ -573,7 +572,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         unawaited(_loadQuickProfileGate());
 
         // Check for urgent deadlines and notify the user
-        _checkUrgentDeadlines();
+        unawaited(_checkUrgentDeadlines());
 
         _scrollToBottom(animated: false);
       }
@@ -852,14 +851,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // intrusive but easy to dismiss; the snackbar is the visible error
     // the QA agent expected to see when a send was blocked.
     if (_isQuotaExhausted) {
-      HapticFeedback.mediumImpact();
+      unawaited(HapticFeedback.mediumImpact());
       _showQuotaErrorSnackBar();
       _showUpgradeDialog();
       return;
     }
 
     _messageController.clear();
-    HapticFeedback.lightImpact();
+    unawaited(HapticFeedback.lightImpact());
 
     final userMessage = ChatMessage(
       id: 'local_${DateTime.now().millisecondsSinceEpoch}',
@@ -950,7 +949,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             // The ReasoningTrail widget renders just above this message
             // and listens to the controller for thinking + tool stages.
             // Closed once the stream finishes (or in catch / finally).
-            _trailController?.close();
+            unawaited(_trailController?.close());
             _trailController = StreamController<ChatStreamEvent>.broadcast();
 
             setState(() {
@@ -1247,7 +1246,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     });
                     _scrollToBottom();
 
-                    if (_ttsEnabled) _speakResponse(followUp.message);
+                    if (_ttsEnabled) unawaited(_speakResponse(followUp.message));
                   }
                 } catch (e) {
                   debugPrint('Follow-up suggestion failed (non-fatal): $e');
@@ -1304,7 +1303,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // For non-streaming path, speak the full response at once.
           // Streaming path already speaks sentence-by-sentence above.
           if (_ttsEnabled && !usedStreaming) {
-            _speakResponse(responseText);
+            unawaited(_speakResponse(responseText));
           }
         }
       }
@@ -1363,7 +1362,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     } finally {
       if (mounted) {
         setState(() => _isSending = false);
-        _loadFreeMessageCount(); // refresh counter after each message
+        unawaited(_loadFreeMessageCount()); // refresh counter after each message
       }
     }
   }
@@ -1562,51 +1561,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  String _getDemoResponse(String message) {
-    final lower = message.toLowerCase();
-    if (lower.contains('депортир') ||
-        lower.contains('украл') ||
-        lower.contains('полиц') ||
-        lower.contains('магазин')) {
-      return DemoData.chatResponses['situation']!;
-    }
-    if (lower.contains('вот решение') ||
-        lower.contains('документ') ||
-        lower.contains('фото')) {
-      return DemoData.chatResponses['document_analysis']!;
-    }
-    if (lower.contains('analyze') || lower.contains('analysis')) {
-      return DemoData.chatResponses['analyze']!;
-    }
-    if (lower.contains('option') || lower.contains('what can')) {
-      return DemoData.chatResponses['options']!;
-    }
-    if (lower.contains('appeal') ||
-        lower.contains('draft') ||
-        lower.contains('жалоб')) {
-      return DemoData.chatResponses['appeal']!;
-    }
-    if (lower.contains('deadline') ||
-        lower.contains('date') ||
-        lower.contains('срок')) {
-      return DemoData.chatResponses['deadlines']!;
-    }
-    if (lower.contains('ошибк') || lower.contains('найти')) {
-      return DemoData.chatResponses['analyze']!;
-    }
-    if (lower.contains('что у меня') ||
-        lower.contains('ситуаци') ||
-        lower.contains('что случ')) {
-      return DemoData.chatResponses['situation']!;
-    }
-    if (lower.contains('прав') || lower.contains('right')) {
-      return DemoData.chatResponses['options']!;
-    }
-    if (lower.contains('что делать') || lower.contains('первым')) {
-      return DemoData.chatResponses['default']!;
-    }
-    return DemoData.chatResponses['default']!;
-  }
 
   void _scrollToBottom({bool animated = true, bool force = false}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -2839,10 +2793,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     );
                     // Report success back so Claude can confirm in-chat
                     // and proceed with the next step.
-                    _sendMessage(
+                    unawaited(_sendMessage(
                         '[system] send_email succeeded via $provider '
                         'to ${data['to']}. Confirm to the user briefly '
-                        'in their language and ask what is next.');
+                        'in their language and ask what is next.'));
                   } else {
                     final err = (resp?['error'] as String?) ??
                         'email dispatch failed (no response from server)';
@@ -2856,12 +2810,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     );
                     // Feed the error back so Claude can explain to the user
                     // instead of silently failing.
-                    _sendMessage(
+                    unawaited(_sendMessage(
                         '[system] send_email FAILED: $err'
                         '${details != null ? ' — $details' : ''}. '
                         'Apologise to the user in their language, explain '
                         'the email was NOT sent, and offer to try again or '
-                        'open the email client via draft_email (mailto:).');
+                        'open the email client via draft_email (mailto:).'));
                   }
                 } else {
                   // Legacy draft_email path: open mailto:
@@ -2876,11 +2830,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       'body': body,
                     },
                   );
-                  launchUrl(uri);
+                  unawaited(launchUrl(uri));
                 }
               } else if (message.navigation != null) {
                 final executor = ToolExecutor(context: context, ref: ref);
-                executor.performNavigation(message.navigation!);
+                unawaited(executor.performNavigation(message.navigation!));
               }
             },
             // BUG#4 fix (2026-04-29): structured tool_result reply.
@@ -3453,7 +3407,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       final bytes = file.bytes;
 
       if (bytes == null) {
-        _sendMessage(_attachFallbackLabel(lang, fileName));
+        unawaited(_sendMessage(_attachFallbackLabel(lang, fileName)));
         return;
       }
 
@@ -3462,7 +3416,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         mimeType: null,
       );
       if (!classification.isSupported) {
-        _sendMessage(_attachUnsupportedLabel(lang, fileName));
+        unawaited(_sendMessage(_attachUnsupportedLabel(lang, fileName)));
         return;
       }
 
@@ -3501,7 +3455,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         // localized explanation as a user message so it surfaces in the
         // conversation, and do NOT call the AI (there is nothing useful
         // for it to analyse).
-        _sendMessage(e.localized(lang));
+        unawaited(_sendMessage(e.localized(lang)));
         return;
       }
 
@@ -3522,7 +3476,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       // - for .txt: the inlined body,
       // - for PDF: a "use read_document with id X" instruction,
       // - for image: the caption alongside an inline image content block.
-      _sendMessage(aiVisibleMessage);
+      unawaited(_sendMessage(aiVisibleMessage));
     } catch (e) {
       // Silently fail — the user can try again
       debugPrint('File picker error: $e');

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
@@ -193,7 +194,7 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
     }
 
     try {
-      HapticFeedback.mediumImpact();
+      unawaited(HapticFeedback.mediumImpact());
       final xFile = await _cameraController!.takePicture();
       setState(() {
         _currentCapture = xFile;

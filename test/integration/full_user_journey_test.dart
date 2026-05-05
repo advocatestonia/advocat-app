@@ -504,6 +504,7 @@ void main() {
       // Mirrors hasTelemetryConsent() contract.
       final consent = false;
       final queued = <String>[];
+      // ignore: dead_code
       if (consent) queued.add(pretendError);
       expect(queued, isEmpty);
     });

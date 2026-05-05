@@ -27,15 +27,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:advocat/features/chat/widgets/quota_error_snackbar.dart';
 import 'package:advocat/l10n/app_localizations.dart';
 
-Widget _wrap(Widget child) {
-  return MaterialApp(
-    locale: const Locale('en'),
-    localizationsDelegates: AppLocalizations.localizationsDelegates,
-    supportedLocales: AppLocalizations.supportedLocales,
-    home: Scaffold(body: Builder(builder: (_) => child)),
-  );
-}
-
 /// Pumps a `Scaffold` with a button that, on tap, shows the snackbar built
 /// for [reason]. Returns the [tester] mid-frame so tests can pump and assert
 /// the snackbar content.

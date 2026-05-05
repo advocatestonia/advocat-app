@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -110,7 +112,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           final accepted = await showGdprConsentDialog(context);
           if (!accepted && mounted) {
             // User declined — sign them out
-            ref.read(authControllerProvider.notifier).logout();
+            unawaited(ref.read(authControllerProvider.notifier).logout());
           }
         }
       }
