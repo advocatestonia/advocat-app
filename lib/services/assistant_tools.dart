@@ -688,14 +688,25 @@ The case has been created. You can now upload documents and I will help analyze 
     final language = params['language'] as String? ?? 'en';
     final instructions = params['instructions'] as String?;
 
-    await Future<void>.delayed(const Duration(milliseconds: 300));
-
-    final legalCase = DemoData.cases
-        .where((c) => c.id == caseId)
-        .firstOrNull;
-
-    final caseTitle = legalCase?.title ?? 'Legal Case';
-    final caseDescription = legalCase?.description ?? '';
+    // Try real Supabase first, then fall back to demo data, then to a
+    // generic placeholder. All paths are recoverable — never block the
+    // chat on a transient backend hiccup.
+    String caseTitle = 'Legal Case';
+    String caseDescription = '';
+    if (caseId.isNotEmpty) {
+      try {
+        final legalCase = await _supabase.getCaseById(caseId);
+        caseTitle = legalCase.title;
+        caseDescription = legalCase.description ?? '';
+      } catch (_) {
+        final demoCase =
+            DemoData.cases.where((c) => c.id == caseId).firstOrNull;
+        if (demoCase != null) {
+          caseTitle = demoCase.title;
+          caseDescription = demoCase.description ?? '';
+        }
+      }
+    }
 
     return ToolResult(
       success: true,
@@ -714,7 +725,11 @@ The case has been created. You can now upload documents and I will help analyze 
           'Use the case details: $caseDescription. '
           '${instructions != null ? "Additional instructions: $instructions. " : ""}'
           'Write a complete, professional legal document ready for submission. '
-          'Use correct legal format for the jurisdiction. No AI disclaimers in the document.',
+          'Use correct legal format for the jurisdiction. '
+          'Format: start with a single H1 heading "# <document title>", '
+          'use ## for section headings and "- " bullets where appropriate. '
+          'No AI disclaimers in the document — the disclaimer is added '
+          'automatically to the PDF footer.',
     );
   }
 

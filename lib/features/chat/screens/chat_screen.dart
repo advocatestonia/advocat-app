@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:printing/printing.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
@@ -23,6 +24,7 @@ import '../../../services/supabase_service.dart';
 import '../../../services/tool_executor.dart';
 import '../../../services/feedback_service.dart';
 import '../../../services/language_detector.dart';
+import '../../../services/pdf_service.dart';
 import '../../../services/voice_service.dart';
 import '../../../widgets/feedback_buttons.dart';
 import '../../auth/providers/auth_provider.dart';
@@ -1350,6 +1352,65 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     );
   }
 
+  // ── PDF export ────────────────────────────────────────────────────────────
+
+  /// Pluggable PDF service hook so widget tests can inject a fake.
+  /// Production callers leave this null and we lazy-instantiate.
+  PdfService? _pdfServiceOverride;
+  PdfService get _pdfService => _pdfServiceOverride ?? PdfService();
+
+  /// Renders [message]'s markdown content into a PDF and triggers a browser
+  /// download / share sheet. Best-effort: any failure surfaces as a snack
+  /// rather than crashing the chat.
+  Future<void> _downloadMessageAsPdf(ChatMessage message) async {
+    unawaited(HapticFeedback.lightImpact());
+    final lang = Localizations.localeOf(context).languageCode;
+    final title = _draftTitleFromContent(message.content);
+    final filename = _draftFilenameFor(title, lang);
+
+    try {
+      final bytes = await _pdfService.renderLegalDocument(
+        markdown: message.content,
+        title: title,
+        language: lang,
+      );
+      // sharePdf works on iOS/Android natively and triggers a download on
+      // Flutter Web (the printing package handles the platform split).
+      await Printing.sharePdf(bytes: bytes, filename: filename);
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to export PDF: $e'),
+          backgroundColor: AppColors.error,
+        ),
+      );
+    }
+  }
+
+  /// Pull a sensible PDF title out of the message — the first `# Heading` if
+  /// present, otherwise a generic fallback.
+  String _draftTitleFromContent(String content) {
+    final m = RegExp(r'^#\s+(.+)$', multiLine: true).firstMatch(content);
+    if (m != null) {
+      return m.group(1)!.trim();
+    }
+    return 'Legal Document';
+  }
+
+  /// Build a download filename from [title] + language. Strips characters that
+  /// are unsafe in filenames; truncates to a reasonable length.
+  String _draftFilenameFor(String title, String lang) {
+    final cleaned = title
+        .replaceAll(RegExp(r'[^\w\s-]'), '')
+        .trim()
+        .replaceAll(RegExp(r'\s+'), '_');
+    final truncated =
+        cleaned.length > 40 ? cleaned.substring(0, 40) : cleaned;
+    final stem = truncated.isEmpty ? 'advocat_document' : truncated;
+    return '${stem}_$lang.pdf';
+  }
+
   // ── Feedback (👍 / 👎) ────────────────────────────────────────────────
 
   /// Cache of stored ratings so we don't re-fetch on every rebuild.
@@ -2310,6 +2371,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         color: AppColors.textTertiary,
                       ),
                     ),
+                    // PDF download — only for messages that look like a
+                    // legal-draft output and only once streaming finishes
+                    // (avoid mid-stream exports of half-typed documents).
+                    if (!_isStreamingMessage(message) &&
+                        PdfService.looksLikeDraft(message.content)) ...[
+                      const SizedBox(width: 8),
+                      Tooltip(
+                        message: 'Download as PDF',
+                        child: GestureDetector(
+                          key: ValueKey('pdf_download_${message.id}'),
+                          onTap: () => _downloadMessageAsPdf(message),
+                          child: const Icon(
+                            Icons.picture_as_pdf,
+                            size: 14,
+                            color: AppColors.textTertiary,
+                          ),
+                        ),
+                      ),
+                    ],
                     // Feedback thumbs (👍/👎) for completed AI messages.
                     // Hidden while the message is still streaming in.
                     if (!_isStreamingMessage(message)) ...[

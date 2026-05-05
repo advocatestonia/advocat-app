@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../config/theme.dart';
+import '../../../services/pdf_service.dart';
 import '../screens/chat_screen.dart';
 import 'rich_message.dart';
 
@@ -13,11 +14,17 @@ class ChatMessageBubble extends StatelessWidget {
     required this.message,
     this.onCopy,
     this.onAction,
+    this.onDownloadPdf,
   });
 
   final ChatMessage message;
   final ValueChanged<String>? onCopy;
   final ValueChanged<String>? onAction;
+
+  /// Invoked when the user taps the PDF-download icon. The icon only
+  /// appears for AI messages whose content [PdfService.looksLikeDraft]
+  /// classifies as a legal-draft output.
+  final ValueChanged<ChatMessage>? onDownloadPdf;
 
   bool get _isUser => message.role == MessageRole.user;
   bool get _isSystem => message.role == MessageRole.system;
@@ -132,6 +139,28 @@ class ChatMessageBubble extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // PDF export — appears only on AI messages that look like
+                    // a generated legal draft. Tapped → onDownloadPdf callback
+                    // (caller decides how to render the bytes — Web download,
+                    // share sheet, Supabase upload, …).
+                    if (PdfService.looksLikeDraft(message.content))
+                      InkWell(
+                        key: ValueKey('pdf_download_${message.id}'),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+                          onDownloadPdf?.call(message);
+                        },
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
+                        child: const Padding(
+                          padding: EdgeInsets.all(4),
+                          child: Icon(
+                            Icons.picture_as_pdf,
+                            size: 14,
+                            color: AppColors.textTertiary,
+                            semanticLabel: 'Download as PDF',
+                          ),
+                        ),
+                      ),
                   ],
                 ],
               ),
