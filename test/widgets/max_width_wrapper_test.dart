@@ -172,14 +172,22 @@ void main() {
 
   // ===========================================================================
   // Regression: every non-shell top-level Scaffold must wrap its body in
-  // MaxWidthWrapper so it does not stretch full-width on desktop.
+  // MaxWidthWrapper so its desktop width is governed by one place.
   //
-  // Shell routes (home/cases/deadlines/settings) are wrapped via MainShell
-  // and rely on the responsive default (no explicit maxWidth).
+  // Two policies:
+  //   - FORM screens (login/register/edit_profile) pass an explicit
+  //     maxWidth: 480 — text-field forms at 1200px-wide look terrible.
+  //   - PAGE-CONTENT screens (subscription, case detail/create/documents/
+  //     timeline, onboarding wizard) and the shell route (home/cases/
+  //     deadlines/settings) pass NO explicit cap and ride the responsive
+  //     default (no constraint <600, 720 on tablet, 1200 on desktop) so
+  //     pricing cards / list pages / wizards breathe out instead of
+  //     sitting in a 480px phone column with empty gutters on desktop.
   //
-  // Form / detail screens listed below pass an explicit narrow cap (480)
-  // so they stay phone-width on desktop — 1200px-wide form fields and
-  // single-column case detail look terrible.
+  // This split was sharpened on 2026-05-05 P0 after the previous
+  // incomplete fix only loosened MainShell — every page-content screen
+  // was still hardcoding maxWidth: 480 and overriding the responsive
+  // default. See commit message for the file-by-file move.
   //
   // We don't render these screens in widget tests (they pull a heavy
   // graph of providers); a source-grep is sufficient and keeps the test
@@ -218,67 +226,74 @@ void main() {
           content.contains('MaxWidthWrapper('),
           isTrue,
           reason: '$relPath must instantiate MaxWidthWrapper(...) '
-              '— wrap the Scaffold body to keep the desktop layout '
-              'phone-width.',
+              '— wrap the Scaffold body to control desktop width.',
         );
       });
     }
 
-    // Form / detail screens must pass an explicit narrow cap (480) so
-    // they don't grow to 1200 on desktop with the new responsive default.
+    // FORM screens must pass an explicit narrow cap (480) so text-field
+    // forms stay readable on desktop. Only true text-field forms qualify
+    // — page content (cards, lists, wizards) goes responsive instead.
     final formScreens = <String>[
       'lib/features/auth/screens/login_screen.dart',
       'lib/features/auth/screens/register_screen.dart',
-      'lib/features/onboarding/screens/onboarding_screen.dart',
-      'lib/features/settings/screens/subscription_screen.dart',
       'lib/features/settings/screens/edit_profile_screen.dart',
-      'lib/features/cases/screens/case_detail_screen.dart',
-      'lib/features/cases/screens/case_create_screen.dart',
-      'lib/features/cases/screens/case_documents_screen.dart',
-      'lib/features/cases/screens/case_timeline_screen.dart',
     ];
 
     for (final relPath in formScreens) {
-      test('$relPath passes explicit maxWidth: 480', () {
+      test('$relPath passes explicit maxWidth: 480 (form-narrow)', () {
         final file = File(relPath);
         final content = file.readAsStringSync();
+        // Look for `maxWidth: 480` on the top-level MaxWidthWrapper.
+        // The image-picker also takes a `maxWidth: 512` arg in
+        // edit_profile, so we deliberately match 480 to avoid coupling
+        // to that unrelated number.
         expect(
           content.contains('maxWidth: 480'),
           isTrue,
           reason: '$relPath must pass `maxWidth: 480` to MaxWidthWrapper '
-              '— form/detail screens must not grow to 1200 on desktop.',
+              '— text-field forms must not grow to 1200 on desktop.',
         );
       });
     }
 
-    // The main shell, by contrast, must NOT pass an explicit maxWidth —
-    // it relies on the responsive default so Home/Cases/Deadlines/Settings
-    // can breathe out to 720/1200 instead of being stuck at 480.
-    test('lib/shared/widgets/main_shell.dart uses responsive default '
-        '(no explicit maxWidth)', () {
-      final content =
-          File('lib/shared/widgets/main_shell.dart').readAsStringSync();
-      // The MainShell call site must be plain `MaxWidthWrapper(child: child)`.
-      expect(
-        content.contains('MaxWidthWrapper(child: child)'),
-        isTrue,
-        reason: 'MainShell must wrap with MaxWidthWrapper(child: child) '
-            'and rely on the responsive default. If you pin an explicit '
-            'maxWidth here you reintroduce the 480px-shell P1 regression.',
-      );
-      // And there must be no `maxWidth:` in the same wrapper invocation
-      // (defensive — catches the case where someone adds a parameter on a
-      // multi-line call).
-      final shellWrapPattern = RegExp(
-        r'MaxWidthWrapper\(\s*maxWidth:',
-        multiLine: true,
-      );
-      expect(
-        shellWrapPattern.hasMatch(content),
-        isFalse,
-        reason: 'MainShell must NOT pass an explicit maxWidth to '
-            'MaxWidthWrapper — that was the 2026-05-03 regression.',
-      );
-    });
+    // PAGE-CONTENT screens AND the main shell must NOT pin an explicit
+    // maxWidth — they ride the responsive default so they can breathe
+    // out to 720/1200 on tablet/desktop instead of squeezing into 480.
+    final responsiveScreens = <String>[
+      'lib/features/settings/screens/subscription_screen.dart',
+      'lib/features/cases/screens/case_detail_screen.dart',
+      'lib/features/cases/screens/case_create_screen.dart',
+      'lib/features/cases/screens/case_documents_screen.dart',
+      'lib/features/cases/screens/case_timeline_screen.dart',
+      'lib/features/onboarding/screens/onboarding_screen.dart',
+      'lib/shared/widgets/main_shell.dart',
+    ];
+
+    // Match `MaxWidthWrapper( ... maxWidth: <num>` across multi-line calls.
+    // We scan the whole file rather than a single regex so the test
+    // message can name the screen.
+    final wrapperWithExplicitCap = RegExp(
+      r'MaxWidthWrapper\([^)]*maxWidth:\s*\d',
+      multiLine: true,
+      dotAll: true,
+    );
+
+    for (final relPath in responsiveScreens) {
+      test('$relPath uses MaxWidthWrapper responsive default '
+          '(no explicit maxWidth)', () {
+        final content = File(relPath).readAsStringSync();
+        expect(
+          wrapperWithExplicitCap.hasMatch(content),
+          isFalse,
+          reason: '$relPath must NOT pass an explicit maxWidth to '
+              'MaxWidthWrapper — page-content screens ride the '
+              'responsive default so they breathe out to 1200px on '
+              'desktop instead of squeezing into a 480px column. '
+              'Pinning maxWidth here reintroduces the P0 regression '
+              'fixed on 2026-05-05.',
+        );
+      });
+    }
   });
 }

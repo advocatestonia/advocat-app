@@ -306,11 +306,11 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      // Constrain form to phone width on desktop viewports —
-      // 1200px-wide form fields look terrible. Explicit 480 wins
-      // over MaxWidthWrapper's responsive default (which is for shell).
+      // Use MaxWidthWrapper's responsive default — case-create is a
+      // multi-step page-content wizard with progress bar and bottom nav,
+      // not a single text-field form. On desktop it should breathe out
+      // to 1200px instead of being squeezed into a 480px column.
       body: MaxWidthWrapper(
-        maxWidth: 480,
         child: Column(
         children: [
           // ── Progress indicator ──────────────────────────────────────

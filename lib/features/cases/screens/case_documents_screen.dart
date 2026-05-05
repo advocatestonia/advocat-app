@@ -19,11 +19,10 @@ class CaseDocumentsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.documents)),
-      // Constrain documents list to phone width on desktop viewports.
-      // Explicit 480 wins over MaxWidthWrapper's responsive default
-      // (which only applies to the main shell).
+      // Use MaxWidthWrapper's responsive default — documents is a list
+      // page (page-content), not a form. On desktop it should breathe
+      // out to 1200px instead of being squeezed into a 480px column.
       body: MaxWidthWrapper(
-        maxWidth: 480,
         child: docsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('${l10n.error}: $e')),

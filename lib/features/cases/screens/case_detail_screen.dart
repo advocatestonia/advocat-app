@@ -54,11 +54,11 @@ class CaseDetailScreen extends ConsumerWidget {
         ),
       ),
       data: (legalCase) => Scaffold(
-        // Constrain detail view to phone width on desktop viewports —
-        // narrative case content reads better as a column. Explicit 480
-        // wins over MaxWidthWrapper's responsive default (for shell).
+        // Use MaxWidthWrapper's responsive default — case detail is page
+        // content (info cards, action tiles, documents/deadlines sections),
+        // not a form. On desktop it should breathe out to 1200px instead
+        // of being squeezed into a 480px column with empty gutters.
         body: MaxWidthWrapper(
-          maxWidth: 480,
           child: CustomScrollView(
           slivers: [
             // ── Sliver app bar with glow effect ──────────────────────

@@ -137,11 +137,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             colors: _gradientColors[_currentPage],
           ),
         ),
-        // Constrain onboarding to phone width on desktop viewports —
-        // story-style flow looks wrong full-width. Explicit 480 wins
-        // over MaxWidthWrapper's responsive default (which is for shell).
+        // Use MaxWidthWrapper's responsive default — onboarding wizard
+        // is page content (illustrations, language picker, hero copy),
+        // not a form. On desktop it should breathe out to 1200px instead
+        // of being squeezed into a 480px column with empty gradient.
         child: MaxWidthWrapper(
-          maxWidth: 480,
           child: Stack(
           children: [
             // Subtle particle/shimmer background

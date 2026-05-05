@@ -78,11 +78,12 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       appBar: AdvocatGradientHeader(
         title: l10n.subscription,
       ),
-      // Constrain pricing card stack to phone width on desktop —
-      // single-column scroll is the correct presentation. Explicit 480
-      // wins over MaxWidthWrapper's responsive default (for shell).
+      // Use MaxWidthWrapper's responsive default — pricing/Subscription is
+      // a page-content screen (cards, comparison), not a form. On desktop
+      // it should breathe out to 1200px, not sit in a 480px column with
+      // empty gutters. Form screens (login/register/edit_profile) keep an
+      // explicit 480 cap; this one is page-content.
       body: MaxWidthWrapper(
-        maxWidth: 480,
         child: FadeTransition(
         opacity: _fadeAnimation,
         child: Column(
