@@ -134,6 +134,63 @@ void main() {
     });
   });
 
+  group('ClaudeService.chooseModel — RU stem coverage (2026-05-05)', () {
+    // RU LLM quality quick-win: users write 'уволили'/'обжаловать'/'подал'
+    // — those didn't match the previous keyword set ('увольн'/'обжалован'
+    // alone), so RU turns under-routed to Sonnet vs EN equivalents.
+    // Each test below uses a real-world long-form (>300 chars) RU sentence
+    // with a single new stem; chooseModel must return Sonnet via the
+    // `len > 300 && match >= 1` branch.
+    String pad(String core) {
+      // Pads to >300 chars without sprinkling other legal keywords.
+      const filler = ' это очень длинное сообщение от пользователя который '
+          'хочет подробно описать свою ситуацию и попросить помощи.';
+      var s = core;
+      while (s.length < 320) {
+        s = '$s$filler';
+      }
+      return s;
+    }
+
+    final ruStemCases = <String, String>{
+      'уволи (уволили)': 'Меня уволили вчера без предупреждения и я не понимаю что делать дальше.',
+      'обжалов (обжаловать)': 'Я хочу обжаловать это постановление и не знаю с чего начать.',
+      'подал (подал заявление)': 'Я подал заявление в полицию на работодателя за невыплату.',
+      'выписк (выписка)': 'Мне нужна выписка из реестра для подтверждения моего адреса.',
+      'нарушил (нарушил права)': 'Работодатель нарушил мои права и я хочу восстановить справедливость.',
+      'вынес (вынес постановление)': 'Орган вынес постановление и я не согласен с этим выводом.',
+      'депорт (депортировать)': 'Меня хотят депортировать после отказа в продлении статуса.',
+      'компенсац (компенсация)': 'Мне положена компенсация за моральный вред который мне причинили.',
+      'возмещ (возмещение)': 'Я требую возмещение убытков от ответчика по этому делу.',
+      'жалоб (жалобу)': 'Я хочу подготовить жалобу на действия должностного лица в орган.',
+    };
+
+    ruStemCases.forEach((label, core) {
+      test('RU stem "$label" routes long query → Sonnet', () {
+        final q = pad(core);
+        expect(q.length, greaterThan(300));
+        expect(
+          ClaudeService.chooseModel(q),
+          ClaudeService.modelSonnet,
+          reason: 'Long RU query containing "$label" must route to Sonnet '
+              '(len=${q.length}). Stem missing from _complexKeywords?',
+        );
+      });
+    });
+
+    test('benign RU greeting still picks Haiku (regression guard)', () {
+      // Make sure the new stems didn't accidentally widen the net for
+      // ordinary thank-you / hello messages.
+      const benign = 'Здравствуйте, спасибо';
+      expect(
+        ClaudeService.chooseModel(benign),
+        ClaudeService.modelHaiku,
+        reason: 'Plain greeting must stay on Haiku — adding RU stems '
+            'must not regress the short-message Haiku path.',
+      );
+    });
+  });
+
   group('ClaudeService.chooseModelForTools — invariants', () {
     test('isAuthenticated=false NEVER returns Sonnet', () {
       // Cost-control invariant. Iterate a battery of queries that would

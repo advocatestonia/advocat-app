@@ -159,6 +159,11 @@ class ClaudeService {
     'опека', 'развод', 'наследств', 'пенси', 'инвалид',
     'больнич', 'декрет', 'ипотек', 'кредит', 'банкрот',
     'мошенн', 'грабеж', 'кража', 'насили', 'побо', 'угроз',
+    // ru: common verb/action stems users actually type (RU LLM quality fix
+    // 2026-05-05). Matcher is substring-based, so 'уволи' covers
+    // уволили/уволила/уволил/уволят.
+    'уволи', 'обжалов', 'подал', 'выписк', 'нарушил', 'вынес',
+    'депорт', 'компенсац', 'возмещ', 'жалоб',
     // English civil/criminal terms
     'salary', 'fired', 'contract', 'fine', 'debt', 'alimony',
     'custody', 'divorce', 'inheritance', 'pension', 'disability',
