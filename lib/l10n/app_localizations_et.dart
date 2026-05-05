@@ -2506,4 +2506,45 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get feedbackCancel => 'Tühista';
+
+  @override
+  String get reasoningPillIdle => 'Mõtlen…';
+
+  @override
+  String get reasoningPillSearchingLaw => 'Loen seadust…';
+
+  @override
+  String get reasoningPillSearchingWeb => 'Otsin veebist…';
+
+  @override
+  String get reasoningPillCheckingCompany => 'Kontrollin äriregistrit…';
+
+  @override
+  String get reasoningPillCheckingVehicle => 'Kontrollin sõidukiregistrit…';
+
+  @override
+  String get reasoningPillReadingDocument => 'Loen Teie dokumenti…';
+
+  @override
+  String get reasoningPillDrafting => 'Koostan dokumenti…';
+
+  @override
+  String get reasoningPillPreparingEmail => 'Valmistan e-kirja ette…';
+
+  @override
+  String get reasoningPillFindingLawyer => 'Otsin advokaate…';
+
+  @override
+  String get reasoningPillThinking => 'Analüüsin Teie juhtumit…';
+
+  @override
+  String get reasoningPillFinalising => 'Vormistan vastust…';
+
+  @override
+  String reasoningCollapsedFormat(int sec, int sources) {
+    return 'Mõtlesin $sec s · $sources allikat';
+  }
+
+  @override
+  String get reasoningExpandHint => 'vajuta sammude nägemiseks';
 }

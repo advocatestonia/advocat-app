@@ -2516,4 +2516,45 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get feedbackCancel => 'Отмена';
+
+  @override
+  String get reasoningPillIdle => 'Думаю…';
+
+  @override
+  String get reasoningPillSearchingLaw => 'Изучаю закон…';
+
+  @override
+  String get reasoningPillSearchingWeb => 'Ищу в интернете…';
+
+  @override
+  String get reasoningPillCheckingCompany => 'Проверяю реестр компаний…';
+
+  @override
+  String get reasoningPillCheckingVehicle => 'Проверяю реестр транспорта…';
+
+  @override
+  String get reasoningPillReadingDocument => 'Читаю Ваш документ…';
+
+  @override
+  String get reasoningPillDrafting => 'Готовлю документ…';
+
+  @override
+  String get reasoningPillPreparingEmail => 'Составляю письмо…';
+
+  @override
+  String get reasoningPillFindingLawyer => 'Подбираю адвокатов…';
+
+  @override
+  String get reasoningPillThinking => 'Анализирую Ваше дело…';
+
+  @override
+  String get reasoningPillFinalising => 'Формулирую ответ…';
+
+  @override
+  String reasoningCollapsedFormat(int sec, int sources) {
+    return 'Размышлял $sec с · источников: $sources';
+  }
+
+  @override
+  String get reasoningExpandHint => 'коснитесь, чтобы увидеть шаги';
 }

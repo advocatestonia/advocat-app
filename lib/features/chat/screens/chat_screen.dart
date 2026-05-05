@@ -16,6 +16,7 @@ import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
+import '../../../services/chat_stream_event.dart';
 import '../../../services/claude_service.dart' show ClaudeServiceException;
 import '../../../services/chat_attachment_service.dart';
 import '../../../services/client_knowledge_service.dart';
@@ -30,6 +31,7 @@ import '../../../widgets/feedback_buttons.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../services/chat_tool_bridge.dart';
 import '../utils/message_speaker.dart';
+import '../widgets/reasoning_trail.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 import '../widgets/welcome_chips.dart';
@@ -122,6 +124,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _isSending = false;
   bool _isTyping = false;
   bool _disclaimerExpanded = true;
+  // Reasoning Trail v1 (2026-05-05) — per-turn event broadcaster. The
+  // streaming consumer below (around line 746) feeds typed ChatStreamEvents
+  // here so the [ReasoningTrail] widget can show what the model is doing.
+  // Kept as a broadcast so the widget can re-listen on rebuild without
+  // dropping events.
+  StreamController<ChatStreamEvent>? _trailController;
   _ChatPhase _chatPhase = _ChatPhase.newCase;
   int _issuesFound = 0;
   final _knowledgeService = ClientKnowledgeService();
@@ -209,6 +217,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _scrollController.dispose();
     _focusNode.dispose();
     _speechSub?.cancel();
+    _trailController?.close();
     super.dispose();
   }
 
@@ -725,8 +734,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               timestamp: DateTime.now(),
             );
 
+            // Reasoning Trail v1 (2026-05-05): open a fresh per-turn
+            // event broadcaster BEFORE we start consuming the stream.
+            // The ReasoningTrail widget renders just above this message
+            // and listens to the controller for thinking + tool stages.
+            // Closed once the stream finishes (or in catch / finally).
+            _trailController?.close();
+            _trailController = StreamController<ChatStreamEvent>.broadcast();
+
             setState(() {
-              _isTyping = false; // Hide typing indicator — text is appearing
+              _isTyping = false; // Hide legacy typing indicator — Trail takes over
               _messages.add(streamingMessage);
             });
             _scrollToBottom(force: true);
@@ -743,7 +760,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
             final fullText = StringBuffer();
 
-            await for (final chunk in ai.sendChatMessageStreaming(
+            await for (final event in ai.sendChatMessageStreamingEvents(
               caseId: widget.caseId,
               message: text,
               userLanguage: Localizations.localeOf(context).languageCode,
@@ -754,33 +771,43 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               nationality: _currentCase?.nationality,
               freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit),
             )) {
-              fullText.write(chunk);
-              streamUIDirty = true;
-              streamUITimer ??= Timer.periodic(const Duration(milliseconds: 50), (_) {
-                if (streamUIDirty && mounted) {
-                  streamUIDirty = false;
-                  setState(() {
-                    final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
-                    if (idx >= 0) {
-                      _messages[idx] = ChatMessage(
-                        id: streamingMessageId,
-                        role: MessageRole.assistant,
-                        content: fullText.toString(),
-                        timestamp: DateTime.now(),
-                      );
-                    }
-                  });
-                  _scrollToBottom();
-                }
-              });
+              // Forward EVERY event to the trail so it can light up the
+              // pill on thinking / tool_use / tool_result / message_done.
+              _trailController?.add(event);
 
-              // Stream the chunk into the speaker's buffer. No audio is
-              // produced here — MessageSpeaker speaks the FULL accumulated
-              // reply once onStreamComplete() fires, so ElevenLabs /
-              // Chirp3 / Gemini receive one continuous text and return
-              // one continuous voice. Sentence-level streaming was
-              // rejected by owner 22.04.2026.
-              _messageSpeaker?.onChunk(chunk);
+              // TextDelta: still drives the existing buffer + TTS chunk
+              // feed exactly as before. Non-text events do not touch the
+              // text buffer or the speaker.
+              if (event is TextDelta) {
+                final chunk = event.text;
+                fullText.write(chunk);
+                streamUIDirty = true;
+                streamUITimer ??= Timer.periodic(const Duration(milliseconds: 50), (_) {
+                  if (streamUIDirty && mounted) {
+                    streamUIDirty = false;
+                    setState(() {
+                      final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
+                      if (idx >= 0) {
+                        _messages[idx] = ChatMessage(
+                          id: streamingMessageId,
+                          role: MessageRole.assistant,
+                          content: fullText.toString(),
+                          timestamp: DateTime.now(),
+                        );
+                      }
+                    });
+                    _scrollToBottom();
+                  }
+                });
+
+                // Stream the chunk into the speaker's buffer. No audio is
+                // produced here — MessageSpeaker speaks the FULL accumulated
+                // reply once onStreamComplete() fires, so ElevenLabs /
+                // Chirp3 / Gemini receive one continuous text and return
+                // one continuous voice. Sentence-level streaming was
+                // rejected by owner 22.04.2026.
+                _messageSpeaker?.onChunk(chunk);
+              }
             }
 
             // Speak the full accumulated reply exactly once now that
@@ -799,6 +826,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             // Clean up the throttle timer.
             streamUITimer?.cancel();
             streamUITimer = null;
+
+            // Reasoning Trail: emit terminal MessageDone (in case the
+            // upstream stream didn't already), close, and clear so the
+            // pill collapses and disappears.
+            _trailController?.add(const MessageDone());
+            await _trailController?.close();
+            if (mounted) {
+              setState(() {
+                _trailController = null;
+              });
+            } else {
+              _trailController = null;
+            }
 
             responseText = fullText.toString();
             _knowledgeService.notifyMessageSent();
@@ -823,6 +863,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             // Cancel throttle timer on error.
             streamUITimer?.cancel();
             streamUITimer = null;
+            // Close the trail on error — pill collapses, doesn't hang.
+            await _trailController?.close();
+            _trailController = null;
             debugPrint('Streaming failed, falling back to non-streaming: $e');
             // Remove any leftover streaming placeholder.
             if (mounted) {
@@ -2088,6 +2131,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // BUG 3: add one trailing slot for the welcome chips when active.
     final chipsSlot = _showWelcomeChips ? 1 : 0;
     final typingSlot = _isTyping ? 1 : 0;
+    // Reasoning Trail v1 (2026-05-05): when a streaming turn is active
+    // (controller is non-null), render the visible-thinking pill in its own
+    // ListView slot just below the messages.
+    final trailSlot = _trailController != null ? 1 : 0;
     // fix/copy-selection: wrap the message list in SelectionArea so users
     // can drag-select text across bubbles on Flutter Web without the
     // per-bubble GestureDetector swallowing pan events. This is the
@@ -2099,9 +2146,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm,
         ),
-        itemCount: _messages.length + chipsSlot + typingSlot,
+        itemCount: _messages.length + chipsSlot + typingSlot + trailSlot,
         itemBuilder: (context, index) {
-          // Order: messages → welcome chips (if active) → typing indicator.
+          // Order: messages → welcome chips (if active) → typing indicator → reasoning trail.
           if (_showWelcomeChips && index == _messages.length) {
             final locale = Localizations.localeOf(context).languageCode;
             return ChatWelcomeChips(
@@ -2113,6 +2160,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           final messagesAndChips = _messages.length + chipsSlot;
           if (index == messagesAndChips && _isTyping) {
             return _buildTypingIndicator();
+          }
+          // ReasoningTrail slot: appended right after typing/messages so
+          // it sits immediately below the streaming assistant bubble.
+          if (_trailController != null &&
+              index == messagesAndChips + typingSlot) {
+            return ReasoningTrail(
+              key: ValueKey(_trailController.hashCode),
+              events: _trailController!.stream,
+            );
           }
 
           final message = _messages[index];

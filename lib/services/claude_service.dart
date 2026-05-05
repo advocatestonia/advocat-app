@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 import '../config/app_config.dart';
+import 'chat_stream_event.dart';
 import 'jwt_refresh_policy.dart';
 import 'tool_definitions.dart';
 import 'web_streaming_stub.dart' if (dart.library.js_interop) 'web_streaming_impl.dart';
@@ -645,15 +646,12 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     return _extractText(response);
   }
 
-  /// Send a message with streaming — returns a Stream of text chunks.
-  /// The stream yields individual text deltas as they arrive from Claude.
+  /// Legacy text-only streaming. Delegates to [sendMessageStreamingEvents]
+  /// and filters down to text deltas via [ChatStreamEventTextExt.toTextStream].
   ///
-  /// On **Flutter Web**, this uses the browser's native `fetch()` API via
-  /// JS interop (see `web/streaming.js`) because Dio's web adapter uses
-  /// XMLHttpRequest which buffers the entire response — no streaming.
-  ///
-  /// On **mobile/desktop**, this uses Dio with `ResponseType.stream` which
-  /// works correctly with dart:io's HttpClient.
+  /// Kept for backward compatibility with call sites that pre-date the
+  /// Reasoning Trail surface (2026-05-05). New code should consume the
+  /// typed-event stream directly so it can show thinking + tool stages.
   Stream<String> sendMessageStreaming({
     required List<Map<String, String>> messages,
     required String systemPrompt,
@@ -661,6 +659,41 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     String? model,
     List<Map<String, dynamic>>? tools,
     double temperature = 0.3,
+    Map<String, dynamic>? thinking,
+  }) {
+    return sendMessageStreamingEvents(
+      messages: messages,
+      systemPrompt: systemPrompt,
+      maxTokens: maxTokens,
+      model: model,
+      tools: tools,
+      temperature: temperature,
+      thinking: thinking,
+    ).toTextStream();
+  }
+
+  /// Typed streaming surface (Reasoning Trail v1, 2026-05-05). Yields
+  /// [ChatStreamEvent] subtypes — text deltas, thinking stages, tool_use
+  /// blocks, tool results — one event per Anthropic SSE event we recognise.
+  ///
+  /// On **Flutter Web**, this uses the browser's native `fetch()` API via
+  /// JS interop (see `web/streaming.js`). The current JS bridge surfaces
+  /// only the assembled text, so on Web we wrap each chunk into a
+  /// `TextDelta` event. Thinking/tool events are degraded to no-ops on
+  /// Web until `web/streaming.js` is upgraded — non-blocking for v1
+  /// because the Reasoning Trail falls back gracefully when no
+  /// thinking/tool events arrive (the pill just rotates the idle caption).
+  ///
+  /// On **mobile/desktop**, this uses Dio with `ResponseType.stream` and
+  /// the SSE parser dispatches every event type Anthropic emits.
+  Stream<ChatStreamEvent> sendMessageStreamingEvents({
+    required List<Map<String, String>> messages,
+    required String systemPrompt,
+    int maxTokens = 4096,
+    String? model,
+    List<Map<String, dynamic>>? tools,
+    double temperature = 0.3,
+    Map<String, dynamic>? thinking,
   }) async* {
     if (!isAvailable) {
       throw const ClaudeServiceException(
@@ -714,6 +747,11 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
       'stream': true,
     };
     if (tools != null && tools.isNotEmpty) body['tools'] = tools;
+    // Reasoning Trail (2026-05-05): pass extended-thinking config through
+    // to Anthropic. Server-side classifier in claude-proxy may also inject
+    // its own based on message complexity — we forward the user's explicit
+    // setting unchanged so callers retain control.
+    if (thinking != null) body['thinking'] = thinking;
 
     // ── Web: use browser fetch() for real streaming ──────────────────────
     if (kIsWeb) {
@@ -726,12 +764,20 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
       final authToken = _useProxy ? AppConfig.supabaseAnonKey : '';
       final apiKey = _useProxy ? '' : AppConfig.claudeApiKey;
 
-      yield* webSendMessageStreaming(
+      // Web bridge today returns assembled text only (see web_streaming_impl.dart).
+      // Wrap each chunk into a TextDelta. Thinking + tool stages will surface
+      // once web/streaming.js is upgraded to forward the raw SSE event names —
+      // tracked as a follow-up. The Reasoning Trail UI degrades gracefully:
+      // no thinking events → idle pill rotates, no tool events → no tool chips.
+      await for (final chunk in webSendMessageStreaming(
         url: fullUrl,
         bodyJson: bodyJson,
         authToken: authToken,
         apiKey: apiKey,
-      );
+      )) {
+        if (chunk.isNotEmpty) yield TextDelta(chunk);
+      }
+      yield const MessageDone();
       return;
     }
 
@@ -761,6 +807,8 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     // split across TCP chunks. Accumulate raw bytes, decode in larger batches.
     const utf8Decoder = Utf8Decoder(allowMalformed: false);
     final rawBytes = <int>[];
+    // Per-stream parser state — tracks active block type, pending sig, etc.
+    final sseState = SseStreamState();
     await for (final chunk in byteStream) {
       rawBytes.addAll(chunk);
       // Try to decode all accumulated bytes
@@ -774,7 +822,10 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
       }
       buffer += textChunk;
 
-      // Process complete SSE lines
+      // Process complete SSE lines. Reasoning Trail v1: we delegate the
+      // event-mapping logic to [parseSseEvent] so it is unit-testable in
+      // isolation, and we update side-effecty token counters here when
+      // the parser surfaces the `_TokenUsageHint` sentinel via [parsed].
       while (buffer.contains('\n')) {
         final lineEnd = buffer.indexOf('\n');
         final line = buffer.substring(0, lineEnd).trim();
@@ -785,36 +836,42 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
         if (!line.startsWith('data: ')) continue;
         final data = line.substring(6);
 
+        Map<String, dynamic>? parsed;
         try {
-          final parsed = jsonDecode(data) as Map<String, dynamic>;
-          final type = parsed['type'] as String?;
-
-          if (type == 'content_block_delta') {
-            final delta = parsed['delta'] as Map<String, dynamic>?;
-            if (delta?['type'] == 'text_delta') {
-              final text = delta!['text'] as String? ?? '';
-              if (text.isNotEmpty) yield text;
-            }
-          } else if (type == 'message_delta') {
-            // usage.output_tokens is CUMULATIVE — assign, not add
-            final usage = parsed['usage'] as Map<String, dynamic>?;
-            if (usage != null) {
-              _sessionOutputTokens =
-                  usage['output_tokens'] as int? ?? _sessionOutputTokens;
-            }
-          } else if (type == 'message_start') {
-            final message = parsed['message'] as Map<String, dynamic>?;
-            final usage = message?['usage'] as Map<String, dynamic>?;
-            if (usage != null) {
-              _sessionInputTokens +=
-                  (usage['input_tokens'] as int? ?? 0);
-            }
-          } else if (type == 'message_stop') {
-            return; // Stream complete
-          }
+          parsed = jsonDecode(data) as Map<String, dynamic>;
         } catch (_) {
-          // Skip unparseable lines
+          continue; // Skip unparseable lines
         }
+
+        // Side-effect: update token counters before emitting events. This
+        // matches legacy behaviour and keeps callers from having to wire it.
+        _absorbUsage(parsed);
+
+        final events = parseSseEvent(parsed, state: sseState);
+        for (final ev in events) {
+          yield ev;
+          if (ev is MessageDone) return;
+        }
+      }
+    }
+  }
+
+  /// Update internal token counters from a parsed SSE event. Pure side
+  /// effect — no events emitted. Called once per SSE event.
+  void _absorbUsage(Map<String, dynamic> parsed) {
+    final type = parsed['type'] as String?;
+    if (type == 'message_start') {
+      final message = parsed['message'] as Map<String, dynamic>?;
+      final usage = message?['usage'] as Map<String, dynamic>?;
+      if (usage != null) {
+        _sessionInputTokens += (usage['input_tokens'] as int? ?? 0);
+      }
+    } else if (type == 'message_delta') {
+      // usage.output_tokens is CUMULATIVE — assign, not add
+      final usage = parsed['usage'] as Map<String, dynamic>?;
+      if (usage != null) {
+        _sessionOutputTokens =
+            usage['output_tokens'] as int? ?? _sessionOutputTokens;
       }
     }
   }
@@ -830,6 +887,144 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     return (text.length / 4).ceil();
   }
 }
+
+// ---------------------------------------------------------------------------
+// SSE → ChatStreamEvent mapping (Reasoning Trail v1, 2026-05-05)
+// ---------------------------------------------------------------------------
+
+/// Pure mapping from one Anthropic SSE JSON payload to zero-or-more
+/// [ChatStreamEvent]s. Exposed at top level (not on the service class) so
+/// tests can feed canned SSE strings without instantiating Dio/HTTP.
+///
+/// Anthropic event model (in stream order):
+///   • message_start                        — sets up message metadata
+///   • content_block_start (type=text|thinking|tool_use|server_tool_use)
+///   • content_block_delta (type=text_delta|thinking_delta|input_json_delta|signature_delta)
+///   • content_block_stop                   — closes the active block
+///   • (loop content_block_* for each block)
+///   • message_delta                        — final usage etc.
+///   • message_stop                         — terminal sentinel
+///
+/// We track which block-kind opened most recently (text vs thinking vs
+/// tool_use) to interpret each delta correctly. Callers must reuse the same
+/// [SseStreamState] across calls within one stream — see
+/// [sendMessageStreamingEvents] for the pattern.
+List<ChatStreamEvent> parseSseEvent(
+  Map<String, dynamic> parsed, {
+  SseStreamState? state,
+}) {
+  final s = state ?? _ambient;
+  final type = parsed['type'] as String?;
+  final out = <ChatStreamEvent>[];
+
+  switch (type) {
+    case 'message_start':
+      s.reset();
+      break;
+
+    case 'content_block_start':
+      final block = parsed['content_block'] as Map<String, dynamic>?;
+      final blockType = block?['type'] as String?;
+      s.activeBlockType = blockType;
+      if (blockType == 'thinking') {
+        out.add(const ThinkingStart());
+      } else if (blockType == 'tool_use') {
+        s.toolCount += 1;
+        final name = block?['name'] as String? ?? 'unknown_tool';
+        final id = block?['id'] as String? ?? '';
+        out.add(ToolUseStart(name, id));
+      } else if (blockType == 'server_tool_use') {
+        // Anthropic-executed tools (e.g. web_search). Same UI treatment.
+        s.toolCount += 1;
+        final name = block?['name'] as String? ?? 'web_search';
+        final id = block?['id'] as String? ?? '';
+        out.add(ToolUseStart(name, id));
+      }
+      // 'text' block_start has no UI signal — text_delta carries the payload.
+      break;
+
+    case 'content_block_delta':
+      final delta = parsed['delta'] as Map<String, dynamic>?;
+      final dType = delta?['type'] as String?;
+      switch (dType) {
+        case 'text_delta':
+          final text = delta!['text'] as String? ?? '';
+          if (text.isNotEmpty) out.add(TextDelta(text));
+          break;
+        case 'thinking_delta':
+          final text = delta!['thinking'] as String? ?? delta['text'] as String? ?? '';
+          if (text.isNotEmpty) out.add(ThinkingDelta(text));
+          break;
+        case 'input_json_delta':
+          final partial = delta!['partial_json'] as String? ?? '';
+          if (partial.isNotEmpty) out.add(ToolInputDelta(partial));
+          break;
+        case 'signature_delta':
+          // We accumulate the signature so ThinkingStop carries it.
+          final sig = delta!['signature'] as String? ?? '';
+          s.pendingSignature = (s.pendingSignature ?? '') + sig;
+          break;
+        // Unknown delta type — drop. Forward-compat: future Anthropic
+        // additions don't break the UI.
+      }
+      break;
+
+    case 'content_block_stop':
+      final blockType = s.activeBlockType;
+      if (blockType == 'thinking') {
+        out.add(ThinkingStop(signature: s.pendingSignature));
+        s.pendingSignature = null;
+      } else if (blockType == 'tool_use' || blockType == 'server_tool_use') {
+        out.add(const ToolUseStop());
+      }
+      // 'text' block_stop has no UI signal.
+      s.activeBlockType = null;
+      break;
+
+    case 'tool_result':
+      // Anthropic does NOT emit `tool_result` SSE events natively; this is
+      // a synthetic event the local tool dispatcher injects after running
+      // a tool locally (chat layer). Still parsed here so all sources of
+      // events flow through the same surface.
+      final result = (parsed['result'] as Map<String, dynamic>?) ?? const {};
+      out.add(ToolResultReceived(Map<String, dynamic>.from(result)));
+      break;
+
+    case 'message_delta':
+      // Usage info is absorbed by _absorbUsage; nothing to surface as an event.
+      break;
+
+    case 'message_stop':
+      out.add(MessageDone(
+        thinkingMs: s.thinkingMs,
+        sources: s.toolCount,
+      ));
+      break;
+  }
+
+  return out;
+}
+
+/// Mutable per-stream parser state. One instance per call to
+/// [ClaudeService.sendMessageStreamingEvents]. Public for tests; production
+/// code lets the caller manage one (or uses [_ambient] when null).
+class SseStreamState {
+  String? activeBlockType;
+  String? pendingSignature;
+  int toolCount = 0;
+  int? thinkingMs; // best-effort wall clock; populated by parser future ext
+  void reset() {
+    activeBlockType = null;
+    pendingSignature = null;
+    toolCount = 0;
+    thinkingMs = null;
+  }
+}
+
+// Process-wide fallback for tests that do not pass explicit state. Real
+// streams always create their own state; this is purely a convenience for
+// stateless single-event mapping tests.
+final SseStreamState _ambient = SseStreamState();
 
 // ---------------------------------------------------------------------------
 // Exception

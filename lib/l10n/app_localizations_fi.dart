@@ -2507,4 +2507,45 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get feedbackCancel => 'Peruuta';
+
+  @override
+  String get reasoningPillIdle => 'Ajattelen…';
+
+  @override
+  String get reasoningPillSearchingLaw => 'Etsin lakia…';
+
+  @override
+  String get reasoningPillSearchingWeb => 'Etsin verkosta…';
+
+  @override
+  String get reasoningPillCheckingCompany => 'Tarkistan yritysrekisteriä…';
+
+  @override
+  String get reasoningPillCheckingVehicle => 'Tarkistan ajoneuvorekisteriä…';
+
+  @override
+  String get reasoningPillReadingDocument => 'Luen dokumenttisi…';
+
+  @override
+  String get reasoningPillDrafting => 'Laadin asiakirjaa…';
+
+  @override
+  String get reasoningPillPreparingEmail => 'Valmistelen sähköpostia…';
+
+  @override
+  String get reasoningPillFindingLawyer => 'Etsin lakimiehiä…';
+
+  @override
+  String get reasoningPillThinking => 'Analysoin tapaustasi…';
+
+  @override
+  String get reasoningPillFinalising => 'Muotoilen vastausta…';
+
+  @override
+  String reasoningCollapsedFormat(int sec, int sources) {
+    return 'Pohdin $sec s · $sources lähdettä';
+  }
+
+  @override
+  String get reasoningExpandHint => 'napauta nähdäksesi vaiheet';
 }

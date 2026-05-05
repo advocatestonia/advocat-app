@@ -951,5 +951,24 @@
     "feedbackThumbsDownLabel": "Ei aidanud",
     "feedbackCommentPrompt": "Mis läks valesti?",
     "feedbackSend": "Saada",
-    "feedbackCancel": "Tühista"
+    "feedbackCancel": "Tühista",
+    "reasoningPillIdle": "Mõtlen…",
+    "reasoningPillSearchingLaw": "Loen seadust…",
+    "reasoningPillSearchingWeb": "Otsin veebist…",
+    "reasoningPillCheckingCompany": "Kontrollin äriregistrit…",
+    "reasoningPillCheckingVehicle": "Kontrollin sõidukiregistrit…",
+    "reasoningPillReadingDocument": "Loen Teie dokumenti…",
+    "reasoningPillDrafting": "Koostan dokumenti…",
+    "reasoningPillPreparingEmail": "Valmistan e-kirja ette…",
+    "reasoningPillFindingLawyer": "Otsin advokaate…",
+    "reasoningPillThinking": "Analüüsin Teie juhtumit…",
+    "reasoningPillFinalising": "Vormistan vastust…",
+    "reasoningCollapsedFormat": "Mõtlesin {sec} s · {sources} allikat",
+    "@reasoningCollapsedFormat": {
+      "placeholders": {
+        "sec": {"type": "int"},
+        "sources": {"type": "int"}
+      }
+    },
+    "reasoningExpandHint": "vajuta sammude nägemiseks"
 }

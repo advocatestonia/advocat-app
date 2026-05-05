@@ -951,5 +951,24 @@
   "feedbackThumbsDownLabel": "Не полезно",
   "feedbackCommentPrompt": "Что не так?",
   "feedbackSend": "Отправить",
-  "feedbackCancel": "Отмена"
+  "feedbackCancel": "Отмена",
+  "reasoningPillIdle": "Думаю…",
+  "reasoningPillSearchingLaw": "Изучаю закон…",
+  "reasoningPillSearchingWeb": "Ищу в интернете…",
+  "reasoningPillCheckingCompany": "Проверяю реестр компаний…",
+  "reasoningPillCheckingVehicle": "Проверяю реестр транспорта…",
+  "reasoningPillReadingDocument": "Читаю Ваш документ…",
+  "reasoningPillDrafting": "Готовлю документ…",
+  "reasoningPillPreparingEmail": "Составляю письмо…",
+  "reasoningPillFindingLawyer": "Подбираю адвокатов…",
+  "reasoningPillThinking": "Анализирую Ваше дело…",
+  "reasoningPillFinalising": "Формулирую ответ…",
+  "reasoningCollapsedFormat": "Размышлял {sec} с · источников: {sources}",
+  "@reasoningCollapsedFormat": {
+    "placeholders": {
+      "sec": {"type": "int"},
+      "sources": {"type": "int"}
+    }
+  },
+  "reasoningExpandHint": "коснитесь, чтобы увидеть шаги"
 }

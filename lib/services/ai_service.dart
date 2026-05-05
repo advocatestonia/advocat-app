@@ -6,7 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import '../config/app_config.dart';
 import '../models/case_model.dart';
+import 'agentic_loop.dart';
+import 'assistant_tools.dart';
 import 'chat_attachment_service.dart';
+import 'chat_stream_event.dart';
+import 'citation_verifier.dart';
 import 'claude_service.dart';
 import 'language_detector.dart';
 import 'supabase_service.dart';
@@ -139,10 +143,12 @@ final aiServiceProvider = Provider<AIService>((ref) {
   final claudeService = ref.watch(claudeServiceProvider);
   final supabase = ref.watch(supabaseServiceProvider);
   final memoryService = ref.watch(userMemoryServiceProvider);
+  final assistantTools = ref.watch(assistantToolsProvider);
   return AIService(
     claudeService: claudeService,
     quotaClient: SupabaseAiQuotaClient(supabase),
     memoryService: memoryService,
+    assistantTools: assistantTools,
   );
 });
 
@@ -156,9 +162,11 @@ class AIService {
     ClaudeService? claudeService,
     AiQuotaClient? quotaClient,
     UserMemoryService? memoryService,
+    AssistantTools? assistantTools,
   })  : _claudeService = claudeService ?? ClaudeService(),
         _quotaClient = quotaClient,
         _memoryService = memoryService,
+        _assistantTools = assistantTools,
         _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
@@ -176,6 +184,13 @@ class AIService {
 
   final ClaudeService _claudeService;
   final AiQuotaClient? _quotaClient;
+
+  /// Optional [AssistantTools] for the agentic loop. When wired, tool_use
+  /// responses from Claude are executed in-loop and the actual tool_result
+  /// blocks are sent back — instead of the legacy single-shot return.
+  /// When null, the legacy single-shot behaviour is preserved (backwards
+  /// compat for callers/tests that don't supply tools).
+  final AssistantTools? _assistantTools;
 
   /// Optional ADR-001 Tier 1 memory service. When wired, chat calls
   /// inject the user's memory block into the system prompt and trigger
@@ -248,6 +263,42 @@ class AIService {
     required List<({String role, String content})> messages,
   }) =>
       _triggerMemoryExtraction(sessionId: sessionId, messages: messages);
+
+  /// Smart Agent v2 — Verified Citations post-processor.
+  ///
+  /// Runs once on the assembled answer text after the agentic loop has
+  /// finished. Any § citation in the text that is NOT backed by a
+  /// `search_estonian_law` / `search_finnish_law` / `search_knowledge`
+  /// tool call this turn is replaced with a soft-correction placeholder
+  /// (see [CitationVerifier.unverifiedPlaceholder]).
+  ///
+  /// Pure delegation to the verifier — exposed as an instance method so
+  /// the agentic-loop call site reads cleanly.
+  String _applyCitationVerification(
+    String text,
+    List<LoopToolCall> toolCalls,
+  ) {
+    if (text.isEmpty) return text;
+    final hits = CitationVerifier.findCitations(text);
+    if (hits.isEmpty) return text;
+    final unverified = CitationVerifier.filterUnverified(
+      hits,
+      toolCalls.map((c) => c.toCitationToolCall()).toList(),
+    );
+    if (unverified.isEmpty) return text;
+    _log.i('Citation verifier: stripping ${unverified.length} unverified '
+        'citation(s) of ${hits.length} total in this turn');
+    return CitationVerifier.stripUnverified(text, unverified);
+  }
+
+  /// Test-only seam for the citation verifier — see
+  /// [test/services/ai_citation_verifier_wiring_test.dart].
+  @visibleForTesting
+  String applyCitationVerificationForTest(
+    String text,
+    List<LoopToolCall> toolCalls,
+  ) =>
+      _applyCitationVerification(text, toolCalls);
 
   // ── Quota cache (P0-3) ─────────────────────────────────────────────
   //
@@ -1149,21 +1200,115 @@ class AIService {
 
         // Check if Claude wants to use a tool
         if (_claudeService.hasToolUse(rawResponse)) {
-          // Extract any accompanying text from the response
-          final textContent = _claudeService.extractText(rawResponse);
-          // Add text to history if present so context is preserved
-          if (textContent.isNotEmpty) {
-            _addToHistory(caseId, 'assistant', textContent);
+          // Smart Agent v2 (2026-05-05): proper Anthropic agentic loop.
+          //
+          // When [_assistantTools] is wired, drive a multi-turn loop with
+          // real tool_result blocks so Claude can chain tools, recover
+          // from errors, and compose a final answer in ONE chat turn —
+          // instead of the legacy fake-user-followup hack that ran a
+          // second ChatResponse round.
+          //
+          // When tools aren't wired (legacy callers, simple tests), we
+          // fall through to the original single-shot behaviour: return
+          // the toolUseResponse so chat_screen.dart's handler can render
+          // the cards via ChatToolBridge as before.
+          final tools = _assistantTools;
+          if (tools == null) {
+            final textContent = _claudeService.extractText(rawResponse);
+            if (textContent.isNotEmpty) {
+              _addToHistory(caseId, 'assistant', textContent);
+            }
+            return ChatResponse(
+              message: textContent.isNotEmpty ? textContent : '',
+              disclaimer:
+                  'This is AI-generated legal information, not legal advice. '
+                  'Please consult a qualified attorney for advice specific to your situation.',
+              toolUseResponse: rawResponse,
+            );
           }
 
+          // Build the seed message list for the loop. We hand Claude back
+          // its own first response (so iteration 0 inside the loop short-
+          // circuits to "tool_use processing") via the canned send below.
+          final loopMessages = <Map<String, dynamic>>[
+            for (final m in messages) Map<String, dynamic>.from(m),
+          ];
+
+          // First call already happened above — the loop's first iteration
+          // is already paid for. We feed the canned [rawResponse] back on
+          // the FIRST invocation of the send closure, then route real
+          // subsequent calls through [ClaudeService.sendMessageWithTools]
+          // using its multimodalMessages channel (which accepts arbitrary
+          // List-of-blocks content — exactly what the agentic loop sends).
+          int sendCount = 0;
+          Future<Map<String, dynamic>> sendFn(
+              List<Map<String, dynamic>> msgs) async {
+            if (sendCount == 0) {
+              sendCount++;
+              return rawResponse;
+            }
+            sendCount++;
+            // Build a canonical block list. Each turn's content is either
+            // a String (plain user text) or a List of blocks
+            // (assistant tool_use / user tool_result). The proxy/Anthropic
+            // accepts both shapes inside a single messages array.
+            final wireMessages = msgs
+                .map((m) => <String, dynamic>{
+                      'role': m['role'],
+                      'content': m['content'],
+                    })
+                .toList();
+            return _claudeService.sendMessageWithTools(
+              // The typed `messages` param is unused when multimodalMessages
+              // wins — pass the original simple history for safety only.
+              messages: messages,
+              systemPrompt: systemPrompt,
+              maxTokens: maxTokens,
+              model: model,
+              multimodalMessages: wireMessages,
+            );
+          }
+
+          final outcome = await runAgenticLoop(
+            initialMessages: loopMessages,
+            send: sendFn,
+            executeTool: tools.execute,
+          );
+
+          // Approval pause — preserve the legacy UI flow EXACTLY.
+          if (outcome.stopReason == LoopStopReason.requiresApproval) {
+            final partialText = outcome.text;
+            if (partialText.isNotEmpty) {
+              _addToHistory(caseId, 'assistant', partialText);
+            }
+            return ChatResponse(
+              message: partialText,
+              disclaimer:
+                  'This is AI-generated legal information, not legal advice. '
+                  'Please consult a qualified attorney for advice specific to your situation.',
+              toolUseResponse: outcome.pendingApprovalResponse,
+            );
+          }
+
+          // Loop produced a composed answer — verify citations and persist.
+          var finalText = outcome.text;
+          finalText = _applyCitationVerification(finalText, outcome.toolCalls);
+
+          if (finalText.isNotEmpty) {
+            _addToHistory(caseId, 'assistant', finalText);
+            _cacheResponse(sanitizedMessage, finalText);
+          }
+
+          unawaited(_triggerMemoryExtraction(
+            sessionId: caseId,
+            messages: _snapshotHistoryForExtraction(caseId),
+          ));
+
           return ChatResponse(
-            message: textContent.isNotEmpty
-                ? textContent
-                : '', // text may be empty when only tool_use is returned
+            message: finalText,
             disclaimer:
                 'This is AI-generated legal information, not legal advice. '
                 'Please consult a qualified attorney for advice specific to your situation.',
-            toolUseResponse: rawResponse,
           );
         }
 
@@ -1453,6 +1598,199 @@ class AIService {
         quotaAlreadyConsumed: true,
       );
       yield response.message;
+    }
+  }
+
+  /// Reasoning Trail v1 (2026-05-05) — typed-event streaming surface.
+  ///
+  /// Mirrors [sendChatMessageStreaming] semantically (same fallbacks, same
+  /// history/cache writes, same quota & error handling) but yields
+  /// [ChatStreamEvent] subtypes instead of raw text. Consumers can light up
+  /// the Reasoning Trail pill (thinking + tool stages) without losing the
+  /// `TextDelta` text chunks the legacy UI relied on.
+  ///
+  /// The call sites that pre-date this surface keep using
+  /// [sendChatMessageStreaming]; the chat screen migrates incrementally.
+  Stream<ChatStreamEvent> sendChatMessageStreamingEvents({
+    required String caseId,
+    required String message,
+    String? userLanguage,
+    String? userName,
+    String? clientContext,
+    CaseType? caseType,
+    String? country,
+    String? nationality,
+    String? caseDescription,
+    String? freeLimitMessage,
+  }) async* {
+    final sanitizedMessage = _sanitizeInput(message);
+
+    final effectiveUserLanguage = LanguageDetector.resolveUserLanguage(
+      profileLanguage: userLanguage,
+      message: sanitizedMessage,
+    );
+
+    // Mock / no-real-AI path → emit one TextDelta + Done so the UI flow
+    // is identical regardless of source.
+    if (!isUsingRealAI) {
+      final response = await sendChatMessage(
+        caseId: caseId,
+        message: message,
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseDescription: caseDescription,
+        userLanguage: userLanguage,
+        userName: userName,
+        clientContext: clientContext,
+        freeLimitMessage: freeLimitMessage,
+      );
+      yield TextDelta(response.message);
+      yield const MessageDone();
+      return;
+    }
+
+    final allowed = await _checkAndIncrementDailyLimit();
+    if (!allowed) {
+      yield TextDelta(freeLimitMessage ??
+          'You have used all $_freeTotalLimit free AI messages. '
+              'Upgrade to Legal Counsel for unlimited AI assistance!');
+      yield const MessageDone();
+      return;
+    }
+
+    if (_responseCache.isNotEmpty) {
+      final cached = _getCachedResponse(sanitizedMessage);
+      if (cached != null) {
+        _log.i('Cache hit for query (streaming events path)');
+        _addToHistory(caseId, 'user', sanitizedMessage);
+        _addToHistory(caseId, 'assistant', cached);
+        yield TextDelta(cached);
+        yield const MessageDone();
+        return;
+      }
+    }
+
+    final isSimple = ClaudeService.isSimpleQuery(sanitizedMessage);
+    if (isSimple) {
+      final response = await sendChatMessage(
+        caseId: caseId,
+        message: message,
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseDescription: caseDescription,
+        userLanguage: userLanguage,
+        userName: userName,
+        clientContext: clientContext,
+        freeLimitMessage: freeLimitMessage,
+      );
+      yield TextDelta(response.message);
+      yield const MessageDone();
+      return;
+    }
+
+    _log.i('Using Claude API for streaming chat (events surface)');
+    try {
+      final model = ClaudeService.chooseModel(sanitizedMessage);
+      final bool isShort = ClaudeService.isShortQuery(sanitizedMessage);
+      final int maxTokens = isShort
+          ? ClaudeService.maxTokensForShortQuery()
+          : ClaudeService.maxTokensForModel(model);
+      _log.i('Streaming events model routing: $model (short: $isShort, maxTokens: $maxTokens)');
+
+      final memoryBlock = await _fetchMemoryBlock();
+
+      String systemPrompt = SystemPrompts.buildChatPrompt(
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseContext: caseDescription,
+        userLanguage: effectiveUserLanguage,
+        query: sanitizedMessage,
+        useReducedContext: model == ClaudeService.modelHaiku,
+        memoryBlock: memoryBlock,
+      );
+
+      if (clientContext != null && clientContext.isNotEmpty) {
+        systemPrompt =
+            '# CLIENT PERSONAL KNOWLEDGE BASE\n\n$clientContext\n\n$systemPrompt';
+      }
+
+      if (userName != null && userName.isNotEmpty) {
+        systemPrompt += '\n\nThe user\'s name is $userName. '
+            'Use their name naturally in conversation — at least once every 3-4 messages. '
+            'Do not overuse it, just weave it in like a friend would.';
+      }
+
+      _addToHistory(caseId, 'user', sanitizedMessage);
+
+      final messages = _buildMessagesForApi(caseId);
+      if (messages.isEmpty) {
+        messages.add({'role': 'user', 'content': sanitizedMessage});
+      }
+
+      final fullResponse = StringBuffer();
+      // Voice-tag scrubber operates on TextDelta only — thinking/tool deltas
+      // never carry voice tags. The output text is yielded as a NEW TextDelta
+      // (so consumers see scrubbed text), while the rest of the events pass
+      // through untouched.
+      final scrubber = VoiceTagStreamScrubber();
+
+      await for (final event in _claudeService.sendMessageStreamingEvents(
+        model: model,
+        messages: messages,
+        systemPrompt: systemPrompt,
+        maxTokens: maxTokens,
+        temperature: 0.3,
+      )) {
+        if (event is TextDelta) {
+          fullResponse.write(event.text);
+          final scrubbed = scrubber.feed(event.text);
+          if (scrubbed.isNotEmpty) yield TextDelta(scrubbed);
+        } else {
+          yield event;
+        }
+      }
+
+      // Flush any buffered tail from the scrubber.
+      final tail = scrubber.flush();
+      if (tail.isNotEmpty) yield TextDelta(tail);
+
+      final responseText = VoiceService.stripVoiceTags(fullResponse.toString());
+      if (responseText.isNotEmpty) {
+        _addToHistory(caseId, 'assistant', responseText);
+        _cacheResponse(sanitizedMessage, responseText);
+
+        unawaited(_triggerMemoryExtraction(
+          sessionId: caseId,
+          messages: _snapshotHistoryForExtraction(caseId),
+        ));
+      }
+    } on ClaudeServiceException catch (e) {
+      _log.e('Claude streaming chat (events) failed, falling back', error: e);
+      _conversationHistory[caseId]?.removeLast();
+
+      if (e.errorCode == 'rate_limit' || e.errorCode == 'overload') {
+        _refundLocalQuota();
+        rethrow;
+      }
+
+      final response = await sendChatMessage(
+        caseId: caseId,
+        message: message,
+        caseType: caseType,
+        country: country,
+        nationality: nationality,
+        caseDescription: caseDescription,
+        userLanguage: userLanguage,
+        userName: userName,
+        clientContext: clientContext,
+        freeLimitMessage: freeLimitMessage,
+        quotaAlreadyConsumed: true,
+      );
+      yield TextDelta(response.message);
+      yield const MessageDone();
     }
   }
 

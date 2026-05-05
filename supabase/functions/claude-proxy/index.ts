@@ -10,6 +10,7 @@ import {
   buildAnthropicHeaders,
 } from "./prompt_caching.ts";
 import { mapAnthropicError } from "./error_mapping.ts";
+import { classifyComplexity } from "./classify_complexity.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -123,6 +124,24 @@ serve(async (req) => {
 
     if (Array.isArray(body.messages) && body.messages.length > MAX_MESSAGES) {
       body.messages = body.messages.slice(-MAX_MESSAGES);
+    }
+
+    // Reasoning Trail v1 (2026-05-05): server-side complexity classifier.
+    // Decides per-turn whether to attach an extended-thinking budget so the
+    // client doesn't have to. Anon callers (max_tokens clamped to 500) never
+    // get thinking — the budget would exceed max_tokens and error the API.
+    // Authenticated users get medium (2K) by default, complex (6K) when
+    // the message is long or contains legal keywords.
+    //
+    // We honour any pre-existing `body.thinking` set by the client — only
+    // overwrite when the field is absent.
+    if (body.thinking === undefined) {
+      const inferred = classifyComplexity(body.messages ?? [], isAnon, {
+        hasTools: Array.isArray(body.tools) && body.tools.length > 0,
+      });
+      if (inferred !== null) {
+        body.thinking = inferred;
+      }
     }
 
     // FIX-4 (Sprint 0): block the "free Claude proxy" abuse vector.

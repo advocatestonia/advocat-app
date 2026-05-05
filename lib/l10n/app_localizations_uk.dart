@@ -2508,4 +2508,45 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get feedbackCancel => 'Скасувати';
+
+  @override
+  String get reasoningPillIdle => 'Thinking…';
+
+  @override
+  String get reasoningPillSearchingLaw => 'Searching Estonian law…';
+
+  @override
+  String get reasoningPillSearchingWeb => 'Searching the web…';
+
+  @override
+  String get reasoningPillCheckingCompany => 'Checking company registry…';
+
+  @override
+  String get reasoningPillCheckingVehicle => 'Checking vehicle registry…';
+
+  @override
+  String get reasoningPillReadingDocument => 'Reading your document…';
+
+  @override
+  String get reasoningPillDrafting => 'Drafting the document…';
+
+  @override
+  String get reasoningPillPreparingEmail => 'Preparing email…';
+
+  @override
+  String get reasoningPillFindingLawyer => 'Looking up lawyers…';
+
+  @override
+  String get reasoningPillThinking => 'Reasoning through your case…';
+
+  @override
+  String get reasoningPillFinalising => 'Composing your answer…';
+
+  @override
+  String reasoningCollapsedFormat(int sec, int sources) {
+    return 'Reasoned for ${sec}s · $sources sources';
+  }
+
+  @override
+  String get reasoningExpandHint => 'tap to see steps';
 }

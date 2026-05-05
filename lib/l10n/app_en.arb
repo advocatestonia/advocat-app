@@ -972,5 +972,24 @@
     "feedbackThumbsDownLabel": "Not helpful",
     "feedbackCommentPrompt": "What was wrong?",
     "feedbackSend": "Send",
-    "feedbackCancel": "Cancel"
+    "feedbackCancel": "Cancel",
+    "reasoningPillIdle": "Thinking…",
+    "reasoningPillSearchingLaw": "Searching Estonian law…",
+    "reasoningPillSearchingWeb": "Searching the web…",
+    "reasoningPillCheckingCompany": "Checking company registry…",
+    "reasoningPillCheckingVehicle": "Checking vehicle registry…",
+    "reasoningPillReadingDocument": "Reading your document…",
+    "reasoningPillDrafting": "Drafting the document…",
+    "reasoningPillPreparingEmail": "Preparing email…",
+    "reasoningPillFindingLawyer": "Looking up lawyers…",
+    "reasoningPillThinking": "Reasoning through your case…",
+    "reasoningPillFinalising": "Composing your answer…",
+    "reasoningCollapsedFormat": "Reasoned for {sec}s · {sources} sources",
+    "@reasoningCollapsedFormat": {
+      "placeholders": {
+        "sec": {"type": "int"},
+        "sources": {"type": "int"}
+      }
+    },
+    "reasoningExpandHint": "tap to see steps"
 }

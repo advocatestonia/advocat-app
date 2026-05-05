@@ -951,5 +951,24 @@
   "feedbackThumbsDownLabel": "Ei hyödyllinen",
   "feedbackCommentPrompt": "Mikä meni pieleen?",
   "feedbackSend": "Lähetä",
-  "feedbackCancel": "Peruuta"
+  "feedbackCancel": "Peruuta",
+  "reasoningPillIdle": "Ajattelen…",
+  "reasoningPillSearchingLaw": "Etsin lakia…",
+  "reasoningPillSearchingWeb": "Etsin verkosta…",
+  "reasoningPillCheckingCompany": "Tarkistan yritysrekisteriä…",
+  "reasoningPillCheckingVehicle": "Tarkistan ajoneuvorekisteriä…",
+  "reasoningPillReadingDocument": "Luen dokumenttisi…",
+  "reasoningPillDrafting": "Laadin asiakirjaa…",
+  "reasoningPillPreparingEmail": "Valmistelen sähköpostia…",
+  "reasoningPillFindingLawyer": "Etsin lakimiehiä…",
+  "reasoningPillThinking": "Analysoin tapaustasi…",
+  "reasoningPillFinalising": "Muotoilen vastausta…",
+  "reasoningCollapsedFormat": "Pohdin {sec} s · {sources} lähdettä",
+  "@reasoningCollapsedFormat": {
+    "placeholders": {
+      "sec": {"type": "int"},
+      "sources": {"type": "int"}
+    }
+  },
+  "reasoningExpandHint": "napauta nähdäksesi vaiheet"
 }

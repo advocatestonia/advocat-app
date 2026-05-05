@@ -4603,6 +4603,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel'**
   String get feedbackCancel;
+
+  /// No description provided for @reasoningPillIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Thinking…'**
+  String get reasoningPillIdle;
+
+  /// No description provided for @reasoningPillSearchingLaw.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching Estonian law…'**
+  String get reasoningPillSearchingLaw;
+
+  /// No description provided for @reasoningPillSearchingWeb.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching the web…'**
+  String get reasoningPillSearchingWeb;
+
+  /// No description provided for @reasoningPillCheckingCompany.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking company registry…'**
+  String get reasoningPillCheckingCompany;
+
+  /// No description provided for @reasoningPillCheckingVehicle.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking vehicle registry…'**
+  String get reasoningPillCheckingVehicle;
+
+  /// No description provided for @reasoningPillReadingDocument.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading your document…'**
+  String get reasoningPillReadingDocument;
+
+  /// No description provided for @reasoningPillDrafting.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafting the document…'**
+  String get reasoningPillDrafting;
+
+  /// No description provided for @reasoningPillPreparingEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing email…'**
+  String get reasoningPillPreparingEmail;
+
+  /// No description provided for @reasoningPillFindingLawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking up lawyers…'**
+  String get reasoningPillFindingLawyer;
+
+  /// No description provided for @reasoningPillThinking.
+  ///
+  /// In en, this message translates to:
+  /// **'Reasoning through your case…'**
+  String get reasoningPillThinking;
+
+  /// No description provided for @reasoningPillFinalising.
+  ///
+  /// In en, this message translates to:
+  /// **'Composing your answer…'**
+  String get reasoningPillFinalising;
+
+  /// No description provided for @reasoningCollapsedFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Reasoned for {sec}s · {sources} sources'**
+  String reasoningCollapsedFormat(int sec, int sources);
+
+  /// No description provided for @reasoningExpandHint.
+  ///
+  /// In en, this message translates to:
+  /// **'tap to see steps'**
+  String get reasoningExpandHint;
 }
 
 class _AppLocalizationsDelegate

@@ -85,16 +85,25 @@ export function applyPromptCaching<T extends { system?: unknown }>(
   return body;
 }
 
-/** Build the header set for Anthropic API calls, including caching beta. */
+/** Build the header set for Anthropic API calls, including caching beta
+ *  AND interleaved-thinking beta (Reasoning Trail v1, 2026-05-05).
+ *
+ *  `interleaved-thinking-2025-05-14` lets the model interleave thinking
+ *  blocks with tool_use blocks within a single turn — required for the
+ *  pill UX where the user sees stages like "thinking → searching law →
+ *  thinking → composing answer". Safe to always send: Anthropic ignores
+ *  the beta when the request doesn't use the feature.
+ */
 export function buildAnthropicHeaders(apiKey: string): Record<string, string> {
   return {
     "Content-Type": "application/json",
     "x-api-key": apiKey,
     // Stable API version the function has always used.
     "anthropic-version": "2023-06-01",
-    // FIX-1 (Sprint 0): enables cache_control on content blocks.
-    // Safe to always send — Anthropic ignores the beta header on calls
-    // that don't use the feature.
-    "anthropic-beta": "prompt-caching-2024-07-31",
+    // Comma-separated betas: prompt caching (Sprint 0) + interleaved
+    // thinking (Reasoning Trail v1, 2026-05-05). Both ignored when the
+    // request body doesn't use them.
+    "anthropic-beta":
+      "prompt-caching-2024-07-31,interleaved-thinking-2025-05-14",
   };
 }
