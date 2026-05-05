@@ -306,9 +306,11 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      // Constrain mobile-first UI to phone width on desktop viewports.
-      // QA report 2026-05-03 P0 ship blocker.
+      // Constrain form to phone width on desktop viewports —
+      // 1200px-wide form fields look terrible. Explicit 480 wins
+      // over MaxWidthWrapper's responsive default (which is for shell).
       body: MaxWidthWrapper(
+        maxWidth: 480,
         child: Column(
         children: [
           // ── Progress indicator ──────────────────────────────────────

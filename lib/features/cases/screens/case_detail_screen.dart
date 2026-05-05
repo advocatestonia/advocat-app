@@ -54,9 +54,11 @@ class CaseDetailScreen extends ConsumerWidget {
         ),
       ),
       data: (legalCase) => Scaffold(
-        // Constrain mobile-first UI to phone width on desktop viewports.
-        // QA report 2026-05-03 P0 ship blocker.
+        // Constrain detail view to phone width on desktop viewports —
+        // narrative case content reads better as a column. Explicit 480
+        // wins over MaxWidthWrapper's responsive default (for shell).
         body: MaxWidthWrapper(
+          maxWidth: 480,
           child: CustomScrollView(
           slivers: [
             // ── Sliver app bar with glow effect ──────────────────────

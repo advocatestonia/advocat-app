@@ -145,8 +145,11 @@ class CaseTimelineScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.caseTimeline)),
-      // Constrain mobile-first UI to phone width on desktop viewports.
+      // Constrain timeline to phone width on desktop viewports —
+      // chronological card list reads better as a column. Explicit 480
+      // wins over MaxWidthWrapper's responsive default (for shell).
       body: MaxWidthWrapper(
+        maxWidth: 480,
         child: timelineAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(

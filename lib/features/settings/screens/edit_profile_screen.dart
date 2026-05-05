@@ -270,9 +270,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      // Constrain mobile-first UI to phone width on desktop viewports.
-      // QA report 2026-05-03 P0 ship blocker.
+      // Constrain form to phone width on desktop viewports —
+      // 1200px-wide form fields look terrible. Explicit 480 wins
+      // over MaxWidthWrapper's responsive default (which is for shell).
       body: MaxWidthWrapper(
+        maxWidth: 480,
         child: Stack(
         children: [
           FadeTransition(

@@ -19,8 +19,11 @@ class CaseDocumentsScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.documents)),
-      // Constrain mobile-first UI to phone width on desktop viewports.
+      // Constrain documents list to phone width on desktop viewports.
+      // Explicit 480 wins over MaxWidthWrapper's responsive default
+      // (which only applies to the main shell).
       body: MaxWidthWrapper(
+        maxWidth: 480,
         child: docsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('${l10n.error}: $e')),

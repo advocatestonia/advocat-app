@@ -154,9 +154,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             stops: [0.0, 0.5, 1.0],
           ),
         ),
-        // Constrain mobile-first UI to phone width on desktop viewports
-        // — same reason as MainShell. QA report 2026-05-03 P0 blocker.
+        // Constrain form to phone width on desktop viewports —
+        // 1200px-wide form fields look terrible. Explicit 480 wins
+        // over MaxWidthWrapper's responsive default (which is for shell).
         child: MaxWidthWrapper(
+          maxWidth: 480,
           child: SafeArea(
             child: AnimatedOpacity(
               opacity: _opacity,

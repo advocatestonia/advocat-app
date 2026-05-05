@@ -289,9 +289,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
             stops: [0.0, 0.5, 1.0],
           ),
         ),
-        // Constrain mobile-first UI to phone width on desktop viewports
-        // — same pattern as LoginScreen / MainShell. QA report 2026-05-03 P0.
+        // Constrain form to phone width on desktop viewports —
+        // 1200px-wide form fields look terrible. Explicit 480 wins
+        // over MaxWidthWrapper's responsive default (which is for shell).
         child: MaxWidthWrapper(
+          maxWidth: 480,
           child: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,

@@ -137,9 +137,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             colors: _gradientColors[_currentPage],
           ),
         ),
-        // Constrain mobile-first UI to phone width on desktop viewports.
-        // QA report 2026-05-03 P0 ship blocker.
+        // Constrain onboarding to phone width on desktop viewports —
+        // story-style flow looks wrong full-width. Explicit 480 wins
+        // over MaxWidthWrapper's responsive default (which is for shell).
         child: MaxWidthWrapper(
+          maxWidth: 480,
           child: Stack(
           children: [
             // Subtle particle/shimmer background

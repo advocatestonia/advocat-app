@@ -1,41 +1,68 @@
 import 'package:flutter/material.dart';
 
-/// Centers and constrains its [child] to a phone-width column on wide
-/// viewports, so the mobile-first UI no longer stretches to 1440px on
-/// desktop with empty gutters.
+/// Centers and constrains its [child] on wide viewports so the
+/// mobile-first UI no longer stretches to 1440px on desktop with
+/// empty gutters — but does NOT pin the entire app shell to a
+/// 480px phone column on desktop either (that was the regression
+/// shipped in 79ba32d on 2026-05-03).
 ///
-/// This is a stop-gap until per-screen desktop layouts ship — the goal
-/// is just to STOP the stretching, not to be a real desktop design.
+/// When [maxWidth] is provided, that explicit cap wins (used by
+/// form screens like login/register/onboarding/subscription where
+/// 1200px-wide form fields look terrible).
 ///
-/// On viewports narrower than [maxWidth] this widget is a no-op (it
-/// just returns its child wrapped in a Center, which has zero visual
-/// effect inside an already-tight constraint).
+/// When [maxWidth] is null, the cap becomes responsive based on
+/// the available viewport width:
+///   - viewport <  600px → no constraint (mobile, full-width)
+///   - viewport <  1024px → 720px cap (tablet)
+///   - viewport >= 1024px → 1200px cap (desktop)
 ///
-/// QA report 2026-05-03 flagged this as a P0 ship blocker:
-/// "the same mobile UI stretches to 1440px wide, leaving ~150-200px
-/// horizontal gaps between every quick-action tile."
+/// This way the shell screens (Home/Cases/Deadlines/Settings) breathe
+/// out on desktop instead of looking like a "tiny app stuck in the
+/// middle of a wide page" while the bottom-nav goes full-width.
 class MaxWidthWrapper extends StatelessWidget {
   const MaxWidthWrapper({
     super.key,
     required this.child,
-    this.maxWidth = defaultMaxWidth,
+    this.maxWidth,
   });
 
-  /// Default phone column width — slightly wider than a 390px iPhone
-  /// viewport so the design has its natural breathing room without
-  /// stretching tiles. Tuned to keep the home grid recognisable.
+  /// Legacy default — exposed for tests and any caller that wants the
+  /// historical 480px phone-column cap explicitly. New callers should
+  /// either pass an explicit value (forms) or pass nothing and let the
+  /// responsive default kick in (shell screens).
   static const double defaultMaxWidth = 480;
 
+  /// Responsive breakpoints used when [maxWidth] is null.
+  static const double tabletBreakpoint = 600;
+  static const double desktopBreakpoint = 1024;
+  static const double tabletMaxWidth = 720;
+  static const double desktopMaxWidth = 1200;
+
   final Widget child;
-  final double maxWidth;
+
+  /// Optional explicit cap. When null the cap becomes responsive
+  /// (see class docs).
+  final double? maxWidth;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: maxWidth),
-        child: child,
-      ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final viewportWidth = constraints.maxWidth;
+        final cap = maxWidth ?? _responsiveCap(viewportWidth);
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: cap),
+            child: child,
+          ),
+        );
+      },
     );
+  }
+
+  static double _responsiveCap(double viewportWidth) {
+    if (viewportWidth < tabletBreakpoint) return double.infinity;
+    if (viewportWidth < desktopBreakpoint) return tabletMaxWidth;
+    return desktopMaxWidth;
   }
 }

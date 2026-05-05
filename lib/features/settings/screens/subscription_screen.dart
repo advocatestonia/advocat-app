@@ -78,9 +78,11 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       appBar: AdvocatGradientHeader(
         title: l10n.subscription,
       ),
-      // Constrain mobile-first UI to phone width on desktop viewports.
-      // QA report 2026-05-03 P0 ship blocker.
+      // Constrain pricing card stack to phone width on desktop —
+      // single-column scroll is the correct presentation. Explicit 480
+      // wins over MaxWidthWrapper's responsive default (for shell).
       body: MaxWidthWrapper(
+        maxWidth: 480,
         child: FadeTransition(
         opacity: _fadeAnimation,
         child: Column(
