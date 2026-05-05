@@ -77,23 +77,62 @@ class UserMemoryService {
   ///
   /// Output:
   ///
+  ///   === YOUR LEGAL STATUS ===
+  ///   (This determines which body of law applies. Apply Estonian Aliens
+  ///   Act, EU directives, or Estonian civil/criminal law accordingly.)
+  ///   - [Legal status] 3rd country national with humanitarian residence permit.
+  ///   - [Nationality] RU
+  ///   - [Residence status] temporary
+  ///
   ///   === WHAT WE KNOW ABOUT YOU ===
   ///   (Use these to personalise tone and anticipate needs. Never quote
   ///   them verbatim unless the user asks what you remember.)
   ///   - [Tone] You prefer short replies.
   ///   - [People you mentioned] Your wife is Sofia.
   ///   ...
+  ///
+  /// Legal-status keys ([kLegalStatusMemoryKeys]) ALWAYS render first so
+  /// the model anchors on jurisdiction before style/tone. They are not
+  /// duplicated into the generic facts list below.
   static String buildMemoryBlock(List<UserMemory> memories) {
     if (memories.isEmpty) return '';
-    final buf = StringBuffer()
-      ..writeln('=== WHAT WE KNOW ABOUT YOU ===')
-      ..writeln(
-        '(Use these to personalise tone and anticipate needs. Never quote '
-        'them verbatim unless the user asks what you remember.)',
-      );
-    for (final m in memories) {
-      buf.writeln('- [${memoryKeyLabel(m.key)}] ${m.text}');
+
+    final legal = memories
+        .where((m) => kLegalStatusMemoryKeys.contains(m.key))
+        .toList(growable: false);
+    final generic = memories
+        .where((m) => !kLegalStatusMemoryKeys.contains(m.key))
+        .toList(growable: false);
+
+    final buf = StringBuffer();
+
+    if (legal.isNotEmpty) {
+      buf
+        ..writeln('=== YOUR LEGAL STATUS ===')
+        ..writeln(
+          '(This determines which body of law applies. Apply Estonian '
+          'Aliens Act, EU directives, or Estonian civil/criminal law '
+          'accordingly. Never assume citizenship — use only what is '
+          'recorded here.)',
+        );
+      for (final m in legal) {
+        buf.writeln('- [${memoryKeyLabel(m.key)}] ${m.text}');
+      }
     }
+
+    if (generic.isNotEmpty) {
+      if (legal.isNotEmpty) buf.writeln();
+      buf
+        ..writeln('=== WHAT WE KNOW ABOUT YOU ===')
+        ..writeln(
+          '(Use these to personalise tone and anticipate needs. Never quote '
+          'them verbatim unless the user asks what you remember.)',
+        );
+      for (final m in generic) {
+        buf.writeln('- [${memoryKeyLabel(m.key)}] ${m.text}');
+      }
+    }
+
     return buf.toString();
   }
 

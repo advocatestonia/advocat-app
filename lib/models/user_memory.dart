@@ -78,6 +78,14 @@ class UserMemory {
 /// with the Edge Function + SQL migration. A mismatch here cannot
 /// corrupt data (the server rejects unknown keys) but it can cause
 /// the UI to show "Unknown" labels if a new key is added server-side.
+///
+/// 2026-05-05 expansion (Visioning Council #1 priority):
+///   legal_status      — citizen | eu_citizen | 3rd_country | asylum_seeker
+///                       | refugee | stateless | other
+///   nationality       — ISO country code (RU, EE, FI, …)
+///   residence_status  — permanent | temporary | humanitarian | undefined
+/// These three gate which body of law applies and therefore appear in a
+/// dedicated "YOUR LEGAL STATUS" section in [UserMemoryService.buildMemoryBlock].
 const Set<String> kAllowedMemoryKeys = {
   'name',
   'tone',
@@ -89,6 +97,18 @@ const Set<String> kAllowedMemoryKeys = {
   'preference',
   'background',
   'discussed_topic',
+  'legal_status',
+  'nationality',
+  'residence_status',
+};
+
+/// Subset of [kAllowedMemoryKeys] that determines which body of law applies
+/// to the user. These are rendered in a separate, prominent section in the
+/// system prompt so the model anchors on legal context before tone/style.
+const Set<String> kLegalStatusMemoryKeys = {
+  'legal_status',
+  'nationality',
+  'residence_status',
 };
 
 /// User-facing label for each memory key. Default shown when the enum
@@ -115,6 +135,12 @@ String memoryKeyLabel(String key) {
       return 'Background';
     case 'discussed_topic':
       return 'Topics discussed';
+    case 'legal_status':
+      return 'Legal status';
+    case 'nationality':
+      return 'Nationality';
+    case 'residence_status':
+      return 'Residence status';
     default:
       return key;
   }

@@ -10,6 +10,11 @@
  *   - the SQL doc comment on public.user_ai_memory.key
  *   - the "key" enum inside the Haiku JSON schema below
  *   - lib/models/user_memory.dart (Dart client)
+ *
+ * 2026-05-05 expansion (Visioning Council #1 priority): legal_status,
+ * nationality, residence_status — these gate which body of law applies
+ * to the user (Estonian Aliens Act vs EU directives vs civil/criminal),
+ * so they are the highest-leverage facts to remember.
  */
 export const ALLOWED_KEYS: Set<string> = new Set([
   "name",
@@ -22,6 +27,9 @@ export const ALLOWED_KEYS: Set<string> = new Set([
   "preference",
   "background",
   "discussed_topic",
+  "legal_status",
+  "nationality",
+  "residence_status",
 ]);
 
 /** Hard cap on the `text` field for a single fact. */
@@ -189,6 +197,18 @@ export const SYSTEM_PROMPT = [
   "inference. Below 0.5 — do not include.\n",
   "5. Return at most 10 facts. Prefer fewer, high-value facts over noise.\n",
   "6. Do NOT repeat facts across multiple keys.\n",
+  "7. PRIORITY KEYS — extract these aggressively when present, they gate ",
+  "which body of law applies:\n",
+  "   • legal_status — one of: citizen | eu_citizen | 3rd_country | ",
+  "asylum_seeker | refugee | stateless | other. Example: \"3rd country ",
+  "national with humanitarian residence permit\".\n",
+  "   • nationality — ISO country code (RU, EE, FI, UA, …). Example: \"RU\".\n",
+  "   • residence_status — one of: permanent | temporary | humanitarian | ",
+  "undefined. Example: \"temporary residence permit, expires 2027\".\n",
+  "   These three are MORE valuable than any tone/preference fact — they ",
+  "decide whether Estonian Aliens Act, EU directives, or civil/criminal ",
+  "law applies. Extract them whenever the user mentions citizenship, a ",
+  "residence permit, asylum, or which country they hold a passport from.\n",
 ].join("");
 
 /**

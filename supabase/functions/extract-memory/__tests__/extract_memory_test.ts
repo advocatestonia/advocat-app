@@ -32,6 +32,9 @@ import {
 // ---------------------------------------------------------------------------
 
 Deno.test("EM-T01 — ALLOWED_KEYS matches ADR-001 bounded vocabulary", () => {
+  // 2026-05-05 expansion: added legal_status / nationality /
+  // residence_status (Visioning Council #1 priority — these gate the
+  // applicable body of law and therefore live in the bounded vocab).
   const expected = [
     "name",
     "tone",
@@ -43,6 +46,9 @@ Deno.test("EM-T01 — ALLOWED_KEYS matches ADR-001 bounded vocabulary", () => {
     "preference",
     "background",
     "discussed_topic",
+    "legal_status",
+    "nationality",
+    "residence_status",
   ];
   for (const k of expected) {
     assert(ALLOWED_KEYS.has(k), `Missing key: ${k}`);
@@ -53,6 +59,18 @@ Deno.test("EM-T01 — ALLOWED_KEYS matches ADR-001 bounded vocabulary", () => {
     "ALLOWED_KEYS must match the exact ADR-001 vocabulary — adding a key " +
       "silently widens the extraction surface and must go through ADR.",
   );
+});
+
+Deno.test("EM-T01b — legal-status keys present and are a strict subset", () => {
+  // The legal-status sub-vocabulary is what the Dart renderer special-cases
+  // in buildMemoryBlock. If it drifts from ALLOWED_KEYS, the renderer
+  // silently drops them into the generic facts list.
+  for (const k of ["legal_status", "nationality", "residence_status"]) {
+    assert(
+      ALLOWED_KEYS.has(k),
+      `legal-status key "${k}" must be in ALLOWED_KEYS`,
+    );
+  }
 });
 
 Deno.test("EM-T02 — buildHaikuRequest targets the right model + deterministic", () => {
