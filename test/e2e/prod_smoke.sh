@@ -387,6 +387,52 @@ for path in \
   fi
 done
 
+# --- Seam D: claude-proxy demo mode (anon Bearer) is allowed ---
+# Regression of 2026-05-05: f8f6a58 removed anonymousPerMinute from the
+# auth gate to close an anon-key cost-burn exploit, but that 401'd the
+# "Proovi demorežiimi" → "AI õigusabi" flow and chat UI showed
+# "Временная ошибка AI". Restored with anonymousPerMinute=3 and a
+# 500-token clamp on anon responses.
+#
+# This probe sends a real Advocat system prompt with the public anon key
+# as Bearer (mirroring lib/services/claude_service.dart:372) and a TINY
+# max_tokens (10) so the per-run cost is well under $0.001 even on the
+# Anthropic round-trip. We accept any 2xx as "demo gate is open"; a 401
+# means we regressed; a 429 is acceptable (smoke ran 4× in same minute).
+seam_d_demo_anon() {
+  local body resp code payload
+  body='{"model":"claude-haiku-4-5-20251001","max_tokens":10,"system":"You are Advocat, a legal assistant.","messages":[{"role":"user","content":"hi"}]}'
+  resp=$(curl -s --max-time "$TIMEOUT" -X POST "$FUNCTIONS_URL/claude-proxy" \
+    -H "Authorization: Bearer ${SMOKE_ANON_KEY}" \
+    -H "apikey: ${SMOKE_ANON_KEY}" \
+    -H "Content-Type: application/json" \
+    -H "Origin: https://advocat.ee" \
+    -w $'\n__HTTP__%{http_code}' \
+    --data-binary "$body" 2>&1 || true)
+  code=$(printf '%s' "$resp" | awk -F'__HTTP__' 'END{print $2}')
+  payload=$(printf '%s' "$resp" | sed 's/__HTTP__.*$//')
+  # 401 on this exact request is the regression we are guarding against.
+  if [[ "$code" == "401" ]]; then
+    printf "  payload: %s\n" "${payload:0:200}" >&2
+    return 1
+  fi
+  # 200/429/402 (quota) are all acceptable — the demo gate is open.
+  printf "\033[1;32m  ✓\033[0m %-55s [code=%s]\n" \
+    "Seam D: claude-proxy demo (anon Bearer) allowed" "$code"
+  return 0
+}
+
+if [[ -z "$SMOKE_ANON_KEY" ]]; then
+  printf "\033[1;33m  ⚠\033[0m %-55s [SUPABASE_ANON_KEY missing — skip]\n" \
+    "Seam D: claude-proxy demo probe"
+else
+  if retry seam_d_demo_anon; then
+    PASS=$((PASS+1))
+  else
+    die "Seam D: claude-proxy 401'd anon Bearer — regression of 2026-05-05 FIX (demo mode)"
+  fi
+fi
+
 echo ""
 echo "[6] Payment activation contract (skipped unless STRIPE_TEST_WEBHOOK_KEY set)"
 # ---------------------------------------------------------------------------

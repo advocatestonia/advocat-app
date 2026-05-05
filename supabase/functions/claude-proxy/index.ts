@@ -16,27 +16,30 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 
 // SECURITY 2026-05-04 U1+U2+U3 — claude-proxy hardening.
 // -----------------------------------------------------------------------------
-// BEFORE: this function had its own inline auth that called
+// BEFORE (pre-f8f6a58): this function had its own inline auth that called
 //   supabase.auth.getUser(token) and, when the token was the public
 //   Supabase anon key (i.e. no associated end-user), set
 //   `effectiveRateLimit = 10` and FORWARDED to Anthropic anyway.
 // That made the function a free Claude proxy: anyone who pulled the
 // anon key out of `main.dart.js` could burn unlimited credits.
 //
-// AFTER:
-//   1) requireUserWithRateLimit (no anonymousPerMinute) — only real
-//      end-user JWTs (role: "authenticated") may call this function.
-//      Anon-key requests now get 401 instead of a Claude response.
-//   2) Server-side `check-ai-quota` round-trip — even authenticated
-//      free-tier users cannot exceed the 7-message free cap by
-//      curl-ing the proxy directly (the cap was previously enforced
-//      only by the polite Flutter client).
-//   3) The legacy in-process rate-limit Map is removed in favour of
-//      the shared helper's bucket. Cloudflare WAF (planned tomorrow)
-//      adds the IP-level cap that survives Edge Function cold-starts.
+// AFTER (f8f6a58):
+//   1) requireUserWithRateLimit — only real end-user JWTs may call this.
+//   2) Server-side `check-ai-quota` round-trip enforces the free cap.
+//   3) The legacy in-process rate-limit Map is removed.
+//
+// 2026-05-05 DEMO RESTORE: f8f6a58 set anonymousPerMinute=0, which 401'd
+// the "Proovi demorežiimi" → "AI õigusabi" flow (chat UI showed "Временная
+// ошибка AI"). We restore demo with a HARD CAP that keeps cost bounded:
+//   • anonymousPerMinute = 3            — IP rate-limit, 3 msgs / min
+//   • ANON_MAX_TOKENS = 500             — clamp anon responses to 500 tokens
+//                                         (vs 4096 for authenticated users)
+// Worst case per anon IP: 3 calls/min × 500 tokens × ~$1.5/1M out tokens
+// (Haiku 4.5) ≈ $0.13/hour. Authenticated callers retain the full 4096 cap.
 // -----------------------------------------------------------------------------
 
 const RATE_LIMIT_MAX = 10;
+const ANON_RATE_LIMIT_PER_MINUTE = 3;
 
 const ALLOWED_MODELS = new Set([
   "claude-sonnet-4-20250514",
@@ -46,6 +49,7 @@ const ALLOWED_MODELS = new Set([
 ]);
 
 const MAX_TOKENS_LIMIT = 4096;
+const ANON_MAX_TOKENS = 500;
 const MAX_MESSAGES = 20;
 
 serve(async (req) => {
@@ -59,18 +63,29 @@ serve(async (req) => {
 
   try {
     // ── 1. AuthN + per-user rate limit ────────────────────────────────────
-    // No `anonymousPerMinute` — anon-key callers get 401.
+    // 2026-05-05 DEMO RESTORE: anonymousPerMinute=3 lets demo-mode callers
+    // (anon-key Bearer) through with an IP-bucketed 3/min cap. The
+    // `anon:<ip>` synthetic principal is bucketed separately from
+    // authenticated users in the shared helper.
     const gate = await requireUserWithRateLimit(req, {
       bucket: "claude-proxy",
       maxPerMinute: RATE_LIMIT_MAX,
+      anonymousPerMinute: ANON_RATE_LIMIT_PER_MINUTE,
     });
     if (gate.kind === "deny") return gate.response;
+    const isAnon = gate.user.id.startsWith("anon:");
 
     // ── 2. Server-side quota check (SECURITY U3) ──────────────────────────
     // Even an authenticated free-tier user cannot bypass the 7-message cap
     // by calling this endpoint directly. We forward the caller's JWT so
     // check-ai-quota's RLS-aware `auth.uid()` resolves correctly.
-    const authHeader = req.headers.get("Authorization")!; // gate guarantees presence
+    //
+    // For anon callers, check-ai-quota returns a synthetic
+    // { allowed: true, plan: "free" } payload (see check-ai-quota/index.ts
+    // lines 75-84) — no real per-IP counter is persisted server-side. The
+    // bound on anon abuse is the rate-limit (3/min/IP) + ANON_MAX_TOKENS
+    // clamp below.
+    const authHeader = req.headers.get("Authorization") ?? "";
     const quotaAllowed = await checkQuota(authHeader);
     if (!quotaAllowed.ok) {
       // 402 Payment Required — semantic match for "out of free quota".
@@ -94,8 +109,17 @@ serve(async (req) => {
       body.model = "claude-haiku-4-5-20251001";
     }
 
-    // Enforce limits
+    // Enforce limits — global 4096 cap applies to everyone.
     body.max_tokens = Math.min(body.max_tokens || MAX_TOKENS_LIMIT, MAX_TOKENS_LIMIT);
+
+    // 2026-05-05 DEMO RESTORE: tighten the cap for anon callers to
+    // ANON_MAX_TOKENS (500). This is a defence-in-depth bound on per-call
+    // cost — even if the rate-limit (3/min/IP) is somehow bypassed, an anon
+    // caller cannot get a full-cost 4096-token response. Authenticated
+    // users keep the full 4096 cap unchanged.
+    if (isAnon) {
+      body.max_tokens = Math.min(body.max_tokens, ANON_MAX_TOKENS);
+    }
 
     if (Array.isArray(body.messages) && body.messages.length > MAX_MESSAGES) {
       body.messages = body.messages.slice(-MAX_MESSAGES);
