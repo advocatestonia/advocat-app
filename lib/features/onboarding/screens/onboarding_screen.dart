@@ -149,6 +149,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 
             SafeArea(
               child: Column(
+                // crossAxisAlignment: stretch so the inner PageView (which
+                // sits in `Expanded`) gets a tight cross-axis constraint
+                // equal to the wrapper's responsive max width (1200 on
+                // desktop). With the default `center`, PageView collapses
+                // to a 480px fallback and the wizard stays squeezed.
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // -- Skip button (top-right, hidden on language and last page) --
                   Align(

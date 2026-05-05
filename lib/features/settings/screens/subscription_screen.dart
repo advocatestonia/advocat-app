@@ -83,10 +83,18 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       // it should breathe out to 1200px, not sit in a 480px column with
       // empty gutters. Form screens (login/register/edit_profile) keep an
       // explicit 480 cap; this one is page-content.
+      //
+      // Column.crossAxisAlignment must be `stretch` so the inner PageView
+      // (which has `viewportFraction: 0.85`) actually receives the full
+      // 1200px wrapper width as a tight cross-axis constraint. With the
+      // default `center`, children get loose constraints and PageView
+      // collapses to a 480px fallback — keeping the desktop layout
+      // squeezed even after the wrapper was loosened.
       body: MaxWidthWrapper(
         child: FadeTransition(
         opacity: _fadeAnimation,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 16),
 

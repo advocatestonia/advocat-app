@@ -310,8 +310,16 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
       // multi-step page-content wizard with progress bar and bottom nav,
       // not a single text-field form. On desktop it should breathe out
       // to 1200px instead of being squeezed into a 480px column.
+      //
+      // Column.crossAxisAlignment must be `stretch` so the inner
+      // step-content children (Expanded, _StepProgressBar, _BottomNav)
+      // actually receive the full 1200px wrapper width as a tight
+      // cross-axis constraint. With the default `center`, children get
+      // loose constraints and collapse to their intrinsic widths,
+      // leaving the wizard squeezed even after the wrapper widened.
       body: MaxWidthWrapper(
         child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // ── Progress indicator ──────────────────────────────────────
           _StepProgressBar(
