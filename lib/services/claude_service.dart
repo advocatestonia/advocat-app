@@ -200,6 +200,51 @@ class ClaudeService {
     return model == modelHaiku ? _maxTokensHaiku : _maxTokensSonnet;
   }
 
+  /// Choose a model for a tool-eligible turn (Anthropic engineer consilium,
+  /// 2026-05-05). Tool turns benefit from Sonnet because the model has to
+  /// (a) decide whether to call a tool, (b) interleave thinking between
+  /// tool_use blocks (requires `interleaved-thinking-2025-05-14` beta —
+  /// already attached in claude-proxy), and (c) stitch the tool result
+  /// into a final answer. Haiku tends to short-circuit step (b).
+  ///
+  /// Routing matrix:
+  ///
+  ///   hasTools=true  + isAuthenticated=true  + !isSimpleQuery → Sonnet
+  ///   hasTools=true  + isAuthenticated=false                  → Haiku
+  ///       (anon callers cannot reach Sonnet — server clamps their
+  ///       max_tokens to 500 and refuses thinking. Sonnet $ on them
+  ///       would be pure burn. See claude-proxy/index.ts ANON_MAX_TOKENS.)
+  ///   hasTools=true  + isAuthenticated=true  +  isSimpleQuery → Haiku
+  ///       (greetings stay on Haiku — 12x cheaper, response is short.)
+  ///   hasTools=false                                          → chooseModel
+  ///       (legacy keyword heuristic — unchanged for non-tool turns.)
+  ///
+  /// Cost ceiling: Sonnet adds ~$0.05/turn vs Haiku for typical legal
+  /// turns with thinking. Anon-path seal pinned by
+  /// claude_service_routing_test.dart and the server-side
+  /// classify_complexity_test.ts.
+  static String chooseModelForTools(
+    String query, {
+    required bool hasTools,
+    required bool isAuthenticated,
+  }) {
+    // Non-tool turns keep legacy behaviour exactly. Pin via direct delegation.
+    if (!hasTools) {
+      return chooseModel(query);
+    }
+    // Cost-control invariant: anon never reaches Sonnet.
+    if (!isAuthenticated) {
+      return modelHaiku;
+    }
+    // Simple greetings stay on Haiku — short reply, no need for Sonnet
+    // headroom. Tools attached or not.
+    if (isSimpleQuery(query)) {
+      return modelHaiku;
+    }
+    // Authenticated, non-trivial, tool-eligible turn → Sonnet.
+    return modelSonnet;
+  }
+
   /// Whether a query is "simple" — greetings, meta-questions, short queries
   /// without legal keywords. Simple queries skip the knowledge base entirely
   /// and use a minimal system prompt for maximum speed.

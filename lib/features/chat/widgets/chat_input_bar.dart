@@ -6,6 +6,12 @@ import '../../../l10n/app_localizations.dart';
 import 'voice_button.dart';
 
 /// Bottom input bar for the chat screen with text field, send, voice and attach.
+///
+/// 2026-05-05 — Stop button (Cursor consilium Gap #1). When [isSending] is
+/// true and [onStop] is non-null, the send button morphs into a stop icon
+/// that calls [onStop] when tapped. This lets the user cancel a streaming
+/// reply mid-flight instead of having to wait ~15s for a wrong-direction
+/// generation to finish (and burn a quota slot).
 class ChatInputBar extends StatelessWidget {
   const ChatInputBar({
     super.key,
@@ -18,6 +24,7 @@ class ChatInputBar extends StatelessWidget {
     required this.onSend,
     required this.onVoiceTap,
     this.onAttach,
+    this.onStop,
   });
 
   final TextEditingController messageController;
@@ -29,6 +36,11 @@ class ChatInputBar extends StatelessWidget {
   final VoidCallback onSend;
   final VoidCallback onVoiceTap;
   final VoidCallback? onAttach;
+
+  /// Called when the user taps the button while [isSending] is true.
+  /// Intended to cancel the in-flight AI stream. When null, the send
+  /// button keeps its legacy disabled-spinner behaviour during sending.
+  final VoidCallback? onStop;
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +142,7 @@ class ChatInputBar extends StatelessWidget {
 
           const SizedBox(width: 6),
 
-          // Mic + Send buttons — same size, aligned in a row
+          // Mic + Send/Stop buttons — same size, aligned in a row
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -169,7 +181,13 @@ class ChatInputBar extends StatelessWidget {
 
               if (voiceInitialized) const SizedBox(width: 6),
 
-              // Send button — 44x44, circular, accent color
+              // Send / Stop button — 44x44, circular, accent color.
+              //
+              // While `isSending`:
+              //   • If `onStop` is non-null → show stop icon, tap calls onStop.
+              //     This is the post-2026-05-05 stop-button fix (Cursor
+              //     consilium Gap #1).
+              //   • If `onStop` is null → legacy disabled-spinner.
               Container(
                 width: 44,
                 height: 44,
@@ -187,19 +205,25 @@ class ChatInputBar extends StatelessWidget {
                   ],
                 ),
                 child: IconButton(
-                  onPressed: isSending ? null : onSend,
+                  onPressed:
+                      isSending ? (onStop) : onSend,
                   icon: isSending
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
+                      ? (onStop != null
+                          ? const Icon(Icons.stop_rounded, size: 20)
+                          : const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            ))
                       : const Icon(Icons.send_rounded, size: 20),
                   color: Colors.white,
                   padding: EdgeInsets.zero,
+                  tooltip: isSending && onStop != null
+                      ? _stopTooltipForLocale(context)
+                      : null,
                 ),
               ),
             ],
@@ -207,5 +231,26 @@ class ChatInputBar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Localised tooltip for the stop button. Inline switch instead of a new
+  /// AppLocalizations key so this change is self-contained — the arb files
+  /// do not need to be regenerated for the fix to ship. Falls through to
+  /// English for any unsupported locale.
+  static String _stopTooltipForLocale(BuildContext context) {
+    final code = Localizations.maybeLocaleOf(context)?.languageCode ?? 'en';
+    switch (code) {
+      case 'et':
+        return 'Peata';
+      case 'ru':
+      case 'uk':
+        return 'Остановить';
+      case 'fi':
+        return 'Pysäytä';
+      case 'de':
+        return 'Stoppen';
+      default:
+        return 'Stop';
+    }
   }
 }

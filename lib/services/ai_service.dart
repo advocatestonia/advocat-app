@@ -380,6 +380,19 @@ class AIService {
   @visibleForTesting
   void refundLocalQuotaForTest() => _refundLocalQuota();
 
+  /// Public refund hook for the chat layer (Cursor consilium Gap #1, stop
+  /// button). Refunds exactly one quota slot iff [anyTokensReceived] is
+  /// false — i.e. the user tapped Stop before the first token streamed in.
+  /// Stops AFTER partial content arrived DO bill: the model already
+  /// produced output and Anthropic charged for it.
+  ///
+  /// Idempotent and bounded by [_refundLocalQuota] (cannot push remaining
+  /// above the monthly limit). Pro users are no-op.
+  void refundLocalQuotaIfEmptyStop({required bool anyTokensReceived}) {
+    if (anyTokensReceived) return;
+    _refundLocalQuota();
+  }
+
   /// Atomically increment the server counter and return the new state.
   /// Called right before each message is dispatched to Claude.
   ///

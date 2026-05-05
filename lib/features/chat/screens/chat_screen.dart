@@ -148,6 +148,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _voiceInitialized = false;
   StreamSubscription<String>? _speechSub;
 
+  // -- Stop button (Cursor consilium Gap #1, 2026-05-05) --
+  //
+  // Holds the active Stream subscription from
+  // ai.sendChatMessageStreamingEvents() so the user can cancel a
+  // wrong-direction generation mid-flight via _stopStreaming(). When the
+  // stream completes naturally we set this back to null in the listen()
+  // onDone handler.
+  StreamSubscription<ChatStreamEvent>? _aiSub;
+  // True when the active generation was cancelled by the user. Drives
+  // the "Stopped by user" placeholder and quota refund decision in
+  // _stopStreaming().
+  bool _stoppedByUser = false;
+  // Live references to the in-flight stream's text buffer + bubble id so
+  // _stopStreaming() (invoked from the input bar's onPressed) can decide
+  // (a) whether to refund the quota slot (empty buffer = refund) and
+  // (b) which assistant bubble to mark "Stopped by user".
+  StringBuffer? _currentStreamFullText;
+  String? _currentStreamMessageId;
+
   /// Single source of truth for speaking AI replies. Rebuilt per reply
   /// so that each AI message produces exactly ONE voiceService.speak()
   /// call — see docs/tts-audit/02-voice-switching-root-cause.md.
@@ -209,6 +228,92 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     } catch (_) {}
   }
 
+  /// The Completer associated with the active stream's "done" signal. Held
+  /// here (in addition to the local var inside _sendMessage) so that
+  /// _stopStreaming() can complete it when the user taps Stop. Without
+  /// this, the .cancel() drops events but the awaited future would never
+  /// fire and the finally block would not run.
+  Completer<void>? _streamDoneCompleter;
+
+  /// Cancel the in-flight AI stream (Cursor consilium Gap #1, 2026-05-05).
+  ///
+  /// Behaviour:
+  ///   - Cancels [_aiSub] so the upstream HTTP/SSE connection drops on the
+  ///     next chunk boundary.
+  ///   - Marks [_stoppedByUser] so the streaming consumer in _sendMessage
+  ///     swaps a "Stopped by user" placeholder for the partial bubble when
+  ///     no text has streamed in yet.
+  ///   - Refunds the local quota slot iff no tokens have been received —
+  ///     a tap that beats the first byte must not bill the user; a tap
+  ///     after content arrived DOES bill (Anthropic charged us for it).
+  ///   - Completes the stream's Completer so the awaiting `_sendMessage`
+  ///     future falls through to its finally block.
+  ///
+  /// Idempotent and safe to call multiple times. No-op when no stream is
+  /// active.
+  void _stopStreaming(StringBuffer fullText, String streamingMessageId) {
+    if (_aiSub == null) return; // No active stream — nothing to stop.
+    _stoppedByUser = true;
+    final anyTokensReceived = fullText.isNotEmpty;
+    unawaited(_aiSub?.cancel() ?? Future<void>.value());
+    _aiSub = null;
+    final completer = _streamDoneCompleter;
+    if (completer != null && !completer.isCompleted) {
+      completer.complete();
+    }
+    _streamDoneCompleter = null;
+
+    // Refund the quota only if we beat the first byte.
+    final ai = ref.read(aiServiceProvider);
+    ai.refundLocalQuotaIfEmptyStop(anyTokensReceived: anyTokensReceived);
+
+    // Swap the empty placeholder bubble for "Stopped by user" so the chat
+    // doesn't end with a blank assistant message.
+    if (mounted) {
+      final stoppedLabel = _stoppedByUserLabelForLocale();
+      setState(() {
+        final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
+        if (idx >= 0) {
+          // If text already arrived, keep it and append the marker. Else
+          // replace the empty bubble with the marker alone.
+          final existing = _messages[idx].content;
+          final newContent = existing.isEmpty
+              ? stoppedLabel
+              : '$existing\n\n_${stoppedLabel}_';
+          _messages[idx] = ChatMessage(
+            id: streamingMessageId,
+            role: MessageRole.assistant,
+            content: newContent,
+            timestamp: DateTime.now(),
+          );
+        }
+        _isSending = false;
+        _isTyping = false;
+      });
+    }
+    // Refresh the displayed quota counter after refund.
+    _loadFreeMessageCount();
+  }
+
+  /// Inline locale switch for the "Stopped by user" marker. Self-contained
+  /// so this fix doesn't require regenerating app_localizations.dart.
+  String _stoppedByUserLabelForLocale() {
+    final code = Localizations.maybeLocaleOf(context)?.languageCode ?? 'en';
+    switch (code) {
+      case 'et':
+        return 'Kasutaja peatas';
+      case 'ru':
+      case 'uk':
+        return 'Остановлено пользователем';
+      case 'fi':
+        return 'Käyttäjä pysäytti';
+      case 'de':
+        return 'Vom Benutzer gestoppt';
+      default:
+        return 'Stopped by user';
+    }
+  }
+
   @override
   void dispose() {
     _knowledgeService.saveConversationSummary(caseId: widget.caseId);
@@ -217,6 +322,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _scrollController.dispose();
     _focusNode.dispose();
     _speechSub?.cancel();
+    // Stop button (2026-05-05): kill any active AI subscription so an
+    // in-flight stream does not write to a disposed widget.
+    unawaited(_aiSub?.cancel() ?? Future<void>.value());
+    _aiSub = null;
     _trailController?.close();
     super.dispose();
   }
@@ -760,7 +869,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
             final fullText = StringBuffer();
 
-            await for (final event in ai.sendChatMessageStreamingEvents(
+            // Stop button (Cursor consilium Gap #1, 2026-05-05): consume
+            // the event stream via .listen() so _stopStreaming() can
+            // .cancel() the subscription mid-flight. Behaviour-equivalent
+            // to the prior `await for` — handlers below are the loop body.
+            // Reset stop flag at start of each turn.
+            _stoppedByUser = false;
+            _currentStreamFullText = fullText;
+            _currentStreamMessageId = streamingMessageId;
+            final streamDone = Completer<void>();
+            _streamDoneCompleter = streamDone;
+            unawaited(_aiSub?.cancel() ?? Future<void>.value());
+            _aiSub = ai
+                .sendChatMessageStreamingEvents(
               caseId: widget.caseId,
               message: text,
               userLanguage: Localizations.localeOf(context).languageCode,
@@ -770,51 +891,73 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               country: 'estonia',
               nationality: _currentCase?.nationality,
               freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit),
-            )) {
-              // Forward EVERY event to the trail so it can light up the
-              // pill on thinking / tool_use / tool_result / message_done.
-              _trailController?.add(event);
+            )
+                .listen(
+              (event) {
+                // Forward EVERY event to the trail so it can light up the
+                // pill on thinking / tool_use / tool_result / message_done.
+                _trailController?.add(event);
 
-              // TextDelta: still drives the existing buffer + TTS chunk
-              // feed exactly as before. Non-text events do not touch the
-              // text buffer or the speaker.
-              if (event is TextDelta) {
-                final chunk = event.text;
-                fullText.write(chunk);
-                streamUIDirty = true;
-                streamUITimer ??= Timer.periodic(const Duration(milliseconds: 50), (_) {
-                  if (streamUIDirty && mounted) {
-                    streamUIDirty = false;
-                    setState(() {
-                      final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
-                      if (idx >= 0) {
-                        _messages[idx] = ChatMessage(
-                          id: streamingMessageId,
-                          role: MessageRole.assistant,
-                          content: fullText.toString(),
-                          timestamp: DateTime.now(),
-                        );
-                      }
-                    });
-                    _scrollToBottom();
-                  }
-                });
+                // TextDelta: still drives the existing buffer + TTS chunk
+                // feed exactly as before. Non-text events do not touch the
+                // text buffer or the speaker.
+                if (event is TextDelta) {
+                  final chunk = event.text;
+                  fullText.write(chunk);
+                  streamUIDirty = true;
+                  streamUITimer ??= Timer.periodic(const Duration(milliseconds: 50), (_) {
+                    if (streamUIDirty && mounted) {
+                      streamUIDirty = false;
+                      setState(() {
+                        final idx = _messages.indexWhere((m) => m.id == streamingMessageId);
+                        if (idx >= 0) {
+                          _messages[idx] = ChatMessage(
+                            id: streamingMessageId,
+                            role: MessageRole.assistant,
+                            content: fullText.toString(),
+                            timestamp: DateTime.now(),
+                          );
+                        }
+                      });
+                      _scrollToBottom();
+                    }
+                  });
 
-                // Stream the chunk into the speaker's buffer. No audio is
-                // produced here — MessageSpeaker speaks the FULL accumulated
-                // reply once onStreamComplete() fires, so ElevenLabs /
-                // Chirp3 / Gemini receive one continuous text and return
-                // one continuous voice. Sentence-level streaming was
-                // rejected by owner 22.04.2026.
-                _messageSpeaker?.onChunk(chunk);
-              }
+                  // Stream the chunk into the speaker's buffer. No audio is
+                  // produced here — MessageSpeaker speaks the FULL accumulated
+                  // reply once onStreamComplete() fires, so ElevenLabs /
+                  // Chirp3 / Gemini receive one continuous text and return
+                  // one continuous voice. Sentence-level streaming was
+                  // rejected by owner 22.04.2026.
+                  _messageSpeaker?.onChunk(chunk);
+                }
+              },
+              onError: (Object e, StackTrace st) {
+                if (!streamDone.isCompleted) streamDone.completeError(e, st);
+              },
+              onDone: () {
+                if (!streamDone.isCompleted) streamDone.complete();
+              },
+              cancelOnError: true,
+            );
+            try {
+              await streamDone.future;
+            } finally {
+              await _aiSub?.cancel();
+              _aiSub = null;
+              _streamDoneCompleter = null;
+              _currentStreamFullText = null;
+              _currentStreamMessageId = null;
             }
 
             // Speak the full accumulated reply exactly once now that
             // streaming is finished. Fire-and-forget — the audio will
             // play while the UI continues (history save, typing-off,
             // scroll). `await` here would block the UI behind TTS.
-            if (_ttsEnabled) {
+            //
+            // Stop button (2026-05-05): skip TTS when the user cancelled
+            // mid-stream — they don't want the partial reply read out.
+            if (_ttsEnabled && !_stoppedByUser) {
               setState(() => _voiceState = VoiceButtonState.speaking);
               unawaited(_messageSpeaker!.onStreamComplete().then((_) {
                 if (mounted) {
@@ -1670,6 +1813,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ],
       ),
       actions: [
+        // Case File — opens the auto-built dossier scoped to this case.
+        IconButton(
+          key: const Key('chat_open_case_file'),
+          icon: const Icon(Icons.folder_open_outlined, size: 22),
+          tooltip: AppLocalizations.of(context)?.caseFileTitle ?? 'Case File',
+          onPressed: () {
+            final cid = widget.caseId;
+            final qs = (cid.isNotEmpty && cid != 'general') ? '?caseId=$cid' : '';
+            context.push('/case-file$qs');
+          },
+        ),
         // Share case summary
         IconButton(
           icon: const Icon(Icons.summarize_outlined, size: 22),
@@ -3477,17 +3631,33 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   ),
                 ],
               ),
+              // Stop button (Cursor consilium Gap #1, 2026-05-05): while
+              // streaming, the send button morphs into a stop icon. Tap
+              // cancels the in-flight stream via _stopStreaming() —
+              // refunds the quota slot when no tokens have been received.
               child: IconButton(
-                onPressed: _isSending ? null : () => _sendMessage(),
+                onPressed: _isSending
+                    ? (_aiSub != null
+                        ? () {
+                            final buf = _currentStreamFullText;
+                            final id = _currentStreamMessageId;
+                            if (buf != null && id != null) {
+                              _stopStreaming(buf, id);
+                            }
+                          }
+                        : null)
+                    : () => _sendMessage(),
                 icon: _isSending
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
+                    ? (_aiSub != null
+                        ? const Icon(Icons.stop_rounded, size: 22)
+                        : const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          ))
                     : const Icon(Icons.arrow_upward_rounded, size: 22),
                 color: Colors.white,
                 padding: EdgeInsets.zero,
