@@ -625,6 +625,61 @@ abstract final class ToolDefinitions {
         'required': ['document_id'],
       },
     },
+    // v24.4 — long-horizon follow-up promises (agent_intentions).
+    //
+    // Use this tool whenever you commit to checking back later. Schedules
+    // a row in the agent_intentions table; an hourly cron Edge Function
+    // fires the actual notification when due. The user sees the pending
+    // promise in their Case File ("Pending follow-ups" section) so they
+    // can trust your word even across sessions.
+    {
+      'name': 'set_followup_intention',
+      'description':
+          'Schedule a future check-in with the user. Use when you promise '
+              'to follow up — e.g. "I will remind you in 30 days about the '
+              'appeal deadline" or "I will check the court case status next '
+              'month". Creates a persisted reminder so the promise actually '
+              'fires later, even across sessions.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'intent_type': {
+            'type': 'string',
+            'enum': [
+              'remind_deadline',
+              'check_court_status',
+              'follow_up_question',
+              'check_company_status',
+            ],
+            'description':
+                'Kind of follow-up. remind_deadline = nudge before a legal '
+                    'deadline; check_court_status = poll a court case for '
+                    'updates; follow_up_question = check in on the user; '
+                    'check_company_status = re-run check_company on a target.',
+          },
+          'target_id': {
+            'type': 'string',
+            'description':
+                'Optional identifier the cron uses when firing — court '
+                    'case number, company registry code, deadline ID, etc.',
+          },
+          'check_at': {
+            'type': 'string',
+            'description':
+                'ISO-8601 datetime (UTC preferred) when to follow up. '
+                    'Must be in the future.',
+          },
+          'context_summary': {
+            'type': 'string',
+            'description':
+                'Short (<=500 chars) summary of WHY we are following up. '
+                    'GDPR: store only the AI intention summary, never raw '
+                    'chat history.',
+          },
+        },
+        'required': ['intent_type', 'check_at', 'context_summary'],
+      },
+    },
   ];
 
   // ── Anthropic server tools (executed on Anthropic's infrastructure) ───

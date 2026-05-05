@@ -28,6 +28,7 @@ import '../../../services/ics_export_service.dart';
 import '../../../services/pdf_service.dart';
 import '../case_file_providers.dart';
 import '../widgets/deadline_countdown_card.dart';
+import '../widgets/pending_intentions_section.dart';
 
 /// Test-only seam — receives the rendered .ics body and is expected to
 /// dispatch it to the platform's share/download surface. Production
@@ -151,6 +152,9 @@ class _CaseFileScreenState extends ConsumerState<CaseFileScreen> {
                       title: l?.caseFileParties ?? 'Parties',
                       child: _PartyChips(parties: state.parties),
                     ),
+                  // v24.4 — Long-horizon agent intentions (cron-fired
+                  // follow-up promises). Self-hides when nothing is pending.
+                  const PendingIntentionsSection(),
                   const SizedBox(height: 24),
                   _ExportButton(
                     label: l?.caseFileExportPdf ?? 'Download dossier (PDF)',

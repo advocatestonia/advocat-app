@@ -330,6 +330,58 @@ class SupabaseService {
     await _client.from('deadlines').update(updates).eq('id', id);
   }
 
+  // ── Agent intentions (long-horizon follow-up promises) ──────────────────
+  // Ref: supabase/migrations/20260505_agent_intentions.sql
+  //      lib/services/assistant_tools.dart#_setFollowupIntention
+  //
+  // Demo-mode safe: returns null when Supabase isn't initialised so unit
+  // tests can exercise the success card without a live DB.
+
+  /// Insert a row into agent_intentions and return its id (or null in demo).
+  Future<String?> createAgentIntention(Map<String, dynamic> data) async {
+    if (isDemo) return null;
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) {
+      throw StateError('createAgentIntention: no signed-in user');
+    }
+    data['user_id'] = uid;
+    final inserted = await _client
+        .from('agent_intentions')
+        .insert(data)
+        .select('id')
+        .single();
+    return inserted['id'] as String?;
+  }
+
+  /// List uncompleted intentions for the signed-in user, optionally
+  /// filtered by case_id. Used by the Case File "Pending follow-ups" UI.
+  Future<List<Map<String, dynamic>>> listAgentIntentions({
+    String? caseId,
+  }) async {
+    if (isDemo) return const [];
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return const [];
+    var q = _client
+        .from('agent_intentions')
+        .select()
+        .eq('user_id', uid)
+        .eq('completed', false);
+    if (caseId != null && caseId.isNotEmpty) {
+      q = q.eq('case_id', caseId);
+    }
+    final rows = await q.order('next_check_at', ascending: true);
+    return List<Map<String, dynamic>>.from(rows as List);
+  }
+
+  /// Cancel an intention (sets completed=true) — used by the UI Cancel button.
+  Future<void> cancelAgentIntention(String id) async {
+    if (isDemo) return;
+    await _client
+        .from('agent_intentions')
+        .update({'completed': true})
+        .eq('id', id);
+  }
+
   // ── Chat history ──────────────────────────────────────────────────────
 
   Future<List<Map<String, dynamic>>> getChatMessages(String caseId) async {

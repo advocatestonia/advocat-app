@@ -135,6 +135,8 @@ class AssistantTools {
     'update_case': _updateCase,
     'get_user_profile': _getUserProfile,
     'analyze_contract': _analyzeContract,
+    // v24.4 additions — long-horizon follow-up promises.
+    'set_followup_intention': _setFollowupIntention,
   };
 
   /// Tools that require explicit user approval before the result is acted upon.
@@ -1648,6 +1650,125 @@ Review the email carefully. It will only be sent after you tap **Send**.
     }
     // Full ISO-8601 — trust it
     return DateTime.tryParse(trimmed)?.toUtc();
+  }
+
+  // ── set_followup_intention ─────────────────────────────────────────────
+  //
+  // Schedules a long-horizon promise. Inserts a row into agent_intentions
+  // and trusts the hourly cron Edge Function to fire the actual notification
+  // when due. Passive — no email goes out from this call, so requiresApproval
+  // stays false (the user is not authorising anything in the moment, just
+  // letting the AI book the future check-in on their behalf).
+  //
+  // GDPR: context_summary is hard-capped at 500 chars and stored as the
+  // only free-text field in conversation_context. Never copy raw chat
+  // history into this column. Server-side CHECK constraint backs the
+  // client-side cap.
+  static const Set<String> _validIntentTypes = <String>{
+    'remind_deadline',
+    'check_court_status',
+    'follow_up_question',
+    'check_company_status',
+  };
+
+  Future<ToolResult> _setFollowupIntention(Map<String, dynamic> params) async {
+    final intentType = (params['intent_type'] as String? ?? '').trim();
+    final checkAtStr = (params['check_at'] as String? ?? '').trim();
+    final contextSummary =
+        (params['context_summary'] as String? ?? '').trim();
+    final targetId = (params['target_id'] as String? ?? '').trim();
+    final caseId = (params['case_id'] as String? ?? '').trim();
+    final locale = (params['locale'] as String? ?? 'en').trim();
+
+    if (intentType.isEmpty) {
+      return ToolResult.error(
+        'set_followup_intention requires intent_type '
+        '(remind_deadline | check_court_status | follow_up_question | check_company_status).',
+      );
+    }
+    if (!_validIntentTypes.contains(intentType)) {
+      return ToolResult.error(
+        'Invalid intent_type "$intentType". Must be one of: '
+        '${_validIntentTypes.join(", ")}.',
+      );
+    }
+    if (checkAtStr.isEmpty) {
+      return ToolResult.error(
+        'set_followup_intention requires check_at (ISO-8601 datetime).',
+      );
+    }
+
+    final checkAt = DateTime.tryParse(checkAtStr)?.toUtc();
+    if (checkAt == null) {
+      return ToolResult.error(
+        'Invalid check_at "$checkAtStr". Use ISO-8601 (e.g. 2026-06-05T10:00:00Z).',
+      );
+    }
+    if (!checkAt.isAfter(DateTime.now().toUtc())) {
+      return ToolResult.error(
+        'check_at must be in the future. Got $checkAtStr.',
+      );
+    }
+
+    if (contextSummary.isEmpty) {
+      return ToolResult.error(
+        'set_followup_intention requires context_summary explaining WHY '
+        'we are following up.',
+      );
+    }
+    // GDPR cap — server-side CHECK constraint backs this up.
+    if (contextSummary.length > 500) {
+      return ToolResult.error(
+        'context_summary is ${contextSummary.length} chars; max is 500. '
+        'Trim to a one-sentence reason.',
+      );
+    }
+
+    final localeNormalised =
+        const {'ru', 'et', 'en'}.contains(locale) ? locale : 'en';
+
+    final row = <String, dynamic>{
+      'intent_type': intentType,
+      if (targetId.isNotEmpty) 'target_id': targetId,
+      if (caseId.isNotEmpty) 'case_id': caseId,
+      'next_check_at': checkAt.toIso8601String(),
+      'conversation_context': {
+        'summary': contextSummary,
+        'locale': localeNormalised,
+      },
+    };
+
+    String? intentionId;
+    try {
+      intentionId = await _supabase.createAgentIntention(row);
+    } catch (e, stack) {
+      _log.e('set_followup_intention: persist failed',
+          error: e, stackTrace: stack);
+      return ToolResult.error(
+        'Could not schedule follow-up: ${_friendlyPersistError(e)}. '
+        'Please try again.',
+      );
+    }
+
+    final dateLabel = checkAt.toIso8601String().substring(0, 10);
+
+    return ToolResult(
+      success: true,
+      displayText: "I'll follow up on $dateLabel — $contextSummary.",
+      cardType: 'intention_set',
+      data: {
+        if (intentionId != null) 'intention_id': intentionId,
+        'intent_type': intentType,
+        if (targetId.isNotEmpty) 'target_id': targetId,
+        if (caseId.isNotEmpty) 'case_id': caseId,
+        'check_at': checkAt.toIso8601String(),
+        'context_summary': contextSummary,
+        'locale': localeNormalised,
+      },
+      // Passive — no notification fires now. UI will surface the pending
+      // promise so the user can cancel it from the Case File screen.
+      requiresApproval: false,
+    );
   }
 
   /// Convert a persist exception into a short, user-safe message.
