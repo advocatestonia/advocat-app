@@ -50,8 +50,23 @@ export type GuardResult =
   | { kind: "allow" }
   | { kind: "reject"; reason: string };
 
-/** Max bytes allowed for a serialised system prompt. Existing limit. */
-export const MAX_SYSTEM_BYTES = 50_000;
+/** Max bytes allowed for a serialised system prompt.
+ *
+ * Raised from 50_000 → 200_000 on 2026-05-05 after a live regression in
+ * production: the chat client builds its system prompt by concatenating
+ * the Advocat base role + KnowledgeBase legal corpus (≈ 45 KB on its
+ * own, see lib/services/knowledge_base.dart, 873 lines of EU + Estonian
+ * + Finnish procedural law) + the Tier-1 memory block. Realistic chat
+ * turns crossed 50 KB, the guard 400'd, and the user saw the catch-all
+ * "Временная ошибка AI" in chat_screen.dart:1054.
+ *
+ * 200 KB still bounds the worst case (Anthropic itself caps the system
+ * field around 200 KB serialized; rejecting > 200 KB protects against
+ * a 1 MB+ DDoS payload while letting the legitimate prompt through).
+ * Token cost is bounded separately by Anthropic's input-token limit
+ * and the 7-message free-tier quota; this limit is purely about HTTP
+ * body size on the Edge Function. */
+export const MAX_SYSTEM_BYTES = 200_000;
 
 /**
  * Validate that body.system (if present) is a legitimate Advocat prompt.

@@ -110,13 +110,29 @@ Deno.test("F4-T13 — oversize string is rejected", () => {
 });
 
 Deno.test("F4-T14 — oversize sum of array blocks is rejected", () => {
-  const block = "x".repeat(40_000);
+  // Each block sized so their sum exceeds MAX_SYSTEM_BYTES regardless of
+  // future bumps to the limit.
+  const block = "x".repeat((MAX_SYSTEM_BYTES / 2) + 1_000);
   const system = [
     { type: "text", text: "You are Advocat. " + block },
     { type: "text", text: block },
   ];
   const res = validateSystemPrompt(system);
   assertEquals(res.kind, "reject");
+});
+
+Deno.test("F4-T14b — legitimate 100 KB legal-corpus prompt is allowed (regression 2026-05-05)", () => {
+  // The chat client builds: base role + KnowledgeBase (~45 KB) + memory.
+  // Realistic prod payloads cross 50 KB for users with Tier-1 memory or
+  // when KnowledgeRouter pulls multiple specialty databases. Lock the
+  // raise from 50_000 to 200_000 so this stops being a silent rejection.
+  const legit =
+    "You are Advocat, an AI legal assistant for people in Europe.\n\n" +
+    "# LEGAL KNOWLEDGE BASE\n\n" + "x".repeat(100_000);
+  // Sanity: prompt is over the OLD limit (50_000) but well under the new (200_000).
+  assertEquals(legit.length > 50_000, true);
+  assertEquals(legit.length < 200_000, true);
+  assertEquals(validateSystemPrompt(legit).kind, "allow");
 });
 
 Deno.test("F4-T15 — array with no text block is rejected", () => {
