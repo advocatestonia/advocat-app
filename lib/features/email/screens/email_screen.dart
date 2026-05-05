@@ -1,11 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+// Re-import Supabase's AuthState under an alias so we can type-annotate the
+// auth-stream subscription. The bare import above hides AuthState because a
+// future merge with auth_provider.dart's own AuthState would otherwise
+// collide.
+import 'package:supabase_flutter/supabase_flutter.dart' as sb
+    show AuthState, AuthChangeEvent;
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../services/oauth_storage_service.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/empty_state.dart';
@@ -54,10 +63,28 @@ class _EmailConnectionState {
   }
 }
 
+/// Google OAuth scopes requested when connecting Gmail. Beyond the basic
+/// `email` scope (so we can read user.email) we also request
+/// `gmail.send` — that is the load-bearing scope: it lets send-email
+/// dispatch on behalf of the user via the Gmail API instead of falling back
+/// to Resend / no-reply@advocat.ee.
+///
+/// IMPORTANT: this scope must be added to the OAuth consent screen in
+/// Google Cloud Console (Authorized scopes). Without that, Google will
+/// redirect with `error=access_denied` even though the request looks fine
+/// on our side.
+const String kGmailOAuthScopes =
+    'email https://www.googleapis.com/auth/gmail.send';
+
 class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
-  _EmailConnectionNotifier() : super(const _EmailConnectionState()) {
+  _EmailConnectionNotifier(this._oauthStorage)
+      : super(const _EmailConnectionState()) {
     _checkExistingConnection();
+    _subscribeToAuthChanges();
   }
+
+  final OAuthStorageService _oauthStorage;
+  StreamSubscription<sb.AuthState>? _authSub;
 
   /// Check if the user is already signed in with Google via Supabase.
   void _checkExistingConnection() {
@@ -85,18 +112,86 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
     }
   }
 
+  /// Listen for auth state changes and persist the Gmail provider token to
+  /// user_oauth_tokens as soon as Supabase exposes it on the session.
+  ///
+  /// Why this matters: `signInWithOAuth` returns the user a Google identity,
+  /// but the actual access_token / refresh_token live ONLY in the in-memory
+  /// session (session.providerToken / providerRefreshToken). They are never
+  /// written to any Postgres table by Supabase. To use them server-side
+  /// (Gmail API call from send-email), we must POST them once after the
+  /// OAuth redirect lands.
+  void _subscribeToAuthChanges() {
+    try {
+      _authSub = Supabase.instance.client.auth.onAuthStateChange.listen(
+        _handleAuthStateChange,
+        onError: (_) {/* swallow — not critical for screen rendering */},
+      );
+    } catch (_) {
+      // Supabase not initialised yet (e.g. unit tests). Silently skip.
+    }
+  }
+
+  Future<void> _handleAuthStateChange(sb.AuthState data) async {
+    if (data.event != sb.AuthChangeEvent.signedIn &&
+        data.event != sb.AuthChangeEvent.tokenRefreshed) {
+      return;
+    }
+    final session = data.session;
+    if (session == null) return;
+    final providerToken = session.providerToken;
+    if (providerToken == null || providerToken.isEmpty) {
+      // Either not a Google sign-in or the provider token has already been
+      // dropped by Supabase (it is only kept for the immediate post-redirect
+      // session). Nothing to persist.
+      return;
+    }
+    try {
+      final result = await _oauthStorage.persistGmailToken(
+        accessToken: providerToken,
+        refreshToken: session.providerRefreshToken,
+        email: session.user.email,
+        // Google's standard access-token lifetime is 3600s; Supabase doesn't
+        // surface the actual expires_in for the provider token, so we send
+        // null and let the Edge Function default kick in.
+      );
+      state = state.copyWith(
+        isConnected: result.ok,
+        isConnecting: false,
+        email: result.email ?? session.user.email,
+        provider: _EmailProvider.gmail,
+        lastSyncAt: DateTime.now(),
+        errorMessage: result.ok ? null : 'Failed to link Gmail',
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isConnecting: false,
+        errorMessage: 'Could not link Gmail: ${e.toString()}',
+      );
+    }
+  }
+
   /// Connect Gmail via Google OAuth through Supabase.
   Future<void> connectGmail() async {
     state = state.copyWith(isConnecting: true, errorMessage: null);
     try {
-      // Link Google identity to existing session, or sign in with Google
+      // Link Google identity to existing session, or sign in with Google.
+      // Scope MUST include gmail.send so send-email can dispatch via the
+      // Gmail API instead of falling back to Resend.
       await Supabase.instance.client.auth.signInWithOAuth(
         OAuthProvider.google,
-        scopes: 'email',
+        scopes: kGmailOAuthScopes,
+        // access_type=offline + prompt=consent are required to receive a
+        // refresh_token. Without prompt=consent, Google omits the refresh
+        // token on subsequent sign-ins for the same user.
+        queryParams: const {
+          'access_type': 'offline',
+          'prompt': 'consent',
+        },
       );
       // On web, this redirects the browser. When the user comes back,
-      // _checkExistingConnection() will pick up the Google identity.
-      // We keep isConnecting true since the page will reload.
+      // _handleAuthStateChange will pick up session.providerToken and POST
+      // it to oauth-callback.
     } catch (e) {
       state = _EmailConnectionState(
         isConnecting: false,
@@ -119,11 +214,17 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
   Future<void> disconnect() async {
     state = const _EmailConnectionState();
   }
+
+  @override
+  void dispose() {
+    _authSub?.cancel();
+    super.dispose();
+  }
 }
 
 final _emailConnectionProvider =
     StateNotifierProvider<_EmailConnectionNotifier, _EmailConnectionState>(
-  (ref) => _EmailConnectionNotifier(),
+  (ref) => _EmailConnectionNotifier(ref.read(oauthStorageServiceProvider)),
 );
 
 // ── Screen ───────────────────────────────────────────────────────────────
