@@ -50,6 +50,13 @@ export const ADVOCAT_IDENTITY_MARKERS: readonly string[] = [
   // Without this marker the guard 400'd the call and Sofia's Timeline silently
   // never built. Fixed 2026-05-05.
   "You are a legal-information extractor",
+  // Case-memory auto-patcher (Pkg 1.C, 2026-05-06). Background Haiku call
+  // fired by `case-auto-patch` after each chat turn to extract a JSON
+  // patch (new dates/contacts/numbers/open_questions/next_actions) and
+  // merge it into `user_cases`. Source of truth: _shared/case_patch_prompt.ts
+  // CASE_PATCH_IDENTITY_MARKER — keep these two strings in lockstep
+  // (verified by case_auto_patch_test.ts CAP-T01).
+  "You are a case-fact extractor for the Advocat app",
   // Case-memory aware role marker (Pkg 1.B, 2026-05-06). Today the
   // <active_case> block is INJECTED in the middle of the prompt by
   // claude-proxy itself, so the leading "You are Advocat" marker still

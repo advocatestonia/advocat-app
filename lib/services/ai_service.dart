@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kDebugMode, visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import '../config/app_config.dart';
+import '../features/case_memory/services/case_auto_patch_service.dart';
 import '../models/case_model.dart';
 import 'agentic_loop.dart';
 import 'assistant_tools.dart';
@@ -148,6 +149,7 @@ final aiServiceProvider = Provider<AIService>((ref) {
   final assistantTools = ref.watch(assistantToolsProvider);
   final caseFileExtractor = ref.watch(caseFileExtractorProvider);
   final caseFileService = ref.watch(caseFileServiceProvider);
+  final caseAutoPatchService = ref.watch(caseAutoPatchServiceProvider);
   return AIService(
     claudeService: claudeService,
     quotaClient: SupabaseAiQuotaClient(supabase),
@@ -155,6 +157,7 @@ final aiServiceProvider = Provider<AIService>((ref) {
     assistantTools: assistantTools,
     caseFileExtractor: caseFileExtractor,
     caseFileService: caseFileService,
+    caseAutoPatchService: caseAutoPatchService,
   );
 });
 
@@ -171,12 +174,14 @@ class AIService {
     AssistantTools? assistantTools,
     CaseFileExtractor? caseFileExtractor,
     CaseFileService? caseFileService,
+    CaseAutoPatchService? caseAutoPatchService,
   })  : _claudeService = claudeService ?? ClaudeService(),
         _quotaClient = quotaClient,
         _memoryService = memoryService,
         _assistantTools = assistantTools,
         _caseFileExtractor = caseFileExtractor,
         _caseFileService = caseFileService,
+        _caseAutoPatchService = caseAutoPatchService,
         _dio = Dio(
           BaseOptions(
             baseUrl: AppConfig.aiApiBaseUrl,
@@ -216,6 +221,13 @@ class AIService {
   /// [_caseFileService]. The chat response NEVER waits for it.
   final CaseFileExtractor? _caseFileExtractor;
   final CaseFileService? _caseFileService;
+
+  /// Optional Pkg 1.C auto-patcher. When wired AND the chat turn is
+  /// case-aware (i.e. [_activeCaseId] is set), every successful turn
+  /// fires a background `case-auto-patch` Edge Function call that asks
+  /// Haiku to extract a JSON patch and merges it into `user_cases`.
+  /// Fire-and-forget — chat reply NEVER waits.
+  final CaseAutoPatchService? _caseAutoPatchService;
 
   final Dio _dio;
   final Logger _log;
@@ -362,6 +374,53 @@ class AIService {
         userMessage: userMessage,
         aiResponse: aiResponse,
         caseId: caseId,
+      );
+
+  /// Fire-and-forget Case Memory auto-patch (Pkg 1.C). Runs after the chat
+  /// reply has already been delivered to the user. Calls the
+  /// `case-auto-patch` Edge Function which:
+  ///   1) verifies the caller owns [caseId] (RLS via `load_active_case`),
+  ///   2) asks Haiku to extract a JSON patch of NEW facts only,
+  ///   3) merges the patch into `user_cases` and invalidates the
+  ///      Riverpod providers so the case-detail screen reflects the
+  ///      change on next render.
+  ///
+  /// Skips the call entirely when:
+  ///   * no active case id is set,
+  ///   * the active case id is `'general'` or any non-UUID synthetic id,
+  ///   * no auto-patch service is wired (legacy callers, tests).
+  ///
+  /// NEVER throws. NEVER blocks the chat reply.
+  Future<void> _triggerCaseAutoPatch({
+    required String userMessage,
+    required String aiResponse,
+  }) async {
+    final svc = _caseAutoPatchService;
+    if (svc == null) return;
+    final caseId = _activeCaseId;
+    if (caseId == null || caseId.isEmpty) return;
+    try {
+      await svc.patchCase(
+        caseId: caseId,
+        userMessage: userMessage,
+        aiReply: aiResponse,
+      );
+    } catch (e) {
+      _log.w('Case auto-patch failed (best-effort, ignored): $e');
+    }
+  }
+
+  /// Test seam — exercises the same private path the production callers
+  /// use, so the contract `_caseAutoPatchService` ↔ `_activeCaseId` stays
+  /// covered without spying on private fields.
+  @visibleForTesting
+  Future<void> triggerCaseAutoPatchForTest({
+    required String userMessage,
+    required String aiResponse,
+  }) =>
+      _triggerCaseAutoPatch(
+        userMessage: userMessage,
+        aiResponse: aiResponse,
       );
 
   /// Smart Agent v2 — Verified Citations post-processor.
@@ -1432,6 +1491,13 @@ class AIService {
             caseId: caseId,
           ));
 
+          // Case Memory auto-patch (Pkg 1.C). Background Haiku JSON patch
+          // when the turn is case-aware. No-ops when no active case id.
+          unawaited(_triggerCaseAutoPatch(
+            userMessage: sanitizedMessage,
+            aiResponse: finalText,
+          ));
+
           return ChatResponse(
             message: finalText,
             disclaimer:
@@ -1461,6 +1527,12 @@ class AIService {
           userMessage: sanitizedMessage,
           aiResponse: responseText,
           caseId: caseId,
+        ));
+
+        // Case Memory auto-patch (Pkg 1.C). Background, never blocks.
+        unawaited(_triggerCaseAutoPatch(
+          userMessage: sanitizedMessage,
+          aiResponse: responseText,
         ));
 
         return ChatResponse(
@@ -1712,6 +1784,12 @@ class AIService {
           aiResponse: responseText,
           caseId: caseId,
         ));
+
+        // Case Memory auto-patch (Pkg 1.C). Background, never blocks.
+        unawaited(_triggerCaseAutoPatch(
+          userMessage: sanitizedMessage,
+          aiResponse: responseText,
+        ));
       }
     } on ClaudeServiceException catch (e) {
       _log.e('Claude streaming chat failed, falling back to non-streaming',
@@ -1926,6 +2004,12 @@ class AIService {
           userMessage: sanitizedMessage,
           aiResponse: responseText,
           caseId: caseId,
+        ));
+
+        // Case Memory auto-patch (Pkg 1.C). Background, never blocks.
+        unawaited(_triggerCaseAutoPatch(
+          userMessage: sanitizedMessage,
+          aiResponse: responseText,
         ));
       }
     } on ClaudeServiceException catch (e) {
