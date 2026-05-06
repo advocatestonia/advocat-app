@@ -28,6 +28,8 @@ import {
   persistCitations,
 } from "./citation_persistence.ts";
 import { wrapAnthropicStreamWithCitations } from "./streaming_citations.ts";
+import { runLegalPlannerLoop } from "../_shared/legal_planner.ts";
+import { persistPlannerTrace } from "./planner_trace_persistence.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -259,6 +261,105 @@ serve(async (req) => {
     // enough to pay back the 1.25x write cost. Flips unit economics from
     // −€0.11/user to +€2.39/user — see docs/performance/05-cost.md §2.5.
     applyPromptCaching(body);
+
+    // ── Legal Planner mode (Pkg 6, 2026-05-07) ───────────────────────────
+    // When the client passes `mode: "legal_planner"` we run the three-pass
+    // planner+executor+critique loop and return a single non-streaming
+    // JSON response. The loop:
+    //   1. Planner   (Sonnet, temp=0.0, ≤500 tok)
+    //   2. Executor  (Sonnet, temp=0.2, ≤4096 tok) — citation markers
+    //   3. Critique  (Haiku,  temp=0.0, ≤300 tok)
+    //   4. Optional ONE-SHOT regen if material_gap=true
+    //
+    // The Dart side gates this on (Pro tier && enable_planner_for_legal_turns
+    // && looksLegalish). Server-side defence: we still verify the user is
+    // authenticated (gate above caught anon already). We also do NOT enable
+    // the planner for streaming requests — the loop is non-streaming by
+    // design (3-4 sequential round-trips), and mixing it with `stream=true`
+    // would silently degrade to a single-pass response.
+    const plannerMode = (body as { mode?: unknown }).mode === "legal_planner";
+    delete (body as { mode?: unknown }).mode;
+    if (plannerMode && !body.stream && !isAnon) {
+      const systemPrompt = typeof body.system === "string"
+        ? body.system
+        : Array.isArray(body.system)
+          // applyPromptCaching may have wrapped system in content-blocks;
+          // unwrap to a plain string for the orchestrator.
+          ? (body.system as Array<{ text?: string }>)
+            .map((b) => b.text ?? "")
+            .join("")
+          : "";
+      const messages = Array.isArray(body.messages)
+        ? body.messages as Array<{ role: string; content: string }>
+        : [];
+      try {
+        const loopResult = await runLegalPlannerLoop({
+          apiKey: CLAUDE_API_KEY,
+          systemPrompt,
+          messages,
+          messageId: persistMessageId ?? undefined,
+          traceWriter: persistMessageId
+            ? (trace) =>
+              persistPlannerTrace(trace, {
+                supabaseUrl: SUPABASE_URL,
+                serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+              })
+            : undefined,
+        });
+
+        // Reuse Pkg 2 verifier on the final draft. Reuse Pkg 0 UPL footer
+        // is already in `systemPrompt` (system_prompts.dart bakes it in
+        // for every assistant turn). The verifier downgrades unverified
+        // markers — invented citations don't earn a "verified" badge.
+        const citations = verifyCitations(loopResult.replyText, ragChunks);
+
+        if (
+          persistMessageId !== null &&
+          persistUserId !== null &&
+          persistCaseId !== null &&
+          citations.length > 0
+        ) {
+          const rows = buildCitationRows({
+            message_id: persistMessageId,
+            user_id: persistUserId,
+            case_id: persistCaseId,
+            citations,
+          });
+          await persistCitations(rows, {
+            supabaseUrl: SUPABASE_URL,
+            serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+          });
+        }
+
+        // Shape: mirror the non-streaming Anthropic response so the
+        // existing Flutter parser keeps working. `mode: "legal_planner"`
+        // is echoed back for client-side telemetry / trace fetch.
+        const augmented = {
+          mode: "legal_planner",
+          content: [{ type: "text", text: loopResult.replyText }],
+          citations,
+          message_id: persistMessageId ?? undefined,
+          planner: {
+            regenerated_once: loopResult.regeneratedOnce,
+            latency_ms: loopResult.latencyMs,
+            cost_cents: loopResult.costCents,
+          },
+        };
+        return new Response(JSON.stringify(augmented), {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      } catch (e) {
+        // Planner failure → fall through to single-pass. The user still
+        // gets an answer; the trace just isn't recorded. Loud log so
+        // ops can see the failure rate without the user noticing.
+        console.warn(
+          `claude-proxy: planner mode failed, falling back to single-pass: ${
+            String(e).slice(0, 300)
+          }`,
+        );
+      }
+    }
 
     // Streaming mode — pipe SSE events from Claude directly to client
     if (body.stream) {
