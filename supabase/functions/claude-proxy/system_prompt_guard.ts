@@ -72,6 +72,14 @@ export const ADVOCAT_IDENTITY_MARKERS: readonly string[] = [
   // keep these two strings in lockstep (verified by pdf_parser_test.ts
   // PDFP-T01).
   "You are a legal document extractor for the Advocat app",
+  // Deadline classifier (Pkg 9, 2026-05-06). Fired by the
+  // `deadline-extractor` Edge Function as a one-shot Sonnet call to
+  // classify candidate dates as statutory deadlines using the
+  // STATUTORY_DEADLINE_TEMPLATES registry. Source of truth:
+  // _shared/deadline_extractor_prompt.ts DEADLINE_EXTRACTOR_IDENTITY_MARKER
+  // — keep these two strings in lockstep (verified by
+  // deadline_extractor_test.ts DLE-T01).
+  "You are a deadline classifier for the Advocat app",
 ];
 
 export type GuardResult =
