@@ -213,6 +213,7 @@ class ToolExecutor {
       case 'list_documents':
       case 'list_cases':
       case 'search_estonian_law':
+      case 'lookup_statute':
       case 'create_deadline':
       case 'update_case':
       case 'get_user_profile':

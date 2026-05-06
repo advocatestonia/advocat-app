@@ -134,6 +134,92 @@ void main() {
     });
   });
 
+  // ---------------------------------------------------------------------------
+  // G7 — lookup_statute input validation (security-review gate)
+  // ---------------------------------------------------------------------------
+  //
+  // The handler at lib/services/assistant_tools.dart::_lookupStatute must:
+  //   * reject empty act / paragraph with a structured error (no network)
+  //   * uppercase the jurisdiction (so 'ee' → 'EE')
+  //   * fall back to 'EE' for jurisdictions outside {EE, FI, EU} rather
+  //     than POST a guaranteed-4xx request
+  //
+  // Production has no Supabase wired in this test environment, so the
+  // network path returns "not in corpus" (success=true with found=false).
+  // We assert on (a) error path for empty inputs and (b) the soft-fail
+  // contract for the network path.
+  group('AssistantTools — lookup_statute (G7) input hardening', () {
+    test('rejects empty act with structured error (no network)', () async {
+      final result = await tools.execute('lookup_statute', {
+        'act': '',
+        'paragraph': '88',
+      });
+      expect(result.success, isFalse);
+      expect(result.displayText, isNotEmpty);
+      expect(result.displayText.toLowerCase(), contains('act'));
+    });
+
+    test('rejects empty paragraph with structured error', () async {
+      final result = await tools.execute('lookup_statute', {
+        'act': 'TLS',
+        'paragraph': '',
+      });
+      expect(result.success, isFalse);
+      expect(result.displayText, isNotEmpty);
+      expect(result.displayText.toLowerCase(), contains('paragraph'));
+    });
+
+    test('rejects both missing act and paragraph keys', () async {
+      final result = await tools.execute('lookup_statute', {});
+      expect(result.success, isFalse);
+      expect(result.displayText, isNotEmpty);
+    });
+
+    test('lowercase jurisdiction "ee" is normalized (no crash)', () async {
+      // Without normalization the handler would either POST 'ee' (which
+      // the edge function rejects, returning null) or local-validate
+      // against {EE, FI, EU} and reject. With normalization, lookup
+      // either succeeds or soft-fails to a "not in corpus" result.
+      final result = await tools.execute('lookup_statute', {
+        'act': 'TLS',
+        'paragraph': '88',
+        'jurisdiction': 'ee',
+      });
+      // Soft-fail to success+found=false is the documented contract;
+      // an explicit error must NOT be returned.
+      expect(result.success, isTrue,
+          reason: 'lowercase jurisdiction must normalize to EE, not error');
+      expect(result.data, isNotNull);
+    });
+
+    test('unsupported jurisdiction "XX" falls back to EE (no crash)',
+        () async {
+      final result = await tools.execute('lookup_statute', {
+        'act': 'TLS',
+        'paragraph': '88',
+        'jurisdiction': 'XX',
+      });
+      // Same soft-fail contract — handler defaults to EE rather than
+      // bubbling a 400 up to the user.
+      expect(result.success, isTrue,
+          reason: 'unsupported jurisdiction must fall back to EE silently');
+      expect(result.data, isNotNull);
+      expect(result.data!['jurisdiction'], 'EE',
+          reason: 'fallback jurisdiction must be EE');
+    });
+
+    test('non-string act value does not crash the handler', () async {
+      // The cast `params['act'] as String? ?? ''` returns '' for a
+      // non-string value, which then hits the empty-input guard.
+      final result = await tools.execute('lookup_statute', {
+        'act': 42,
+        'paragraph': '88',
+      });
+      expect(result.success, isFalse);
+      expect(result.displayText, isNotEmpty);
+    });
+  });
+
   group('ToolResult contract invariants', () {
     test('ToolResult.error produces success=false and non-empty text', () {
       final r = ToolResult.error('something went wrong');

@@ -625,6 +625,47 @@ abstract final class ToolDefinitions {
         'required': ['document_id'],
       },
     },
+    // Phase 2 Pkg 1+2 — exact-paragraph statute lookup. Mirror of
+    // search_estonian_law/search_finnish_law but for the case where the
+    // user (or the model) names a known §. Bypasses embedding search,
+    // hits the lookup_statute RPC directly. Returns null if the act/§
+    // isn't in our bundled corpus or has been superseded (in_force=false).
+    {
+      'name': 'lookup_statute',
+      'description':
+          'EXACT paragraph lookup of a known statute. Use when the user '
+              'names a specific § (e.g. "what does KarS § 121 say verbatim", '
+              '"read me Rikoslaki 21:6"). No semantic search — direct DB '
+              'lookup against the in-force version of the statute. Returns '
+              'null if the act/paragraph is not in our bundled corpus; in '
+              'that case fall back to search_estonian_law/search_finnish_law '
+              'or web_search rather than fabricating text.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'act': {
+            'type': 'string',
+            'description':
+                'Statute code, e.g. KarS, HMS, TLS, VMS, Rikoslaki, '
+                    'Ulkomaalaislaki. Case-insensitive (server uses ilike).',
+          },
+          'paragraph': {
+            'type': 'string',
+            'description':
+                'Paragraph identifier without the § prefix, e.g. "121", '
+                    '"40 lg 3", "21:6".',
+          },
+          'jurisdiction': {
+            'type': 'string',
+            'enum': ['EE', 'FI', 'EU'],
+            'description':
+                'Jurisdiction code: EE (Estonia, default), FI (Finland), '
+                    'EU (EU directives via CELEX-ID).',
+          },
+        },
+        'required': ['act', 'paragraph'],
+      },
+    },
     // v24.4 — long-horizon follow-up promises (agent_intentions).
     //
     // Use this tool whenever you commit to checking back later. Schedules

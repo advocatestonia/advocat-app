@@ -10,6 +10,7 @@ import 'estonian_law_search.dart';
 import 'finnish_law_search.dart';
 import 'ics_export_service.dart';
 import 'knowledge_base.dart';
+import 'law_lookup_client.dart';
 import 'supabase_service.dart';
 
 // ---------------------------------------------------------------------------
@@ -131,6 +132,8 @@ class AssistantTools {
     'search_estonian_law': _searchEstonianLaw,
     // v24.2 additions
     'search_finnish_law': _searchFinnishLaw,
+    // Phase 2 Pkg 1+2 — exact statute lookup via law-lookup edge fn.
+    'lookup_statute': _lookupStatute,
     'create_deadline': _createDeadline,
     'update_case': _updateCase,
     'get_user_profile': _getUserProfile,
@@ -1424,6 +1427,102 @@ Review the email carefully. It will only be sent after you tap **Send**.
         'matches': matches,
       },
       claudeText: claudeText.toString(),
+    );
+  }
+
+  /// Phase 2 Pkg 1+2 — exact statute lookup.
+  ///
+  /// Calls the `law-lookup` edge function (lookup_statute RPC) for an
+  /// in-force paragraph match. Returns either:
+  ///   • success + verbatim body (claudeText) when found,
+  ///   • success + "not in corpus" message when not found — the model is
+  ///     expected to fall back to search_estonian_law / search_finnish_law
+  ///     / web_search rather than fabricate.
+  ///
+  /// Soft-fails to a not-found result on any client/edge-function error so
+  /// chat never breaks on a single tool round-trip.
+  Future<ToolResult> _lookupStatute(Map<String, dynamic> params) async {
+    final act = (params['act'] as String? ?? '').trim();
+    final paragraph = (params['paragraph'] as String? ?? '').trim();
+    final jurisdictionRaw =
+        (params['jurisdiction'] as String? ?? 'EE').trim().toUpperCase();
+    final jurisdiction =
+        LawLookupClient.supportedJurisdictions.contains(jurisdictionRaw)
+            ? jurisdictionRaw
+            : 'EE';
+
+    if (act.isEmpty || paragraph.isEmpty) {
+      return ToolResult.error(
+        'lookup_statute requires both act and paragraph.',
+      );
+    }
+
+    final hit = await LawLookupClient.lookup(
+      act: act,
+      paragraph: paragraph,
+      jurisdiction: jurisdiction,
+    );
+
+    if (hit == null) {
+      // Not in corpus / superseded / RPC error — same UI shape, model
+      // chooses fallback path.
+      final notFoundText =
+          '$act § $paragraph ($jurisdiction) is not in our bundled '
+          'in-force corpus. Fall back to a semantic search '
+          '(search_estonian_law / search_finnish_law) or web_search '
+          'rather than guessing the wording.';
+      return ToolResult(
+        success: true,
+        displayText: 'No exact match for **$act § $paragraph** ($jurisdiction).',
+        cardType: null,
+        data: {
+          'act': act,
+          'paragraph': paragraph,
+          'jurisdiction': jurisdiction,
+          'found': false,
+        },
+        claudeText: notFoundText,
+      );
+    }
+
+    final headerTitle = hit.title?.isNotEmpty == true ? ' — ${hit.title}' : '';
+    final displayBuf = StringBuffer()
+      ..writeln('**${hit.actName} § ${hit.paragraph}**$headerTitle')
+      ..writeln()
+      ..writeln(hit.body);
+    if (hit.sourceUrl != null) {
+      displayBuf.writeln('\n[Source](${hit.sourceUrl})');
+    }
+
+    final claudeBuf = StringBuffer()
+      ..writeln(
+        '${hit.actName} § ${hit.paragraph} '
+        '(${hit.jurisdiction}${hit.versionDate != null ? ", v${hit.versionDate}" : ""}):',
+      )
+      ..writeln(hit.body)
+      ..writeln()
+      ..writeln(
+        'Cite this paragraph EXACTLY as written above — never paraphrase '
+        'the § number, never invent additional clauses. If the user asked '
+        'about something not covered by these words, say so.',
+      );
+
+    return ToolResult(
+      success: true,
+      displayText: displayBuf.toString(),
+      cardType: null,
+      data: {
+        'act': hit.actName,
+        'act_slug': hit.actSlug,
+        'paragraph': hit.paragraph,
+        'jurisdiction': hit.jurisdiction,
+        'title': hit.title,
+        'body': hit.body,
+        'url': hit.sourceUrl,
+        if (hit.versionDate != null) 'version_date': hit.versionDate,
+        'found': true,
+      },
+      claudeText: claudeBuf.toString(),
     );
   }
 
