@@ -36,9 +36,8 @@ import {
 } from "./policy_gate.ts";
 import {
   KNOWN_COURTS_DEFAULT,
+  pickPromptVersion,
   PRIVILEGED_DOMAINS_DEFAULT,
-  PROMPT_VERSION,
-  SYSTEM_PROMPT_V1_1,
 } from "../_shared/email_agent_prompt.ts";
 
 // =============================================================================
@@ -288,7 +287,12 @@ export function buildSystemBlocks(contextSuffix: string): Array<{
   // prefix because <context> lives outside the cache boundary in the
   // prompt body. We split on the closing `</memory_protocol>` boundary
   // (per spec §685) and substitute the build-time domain lists.
-  const prefixRaw = SYSTEM_PROMPT_V1_1
+  // Track E (v2.1 consilium, 2026-05-07): prompt version is picked at
+  // runtime from EMAIL_AGENT_PROMPT_VERSION env var (defaults to
+  // v1.1-final). v1.2-final adds Rules 31–35 — flip via Supabase secret
+  // after staging soak.
+  const { prompt: activePrompt } = pickPromptVersion();
+  const prefixRaw = activePrompt
     .split(/<context>[\s\S]*<\/context>/)[0]
     .replace(/\{\{PRIVILEGED_DOMAINS\}\}/g, PRIVILEGED_DOMAINS_DEFAULT.join(", "))
     .replace(/\{\{KNOWN_COURTS\}\}/g, KNOWN_COURTS_DEFAULT.join(", "));
@@ -510,7 +514,7 @@ export async function runTriage(
     draft_cc: parsed.draft?.cc ?? [],
     send_recommendation: finalSendRec,
     severity,
-    prompt_version: PROMPT_VERSION,
+    prompt_version: pickPromptVersion().version,
     model_id: "claude-sonnet-4-6",
     raw_model_output: raw.slice(0, 30_000),
     reviewer_status: reviewer == null

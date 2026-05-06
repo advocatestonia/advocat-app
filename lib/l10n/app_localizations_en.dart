@@ -1409,6 +1409,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.';
 
   @override
+  String get gmailReauthBannerBody =>
+      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+
+  @override
+  String get gmailReauthBannerCta => 'Reauthorize';
+
+  @override
   String connectedTo(String email) {
     return 'Connected to $email';
   }

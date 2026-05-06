@@ -2750,6 +2750,18 @@ abstract class AppLocalizations {
   /// **'You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.'**
   String get disconnectEmailConfirm;
 
+  /// No description provided for @gmailReauthBannerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.'**
+  String get gmailReauthBannerBody;
+
+  /// No description provided for @gmailReauthBannerCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Reauthorize'**
+  String get gmailReauthBannerCta;
+
   /// No description provided for @connectedTo.
   ///
   /// In en, this message translates to:

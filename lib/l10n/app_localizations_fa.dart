@@ -1412,6 +1412,13 @@ class AppLocalizationsFa extends AppLocalizations {
       'همگام‌سازی خودکار ایمیل متوقف می‌شود. ایمیل‌های قبلاً همگام‌سازی شده باقی می‌مانند.';
 
   @override
+  String get gmailReauthBannerBody =>
+      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+
+  @override
+  String get gmailReauthBannerCta => 'Reauthorize';
+
+  @override
   String connectedTo(String email) {
     return 'متصل به $email';
   }

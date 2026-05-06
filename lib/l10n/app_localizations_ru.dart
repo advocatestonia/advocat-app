@@ -1416,6 +1416,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Автоматическая синхронизация email будет остановлена. Ранее синхронизированные письма останутся в делах.';
 
   @override
+  String get gmailReauthBannerBody =>
+      'Advocat v2.1 читает ваш почтовый ящик, чтобы готовить ответы; вы можете отозвать доступ в любое время. Переподключите Gmail, чтобы включить проактивную сортировку.';
+
+  @override
+  String get gmailReauthBannerCta => 'Переподключить';
+
+  @override
   String connectedTo(String email) {
     return 'Подключено к $email';
   }

@@ -1426,6 +1426,13 @@ class AppLocalizationsPl extends AppLocalizations {
       'Automatyczna synchronizacja email zostanie zatrzymana. Wcześniej zsynchronizowane emaile pozostaną.';
 
   @override
+  String get gmailReauthBannerBody =>
+      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+
+  @override
+  String get gmailReauthBannerCta => 'Reauthorize';
+
+  @override
   String connectedTo(String email) {
     return 'Połączono z $email';
   }

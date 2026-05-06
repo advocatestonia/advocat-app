@@ -608,6 +608,8 @@
     "assignToCase": "Assign to case",
     "disconnectEmail": "Disconnect Email",
     "disconnectEmailConfirm": "You will stop receiving automatic email syncing. Previously synced emails will remain in your cases.",
+    "gmailReauthBannerBody": "Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.",
+    "gmailReauthBannerCta": "Reauthorize",
     "connectedTo": "Connected to {email}",
     "@connectedTo": {
         "placeholders": {

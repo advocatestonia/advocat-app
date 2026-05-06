@@ -1406,6 +1406,13 @@ class AppLocalizationsAr extends AppLocalizations {
       'ستتوقف المزامنة التلقائية للبريد. ستبقى الرسائل المزامنة سابقاً في قضاياك.';
 
   @override
+  String get gmailReauthBannerBody =>
+      'Advocat v2.1 reads your inbox to draft replies; you can revoke any time. Reconnect Gmail to enable proactive triage.';
+
+  @override
+  String get gmailReauthBannerCta => 'Reauthorize';
+
+  @override
   String connectedTo(String email) {
     return 'متصل بـ $email';
   }

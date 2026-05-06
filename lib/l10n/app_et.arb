@@ -437,6 +437,8 @@
     "deportationNoticeDesc": "Sammud väljasaatmiskorralduse vaidlustamiseks",
     "disconnectEmail": "Katkesta e-posti ühendus",
     "disconnectEmailConfirm": "Automaatne e-posti sünkroonimine lõpetatakse. Varem sünkroonitud e-kirjad jäävad teie juhtumitesse.",
+    "gmailReauthBannerBody": "Advocat v2.1 loeb teie postkasti, et koostada vastuseid; saate loa igal ajal tagasi võtta. Ühenda Gmail uuesti, et lubada ennetav sõelumine.",
+    "gmailReauthBannerCta": "Anna uuesti luba",
     "discriminationDesc": "Kuidas teatada diskrimineerimisest ja selle vastu võidelda",
     "doNotIgnoreNotice": "ÄRGE ignoreerige teadet — tähtajad on ranged",
     "documentAnalysis": "Dokumendianalüüs",

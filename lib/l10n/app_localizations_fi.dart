@@ -1419,6 +1419,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Automaattinen sähköpostisynkronointi lopetetaan. Aiemmin synkronoidut sähköpostit säilyvät tapauksissasi.';
 
   @override
+  String get gmailReauthBannerBody =>
+      'Advocat v2.1 lukee postilaatikkoasi laatiakseen vastauksia; voit peruuttaa luvan milloin tahansa. Yhdistä Gmail uudelleen ottaaksesi käyttöön proaktiivisen seulonnan.';
+
+  @override
+  String get gmailReauthBannerCta => 'Vahvista uudelleen';
+
+  @override
   String connectedTo(String email) {
     return 'Yhdistetty: $email';
   }

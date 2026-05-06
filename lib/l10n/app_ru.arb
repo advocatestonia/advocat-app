@@ -624,6 +624,8 @@
     },
     "disconnectEmail": "Отключить email",
     "disconnectEmailConfirm": "Автоматическая синхронизация email будет остановлена. Ранее синхронизированные письма останутся в делах.",
+    "gmailReauthBannerBody": "Advocat v2.1 читает ваш почтовый ящик, чтобы готовить ответы; вы можете отозвать доступ в любое время. Переподключите Gmail, чтобы включить проактивную сортировку.",
+    "gmailReauthBannerCta": "Переподключить",
     "draftCopiedToClipboard": "Черновик скопирован в буфер",
     "draftGeneration": "Генерация черновиков",
     "emailIntegrationTitle": "Интеграция с email",

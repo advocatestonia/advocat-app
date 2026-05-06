@@ -12,12 +12,14 @@ import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 import 'package:supabase_flutter/supabase_flutter.dart' as sb
     show AuthState, AuthChangeEvent;
 
+import '../../../config/feature_flags.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/oauth_storage_service.dart';
 import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/empty_state.dart';
+import '../widgets/gmail_reauth_banner.dart';
 
 // ── State ────────────────────────────────────────────────────────────────
 
@@ -32,6 +34,7 @@ class _EmailConnectionState {
     this.isSyncing = false,
     this.isConnecting = false,
     this.errorMessage,
+    this.tokenScopeHint,
   });
 
   final bool isConnected;
@@ -42,6 +45,13 @@ class _EmailConnectionState {
   final bool isConnecting;
   final String? errorMessage;
 
+  /// Best-effort: the scope string from `user_oauth_tokens.scope`, lowercased.
+  /// `null` when we have not yet fetched it (e.g. first launch before the
+  /// background read returns) — treat null as "scope unknown" and show the
+  /// banner when V2 is active, preferring user friction over silent
+  /// loss-of-functionality.
+  final String? tokenScopeHint;
+
   _EmailConnectionState copyWith({
     bool? isConnected,
     String? email,
@@ -50,6 +60,7 @@ class _EmailConnectionState {
     bool? isSyncing,
     bool? isConnecting,
     String? errorMessage,
+    String? tokenScopeHint,
   }) {
     return _EmailConnectionState(
       isConnected: isConnected ?? this.isConnected,
@@ -59,6 +70,7 @@ class _EmailConnectionState {
       isSyncing: isSyncing ?? this.isSyncing,
       isConnecting: isConnecting ?? this.isConnecting,
       errorMessage: errorMessage,
+      tokenScopeHint: tokenScopeHint ?? this.tokenScopeHint,
     );
   }
 }
@@ -79,16 +91,12 @@ class _EmailConnectionState {
 // modify is required to apply Gmail labels (e.g. `advocat-handled-auto`)
 // once a thread has been triaged + auto-archived. Existing connected users
 // must re-authorise — the email_screen UI surfaces a one-time banner per
-// 09_INTEGRATION_INTO_ADVOCAT.md §D1.
+// 09_INTEGRATION_INTO_ADVOCAT.md §D1, gated by `kGmailScopesIncludeProactive`
+// in lib/config/feature_flags.dart.
 //
-// Order matches Google Cloud Console "Authorized scopes" registration; when
-// adding scopes here, also update the consent screen, otherwise Google
-// rejects the OAuth flow with `error=access_denied`.
-const String kGmailOAuthScopes =
-    'email '
-    'https://www.googleapis.com/auth/gmail.send '
-    'https://www.googleapis.com/auth/gmail.readonly '
-    'https://www.googleapis.com/auth/gmail.modify';
+// Backwards-compat alias. New code should reference `kGmailScopesActive`
+// directly; this name is kept because tests and comments reference it.
+const String kGmailOAuthScopes = kGmailScopesActive;
 
 class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
   _EmailConnectionNotifier(this._oauthStorage)
@@ -119,10 +127,41 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
             provider: _EmailProvider.gmail,
             lastSyncAt: DateTime.now(),
           );
+          // D1 (Email Agent integration): fetch the stored token's scope
+          // string so the re-auth banner can decide whether the user is on
+          // V1 (send-only) or V2 (send + readonly + modify). Best-effort —
+          // any error leaves `tokenScopeHint` null and the banner shows
+          // (preferring user friction over silent loss-of-functionality).
+          unawaited(_loadTokenScopeHint(user.id));
         }
       }
     } catch (_) {
       // Supabase not initialized or other error — stay disconnected
+    }
+  }
+
+  /// Reads `user_oauth_tokens.scope` for the current user (Gmail provider)
+  /// and stores the lowercased scope string in state so the re-auth banner
+  /// can gate visibility. RLS policies enforce that the row is the user's
+  /// own; we never trust the server to filter for us.
+  Future<void> _loadTokenScopeHint(String userId) async {
+    try {
+      final row = await Supabase.instance.client
+          .from('user_oauth_tokens')
+          .select('scope')
+          .eq('user_id', userId)
+          .eq('provider', 'gmail')
+          .maybeSingle();
+      String? scope;
+      if (row != null) {
+        final raw = (row as Map)['scope'];
+        if (raw is String) scope = raw.toLowerCase();
+      }
+      if (scope != null) {
+        state = state.copyWith(tokenScopeHint: scope);
+      }
+    } catch (_) {
+      // Swallow — null scope is the safe-by-default value.
     }
   }
 
@@ -194,7 +233,7 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
       // Gmail API instead of falling back to Resend.
       await Supabase.instance.client.auth.signInWithOAuth(
         OAuthProvider.google,
-        scopes: kGmailOAuthScopes,
+        scopes: kGmailScopesActive,
         // access_type=offline + prompt=consent are required to receive a
         // refresh_token. Without prompt=consent, Google omits the refresh
         // token on subsequent sign-ins for the same user.
@@ -793,9 +832,23 @@ class _ConnectedView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
+    // D1: when the active scope set is V2 but the stored token was minted
+    // with V1, surface the one-time re-auth banner above the connected view.
+    final showReauthBanner = kGmailScopesIncludeProactive &&
+        !gmailScopeIncludesReadonly(connection.tokenScopeHint);
+
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
+        // ── One-time re-auth banner (V1 → V2 scope migration) ─────────
+        if (showReauthBanner) ...[
+          GmailReauthBanner(
+            onReauthorize: () =>
+                ref.read(_emailConnectionProvider.notifier).connectGmail(),
+          ),
+          const SizedBox(height: AppSpacing.md),
+        ],
+
         // ── Connection status with animated indicator ──────────────────
         _AnimatedConnectionCard(connection: connection, ref: ref)
             .animate()

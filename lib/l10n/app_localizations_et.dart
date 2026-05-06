@@ -1418,6 +1418,13 @@ class AppLocalizationsEt extends AppLocalizations {
       'Automaatne e-posti sünkroonimine lõpetatakse. Varem sünkroonitud e-kirjad jäävad teie juhtumitesse.';
 
   @override
+  String get gmailReauthBannerBody =>
+      'Advocat v2.1 loeb teie postkasti, et koostada vastuseid; saate loa igal ajal tagasi võtta. Ühenda Gmail uuesti, et lubada ennetav sõelumine.';
+
+  @override
+  String get gmailReauthBannerCta => 'Anna uuesti luba';
+
+  @override
   String connectedTo(String email) {
     return 'Ühendatud: $email';
   }

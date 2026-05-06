@@ -612,6 +612,8 @@
     },
     "disconnectEmail": "Katkaise sähköposti",
     "disconnectEmailConfirm": "Automaattinen sähköpostisynkronointi lopetetaan. Aiemmin synkronoidut sähköpostit säilyvät tapauksissasi.",
+    "gmailReauthBannerBody": "Advocat v2.1 lukee postilaatikkoasi laatiakseen vastauksia; voit peruuttaa luvan milloin tahansa. Yhdistä Gmail uudelleen ottaaksesi käyttöön proaktiivisen seulonnan.",
+    "gmailReauthBannerCta": "Vahvista uudelleen",
     "draftCopiedToClipboard": "Luonnos kopioitu leikepöydälle",
     "draftGeneration": "Luonnosten luonti",
     "emailIntegrationTitle": "Sähköposti-integraatio",
