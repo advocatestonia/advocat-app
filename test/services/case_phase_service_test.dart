@@ -38,7 +38,8 @@ class _FakeRpc {
     callCount++;
     lastFnName = fnName;
     lastParams = params;
-    if (_error != null) throw _error!;
+    final err = _error;
+    if (err != null) throw err;
     return _response;
   }
 }
