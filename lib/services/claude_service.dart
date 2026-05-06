@@ -690,6 +690,62 @@ class ClaudeService {
     return _extractText(response);
   }
 
+  /// Phase 2 Pkg 6 — three-pass legal reasoning entry point.
+  ///
+  /// Routes the request through `claude-proxy` with `mode: "legal_planner"`,
+  /// which orchestrates planner → executor → critique → optional regen
+  /// server-side. Returns the augmented Anthropic-shaped JSON with the
+  /// final draft text in `content[0].text`, the verifier's `citations[]`,
+  /// and a `planner` metadata block (regenerated_once / latency_ms /
+  /// cost_cents) that the chat UI surfaces in the Reasoning Trail.
+  ///
+  /// Caller is responsible for the trigger gating (Pro tier +
+  /// `enable_planner_for_legal_turns` user setting + [looksLegalish]).
+  /// This method is a 4th path on top of single_shot / agentic_loop /
+  /// streaming; it is not auto-selected by [chooseModel].
+  Future<Map<String, dynamic>> sendLegalPlannerMessage({
+    required List<Map<String, String>> messages,
+    required String systemPrompt,
+    String? caseId,
+    String? messageId,
+  }) async {
+    if (!isAvailable) {
+      throw const ClaudeServiceException(
+        'Claude API is not configured. Set SUPABASE_URL or CLAUDE_API_KEY.',
+      );
+    }
+
+    final body = <String, dynamic>{
+      // Server runs Sonnet/Haiku internally; the "model" field is unused
+      // in legal_planner mode but kept for proxy guard compatibility.
+      'model': modelSonnet,
+      'max_tokens': 4096,
+      'temperature': 0.2,
+      'system': systemPrompt,
+      'messages': messages,
+      'mode': 'legal_planner',
+      if (caseId != null && caseId.isNotEmpty) 'case_id': caseId,
+      if (messageId != null && messageId.isNotEmpty) 'message_id': messageId,
+    };
+
+    final response = await _dio.post(
+      _useProxy ? '/claude-proxy' : '/v1/messages',
+      data: body,
+      options: Options(
+        headers: _useProxy
+            ? {
+                'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
+              }
+            : {
+                'x-api-key': AppConfig.claudeApiKey,
+              },
+      ),
+    );
+
+    final data = response.data as Map<String, dynamic>;
+    return data;
+  }
+
   /// Send a chat message with tool definitions included.
   ///
   /// Returns the raw Claude API response so the caller can inspect

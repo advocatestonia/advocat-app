@@ -19,6 +19,7 @@ import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/status_chip.dart';
+import '../../../services/legal_planner.dart';
 import '../../auth/providers/auth_provider.dart';
 import 'edit_profile_screen.dart';
 
@@ -90,6 +91,11 @@ class SettingsScreen extends ConsumerWidget {
               inactiveTrackColor: AppColors.border,
             ),
           ),
+
+          // Pkg 6 — three-pass planner toggle (Pro only). Default OFF;
+          // adds ~3-6s to legal turns when on. Settings-screen copy is
+          // inline English for now — ARB keys land in a follow-up pass.
+          _PlannerToggleTile(),
 
           const _SectionDivider(),
 
@@ -801,6 +807,32 @@ class SettingsScreen extends ConsumerWidget {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
     }
+  }
+}
+
+// ── Pkg 6 planner toggle ─────────────────────────────────────────────────
+// Pro-only opt-in to the three-pass legal reasoning loop. The toggle UI
+// renders for everyone but stays disabled (and OFF) for free-tier users
+// so they see the capability and have a reason to upgrade.
+class _PlannerToggleTile extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final asyncEnabled = ref.watch(plannerEnabledProvider);
+    final value = asyncEnabled.valueOrNull ?? false;
+    return _SettingsTile(
+      icon: Icons.psychology_outlined,
+      title: 'Smart legal reasoning',
+      subtitle: 'Plan, draft, self-critique on legal questions (Pro)',
+      trailing: Switch.adaptive(
+        value: value,
+        onChanged: (v) =>
+            ref.read(plannerEnabledProvider.notifier).setEnabled(v),
+        activeThumbColor: Colors.white,
+        activeTrackColor: AppColors.accent,
+        inactiveThumbColor: Colors.white,
+        inactiveTrackColor: AppColors.border,
+      ),
+    );
   }
 }
 
