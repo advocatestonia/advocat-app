@@ -5305,6 +5305,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Uploading {done} / {total}…'**
   String intakeUploadProgress(int done, int total);
+
+  /// No description provided for @uplDisclaimerFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat is not a law firm. This is information, not legal advice.'**
+  String get uplDisclaimerFooter;
+
+  /// No description provided for @citationStatusVerifiedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Verified'**
+  String get citationStatusVerifiedBadge;
+
+  /// No description provided for @citationStatusUnverifiedBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Unverified'**
+  String get citationStatusUnverifiedBadge;
+
+  /// No description provided for @citationStatusHistoricalBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Historical version'**
+  String get citationStatusHistoricalBadge;
+
+  /// No description provided for @citationStatusVerifiedTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Cited from a retrieved law source.'**
+  String get citationStatusVerifiedTooltip;
+
+  /// No description provided for @citationStatusUnverifiedTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'AI quoted this without retrieval — verify before relying.'**
+  String get citationStatusUnverifiedTooltip;
+
+  /// No description provided for @citationStatusHistoricalTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Cited section is no longer in force.'**
+  String get citationStatusHistoricalTooltip;
+
+  /// No description provided for @citationOpenInRiigiTeataja.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Riigi Teataja'**
+  String get citationOpenInRiigiTeataja;
+
+  /// No description provided for @citationSnippetExpand.
+  ///
+  /// In en, this message translates to:
+  /// **'Show full text'**
+  String get citationSnippetExpand;
+
+  /// No description provided for @citationSnippetCollapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get citationSnippetCollapse;
+
+  /// No description provided for @citationUnverifiedSheetNote.
+  ///
+  /// In en, this message translates to:
+  /// **'AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.'**
+  String get citationUnverifiedSheetNote;
+
+  /// No description provided for @citationFooterNoneWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'No grounded citations'**
+  String get citationFooterNoneWarning;
+
+  /// No description provided for @citationFooterSummaryTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} citations'**
+  String citationFooterSummaryTotal(int count);
+
+  /// No description provided for @citationFooterSummaryVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} verified'**
+  String citationFooterSummaryVerified(int count);
+
+  /// No description provided for @citationFooterSummaryUnverified.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} unverified'**
+  String citationFooterSummaryUnverified(int count);
+
+  /// No description provided for @citationFooterSummaryHistorical.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} historical'**
+  String citationFooterSummaryHistorical(int count);
 }
 
 class _AppLocalizationsDelegate

@@ -822,5 +822,48 @@
     "cheaperAnnually": "€{amount}/ماه ارزان‌تر با اشتراک سالانه",
     "navigatingTo": "در حال باز کردن",
     "stayInChat": "ماندن در چت",
-    "backToChat": "بازگشت به چت"
+    "backToChat": "بازگشت به چت",
+    "citationStatusVerifiedBadge": "Verified",
+    "citationStatusUnverifiedBadge": "Unverified",
+    "citationStatusHistoricalBadge": "Historical version",
+    "citationStatusVerifiedTooltip": "Cited from a retrieved law source.",
+    "citationStatusUnverifiedTooltip": "AI quoted this without retrieval — verify before relying.",
+    "citationStatusHistoricalTooltip": "Cited section is no longer in force.",
+    "citationOpenInRiigiTeataja": "Open in Riigi Teataja",
+    "citationSnippetExpand": "Show full text",
+    "citationSnippetCollapse": "Show less",
+    "citationUnverifiedSheetNote": "AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.",
+    "citationFooterNoneWarning": "No grounded citations",
+    "citationFooterSummaryTotal": "{count} citations",
+    "citationFooterSummaryVerified": "{count} verified",
+    "citationFooterSummaryUnverified": "{count} unverified",
+    "citationFooterSummaryHistorical": "{count} historical",
+    "@citationFooterSummaryTotal": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@citationFooterSummaryVerified": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@citationFooterSummaryUnverified": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@citationFooterSummaryHistorical": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }

@@ -2883,4 +2883,65 @@ class AppLocalizationsRu extends AppLocalizations {
   String intakeUploadProgress(int done, int total) {
     return 'Загружаю $done / $total…';
   }
+
+  @override
+  String get uplDisclaimerFooter =>
+      'Advocat не является юридической фирмой. Это информация, а не юридическая консультация.';
+
+  @override
+  String get citationStatusVerifiedBadge => 'Проверено';
+
+  @override
+  String get citationStatusUnverifiedBadge => 'Не проверено';
+
+  @override
+  String get citationStatusHistoricalBadge => 'Старая редакция';
+
+  @override
+  String get citationStatusVerifiedTooltip =>
+      'Цитата подтверждена найденным источником закона.';
+
+  @override
+  String get citationStatusUnverifiedTooltip =>
+      'ИИ привёл ссылку без поиска — проверьте перед использованием.';
+
+  @override
+  String get citationStatusHistoricalTooltip =>
+      'Указанная статья больше не действует.';
+
+  @override
+  String get citationOpenInRiigiTeataja => 'Открыть в Riigi Teataja';
+
+  @override
+  String get citationSnippetExpand => 'Показать полностью';
+
+  @override
+  String get citationSnippetCollapse => 'Свернуть';
+
+  @override
+  String get citationUnverifiedSheetNote =>
+      'ИИ сослался на этот параграф, но он не был найден в корпусе закона на этом ходу. Проверьте ссылку перед использованием.';
+
+  @override
+  String get citationFooterNoneWarning => 'Нет подтверждённых ссылок';
+
+  @override
+  String citationFooterSummaryTotal(int count) {
+    return '$count ссылок';
+  }
+
+  @override
+  String citationFooterSummaryVerified(int count) {
+    return '$count проверено';
+  }
+
+  @override
+  String citationFooterSummaryUnverified(int count) {
+    return '$count непроверенных';
+  }
+
+  @override
+  String citationFooterSummaryHistorical(int count) {
+    return '$count устаревших';
+  }
 }

@@ -965,10 +965,14 @@
     "reasoningPillFinalising": "Vormistan vastust…",
     "reasoningCollapsedFormat": "Mõtlesin {sec} s · {sources} allikat",
     "@reasoningCollapsedFormat": {
-      "placeholders": {
-        "sec": {"type": "int"},
-        "sources": {"type": "int"}
-      }
+        "placeholders": {
+            "sec": {
+                "type": "int"
+            },
+            "sources": {
+                "type": "int"
+            }
+        }
     },
     "reasoningExpandHint": "vajuta sammude nägemiseks",
     "caseFileTitle": "Toimik",
@@ -1075,17 +1079,68 @@
     "intakeStepIndicator": "Samm {current} / {total}",
     "@intakeStepIndicator": {
         "placeholders": {
-            "current": {"type": "int"},
-            "total": {"type": "int"}
+            "current": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "intakeFieldRequired": "Kohustuslik",
     "intakeUploadProgress": "Laadin üles {done} / {total}…",
     "@intakeUploadProgress": {
         "placeholders": {
-            "done": {"type": "int"},
-            "total": {"type": "int"}
+            "done": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
-    "uplDisclaimerFooter": "Advocat ei ole advokaadibüroo. See on informatsioon, mitte õigusnõu."
+    "uplDisclaimerFooter": "Advocat ei ole advokaadibüroo. See on informatsioon, mitte õigusnõu.",
+    "citationStatusVerifiedBadge": "Kontrollitud",
+    "citationStatusUnverifiedBadge": "Kontrollimata",
+    "citationStatusHistoricalBadge": "Vana redaktsioon",
+    "citationStatusVerifiedTooltip": "Tsiteeritud allikast, mis on otsitud praegusest seaduskorpusest.",
+    "citationStatusUnverifiedTooltip": "AI tsiteeris seda ilma otsinguta — kontrolli enne tuginemist.",
+    "citationStatusHistoricalTooltip": "Tsiteeritud säte ei kehti enam.",
+    "citationOpenInRiigiTeataja": "Ava Riigi Teatajas",
+    "citationSnippetExpand": "Näita täisteksti",
+    "citationSnippetCollapse": "Peida",
+    "citationUnverifiedSheetNote": "AI tsiteeris seda paragrahvi, kuid seda ei leitud praegusest seaduskorpusest. Kontrolli viidet enne tuginemist.",
+    "citationFooterNoneWarning": "Allikaviiteid pole",
+    "citationFooterSummaryTotal": "{count} viidet",
+    "citationFooterSummaryVerified": "{count} kontrollitud",
+    "citationFooterSummaryUnverified": "{count} kontrollimata",
+    "citationFooterSummaryHistorical": "{count} vana",
+    "@citationFooterSummaryTotal": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@citationFooterSummaryVerified": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@citationFooterSummaryUnverified": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@citationFooterSummaryHistorical": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }

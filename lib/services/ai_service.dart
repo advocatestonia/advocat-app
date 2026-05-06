@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import '../config/app_config.dart';
 import '../features/case_memory/services/case_auto_patch_service.dart';
+import '../features/chat/citations/citation_model.dart';
 import '../models/case_model.dart';
 import 'agentic_loop.dart';
 import 'assistant_tools.dart';
@@ -1474,6 +1475,11 @@ class AIService {
           var finalText = outcome.text;
           finalText = _applyCitationVerification(finalText, outcome.toolCalls);
 
+          // Phase 2 Pkg 2 — server-side grounded citations from the proxy's
+          // last end_turn response. List is empty when the backend predates
+          // Pkg 2 or when the turn used no RAG context.
+          final loopCitations = Citation.listFromJson(outcome.citations);
+
           if (finalText.isNotEmpty) {
             _addToHistory(caseId, 'assistant', finalText);
             _cacheResponse(sanitizedMessage, finalText);
@@ -1503,11 +1509,15 @@ class AIService {
             disclaimer:
                 'This is AI-generated legal information, not legal advice. '
                 'Please consult a qualified attorney for advice specific to your situation.',
+            citations: loopCitations,
           );
         }
 
         // Normal text-only response
         final responseText = _claudeService.extractText(rawResponse);
+        // Phase 2 Pkg 2 — surface citations from the single-shot path too.
+        final singleShotCitations =
+            Citation.listFromJson(rawResponse['citations']);
 
         // Add assistant response to history
         _addToHistory(caseId, 'assistant', responseText);
@@ -1540,6 +1550,7 @@ class AIService {
           disclaimer:
               'This is AI-generated legal information, not legal advice. '
               'Please consult a qualified attorney for advice specific to your situation.',
+          citations: singleShotCitations,
         );
       } on ClaudeServiceException catch (e) {
         _log.e('Claude chat failed, falling back to proxy', error: e);
@@ -2213,11 +2224,18 @@ class ChatResponse {
   /// execute tool calls.  `null` for plain text responses.
   final Map<String, dynamic>? toolUseResponse;
 
+  /// Phase 2 Pkg 2 — grounded citations extracted by the proxy verifier.
+  /// One row per distinct `[[ref:ACT:PARA]]` marker in [message]. Empty
+  /// for tool-use turns, demo mode, and legacy backends without the
+  /// verifier wired up. Never null.
+  final List<Citation> citations;
+
   const ChatResponse({
     required this.message,
     this.suggestedActions,
     this.disclaimer,
     this.toolUseResponse,
+    this.citations = const [],
   });
 
   /// Whether this response contains tool calls that need to be executed.
@@ -2228,6 +2246,7 @@ class ChatResponse {
       message: json['message'] as String,
       suggestedActions: (json['suggested_actions'] as List<dynamic>?)?.cast<String>(),
       disclaimer: json['disclaimer'] as String?,
+      citations: Citation.listFromJson(json['citations']),
     );
   }
 }

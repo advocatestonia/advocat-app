@@ -26,6 +26,7 @@ import '../../../services/feedback_service.dart';
 import '../../../services/language_detector.dart';
 import '../../../services/pdf_service.dart';
 import '../../../services/voice_service.dart';
+import '../citations/citation_model.dart';
 import '../../../widgets/feedback_buttons.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../services/chat_tool_bridge.dart';
@@ -63,6 +64,11 @@ class ChatMessage {
   /// Deferred navigation to perform after showing this message.
   final ToolNavigation? navigation;
 
+  /// Phase 2 Pkg 2 — grounded citations attached to this assistant message.
+  /// Empty for user / system / tool-result messages, and for legacy
+  /// assistant messages (pre-Pkg 2) which had no marker syntax.
+  final List<Citation> citations;
+
   const ChatMessage({
     required this.id,
     required this.role,
@@ -73,6 +79,7 @@ class ChatMessage {
     this.hasAttachment = false,
     this.toolResult,
     this.navigation,
+    this.citations = const [],
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -83,6 +90,7 @@ class ChatMessage {
       timestamp: DateTime.tryParse(json['created_at'] as String? ?? '') ??
           DateTime.now(),
       hasAttachment: json['has_attachment'] as bool? ?? false,
+      citations: Citation.listFromJson(json['citations']),
     );
   }
 }
@@ -898,6 +906,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       } else {
         // Normal AI response flow
         String responseText = '';
+        // Phase 2 Pkg 2 — citations from the final ChatResponse for this turn.
+        // Captured here so the assistant ChatMessage built below the
+        // streaming/non-streaming branches can attach them.
+        List<Citation> responseCitations = const [];
         bool usedStreaming = false;
         final ai = ref.read(aiServiceProvider);
         if (ai.isUsingRealAI) {
@@ -1263,6 +1275,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             }
 
             responseText = response.message;
+            // Phase 2 Pkg 2 — capture grounded citations for the bubble.
+            responseCitations = response.citations;
           }
 
           // Guard against empty responses (e.g. tool_use only).
@@ -1288,6 +1302,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               role: MessageRole.assistant,
               content: responseText,
               timestamp: DateTime.now(),
+              citations: responseCitations,
             );
             setState(() {
               _isTyping = false;

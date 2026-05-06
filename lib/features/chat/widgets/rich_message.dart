@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../config/theme.dart';
+import '../../../core/citations/marker.dart';
+import '../citations/citation_model.dart';
 import 'action_chip.dart';
+import 'citations/citation_marker_span.dart';
 
 // ---------------------------------------------------------------------------
 // Public API
@@ -28,6 +31,7 @@ class RichMessage extends StatelessWidget {
     this.onActionTap,
     this.animate = true,
     this.baseStyle,
+    this.citations = const [],
   });
 
   /// Raw AI message text.
@@ -41,6 +45,12 @@ class RichMessage extends StatelessWidget {
 
   /// Base text style. Falls back to a sensible default.
   final TextStyle? baseStyle;
+
+  /// Phase 2 Pkg 2 — grounded citations for this assistant message.
+  /// `[[ref:ACT:PARA]]` markers in [text] are replaced inline with chips
+  /// that look up their data from this list. Empty for legacy messages
+  /// or non-legal turns.
+  final List<Citation> citations;
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +356,7 @@ class RichMessage extends StatelessWidget {
     TextStyle baseStyle,
     bool isDark,
   ) {
-    final spans = _parseInlineSpans(text, baseStyle, isDark);
+    final spans = _parseInlineSpans(context, text, baseStyle, isDark);
 
     // Check if any span is a widget span (action chip)
     final hasWidgets = spans.any((s) => s is WidgetSpan);
@@ -365,6 +375,57 @@ class RichMessage extends StatelessWidget {
   }
 
   List<InlineSpan> _parseInlineSpans(
+    BuildContext context,
+    String text,
+    TextStyle baseStyle,
+    bool isDark,
+  ) {
+    // Phase 2 Pkg 2 — citation markers `[[ref:ACT:PARA]]` in text get
+    // replaced with tappable chips before any other inline parsing.
+    // We split the text into segments at every marker, run the legacy
+    // inline parser on each NON-marker segment, then concatenate.
+    if (text.contains('[[ref:')) {
+      final markerRegex = RegExp(kCitationMarkerPattern);
+      final byKey = <String, Citation>{
+        for (final c in citations) c.key: c,
+      };
+      final out = <InlineSpan>[];
+      int cursor = 0;
+      for (final match in markerRegex.allMatches(text)) {
+        if (match.start > cursor) {
+          // Recurse into the legacy parser on the prefix text. Pass an
+          // empty-citations RichMessage spec so the recursion stops.
+          out.addAll(_parseInlineSpansLegacy(
+            text.substring(cursor, match.start),
+            baseStyle,
+            isDark,
+          ));
+        }
+        final actSlug = (match.group(1) ?? '').toLowerCase();
+        final paragraph = match.group(2) ?? '';
+        final key = '$actSlug:$paragraph';
+        final citation = byKey[key];
+        out.addAll(buildCitationSpans(
+          context: context,
+          text: match.group(0)!,
+          citations: citation == null ? const [] : [citation],
+          baseStyle: baseStyle,
+        ));
+        cursor = match.end;
+      }
+      if (cursor < text.length) {
+        out.addAll(_parseInlineSpansLegacy(
+          text.substring(cursor),
+          baseStyle,
+          isDark,
+        ));
+      }
+      return out;
+    }
+    return _parseInlineSpansLegacy(text, baseStyle, isDark);
+  }
+
+  List<InlineSpan> _parseInlineSpansLegacy(
     String text,
     TextStyle baseStyle,
     bool isDark,

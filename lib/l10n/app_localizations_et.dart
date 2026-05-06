@@ -2873,4 +2873,65 @@ class AppLocalizationsEt extends AppLocalizations {
   String intakeUploadProgress(int done, int total) {
     return 'Laadin üles $done / $total…';
   }
+
+  @override
+  String get uplDisclaimerFooter =>
+      'Advocat ei ole advokaadibüroo. See on informatsioon, mitte õigusnõu.';
+
+  @override
+  String get citationStatusVerifiedBadge => 'Kontrollitud';
+
+  @override
+  String get citationStatusUnverifiedBadge => 'Kontrollimata';
+
+  @override
+  String get citationStatusHistoricalBadge => 'Vana redaktsioon';
+
+  @override
+  String get citationStatusVerifiedTooltip =>
+      'Tsiteeritud allikast, mis on otsitud praegusest seaduskorpusest.';
+
+  @override
+  String get citationStatusUnverifiedTooltip =>
+      'AI tsiteeris seda ilma otsinguta — kontrolli enne tuginemist.';
+
+  @override
+  String get citationStatusHistoricalTooltip =>
+      'Tsiteeritud säte ei kehti enam.';
+
+  @override
+  String get citationOpenInRiigiTeataja => 'Ava Riigi Teatajas';
+
+  @override
+  String get citationSnippetExpand => 'Näita täisteksti';
+
+  @override
+  String get citationSnippetCollapse => 'Peida';
+
+  @override
+  String get citationUnverifiedSheetNote =>
+      'AI tsiteeris seda paragrahvi, kuid seda ei leitud praegusest seaduskorpusest. Kontrolli viidet enne tuginemist.';
+
+  @override
+  String get citationFooterNoneWarning => 'Allikaviiteid pole';
+
+  @override
+  String citationFooterSummaryTotal(int count) {
+    return '$count viidet';
+  }
+
+  @override
+  String citationFooterSummaryVerified(int count) {
+    return '$count kontrollitud';
+  }
+
+  @override
+  String citationFooterSummaryUnverified(int count) {
+    return '$count kontrollimata';
+  }
+
+  @override
+  String citationFooterSummaryHistorical(int count) {
+    return '$count vana';
+  }
 }

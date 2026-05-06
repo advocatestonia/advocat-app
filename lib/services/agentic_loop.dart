@@ -119,6 +119,7 @@ class LoopOutcome {
     required this.iterations,
     required this.toolCalls,
     this.pendingApprovalResponse,
+    this.citations,
   });
 
   /// Text to show the user. Already verified for citations.
@@ -137,6 +138,16 @@ class LoopOutcome {
   /// the raw Claude response that triggered the pause — caller passes it
   /// to [ChatToolBridge.executeToolCalls] to render approval UI.
   final Map<String, dynamic>? pendingApprovalResponse;
+
+  /// Phase 2 Pkg 2 — raw `citations: [...]` array from the LAST proxy
+  /// response in the loop. Kept as `List<dynamic>?` to avoid coupling the
+  /// loop to the typed [Citation] model in `lib/features/chat/citations`;
+  /// callers (ai_service.dart) decode via [Citation.listFromJson].
+  ///
+  /// Null when the loop never reached an end_turn iteration (approval pause,
+  /// max iterations, error). Empty list when the proxy didn't return a
+  /// citations field (legacy backend, demo mode).
+  final List<dynamic>? citations;
 }
 
 /// Run the agentic loop. See file header for invariants.
@@ -190,6 +201,7 @@ Future<LoopOutcome> runAgenticLoop({
         stopReason: LoopStopReason.endTurn,
         iterations: i + 1,
         toolCalls: allToolCalls,
+        citations: response['citations'] as List<dynamic>?,
       );
     }
 

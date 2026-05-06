@@ -2876,4 +2876,65 @@ class AppLocalizationsFi extends AppLocalizations {
   String intakeUploadProgress(int done, int total) {
     return 'Ladataan $done / $total…';
   }
+
+  @override
+  String get uplDisclaimerFooter =>
+      'Advocat ei ole asianajotoimisto. Tämä on tietoa, ei oikeudellista neuvontaa.';
+
+  @override
+  String get citationStatusVerifiedBadge => 'Vahvistettu';
+
+  @override
+  String get citationStatusUnverifiedBadge => 'Vahvistamaton';
+
+  @override
+  String get citationStatusHistoricalBadge => 'Vanha versio';
+
+  @override
+  String get citationStatusVerifiedTooltip =>
+      'Lainattu lähde löytyi lakikorpuksesta.';
+
+  @override
+  String get citationStatusUnverifiedTooltip =>
+      'AI lainasi ilman hakua — tarkista ennen käyttöä.';
+
+  @override
+  String get citationStatusHistoricalTooltip =>
+      'Lainattu kohta ei ole enää voimassa.';
+
+  @override
+  String get citationOpenInRiigiTeataja => 'Avaa Riigi Teatajassa';
+
+  @override
+  String get citationSnippetExpand => 'Näytä koko teksti';
+
+  @override
+  String get citationSnippetCollapse => 'Näytä vähemmän';
+
+  @override
+  String get citationUnverifiedSheetNote =>
+      'AI lainasi tämän kohdan, mutta sitä ei haettu lakikorpuksesta tällä vuorolla. Tarkista viittaus ennen käyttöä.';
+
+  @override
+  String get citationFooterNoneWarning => 'Ei vahvistettuja viittauksia';
+
+  @override
+  String citationFooterSummaryTotal(int count) {
+    return '$count viittausta';
+  }
+
+  @override
+  String citationFooterSummaryVerified(int count) {
+    return '$count vahvistettu';
+  }
+
+  @override
+  String citationFooterSummaryUnverified(int count) {
+    return '$count vahvistamatta';
+  }
+
+  @override
+  String citationFooterSummaryHistorical(int count) {
+    return '$count vanhaa';
+  }
 }

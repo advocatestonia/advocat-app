@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../../../config/theme.dart';
 import '../../../services/pdf_service.dart';
 import '../screens/chat_screen.dart';
+import 'citations/message_citations_footer.dart';
 import 'rich_message.dart';
 
 /// A single chat message bubble with copy and action support.
@@ -93,6 +94,14 @@ class ChatMessageBubble extends StatelessWidget {
                 RichMessage(
                   text: message.content,
                   onActionTap: (label) => onAction?.call(label),
+                  citations: message.citations,
+                ),
+              if (!_isUser &&
+                  (message.citations.isNotEmpty ||
+                      looksLegalish(message.content)))
+                MessageCitationsFooter(
+                  citations: message.citations,
+                  legalContent: looksLegalish(message.content),
                 ),
               const SizedBox(height: 4),
               Row(

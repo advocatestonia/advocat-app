@@ -2871,4 +2871,65 @@ class AppLocalizationsEn extends AppLocalizations {
   String intakeUploadProgress(int done, int total) {
     return 'Uploading $done / $total…';
   }
+
+  @override
+  String get uplDisclaimerFooter =>
+      'Advocat is not a law firm. This is information, not legal advice.';
+
+  @override
+  String get citationStatusVerifiedBadge => 'Verified';
+
+  @override
+  String get citationStatusUnverifiedBadge => 'Unverified';
+
+  @override
+  String get citationStatusHistoricalBadge => 'Historical version';
+
+  @override
+  String get citationStatusVerifiedTooltip =>
+      'Cited from a retrieved law source.';
+
+  @override
+  String get citationStatusUnverifiedTooltip =>
+      'AI quoted this without retrieval — verify before relying.';
+
+  @override
+  String get citationStatusHistoricalTooltip =>
+      'Cited section is no longer in force.';
+
+  @override
+  String get citationOpenInRiigiTeataja => 'Open in Riigi Teataja';
+
+  @override
+  String get citationSnippetExpand => 'Show full text';
+
+  @override
+  String get citationSnippetCollapse => 'Show less';
+
+  @override
+  String get citationUnverifiedSheetNote =>
+      'AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.';
+
+  @override
+  String get citationFooterNoneWarning => 'No grounded citations';
+
+  @override
+  String citationFooterSummaryTotal(int count) {
+    return '$count citations';
+  }
+
+  @override
+  String citationFooterSummaryVerified(int count) {
+    return '$count verified';
+  }
+
+  @override
+  String citationFooterSummaryUnverified(int count) {
+    return '$count unverified';
+  }
+
+  @override
+  String citationFooterSummaryHistorical(int count) {
+    return '$count historical';
+  }
 }
