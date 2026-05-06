@@ -2907,59 +2907,59 @@ class AppLocalizationsEs extends AppLocalizations {
       'Advocat is not a law firm. This is information, not legal advice.';
 
   @override
-  String get citationStatusVerifiedBadge => 'Verified';
+  String get citationStatusVerifiedBadge => 'Verificada';
 
   @override
-  String get citationStatusUnverifiedBadge => 'Unverified';
+  String get citationStatusUnverifiedBadge => 'Sin verificar';
 
   @override
-  String get citationStatusHistoricalBadge => 'Historical version';
+  String get citationStatusHistoricalBadge => 'Versión histórica';
 
   @override
   String get citationStatusVerifiedTooltip =>
-      'Cited from a retrieved law source.';
+      'Citada a partir de una fuente jurídica recuperada.';
 
   @override
   String get citationStatusUnverifiedTooltip =>
-      'AI quoted this without retrieval — verify before relying.';
+      'La IA citó este pasaje sin recuperar la fuente — verifíquelo antes de confiar en él.';
 
   @override
   String get citationStatusHistoricalTooltip =>
-      'Cited section is no longer in force.';
+      'La disposición citada ya no se encuentra en vigor.';
 
   @override
-  String get citationOpenInRiigiTeataja => 'Open in Riigi Teataja';
+  String get citationOpenInRiigiTeataja => 'Abrir en Riigi Teataja';
 
   @override
-  String get citationSnippetExpand => 'Show full text';
+  String get citationSnippetExpand => 'Mostrar texto completo';
 
   @override
-  String get citationSnippetCollapse => 'Show less';
+  String get citationSnippetCollapse => 'Mostrar menos';
 
   @override
   String get citationUnverifiedSheetNote =>
-      'AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.';
+      'La IA citó este párrafo, pero no fue recuperado del corpus jurídico en esta consulta. Verifique la referencia antes de utilizarla.';
 
   @override
-  String get citationFooterNoneWarning => 'No grounded citations';
+  String get citationFooterNoneWarning => 'Sin citas fundamentadas';
 
   @override
   String citationFooterSummaryTotal(int count) {
-    return '$count citations';
+    return '$count citas';
   }
 
   @override
   String citationFooterSummaryVerified(int count) {
-    return '$count verified';
+    return '$count verificadas';
   }
 
   @override
   String citationFooterSummaryUnverified(int count) {
-    return '$count unverified';
+    return '$count sin verificar';
   }
 
   @override
   String citationFooterSummaryHistorical(int count) {
-    return '$count historical';
+    return '$count históricas';
   }
 }

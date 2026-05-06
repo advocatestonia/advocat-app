@@ -2884,59 +2884,59 @@ class AppLocalizationsUk extends AppLocalizations {
       'Advocat is not a law firm. This is information, not legal advice.';
 
   @override
-  String get citationStatusVerifiedBadge => 'Verified';
+  String get citationStatusVerifiedBadge => 'Перевірено';
 
   @override
-  String get citationStatusUnverifiedBadge => 'Unverified';
+  String get citationStatusUnverifiedBadge => 'Не перевірено';
 
   @override
-  String get citationStatusHistoricalBadge => 'Historical version';
+  String get citationStatusHistoricalBadge => 'Історична редакція';
 
   @override
   String get citationStatusVerifiedTooltip =>
-      'Cited from a retrieved law source.';
+      'Цитата з відновленого правового джерела.';
 
   @override
   String get citationStatusUnverifiedTooltip =>
-      'AI quoted this without retrieval — verify before relying.';
+      'ШІ навів цей фрагмент без відновлення джерела — перевірте перед використанням.';
 
   @override
   String get citationStatusHistoricalTooltip =>
-      'Cited section is no longer in force.';
+      'Цитоване положення вже не чинне.';
 
   @override
-  String get citationOpenInRiigiTeataja => 'Open in Riigi Teataja';
+  String get citationOpenInRiigiTeataja => 'Відкрити в Riigi Teataja';
 
   @override
-  String get citationSnippetExpand => 'Show full text';
+  String get citationSnippetExpand => 'Показати повний текст';
 
   @override
-  String get citationSnippetCollapse => 'Show less';
+  String get citationSnippetCollapse => 'Згорнути';
 
   @override
   String get citationUnverifiedSheetNote =>
-      'AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.';
+      'ШІ навів цей пункт, проте у цій сесії його не було відновлено з правового корпусу. Перевірте посилання, перш ніж на нього спиратися.';
 
   @override
-  String get citationFooterNoneWarning => 'No grounded citations';
+  String get citationFooterNoneWarning => 'Немає підтверджених посилань';
 
   @override
   String citationFooterSummaryTotal(int count) {
-    return '$count citations';
+    return '$count посилань';
   }
 
   @override
   String citationFooterSummaryVerified(int count) {
-    return '$count verified';
+    return '$count перевірено';
   }
 
   @override
   String citationFooterSummaryUnverified(int count) {
-    return '$count unverified';
+    return '$count не перевірено';
   }
 
   @override
   String citationFooterSummaryHistorical(int count) {
-    return '$count historical';
+    return '$count історичних';
   }
 }

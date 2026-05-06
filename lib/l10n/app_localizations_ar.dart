@@ -2867,59 +2867,59 @@ class AppLocalizationsAr extends AppLocalizations {
       'Advocat is not a law firm. This is information, not legal advice.';
 
   @override
-  String get citationStatusVerifiedBadge => 'Verified';
+  String get citationStatusVerifiedBadge => 'موثَّق';
 
   @override
-  String get citationStatusUnverifiedBadge => 'Unverified';
+  String get citationStatusUnverifiedBadge => 'غير موثَّق';
 
   @override
-  String get citationStatusHistoricalBadge => 'Historical version';
+  String get citationStatusHistoricalBadge => 'نسخة سابقة';
 
   @override
   String get citationStatusVerifiedTooltip =>
-      'Cited from a retrieved law source.';
+      'مُقتبَس من مصدر قانوني تم استرجاعه.';
 
   @override
   String get citationStatusUnverifiedTooltip =>
-      'AI quoted this without retrieval — verify before relying.';
+      'اقتبس الذكاء الاصطناعي هذا دون استرجاع المصدر — تحقَّق قبل الاعتماد عليه.';
 
   @override
   String get citationStatusHistoricalTooltip =>
-      'Cited section is no longer in force.';
+      'الحكم المُقتبَس لم يعد ساري المفعول.';
 
   @override
-  String get citationOpenInRiigiTeataja => 'Open in Riigi Teataja';
+  String get citationOpenInRiigiTeataja => 'فتح في Riigi Teataja';
 
   @override
-  String get citationSnippetExpand => 'Show full text';
+  String get citationSnippetExpand => 'عرض النص الكامل';
 
   @override
-  String get citationSnippetCollapse => 'Show less';
+  String get citationSnippetCollapse => 'عرض أقل';
 
   @override
   String get citationUnverifiedSheetNote =>
-      'AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.';
+      'اقتبس الذكاء الاصطناعي هذه الفقرة، غير أنه لم يتم استرجاعها من المتن القانوني في هذه الجلسة. تحقَّق من المرجع قبل الاعتماد عليه.';
 
   @override
-  String get citationFooterNoneWarning => 'No grounded citations';
+  String get citationFooterNoneWarning => 'لا توجد اقتباسات موثَّقة';
 
   @override
   String citationFooterSummaryTotal(int count) {
-    return '$count citations';
+    return '$count اقتباس';
   }
 
   @override
   String citationFooterSummaryVerified(int count) {
-    return '$count verified';
+    return '$count موثَّق';
   }
 
   @override
   String citationFooterSummaryUnverified(int count) {
-    return '$count unverified';
+    return '$count غير موثَّق';
   }
 
   @override
   String citationFooterSummaryHistorical(int count) {
-    return '$count historical';
+    return '$count نسخة سابقة';
   }
 }

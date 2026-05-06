@@ -2882,59 +2882,59 @@ class AppLocalizationsFa extends AppLocalizations {
       'Advocat is not a law firm. This is information, not legal advice.';
 
   @override
-  String get citationStatusVerifiedBadge => 'Verified';
+  String get citationStatusVerifiedBadge => 'تأییدشده';
 
   @override
-  String get citationStatusUnverifiedBadge => 'Unverified';
+  String get citationStatusUnverifiedBadge => 'تأییدنشده';
 
   @override
-  String get citationStatusHistoricalBadge => 'Historical version';
+  String get citationStatusHistoricalBadge => 'نسخهٔ پیشین';
 
   @override
   String get citationStatusVerifiedTooltip =>
-      'Cited from a retrieved law source.';
+      'از یک منبع حقوقی بازیابی‌شده نقل شده است.';
 
   @override
   String get citationStatusUnverifiedTooltip =>
-      'AI quoted this without retrieval — verify before relying.';
+      'هوش مصنوعی این متن را بدون بازیابی منبع نقل کرده است — پیش از اتکا، بازبینی کنید.';
 
   @override
   String get citationStatusHistoricalTooltip =>
-      'Cited section is no longer in force.';
+      'حکم نقل‌شده دیگر لازم‌الاجرا نیست.';
 
   @override
-  String get citationOpenInRiigiTeataja => 'Open in Riigi Teataja';
+  String get citationOpenInRiigiTeataja => 'گشودن در Riigi Teataja';
 
   @override
-  String get citationSnippetExpand => 'Show full text';
+  String get citationSnippetExpand => 'نمایش متن کامل';
 
   @override
-  String get citationSnippetCollapse => 'Show less';
+  String get citationSnippetCollapse => 'نمایش کمتر';
 
   @override
   String get citationUnverifiedSheetNote =>
-      'AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.';
+      'هوش مصنوعی این بند را نقل کرد، اما در این گفت‌وگو از پیکرهٔ حقوقی بازیابی نشده است. پیش از اتکا، ارجاع را راستی‌آزمایی کنید.';
 
   @override
-  String get citationFooterNoneWarning => 'No grounded citations';
+  String get citationFooterNoneWarning => 'هیچ ارجاع مستندی موجود نیست';
 
   @override
   String citationFooterSummaryTotal(int count) {
-    return '$count citations';
+    return '$count ارجاع';
   }
 
   @override
   String citationFooterSummaryVerified(int count) {
-    return '$count verified';
+    return '$count تأییدشده';
   }
 
   @override
   String citationFooterSummaryUnverified(int count) {
-    return '$count unverified';
+    return '$count تأییدنشده';
   }
 
   @override
   String citationFooterSummaryHistorical(int count) {
-    return '$count historical';
+    return '$count نسخهٔ پیشین';
   }
 }

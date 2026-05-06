@@ -2894,59 +2894,57 @@ class AppLocalizationsLv extends AppLocalizations {
       'Advocat is not a law firm. This is information, not legal advice.';
 
   @override
-  String get citationStatusVerifiedBadge => 'Verified';
+  String get citationStatusVerifiedBadge => 'Pārbaudīts';
 
   @override
-  String get citationStatusUnverifiedBadge => 'Unverified';
+  String get citationStatusUnverifiedBadge => 'Nepārbaudīts';
 
   @override
-  String get citationStatusHistoricalBadge => 'Historical version';
+  String get citationStatusHistoricalBadge => 'Vēsturiskā redakcija';
 
   @override
-  String get citationStatusVerifiedTooltip =>
-      'Cited from a retrieved law source.';
+  String get citationStatusVerifiedTooltip => 'Citēts no iegūta tiesību avota.';
 
   @override
   String get citationStatusUnverifiedTooltip =>
-      'AI quoted this without retrieval — verify before relying.';
+      'MI citēja šo fragmentu bez avota iegūšanas — pirms paļaušanās pārbaudiet.';
 
   @override
-  String get citationStatusHistoricalTooltip =>
-      'Cited section is no longer in force.';
+  String get citationStatusHistoricalTooltip => 'Citētā norma vairs nav spēkā.';
 
   @override
-  String get citationOpenInRiigiTeataja => 'Open in Riigi Teataja';
+  String get citationOpenInRiigiTeataja => 'Atvērt Riigi Teataja';
 
   @override
-  String get citationSnippetExpand => 'Show full text';
+  String get citationSnippetExpand => 'Rādīt pilnu tekstu';
 
   @override
-  String get citationSnippetCollapse => 'Show less';
+  String get citationSnippetCollapse => 'Rādīt mazāk';
 
   @override
   String get citationUnverifiedSheetNote =>
-      'AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.';
+      'MI citēja šo paragrāfu, taču šajā sarunā tas netika iegūts no tiesību aktu korpusa. Pārbaudiet atsauci, pirms uz tās paļaujaties.';
 
   @override
-  String get citationFooterNoneWarning => 'No grounded citations';
+  String get citationFooterNoneWarning => 'Nav pamatotu atsauču';
 
   @override
   String citationFooterSummaryTotal(int count) {
-    return '$count citations';
+    return '$count atsauces';
   }
 
   @override
   String citationFooterSummaryVerified(int count) {
-    return '$count verified';
+    return '$count pārbaudītas';
   }
 
   @override
   String citationFooterSummaryUnverified(int count) {
-    return '$count unverified';
+    return '$count nepārbaudītas';
   }
 
   @override
   String citationFooterSummaryHistorical(int count) {
-    return '$count historical';
+    return '$count vēsturiskas';
   }
 }
