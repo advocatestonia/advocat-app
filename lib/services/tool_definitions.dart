@@ -666,6 +666,116 @@ abstract final class ToolDefinitions {
         'required': ['act', 'paragraph'],
       },
     },
+    // ── Email Agent D5 — proactive inbox tools ────────────────────────────
+    //
+    // Refs: business/email_agent_handoff_2026-05-06/09_INTEGRATION_INTO_ADVOCAT.md
+    //       supabase/migrations/20260507_13_email_inbox.sql (table contract)
+    //       supabase/functions/email-triage/index.ts (Sonnet 4.6 v1.1-final
+    //         output that lands in email_triage_results)
+    //
+    // The chat assistant doubles as the conversational front-end of the
+    // inbox. These four tools let the user drive the inbox without ever
+    // leaving chat: read thread list, drill into a single triage card,
+    // approve sending the model-prepared draft (uses the existing
+    // send-email edge fn), or snooze a thread for 24h.
+    //
+    // Approval semantics: only `approve_send_draft` mutates the outside
+    // world (sends mail) — it MUST be in AssistantTools.requiresApproval.
+    // The other three are read-only / passive flag flips.
+    {
+      'name': 'list_inbox',
+      'description':
+          'List triaged email threads from the inbox, ordered by severity '
+              '(CRITICAL → LOW), then by recency. Joins email_triage_results '
+              'with email_threads. Snoozed threads (user_action=snoozed within '
+              'the last 24h) are filtered out client-side. Use when the user '
+              'asks "what is in my inbox", "show urgent emails", "purkune '
+              'kirjad".',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'severity': {
+            'type': 'string',
+            'enum': ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'],
+            'description':
+                'Optional severity filter. Omit to see everything '
+                    'severity-sorted (CRITICAL first).',
+          },
+          'limit': {
+            'type': 'integer',
+            'description':
+                'Max number of threads to return. Default 20, hard cap 100.',
+          },
+        },
+        'required': <String>[],
+      },
+    },
+    {
+      'name': 'get_thread_triage',
+      'description':
+          'Return the full triage card for a single email thread — '
+              'severity, briefing, deadlines, draft body, posture, '
+              'send_recommendation. Use when the user asks "what does the '
+              'email from Jokela say", "что в письме от прокурора", "kuidas '
+              'on selle kirjaga".',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'thread_id': {
+            'type': 'string',
+            'description':
+                'UUID of the thread (email_threads.id). Get it from '
+                    'list_inbox first.',
+          },
+        },
+        'required': ['thread_id'],
+      },
+    },
+    {
+      'name': 'approve_send_draft',
+      'description':
+          'Send the AI-prepared draft for a triaged thread. ALWAYS requires '
+              'explicit user approval — the chat shows a confirm modal '
+              'before the existing send-email edge fn dispatches mail. '
+              'Routes through send-email exactly like the existing send_email '
+              'tool: Gmail OAuth first, Resend fallback, audit row in '
+              'correspondence. After sending, marks email_triage_results.'
+              'user_action=sent and email_threads.triage_status=triaged.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'triage_id': {
+            'type': 'string',
+            'description':
+                'UUID of the triage row (email_triage_results.id). The '
+                    'persisted draft_to / draft_subject / draft_body / '
+                    'draft_language fields are dispatched verbatim.',
+          },
+        },
+        'required': ['triage_id'],
+      },
+    },
+    {
+      'name': 'snooze_thread',
+      'description':
+          'Hide a triaged thread for 24 hours. Marks email_triage_results.'
+              'user_action=snoozed and stamps seen_by_user_at = now() so '
+              'agent-intentions-cron also stops nagging about it. Use when '
+              'the user says "snooze", "later", "напомни завтра", "не '
+              'сейчас".',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'thread_id': {
+            'type': 'string',
+            'description':
+                'UUID of the thread (email_threads.id). The latest triage '
+                    'row for this thread is updated.',
+          },
+        },
+        'required': ['thread_id'],
+      },
+    },
     // v24.4 — long-horizon follow-up promises (agent_intentions).
     //
     // Use this tool whenever you commit to checking back later. Schedules

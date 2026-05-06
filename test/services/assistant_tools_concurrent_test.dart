@@ -214,6 +214,9 @@ void main() {
         'send_email',
         'create_deadline',
         'update_case',
+        // Email Agent D5 — dispatches the persisted triage draft via the
+        // existing send-email edge fn. Same gate as send_email.
+        'approve_send_draft',
       };
       expect(AssistantTools.requiresApproval, expectedWriteTools);
     });
