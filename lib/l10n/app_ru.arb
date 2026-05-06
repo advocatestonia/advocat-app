@@ -1276,5 +1276,17 @@
     "workspaceTimelineEmpty": "Событий пока нет.",
     "workspaceDocumentsEmpty": "Документов нет. Загрузите через Сканирование.",
     "workspaceDraftsEmpty": "Черновиков пока нет.",
-    "workspaceInboxEmpty": "Связанных писем нет."
+    "workspaceInboxEmpty": "Связанных писем нет.",
+    "plannerSettingsTitle": "Трёхпроходное юридическое рассуждение",
+    "plannerSettingsSubtitle": "План → ответ → критика. Медленнее, но тщательнее.",
+    "plannerSettingsProBadge": "Pro",
+    "plannerSettingsProDescription": "Доступно в Pro-плане",
+    "plannerTrailHeaderPlan": "План",
+    "plannerTrailHeaderCritique": "Критика",
+    "plannerTrailSubQuestions": "Под-вопросы",
+    "plannerTrailCounterArgs": "Контр-аргументы",
+    "plannerTrailEvidenceGaps": "Пробелы в доказательствах",
+    "plannerTrailMaterialGapTrue": "Обнаружен существенный пробел",
+    "plannerTrailRegeneratedBadge": "Перегенерировано",
+    "plannerTrailEmpty": "пусто"
 }

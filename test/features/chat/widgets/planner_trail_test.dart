@@ -120,6 +120,43 @@ void main() {
     expect(find.textContaining('UNIQUE_PLAN_QUESTION_X42'), findsOneWidget);
   });
 
+  // ───────────────────────────────────────────────────────────────────
+  // Planner UX gap-fix (2026-05-06, audit d54268c).
+  //
+  // Pin the Semantics wrapping required for screen-reader a11y.
+  // Section headers must announce as both `header` and `button`, with
+  // an explicit `toggled` state. Expand-icon is hidden from semantics
+  // (decorative — text label is what matters for assistive tech).
+  // ───────────────────────────────────────────────────────────────────
+  testWidgets('section headers expose Semantics(header: true) for a11y',
+      (tester) async {
+    final handle = tester.ensureSemantics();
+    await tester.pumpWidget(_wrap(PlannerTrail(data: _trace())));
+    await tester.pumpAndSettle();
+
+    // Plan + Critique rows must each be tagged as a Semantics header
+    // so screen readers announce them as section landmarks. We find
+    // the explicit Semantics widget (not the Text descendant) by its
+    // matching label and check its properties via the semantics tree.
+    final planSemanticsFinder = find.byWidgetPredicate(
+      (w) => w is Semantics && w.properties.label == 'Plan',
+    );
+    expect(planSemanticsFinder, findsOneWidget);
+
+    final node = tester.getSemantics(planSemanticsFinder);
+    expect(
+      node.flagsCollection.isHeader,
+      isTrue,
+      reason: 'Plan section row must be a Semantics header.',
+    );
+    expect(
+      node.flagsCollection.isButton,
+      isTrue,
+      reason: 'Plan section row must be a Semantics button (tappable toggle).',
+    );
+    handle.dispose();
+  });
+
   group('PlannerTraceData.fromRpcRow', () {
     test('unwraps a planner_trace RPC row', () {
       final data = PlannerTraceData.fromRpcRow({

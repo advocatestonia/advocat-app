@@ -19,6 +19,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../services/legal_planner.dart';
 
 /// Plan + critique payload as returned by the `planner_trace(uuid)` RPC,
@@ -96,6 +97,24 @@ class _PlannerTrailState extends State<PlannerTrail> {
   Widget build(BuildContext context) {
     final d = widget.data;
     final secs = (d.summary.latencyMs / 1000).round();
+    final l = AppLocalizations.of(context);
+
+    // Localized strings with safe English fallbacks. Widget tests construct
+    // the trail without a Localizations ancestor in some cases, so we never
+    // crash when [l] is null — we degrade to the shipped English copy.
+    final headerPlan = l?.plannerTrailHeaderPlan ?? 'Plan';
+    final headerCritique = l?.plannerTrailHeaderCritique ?? 'Critique';
+    final labelSubQ = l?.plannerTrailSubQuestions ?? 'Sub-questions';
+    final labelCounter = l?.plannerTrailCounterArgs ?? 'Counter-arguments';
+    final labelGaps = l?.plannerTrailEvidenceGaps ?? 'Evidence gaps';
+    final materialGapStr =
+        l?.plannerTrailMaterialGapTrue ?? 'Material gap detected';
+    final regenBadge = l?.plannerTrailRegeneratedBadge ?? 'Regenerated once';
+    final emptyText = l?.plannerTrailEmpty ?? 'no items';
+
+    final critiqueTitle = d.materialGap
+        ? '$headerCritique · ${_lowerFirst(materialGapStr)}'
+        : '$headerCritique · clean';
 
     return Container(
       key: const ValueKey('planner_trail'),
@@ -116,29 +135,36 @@ class _PlannerTrailState extends State<PlannerTrail> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // ── Header ──────────────────────────────────────────────
-          Row(
-            children: [
-              const Icon(
-                Icons.psychology_outlined,
-                size: 14,
-                color: AppColors.accent,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                'Planner · 3 passes${d.regeneratedOnce ? ' + 1 regen' : ''} · ${secs}s',
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textSecondary,
+          // Wrapped in Semantics(header: true) so screen readers
+          // announce the planner card as a section header (a11y fix
+          // 2026-05-06, audit d54268c).
+          Semantics(
+            header: true,
+            label: 'Planner reasoning trail',
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.psychology_outlined,
+                  size: 14,
+                  color: AppColors.accent,
                 ),
-              ),
-            ],
+                const SizedBox(width: 6),
+                Text(
+                  'Planner · 3 passes${d.regeneratedOnce ? ' + 1 regen ($regenBadge)' : ''} · ${secs}s',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 8),
 
           // ── Plan section ────────────────────────────────────────
           _Section(
-            title: 'Plan',
+            title: headerPlan,
             expanded: _planExpanded,
             onToggle: () =>
                 setState(() => _planExpanded = !_planExpanded),
@@ -146,21 +172,24 @@ class _PlannerTrailState extends State<PlannerTrail> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _BulletList(
-                  label: 'Sub-questions',
+                  label: labelSubQ,
                   items: d.subQuestions,
+                  emptyText: emptyText,
                 ),
                 if (d.counterArgs.isNotEmpty) ...[
                   const SizedBox(height: 6),
                   _BulletList(
-                    label: 'Counter-arguments',
+                    label: labelCounter,
                     items: d.counterArgs,
+                    emptyText: emptyText,
                   ),
                 ],
                 if (d.evidenceGaps.isNotEmpty) ...[
                   const SizedBox(height: 6),
                   _BulletList(
-                    label: 'Evidence gaps',
+                    label: labelGaps,
                     items: d.evidenceGaps,
+                    emptyText: emptyText,
                   ),
                 ],
               ],
@@ -170,9 +199,7 @@ class _PlannerTrailState extends State<PlannerTrail> {
 
           // ── Critique section ────────────────────────────────────
           _Section(
-            title: d.materialGap
-                ? 'Critique · material gap'
-                : 'Critique · clean',
+            title: critiqueTitle,
             expanded: _critiqueExpanded,
             onToggle: () => setState(
               () => _critiqueExpanded = !_critiqueExpanded,
@@ -188,6 +215,7 @@ class _PlannerTrailState extends State<PlannerTrail> {
                 : _BulletList(
                     label: 'Issues',
                     items: d.critiqueIssues,
+                    emptyText: emptyText,
                   ),
           ),
         ],
@@ -195,6 +223,9 @@ class _PlannerTrailState extends State<PlannerTrail> {
     );
   }
 }
+
+String _lowerFirst(String s) =>
+    s.isEmpty ? s : s[0].toLowerCase() + s.substring(1);
 
 class _Section extends StatelessWidget {
   const _Section({
@@ -214,26 +245,43 @@ class _Section extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          behavior: HitTestBehavior.opaque,
+        // Semantics(header: true, button: true) so screen readers
+        // announce the row as both a section header and a tappable
+        // toggle. expanded/collapsed state is communicated via the
+        // boolean for assistive tech (audit d54268c, 2026-05-06).
+        // container: true + explicit label merges the descendant Text
+        // node into the parent semantics so `tester.getSemantics(find
+        // .text(title))` reads back the header/button flags.
+        Semantics(
+          container: true,
+          header: true,
+          button: true,
+          label: title,
+          toggled: expanded,
           onTap: onToggle,
-          child: Row(
-            children: [
-              Icon(
-                expanded ? Icons.expand_less : Icons.expand_more,
-                size: 14,
-                color: AppColors.textTertiary,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textSecondary,
+          child: GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: onToggle,
+            child: Row(
+              children: [
+                ExcludeSemantics(
+                  child: Icon(
+                    expanded ? Icons.expand_less : Icons.expand_more,
+                    size: 14,
+                    color: AppColors.textTertiary,
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 4),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         if (expanded)
@@ -250,10 +298,12 @@ class _BulletList extends StatelessWidget {
   const _BulletList({
     required this.label,
     required this.items,
+    this.emptyText = 'no items',
   });
 
   final String label;
   final List<String> items;
+  final String emptyText;
 
   @override
   Widget build(BuildContext context) {
@@ -271,9 +321,9 @@ class _BulletList extends StatelessWidget {
         ),
         const SizedBox(height: 2),
         if (items.isEmpty)
-          const Text(
-            '— no items —',
-            style: TextStyle(
+          Text(
+            '— $emptyText —',
+            style: const TextStyle(
               fontSize: 11,
               color: AppColors.textTertiary,
               fontStyle: FontStyle.italic,

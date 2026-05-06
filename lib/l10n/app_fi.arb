@@ -1276,5 +1276,17 @@
     "workspaceTimelineEmpty": "Ei tapahtumia vielä.",
     "workspaceDocumentsEmpty": "Ei asiakirjoja. Lataa skannaa-toiminnon kautta.",
     "workspaceDraftsEmpty": "Ei luonnoksia vielä.",
-    "workspaceInboxEmpty": "Ei liittyviä sähköposteja."
+    "workspaceInboxEmpty": "Ei liittyviä sähköposteja.",
+    "plannerSettingsTitle": "Kolmivaiheinen oikeudellinen päättely",
+    "plannerSettingsSubtitle": "Suunnitelma → vastaus → kritiikki. Hitaampi mutta perusteellisempi.",
+    "plannerSettingsProBadge": "Pro",
+    "plannerSettingsProDescription": "Saatavilla Pro-tilauksessa",
+    "plannerTrailHeaderPlan": "Suunnitelma",
+    "plannerTrailHeaderCritique": "Kritiikki",
+    "plannerTrailSubQuestions": "Alikysymykset",
+    "plannerTrailCounterArgs": "Vasta-argumentit",
+    "plannerTrailEvidenceGaps": "Todistepuutteet",
+    "plannerTrailMaterialGapTrue": "Olennainen puute havaittu",
+    "plannerTrailRegeneratedBadge": "Uudelleen luotu",
+    "plannerTrailEmpty": "ei kohteita"
 }

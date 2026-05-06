@@ -173,6 +173,24 @@ class ClaudeService {
     // Finnish legal terms
     'palkka', 'irtisano', 'sopimus', 'sakko', 'velka', 'elatus',
     'huoltaj', 'avioero', 'perintö', 'eläke', 'vamma',
+    // Planner UX gap-fix (2026-05-06): 13 missing FI/EE critical legal
+    // terms surfaced by PLANNER_UX_AUDIT.md (commit d54268c). Without
+    // these, owner's own KHO 5.6.2026 deadline workflow (the dogfood
+    // case) doesn't trigger Sonnet routing for the planner gate.
+    //
+    // Finnish — court abbreviations, deportation, appeal-leave, criminal
+    // protocol, restoration, lawyer-client privilege, lost-deadline,
+    // service-of-process, administrative reconsideration/appeal.
+    'kho', 'hao', 'käännytys', 'kaennytys', 'valituslupa',
+    'esitutkintapöytäkirj', 'palauttami', 'asianajosalaisuus',
+    'menetetyn määräaj', 'tiedoksisaanti', 'tiedoksisaa',
+    'oikaisuvaatimus', 'hallintovalitus',
+    // Estonian — supreme court, restoration, lawyer-client privilege,
+    // service-of-process, supreme-court appeal, special appeal.
+    'riigikohus', 'ennistami', 'kutsesaladu', 'kättetoimetami',
+    'kassatsioon', 'määruskaebus',
+    // ECHR doctrine.
+    'salduz', 'protokoll 15', 'protokoll-15',
   ];
 
   /// Broader legal-domain stems used by [looksLegalish] (P0-3, 2026-05-05).

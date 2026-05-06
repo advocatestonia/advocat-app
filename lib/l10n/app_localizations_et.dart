@@ -3183,4 +3183,41 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get workspaceInboxEmpty => 'Seotud e-kirju pole.';
+
+  @override
+  String get plannerSettingsTitle => 'Kolmesammuline õiguslik arutlus';
+
+  @override
+  String get plannerSettingsSubtitle =>
+      'Plaan → vastus → kriitika. Aeglasem, kuid põhjalikum.';
+
+  @override
+  String get plannerSettingsProBadge => 'Pro';
+
+  @override
+  String get plannerSettingsProDescription => 'Saadaval Pro plaanis';
+
+  @override
+  String get plannerTrailHeaderPlan => 'Plaan';
+
+  @override
+  String get plannerTrailHeaderCritique => 'Kriitika';
+
+  @override
+  String get plannerTrailSubQuestions => 'Alaküsimused';
+
+  @override
+  String get plannerTrailCounterArgs => 'Vastuargumendid';
+
+  @override
+  String get plannerTrailEvidenceGaps => 'Tõendite puudujäägid';
+
+  @override
+  String get plannerTrailMaterialGapTrue => 'Tuvastatud oluline puudus';
+
+  @override
+  String get plannerTrailRegeneratedBadge => 'Loodud uuesti';
+
+  @override
+  String get plannerTrailEmpty => 'kirjeid pole';
 }

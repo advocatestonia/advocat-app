@@ -3191,4 +3191,41 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get workspaceInboxEmpty => 'Связанных писем нет.';
+
+  @override
+  String get plannerSettingsTitle => 'Трёхпроходное юридическое рассуждение';
+
+  @override
+  String get plannerSettingsSubtitle =>
+      'План → ответ → критика. Медленнее, но тщательнее.';
+
+  @override
+  String get plannerSettingsProBadge => 'Pro';
+
+  @override
+  String get plannerSettingsProDescription => 'Доступно в Pro-плане';
+
+  @override
+  String get plannerTrailHeaderPlan => 'План';
+
+  @override
+  String get plannerTrailHeaderCritique => 'Критика';
+
+  @override
+  String get plannerTrailSubQuestions => 'Под-вопросы';
+
+  @override
+  String get plannerTrailCounterArgs => 'Контр-аргументы';
+
+  @override
+  String get plannerTrailEvidenceGaps => 'Пробелы в доказательствах';
+
+  @override
+  String get plannerTrailMaterialGapTrue => 'Обнаружен существенный пробел';
+
+  @override
+  String get plannerTrailRegeneratedBadge => 'Перегенерировано';
+
+  @override
+  String get plannerTrailEmpty => 'пусто';
 }

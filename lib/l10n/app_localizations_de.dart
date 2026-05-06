@@ -3216,4 +3216,41 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get workspaceInboxEmpty => 'No related email.';
+
+  @override
+  String get plannerSettingsTitle => 'Three-pass legal reasoning';
+
+  @override
+  String get plannerSettingsSubtitle =>
+      'Plan → answer → critique. Slower but more thorough.';
+
+  @override
+  String get plannerSettingsProBadge => 'Pro';
+
+  @override
+  String get plannerSettingsProDescription => 'Available on Pro plan';
+
+  @override
+  String get plannerTrailHeaderPlan => 'Plan';
+
+  @override
+  String get plannerTrailHeaderCritique => 'Critique';
+
+  @override
+  String get plannerTrailSubQuestions => 'Sub-questions';
+
+  @override
+  String get plannerTrailCounterArgs => 'Counter-arguments';
+
+  @override
+  String get plannerTrailEvidenceGaps => 'Evidence gaps';
+
+  @override
+  String get plannerTrailMaterialGapTrue => 'Material gap detected';
+
+  @override
+  String get plannerTrailRegeneratedBadge => 'Regenerated once';
+
+  @override
+  String get plannerTrailEmpty => 'no items';
 }

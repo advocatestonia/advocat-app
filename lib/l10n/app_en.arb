@@ -1297,5 +1297,53 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "plannerSettingsTitle": "Three-pass legal reasoning",
+    "@plannerSettingsTitle": {
+        "description": "Settings tile title for the planner toggle (Pkg 6)."
+    },
+    "plannerSettingsSubtitle": "Plan → answer → critique. Slower but more thorough.",
+    "@plannerSettingsSubtitle": {
+        "description": "Settings tile subtitle explaining the planner's three-pass loop."
+    },
+    "plannerSettingsProBadge": "Pro",
+    "@plannerSettingsProBadge": {
+        "description": "Pro tier badge on the planner settings tile."
+    },
+    "plannerSettingsProDescription": "Available on Pro plan",
+    "@plannerSettingsProDescription": {
+        "description": "Locked-tile hint shown to free-tier users on the planner toggle."
+    },
+    "plannerTrailHeaderPlan": "Plan",
+    "@plannerTrailHeaderPlan": {
+        "description": "Reasoning Trail Plan section header."
+    },
+    "plannerTrailHeaderCritique": "Critique",
+    "@plannerTrailHeaderCritique": {
+        "description": "Reasoning Trail Critique section header."
+    },
+    "plannerTrailSubQuestions": "Sub-questions",
+    "@plannerTrailSubQuestions": {
+        "description": "Reasoning Trail sub-questions list label."
+    },
+    "plannerTrailCounterArgs": "Counter-arguments",
+    "@plannerTrailCounterArgs": {
+        "description": "Reasoning Trail counter-arguments list label."
+    },
+    "plannerTrailEvidenceGaps": "Evidence gaps",
+    "@plannerTrailEvidenceGaps": {
+        "description": "Reasoning Trail evidence-gaps list label."
+    },
+    "plannerTrailMaterialGapTrue": "Material gap detected",
+    "@plannerTrailMaterialGapTrue": {
+        "description": "Reasoning Trail critique status when the planner flagged a material gap."
+    },
+    "plannerTrailRegeneratedBadge": "Regenerated once",
+    "@plannerTrailRegeneratedBadge": {
+        "description": "Reasoning Trail header badge when the answer was regenerated once."
+    },
+    "plannerTrailEmpty": "no items",
+    "@plannerTrailEmpty": {
+        "description": "Reasoning Trail placeholder shown when a list section is empty."
+    }
 }

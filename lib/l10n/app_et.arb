@@ -1276,5 +1276,17 @@
     "workspaceTimelineEmpty": "Sündmusi pole veel.",
     "workspaceDocumentsEmpty": "Dokumente pole. Laadige üles skaneerimise kaudu.",
     "workspaceDraftsEmpty": "Mustandeid pole veel.",
-    "workspaceInboxEmpty": "Seotud e-kirju pole."
+    "workspaceInboxEmpty": "Seotud e-kirju pole.",
+    "plannerSettingsTitle": "Kolmesammuline õiguslik arutlus",
+    "plannerSettingsSubtitle": "Plaan → vastus → kriitika. Aeglasem, kuid põhjalikum.",
+    "plannerSettingsProBadge": "Pro",
+    "plannerSettingsProDescription": "Saadaval Pro plaanis",
+    "plannerTrailHeaderPlan": "Plaan",
+    "plannerTrailHeaderCritique": "Kriitika",
+    "plannerTrailSubQuestions": "Alaküsimused",
+    "plannerTrailCounterArgs": "Vastuargumendid",
+    "plannerTrailEvidenceGaps": "Tõendite puudujäägid",
+    "plannerTrailMaterialGapTrue": "Tuvastatud oluline puudus",
+    "plannerTrailRegeneratedBadge": "Loodud uuesti",
+    "plannerTrailEmpty": "kirjeid pole"
 }

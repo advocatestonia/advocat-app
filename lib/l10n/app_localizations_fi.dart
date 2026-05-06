@@ -3186,4 +3186,41 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get workspaceInboxEmpty => 'Ei liittyviä sähköposteja.';
+
+  @override
+  String get plannerSettingsTitle => 'Kolmivaiheinen oikeudellinen päättely';
+
+  @override
+  String get plannerSettingsSubtitle =>
+      'Suunnitelma → vastaus → kritiikki. Hitaampi mutta perusteellisempi.';
+
+  @override
+  String get plannerSettingsProBadge => 'Pro';
+
+  @override
+  String get plannerSettingsProDescription => 'Saatavilla Pro-tilauksessa';
+
+  @override
+  String get plannerTrailHeaderPlan => 'Suunnitelma';
+
+  @override
+  String get plannerTrailHeaderCritique => 'Kritiikki';
+
+  @override
+  String get plannerTrailSubQuestions => 'Alikysymykset';
+
+  @override
+  String get plannerTrailCounterArgs => 'Vasta-argumentit';
+
+  @override
+  String get plannerTrailEvidenceGaps => 'Todistepuutteet';
+
+  @override
+  String get plannerTrailMaterialGapTrue => 'Olennainen puute havaittu';
+
+  @override
+  String get plannerTrailRegeneratedBadge => 'Uudelleen luotu';
+
+  @override
+  String get plannerTrailEmpty => 'ei kohteita';
 }

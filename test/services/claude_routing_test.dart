@@ -120,6 +120,120 @@ void main() {
         );
       }
     });
+
+    // ─────────────────────────────────────────────────────────────────
+    // Planner UX gap-fix (2026-05-06, audit d54268c).
+    //
+    // Pin the 13 missing FI/EE critical legal terms the audit flagged
+    // as absent from looksLegalish. Without these, the owner's own
+    // KHO 5.6.2026 deadline workflow doesn't trigger Sonnet routing
+    // for the planner gate.
+    // ─────────────────────────────────────────────────────────────────
+    test('FI court abbreviations + restoration vocabulary → true', () {
+      const cases = [
+        // KHO + HAO court abbreviations.
+        'voiko kho ottaa asian käsiteltäväksi',
+        'jätin valituksen hao:lle ajoissa',
+        // Käännytys / valituslupa.
+        'käännytyspäätös on lainvastainen',
+        'kaennytys ilman tulkkia',
+        'valituslupa korkeimmalta hallinto-oikeudelta',
+        // Esitutkintapöytäkirja stem.
+        'tarvitsen esitutkintapöytäkirjan kopion',
+        // Palauttaminen stem.
+        'menetetyn määräajan palauttamishakemus',
+        // Asianajosalaisuus.
+        'asianajosalaisuus suojaa keskustelua',
+        // Lost-deadline + service-of-process + admin recourse.
+        'menetetyn määräajan palauttaminen',
+        'tiedoksisaanti tapahtui myöhässä',
+        'jätän tiedoksisaannin todistamatta',
+        'oikaisuvaatimus migrille',
+        'hallintovalitus hovioikeudelle',
+      ];
+      for (final q in cases) {
+        expect(
+          ClaudeService.looksLegalish(q),
+          isTrue,
+          reason: 'FI "$q" must register as legal-ish.',
+        );
+      }
+    });
+
+    test('EE supreme-court + restoration + privilege vocabulary → true', () {
+      const cases = [
+        // Riigikohus.
+        'riigikohus tühistas otsuse',
+        // Restoration stem.
+        'taotlen tähtaja ennistamist',
+        // Lawyer-client privilege.
+        'kutsesaladus kaitseb meie kirjavahetust',
+        // Service-of-process stem.
+        'kättetoimetamine ebaõnnestus',
+        // Cassation + special appeal.
+        'esitan kassatsioonkaebuse',
+        'esitan määruskaebuse ringkonnakohtule',
+      ];
+      for (final q in cases) {
+        expect(
+          ClaudeService.looksLegalish(q),
+          isTrue,
+          reason: 'EE "$q" must register as legal-ish.',
+        );
+      }
+    });
+
+    test('ECHR doctrine references → true', () {
+      const cases = [
+        'salduz doctrine applies here',
+        'protokoll 15 ratification',
+        'protokoll-15 commentary',
+      ];
+      for (final q in cases) {
+        expect(
+          ClaudeService.looksLegalish(q),
+          isTrue,
+          reason: 'ECHR "$q" must register as legal-ish.',
+        );
+      }
+    });
+
+    test('mixed-language legal turns still trigger', () {
+      // RU sentence with embedded FI court abbreviation — owner's actual
+      // typing pattern when asking about the dogfood case.
+      const cases = [
+        'что с моим KHO дедлайном',
+        'когда HAO отвечает',
+        'нужно подать valituslupa до 5 июня',
+        'mul on kho deadline',
+      ];
+      for (final q in cases) {
+        expect(
+          ClaudeService.looksLegalish(q),
+          isTrue,
+          reason: 'Mixed-lang "$q" must register as legal-ish.',
+        );
+      }
+    });
+
+    test('short benign messages do not false-positive on new terms', () {
+      // Guard against new keyword false-positives on short small-talk.
+      const cases = [
+        'spasibo',
+        'aitäh sulle',
+        'привет',
+        'ok',
+        'cool',
+        'nice',
+      ];
+      for (final q in cases) {
+        expect(
+          ClaudeService.looksLegalish(q),
+          isFalse,
+          reason: 'Short benign "$q" must NOT register as legal-ish.',
+        );
+      }
+    });
   });
 
   group('ClaudeService.chooseModel — P0-3 legal escalation', () {

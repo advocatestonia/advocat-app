@@ -5857,6 +5857,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No related email.'**
   String get workspaceInboxEmpty;
+
+  /// Settings tile title for the planner toggle (Pkg 6).
+  ///
+  /// In en, this message translates to:
+  /// **'Three-pass legal reasoning'**
+  String get plannerSettingsTitle;
+
+  /// Settings tile subtitle explaining the planner's three-pass loop.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan → answer → critique. Slower but more thorough.'**
+  String get plannerSettingsSubtitle;
+
+  /// Pro tier badge on the planner settings tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro'**
+  String get plannerSettingsProBadge;
+
+  /// Locked-tile hint shown to free-tier users on the planner toggle.
+  ///
+  /// In en, this message translates to:
+  /// **'Available on Pro plan'**
+  String get plannerSettingsProDescription;
+
+  /// Reasoning Trail Plan section header.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get plannerTrailHeaderPlan;
+
+  /// Reasoning Trail Critique section header.
+  ///
+  /// In en, this message translates to:
+  /// **'Critique'**
+  String get plannerTrailHeaderCritique;
+
+  /// Reasoning Trail sub-questions list label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-questions'**
+  String get plannerTrailSubQuestions;
+
+  /// Reasoning Trail counter-arguments list label.
+  ///
+  /// In en, this message translates to:
+  /// **'Counter-arguments'**
+  String get plannerTrailCounterArgs;
+
+  /// Reasoning Trail evidence-gaps list label.
+  ///
+  /// In en, this message translates to:
+  /// **'Evidence gaps'**
+  String get plannerTrailEvidenceGaps;
+
+  /// Reasoning Trail critique status when the planner flagged a material gap.
+  ///
+  /// In en, this message translates to:
+  /// **'Material gap detected'**
+  String get plannerTrailMaterialGapTrue;
+
+  /// Reasoning Trail header badge when the answer was regenerated once.
+  ///
+  /// In en, this message translates to:
+  /// **'Regenerated once'**
+  String get plannerTrailRegeneratedBadge;
+
+  /// Reasoning Trail placeholder shown when a list section is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'no items'**
+  String get plannerTrailEmpty;
 }
 
 class _AppLocalizationsDelegate

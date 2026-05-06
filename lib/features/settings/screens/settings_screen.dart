@@ -811,26 +811,54 @@ class SettingsScreen extends ConsumerWidget {
 }
 
 // ── Pkg 6 planner toggle ─────────────────────────────────────────────────
-// Pro-only opt-in to the three-pass legal reasoning loop. The toggle UI
-// renders for everyone but stays disabled (and OFF) for free-tier users
-// so they see the capability and have a reason to upgrade.
+// Pro-only opt-in to the three-pass legal reasoning loop.
+//
+// Planner UX gap-fix (2026-05-06, audit d54268c): the previous build let
+// free-tier users flip the switch (cosmetic-only deception — only the
+// server gate enforced). Now the switch is TRULY disabled for non-Pro
+// users via `onChanged: null`, with a Pro badge + locked-state hint so
+// the upgrade path is honest. Localized via plannerSettings* l10n keys.
 class _PlannerToggleTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final asyncEnabled = ref.watch(plannerEnabledProvider);
+    final userAsync = ref.watch(currentUserProvider);
+    final isPro =
+        userAsync.whenOrNull(data: (u) => u?.isProActive) ?? false;
     final value = asyncEnabled.valueOrNull ?? false;
+    final effectiveValue = isPro ? value : false;
     return _SettingsTile(
       icon: Icons.psychology_outlined,
-      title: 'Smart legal reasoning',
-      subtitle: 'Plan, draft, self-critique on legal questions (Pro)',
-      trailing: Switch.adaptive(
-        value: value,
-        onChanged: (v) =>
-            ref.read(plannerEnabledProvider.notifier).setEnabled(v),
-        activeThumbColor: Colors.white,
-        activeTrackColor: AppColors.accent,
-        inactiveThumbColor: Colors.white,
-        inactiveTrackColor: AppColors.border,
+      title: l.plannerSettingsTitle,
+      subtitle: isPro
+          ? l.plannerSettingsSubtitle
+          : '${l.plannerSettingsSubtitle}  •  ${l.plannerSettingsProDescription}',
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!isPro) ...[
+            StatusChip(
+              label: l.plannerSettingsProBadge,
+              variant: StatusChipVariant.neutral,
+              showDot: false,
+            ),
+            const SizedBox(width: AppSpacing.xs),
+          ],
+          Switch.adaptive(
+            value: effectiveValue,
+            // Free-tier: onChanged=null disables the switch entirely
+            // (Material/Cupertino render greyed-out + non-interactive).
+            onChanged: isPro
+                ? (v) =>
+                    ref.read(plannerEnabledProvider.notifier).setEnabled(v)
+                : null,
+            activeThumbColor: Colors.white,
+            activeTrackColor: AppColors.accent,
+            inactiveThumbColor: Colors.white,
+            inactiveTrackColor: AppColors.border,
+          ),
+        ],
       ),
     );
   }
