@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:advocat/features/case_memory/data/case_repository.dart';
 import 'package:advocat/features/case_memory/models/case_document.dart';
 import 'package:advocat/features/case_memory/models/user_case.dart';
@@ -15,6 +17,7 @@ class FakeCaseRepository implements CaseRepository {
   Exception? raiseOnCreate;
   Exception? raiseOnUpdate;
   Exception? raiseOnArchive;
+  Exception? raiseOnUpload;
 
   // Spies for assertion.
   CaseListFilter? lastListFilter;
@@ -24,6 +27,7 @@ class FakeCaseRepository implements CaseRepository {
   String? lastArchiveId;
   String? lastCloseId;
   String? lastListDocumentsCaseId;
+  final List<Map<String, Object?>> uploadedPayloads = [];
 
   @override
   Future<List<UserCase>> listCases({
@@ -105,6 +109,37 @@ class FakeCaseRepository implements CaseRepository {
   Future<List<CaseDocument>> listDocuments(String caseId) async {
     lastListDocumentsCaseId = caseId;
     return documents.where((d) => d.caseId == caseId).toList();
+  }
+
+  @override
+  Future<String> uploadDocument({
+    required String caseId,
+    required String filename,
+    required Uint8List bytes,
+    required String mimeType,
+  }) async {
+    if (raiseOnUpload != null) throw raiseOnUpload!;
+    uploadedPayloads.add({
+      'caseId': caseId,
+      'filename': filename,
+      'sizeBytes': bytes.length,
+      'mimeType': mimeType,
+    });
+    final id = 'doc-${uploadedPayloads.length}';
+    documents = [
+      ...documents,
+      CaseDocument(
+        id: id,
+        caseId: caseId,
+        userId: 'user-1',
+        filename: filename,
+        storagePath: 'fake/$caseId/$filename',
+        mimeType: mimeType,
+        sizeBytes: bytes.length,
+        uploadedAt: DateTime.utc(2026, 5, 5, 12),
+      ),
+    ];
+    return id;
   }
 }
 

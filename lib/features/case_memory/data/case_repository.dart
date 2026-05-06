@@ -6,9 +6,14 @@
 // the migration's RLS policy enforces auth.uid() = user_id.
 //
 // Pkg 1.D scope: list / create / update / archive / get / list docs.
-// PDF upload + parse is Pkg 2; cases this repo emits have empty doc
-// lists until Pkg 2 ships.
+// Pkg 3 adds [uploadDocument] used by the intake wizard's step 5 to
+// upload bytes to Storage and create a `case_documents` row with
+// parsed_text=null (Pkg 2's PDF parser fills parsed_text via a
+// separate edge function). The dual-write pattern means Pkg 3 ships
+// without depending on Pkg 2 deployment.
 // =====================================================================
+
+import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -46,6 +51,17 @@ abstract class CaseRepository {
   Future<void> archiveCase(String id);
   Future<void> closeCase(String id);
   Future<List<CaseDocument>> listDocuments(String caseId);
+
+  /// Pkg 3 — uploads [bytes] to Supabase Storage under
+  /// `<userId>/<caseId>/<filename>` and creates a `case_documents` row
+  /// with `parsed_text` left null (Pkg 2 fills it asynchronously when
+  /// deployed). Returns the freshly-created document id.
+  Future<String> uploadDocument({
+    required String caseId,
+    required String filename,
+    required Uint8List bytes,
+    required String mimeType,
+  });
 }
 
 class SupabaseCaseRepository implements CaseRepository {
@@ -145,5 +161,44 @@ class SupabaseCaseRepository implements CaseRepository {
     return (rows as List)
         .map((r) => CaseDocument.fromJson(Map<String, dynamic>.from(r as Map)))
         .toList(growable: false);
+  }
+
+  @override
+  Future<String> uploadDocument({
+    required String caseId,
+    required String filename,
+    required Uint8List bytes,
+    required String mimeType,
+  }) async {
+    final userId = _client.auth.currentUser?.id;
+    if (userId == null) {
+      throw StateError('uploadDocument: no authenticated user');
+    }
+    // Sanitize filename — Storage path keys reject some chars.
+    final safeName = filename.replaceAll(RegExp(r'[^A-Za-z0-9._-]'), '_');
+    final ts = DateTime.now().millisecondsSinceEpoch;
+    final storagePath = '$userId/$caseId/${ts}_$safeName';
+
+    await _client.storage.from('case-documents').uploadBinary(
+          storagePath,
+          bytes,
+          fileOptions: FileOptions(contentType: mimeType),
+        );
+
+    final inserted = await _client
+        .from(_docsTable)
+        .insert({
+          'case_id': caseId,
+          'user_id': userId,
+          'filename': filename,
+          'storage_path': storagePath,
+          'mime_type': mimeType,
+          'size_bytes': bytes.length,
+          // parsed_text intentionally null — Pkg 2 fills it async.
+        })
+        .select('id')
+        .single();
+
+    return inserted['id'] as String;
   }
 }

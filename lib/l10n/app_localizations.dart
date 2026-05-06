@@ -4927,6 +4927,384 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Case archived'**
   String get caseArchivedAck;
+
+  /// No description provided for @intakeStep1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Where is the case?'**
+  String get intakeStep1Title;
+
+  /// No description provided for @intakeStep1Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Country and authority you are dealing with.'**
+  String get intakeStep1Subtitle;
+
+  /// No description provided for @intakeJurisdictionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Country / jurisdiction'**
+  String get intakeJurisdictionLabel;
+
+  /// No description provided for @intakeAuthorityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Authority type'**
+  String get intakeAuthorityLabel;
+
+  /// No description provided for @intakeAuthorityNameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Authority name (optional)'**
+  String get intakeAuthorityNameLabel;
+
+  /// No description provided for @intakeAuthorityPolice.
+  ///
+  /// In en, this message translates to:
+  /// **'Police'**
+  String get intakeAuthorityPolice;
+
+  /// No description provided for @intakeAuthorityCourt.
+  ///
+  /// In en, this message translates to:
+  /// **'Court'**
+  String get intakeAuthorityCourt;
+
+  /// No description provided for @intakeAuthoritySocial.
+  ///
+  /// In en, this message translates to:
+  /// **'Social services'**
+  String get intakeAuthoritySocial;
+
+  /// No description provided for @intakeAuthorityEmployer.
+  ///
+  /// In en, this message translates to:
+  /// **'Employer'**
+  String get intakeAuthorityEmployer;
+
+  /// No description provided for @intakeAuthorityLandlord.
+  ///
+  /// In en, this message translates to:
+  /// **'Landlord'**
+  String get intakeAuthorityLandlord;
+
+  /// No description provided for @intakeAuthorityOpposingParty.
+  ///
+  /// In en, this message translates to:
+  /// **'Opposing party'**
+  String get intakeAuthorityOpposingParty;
+
+  /// No description provided for @intakeAuthorityOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get intakeAuthorityOther;
+
+  /// No description provided for @intakeStep2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What kind of case?'**
+  String get intakeStep2Title;
+
+  /// No description provided for @intakeStep2Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the closest type — you can refine later.'**
+  String get intakeStep2Subtitle;
+
+  /// No description provided for @intakeCaseTypeCriminal.
+  ///
+  /// In en, this message translates to:
+  /// **'Criminal'**
+  String get intakeCaseTypeCriminal;
+
+  /// No description provided for @intakeCaseTypeCivil.
+  ///
+  /// In en, this message translates to:
+  /// **'Civil'**
+  String get intakeCaseTypeCivil;
+
+  /// No description provided for @intakeCaseTypeFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family'**
+  String get intakeCaseTypeFamily;
+
+  /// No description provided for @intakeCaseTypeAdmin.
+  ///
+  /// In en, this message translates to:
+  /// **'Administrative'**
+  String get intakeCaseTypeAdmin;
+
+  /// No description provided for @intakeCaseTypeImmigration.
+  ///
+  /// In en, this message translates to:
+  /// **'Immigration'**
+  String get intakeCaseTypeImmigration;
+
+  /// No description provided for @intakeCaseTypeLabor.
+  ///
+  /// In en, this message translates to:
+  /// **'Labor'**
+  String get intakeCaseTypeLabor;
+
+  /// No description provided for @intakeCaseTypeConsumer.
+  ///
+  /// In en, this message translates to:
+  /// **'Consumer'**
+  String get intakeCaseTypeConsumer;
+
+  /// No description provided for @intakeCaseTypeInheritance.
+  ///
+  /// In en, this message translates to:
+  /// **'Inheritance'**
+  String get intakeCaseTypeInheritance;
+
+  /// No description provided for @intakeCaseTypeOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get intakeCaseTypeOther;
+
+  /// No description provided for @intakeStep3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Who is involved?'**
+  String get intakeStep3Title;
+
+  /// No description provided for @intakeStep3Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role and the other side.'**
+  String get intakeStep3Subtitle;
+
+  /// No description provided for @intakeRoleLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your role'**
+  String get intakeRoleLabel;
+
+  /// No description provided for @intakeRolePlaintiff.
+  ///
+  /// In en, this message translates to:
+  /// **'Plaintiff'**
+  String get intakeRolePlaintiff;
+
+  /// No description provided for @intakeRoleDefendant.
+  ///
+  /// In en, this message translates to:
+  /// **'Defendant'**
+  String get intakeRoleDefendant;
+
+  /// No description provided for @intakeRoleVictim.
+  ///
+  /// In en, this message translates to:
+  /// **'Victim'**
+  String get intakeRoleVictim;
+
+  /// No description provided for @intakeRoleAccused.
+  ///
+  /// In en, this message translates to:
+  /// **'Accused'**
+  String get intakeRoleAccused;
+
+  /// No description provided for @intakeRoleWitness.
+  ///
+  /// In en, this message translates to:
+  /// **'Witness'**
+  String get intakeRoleWitness;
+
+  /// No description provided for @intakeRoleFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'Family member'**
+  String get intakeRoleFamily;
+
+  /// No description provided for @intakeRoleOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get intakeRoleOther;
+
+  /// No description provided for @intakeOpposingSideLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Opposing side (optional)'**
+  String get intakeOpposingSideLabel;
+
+  /// No description provided for @intakeWitnessesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Witnesses (optional)'**
+  String get intakeWitnessesLabel;
+
+  /// No description provided for @intakeAddWitness.
+  ///
+  /// In en, this message translates to:
+  /// **'Add witness'**
+  String get intakeAddWitness;
+
+  /// No description provided for @intakeWitnessHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Name or contact'**
+  String get intakeWitnessHint;
+
+  /// No description provided for @intakeStep4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbers & dates'**
+  String get intakeStep4Title;
+
+  /// No description provided for @intakeStep4Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Whatever you already have. Skip what you don\'t.'**
+  String get intakeStep4Subtitle;
+
+  /// No description provided for @intakeCaseNumberLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Case number (optional)'**
+  String get intakeCaseNumberLabel;
+
+  /// No description provided for @intakeIncidentDateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Incident date (optional)'**
+  String get intakeIncidentDateLabel;
+
+  /// No description provided for @intakeIncidentDatePick.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick date'**
+  String get intakeIncidentDatePick;
+
+  /// No description provided for @intakeDeadlinesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Known deadlines'**
+  String get intakeDeadlinesLabel;
+
+  /// No description provided for @intakeAddDeadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Add deadline'**
+  String get intakeAddDeadline;
+
+  /// No description provided for @intakeDeadlineWhatHint.
+  ///
+  /// In en, this message translates to:
+  /// **'What'**
+  String get intakeDeadlineWhatHint;
+
+  /// No description provided for @intakeStep5Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get intakeStep5Title;
+
+  /// No description provided for @intakeStep5Subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload anything relevant. We will read it.'**
+  String get intakeStep5Subtitle;
+
+  /// No description provided for @intakeUploadDocsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload documents'**
+  String get intakeUploadDocsLabel;
+
+  /// No description provided for @intakeSkipDocs.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip — I\'ll upload later'**
+  String get intakeSkipDocs;
+
+  /// No description provided for @intakeNextBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get intakeNextBtn;
+
+  /// No description provided for @intakeBackBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get intakeBackBtn;
+
+  /// No description provided for @intakeFinishBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish & open chat'**
+  String get intakeFinishBtn;
+
+  /// No description provided for @intakeUrgentBtn.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent — ask now'**
+  String get intakeUrgentBtn;
+
+  /// No description provided for @intakeUrgentDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open chat now?'**
+  String get intakeUrgentDialogTitle;
+
+  /// No description provided for @intakeUrgentDialogBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll save what you\'ve entered as a draft case. You can finish the wizard from the case page anytime.'**
+  String get intakeUrgentDialogBody;
+
+  /// No description provided for @intakeUrgentConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Open chat'**
+  String get intakeUrgentConfirm;
+
+  /// No description provided for @intakeUrgentCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep filling'**
+  String get intakeUrgentCancel;
+
+  /// No description provided for @intakePreparingCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your case…'**
+  String get intakePreparingCase;
+
+  /// No description provided for @intakeFallbackGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'I see your case. Tell me what\'s most pressing — I\'ll work through it with you.'**
+  String get intakeFallbackGreeting;
+
+  /// No description provided for @intakeUrgentGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'I see this is urgent. Ask your question — I\'ll fill in the rest as we go.'**
+  String get intakeUrgentGreeting;
+
+  /// No description provided for @intakeStepIndicator.
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String intakeStepIndicator(int current, int total);
+
+  /// No description provided for @intakeFieldRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get intakeFieldRequired;
+
+  /// No description provided for @intakeUploadProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Uploading {done} / {total}…'**
+  String intakeUploadProgress(int done, int total);
 }
 
 class _AppLocalizationsDelegate

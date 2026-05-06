@@ -2678,4 +2678,202 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get caseArchivedAck => 'Asia arkistoitu';
+
+  @override
+  String get intakeStep1Title => 'Missä asia on?';
+
+  @override
+  String get intakeStep1Subtitle => 'Maa ja viranomainen, jonka kanssa asioit.';
+
+  @override
+  String get intakeJurisdictionLabel => 'Maa / lainkäyttöalue';
+
+  @override
+  String get intakeAuthorityLabel => 'Viranomaisen tyyppi';
+
+  @override
+  String get intakeAuthorityNameLabel => 'Viranomaisen nimi (valinnainen)';
+
+  @override
+  String get intakeAuthorityPolice => 'Poliisi';
+
+  @override
+  String get intakeAuthorityCourt => 'Tuomioistuin';
+
+  @override
+  String get intakeAuthoritySocial => 'Sosiaalitoimi';
+
+  @override
+  String get intakeAuthorityEmployer => 'Työnantaja';
+
+  @override
+  String get intakeAuthorityLandlord => 'Vuokranantaja';
+
+  @override
+  String get intakeAuthorityOpposingParty => 'Vastapuoli';
+
+  @override
+  String get intakeAuthorityOther => 'Muu';
+
+  @override
+  String get intakeStep2Title => 'Millainen asia?';
+
+  @override
+  String get intakeStep2Subtitle =>
+      'Valitse lähin tyyppi — voit tarkentaa myöhemmin.';
+
+  @override
+  String get intakeCaseTypeCriminal => 'Rikosasia';
+
+  @override
+  String get intakeCaseTypeCivil => 'Siviiliasia';
+
+  @override
+  String get intakeCaseTypeFamily => 'Perheasia';
+
+  @override
+  String get intakeCaseTypeAdmin => 'Hallintoasia';
+
+  @override
+  String get intakeCaseTypeImmigration => 'Maahanmuutto';
+
+  @override
+  String get intakeCaseTypeLabor => 'Työasia';
+
+  @override
+  String get intakeCaseTypeConsumer => 'Kuluttaja-asia';
+
+  @override
+  String get intakeCaseTypeInheritance => 'Perintö';
+
+  @override
+  String get intakeCaseTypeOther => 'Muu';
+
+  @override
+  String get intakeStep3Title => 'Ketä asia koskee?';
+
+  @override
+  String get intakeStep3Subtitle => 'Roolisi ja vastapuoli.';
+
+  @override
+  String get intakeRoleLabel => 'Roolisi';
+
+  @override
+  String get intakeRolePlaintiff => 'Kantaja';
+
+  @override
+  String get intakeRoleDefendant => 'Vastaaja';
+
+  @override
+  String get intakeRoleVictim => 'Asianomistaja';
+
+  @override
+  String get intakeRoleAccused => 'Syytetty';
+
+  @override
+  String get intakeRoleWitness => 'Todistaja';
+
+  @override
+  String get intakeRoleFamily => 'Perheenjäsen';
+
+  @override
+  String get intakeRoleOther => 'Muu';
+
+  @override
+  String get intakeOpposingSideLabel => 'Vastapuoli (valinnainen)';
+
+  @override
+  String get intakeWitnessesLabel => 'Todistajat (valinnainen)';
+
+  @override
+  String get intakeAddWitness => 'Lisää todistaja';
+
+  @override
+  String get intakeWitnessHint => 'Nimi tai yhteystieto';
+
+  @override
+  String get intakeStep4Title => 'Numerot ja päivämäärät';
+
+  @override
+  String get intakeStep4Subtitle =>
+      'Mitä jo tiedät. Loput voit jättää tyhjäksi.';
+
+  @override
+  String get intakeCaseNumberLabel => 'Asianumero (valinnainen)';
+
+  @override
+  String get intakeIncidentDateLabel => 'Tapahtumapäivä (valinnainen)';
+
+  @override
+  String get intakeIncidentDatePick => 'Valitse päivä';
+
+  @override
+  String get intakeDeadlinesLabel => 'Tunnetut määräajat';
+
+  @override
+  String get intakeAddDeadline => 'Lisää määräaika';
+
+  @override
+  String get intakeDeadlineWhatHint => 'Mikä';
+
+  @override
+  String get intakeStep5Title => 'Asiakirjat';
+
+  @override
+  String get intakeStep5Subtitle => 'Lataa kaikki olennainen. Luemme ne.';
+
+  @override
+  String get intakeUploadDocsLabel => 'Lataa asiakirjat';
+
+  @override
+  String get intakeSkipDocs => 'Ohita — lataan myöhemmin';
+
+  @override
+  String get intakeNextBtn => 'Seuraava';
+
+  @override
+  String get intakeBackBtn => 'Takaisin';
+
+  @override
+  String get intakeFinishBtn => 'Valmis ja avaa keskustelu';
+
+  @override
+  String get intakeUrgentBtn => 'Kiireellinen — kysy nyt';
+
+  @override
+  String get intakeUrgentDialogTitle => 'Avataanko keskustelu nyt?';
+
+  @override
+  String get intakeUrgentDialogBody =>
+      'Tallennamme antamasi tiedot luonnokseksi. Voit täydentää lomakkeen asian sivulta milloin tahansa.';
+
+  @override
+  String get intakeUrgentConfirm => 'Avaa keskustelu';
+
+  @override
+  String get intakeUrgentCancel => 'Jatka täyttöä';
+
+  @override
+  String get intakePreparingCase => 'Valmistelen asiaasi…';
+
+  @override
+  String get intakeFallbackGreeting =>
+      'Näen asiasi. Kerro, mikä on kiireellisintä — käymme sen yhdessä läpi.';
+
+  @override
+  String get intakeUrgentGreeting =>
+      'Näen, että asia on kiireellinen. Kysy kysymyksesi — täydennän tietoja keskustelun edetessä.';
+
+  @override
+  String intakeStepIndicator(int current, int total) {
+    return 'Vaihe $current / $total';
+  }
+
+  @override
+  String get intakeFieldRequired => 'Pakollinen';
+
+  @override
+  String intakeUploadProgress(int done, int total) {
+    return 'Ladataan $done / $total…';
+  }
 }

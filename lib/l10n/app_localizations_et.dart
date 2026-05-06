@@ -2676,4 +2676,201 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get caseArchivedAck => 'Juhtum arhiveeritud';
+
+  @override
+  String get intakeStep1Title => 'Kus on juhtum?';
+
+  @override
+  String get intakeStep1Subtitle => 'Riik ja asutus, kellega tegeled.';
+
+  @override
+  String get intakeJurisdictionLabel => 'Riik / jurisdiktsioon';
+
+  @override
+  String get intakeAuthorityLabel => 'Asutuse tüüp';
+
+  @override
+  String get intakeAuthorityNameLabel => 'Asutuse nimi (valikuline)';
+
+  @override
+  String get intakeAuthorityPolice => 'Politsei';
+
+  @override
+  String get intakeAuthorityCourt => 'Kohus';
+
+  @override
+  String get intakeAuthoritySocial => 'Sotsiaalamet';
+
+  @override
+  String get intakeAuthorityEmployer => 'Tööandja';
+
+  @override
+  String get intakeAuthorityLandlord => 'Üürileandja';
+
+  @override
+  String get intakeAuthorityOpposingParty => 'Vastaspool';
+
+  @override
+  String get intakeAuthorityOther => 'Muu';
+
+  @override
+  String get intakeStep2Title => 'Millise juhtumiga on tegu?';
+
+  @override
+  String get intakeStep2Subtitle => 'Vali lähim tüüp — saad hiljem täpsustada.';
+
+  @override
+  String get intakeCaseTypeCriminal => 'Kriminaal';
+
+  @override
+  String get intakeCaseTypeCivil => 'Tsiviil';
+
+  @override
+  String get intakeCaseTypeFamily => 'Perekond';
+
+  @override
+  String get intakeCaseTypeAdmin => 'Haldus';
+
+  @override
+  String get intakeCaseTypeImmigration => 'Migratsioon';
+
+  @override
+  String get intakeCaseTypeLabor => 'Töö';
+
+  @override
+  String get intakeCaseTypeConsumer => 'Tarbija';
+
+  @override
+  String get intakeCaseTypeInheritance => 'Pärimine';
+
+  @override
+  String get intakeCaseTypeOther => 'Muu';
+
+  @override
+  String get intakeStep3Title => 'Kes on osapooled?';
+
+  @override
+  String get intakeStep3Subtitle => 'Sinu roll ja vastaspool.';
+
+  @override
+  String get intakeRoleLabel => 'Sinu roll';
+
+  @override
+  String get intakeRolePlaintiff => 'Hageja';
+
+  @override
+  String get intakeRoleDefendant => 'Kostja';
+
+  @override
+  String get intakeRoleVictim => 'Kannatanu';
+
+  @override
+  String get intakeRoleAccused => 'Süüdistatav';
+
+  @override
+  String get intakeRoleWitness => 'Tunnistaja';
+
+  @override
+  String get intakeRoleFamily => 'Pereliige';
+
+  @override
+  String get intakeRoleOther => 'Muu';
+
+  @override
+  String get intakeOpposingSideLabel => 'Vastaspool (valikuline)';
+
+  @override
+  String get intakeWitnessesLabel => 'Tunnistajad (valikuline)';
+
+  @override
+  String get intakeAddWitness => 'Lisa tunnistaja';
+
+  @override
+  String get intakeWitnessHint => 'Nimi või kontakt';
+
+  @override
+  String get intakeStep4Title => 'Numbrid ja kuupäevad';
+
+  @override
+  String get intakeStep4Subtitle =>
+      'Mida juba tead. Mida ei tea — jäta vahele.';
+
+  @override
+  String get intakeCaseNumberLabel => 'Juhtumi number (valikuline)';
+
+  @override
+  String get intakeIncidentDateLabel => 'Sündmuse kuupäev (valikuline)';
+
+  @override
+  String get intakeIncidentDatePick => 'Vali kuupäev';
+
+  @override
+  String get intakeDeadlinesLabel => 'Teadaolevad tähtajad';
+
+  @override
+  String get intakeAddDeadline => 'Lisa tähtaeg';
+
+  @override
+  String get intakeDeadlineWhatHint => 'Mis';
+
+  @override
+  String get intakeStep5Title => 'Dokumendid';
+
+  @override
+  String get intakeStep5Subtitle => 'Lae üles kõik asjakohane. Loeme need.';
+
+  @override
+  String get intakeUploadDocsLabel => 'Lae dokumendid';
+
+  @override
+  String get intakeSkipDocs => 'Jäta vahele — laen hiljem';
+
+  @override
+  String get intakeNextBtn => 'Edasi';
+
+  @override
+  String get intakeBackBtn => 'Tagasi';
+
+  @override
+  String get intakeFinishBtn => 'Lõpeta ja ava vestlus';
+
+  @override
+  String get intakeUrgentBtn => 'Kiireloomuline — küsi kohe';
+
+  @override
+  String get intakeUrgentDialogTitle => 'Kas avada vestlus kohe?';
+
+  @override
+  String get intakeUrgentDialogBody =>
+      'Salvestame sisestatu mustandina. Saad ankeedi lõpetada juhtumi lehelt igal ajal.';
+
+  @override
+  String get intakeUrgentConfirm => 'Ava vestlus';
+
+  @override
+  String get intakeUrgentCancel => 'Jätka täitmist';
+
+  @override
+  String get intakePreparingCase => 'Valmistan juhtumit ette…';
+
+  @override
+  String get intakeFallbackGreeting =>
+      'Ma näen sinu juhtumit. Ütle, mis on praegu kõige kiirem — vaatame koos läbi.';
+
+  @override
+  String get intakeUrgentGreeting =>
+      'Ma näen, et see on kiireloomuline. Esita oma küsimus — täidan toimiku jutu käigus.';
+
+  @override
+  String intakeStepIndicator(int current, int total) {
+    return 'Samm $current / $total';
+  }
+
+  @override
+  String get intakeFieldRequired => 'Kohustuslik';
+
+  @override
+  String intakeUploadProgress(int done, int total) {
+    return 'Laadin üles $done / $total…';
+  }
 }

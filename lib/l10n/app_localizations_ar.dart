@@ -2661,4 +2661,204 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get caseArchivedAck => 'Case archived';
+
+  @override
+  String get intakeStep1Title => 'Where is the case?';
+
+  @override
+  String get intakeStep1Subtitle =>
+      'Country and authority you are dealing with.';
+
+  @override
+  String get intakeJurisdictionLabel => 'Country / jurisdiction';
+
+  @override
+  String get intakeAuthorityLabel => 'Authority type';
+
+  @override
+  String get intakeAuthorityNameLabel => 'Authority name (optional)';
+
+  @override
+  String get intakeAuthorityPolice => 'Police';
+
+  @override
+  String get intakeAuthorityCourt => 'Court';
+
+  @override
+  String get intakeAuthoritySocial => 'Social services';
+
+  @override
+  String get intakeAuthorityEmployer => 'Employer';
+
+  @override
+  String get intakeAuthorityLandlord => 'Landlord';
+
+  @override
+  String get intakeAuthorityOpposingParty => 'Opposing party';
+
+  @override
+  String get intakeAuthorityOther => 'Other';
+
+  @override
+  String get intakeStep2Title => 'What kind of case?';
+
+  @override
+  String get intakeStep2Subtitle =>
+      'Pick the closest type — you can refine later.';
+
+  @override
+  String get intakeCaseTypeCriminal => 'Criminal';
+
+  @override
+  String get intakeCaseTypeCivil => 'Civil';
+
+  @override
+  String get intakeCaseTypeFamily => 'Family';
+
+  @override
+  String get intakeCaseTypeAdmin => 'Administrative';
+
+  @override
+  String get intakeCaseTypeImmigration => 'Immigration';
+
+  @override
+  String get intakeCaseTypeLabor => 'Labor';
+
+  @override
+  String get intakeCaseTypeConsumer => 'Consumer';
+
+  @override
+  String get intakeCaseTypeInheritance => 'Inheritance';
+
+  @override
+  String get intakeCaseTypeOther => 'Other';
+
+  @override
+  String get intakeStep3Title => 'Who is involved?';
+
+  @override
+  String get intakeStep3Subtitle => 'Your role and the other side.';
+
+  @override
+  String get intakeRoleLabel => 'Your role';
+
+  @override
+  String get intakeRolePlaintiff => 'Plaintiff';
+
+  @override
+  String get intakeRoleDefendant => 'Defendant';
+
+  @override
+  String get intakeRoleVictim => 'Victim';
+
+  @override
+  String get intakeRoleAccused => 'Accused';
+
+  @override
+  String get intakeRoleWitness => 'Witness';
+
+  @override
+  String get intakeRoleFamily => 'Family member';
+
+  @override
+  String get intakeRoleOther => 'Other';
+
+  @override
+  String get intakeOpposingSideLabel => 'Opposing side (optional)';
+
+  @override
+  String get intakeWitnessesLabel => 'Witnesses (optional)';
+
+  @override
+  String get intakeAddWitness => 'Add witness';
+
+  @override
+  String get intakeWitnessHint => 'Name or contact';
+
+  @override
+  String get intakeStep4Title => 'Numbers & dates';
+
+  @override
+  String get intakeStep4Subtitle =>
+      'Whatever you already have. Skip what you don\'t.';
+
+  @override
+  String get intakeCaseNumberLabel => 'Case number (optional)';
+
+  @override
+  String get intakeIncidentDateLabel => 'Incident date (optional)';
+
+  @override
+  String get intakeIncidentDatePick => 'Pick date';
+
+  @override
+  String get intakeDeadlinesLabel => 'Known deadlines';
+
+  @override
+  String get intakeAddDeadline => 'Add deadline';
+
+  @override
+  String get intakeDeadlineWhatHint => 'What';
+
+  @override
+  String get intakeStep5Title => 'Documents';
+
+  @override
+  String get intakeStep5Subtitle =>
+      'Upload anything relevant. We will read it.';
+
+  @override
+  String get intakeUploadDocsLabel => 'Upload documents';
+
+  @override
+  String get intakeSkipDocs => 'Skip — I\'ll upload later';
+
+  @override
+  String get intakeNextBtn => 'Next';
+
+  @override
+  String get intakeBackBtn => 'Back';
+
+  @override
+  String get intakeFinishBtn => 'Finish & open chat';
+
+  @override
+  String get intakeUrgentBtn => 'Urgent — ask now';
+
+  @override
+  String get intakeUrgentDialogTitle => 'Open chat now?';
+
+  @override
+  String get intakeUrgentDialogBody =>
+      'We\'ll save what you\'ve entered as a draft case. You can finish the wizard from the case page anytime.';
+
+  @override
+  String get intakeUrgentConfirm => 'Open chat';
+
+  @override
+  String get intakeUrgentCancel => 'Keep filling';
+
+  @override
+  String get intakePreparingCase => 'Preparing your case…';
+
+  @override
+  String get intakeFallbackGreeting =>
+      'I see your case. Tell me what\'s most pressing — I\'ll work through it with you.';
+
+  @override
+  String get intakeUrgentGreeting =>
+      'I see this is urgent. Ask your question — I\'ll fill in the rest as we go.';
+
+  @override
+  String intakeStepIndicator(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get intakeFieldRequired => 'Required';
+
+  @override
+  String intakeUploadProgress(int done, int total) {
+    return 'Uploading $done / $total…';
+  }
 }

@@ -2686,4 +2686,201 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get caseArchivedAck => 'Дело архивировано';
+
+  @override
+  String get intakeStep1Title => 'Где дело?';
+
+  @override
+  String get intakeStep1Subtitle => 'Страна и орган, с которым вы имеете дело.';
+
+  @override
+  String get intakeJurisdictionLabel => 'Страна / юрисдикция';
+
+  @override
+  String get intakeAuthorityLabel => 'Тип органа';
+
+  @override
+  String get intakeAuthorityNameLabel => 'Название органа (необязательно)';
+
+  @override
+  String get intakeAuthorityPolice => 'Полиция';
+
+  @override
+  String get intakeAuthorityCourt => 'Суд';
+
+  @override
+  String get intakeAuthoritySocial => 'Социальная служба';
+
+  @override
+  String get intakeAuthorityEmployer => 'Работодатель';
+
+  @override
+  String get intakeAuthorityLandlord => 'Арендодатель';
+
+  @override
+  String get intakeAuthorityOpposingParty => 'Другая сторона';
+
+  @override
+  String get intakeAuthorityOther => 'Другое';
+
+  @override
+  String get intakeStep2Title => 'Какое это дело?';
+
+  @override
+  String get intakeStep2Subtitle => 'Выберите ближайший тип — уточним позже.';
+
+  @override
+  String get intakeCaseTypeCriminal => 'Уголовное';
+
+  @override
+  String get intakeCaseTypeCivil => 'Гражданское';
+
+  @override
+  String get intakeCaseTypeFamily => 'Семейное';
+
+  @override
+  String get intakeCaseTypeAdmin => 'Административное';
+
+  @override
+  String get intakeCaseTypeImmigration => 'Миграция';
+
+  @override
+  String get intakeCaseTypeLabor => 'Трудовое';
+
+  @override
+  String get intakeCaseTypeConsumer => 'Потребительское';
+
+  @override
+  String get intakeCaseTypeInheritance => 'Наследство';
+
+  @override
+  String get intakeCaseTypeOther => 'Другое';
+
+  @override
+  String get intakeStep3Title => 'Кто участвует?';
+
+  @override
+  String get intakeStep3Subtitle => 'Ваша роль и другая сторона.';
+
+  @override
+  String get intakeRoleLabel => 'Ваша роль';
+
+  @override
+  String get intakeRolePlaintiff => 'Истец';
+
+  @override
+  String get intakeRoleDefendant => 'Ответчик';
+
+  @override
+  String get intakeRoleVictim => 'Потерпевший';
+
+  @override
+  String get intakeRoleAccused => 'Обвиняемый';
+
+  @override
+  String get intakeRoleWitness => 'Свидетель';
+
+  @override
+  String get intakeRoleFamily => 'Член семьи';
+
+  @override
+  String get intakeRoleOther => 'Другое';
+
+  @override
+  String get intakeOpposingSideLabel => 'Другая сторона (необязательно)';
+
+  @override
+  String get intakeWitnessesLabel => 'Свидетели (необязательно)';
+
+  @override
+  String get intakeAddWitness => 'Добавить свидетеля';
+
+  @override
+  String get intakeWitnessHint => 'Имя или контакт';
+
+  @override
+  String get intakeStep4Title => 'Номера и даты';
+
+  @override
+  String get intakeStep4Subtitle =>
+      'Что уже знаете. Что не знаете — пропустите.';
+
+  @override
+  String get intakeCaseNumberLabel => 'Номер дела (необязательно)';
+
+  @override
+  String get intakeIncidentDateLabel => 'Дата происшествия (необязательно)';
+
+  @override
+  String get intakeIncidentDatePick => 'Выбрать дату';
+
+  @override
+  String get intakeDeadlinesLabel => 'Известные сроки';
+
+  @override
+  String get intakeAddDeadline => 'Добавить срок';
+
+  @override
+  String get intakeDeadlineWhatHint => 'Что';
+
+  @override
+  String get intakeStep5Title => 'Документы';
+
+  @override
+  String get intakeStep5Subtitle => 'Загрузите всё, что есть. Мы прочитаем.';
+
+  @override
+  String get intakeUploadDocsLabel => 'Загрузить документы';
+
+  @override
+  String get intakeSkipDocs => 'Пропустить — загружу позже';
+
+  @override
+  String get intakeNextBtn => 'Далее';
+
+  @override
+  String get intakeBackBtn => 'Назад';
+
+  @override
+  String get intakeFinishBtn => 'Завершить и открыть чат';
+
+  @override
+  String get intakeUrgentBtn => 'Горит — спросить сразу';
+
+  @override
+  String get intakeUrgentDialogTitle => 'Открыть чат сейчас?';
+
+  @override
+  String get intakeUrgentDialogBody =>
+      'Сохраним введённое как черновик дела. Можно дозаполнить из карточки дела в любой момент.';
+
+  @override
+  String get intakeUrgentConfirm => 'Открыть чат';
+
+  @override
+  String get intakeUrgentCancel => 'Продолжить заполнение';
+
+  @override
+  String get intakePreparingCase => 'Готовлю ваше дело…';
+
+  @override
+  String get intakeFallbackGreeting =>
+      'Я вижу ваше дело. Скажите, что сейчас острее всего — разберёмся вместе.';
+
+  @override
+  String get intakeUrgentGreeting =>
+      'Я вижу, что вам нужно срочно. Спросите вопрос — по ходу разговора заполню досье.';
+
+  @override
+  String intakeStepIndicator(int current, int total) {
+    return 'Шаг $current из $total';
+  }
+
+  @override
+  String get intakeFieldRequired => 'Обязательно';
+
+  @override
+  String intakeUploadProgress(int done, int total) {
+    return 'Загружаю $done / $total…';
+  }
 }

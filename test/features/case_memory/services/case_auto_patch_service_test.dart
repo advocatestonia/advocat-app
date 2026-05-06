@@ -11,6 +11,7 @@
 library;
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:advocat/features/case_memory/data/case_repository.dart';
 import 'package:advocat/features/case_memory/models/case_document.dart';
@@ -109,6 +110,14 @@ class _FakeCaseRepository implements CaseRepository {
 
   @override
   Future<List<CaseDocument>> listDocuments(String caseId) async => const [];
+
+  @override
+  Future<String> uploadDocument({
+    required String caseId,
+    required String filename,
+    required Uint8List bytes,
+    required String mimeType,
+  }) async => throw UnimplementedError();
 }
 
 UserCase _stubCase(String id) => UserCase(

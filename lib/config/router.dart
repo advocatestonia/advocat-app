@@ -33,8 +33,10 @@ import '../features/case_file/screens/case_file_screen.dart';
 // legacy /cases routes; gradually replacing them.
 import '../features/case_memory/screens/cases_list_screen.dart'
     as cm_list;
-import '../features/case_memory/screens/case_create_screen.dart'
-    as cm_create;
+// Pkg 3 — replaces the minimal /cases-v2/new placeholder with the
+// 5-step structured-intake wizard.
+import '../features/case_memory/screens/intake_wizard/intake_wizard_screen.dart'
+    as cm_intake;
 import '../features/case_memory/screens/case_detail_screen.dart'
     as cm_detail;
 import '../features/case_memory/screens/case_edit_screen.dart' as cm_edit;
@@ -198,7 +200,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.caseV2New,
         name: 'caseV2New',
-        builder: (context, state) => const cm_create.CaseCreateScreen(),
+        builder: (context, state) => const cm_intake.IntakeWizardScreen(),
       ),
       GoRoute(
         path: AppRoutes.caseV2Detail,
