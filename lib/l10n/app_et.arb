@@ -1266,5 +1266,13 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "workspaceTabOverview": "Ülevaade",
+    "workspaceTabChat": "Vestlus",
+    "workspaceTabDrafts": "Mustandid",
+    "workspaceOverviewEmpty": "Lisage dokumente, et koostada kokkuvõte.",
+    "workspaceTimelineEmpty": "Sündmusi pole veel.",
+    "workspaceDocumentsEmpty": "Dokumente pole. Laadige üles skaneerimise kaudu.",
+    "workspaceDraftsEmpty": "Mustandeid pole veel.",
+    "workspaceInboxEmpty": "Seotud e-kirju pole."
 }

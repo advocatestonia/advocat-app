@@ -3150,4 +3150,30 @@ class AppLocalizationsEt extends AppLocalizations {
   String inboxDeadlineOverdue(int days) {
     return 'tähtaeg ületatud $days p';
   }
+
+  @override
+  String get workspaceTabOverview => 'Ülevaade';
+
+  @override
+  String get workspaceTabChat => 'Vestlus';
+
+  @override
+  String get workspaceTabDrafts => 'Mustandid';
+
+  @override
+  String get workspaceOverviewEmpty =>
+      'Lisage dokumente, et koostada kokkuvõte.';
+
+  @override
+  String get workspaceTimelineEmpty => 'Sündmusi pole veel.';
+
+  @override
+  String get workspaceDocumentsEmpty =>
+      'Dokumente pole. Laadige üles skaneerimise kaudu.';
+
+  @override
+  String get workspaceDraftsEmpty => 'Mustandeid pole veel.';
+
+  @override
+  String get workspaceInboxEmpty => 'Seotud e-kirju pole.';
 }

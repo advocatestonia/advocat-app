@@ -45,6 +45,14 @@ import '../features/case_memory/screens/intake_wizard/intake_wizard_screen.dart'
 import '../features/case_memory/screens/case_detail_screen.dart'
     as cm_detail;
 import '../features/case_memory/screens/case_edit_screen.dart' as cm_edit;
+// Phase 2 Pkg 4 — Case Workspace replaces the legacy Pkg 1 case-detail
+// screen at /cases-v2/:id. Backwards compat: the legacy screen remains
+// reachable when the SharedPreferences flag is `false` (Settings rollback
+// toggle, removed next release).
+import '../features/case_workspace/providers/case_workspace_provider.dart'
+    as cw_provider;
+import '../features/case_workspace/screens/case_workspace_screen.dart'
+    as cw_screen;
 // Pkg 9 — Deadline Radar per-case screens.
 import '../features/case_memory/screens/case_deadlines_screen.dart'
     as cm_deadlines;
@@ -252,7 +260,21 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'caseV2Detail',
         builder: (context, state) {
           final id = state.pathParameters['id']!;
-          return cm_detail.CaseDetailScreen(caseId: id);
+          // Phase 2 Pkg 4 — workspace replaces detail screen by default.
+          // Falls back to the legacy screen when the rollback flag is off.
+          final flagOn = ProviderScope.containerOf(context, listen: false)
+              .read(cw_provider.caseWorkspaceFlagProvider);
+          if (!flagOn) {
+            return cm_detail.CaseDetailScreen(caseId: id);
+          }
+          final tabRaw = state.uri.queryParameters['tab'];
+          final initialTab = tabRaw == null
+              ? null
+              : cw_provider.WorkspaceTab.fromQuery(tabRaw);
+          return cw_screen.CaseWorkspaceScreen(
+            caseId: id,
+            initialTab: initialTab,
+          );
         },
         routes: [
           GoRoute(

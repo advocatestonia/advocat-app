@@ -3158,4 +3158,30 @@ class AppLocalizationsRu extends AppLocalizations {
   String inboxDeadlineOverdue(int days) {
     return 'просрочено на $days дн.';
   }
+
+  @override
+  String get workspaceTabOverview => 'Обзор';
+
+  @override
+  String get workspaceTabChat => 'Чат';
+
+  @override
+  String get workspaceTabDrafts => 'Черновики';
+
+  @override
+  String get workspaceOverviewEmpty =>
+      'Добавьте документы, чтобы построить сводку.';
+
+  @override
+  String get workspaceTimelineEmpty => 'Событий пока нет.';
+
+  @override
+  String get workspaceDocumentsEmpty =>
+      'Документов нет. Загрузите через Сканирование.';
+
+  @override
+  String get workspaceDraftsEmpty => 'Черновиков пока нет.';
+
+  @override
+  String get workspaceInboxEmpty => 'Связанных писем нет.';
 }

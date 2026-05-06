@@ -3153,4 +3153,30 @@ class AppLocalizationsFi extends AppLocalizations {
   String inboxDeadlineOverdue(int days) {
     return 'myöhässä $days pv';
   }
+
+  @override
+  String get workspaceTabOverview => 'Yleiskatsaus';
+
+  @override
+  String get workspaceTabChat => 'Keskustelu';
+
+  @override
+  String get workspaceTabDrafts => 'Luonnokset';
+
+  @override
+  String get workspaceOverviewEmpty =>
+      'Lisää asiakirjoja yhteenvedon rakentamiseksi.';
+
+  @override
+  String get workspaceTimelineEmpty => 'Ei tapahtumia vielä.';
+
+  @override
+  String get workspaceDocumentsEmpty =>
+      'Ei asiakirjoja. Lataa skannaa-toiminnon kautta.';
+
+  @override
+  String get workspaceDraftsEmpty => 'Ei luonnoksia vielä.';
+
+  @override
+  String get workspaceInboxEmpty => 'Ei liittyviä sähköposteja.';
 }

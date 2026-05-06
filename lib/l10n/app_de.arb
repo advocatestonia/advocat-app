@@ -1596,5 +1596,13 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "workspaceTabOverview": "Overview",
+    "workspaceTabChat": "Chat",
+    "workspaceTabDrafts": "Drafts",
+    "workspaceOverviewEmpty": "Add documents to build a summary.",
+    "workspaceTimelineEmpty": "No events yet.",
+    "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
+    "workspaceDraftsEmpty": "No drafts yet.",
+    "workspaceInboxEmpty": "No related email."
 }

@@ -1266,5 +1266,13 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "workspaceTabOverview": "Yleiskatsaus",
+    "workspaceTabChat": "Keskustelu",
+    "workspaceTabDrafts": "Luonnokset",
+    "workspaceOverviewEmpty": "Lisää asiakirjoja yhteenvedon rakentamiseksi.",
+    "workspaceTimelineEmpty": "Ei tapahtumia vielä.",
+    "workspaceDocumentsEmpty": "Ei asiakirjoja. Lataa skannaa-toiminnon kautta.",
+    "workspaceDraftsEmpty": "Ei luonnoksia vielä.",
+    "workspaceInboxEmpty": "Ei liittyviä sähköposteja."
 }

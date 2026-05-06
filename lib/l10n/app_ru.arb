@@ -1266,5 +1266,13 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "workspaceTabOverview": "Обзор",
+    "workspaceTabChat": "Чат",
+    "workspaceTabDrafts": "Черновики",
+    "workspaceOverviewEmpty": "Добавьте документы, чтобы построить сводку.",
+    "workspaceTimelineEmpty": "Событий пока нет.",
+    "workspaceDocumentsEmpty": "Документов нет. Загрузите через Сканирование.",
+    "workspaceDraftsEmpty": "Черновиков пока нет.",
+    "workspaceInboxEmpty": "Связанных писем нет."
 }

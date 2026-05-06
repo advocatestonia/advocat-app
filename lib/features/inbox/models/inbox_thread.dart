@@ -74,6 +74,7 @@ class InboxThread {
     required this.userAction,
     required this.seenByUserAt,
     this.deadlines = const <InboxDeadline>[],
+    this.caseId,
   });
 
   /// `email_threads.id` (uuid).
@@ -119,6 +120,12 @@ class InboxThread {
   /// when the triage produced none (or the row was loaded from a thinner
   /// projection like the assistant tool's card data).
   final List<InboxDeadline> deadlines;
+
+  /// Optional `case_id` linking this thread to a `user_cases` row. Set
+  /// when the email triage agent has carried this thread into a case
+  /// dossier; `null` for unattributed inbox traffic. Pkg 4 uses this
+  /// to filter the per-case inbox tab.
+  final String? caseId;
 
   /// The single most-urgent deadline (smallest non-null deltaDays, with
   /// negative/overdue values winning). Returns `null` when the thread has
@@ -186,6 +193,7 @@ class InboxThread {
       userAction: row['user_action'] as String?,
       seenByUserAt: seenIso != null ? DateTime.tryParse(seenIso) : null,
       deadlines: parsedDeadlines,
+      caseId: row['case_id'] as String?,
     );
   }
 }

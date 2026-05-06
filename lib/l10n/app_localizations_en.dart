@@ -3148,4 +3148,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String inboxDeadlineOverdue(int days) {
     return 'overdue ${days}d';
   }
+
+  @override
+  String get workspaceTabOverview => 'Overview';
+
+  @override
+  String get workspaceTabChat => 'Chat';
+
+  @override
+  String get workspaceTabDrafts => 'Drafts';
+
+  @override
+  String get workspaceOverviewEmpty => 'Add documents to build a summary.';
+
+  @override
+  String get workspaceTimelineEmpty => 'No events yet.';
+
+  @override
+  String get workspaceDocumentsEmpty => 'No documents. Upload from Scan.';
+
+  @override
+  String get workspaceDraftsEmpty => 'No drafts yet.';
+
+  @override
+  String get workspaceInboxEmpty => 'No related email.';
 }

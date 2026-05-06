@@ -5797,6 +5797,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'overdue {days}d'**
   String inboxDeadlineOverdue(int days);
+
+  /// No description provided for @workspaceTabOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get workspaceTabOverview;
+
+  /// No description provided for @workspaceTabChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat'**
+  String get workspaceTabChat;
+
+  /// No description provided for @workspaceTabDrafts.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafts'**
+  String get workspaceTabDrafts;
+
+  /// No description provided for @workspaceOverviewEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Add documents to build a summary.'**
+  String get workspaceOverviewEmpty;
+
+  /// No description provided for @workspaceTimelineEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No events yet.'**
+  String get workspaceTimelineEmpty;
+
+  /// No description provided for @workspaceDocumentsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents. Upload from Scan.'**
+  String get workspaceDocumentsEmpty;
+
+  /// No description provided for @workspaceDraftsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No drafts yet.'**
+  String get workspaceDraftsEmpty;
+
+  /// No description provided for @workspaceInboxEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No related email.'**
+  String get workspaceInboxEmpty;
 }
 
 class _AppLocalizationsDelegate
