@@ -49,12 +49,39 @@ class LawChunk {
   /// Optional canonical source URL (Riigi Teataja, Finlex, EUR-Lex).
   final String? sourceUrl;
 
+  /// `law_chunks.id` — deterministic id of the row, e.g. `"tls-§88-1"`.
+  /// Pkg 2 (Citations API): the chat client passes this through to
+  /// claude-proxy in `rag_context.chunks[*].id` so the grounding verifier
+  /// can resolve `[[ref:tls:88]]` markers to a concrete chunk row.
+  final String? id;
+
+  /// `law_chunks.act_slug` — lowercase short slug used inside the marker
+  /// syntax (`[[ref:tls:88]]`). Optional for back-compat with callers that
+  /// haven't been wired through the `act_slug` field yet (e.g. legacy
+  /// tests). When null, the marker directive is omitted from
+  /// formatLawContext for that chunk and the verifier cannot match it.
+  final String? actSlug;
+
+  /// `law_chunks.jurisdiction` — EE / FI / EU / RU / DE. Pkg 2: passed
+  /// through to the verifier so EU markers resolve via CELEX-id.
+  final String? jurisdiction;
+
+  /// `law_chunks.in_force` — false flips the verifier status to
+  /// `historical`. Defaults to `true` in fromJson for back-compat with
+  /// today's law-search response (which only emits `in_force = true`
+  /// rows via the partial unique index in 20260507_06).
+  final bool? inForce;
+
   const LawChunk({
     required this.actName,
     required this.paragraph,
     required this.body,
     required this.similarity,
     this.sourceUrl,
+    this.id,
+    this.actSlug,
+    this.jurisdiction,
+    this.inForce,
   });
 
   /// Approximate byte cost in the system prompt. Used by the budget-trim
@@ -62,21 +89,63 @@ class LawChunk {
   /// Conservative: header + body + URL + formatting overhead.
   int approximateBytes() {
     final urlLen = sourceUrl?.length ?? 0;
-    return actName.length + paragraph.length + body.length + urlLen + 32;
+    final slugLen = actSlug?.length ?? 0;
+    return actName.length + paragraph.length + body.length + urlLen + slugLen + 64;
   }
 
   factory LawChunk.fromJson(Map<String, dynamic> json) {
     final sim = json['similarity'];
     final score = sim is num ? sim.toDouble() : 0.0;
     final url = json['source_url'];
+    final id = json['id'];
+    final slug = json['act_slug'];
+    final jur = json['jurisdiction'];
+    final inForceRaw = json['in_force'];
     return LawChunk(
       actName: (json['act_name'] as String?) ?? '',
       paragraph: (json['paragraph'] as String?) ?? '',
       body: (json['body'] as String?) ?? '',
       similarity: score.clamp(0.0, 1.0),
       sourceUrl: url is String && url.isNotEmpty ? url : null,
+      id: id is String && id.isNotEmpty ? id : null,
+      actSlug: slug is String && slug.isNotEmpty ? slug : null,
+      jurisdiction: jur is String && jur.isNotEmpty ? jur : null,
+      inForce: inForceRaw is bool ? inForceRaw : null,
     );
   }
+
+  /// Serialise back to the JSON shape claude-proxy expects in
+  /// `rag_context.chunks` (Pkg 2). Mirror of `fromJson`. We leave the
+  /// `body` whole — the verifier truncates to ≤400 chars on its end.
+  Map<String, dynamic> toRagContextJson() {
+    return <String, dynamic>{
+      if (id != null) 'id': id,
+      if (actSlug != null) 'act_slug': actSlug,
+      'act_name': actName,
+      'paragraph': _markerParagraph(),
+      'body': body,
+      if (sourceUrl != null) 'source_url': sourceUrl,
+      if (jurisdiction != null) 'jurisdiction': jurisdiction,
+      if (inForce != null) 'in_force': inForce,
+    };
+  }
+
+  /// Strip the leading "§" / whitespace so the value is the marker-friendly
+  /// form ("88") rather than the human-readable form ("§ 88"). Used both
+  /// by the rag_context payload and by formatLawContext when it shows the
+  /// `paragraph: …` annotation.
+  String _markerParagraph() {
+    var p = paragraph.trim();
+    if (p.startsWith('§')) {
+      p = p.substring(1).trim();
+    }
+    return p;
+  }
+
+  /// Public accessor for the marker-friendly paragraph form. Exposed so
+  /// callers (system prompt builder, claude_service) don't have to repeat
+  /// the same § strip everywhere.
+  String get markerParagraph => _markerParagraph();
 }
 
 /// Static client. No instance state — every call constructs its own Dio so

@@ -217,6 +217,12 @@ abstract final class SystemPrompts {
   /// Format a non-empty list of [LawChunk]s as the RAG header block.
   /// Pure formatter, no budget logic. Used by [injectLawContext]; exposed
   /// so the contract test can pin the wire format directly.
+  ///
+  /// Pkg 2 (Citations API, 2026-05-06): each chunk header now also carries
+  /// the machine-friendly `act_slug: <slug>` + `paragraph: <para>` lines
+  /// so the model can compose `[[ref:slug:para]]` markers. The footer
+  /// instructs the model to emit the marker after every load-bearing
+  /// citation. See docs/architecture/phase2-pkg2-citations.md §2.
   static String formatLawContext(List<LawChunk> chunks) {
     final buf = StringBuffer();
     buf.writeln('## RELEVANT ESTONIAN LAW '
@@ -229,6 +235,17 @@ abstract final class SystemPrompts {
       final actName = c.actName.trim();
       final headerSuffix = paragraph.isEmpty ? '' : ' $paragraph';
       buf.writeln('### $actName$headerSuffix');
+      // Pkg 2: emit machine-friendly act_slug + paragraph annotation.
+      // The model uses these two values inside [[ref:slug:para]] markers;
+      // the verifier joins on `lower(act_slug):paragraph`. Skip the
+      // annotation when act_slug is null (legacy chunks) — the verifier
+      // can still try to resolve via case-insensitive act match, but a
+      // null slug means the chunk pre-dates the Pkg 1 jurisdiction
+      // migration and shouldn't be marker-eligible.
+      if (c.actSlug != null && c.actSlug!.isNotEmpty) {
+        buf.writeln('act_slug: ${c.actSlug}');
+        buf.writeln('paragraph: ${c.markerParagraph}');
+      }
       // Body as a blockquote — visually separates the verbatim text from
       // the surrounding instructions for the model.
       for (final line in c.body.split('\n')) {
@@ -249,6 +266,24 @@ abstract final class SystemPrompts {
     buf.writeln(
         '- If law is in another language than user\'s, translate the cited '
         'text but keep the § number.');
+    // Pkg 2 marker directive — the model MUST append [[ref:slug:para]]
+    // after every load-bearing legal claim sourced from the chunks above.
+    // The act_slug + paragraph values come straight from each chunk
+    // header. Failure mode: if the model can't ground a claim in the
+    // chunks above it must say so in the user's language rather than
+    // invent a marker. The grounding verifier catches missing markers
+    // (citations:[]) and unverified ones (status:'unverified').
+    buf.writeln(
+        '- After every legal claim you ground in a paragraph above, append '
+        'the marker `[[ref:ACT_SLUG:PARAGRAPH]]` (lowercase act_slug, '
+        'paragraph exactly as shown in the chunk header). '
+        'Examples: `[[ref:tls:88]]`, `[[ref:kars:121]]`, '
+        '`[[ref:32019l1152:5:en]]`. One marker per cited paragraph.');
+    buf.writeln(
+        '- If you cannot ground a legal claim in the chunks above, say so '
+        'in the user\'s language ("точную статью я уточню при необходимости" '
+        '/ "täpsema § viite täpsustan vajadusel" / "I cannot confirm the '
+        'exact provision"). DO NOT invent a marker.');
     return buf.toString().trimRight();
   }
 

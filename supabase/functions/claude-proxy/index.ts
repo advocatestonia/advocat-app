@@ -16,6 +16,12 @@ import {
   isValidCaseId,
   loadActiveCase,
 } from "./active_case_injection.ts";
+import {
+  concatAnthropicTextBlocks,
+  extractRagContext,
+  type GroundingChunk,
+  verifyCitations,
+} from "../_shared/citation_grounder.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -109,6 +115,22 @@ serve(async (req) => {
     }
 
     const body = await req.json();
+
+    // ── Citations pipeline (Pkg 2, 2026-05-06) ───────────────────────────
+    // Pull `rag_context` off the body BEFORE we do anything else with it.
+    // The field is proxy-only — the verifier (post-Anthropic) needs the
+    // chunks to ground markers, but Anthropic must NEVER see it (it's not
+    // a Messages API field and would 400). extractRagContext both strips
+    // the field in-place and returns the parsed chunks.
+    //
+    // Why here, before the model/quota normalisation: keeps the strip a
+    // single, predictable point of mutation. Even if the request fails
+    // every subsequent guard (model not allowed, system prompt rejected),
+    // we already removed `rag_context` from `body`, so any path that
+    // forwards `body` cannot leak it.
+    const ragChunks: GroundingChunk[] = extractRagContext(
+      body as Record<string, unknown>,
+    );
 
     // Enforce allowed model
     if (!body.model || !ALLOWED_MODELS.has(body.model)) {
@@ -256,10 +278,19 @@ serve(async (req) => {
       body: JSON.stringify(body),
     });
 
-    // Happy path: forward Anthropic's JSON unchanged.
+    // Happy path: forward Anthropic's JSON augmented with grounded citations.
     if (claudeResponse.ok) {
       const result = await claudeResponse.json();
-      return new Response(JSON.stringify(result), {
+      // ── Grounding verifier (Pkg 2) ─────────────────────────────────────
+      // Pure regex + Map lookup against ragChunks (already in memory from
+      // this turn). p95 < 50 ms per design. Never throws; returns [] on
+      // empty inputs so legacy callers (no rag_context) keep working.
+      const replyText = concatAnthropicTextBlocks(
+        (result as { content?: unknown }).content,
+      );
+      const citations = verifyCitations(replyText, ragChunks);
+      const augmented = { ...result, citations };
+      return new Response(JSON.stringify(augmented), {
         status: claudeResponse.status,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
