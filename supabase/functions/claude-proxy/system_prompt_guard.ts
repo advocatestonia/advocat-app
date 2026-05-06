@@ -64,6 +64,14 @@ export const ADVOCAT_IDENTITY_MARKERS: readonly string[] = [
   // Pkg 1.D (UI) can ship a client-side variant where the model leads
   // with case context without rewriting the guard.
   "# ROLE — Advocat: Estonian-EU legal AI assistant with case memory",
+  // PDF structured-extraction prompt (Pkg 2, 2026-05-06). Fired by the
+  // `pdf-parser` Edge Function as a one-shot Sonnet call to extract
+  // strict JSON metadata from a parsed PDF (doc_type, parties,
+  // case_numbers, key_facts, deadlines, …). Source of truth:
+  // _shared/pdf_extractor_prompt.ts PDF_EXTRACTOR_IDENTITY_MARKER —
+  // keep these two strings in lockstep (verified by pdf_parser_test.ts
+  // PDFP-T01).
+  "You are a legal document extractor for the Advocat app",
 ];
 
 export type GuardResult =
