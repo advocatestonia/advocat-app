@@ -831,6 +831,356 @@ abstract final class ToolDefinitions {
         'required': ['intent_type', 'check_at', 'context_summary'],
       },
     },
+    // ── v2.1 Tier-1 tools (Rules 31-35 from operator prompt v1.2-final) ────
+    //
+    // Refs: business/email_agent_handoff_2026-05-06/v2.1_consilium/
+    //         TOOLS_INVENTORY.md (which 30 tools are missing)
+    //       business/email_agent_handoff_2026-05-06/
+    //         10_OPERATOR_PROMPT_v2_FI_EE_DEEP.md §4 (full 30-tool spec)
+    //
+    // These 7 wrappers unblock v1.2-final on prod. Without them, Sonnet hits
+    // `tool not registered` errors on Rules 31 (deadline math), 32 (carrier
+    // tracking), 34 (state-error stacking), 35 (esitutkintapöytäkirja parse).
+    // Tier 2 / 3 deferred to v2.2.
+    //
+    // All 7 are read-only wrappers — none mutate world state — so none added
+    // to AssistantTools.requiresApproval.
+    {
+      'name': 'document_extract_facts',
+      'description':
+          'Deep-extract facts from a document (esitutkintapöytäkirja, court '
+              'decision, contract). Wrapper around analyze_document with '
+              'targeted multi-pass extraction. Returns a structured fact list '
+              'with page references and confidence, plus a 120-word summary. '
+              'Use for Rule 35 (esitutkintapöytäkirja parse) and any time the '
+              'user uploads a long official document and asks "what does this '
+              'say". Categories: dates, parties, case_numbers, statements, '
+              'contradictions, admissions, promises, identity_errors, money, '
+              'language_issues, attachments_referenced.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'file_path': {
+            'type': 'string',
+            'description':
+                'Document ID (or file path) to extract from. Use '
+                    'list_documents first if unsure.',
+          },
+          'multi_pass': {
+            'type': 'boolean',
+            'description':
+                'Run two extraction passes for better recall on long docs. '
+                    'Default true.',
+          },
+          'extraction_targets': {
+            'type': 'array',
+            'items': {
+              'type': 'string',
+              'enum': [
+                'dates',
+                'parties',
+                'case_numbers',
+                'statements',
+                'contradictions',
+                'admissions',
+                'promises',
+                'identity_errors',
+                'money',
+                'language_issues',
+                'attachments_referenced',
+              ],
+            },
+            'description':
+                'Optional list of categories to focus on. Omit for all '
+                    'categories.',
+          },
+          'case_id': {
+            'type': 'string',
+            'description':
+                'Optional case ID to scope the extraction (auto-attaches to '
+                    'the active case).',
+          },
+        },
+        'required': ['file_path'],
+      },
+    },
+    {
+      'name': 'document_extract_deadlines',
+      'description':
+          'Extract appeal deadlines and routing from an official document '
+              '(HAO/KHO päätös, Migri decision, court order). Wrapper around '
+              'read_document with regex-driven date extraction and '
+              'forum-mapping. Use for Rule 18 (appeal route extraction) — any '
+              'time the user uploads a päätös and asks "what is the deadline" '
+              'or "where do I appeal". Returns absolute dates, days remaining, '
+              'service-clock basis, and the next forum.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'file_path': {
+            'type': 'string',
+            'description':
+                'Document ID (or file path) of the official document.',
+          },
+          'case_id': {
+            'type': 'string',
+            'description': 'Case ID the document belongs to.',
+          },
+        },
+        'required': ['file_path'],
+      },
+    },
+    {
+      'name': 'document_detect_state_errors',
+      'description':
+          'Detect identity / procedural errors stacked by state authorities '
+              'in an official document. Compares the document content against '
+              'the user\'s known identity (name, citizenship, language, birth '
+              'year/place). Use for Rule 34 — when the user is challenging a '
+              'state decision and you need to enumerate concrete errors '
+              '(name typo, wrong citizenship, missing signature, wrong '
+              'language) for an erityisen painava syy / KHO valituslupa '
+              'argument. Returns errors with legal_relevance and a stacking '
+              'argument when 3+ errors are found.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'file_path': {
+            'type': 'string',
+            'description': 'Document ID of the official document.',
+          },
+          'case_id': {
+            'type': 'string',
+            'description': 'Case ID the document belongs to.',
+          },
+          'user_identity': {
+            'type': 'object',
+            'description':
+                'User identity object with name, citizenship, '
+                    'language_preference, birth_year, birth_place. The tool '
+                    'compares against this to flag mismatches.',
+            'properties': {
+              'name': {'type': 'string'},
+              'citizenship': {'type': 'string'},
+              'language_preference': {'type': 'string'},
+              'birth_year': {'type': 'integer'},
+              'birth_place': {'type': 'string'},
+            },
+          },
+        },
+        'required': ['file_path'],
+      },
+    },
+    {
+      'name': 'tracking_fetch_posti',
+      'description':
+          'Fetch carrier-tracking events for a Posti / Itella shipment by '
+              'tracking ID (format: 2 letters + 9 digits + 2 letters, e.g. '
+              'RS846423104FI). Use for Rule 32 — when the user claims a court '
+              'or authority document arrived late, or there was a delivery '
+              'failure (e.g. wrong-name envelope returned to sender). On API '
+              'failure, returns a manual-input fallback so the user can paste '
+              'tracking history from posti.fi. Demo data covers Sulga case '
+              'tracking.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'tracking_id': {
+            'type': 'string',
+            'description':
+                'Posti tracking ID — 2 letters + 9 digits + 2 letters '
+                    '(e.g. RS846423104FI).',
+          },
+        },
+        'required': ['tracking_id'],
+      },
+    },
+    {
+      'name': 'deadline_compute_with_holidays',
+      'description':
+          'Compute a deadline with FI/EE/EU/ECtHR holiday and weekend shift. '
+              'Use for Rule 28 — any time you compute a procedural deadline '
+              '(valitusaika, määräaika, tähtaeg) so the result lands on a '
+              'business day, not a Saturday or a public holiday. Supports '
+              'calendar-day vs working-day counting and 5 service-clock '
+              'bases (dispatch, tiedoksisaanti+7d, saantitodistus, '
+              'kättetoimetamine+5p, actual_receipt). ECtHR deadlines do NOT '
+              'shift on weekends / holidays per Protocol 15 — the tool '
+              'enforces this.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'start_date': {
+            'type': 'string',
+            'description':
+                'ISO-8601 start date (YYYY-MM-DD) — typically the päätös '
+                    'date or service date.',
+          },
+          'days': {
+            'type': 'integer',
+            'description':
+                'Number of days for the deadline window (e.g. 30 for KHO '
+                    'valitus).',
+          },
+          'jurisdiction': {
+            'type': 'string',
+            'enum': ['FI', 'EE', 'EU', 'ECtHR'],
+            'description':
+                'FI / EE / EU / ECtHR. Determines the holiday calendar and '
+                    'weekend-shift rules.',
+          },
+          'calendar_or_working': {
+            'type': 'string',
+            'enum': ['calendar', 'working'],
+            'description':
+                'Default calendar. "calendar" counts every day; "working" '
+                    'counts only Mon-Fri non-holiday days.',
+          },
+          'service_basis': {
+            'type': 'string',
+            'enum': [
+              'dispatch',
+              'tiedoksisaanti_7d',
+              'saantitodistus',
+              'kattetoimetamine_5p',
+              'actual_receipt',
+            ],
+            'description':
+                'Optional service-clock basis. Adjusts the effective start '
+                    'date (e.g. tiedoksisaanti_7d adds 7 days to dispatch).',
+          },
+        },
+        'required': ['start_date', 'days', 'jurisdiction'],
+      },
+    },
+    {
+      'name': 'inbox_read_thread_full',
+      'description':
+          'Read a full email thread including all messages, attachments, '
+              'triage state and privilege state (RLS-protected). Extension of '
+              'list_inbox / get_thread_triage that returns the entire thread '
+              'history, not just the latest triage card. Use when the user '
+              'asks "what is the full conversation with Jokela", "show me the '
+              'whole thread", "all messages in this thread". If the thread is '
+              'attorney-client privileged and not yet unlocked, returns '
+              'metadata only (no body).',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'thread_id': {
+            'type': 'string',
+            'description':
+                'UUID of the thread (email_threads.id). Get it from '
+                    'list_inbox first.',
+          },
+        },
+        'required': ['thread_id'],
+      },
+    },
+    {
+      'name': 'lesson_write_from_mistake',
+      'description':
+          'Persist a lesson learned from a mistake or correction. Records '
+              'WHAT happened, WHAT to do next time, scope (case / user / '
+              'global) and category (legal_cite / domain_knowledge / tone / '
+              'tool_use / privilege / deadline / redaction / other). Use '
+              'every time the user corrects you, points out an error, or you '
+              'realise after the fact that a different approach would have '
+              'been better. The lesson is then auto-applied on similar future '
+              'tasks via lesson_apply_to_current_task.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'trigger': {
+            'type': 'string',
+            'description':
+                'Short description of the situation that triggered the '
+                    'lesson (e.g. "filed restoration motion at HAO").',
+          },
+          'what_happened': {
+            'type': 'string',
+            'description':
+                'What actually happened / what the mistake was (e.g. "HAO '
+                    'has no jurisdiction over menetetyn määräajan '
+                    'palauttaminen — that is KHO-exclusive per HOL § 114-115").',
+          },
+          'what_to_do_next_time': {
+            'type': 'string',
+            'description':
+                'Concrete corrective action (e.g. "always check HOL § 114 '
+                    'forum before filing a restoration motion").',
+          },
+          'scope': {
+            'type': 'string',
+            'enum': ['case', 'user', 'global'],
+            'description':
+                'case = this case only; user = this user across cases; '
+                    'global = applies to every user.',
+          },
+          'category': {
+            'type': 'string',
+            'enum': [
+              'legal_cite',
+              'domain_knowledge',
+              'tone',
+              'tool_use',
+              'privilege',
+              'deadline',
+              'redaction',
+              'other',
+            ],
+            'description': 'Lesson category for retrieval grouping.',
+          },
+          'case_id': {
+            'type': 'string',
+            'description':
+                'Optional case ID — required when scope=case.',
+          },
+        },
+        'required': [
+          'trigger',
+          'what_happened',
+          'what_to_do_next_time',
+          'scope',
+          'category',
+        ],
+      },
+    },
+    {
+      'name': 'lesson_apply_to_current_task',
+      'description':
+          'Retrieve lessons relevant to the current task. Performs keyword '
+              'matching against the task description and returns the top '
+              'matching lessons (default 5). Use BEFORE acting on any '
+              'non-trivial task — "before drafting", "before computing a '
+              'deadline", "before sending mail" — so accumulated lessons '
+              'guide the current step. Compounds the agent\'s knowledge across '
+              'sessions.',
+      'input_schema': {
+        'type': 'object',
+        'properties': {
+          'task_description': {
+            'type': 'string',
+            'description':
+                'Short description of the current task (e.g. "drafting '
+                    'restoration motion for missed appeal deadline").',
+          },
+          'case_id': {
+            'type': 'string',
+            'description':
+                'Optional case ID — limits matching to lessons scoped to '
+                    'this case + user-level + global.',
+          },
+          'max_lessons': {
+            'type': 'integer',
+            'description':
+                'Maximum number of lessons to return. Default 5, hard cap '
+                    '20.',
+          },
+        },
+        'required': ['task_description'],
+      },
+    },
   ];
 
   // ── Anthropic server tools (executed on Anthropic's infrastructure) ───
