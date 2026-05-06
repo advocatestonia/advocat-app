@@ -3137,4 +3137,20 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get inboxDraftLoadError => 'Luonnoksen lataaminen epäonnistui.';
+
+  @override
+  String get inboxDeadlineToday => 'tänään';
+
+  @override
+  String get inboxDeadlineTomorrow => 'huomenna';
+
+  @override
+  String inboxDeadlineInDays(int days) {
+    return '$days pv kuluttua';
+  }
+
+  @override
+  String inboxDeadlineOverdue(int days) {
+    return 'myöhässä $days pv';
+  }
 }

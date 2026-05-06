@@ -3134,4 +3134,20 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get inboxDraftLoadError => 'Mustandit ei õnnestunud laadida.';
+
+  @override
+  String get inboxDeadlineToday => 'täna';
+
+  @override
+  String get inboxDeadlineTomorrow => 'homme';
+
+  @override
+  String inboxDeadlineInDays(int days) {
+    return '$days p pärast';
+  }
+
+  @override
+  String inboxDeadlineOverdue(int days) {
+    return 'tähtaeg ületatud $days p';
+  }
 }

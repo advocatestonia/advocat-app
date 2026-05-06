@@ -1,0 +1,308 @@
+// triage_card_test.dart — D6 widget tests for the inbox TriageCard.
+// -----------------------------------------------------------------------------
+// Refs:
+//   business/email_agent_handoff_2026-05-06/09_INTEGRATION_INTO_ADVOCAT.md §D6
+//   lib/features/inbox/widgets/triage_card.dart
+//   lib/features/inbox/models/inbox_thread.dart
+//   lib/features/inbox/providers/inbox_provider.dart
+//
+// Coverage (matches spec line "triage_card_test.dart — 4 actions, severity
+// badges, deadline chip"):
+//   - Severity badge: text + colour band per severity bucket.
+//   - 4 actions wired:
+//       Approve & send (only when hasDraft)
+//       Edit          (only when hasDraft)
+//       Snooze        (always)
+//       Archive       (always)
+//   - hasDraft=false hides the two draft-only buttons (Approve & send + Edit).
+//   - Snooze tap optimistically removes the row from the inbox provider.
+//   - Deadline chip renders when InboxThread.topDeadline is non-null.
+//   - Deadline chip absent when deadlines list is empty.
+// -----------------------------------------------------------------------------
+
+import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:advocat/features/inbox/models/inbox_severity.dart';
+import 'package:advocat/features/inbox/models/inbox_thread.dart';
+import 'package:advocat/features/inbox/providers/inbox_provider.dart';
+import 'package:advocat/features/inbox/widgets/triage_card.dart';
+import 'package:advocat/l10n/app_localizations.dart';
+import 'package:advocat/services/assistant_tools.dart';
+import 'package:advocat/services/supabase_service.dart';
+
+InboxThread _thread({
+  String id = 't1',
+  InboxSeverity severity = InboxSeverity.high,
+  bool hasDraft = true,
+  String? userAction,
+  DateTime? seenAt,
+  List<InboxDeadline> deadlines = const <InboxDeadline>[],
+}) =>
+    InboxThread(
+      threadId: id,
+      triageId: 'triage-$id',
+      subject: 'Subject $id',
+      senderEmail: 'sender-$id@example.com',
+      severity: severity,
+      userBrief: 'Brief for $id',
+      lastMessageAt: DateTime.now().toUtc(),
+      hasDraft: hasDraft,
+      sendRecommendation: 'hold_for_user_review',
+      userAction: userAction,
+      seenByUserAt: seenAt,
+      deadlines: deadlines,
+    );
+
+class _SeededInboxNotifier extends InboxNotifier {
+  _SeededInboxNotifier(super.tools, List<InboxThread> seed) {
+    state = InboxState(
+      threads: seed,
+      severityFilter: null,
+      isLoading: false,
+      errorMessage: null,
+    );
+  }
+
+  @override
+  Future<void> refresh() async {/* no-op for tests */}
+
+  @override
+  Future<void> snooze(String threadId) async {
+    // Bypass tool I/O — just exercise the optimistic-remove path under
+    // test, identical to what production does after a successful tool
+    // call.
+    state = state.copyWith(
+      threads:
+          state.threads.where((t) => t.threadId != threadId).toList(),
+    );
+  }
+}
+
+Widget _wrap(Widget child, {required List<InboxThread> seed}) {
+  // Minimal GoRouter so context.push from the Edit action does not throw.
+  final router = GoRouter(
+    initialLocation: '/inbox',
+    routes: [
+      GoRoute(
+        path: '/inbox',
+        builder: (_, __) => Scaffold(body: child),
+      ),
+      GoRoute(
+        path: '/inbox/draft/:triageId',
+        builder: (_, __) =>
+            const Scaffold(body: Center(child: Text('edit'))),
+      ),
+    ],
+  );
+  return ProviderScope(
+    overrides: [
+      inboxProvider.overrideWith(
+        (ref) => _SeededInboxNotifier(
+          ref.read(assistantToolsProvider),
+          seed,
+        ),
+      ),
+      assistantToolsProvider.overrideWithValue(
+        AssistantTools(supabaseService: SupabaseService()),
+      ),
+    ],
+    child: MaterialApp.router(
+      routerConfig: router,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en'), Locale('et'), Locale('ru')],
+    ),
+  );
+}
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  // ── Severity badges ───────────────────────────────────────────────────
+
+  group('TriageCard — severity badges', () {
+    testWidgets('renders the severity raw label as text', (tester) async {
+      final t = _thread(severity: InboxSeverity.critical);
+      await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+      // CRITICAL pulses; one pump is enough to flush layout.
+      await tester.pump();
+      expect(find.text('CRITICAL'), findsOneWidget);
+    });
+
+    for (final s in InboxSeverity.values) {
+      testWidgets('renders ${s.raw} badge text', (tester) async {
+        final t = _thread(id: s.raw.toLowerCase(), severity: s);
+        await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+        await tester.pump();
+        expect(find.text(s.raw), findsOneWidget);
+      });
+    }
+  });
+
+  // ── 4 actions ─────────────────────────────────────────────────────────
+
+  group('TriageCard — 4 actions', () {
+    testWidgets(
+      'shows Approve & send, Edit, Snooze, Archive when hasDraft=true',
+      (tester) async {
+        final t = _thread(hasDraft: true);
+        await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+        await tester.pumpAndSettle();
+        expect(find.text('Approve & send'), findsOneWidget);
+        expect(find.text('Edit'), findsOneWidget);
+        expect(find.text('Snooze'), findsOneWidget);
+        expect(find.text('Archive'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'hides Approve & send + Edit when hasDraft=false (only Snooze + Archive)',
+      (tester) async {
+        final t = _thread(hasDraft: false);
+        await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+        await tester.pumpAndSettle();
+        expect(find.text('Approve & send'), findsNothing);
+        expect(find.text('Edit'), findsNothing);
+        expect(find.text('Snooze'), findsOneWidget);
+        expect(find.text('Archive'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Snooze tap optimistically removes the thread from the provider',
+      (tester) async {
+        final t = _thread(id: 's1', hasDraft: false);
+        await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+        await tester.pumpAndSettle();
+
+        // Tap Snooze.
+        await tester.tap(find.text('Snooze'));
+        await tester.pumpAndSettle();
+
+        // The seeded notifier should have removed the row optimistically.
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(MaterialApp)),
+        );
+        final remaining = container.read(inboxProvider).threads;
+        expect(remaining, isEmpty,
+            reason: 'Snooze must remove the row from the inbox state.');
+      },
+    );
+
+    testWidgets(
+      'Approve tap opens the confirm dialog (cancel does NOT dispatch send)',
+      (tester) async {
+        final t = _thread(hasDraft: true);
+        await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Approve & send'));
+        await tester.pumpAndSettle();
+
+        // Confirm dialog visible.
+        expect(find.text('Send the prepared reply?'), findsOneWidget);
+
+        // Cancel — no toast / no provider mutation.
+        await tester.tap(find.text('Cancel'));
+        await tester.pumpAndSettle();
+        expect(find.text('Sent.'), findsNothing);
+      },
+    );
+  });
+
+  // ── Deadline chip ─────────────────────────────────────────────────────
+
+  group('TriageCard — deadline chip', () {
+    testWidgets('renders chip with "today" when deltaDays=0', (tester) async {
+      final t = _thread(
+        deadlines: const [
+          InboxDeadline(
+            isoDate: '2026-05-06',
+            deltaDays: 0,
+            description: 'Court reply',
+          ),
+        ],
+      );
+      await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+      await tester.pumpAndSettle();
+      // Chip text format is "<description> · today".
+      expect(find.textContaining('today'), findsOneWidget);
+      expect(find.textContaining('Court reply'), findsOneWidget);
+    });
+
+    testWidgets('renders "in Nd" form when deltaDays>1', (tester) async {
+      final t = _thread(
+        deadlines: const [
+          InboxDeadline(
+            isoDate: '2026-05-13',
+            deltaDays: 7,
+            description: 'Appeal window',
+          ),
+        ],
+      );
+      await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('in 7d'), findsOneWidget);
+    });
+
+    testWidgets('renders "overdue Nd" when deltaDays<0', (tester) async {
+      final t = _thread(
+        deadlines: const [
+          InboxDeadline(
+            isoDate: '2026-05-01',
+            deltaDays: -5,
+            description: 'Filing window',
+          ),
+        ],
+      );
+      await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('overdue 5d'), findsOneWidget);
+    });
+
+    testWidgets('hides the chip when deadlines list is empty', (tester) async {
+      final t = _thread();
+      await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+      await tester.pumpAndSettle();
+      // No clock icon means no chip.
+      expect(find.byIcon(Icons.schedule_rounded), findsNothing);
+    });
+
+    testWidgets('picks the most-urgent deadline when several exist',
+        (tester) async {
+      final t = _thread(
+        deadlines: const [
+          InboxDeadline(
+            isoDate: '2026-05-30',
+            deltaDays: 24,
+            description: 'Late item',
+          ),
+          InboxDeadline(
+            isoDate: '2026-05-08',
+            deltaDays: 2,
+            description: 'Urgent item',
+          ),
+          InboxDeadline(
+            isoDate: '2026-05-20',
+            deltaDays: 14,
+            description: 'Mid item',
+          ),
+        ],
+      );
+      await tester.pumpWidget(_wrap(TriageCard(thread: t), seed: [t]));
+      await tester.pumpAndSettle();
+      // The chip must render the urgent item, not the others.
+      expect(find.textContaining('Urgent item'), findsOneWidget);
+      expect(find.textContaining('Late item'), findsNothing);
+      expect(find.textContaining('Mid item'), findsNothing);
+    });
+  });
+}

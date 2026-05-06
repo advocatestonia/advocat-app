@@ -3142,4 +3142,20 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get inboxDraftLoadError => 'Не удалось загрузить черновик.';
+
+  @override
+  String get inboxDeadlineToday => 'сегодня';
+
+  @override
+  String get inboxDeadlineTomorrow => 'завтра';
+
+  @override
+  String inboxDeadlineInDays(int days) {
+    return 'через $days дн.';
+  }
+
+  @override
+  String inboxDeadlineOverdue(int days) {
+    return 'просрочено на $days дн.';
+  }
 }

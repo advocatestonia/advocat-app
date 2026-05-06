@@ -5773,6 +5773,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not load draft.'**
   String get inboxDraftLoadError;
+
+  /// No description provided for @inboxDeadlineToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get inboxDeadlineToday;
+
+  /// No description provided for @inboxDeadlineTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'tomorrow'**
+  String get inboxDeadlineTomorrow;
+
+  /// No description provided for @inboxDeadlineInDays.
+  ///
+  /// In en, this message translates to:
+  /// **'in {days}d'**
+  String inboxDeadlineInDays(int days);
+
+  /// No description provided for @inboxDeadlineOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'overdue {days}d'**
+  String inboxDeadlineOverdue(int days);
 }
 
 class _AppLocalizationsDelegate

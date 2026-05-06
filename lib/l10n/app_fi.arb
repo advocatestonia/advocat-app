@@ -1248,5 +1248,23 @@
     "inboxSentToast": "Lähetetty.",
     "inboxSnoozedToast": "Torkku 24 tuntia.",
     "inboxArchivedToast": "Arkistoitu.",
-    "inboxDraftLoadError": "Luonnoksen lataaminen epäonnistui."
+    "inboxDraftLoadError": "Luonnoksen lataaminen epäonnistui.",
+    "inboxDeadlineToday": "tänään",
+    "inboxDeadlineTomorrow": "huomenna",
+    "inboxDeadlineInDays": "{days} pv kuluttua",
+    "@inboxDeadlineInDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "inboxDeadlineOverdue": "myöhässä {days} pv",
+    "@inboxDeadlineOverdue": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    }
 }

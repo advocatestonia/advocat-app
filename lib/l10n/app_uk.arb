@@ -978,5 +978,23 @@
     "inboxSentToast": "Sent.",
     "inboxSnoozedToast": "Snoozed for 24h.",
     "inboxArchivedToast": "Archived.",
-    "inboxDraftLoadError": "Could not load draft."
+    "inboxDraftLoadError": "Could not load draft.",
+    "inboxDeadlineToday": "today",
+    "inboxDeadlineTomorrow": "tomorrow",
+    "inboxDeadlineInDays": "in {days}d",
+    "@inboxDeadlineInDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "inboxDeadlineOverdue": "overdue {days}d",
+    "@inboxDeadlineOverdue": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    }
 }

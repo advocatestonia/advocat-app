@@ -1248,5 +1248,23 @@
     "inboxSentToast": "Отправлено.",
     "inboxSnoozedToast": "Отложено на 24 часа.",
     "inboxArchivedToast": "В архиве.",
-    "inboxDraftLoadError": "Не удалось загрузить черновик."
+    "inboxDraftLoadError": "Не удалось загрузить черновик.",
+    "inboxDeadlineToday": "сегодня",
+    "inboxDeadlineTomorrow": "завтра",
+    "inboxDeadlineInDays": "через {days} дн.",
+    "@inboxDeadlineInDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "inboxDeadlineOverdue": "просрочено на {days} дн.",
+    "@inboxDeadlineOverdue": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    }
 }

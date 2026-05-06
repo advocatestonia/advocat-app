@@ -3169,4 +3169,20 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get inboxDraftLoadError => 'Could not load draft.';
+
+  @override
+  String get inboxDeadlineToday => 'today';
+
+  @override
+  String get inboxDeadlineTomorrow => 'tomorrow';
+
+  @override
+  String inboxDeadlineInDays(int days) {
+    return 'in ${days}d';
+  }
+
+  @override
+  String inboxDeadlineOverdue(int days) {
+    return 'overdue ${days}d';
+  }
 }

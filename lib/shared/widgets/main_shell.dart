@@ -22,6 +22,9 @@ class MainShell extends ConsumerWidget {
 
   final Widget child;
 
+  // Email Agent D6 — Inbox tab inserted between Cases and Scan. Six tabs
+  // total now; the Scan centre button stays at index 3 (post-insert) so
+  // the layout still puts it dead centre.
   static const _tabs = [
     _TabDef(
       route: AppRoutes.home,
@@ -34,6 +37,12 @@ class MainShell extends ConsumerWidget {
       icon: AppIcons.casesOutlined,
       activeIcon: AppIcons.cases,
       label: 'Cases',
+    ),
+    _TabDef(
+      route: AppRoutes.inbox,
+      icon: Icons.inbox_outlined,
+      activeIcon: Icons.inbox_rounded,
+      label: 'Inbox',
     ),
     _TabDef(
       route: AppRoutes.scan,
@@ -61,9 +70,10 @@ class MainShell extends ConsumerWidget {
     final location = GoRouterState.of(context).matchedLocation;
     if (location.startsWith('/home')) return 0;
     if (location.startsWith('/cases')) return 1;
-    if (location.startsWith('/scan')) return 2;
-    if (location.startsWith('/deadlines')) return 3;
-    if (location.startsWith('/settings')) return 4;
+    if (location.startsWith('/inbox')) return 2;
+    if (location.startsWith('/scan')) return 3;
+    if (location.startsWith('/deadlines')) return 4;
+    if (location.startsWith('/settings')) return 5;
     return 0;
   }
 
@@ -83,10 +93,13 @@ class MainShell extends ConsumerWidget {
     final urgentCount = ref.watch(urgentDeadlineCountProvider);
     final l = AppLocalizations.of(context);
 
-    // Localized labels for tabs (order must match _tabs)
+    // Localized labels for tabs (order must match _tabs).
+    // Email Agent D6 inserts the Inbox tab between Cases and Scan, so
+    // this list MUST track the same insertion to keep label/index alignment.
     final localizedLabels = [
       l?.home ?? 'Home',
       l?.cases ?? 'Cases',
+      l?.inboxTitle ?? 'Inbox',
       l?.scan ?? 'Scan',
       l?.deadlines ?? 'Deadlines',
       l?.settings ?? 'Settings',

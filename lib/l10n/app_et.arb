@@ -1248,5 +1248,23 @@
     "inboxSentToast": "Saadetud.",
     "inboxSnoozedToast": "Edasi lükatud 24 tunniks.",
     "inboxArchivedToast": "Arhiveeritud.",
-    "inboxDraftLoadError": "Mustandit ei õnnestunud laadida."
+    "inboxDraftLoadError": "Mustandit ei õnnestunud laadida.",
+    "inboxDeadlineToday": "täna",
+    "inboxDeadlineTomorrow": "homme",
+    "inboxDeadlineInDays": "{days} p pärast",
+    "@inboxDeadlineInDays": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    },
+    "inboxDeadlineOverdue": "tähtaeg ületatud {days} p",
+    "@inboxDeadlineOverdue": {
+        "placeholders": {
+            "days": {
+                "type": "int"
+            }
+        }
+    }
 }
