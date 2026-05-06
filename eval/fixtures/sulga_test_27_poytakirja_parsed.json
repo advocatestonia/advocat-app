@@ -1,0 +1,73 @@
+{
+  "_test_id": "sulga_test_27",
+  "_source_spec": "business/email_agent_handoff_2026-05-06/v2.1_consilium/track_A_v1.2_prompt.md §5 Test 27",
+  "_purpose": "Esitutkintapöytäkirja 5500/R/75170/25 parsed → Rule 35 sub-rules (a-g) fire: Engvist admission, ETL 4:1 asymmetric medical, pending obligation 13.1.2026 expired, missing Soinila kuulustelu, asianomistaja status, SALASSA video disclosure (ETL 4:15), Salduz violation candidate.",
+  "thread": {
+    "thread_id": "FIXTURE_SULGA_27",
+    "messages": [
+      {
+        "from": "{{USER_EMAIL}}",
+        "to": "self",
+        "subject": "Esitutkintapöytäkirja 5500/R/75170/25 parsed — 35 sivua",
+        "date": "2026-05-06T20:00:00+03:00",
+        "body": "Calling layer parsed esitutkintapöytäkirja, structured fields populated. Käy tämä kierros läpi Rule 35 mukaan."
+      }
+    ]
+  },
+  "headers": {},
+  "attachments_metadata": [
+    {
+      "filename": "etl_5500_R_75170_25.pdf",
+      "mime": "application/pdf",
+      "pages": 35,
+      "_note": "structured parse below in active_case_overlay.case_facts.criminal_pretrial"
+    }
+  ],
+  "active_case_overlay": {
+    "case_id": "fixture_sulga_main",
+    "case_facts": {
+      "criminal_pretrial": {
+        "case_number": "5500/R/75170/25",
+        "engvist_kuulustelu": {
+          "page": 8,
+          "verbatim_quote": "sain hänet kaadettua maahan",
+          "type": "admission_candidate"
+        },
+        "engvist_promise": {
+          "page": 14,
+          "verbatim_quote": "toimitan korvausvaatimukseni 13.1.2026 mennessä",
+          "deadline": "2026-01-13",
+          "delivered": false
+        },
+        "liite_3_photos_user": 8,
+        "laakarinlausunto_user": null,
+        "laakarinlausunto_engvist": {
+          "discipline": "käsikirurgi",
+          "date": "2025-12-12"
+        },
+        "soinila": {
+          "narrative_mention_pages": [6, 11],
+          "narrative_role": "kahlitsi käyttäjän",
+          "kuulustelu_record": null
+        },
+        "sulga_kuulustelu": {
+          "date": "2025-12-05",
+          "counter_claims": ["property_loss", "threats"],
+          "separate_R_number_opened": false
+        },
+        "liite_1_videos": {
+          "label": "SALASSA",
+          "count": 4,
+          "duration_minutes": 6,
+          "defence_access_status": null
+        }
+      }
+    },
+    "identity_errors_pattern": [],
+    "memory_block": {
+      "current_date": "2026-05-06"
+    }
+  },
+  "user_question": "Käy läpi pöytäkirja Rule 35 mukaan.",
+  "_eval_intent": "Tests Rule 35(a-g) — admission capture, asymmetric medical contradiction, expired pending obligation, missing kuulustelu, asianomistaja status, SALASSA disclosure (ETL 4:15), Salduz candidate."
+}

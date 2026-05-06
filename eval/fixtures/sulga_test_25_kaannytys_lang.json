@@ -1,0 +1,36 @@
+{
+  "_test_id": "sulga_test_25",
+  "_source_spec": "business/email_agent_handoff_2026-05-06/v2.1_consilium/track_A_v1.2_prompt.md §5 Test 25",
+  "_purpose": "Käännytys-päätös 5.12.2025 issued in EN despite RU interpreter requested at kuulustelu → Rule 33 fires (language defect = strongest single procedural error; HL § 26 + Direktiivi 2004/38 Art 30(1) + ECHR 6.3.a + 6.3.e). NO silent in-house translation.",
+  "thread": {
+    "thread_id": "FIXTURE_SULGA_25",
+    "messages": [
+      {
+        "from": "{{USER_EMAIL}}",
+        "to": "self",
+        "subject": "Käännytys-päätös englanniksi — pyysin venäjää tulkkaukseen",
+        "date": "2026-05-06T18:00:00+03:00",
+        "body": "Sain käännyttämispäätöksen 5.12.2025 englanniksi. Kuulustelussa pyysin venäjänkielistä tulkkia (interpreter_language=RU on file). Tämä on keskeinen menettelyvirhe — pyydän että agentti laatii tästä erillisen kirjelmän."
+      }
+    ]
+  },
+  "headers": {},
+  "attachments_metadata": [
+    {
+      "filename": "kaannytys_paatos_5_12_2025_EN.pdf",
+      "mime": "application/pdf",
+      "pages": 6,
+      "_note": "metadata-only; body language detected via OCR sample = 'EN'"
+    }
+  ],
+  "active_case_overlay": {
+    "case_id": "fixture_sulga_main",
+    "case_facts": {
+      "interpreter_language": ["RU"],
+      "interpreter_request_source": "kuulustelu_5_12_2025_pöytäkirja_p_2"
+    },
+    "identity_errors_pattern": []
+  },
+  "user_question": "Laadi kirjelmä tästä menettelyvirheestä.",
+  "_eval_intent": "Tests Rule 33 (language defect = top error) + Rule 34 (identity-pattern increment for language_defect). Anti-test: agent must NOT silently translate the päätös into RU — that destroys the procedural-error claim."
+}

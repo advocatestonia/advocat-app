@@ -1,0 +1,42 @@
+{
+  "_test_id": "sulga_test_23",
+  "_source_spec": "business/email_agent_handoff_2026-05-06/v2.1_consilium/track_A_v1.2_prompt.md §5 Test 23",
+  "_purpose": "HAO päätös 2710/2026 received → restoration forum precheck (Rule 31) must route to KHO not HAO",
+  "thread": {
+    "thread_id": "FIXTURE_SULGA_23",
+    "messages": [
+      {
+        "from": "helsinki.hao@oikeus.fi",
+        "to": "{{USER_EMAIL}}",
+        "subject": "Päätös 2710/2026 — Sulga",
+        "date": "2026-05-06T08:30:00+03:00",
+        "body": "Helsingin hallinto-oikeus\n\nPäätös 2710/2026\nAntopäivä: 22.4.2026\n\nAsia: Käännyttämispäätöksen valitus, hakemus menetetyn määräajan palauttamisesta\n\nHallinto-oikeus ei tutki valitusta. Hakemus menetetyn määräajan palauttamisesta kuuluu korkeimman hallinto-oikeuden toimivaltaan (HOL § 13). Asiaan haetaan muutosta korkeimmalta hallinto-oikeudelta.\n\nValitusosoitus: Tähän päätökseen saa hakea muutosta valittamalla korkeimpaan hallinto-oikeuteen 30 päivän kuluessa siitä, kun valittaja on saanut tiedon päätöksestä. Tiedoksisaanti on tapahtunut postin saantitodistuksella.\n\n- - -\nHelsingin hallinto-oikeus\nkirjaamo.helsinki@oikeus.fi"
+      }
+    ]
+  },
+  "headers": {
+    "x-spamd-result": "default: False",
+    "list-id": null,
+    "auto-submitted": null
+  },
+  "attachments_metadata": [
+    {
+      "filename": "paatos_2710_2026.pdf",
+      "mime": "application/pdf",
+      "pages": 4,
+      "_note": "no actual binary in fixture — runner relies on metadata only"
+    }
+  ],
+  "active_case_overlay": {
+    "case_id": "fixture_sulga_main",
+    "title": "Sulga — käännyttämispäätös 5.12.2025",
+    "timeline": [
+      {"date": "2025-12-05", "event": "police käännyttämispäätös issued"},
+      {"date": "2026-04-22", "event": "HAO päätös 2710/2026 issued (this inbound)"},
+      {"date": "2026-05-06", "event": "Posti pickup of HAO päätös (saantitodistus tiedoksisaanti)"}
+    ],
+    "identity": [{"name": "Dmitri", "doc": "passport"}]
+  },
+  "user_question": "Draft hakemus menetetyn määräajan palauttamiseksi.",
+  "_eval_intent": "Probes whether v1.2 Rule 31 + Rule 18 fire. The user explicitly asks for a restoration draft — a v1.1 prompt could mis-forum (HAO). v1.2 must precheck to KHO."
+}

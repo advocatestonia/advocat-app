@@ -1,0 +1,42 @@
+{
+  "_test_id": "sulga_test_24",
+  "_source_spec": "business/email_agent_handoff_2026-05-06/v2.1_consilium/track_A_v1.2_prompt.md §5 Test 24",
+  "_purpose": "Posti tracking event RS846423104FI — Dimitri vs Dmitri identity error → Rule 32 (HOL § 114 hyväksyttävä syy + Charter Art 41 + evidence-gather + ≤80-word delay paragraph + identity-pattern increment)",
+  "thread": {
+    "thread_id": "FIXTURE_SULGA_24",
+    "messages": [
+      {
+        "from": "{{USER_EMAIL}}",
+        "to": "self",
+        "subject": "Posti tracking RS846423104FI — kirje viivästynyt nimi vääränä",
+        "date": "2026-05-06T16:00:00+03:00",
+        "body": "Posti tracking event ingested by calling layer:\n\nLähetystunnus: RS846423104FI\n22.4.2026 — kirje lähetetty Helsingin hallinto-oikeudesta\n29.4.2026 — toimitusyritys, status: wrong_recipient_name (kirjekuoressa Dimitri, en Dmitri)\n6.5.2026 — vastaanottaja noutanut postista\n\nTämä on syy menetetyn määräajan palauttamiseen — 7 päivän viive johtuu valtion lähettämästä asiakirjasta, joka on osoitettu väärällä nimellä."
+      }
+    ]
+  },
+  "headers": {
+    "x-tracking-source": "posti.fi",
+    "x-fixture-system-event": "true"
+  },
+  "attachments_metadata": [
+    {
+      "filename": "posti_tracking_RS846423104FI.png",
+      "mime": "image/png",
+      "_note": "screenshot of Posti tracking page — runner uses metadata only"
+    }
+  ],
+  "active_case_overlay": {
+    "case_id": "fixture_sulga_main",
+    "timeline": [
+      {"date": "2026-04-22", "event": "HAO päätös 2710/2026 dispatch (saantitodistus)"},
+      {"date": "2026-04-29", "event": "Posti delivery attempt — wrong_recipient_name (Dimitri)"},
+      {"date": "2026-05-06", "event": "Posti pickup (correct recipient)"}
+    ],
+    "identity": [
+      {"name": "Dmitri", "doc": "passport", "confidence": "high"}
+    ],
+    "identity_errors_pattern": []
+  },
+  "user_question": "Lisää tämä viive § 114 hakemukseen.",
+  "_eval_intent": "Tests Rule 32 sub-rules (a-d) for delay attribution + Rule 34 increment for transliteration error."
+}

@@ -1,0 +1,48 @@
+{
+  "_test_id": "sulga_test_26",
+  "_source_spec": "business/email_agent_handoff_2026-05-06/v2.1_consilium/track_A_v1.2_prompt.md §5 Test 26",
+  "_purpose": "Three identity errors crystallise → Rule 34 pattern_of_administrative_incompetence=true; restoration draft must cite PATTERN (not single errors) under UlkL § 196 erityisen painava syy + Charter Art 41 + HL § 6. Rule 19 surfaces Õiguskansler/EU Ombudsman parallel tracks.",
+  "thread": {
+    "thread_id": "FIXTURE_SULGA_26",
+    "messages": [
+      {
+        "from": "{{USER_EMAIL}}",
+        "to": "self",
+        "subject": "Posti-virhe Dimitri — kolmas identiteettivirhe",
+        "date": "2026-05-06T19:30:00+03:00",
+        "body": "Calling layer appended kolmas identiteettivirhe (name_transliteration: Dimitri ≠ Dmitri). Active case identity_errors_pattern[] now has 3 entries. Pyydän pattern-flag-päivityksen ja restoration drafting-kierroksen, joka käyttää PATTERNia."
+      }
+    ]
+  },
+  "headers": {},
+  "attachments_metadata": [],
+  "active_case_overlay": {
+    "case_id": "fixture_sulga_main",
+    "case_facts": {
+      "interpreter_language": ["RU"]
+    },
+    "identity": [{"name": "Dmitri", "doc": "passport"}],
+    "identity_errors_pattern": [
+      {
+        "type": "place_of_birth_anachronism",
+        "value": "Neuvostoliitto",
+        "doc": "police_paatos_5_12_2025",
+        "added_at": "2026-04-30"
+      },
+      {
+        "type": "signature_mismatch",
+        "doc": "police_paatos_5_12_2025",
+        "added_at": "2026-04-30"
+      },
+      {
+        "type": "name_transliteration",
+        "value": "Dimitri",
+        "expected": "Dmitri",
+        "doc": "posti_envelope_RS846423104FI",
+        "added_at": "2026-05-06"
+      }
+    ]
+  },
+  "user_question": "Käytä patternia restoration draftissa.",
+  "_eval_intent": "Tests Rule 34 pattern flag (len>=3) + Rule 19 parallel tracks (Õiguskansler, EU Ombudsman) + that draft cites pattern not isolated errors."
+}

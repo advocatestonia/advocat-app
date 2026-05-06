@@ -1,0 +1,4 @@
+# Eval runner outputs — never commit. Each run writes here; promote to
+# baseline manually if/when desired.
+results/*.json
+!results/.gitkeep
