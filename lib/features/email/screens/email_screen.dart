@@ -73,8 +73,22 @@ class _EmailConnectionState {
 /// Google Cloud Console (Authorized scopes). Without that, Google will
 /// redirect with `error=access_denied` even though the request looks fine
 /// on our side.
+// D1 (Email Agent integration, 2026-05-07): added gmail.readonly +
+// gmail.modify on top of the original gmail.send scope. readonly powers the
+// proactive inbox-triage agent (email-inbox-sync edge fn polls every 5 min);
+// modify is required to apply Gmail labels (e.g. `advocat-handled-auto`)
+// once a thread has been triaged + auto-archived. Existing connected users
+// must re-authorise — the email_screen UI surfaces a one-time banner per
+// 09_INTEGRATION_INTO_ADVOCAT.md §D1.
+//
+// Order matches Google Cloud Console "Authorized scopes" registration; when
+// adding scopes here, also update the consent screen, otherwise Google
+// rejects the OAuth flow with `error=access_denied`.
 const String kGmailOAuthScopes =
-    'email https://www.googleapis.com/auth/gmail.send';
+    'email '
+    'https://www.googleapis.com/auth/gmail.send '
+    'https://www.googleapis.com/auth/gmail.readonly '
+    'https://www.googleapis.com/auth/gmail.modify';
 
 class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
   _EmailConnectionNotifier(this._oauthStorage)
