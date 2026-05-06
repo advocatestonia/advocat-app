@@ -23,6 +23,7 @@ import '../data/case_repository.dart';
 import '../models/user_case.dart';
 import '../state/active_case_provider.dart';
 import '../state/cases_list_provider.dart';
+import 'phase_badge.dart';
 
 class ActiveCaseChip extends ConsumerWidget {
   const ActiveCaseChip({super.key});
@@ -145,6 +146,15 @@ class _ActiveBadge extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          // Pkg 5: phase suffix — small badge after the title so the
+          // user always knows which mode the conversation is in.
+          const SizedBox(width: 6),
+          PhaseBadge(
+            phase: userCase.phase,
+            locale: userCase.language,
+            compact: true,
+          ),
+          const SizedBox(width: 4),
           InkWell(
             onTap: onClear,
             borderRadius: BorderRadius.circular(12),
