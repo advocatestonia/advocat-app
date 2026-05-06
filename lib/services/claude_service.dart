@@ -1030,7 +1030,14 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
         final events = parseSseEvent(parsed, state: sseState);
         for (final ev in events) {
           yield ev;
-          if (ev is MessageDone) return;
+          // Pkg 2 closeout (2026-05-06): we no longer `return` on
+          // MessageDone here. The proxy's streaming wrap appends a
+          // trailing `event: citations` frame AFTER Anthropic's own
+          // message_stop, and the consumer needs that frame to render
+          // citation chips. The upstream reader's `done` flag is now
+          // the canonical end-of-stream signal — when the proxy closes
+          // its writer (right after the citations frame), this `await
+          // for` over byteStream exits naturally.
         }
       }
     }
@@ -1179,6 +1186,34 @@ List<ChatStreamEvent> parseSseEvent(
         thinkingMs: s.thinkingMs,
         sources: s.toolCount,
       ));
+      break;
+
+    default:
+      // Pkg 2 closeout (2026-05-06): the proxy's streaming wrap APPENDS
+      // a custom `event: citations` SSE frame after Anthropic's own
+      // message_stop. Its data line is JSON of shape
+      //   {"citations": [...], "message_id": "uuid|null"}
+      // with NO `type` field, so it lands in this default branch.
+      // Detection signal: presence of a `citations` array on the payload.
+      // Anthropic's own SSE shapes never carry that key at top level, so
+      // a false-positive would require a future protocol change — we
+      // accept that risk and keep the detection cheap.
+      final maybeCitations = parsed['citations'];
+      if (maybeCitations is List) {
+        final raw = <Map<String, dynamic>>[];
+        for (final c in maybeCitations) {
+          if (c is Map<String, dynamic>) {
+            raw.add(c);
+          } else if (c is Map) {
+            raw.add(Map<String, dynamic>.from(c));
+          }
+        }
+        final messageId = parsed['message_id'];
+        out.add(CitationsReceived(
+          rawCitations: raw,
+          messageId: messageId is String ? messageId : null,
+        ));
+      }
       break;
   }
 

@@ -27,6 +27,7 @@ import {
   isValidMessageId,
   persistCitations,
 } from "./citation_persistence.ts";
+import { wrapAnthropicStreamWithCitations } from "./streaming_citations.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -285,8 +286,44 @@ serve(async (req) => {
         });
       }
 
-      // Pipe SSE stream directly through — no server-side parsing needed
-      return new Response(claudeStreamResponse.body, {
+      // ── Streaming citations (Pkg 2 closeout, design §9 risk #2) ────────
+      // Wrap the upstream Anthropic SSE pipe with a TransformStream that
+      // (a) forwards every byte unchanged so the Flutter UI keeps rendering
+      // text deltas live, and (b) accumulates the assistant's reply text
+      // into a shadow buffer. On message_stop / upstream close, the wrapper
+      // runs the verifier on the assembled text and APPENDS one trailing
+      // SSE frame `event: citations\ndata: {citations:[...], message_id}\n\n`.
+      // The Flutter SSE parser routes that named event to the citation chip
+      // updater. Persistence opt-in is the same as the non-streaming branch:
+      // when persistMessageId / persistCaseId / persistUserId are all set,
+      // the wrap fires onCitations to upsert rows via service-role.
+      const wrappedBody = claudeStreamResponse.body === null
+        ? null
+        : wrapAnthropicStreamWithCitations(claudeStreamResponse.body, {
+          ragChunks,
+          messageId: persistMessageId,
+          onCitations: async (citations) => {
+            if (
+              persistMessageId === null ||
+              persistUserId === null ||
+              persistCaseId === null ||
+              citations.length === 0
+            ) {
+              return;
+            }
+            const rows = buildCitationRows({
+              message_id: persistMessageId,
+              user_id: persistUserId,
+              case_id: persistCaseId,
+              citations,
+            });
+            await persistCitations(rows, {
+              supabaseUrl: SUPABASE_URL,
+              serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+            });
+          },
+        });
+      return new Response(wrappedBody, {
         status: 200,
         headers: {
           ...corsHeaders,

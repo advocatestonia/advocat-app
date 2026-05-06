@@ -186,6 +186,46 @@ final class ToolResultReceived extends ChatStreamEvent {
   int get hashCode => Object.hashAll(result.entries.map((e) => Object.hash(e.key, e.value)));
 }
 
+/// Trailing citations frame — emitted by the Pkg 2 streaming wrap on
+/// claude-proxy. Anthropic itself never emits this; it's a custom SSE
+/// event injected by the proxy AFTER message_stop, carrying the verifier
+/// output for the just-completed assistant message.
+///
+/// Frame format on the wire:
+///   event: citations
+///   data: {"citations": [...], "message_id": "uuid-or-null"}
+///   <blank line>
+///
+/// `messageId` is non-null only when the caller opted in to server-side
+/// persistence by passing body.message_id; for fire-and-forget streaming
+/// (no persistence), the field is null and the chat UI can still render
+/// chips against the in-memory message identity.
+///
+/// `rawCitations` is the verifier payload as a list of JSON maps so the
+/// chat layer can deserialise into its own MessageCitation model without
+/// this layer needing to import that model. Order matches verifier
+/// first-occurrence order.
+final class CitationsReceived extends ChatStreamEvent {
+  const CitationsReceived({required this.rawCitations, this.messageId});
+  final List<Map<String, dynamic>> rawCitations;
+  final String? messageId;
+
+  @override
+  String toString() =>
+      'CitationsReceived(n=${rawCitations.length}, messageId=$messageId)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CitationsReceived &&
+          other.messageId == messageId &&
+          _listOfMapsEquals(other.rawCitations, rawCitations);
+
+  @override
+  int get hashCode =>
+      Object.hash(messageId, rawCitations.length);
+}
+
 /// Terminal event — the message_stop SSE arrived. `thinkingMs` is the wall
 /// clock spent in thinking blocks (best effort, may be null on legacy
 /// streams). `sources` is the count of tool_use blocks observed in the turn.
@@ -240,6 +280,18 @@ bool _mapEquals(Map<String, dynamic> a, Map<String, dynamic> b) {
   for (final k in a.keys) {
     if (!b.containsKey(k)) return false;
     if (a[k] != b[k]) return false;
+  }
+  return true;
+}
+
+bool _listOfMapsEquals(
+  List<Map<String, dynamic>> a,
+  List<Map<String, dynamic>> b,
+) {
+  if (identical(a, b)) return true;
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; i++) {
+    if (!_mapEquals(a[i], b[i])) return false;
   }
   return true;
 }
