@@ -22,6 +22,7 @@ import {
   type IntentionRow,
   type MinimalSupabase,
   processDueIntentions,
+  type TriagePushRow,
 } from "./processor.ts";
 
 serve(async (req) => {
@@ -91,6 +92,49 @@ serve(async (req) => {
             notification_sent_at: now.toISOString(),
           })
           .eq("id", id);
+        if (error) throw error;
+      },
+
+      // ── D7 — email-triage push fan-out ──────────────────────────────
+      async fetchUnseenCriticalTriage(limit) {
+        // JOIN email_threads so the notification can include subject /
+        // sender. PostgREST embeds the parent row when we use the
+        // `email_threads!inner(...)` selector and then we flatten on the
+        // way out.
+        const { data, error } = await client
+          .from("email_triage_results")
+          .select(
+            "id, thread_id, user_id, severity, draft_language, user_brief, " +
+              "email_threads!inner(subject, sender_email)",
+          )
+          .in("severity", ["CRITICAL", "HIGH"])
+          .is("seen_by_user_at", null)
+          .order("created_at", { ascending: true })
+          .limit(limit);
+        if (error) throw error;
+        const rows = (data ?? []) as Array<Record<string, unknown>>;
+        return rows.map((r) => {
+          const thread =
+            (r.email_threads as Record<string, unknown> | null) ?? null;
+          return {
+            id: r.id as string,
+            thread_id: r.thread_id as string,
+            user_id: r.user_id as string,
+            severity: r.severity as TriagePushRow["severity"],
+            draft_language: (r.draft_language as string | null) ?? null,
+            user_brief: (r.user_brief as string | null) ?? null,
+            subject: (thread?.subject as string | undefined) ?? null,
+            sender_email:
+              (thread?.sender_email as string | undefined) ?? null,
+          } satisfies TriagePushRow;
+        });
+      },
+
+      async markTriageSeen(triageId, now) {
+        const { error } = await client
+          .from("email_triage_results")
+          .update({ seen_by_user_at: now.toISOString() })
+          .eq("id", triageId);
         if (error) throw error;
       },
     };

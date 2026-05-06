@@ -28,13 +28,38 @@ export interface MinimalSupabase {
     type: string;
     title: string;
     body: string;
+    deep_link?: string;
   }): Promise<void>;
   markIntentionComplete(id: string, now: Date): Promise<void>;
+
+  /// D7 — fetch unseen CRITICAL/HIGH triage rows across all users so the
+  /// cron can push notifications before the user opens Advocat. Rows are
+  /// the JOIN of `email_triage_results` with the parent `email_threads` so
+  /// the title/body can reference the subject.
+  fetchUnseenCriticalTriage?(limit: number): Promise<TriagePushRow[]>;
+
+  /// D7 — stamp seen_by_user_at on the triage row so the cron does not
+  /// re-push on the next tick.
+  markTriageSeen?(triageId: string, now: Date): Promise<void>;
+}
+
+export interface TriagePushRow {
+  id: string;            // email_triage_results.id
+  thread_id: string;     // email_threads.id
+  user_id: string;
+  severity: "CRITICAL" | "HIGH" | "MEDIUM" | "LOW";
+  draft_language: string | null;
+  user_brief: string | null;
+  subject: string | null;
+  sender_email: string | null;
 }
 
 export interface ProcessResult {
   processed: number;
   errors: number;
+  /// D7 — number of triage rows pushed in this tick.
+  triagePushed?: number;
+  triageErrors?: number;
 }
 
 /**
@@ -183,5 +208,87 @@ export async function processDueIntentions(
     }
   }
 
-  return { processed, errors };
+  // ── D7 — push unseen CRITICAL/HIGH email-triage rows ───────────────────
+  // The triage edge fn (D4) writes rows into email_triage_results without
+  // sending push notifications itself. The hourly cron fans out a single
+  // push per unseen high-severity row and stamps seen_by_user_at to make
+  // the operation idempotent. MEDIUM/LOW stay in-app only (per spec).
+  let triagePushed = 0;
+  let triageErrors = 0;
+
+  if (
+    typeof supabase.fetchUnseenCriticalTriage === "function" &&
+    typeof supabase.markTriageSeen === "function"
+  ) {
+    try {
+      const rows = await supabase.fetchUnseenCriticalTriage(limit);
+      for (const t of rows) {
+        try {
+          const { title, body } = renderTriageNotification(t);
+          await supabase.insertNotification({
+            user_id: t.user_id,
+            type: `email_triage:${t.severity.toLowerCase()}`,
+            title,
+            body,
+            deep_link: `advocat://inbox/thread/${t.thread_id}`,
+          });
+          await supabase.markTriageSeen(t.id, now);
+          triagePushed++;
+        } catch (_e) {
+          triageErrors++;
+        }
+      }
+    } catch (_e) {
+      triageErrors++;
+    }
+  }
+
+  return {
+    processed,
+    errors,
+    triagePushed,
+    triageErrors,
+  };
+}
+
+/**
+ * D7 — render the push for a single unseen CRITICAL/HIGH triage row.
+ *
+ * Localised by `draft_language` (the language the model picked for the
+ * reply, which is the user's working language for that thread). Pure — no
+ * IO. The body is capped at 140 chars per spec §D7.
+ */
+export function renderTriageNotification(
+  t: TriagePushRow,
+): { title: string; body: string } {
+  const lang = (t.draft_language || "en").toLowerCase();
+  const titleByLocale: Record<string, Record<string, string>> = {
+    CRITICAL: {
+      ru: "Срочно: ответ требуется сегодня",
+      et: "Kiire: vastust vaja täna",
+      fi: "Kiireellinen: vastausta tänään",
+      en: "Urgent: response needed today",
+    },
+    HIGH: {
+      ru: "Важно: новое письмо требует внимания",
+      et: "Tähtis: uus kiri vajab tähelepanu",
+      fi: "Tärkeää: uusi sähköposti vaatii huomiota",
+      en: "Important: new email needs attention",
+    },
+  };
+
+  const titles = titleByLocale[t.severity] ?? titleByLocale.HIGH;
+  const subject = (t.subject || "").trim();
+  const sender = (t.sender_email || "").trim();
+  const baseTitle = titles[lang] ?? titles.en;
+  const title = subject ? `${baseTitle} — ${subject}` : baseTitle;
+
+  // Spec §D7: body = user_brief.slice(0, 140). Fall back to "<sender>: ..."
+  // when the brief is missing so the user always sees something useful.
+  const brief = (t.user_brief || "").trim();
+  const fallbackBody = sender ? `${sender}: ${subject || ""}`.trim() : subject;
+  const raw = brief.length > 0 ? brief : fallbackBody;
+  const body = raw.slice(0, 140);
+
+  return { title, body };
 }
