@@ -14,6 +14,8 @@
 
 import 'package:flutter/foundation.dart';
 
+import 'case_phase.dart';
+
 /// Status mirrors the `user_cases.status` CHECK constraint.
 enum CaseMemoryStatus {
   active,
@@ -55,6 +57,8 @@ class UserCase {
     this.nextActions = const [],
     this.summary,
     this.language = 'ru',
+    this.phase = CasePhase.intake,
+    this.phaseEnteredAt,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -74,6 +78,11 @@ class UserCase {
   final List<NextAction> nextActions;
   final String? summary;
   final String language;
+  /// Phase 2 Pkg 5 — conversation state machine phase. Defaults to
+  /// [CasePhase.intake] for older rows that pre-date the column.
+  final CasePhase phase;
+  /// Timestamp the phase was last entered. Null for pre-Pkg-5 rows.
+  final DateTime? phaseEnteredAt;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -96,6 +105,10 @@ class UserCase {
       nextActions: _parseList(json['next_actions'], NextAction.fromJson),
       summary: json['summary'] as String?,
       language: (json['language'] as String?) ?? 'ru',
+      phase: CasePhase.fromDbOrDefault(json['phase'] as String?),
+      phaseEnteredAt: json['phase_entered_at'] != null
+          ? DateTime.parse(json['phase_entered_at'] as String)
+          : null,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
     );
@@ -117,6 +130,8 @@ class UserCase {
         'next_actions': nextActions.map((e) => e.toJson()).toList(),
         'summary': summary,
         'language': language,
+        'phase': phase.dbValue,
+        'phase_entered_at': phaseEnteredAt?.toIso8601String(),
         'created_at': createdAt.toIso8601String(),
         'updated_at': updatedAt.toIso8601String(),
       };
@@ -158,6 +173,8 @@ class UserCase {
     List<NextAction>? nextActions,
     Object? summary = _sentinel,
     String? language,
+    CasePhase? phase,
+    Object? phaseEnteredAt = _sentinel,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -177,6 +194,10 @@ class UserCase {
       nextActions: nextActions ?? this.nextActions,
       summary: identical(summary, _sentinel) ? this.summary : summary as String?,
       language: language ?? this.language,
+      phase: phase ?? this.phase,
+      phaseEnteredAt: identical(phaseEnteredAt, _sentinel)
+          ? this.phaseEnteredAt
+          : phaseEnteredAt as DateTime?,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

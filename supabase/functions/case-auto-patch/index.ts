@@ -61,6 +61,13 @@ import {
   mergePatchIntoSnapshot,
   parseCasePatch,
 } from "../_shared/case_patch_prompt.ts";
+import {
+  type CasePhase,
+  type CasePhaseSnapshot,
+  type CasePhaseSignals,
+  nextAutoPhase,
+  parseCasePhase,
+} from "../_shared/case_phase.ts";
 import { isValidCaseId } from "../claude-proxy/active_case_injection.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -163,40 +170,65 @@ serve(async (req: Request) => {
 
   // ── 5. Merge into snapshot, write via service-role client.
   const merge = mergePatchIntoSnapshot(snapshot, patch);
-  if (merge.fields_changed.length === 0) {
-    return jsonOk({ patched: false, reason: "no_changes" });
-  }
+  const factsChanged = merge.fields_changed.length > 0;
 
-  try {
-    const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-      auth: { persistSession: false, autoRefreshToken: false },
-    });
-    // Ownership was already proven by the RLS-bound load_active_case call
-    // above; the service-role write is constrained to the same case_id and
-    // additionally pinned to user_id = gate.user.id for defence-in-depth.
-    const { error } = await admin
-      .from("user_cases")
-      .update(merge.update)
-      .eq("id", caseId)
-      .eq("user_id", gate.user.id);
-    if (error) {
+  if (factsChanged) {
+    try {
+      const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
+      // Ownership was already proven by the RLS-bound load_active_case call
+      // above; the service-role write is constrained to the same case_id and
+      // additionally pinned to user_id = gate.user.id for defence-in-depth.
+      const { error } = await admin
+        .from("user_cases")
+        .update(merge.update)
+        .eq("id", caseId)
+        .eq("user_id", gate.user.id);
+      if (error) {
+        console.warn(
+          `case-auto-patch: update failed: ${
+            String(error.message ?? error).slice(0, 200)
+          }`,
+        );
+        return jsonOk({ patched: false, reason: "write_failed" });
+      }
+    } catch (e) {
       console.warn(
-        `case-auto-patch: update failed: ${
-          String(error.message ?? error).slice(0, 200)
-        }`,
+        `case-auto-patch: write threw: ${String(e).slice(0, 200)}`,
       );
       return jsonOk({ patched: false, reason: "write_failed" });
     }
-  } catch (e) {
-    console.warn(
-      `case-auto-patch: write threw: ${String(e).slice(0, 200)}`,
-    );
-    return jsonOk({ patched: false, reason: "write_failed" });
+  }
+
+  // ── 6. Phase 2 Pkg 5 — phase auto-transition.
+  // The merged snapshot (post-fact-update) is what the rule consults so
+  // an intake → strategy transition can fire on the same turn that
+  // surfaces the missing case_number. Call set_case_phase RPC AS THE
+  // USER (RLS-bound) — never service-role for state changes.
+  const phaseChange = await maybeApplyPhaseTransition({
+    caseId,
+    authHeader,
+    preMergeSnapshot: snapshot,
+    mergeUpdate: merge.update,
+    phaseTransition: patch.phase_transition,
+  });
+
+  const fieldsChanged = [...merge.fields_changed];
+  if (phaseChange?.changed) {
+    fieldsChanged.push("phase");
+  }
+
+  if (fieldsChanged.length === 0) {
+    return jsonOk({ patched: false, reason: "no_changes" });
   }
 
   return jsonOk({
     patched: true,
-    fields_changed: merge.fields_changed,
+    fields_changed: fieldsChanged,
+    ...(phaseChange?.changed
+      ? { phase: { from: phaseChange.from, to: phaseChange.to } }
+      : {}),
   });
 });
 
@@ -245,7 +277,100 @@ async function loadCaseAsUser(
     open_questions: row.open_questions,
     next_actions: row.next_actions,
     summary: row.summary,
+    // Pkg 5: phase column is populated by 20260507_15_case_phase.sql.
+    // Pre-migration databases return undefined → rule falls back to
+    // 'intake'.
+    phase: row.phase,
   };
+}
+
+/**
+ * Pkg 5 — apply a phase transition if the merged snapshot + Haiku
+ * signals warrant one. Returns:
+ *   - `{ changed: true, from, to }` when the RPC actually updated the row,
+ *   - `{ changed: false }` when no transition fires or the RPC reports noop,
+ *   - `null` on RPC error (logged, swallowed — phase is best-effort).
+ *
+ * The merged snapshot drives `hasIntakeMinFacts` so an intake → strategy
+ * transition can fire on the same turn that surfaces the missing
+ * case_number / party / key_date. We rebuild the merged jsonb arrays
+ * from `preMergeSnapshot` + `mergeUpdate` to avoid an extra DB read.
+ */
+async function maybeApplyPhaseTransition(args: {
+  caseId: string;
+  authHeader: string;
+  preMergeSnapshot: CaseRowSnapshot;
+  mergeUpdate: Record<string, unknown>;
+  phaseTransition: { to: CasePhase; reason: string } | null;
+}): Promise<{ changed: boolean; from?: CasePhase; to?: CasePhase } | null> {
+  if (args.phaseTransition === null) {
+    return { changed: false };
+  }
+
+  const currentPhase = parseCasePhase(args.preMergeSnapshot.phase) ?? "intake";
+
+  // Build a phase-rule snapshot that reflects the merge's effect on the
+  // three structural arrays. Falls back to the pre-merge value when the
+  // merge didn't touch that field.
+  const ruleSnapshot: CasePhaseSnapshot = {
+    phase: currentPhase,
+    case_numbers: args.mergeUpdate.case_numbers ??
+      args.preMergeSnapshot.case_numbers,
+    parties: args.mergeUpdate.parties ?? args.preMergeSnapshot.parties,
+    key_dates: args.mergeUpdate.key_dates ?? args.preMergeSnapshot.key_dates,
+  };
+
+  const signals: CasePhaseSignals = {
+    userIntentToTransitionTo: args.phaseTransition.to,
+  };
+
+  const target = nextAutoPhase(ruleSnapshot, signals);
+  if (target === null || target === currentPhase) {
+    return { changed: false };
+  }
+
+  // Call the RPC AS THE USER so RLS still applies. set_case_phase is
+  // idempotent: if the row already moved (race with another tab), we
+  // get `changed: false, reason: 'noop'` back.
+  if (!SUPABASE_URL) return null;
+  try {
+    const supabase = createClient(SUPABASE_URL, "", {
+      global: { headers: { Authorization: args.authHeader } },
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const { data, error } = await supabase.rpc("set_case_phase", {
+      p_case_id: args.caseId,
+      p_phase: target,
+      p_metadata: {
+        reason: args.phaseTransition.reason,
+        source: "case-auto-patch",
+      },
+    });
+    if (error) {
+      console.warn(
+        `case-auto-patch: set_case_phase error: ${
+          String(error.message ?? error).slice(0, 200)
+        }`,
+      );
+      return null;
+    }
+    const obj = (data && typeof data === "object" && !Array.isArray(data))
+      ? data as Record<string, unknown>
+      : null;
+    if (obj && obj.changed === true) {
+      return {
+        changed: true,
+        from: currentPhase,
+        to: target,
+      };
+    }
+    return { changed: false };
+  } catch (e) {
+    console.warn(
+      `case-auto-patch: set_case_phase threw: ${String(e).slice(0, 200)}`,
+    );
+    return null;
+  }
 }
 
 /**

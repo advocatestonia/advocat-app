@@ -14,6 +14,7 @@ import {
   assert,
   assertEquals,
   assertFalse,
+  assertStrictEquals,
   assertStringIncludes,
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
@@ -426,4 +427,69 @@ Deno.test("CAP-S08 — Haiku key check before fetch", () => {
 
 Deno.test("CAP-S09 — bucket name 'case-auto-patch' for rate-limit isolation", () => {
   assertStringIncludes(INDEX_TS, '"case-auto-patch"');
+});
+
+// =============================================================================
+// 5. Phase 2 Pkg 5 — phase_transition handling
+// =============================================================================
+
+Deno.test("CAP-P01 — system prompt teaches Haiku about phase_transition", () => {
+  assertStringIncludes(CASE_PATCH_SYSTEM_PROMPT, "phase_transition");
+  assertStringIncludes(CASE_PATCH_SYSTEM_PROMPT, '"strategy"');
+  assertStringIncludes(CASE_PATCH_SYSTEM_PROMPT, '"draft"');
+  assertStringIncludes(CASE_PATCH_SYSTEM_PROMPT, '"wait"');
+});
+
+Deno.test("CAP-P02 — parser carries phase_transition through", () => {
+  const raw = JSON.stringify({
+    case_numbers_add: [],
+    parties_add: [],
+    authorities_add: [],
+    key_dates_add: [],
+    timeline_add: [],
+    open_questions_replace: null,
+    next_actions_replace: null,
+    summary_replace: null,
+    phase_transition: { to: "strategy", reason: "we have a docket" },
+  });
+  const p = parseCasePatch(raw);
+  assert(p !== null);
+  assertEquals(p!.phase_transition, {
+    to: "strategy",
+    reason: "we have a docket",
+  });
+});
+
+Deno.test("CAP-P03 — parser ignores phase_transition.to='closed' (manual-only)", () => {
+  const raw = JSON.stringify({
+    ...emptyPatch(),
+    phase_transition: { to: "closed", reason: "user said done" },
+  });
+  const p = parseCasePatch(raw);
+  assert(p !== null);
+  assertEquals(p!.phase_transition, null);
+});
+
+Deno.test("CAP-P04 — emptyPatch carries null phase_transition", () => {
+  assertStrictEquals(emptyPatch().phase_transition, null);
+});
+
+Deno.test("CAP-P05 — phase_transition does NOT count as 'fact change'", () => {
+  // isEmptyPatch must still report empty when only phase_transition is
+  // set — the caller writes phase via a separate RPC, not the merge.
+  const p = emptyPatch();
+  p.phase_transition = { to: "draft", reason: "OK draft it" };
+  assert(isEmptyPatch(p));
+});
+
+Deno.test("CAP-S10 — index.ts wires set_case_phase RPC", () => {
+  assertStringIncludes(INDEX_TS, "set_case_phase");
+  assertStringIncludes(INDEX_TS, "maybeApplyPhaseTransition");
+  // RPC called AS THE USER (RLS-bound), never service-role.
+  assertStringIncludes(INDEX_TS, "Authorization: args.authHeader");
+});
+
+Deno.test("CAP-S11 — index.ts imports phase rule from shared module", () => {
+  assertStringIncludes(INDEX_TS, "_shared/case_phase.ts");
+  assertStringIncludes(INDEX_TS, "nextAutoPhase");
 });

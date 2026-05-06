@@ -1,3 +1,4 @@
+import '../features/case_memory/models/case_phase.dart';
 import '../models/case_model.dart';
 import 'knowledge_base.dart';
 import 'law_search_client.dart';
@@ -84,6 +85,8 @@ abstract final class SystemPrompts {
     String? query,
     bool useReducedContext = false,
     String memoryBlock = '',
+    CasePhase? casePhase,
+    DateTime? phaseEnteredAt,
   }) {
     final buffer = StringBuffer();
 
@@ -137,6 +140,12 @@ abstract final class SystemPrompts {
     // own header + guidance when non-empty; we only append it verbatim.
     if (memoryBlock.isNotEmpty) {
       buffer.writeln(memoryBlock);
+      buffer.writeln();
+    }
+
+    // === CASE PHASE === (Phase 2 Pkg 5).
+    if (casePhase != null) {
+      buffer.writeln(_buildPhaseBlock(casePhase, phaseEnteredAt));
       buffer.writeln();
     }
 
@@ -212,6 +221,85 @@ abstract final class SystemPrompts {
     }
     // Even the existing prompt alone is over budget — sacrifice RAG.
     return existingPrompt;
+  }
+
+  // ── Phase 2 Pkg 5 — CASE PHASE block ───────────────────────────────
+
+  static const Map<CasePhase, String> _phaseGuidance = {
+    CasePhase.intake:
+        'You are in the INTAKE phase for this case. Your goal is to '
+        'gather minimum facts: jurisdiction, case type, parties, at '
+        'least one case_number, and the key dates. Ask focused '
+        'questions, do not draft anything yet, do not propose strategy '
+        'until intake is complete.',
+    CasePhase.strategy:
+        'You are in the STRATEGY phase for this case. Focus on: forum '
+        'selection, evidence prioritisation, deadline mapping. Propose '
+        'options and trade-offs first; do NOT produce a full pleading '
+        'unless the user explicitly accepts a specific draft proposal.',
+    CasePhase.draft:
+        'You are in the DRAFT phase for this case. The user has '
+        'accepted a specific draft proposal. Produce well-formed '
+        'pleadings/letters in the correct citation style, ask only '
+        'clarifying questions strictly needed to complete the draft, '
+        'and offer to dispatch via the Email Agent or save to the '
+        'vault when done.',
+    CasePhase.wait:
+        'You are in the WAIT phase for this case. The user is awaiting '
+        'an external event (court reply, opposing counsel, document '
+        'arrival). Do not push for new drafts unless the user wants to '
+        'prepare contingencies. When the user reports an inbound '
+        'response or new document, transition the conversation back to '
+        'STRATEGY and reassess the plan.',
+    CasePhase.closed:
+        'This case is CLOSED / archived. Treat it as read-only — do '
+        'not create new drafts, deadlines, or actions. If the user '
+        'wants to act on it, suggest reopening the case first.',
+  };
+
+  static String _buildPhaseBlock(CasePhase phase, DateTime? enteredAt) {
+    final buf = StringBuffer();
+    buf.writeln('# CASE PHASE — ${phase.displayToken}');
+    final guidance = _phaseGuidance[phase] ?? '';
+    if (enteredAt != null) {
+      buf.writeln('(Phase entered: ${enteredAt.toUtc().toIso8601String()})');
+    }
+    if (guidance.isNotEmpty) {
+      buf.writeln(guidance);
+    }
+    return buf.toString().trimRight();
+  }
+
+  static const String _phaseHeaderPrefix = '# CASE PHASE — ';
+
+  /// Inject (or replace) the phase block into [existingPrompt].
+  ///
+  /// When [phase] is null, returns [existingPrompt] verbatim. When
+  /// non-null, prepends the phase block. Idempotent: re-injecting the
+  /// SAME phase is a no-op (the block stays put); re-injecting a
+  /// DIFFERENT phase removes the old block first.
+  static String injectPhaseContext(
+    String existingPrompt,
+    CasePhase? phase, {
+    DateTime? phaseEnteredAt,
+  }) {
+    if (phase == null) return existingPrompt;
+
+    var cleaned = existingPrompt;
+    final headerIdx = cleaned.indexOf(_phaseHeaderPrefix);
+    if (headerIdx >= 0) {
+      final blockEnd = cleaned.indexOf('\n\n', headerIdx);
+      if (blockEnd >= 0) {
+        cleaned =
+            cleaned.substring(0, headerIdx) + cleaned.substring(blockEnd + 2);
+      } else {
+        cleaned = cleaned.substring(0, headerIdx).trimRight();
+      }
+    }
+
+    final block = _buildPhaseBlock(phase, phaseEnteredAt);
+    if (cleaned.isEmpty) return block;
+    return '$block\n\n$cleaned';
   }
 
   /// Format a non-empty list of [LawChunk]s as the RAG header block.

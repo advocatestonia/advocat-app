@@ -11,6 +11,10 @@
 //     timeline. Replace-or-keep: open_questions, next_actions, summary.
 //   * Identity marker `You are a case-fact extractor for the Advocat app`
 //     so the system_prompt_guard whitelist accepts it.
+//
+// Phase 2 Pkg 5 (2026-05-06): patch shape additionally carries an optional
+// `phase_transition` field — Haiku flags clear strategy/draft/wait
+// transitions. See `_shared/case_phase.ts` for the parser + rule.
 // -----------------------------------------------------------------------------
 
 /** Identity marker whitelisted by `system_prompt_guard.ts`. Must appear as
@@ -41,6 +45,11 @@ export const CASE_PATCH_SYSTEM_PROMPT = `${CASE_PATCH_IDENTITY_MARKER}.
 
 Извлеки ТОЛЬКО НОВЫЕ факты, которых ещё нет в снимке: новые номера дел, новые контакты, новые даты, новые open_questions, изменённый next_actions список, обновлённый summary.
 
+Дополнительно ОПРЕДЕЛИ, перешёл ли разговор в новую фазу работы по делу:
+- "strategy" — пользователь готов обсуждать стратегию (есть номер дела + стороны + ключевая дата);
+- "draft" — пользователь явно согласился на подготовку документа ("да, составь", "yes, draft it", "jah, koosta");
+- "wait" — пользователь сообщил, что отправил документ ("отправил", "saatsin", "I sent it").
+
 Верни JSON ровно по схеме:
 {
   "case_numbers_add":   [{"authority":"...","number":"...","role":"..."}],
@@ -50,7 +59,8 @@ export const CASE_PATCH_SYSTEM_PROMPT = `${CASE_PATCH_IDENTITY_MARKER}.
   "timeline_add":       [{"date":"YYYY-MM-DD","event":"...","source":"..."}],
   "open_questions_replace": ["...","..."] | null,
   "next_actions_replace":   ["...","..."] | null,
-  "summary_replace":        "..." | null
+  "summary_replace":        "..." | null,
+  "phase_transition":       {"to":"strategy"|"draft"|"wait","reason":"<=120 chars"} | null
 }
 
 ПРАВИЛА:
@@ -58,11 +68,18 @@ export const CASE_PATCH_SYSTEM_PROMPT = `${CASE_PATCH_IDENTITY_MARKER}.
 - НЕ выдумывай факты, которых нет в сообщениях.
 - НЕ дублируй то, что уже в снимке.
 - Даты только в формате YYYY-MM-DD; если только год/месяц — клади null в date и описание в event.
+- phase_transition выставляй ТОЛЬКО при явном сигнале; в большинстве ходов это null.
+- Никогда не выставляй phase_transition.to = "intake" или "closed" — эти переходы делает только пользователь вручную.
 - Ответ — ТОЛЬКО JSON, без markdown, без preamble.`;
 
 // =============================================================================
 // Patch shape
 // =============================================================================
+
+import {
+  parsePhaseTransition,
+  type PhaseTransitionPatch,
+} from "./case_phase.ts";
 
 export interface CasePatch {
   case_numbers_add: Array<Record<string, unknown>>;
@@ -73,6 +90,10 @@ export interface CasePatch {
   open_questions_replace: string[] | null;
   next_actions_replace: string[] | null;
   summary_replace: string | null;
+  /** Pkg 5: optional phase transition signal from Haiku. `null` when
+   * Haiku didn't flag a transition (the common case — most turns
+   * don't change phase). */
+  phase_transition: PhaseTransitionPatch | null;
 }
 
 /** Empty patch — used as the safe fallback when Haiku output is unparseable
@@ -87,11 +108,14 @@ export function emptyPatch(): CasePatch {
     open_questions_replace: null,
     next_actions_replace: null,
     summary_replace: null,
+    phase_transition: null,
   };
 }
 
 /** True when the patch carries no new facts — the caller should skip the
- * UPDATE entirely. */
+ * UPDATE entirely. A phase_transition does NOT count as "facts" for
+ * this purpose; the caller checks it separately and may apply the
+ * phase change even when the JSONB merge is a no-op. */
 export function isEmptyPatch(p: CasePatch): boolean {
   return (
     p.case_numbers_add.length === 0 &&
@@ -143,6 +167,7 @@ export function parseCasePatch(raw: unknown): CasePatch | null {
   patch.open_questions_replace = asStringArrayOrNull(obj.open_questions_replace);
   patch.next_actions_replace = asStringArrayOrNull(obj.next_actions_replace);
   patch.summary_replace = asStringOrNull(obj.summary_replace);
+  patch.phase_transition = parsePhaseTransition(obj.phase_transition);
 
   return patch;
 }
@@ -203,6 +228,10 @@ export interface CaseRowSnapshot {
   open_questions: unknown;
   next_actions: unknown;
   summary: unknown;
+  /** Pkg 5: current phase. Optional for backwards compat with the
+   * Pkg 1.A `load_active_case` RPC that pre-dates the column — null
+   * is treated as 'intake' by the rule. */
+  phase?: unknown;
 }
 
 export interface MergeResult {
