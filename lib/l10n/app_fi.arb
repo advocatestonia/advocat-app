@@ -1086,5 +1086,6 @@
       "done": {"type": "int"},
       "total": {"type": "int"}
     }
-  }
+  },
+  "uplDisclaimerFooter": "Advocat ei ole asianajotoimisto. Tämä on tietoa, ei oikeudellista neuvontaa."
 }

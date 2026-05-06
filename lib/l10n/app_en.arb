@@ -1107,5 +1107,6 @@
             "done": {"type": "int"},
             "total": {"type": "int"}
         }
-    }
+    },
+    "uplDisclaimerFooter": "Advocat is not a law firm. This is information, not legal advice."
 }
