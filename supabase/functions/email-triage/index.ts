@@ -37,6 +37,7 @@ import {
   applyMemoryUpdatesReal,
   loadLawSearchReal,
   loadMemoryBlockReal,
+  maybeTransitionWaitToStrategyOnInbound,
 } from "./wiring.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -111,6 +112,38 @@ async function dispatchTriage(
     if (!out.ok) {
       return jsonError(out.error_code, 500, out.detail ? { detail: out.detail } : {});
     }
+
+    // Pkg 5 — wait → strategy auto-transition on HIGH/CRITICAL inbound.
+    // Best-effort: any miss / error is swallowed inside the helper.
+    // Re-fetch the thread row (just case_id) since runTriage's
+    // ThreadRecord isn't returned in TriageOutcome and we don't want
+    // to widen that contract for a sidecar effect.
+    let phaseFlip:
+      | { changed: boolean; from?: string; to?: string }
+      | null = null;
+    try {
+      const { data: threadRow } = await sb
+        .from("email_threads")
+        .select("case_id")
+        .eq("id", threadId)
+        .maybeSingle();
+      const caseId = (threadRow?.case_id as string | null) ?? null;
+      if (caseId) {
+        phaseFlip = await maybeTransitionWaitToStrategyOnInbound(sb, {
+          case_id: caseId,
+          severity: out.severity ?? null,
+          triage_id: out.triage_id,
+          thread_id: threadId,
+        });
+      }
+    } catch (e) {
+      console.warn(
+        `email-triage: phase-flip post-step threw: ${
+          String(e).slice(0, 200)
+        }`,
+      );
+    }
+
     return jsonOk({
       ok: true,
       triage_id: out.triage_id,
@@ -119,6 +152,9 @@ async function dispatchTriage(
       privilege_check: out.privilege_check,
       posture: out.posture,
       gate_pass: out.gate_result?.pass ?? null,
+      ...(phaseFlip?.changed
+        ? { case_phase: { from: phaseFlip.from, to: phaseFlip.to } }
+        : {}),
     });
   } catch (e) {
     return jsonError("triage_failed", 502, {

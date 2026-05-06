@@ -358,6 +358,126 @@ function isLikelyEmail(s: string): boolean {
   return true;
 }
 
+// =============================================================================
+// Phase 2 Pkg 5 — Conversation State Machine integration
+// =============================================================================
+//
+// Spec: docs/architecture/phase2-pkg5-state-machine.md §8.
+//
+// When email-triage classifies an inbound thread that is mapped to a
+// case, AND that case is currently in `wait`, AND the triage severity
+// is HIGH or CRITICAL, flip the case from `wait` → `strategy`. The
+// rationale: an HIGH/CRITICAL inbound on a case the user was waiting
+// on is exactly the "external event arrived" signal that should pull
+// the user back into active strategy mode.
+//
+// Soft-fail: any RPC error or RLS reject is swallowed (logged) — the
+// triage critical path must not depend on phase mechanics.
+//
+// Pinned by `__tests__/wiring_test.ts` Pkg 5 group.
+
+/** Severity values that warrant a wait → strategy transition. */
+const _PHASE_FLIP_SEVERITIES = new Set(["HIGH", "CRITICAL"]);
+
+/**
+ * Pkg 5 — flip a case from `wait` to `strategy` when an inbound email
+ * thread mapped to that case is triaged at HIGH/CRITICAL severity.
+ *
+ * Returns the resulting transition shape from `set_case_phase` so
+ * tests can assert behaviour, or `null` on any guard miss / error
+ * (best-effort by design).
+ *
+ * Guards (in order — first miss returns `null` without an RPC call):
+ *   1. case_id is non-null (unmapped threads are no-ops).
+ *   2. severity is HIGH or CRITICAL.
+ *   3. The case is currently in `wait` (no other phase is auto-flipped
+ *      from email triage — that prevents accidentally pulling a case
+ *      out of `draft` mid-letter).
+ *
+ * Calls the `set_case_phase` RPC with the service-role client. The
+ * RPC itself is `security invoker`, but the email-triage edge fn
+ * already runs server-side under the service-role client so we
+ * preserve the same boundary as `agent_intentions` writes.
+ */
+export async function maybeTransitionWaitToStrategyOnInbound(
+  // deno-lint-ignore no-explicit-any
+  sb: any,
+  args: {
+    case_id: string | null;
+    severity: string | null;
+    triage_id: string | null;
+    thread_id: string | null;
+  },
+): Promise<{ changed: boolean; from?: string; to?: string } | null> {
+  if (!args.case_id) return null;
+  if (!args.severity) return null;
+  if (!_PHASE_FLIP_SEVERITIES.has(args.severity.toUpperCase())) return null;
+
+  // Read current phase. We could let `set_case_phase` no-op via its
+  // own current-phase check, but explicit pre-read keeps the trigger
+  // surface narrow (only flip wait → strategy, never anything else
+  // from this hook).
+  let currentPhase: string | null = null;
+  try {
+    const { data, error } = await sb
+      .from("user_cases")
+      .select("phase")
+      .eq("id", args.case_id)
+      .maybeSingle();
+    if (error || !data) return null;
+    currentPhase = (data.phase as string | null) ?? null;
+  } catch (_e) {
+    return null;
+  }
+  if (currentPhase !== "wait") return null;
+
+  // Idempotency: set_case_phase itself is a no-op when current === target.
+  // Source attribution lives in phase_metadata so support / audit can
+  // reconstruct WHY a case shifted out of `wait` without touching the
+  // triage table.
+  try {
+    const { data, error } = await sb.rpc("set_case_phase", {
+      p_case_id: args.case_id,
+      p_phase: "strategy",
+      p_metadata: {
+        reason: "email_triage_inbound_high_severity",
+        source: "email-triage",
+        severity: args.severity.toUpperCase(),
+        triage_id: args.triage_id,
+        thread_id: args.thread_id,
+      },
+    });
+    if (error) {
+      // Log via console.warn so the edge fn log stream surfaces the
+      // failure but the triage Response stays 200 — phase flip is
+      // best-effort.
+      console.warn(
+        `email-triage: set_case_phase error (${args.case_id}): ` +
+          String(error.message ?? error).slice(0, 200),
+      );
+      return null;
+    }
+    if (data && typeof data === "object" && !Array.isArray(data)) {
+      const obj = data as Record<string, unknown>;
+      if (obj.changed === true) {
+        return {
+          changed: true,
+          from: typeof obj.from === "string" ? obj.from : currentPhase,
+          to: typeof obj.to === "string" ? obj.to : "strategy",
+        };
+      }
+      return { changed: false };
+    }
+    return null;
+  } catch (e) {
+    console.warn(
+      `email-triage: set_case_phase threw (${args.case_id}): ` +
+        String(e).slice(0, 200),
+    );
+    return null;
+  }
+}
+
 /** Wrap a Supabase query promise so a thrown error becomes `null`. */
 async function safeQuery<T>(
   // deno-lint-ignore no-explicit-any

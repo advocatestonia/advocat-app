@@ -34,6 +34,7 @@ import {
   applyMemoryUpdatesReal,
   loadLawSearchReal,
   loadMemoryBlockReal,
+  maybeTransitionWaitToStrategyOnInbound,
 } from "../wiring.ts";
 import type { MemoryUpdate } from "../parse_blocks.ts";
 
@@ -678,4 +679,353 @@ Deno.test("applyMemoryUpdatesReal — DB throw is swallowed", async () => {
     },
   ];
   await applyMemoryUpdatesReal(sb, "user-1", updates);
+});
+
+// =============================================================================
+// Phase 2 Pkg 5 — maybeTransitionWaitToStrategyOnInbound
+// =============================================================================
+// Spec: docs/architecture/phase2-pkg5-state-machine.md §8.
+//
+// Fake Supabase here is purpose-built — the existing FakeQuery shared
+// above doesn't track `phase`, doesn't support `.rpc()`, and the Pkg 5
+// hook is the only call-site that needs both. We keep both fakes side
+// by side rather than retro-fitting the existing one to avoid breaking
+// the carry-over tests above.
+
+interface PhaseFakeShape {
+  cases: Record<string, { phase: string | null }>;
+  rpcResult?: { data?: unknown; error?: { message: string } | null };
+  rpcThrow?: Error;
+  caseSelectThrow?: Error;
+}
+
+interface PhaseFakeCaptures {
+  rpc_calls: Array<{ name: string; args: Record<string, unknown> }>;
+}
+
+// deno-lint-ignore no-explicit-any
+function makePhaseFakeSb(
+  shape: PhaseFakeShape,
+  captures: PhaseFakeCaptures,
+): any {
+  return {
+    from(table: string) {
+      if (table !== "user_cases") {
+        throw new Error(`unexpected table in phase fake: ${table}`);
+      }
+      let id: string | null = null;
+      const builder = {
+        select(_cols: string) {
+          return builder;
+        },
+        // deno-lint-ignore no-explicit-any
+        eq(key: string, value: any) {
+          if (key === "id") id = value as string;
+          return builder;
+        },
+        maybeSingle() {
+          if (shape.caseSelectThrow) throw shape.caseSelectThrow;
+          if (id === null || !shape.cases[id]) {
+            return Promise.resolve({ data: null, error: null });
+          }
+          return Promise.resolve({
+            data: { phase: shape.cases[id].phase },
+            error: null,
+          });
+        },
+      };
+      return builder;
+    },
+    // deno-lint-ignore no-explicit-any
+    rpc(name: string, args: Record<string, unknown>) {
+      captures.rpc_calls.push({ name, args });
+      if (shape.rpcThrow) {
+        return Promise.reject(shape.rpcThrow);
+      }
+      const r = shape.rpcResult ?? { data: null, error: null };
+      return Promise.resolve(r);
+    },
+  };
+}
+
+Deno.test("Pkg5/CPS-T-EMAIL-01 — wait + HIGH severity flips to strategy", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+    rpcResult: {
+      data: {
+        changed: true,
+        from: "wait",
+        to: "strategy",
+        phase_entered_at: new Date().toISOString(),
+      },
+      error: null,
+    },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "HIGH",
+    triage_id: "triage-99",
+    thread_id: "thread-1",
+  });
+
+  assertExists(out);
+  assertEquals(out!.changed, true);
+  assertEquals(out!.from, "wait");
+  assertEquals(out!.to, "strategy");
+
+  // Verify RPC payload — set_case_phase, with metadata source markers.
+  assertEquals(captures.rpc_calls.length, 1);
+  const call = captures.rpc_calls[0];
+  assertEquals(call.name, "set_case_phase");
+  assertEquals(call.args.p_case_id, "case-1");
+  assertEquals(call.args.p_phase, "strategy");
+  const meta = call.args.p_metadata as Record<string, unknown>;
+  assertEquals(meta.source, "email-triage");
+  assertEquals(meta.severity, "HIGH");
+  assertEquals(meta.triage_id, "triage-99");
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-02 — CRITICAL severity also flips", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+    rpcResult: {
+      data: { changed: true, from: "wait", to: "strategy" },
+      error: null,
+    },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "CRITICAL",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out?.changed, true);
+  assertEquals(captures.rpc_calls.length, 1);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-03 — MEDIUM severity is a no-op", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "MEDIUM",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-04 — LOW severity is a no-op", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "LOW",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-05 — null case_id is a no-op (unmapped thread)", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({ cases: {} }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: null,
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-06 — case in strategy stays put (no double-flip)", async () => {
+  // The hook ONLY flips wait → strategy. Other phases — strategy,
+  // draft, intake — must be left alone so we don't yank a user out
+  // of mid-letter draft work because of an inbound notification.
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "strategy" } },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-07 — case in draft stays put", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "draft" } },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-08 — closed case is never auto-resurrected", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "closed" } },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "CRITICAL",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-09 — missing case row soft-fails to null", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({ cases: {} }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "nonexistent-case",
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-10 — RPC error is swallowed (returns null)", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+    rpcResult: { data: null, error: { message: "RLS reject" } },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  // RPC was attempted (verified the trigger fired) but error was swallowed.
+  assertEquals(captures.rpc_calls.length, 1);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-11 — RPC throw is swallowed", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+    rpcThrow: new Error("network down"),
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-12 — case-select throw soft-fails", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+    caseSelectThrow: new Error("read failed"),
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-13 — null severity is a no-op", async () => {
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: null,
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out, null);
+  assertEquals(captures.rpc_calls.length, 0);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-14 — lowercase severity is normalised", async () => {
+  // Defensive: callers may pass severity in any case. The helper
+  // upper-cases before the gate check.
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+    rpcResult: {
+      data: { changed: true, from: "wait", to: "strategy" },
+      error: null,
+    },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "high",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertEquals(out?.changed, true);
+  assertEquals(captures.rpc_calls.length, 1);
+});
+
+Deno.test("Pkg5/CPS-T-EMAIL-15 — RPC reports noop, helper returns changed:false", async () => {
+  // Idempotency contract: if the RPC says noop (race with another tab
+  // already flipped the case), helper returns changed:false but doesn't
+  // throw. Caller sees no transition in the response payload.
+  const captures: PhaseFakeCaptures = { rpc_calls: [] };
+  const sb = makePhaseFakeSb({
+    cases: { "case-1": { phase: "wait" } },
+    rpcResult: {
+      data: { changed: false, reason: "noop", phase: "strategy" },
+      error: null,
+    },
+  }, captures);
+
+  const out = await maybeTransitionWaitToStrategyOnInbound(sb, {
+    case_id: "case-1",
+    severity: "HIGH",
+    triage_id: "t",
+    thread_id: "th",
+  });
+  assertExists(out);
+  assertEquals(out!.changed, false);
 });

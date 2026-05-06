@@ -181,6 +181,18 @@ Banner copy is built from `(phase, phase_metadata.last_action_summary, time_elap
 
 Existing `ActiveCaseChip` (`active_case_chip.dart`) gets a phase suffix — a small `· STRATEGY` chip after the title, same colour as the badge. No new widget, just a 1-line edit in the chip.
 
+### 7.4 Phase indicator row — `phase_indicator.dart`
+
+Composite row widget combining `PhaseBadge` + localised "entered N <unit> ago" suffix + optional override popup. Reusable across:
+
+- Case detail screen header (current consumer).
+- Workspace Overview tab top row (Pkg 4 owns the surface; this widget is the drop-in).
+- Cases list expanded row (future — Pkg 4 backlog).
+
+The override popup excludes the current phase from its options and fires the parent-supplied `onOverride: ValueChanged<CasePhase>` callback. The widget is dumb chrome — it never calls `CasePhaseService` itself; the parent owns that integration so it can pair the manual transition with provider-invalidation, telemetry, or undo logic.
+
+Localisation: en/et/ru/fi inline (consistent with `PhaseBadge`); other locales fall back to English. Russian uses grammar-aware plural rules (`день / дня / дней`). Negative durations (clock skew) suppress the suffix rather than printing "entered -3 days ago".
+
 ---
 
 ## 8. agent_intentions integration
@@ -199,7 +211,14 @@ When the auto-patch flips a case to `wait` AND a `case_deadlines` row for that c
 
 The existing `agent-intentions-cron` (D7-wired) picks it up and pushes a notification, which on user resume drives the `wait → strategy` flip via the resume banner ("got the response — let's plan the next move").
 
-Email D4 triage already calls into `agent-intentions-cron`; on a `requires_action` triage we additionally trigger `set_case_phase(case_id, 'strategy')` server-side if the thread is mapped to a case (mapping is the email_threads.case_id column added in D2, FK currently optional — a no-op for unmapped threads).
+Email D4 triage already calls into `agent-intentions-cron`; on a triage with severity `HIGH` or `CRITICAL` we additionally trigger `set_case_phase(case_id, 'strategy')` server-side if the thread is mapped to a case AND the case is currently in `wait`. Mapping comes from the `email_threads.case_id` column added in D2 (FK optional — a no-op for unmapped threads).
+
+The hook is implemented in `email-triage/wiring.ts::maybeTransitionWaitToStrategyOnInbound` and called once from `dispatchTriage` after `runTriage` succeeds. The helper is best-effort: any guard miss (unmapped, non-HIGH/CRITICAL, case not in `wait`) returns `null` without an RPC call; any RPC error is logged and swallowed so the triage Response stays 200. When the transition fires, the response payload includes `case_phase: { from: 'wait', to: 'strategy' }` so the client can refresh case state immediately.
+
+The hook deliberately ONLY flips `wait → strategy`. Other phases — `strategy`, `draft`, `intake`, `closed` — are explicitly left alone:
+- `strategy / draft`: yanking the user out of mid-letter draft work because of an inbound notification would be worse than the status quo.
+- `intake`: the case isn't ready for strategy yet; the auto-patch path handles intake → strategy when min facts land.
+- `closed`: archived cases are never auto-resurrected — only manual reopen.
 
 ---
 
