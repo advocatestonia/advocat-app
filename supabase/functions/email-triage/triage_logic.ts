@@ -138,6 +138,18 @@ export interface MinimalTriageDeps {
     summary: string;
     locale: string;
   }): Promise<void>;
+  /**
+   * Apply `<memory_update>` block entries to durable per-user storage.
+   * Carry-over Task 5 — the system prompt v1.1-final §9.2 learning loop:
+   * when the model emits an `own_counsel_email` (or compatible)
+   * memory_update, persist it so future triage runs surface it via
+   * `loadMemoryBlock`. Optional — production deps fully implement;
+   * tests may leave undefined so the behaviour is opt-in per fixture.
+   */
+  applyMemoryUpdates?(args: {
+    user_id: string;
+    updates: import("./parse_blocks.ts").MemoryUpdate[];
+  }): Promise<void>;
 }
 
 export interface TriageInsertRow {
@@ -509,6 +521,20 @@ export async function runTriage(
     reviewer_failures: reviewer?.failures ?? [],
   };
   const insert = await deps.persistTriageRow(row);
+
+  // Carry-over Task 5: write-back loop. The model can promote facts it
+  // discovered during triage (e.g. "this Jokela address is now confirmed
+  // own counsel") into per-user durable storage. Best-effort — failure
+  // here must not collapse the triage row, which has already been
+  // persisted.
+  if (deps.applyMemoryUpdates && parsed.memory_updates.length > 0) {
+    try {
+      await deps.applyMemoryUpdates({
+        user_id: args.user_id,
+        updates: parsed.memory_updates,
+      });
+    } catch (_e) { /* ignore */ }
+  }
 
   // Update thread + sidecar writes (best-effort)
   const threadStatus = finalSendRec === "archive" ? "archived" : "triaged";

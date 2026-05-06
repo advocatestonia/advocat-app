@@ -32,6 +32,12 @@ import {
   type TriageInsertRow,
   type UserPrefs,
 } from "./triage_logic.ts";
+import {
+  appendCaseEventReal,
+  applyMemoryUpdatesReal,
+  loadLawSearchReal,
+  loadMemoryBlockReal,
+} from "./wiring.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -172,18 +178,12 @@ function makeProdDeps(
       }
     },
 
-    async loadMemoryBlock(_userId: string): Promise<MemoryBlock> {
-      // Minimal Phase 1 implementation. The MemoryBlock surfaces from
-      // `case_facts` (Pkg 1). Future revisions plug a real loader; for
-      // now we return an empty shape so the model has a stable schema.
-      return {
-        identity_markers: {},
-        dead_addresses: [],
-        own_counsel_emails: [],
-        known_privileged_individuals: [],
-        relations: null,
-        recent_owner_feedback: undefined,
-      };
+    async loadMemoryBlock(userId: string): Promise<MemoryBlock> {
+      // Carry-over Task 1: build the MemoryBlock from real per-user
+      // sources. The block is capped at ~2 KB before serialisation so
+      // the cached prompt prefix stays well under the model's static
+      // context budget (system_prompt v1.1-final §3.7).
+      return await loadMemoryBlockReal(sb, userId);
     },
 
     async loadUserPrefs(userId: string): Promise<UserPrefs> {
@@ -216,11 +216,15 @@ function makeProdDeps(
       }
     },
 
-    async loadLawSearch(_query: string): Promise<unknown> {
-      // The law-search edge fn is best-effort context — call inline only
-      // when it's wired. Phase 1 keeps law context optional/empty so the
-      // critical path doesn't depend on RAG availability.
-      return [];
+    async loadLawSearch(query: string): Promise<unknown> {
+      // Carry-over Task 2: call the existing `law-search` edge fn with a
+      // tight timeout. Soft-fail to `[]` on any error — the triage
+      // critical path must not hang on a RAG outage (per the law-search
+      // graceful-degradation contract, the fn already returns
+      // `{chunks: []}` on its own internal failures, but we still wrap
+      // the network call defensively in case Supabase Functions are
+      // unreachable).
+      return await loadLawSearchReal(sb, query);
     },
 
     async checkQuota(userId: string): Promise<QuotaResult> {
@@ -308,30 +312,11 @@ function makeProdDeps(
     },
 
     async appendCaseEvent(args) {
-      // Best-effort. The `case_events` table lands in Pkg 1.A; the call
-      // is wrapped in try/catch upstream. We use the user_cases timeline
-      // jsonb column as the durable store for now (mirrors the
-      // case-auto-patch pattern).
-      try {
-        if (!args.case_id) return;
-        const { data: caseRow } = await sb
-          .from("user_cases")
-          .select("timeline")
-          .eq("id", args.case_id)
-          .eq("user_id", args.user_id)
-          .maybeSingle();
-        const tl = Array.isArray(caseRow?.timeline) ? caseRow!.timeline : [];
-        tl.push({
-          ts: new Date().toISOString(),
-          type: args.type,
-          ...args.payload,
-        });
-        await sb
-          .from("user_cases")
-          .update({ timeline: tl })
-          .eq("id", args.case_id)
-          .eq("user_id", args.user_id);
-      } catch (_e) { /* ignore */ }
+      // Carry-over Task 3: real append against `user_cases.timeline`
+      // (jsonb), with idempotency guard on
+      // (case_id, type, ref_email_id, occurred_at). The timeline jsonb
+      // column already exists from `20260506_case_memory.sql`.
+      await appendCaseEventReal(sb, args);
     },
 
     async scheduleAgentIntention(args) {
@@ -347,6 +332,12 @@ function makeProdDeps(
           },
         });
       } catch (_e) { /* ignore */ }
+    },
+
+    async applyMemoryUpdates(args) {
+      // Carry-over Task 5: persist OWN_COUNSEL_EMAIL discoveries from
+      // the model into `user_settings.own_counsel_emails`. Best-effort.
+      await applyMemoryUpdatesReal(sb, args.user_id, args.updates);
     },
   };
 }

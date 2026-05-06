@@ -34,6 +34,24 @@ import 'package:advocat/l10n/app_localizations.dart';
 import 'package:advocat/services/assistant_tools.dart';
 import 'package:advocat/services/supabase_service.dart';
 
+/// Records edge-function invocations so the carry-over Task 4 widget
+/// tests can assert that:
+///   - Archive triggers a `gmail-label` invoke with the right shape.
+///   - The local hide happens regardless of Gmail-side outcome.
+class _RecordingSupabaseService extends SupabaseService {
+  final List<({String name, Map<String, dynamic>? body})> calls = [];
+  Map<String, dynamic>? nextResponse;
+
+  @override
+  Future<Map<String, dynamic>?> callEdgeFunction(
+    String functionName, {
+    Map<String, dynamic>? body,
+  }) async {
+    calls.add((name: functionName, body: body));
+    return nextResponse;
+  }
+}
+
 InboxThread _thread({
   String id = 't1',
   InboxSeverity severity = InboxSeverity.high,
@@ -80,6 +98,51 @@ class _SeededInboxNotifier extends InboxNotifier {
           state.threads.where((t) => t.threadId != threadId).toList(),
     );
   }
+}
+
+Widget _wrapWithSupabase(
+  Widget child, {
+  required List<InboxThread> seed,
+  required SupabaseService supabase,
+}) {
+  final router = GoRouter(
+    initialLocation: '/inbox',
+    routes: [
+      GoRoute(
+        path: '/inbox',
+        builder: (_, __) => Scaffold(body: child),
+      ),
+      GoRoute(
+        path: '/inbox/draft/:triageId',
+        builder: (_, __) =>
+            const Scaffold(body: Center(child: Text('edit'))),
+      ),
+    ],
+  );
+  return ProviderScope(
+    overrides: [
+      supabaseServiceProvider.overrideWithValue(supabase),
+      inboxProvider.overrideWith(
+        (ref) => _SeededInboxNotifier(
+          ref.read(assistantToolsProvider),
+          seed,
+        ),
+      ),
+      assistantToolsProvider.overrideWithValue(
+        AssistantTools(supabaseService: supabase),
+      ),
+    ],
+    child: MaterialApp.router(
+      routerConfig: router,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en'), Locale('et'), Locale('ru')],
+    ),
+  );
 }
 
 Widget _wrap(Widget child, {required List<InboxThread> seed}) {
@@ -304,5 +367,73 @@ void main() {
       expect(find.textContaining('Late item'), findsNothing);
       expect(find.textContaining('Mid item'), findsNothing);
     });
+  });
+
+  // ── Carry-over Task 4: Archive mirrors to Gmail via gmail-label ───────
+
+  group('TriageCard — Archive Gmail label mirror', () {
+    testWidgets('Archive tap invokes gmail-label edge fn', (tester) async {
+      final supabase = _RecordingSupabaseService()
+        ..nextResponse = {'ok': true, 'applied': ['advocat:auto-archived']};
+      final t = _thread(id: 'a1', hasDraft: false);
+      await tester.pumpWidget(
+        _wrapWithSupabase(
+          TriageCard(thread: t),
+          seed: [t],
+          supabase: supabase,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Archive'));
+      await tester.pumpAndSettle();
+
+      final invoked =
+          supabase.calls.where((c) => c.name == 'gmail-label').toList();
+      expect(invoked, isNotEmpty,
+          reason: 'Archive must call gmail-label edge fn.');
+      final body = invoked.single.body!;
+      expect(body['thread_id'], equals('a1'));
+      expect(
+        (body['add_labels'] as List).contains('advocat:auto-archived'),
+        isTrue,
+      );
+      expect((body['remove_labels'] as List).contains('INBOX'), isTrue);
+    });
+
+    testWidgets(
+      'Archive hides the row even when Gmail soft-fails',
+      (tester) async {
+        final supabase = _RecordingSupabaseService()
+          ..nextResponse = {
+            'ok': false,
+            'error_code': 'gmail_unavailable',
+            'detail': 'simulated outage',
+          };
+        final t = _thread(id: 'a2', hasDraft: false);
+        await tester.pumpWidget(
+          _wrapWithSupabase(
+            TriageCard(thread: t),
+            seed: [t],
+            supabase: supabase,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Archive'));
+        await tester.pumpAndSettle();
+
+        // Local hide must still happen — UX contract from §D6:
+        // "soft-fail if Gmail API errors — local archive still succeeds".
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(MaterialApp)),
+        );
+        final remaining = container.read(inboxProvider).threads;
+        expect(remaining, isEmpty);
+
+        expect(supabase.calls.length, equals(1));
+        expect(supabase.calls.single.name, equals('gmail-label'));
+      },
+    );
   });
 }

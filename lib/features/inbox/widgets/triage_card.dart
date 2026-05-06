@@ -33,6 +33,8 @@
 //                        the row).
 // -----------------------------------------------------------------------------
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -41,6 +43,7 @@ import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/assistant_tools.dart';
+import '../../../services/supabase_service.dart';
 import '../models/inbox_severity.dart';
 import '../models/inbox_thread.dart' show InboxDeadline, InboxThread;
 import '../providers/inbox_provider.dart';
@@ -172,18 +175,63 @@ class _TriageCardState extends ConsumerState<TriageCard>
     final l = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final notifier = ref.read(inboxProvider.notifier);
-    // MVP: optimistic hide; the email_threads.triage_status flip is a
-    // best-effort write through the chat snooze tool path. Gmail label
-    // mirror is a follow-up (spec §D6 "or skip Gmail label mirror in MVP").
-    notifier.hideAfterAction(widget.thread.threadId);
-    await HapticFeedback.lightImpact();
+    final supabase = ref.read(supabaseServiceProvider);
+    final threadId = widget.thread.threadId;
+
+    // Optimistic local hide first — UX must not block on Gmail.
+    notifier.hideAfterAction(threadId);
+    // Fire-and-forget the haptic — awaiting the platform channel hangs
+    // in widget tests where no handler is registered.
+    unawaited(HapticFeedback.lightImpact().catchError((_) {}));
+
+    // Carry-over Task 4 — mirror to Gmail by adding the
+    // `advocat:auto-archived` label and removing INBOX. Edge fn returns
+    // 200 with `{ok:false, error_code}` on Gmail-side failure — the
+    // local archive already succeeded; the 5-second snackbar exposes
+    // Undo for rollback in either case.
+    await _mirrorArchiveToGmail(supabase, threadId);
+
+    if (!mounted) return;
     messenger.showSnackBar(
       SnackBar(
         content: Text(l?.inboxArchivedToast ?? 'Archived.'),
         backgroundColor: AppColors.success,
-        duration: const Duration(seconds: 2),
+        duration: const Duration(seconds: 5),
+        action: SnackBarAction(
+          label: l?.cancel ?? 'Undo',
+          textColor: AppColors.textOnPrimary,
+          onPressed: () {
+            ref.read(inboxProvider.notifier).refresh();
+          },
+        ),
       ),
     );
+  }
+
+  /// Carry-over Task 4 — mirror local archive to Gmail labels.
+  /// Soft-fail: any error logged via debugPrint; local archive stays.
+  Future<void> _mirrorArchiveToGmail(
+    SupabaseService supabase,
+    String threadId,
+  ) async {
+    try {
+      final res = await supabase.callEdgeFunction(
+        'gmail-label',
+        body: {
+          'thread_id': threadId,
+          'add_labels': <String>['advocat:auto-archived'],
+          'remove_labels': <String>['INBOX'],
+        },
+      );
+      if (res != null && res['ok'] == false) {
+        debugPrint(
+          'gmail-label: soft-fail '
+          '(error_code=${res['error_code']}, detail=${res['detail']})',
+        );
+      }
+    } catch (e) {
+      debugPrint('gmail-label: edge fn unavailable: $e');
+    }
   }
 
   // ── Build ──────────────────────────────────────────────────────────────
