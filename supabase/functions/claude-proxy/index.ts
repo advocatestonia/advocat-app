@@ -22,9 +22,16 @@ import {
   type GroundingChunk,
   verifyCitations,
 } from "../_shared/citation_grounder.ts";
+import {
+  buildCitationRows,
+  isValidMessageId,
+  persistCitations,
+} from "./citation_persistence.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY =
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 // SECURITY 2026-05-04 U1+U2+U3 — claude-proxy hardening.
 // -----------------------------------------------------------------------------
@@ -131,6 +138,26 @@ serve(async (req) => {
     const ragChunks: GroundingChunk[] = extractRagContext(
       body as Record<string, unknown>,
     );
+
+    // ── Citations persistence opt-in (Pkg 2 closeout, 2026-05-06) ────────
+    // The client may pre-generate the assistant chat_messages.id (UUID v4)
+    // and pass it back via `body.message_id`. When present + valid, the
+    // proxy persists the verifier's citations[] to chat_message_citations
+    // (service-role write — RLS forbids anon/authenticated INSERT). When
+    // absent or invalid, persistence silently no-ops so legacy callers see
+    // zero observable change.
+    //
+    // We strip message_id from the body before any path that forwards to
+    // Anthropic — same hygiene rule as case_id and rag_context. We also
+    // capture case_id ONCE here, before the active-case branch deletes it
+    // below, so the persistence row carries a real case_id.
+    const messageIdRaw = (body as { message_id?: unknown }).message_id;
+    const persistMessageId = isValidMessageId(messageIdRaw)
+      ? messageIdRaw
+      : null;
+    const persistCaseId = typeof body.case_id === "string" ? body.case_id : null;
+    const persistUserId = isAnon ? null : gate.user.id;
+    delete (body as { message_id?: unknown }).message_id;
 
     // Enforce allowed model
     if (!body.model || !ALLOWED_MODELS.has(body.model)) {
@@ -289,7 +316,38 @@ serve(async (req) => {
         (result as { content?: unknown }).content,
       );
       const citations = verifyCitations(replyText, ragChunks);
-      const augmented = { ...result, citations };
+
+      // ── Persistence (Pkg 2 closeout) ──────────────────────────────────
+      // Opt-in via body.message_id (validated above as `persistMessageId`).
+      // Required prereqs: (1) valid UUID, (2) authenticated user, (3) a
+      // case_id was on the request, (4) verifier produced rows. Any
+      // missing prereq → silent no-op. Errors are logged-and-swallowed
+      // inside persistCitations — never block the chat reply.
+      if (
+        persistMessageId !== null &&
+        persistUserId !== null &&
+        persistCaseId !== null &&
+        citations.length > 0
+      ) {
+        const rows = buildCitationRows({
+          message_id: persistMessageId,
+          user_id: persistUserId,
+          case_id: persistCaseId,
+          citations,
+        });
+        await persistCitations(rows, {
+          supabaseUrl: SUPABASE_URL,
+          serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+        });
+      }
+
+      // Augmented response — citations[] always present (back-compat
+      // with Flutter parser which expects the field). message_id echoed
+      // back ONLY when persistence was opted in, so the client can wire
+      // its chat_messages row to the same UUID.
+      const augmented = persistMessageId !== null
+        ? { ...result, citations, message_id: persistMessageId }
+        : { ...result, citations };
       return new Response(JSON.stringify(augmented), {
         status: claudeResponse.status,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
