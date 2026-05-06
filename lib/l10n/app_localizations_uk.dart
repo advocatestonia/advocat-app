@@ -2939,4 +2939,204 @@ class AppLocalizationsUk extends AppLocalizations {
   String citationFooterSummaryHistorical(int count) {
     return '$count історичних';
   }
+
+  @override
+  String get deadlineRadarTitle => 'Upcoming deadlines';
+
+  @override
+  String get deadlineRadarEmpty => 'No upcoming deadlines';
+
+  @override
+  String get deadlineRadarViewAll => 'View all';
+
+  @override
+  String deadlineCardDaysLeft(int count) {
+    return 'in $count days';
+  }
+
+  @override
+  String get deadlineCardTomorrow => 'tomorrow';
+
+  @override
+  String get deadlineCardToday => 'today';
+
+  @override
+  String deadlineCardOverdue(int count) {
+    return '$count days overdue';
+  }
+
+  @override
+  String get deadlineCardMarkComplete => 'Mark complete';
+
+  @override
+  String get deadlineCardSnooze => 'Snooze';
+
+  @override
+  String get deadlineCardSnooze3d => 'Snooze 3 days';
+
+  @override
+  String get deadlineCardSnooze7d => 'Snooze 7 days';
+
+  @override
+  String get deadlineCardSnoozeCustom => 'Pick a date';
+
+  @override
+  String get deadlineCardEdit => 'Edit';
+
+  @override
+  String get deadlineCardDelete => 'Archive';
+
+  @override
+  String get deadlineCardSourceLabelPdf => 'from PDF';
+
+  @override
+  String get deadlineCardSourceLabelIntake => 'from intake';
+
+  @override
+  String get deadlineCardSourceLabelManual => 'added manually';
+
+  @override
+  String get deadlineCardSourceLabelEmail => 'from email';
+
+  @override
+  String get deadlineCardSourceLabelHaikuExtract => 'AI-extracted';
+
+  @override
+  String get deadlineCardSourceLabelStatutoryTemplate => 'statute template';
+
+  @override
+  String deadlineBannerCritical(String title, String when) {
+    return 'Critical deadline $title $when';
+  }
+
+  @override
+  String get deadlineBannerDismiss => 'Dismiss';
+
+  @override
+  String get deadlineBannerOpen => 'Open deadline';
+
+  @override
+  String deadlineHolidayShifted(String original, String reason) {
+    return 'Shifted from $original due to $reason';
+  }
+
+  @override
+  String get deadlinePermissionAskTitle => 'Enable deadline reminders?';
+
+  @override
+  String get deadlinePermissionAskBody =>
+      'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.';
+
+  @override
+  String get deadlinePermissionAllow => 'Allow';
+
+  @override
+  String get deadlinePermissionLater => 'Later';
+
+  @override
+  String get deadlineSettingsSection => 'Deadline reminders';
+
+  @override
+  String get deadlineSettingsPushChannel => 'Push notifications';
+
+  @override
+  String get deadlineSettingsEmailChannel => 'Email (critical only)';
+
+  @override
+  String get deadlineSettingsInAppChannel => 'In-app banners';
+
+  @override
+  String get deadlineSettingsCriticalBypass =>
+      'Critical reminders bypass quiet hours';
+
+  @override
+  String get deadlineSettingsQuietHours => 'Quiet hours';
+
+  @override
+  String deadlineSettingsQuietHoursBadge(String start, String end) {
+    return 'Quiet $start–$end';
+  }
+
+  @override
+  String get deadlineCaseScreenTitle => 'Case deadlines';
+
+  @override
+  String get deadlineAddManualCta => 'Add deadline';
+
+  @override
+  String get deadlineFormTitle => 'Title';
+
+  @override
+  String get deadlineFormDescription => 'Description (optional)';
+
+  @override
+  String get deadlineFormStatuteTemplate => 'Statute template';
+
+  @override
+  String get deadlineFormStatuteTemplateNone => 'None (manual)';
+
+  @override
+  String get deadlineFormDeadlineAt => 'Deadline date';
+
+  @override
+  String get deadlineFormPriority => 'Priority';
+
+  @override
+  String get deadlineFormSave => 'Save';
+
+  @override
+  String get deadlineFormCancel => 'Cancel';
+
+  @override
+  String get deadlineCompletedNotePrompt => 'Add a note (optional)';
+
+  @override
+  String get deadlineCompletedNoteSave => 'Save';
+
+  @override
+  String get inboxTitle => 'Inbox';
+
+  @override
+  String get inboxEmptyTitle => 'Nothing pending';
+
+  @override
+  String get inboxEmptyBody =>
+      'New email threads will appear here as they get triaged.';
+
+  @override
+  String get inboxApproveSend => 'Approve & send';
+
+  @override
+  String get inboxEditDraft => 'Edit';
+
+  @override
+  String get inboxSnooze => 'Snooze';
+
+  @override
+  String get inboxArchive => 'Archive';
+
+  @override
+  String get inboxFilterAll => 'All';
+
+  @override
+  String get inboxConfirmSendTitle => 'Send the prepared reply?';
+
+  @override
+  String get inboxConfirmSendBody =>
+      'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.';
+
+  @override
+  String get inboxSendButton => 'Send';
+
+  @override
+  String get inboxSentToast => 'Sent.';
+
+  @override
+  String get inboxSnoozedToast => 'Snoozed for 24h.';
+
+  @override
+  String get inboxArchivedToast => 'Archived.';
+
+  @override
+  String get inboxDraftLoadError => 'Could not load draft.';
 }

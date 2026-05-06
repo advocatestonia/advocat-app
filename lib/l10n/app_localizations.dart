@@ -5401,6 +5401,378 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} historical'**
   String citationFooterSummaryHistorical(int count);
+
+  /// No description provided for @deadlineRadarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming deadlines'**
+  String get deadlineRadarTitle;
+
+  /// No description provided for @deadlineRadarEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No upcoming deadlines'**
+  String get deadlineRadarEmpty;
+
+  /// No description provided for @deadlineRadarViewAll.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get deadlineRadarViewAll;
+
+  /// No description provided for @deadlineCardDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'in {count} days'**
+  String deadlineCardDaysLeft(int count);
+
+  /// No description provided for @deadlineCardTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'tomorrow'**
+  String get deadlineCardTomorrow;
+
+  /// No description provided for @deadlineCardToday.
+  ///
+  /// In en, this message translates to:
+  /// **'today'**
+  String get deadlineCardToday;
+
+  /// No description provided for @deadlineCardOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days overdue'**
+  String deadlineCardOverdue(int count);
+
+  /// No description provided for @deadlineCardMarkComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark complete'**
+  String get deadlineCardMarkComplete;
+
+  /// No description provided for @deadlineCardSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze'**
+  String get deadlineCardSnooze;
+
+  /// No description provided for @deadlineCardSnooze3d.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 3 days'**
+  String get deadlineCardSnooze3d;
+
+  /// No description provided for @deadlineCardSnooze7d.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 7 days'**
+  String get deadlineCardSnooze7d;
+
+  /// No description provided for @deadlineCardSnoozeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a date'**
+  String get deadlineCardSnoozeCustom;
+
+  /// No description provided for @deadlineCardEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get deadlineCardEdit;
+
+  /// No description provided for @deadlineCardDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get deadlineCardDelete;
+
+  /// No description provided for @deadlineCardSourceLabelPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'from PDF'**
+  String get deadlineCardSourceLabelPdf;
+
+  /// No description provided for @deadlineCardSourceLabelIntake.
+  ///
+  /// In en, this message translates to:
+  /// **'from intake'**
+  String get deadlineCardSourceLabelIntake;
+
+  /// No description provided for @deadlineCardSourceLabelManual.
+  ///
+  /// In en, this message translates to:
+  /// **'added manually'**
+  String get deadlineCardSourceLabelManual;
+
+  /// No description provided for @deadlineCardSourceLabelEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'from email'**
+  String get deadlineCardSourceLabelEmail;
+
+  /// No description provided for @deadlineCardSourceLabelHaikuExtract.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-extracted'**
+  String get deadlineCardSourceLabelHaikuExtract;
+
+  /// No description provided for @deadlineCardSourceLabelStatutoryTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'statute template'**
+  String get deadlineCardSourceLabelStatutoryTemplate;
+
+  /// No description provided for @deadlineBannerCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical deadline {title} {when}'**
+  String deadlineBannerCritical(String title, String when);
+
+  /// No description provided for @deadlineBannerDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get deadlineBannerDismiss;
+
+  /// No description provided for @deadlineBannerOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open deadline'**
+  String get deadlineBannerOpen;
+
+  /// No description provided for @deadlineHolidayShifted.
+  ///
+  /// In en, this message translates to:
+  /// **'Shifted from {original} due to {reason}'**
+  String deadlineHolidayShifted(String original, String reason);
+
+  /// No description provided for @deadlinePermissionAskTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable deadline reminders?'**
+  String get deadlinePermissionAskTitle;
+
+  /// No description provided for @deadlinePermissionAskBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.'**
+  String get deadlinePermissionAskBody;
+
+  /// No description provided for @deadlinePermissionAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get deadlinePermissionAllow;
+
+  /// No description provided for @deadlinePermissionLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get deadlinePermissionLater;
+
+  /// No description provided for @deadlineSettingsSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline reminders'**
+  String get deadlineSettingsSection;
+
+  /// No description provided for @deadlineSettingsPushChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Push notifications'**
+  String get deadlineSettingsPushChannel;
+
+  /// No description provided for @deadlineSettingsEmailChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (critical only)'**
+  String get deadlineSettingsEmailChannel;
+
+  /// No description provided for @deadlineSettingsInAppChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'In-app banners'**
+  String get deadlineSettingsInAppChannel;
+
+  /// No description provided for @deadlineSettingsCriticalBypass.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical reminders bypass quiet hours'**
+  String get deadlineSettingsCriticalBypass;
+
+  /// No description provided for @deadlineSettingsQuietHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet hours'**
+  String get deadlineSettingsQuietHours;
+
+  /// No description provided for @deadlineSettingsQuietHoursBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiet {start}–{end}'**
+  String deadlineSettingsQuietHoursBadge(String start, String end);
+
+  /// No description provided for @deadlineCaseScreenTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Case deadlines'**
+  String get deadlineCaseScreenTitle;
+
+  /// No description provided for @deadlineAddManualCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Add deadline'**
+  String get deadlineAddManualCta;
+
+  /// No description provided for @deadlineFormTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get deadlineFormTitle;
+
+  /// No description provided for @deadlineFormDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get deadlineFormDescription;
+
+  /// No description provided for @deadlineFormStatuteTemplate.
+  ///
+  /// In en, this message translates to:
+  /// **'Statute template'**
+  String get deadlineFormStatuteTemplate;
+
+  /// No description provided for @deadlineFormStatuteTemplateNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None (manual)'**
+  String get deadlineFormStatuteTemplateNone;
+
+  /// No description provided for @deadlineFormDeadlineAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline date'**
+  String get deadlineFormDeadlineAt;
+
+  /// No description provided for @deadlineFormPriority.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get deadlineFormPriority;
+
+  /// No description provided for @deadlineFormSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get deadlineFormSave;
+
+  /// No description provided for @deadlineFormCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get deadlineFormCancel;
+
+  /// No description provided for @deadlineCompletedNotePrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a note (optional)'**
+  String get deadlineCompletedNotePrompt;
+
+  /// No description provided for @deadlineCompletedNoteSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get deadlineCompletedNoteSave;
+
+  /// No description provided for @inboxTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inbox'**
+  String get inboxTitle;
+
+  /// No description provided for @inboxEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing pending'**
+  String get inboxEmptyTitle;
+
+  /// No description provided for @inboxEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'New email threads will appear here as they get triaged.'**
+  String get inboxEmptyBody;
+
+  /// No description provided for @inboxApproveSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve & send'**
+  String get inboxApproveSend;
+
+  /// No description provided for @inboxEditDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get inboxEditDraft;
+
+  /// No description provided for @inboxSnooze.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze'**
+  String get inboxSnooze;
+
+  /// No description provided for @inboxArchive.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get inboxArchive;
+
+  /// No description provided for @inboxFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get inboxFilterAll;
+
+  /// No description provided for @inboxConfirmSendTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the prepared reply?'**
+  String get inboxConfirmSendTitle;
+
+  /// No description provided for @inboxConfirmSendBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.'**
+  String get inboxConfirmSendBody;
+
+  /// No description provided for @inboxSendButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get inboxSendButton;
+
+  /// No description provided for @inboxSentToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent.'**
+  String get inboxSentToast;
+
+  /// No description provided for @inboxSnoozedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Snoozed for 24h.'**
+  String get inboxSnoozedToast;
+
+  /// No description provided for @inboxArchivedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Archived.'**
+  String get inboxArchivedToast;
+
+  /// No description provided for @inboxDraftLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load draft.'**
+  String get inboxDraftLoadError;
 }
 
 class _AppLocalizationsDelegate

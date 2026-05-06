@@ -2934,4 +2934,204 @@ class AppLocalizationsEt extends AppLocalizations {
   String citationFooterSummaryHistorical(int count) {
     return '$count vana';
   }
+
+  @override
+  String get deadlineRadarTitle => 'Eesseisvad tähtajad';
+
+  @override
+  String get deadlineRadarEmpty => 'Eesseisvaid tähtaegasid pole';
+
+  @override
+  String get deadlineRadarViewAll => 'Vaata kõiki';
+
+  @override
+  String deadlineCardDaysLeft(int count) {
+    return '$count päeva pärast';
+  }
+
+  @override
+  String get deadlineCardTomorrow => 'homme';
+
+  @override
+  String get deadlineCardToday => 'täna';
+
+  @override
+  String deadlineCardOverdue(int count) {
+    return '$count päeva üle tähtaja';
+  }
+
+  @override
+  String get deadlineCardMarkComplete => 'Märgi tehtuks';
+
+  @override
+  String get deadlineCardSnooze => 'Lükka edasi';
+
+  @override
+  String get deadlineCardSnooze3d => 'Edasi 3 päeva';
+
+  @override
+  String get deadlineCardSnooze7d => 'Edasi 7 päeva';
+
+  @override
+  String get deadlineCardSnoozeCustom => 'Vali kuupäev';
+
+  @override
+  String get deadlineCardEdit => 'Muuda';
+
+  @override
+  String get deadlineCardDelete => 'Arhiveeri';
+
+  @override
+  String get deadlineCardSourceLabelPdf => 'PDF-ist';
+
+  @override
+  String get deadlineCardSourceLabelIntake => 'ankeedist';
+
+  @override
+  String get deadlineCardSourceLabelManual => 'käsitsi lisatud';
+
+  @override
+  String get deadlineCardSourceLabelEmail => 'e-kirjast';
+
+  @override
+  String get deadlineCardSourceLabelHaikuExtract => 'AI tuvastatud';
+
+  @override
+  String get deadlineCardSourceLabelStatutoryTemplate => 'seaduse mall';
+
+  @override
+  String deadlineBannerCritical(String title, String when) {
+    return 'Kriitiline tähtaeg: $title $when';
+  }
+
+  @override
+  String get deadlineBannerDismiss => 'Sulge';
+
+  @override
+  String get deadlineBannerOpen => 'Ava tähtaeg';
+
+  @override
+  String deadlineHolidayShifted(String original, String reason) {
+    return 'Nihutatud kuupäevalt $original ($reason)';
+  }
+
+  @override
+  String get deadlinePermissionAskTitle => 'Luba tähtaegade meeldetuletused?';
+
+  @override
+  String get deadlinePermissionAskBody =>
+      'Saadame meeldetuletuse 7, 3 ja 1 päeva enne iga seadusjärgset tähtaega ning tähtaja päeva hommikul. Ei kasutata kunagi turunduseks.';
+
+  @override
+  String get deadlinePermissionAllow => 'Luba';
+
+  @override
+  String get deadlinePermissionLater => 'Hiljem';
+
+  @override
+  String get deadlineSettingsSection => 'Tähtaegade meeldetuletused';
+
+  @override
+  String get deadlineSettingsPushChannel => 'Tõuketeavitused';
+
+  @override
+  String get deadlineSettingsEmailChannel => 'E-post (ainult kriitilised)';
+
+  @override
+  String get deadlineSettingsInAppChannel => 'Sisesed teavitused';
+
+  @override
+  String get deadlineSettingsCriticalBypass =>
+      'Kriitilised teavitused läbivad vaikust';
+
+  @override
+  String get deadlineSettingsQuietHours => 'Vaikne aeg';
+
+  @override
+  String deadlineSettingsQuietHoursBadge(String start, String end) {
+    return 'Vaikne $start–$end';
+  }
+
+  @override
+  String get deadlineCaseScreenTitle => 'Asja tähtajad';
+
+  @override
+  String get deadlineAddManualCta => 'Lisa tähtaeg';
+
+  @override
+  String get deadlineFormTitle => 'Pealkiri';
+
+  @override
+  String get deadlineFormDescription => 'Kirjeldus (valikuline)';
+
+  @override
+  String get deadlineFormStatuteTemplate => 'Seaduse mall';
+
+  @override
+  String get deadlineFormStatuteTemplateNone => 'Puudub (käsitsi)';
+
+  @override
+  String get deadlineFormDeadlineAt => 'Tähtaja kuupäev';
+
+  @override
+  String get deadlineFormPriority => 'Prioriteet';
+
+  @override
+  String get deadlineFormSave => 'Salvesta';
+
+  @override
+  String get deadlineFormCancel => 'Tühista';
+
+  @override
+  String get deadlineCompletedNotePrompt => 'Lisa märkus (valikuline)';
+
+  @override
+  String get deadlineCompletedNoteSave => 'Salvesta';
+
+  @override
+  String get inboxTitle => 'Postkast';
+
+  @override
+  String get inboxEmptyTitle => 'Pole midagi ootel';
+
+  @override
+  String get inboxEmptyBody =>
+      'Uued e-kirjad ilmuvad siia, kui need on triaažitud.';
+
+  @override
+  String get inboxApproveSend => 'Kinnita ja saada';
+
+  @override
+  String get inboxEditDraft => 'Muuda';
+
+  @override
+  String get inboxSnooze => 'Edasi lükata';
+
+  @override
+  String get inboxArchive => 'Arhiveeri';
+
+  @override
+  String get inboxFilterAll => 'Kõik';
+
+  @override
+  String get inboxConfirmSendTitle => 'Kas saata ettevalmistatud vastus?';
+
+  @override
+  String get inboxConfirmSendBody =>
+      'Advocat saadab AI ettevalmistatud vastuse sinu ühendatud Gmaili kaudu. Saad sisu vaadata järgmisel ekraanil.';
+
+  @override
+  String get inboxSendButton => 'Saada';
+
+  @override
+  String get inboxSentToast => 'Saadetud.';
+
+  @override
+  String get inboxSnoozedToast => 'Edasi lükatud 24 tunniks.';
+
+  @override
+  String get inboxArchivedToast => 'Arhiveeritud.';
+
+  @override
+  String get inboxDraftLoadError => 'Mustandit ei õnnestunud laadida.';
 }

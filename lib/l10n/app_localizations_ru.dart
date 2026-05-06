@@ -2944,4 +2944,202 @@ class AppLocalizationsRu extends AppLocalizations {
   String citationFooterSummaryHistorical(int count) {
     return '$count устаревших';
   }
+
+  @override
+  String get deadlineRadarTitle => 'Ближайшие сроки';
+
+  @override
+  String get deadlineRadarEmpty => 'Нет ближайших сроков';
+
+  @override
+  String get deadlineRadarViewAll => 'Все сроки';
+
+  @override
+  String deadlineCardDaysLeft(int count) {
+    return 'через $count дн.';
+  }
+
+  @override
+  String get deadlineCardTomorrow => 'завтра';
+
+  @override
+  String get deadlineCardToday => 'сегодня';
+
+  @override
+  String deadlineCardOverdue(int count) {
+    return 'просрочено на $count дн.';
+  }
+
+  @override
+  String get deadlineCardMarkComplete => 'Отметить выполненным';
+
+  @override
+  String get deadlineCardSnooze => 'Отложить';
+
+  @override
+  String get deadlineCardSnooze3d => 'Отложить на 3 дня';
+
+  @override
+  String get deadlineCardSnooze7d => 'Отложить на 7 дней';
+
+  @override
+  String get deadlineCardSnoozeCustom => 'Выбрать дату';
+
+  @override
+  String get deadlineCardEdit => 'Изменить';
+
+  @override
+  String get deadlineCardDelete => 'В архив';
+
+  @override
+  String get deadlineCardSourceLabelPdf => 'из PDF';
+
+  @override
+  String get deadlineCardSourceLabelIntake => 'из анкеты';
+
+  @override
+  String get deadlineCardSourceLabelManual => 'вручную';
+
+  @override
+  String get deadlineCardSourceLabelEmail => 'из e-mail';
+
+  @override
+  String get deadlineCardSourceLabelHaikuExtract => 'найдено AI';
+
+  @override
+  String get deadlineCardSourceLabelStatutoryTemplate => 'шаблон закона';
+
+  @override
+  String deadlineBannerCritical(String title, String when) {
+    return 'Критический срок: $title $when';
+  }
+
+  @override
+  String get deadlineBannerDismiss => 'Скрыть';
+
+  @override
+  String get deadlineBannerOpen => 'Открыть срок';
+
+  @override
+  String deadlineHolidayShifted(String original, String reason) {
+    return 'Перенесено с $original ($reason)';
+  }
+
+  @override
+  String get deadlinePermissionAskTitle => 'Включить напоминания о сроках?';
+
+  @override
+  String get deadlinePermissionAskBody =>
+      'Напомним за 7, 3 и 1 день до каждого процессуального срока и утром в день срока. Никогда не используется для маркетинга.';
+
+  @override
+  String get deadlinePermissionAllow => 'Разрешить';
+
+  @override
+  String get deadlinePermissionLater => 'Позже';
+
+  @override
+  String get deadlineSettingsSection => 'Напоминания о сроках';
+
+  @override
+  String get deadlineSettingsPushChannel => 'Push-уведомления';
+
+  @override
+  String get deadlineSettingsEmailChannel => 'E-mail (только критические)';
+
+  @override
+  String get deadlineSettingsInAppChannel => 'Уведомления в приложении';
+
+  @override
+  String get deadlineSettingsCriticalBypass => 'Критические минуют тихие часы';
+
+  @override
+  String get deadlineSettingsQuietHours => 'Тихие часы';
+
+  @override
+  String deadlineSettingsQuietHoursBadge(String start, String end) {
+    return 'Тихо $start–$end';
+  }
+
+  @override
+  String get deadlineCaseScreenTitle => 'Сроки по делу';
+
+  @override
+  String get deadlineAddManualCta => 'Добавить срок';
+
+  @override
+  String get deadlineFormTitle => 'Название';
+
+  @override
+  String get deadlineFormDescription => 'Описание (необязательно)';
+
+  @override
+  String get deadlineFormStatuteTemplate => 'Шаблон статьи';
+
+  @override
+  String get deadlineFormStatuteTemplateNone => 'Нет (вручную)';
+
+  @override
+  String get deadlineFormDeadlineAt => 'Дата срока';
+
+  @override
+  String get deadlineFormPriority => 'Приоритет';
+
+  @override
+  String get deadlineFormSave => 'Сохранить';
+
+  @override
+  String get deadlineFormCancel => 'Отмена';
+
+  @override
+  String get deadlineCompletedNotePrompt => 'Заметка (необязательно)';
+
+  @override
+  String get deadlineCompletedNoteSave => 'Сохранить';
+
+  @override
+  String get inboxTitle => 'Входящие';
+
+  @override
+  String get inboxEmptyTitle => 'Ничего не ждёт';
+
+  @override
+  String get inboxEmptyBody => 'Новые письма появятся здесь после анализа.';
+
+  @override
+  String get inboxApproveSend => 'Подтвердить и отправить';
+
+  @override
+  String get inboxEditDraft => 'Изменить';
+
+  @override
+  String get inboxSnooze => 'Отложить';
+
+  @override
+  String get inboxArchive => 'В архив';
+
+  @override
+  String get inboxFilterAll => 'Все';
+
+  @override
+  String get inboxConfirmSendTitle => 'Отправить подготовленный ответ?';
+
+  @override
+  String get inboxConfirmSendBody =>
+      'Advocat отправит подготовленный AI ответ через подключённый Gmail. Вы ещё сможете просмотреть текст на следующем экране.';
+
+  @override
+  String get inboxSendButton => 'Отправить';
+
+  @override
+  String get inboxSentToast => 'Отправлено.';
+
+  @override
+  String get inboxSnoozedToast => 'Отложено на 24 часа.';
+
+  @override
+  String get inboxArchivedToast => 'В архиве.';
+
+  @override
+  String get inboxDraftLoadError => 'Не удалось загрузить черновик.';
 }

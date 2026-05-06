@@ -1142,5 +1142,111 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "deadlineRadarTitle": "Tulevat määräajat",
+    "deadlineRadarEmpty": "Ei tulevia määräaikoja",
+    "deadlineRadarViewAll": "Näytä kaikki",
+    "deadlineCardDaysLeft": "{count} päivän päästä",
+    "@deadlineCardDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardTomorrow": "huomenna",
+    "deadlineCardToday": "tänään",
+    "deadlineCardOverdue": "{count} päivää myöhässä",
+    "@deadlineCardOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardMarkComplete": "Merkitse valmiiksi",
+    "deadlineCardSnooze": "Lykkää",
+    "deadlineCardSnooze3d": "Lykkää 3 päivää",
+    "deadlineCardSnooze7d": "Lykkää 7 päivää",
+    "deadlineCardSnoozeCustom": "Valitse päivä",
+    "deadlineCardEdit": "Muokkaa",
+    "deadlineCardDelete": "Arkistoi",
+    "deadlineCardSourceLabelPdf": "PDF-tiedostosta",
+    "deadlineCardSourceLabelIntake": "lomakkeesta",
+    "deadlineCardSourceLabelManual": "lisätty manuaalisesti",
+    "deadlineCardSourceLabelEmail": "sähköpostista",
+    "deadlineCardSourceLabelHaikuExtract": "AI-tunnistus",
+    "deadlineCardSourceLabelStatutoryTemplate": "lakimalli",
+    "deadlineBannerCritical": "Kriittinen määräaika: {title} {when}",
+    "@deadlineBannerCritical": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            },
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineBannerDismiss": "Sulje",
+    "deadlineBannerOpen": "Avaa määräaika",
+    "deadlineHolidayShifted": "Siirretty päivästä {original} ({reason})",
+    "@deadlineHolidayShifted": {
+        "placeholders": {
+            "original": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlinePermissionAskTitle": "Salli määräaikamuistutukset?",
+    "deadlinePermissionAskBody": "Muistutamme 7, 3 ja 1 päivää ennen jokaista lakisääteistä määräaikaa sekä määräaamuna. Ei käytetä markkinointiin.",
+    "deadlinePermissionAllow": "Salli",
+    "deadlinePermissionLater": "Myöhemmin",
+    "deadlineSettingsSection": "Määräaikamuistutukset",
+    "deadlineSettingsPushChannel": "Push-ilmoitukset",
+    "deadlineSettingsEmailChannel": "Sähköposti (vain kriittiset)",
+    "deadlineSettingsInAppChannel": "Sovelluksen sisäiset ilmoitukset",
+    "deadlineSettingsCriticalBypass": "Kriittiset ohittavat hiljaiset tunnit",
+    "deadlineSettingsQuietHours": "Hiljaiset tunnit",
+    "deadlineSettingsQuietHoursBadge": "Hiljainen {start}–{end}",
+    "@deadlineSettingsQuietHoursBadge": {
+        "placeholders": {
+            "start": {
+                "type": "String"
+            },
+            "end": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineCaseScreenTitle": "Asian määräajat",
+    "deadlineAddManualCta": "Lisää määräaika",
+    "deadlineFormTitle": "Otsikko",
+    "deadlineFormDescription": "Kuvaus (valinnainen)",
+    "deadlineFormStatuteTemplate": "Lakimalli",
+    "deadlineFormStatuteTemplateNone": "Ei (manuaalinen)",
+    "deadlineFormDeadlineAt": "Määräaikapäivä",
+    "deadlineFormPriority": "Prioriteetti",
+    "deadlineFormSave": "Tallenna",
+    "deadlineFormCancel": "Peruuta",
+    "deadlineCompletedNotePrompt": "Lisää muistiinpano (valinnainen)",
+    "deadlineCompletedNoteSave": "Tallenna",
+    "inboxTitle": "Saapuneet",
+    "inboxEmptyTitle": "Ei mitään odottamassa",
+    "inboxEmptyBody": "Uudet sähköpostit näkyvät täällä triagoinnin jälkeen.",
+    "inboxApproveSend": "Hyväksy ja lähetä",
+    "inboxEditDraft": "Muokkaa",
+    "inboxSnooze": "Torkku",
+    "inboxArchive": "Arkistoi",
+    "inboxFilterAll": "Kaikki",
+    "inboxConfirmSendTitle": "Lähetetäänkö valmisteltu vastaus?",
+    "inboxConfirmSendBody": "Advocat lähettää AI:n valmisteleman vastauksen yhdistetyn Gmail-tilisi kautta. Voit vielä tarkistaa sisällön seuraavassa näkymässä.",
+    "inboxSendButton": "Lähetä",
+    "inboxSentToast": "Lähetetty.",
+    "inboxSnoozedToast": "Torkku 24 tuntia.",
+    "inboxArchivedToast": "Arkistoitu.",
+    "inboxDraftLoadError": "Luonnoksen lataaminen epäonnistui."
 }

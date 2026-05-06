@@ -40,6 +40,7 @@ import '../quick_profile/quick_profile_gate.dart';
 import '../quick_profile/quick_profile_intake.dart';
 import '../../../services/user_memory_service.dart';
 import '../../case_memory/widgets/active_case_chip.dart';
+import '../../case_memory/widgets/deadline_banner.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -1824,6 +1825,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           // Quick action chips
           if (!_isSending) _buildQuickActions(),
+
+          // Pkg 9 — Critical-deadline banner for the active case.
+          // Renders nothing when no active case OR no deadline ≤ 3d OR
+          // the user already dismissed the current urgency band.
+          const DeadlineBanner(),
 
           // Pkg 1.D — Case Memory composer chip. Shows the active case
           // badge (or a "Link to case" chip) above the input bar so the

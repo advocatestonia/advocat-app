@@ -18,6 +18,11 @@ import '../features/chat/screens/chat_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/settings/screens/subscription_screen.dart';
 import '../features/email/screens/email_screen.dart';
+// Email Agent D6 — proactive inbox UI (handoff
+// 09_INTEGRATION_INTO_ADVOCAT.md). Sits inside the shell route as a top-
+// level tab between Cases and Scan; deep-link target for D7 push.
+import '../features/inbox/screens/inbox_screen.dart';
+import '../features/inbox/screens/inbox_draft_edit_screen.dart';
 import '../features/checker/screens/checker_home_screen.dart';
 import '../features/checker/screens/company_checker_screen.dart';
 import '../features/checker/screens/vehicle_checker_screen.dart';
@@ -40,6 +45,17 @@ import '../features/case_memory/screens/intake_wizard/intake_wizard_screen.dart'
 import '../features/case_memory/screens/case_detail_screen.dart'
     as cm_detail;
 import '../features/case_memory/screens/case_edit_screen.dart' as cm_edit;
+// Pkg 9 — Deadline Radar per-case screens.
+import '../features/case_memory/screens/case_deadlines_screen.dart'
+    as cm_deadlines;
+import '../features/case_memory/screens/deadline_edit_screen.dart'
+    as cm_deadline_edit;
+import '../features/case_memory/data/case_deadline_repository.dart'
+    as cm_deadline_repo;
+import '../features/case_memory/state/case_deadline_providers.dart'
+    as cm_deadline_providers;
+import '../features/case_memory/models/case_deadline.dart'
+    as cm_deadline_model;
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -58,6 +74,13 @@ abstract final class AppRoutes {
   static const String settings = '/settings';
   static const String subscription = '/subscription';
   static const String email = '/email';
+  // Email Agent D6 — Inbox tab. /inbox lands at the top of the list;
+  // /inbox/thread/:id is the deep-link target for D7 push notifications;
+  // /inbox/draft/:triageId opens the draft editor wrapper around the
+  // existing DraftViewerScreen.
+  static const String inbox = '/inbox';
+  static const String inboxThread = '/inbox/thread/:threadId';
+  static const String inboxDraftEdit = '/inbox/draft/:triageId';
   static const String checker = '/checker';
   static const String checkerCompany = '/checker/company';
   static const String checkerVehicle = '/checker/vehicle';
@@ -135,6 +158,28 @@ final routerProvider = Provider<GoRouter>((ref) {
             pageBuilder: (context, state) => const NoTransitionPage(
               child: CasesListScreen(),
             ),
+          ),
+          // Email Agent D6 — Inbox tab. Two paths share one screen:
+          //   /inbox                — top of the list.
+          //   /inbox/thread/:id     — same screen + focusThreadId so the
+          //                           D7 push deep link lands the user on
+          //                           the correct row.
+          GoRoute(
+            path: AppRoutes.inbox,
+            name: 'inbox',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: InboxScreen(),
+            ),
+          ),
+          GoRoute(
+            path: AppRoutes.inboxThread,
+            name: 'inboxThread',
+            pageBuilder: (context, state) {
+              final tid = state.pathParameters['threadId'];
+              return NoTransitionPage(
+                child: InboxScreen(focusThreadId: tid),
+              );
+            },
           ),
           GoRoute(
             path: AppRoutes.deadlines,
@@ -218,6 +263,38 @@ final routerProvider = Provider<GoRouter>((ref) {
               return cm_edit.CaseEditScreen(caseId: id);
             },
           ),
+          // Pkg 9 — Deadline Radar per-case routes.
+          GoRoute(
+            path: 'deadlines',
+            name: 'caseV2Deadlines',
+            builder: (context, state) {
+              final id = state.pathParameters['id']!;
+              return cm_deadlines.CaseDeadlinesScreen(caseId: id);
+            },
+            routes: [
+              GoRoute(
+                path: 'new',
+                name: 'caseV2DeadlineNew',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return cm_deadline_edit.DeadlineEditScreen(caseId: id);
+                },
+              ),
+              GoRoute(
+                path: ':deadlineId/edit',
+                name: 'caseV2DeadlineEdit',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  final deadlineId =
+                      state.pathParameters['deadlineId']!;
+                  return _DeadlineEditLoader(
+                    caseId: id,
+                    deadlineId: deadlineId,
+                  );
+                },
+              ),
+            ],
+          ),
         ],
       ),
       GoRoute(
@@ -237,6 +314,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.email,
         name: 'email',
         builder: (context, state) => const EmailScreen(),
+      ),
+      // Email Agent D6 — full-screen inbox draft editor (outside shell so
+      // the bottom-nav bar doesn't compete with the keyboard).
+      GoRoute(
+        path: AppRoutes.inboxDraftEdit,
+        name: 'inboxDraftEdit',
+        builder: (context, state) {
+          final tid = state.pathParameters['triageId'] ?? '';
+          final threadId = state.uri.queryParameters['threadId'];
+          final caseId = state.uri.queryParameters['caseId'];
+          return InboxDraftEditScreen(
+            triageId: tid,
+            threadId: threadId,
+            caseId: caseId,
+          );
+        },
       ),
       GoRoute(
         path: AppRoutes.checker,
@@ -332,3 +425,55 @@ final routerProvider = Provider<GoRouter>((ref) {
     ),
   );
 });
+
+/// Loads a single CaseDeadline by id and renders the edit form once it
+/// arrives. Pkg 9 — used for `/cases-v2/:id/deadlines/:deadlineId/edit`.
+class _DeadlineEditLoader extends ConsumerWidget {
+  const _DeadlineEditLoader({
+    required this.caseId,
+    required this.deadlineId,
+  });
+
+  final String caseId;
+  final String deadlineId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final asyncList = ref.watch(
+      cm_deadline_providers.deadlinesProvider(caseId),
+    );
+    return asyncList.when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (e, _) => Scaffold(
+        appBar: AppBar(),
+        body: Center(child: Text('$e')),
+      ),
+      data: (deadlines) {
+        cm_deadline_model.CaseDeadline? existing;
+        for (final d in deadlines) {
+          if (d.id == deadlineId) {
+            existing = d;
+            break;
+          }
+        }
+        if (existing == null) {
+          return Scaffold(
+            appBar: AppBar(),
+            body: const Center(child: Text('Deadline not found')),
+          );
+        }
+        return cm_deadline_edit.DeadlineEditScreen(
+          caseId: caseId,
+          existing: existing,
+        );
+      },
+    );
+  }
+}
+
+// Suppress unused import warnings — `cm_deadline_repo` is referenced
+// indirectly through providers in tests/overrides.
+// ignore: unused_element
+typedef _RoutePkg9DeadlineRepoAlias = cm_deadline_repo.CaseDeadlineRepository;

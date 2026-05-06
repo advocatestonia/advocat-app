@@ -21,6 +21,7 @@ import '../../../services/stripe_checkout_service.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../cases/providers/cases_provider.dart';
 import '../../cases/widgets/case_card.dart';
+import '../../case_memory/widgets/deadline_radar_widget.dart';
 import '../../deadlines/providers/deadlines_provider.dart';
 
 // ---------------------------------------------------------------------------
@@ -285,7 +286,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
             ),
 
-            // ── Urgent deadline banner ───────────────────────────────────
+            // ── Pkg 9 Deadline Radar (case_deadlines table) ─────────────
+            const SliverToBoxAdapter(child: DeadlineRadarWidget()),
+
+            // ── Urgent deadline banner (legacy `deadlines` table) ────────
             SliverToBoxAdapter(
               child: deadlinesAsync.when(
                 loading: () => const SizedBox.shrink(),

@@ -1142,5 +1142,111 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "deadlineRadarTitle": "Eesseisvad tähtajad",
+    "deadlineRadarEmpty": "Eesseisvaid tähtaegasid pole",
+    "deadlineRadarViewAll": "Vaata kõiki",
+    "deadlineCardDaysLeft": "{count} päeva pärast",
+    "@deadlineCardDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardTomorrow": "homme",
+    "deadlineCardToday": "täna",
+    "deadlineCardOverdue": "{count} päeva üle tähtaja",
+    "@deadlineCardOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardMarkComplete": "Märgi tehtuks",
+    "deadlineCardSnooze": "Lükka edasi",
+    "deadlineCardSnooze3d": "Edasi 3 päeva",
+    "deadlineCardSnooze7d": "Edasi 7 päeva",
+    "deadlineCardSnoozeCustom": "Vali kuupäev",
+    "deadlineCardEdit": "Muuda",
+    "deadlineCardDelete": "Arhiveeri",
+    "deadlineCardSourceLabelPdf": "PDF-ist",
+    "deadlineCardSourceLabelIntake": "ankeedist",
+    "deadlineCardSourceLabelManual": "käsitsi lisatud",
+    "deadlineCardSourceLabelEmail": "e-kirjast",
+    "deadlineCardSourceLabelHaikuExtract": "AI tuvastatud",
+    "deadlineCardSourceLabelStatutoryTemplate": "seaduse mall",
+    "deadlineBannerCritical": "Kriitiline tähtaeg: {title} {when}",
+    "@deadlineBannerCritical": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            },
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineBannerDismiss": "Sulge",
+    "deadlineBannerOpen": "Ava tähtaeg",
+    "deadlineHolidayShifted": "Nihutatud kuupäevalt {original} ({reason})",
+    "@deadlineHolidayShifted": {
+        "placeholders": {
+            "original": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlinePermissionAskTitle": "Luba tähtaegade meeldetuletused?",
+    "deadlinePermissionAskBody": "Saadame meeldetuletuse 7, 3 ja 1 päeva enne iga seadusjärgset tähtaega ning tähtaja päeva hommikul. Ei kasutata kunagi turunduseks.",
+    "deadlinePermissionAllow": "Luba",
+    "deadlinePermissionLater": "Hiljem",
+    "deadlineSettingsSection": "Tähtaegade meeldetuletused",
+    "deadlineSettingsPushChannel": "Tõuketeavitused",
+    "deadlineSettingsEmailChannel": "E-post (ainult kriitilised)",
+    "deadlineSettingsInAppChannel": "Sisesed teavitused",
+    "deadlineSettingsCriticalBypass": "Kriitilised teavitused läbivad vaikust",
+    "deadlineSettingsQuietHours": "Vaikne aeg",
+    "deadlineSettingsQuietHoursBadge": "Vaikne {start}–{end}",
+    "@deadlineSettingsQuietHoursBadge": {
+        "placeholders": {
+            "start": {
+                "type": "String"
+            },
+            "end": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineCaseScreenTitle": "Asja tähtajad",
+    "deadlineAddManualCta": "Lisa tähtaeg",
+    "deadlineFormTitle": "Pealkiri",
+    "deadlineFormDescription": "Kirjeldus (valikuline)",
+    "deadlineFormStatuteTemplate": "Seaduse mall",
+    "deadlineFormStatuteTemplateNone": "Puudub (käsitsi)",
+    "deadlineFormDeadlineAt": "Tähtaja kuupäev",
+    "deadlineFormPriority": "Prioriteet",
+    "deadlineFormSave": "Salvesta",
+    "deadlineFormCancel": "Tühista",
+    "deadlineCompletedNotePrompt": "Lisa märkus (valikuline)",
+    "deadlineCompletedNoteSave": "Salvesta",
+    "inboxTitle": "Postkast",
+    "inboxEmptyTitle": "Pole midagi ootel",
+    "inboxEmptyBody": "Uued e-kirjad ilmuvad siia, kui need on triaažitud.",
+    "inboxApproveSend": "Kinnita ja saada",
+    "inboxEditDraft": "Muuda",
+    "inboxSnooze": "Edasi lükata",
+    "inboxArchive": "Arhiveeri",
+    "inboxFilterAll": "Kõik",
+    "inboxConfirmSendTitle": "Kas saata ettevalmistatud vastus?",
+    "inboxConfirmSendBody": "Advocat saadab AI ettevalmistatud vastuse sinu ühendatud Gmaili kaudu. Saad sisu vaadata järgmisel ekraanil.",
+    "inboxSendButton": "Saada",
+    "inboxSentToast": "Saadetud.",
+    "inboxSnoozedToast": "Edasi lükatud 24 tunniks.",
+    "inboxArchivedToast": "Arhiveeritud.",
+    "inboxDraftLoadError": "Mustandit ei õnnestunud laadida."
 }

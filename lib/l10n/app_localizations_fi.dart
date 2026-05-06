@@ -2937,4 +2937,204 @@ class AppLocalizationsFi extends AppLocalizations {
   String citationFooterSummaryHistorical(int count) {
     return '$count vanhaa';
   }
+
+  @override
+  String get deadlineRadarTitle => 'Tulevat määräajat';
+
+  @override
+  String get deadlineRadarEmpty => 'Ei tulevia määräaikoja';
+
+  @override
+  String get deadlineRadarViewAll => 'Näytä kaikki';
+
+  @override
+  String deadlineCardDaysLeft(int count) {
+    return '$count päivän päästä';
+  }
+
+  @override
+  String get deadlineCardTomorrow => 'huomenna';
+
+  @override
+  String get deadlineCardToday => 'tänään';
+
+  @override
+  String deadlineCardOverdue(int count) {
+    return '$count päivää myöhässä';
+  }
+
+  @override
+  String get deadlineCardMarkComplete => 'Merkitse valmiiksi';
+
+  @override
+  String get deadlineCardSnooze => 'Lykkää';
+
+  @override
+  String get deadlineCardSnooze3d => 'Lykkää 3 päivää';
+
+  @override
+  String get deadlineCardSnooze7d => 'Lykkää 7 päivää';
+
+  @override
+  String get deadlineCardSnoozeCustom => 'Valitse päivä';
+
+  @override
+  String get deadlineCardEdit => 'Muokkaa';
+
+  @override
+  String get deadlineCardDelete => 'Arkistoi';
+
+  @override
+  String get deadlineCardSourceLabelPdf => 'PDF-tiedostosta';
+
+  @override
+  String get deadlineCardSourceLabelIntake => 'lomakkeesta';
+
+  @override
+  String get deadlineCardSourceLabelManual => 'lisätty manuaalisesti';
+
+  @override
+  String get deadlineCardSourceLabelEmail => 'sähköpostista';
+
+  @override
+  String get deadlineCardSourceLabelHaikuExtract => 'AI-tunnistus';
+
+  @override
+  String get deadlineCardSourceLabelStatutoryTemplate => 'lakimalli';
+
+  @override
+  String deadlineBannerCritical(String title, String when) {
+    return 'Kriittinen määräaika: $title $when';
+  }
+
+  @override
+  String get deadlineBannerDismiss => 'Sulje';
+
+  @override
+  String get deadlineBannerOpen => 'Avaa määräaika';
+
+  @override
+  String deadlineHolidayShifted(String original, String reason) {
+    return 'Siirretty päivästä $original ($reason)';
+  }
+
+  @override
+  String get deadlinePermissionAskTitle => 'Salli määräaikamuistutukset?';
+
+  @override
+  String get deadlinePermissionAskBody =>
+      'Muistutamme 7, 3 ja 1 päivää ennen jokaista lakisääteistä määräaikaa sekä määräaamuna. Ei käytetä markkinointiin.';
+
+  @override
+  String get deadlinePermissionAllow => 'Salli';
+
+  @override
+  String get deadlinePermissionLater => 'Myöhemmin';
+
+  @override
+  String get deadlineSettingsSection => 'Määräaikamuistutukset';
+
+  @override
+  String get deadlineSettingsPushChannel => 'Push-ilmoitukset';
+
+  @override
+  String get deadlineSettingsEmailChannel => 'Sähköposti (vain kriittiset)';
+
+  @override
+  String get deadlineSettingsInAppChannel => 'Sovelluksen sisäiset ilmoitukset';
+
+  @override
+  String get deadlineSettingsCriticalBypass =>
+      'Kriittiset ohittavat hiljaiset tunnit';
+
+  @override
+  String get deadlineSettingsQuietHours => 'Hiljaiset tunnit';
+
+  @override
+  String deadlineSettingsQuietHoursBadge(String start, String end) {
+    return 'Hiljainen $start–$end';
+  }
+
+  @override
+  String get deadlineCaseScreenTitle => 'Asian määräajat';
+
+  @override
+  String get deadlineAddManualCta => 'Lisää määräaika';
+
+  @override
+  String get deadlineFormTitle => 'Otsikko';
+
+  @override
+  String get deadlineFormDescription => 'Kuvaus (valinnainen)';
+
+  @override
+  String get deadlineFormStatuteTemplate => 'Lakimalli';
+
+  @override
+  String get deadlineFormStatuteTemplateNone => 'Ei (manuaalinen)';
+
+  @override
+  String get deadlineFormDeadlineAt => 'Määräaikapäivä';
+
+  @override
+  String get deadlineFormPriority => 'Prioriteetti';
+
+  @override
+  String get deadlineFormSave => 'Tallenna';
+
+  @override
+  String get deadlineFormCancel => 'Peruuta';
+
+  @override
+  String get deadlineCompletedNotePrompt => 'Lisää muistiinpano (valinnainen)';
+
+  @override
+  String get deadlineCompletedNoteSave => 'Tallenna';
+
+  @override
+  String get inboxTitle => 'Saapuneet';
+
+  @override
+  String get inboxEmptyTitle => 'Ei mitään odottamassa';
+
+  @override
+  String get inboxEmptyBody =>
+      'Uudet sähköpostit näkyvät täällä triagoinnin jälkeen.';
+
+  @override
+  String get inboxApproveSend => 'Hyväksy ja lähetä';
+
+  @override
+  String get inboxEditDraft => 'Muokkaa';
+
+  @override
+  String get inboxSnooze => 'Torkku';
+
+  @override
+  String get inboxArchive => 'Arkistoi';
+
+  @override
+  String get inboxFilterAll => 'Kaikki';
+
+  @override
+  String get inboxConfirmSendTitle => 'Lähetetäänkö valmisteltu vastaus?';
+
+  @override
+  String get inboxConfirmSendBody =>
+      'Advocat lähettää AI:n valmisteleman vastauksen yhdistetyn Gmail-tilisi kautta. Voit vielä tarkistaa sisällön seuraavassa näkymässä.';
+
+  @override
+  String get inboxSendButton => 'Lähetä';
+
+  @override
+  String get inboxSentToast => 'Lähetetty.';
+
+  @override
+  String get inboxSnoozedToast => 'Torkku 24 tuntia.';
+
+  @override
+  String get inboxArchivedToast => 'Arkistoitu.';
+
+  @override
+  String get inboxDraftLoadError => 'Luonnoksen lataaminen epäonnistui.';
 }

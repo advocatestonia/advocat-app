@@ -14,9 +14,12 @@ import 'package:go_router/go_router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../data/case_repository.dart';
+import '../models/case_deadline.dart';
 import '../models/user_case.dart';
 import '../state/active_case_provider.dart';
+import '../state/case_deadline_providers.dart';
 import '../state/cases_list_provider.dart';
+import '../widgets/deadline_card.dart';
 
 class CaseDetailScreen extends ConsumerWidget {
   const CaseDetailScreen({super.key, required this.caseId});
@@ -144,6 +147,9 @@ class _Body extends ConsumerWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
+          // Pkg 9 — inline section listing top deadlines for this case.
+          // Tapping the section header navigates to the full screen.
+          _CaseDeadlinesSection(caseId: userCase.id),
           _ListSection(
             title: l10n?.caseNumbersSection ?? 'Case numbers',
             items: userCase.caseNumbers
@@ -323,6 +329,78 @@ class _ListSection extends StatelessWidget {
                 ))
             .toList(),
       ),
+    );
+  }
+}
+
+/// Pkg 9 — collapsed deadline section: top-3 active rows + a link to
+/// the full per-case list. Hidden when no Pkg-9 deadlines exist.
+class _CaseDeadlinesSection extends ConsumerWidget {
+  const _CaseDeadlinesSection({required this.caseId});
+  final String caseId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final asyncList = ref.watch(deadlinesProvider(caseId));
+    return asyncList.when(
+      loading: () => const SizedBox.shrink(),
+      error: (_, __) => const SizedBox.shrink(),
+      data: (rows) {
+        final active = rows
+            .where((d) => d.status == CaseDeadlineStatus.active)
+            .take(3)
+            .toList(growable: false);
+        if (active.isEmpty) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.only(top: AppSpacing.md),
+          child: Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        l10n?.deadlineCaseScreenTitle ?? 'Deadlines',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    TextButton(
+                      key: const Key('case-detail-view-deadlines'),
+                      onPressed: () => GoRouter.of(context)
+                          .push('/cases-v2/$caseId/deadlines'),
+                      child: Text(
+                        l10n?.deadlineRadarViewAll ?? 'View all',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.xs),
+                ...active.map(
+                  (d) => Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+                    child: DeadlineCard(
+                      deadline: d,
+                      mode: DeadlineCardMode.compact,
+                      onTap: () => GoRouter.of(context)
+                          .push('/cases-v2/$caseId/deadlines'),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

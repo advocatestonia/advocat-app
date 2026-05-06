@@ -1142,5 +1142,111 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "deadlineRadarTitle": "Ближайшие сроки",
+    "deadlineRadarEmpty": "Нет ближайших сроков",
+    "deadlineRadarViewAll": "Все сроки",
+    "deadlineCardDaysLeft": "через {count} дн.",
+    "@deadlineCardDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardTomorrow": "завтра",
+    "deadlineCardToday": "сегодня",
+    "deadlineCardOverdue": "просрочено на {count} дн.",
+    "@deadlineCardOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardMarkComplete": "Отметить выполненным",
+    "deadlineCardSnooze": "Отложить",
+    "deadlineCardSnooze3d": "Отложить на 3 дня",
+    "deadlineCardSnooze7d": "Отложить на 7 дней",
+    "deadlineCardSnoozeCustom": "Выбрать дату",
+    "deadlineCardEdit": "Изменить",
+    "deadlineCardDelete": "В архив",
+    "deadlineCardSourceLabelPdf": "из PDF",
+    "deadlineCardSourceLabelIntake": "из анкеты",
+    "deadlineCardSourceLabelManual": "вручную",
+    "deadlineCardSourceLabelEmail": "из e-mail",
+    "deadlineCardSourceLabelHaikuExtract": "найдено AI",
+    "deadlineCardSourceLabelStatutoryTemplate": "шаблон закона",
+    "deadlineBannerCritical": "Критический срок: {title} {when}",
+    "@deadlineBannerCritical": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            },
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineBannerDismiss": "Скрыть",
+    "deadlineBannerOpen": "Открыть срок",
+    "deadlineHolidayShifted": "Перенесено с {original} ({reason})",
+    "@deadlineHolidayShifted": {
+        "placeholders": {
+            "original": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlinePermissionAskTitle": "Включить напоминания о сроках?",
+    "deadlinePermissionAskBody": "Напомним за 7, 3 и 1 день до каждого процессуального срока и утром в день срока. Никогда не используется для маркетинга.",
+    "deadlinePermissionAllow": "Разрешить",
+    "deadlinePermissionLater": "Позже",
+    "deadlineSettingsSection": "Напоминания о сроках",
+    "deadlineSettingsPushChannel": "Push-уведомления",
+    "deadlineSettingsEmailChannel": "E-mail (только критические)",
+    "deadlineSettingsInAppChannel": "Уведомления в приложении",
+    "deadlineSettingsCriticalBypass": "Критические минуют тихие часы",
+    "deadlineSettingsQuietHours": "Тихие часы",
+    "deadlineSettingsQuietHoursBadge": "Тихо {start}–{end}",
+    "@deadlineSettingsQuietHoursBadge": {
+        "placeholders": {
+            "start": {
+                "type": "String"
+            },
+            "end": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineCaseScreenTitle": "Сроки по делу",
+    "deadlineAddManualCta": "Добавить срок",
+    "deadlineFormTitle": "Название",
+    "deadlineFormDescription": "Описание (необязательно)",
+    "deadlineFormStatuteTemplate": "Шаблон статьи",
+    "deadlineFormStatuteTemplateNone": "Нет (вручную)",
+    "deadlineFormDeadlineAt": "Дата срока",
+    "deadlineFormPriority": "Приоритет",
+    "deadlineFormSave": "Сохранить",
+    "deadlineFormCancel": "Отмена",
+    "deadlineCompletedNotePrompt": "Заметка (необязательно)",
+    "deadlineCompletedNoteSave": "Сохранить",
+    "inboxTitle": "Входящие",
+    "inboxEmptyTitle": "Ничего не ждёт",
+    "inboxEmptyBody": "Новые письма появятся здесь после анализа.",
+    "inboxApproveSend": "Подтвердить и отправить",
+    "inboxEditDraft": "Изменить",
+    "inboxSnooze": "Отложить",
+    "inboxArchive": "В архив",
+    "inboxFilterAll": "Все",
+    "inboxConfirmSendTitle": "Отправить подготовленный ответ?",
+    "inboxConfirmSendBody": "Advocat отправит подготовленный AI ответ через подключённый Gmail. Вы ещё сможете просмотреть текст на следующем экране.",
+    "inboxSendButton": "Отправить",
+    "inboxSentToast": "Отправлено.",
+    "inboxSnoozedToast": "Отложено на 24 часа.",
+    "inboxArchivedToast": "В архиве.",
+    "inboxDraftLoadError": "Не удалось загрузить черновик."
 }

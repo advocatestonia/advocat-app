@@ -1163,5 +1163,111 @@
                 "type": "int"
             }
         }
-    }
+    },
+    "deadlineRadarTitle": "Upcoming deadlines",
+    "deadlineRadarEmpty": "No upcoming deadlines",
+    "deadlineRadarViewAll": "View all",
+    "deadlineCardDaysLeft": "in {count} days",
+    "@deadlineCardDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardTomorrow": "tomorrow",
+    "deadlineCardToday": "today",
+    "deadlineCardOverdue": "{count} days overdue",
+    "@deadlineCardOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineCardMarkComplete": "Mark complete",
+    "deadlineCardSnooze": "Snooze",
+    "deadlineCardSnooze3d": "Snooze 3 days",
+    "deadlineCardSnooze7d": "Snooze 7 days",
+    "deadlineCardSnoozeCustom": "Pick a date",
+    "deadlineCardEdit": "Edit",
+    "deadlineCardDelete": "Archive",
+    "deadlineCardSourceLabelPdf": "from PDF",
+    "deadlineCardSourceLabelIntake": "from intake",
+    "deadlineCardSourceLabelManual": "added manually",
+    "deadlineCardSourceLabelEmail": "from email",
+    "deadlineCardSourceLabelHaikuExtract": "AI-extracted",
+    "deadlineCardSourceLabelStatutoryTemplate": "statute template",
+    "deadlineBannerCritical": "Critical deadline {title} {when}",
+    "@deadlineBannerCritical": {
+        "placeholders": {
+            "title": {
+                "type": "String"
+            },
+            "when": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineBannerDismiss": "Dismiss",
+    "deadlineBannerOpen": "Open deadline",
+    "deadlineHolidayShifted": "Shifted from {original} due to {reason}",
+    "@deadlineHolidayShifted": {
+        "placeholders": {
+            "original": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlinePermissionAskTitle": "Enable deadline reminders?",
+    "deadlinePermissionAskBody": "We'll ping you 7, 3, and 1 day before each statutory deadline, plus the morning of. Never used for marketing.",
+    "deadlinePermissionAllow": "Allow",
+    "deadlinePermissionLater": "Later",
+    "deadlineSettingsSection": "Deadline reminders",
+    "deadlineSettingsPushChannel": "Push notifications",
+    "deadlineSettingsEmailChannel": "Email (critical only)",
+    "deadlineSettingsInAppChannel": "In-app banners",
+    "deadlineSettingsCriticalBypass": "Critical reminders bypass quiet hours",
+    "deadlineSettingsQuietHours": "Quiet hours",
+    "deadlineSettingsQuietHoursBadge": "Quiet {start}–{end}",
+    "@deadlineSettingsQuietHoursBadge": {
+        "placeholders": {
+            "start": {
+                "type": "String"
+            },
+            "end": {
+                "type": "String"
+            }
+        }
+    },
+    "deadlineCaseScreenTitle": "Case deadlines",
+    "deadlineAddManualCta": "Add deadline",
+    "deadlineFormTitle": "Title",
+    "deadlineFormDescription": "Description (optional)",
+    "deadlineFormStatuteTemplate": "Statute template",
+    "deadlineFormStatuteTemplateNone": "None (manual)",
+    "deadlineFormDeadlineAt": "Deadline date",
+    "deadlineFormPriority": "Priority",
+    "deadlineFormSave": "Save",
+    "deadlineFormCancel": "Cancel",
+    "deadlineCompletedNotePrompt": "Add a note (optional)",
+    "deadlineCompletedNoteSave": "Save",
+    "inboxTitle": "Inbox",
+    "inboxEmptyTitle": "Nothing pending",
+    "inboxEmptyBody": "New email threads will appear here as they get triaged.",
+    "inboxApproveSend": "Approve & send",
+    "inboxEditDraft": "Edit",
+    "inboxSnooze": "Snooze",
+    "inboxArchive": "Archive",
+    "inboxFilterAll": "All",
+    "inboxConfirmSendTitle": "Send the prepared reply?",
+    "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
+    "inboxSendButton": "Send",
+    "inboxSentToast": "Sent.",
+    "inboxSnoozedToast": "Snoozed for 24h.",
+    "inboxArchivedToast": "Archived.",
+    "inboxDraftLoadError": "Could not load draft."
 }
