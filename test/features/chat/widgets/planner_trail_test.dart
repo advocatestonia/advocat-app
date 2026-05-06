@@ -100,6 +100,26 @@ void main() {
     expect(find.textContaining('no items'), findsAtLeastNWidgets(1));
   });
 
+  testWidgets('tap on Plan section header collapses and re-expands content',
+      (tester) async {
+    // Sections start expanded by default — sub-question text is visible.
+    await tester.pumpWidget(_wrap(PlannerTrail(
+      data: _trace(subQs: const ['UNIQUE_PLAN_QUESTION_X42']),
+    )));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('UNIQUE_PLAN_QUESTION_X42'), findsOneWidget);
+
+    // Tap the Plan section title to collapse.
+    await tester.tap(find.text('Plan'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('UNIQUE_PLAN_QUESTION_X42'), findsNothing);
+
+    // Tap again to re-expand.
+    await tester.tap(find.text('Plan'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('UNIQUE_PLAN_QUESTION_X42'), findsOneWidget);
+  });
+
   group('PlannerTraceData.fromRpcRow', () {
     test('unwraps a planner_trace RPC row', () {
       final data = PlannerTraceData.fromRpcRow({
