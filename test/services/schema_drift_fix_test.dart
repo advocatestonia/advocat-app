@@ -16,7 +16,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   final migrationFile = File(
-    'supabase/migrations/20260422_schema_drift_fix.sql',
+    'supabase/migrations/20260422005000_schema_drift_fix.sql',
   );
 
   group('FIX-3 — schema drift migration', () {
@@ -192,7 +192,7 @@ void main() {
             isTrue,
             reason:
                 'Edge Function $path went missing — either restore it or '
-                'drop $table from migration 20260422_schema_drift_fix.sql',
+                'drop $table from migration 20260422005000_schema_drift_fix.sql',
           );
           final src = file.readAsStringSync();
           expect(

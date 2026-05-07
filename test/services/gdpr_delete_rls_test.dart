@@ -21,7 +21,7 @@ void main() {
     // The migration must live at this exact path so `supabase db push`
     // picks it up in order (timestamp > 20260421).
     final migrationFile = File(
-      'supabase/migrations/20260422_delete_own_policies.sql',
+      'supabase/migrations/20260422060000_delete_own_policies.sql',
     );
 
     test('migration file exists at expected path', () {
@@ -29,7 +29,7 @@ void main() {
         migrationFile.existsSync(),
         isTrue,
         reason:
-            'Expected supabase/migrations/20260422_delete_own_policies.sql to '
+            'Expected supabase/migrations/20260422060000_delete_own_policies.sql to '
             'exist. This migration is required for GDPR Art. 17 '
             '(right to erasure) — see docs/performance/04-database.md P0.',
       );
