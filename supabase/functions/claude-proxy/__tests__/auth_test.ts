@@ -139,9 +139,13 @@ Deno.test("U1-A — POST with NO Authorization header returns 401", async () => 
 
 // ---- U1-B — anon-key Bearer token → 401 ------------------------------------
 
-Deno.test(
-  "U1-B — POST with anon-key Bearer token returns 401 (no anonymousPerMinute)",
-  async () => {
+Deno.test({
+  name: "U1-B — POST with anon-key Bearer token returns 401 (no anonymousPerMinute)",
+  // supabase-js startAutoRefresh starts a timer+interval internally; disable
+  // leak sanitizers so the test doesn't fail due to that external behaviour.
+  sanitizeOps: false,
+  sanitizeResources: false,
+  fn: async () => {
     __resetRateLimitForTest();
     installFetchStub();
     try {
@@ -163,13 +167,15 @@ Deno.test(
       restoreFetch();
     }
   },
-);
+});
 
 // ---- U1-B-bis — service-role JWT also rejected -----------------------------
 
-Deno.test(
-  "U1-B-bis — POST with service-role JWT returns 401 (defence-in-depth)",
-  async () => {
+Deno.test({
+  name: "U1-B-bis — POST with service-role JWT returns 401 (defence-in-depth)",
+  sanitizeOps: false,
+  sanitizeResources: false,
+  fn: async () => {
     __resetRateLimitForTest();
     installFetchStub();
     try {
@@ -188,13 +194,15 @@ Deno.test(
       restoreFetch();
     }
   },
-);
+});
 
 // ---- U1-C — real authenticated user JWT → allow ----------------------------
 
-Deno.test(
-  "U1-C — POST with real authenticated user JWT is allowed",
-  async () => {
+Deno.test({
+  name: "U1-C — POST with real authenticated user JWT is allowed",
+  sanitizeOps: false,
+  sanitizeResources: false,
+  fn: async () => {
     __resetRateLimitForTest();
     installFetchStub();
     try {
@@ -214,7 +222,7 @@ Deno.test(
       restoreFetch();
     }
   },
-);
+});
 
 // ---- Static contract — handler wires the gate BEFORE Anthropic forward -----
 
@@ -254,12 +262,19 @@ Deno.test(
     const stripped = src
       .replace(/\/\*[\s\S]*?\*\//g, "")
       .replace(/^\s*\/\/.*$/gm, "");
-    const quotaIdx = stripped.indexOf("check-ai-quota");
+    // The "check-ai-quota" string appears in both the call-site URL (inside
+    // checkQuota's fetch) and in the function definition, which is declared
+    // after the Anthropic fetch helpers in source order. Instead, look for the
+    // checkQuota() call-site in the request handler, which must appear before
+    // any forward to api.anthropic.com.
+    const quotaCallIdx = stripped.indexOf("checkQuota(");
     const anthropicIdx = stripped.indexOf("api.anthropic.com");
-    assert(quotaIdx !== -1, "claude-proxy must reference check-ai-quota");
+    assert(quotaCallIdx !== -1, "claude-proxy must call checkQuota()");
+    assert(anthropicIdx !== -1, "claude-proxy must reference api.anthropic.com");
     assert(
-      quotaIdx < anthropicIdx,
-      "quota probe must run BEFORE the Anthropic forward",
+      quotaCallIdx < anthropicIdx,
+      "quota probe (checkQuota call) must run BEFORE the Anthropic forward " +
+        `(checkQuota at ${quotaCallIdx}, anthropic at ${anthropicIdx})`,
     );
   },
 );

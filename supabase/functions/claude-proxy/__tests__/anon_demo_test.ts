@@ -291,33 +291,33 @@ Deno.test({
 // ---- T4 — authenticated callers are NOT clamped (regression guard) --------
 
 Deno.test({
-  name: "T4 — index.ts preserves the 4096 cap for authenticated callers",
+  name: "T4 — index.ts preserves the 16384 cap for authenticated callers",
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
-    // The pre-existing MAX_TOKENS_LIMIT = 4096 must remain intact so that
-    // adding the anon clamp didn't regress authenticated users down to 500.
-    const hasAuthCap = /MAX_TOKENS_LIMIT\s*=\s*4096/.test(indexCode) ||
-      /Math\.min\([^)]*4096[^)]*\)/.test(indexCode);
+    // MAX_TOKENS_LIMIT was raised from 4096 → 16384 (2026-05-07).
+    // Verify the new value is present so we catch any regression.
+    const hasAuthCap = /MAX_TOKENS_LIMIT\s*=\s*16384/.test(indexCode) ||
+      /Math\.min\([^)]*16384[^)]*\)/.test(indexCode);
     assert(
       hasAuthCap,
-      "claude-proxy/index.ts must keep the 4096 cap for authenticated " +
-        "callers (MAX_TOKENS_LIMIT = 4096 or Math.min(..., 4096))",
+      "claude-proxy/index.ts must keep the 16384 cap for authenticated " +
+        "callers (MAX_TOKENS_LIMIT = 16384 or Math.min(..., 16384))",
     );
 
-    // And the order must be: anon clamp tightens AFTER the global 4096 cap,
-    // so an authenticated request with max_tokens=4096 stays at 4096 while
+    // And the order must be: anon clamp tightens AFTER the global 16384 cap,
+    // so an authenticated request with max_tokens=16384 stays at 16384 while
     // an anon request gets pinned to 500. We verify by checking that the
-    // 500 literal appears after the 4096 literal in the source.
-    const idx4096 = indexCode.indexOf("4096");
+    // 500 literal appears after the 16384 literal in the source.
+    const idx16384 = indexCode.indexOf("16384");
     const idx500 = indexCode.indexOf("500");
-    assert(idx4096 !== -1, "4096 cap missing");
+    assert(idx16384 !== -1, "16384 cap missing");
     assert(idx500 !== -1, "500 anon cap missing");
     assert(
-      idx500 > idx4096,
-      "anon 500 clamp must come AFTER the 4096 global cap so " +
-        "authenticated callers retain 4096 (4096 at " +
-        `${idx4096}, 500 at ${idx500})`,
+      idx500 > idx16384,
+      "anon 500 clamp must come AFTER the 16384 global cap so " +
+        "authenticated callers retain 16384 (16384 at " +
+        `${idx16384}, 500 at ${idx500})`,
     );
   },
 });

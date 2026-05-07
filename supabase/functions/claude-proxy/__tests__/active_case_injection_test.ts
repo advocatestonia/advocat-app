@@ -240,9 +240,12 @@ Deno.test("CM-T22 — extreme overflow lands at minimal level", () => {
   p.case.authorities = Array.from({ length: 50 }, (_, i) => "A".repeat(400) + i);
   p.case.timeline = Array.from({ length: 50 }, (_, i) => "T".repeat(400) + i);
   p.recent_documents = Array.from({ length: 50 }, (_, i) => ({
+    id: `test-doc-id-${i}`,
     filename: `doc${"X".repeat(80)}-${i}.pdf`,
     doc_type: "court_decision",
     parsed_summary: "S".repeat(800),
+    doc_date: "2026-04-01",
+    uploaded_at: "2026-04-01T00:00:00Z",
   }));
   // Tight 1500-byte cap forces minimal — none of the upper levels can fit.
   const out = formatActiveCaseBlockWithCap(p, 1500);
