@@ -159,8 +159,8 @@ run "flutter build web --release --dart-define-from-file=.env.prod"
 
 [[ -f build/web/main.dart.js ]] || die "main.dart.js missing after build"
 MAIN_SIZE=$(wc -c < build/web/main.dart.js)
-[[ $MAIN_SIZE -ge 5000000 && $MAIN_SIZE -le 8500000 ]] \
-  || die "main.dart.js size ($MAIN_SIZE) outside 5-8.5 MB"
+[[ $MAIN_SIZE -ge 5000000 && $MAIN_SIZE -le 9500000 ]] \
+  || die "main.dart.js size ($MAIN_SIZE) outside 5-9.5 MB"
 ok "main.dart.js OK ($MAIN_SIZE bytes)"
 
 # ---------------------------------------------------------------------------

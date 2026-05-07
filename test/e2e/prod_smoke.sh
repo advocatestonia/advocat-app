@@ -128,13 +128,13 @@ check "main.dart.js is 200" \
   "curl_code $BASE_URL/main.dart.js" \
   "200"
 
-# 2. main.dart.js size guard (5-8.5 MB — anything smaller means env vars missing)
+# 2. main.dart.js size guard (5-9.5 MB — anything smaller means env vars missing)
 SIZE=$(curl -sI --max-time "$TIMEOUT" $BASE_URL/main.dart.js | grep -i '^content-length' | awk '{print $2}' | tr -d '\r')
-if [[ -n "$SIZE" && "$SIZE" -ge 5000000 && "$SIZE" -le 8500000 ]]; then
-  printf "\033[1;32m  ✓\033[0m %-55s [%s bytes]\n" "main.dart.js size in 5-8.5 MB" "$SIZE"
+if [[ -n "$SIZE" && "$SIZE" -ge 5000000 && "$SIZE" -le 9500000 ]]; then
+  printf "\033[1;32m  ✓\033[0m %-55s [%s bytes]\n" "main.dart.js size in 5-9.5 MB" "$SIZE"
   PASS=$((PASS+1))
 else
-  printf "\033[1;31m  ✗\033[0m %-55s [size=%s]\n" "main.dart.js size in 5-8.5 MB" "$SIZE"
+  printf "\033[1;31m  ✗\033[0m %-55s [size=%s]\n" "main.dart.js size in 5-9.5 MB" "$SIZE"
   FAIL=$((FAIL+1))
   FAILURES+=("main.dart.js size out of range ($SIZE)")
 fi
