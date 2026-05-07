@@ -334,12 +334,15 @@ void main() {
   });
 
   group('ClaudeService.maxTokensForModel', () {
-    test('returns 800 for Haiku', () {
-      expect(ClaudeService.maxTokensForModel(ClaudeService.modelHaiku), 800);
+    // 2026-05-07: caps raised so the assistant can deliver full contracts and
+    // multi-page legal drafts without truncation. Haiku 800→4096, Sonnet
+    // 2500→16384 (matches claude-proxy MAX_TOKENS_LIMIT).
+    test('returns 4096 for Haiku', () {
+      expect(ClaudeService.maxTokensForModel(ClaudeService.modelHaiku), 4096);
     });
 
-    test('returns 2500 for Sonnet', () {
-      expect(ClaudeService.maxTokensForModel(ClaudeService.modelSonnet), 2500);
+    test('returns 16384 for Sonnet', () {
+      expect(ClaudeService.maxTokensForModel(ClaudeService.modelSonnet), 16384);
     });
   });
 

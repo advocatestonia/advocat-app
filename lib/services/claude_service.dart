@@ -122,10 +122,17 @@ class ClaudeService {
   static const String modelHaiku = 'claude-haiku-4-5-20251001';
 
   /// Max output tokens for Haiku (short answers — fewer tokens = faster).
-  static const int _maxTokensHaiku = 800;
+  /// 2026-05-07: raised 800 → 4096 so Haiku-routed turns (simple Q&A,
+  /// quick summaries) don't truncate when user asks for a paragraph or two.
+  static const int _maxTokensHaiku = 4096;
 
-  /// Max output tokens for Sonnet (detailed answers).
-  static const int _maxTokensSonnet = 2500;
+  /// Max output tokens for Sonnet (detailed answers, contracts, pleadings).
+  /// 2026-05-07: raised 2500 → 16384 (matches claude-proxy MAX_TOKENS_LIMIT)
+  /// so the assistant can deliver full contracts, multi-page legal drafts,
+  /// dossier summaries without hitting the cap mid-sentence. Sonnet 4.6
+  /// supports up to 64K output tokens; 16K covers ~12k Russian/ET/FI words
+  /// ≈ 6-8 pages of dense legal prose.
+  static const int _maxTokensSonnet = 16384;
 
   /// Keywords that indicate a complex legal query requiring Sonnet.
   static const List<String> _complexKeywords = [
@@ -490,7 +497,7 @@ class ClaudeService {
   Future<Map<String, dynamic>> _callApi({
     required String systemPrompt,
     required List<Map<String, String>> messages,
-    int maxTokens = 4096,
+    int maxTokens = 16384,
     double temperature = 0.3,
     bool includeTools = false,
     String? model,
@@ -689,7 +696,7 @@ class ClaudeService {
   Future<String> sendMessage({
     required List<Map<String, String>> messages,
     required String systemPrompt,
-    int maxTokens = 4096,
+    int maxTokens = 16384,
     String? model,
     String? caseId,
   }) async {
@@ -777,7 +784,7 @@ class ClaudeService {
   Future<Map<String, dynamic>> sendMessageWithTools({
     required List<Map<String, String>> messages,
     required String systemPrompt,
-    int maxTokens = 4096,
+    int maxTokens = 16384,
     String? model,
     List<Map<String, dynamic>>? multimodalMessages,
     String? caseId,
@@ -903,7 +910,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
   Stream<String> sendMessageStreaming({
     required List<Map<String, String>> messages,
     required String systemPrompt,
-    int maxTokens = 4096,
+    int maxTokens = 16384,
     String? model,
     List<Map<String, dynamic>>? tools,
     double temperature = 0.3,
@@ -939,7 +946,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
   Stream<ChatStreamEvent> sendMessageStreamingEvents({
     required List<Map<String, String>> messages,
     required String systemPrompt,
-    int maxTokens = 4096,
+    int maxTokens = 16384,
     String? model,
     List<Map<String, dynamic>>? tools,
     double temperature = 0.3,

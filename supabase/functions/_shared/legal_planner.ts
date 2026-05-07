@@ -34,8 +34,12 @@ const MODEL_SONNET = "claude-sonnet-4-20250514";
 const MODEL_HAIKU = "claude-haiku-4-5-20251001";
 
 // Per-pass token budgets — pinned by the spec (§2 Pass shapes).
+// 2026-05-07: EXECUTOR raised 4096 → 16384 so planner-routed legal turns
+// (contracts, full pleadings, dossier summaries) deliver complete output
+// matching claude-proxy MAX_TOKENS_LIMIT. Planner + Critique stay tight —
+// they emit small JSON payloads, not user-facing prose.
 export const PLANNER_MAX_TOKENS = 500;
-export const EXECUTOR_MAX_TOKENS = 4096;
+export const EXECUTOR_MAX_TOKENS = 16384;
 export const CRITIQUE_MAX_TOKENS = 300;
 
 // Per-pass temperatures — Planner is deterministic, Executor mildly
