@@ -277,7 +277,7 @@ async function loadCaseAsUser(
     open_questions: row.open_questions,
     next_actions: row.next_actions,
     summary: row.summary,
-    // Pkg 5: phase column is populated by 20260507_15_case_phase.sql.
+    // Pkg 5: phase column is populated by 20260507150000_case_phase.sql.
     // Pre-migration databases return undefined → rule falls back to
     // 'intake'.
     phase: row.phase,

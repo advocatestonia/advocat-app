@@ -4,7 +4,7 @@
 // Mirrors the CHECK constraint on `user_cases.phase`:
 //   intake | strategy | draft | wait | closed
 //
-// Schema source of truth: supabase/migrations/20260507_15_case_phase.sql
+// Schema source of truth: supabase/migrations/20260507150000_case_phase.sql
 // Edge-side source of truth: supabase/functions/_shared/case_phase.ts
 // =====================================================================
 

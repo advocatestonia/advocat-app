@@ -2,7 +2,7 @@
 // -----------------------------------------------------------------------------
 // Ref: lib/services/case_file_extractor.dart
 //      lib/services/case_file_service.dart
-//      supabase/migrations/20260505_case_file.sql
+//      supabase/migrations/20260505120000_case_file.sql
 //
 // Pure data classes. No IO, no Supabase, no Flutter — safe to unit-test.
 // -----------------------------------------------------------------------------

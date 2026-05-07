@@ -58,7 +58,7 @@ export interface StatutoryAnchor {
 
 /** The single registry. Extending: add a new entry here AND mirror it in
  * the Postgres `pg_compute_deadline` SQL function (see migration
- * 20260507_12_deadline_extractor_rpcs.sql). */
+ * 20260507120000_deadline_extractor_rpcs.sql). */
 export const STATUTORY_DEADLINE_TEMPLATES: Readonly<
   Record<string, StatutoryAnchor>
 > = {

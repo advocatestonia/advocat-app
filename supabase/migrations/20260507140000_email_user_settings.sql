@@ -10,7 +10,7 @@
 --   * dead_address_corrections  jsonb    — Rule 9 auto-send recipient gate
 --
 -- Migration filename slot _14: max preceding _NN this day is _13
--- (`20260507_13_email_inbox.sql`). Per
+-- (`20260507130000_email_inbox.sql`). Per
 -- `lesson_migration_alphabetical_order.md`, the `_NN_` prefix enforces
 -- topological dep order when multiple migrations land on the same day.
 --

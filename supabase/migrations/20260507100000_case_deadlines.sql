@@ -6,7 +6,7 @@
 -- key, RLS granularity, and pg_cron foreign-key targets the radar needs.
 --
 -- Migration filename slot _10 (NOT _09): Pkg 2 closeout took _09 with
--- 20260507_09_message_citations_unique.sql.
+-- 20260507090000_citations_position_idempotency.sql.
 --
 -- Spec source of truth: docs/architecture/phase2-pkg9-deadline-radar.md.
 --
@@ -191,7 +191,7 @@ $$;
 
 -- ── 7. RPC: mark_deadline_complete ────────────────────────────────────
 -- Owner-only mutation via SECURITY DEFINER + ownership pre-check. Pattern
--- mirrors public.unredact (20260507_05_pii_redaction_map.sql).
+-- mirrors public.unredact (20260507050000_pii_redaction_map.sql).
 create or replace function public.mark_deadline_complete(
     p_deadline_id uuid,
     p_note        text default null

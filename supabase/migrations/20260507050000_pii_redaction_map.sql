@@ -13,14 +13,14 @@
 --   data subject (the user). GDPR Art. 5(1)(c) data minimization.
 --
 -- Depends on:
---   * 20260507_01_sensitive_schema.sql — creates schema, pgcrypto, vault key.
---   * 20260507_02_audit_log.sql        — receives un-redact audit rows.
+--   * 20260507010000_sensitive_schema.sql — creates schema, pgcrypto, vault key.
+--   * 20260507020000_audit_log.sql        — receives un-redact audit rows.
 --
 -- Idempotency:
 --   * `if not exists` everywhere; safe to re-run with `supabase db push`.
 -- =====================================================================
 
--- Schema/extension creation lives in 20260507_01_sensitive_schema.sql.
+-- Schema/extension creation lives in 20260507010000_sensitive_schema.sql.
 -- This re-issues `if not exists` guards in case migrations are applied
 -- out of order (e.g. selective backfill). Both are no-ops when present.
 create extension if not exists pgcrypto;

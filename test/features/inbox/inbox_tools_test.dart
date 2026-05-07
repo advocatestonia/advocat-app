@@ -5,7 +5,7 @@
 //   lib/services/assistant_tools.dart — _listInbox / _getThreadTriage /
 //                                       _approveSendDraft / _snoozeThread
 //   lib/services/tool_definitions.dart — JSON schemas for the 4 tools
-//   supabase/migrations/20260507_13_email_inbox.sql — table contracts
+//   supabase/migrations/20260507130000_email_inbox.sql — table contracts
 //
 // Scope (per spec hard rules):
 //   - Tool registration: list_inbox / get_thread_triage / approve_send_draft /

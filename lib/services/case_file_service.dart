@@ -2,7 +2,7 @@
 // -----------------------------------------------------------------------------
 // Ref: lib/models/case_file.dart
 //      lib/services/case_file_extractor.dart
-//      supabase/migrations/20260505_case_file.sql
+//      supabase/migrations/20260505120000_case_file.sql
 //
 // CRUD on three tables:
 //   * case_file_events

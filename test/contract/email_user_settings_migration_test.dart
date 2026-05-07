@@ -6,7 +6,7 @@ library;
 // (Track E, 2026-05-07)
 // =============================================================================
 //
-// Pins the SQL contract for `20260507_14_email_user_settings.sql`. Sibling
+// Pins the SQL contract for `20260507140000_email_user_settings.sql`. Sibling
 // of `email_inbox_migration_test.dart` — same pattern, narrower scope:
 // the user_settings table backs the email-triage MemoryBlock (Rule 16.bis
 // own_counsel_advisory + Rule 9 dead-address corrections).

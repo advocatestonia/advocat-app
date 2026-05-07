@@ -6,7 +6,7 @@
 --   say verbatim"); embedding search is reserved for semantic queries.
 --
 --   Returns at most one row (the in-force version per the unique partial
---   index in 20260507_06_law_chunks_jurisdiction.sql). NULL is a normal
+--   index in 20260507060000_law_chunks_jurisdiction.sql). NULL is a normal
 --   return — caller handles "not in our corpus".
 --
 --   ilike on act_slug is intentional: the corpus uses lowercase slugs

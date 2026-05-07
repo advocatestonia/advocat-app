@@ -119,7 +119,7 @@ void main() {
         contains('from pg_policies'),
         reason:
             'Re-running migration must not throw on policy already existing. '
-            'The do-block in 20260507_05_pii_redaction_map.sql sets the '
+            'The do-block in 20260507050000_pii_redaction_map.sql sets the '
             'precedent — mirror it here.',
       );
       expect(

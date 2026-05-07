@@ -356,12 +356,13 @@ void main() {
           .listSync()
           .whereType<File>()
           .map((f) => f.path.split('/').last)
-          .where((n) => n.startsWith('20260507_'))
+          .where((n) => n.startsWith('20260507'))
           .toList()
         ..sort();
 
-      // _09 must NOT be a Pkg 9 file.
-      final slot09 = files.where((f) => f.startsWith('20260507_09'));
+      // Slot _09 must NOT be a Pkg 9 file. After the rename to unique
+      // timestamps, the slot is encoded as `20260507090000_*`.
+      final slot09 = files.where((f) => f.startsWith('20260507090000'));
       expect(slot09, isNotEmpty,
           reason: 'Slot _09 should be claimed by Pkg 2 closeout');
       for (final f in slot09) {
@@ -375,17 +376,17 @@ void main() {
 
       // _10/_11/_12 — exactly the three Pkg 9 deadline migrations.
       expect(
-        files.any((f) => f.contains('20260507_10_case_deadlines')),
+        files.any((f) => f.contains('20260507100000_case_deadlines')),
         isTrue,
       );
       expect(
         files.any(
-            (f) => f.contains('20260507_11_deadline_notification_log')),
+            (f) => f.contains('20260507110000_deadline_notification_log')),
         isTrue,
       );
       expect(
         files.any(
-            (f) => f.contains('20260507_12_deadline_extractor_rpcs')),
+            (f) => f.contains('20260507120000_deadline_extractor_rpcs')),
         isTrue,
       );
     });

@@ -85,7 +85,7 @@ $$;
 
 -- ── RPC: message_citations(p_message_id) ────────────────────────────────
 -- Owner-checked single-call fetcher for the chat UI. Mirrors the
--- security pattern in 20260507_05_pii_redaction_map.sql (security
+-- security pattern in 20260507050000_pii_redaction_map.sql (security
 -- definer + explicit search_path + auth.uid() null-guard + alter
 -- function owner to postgres). Authenticated callers only.
 create or replace function public.message_citations(p_message_id uuid)

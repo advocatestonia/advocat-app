@@ -3,7 +3,7 @@
 // -----------------------------------------------------------------------------
 // Ref: lib/services/supabase_service.dart#listAgentIntentions/cancelAgentIntention
 //      lib/features/case_file/widgets/pending_intentions_section.dart
-//      supabase/migrations/20260505_agent_intentions.sql
+//      supabase/migrations/20260505110000_agent_intentions.sql
 //
 // Read-only list + cancel action. Kept out of case_file_service.dart on
 // purpose — that file just shipped, owner asked us not to touch it.

@@ -8,11 +8,11 @@ library;
 // 2026-05-07 — Pkg 0 / Track B-2. Pins the SQL contract for the six Phase 2
 // migrations that introduce GDPR-aligned PII handling:
 //
-//   * 20260507_01_sensitive_schema.sql            — encrypted parsed_text + RPC
-//   * 20260507_02_audit_log.sql                   — append-only audit trail
-//   * 20260507_03_consent_log.sql                 — Art. 9/10 consent ledger
-//   * 20260507_04_attorney_privilege_acceptance.sql — onboarding disclaimer
-//   * 20260507_05_pii_redaction_map.sql           — per-case PII tokens
+//   * 20260507010000_sensitive_schema.sql            — encrypted parsed_text + RPC
+//   * 20260507020000_audit_log.sql                   — append-only audit trail
+//   * 20260507030000_consent_log.sql                 — Art. 9/10 consent ledger
+//   * 20260507040000_attorney_privilege_acceptance.sql — onboarding disclaimer
+//   * 20260507050000_pii_redaction_map.sql           — per-case PII tokens
 //   * (06/07) law_chunks_jurisdiction + lookup_statute — pinned separately
 //
 // Without these tests, an accidental rename, dropped policy, or reshuffled

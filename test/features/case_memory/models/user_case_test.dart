@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// Round-trip JSON for [UserCase] and its nested types.
 ///
 /// The DB row shape is the SOURCE of truth — see migration
-/// `20260506_case_memory.sql` for column types. JSONB arrays of objects
+/// `20260506100000_case_memory.sql` for column types. JSONB arrays of objects
 /// (`case_numbers`, `parties`, `key_dates`, `authorities`, `timeline`,
 /// `open_questions`, `next_actions`) MUST round-trip through fromJson/toJson
 /// without data loss so Pkg 1.B's `load_active_case` RPC output is

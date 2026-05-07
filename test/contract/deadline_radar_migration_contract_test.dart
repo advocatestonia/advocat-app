@@ -7,9 +7,9 @@ library;
 //
 // 2026-05-06 — Pkg 9. Pins the SQL contract for the three Pkg 9 migrations:
 //
-//   * 20260507_10_case_deadlines.sql            — table + indexes + RLS + RPCs
-//   * 20260507_11_deadline_notification_log.sql — idempotency log + RLS
-//   * 20260507_12_deadline_extractor_rpcs.sql   — apply_deadline_extraction
+//   * 20260507100000_case_deadlines.sql            — table + indexes + RLS + RPCs
+//   * 20260507110000_deadline_notification_log.sql — idempotency log + RLS
+//   * 20260507120000_deadline_extractor_rpcs.sql   — apply_deadline_extraction
 //
 // Pattern: read the migration file from disk and grep load-bearing
 // identifiers. Mirrors phase2_pii_migration_contract_test.dart and
@@ -415,19 +415,20 @@ void main() {
         ..sort();
 
       expect(
-        files.any((f) => f.contains('20260507_10_case_deadlines')),
+        files.any((f) => f.contains('20260507100000_case_deadlines')),
         isTrue,
-        reason: 'Pkg 9 must occupy slot _10',
+        reason: 'Pkg 9 must occupy slot _10 (timestamp 20260507100000)',
       );
       expect(
-        files.any((f) => f.contains('20260507_11_deadline_notification_log')),
+        files.any(
+            (f) => f.contains('20260507110000_deadline_notification_log')),
         isTrue,
-        reason: 'Pkg 9 must occupy slot _11',
+        reason: 'Pkg 9 must occupy slot _11 (timestamp 20260507110000)',
       );
       expect(
-        files.any((f) => f.contains('20260507_12_deadline_extractor_rpcs')),
+        files.any((f) => f.contains('20260507120000_deadline_extractor_rpcs')),
         isTrue,
-        reason: 'Pkg 9 must occupy slot _12',
+        reason: 'Pkg 9 must occupy slot _12 (timestamp 20260507120000)',
       );
     });
   });

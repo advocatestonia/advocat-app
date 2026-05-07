@@ -7,10 +7,10 @@
 --   acknowledgement, plus cookies/marketing for completeness.
 --
 -- Sister tables (this migration set):
---   * 20260507_01_sensitive_schema.sql              — encrypted parsed_text
---   * 20260507_02_audit_log.sql                     — generic audit trail
---   * 20260507_04_attorney_privilege_acceptance.sql — privilege disclaimer
---   * 20260507_05_pii_redaction_map.sql             — third-party PII tokens
+--   * 20260507010000_sensitive_schema.sql              — encrypted parsed_text
+--   * 20260507020000_audit_log.sql                     — generic audit trail
+--   * 20260507040000_attorney_privilege_acceptance.sql — privilege disclaimer
+--   * 20260507050000_pii_redaction_map.sql             — third-party PII tokens
 --
 -- Data lifecycle:
 --   * INSERT only via SECURITY DEFINER RPC `grant_consent`.

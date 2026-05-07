@@ -331,7 +331,7 @@ class SupabaseService {
   }
 
   // ── Agent intentions (long-horizon follow-up promises) ──────────────────
-  // Ref: supabase/migrations/20260505_agent_intentions.sql
+  // Ref: supabase/migrations/20260505110000_agent_intentions.sql
   //      lib/services/assistant_tools.dart#_setFollowupIntention
   //
   // Demo-mode safe: returns null when Supabase isn't initialised so unit

@@ -16,7 +16,7 @@
 --   * 'intake'   otherwise.
 --
 -- Migration filename slot _15: parallel agent took _14
--- (`20260507_14_email_user_settings.sql` shipped same day). Per
+-- (`20260507140000_email_user_settings.sql` shipped same day). Per
 -- `lesson_migration_alphabetical_order.md`, the `_NN_` prefix enforces
 -- topological dep order when multiple migrations land on the same day.
 -- No dep on email_user_settings — bumping to _15 keeps slots unique.

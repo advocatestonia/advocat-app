@@ -5,7 +5,7 @@ library;
 // email_inbox_migration_test.dart — D2 contract test (Track E, 2026-05-07)
 // =============================================================================
 //
-// Pins the SQL contract for `20260507_13_email_inbox.sql`. Pattern matches
+// Pins the SQL contract for `20260507130000_email_inbox.sql`. Pattern matches
 // `citations_migration_contract_test.dart` and
 // `deadline_radar_migration_contract_test.dart`: read the migration text and
 // assert on load-bearing identifiers.

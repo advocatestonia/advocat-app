@@ -26,7 +26,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Pkg 5 — case phase migration', () {
     final migrationFile = File(
-      'supabase/migrations/20260507_15_case_phase.sql',
+      'supabase/migrations/20260507150000_case_phase.sql',
     );
 
     late String sql;

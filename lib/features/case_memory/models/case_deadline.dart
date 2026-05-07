@@ -2,7 +2,7 @@
 // CaseDeadline — Pkg 9 case_deadlines row.
 //
 // Mirrors the schema in:
-//   supabase/migrations/20260507_10_case_deadlines.sql
+//   supabase/migrations/20260507100000_case_deadlines.sql
 //
 // Two read shapes:
 //   - [CaseDeadline.fromCaseRow]    — `case_deadlines_for(p_case_id)`

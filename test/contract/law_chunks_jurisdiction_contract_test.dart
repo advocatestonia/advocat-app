@@ -6,7 +6,7 @@ library;
 // =============================================================================
 //
 // Phase 2 Pkg 1+2 (2026-05-07). Pins the SQL contract for the
-// 20260507_06_law_chunks_jurisdiction.sql + 20260507_07_lookup_statute_rpc.sql
+// 20260507060000_law_chunks_jurisdiction.sql + 20260507070000_lookup_statute_rpc.sql
 // migrations. Without this test, an accidental rename (jurisdiction →
 // jurisdiction_code) or constraint drop would only show up in production
 // during the routing layer's first 4xx — much later than CI.
@@ -30,24 +30,24 @@ void main() {
     // supabase/migrations/. Resolve relative to current dir, which the
     // `flutter test` runner sets to the package root.
     final migrationFile =
-        File('supabase/migrations/20260507_06_law_chunks_jurisdiction.sql');
+        File('supabase/migrations/20260507060000_law_chunks_jurisdiction.sql');
     final lookupFile =
-        File('supabase/migrations/20260507_07_lookup_statute_rpc.sql');
+        File('supabase/migrations/20260507070000_lookup_statute_rpc.sql');
     expect(
       migrationFile.existsSync(),
       isTrue,
-      reason: 'Migration 20260507_06_law_chunks_jurisdiction.sql must exist',
+      reason: 'Migration 20260507060000_law_chunks_jurisdiction.sql must exist',
     );
     expect(
       lookupFile.existsSync(),
       isTrue,
-      reason: 'Migration 20260507_07_lookup_statute_rpc.sql must exist',
+      reason: 'Migration 20260507070000_lookup_statute_rpc.sql must exist',
     );
     migrationSrc = migrationFile.readAsStringSync();
     lookupSrc = lookupFile.readAsStringSync();
   });
 
-  group('20260507_06_law_chunks_jurisdiction.sql — column additions', () {
+  group('20260507060000_law_chunks_jurisdiction.sql — column additions', () {
     test('adds jurisdiction column', () {
       // Must be an ADD COLUMN on jurisdiction.
       expect(
@@ -176,7 +176,7 @@ void main() {
     });
   });
 
-  group('20260507_07_lookup_statute_rpc.sql — exact-paragraph RPC', () {
+  group('20260507070000_lookup_statute_rpc.sql — exact-paragraph RPC', () {
     test('declares lookup_statute with the documented param names', () {
       // Param names are LOAD-BEARING — Postgres binds positional and named
       // params separately, and the edge function calls with named args.

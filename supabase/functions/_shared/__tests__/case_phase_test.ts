@@ -196,7 +196,7 @@ Deno.test("CPS-T11e — parsePhaseTransition truncates over-long reason", () => 
 Deno.test("CPS-T01-mirror — enum matches migration check constraint", async () => {
   const sql = await Deno.readTextFile(
     new URL(
-      "../../../migrations/20260507_15_case_phase.sql",
+      "../../../migrations/20260507150000_case_phase.sql",
       import.meta.url,
     ),
   );

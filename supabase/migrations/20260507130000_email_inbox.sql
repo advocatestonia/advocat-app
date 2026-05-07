@@ -19,12 +19,12 @@
 --                                the 4 optional blocks land in jsonb.
 --
 -- Migration filename slot _13: max preceding _NN this day is _12
--- (`20260507_12_deadline_extractor_rpcs.sql`). Per
+-- (`20260507120000_deadline_extractor_rpcs.sql`). Per
 -- `lesson_migration_alphabetical_order.md`, the `_NN_` prefix enforces
 -- topological dep order when multiple migrations land on the same day.
 --
 -- Idempotency: every DDL is `if not exists`; `supabase db push` is safe
--- to re-run. Mirrors `20260506_case_memory.sql` shape.
+-- to re-run. Mirrors `20260506100000_case_memory.sql` shape.
 -- =====================================================================
 
 create extension if not exists pgcrypto;

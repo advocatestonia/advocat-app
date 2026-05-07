@@ -30,7 +30,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Pkg 1.A — case memory migration', () {
     final migrationFile = File(
-      'supabase/migrations/20260506_case_memory.sql',
+      'supabase/migrations/20260506100000_case_memory.sql',
     );
 
     late String sql;

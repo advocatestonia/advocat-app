@@ -20,7 +20,7 @@
 --   subscription tier so flipping the bit on a free account is a no-op.
 --
 -- Migration filename slot _16: max preceding _NN this day is _15
--- (`20260507_15_case_phase.sql`). Per
+-- (`20260507150000_case_phase.sql`). Per
 -- `lesson_migration_alphabetical_order.md`, the `_NN_` prefix enforces
 -- topological dep order when multiple migrations land on the same day.
 -- =============================================================================
@@ -109,7 +109,7 @@ $$;
 
 -- ── RPC: planner_trace(p_message_id) ────────────────────────────────────
 -- Owner-checked single-call fetcher for the chat UI extension. Mirrors
--- the security pattern in 20260507_08_message_citations.sql:
+-- the security pattern in 20260507080000_message_citations.sql:
 --   • SECURITY DEFINER (so the trace lookup bypasses RLS once we've
 --     verified the caller owns the parent message)
 --   • explicit search_path pin (defeats schema-injection class for

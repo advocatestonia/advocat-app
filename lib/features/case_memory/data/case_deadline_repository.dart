@@ -1,7 +1,7 @@
 // =====================================================================
 // CaseDeadlineRepository — Pkg 9 Supabase wrapper.
 //
-// Surfaces the three RPCs from migration 20260507_10_case_deadlines.sql:
+// Surfaces the three RPCs from migration 20260507100000_case_deadlines.sql:
 //   * active_deadlines(p_limit)        → top-N across user's active cases
 //   * case_deadlines_for(p_case_id)    → full per-case list
 //   * mark_deadline_complete(id, note) → owner-only completion

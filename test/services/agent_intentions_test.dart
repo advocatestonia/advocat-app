@@ -2,7 +2,7 @@
 // -----------------------------------------------------------------------------
 // Ref: lib/services/tool_definitions.dart
 //      lib/services/assistant_tools.dart#_setFollowupIntention
-//      supabase/migrations/20260505_agent_intentions.sql
+//      supabase/migrations/20260505110000_agent_intentions.sql
 //
 // Scope:
 //   - Tool schema: shape, name, required fields, enum on intent_type

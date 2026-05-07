@@ -669,7 +669,7 @@ abstract final class ToolDefinitions {
     // ── Email Agent D5 — proactive inbox tools ────────────────────────────
     //
     // Refs: business/email_agent_handoff_2026-05-06/09_INTEGRATION_INTO_ADVOCAT.md
-    //       supabase/migrations/20260507_13_email_inbox.sql (table contract)
+    //       supabase/migrations/20260507130000_email_inbox.sql (table contract)
     //       supabase/functions/email-triage/index.ts (Sonnet 4.6 v1.1-final
     //         output that lands in email_triage_results)
     //

@@ -64,7 +64,7 @@ interface NotificationLogRow {
 class FakeCaseDeadlinesTable {
   rows: CaseDeadlineRow[] = [];
   /** Mirrors the partial unique index on (case_id, anchor_key, date)
-   * declared in 20260507_10_case_deadlines.sql. Returns id of upserted
+   * declared in 20260507100000_case_deadlines.sql. Returns id of upserted
    * row + a flag indicating if completed-status preserved. */
   upsert(
     caseId: string,

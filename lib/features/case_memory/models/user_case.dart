@@ -1,7 +1,7 @@
 // =====================================================================
 // UserCase — client-side model for the `public.user_cases` row shape.
 //
-// Schema source of truth: supabase/migrations/20260506_case_memory.sql
+// Schema source of truth: supabase/migrations/20260506100000_case_memory.sql
 // JSONB columns are stored as arrays of objects on the DB side; here
 // they are typed as small immutable classes so the UI layer never
 // reaches into raw maps.

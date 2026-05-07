@@ -21,7 +21,7 @@
 -- Idempotency:
 --   * `if not exists` everywhere. Owner may run `supabase db push` twice.
 --   * `gen_random_uuid()` from pgcrypto (modern Supabase default).
---   * `vector` extension already loaded by 20260506_law_corpus.sql; the
+--   * `vector` extension already loaded by 20260506110000_law_corpus.sql; the
 --     `create extension if not exists` here is harmless.
 -- =====================================================================
 

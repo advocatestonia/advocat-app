@@ -351,7 +351,7 @@ function makeProdDeps(
       // Carry-over Task 3: real append against `user_cases.timeline`
       // (jsonb), with idempotency guard on
       // (case_id, type, ref_email_id, occurred_at). The timeline jsonb
-      // column already exists from `20260506_case_memory.sql`.
+      // column already exists from `20260506100000_case_memory.sql`.
       await appendCaseEventReal(sb, args);
     },
 

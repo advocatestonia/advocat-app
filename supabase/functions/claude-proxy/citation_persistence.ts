@@ -10,8 +10,9 @@
 //   contract / "prefer server-side to avoid race with offline queue").
 //
 // Migration:
-//   supabase/migrations/20260507_08_message_citations.sql           — table
-//   supabase/migrations/20260507_09_message_citations_unique.sql    — unique
+//   supabase/migrations/20260507080000_message_citations.sql           — table
+//   supabase/migrations/20260507090000_citations_position_idempotency.sql
+//                                                                     — unique
 //                                                                     idx
 //
 // Idempotency contract:
@@ -33,7 +34,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import type { Citation } from "../_shared/citation_grounder.ts";
 
 /** One row destined for `public.chat_message_citations`. Field names match
- *  the column names in 20260507_08_message_citations.sql exactly so the row
+ *  the column names in 20260507080000_message_citations.sql exactly so the row
  *  goes straight to .insert/.upsert without further translation. */
 export interface CitationRow {
   message_id: string;
