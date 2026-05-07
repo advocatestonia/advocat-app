@@ -96272,7 +96272,7 @@ k=!m&&A.bR9(c3)
 a9.a=null
 if(m)b0=a9.a=200
 else if(k){a9.a=200
-b0=200}else{b1=l==="claude-haiku-4-5-20251001"?800:2500
+b0=200}else{b1=l==="claude-haiku-4-5-20251001"?4096:16384
 a9.a=b1
 b0=b1}a8.kk("Model routing: "+A.i(l)+" (simple: "+A.i(m)+", short: "+A.i(k)+", maxTokens: "+b0+")")
 n.Bo(c8,"user",c3)
@@ -96444,7 +96444,7 @@ p=20
 l=A.bR8(b0,b1)
 k=A.bR9(b0)
 if(k)a4=200
-else a4=l==="claude-haiku-4-5-20251001"?800:2500
+else a4=l==="claude-haiku-4-5-20251001"?4096:16384
 j=a4
 a3.kk("Streaming events model routing: "+A.i(l)+" (short: "+A.i(k)+", maxTokens: "+A.i(j)+")")
 s=23
