@@ -201,10 +201,15 @@ check "deadline-reminder rejects POST without cron secret" \
   "curl -s --max-time $TIMEOUT -X POST '$FUNCTIONS_URL/deadline-reminder' -H 'Content-Type: application/json' -d '{}' -o /dev/null -w '%{http_code}'" \
   "^(401|403)$"
 
-# claude-proxy must require JWT for chat
-check "claude-proxy rejects POST without auth" \
+# claude-proxy: 2026-05-05 demo restore allows anon via anonymousPerMinute=3
+# (IP rate-limited). With empty messages payload, request flows through anon
+# pass-through, hits Anthropic, gets 400 invalid_request_error (messages
+# field required). Without auth header at all → also flows through (anon),
+# same 400. So 400 is the expected anon-mode response, 401/403 only happens
+# if anon mode is removed. Accept all three to track either policy.
+check "claude-proxy responds to POST without auth (anon allowed via demo)" \
   "curl -s --max-time $TIMEOUT -X POST '$FUNCTIONS_URL/claude-proxy' -H 'Content-Type: application/json' -d '{\"messages\":[]}' -o /dev/null -w '%{http_code}'" \
-  "^(401|403)$"
+  "^(400|401|403)$"
 
 # check-company should work for anon (read-only business registry proxy)
 check "check-company allows anon POST (rate-limited)" \
