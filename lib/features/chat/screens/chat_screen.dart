@@ -17,7 +17,10 @@ import '../../../models/deadline.dart';
 import '../../../services/ai_service.dart';
 import '../../../services/assistant_tools.dart';
 import '../../../services/chat_stream_event.dart';
-import '../../../services/claude_service.dart' show ClaudeServiceException;
+import '../../../services/claude_service.dart'
+    show ClaudeService, ClaudeServiceException;
+import '../../../services/legal_planner.dart';
+import '../widgets/planner_trail.dart';
 import '../../../services/chat_attachment_service.dart';
 import '../../../services/client_knowledge_service.dart';
 import '../../../services/supabase_service.dart';
@@ -70,6 +73,11 @@ class ChatMessage {
   /// assistant messages (pre-Pkg 2) which had no marker syntax.
   final List<Citation> citations;
 
+  /// Phase 2 Pkg 6 — planner trace data for the Reasoning Trail UI.
+  /// Non-null only on assistant messages produced by the legal planner loop
+  /// (Pro + opt-in + looksLegalish). Renders [PlannerTrail] below the bubble.
+  final PlannerTraceData? plannerTraceData;
+
   const ChatMessage({
     required this.id,
     required this.role,
@@ -81,6 +89,7 @@ class ChatMessage {
     this.toolResult,
     this.navigation,
     this.citations = const [],
+    this.plannerTraceData,
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -954,6 +963,89 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
           } else {
             ctx = await _knowledgeService.buildClientContext(caseId: widget.caseId);
+          }
+
+          // ── Phase 2 Pkg 6: legal planner routing ─────────────────
+          // Check the planner gate BEFORE streaming. Planner turns are
+          // non-streaming (3-pass server loop) and replace the normal path.
+          // Gate: Pro user + opt-in toggle + looksLegalish keyword filter.
+          // The async plannerEnabledProvider read is synchronous after first
+          // build — .valueOrNull gives false if still loading.
+          final plannerEnabled =
+              ref.read(plannerEnabledProvider).valueOrNull ?? false;
+          final isProForPlanner =
+              ref.read(aiServiceProvider).isProUser;
+          if (shouldRouteToPlanner(
+            isPro: isProForPlanner,
+            enabledByPref: plannerEnabled,
+            looksLegalish: ClaudeService.looksLegalish(text),
+          )) {
+            // Planner path: non-streaming 3-pass loop via claude-proxy.
+            try {
+              final plannerSvc = ref.read(legalPlannerServiceProvider);
+              final history = _messages
+                  .where((m) =>
+                      m.role == MessageRole.user ||
+                      m.role == MessageRole.assistant)
+                  .map((m) => {
+                        'role': m.role == MessageRole.user ? 'user' : 'assistant',
+                        'content': m.content,
+                      })
+                  .toList();
+              final plannerResult = await plannerSvc.run(
+                messages: history,
+                systemPrompt: ctx,
+                caseId: widget.caseId,
+              );
+              responseText = plannerResult.replyText;
+              responseCitations =
+                  Citation.listFromJson(plannerResult.citations);
+              usedStreaming = false;
+
+              // Build the PlannerTraceData from the summary returned by
+              // the proxy. Sub-questions / counter-args require a separate
+              // planner_trace() RPC that is not yet wired here — we
+              // pre-populate them as empty lists so the trail card still
+              // renders the summary row (latency + regen badge).
+              final traceData = PlannerTraceData(
+                subQuestions: const [],
+                counterArgs: const [],
+                evidenceGaps: const [],
+                materialGap: false,
+                critiqueIssues: const [],
+                regeneratedOnce: plannerResult.summary.regeneratedOnce,
+                summary: plannerResult.summary,
+              );
+
+              await supabase.saveChatMessage(
+                caseId: widget.caseId,
+                role: 'assistant',
+                content: responseText,
+              );
+
+              if (mounted) {
+                setState(() {
+                  _isTyping = false;
+                  _messages.add(ChatMessage(
+                    id: 'ai_planner_${DateTime.now().millisecondsSinceEpoch}',
+                    role: MessageRole.assistant,
+                    content: responseText,
+                    timestamp: DateTime.now(),
+                    citations: responseCitations,
+                    plannerTraceData: traceData,
+                  ));
+                });
+                _updateChatPhase();
+                _scrollToBottom();
+                if (_ttsEnabled) unawaited(_speakResponse(responseText));
+              }
+              // Planner path is complete — skip streaming + non-streaming.
+              return;
+            } catch (plannerErr) {
+              // Planner failure is non-fatal — fall through to normal path.
+              debugPrint(
+                  'LegalPlanner failed, falling back to normal AI: $plannerErr');
+            }
           }
 
           // ── Try streaming first for word-by-word UI ──────────────
@@ -2733,6 +2825,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
             ], // end of else (non-tool-result bubble)
+
+            // Phase 2 Pkg 6 — Planner Reasoning Trail.
+            // Renders below the assistant bubble when the message was
+            // produced by the three-pass legal planner loop (Pro + opt-in).
+            if (!isUser && message.plannerTraceData != null)
+              PlannerTrail(
+                key: ValueKey('planner_trail_${message.id}'),
+                data: message.plannerTraceData!,
+              ),
 
             // Timestamp + action buttons row
             Padding(
