@@ -844,6 +844,31 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
+  // -- Consilium --
+
+  /// Trigger a multi-expert consilium analysis of the current case.
+  ///
+  /// v1 implementation: reuses the full streaming infrastructure by sending
+  /// a structured consilium prompt as a regular user message. The proxy will
+  /// eventually consume `mode: "consilium"` natively; until then this
+  /// synthetic message produces a substantively equivalent multi-perspective
+  /// analysis from the AI.
+  ///
+  /// Gated on Pro status — the button is hidden for free users so no
+  /// quota guard is needed here beyond the standard _sendMessage gate.
+  Future<void> _triggerConsilium() async {
+    if (_isSending) return;
+    const consiliumPrompt =
+        '[CONSILIUM] Проведи юридический совет по моему делу от имени четырёх '
+        'независимых экспертов: (1) специалист по процессуальному праву, '
+        '(2) специалист по материальному праву, '
+        '(3) специалист по правам человека и ЕКПЧ, '
+        '(4) стратег-адвокат. '
+        'Каждый эксперт даёт свою оценку ситуации и рекомендации. '
+        'В конце — краткий синтез: согласованная позиция и приоритетные шаги.';
+    await _sendMessage(consiliumPrompt);
+  }
+
   // -- Sending --
 
   Future<void> _sendMessage([String? overrideText]) async {
@@ -3705,10 +3730,56 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
         const SizedBox(width: 6),
 
-        // Mic + Send buttons — same size (44x44), aligned in a row
+        // Consilium + Mic + Send buttons — same size (44x44), aligned in a row
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Consilium button — Pro-only, 44x44, circular
+            if (ref.read(aiServiceProvider).isProUser)
+              Tooltip(
+                message: 'Юридический совет (4 эксперта)',
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.surface,
+                    border: Border.all(
+                      color: AppColors.border.withValues(alpha: 0.3),
+                      width: 0.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.06),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: IconButton(
+                    key: const Key('consilium_button'),
+                    onPressed: _isSending ? null : _triggerConsilium,
+                    icon: _isSending
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColors.textTertiary,
+                            ),
+                          )
+                        : const Icon(
+                            Icons.balance_rounded,
+                            size: 18,
+                            color: AppColors.textSecondary,
+                          ),
+                    padding: EdgeInsets.zero,
+                  ),
+                ),
+              ),
+
+            if (ref.read(aiServiceProvider).isProUser) const SizedBox(width: 4),
+
             // Mic button — 44x44, circular with shadow
             if (_voiceInitialized)
               Container(

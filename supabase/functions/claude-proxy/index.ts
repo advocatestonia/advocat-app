@@ -30,6 +30,12 @@ import {
 import { wrapAnthropicStreamWithCitations } from "./streaming_citations.ts";
 import { runLegalPlannerLoop } from "../_shared/legal_planner.ts";
 import { persistPlannerTrace } from "./planner_trace_persistence.ts";
+import { runConsilium, shouldRunConsilium } from "../_shared/consilium.ts";
+import {
+  ASSISTANT_TOOLS,
+  executeToolCalls,
+  extractToolUseBlocks,
+} from "./tool_handlers.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -297,6 +303,63 @@ serve(async (req) => {
       const messages = Array.isArray(body.messages)
         ? body.messages as Array<{ role: string; content: string }>
         : [];
+
+      // ── Consilium upgrade path (Phase 2, 2026-05-07) ─────────────────────
+      // For complex multi-angle legal questions, escalate to the 4-role
+      // consilium (Процессуалист + Материальный юрист + Тактик + Risk Auditor)
+      // instead of the 3-pass planner. shouldRunConsilium() uses Haiku to
+      // classify in ~200ms; on any error it returns false so we fall through
+      // to the existing planner path.
+      //
+      // The consilium runs with SSE streaming so we switch the response to
+      // text/event-stream. The ragContext is the joined chunk texts from the
+      // ragChunks already extracted above; caseContext is empty string because
+      // applyActiveCaseToBody already folded it into systemPrompt.
+      const userMessage = messages.length > 0
+        ? String(messages[messages.length - 1].content ?? "")
+        : "";
+      if (userMessage) {
+        const useConsilium = await shouldRunConsilium(userMessage, CLAUDE_API_KEY);
+        if (useConsilium) {
+          const ragContext = ragChunks
+            .map((c) => c.body ?? "")
+            .filter(Boolean)
+            .join("\n\n");
+
+          const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
+          const writer = writable.getWriter();
+          const encoder = new TextEncoder();
+
+          // Run consilium asynchronously — the stream closes itself when done.
+          runConsilium({
+            userMessage,
+            systemPrompt,
+            ragContext,
+            caseContext: "",
+            anthropicApiKey: CLAUDE_API_KEY,
+            onEvent: (event) => {
+              const frame = `data: ${JSON.stringify(event)}\n\n`;
+              writer.write(encoder.encode(frame)).catch(() => {});
+            },
+          }).finally(() => {
+            writer.close().catch(() => {});
+          });
+
+          return new Response(readable, {
+            status: 200,
+            headers: {
+              ...corsHeaders,
+              "Content-Type": "text/event-stream",
+              "Cache-Control": "no-cache",
+              "Connection": "keep-alive",
+              "X-Accel-Buffering": "no",
+              "X-Advocat-Mode": "consilium",
+            },
+          });
+        }
+      }
+      // ── End consilium upgrade path ────────────────────────────────────────
+
       try {
         const loopResult = await runLegalPlannerLoop({
           apiKey: CLAUDE_API_KEY,
@@ -441,6 +504,15 @@ serve(async (req) => {
       });
     }
 
+    // ── Tool-use injection (2026-05-07) ──────────────────────────────────
+    // When the client has NOT provided its own tools list, inject the
+    // assistant tools (send_email, generate_pdf). Authenticated users only —
+    // anon callers get read-only assistance, no side-effecting tools.
+    // The client may pass body.tools = [] to explicitly disable injection.
+    if (!isAnon && !Array.isArray(body.tools)) {
+      body.tools = ASSISTANT_TOOLS;
+    }
+
     // Non-streaming mode (existing behavior)
     const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -450,13 +522,108 @@ serve(async (req) => {
 
     // Happy path: forward Anthropic's JSON augmented with grounded citations.
     if (claudeResponse.ok) {
-      const result = await claudeResponse.json();
+      const result = await claudeResponse.json() as {
+        content?: unknown;
+        stop_reason?: string;
+        [key: string]: unknown;
+      };
+
+      // ── Tool-use execution (2026-05-07) ───────────────────────────────
+      // When Anthropic returns stop_reason="tool_use", extract the
+      // tool_use blocks, execute them (send_email / generate_pdf), and
+      // send ONE follow-up call to Anthropic so the model can produce a
+      // final user-facing text reply incorporating the tool results.
+      //
+      // Design constraints:
+      //   - Max ONE tool loop iteration (avoids runaway chains).
+      //   - Tool execution errors are surfaced as tool_result.is_error=true;
+      //     the follow-up call lets the model explain the failure gracefully.
+      //   - Only authenticated callers (isAnon=false) reach this branch
+      //     because tools are never injected for anon.
+      //   - We skip the loop if the body had stream=true (shouldn't happen
+      //     in the non-streaming branch, but belt+suspenders).
+      if (
+        !isAnon &&
+        result.stop_reason === "tool_use" &&
+        Array.isArray(result.content)
+      ) {
+        const toolBlocks = extractToolUseBlocks(result.content);
+        if (toolBlocks.length > 0) {
+          const toolResults = await executeToolCalls(
+            toolBlocks,
+            authHeader,
+            gate.user.id,
+          );
+
+          // Build follow-up messages: existing messages + assistant turn +
+          // tool results as a "user" turn (Anthropic's tool_result protocol).
+          const followUpMessages = [
+            ...(Array.isArray(body.messages) ? body.messages : []),
+            { role: "assistant", content: result.content },
+            { role: "user", content: toolResults },
+          ];
+
+          // Strip tools from the follow-up so the model produces a text reply.
+          const followUpBody = {
+            ...body,
+            messages: followUpMessages,
+            tools: undefined,
+            // Allow the full token budget for the final answer.
+            max_tokens: isAnon ? ANON_MAX_TOKENS : MAX_TOKENS_LIMIT,
+          };
+          delete followUpBody.tools;
+
+          const followUpResponse = await fetch(
+            "https://api.anthropic.com/v1/messages",
+            {
+              method: "POST",
+              headers: buildAnthropicHeaders(CLAUDE_API_KEY),
+              body: JSON.stringify(followUpBody),
+            },
+          );
+
+          if (followUpResponse.ok) {
+            const followUpResult = await followUpResponse.json() as {
+              content?: unknown;
+              [key: string]: unknown;
+            };
+            // Run citations on the follow-up text, then return.
+            const followUpText = concatAnthropicTextBlocks(
+              followUpResult.content,
+            );
+            const followUpCitations = verifyCitations(followUpText, ragChunks);
+            const followUpAugmented = persistMessageId !== null
+              ? {
+                ...followUpResult,
+                citations: followUpCitations,
+                message_id: persistMessageId,
+                tool_calls_executed: toolBlocks.map((b) => b.name),
+              }
+              : {
+                ...followUpResult,
+                citations: followUpCitations,
+                tool_calls_executed: toolBlocks.map((b) => b.name),
+              };
+            return new Response(JSON.stringify(followUpAugmented), {
+              status: 200,
+              headers: { ...corsHeaders, "Content-Type": "application/json" },
+            });
+          }
+          // Follow-up call failed — fall through to return the raw tool_use
+          // response so the client isn't left with a total failure.
+          console.warn(
+            `claude-proxy: tool follow-up call failed HTTP ${followUpResponse.status}`,
+          );
+        }
+      }
+      // ── End tool-use execution ─────────────────────────────────────────
+
       // ── Grounding verifier (Pkg 2) ─────────────────────────────────────
       // Pure regex + Map lookup against ragChunks (already in memory from
       // this turn). p95 < 50 ms per design. Never throws; returns [] on
       // empty inputs so legacy callers (no rag_context) keep working.
       const replyText = concatAnthropicTextBlocks(
-        (result as { content?: unknown }).content,
+        result.content,
       );
       const citations = verifyCitations(replyText, ragChunks);
 

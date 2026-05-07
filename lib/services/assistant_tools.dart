@@ -159,6 +159,8 @@ class AssistantTools {
     'inbox_read_thread_full': _inboxReadThreadFull,
     'lesson_write_from_mistake': _lessonWriteFromMistake,
     'lesson_apply_to_current_task': _lessonApplyToCurrentTask,
+    // v2.1 — generate HTML document from markdown and upload to Storage.
+    'generate_pdf': _generatePdf,
   };
 
   /// Tools that require explicit user approval before the result is acted upon.
@@ -177,6 +179,9 @@ class AssistantTools {
     // Email Agent D5 — dispatches the persisted triage draft via the
     // existing send-email edge fn. Same gate as send_email.
     'approve_send_draft',
+    // generate_pdf requires approval: it writes a file to Storage and
+    // optionally creates a DB row. User confirms before the upload happens.
+    'generate_pdf',
   };
 
   /// List of all registered tool names.
@@ -258,6 +263,9 @@ class AssistantTools {
         return 'Apply these changes to the case?';
       case 'approve_send_draft':
         return 'Send the prepared reply?';
+      case 'generate_pdf':
+        final docTitle = params['title'] as String? ?? 'document';
+        return 'Generate and upload "$docTitle" to your case documents?';
       default:
         return 'Confirm this action?';
     }
@@ -3238,6 +3246,94 @@ $brief
               'lesson-grounded guidance.'
           : 'Apply these ${capped.length} lesson(s) before acting:\n'
               '${capped.map((l) => "- ${l['value']}").join("\n")}',
+    );
+  }
+
+  // ── PDF / document generation ─────────────────────────────────────────────
+
+  /// Converts [body_markdown] to HTML, uploads to the `case-documents`
+  /// Storage bucket, returns a signed download URL valid for 1 hour, and
+  /// optionally links the generated file to an active case.
+  ///
+  /// Parameters:
+  ///   title          — document title (required, ≤200 chars)
+  ///   body_markdown  — markdown body (required, ≤100 000 chars)
+  ///   doc_type       — e.g. "appeal", "complaint", "letter" (default "other")
+  ///   locale         — e.g. "en", "et", "fi" (default "en")
+  ///   case_id        — optional UUID; if provided the file is linked to the case
+  Future<ToolResult> _generatePdf(Map<String, dynamic> params) async {
+    final title = (params['title'] as String? ?? '').trim();
+    final bodyMarkdown = (params['body_markdown'] as String? ?? '').trim();
+    final docType = (params['doc_type'] as String? ?? 'other').trim();
+    final locale = (params['locale'] as String? ?? 'en').trim();
+    final caseId = params['case_id'] as String?;
+
+    if (title.isEmpty) {
+      return ToolResult.error('generate_pdf requires a non-empty title.');
+    }
+    if (bodyMarkdown.isEmpty) {
+      return ToolResult.error('generate_pdf requires non-empty body_markdown.');
+    }
+
+    Map<String, dynamic>? resp;
+    try {
+      resp = await _supabase.callEdgeFunction(
+        'pdf-generator',
+        body: {
+          'title': title,
+          'body_markdown': bodyMarkdown,
+          'doc_type': docType,
+          'locale': locale,
+          if (caseId != null && caseId.isNotEmpty) 'case_id': caseId,
+        },
+      );
+    } catch (e) {
+      _log.w('generate_pdf: edge function failed: $e');
+    }
+
+    if (resp == null || resp['download_url'] == null) {
+      return ToolResult.error(
+        'Could not generate the document. The server may be temporarily '
+        'unavailable — please try again in a moment.',
+      );
+    }
+
+    final downloadUrl = resp['download_url'] as String;
+    final filename = resp['filename'] as String? ?? '$title.html';
+    final documentId = resp['document_id'] as String?;
+
+    final displayBuf = StringBuffer();
+    displayBuf.writeln('**Document generated:** $title');
+    displayBuf.writeln();
+    displayBuf.writeln('**Format:** HTML (print-ready, open in browser to print as PDF)');
+    displayBuf.writeln('**File:** $filename');
+    if (caseId != null && caseId.isNotEmpty) {
+      displayBuf.writeln(
+        documentId != null
+            ? '**Case vault:** Document linked to case.'
+            : '**Case vault:** Could not link to case (file still accessible via URL).',
+      );
+    }
+    displayBuf.writeln();
+    displayBuf.writeln('**Download link** (valid 1 hour):');
+    displayBuf.writeln(downloadUrl);
+
+    return ToolResult(
+      success: true,
+      displayText: displayBuf.toString(),
+      cardType: 'draft_preview',
+      data: {
+        'title': title,
+        'doc_type': docType,
+        'locale': locale,
+        'filename': filename,
+        'download_url': downloadUrl,
+        'storage_path': resp['storage_path'] as String? ?? '',
+        if (documentId != null) 'document_id': documentId,
+        if (caseId != null && caseId.isNotEmpty) 'case_id': caseId,
+      },
+      requiresApproval: true,
+      approvalMessage: 'Generate and upload "$title" to your case documents?',
     );
   }
 

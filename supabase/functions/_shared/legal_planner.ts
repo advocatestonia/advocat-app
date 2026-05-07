@@ -30,7 +30,7 @@
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 
-const MODEL_SONNET = "claude-sonnet-4-20250514";
+const MODEL_SONNET = "claude-sonnet-4-6";
 const MODEL_HAIKU = "claude-haiku-4-5-20251001";
 
 // Per-pass token budgets — pinned by the spec (§2 Pass shapes).
@@ -216,6 +216,9 @@ Hard rules:
 - Stay under 500 tokens. Brevity > completeness.
 - If the question is not legal-domain after all, emit
   <plan><sub_questions>- (none)</sub_questions></plan> and stop.
+
+## ДЕДЛАЙН-ФИЛЬТР
+Если в контексте дела есть дата дедлайна — КАЖДЫЙ совет проверяй: "мы успеваем до дедлайна?". Если нет — это P0 риск, назови явно.
 `.trim();
 
 const EXECUTOR_INSTRUCTIONS_HEADER = String.raw`
@@ -261,6 +264,17 @@ Output format (strict — the orchestrator parses these tags):
 </critique>
 
 Stay under 300 tokens.
+
+## ПРОАКТИВНЫЙ АНАЛИЗ — ОБЯЗАТЕЛЬНО
+После своей критики добавь раздел:
+
+**Что клиент не спросил, но должен знать:**
+- Если видишь процессуальный риск — назови его (например: "срок подачи истекает через X дней")
+- Если видишь упущенный аргумент — назови его
+- Если видишь паттерн из нескольких фактов — объедини их в один вывод
+- Если ничего критичного нет — напиши "Критических упущений нет"
+
+Максимум 3 пункта. Каждый начинается с ⚠️ если риск, или 💡 если возможность.
 `.trim();
 
 // ─── Parsers ─────────────────────────────────────────────────────────────

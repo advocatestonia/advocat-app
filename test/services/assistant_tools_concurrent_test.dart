@@ -217,6 +217,8 @@ void main() {
         // Email Agent D5 — dispatches the persisted triage draft via the
         // existing send-email edge fn. Same gate as send_email.
         'approve_send_draft',
+        // 2026-05-07 Badass Lawyer AI — generates PDF and uploads to Storage.
+        'generate_pdf',
       };
       expect(AssistantTools.requiresApproval, expectedWriteTools);
     });
