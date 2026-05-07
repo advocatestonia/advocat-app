@@ -281,15 +281,28 @@ void main() {
       });
 
       test(
-        'natural-key dedupe index on case_deadlines (case_id, anchor_key, deadline_at::date)',
+        "natural-key dedupe index on case_deadlines (case_id, anchor_key, (deadline_at AT TIME ZONE 'UTC')::date)",
         () {
           // This index is what makes apply_deadline_extraction's upsert work.
           // Drop it and you start getting duplicate kaebus rows from PDF +
           // intake.
+          //
+          // The date cast is wrapped in `AT TIME ZONE 'UTC'` because Postgres
+          // requires index expressions to be IMMUTABLE — bare timestamptz::date
+          // depends on the session TimeZone GUC and is therefore STABLE only.
           final sql = _readMigration('case_deadlines');
           expect(sql, contains('case_deadlines_anchor_dedupe_idx'));
           // Partial index — only when anchor_key IS NOT NULL.
           expect(sql, contains('where anchor_key is not null'));
+          // IMMUTABLE-safe date cast — pinning to UTC makes the expression
+          // deterministic regardless of session TimeZone setting.
+          expect(
+            sql,
+            contains("(deadline_at AT TIME ZONE 'UTC')::date"),
+            reason:
+                'index expression must be IMMUTABLE — bare timestamptz::date '
+                'is only STABLE and Postgres rejects it in unique indexes',
+          );
         },
       );
     },

@@ -140,8 +140,8 @@ void main() {
         sql,
         contains('case_deadlines_anchor_dedupe_idx'),
         reason:
-            'natural-key (case_id, anchor_key, deadline_at::date) must '
-            'be uniquely enforced for upsert dedupe',
+            "natural-key (case_id, anchor_key, (deadline_at AT TIME ZONE 'UTC')::date) "
+            'must be uniquely enforced for upsert dedupe',
       );
       expect(
         sql,
@@ -149,6 +149,16 @@ void main() {
         reason:
             'dedupe index must be partial — manual rows without anchor '
             'are user-controlled and may legitimately duplicate',
+      );
+      // IMMUTABLE-safe date cast — bare `timestamptz::date` is only STABLE
+      // (depends on session TimeZone GUC); Postgres rejects STABLE
+      // expressions in index definitions. Pinning to UTC makes it IMMUTABLE.
+      expect(
+        sql,
+        contains("(deadline_at AT TIME ZONE 'UTC')::date"),
+        reason:
+            'index expression must be IMMUTABLE — wrap timestamptz::date in '
+            "AT TIME ZONE 'UTC' so expression is deterministic",
       );
     });
 

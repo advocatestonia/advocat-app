@@ -95,7 +95,7 @@ create index if not exists case_deadlines_cron_scan_idx
 -- anchor_key is set; manual rows without an anchor are user's own list and
 -- intentionally allow duplicates.
 create unique index if not exists case_deadlines_anchor_dedupe_idx
-    on public.case_deadlines (case_id, anchor_key, (deadline_at::date))
+    on public.case_deadlines (case_id, anchor_key, ((deadline_at AT TIME ZONE 'UTC')::date))
     where anchor_key is not null;
 
 -- ── 3. updated_at trigger ─────────────────────────────────────────────
