@@ -2351,7 +2351,7 @@ abstract class AppLocalizations {
   /// No description provided for @pdfExportComingSoon.
   ///
   /// In en, this message translates to:
-  /// **'PDF export coming soon'**
+  /// **'Export as PDF'**
   String get pdfExportComingSoon;
 
   /// No description provided for @analysisFailedRetry.
@@ -2573,7 +2573,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailComingSoon.
   ///
   /// In en, this message translates to:
-  /// **'Email sending coming soon'**
+  /// **'Send email via your connected Gmail account'**
   String get emailComingSoon;
 
   /// No description provided for @reviewBeforeSending.
