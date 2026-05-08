@@ -1182,7 +1182,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exportAsPdf => 'Export as PDF';
 
   @override
-  String get pdfExportComingSoon => 'PDF export coming soon';
+  String get pdfExportComingSoon => 'Export as PDF';
 
   @override
   String get analysisFailedRetry => 'Analysis failed. Please try again.';
@@ -1310,7 +1310,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get copiedToClipboard => 'Copied to clipboard';
 
   @override
-  String get emailComingSoon => 'Email sending coming soon';
+  String get emailComingSoon => 'Send email via your connected Gmail account';
 
   @override
   String get reviewBeforeSending =>

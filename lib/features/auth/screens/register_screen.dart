@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router.dart';
 import '../../../l10n/app_localizations.dart';
@@ -115,19 +116,29 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
 
     // Tap recognizers for terms/privacy links
     _termsRecognizer = TapGestureRecognizer()
-      ..onTap = () {
-        // TODO: Open Terms of Service
-      };
+      ..onTap = _openTerms;
     _privacyRecognizer = TapGestureRecognizer()
-      ..onTap = () {
-        // TODO: Open Privacy Policy
-      };
+      ..onTap = _openPrivacy;
 
     // Listen to focus changes for shadow effect
     _nameFocus.addListener(_onFocusChange);
     _emailFocus.addListener(_onFocusChange);
     _passwordFocus.addListener(_onFocusChange);
     _confirmPasswordFocus.addListener(_onFocusChange);
+  }
+
+  Future<void> _openTerms() async {
+    final uri = Uri.parse('https://advocat.ee/terms');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Future<void> _openPrivacy() async {
+    final uri = Uri.parse('https://advocat.ee/privacy');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   void _onFocusChange() => setState(() {});

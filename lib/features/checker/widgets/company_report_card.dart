@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../providers/company_checker_provider.dart';
@@ -129,12 +131,9 @@ class CompanyReportCard extends StatelessWidget {
             width: double.infinity,
             child: OutlinedButton.icon(
               onPressed: () {
-                // TODO: Navigate to case creation with pre-filled data
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(AppLocalizations.of(context)?.caseCreationComingSoon ?? 'Case creation with pre-filled data coming soon'),
-                    behavior: SnackBarBehavior.floating,
-                  ),
+                context.push(
+                  AppRoutes.caseV2New,
+                  extra: {'companyName': report.companyName},
                 );
               },
               icon: const Icon(Icons.folder_open_outlined),

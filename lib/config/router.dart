@@ -432,12 +432,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/documents',
         name: 'documentsRedirect',
-        redirect: (context, state) => AppRoutes.home,
+        redirect: (context, state) => AppRoutes.cases,
       ),
       GoRoute(
         path: '/case/:id',
         name: 'caseSingularRedirect',
-        redirect: (context, state) => AppRoutes.home,
+        redirect: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return '/cases-v2/$id';
+        },
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

@@ -9,10 +9,10 @@ library;
 // The QA pass found that bare /profile, /chat, /documents and /case/<id>
 // dead-ended on a "Page not found:" screen with no recovery affordance.
 // Owner approved redirecting them to:
-//   /profile      → /settings  (profile lives inside settings)
-//   /chat         → /home      (chat needs a caseId; bare path is invalid)
-//   /documents    → /home      (TODO: dedicated documents listing screen)
-//   /case/<id>    → /home      (TODO: alias to /cases/<id>)
+//   /profile      → /settings    (profile lives inside settings)
+//   /chat         → /home        (chat needs a caseId; bare path is invalid)
+//   /documents    → /cases       (cases list is the closest document hub)
+//   /case/<id>    → /cases-v2/<id> (alias to case workspace, preserving id)
 //
 // We boot a tiny GoRouter that mirrors the redirect rules and assert the
 // resolved location for each entry path. We also do a light source-grep
@@ -42,6 +42,14 @@ GoRouter _buildRedirectOnlyRouter() {
         builder: (_, __) => const Scaffold(body: Text('settings')),
       ),
       GoRoute(
+        path: AppRoutes.cases,
+        builder: (_, __) => const Scaffold(body: Text('cases')),
+      ),
+      GoRoute(
+        path: '/cases-v2/:id',
+        builder: (_, __) => const Scaffold(body: Text('case workspace')),
+      ),
+      GoRoute(
         path: '/profile',
         redirect: (_, __) => AppRoutes.settings,
       ),
@@ -51,11 +59,14 @@ GoRouter _buildRedirectOnlyRouter() {
       ),
       GoRoute(
         path: '/documents',
-        redirect: (_, __) => AppRoutes.home,
+        redirect: (_, __) => AppRoutes.cases,
       ),
       GoRoute(
         path: '/case/:id',
-        redirect: (_, __) => AppRoutes.home,
+        redirect: (_, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return '/cases-v2/$id';
+        },
       ),
     ],
     errorBuilder: (_, state) => Scaffold(
@@ -85,14 +96,15 @@ void main() {
       expect(loc, AppRoutes.home);
     });
 
-    testWidgets('/documents redirects to /home', (tester) async {
+    testWidgets('/documents redirects to /cases', (tester) async {
       final loc = await _resolveLocation(tester, '/documents');
-      expect(loc, AppRoutes.home);
+      expect(loc, AppRoutes.cases);
     });
 
-    testWidgets('/case/<id> redirects to /home', (tester) async {
+    testWidgets('/case/<id> redirects to /cases-v2/<id>', (tester) async {
       final loc = await _resolveLocation(tester, '/case/test-case-123');
-      expect(loc, AppRoutes.home);
+      expect(loc, startsWith('/cases-v2/'),
+          reason: '/case/:id must redirect to the case workspace (/cases-v2/...)');
     });
   });
 
@@ -134,7 +146,7 @@ void main() {
           reason: '/chat must redirect to AppRoutes.home');
     });
 
-    test('declares /documents redirect to AppRoutes.home', () {
+    test('declares /documents redirect to AppRoutes.cases', () {
       final docsIdx = source.indexOf("path: '/documents'");
       expect(docsIdx, greaterThan(0),
           reason: '/documents redirect route must exist');
@@ -142,20 +154,20 @@ void main() {
         docsIdx,
         (docsIdx + 200).clamp(0, source.length),
       );
-      expect(block, contains('AppRoutes.home'),
-          reason: '/documents must redirect to AppRoutes.home');
+      expect(block, contains('AppRoutes.cases'),
+          reason: '/documents must redirect to AppRoutes.cases');
     });
 
-    test('declares /case/:id redirect to AppRoutes.home', () {
+    test('declares /case/:id redirect to /cases-v2/<id>', () {
       final caseIdx = source.indexOf("path: '/case/:id'");
       expect(caseIdx, greaterThan(0),
           reason: '/case/:id redirect route must exist');
       final block = source.substring(
         caseIdx,
-        (caseIdx + 200).clamp(0, source.length),
+        (caseIdx + 300).clamp(0, source.length),
       );
-      expect(block, contains('AppRoutes.home'),
-          reason: '/case/:id must redirect to AppRoutes.home');
+      expect(block, contains('cases-v2'),
+          reason: '/case/:id must redirect to /cases-v2/<id>');
     });
   });
 }

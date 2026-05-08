@@ -68,9 +68,7 @@ Future<void> main() async {
     await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   }
 
-  // NOTE: Firebase and Stripe initialization disabled for demo.
-  // Enable when backend is configured:
-  // await Firebase.initializeApp();
+  // Firebase.initializeApp() requires firebase_options.dart — run flutterfire configure first
   // Stripe.publishableKey = AppConfig.stripePublishableKey;
 
   runWithErrorBoundary(() {
