@@ -75122,7 +75122,7 @@ return A.Z(s,A.ai(A.b([B.aC9,A.d4(B.cBA,s,s,s,new A.biq(this),s,s)],t.p),B.x,B.q
 ga92(){this.gbC().ak(0,$.xn(),t.WL)
 return this.dy===0},
 aPL(){var s=null
-return new A.a5(B.dT,A.al(A.b([new A.a5(B.hl,A.q("\u0412\u044b \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043b\u0438 \u0432\u0441\u0435 7 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0445 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439. \u041e\u0444\u043e\u0440\u043c\u0438\u0442\u0435 Advocat Pro \u0437\u0430 \u20ac14.99/\u043c\u0435\u0441.",B.cFb,s,s,s,s,B.on,s,s,s),s),B.en,A.bN(A.y9(B.aGH,B.cFk,B.cAS,new A.biv(this),A.jk(s,s,B.y,s,s,s,0,s,s,B.I,s,s,s,s,new A.bY(A.Y(24),B.R),s,s,s,s,s)),48,s)],t.p),B.dd,s,B.q,B.a2),s)},
+return new A.a5(B.dT,A.al(A.b([new A.a5(B.hl,A.q("\u0412\u044b \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043b\u0438 \u0432\u0441\u0435 7 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0445 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439. \u041e\u0444\u043e\u0440\u043c\u0438\u0442\u0435 Advocat Pro \u0437\u0430 \u20ac19.99/\u043c\u0435\u0441.",B.cFb,s,s,s,s,B.on,s,s,s),s),B.en,A.bN(A.y9(B.aGH,B.cFk,B.cAS,new A.biv(this),A.jk(s,s,B.y,s,s,s,0,s,s,B.I,s,s,s,s,new A.bY(A.Y(24),B.R),s,s,s,s,s)),48,s)],t.p),B.dd,s,B.q,B.a2),s)},
 aOO(a){var s,r,q,p,o,n,m,l=this,k=null,j=A.bN(A.dp(B.M,k,k,B.aGW,k,k,new A.bi6(l),B.aN,k,k,k,k),44,40),i=l.as?k:new A.bi7(l)
 i=A.aI(new A.a0p(l.w,l.y,i,k),1,k)
 s=t.p
@@ -75620,7 +75620,7 @@ s.toString
 return A.bU(s).dk("/subscription",null,t.X)},
 $S:0}
 A.bjy.prototype={
-$1(a){var s=null,r=A.q("\u0412\u044b \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043b\u0438 \u0432\u0441\u0435 7 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0445 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439. \u041e\u0444\u043e\u0440\u043c\u0438\u0442\u0435 Advocat Pro \u0437\u0430 \u20ac14.99/\u043c\u0435\u0441 \u0434\u043b\u044f \u043d\u0435\u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u043d\u043e\u0433\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u0430 \u043a AI-\u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044f\u043c.",s,s,s,s,s,s,s,s,s)
+$1(a){var s=null,r=A.q("\u0412\u044b \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043b\u0438 \u0432\u0441\u0435 7 \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u044b\u0445 \u0441\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0439. \u041e\u0444\u043e\u0440\u043c\u0438\u0442\u0435 Advocat Pro \u0437\u0430 \u20ac19.99/\u043c\u0435\u0441 \u0434\u043b\u044f \u043d\u0435\u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u043d\u043e\u0433\u043e \u0434\u043e\u0441\u0442\u0443\u043f\u0430 \u043a AI-\u043a\u043e\u043d\u0441\u0443\u043b\u044c\u0442\u0430\u0446\u0438\u044f\u043c.",s,s,s,s,s,s,s,s,s)
 return A.nW(A.b([A.d4(B.cBj,s,s,s,new A.bjw(a),s,s),A.kP(B.cBp,s,new A.bjx(this.a,a),A.jk(s,s,B.y,s,s,s,s,s,s,B.I,s,s,s,s,s,s,s,s,s,s))],t.p),r,B.cFa,s,B.cBJ)},
 $S:46}
 A.bjw.prototype={
@@ -81955,7 +81955,7 @@ n=a.glX()
 q=b===B.a51
 o=A.b([new A.ja(a.gru(),!0),new A.ja(a.gxo(),!0),new A.ja(a.gxy(),!0),new A.ja(a.glM(),!0),new A.ja(a.gkd(),!0),new A.ja(a.gmw(),!0)],p)
 s=q?null:new A.bAC(this)
-n=A.bNi(119.99,B.cLm,o,c,q,d==="basic",!0,14.99,s,"basic","COUNSEL",n)
+n=A.bNi(119.99,B.cLm,o,c,q,d==="basic",!0,19.99,s,"basic","COUNSEL",n)
 s=a.glN()
 q=b===B.BO
 p=A.b([new A.ja(a.gxD(),!0),new A.ja(a.gxE(),!0),new A.ja(a.gxF(),!0),new A.ja(a.glM(),!0),new A.ja(a.gkd(),!0),new A.ja(a.gvT(),!0)],p)
@@ -210724,9 +210724,9 @@ B.cAL=new A.c9("No issues flagged.",null,B.lK,null,null,null,null,null,null,null
 B.C8=new A.c9("Cancel",null,null,null,null,null,null,null,null,null,null)
 B.cAo=new A.C(!0,B.au,null,null,null,null,22,B.am,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.cAM=new A.c9("How it works",null,B.cAo,null,null,null,null,null,null,null,null)
-B.cAS=new A.c9("\u041e\u0444\u043e\u0440\u043c\u0438\u0442\u044c Advocat Pro \u2014 \u20ac14.99/\u043c\u0435\u0441",null,B.a5W,null,null,null,null,null,null,null,null)
+B.cAS=new A.c9("\u041e\u0444\u043e\u0440\u043c\u0438\u0442\u044c Advocat Pro \u2014 \u20ac19.99/\u043c\u0435\u0441",null,B.a5W,null,null,null,null,null,null,null,null)
 B.cw6=new A.C(!0,B.I,null,null,null,null,11,B.a5,null,0.2,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
-B.cAW=new A.c9("from \u20ac14.99/mo",null,B.cw6,null,null,null,null,null,null,null,null)
+B.cAW=new A.c9("from \u20ac19.99/mo",null,B.cw6,null,null,null,null,null,null,null,null)
 B.cB2=new A.c9("Forget everything",null,B.oq,null,null,null,null,null,null,null,null)
 B.cvD=new A.C(!0,B.M,null,null,null,null,14,B.aC,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null)
 B.cB5=new A.c9("Professional verification tools",null,B.cvD,null,null,null,null,null,null,null,null)
@@ -210739,7 +210739,7 @@ B.cBh=new A.c9("Forget everything",null,null,null,null,null,null,null,null,null,
 B.cBj=new A.c9("\u041f\u043e\u0437\u0436\u0435",null,null,null,null,null,null,null,null,null,null)
 B.cBm=new A.c9("AI-generated draft. Must be reviewed by a qualified attorney.",null,B.a5z,null,null,null,null,null,null,null,null)
 B.cBo=new A.c9("Page Not Found",null,null,null,null,null,null,null,null,null,null)
-B.cBp=new A.c9("Advocat Pro \u2014 \u20ac14.99/\u043c\u0435\u0441",null,null,null,null,null,null,null,null,null,null)
+B.cBp=new A.c9("Advocat Pro \u2014 \u20ac19.99/\u043c\u0435\u0441",null,null,null,null,null,null,null,null,null,null)
 B.cBr=new A.c9("Lae uuesti \xb7 Reload",null,null,null,null,null,null,null,null,null,null)
 B.cBt=new A.c9("Forget everything?",null,null,null,null,null,null,null,null,null,null)
 B.cBu=new A.c9("Gmail",null,B.a5N,null,null,null,null,null,null,null,null)
