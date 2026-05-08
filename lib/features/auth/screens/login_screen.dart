@@ -65,6 +65,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     await ref.read(authControllerProvider.notifier).loginWithGoogle();
   }
 
+  Future<void> _handleAppleLogin() async {
+    try {
+      await ref.read(authControllerProvider.notifier).loginWithApple();
+    } catch (e) {
+      if (!mounted) return;
+      _showSnackBar('Apple Sign-In failed. Please try email.');
+    }
+  }
+
   Future<void> _handleForgotPassword() async {
     final l = AppLocalizations.of(context)!;
     final email = _emailController.text.trim();
@@ -469,9 +478,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
           // -- Apple sign-in --
           _ScaleOnTapButton(
-            onTap: authState.isLoading ? null : () {
-              _showSnackBar('Apple Sign-In — tuleb peagi');
-            },
+            onTap: authState.isLoading ? null : _handleAppleLogin,
             child: Container(
               height: 44,
               decoration: BoxDecoration(
@@ -486,9 +493,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 ],
               ),
               child: OutlinedButton(
-                onPressed: authState.isLoading ? null : () {
-                  _showSnackBar('Apple Sign-In — tuleb peagi');
-                },
+                onPressed: authState.isLoading ? null : _handleAppleLogin,
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.black,

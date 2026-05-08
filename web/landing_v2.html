@@ -48,6 +48,26 @@ body{margin:0;padding:0;background:linear-gradient(135deg,#F0EEEB 0%,#E8E4DF 25%
 .trust-section.visible{opacity:1;transform:translateY(0)}
 .trust-badge{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1.5px solid rgba(13,148,136,0.2);border-radius:40px;padding:12px 28px;font-size:14px;font-weight:600;color:var(--text);box-shadow:0 2px 16px rgba(26,53,93,0.05)}
 .trust-badge svg{flex-shrink:0}
+.pricing-section{margin:0 auto 48px;max-width:680px;text-align:center;opacity:0;transform:translateY(24px);transition:all .6s ease-out .2s}
+.pricing-section.visible{opacity:1;transform:translateY(0)}
+.pricing-title{font-size:26px;font-weight:800;color:var(--text);margin:0 0 6px}
+.pricing-sub{font-size:14px;color:var(--text);opacity:.6;margin:0 0 28px}
+.pricing-cards{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.price-card{background:var(--surface);border-radius:16px;padding:24px 20px;min-width:220px;max-width:280px;flex:1;box-shadow:0 2px 20px rgba(26,53,93,0.07);border:1.5px solid rgba(26,53,93,0.08);text-align:left}
+.price-card.featured{border-color:var(--accent);box-shadow:0 4px 28px rgba(13,148,136,0.18);position:relative}
+.price-card.featured::before{content:"Most popular";position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:3px 14px;border-radius:20px;letter-spacing:.4px;white-space:nowrap}
+.price-card h3{font-size:17px;font-weight:700;color:var(--text);margin:0 0 4px}
+.price-card .price-amount{font-size:32px;font-weight:800;color:var(--accent);line-height:1.1;margin:0 0 2px}
+.price-card .price-amount span{font-size:15px;font-weight:500;color:var(--text);opacity:.55}
+.price-card ul{list-style:none;margin:14px 0 20px;padding:0}
+.price-card ul li{font-size:13px;color:var(--text);opacity:.75;padding:4px 0;padding-left:20px;position:relative}
+.price-card ul li::before{content:"✓";position:absolute;left:0;color:var(--accent);font-weight:700}
+.price-card .btn-pricing{display:inline-block;width:100%;text-align:center;padding:11px 0;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;box-sizing:border-box}
+.btn-pricing-free{background:transparent;border:1.5px solid rgba(26,53,93,0.2);color:var(--text)}
+.btn-pricing-free:hover{border-color:var(--accent);color:var(--accent)}
+.btn-pricing-pro{background:var(--accent);color:#fff;border:none}
+.btn-pricing-pro:hover{filter:brightness(1.08);transform:translateY(-1px)}
+@media(max-width:600px){.pricing-cards{flex-direction:column;align-items:center}.price-card{min-width:unset;width:100%}.pricing-title{font-size:20px}}
 .footer{text-align:center;padding:24px 20px 32px;font-size:12px;color:var(--text);opacity:.45;line-height:1.8}
 .footer a{color:var(--accent);text-decoration:none;font-weight:500;transition:opacity .2s}
 .footer a:hover{opacity:.7}
@@ -137,6 +157,49 @@ html[dir="rtl"] body{direction:rtl}
     <div class="trust-badge">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0D9488" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <span id="trust-text">Trusted & Secure — Your data stays private</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing-section" id="pricing-section">
+  <h2 class="pricing-title">Simple, transparent pricing</h2>
+  <p class="pricing-sub">Start free. Upgrade when you need more.</p>
+  <div class="pricing-cards">
+    <div class="price-card">
+      <h3>Free</h3>
+      <div class="price-amount">€0<span></span></div>
+      <ul>
+        <li>7 messages / month</li>
+        <li>17 languages</li>
+        <li>All case types</li>
+        <li>AI legal analysis</li>
+      </ul>
+      <a href="/app.html" class="btn-pricing btn-pricing-free">Start free</a>
+    </div>
+    <div class="price-card featured">
+      <h3>Counsel</h3>
+      <div class="price-amount">€14.99<span>/mo</span></div>
+      <ul>
+        <li>100 messages / day</li>
+        <li>3 active cases</li>
+        <li>Document analysis</li>
+        <li>Draft generation</li>
+        <li>Voice input</li>
+      </ul>
+      <a href="/app.html?plan=basic" class="btn-pricing btn-pricing-pro">Get Counsel</a>
+    </div>
+    <div class="price-card">
+      <h3>Pro</h3>
+      <div class="price-amount">€29.99<span>/mo</span></div>
+      <ul>
+        <li>Unlimited messages</li>
+        <li>Unlimited cases</li>
+        <li>Unlimited doc scans</li>
+        <li>Priority processing</li>
+        <li>Draft generation</li>
+      </ul>
+      <a href="/app.html?plan=premium" class="btn-pricing btn-pricing-pro">Get Pro</a>
     </div>
   </div>
 </div>
@@ -359,12 +422,17 @@ var revealed=false;
 function checkScroll(){
   var ss=document.getElementById('stats-section');
   var ts=document.getElementById('trust-section');
+  var ps=document.getElementById('pricing-section');
   if(!ss)return;
   var rect=ss.getBoundingClientRect();
   if(rect.top<window.innerHeight-60){
     ss.classList.add('visible');
     ts.classList.add('visible');
     if(!revealed){revealed=true;animateCounters();}
+  }
+  if(ps){
+    var pr=ps.getBoundingClientRect();
+    if(pr.top<window.innerHeight-60){ps.classList.add('visible');}
   }
 }
 window.addEventListener('scroll',checkScroll,{passive:true});

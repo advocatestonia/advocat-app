@@ -222,6 +222,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // user who tapped Skip is never re-asked.
   bool _showQuickProfile = false;
 
+  // Guards the per-session intake trigger: once we have decided to show
+  // the bottom sheet (or determined it should not show), flip this flag
+  // so subsequent AI responses do not re-trigger it.
+  bool _hasShownIntakeThisSession = false;
+
   // -- Image-vision staging (2026-04-23) --
   // Staged when the user picks an image; consumed (cleared) on next
   // _sendMessage so the image is forwarded to Claude as an inline vision
@@ -593,10 +598,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         // Preload context so the first AI response doesn't block on Supabase queries
         unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
 
-        // Quick Profile intake (2026-05-05): on first chat with no
-        // legal-status memory and no completion flag, show a one-shot
-        // intake question. Best-effort — never blocks chat.
-        unawaited(_loadQuickProfileGate());
+        // Quick Profile intake is now triggered AFTER the first AI response
+        // (see _maybeShowIntakeAfterFirstAIResponse). No longer shown on mount.
 
         // Check for urgent deadlines and notify the user
         unawaited(_checkUrgentDeadlines());
@@ -610,9 +613,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           _messages = [];
         });
         _sendWelcomeMessage();
-        // Even on a load error — the user is starting fresh, so the
-        // intake is more relevant than usual.
-        unawaited(_loadQuickProfileGate());
+        // Quick Profile intake is deferred to after the first AI response.
       }
     }
   }
@@ -686,21 +687,81 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  // -- Quick Profile intake handlers (2026-05-05) --
+  // -- Quick Profile intake handlers (2026-05-05, redesigned 2026-05-08) --
 
-  /// Decide whether to show the intake on this mount and update state.
-  /// Best-effort — any error (auth not ready, RLS, network) just leaves
-  /// _showQuickProfile=false so chat works for everyone.
-  Future<void> _loadQuickProfileGate() async {
-    try {
-      final memoryService = ref.read(userMemoryServiceProvider);
-      final memories = await memoryService.getMemories(limit: 20);
-      final show = await QuickProfileGate.shouldShow(memories: memories);
+  /// Called once after the first AI response arrives. Checks whether the
+  /// intake gate should show and, if so, presents it as a bottom sheet
+  /// after a short delay so the UI settles before the sheet appears.
+  ///
+  /// Idempotent — guarded by [_hasShownIntakeThisSession] so multiple AI
+  /// responses (e.g. streaming + follow-up) only trigger it once.
+  void _maybeShowIntakeAfterFirstAIResponse() {
+    if (_hasShownIntakeThisSession) return;
+    _hasShownIntakeThisSession = true;
+
+    Future.delayed(const Duration(milliseconds: 800), () async {
       if (!mounted) return;
-      setState(() => _showQuickProfile = show);
-    } catch (_) {
-      // Fail closed — don't block chat on intake gating.
-    }
+      try {
+        final memoryService = ref.read(userMemoryServiceProvider);
+        final memories = await memoryService.getMemories(limit: 20);
+        if (!mounted) return;
+        final show = await QuickProfileGate.shouldShow(memories: memories);
+        if (!mounted || !show) return;
+        _showIntakeGate();
+      } catch (_) {
+        // Best-effort — never block chat on intake gating.
+      }
+    });
+  }
+
+  /// Present the QuickProfileIntake as a modal bottom sheet. This is less
+  /// aggressive than a blocking full-screen overlay and lets the user
+  /// dismiss it without feeling interrupted.
+  void _showIntakeGate() {
+    final locale = Localizations.localeOf(context).languageCode;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => Container(
+        decoration: const BoxDecoration(
+          color: Color(0xFF1A1A2E), // matches app dark surface
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Drag handle
+                Container(
+                  width: 36,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                QuickProfileIntake(
+                  locale: locale,
+                  onAnswer: (answer) {
+                    Navigator.of(context).pop();
+                    _onQuickProfileAnswer(answer);
+                  },
+                  onSkip: () {
+                    Navigator.of(context).pop();
+                    _onQuickProfileSkip();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   /// User tapped a status chip — persist the flag, echo the answer back
@@ -1047,6 +1108,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 _updateChatPhase();
                 _scrollToBottom();
                 if (_ttsEnabled) unawaited(_speakResponse(responseText));
+                _maybeShowIntakeAfterFirstAIResponse();
               }
               // Planner path is complete — skip streaming + non-streaming.
               return;
@@ -1448,6 +1510,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           if (_ttsEnabled && !usedStreaming) {
             unawaited(_speakResponse(responseText));
           }
+
+          // Show intake gate after first AI response (post-launch UX 2026-05-08).
+          _maybeShowIntakeAfterFirstAIResponse();
         }
       }
     } catch (e, stackTrace) {
@@ -1962,6 +2027,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // user always knows whether the next message will be folded
           // into a case file by claude-proxy (Pkg 1.B).
           const ActiveCaseChip(),
+
+          // Quota-exhausted inline banner — sits immediately above the
+          // input bar when the free limit is hit. Complements the upgrade
+          // CTA inside the input bar; visible even if the user has not
+          // dismissed a prior snackbar.
+          if (_isQuotaExhausted && !ref.read(aiServiceProvider).isProUser)
+            _buildQuotaExhaustedBanner(),
 
           // Input bar with voice button
           _buildInputBar(),
@@ -3708,6 +3780,34 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   // -- Input bar --
 
+  /// Inline banner shown immediately above the input container when the
+  /// free-tier quota is exhausted. Provides a persistent upgrade path that
+  /// is always visible — distinct from the transient snackbar and the CTA
+  /// inside the input bar itself.
+  Widget _buildQuotaExhaustedBanner() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: const Color(0xFF1A2540),
+      child: Row(
+        children: [
+          const Expanded(
+            child: Text(
+              'Monthly limit reached',
+              style: TextStyle(color: Colors.white70, fontSize: 13),
+            ),
+          ),
+          TextButton(
+            onPressed: () => context.push(AppRoutes.subscription),
+            child: const Text(
+              'Upgrade \u2192',
+              style: TextStyle(color: Color(0xFF00E5FF)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Whether the user's free-tier AI quota is exhausted. Pro users are
   /// reported with `_freeMessagesRemaining == -1` (unlimited) by
   /// [_loadFreeMessageCount].
@@ -3762,26 +3862,28 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           else
             _buildComposerRow(isListening),
 
-          // Remaining-messages hint — small, subtle, only shown for free
-          // users with at least one message consumed and still some quota
-          // left. Hidden at 0 (the CTA itself conveys exhaustion).
+          // Remaining-messages hint — shown for free users when 3 or fewer
+          // messages remain. Hidden at 0 (the upgrade CTA replaces the
+          // composer and conveys exhaustion more prominently).
           if (isFreeUser &&
               !quotaExhausted &&
               _freeMessagesRemaining >= 0 &&
-              _freeMessagesUsed > 0) ...[
-            const SizedBox(height: 6),
+              _freeMessagesRemaining <= 3) ...[
+            const SizedBox(height: 4),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
-                'Осталось $_freeMessagesRemaining '
-                '${_freeMessagesRemaining == 1 ? "бесплатное сообщение" : "бесплатных сообщений"}',
+                '$_freeMessagesRemaining '
+                'message${_freeMessagesRemaining == 1 ? "" : "s"} '
+                'left this month',
                 key: const Key('free_messages_remaining_text'),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w500,
-                  color: _freeMessagesRemaining <= 2
-                      ? AppColors.warning
-                      : AppColors.textTertiary,
+                  color: _freeMessagesRemaining == 0
+                      ? Colors.red
+                      : Colors.orange,
                 ),
               ),
             ),

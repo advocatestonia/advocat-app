@@ -296,6 +296,33 @@ class AuthController extends StateNotifier<AuthState> {
     }
   }
 
+  /// Sign in with Apple OAuth.
+  ///
+  /// Requires Apple OAuth provider to be enabled in Supabase Auth settings
+  /// (Authentication → Providers → Apple) with a valid Service ID and Key.
+  Future<void> loginWithApple() async {
+    state = state.copyWith(status: AuthStatus.loading, errorMessage: null);
+    try {
+      await Supabase.instance.client.auth
+          .signInWithOAuth(
+        OAuthProvider.apple,
+        redirectTo: 'https://advocat.ee/app.html',
+      );
+      // OAuth redirects the browser; on return _init() picks up the session.
+    } on AuthException catch (e) {
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: e.message,
+      );
+    } catch (e) {
+      if (kDebugMode) debugPrint('Apple login error: $e');
+      state = AuthState(
+        status: AuthStatus.error,
+        errorMessage: 'Apple sign-in failed: ${e.toString()}',
+      );
+    }
+  }
+
   /// Sign out the current user.
   Future<void> logout() async {
     try {

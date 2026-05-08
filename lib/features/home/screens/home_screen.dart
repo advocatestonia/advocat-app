@@ -1202,13 +1202,39 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                           ),
                         ),
                         const SizedBox(height: 2),
-                        Text(
-                          AppLocalizations.of(context)?.advocatProSubtitle ?? 'Unlock premium features',
-                          style: const TextStyle(
-                            color: Color(0xFF8ECAC7),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                AppLocalizations.of(context)?.advocatProSubtitle ?? 'Unlock premium features',
+                                style: const TextStyle(
+                                  color: Color(0xFF8ECAC7),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.12),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Text(
+                                'from €14.99/mo',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.2,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
