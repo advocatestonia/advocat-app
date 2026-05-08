@@ -2498,7 +2498,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         title: const Text('Лимит бесплатных сообщений'),
         content: Text(
           'Вы использовали все ${AIService.freeTotalLimit} бесплатных '
-          'сообщений. Оформите Advocat Pro за €14.99/мес для неограниченного '
+          'сообщений. Оформите Advocat Pro за €19.99/мес для неограниченного '
           'доступа к AI-консультациям.',
         ),
         actions: [
@@ -2515,7 +2515,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               Navigator.of(ctx).pop();
               context.push(AppRoutes.subscription);
             },
-            child: const Text('Advocat Pro — €14.99/мес'),
+            child: const Text('Advocat Pro — €19.99/мес'),
           ),
         ],
       ),
@@ -3906,7 +3906,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
               'Вы использовали все ${AIService.freeTotalLimit} бесплатных '
-              'сообщений. Оформите Advocat Pro за €14.99/мес.',
+              'сообщений. Оформите Advocat Pro за €19.99/мес.',
               key: const Key('quota_exhausted_message'),
               style: const TextStyle(
                 fontSize: 13,
@@ -3923,7 +3923,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               onPressed: () => context.push(AppRoutes.subscription),
               icon: const Icon(Icons.workspace_premium_rounded, size: 18),
               label: const Text(
-                'Оформить Advocat Pro — €14.99/мес',
+                'Оформить Advocat Pro — €19.99/мес',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,

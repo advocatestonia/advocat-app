@@ -1225,7 +1225,7 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: const Text(
-                                'from €14.99/mo',
+                                'from €19.99/mo',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 11,

@@ -294,7 +294,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         planId: 'basic',
         title: l10n.legalFighter,
         tierLabel: 'COUNSEL',
-        monthlyPrice: 14.99,
+        monthlyPrice: 19.99,
         annualPrice: 119.99,
         isAnnual: isAnnual,
         isCurrent: currentTier == SubscriptionTier.basic,
