@@ -33,7 +33,7 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const GMAIL_FALLBACK_ONLY = Deno.env.get("SEND_EMAIL_FALLBACK_ONLY") === "1";
 const DEFAULT_FROM =
-  Deno.env.get("SEND_EMAIL_DEFAULT_FROM") || "no-reply@advocat.ee";
+  Deno.env.get("SEND_EMAIL_DEFAULT_FROM") || "support@advocat.ee";
 const GOOGLE_CLIENT_ID = Deno.env.get("GOOGLE_CLIENT_ID");
 const GOOGLE_CLIENT_SECRET = Deno.env.get("GOOGLE_CLIENT_SECRET");
 

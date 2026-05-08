@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/app_config.dart';
 import 'chat_stream_event.dart';
@@ -1022,7 +1023,10 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
           : 'https://api.anthropic.com';
       final fullUrl = '$baseUrl$path';
       final bodyJson = jsonEncode(body);
-      final authToken = _useProxy ? AppConfig.supabaseAnonKey : '';
+      final authToken = _useProxy
+          ? (Supabase.instance.client.auth.currentSession?.accessToken ??
+              AppConfig.supabaseAnonKey)
+          : '';
       final apiKey = _useProxy ? '' : AppConfig.claudeApiKey;
 
       // Web bridge today returns assembled text only (see web_streaming_impl.dart).
@@ -1045,6 +1049,14 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     // ── Native (mobile/desktop): use Dio streaming ──────────────────────
     final path = _useProxy ? '/claude-proxy' : '/v1/messages';
 
+    // Use the signed-in user's JWT so the proxy recognises the caller as
+    // authenticated and injects tools (send_email, generate_pdf, etc.).
+    // Fall back to the anon key only when no session exists (demo mode).
+    final String proxyAuthToken = _useProxy
+        ? (Supabase.instance.client.auth.currentSession?.accessToken ??
+            AppConfig.supabaseAnonKey)
+        : '';
+
     final response = await _dio.post<ResponseBody>(
       path,
       data: body,
@@ -1052,7 +1064,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
         responseType: ResponseType.stream,
         headers: _useProxy
             ? {
-                'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
+                'Authorization': 'Bearer $proxyAuthToken',
               }
             : {
                 'x-api-key': AppConfig.claudeApiKey,
