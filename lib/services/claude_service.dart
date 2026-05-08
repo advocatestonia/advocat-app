@@ -133,7 +133,7 @@ class ClaudeService {
   /// dossier summaries without hitting the cap mid-sentence. Sonnet 4.6
   /// supports up to 64K output tokens; 16K covers ~12k Russian/ET/FI words
   /// ≈ 6-8 pages of dense legal prose.
-  static const int _maxTokensSonnet = 16384;
+  static const int _maxTokensSonnet = 32000;
 
   /// Keywords that indicate a complex legal query requiring Sonnet.
   static const List<String> _complexKeywords = [

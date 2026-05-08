@@ -76,12 +76,10 @@ const ALLOWED_MODELS = new Set([
   "claude-3-haiku-20240307",
 ]);
 
-// 2026-05-07: raised 4096 → 16384 so the assistant can deliver full contracts,
-// long legal drafts, multi-page pleadings, dossier summaries without truncation.
-// Sonnet 4.6 supports up to 64K output tokens; 16K is a sane cost/utility
-// balance — covers ~12k Russian/Estonian/Finnish words ≈ 6-8 pages of dense
-// legal prose. Anon callers stay clamped at 500 (anti-abuse, demo-mode).
-const MAX_TOKENS_LIMIT = 16384;
+// 2026-05-08: raised 16384 → 32000 (Anthropic API max for Sonnet 4.6).
+// No artificial cap — AI writes contracts, pleadings, full legal dossiers
+// without stopping mid-document. Anon callers stay clamped at 500 (demo).
+const MAX_TOKENS_LIMIT = 32000;
 const ANON_MAX_TOKENS = 500;
 const MAX_MESSAGES = 20;
 

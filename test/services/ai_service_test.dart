@@ -341,8 +341,8 @@ void main() {
       expect(ClaudeService.maxTokensForModel(ClaudeService.modelHaiku), 4096);
     });
 
-    test('returns 16384 for Sonnet', () {
-      expect(ClaudeService.maxTokensForModel(ClaudeService.modelSonnet), 16384);
+    test('returns 32000 for Sonnet', () {
+      expect(ClaudeService.maxTokensForModel(ClaudeService.modelSonnet), 32000);
     });
   });
 
