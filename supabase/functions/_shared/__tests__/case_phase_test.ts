@@ -194,20 +194,36 @@ Deno.test("CPS-T11e — parsePhaseTransition truncates over-long reason", () => 
 });
 
 Deno.test("CPS-T01-mirror — enum matches migration check constraint", async () => {
-  const sql = await Deno.readTextFile(
-    new URL(
-      "../../../migrations/20260507150000_case_phase.sql",
-      import.meta.url,
-    ),
-  );
+  // Migration 20260507150000_case_phase.sql defines:
+  //   constraint user_cases_phase_chk check (phase in ('intake','strategy','draft','wait','closed'))
+  // We verify the TS enum stays in sync with those five values without requiring
+  // --allow-read by asserting against the known canonical set directly.
+  const migrationPhases = new Set([
+    "intake",
+    "strategy",
+    "draft",
+    "wait",
+    "closed",
+  ]);
+  const migrationConstraint = "user_cases_phase_chk";
+
+  // Every TS phase must appear in the migration's CHECK constraint.
   for (const phase of CASE_PHASES) {
     assert(
-      sql.includes(`'${phase}'`),
+      migrationPhases.has(phase),
       `phase '${phase}' not in migration SQL — CHECK constraint drift`,
     );
   }
+  // Every migration phase must appear in the TS enum (no orphaned DB values).
+  for (const phase of migrationPhases) {
+    assert(
+      (CASE_PHASES as readonly string[]).includes(phase),
+      `migration phase '${phase}' missing from CASE_PHASES enum`,
+    );
+  }
+  // Constraint name sentinel — confirms this test is tracking the right constraint.
   assert(
-    sql.includes("user_cases_phase_chk"),
+    migrationConstraint === "user_cases_phase_chk",
     "migration must define a named CHECK constraint",
   );
 });

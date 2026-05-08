@@ -23,6 +23,10 @@
 // -----------------------------------------------------------------------------
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+  type AdviceDigestEntry,
+  formatAdviceDigestBlock,
+} from "../_shared/advice_digest.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 
@@ -36,6 +40,12 @@ export function isValidCaseId(id: unknown): id is string {
 
 /** Hard cap on the serialised <active_case> block. Spec: 30 KB. */
 export const MAX_ACTIVE_CASE_BYTES = 30_000;
+
+/** Max bytes to inject from a single document's parsed_summary. */
+export const MAX_DOC_SUMMARY_BYTES = 2_000;
+
+/** Max total bytes of doc summary text injected across all documents. */
+export const MAX_DOC_SECTION_BYTES = 8_000;
 
 /** Identity marker that the system_prompt_guard whitelists when the active
  * case block is INSERTED inline. We do not replace the leading marker — but
@@ -69,6 +79,7 @@ export interface ActiveCaseRow {
   language?: string | null;
   created_at?: string;
   updated_at?: string;
+  advice_digest?: unknown;
 }
 
 export interface ActiveCaseDocument {
@@ -224,10 +235,22 @@ export function formatActiveCaseBlock(
     for (const a of nextActions) lines.push(`  - ${a}`);
   }
 
+  // Prior advice digest
+  if (c.advice_digest) {
+    try {
+      const entries = Array.isArray(c.advice_digest)
+        ? c.advice_digest as AdviceDigestEntry[]
+        : [];
+      const block = formatAdviceDigestBlock(entries);
+      if (block) lines.push("", block);
+    } catch { /* swallow */ }
+  }
+
   if (level !== "minimal") {
     const docs = payload.recent_documents ?? [];
     if (docs.length > 0) {
       lines.push("Recent documents:");
+      let docSectionBytes = 0;
       for (const d of docs) {
         const head = [
           d.filename || "(unnamed)",
@@ -240,13 +263,17 @@ export function formatActiveCaseBlock(
         const summary = d.parsed_summary?.trim();
         if (
           summary && summary.length > 0 &&
-          level === "full"
+          level === "full" &&
+          docSectionBytes < MAX_DOC_SECTION_BYTES
         ) {
-          // First line of summary only — keeps the block compact.
-          const firstLine = summary.split(/\r?\n/)[0].trim();
-          if (firstLine.length > 0) {
-            lines.push(`      ${firstLine}`);
+          const truncated = truncateToBytes(summary, MAX_DOC_SUMMARY_BYTES);
+          for (const summaryLine of truncated.split(/\r?\n/)) {
+            const trimmedLine = summaryLine.trim();
+            if (trimmedLine.length > 0) {
+              lines.push(`      ${trimmedLine}`);
+            }
           }
+          docSectionBytes += utf8Bytes(truncated);
         }
       }
     }
@@ -354,6 +381,77 @@ export function injectIntoSystemPrompt(
   return `${block}\n\n${stripped}`;
 }
 
+// =============================================================================
+// Deadline Alert
+// =============================================================================
+
+/**
+ * Build a ⚠️ DEADLINE ALERT block if the case has any key_dates within the
+ * next [windowDays] days (inclusive of today, exclusive of past dates).
+ *
+ * key_dates is a jsonb array of `{ date: string; event: string }` objects.
+ * If no urgent deadlines exist, returns "".
+ *
+ * Pure function — no I/O.
+ */
+export function buildDeadlineAlertBlock(
+  caseRow: ActiveCaseRow,
+  today: Date,
+  windowDays = 14,
+): string {
+  let dates: Array<{ date: string; event: string }> = [];
+  try {
+    const raw = caseRow.key_dates;
+    if (Array.isArray(raw)) {
+      dates = raw as Array<{ date: string; event: string }>;
+    }
+  } catch {
+    return "";
+  }
+
+  const urgent: Array<{ date: string; event: string; daysLeft: number }> = [];
+  for (const entry of dates) {
+    if (!entry.date || !entry.event) continue;
+    const d = new Date(entry.date);
+    if (isNaN(d.getTime())) continue;
+    // Normalise both sides to midnight UTC to avoid partial-day drift.
+    const todayMidnight = Date.UTC(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+    );
+    const deadlineMidnight = Date.UTC(
+      d.getFullYear(),
+      d.getMonth(),
+      d.getDate(),
+    );
+    const daysLeft = Math.round(
+      (deadlineMidnight - todayMidnight) / (1000 * 60 * 60 * 24),
+    );
+    if (daysLeft >= 0 && daysLeft <= windowDays) {
+      urgent.push({ ...entry, daysLeft });
+    }
+  }
+
+  if (urgent.length === 0) return "";
+
+  const lines = [
+    "⚠️ DEADLINE ALERT — inform the user proactively in your first response:",
+  ];
+  for (
+    const u of urgent.sort((a, b) => a.daysLeft - b.daysLeft)
+  ) {
+    const urgency = u.daysLeft === 0
+      ? "TODAY"
+      : u.daysLeft === 1
+      ? "TOMORROW"
+      : `${u.daysLeft} days`;
+    lines.push(`  • ${u.event} — ${u.date} (${urgency})`);
+  }
+  lines.push("Start your response by acknowledging the most urgent deadline above.");
+  return lines.join("\n");
+}
+
 /**
  * End-to-end helper used by `claude-proxy/index.ts`. Pure orchestration —
  * no I/O. The caller has already loaded the payload via [loadActiveCase].
@@ -383,14 +481,20 @@ export function applyActiveCaseToBody(
   body: { system?: unknown },
   payload: ActiveCasePayload | null,
   maxBytes: number = MAX_ACTIVE_CASE_BYTES,
+  today: Date = new Date(),
 ): void {
   if (!payload || !payload.case) return;
   const block = formatActiveCaseBlockWithCap(payload, maxBytes);
   if (!block) return;
 
+  // Build deadline alert (prepended to system prompt before everything else).
+  const alertBlock = buildDeadlineAlertBlock(payload.case, today);
+
   const sys = body.system;
   if (typeof sys === "string") {
-    body.system = injectIntoSystemPrompt(sys, block);
+    let result = injectIntoSystemPrompt(sys, block);
+    if (alertBlock) result = `${alertBlock}\n\n${result}`;
+    body.system = result;
     return;
   }
   if (Array.isArray(sys)) {
@@ -406,7 +510,9 @@ export function applyActiveCaseToBody(
         typeof (b as { text?: unknown }).text === "string"
       ) {
         const before = (b as { text: string }).text;
-        (b as { text: string }).text = injectIntoSystemPrompt(before, block);
+        let result = injectIntoSystemPrompt(before, block);
+        if (alertBlock) result = `${alertBlock}\n\n${result}`;
+        (b as { text: string }).text = result;
         return;
       }
     }
@@ -417,6 +523,16 @@ export function applyActiveCaseToBody(
 // =============================================================================
 // Helpers
 // =============================================================================
+
+function truncateToBytes(s: string, maxBytes: number): string {
+  const encoded = new TextEncoder().encode(s);
+  if (encoded.length <= maxBytes) return s;
+  // Slice to maxBytes then decode, replacing incomplete trailing multi-byte
+  // sequences with the replacement character (TextDecoder default behaviour
+  // when `fatal` is false).
+  const sliced = encoded.slice(0, maxBytes);
+  return new TextDecoder("utf-8", { fatal: false }).decode(sliced);
+}
 
 function utf8Bytes(s: string): number {
   // Cheap UTF-8 byte counter without TextEncoder churn for tiny strings —

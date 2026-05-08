@@ -65,6 +65,10 @@ export interface GroundingChunk {
   jurisdiction?: string | null;
   /** law_chunks.in_force — drives `historical` status when false. */
   in_force?: boolean | null;
+  /** law_chunks.corpus_refreshed_at — timestamp of the last ingest run.
+   *  Null means the field was not yet present; treated as stale by the
+   *  grounder to be conservative. */
+  corpus_refreshed_at?: string | null;
 }
 
 /** One marker → one citation row in the response payload (and one row in
@@ -90,12 +94,31 @@ export interface Citation {
   in_force: boolean | null;
   /** Number of times this marker appeared in the reply text. ≥1. */
   occurrences: number;
+  /** True when corpus_refreshed_at is older than STALE_THRESHOLD_DAYS or
+   *  absent. A stale citation is still `verified` (the law exists in our
+   *  corpus) but the text may no longer reflect the current version. */
+  stale?: boolean;
 }
 
 /** Snippet length cap as specified in the design doc (§3 response shape).
  *  ≤400 chars keeps the JSON payload small while still showing meaningful
  *  context in the bottom sheet. */
 export const SNIPPET_MAX_CHARS = 400;
+
+/** Number of days after the last corpus ingest before a citation is
+ *  considered potentially stale. Matches the 90-day review cadence. */
+export const STALE_THRESHOLD_DAYS = 90;
+
+/** Returns true when the corpus was last refreshed more than
+ *  STALE_THRESHOLD_DAYS ago, or when the timestamp is absent/null.
+ *  An unknown refresh date is treated conservatively as stale. */
+export function isStale(corpusRefreshedAt: string | null | undefined): boolean {
+  if (!corpusRefreshedAt) return true;
+  const refreshed = new Date(corpusRefreshedAt);
+  if (isNaN(refreshed.getTime())) return true;
+  const daysSince = (Date.now() - refreshed.getTime()) / (1000 * 60 * 60 * 24);
+  return daysSince > STALE_THRESHOLD_DAYS;
+}
 
 /** Build the lookup index. Keyed by `lower(act_slug):paragraph` so the
  *  marker → chunk join is a single Map.get(). Paragraph stays exact —
@@ -168,6 +191,11 @@ export function verifyCitations(
       status = "verified";
     }
 
+    const chunkStale = chunk ? isStale(chunk.corpus_refreshed_at) : false;
+    const snippet = chunk ? makeSnippet(chunk.body) : null;
+    // Staleness warning goes into the `stale` flag + stale_note field, NOT
+    // appended to snippet — snippet has a hard 400-char cap enforced by tests.
+
     const citation: Citation = {
       marker,
       status,
@@ -176,11 +204,12 @@ export function verifyCitations(
       paragraph,
       act_name: chunk?.act_name ?? null,
       title: chunk?.title ?? null,
-      snippet: chunk ? makeSnippet(chunk.body) : null,
+      snippet,
       source_url: chunk?.source_url ?? null,
       jurisdiction: chunk?.jurisdiction ?? null,
       in_force: chunk ? (chunk.in_force ?? null) : null,
       occurrences: 1,
+      stale: chunkStale || undefined,
     };
     seen.set(key, citation);
     order.push(key);
@@ -226,6 +255,9 @@ export function extractRagContext(
         ? obj.jurisdiction
         : null,
       in_force: typeof obj.in_force === "boolean" ? obj.in_force : null,
+      corpus_refreshed_at: typeof obj.corpus_refreshed_at === "string"
+        ? obj.corpus_refreshed_at
+        : null,
     });
   }
   return out;

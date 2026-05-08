@@ -109,6 +109,7 @@ class PlannerResult {
     required this.citations,
     required this.summary,
     this.messageId,
+    this.blockingGap = false,
   });
 
   factory PlannerResult.fromAugmented(Map<String, dynamic> json) {
@@ -127,6 +128,9 @@ class PlannerResult {
       citations: cits,
       summary: PlannerSummary.fromJson(planner),
       messageId: json['message_id'] as String?,
+      // `planner.blocking_gap: true` means the AI needs more info before
+      // giving a substantive answer — surfaces as an amber bubble in the UI.
+      blockingGap: planner['blocking_gap'] as bool? ?? false,
     );
   }
 
@@ -138,6 +142,10 @@ class PlannerResult {
   final List<dynamic> citations;
   final PlannerSummary summary;
   final String? messageId;
+
+  /// True when the planner decided it needs more information before it can
+  /// give a complete answer. Drives the amber bubble style in the chat UI.
+  final bool blockingGap;
 }
 
 /// Runtime trigger gate for the planner. All three must be true:

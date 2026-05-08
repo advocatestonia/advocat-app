@@ -78,6 +78,12 @@ class ChatMessage {
   /// (Pro + opt-in + looksLegalish). Renders [PlannerTrail] below the bubble.
   final PlannerTraceData? plannerTraceData;
 
+  /// True when the planner signals `blocking_gap: true` — i.e. the AI needs
+  /// more information before it can give a substantive answer. The bubble is
+  /// rendered with a distinct amber background so the user notices it is a
+  /// clarifying question, not an answer.
+  final bool isBlockingGap;
+
   const ChatMessage({
     required this.id,
     required this.role,
@@ -90,6 +96,7 @@ class ChatMessage {
     this.navigation,
     this.citations = const [],
     this.plannerTraceData,
+    this.isBlockingGap = false,
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -101,6 +108,7 @@ class ChatMessage {
           DateTime.now(),
       hasAttachment: json['has_attachment'] as bool? ?? false,
       citations: Citation.listFromJson(json['citations']),
+      isBlockingGap: json['is_blocking_gap'] as bool? ?? false,
     );
   }
 }
@@ -1033,6 +1041,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     timestamp: DateTime.now(),
                     citations: responseCitations,
                     plannerTraceData: traceData,
+                    isBlockingGap: plannerResult.blockingGap,
                   ));
                 });
                 _updateChatPhase();
@@ -2691,6 +2700,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final isUser = message.role == MessageRole.user;
     final isSystem = message.role == MessageRole.system;
     final isToolResult = message.role == MessageRole.toolResult;
+    // Blocking-gap messages are clarifying questions from the AI — give them
+    // a distinct amber tint so the user knows they need to respond with info.
+    final isBlockingGap = !isUser && message.isBlockingGap;
 
     if (isSystem) {
       return Padding(
@@ -2748,7 +2760,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                         colors: [AppColors.accent, AppColors.accentDark],
                       )
                     : null,
-                color: isUser ? null : AppColors.surface,
+                color: isUser
+                    ? null
+                    : isBlockingGap
+                        ? const Color(0xFFFFF8E1) // amber-50 tint
+                        : AppColors.surface,
                 borderRadius: BorderRadius.only(
                   topLeft: const Radius.circular(AppRadius.lg),
                   topRight: const Radius.circular(AppRadius.lg),
@@ -2761,7 +2777,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
                 border: isUser
                     ? null
-                    : Border.all(color: AppColors.border, width: 0.5),
+                    : Border.all(
+                        color: isBlockingGap
+                            ? const Color(0xFFFFB300) // amber accent border
+                            : AppColors.border,
+                        width: isBlockingGap ? 1.0 : 0.5,
+                      ),
                 boxShadow: [
                   BoxShadow(
                     color: (isUser
@@ -3047,6 +3068,26 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         widgets.add(Padding(
           padding: const EdgeInsets.only(bottom: 6),
           child: _buildSeverityLine(trimmed, textColor),
+        ));
+        continue;
+      }
+
+      // Markdown headers: ## Следующие шаги (and any ##/# heading)
+      if (trimmed.startsWith('## ') || trimmed.startsWith('# ')) {
+        final headerText = trimmed.startsWith('## ')
+            ? trimmed.substring(3).trim()
+            : trimmed.substring(2).trim();
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(top: 10, bottom: 4),
+          child: Text(
+            headerText,
+            style: const TextStyle(
+              color: AppColors.accent,
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              height: 1.35,
+            ),
+          ),
         ));
         continue;
       }

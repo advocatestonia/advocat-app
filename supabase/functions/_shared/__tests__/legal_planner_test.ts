@@ -134,6 +134,36 @@ Deno.test("parsePlannerOutput — drops (none) sentinel and empty bullets", () =
   assertEquals(plan.sub_questions, []);
 });
 
+Deno.test("parsePlannerOutput — parses probability_signal", () => {
+  const plan = parsePlannerOutput(`
+    <plan>
+      <sub_questions>- q</sub_questions>
+      <probability_signal>weak — deadline likely missed, < 20% restoration chance</probability_signal>
+      <alternatives_needed>true</alternatives_needed>
+    </plan>
+  `);
+  assertStringIncludes(plan.probability_signal, "weak");
+  assertStringIncludes(plan.probability_signal, "20%");
+  assertEquals(plan.alternatives_needed, true);
+});
+
+Deno.test("parsePlannerOutput — alternatives_needed false by default", () => {
+  const plan = parsePlannerOutput(`
+    <plan>
+      <sub_questions>- q</sub_questions>
+      <alternatives_needed>false</alternatives_needed>
+    </plan>
+  `);
+  assertEquals(plan.alternatives_needed, false);
+  assertEquals(plan.probability_signal, "");
+});
+
+Deno.test("parsePlannerOutput — missing new tags default to empty/false", () => {
+  const plan = parsePlannerOutput(SAMPLE_PLAN_XML);
+  assertEquals(plan.probability_signal, "");
+  assertEquals(plan.alternatives_needed, false);
+});
+
 Deno.test("parseCritiqueOutput — material_gap=true round-trips", () => {
   const c = parseCritiqueOutput(SAMPLE_CRITIQUE_GAP);
   assertEquals(c.material_gap, true);
@@ -199,11 +229,11 @@ Deno.test("runLegalPlannerLoop — 3 passes when critique reports no gap", async
   assertEquals(result.critique.material_gap, false);
 
   // Verify per-pass model + budget contracts.
-  assertEquals(calls[0].model, "claude-sonnet-4-20250514");
+  assertEquals(calls[0].model, "claude-sonnet-4-6");
   assertEquals(calls[0].maxTokens, PLANNER_MAX_TOKENS);
   assertEquals(calls[0].temperature, PLANNER_TEMPERATURE);
 
-  assertEquals(calls[1].model, "claude-sonnet-4-20250514");
+  assertEquals(calls[1].model, "claude-sonnet-4-6");
   assertEquals(calls[1].maxTokens, EXECUTOR_MAX_TOKENS);
   assertEquals(calls[1].temperature, EXECUTOR_TEMPERATURE);
   // Plan must be folded into executor's system prompt.
@@ -239,7 +269,7 @@ Deno.test("runLegalPlannerLoop — regenerates ONCE when critique flags gap", as
   assertEquals(result.critique.material_gap, true);
 
   // The regen pass is also Sonnet at executor budget.
-  assertEquals(calls[3].model, "claude-sonnet-4-20250514");
+  assertEquals(calls[3].model, "claude-sonnet-4-6");
   assertEquals(calls[3].maxTokens, EXECUTOR_MAX_TOKENS);
   // Regen system prompt must include the critique block.
   assertStringIncludes(calls[3].systemPrompt, "<critique_for_regen>");

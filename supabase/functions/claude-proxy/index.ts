@@ -31,6 +31,8 @@ import { wrapAnthropicStreamWithCitations } from "./streaming_citations.ts";
 import { runLegalPlannerLoop } from "../_shared/legal_planner.ts";
 import { persistPlannerTrace } from "./planner_trace_persistence.ts";
 import { runConsilium, shouldRunConsilium } from "../_shared/consilium.ts";
+import { extractAndPatchFacts } from "../_shared/fact_extractor.ts";
+import { appendAdviceDigest } from "../_shared/advice_digest.ts";
 import {
   ASSISTANT_TOOLS,
   executeToolCalls,
@@ -339,9 +341,43 @@ serve(async (req) => {
               const frame = `data: ${JSON.stringify(event)}\n\n`;
               writer.write(encoder.encode(frame)).catch(() => {});
             },
+          }).then((synthesisText) => {
+            // Fire-and-forget advice digest after consilium.
+            if (!isAnon && persistCaseId && synthesisText) {
+              appendAdviceDigest({
+                caseId: persistCaseId,
+                replyText: synthesisText,
+                probabilitySignal: "",
+                supabaseUrl: SUPABASE_URL,
+                serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+                anthropicApiKey: CLAUDE_API_KEY,
+              }).catch((e) =>
+                console.warn(`advice_digest: consilium: ${String(e).slice(0, 200)}`)
+              );
+            }
           }).finally(() => {
             writer.close().catch(() => {});
           });
+
+          // Upgrade 2: fire-and-forget fact extraction + advice digest after consilium.
+          // runConsilium returns the synthesis text — capture it for digest.
+          if (!isAnon && persistCaseId && persistUserId) {
+            extractAndPatchFacts({
+              caseId: persistCaseId,
+              userId: persistUserId,
+              conversationText: "",
+              userMessage,
+              supabaseUrl: SUPABASE_URL,
+              serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+              anthropicApiKey: CLAUDE_API_KEY,
+            }).catch((e) =>
+              console.warn(
+                `claude-proxy: fact_extractor consilium failed: ${
+                  String(e).slice(0, 200)
+                }`,
+              )
+            );
+          }
 
           return new Response(readable, {
             status: 200,
@@ -373,6 +409,15 @@ serve(async (req) => {
             : undefined,
         });
 
+        if (loopResult.kind === "blocked") {
+          return new Response(JSON.stringify({
+            mode: "legal_planner",
+            content: [{ type: "text", text: loopResult.question }],
+            citations: [],
+            planner: { blocking_gap: true, latency_ms: loopResult.latencyMs, cost_cents: loopResult.costCents },
+          }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        }
+
         // Reuse Pkg 2 verifier on the final draft. Reuse Pkg 0 UPL footer
         // is already in `systemPrompt` (system_prompts.dart bakes it in
         // for every assistant turn). The verifier downgrades unverified
@@ -395,6 +440,46 @@ serve(async (req) => {
             supabaseUrl: SUPABASE_URL,
             serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
           });
+        }
+
+        // Upgrade 2: fire-and-forget fact extraction after planner.
+        // loopResult is narrowed to PlannerLoopResult here because the
+        // `kind === "blocked"` branch returns early above.
+        if (!isAnon && persistCaseId && persistUserId) {
+          const plannerUserMessage = messages.length > 0
+            ? String(messages[messages.length - 1].content ?? "")
+            : "";
+          // deno-lint-ignore no-explicit-any
+          const _completedResult = loopResult as any;
+          extractAndPatchFacts({
+            caseId: persistCaseId,
+            userId: persistUserId,
+            conversationText: _completedResult.replyText as string,
+            userMessage: plannerUserMessage,
+            supabaseUrl: SUPABASE_URL,
+            serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+            anthropicApiKey: CLAUDE_API_KEY,
+          }).catch((e) =>
+            console.warn(
+              `claude-proxy: fact_extractor planner failed: ${
+                String(e).slice(0, 200)
+              }`,
+            )
+          );
+        }
+
+        // Fire-and-forget advice digest after planner (kind==="completed" branch).
+        if (!isAnon && persistCaseId) {
+          appendAdviceDigest({
+            caseId: persistCaseId,
+            replyText: loopResult.replyText,
+            probabilitySignal: loopResult.plan?.probability_signal ?? "",
+            supabaseUrl: SUPABASE_URL,
+            serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+            anthropicApiKey: CLAUDE_API_KEY,
+          }).catch((e) =>
+            console.warn(`advice_digest: ${String(e).slice(0, 200)}`)
+          );
         }
 
         // Shape: mirror the non-streaming Anthropic response so the

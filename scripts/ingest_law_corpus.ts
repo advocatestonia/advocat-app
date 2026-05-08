@@ -71,6 +71,9 @@ interface LawChunk {
   body_hash: string;
   embedding: number[];
   token_count: number;
+  /** Set to the start of this ingest run so the citation grounder can detect
+   *  corpus staleness (threshold: 90 days). */
+  corpus_refreshed_at: string;
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -201,6 +204,11 @@ async function fetchExistingHashes(
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
+
+/** ISO timestamp captured once at process start; stamped onto every upserted
+ *  row as corpus_refreshed_at so the citation grounder knows when the corpus
+ *  was last refreshed. */
+const RUN_STARTED_AT = new Date().toISOString();
 
 if (!OPENAI_API_KEY && !DRY_RUN) {
   console.error(
@@ -362,6 +370,7 @@ for (let i = 0; i < rawChunks.length; i += BATCH_SIZE) {
         body_hash: hashes[j],
         embedding,
         token_count: tokens,
+        corpus_refreshed_at: RUN_STARTED_AT,
       });
     }
 

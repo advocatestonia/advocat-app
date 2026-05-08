@@ -1,4 +1,5 @@
 // legal_planner.ts — Phase 2 Pkg 6 three-pass orchestrator.
+import { checkCalibration } from "./probability_calibration.ts";
 // -----------------------------------------------------------------------------
 // Pure-ish module — no Deno globals beyond `fetch`. Imported by
 //   • supabase/functions/claude-proxy/index.ts (when mode='legal_planner')
@@ -65,6 +66,16 @@ export interface PlannerPlan {
   sub_questions: string[];
   counter_args: string[];
   evidence_gaps: string[];
+  /** Short honest signal from the planner: "strong", "medium", "weak — ...", or "closed — ...".
+   *  Injected into the executor system prompt so it calibrates its tone. */
+  probability_signal: string;
+  /** True when the planner detected a weak/closed primary path and instructed
+   *  the executor to search for alternatives. The consilium module can check
+   *  this flag to decide whether to activate the Поисковик альтернатив role. */
+  alternatives_needed: boolean;
+  /** Gaps that BLOCK the answer — answer would differ >50% without this fact.
+   *  Non-empty means the orchestrator should NOT run the executor. */
+  blocking_gaps: string[];
   /** Verbatim raw text from the planner — kept for debugging. Truncated
    *  at 4 KB so the jsonb row stays bounded. */
   raw: string;
@@ -85,8 +96,17 @@ export interface AnthropicCallResult {
   outputTokens: number;
 }
 
+export interface PlannerBlockedResult {
+  kind: "blocked";
+  question: string;
+  plan: PlannerPlan;
+  latencyMs: number;
+  costCents: number;
+}
+
 /** Final shape returned by [runLegalPlannerLoop]. */
 export interface PlannerLoopResult {
+  kind: "completed";
   /** The final executor reply (post-regen if it fired). Caller runs the
    *  citation_grounder + UPL footer over THIS string. */
   replyText: string;
@@ -110,6 +130,7 @@ export type TraceWriter = (trace: {
   regenerated_once: boolean;
   latency_ms: number;
   cost_cents: number;
+  calibration_warning?: string | null;
 }) => Promise<void>;
 
 /** Anthropic call shim. Injected by tests; falls back to fetch in prod. */
@@ -208,6 +229,17 @@ Output format (strict — the Executor pass parses these tags):
   <evidence_gaps>
     - one short missing-fact / missing-document item per bullet (max 3)
   </evidence_gaps>
+  <probability_signal>
+    - brief honest signal: is this a strong / medium / weak / closed path?
+    - example: "weak — deadline likely missed, < 20% restoration chance"
+  </probability_signal>
+  <alternatives_needed>true|false</alternatives_needed>
+  <blocking_gaps>
+    - ONLY list a gap if the answer would differ by MORE THAN 50% without this fact.
+    - Emit as a question to the user: "What is the exact filing deadline?"
+    - Leave empty for most questions. Max 1 item.
+    - If empty: <blocking_gaps></blocking_gaps>
+  </blocking_gaps>
 </plan>
 
 Hard rules:
@@ -216,9 +248,20 @@ Hard rules:
 - Stay under 500 tokens. Brevity > completeness.
 - If the question is not legal-domain after all, emit
   <plan><sub_questions>- (none)</sub_questions></plan> and stop.
+- Set <alternatives_needed>true</alternatives_needed> if the primary path is weak or closed.
+- <blocking_gaps> MUST be empty for: follow-up turns, general legal questions, any case where all answer paths lead to the same advice.
+- Only block when the SPECIFIC missing fact would flip the primary recommendation.
 
 ## ДЕДЛАЙН-ФИЛЬТР
 Если в контексте дела есть дата дедлайна — КАЖДЫЙ совет проверяй: "мы успеваем до дедлайна?". Если нет — это P0 риск, назови явно.
+
+## ЦЕПОЧКА ДЕДЛАЙНОВ
+Если в деле есть финальный дедлайн, выполни обратный расчёт:
+- Какие шаги нужны ДО финального дедлайна?
+- Сколько времени занимает каждый шаг (realistically)?
+- Какая самая ранняя дата когда нужно начать шаг N чтобы успеть к шагу N+1?
+Добавь в <evidence_gaps> если какая-то дата в цепочке неизвестна.
+Добавь в <sub_questions> если порядок шагов неочевиден.
 `.trim();
 
 const EXECUTOR_INSTRUCTIONS_HEADER = String.raw`
@@ -235,6 +278,14 @@ Hard rules:
 - Markers MUST point to acts that the RAG context (if any) actually
   supplied. The post-pass verifier will downgrade unverified markers, so
   inventing citations only hurts the badge.
+- ALWAYS end your response with a ## Следующие шаги section (in the user's language).
+  List 1-3 concrete actions: specific document to file, office to call, deadline to meet.
+  Format each as: "[ ] ACTION — by DATE or ASAP if no deadline known"
+  Skip this section ONLY for purely theoretical questions with no actionable steps.
+- If your answer depends on an assumed fact that the user has NOT explicitly confirmed,
+  add an "⚠️ Этот вывод предполагает:" note immediately after the relevant claim.
+  Format: "⚠️ Предполагается: [assumed fact]. Если это не так — [how the answer changes]."
+  Max 2 such notes per response. Skip if all key facts are confirmed in the conversation.
 `.trim();
 
 const CRITIQUE_INSTRUCTIONS = String.raw`
@@ -246,7 +297,9 @@ Material gap means:
   • a sub-question from the plan went unanswered, OR
   • a counter-argument was ignored that meaningfully changes the bottom line, OR
   • a specific deadline / right / procedural step was claimed without a
-    [[ref:...]] marker and is not common knowledge.
+    [[ref:...]] marker and is not common knowledge, OR
+  • the answer is materially conditional on an unconfirmed assumption but does NOT
+    flag this assumption to the user (missing ⚠️ Предполагается note).
 
 Cosmetic issues (tone, length, ordering) are NOT material — return
 material_gap=false for those.
@@ -295,10 +348,25 @@ export function parsePlannerOutput(text: string): PlannerPlan {
   const planMatch = text.match(/<plan>([\s\S]*?)<\/plan>/i);
   const inner = planMatch ? planMatch[1] : text;
 
+  // <probability_signal> — inline text, not a bullet list.
+  const probMatch = inner.match(/<probability_signal>([\s\S]*?)<\/probability_signal>/i);
+  const probability_signal = probMatch
+    ? probMatch[1].trim().replace(/^[-•*]\s*/, "").split(/\r?\n/)[0].trim()
+    : "";
+
+  // <alternatives_needed> — literal "true" or "false".
+  const altMatch = inner.match(/<alternatives_needed>\s*(true|false)\s*<\/alternatives_needed>/i);
+  const alternatives_needed = altMatch ? altMatch[1].toLowerCase() === "true" : false;
+
+  const blocking_gaps = parseBulletSection(inner, "blocking_gaps");
+
   return {
     sub_questions: parseBulletSection(inner, "sub_questions"),
     counter_args: parseBulletSection(inner, "counter_args"),
     evidence_gaps: parseBulletSection(inner, "evidence_gaps"),
+    probability_signal,
+    alternatives_needed,
+    blocking_gaps,
     raw: truncate(text),
   };
 }
@@ -393,7 +461,7 @@ export interface RunLegalPlannerOptions {
  */
 export async function runLegalPlannerLoop(
   opts: RunLegalPlannerOptions,
-): Promise<PlannerLoopResult> {
+): Promise<PlannerLoopResult | PlannerBlockedResult> {
   const call = opts.caller ?? defaultAnthropicCaller;
   const now = opts.now ?? (() => Date.now());
   const startedAt = now();
@@ -416,6 +484,28 @@ export async function runLegalPlannerLoop(
     plannerResult.outputTokens,
   );
   const plan = parsePlannerOutput(plannerResult.text);
+
+  if (plan.blocking_gaps.length > 0) {
+    const latencyMs = Math.max(0, now() - startedAt);
+    return {
+      kind: "blocked",
+      question: plan.blocking_gaps[0],
+      plan,
+      latencyMs,
+      costCents: cumulativeCostCents,
+    };
+  }
+
+  // Calibration guard — log overclaims to trace but never block the user.
+  const calibrationWarning = plan.probability_signal
+    ? checkCalibration(
+        plan.probability_signal,
+        opts.messages.map((m) => m.content).join(" ").slice(0, 500),
+      )
+    : null;
+  if (calibrationWarning) {
+    console.warn(`legal_planner: ${calibrationWarning}`);
+  }
 
   // ── Pass 2 — Executor (Sonnet, temp=0.2) ──────────────────────────
   const executorSystem = buildExecutorSystem(opts.systemPrompt, plan, null);
@@ -493,6 +583,7 @@ export async function runLegalPlannerLoop(
         regenerated_once: regeneratedOnce,
         latency_ms: latencyMs,
         cost_cents: cumulativeCostCents,
+        calibration_warning: calibrationWarning,
       });
     } catch (e) {
       console.warn(
@@ -502,6 +593,7 @@ export async function runLegalPlannerLoop(
   }
 
   return {
+    kind: "completed",
     replyText: finalDraft,
     plan,
     critique,
@@ -536,6 +628,16 @@ export function buildExecutorSystem(
     lines.push("  <evidence_gaps>");
     for (const g of plan.evidence_gaps) lines.push(`    - ${g}`);
     lines.push("  </evidence_gaps>");
+  }
+  if (plan.probability_signal) {
+    lines.push(`  <probability_signal>${plan.probability_signal}</probability_signal>`);
+  }
+  if (plan.alternatives_needed) {
+    lines.push("  <alternatives_needed>true</alternatives_needed>");
+    lines.push("  <!-- INSTRUCTION: the primary path is weak or closed. You MUST");
+    lines.push("       include a section 'Альтернативные пути' with ≥2 independent");
+    lines.push("       alternatives the user hasn't considered. Be honest about");
+    lines.push("       their probability — do NOT reframe the closed path as viable. -->");
   }
   lines.push("</plan>");
 
