@@ -429,7 +429,21 @@ serve(async (req) => {
       }
     }
 
-    // Streaming mode — pipe SSE events from Claude directly to client
+    // ── Tool-use injection ────────────────────────────────────────────────
+    // Must be BEFORE the streaming branch so tools are available in BOTH
+    // streaming and non-streaming modes. Without this, Claude sees no tools
+    // during streaming and emits raw XML tool-call text to the client.
+    if (!isAnon && !Array.isArray(body.tools)) {
+      body.tools = ASSISTANT_TOOLS;
+    }
+
+    // Streaming mode — pipe SSE events from Claude directly to client.
+    // When tools are injected, force non-streaming so tool_use blocks are
+    // handled server-side and never leak raw XML to the client.
+    if (body.stream && Array.isArray(body.tools) && body.tools.length > 0) {
+      body.stream = false;
+    }
+
     if (body.stream) {
       const claudeStreamResponse = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
@@ -502,15 +516,6 @@ serve(async (req) => {
           "X-Accel-Buffering": "no",
         },
       });
-    }
-
-    // ── Tool-use injection (2026-05-07) ──────────────────────────────────
-    // When the client has NOT provided its own tools list, inject the
-    // assistant tools (send_email, generate_pdf). Authenticated users only —
-    // anon callers get read-only assistance, no side-effecting tools.
-    // The client may pass body.tools = [] to explicitly disable injection.
-    if (!isAnon && !Array.isArray(body.tools)) {
-      body.tools = ASSISTANT_TOOLS;
     }
 
     // Non-streaming mode (existing behavior)
@@ -587,26 +592,32 @@ serve(async (req) => {
               content?: unknown;
               [key: string]: unknown;
             };
-            // Run citations on the follow-up text, then return.
+            // Run citations on the follow-up text.
             const followUpText = concatAnthropicTextBlocks(
               followUpResult.content,
             );
             const followUpCitations = verifyCitations(followUpText, ragChunks);
-            const followUpAugmented = persistMessageId !== null
-              ? {
-                ...followUpResult,
-                citations: followUpCitations,
-                message_id: persistMessageId,
-                tool_calls_executed: toolBlocks.map((b) => b.name),
-              }
-              : {
-                ...followUpResult,
-                citations: followUpCitations,
-                tool_calls_executed: toolBlocks.map((b) => b.name),
-              };
-            return new Response(JSON.stringify(followUpAugmented), {
+
+            // The client sent stream:true so it expects SSE, not JSON.
+            // Wrap the follow-up result as synthetic SSE so the Flutter
+            // SSE parser receives it correctly (message_start → text deltas
+            // → message_stop). This avoids the client hanging on a silent
+            // JSON response it doesn't know how to parse.
+            const toolsExecuted = toolBlocks.map((b) => b.name);
+            const encoder = new TextEncoder();
+            const sseBody = buildSseFromAnthropicResult(
+              followUpResult,
+              followUpCitations,
+              persistMessageId,
+              toolsExecuted,
+            );
+            return new Response(encoder.encode(sseBody), {
               status: 200,
-              headers: { ...corsHeaders, "Content-Type": "application/json" },
+              headers: {
+                ...corsHeaders,
+                "Content-Type": "text/event-stream",
+                "Cache-Control": "no-cache",
+              },
             });
           }
           // Follow-up call failed — fall through to return the raw tool_use
@@ -700,6 +711,66 @@ serve(async (req) => {
  * curl-bypassing the 7-msg cap, which is a strictly smaller blast radius
  * than killing chat for everyone during a partial outage.
  */
+/**
+ * Wrap a completed Anthropic non-streaming result as synthetic SSE so the
+ * Flutter client (which sent stream:true) can parse it correctly.
+ * Emits: message_start → content_block_start → text deltas → content_block_stop
+ *        → message_delta → message_stop → (optional citations frame).
+ */
+function buildSseFromAnthropicResult(
+  result: { content?: unknown; usage?: unknown; model?: unknown; id?: unknown; [key: string]: unknown },
+  citations: unknown[],
+  messageId: string | null,
+  toolsExecuted: string[],
+): string {
+  const text = concatAnthropicTextBlocks(result.content);
+  const model = (result.model as string) ?? "claude-sonnet";
+  const msgId = (result.id as string) ?? `msg_tool_${Date.now()}`;
+  const usage = (result.usage as Record<string, unknown>) ?? {};
+
+  const frames: string[] = [];
+  const sse = (event: string, data: unknown) =>
+    `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+
+  frames.push(sse("message_start", {
+    type: "message_start",
+    message: { id: msgId, type: "message", role: "assistant", model, content: [], usage },
+  }));
+
+  frames.push(sse("content_block_start", {
+    type: "content_block_start", index: 0,
+    content_block: { type: "text", text: "" },
+  }));
+
+  // Chunk text into ~200-char deltas so Flutter renders progressively.
+  const chunkSize = 200;
+  for (let i = 0; i < text.length; i += chunkSize) {
+    frames.push(sse("content_block_delta", {
+      type: "content_block_delta", index: 0,
+      delta: { type: "text_delta", text: text.slice(i, i + chunkSize) },
+    }));
+  }
+
+  frames.push(sse("content_block_stop", { type: "content_block_stop", index: 0 }));
+  frames.push(sse("message_delta", {
+    type: "message_delta",
+    delta: { stop_reason: "end_turn" },
+    usage: { output_tokens: Math.ceil(text.length / 4) },
+  }));
+  frames.push(sse("message_stop", { type: "message_stop" }));
+
+  // Citations frame (Pkg 2 format) — picked up by Flutter SSE parser.
+  if (citations.length > 0 || toolsExecuted.length > 0) {
+    frames.push(`event: citations\ndata: ${JSON.stringify({
+      citations,
+      message_id: messageId,
+      tool_calls_executed: toolsExecuted,
+    })}\n\n`);
+  }
+
+  return frames.join("");
+}
+
 async function checkQuota(
   authHeader: string,
 ): Promise<{ ok: boolean; payload: Record<string, unknown> | null }> {

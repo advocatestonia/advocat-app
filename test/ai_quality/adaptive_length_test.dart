@@ -86,9 +86,9 @@ void main() {
     }
   });
 
-  group('ClaudeService.maxTokensForShortQuery — tight budget', () {
-    test('short query returns <=300 tokens', () {
-      expect(ClaudeService.maxTokensForShortQuery(), lessThanOrEqualTo(300));
+  group('ClaudeService.maxTokensForShortQuery — minimum budget', () {
+    test('short query returns at least 4096 tokens (no truncation)', () {
+      expect(ClaudeService.maxTokensForShortQuery(), greaterThanOrEqualTo(4096));
     });
   });
 }

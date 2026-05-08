@@ -479,9 +479,9 @@ class ClaudeService {
     return false;
   }
 
-  /// Tight token budget for short queries. Prevents Claude from padding a
-  /// one-sentence answer into a five-paragraph essay.
-  static int maxTokensForShortQuery() => 200;
+  /// Minimum token budget — even "short" queries may trigger document
+  /// generation or long legal explanations, so never go below 4096.
+  static int maxTokensForShortQuery() => 4096;
 
   /// Maximum retries on transient failures.
   static const int _maxRetries = 1;

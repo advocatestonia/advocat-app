@@ -1270,7 +1270,7 @@ class AIService {
             !isSimple && ClaudeService.isShortQuery(sanitizedMessage);
         final int maxTokens;
         if (isSimple) {
-          maxTokens = 200;
+          maxTokens = 4096;
         } else if (isShort) {
           maxTokens = ClaudeService.maxTokensForShortQuery();
         } else {
@@ -1311,7 +1311,7 @@ class AIService {
         // Personalize: tell the AI the user's name so it can greet them
         if (userName != null && userName.isNotEmpty) {
           systemPrompt += '\n\nThe user\'s name is $userName. '
-              'Use their name naturally in conversation — at least once every 3-4 messages. '
+              'You may use their name occasionally (at most once per conversation). '
               'Do not overuse it, just weave it in like a friend would.';
         }
 
