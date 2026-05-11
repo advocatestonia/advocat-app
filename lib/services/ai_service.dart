@@ -18,6 +18,7 @@ import 'citation_verifier.dart';
 import 'claude_service.dart';
 import 'language_detector.dart';
 import 'supabase_service.dart';
+import '../features/auth/providers/auth_provider.dart';
 import 'system_prompts.dart';
 import 'user_memory_service.dart';
 import 'voice_service.dart';
@@ -151,7 +152,7 @@ final aiServiceProvider = Provider<AIService>((ref) {
   final caseFileExtractor = ref.watch(caseFileExtractorProvider);
   final caseFileService = ref.watch(caseFileServiceProvider);
   final caseAutoPatchService = ref.watch(caseAutoPatchServiceProvider);
-  return AIService(
+  final service = AIService(
     claudeService: claudeService,
     quotaClient: SupabaseAiQuotaClient(supabase),
     memoryService: memoryService,
@@ -160,6 +161,11 @@ final aiServiceProvider = Provider<AIService>((ref) {
     caseFileService: caseFileService,
     caseAutoPatchService: caseAutoPatchService,
   );
+  // Sync pro status from the authoritative user profile so isProUser
+  // stays accurate across auth state changes (login, purchase, logout).
+  final userAsync = ref.watch(currentUserProvider);
+  service.isProUser = userAsync.valueOrNull?.isProActive ?? false;
+  return service;
 });
 
 /// Service that communicates with the AI backend.

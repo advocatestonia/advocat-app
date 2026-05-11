@@ -134,10 +134,20 @@ PROJECT_REF="${SUPABASE_PROJECT_REF:-okgnkucgwsytsondrjye}"
 LAST_PROD=$(git rev-parse github/gh-pages 2>/dev/null || echo "")
 CHANGED_FNS=()
 if [[ -n "$LAST_PROD" ]]; then
-  while IFS= read -r fn; do
-    [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
-  done < <(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null \
-            | awk -F/ '/supabase\/functions\/[^_][^/]+\//{print $3}' | sort -u)
+  CHANGED_FILES=$(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null)
+  # If any _shared module changed, redeploy all functions that import it.
+  # _shared changes are invisible to the per-function diff but affect all dependents.
+  if echo "$CHANGED_FILES" | grep -q 'supabase/functions/_shared/'; then
+    log "_shared module(s) changed — redeploying all dependent functions"
+    while IFS= read -r fn; do
+      [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
+    done < <(ls supabase/functions/ | grep -v '^_' | sort -u)
+  else
+    while IFS= read -r fn; do
+      [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
+    done < <(echo "$CHANGED_FILES" \
+              | awk -F/ '/supabase\/functions\/[^_][^/]+\//{print $3}' | sort -u)
+  fi
 fi
 if [[ ${#CHANGED_FNS[@]} -eq 0 ]]; then
   ok "No Edge Function changes detected"

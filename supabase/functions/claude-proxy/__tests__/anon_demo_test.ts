@@ -295,29 +295,29 @@ Deno.test({
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
-    // MAX_TOKENS_LIMIT was raised from 4096 → 16384 (2026-05-07).
+    // MAX_TOKENS_LIMIT was raised from 16384 → 32000 (2026-05-08, Sonnet 4.6 max).
     // Verify the new value is present so we catch any regression.
-    const hasAuthCap = /MAX_TOKENS_LIMIT\s*=\s*16384/.test(indexCode) ||
-      /Math\.min\([^)]*16384[^)]*\)/.test(indexCode);
+    const hasAuthCap = /MAX_TOKENS_LIMIT\s*=\s*32000/.test(indexCode) ||
+      /Math\.min\([^)]*32000[^)]*\)/.test(indexCode);
     assert(
       hasAuthCap,
-      "claude-proxy/index.ts must keep the 16384 cap for authenticated " +
-        "callers (MAX_TOKENS_LIMIT = 16384 or Math.min(..., 16384))",
+      "claude-proxy/index.ts must keep the 32000 cap for authenticated " +
+        "callers (MAX_TOKENS_LIMIT = 32000 or Math.min(..., 32000))",
     );
 
-    // And the order must be: anon clamp tightens AFTER the global 16384 cap,
-    // so an authenticated request with max_tokens=16384 stays at 16384 while
+    // And the order must be: anon clamp tightens AFTER the global 32000 cap,
+    // so an authenticated request with max_tokens=32000 stays at 32000 while
     // an anon request gets pinned to 500. We verify by checking that the
-    // 500 literal appears after the 16384 literal in the source.
-    const idx16384 = indexCode.indexOf("16384");
+    // 500 literal appears after the 32000 literal in the source.
+    const idxAuthCap = indexCode.indexOf("32000");
     const idx500 = indexCode.indexOf("500");
-    assert(idx16384 !== -1, "16384 cap missing");
+    assert(idxAuthCap !== -1, "32000 cap missing");
     assert(idx500 !== -1, "500 anon cap missing");
     assert(
-      idx500 > idx16384,
-      "anon 500 clamp must come AFTER the 16384 global cap so " +
-        "authenticated callers retain 16384 (16384 at " +
-        `${idx16384}, 500 at ${idx500})`,
+      idx500 > idxAuthCap,
+      "anon 500 clamp must come AFTER the 32000 global cap so " +
+        "authenticated callers retain 32000 (32000 at " +
+        `${idxAuthCap}, 500 at ${idx500})`,
     );
   },
 });

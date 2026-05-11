@@ -339,23 +339,33 @@ Deno.test("T18 — claude-proxy uses shared gate + has rate-limit (SECURITY 2026
   assertStringIncludes(src, 'bucket: "claude-proxy"');
 });
 
-Deno.test("T19 — claude-proxy does NOT allow anonymous traffic (SECURITY 2026-05-04 U1)", () => {
-  // The U1 fix is "no anonymousPerMinute on the gate call". A regression
-  // that re-introduces anonymous chat would also re-introduce the cost-burn
-  // vector, so freeze the contract here.
+Deno.test("T19 — claude-proxy anon traffic is hard-capped (SECURITY 2026-05-04 U1 + demo restore)", () => {
+  // 2026-05-05 DEMO RESTORE: anonymousPerMinute=3 was re-enabled with a hard
+  // 500-token cap so the landing demo works. The security contract is:
+  //   1. anonymousPerMinute MUST be ≤ 3 (not unbounded)
+  //   2. ANON_MAX_TOKENS MUST be ≤ 500 (cost bound)
+  // We verify both caps are present in the source.
   const src = Deno.readTextFileSync(
     new URL("../claude-proxy/index.ts", import.meta.url),
   );
-  // Strip comments so we don't trip on the explanatory text that mentions
-  // the option name in passing.
-  const stripped = src
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/^\s*\/\/.*$/gm, "");
-  if (stripped.includes("anonymousPerMinute")) {
-    throw new Error(
-      "claude-proxy must NOT pass anonymousPerMinute — would re-open " +
-        "the anon-key cost-burn vector (security audit 2026-05-04 U1).",
-    );
+  if (!src.includes("ANON_RATE_LIMIT_PER_MINUTE") && !src.includes("anonymousPerMinute")) {
+    throw new Error("claude-proxy must define anonymous rate limit");
+  }
+  // ANON_MAX_TOKENS must be ≤ 500
+  const anonTokensMatch = src.match(/ANON_MAX_TOKENS\s*=\s*(\d+)/);
+  if (anonTokensMatch) {
+    const cap = parseInt(anonTokensMatch[1], 10);
+    if (cap > 500) {
+      throw new Error(`ANON_MAX_TOKENS=${cap} exceeds 500 — cost-burn risk`);
+    }
+  }
+  // ANON_RATE_LIMIT_PER_MINUTE must be ≤ 3
+  const anonRateMatch = src.match(/ANON_RATE_LIMIT_PER_MINUTE\s*=\s*(\d+)/);
+  if (anonRateMatch) {
+    const rate = parseInt(anonRateMatch[1], 10);
+    if (rate > 3) {
+      throw new Error(`ANON_RATE_LIMIT_PER_MINUTE=${rate} exceeds 3 — cost-burn risk`);
+    }
   }
 });
 

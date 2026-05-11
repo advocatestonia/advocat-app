@@ -211,20 +211,22 @@ Deno.test("CM-T20 — small case fits at full level", () => {
   assertStringIncludes(out!, "Recent documents:");
 });
 
-Deno.test("CM-T21 — overflow drops parsed_summary first (step 1)", () => {
+Deno.test("CM-T21 — overflow: parsed_summary truncated to MAX_DOC_SUMMARY_BYTES (2KB)", () => {
+  // 2026-05-09: active_case_injection now truncates parsed_summary to
+  // MAX_DOC_SUMMARY_BYTES (2000 chars) instead of dropping the entire field.
+  // A 35 KB summary is trimmed to 2 KB and still fits within MAX_ACTIVE_CASE_BYTES,
+  // so the output includes the filename and a truncated summary.
   const p = basePayload();
-  // Inflate parsed_summary alone to push past 30 KB but leave structure
-  // small enough that no-doc-summaries fits.
   p.recent_documents[0].parsed_summary = "X".repeat(35_000);
   const out = formatActiveCaseBlockWithCap(p, MAX_ACTIVE_CASE_BYTES);
-  if (out === null) throw new Error("Trimmed result should fit");
+  if (out === null) throw new Error("Trimmed result should fit within 30KB cap");
   // Filename must survive.
   assertStringIncludes(out!, "kaannyttamispaatos_2025-12-04.pdf");
-  // Summary X-runs must be gone (no 35 KB X's left).
-  if (out!.includes("X".repeat(100))) {
-    throw new Error("parsed_summary must be dropped at no-doc-summaries level");
+  // Full 35KB X-run must NOT be present (was truncated).
+  if (out!.includes("X".repeat(3_000))) {
+    throw new Error("parsed_summary must be truncated to MAX_DOC_SUMMARY_BYTES");
   }
-  // Other sections still present (didn't trim further than needed).
+  // Timeline must still be present (didn't over-trim).
   assertStringIncludes(out!, "Timeline:");
 });
 
