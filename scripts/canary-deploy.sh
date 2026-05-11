@@ -143,10 +143,13 @@ if [[ -n "$LAST_PROD" ]]; then
       [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
     done < <(ls supabase/functions/ | grep -v '^_' | sort -u)
   else
-    while IFS= read -r fn; do
-      [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
-    done < <(echo "$CHANGED_FILES" \
-              | awk -F/ '/supabase\/functions\/[^_][^/]+\//{print $3}' | sort -u)
+    # Extract function names: supabase/functions/<name>/... — skip _shared
+    while IFS= read -r line; do
+      fn=$(echo "$line" | sed 's|supabase/functions/||' | cut -d/ -f1)
+      [[ -n "$fn" && "$fn" != _* ]] && CHANGED_FNS+=("$fn")
+    done < <(echo "$CHANGED_FILES" | grep 'supabase/functions/' | grep -v '_shared' | sort -u)
+    # Deduplicate
+    IFS=$'\n' read -r -d '' -a CHANGED_FNS < <(printf '%s\n' "${CHANGED_FNS[@]}" | sort -u && printf '\0') || true
   fi
 fi
 if [[ ${#CHANGED_FNS[@]} -eq 0 ]]; then
