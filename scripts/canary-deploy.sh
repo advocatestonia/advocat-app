@@ -134,7 +134,7 @@ PROJECT_REF="${SUPABASE_PROJECT_REF:-okgnkucgwsytsondrjye}"
 LAST_PROD=$(git rev-parse github/gh-pages 2>/dev/null || echo "")
 CHANGED_FNS=()
 if [[ -n "$LAST_PROD" ]]; then
-  CHANGED_FILES=$(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null)
+  CHANGED_FILES=$(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null || true)
   # If any _shared module changed, redeploy all functions that import it.
   # _shared changes are invisible to the per-function diff but affect all dependents.
   if echo "$CHANGED_FILES" | grep -q 'supabase/functions/_shared/'; then
