@@ -1188,6 +1188,174 @@ img, svg { display: block; max-width: 100%; }
 .pricing-note { text-align: center; margin-top: 28px; font-size: 13px; color: var(--muted); }
 .pricing-note strong { color: var(--teal); }
 
+/* ── PRICING v2 — anchor, toggle, trust, testimonials ─────────────────────── */
+
+/* Lawyer-cost anchor block above the headline */
+.pricing-anchor {
+  max-width: 720px; margin: 0 auto 36px;
+  background: linear-gradient(180deg, #FFF 0%, #F1F8F5 100%);
+  border: 1px solid var(--line);
+  border-radius: 16px; padding: 22px 28px;
+  box-shadow: 0 2px 12px rgba(15,27,53,.04), 0 12px 28px -16px rgba(13,148,136,.18);
+  text-align: center;
+}
+.pricing-anchor-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 18px; flex-wrap: wrap;
+}
+.pricing-anchor-col { flex: 1 1 200px; min-width: 0; }
+.pricing-anchor-label {
+  font-size: 11px; font-weight: 800; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+.pricing-anchor-value {
+  font-size: 30px; font-weight: 900; letter-spacing: -0.02em;
+  color: var(--navy); line-height: 1.1;
+}
+.pricing-anchor-them-value { color: #B91C1C; text-decoration: line-through; text-decoration-thickness: 2px; }
+.pricing-anchor-us-value { color: var(--teal); }
+.pricing-anchor-unit { font-size: 14px; font-weight: 600; color: var(--muted); margin-left: 4px; text-decoration: none; }
+.pricing-anchor-them-value .pricing-anchor-unit { color: var(--muted); }
+.pricing-anchor-us-value .pricing-anchor-unit { color: var(--teal2); }
+.pricing-anchor-vs {
+  font-size: 22px; font-weight: 800; color: var(--teal);
+  flex: 0 0 auto; padding: 0 6px;
+}
+.pricing-anchor-note {
+  margin-top: 12px; font-size: 13px; color: var(--muted); font-style: italic;
+}
+
+/* Launch promo banner inside pricing section */
+.pricing-promo-banner {
+  margin: 18px auto 0; max-width: 640px;
+  background: linear-gradient(90deg, rgba(13,148,136,.10) 0%, rgba(20,184,166,.12) 100%);
+  border: 1px solid rgba(13,148,136,.32);
+  border-radius: 999px;
+  padding: 10px 22px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-size: 13.5px; color: var(--teal2); font-weight: 600;
+}
+.pricing-promo-icon {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--teal3);
+  box-shadow: 0 0 0 4px rgba(20,184,166,.22);
+  animation: promoPulse 1.6s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.pricing-promo-text strong {
+  color: var(--navy); font-weight: 800;
+  background: rgba(13,148,136,.18);
+  padding: 1px 7px; border-radius: 4px; margin: 0 2px;
+  font-family: 'Inter', monospace; letter-spacing: .04em;
+}
+@keyframes promoPulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(20,184,166,.22); }
+  50%      { box-shadow: 0 0 0 7px rgba(20,184,166,.10); }
+}
+
+/* Monthly / Annual toggle */
+.billing-toggle {
+  display: inline-flex; align-items: center; gap: 4px;
+  margin: 28px auto 8px; padding: 5px;
+  background: #F1F3F5; border: 1px solid var(--line);
+  border-radius: 999px;
+  position: relative; left: 50%; transform: translateX(-50%);
+}
+.billing-toggle-btn {
+  font-size: 14px; font-weight: 600; color: var(--muted);
+  padding: 9px 22px; border-radius: 999px;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+.billing-toggle-btn:hover { color: var(--text); }
+.billing-toggle-btn.is-active {
+  background: #FFF; color: var(--navy);
+  box-shadow: 0 1px 3px rgba(15,27,53,.10), 0 4px 8px -4px rgba(15,27,53,.08);
+}
+.billing-toggle-savings {
+  display: inline-flex; align-items: center;
+  margin-left: 10px;
+  font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--green);
+  background: rgba(5,150,105,.10);
+  border: 1px solid rgba(5,150,105,.22);
+  border-radius: 999px; padding: 5px 11px;
+}
+
+/* Toggle drives visibility of monthly/annual price rows */
+.plan-price-billing[data-billing-show],
+.plan-annual-billing[data-billing-show] { display: none; }
+.ab-pricing[data-billing="monthly"] .plan-price-billing[data-billing-show~="monthly"],
+.ab-pricing[data-billing="monthly"] .plan-annual-billing[data-billing-show~="monthly"],
+.ab-pricing[data-billing="annual"] .plan-price-billing[data-billing-show~="annual"],
+.ab-pricing[data-billing="annual"] .plan-annual-billing[data-billing-show~="annual"] { display: flex; }
+.ab-pricing .plan-price-billing[data-billing-show*=","] { /* free tier shows in both */ }
+.ab-pricing[data-billing="monthly"] .plan-price-billing[data-billing-show="monthly,annual"],
+.ab-pricing[data-billing="annual"] .plan-price-billing[data-billing-show="monthly,annual"] { display: flex; }
+
+/* Trust badge row */
+.pricing-trust-row {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 10px 18px; margin: 32px auto 0; max-width: 920px;
+}
+.pricing-trust-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  background: rgba(13,148,136,.06);
+  border: 1px solid rgba(13,148,136,.18);
+  padding: 8px 14px; border-radius: 999px;
+}
+.pricing-trust-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--teal); color: #FFF;
+  font-size: 11px; font-weight: 900; flex-shrink: 0;
+}
+
+/* Testimonials block */
+.pricing-testimonials {
+  margin-top: 56px; padding-top: 40px;
+  border-top: 1px solid var(--line);
+}
+.pricing-testimonials-head { text-align: center; margin-bottom: 28px; }
+.pricing-testimonials-eyebrow {
+  font-size: 11px; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 6px;
+}
+.pricing-testimonials-disclaimer {
+  font-size: 12px; color: var(--faint); font-style: italic;
+}
+.pricing-testimonials-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+}
+.pricing-testimonial {
+  background: linear-gradient(180deg, #FAFCFB 0%, #F1F8F5 100%);
+  border: 1px solid var(--line); border-radius: 14px;
+  padding: 22px 22px 18px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 2px 12px rgba(15,27,53,.04);
+}
+.pricing-testimonial-quote {
+  font-size: 14px; line-height: 1.55; color: var(--text);
+  flex: 1; margin-bottom: 14px;
+  quotes: "\201C" "\201D";
+}
+.pricing-testimonial-author {
+  display: flex; flex-direction: column; gap: 2px;
+  padding-top: 12px; border-top: 1px solid var(--line);
+}
+.pricing-testimonial-name {
+  font-size: 13px; font-weight: 700; color: var(--navy);
+}
+.pricing-testimonial-meta {
+  font-size: 11.5px; color: var(--muted); letter-spacing: .02em;
+}
+
+@media (max-width: 900px) {
+  .pricing-testimonials-grid { grid-template-columns: 1fr; }
+  .pricing-anchor-row { flex-direction: column; gap: 12px; }
+  .pricing-anchor-vs { transform: rotate(90deg); padding: 0; }
+}
+
 /* Idle floating + glow animations (motion-friendly) */
 @media (prefers-reduced-motion: no-preference) {
   .plan { animation: planFloat 5.5s ease-in-out infinite; }
@@ -1482,6 +1650,77 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
   .cmp-cta:active { transform: scale(.98); }
 }
 
+/* ── CONTRACT REVIEW SECTION ── */
+.contracts-section {
+  background: var(--navy);
+  color: #fff;
+  padding: 80px 24px;
+}
+.contracts-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+.contracts-text h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 16px;
+}
+.contracts-text p {
+  font-size: 1.125rem;
+  line-height: 1.55;
+  opacity: 0.85;
+  margin: 0 0 24px;
+}
+.contracts-badges {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.contracts-badges .badge {
+  background: rgba(13, 148, 136, 0.15);
+  color: #5EEAD4;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid rgba(13, 148, 136, 0.3);
+}
+.contracts-section .cta-button {
+  background: var(--teal);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-block;
+  transition: background 0.2s ease;
+}
+.contracts-section .cta-button:hover {
+  background: var(--teal2);
+}
+.contracts-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+@media (max-width: 768px) {
+  .contracts-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .contracts-section { padding: 56px 20px; }
+}
+
 /* ── RTL ── */
 html[dir="rtl"] body { direction: rtl; }
 html[dir="rtl"] .chat-msg.user { align-self: flex-start; border-bottom-right-radius: 14px; border-bottom-left-radius: 3px; }
@@ -1585,8 +1824,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 <!-- ── LIVE DEMO TEASER ── -->
 <!-- Layer 1 of "first 60 seconds wow": a click-through teaser that drops -->
 <!-- the visitor straight onto the full demo page at /demo.html. Kept tiny -->
-<!-- and inline-styled to avoid clashing with parallel landing CSS work; -->
-<!-- the heavy lifting (animation, PDF reveal, CTA wall) lives on /demo.html. -->
+<!-- to avoid clashing with parallel landing work; the heavy lifting -->
+<!-- (animation, PDF reveal, CTA wall) all lives on /demo.html. -->
 <section class="section" id="live-demo" style="padding:48px 0;background:linear-gradient(180deg,#F8F9FA 0%,#FFFFFF 100%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
   <div class="container" style="text-align:center;max-width:780px">
     <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--teal);text-transform:uppercase;margin-bottom:14px">
@@ -1640,6 +1879,25 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 
 <!-- ── CASES & DOCUMENTS ── -->
 <!-- ── CASES section removed 2026-05-03: header-only stub, content TBD. -->
+
+<!-- ── CONTRACT REVIEW ── -->
+<section id="contracts" class="contracts-section">
+  <div class="contracts-inner">
+    <div class="contracts-text">
+      <h2 data-i18n="contracts.heading">Drop a contract. Get a reply in 90 seconds.</h2>
+      <p data-i18n="contracts.sub">AI reads it, flags risks, drafts your reply to the other side — in their language.</p>
+      <div class="contracts-badges">
+        <span class="badge" data-i18n="contracts.badge1">11 jurisdictions</span>
+        <span class="badge" data-i18n="contracts.badge2">17 languages</span>
+        <span class="badge" data-i18n="contracts.badge3">$0.13 per contract</span>
+      </div>
+      <a href="/app.html?plan=counsel&amp;billing=monthly" class="cta-button" data-i18n="contracts.cta">Try with your contract →</a>
+    </div>
+    <div class="contracts-visual">
+      <img src="/assets/contract_review_preview.png" alt="Sample Contract Review report" loading="lazy">
+    </div>
+  </div>
+</section>
 
 <!-- ── COMPARE ── -->
 <section class="section" id="compare">
@@ -1850,7 +2108,19 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 </section>
 
 <!-- ── PRICING ── -->
-<section class="section section-alt" id="pricing">
+<!-- =========================================================================
+     PRICING — A/B VARIANTS
+     =========================================================================
+     Two variants live in the DOM simultaneously:
+       .ab-v1  (control)   — original 3-card layout
+       .ab-v2  (treatment) — anchor + toggle + testimonials + guarantee
+     One is hidden via [hidden] attribute by the A/B init script reading the
+     `advocat_ab_pricing` cookie (set on first visit, 50/50 split).
+     If JS is disabled, v2 shows (better-perceived default).
+     ========================================================================= -->
+
+<!-- ── PRICING (v1 — CONTROL) ── -->
+<section class="section section-alt ab-pricing ab-v1" id="pricing" hidden>
   <div class="container">
     <div style="text-align:center">
       <div class="section-label" style="justify-content:center" data-i18n="pricing.label">PRICING</div>
@@ -1860,7 +2130,6 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="pricing-grid">
       <!-- FREE -->
       <div class="plan">
-        <!-- Decorative iconmark watermark (simple shield outline for Free tier) -->
         <svg class="plan-watermark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
           <path d="M32 4 L56 14 V32 C56 46 44 56 32 60 C20 56 8 46 8 32 V14 Z"
                 stroke="#0D9488" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
@@ -1877,14 +2146,14 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan1.f3">Document scanning (3 docs)</li>
           <li data-i18n="plan1.f4">Cited sources from EU & EE law</li>
           <li data-i18n="plan1.f5">No card required</li>
+          <li data-i18n="pricing.free.contract_review">1 contract review (lifetime trial)</li>
         </ul>
-        <a class="btn btn-primary" href="/app.html" data-i18n="plan1.cta">Start free</a>
+        <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="free" href="/app.html" data-i18n="plan1.cta">Start free</a>
       </div>
 
       <!-- PRO -->
       <div class="plan featured">
         <div class="plan-badge" data-i18n="plan2.badge">Most popular</div>
-        <!-- Brand shield watermark (uses official logo_shield.png) -->
         <img class="plan-watermark" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy">
         <span class="plan-name-eyebrow" data-i18n="plan2.eyebrow">For families</span>
         <div class="plan-name" data-i18n="plan2.name">Pro</div>
@@ -1903,13 +2172,13 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f4">Full document drafting (letters, complaints)</li>
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
+          <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
         </ul>
-        <a class="btn btn-primary" id="plan2-cta" href="/app.html?plan=counsel&amp;billing=monthly" data-i18n="plan2.cta">Start now</a>
+        <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="pro" id="plan2-cta" href="/app.html?plan=counsel&amp;billing=monthly" data-i18n="plan2.cta">Start now</a>
       </div>
 
       <!-- PREMIUM -->
       <div class="plan plan-premium">
-        <!-- Pulsing legal-assistant icon — mirrors in-app home tile (shield + 3 animated rings) -->
         <div class="plan-pulse-icon" aria-hidden="true">
           <svg class="pulse-rings" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
             <circle class="r1" cx="50" cy="50" r="38"/>
@@ -1935,12 +2204,209 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f4">Priority processing</li>
           <li data-i18n="plan3.f5">Everything in Pro</li>
           <li data-i18n="plan3.f6">Email & document export</li>
+          <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
         </ul>
-        <a class="btn btn-primary" href="/app.html?plan=representation&amp;billing=monthly" data-i18n="plan3.cta">Choose Premium</a>
+        <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="premium" href="/app.html?plan=representation&amp;billing=monthly" data-i18n="plan3.cta">Choose Premium</a>
       </div>
     </div>
     <p class="pricing-note">
       <span data-i18n="pricing.note">Cancel anytime. Save 30-33% with annual billing.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ── PRICING (v2 — TREATMENT: anchor + annual default + testimonials + guarantee) ── -->
+<section class="section section-alt ab-pricing ab-v2" id="pricing-v2">
+  <div class="container">
+    <!-- Lawyer-cost anchor (above headline) -->
+    <div class="pricing-anchor" aria-label="Cost comparison">
+      <div class="pricing-anchor-row">
+        <div class="pricing-anchor-col pricing-anchor-them">
+          <div class="pricing-anchor-label" data-i18n="pricing.anchor.them_label">A lawyer charges</div>
+          <div class="pricing-anchor-value pricing-anchor-them-value">€250–600<span class="pricing-anchor-unit" data-i18n="pricing.anchor.per_hour">/ hour</span></div>
+        </div>
+        <div class="pricing-anchor-vs" aria-hidden="true">→</div>
+        <div class="pricing-anchor-col pricing-anchor-us">
+          <div class="pricing-anchor-label" data-i18n="pricing.anchor.us_label">Advocat costs</div>
+          <div class="pricing-anchor-value pricing-anchor-us-value">€19.99<span class="pricing-anchor-unit" data-i18n="pricing.anchor.per_month">/ month</span></div>
+        </div>
+      </div>
+      <div class="pricing-anchor-note" data-i18n="pricing.anchor.note">One hour with a lawyer costs more than a year of Advocat.</div>
+    </div>
+
+    <div style="text-align:center">
+      <div class="section-label" style="justify-content:center" data-i18n="pricing.label">PRICING</div>
+      <h2 data-i18n-html="pricing.title.v2">Clear price. <em>Cancel anytime.</em></h2>
+      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.sub.v2">14-day full refund under EU consumer law. No card required to start.</p>
+    </div>
+
+    <!-- Optional launch promo banner — appended/shown by JS only when banner copy + active window are set. -->
+    <div id="pricing-promo-banner" class="pricing-promo-banner" hidden>
+      <span class="pricing-promo-icon" aria-hidden="true">●</span>
+      <span class="pricing-promo-text" data-i18n="pricing.promo.text">Launch month: first month 50% off — code <strong>LAUNCH50</strong></span>
+    </div>
+
+    <!-- Monthly / Annual toggle (annual default) -->
+    <div class="billing-toggle" role="tablist" aria-label="Billing period">
+      <button type="button" class="billing-toggle-btn" data-billing="monthly" role="tab" aria-selected="false" data-i18n="billing.monthly">Monthly</button>
+      <button type="button" class="billing-toggle-btn is-active" data-billing="annual" role="tab" aria-selected="true" data-i18n="billing.annual">Annual</button>
+      <span class="billing-toggle-savings" data-i18n="billing.savings_pill">Save up to 33%</span>
+    </div>
+
+    <div class="pricing-grid">
+      <!-- FREE -->
+      <div class="plan">
+        <svg class="plan-watermark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M32 4 L56 14 V32 C56 46 44 56 32 60 C20 56 8 46 8 32 V14 Z"
+                stroke="#0D9488" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        </svg>
+        <span class="plan-name-eyebrow" data-i18n="plan1.eyebrow">Starter</span>
+        <div class="plan-name" data-i18n="plan1.name">Free</div>
+        <div class="plan-price plan-price-billing" data-billing-show="monthly,annual">
+          <span class="currency">€</span><span class="amount">0</span><span class="per" data-i18n="plan1.per">/ forever</span>
+        </div>
+        <div class="plan-desc" data-i18n="plan1.desc">Try the system. Get a real answer with cited law before you decide.</div>
+        <ul class="plan-features">
+          <li data-i18n="plan1.f1">7 AI messages total</li>
+          <li data-i18n="plan1.f2">1 active case</li>
+          <li data-i18n="plan1.f3">Document scanning (3 docs)</li>
+          <li data-i18n="plan1.f4">Cited sources from EU & EE law</li>
+          <li data-i18n="plan1.f5">No card required</li>
+          <li data-i18n="pricing.free.contract_review">1 contract review (lifetime trial)</li>
+        </ul>
+        <a class="btn btn-primary ab-cta" data-variant="v2" data-plan="free" href="/app.html" data-i18n="plan1.cta">Start free</a>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan featured">
+        <div class="plan-badge" data-i18n="plan2.badge">Most popular</div>
+        <img class="plan-watermark" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy">
+        <span class="plan-name-eyebrow" data-i18n="plan2.eyebrow">For families</span>
+        <div class="plan-name" data-i18n="plan2.name">Pro</div>
+
+        <!-- Monthly price -->
+        <div class="plan-price plan-price-billing" data-billing-show="monthly">
+          <span class="currency">€</span><span class="amount">19.99</span><span class="per" data-i18n="plan2.per">/ month</span>
+        </div>
+        <!-- Annual price (default visible) -->
+        <div class="plan-price plan-price-billing" data-billing-show="annual">
+          <span class="currency">€</span><span class="amount">13.33</span><span class="per" data-i18n="plan2.per_eff_month">/ month, billed yearly</span>
+        </div>
+        <div class="plan-annual plan-annual-billing" data-billing-show="annual">
+          <span data-i18n="plan2.annual_full">€159.99 per year — save €79.89 (33% off)</span>
+          <span class="plan-save-badge">SAVE 33%</span>
+        </div>
+        <div class="plan-annual plan-annual-billing" data-billing-show="monthly">
+          <span data-i18n="plan2.annual_hint">Switch to annual to save €79.89/year (33%)</span>
+        </div>
+
+        <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. Unlimited AI, full document drafting.</div>
+        <ul class="plan-features">
+          <li data-i18n="plan2.f1">100 AI messages / day</li>
+          <li data-i18n="plan2.f2">3 active cases</li>
+          <li data-i18n="plan2.f3">Document scanning (20 docs)</li>
+          <li data-i18n="plan2.f4">Full document drafting (letters, complaints)</li>
+          <li data-i18n="plan2.f5">Voice input</li>
+          <li data-i18n="plan2.f6">Web search for fresh law</li>
+          <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
+        </ul>
+        <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="pro" data-href-monthly="/app.html?plan=counsel&amp;billing=monthly" data-href-annual="/app.html?plan=counsel&amp;billing=annual" href="/app.html?plan=counsel&amp;billing=annual" data-i18n="plan2.cta">Start now</a>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="plan plan-premium">
+        <div class="plan-pulse-icon" aria-hidden="true">
+          <svg class="pulse-rings" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+            <circle class="r1" cx="50" cy="50" r="38"/>
+            <circle class="r2" cx="50" cy="50" r="38"/>
+            <circle class="r3" cx="50" cy="50" r="38"/>
+          </svg>
+          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true">
+        </div>
+        <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
+        <div class="plan-name" data-i18n="plan3.name">Premium</div>
+
+        <div class="plan-price plan-price-billing" data-billing-show="monthly">
+          <span class="currency">€</span><span class="amount">29.99</span><span class="per" data-i18n="plan3.per">/ month</span>
+        </div>
+        <div class="plan-price plan-price-billing" data-billing-show="annual">
+          <span class="currency">€</span><span class="amount">20.83</span><span class="per" data-i18n="plan3.per_eff_month">/ month, billed yearly</span>
+        </div>
+        <div class="plan-annual plan-annual-billing" data-billing-show="annual">
+          <span data-i18n="plan3.annual_full">€249.99 per year — save €109.89 (30% off)</span>
+          <span class="plan-save-badge">SAVE 30%</span>
+        </div>
+        <div class="plan-annual plan-annual-billing" data-billing-show="monthly">
+          <span data-i18n="plan3.annual_hint">Switch to annual to save €109.89/year (30%)</span>
+        </div>
+
+        <div class="plan-desc" data-i18n="plan3.desc">Full defense — unlimited everything, priority response, all features.</div>
+        <ul class="plan-features">
+          <li data-i18n="plan3.f1">Unlimited AI messages</li>
+          <li data-i18n="plan3.f2">Unlimited cases</li>
+          <li data-i18n="plan3.f3">Unlimited document scans</li>
+          <li data-i18n="plan3.f4">Priority processing</li>
+          <li data-i18n="plan3.f5">Everything in Pro</li>
+          <li data-i18n="plan3.f6">Email & document export</li>
+          <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
+        </ul>
+        <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="premium" data-href-monthly="/app.html?plan=representation&amp;billing=monthly" data-href-annual="/app.html?plan=representation&amp;billing=annual" href="/app.html?plan=representation&amp;billing=annual" data-i18n="plan3.cta">Choose Premium</a>
+      </div>
+    </div>
+
+    <!-- Money-back guarantee + trust badges -->
+    <div class="pricing-trust-row" aria-label="Guarantees">
+      <div class="pricing-trust-badge">
+        <span class="pricing-trust-icon" aria-hidden="true">✓</span>
+        <span data-i18n="pricing.trust.refund">14-day money-back — EU consumer law</span>
+      </div>
+      <div class="pricing-trust-badge">
+        <span class="pricing-trust-icon" aria-hidden="true">✓</span>
+        <span data-i18n="pricing.trust.cancel">Cancel anytime, one click</span>
+      </div>
+      <div class="pricing-trust-badge">
+        <span class="pricing-trust-icon" aria-hidden="true">✓</span>
+        <span data-i18n="pricing.trust.gdpr">GDPR · EU servers (Frankfurt)</span>
+      </div>
+      <div class="pricing-trust-badge">
+        <span class="pricing-trust-icon" aria-hidden="true">✓</span>
+        <span data-i18n="pricing.trust.nocard">No card to start</span>
+      </div>
+    </div>
+
+    <!-- Testimonials — clearly labelled as anonymised beta feedback -->
+    <div class="pricing-testimonials" aria-label="Beta user feedback">
+      <div class="pricing-testimonials-head">
+        <div class="pricing-testimonials-eyebrow" data-i18n="pricing.testimonials.eyebrow">EARLY USERS</div>
+        <div class="pricing-testimonials-disclaimer" data-i18n="pricing.testimonials.disclaimer">Beta user feedback, anonymised. Advocat is in early access.</div>
+      </div>
+      <div class="pricing-testimonials-grid">
+        <blockquote class="pricing-testimonial">
+          <p class="pricing-testimonial-quote" data-i18n="pricing.testimonials.q1">"Our supplier contract had a 60-day termination clause I had missed. Advocat flagged it, cited VÕS § 196, and drafted the counter-letter. We would have signed blind."</p>
+          <footer class="pricing-testimonial-author">
+            <span class="pricing-testimonial-name" data-i18n="pricing.testimonials.a1_name">M., SaaS founder</span>
+            <span class="pricing-testimonial-meta" data-i18n="pricing.testimonials.a1_meta">Tallinn · Pro plan</span>
+          </footer>
+        </blockquote>
+        <blockquote class="pricing-testimonial">
+          <p class="pricing-testimonial-quote" data-i18n="pricing.testimonials.q2">"Deadline radar caught a 14-day appeal window the day before it closed. I would have lost the right to appeal entirely."</p>
+          <footer class="pricing-testimonial-author">
+            <span class="pricing-testimonial-name" data-i18n="pricing.testimonials.a2_name">K., solopreneur</span>
+            <span class="pricing-testimonial-meta" data-i18n="pricing.testimonials.a2_meta">Tartu · Premium plan</span>
+          </footer>
+        </blockquote>
+        <blockquote class="pricing-testimonial">
+          <p class="pricing-testimonial-quote" data-i18n="pricing.testimonials.q3">"I asked in Russian, got the answer with Estonian statute references, then a Finnish letter draft. No other tool spans all three languages at this depth."</p>
+          <footer class="pricing-testimonial-author">
+            <span class="pricing-testimonial-name" data-i18n="pricing.testimonials.a3_name">A., Russian-speaker in Finland</span>
+            <span class="pricing-testimonial-meta" data-i18n="pricing.testimonials.a3_meta">Helsinki · Pro plan</span>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+
+    <p class="pricing-note">
+      <span data-i18n="pricing.note.v2">Cancel anytime. 14-day EU refund. Save 30–33% with annual billing.</span>
     </p>
   </div>
 </section>
@@ -2163,6 +2629,13 @@ const I18N = {
     'hero.trust1': '7 free messages — no card', 'hero.trust2': 'Cited sources', 'hero.trust3': 'EU GDPR · servers in Frankfurt',
     'how.label': 'THREE STEPS', 'how.title': 'Legal help that actually <em>works</em>.',
     'how.sub': 'No seven-page sign-up. Speak naturally, attach the docs, get a clear next step.',
+    'contracts.heading': 'Drop a contract. Get a reply in 90 seconds.',
+    'contracts.sub': 'AI reads it, flags risks, drafts your reply to the other side — in their language.',
+    'contracts.badge1': '11 jurisdictions', 'contracts.badge2': '17 languages', 'contracts.badge3': '$0.13 per contract',
+    'contracts.cta': 'Try with your contract →',
+    'pricing.free.contract_review': '1 contract review (lifetime trial)',
+    'pricing.pro.contract_review': '5 contract reviews / month',
+    'pricing.premium.contract_review': '20 contract reviews / month',
     'how.s1h': 'Ask your question', 'how.s1p': 'Talk like you would to a friend — in any of 17 languages. Advocat asks follow-ups like a good lawyer would.', 'how.s1m': '~ 90 seconds',
     'how.s2h': 'AI cites the law', 'how.s2p': 'Every answer cites the exact statute (e.g. VÕS § 308 lg 3). You can verify it in Riigi Teataja yourself.', 'how.s2m': 'PDF · DOCX · images',
     'how.s3h': 'Send the letter from your email', 'how.s3p': 'AI drafts the letter — you send it from your own email in one click.', 'how.s3m': 'Ready to send',
@@ -2191,28 +2664,51 @@ const I18N = {
     'compare.year_save': 'You save',
     'compare.year_save_sub': 'Every single year.',
     'pricing.label': 'PRICING', 'pricing.title': 'Clear price. No <em>surprises</em>.',
+    'pricing.title.v2': 'Clear price. <em>Cancel anytime.</em>',
     'pricing.sub': 'Cancel anytime. Full refund within the first 14 days under EU consumer law.',
+    'pricing.sub.v2': '14-day full refund under EU consumer law. No card required to start.',
+    'pricing.anchor.them_label': 'A lawyer charges', 'pricing.anchor.us_label': 'Advocat costs',
+    'pricing.anchor.per_hour': '/ hour', 'pricing.anchor.per_month': '/ month',
+    'pricing.anchor.note': 'One hour with a lawyer costs more than a year of Advocat.',
+    'pricing.promo.text': 'Launch month: first month 50% off — code <strong>LAUNCH50</strong>',
+    'billing.monthly': 'Monthly', 'billing.annual': 'Annual',
+    'billing.savings_pill': 'Save up to 33%',
+    'pricing.trust.refund': '14-day money-back — EU consumer law',
+    'pricing.trust.cancel': 'Cancel anytime, one click',
+    'pricing.trust.gdpr': 'GDPR · EU servers (Frankfurt)',
+    'pricing.trust.nocard': 'No card to start',
+    'pricing.testimonials.eyebrow': 'EARLY USERS',
+    'pricing.testimonials.disclaimer': 'Beta user feedback, anonymised. Advocat is in early access.',
+    'pricing.testimonials.q1': '"Our supplier contract had a 60-day termination clause I had missed. Advocat flagged it, cited VÕS § 196, and drafted the counter-letter. We would have signed blind."',
+    'pricing.testimonials.a1_name': 'M., SaaS founder', 'pricing.testimonials.a1_meta': 'Tallinn · Pro plan',
+    'pricing.testimonials.q2': '"Deadline radar caught a 14-day appeal window the day before it closed. I would have lost the right to appeal entirely."',
+    'pricing.testimonials.a2_name': 'K., solopreneur', 'pricing.testimonials.a2_meta': 'Tartu · Premium plan',
+    'pricing.testimonials.q3': '"I asked in Russian, got the answer with Estonian statute references, then a Finnish letter draft. No other tool spans all three languages at this depth."',
+    'pricing.testimonials.a3_name': 'A., Russian-speaker in Finland', 'pricing.testimonials.a3_meta': 'Helsinki · Pro plan',
     'plan1.eyebrow': 'Starter', 'plan1.name': 'Free', 'plan1.per': '/ forever',
     'plan1.desc': 'Try the system. Get a real answer with cited law before you decide.',
     'plan1.f1': '7 AI messages total', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
     'plan1.cta': 'Start free',
-    'plan2.badge': 'Most popular', 'plan2.eyebrow': 'For families', 'plan2.name': 'Pro', 'plan2.per': '/ month', 'plan2.annual': 'or €159.99/year — save 33%',
+    'plan2.badge': 'Most popular', 'plan2.eyebrow': 'For families', 'plan2.name': 'Pro', 'plan2.per': '/ month', 'plan2.per_eff_month': '/ month, billed yearly', 'plan2.annual': 'or €159.99/year — save 33%', 'plan2.annual_full': '€159.99 per year — save €79.89 (33% off)', 'plan2.annual_hint': 'Switch to annual to save €79.89/year (33%)',
     'plan2.desc': 'Daily legal help for you and your family. Unlimited AI, full document drafting.',
     'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
     'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
     'plan2.cta': 'Start now',
-    'plan3.eyebrow': 'Full defense', 'plan3.name': 'Premium', 'plan3.per': '/ month', 'plan3.annual': 'or €249.99/year — save 30%',
+    'plan3.eyebrow': 'Full defense', 'plan3.name': 'Premium', 'plan3.per': '/ month', 'plan3.per_eff_month': '/ month, billed yearly', 'plan3.annual': 'or €249.99/year — save 30%', 'plan3.annual_full': '€249.99 per year — save €109.89 (30% off)', 'plan3.annual_hint': 'Switch to annual to save €109.89/year (30%)',
     'plan3.desc': 'Full defense — unlimited everything, priority response, all features.',
     'plan3.f1': 'Unlimited AI messages', 'plan3.f2': 'Unlimited cases', 'plan3.f3': 'Unlimited document scans',
     'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
     'plan3.cta': 'Choose Premium',
     'pricing.note': 'Cancel anytime. Save 30-33% with annual billing.',
+    'pricing.note.v2': 'Cancel anytime. 14-day EU refund. Save 30–33% with annual billing.',
     'faq.label': 'FAQ', 'faq.title': 'Honest <em>answers</em> to common questions.',
     'faq.items': [
-      { q: 'Is this legal? Can I really use AI for legal questions?', a: 'Yes. Advocat is a legal information service — it explains laws and helps you draft documents. It does not replace a licensed attorney for court representation, but for understanding your situation and writing letters it works fine. The same way reading legal articles online is legal, using a tool that does it for you is legal.' },
-      { q: 'Is my data safe?', a: 'Yes. Encrypted at rest, hosted on EU servers (Frankfurt). Conversations are never used to train AI models. We are GDPR-aligned and follow strict data minimization. You can delete your data at any time.' },
-      { q: 'Why is this better than ChatGPT?', a: 'Advocat is specialized for Estonian and EU law: it cites specific statutes (e.g. VÕS § 308), remembers your case across sessions, and can write formal letters in the right legal format. ChatGPT can hallucinate fake citations — Advocat cites real ones from Riigi Teataja.' },
+      { q: 'Is this real legal advice?', a: 'No — it is legal information. Advocat explains what the law says, cites the specific statute, and drafts letters and complaints for you. A licensed attorney still represents you in court. For most everyday situations (contracts, deposits, deadlines, employer disputes) the information layer is what people actually need — and that is where a lawyer would otherwise charge €250–600/hour. Advocat is built to save you those billable hours.' },
+      { q: 'What if the AI is wrong?', a: 'AI can make mistakes — we never hide that. Every Advocat answer cites the specific statute (e.g. VÕS § 308 lg 3) so you can verify it on Riigi Teataja yourself. We also publish our quality scorecard publicly — see /scorecard for current accuracy numbers across Estonian and EU law domains. For court filings or binding opinions, always have a licensed attorney review the draft.' },
+      { q: 'Is my data safe?', a: 'Yes. Encrypted at rest, hosted on EU servers (Frankfurt). Conversations are never used to train AI models. We are GDPR-aligned and follow strict data minimisation. You can delete your data at any time.' },
+      { q: 'Which languages do you support?', a: '17 languages, including Finnish, Estonian, Russian, Swedish, Ukrainian, English, German, French, Spanish, Italian, Latvian, Lithuanian, Polish, Arabic, Persian, Turkish, and Romanian. You can ask in one language and request the answer or draft letter in another — e.g. ask in Russian, receive an Estonian formal letter ready to send.' },
       { q: 'Can I get a refund?', a: 'Yes. Cancel anytime in one click — no questions. Under EU consumer law, you have 14 days from purchase to get a full refund. After that, your subscription stays active until the end of the billing period. Need help? Write to support@advocat.ee.' },
+      { q: 'Why is this better than ChatGPT?', a: 'Advocat is specialised for Estonian and EU law: it cites specific statutes (e.g. VÕS § 308), remembers your case across sessions, and can write formal letters in the right legal format. ChatGPT can hallucinate fake citations — Advocat cites real ones from Riigi Teataja.' },
       { q: 'Are these documents legally binding?', a: 'The documents Advocat drafts are templates and starting points. They become legally meaningful when you sign and send them. For documents going to court, we strongly recommend a licensed attorney review them first. Advocat is your draft author, not your lawyer in court.' },
       { q: 'Will Advocat represent me in court?', a: 'No. Advocat is for preparation, not representation. We help you understand your rights, write to the other party, and prepare your case file. For appearing in court itself, you need a licensed Estonian advocate (vandeadvokaat). We can help you find one when needed.' },
       { q: 'Who actually sends the letter?', a: 'You. Every email requires your explicit approval in a modal before it leaves. Sent from your Gmail (if connected) or our service with \'on behalf of [your name]\' signature. AI never sends autonomously.' },
@@ -2257,6 +2753,13 @@ const I18N = {
     'hero.trust1': '7 sõnumit tasuta — kaarti pole vaja', 'hero.trust2': 'Viited Riigi Teatajale', 'hero.trust3': 'EL GDPR · serverid Frankfurdis',
     'how.label': 'KOLM SAMMU', 'how.title': 'Õigusabi, mis <em>päriselt aitab</em>.',
     'how.sub': 'Ei mingit seitsmeleheküljelist registreerimist. Kirjelda olukorda oma sõnadega, lisa dokumendid, saa selge järgmine samm.',
+    'contracts.heading': 'Lisa leping. Saa vastus 90 sekundiga.',
+    'contracts.sub': 'AI loeb selle läbi, märgib riskid, koostab vastuse teisele poolele — nende keeles.',
+    'contracts.badge1': '11 jurisdiktsiooni', 'contracts.badge2': '17 keelt', 'contracts.badge3': '$0.13 lepingu kohta',
+    'contracts.cta': 'Proovi oma lepinguga →',
+    'pricing.free.contract_review': '1 lepingu ülevaatus (eluaegne proov)',
+    'pricing.pro.contract_review': '5 lepingu ülevaatust / kuus',
+    'pricing.premium.contract_review': '20 lepingu ülevaatust / kuus',
     'how.s1h': 'Kirjelda olukorda', 'how.s1p': 'Räägi nii, nagu räägiksid sõbrale — eesti, vene, ukraina või mõnes 17 muus keeles. Advocat küsib täpsustusi nagu hea jurist.', 'how.s1m': '~ 90 sekundit',
     'how.s2h': 'AI viitab seadusele', 'how.s2p': 'Iga vastus toob välja konkreetse sätte (nt VÕS § 308 lg 3). Saad selle Riigi Teatajast ise kontrollida.', 'how.s2m': 'PDF · DOCX · pildid',
     'how.s3h': 'Saada kiri oma postkastist', 'how.s3p': 'AI koostab kirja mustandi — saadad oma postkastist ühe klõpsuga.', 'how.s3m': 'Valmis saatmiseks',
@@ -2351,6 +2854,13 @@ const I18N = {
     'hero.trust1': '7 бесплатных сообщений — без карты', 'hero.trust2': 'Со ссылками на закон', 'hero.trust3': 'EU GDPR · серверы во Франкфурте',
     'how.label': 'ТРИ ШАГА', 'how.title': 'Юридическая помощь, которая <em>работает</em>.',
     'how.sub': 'Никакой регистрации на семь экранов. Говори естественно, прикрепи документы, получи понятный план.',
+    'contracts.heading': 'Загрузи контракт. Получи готовый ответ за 90 секунд.',
+    'contracts.sub': 'AI прочитает, найдёт риски, составит ответ контрагенту — на его языке.',
+    'contracts.badge1': '11 юрисдикций', 'contracts.badge2': '17 языков', 'contracts.badge3': '$0.13 за контракт',
+    'contracts.cta': 'Попробовать со своим контрактом →',
+    'pricing.free.contract_review': '1 анализ контракта (пожизненный пробный)',
+    'pricing.pro.contract_review': '5 анализов контрактов / месяц',
+    'pricing.premium.contract_review': '20 анализов контрактов / месяц',
     'how.s1h': 'Задай вопрос', 'how.s1p': 'Говори как с другом — на русском, эстонском, украинском или любом из 17 языков. Advocat задаёт уточняющие вопросы как хороший юрист.', 'how.s1m': '~ 90 сек',
     'how.s2h': 'ИИ цитирует закон', 'how.s2p': 'Каждый ответ ссылается на конкретную статью (например, VÕS § 308 ч. 3). Можно проверить в Riigi Teataja самостоятельно.', 'how.s2m': 'PDF · DOCX · фото',
     'how.s3h': 'Отправь письмо со своей почты', 'how.s3p': 'AI готовит письмо — отправляете со своей почты в один клик.', 'how.s3m': 'Готово к отправке',
@@ -2539,6 +3049,13 @@ const I18N = {
     'hero.trust1': '7 ilmaista viestiä — ei korttia', 'hero.trust2': 'Lähdeviitteet mukana', 'hero.trust3': 'EU GDPR · palvelimet Frankfurtissa',
     'how.label': 'KOLME VAIHETTA', 'how.title': 'Lakiapua, joka <em>todella toimii</em>.',
     'how.sub': 'Ei seitsemän sivun rekisteröitymistä. Puhu luonnollisesti, lataa dokumentit, saat selkeän seuraavan askeleen.',
+    'contracts.heading': 'Pudota sopimus. Saa vastaus 90 sekunnissa.',
+    'contracts.sub': 'AI lukee sen, merkitsee riskit, laatii vastauksen toiselle puolelle — heidän kielellään.',
+    'contracts.badge1': '11 lainkäyttöaluetta', 'contracts.badge2': '17 kieltä', 'contracts.badge3': '$0.13 per sopimus',
+    'contracts.cta': 'Kokeile sopimuksellasi →',
+    'pricing.free.contract_review': '1 sopimuksen tarkastus (elinikäinen kokeilu)',
+    'pricing.pro.contract_review': '5 sopimustarkastusta / kuukausi',
+    'pricing.premium.contract_review': '20 sopimustarkastusta / kuukausi',
     'how.s1h': 'Esitä kysymyksesi', 'how.s1p': 'Puhu kuin ystävälle — millä tahansa 17 kielellä. Advocat esittää tarkentavia kysymyksiä kuten hyvä juristi.', 'how.s1m': '~ 90 sek',
     'how.s2h': 'Tekoäly siteeraa lakia', 'how.s2p': 'Jokainen vastaus viittaa tarkkaan pykälään (esim. VÕS § 308). Voit tarkistaa sen Riigi Teatajasta itse.', 'how.s2m': 'PDF · DOCX · kuvat',
     'how.s3h': 'Lähetä kirje omasta postistasi', 'how.s3p': 'Tekoäly laatii kirjeen luonnoksen — lähetät sen omasta sähköpostistasi yhdellä klikkauksella.', 'how.s3m': 'Valmis lähetettäväksi',
