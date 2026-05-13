@@ -997,5 +997,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Vérifier ce contrat",
+    "contractReviews": "Examens de contrats",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 examen de contrat (essai à vie)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 examens de contrat par mois",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 examens de contrat par mois",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} examens de contrat restants ce mois-ci",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Aucun examen de contrat restant ce mois-ci",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Essai gratuit : 1 examen de contrat",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Essai gratuit utilisé — mettez à niveau",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Examens de contrat épuisés",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Vous avez utilisé votre examen de contrat gratuit. Mettez à niveau pour des examens mensuels.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Vous avez utilisé {used} examens sur {cap} ce mois-ci. Mettez à niveau pour un plafond plus élevé.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Passez à Counsel (€19,99/mois) — 5 examens",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Passez à Pro (€29,99/mois) — 20 examens",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Passez à Pro — 20/mois",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Pas maintenant",
+    "@notNow": {}
 }

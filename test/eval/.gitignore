@@ -1,0 +1,5 @@
+# eval-run artefacts — do NOT commit (contain full candidate answers,
+# potentially user-data-shaped text; also large). Keep questions/, types.ts,
+# grader.ts, runner.ts, README.md tracked.
+results/
+*.tmp.json

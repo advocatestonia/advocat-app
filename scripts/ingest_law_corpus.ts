@@ -12,13 +12,53 @@
  * Usage:
  *   OPENAI_API_KEY=sk-... deno run --allow-read --allow-net --allow-env scripts/ingest_law_corpus.ts
  *
+ *   # Ingest Finnish corpus:
+ *   OPENAI_API_KEY=sk-... deno run --allow-read --allow-net --allow-env \
+ *     scripts/ingest_law_corpus.ts \
+ *     --jurisdiction=FI --lang=fi --source-dir=assets/legal/finland
+ *
  * Optional env overrides:
  *   SUPABASE_URL            (default: https://okgnkucgwsytsondrjye.supabase.co)
  *   SUPABASE_SERVICE_ROLE_KEY
  *   CORPUS_DIR              (default: assets/legal/estonia)
+ *   JURISDICTION            (default: EE — only used when per-file
+ *                            jurisdiction is missing; CLI --jurisdiction
+ *                            overrides this)
+ *   LANG                    (default: et — only used when per-file
+ *                            language is missing; CLI --lang overrides)
  *   BATCH_SIZE              (default: 20)
  *   DRY_RUN=1               (skip Supabase writes, just count chunks)
+ *
+ * CLI flags (Phase 2 Finland support, 2026-05-11):
+ *   --jurisdiction=<EE|FI|EU|RU|DE>
+ *   --lang=<et|ru|en|fi|...>
+ *   --source-dir=<path>     (alias for CORPUS_DIR, takes precedence)
+ *
+ * Per-row jurisdiction precedence (highest first):
+ *   1. The JSON file's top-level `jurisdiction` field, if present.
+ *   2. The CLI `--jurisdiction` flag.
+ *   3. The `JURISDICTION` env var.
+ *   4. Hardcoded fallback `"EE"` (back-compat with the Estonian-only era).
+ *
+ * Same precedence chain applies to `lang`.
  */
+
+// ── CLI args ─────────────────────────────────────────────────────────────────
+//
+// Parsed BEFORE config so CLI flags can override env defaults. Recognised
+// flags (Phase 2 Finland support, 2026-05-11):
+//   --jurisdiction=<EE|FI|EU|RU|DE>
+//   --lang=<et|ru|en|fi|...>
+//   --source-dir=<path>           alias for CORPUS_DIR
+//   --dry-run                     alias for DRY_RUN=1
+
+const CLI_ARGS = new Map<string, string>();
+for (const arg of Deno.args) {
+  if (arg.startsWith("--")) {
+    const [k, v] = arg.slice(2).split("=", 2);
+    CLI_ARGS.set(k, v ?? "true");
+  }
+}
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
@@ -31,10 +71,24 @@ const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 
 const CORPUS_DIR =
-  Deno.env.get("CORPUS_DIR") ?? "assets/legal/estonia";
+  CLI_ARGS.get("source-dir") ??
+  Deno.env.get("CORPUS_DIR") ??
+  "assets/legal/estonia";
+
+/** CLI-provided jurisdiction default. Per-file `jurisdiction` field wins;
+ *  this is the fallback for older corpus files that omit it.
+ *  Precedence: file → CLI flag → env → "EE". */
+const CLI_JURISDICTION = CLI_ARGS.get("jurisdiction") ??
+  Deno.env.get("JURISDICTION") ?? "EE";
+
+/** CLI-provided language default. Per-file `language` field wins;
+ *  this is the fallback for older corpus files that omit it.
+ *  Precedence: file → CLI flag → env → "et". */
+const CLI_LANG = CLI_ARGS.get("lang") ?? Deno.env.get("LANG") ?? "et";
 
 const BATCH_SIZE = parseInt(Deno.env.get("BATCH_SIZE") ?? "20", 10);
-const DRY_RUN = Deno.env.get("DRY_RUN") === "1";
+const DRY_RUN = Deno.env.get("DRY_RUN") === "1" ||
+  CLI_ARGS.get("dry-run") === "true";
 
 const OPENAI_EMBED_URL = "https://api.openai.com/v1/embeddings";
 const OPENAI_MODEL = "text-embedding-3-small";
@@ -54,6 +108,12 @@ interface LawFile {
   name?: string;
   name_en?: string;
   source?: string;
+  /** Optional per-file jurisdiction. Set on Finnish corpus files
+   *  (e.g. `"FI"`). When omitted, falls back to CLI_JURISDICTION. */
+  jurisdiction?: string;
+  /** Optional per-file language (ISO 639-1). Set on Finnish corpus files
+   *  (`"fi"`). When omitted, falls back to CLI_LANG. */
+  language?: string;
   sections?: Section[];
   [key: string]: unknown;
 }
@@ -224,10 +284,12 @@ function fakeBatch(count: number): Array<{ embedding: number[]; tokens: number }
 }
 
 console.log(`Advocat Law Corpus Ingestion`);
-console.log(`  Corpus dir : ${CORPUS_DIR}`);
-console.log(`  Supabase   : ${SUPABASE_URL}`);
-console.log(`  Batch size : ${BATCH_SIZE}`);
-console.log(`  Dry run    : ${DRY_RUN}`);
+console.log(`  Corpus dir   : ${CORPUS_DIR}`);
+console.log(`  Supabase     : ${SUPABASE_URL}`);
+console.log(`  Batch size   : ${BATCH_SIZE}`);
+console.log(`  Jurisdiction : ${CLI_JURISDICTION} (per-file value wins)`);
+console.log(`  Language     : ${CLI_LANG} (per-file value wins)`);
+console.log(`  Dry run      : ${DRY_RUN}`);
 console.log();
 
 // 1. Enumerate files
@@ -249,6 +311,9 @@ interface RawChunk {
   title: string | null;
   body: string;
   lang: string;
+  /** Per-file jurisdiction (FI/EE/EU/...). Resolved at parse time so the
+   *  upsert path doesn't have to re-derive it. */
+  jurisdiction: string;
   sourceUrl: string | null;
 }
 
@@ -267,6 +332,12 @@ for (const fpath of files) {
     .toLowerCase();
   const actName = data.name ?? actSlug;
   const sourceUrl = (data.source as string | undefined) ?? null;
+  // Per-file jurisdiction/language fall through to CLI flags, then env,
+  // then the historical Estonian defaults. Files in assets/legal/finland/
+  // already declare `jurisdiction: "FI"` and `language: "fi"` so this is
+  // the load-bearing line for the Finnish ingest.
+  const fileJurisdiction = (data.jurisdiction ?? CLI_JURISDICTION).toUpperCase();
+  const fileLang = (data.language ?? CLI_LANG).toLowerCase();
 
   let skipped = 0;
   for (const section of data.sections) {
@@ -286,7 +357,8 @@ for (const fpath of files) {
       paragraph: section.paragraph,
       title: section.title ?? null,
       body: section.body.trim(),
-      lang: "et",
+      lang: fileLang,
+      jurisdiction: fileJurisdiction,
       sourceUrl,
     });
   }
@@ -365,7 +437,9 @@ for (let i = 0; i < rawChunks.length; i += BATCH_SIZE) {
         title: raw.title,
         body: raw.body,
         lang: raw.lang,
-        jurisdiction: "EE",
+        // Per-row jurisdiction: file → CLI flag → env → "EE".
+        // No longer hardcoded — Finnish acts ingest with "FI".
+        jurisdiction: raw.jurisdiction,
         source_url: raw.sourceUrl,
         body_hash: hashes[j],
         embedding,

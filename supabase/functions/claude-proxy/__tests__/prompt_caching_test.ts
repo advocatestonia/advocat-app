@@ -18,6 +18,7 @@ import {
   applyPromptCaching,
   buildAnthropicHeaders,
   CACHE_MIN_CHARS,
+  CACHE_TTL,
 } from "../prompt_caching.ts";
 
 // ---- applyPromptCaching --------------------------------------------------
@@ -30,12 +31,16 @@ Deno.test("F1-T01 — string system prompt is wrapped in cached block", () => {
   const out = applyPromptCaching(body);
   assert(Array.isArray(out.system));
   const arr = out.system as Array<
-    { type: string; text: string; cache_control?: { type: string } }
+    { type: string; text: string; cache_control?: { type: string; ttl?: string } }
   >;
   assertEquals(arr.length, 1);
   assertEquals(arr[0].type, "text");
   assertEquals(arr[0].text, legit);
   assertEquals(arr[0].cache_control?.type, "ephemeral");
+  // TTL pinned to 1h — guards against Anthropic's March 2026 default
+  // regression from 1h to 5m.
+  assertEquals(arr[0].cache_control?.ttl, "1h");
+  assertEquals(arr[0].cache_control?.ttl, CACHE_TTL);
 });
 
 Deno.test("F1-T02 — short string system prompt is left as string (not worth caching)", () => {
@@ -75,14 +80,40 @@ Deno.test("F1-T05 — array form with large block gets cache_control added", () 
   };
   const out = applyPromptCaching(body);
   const arr = out.system as Array<
-    { type: string; text: string; cache_control?: { type: string } }
+    { type: string; text: string; cache_control?: { type: string; ttl?: string } }
   >;
   assertEquals(arr[0].cache_control?.type, "ephemeral");
+  // New cache_control markers always carry the explicit 1h TTL.
+  assertEquals(arr[0].cache_control?.ttl, "1h");
   // Second block is too small — must NOT be cached.
   assertEquals(arr[1].cache_control, undefined);
 });
 
 Deno.test("F1-T06 — array form preserves existing cache_control markers", () => {
+  const bigText = "You are Advocat. " + "x".repeat(CACHE_MIN_CHARS + 100);
+  const body = {
+    system: [
+      {
+        type: "text" as const,
+        text: bigText,
+        cache_control: { type: "ephemeral" as const, ttl: "1h" as const },
+      },
+    ],
+  };
+  const out = applyPromptCaching(body);
+  const arr = out.system as Array<
+    { type: string; cache_control?: { type: string; ttl?: string } }
+  >;
+  // Idempotent — still exactly one marker.
+  assertEquals(arr[0].cache_control?.type, "ephemeral");
+  // Existing TTL is preserved verbatim — caller's choice wins.
+  assertEquals(arr[0].cache_control?.ttl, "1h");
+});
+
+Deno.test("F1-T06b — caller's cache_control without ttl is upgraded to 1h", () => {
+  // Guards the March 2026 regression: a caller-supplied marker without an
+  // explicit ttl would inherit Anthropic's new 5m default. We force-pin it
+  // to CACHE_TTL so the whole request body has uniform TTL policy.
   const bigText = "You are Advocat. " + "x".repeat(CACHE_MIN_CHARS + 100);
   const body = {
     system: [
@@ -95,10 +126,10 @@ Deno.test("F1-T06 — array form preserves existing cache_control markers", () =
   };
   const out = applyPromptCaching(body);
   const arr = out.system as Array<
-    { type: string; cache_control?: { type: string } }
+    { type: string; cache_control?: { type: string; ttl?: string } }
   >;
-  // Idempotent — still exactly one marker.
   assertEquals(arr[0].cache_control?.type, "ephemeral");
+  assertEquals(arr[0].cache_control?.ttl, "1h");
 });
 
 Deno.test("F1-T07 — only blocks with type='text' get cache_control", () => {
@@ -114,10 +145,19 @@ Deno.test("F1-T07 — only blocks with type='text' get cache_control", () => {
   };
   const out = applyPromptCaching(body);
   const arr = out.system as Array<
-    { type: string; cache_control?: { type: string } }
+    { type: string; cache_control?: { type: string; ttl?: string } }
   >;
   assertEquals(arr[0].cache_control?.type, "ephemeral");
+  assertEquals(arr[0].cache_control?.ttl, "1h");
   assertEquals(arr[1].cache_control, undefined);
+});
+
+Deno.test("F1-T07b — CACHE_TTL constant is pinned to 1h", () => {
+  // Anthropic silently regressed the cache_control default from 1h to 5m
+  // in March 2026. Long Advocat sessions (median 30 min for free tier,
+  // 75 min for premium) need the 1h tier to keep hit rates above 0.9.
+  // Lock the constant so a refactor can't quietly drop the TTL.
+  assertEquals(CACHE_TTL, "1h");
 });
 
 Deno.test("F1-T08 — applyPromptCaching is idempotent (run twice == run once)", () => {

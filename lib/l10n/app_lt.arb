@@ -1598,5 +1598,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Peržiūrėti sutartį",
+    "contractReviews": "Sutarčių peržiūros",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 sutarties peržiūra (visam laikui)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 sutarčių peržiūros per mėnesį",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 sutarčių peržiūrų per mėnesį",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Šį mėnesį liko {count} sutarčių peržiūrų",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Šį mėnesį sutarčių peržiūrų neliko",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Nemokamas bandymas: 1 sutarties peržiūra",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Nemokamas bandymas išnaudotas — atnaujinkite",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Sutarčių peržiūros išnaudotos",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Išnaudojote nemokamą sutarties peržiūrą. Atnaujinkite, kad gautumėte mėnesines peržiūras.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Šį mėnesį panaudojote {used} iš {cap} peržiūrų. Atnaujinkite didesniam mėnesio limitui.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Atnaujinkite į Counsel (€19,99/mėn.) — 5 peržiūros",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Atnaujinkite į Pro (€29,99/mėn.) — 20 peržiūrų",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Atnaujinkite į Pro — 20/mėn.",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Ne dabar",
+    "@notNow": {}
 }

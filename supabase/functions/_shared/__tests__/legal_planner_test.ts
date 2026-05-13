@@ -29,8 +29,28 @@ import {
   parsePlannerOutput,
   PLANNER_MAX_TOKENS,
   PLANNER_TEMPERATURE,
+  type PlannerBlockedResult,
+  type PlannerLoopResult,
   runLegalPlannerLoop,
 } from "../legal_planner.ts";
+
+/**
+ * Narrow a `PlannerLoopResult | PlannerBlockedResult` union down to the
+ * completed branch. `runLegalPlannerLoop` now returns a discriminated union,
+ * so any test that touches `replyText`, `regeneratedOnce`, or `critique`
+ * must narrow first. Throws if the orchestrator returned a "blocked" result
+ * — every test in this file scripts the happy / regen path, so a "blocked"
+ * outcome would indicate a regression in the planner itself.
+ */
+function assertCompleted(
+  result: PlannerLoopResult | PlannerBlockedResult,
+): asserts result is PlannerLoopResult {
+  if (result.kind !== "completed") {
+    throw new Error(
+      `Expected completed planner result, got: ${result.kind}`,
+    );
+  }
+}
 
 // ─── Fixtures ───────────────────────────────────────────────────────────────
 
@@ -220,9 +240,13 @@ Deno.test("runLegalPlannerLoop — 3 passes when critique reports no gap", async
     messages: [{ role: "user", content: "Was I dismissed legally?" }],
     caller,
     now: () => 0,
+    // Legacy 3-pass contract — adversarial extensions tested separately
+    // in supabase/functions/_tests/adversarial_pipeline_test.ts.
+    enableAdversarial: false,
   });
 
   assertEquals(calls.length, 3, "exactly 3 anthropic calls");
+  assertCompleted(result);
   assertEquals(result.regeneratedOnce, false);
   assertEquals(result.replyText, SAMPLE_EXECUTOR);
   assertEquals(result.plan.sub_questions.length, 2);
@@ -261,9 +285,11 @@ Deno.test("runLegalPlannerLoop — regenerates ONCE when critique flags gap", as
     systemPrompt: "BASE",
     messages: [{ role: "user", content: "Q?" }],
     caller,
+    enableAdversarial: false,
   });
 
   assertEquals(calls.length, 4, "regen fires => 4 calls");
+  assertCompleted(result);
   assertEquals(result.regeneratedOnce, true);
   assertEquals(result.replyText, REGEN_DRAFT);
   assertEquals(result.critique.material_gap, true);
@@ -295,9 +321,11 @@ Deno.test("runLegalPlannerLoop — never re-fires regen even if critique returns
     systemPrompt: "BASE",
     messages: [{ role: "user", content: "Q?" }],
     caller,
+    enableAdversarial: false,
   });
 
   assertEquals(calls.length, 4);
+  assertCompleted(result);
   assertEquals(result.regeneratedOnce, true);
 });
 
@@ -324,6 +352,7 @@ Deno.test("runLegalPlannerLoop — calls traceWriter with the assembled trace", 
     // deno-lint-ignore no-explicit-any
     traceWriter: traceWriter as any,
     caller,
+    enableAdversarial: false,
   });
 
   assert(captured !== null, "traceWriter was called");
@@ -353,7 +382,9 @@ Deno.test("runLegalPlannerLoop — swallows traceWriter errors", async () => {
     messageId: "00000000-0000-0000-0000-000000000abc",
     traceWriter: traceWriter as any,
     caller,
+    enableAdversarial: false,
   });
+  assertCompleted(result);
   assertEquals(result.replyText, SAMPLE_EXECUTOR);
 });
 
@@ -370,6 +401,8 @@ Deno.test("runLegalPlannerLoop — executor draft retains [[ref:...]] markers", 
     systemPrompt: "BASE",
     messages: [{ role: "user", content: "Q?" }],
     caller,
+    enableAdversarial: false,
   });
+  assertCompleted(result);
   assertStringIncludes(result.replyText, "[[ref:tls:88]]");
 });

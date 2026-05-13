@@ -45,7 +45,12 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 
-const SUPPORTED_LANGS = new Set(["et", "ru", "en"]);
+// Supported query languages. `fi` was added 2026-05-11 alongside the
+// Finnish Finlex corpus ingest (Phase 2 Pkg 1). The law_chunks.lang CHECK
+// constraint was widened in 20260514100000_law_chunks_lang_fi.sql to
+// allow 'fi' and 'eu_fi' rows so this set's superset relationship to the
+// column values still holds.
+const SUPPORTED_LANGS = new Set(["et", "ru", "en", "fi"]);
 const DEFAULT_MATCH_COUNT = 8;
 const MAX_MATCH_COUNT = 50;
 const DEFAULT_SIM_THRESHOLD = 0.60;
@@ -62,7 +67,16 @@ interface RequestBody {
   lang?: unknown;
   match_count?: unknown;
   similarity_threshold?: unknown;
+  // Phase 2 Pkg 1 (2026-05-11): optional jurisdiction scope. When set,
+  // limits retrieval to one of {EE, FI, EU, RU, DE}. When omitted/null,
+  // the RPC returns chunks from every jurisdiction (legacy back-compat).
+  query_jurisdiction?: unknown;
 }
+
+/** Mirrors the law_chunks.jurisdiction CHECK constraint. The RPC will
+ *  silently return zero rows if you pass an unknown value, but it's
+ *  cleaner to reject it at the edge with a 400 so misuse is loud. */
+const SUPPORTED_JURISDICTIONS = new Set(["EE", "FI", "EU", "RU", "DE"]);
 
 interface RpcChunk {
   id: string;
@@ -72,6 +86,11 @@ interface RpcChunk {
   title: string | null;
   body: string;
   source_url: string | null;
+  /** Phase 2 Pkg 1: the RPC already returns jurisdiction (added in
+   *  20260507060000_law_chunks_jurisdiction.sql). We pass it through to
+   *  the client so the LawChunk model can be aware of FI vs EE vs EU
+   *  without an extra round-trip. */
+  jurisdiction?: string;
   similarity: number;
 }
 
@@ -139,6 +158,25 @@ serve(async (req) => {
     matchCount = Math.floor(body.match_count);
   }
 
+  // Phase 2 Pkg 1: parse query_jurisdiction. Null when omitted (legacy
+  // behaviour: search every jurisdiction). Strict whitelist check —
+  // unknown values are misuse, not transient failure, so we 400 rather
+  // than silently return empty.
+  let queryJurisdiction: string | null = null;
+  if (body.query_jurisdiction !== undefined && body.query_jurisdiction !== null) {
+    if (typeof body.query_jurisdiction !== "string") {
+      return jsonError("Invalid 'query_jurisdiction' (must be a string)", 400);
+    }
+    const upper = body.query_jurisdiction.toUpperCase();
+    if (!SUPPORTED_JURISDICTIONS.has(upper)) {
+      return jsonError(
+        `Invalid 'query_jurisdiction' (expected one of ${[...SUPPORTED_JURISDICTIONS].join(", ")})`,
+        400,
+      );
+    }
+    queryJurisdiction = upper;
+  }
+
   let similarityThreshold = DEFAULT_SIM_THRESHOLD;
   if (body.similarity_threshold !== undefined && body.similarity_threshold !== null) {
     if (
@@ -191,6 +229,10 @@ serve(async (req) => {
       query_lang: lang,
       match_count: matchCount,
       similarity_threshold: similarityThreshold,
+      // The RPC signature accepts query_jurisdiction with default null.
+      // Pass null explicitly when caller omitted it so the SQL planner
+      // sees a stable parameter set across calls.
+      query_jurisdiction: queryJurisdiction,
     });
     if (error) {
       console.warn(`law-search: RPC error — ${error.message}`);
@@ -206,6 +248,10 @@ serve(async (req) => {
       title: r.title ?? null,
       body: r.body,
       source_url: r.source_url ?? null,
+      // Phase 2 Pkg 1: pass jurisdiction through so the client can
+      // display "Finnish law" / "Estonian law" badges and the citation
+      // grounder can scope marker resolution per-jurisdiction.
+      jurisdiction: typeof r.jurisdiction === "string" ? r.jurisdiction : null,
       similarity: typeof r.similarity === "number" ? r.similarity : 0,
     }));
 

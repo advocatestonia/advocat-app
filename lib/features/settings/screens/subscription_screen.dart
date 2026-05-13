@@ -281,6 +281,8 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
           _Feature(l10n.oneCaseActive, true),
           _Feature(l10n.threeDocScans, true),
           _Feature(l10n.basicAiAnalysis, true),
+          // Pkg Contract Review (2026-05-13): per-tier quota line.
+          _Feature(l10n.contractReviewsFreeFeature, true),
           _Feature(l10n.draftGeneration, false),
           _Feature(l10n.voiceInput, false),
         ],
@@ -307,6 +309,8 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
           _Feature(l10n.threeCasesActive, true),
           _Feature(l10n.twentyDocScans, true),
           _Feature(l10n.fullAiAnalysis, true),
+          // Pkg Contract Review (2026-05-13): per-tier quota line.
+          _Feature(l10n.contractReviewsCounselFeature, true),
           _Feature(l10n.draftGeneration, true),
           _Feature(l10n.voiceInput, true),
         ],
@@ -331,6 +335,8 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
           _Feature(l10n.unlimitedCases, true),
           _Feature(l10n.unlimitedDocScans, true),
           _Feature(l10n.fullAiAnalysis, true),
+          // Pkg Contract Review (2026-05-13): per-tier quota line.
+          _Feature(l10n.contractReviewsProFeature, true),
           _Feature(l10n.draftGeneration, true),
           _Feature(l10n.priorityProcessing, true),
         ],
@@ -988,8 +994,10 @@ class _PlanCardState extends State<_PlanCard>
                   const SizedBox(height: 6),
 
                   // ── Features list ──────────────────────────
+                  // Cap bumped to 7 in 2026-05-13 to make room for the
+                  // Contract Reviews line on every tier (Pkg Contract Review).
                   ...List.generate(
-                    math.min(widget.features.length, 6),
+                    math.min(widget.features.length, 7),
                     (i) {
                       final f = widget.features[i];
                       return Padding(

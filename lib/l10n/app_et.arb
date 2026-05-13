@@ -1288,5 +1288,70 @@
     "plannerTrailEvidenceGaps": "Tõendite puudujäägid",
     "plannerTrailMaterialGapTrue": "Tuvastatud oluline puudus",
     "plannerTrailRegeneratedBadge": "Loodud uuesti",
-    "plannerTrailEmpty": "kirjeid pole"
+    "plannerTrailEmpty": "kirjeid pole",
+    "supportTitle": "Vajad abi?",
+    "supportSubtitle": "Vastame tavaliselt 1-2 tunni jooksul.",
+    "supportWhatsapp": "WhatsApp",
+    "supportEmail": "E-post",
+    "supportInApp": "Kirjuta meile siin",
+    "supportCategoryLabel": "Kategooria",
+    "supportCategoryBug": "Viga rakenduses",
+    "supportCategoryPayment": "Maksega seotud",
+    "supportCategoryQuestion": "Küsimus",
+    "supportCategoryFeature": "Soovin uut funktsiooni",
+    "supportCategoryOther": "Muu",
+    "supportMessagePlaceholder": "Kirjelda probleemi...",
+    "supportEmailLabel": "E-post (valikuline)",
+    "supportSend": "Saada",
+    "supportSentSuccess": "Sõnum saadetud! Vastame peagi.",
+    "supportError": "Tekkis viga. Proovi uuesti.",
+    "supportErrorTooShort": "Palun kirjuta vähemalt 10 tähemärki.",
+    "supportErrorTooLong": "Maksimum 2000 tähemärki.",
+    "supportPrivacyNotice": "Sinu sõnum salvestatakse turvaliselt.",
+    "reviewThisContract": "Vaata leping üle",
+    "contractReviews": "Lepingute ülevaatus",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 lepingu ülevaatus (eluaegne prooviversioon)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 lepingu ülevaatust kuus",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 lepingu ülevaatust kuus",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} lepingu ülevaatust selles kuus alles",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Selles kuus ei ole lepingu ülevaatusi alles",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Tasuta proovi: 1 lepingu ülevaatus",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Tasuta proov kasutatud — uuenda paketti",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Lepingu ülevaatused on otsas",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Kasutasid oma tasuta lepingu ülevaatuse. Uuenda paketti, et saada kuiseid ülevaatusi.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Kasutasid {used} ülevaatust {cap}-st selles kuus. Uuenda paketti suurema kuulimiidi jaoks.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Uuenda Counsel paketiks (€19,99/kuu) — 5 ülevaatust",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Uuenda Pro paketiks (€29,99/kuu) — 20 ülevaatust",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Uuenda Pro — 20/kuu",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Mitte praegu",
+    "@notNow": {}
 }

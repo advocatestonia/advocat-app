@@ -3223,4 +3223,121 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'ei kohteita';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Tarkista sopimus';
+
+  @override
+  String get contractReviews => 'Sopimusten tarkistukset';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 sopimuksen tarkistus (elinikäinen kokeilu)';
+
+  @override
+  String get contractReviewsCounselFeature =>
+      '5 sopimustarkistusta kuukaudessa';
+
+  @override
+  String get contractReviewsProFeature => '20 sopimustarkistusta kuukaudessa';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return '$count sopimustarkistusta jäljellä tässä kuussa';
+  }
+
+  @override
+  String get contractReviewsExhausted =>
+      'Tässä kuussa ei ole sopimustarkistuksia jäljellä';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Ilmainen kokeilu: 1 sopimustarkistus';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Ilmainen kokeilu käytetty — päivitä';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Sopimustarkistukset käytetty';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Käytit ilmaisen sopimustarkistuksesi. Päivitä saadaksesi kuukausittaisia tarkistuksia.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Käytit $used / $cap tarkistuksesta tässä kuussa. Päivitä suurempaa kuukausirajaa varten.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Päivitä Counsel (€19,99/kk) — 5 tarkistusta';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Päivitä Pro (€29,99/kk) — 20 tarkistusta';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Päivitä Pro — 20/kk';
+
+  @override
+  String get notNow => 'Ei nyt';
 }

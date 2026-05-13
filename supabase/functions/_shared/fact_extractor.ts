@@ -8,6 +8,13 @@
 //   - never throws: all errors are logged and swallowed.
 //   - local callAnthropicBlocking copied from consilium.ts to avoid circular
 //     imports between _shared modules.
+//
+// 2026-05-13 — extended: when the extractor finds a `contradictions` array,
+// each item is also persisted as a `fact_extractor`-sourced row in
+// advice_corrections (Memory of Wrong Answers). The wrong_advice is the
+// prior assistant claim, the correct_answer is the new contradicting fact.
+// This is fire-and-forget on its own — failure to write a correction never
+// blocks the fact patch itself.
 // -----------------------------------------------------------------------------
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
@@ -247,5 +254,44 @@ export async function extractAndPatchFacts(
         String(e).slice(0, 200)
       }`,
     );
+  }
+
+  // ── Step 5: contradictions → advice_corrections ──────────────────────────
+  // Each contradiction means "what the assistant said earlier disagrees with
+  // a new fact we just learned". Persist as fact_extractor-sourced
+  // corrections so the planner sees them on subsequent turns.
+  // Fire-and-forget; embedding is intentionally NULL (no OpenAI call here
+  // to keep the hot path cheap; backfill job is responsible).
+  for (const c of contradictions) {
+    if (!c || c.length < 8) continue;
+    try {
+      await fetch(`${opts.supabaseUrl}/rest/v1/advice_corrections`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: opts.serviceRoleKey,
+          Authorization: `Bearer ${opts.serviceRoleKey}`,
+          Prefer: "return=minimal",
+        },
+        body: JSON.stringify({
+          user_id: opts.userId,
+          conversation_id: null,
+          question: opts.userMessage.slice(0, 4000),
+          wrong_advice: opts.conversationText.slice(0, 2000),
+          correct_answer: c.slice(0, 2000),
+          why_wrong: "fact_extractor flagged contradiction",
+          correction_source: "fact_extractor",
+          jurisdiction: null,
+          case_type: null,
+          severity: "factual",
+          embedding: null,
+          metadata: { case_id: opts.caseId, detected_by: "fact_extractor_v1" },
+        }),
+      });
+    } catch (e) {
+      console.warn(
+        `fact_extractor: correction insert failed: ${String(e).slice(0, 200)}`,
+      );
+    }
   }
 }

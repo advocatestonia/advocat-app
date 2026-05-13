@@ -1,0 +1,152 @@
+[
+  {
+    "id": "dep-001",
+    "category": "deportation",
+    "language": "et",
+    "question": "Sain PPA-lt otsuse, et mu tähtajaline elamisluba ei pikendata ja pean 30 päeva jooksul Eestist lahkuma. Olen elanud siin 8 aastat, töötan, lapsed on koolis. Kuidas vaidlustada?",
+    "expected": {
+      "must_mention_laws": ["VMS", "HKMS"],
+      "must_include": [
+        "PPA otsuse vaidlustamine — vaie PPA-le 30 päeva jooksul (HMS § 75) VÕI kohe halduskohtusse (HKMS)",
+        "halduskohtu kaebus 30 päeva otsuse teatavakstegemisest (HKMS § 46)",
+        "esialgse õiguskaitse taotlus — kohus peatab otsuse täitmise menetluse ajaks (HKMS § 249)",
+        "VMS — välismaalaste seadus, elamisluba pikendamise alused",
+        "perekonnaelu kaitse — EIÕK art 8, ELi põhiõiguste harta art 7 (kui kohaldatav)",
+        "lapse parima huvi printsiip — Lapse õiguste konventsioon art 3 + Riigikohtu praktika (lapse huvi kaalub raskelt kui kool, sotsiaalne side)",
+        "soovitus: koguda tõendid integratsioonist (tööleping, laste koolitõend, eluase, sotsiaalsidemed)",
+        "väljasaatmise tähtaja peatamine vaide / kaebuse esitamisel",
+        "tasuta riigi õigusabi sissetuleku korral"
+      ],
+      "must_not_include": [
+        "soovitus lihtsalt lahkuda",
+        "lubadus garanteeritud tulemusele",
+        "väär tähtaeg"
+      ],
+      "tone": "tõsine, samm-sammult, lootust andev kuid realistlik",
+      "min_word_count": 200,
+      "max_word_count": 800
+    },
+    "difficulty": "hard",
+    "tags": ["residence-permit", "ppa", "deportation", "appeal", "echr-8", "vms"]
+  },
+  {
+    "id": "dep-002",
+    "category": "deportation",
+    "language": "et",
+    "question": "Olen elanud Eestis 25 aastat halli passiga (määratlemata kodakondsus). Tahan saada Eesti kodakondsust. Mis on tingimused ja kas saan?",
+    "expected": {
+      "must_mention_laws": ["KodS"],
+      "must_include": [
+        "kodakondsuse seadus (KodS) — naturalisatsioonikorras kodakondsuse saamine § 6",
+        "tingimused: 8 aastat alalist elamist Eestis (KodS § 6 lg 1 p 2)",
+        "alaline elamisluba või pikaajalise elaniku elamisluba (KodS § 6 lg 1 p 1)",
+        "eesti keele tundmise eksam — B1 tase (KodS § 8)",
+        "Eesti Vabariigi põhiseaduse ja kodakondsuse seaduse tundmise eksam (KodS § 8)",
+        "püsiv ja seaduslik sissetulek (KodS § 6 lg 1 p 5)",
+        "lojaalsus Eesti riigile — pole karistusi raske kuritegude eest (KodS § 21)",
+        "loobumine senisest kodakondsusest — kuid määratlemata kodakondsuse korral see lihtsam",
+        "vanuse erandid — eksamid lihtsustatud vanematele (üle 65) ja puudega isikutele (KodS § 35)",
+        "menetlusaeg keskmiselt 6 kuud, otsus PPA + Vabariigi Valitsus"
+      ],
+      "must_not_include": [
+        "väide et 'hall pass' annab automaatselt õiguse",
+        "vananenud nõuded"
+      ],
+      "tone": "informatiivne, julgustav",
+      "min_word_count": 200,
+      "max_word_count": 700
+    },
+    "difficulty": "medium",
+    "tags": ["citizenship", "kods", "naturalization", "stateless", "estonian-language"]
+  },
+  {
+    "id": "dep-003",
+    "category": "deportation",
+    "language": "et",
+    "question": "Olen Ukrainast põgenenud sõja eest. Mul on ajutise kaitse staatus, kuid see lõpeb peagi. Mis saab edasi ja kuidas Eestisse jääda?",
+    "expected": {
+      "must_mention_laws": ["VRKS", "VMS"],
+      "must_include": [
+        "ajutine kaitse direktiivi 2001/55/EÜ alusel — pikendatud EL Nõukogu otsusega (kontrollida värskeimat lõputähtaega)",
+        "ajutise kaitse staatuse pikendamine PPA kaudu kui EL pikendab",
+        "üleminek tavalisele elamisloale — töötamiseks (VMS) või õppimiseks",
+        "varjupaigamenetlus (rahvusvaheline kaitse) VRKS alusel — kui ajutine kaitse lõpeb ja jätkuv kaitsevajadus",
+        "varjupaigataotluse esitamine PPA-le — pakhuselonenu / kvalifitseeritud kaitse",
+        "perekonna taasühinemise võimalus kui pereliige on Eestis kaitsestaatuses",
+        "Eesti Pagulasabi, ÜRO Pagulaste Ülemvoliniku Amet (UNHCR) — tasuta nõustamine ja õigusabi",
+        "soovitus: alustada planeerimist juba 3-6 kuud enne staatuse lõppu"
+      ],
+      "must_not_include": [
+        "väide et Ukraina kodanikud saavad Eesti kodakondsuse automaatselt",
+        "vananenud info ajutise kaitse lõpu kohta"
+      ],
+      "tone": "empaatiline, sõbralik, julgustav",
+      "min_word_count": 180,
+      "max_word_count": 700
+    },
+    "difficulty": "hard",
+    "tags": ["ukraine", "temporary-protection", "asylum", "vrks", "ukrainian-refugees"]
+  },
+  {
+    "id": "dep-004",
+    "category": "deportation",
+    "language": "et",
+    "question": "Mu mees on Eesti kodanik, mina USA kodanik. Tahan Eestisse kolida ja elamisluba taotleda abielu alusel. Mis dokumendid vaja?",
+    "expected": {
+      "must_mention_laws": ["VMS"],
+      "must_include": [
+        "tähtajaline elamisluba abikaasa juurde elama asumiseks (VMS § 118)",
+        "PPA-le esitatav taotlus — Eestis viibides PPA esindusse",
+        "vajalikud dokumendid: kehtiv reisidokument, abielutunnistus apostille / legaliseeritud, ühine eluase, tervisekindlustus",
+        "majanduslikud vahendid — abikaasa peab tõendama piisavat sissetulekut perele",
+        "registreeritud elukoht Eestis",
+        "tähtaeg: esmane elamisluba kuni 5 aastat (VMS § 121)",
+        "pikendamine ja alaline elamisluba pärast 5 aastat alalist elamist (VMS)",
+        "rahvusvahelise abielu korral peab abielutunnistus olema Eestis tunnustatud",
+        "menetlusaeg umbes 2 kuud, riigilõiv ca 80-160 €",
+        "soovitus: konsultatsioon enne ümberkolimist, ärge eeldage automaatset luba"
+      ],
+      "must_not_include": [
+        "väide et abielu USA kodanikuga tagab automaatselt elamisloa",
+        "soovitus jätta dokumendid esitamata"
+      ],
+      "tone": "praktiline, kontrollnimekirja stiilis",
+      "min_word_count": 170,
+      "max_word_count": 650
+    },
+    "difficulty": "medium",
+    "tags": ["spouse-permit", "vms-118", "marriage", "third-country", "ppa"]
+  },
+  {
+    "id": "dep-005",
+    "category": "deportation",
+    "language": "et",
+    "question": "PPA tegi mulle väljasaatmisotsuse ja sissesõidukeelu 5 aastaks Schengeni alasse. Mul on Eestis elukaaslane ja 2-aastane laps. Otsus on jõustunud — kas saan veel midagi teha?",
+    "expected": {
+      "must_mention_laws": ["VSS", "VMS", "HKMS"],
+      "must_include": [
+        "jõustunud otsus — tähtaeg vaidlustamiseks (30 päeva HKMS § 46) on möödunud, kuid mitte kõik on lootusetu",
+        "TÄHTAJA ENNISTAMISE TAOTLUS halduskohtule (HKMS § 71) — mõjuv põhjus (näiteks otsust polnud kätte saanud, vale aadress)",
+        "uue elamisloa taotluse uuesti esitamine peale sissesõidukeelu lõppu",
+        "sissesõidukeelu lühendamine / tühistamine PPA-le esitatud taotluse alusel (VSS § 30) — kaalukad isiklikud asjaolud, perekonnaelu, lapse huvi",
+        "EIÕK art 8 (perekonnaelu) — laps ja elukaaslane Eestis on tugev argument",
+        "ELi põhiõiguste harta art 7 ja 24 (kui kohaldatav)",
+        "lapse parima huvi printsiip — ÜRO lapse õiguste konventsioon art 3",
+        "Riigikohtu praktika perekonnaelu kaalumisest väljasaatmismenetlustes",
+        "humanitaarsetel kaalutlustel taotlus — eelkõige laps Eestis",
+        "soovitus: konsulteerida advokaadiga IMMÉDIATELY, eriti enne tegelikku väljasaatmist; lapse õiguste kaitse",
+        "õiguskantsler — kui süsteemne küsimus / põhiõiguste rikkumine"
+      ],
+      "must_not_include": [
+        "väide et jõustunud otsust ei saa enam üldse vaidlustada",
+        "ebatäpsed õiguskaitsevahendid",
+        "lubadus tulemusele"
+      ],
+      "tone": "tõsine, kaastundlik, kuid mitte lootust kustutav — selge tegevusplaan",
+      "min_word_count": 230,
+      "max_word_count": 900
+    },
+    "difficulty": "hard",
+    "tags": ["entry-ban", "deportation", "vss-30", "echr-8", "child-best-interest", "restoration-of-term"]
+  }
+]

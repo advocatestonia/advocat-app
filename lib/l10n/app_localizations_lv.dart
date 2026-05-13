@@ -3231,4 +3231,119 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'no items';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Pārskatīt līgumu';
+
+  @override
+  String get contractReviews => 'Līgumu pārbaudes';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 līguma pārbaude (mūža izmēģinājums)';
+
+  @override
+  String get contractReviewsCounselFeature => '5 līgumu pārbaudes mēnesī';
+
+  @override
+  String get contractReviewsProFeature => '20 līgumu pārbaudes mēnesī';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return 'Šomēnes palikušas $count līgumu pārbaudes';
+  }
+
+  @override
+  String get contractReviewsExhausted => 'Šomēnes vairs nav līgumu pārbaužu';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Bezmaksas izmēģinājums: 1 līguma pārbaude';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Bezmaksas izmēģinājums izmantots — jaunini';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Līgumu pārbaudes izmantotas';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Tu izmantoji savu bezmaksas līguma pārbaudi. Jaunini, lai saņemtu ikmēneša pārbaudes.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Tu izmantoji $used no $cap pārbaudēm šomēnes. Jaunini augstākam mēneša limitam.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Jaunini uz Counsel (€19,99/mēn.) — 5 pārbaudes';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Jaunini uz Pro (€29,99/mēn.) — 20 pārbaudes';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Jaunini uz Pro — 20/mēn.';
+
+  @override
+  String get notNow => 'Ne tagad';
 }

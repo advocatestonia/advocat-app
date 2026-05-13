@@ -5929,6 +5929,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'no items'**
   String get plannerTrailEmpty;
+
+  /// Title of the in-app support sheet (also FAB tooltip).
+  ///
+  /// In en, this message translates to:
+  /// **'Need help?'**
+  String get supportTitle;
+
+  /// No description provided for @supportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We usually reply within 1-2 hours.'**
+  String get supportSubtitle;
+
+  /// No description provided for @supportWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get supportWhatsapp;
+
+  /// No description provided for @supportEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get supportEmail;
+
+  /// No description provided for @supportInApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Message us here'**
+  String get supportInApp;
+
+  /// No description provided for @supportCategoryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get supportCategoryLabel;
+
+  /// No description provided for @supportCategoryBug.
+  ///
+  /// In en, this message translates to:
+  /// **'Bug'**
+  String get supportCategoryBug;
+
+  /// No description provided for @supportCategoryPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment issue'**
+  String get supportCategoryPayment;
+
+  /// No description provided for @supportCategoryQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Question'**
+  String get supportCategoryQuestion;
+
+  /// No description provided for @supportCategoryFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature request'**
+  String get supportCategoryFeature;
+
+  /// No description provided for @supportCategoryOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get supportCategoryOther;
+
+  /// No description provided for @supportMessagePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your problem...'**
+  String get supportMessagePlaceholder;
+
+  /// No description provided for @supportEmailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email (optional)'**
+  String get supportEmailLabel;
+
+  /// No description provided for @supportSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get supportSend;
+
+  /// No description provided for @supportSentSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Message sent! We\'ll reply soon.'**
+  String get supportSentSuccess;
+
+  /// No description provided for @supportError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Try again.'**
+  String get supportError;
+
+  /// No description provided for @supportErrorTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Please write at least 10 characters.'**
+  String get supportErrorTooShort;
+
+  /// No description provided for @supportErrorTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum 2000 characters.'**
+  String get supportErrorTooLong;
+
+  /// No description provided for @supportPrivacyNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Your message is stored securely.'**
+  String get supportPrivacyNotice;
+
+  /// Chip shown after uploading a PDF that the classifier flagged as a contract. Tapping it triggers the analyze_contract tool.
+  ///
+  /// In en, this message translates to:
+  /// **'Review this contract'**
+  String get reviewThisContract;
+
+  /// Subscription-screen feature label for the Contract Review quota line.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Reviews'**
+  String get contractReviews;
+
+  /// No description provided for @contractReviewsFreeFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'1 contract review (lifetime trial)'**
+  String get contractReviewsFreeFeature;
+
+  /// No description provided for @contractReviewsCounselFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'5 contract reviews per month'**
+  String get contractReviewsCounselFeature;
+
+  /// No description provided for @contractReviewsProFeature.
+  ///
+  /// In en, this message translates to:
+  /// **'20 contract reviews per month'**
+  String get contractReviewsProFeature;
+
+  /// Quota pill shown near chat upload button when remaining > 0.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} contract reviews left this month'**
+  String contractReviewsLeft(int count);
+
+  /// No description provided for @contractReviewsExhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'No contract reviews left this month'**
+  String get contractReviewsExhausted;
+
+  /// No description provided for @contractReviewsFreeTrialLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Free trial: 1 contract review'**
+  String get contractReviewsFreeTrialLeft;
+
+  /// No description provided for @contractReviewsFreeTrialUsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Free trial used — upgrade for more'**
+  String get contractReviewsFreeTrialUsed;
+
+  /// No description provided for @contractReviewsUpgradeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract reviews used up'**
+  String get contractReviewsUpgradeTitle;
+
+  /// No description provided for @contractReviewsUpgradeBodyFree.
+  ///
+  /// In en, this message translates to:
+  /// **'You used your free contract review. Upgrade for monthly contract reviews.'**
+  String get contractReviewsUpgradeBodyFree;
+
+  /// No description provided for @contractReviewsUpgradeBodyPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.'**
+  String contractReviewsUpgradeBodyPaid(int used, int cap);
+
+  /// No description provided for @contractReviewsUpgradeCounselCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Counsel (€19.99/mo) — 5 reviews'**
+  String get contractReviewsUpgradeCounselCta;
+
+  /// No description provided for @contractReviewsUpgradeProCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro (€29.99/mo) — 20 reviews'**
+  String get contractReviewsUpgradeProCta;
+
+  /// No description provided for @contractReviewsUpgradeToProShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Upgrade to Pro — 20/mo'**
+  String get contractReviewsUpgradeToProShort;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get notNow;
 }
 
 class _AppLocalizationsDelegate

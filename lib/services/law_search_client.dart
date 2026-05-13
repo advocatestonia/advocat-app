@@ -167,6 +167,12 @@ abstract final class LawSearchClient {
   /// body, missing config). Callers MUST treat empty as "no RAG, skip
   /// injection" and continue the chat turn unchanged.
   ///
+  /// [queryJurisdiction] — optional ISO 3166-1 alpha-2 code (EE, FI, EU, ...)
+  /// to scope retrieval to one jurisdiction. When null, the RPC's default
+  /// is used (search every jurisdiction). EU directives are always
+  /// included regardless of the value (the RPC does `lc.lang like 'eu_%'`
+  /// unconditionally). Added 2026-05-11 for the Finnish corpus.
+  ///
   /// [dio] — optional injected Dio for tests. Production calls leave it null.
   static Future<List<LawChunk>> search({
     required String query,
@@ -174,6 +180,7 @@ abstract final class LawSearchClient {
     int matchCount = defaultMatchCount,
     double similarityThreshold = defaultSimilarityThreshold,
     Duration timeout = defaultTimeout,
+    String? queryJurisdiction,
     Dio? dio,
   }) async {
     // Empty query / no Supabase config — degrade silently.
@@ -195,15 +202,23 @@ abstract final class LawSearchClient {
         ));
 
     try {
+      final body = <String, dynamic>{
+        'query': query,
+        'lang': lang,
+        'match_count': matchCount,
+        'similarity_threshold': similarityThreshold,
+      };
+      // Only include the jurisdiction key when set so back-compat with
+      // the edge function's current shape is preserved. The edge fn
+      // ignores unknown keys, but omission keeps the wire-format diff
+      // minimal until the server-side validator is taught about it.
+      if (queryJurisdiction != null && queryJurisdiction.isNotEmpty) {
+        body['query_jurisdiction'] = queryJurisdiction.toUpperCase();
+      }
       final resp = await client
           .post<dynamic>(
             '/law-search',
-            data: <String, dynamic>{
-              'query': query,
-              'lang': lang,
-              'match_count': matchCount,
-              'similarity_threshold': similarityThreshold,
-            },
+            data: body,
           )
           .timeout(timeout);
       return _parseResponse(resp.data);

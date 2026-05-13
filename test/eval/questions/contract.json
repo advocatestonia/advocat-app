@@ -1,0 +1,152 @@
+[
+  {
+    "id": "ctr-001",
+    "category": "contract",
+    "language": "et",
+    "question": "Sõlmisin ehitusettevõttega kodu remondiks lepingu 25 000 € eest. Töötasin neilt 2 kuud tagasi täiendava 4000 € lisatööde eest. Töö pole valmis ja kvaliteet halb. Kas saan lepingust taganeda?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "töövõtuleping (VÕS §-d 635 jj)",
+        "töövõtja kohustused — töö kvaliteet ja tähtaeg",
+        "olulise rikkumise korral lepingust taganemise õigus (VÕS § 116 — taganemine olulise rikkumise korral)",
+        "TAGANEMISE EELNEVAD SAMMUD: anda mõistlik täiendav tähtaeg parandamiseks (VÕS § 114) VÕI puuduste kõrvaldamise nõue (VÕS § 222 viited)",
+        "kahju hüvitamise nõue (VÕS § 115) — lisatöö lõpetamine teiselt tegijalt kallimalt",
+        "samm 1: kirjalik nõue + akt puuduste loeteluga + foto-tõendid",
+        "samm 2: täiendav mõistlik tähtaeg",
+        "samm 3: lepingu lõpetamine / taganemine",
+        "samm 4: kohus / vahekohus",
+        "soovitus: ekspertiis sõltumatu hindaja poolt"
+      ],
+      "must_not_include": [
+        "soovitus minna otse kohtusse ilma eelnevate sammudeta",
+        "kategooriline garantii edukusele"
+      ],
+      "tone": "praktiline, tellija huve kaitsev",
+      "min_word_count": 180,
+      "max_word_count": 700
+    },
+    "difficulty": "medium",
+    "tags": ["construction", "tovotuleping", "vos-116", "termination", "breach"]
+  },
+  {
+    "id": "ctr-002",
+    "category": "contract",
+    "language": "et",
+    "question": "Sõlmisin auto laenu (kapitalirent) 3 aastaks. Pärast 1 aastat soovin maha müüa või loobuda. Mis on minu valikud?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "kapitalirent (liising) — VÕS §-d 339 jj reguleerivad liisingulepingut",
+        "lepingu erakorraline ülesütlemine — ainult mõjuvatel põhjustel (VÕS § 196)",
+        "ennetähtaegne maksmine — õigus, kuid leping võib näha ette tasusid (kapitalirent)",
+        "tarbijakrediidi puhul ennetähtaegse tagasimaksmise hüvitis on piiratud (VÕS § 411)",
+        "vara müümine — võimalik, kui liisingumakse on lõpetatud (omandiõigus liisinguandjal kuni lõpuni)",
+        "kolmandale isikule lepingu loovutamine — vajab liisinguandja nõusolekut",
+        "tagasiandmine liisinguandjale võib kaasa tuua kahju hüvitamise (jääkväärtus vs müügihind)",
+        "samm 1: kirjalik järelpärimine liisinguandjale variantide kohta",
+        "samm 2: kalkulatsioon — võrrelda variante",
+        "soovitus: vältida vaikset tasumata jätmist (lõpeb krediidi mustaks listiks ja repossessikon)"
+      ],
+      "must_not_include": [
+        "väide et auto saab vabalt müüa (omand ei ole sinu)",
+        "soovitus lihtsalt makseid lõpetada"
+      ],
+      "tone": "neutraalne, hoiatav (rahaliste tagajärgede osas)",
+      "min_word_count": 170,
+      "max_word_count": 650
+    },
+    "difficulty": "medium",
+    "tags": ["leasing", "kapitalirent", "vos-411", "early-termination", "consumer-credit"]
+  },
+  {
+    "id": "ctr-003",
+    "category": "contract",
+    "language": "et",
+    "question": "Allkirjastasin äriühinguga teenuse osutamise lepingu (SaaS, 12 kuud), kuid pakutav teenus ei tööta lubatud viisil. Olen juriidiline isik. Kas saan loobuda?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "B2B (juriidilise isiku vahel) leping — TARBIJAKAITSE EI KOHALDU, kuid VÕS üldreeglid kehtivad",
+        "lepingu täitmine — peab vastama kokkulepitule (VÕS § 76)",
+        "olulise rikkumise korral lepingust taganemine (VÕS § 116)",
+        "puuduste kõrvaldamise nõue (analoogia VÕS § 222) — anda mõistlik täiendav tähtaeg",
+        "ettevõtjate vahelistes lepingutes tüüptingimuste kontroll on PIIRATUM kui tarbija puhul (VÕS § 42, § 44 erireeglid)",
+        "siiski — ebaharilikud ja kahjustavad tüüptingimused võivad olla tühised ka B2B kontekstis",
+        "samm 1: kirjalik nõue lepingule vastavalt — defektide loetelu + tähtaeg",
+        "samm 2: lepingu lõpetamine, kahju hüvitamise nõue",
+        "samm 3: kohus või vahekohus (kui lepingus arbitraažiklausel)",
+        "soovitus: kontrollida SLA (teenustaseme kokkulepe) ja lepingu lõpetamise klauslid"
+      ],
+      "must_not_include": [
+        "tarbijakaitse normide kohaldamine B2B juhtumile",
+        "väär väide et 14-päevane taganemisõigus kehtib"
+      ],
+      "tone": "ettevõtja vastaspoolega rääkiv, juriidiliselt täpne",
+      "min_word_count": 170,
+      "max_word_count": 650
+    },
+    "difficulty": "hard",
+    "tags": ["b2b", "saas", "vos-116", "service-contract", "no-consumer-protection"]
+  },
+  {
+    "id": "ctr-004",
+    "category": "contract",
+    "language": "et",
+    "question": "Andsin sõbrale 5000 € laenuks, kokkuleppisime suuliselt et ta maksab tagasi 6 kuu jooksul. On möödunud 1 aasta, raha pole. Kas saan kohtus nõuda?",
+    "expected": {
+      "must_mention_laws": ["VÕS", "TsÜS"],
+      "must_include": [
+        "laenuleping VÕS §-d 396 jj — suuline laenuleping on KEHTIV, kuid keerulisem tõendada",
+        "TÕENDID — pangaülekanne, sõnumid, e-kirjad, tunnistajad",
+        "aegumistähtaeg 3 aastat (TsÜS § 146)",
+        "samm 1: kirjalik nõue + lõpptähtaeg (näiteks 30 päeva)",
+        "samm 2: maksekäsu kiirmenetlus (TsMS §-d 481 jj) kui võlg selge ja vaidlustamata — soodne ja kiire",
+        "kui võlgnik vaidleb maksekäsule vastu — hagimenetlus",
+        "samm 3: kui kohtuotsus tehtud, kohtutäitur võlgniku vara vastu",
+        "soovitus: enne kohtumenetlust kasutada tõestust — kogu kirjavahetus, panga väljavõte",
+        "võimalik nõuda viivist seaduslikus määras (VÕS § 113 — 0,15% päevas) tähtaja saabumisest"
+      ],
+      "must_not_include": [
+        "väide et suuline kokkulepe pole õiguslikult kehtiv",
+        "vale aegumistähtaeg"
+      ],
+      "tone": "praktiline, samm-sammult",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "medium",
+    "tags": ["loan", "oral-agreement", "tsus-146", "maksekask", "informal-loan"]
+  },
+  {
+    "id": "ctr-005",
+    "category": "contract",
+    "language": "et",
+    "question": "Sõlmisin korterit ostes ostulepingu maakleri kaudu, kuid pärast lepingu allkirjastamist (notari juures) avastasin varjatud puudused — niiskus seintes. Mis on müüja vastutus?",
+    "expected": {
+      "must_mention_laws": ["VÕS", "AÕS"],
+      "must_include": [
+        "müüja vastutus puuduste eest (VÕS § 217 jj) — kinnisasja müügil 2 aastat puuduste eest (VÕS § 218)",
+        "varjatud puudus ja müüja teadmine — kui müüja teadis ja varjas, vastutus karmim (VÕS § 217 lg 3 — petturus)",
+        "ostja õigused: parandamine, hinnaalandus, lepingust taganemine, kahju hüvitamine (VÕS § 222)",
+        "olulise puuduse korral — taganemisõigus",
+        "kinnisasja müügilepingu tühistamise alused — pettus (TsÜS § 94), eksimus oluliste asjaolude osas (TsÜS § 92)",
+        "müügilepingu pettuse alusel tühistamise tähtaeg 6 kuud (TsÜS § 99 lg 1)",
+        "samm 1: ekspertiis (sõltumatu insener / kinnisvaraekspert)",
+        "samm 2: kirjalik nõue müüjale — puuduste loetelu + soovitav lahendus + tähtaeg",
+        "samm 3: kohus — maakohus, hagimenetlus",
+        "soovitus: dokumenteerida kõik ostueelne suhtlus, varjatu fotod ja eksperdiakt",
+        "maakleri vastutus — eraldi, kui maakler teadis puudustest (VÕS § 658 jj — maaklertegevus)"
+      ],
+      "must_not_include": [
+        "väide et notari juures sõlmitud lepingut ei saa enam vaidlustada",
+        "vale aegumistähtaeg"
+      ],
+      "tone": "selge, ostja õigusi rõhutav, praktiline",
+      "min_word_count": 200,
+      "max_word_count": 800
+    },
+    "difficulty": "hard",
+    "tags": ["real-estate", "hidden-defects", "vos-217", "tsus-94", "fraud", "rescission"]
+  }
+]

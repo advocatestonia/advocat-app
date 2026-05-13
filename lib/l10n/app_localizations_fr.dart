@@ -3256,4 +3256,119 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'no items';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Vérifier ce contrat';
+
+  @override
+  String get contractReviews => 'Examens de contrats';
+
+  @override
+  String get contractReviewsFreeFeature => '1 examen de contrat (essai à vie)';
+
+  @override
+  String get contractReviewsCounselFeature => '5 examens de contrat par mois';
+
+  @override
+  String get contractReviewsProFeature => '20 examens de contrat par mois';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return '$count examens de contrat restants ce mois-ci';
+  }
+
+  @override
+  String get contractReviewsExhausted =>
+      'Aucun examen de contrat restant ce mois-ci';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Essai gratuit : 1 examen de contrat';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Essai gratuit utilisé — mettez à niveau';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Examens de contrat épuisés';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Vous avez utilisé votre examen de contrat gratuit. Mettez à niveau pour des examens mensuels.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Vous avez utilisé $used examens sur $cap ce mois-ci. Mettez à niveau pour un plafond plus élevé.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Passez à Counsel (€19,99/mois) — 5 examens';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Passez à Pro (€29,99/mois) — 20 examens';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Passez à Pro — 20/mois';
+
+  @override
+  String get notNow => 'Pas maintenant';
 }

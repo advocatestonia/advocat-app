@@ -3239,4 +3239,120 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'no items';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Verifică contractul';
+
+  @override
+  String get contractReviews => 'Verificări contracte';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 verificare contract (probă pe viață)';
+
+  @override
+  String get contractReviewsCounselFeature => '5 verificări contracte pe lună';
+
+  @override
+  String get contractReviewsProFeature => '20 verificări contracte pe lună';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return 'Au mai rămas $count verificări contracte luna aceasta';
+  }
+
+  @override
+  String get contractReviewsExhausted =>
+      'Nu mai sunt verificări contracte luna aceasta';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Probă gratuită: 1 verificare contract';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Probă gratuită folosită — actualizați';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Verificări contracte epuizate';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Ați folosit verificarea gratuită de contract. Actualizați pentru verificări lunare.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Ați folosit $used din $cap verificări luna aceasta. Actualizați pentru o limită lunară mai mare.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Treceți la Counsel (€19,99/lună) — 5 verificări';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Treceți la Pro (€29,99/lună) — 20 verificări';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Treceți la Pro — 20/lună';
+
+  @override
+  String get notNow => 'Nu acum';
 }

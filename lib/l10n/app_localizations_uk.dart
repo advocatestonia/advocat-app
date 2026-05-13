@@ -3223,4 +3223,120 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'no items';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Розібрати договір';
+
+  @override
+  String get contractReviews => 'Перевірки договорів';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 перевірка договору (пробна назавжди)';
+
+  @override
+  String get contractReviewsCounselFeature => '5 перевірок договорів на місяць';
+
+  @override
+  String get contractReviewsProFeature => '20 перевірок договорів на місяць';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return 'Залишилось $count перевірок договорів цього місяця';
+  }
+
+  @override
+  String get contractReviewsExhausted =>
+      'Цього місяця перевірок договорів не залишилось';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Пробна версія: 1 перевірка договору';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Пробну версію використано — оновіть план';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Перевірки договорів вичерпано';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Ви використали безкоштовну перевірку договору. Оновіть план для щомісячних перевірок.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Ви використали $used з $cap перевірок цього місяця. Оновіть план для більшого ліміту.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Перейти на Counsel (€19,99/міс) — 5 перевірок';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Перейти на Pro (€29,99/міс) — 20 перевірок';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Перейти на Pro — 20/міс';
+
+  @override
+  String get notNow => 'Не зараз';
 }

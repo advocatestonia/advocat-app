@@ -3221,4 +3221,119 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'no items';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Sözleşmeyi incele';
+
+  @override
+  String get contractReviews => 'Sözleşme incelemeleri';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 sözleşme incelemesi (ömür boyu deneme)';
+
+  @override
+  String get contractReviewsCounselFeature => 'Ayda 5 sözleşme incelemesi';
+
+  @override
+  String get contractReviewsProFeature => 'Ayda 20 sözleşme incelemesi';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return 'Bu ay $count sözleşme incelemesi kaldı';
+  }
+
+  @override
+  String get contractReviewsExhausted => 'Bu ay sözleşme incelemesi kalmadı';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Ücretsiz deneme: 1 sözleşme incelemesi';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Ücretsiz deneme kullanıldı — yükseltin';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Sözleşme incelemeleri tükendi';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Ücretsiz sözleşme incelemenizi kullandınız. Aylık incelemeler için yükseltin.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Bu ay $cap incelemenin $used tanesini kullandınız. Daha yüksek aylık limit için yükseltin.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Counsel\'a yükselt (€19,99/ay) — 5 inceleme';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Pro\'ya yükselt (€29,99/ay) — 20 inceleme';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Pro\'ya yükselt — 20/ay';
+
+  @override
+  String get notNow => 'Şimdi değil';
 }

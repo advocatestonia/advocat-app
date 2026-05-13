@@ -997,5 +997,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "بررسی این قرارداد",
+    "contractReviews": "Contract Reviews",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 contract review (lifetime trial)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 contract reviews per month",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 contract reviews per month",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} contract reviews left this month",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "No contract reviews left this month",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Free trial: 1 contract review",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Free trial used — upgrade for more",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Contract reviews used up",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "You used your free contract review. Upgrade for monthly contract reviews.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (€19.99/mo) — 5 reviews",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Upgrade to Pro (€29.99/mo) — 20 reviews",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Upgrade to Pro — 20/mo",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Not now",
+    "@notNow": {}
 }

@@ -107,3 +107,30 @@ class AppConfig {
     'image/heic',
   ];
 }
+
+/// Support widget configuration.
+///
+/// All values are read at compile time via `--dart-define`. Leave them
+/// blank if a channel is not yet provisioned — the support sheet hides
+/// any channel whose value is empty.
+class SupportConfig {
+  SupportConfig._();
+
+  /// WhatsApp number in international format (digits only, no + or spaces).
+  /// Example: `--dart-define=ADVOCAT_WHATSAPP_NUMBER=3725551234`. An empty
+  /// value hides the WhatsApp button entirely.
+  static const String whatsappNumber = String.fromEnvironment(
+    'ADVOCAT_WHATSAPP_NUMBER',
+    defaultValue: '',
+  );
+
+  /// Email used by the "Email us" button in the support sheet.
+  static const String supportEmail = String.fromEnvironment(
+    'ADVOCAT_SUPPORT_EMAIL',
+    defaultValue: 'support@advocat.ee',
+  );
+
+  /// Whether the WhatsApp channel should be shown. Returns false when the
+  /// number is unset so the button silently disappears.
+  static bool get whatsappAvailable => whatsappNumber.isNotEmpty;
+}

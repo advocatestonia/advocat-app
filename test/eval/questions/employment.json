@@ -1,0 +1,132 @@
+[
+  {
+    "id": "emp-001",
+    "category": "employment",
+    "language": "et",
+    "question": "Tööandja vallandas mind suuliselt ilma kirjaliku põhjuseta. Töötasin seal 3 aastat. Kas see on seaduslik ja mida saan teha?",
+    "expected": {
+      "must_mention_laws": ["TLS"],
+      "must_include": [
+        "ülesütlemise avaldus peab olema kirjalikult taasesitatavas vormis (TLS § 95)",
+        "töötaja võib ülesütlemise vaidlustada töövaidluskomisjonis või kohtus",
+        "vaidlustamise tähtaeg on 30 kalendripäeva ülesütlemise kättesaamisest (TLS § 89 lg 1)",
+        "ebaseadusliku ülesütlemise tagajärg: hüvitis vähemalt 3 kuu keskmist töötasu (TLS § 109)",
+        "soovitus: koguda tõendid (e-kirjad, tunnistajad, suuline põhjus)"
+      ],
+      "must_not_include": [
+        "lubadus garanteeritud tulemusele kohtus",
+        "vastus ilma juriidilise hoiatuseta",
+        "väljamõeldud kohtulahend"
+      ],
+      "tone": "professionaalne, empaatiline, struktuurne",
+      "min_word_count": 120,
+      "max_word_count": 500
+    },
+    "difficulty": "medium",
+    "tags": ["dismissal", "tls", "written-notice", "tvkomisjon"]
+  },
+  {
+    "id": "emp-002",
+    "category": "employment",
+    "language": "et",
+    "question": "Tööandja ei ole mulle 2 kuud palka maksnud. Mis on minu õigused ja kuidas raha kätte saada?",
+    "expected": {
+      "must_mention_laws": ["TLS", "VÕS"],
+      "must_include": [
+        "töötasu maksmise kohustus (TLS § 33)",
+        "õigus tööleping erakorraliselt üles öelda mõjuval põhjusel — palga maksmata jätmine (TLS § 91 lg 2)",
+        "viivis 0,15% päevas tähtaja ületamisest (VÕS § 113) või vastavalt kollektiivlepingule",
+        "Töövaidluskomisjon (TVK) — kuni 10 000 € nõue, riigilõivuvaba",
+        "Töötukassa pankrotihüvitis kui tööandja maksejõuetu",
+        "soovitus: saata kirjalik nõue, fikseerida tähtaeg"
+      ],
+      "must_not_include": [
+        "soovitus ähvardada vägivallaga",
+        "töötamise jätkamise nõuanne ilma kaalumiseta"
+      ],
+      "tone": "professionaalne, praktiline",
+      "min_word_count": 130,
+      "max_word_count": 550
+    },
+    "difficulty": "medium",
+    "tags": ["unpaid-wages", "tls", "tvkomisjon", "extraordinary-termination"]
+  },
+  {
+    "id": "emp-003",
+    "category": "employment",
+    "language": "et",
+    "question": "Töötan ametlikult 40 tundi nädalas, kuid ülemus sunnib jääma õhtuti üle 2-3 tundi ilma lisatasuta. Kas pean nõustuma?",
+    "expected": {
+      "must_mention_laws": ["TLS"],
+      "must_include": [
+        "ületunnitöö nõuab töötaja ja tööandja kokkulepet (TLS § 44 lg 2)",
+        "ületunnitöö hüvitatakse 1,5-kordse tunnitasuga või vaba ajaga (TLS § 44 lg 6)",
+        "maksimaalne tööaeg 48 tundi nädalas keskmiselt 4-kuulisel arvestusperioodil (TLS § 46)",
+        "tööinspektsiooni kaebuse võimalus",
+        "töötaja õigus keelduda ületunnitööst kui pole kokkulepet"
+      ],
+      "must_not_include": [
+        "soovitus lihtsalt nõustuda ilma analüüsita",
+        "väär väide et 48h piir ei kehti"
+      ],
+      "tone": "informatiivne, töötaja huve kaitsev",
+      "min_word_count": 120,
+      "max_word_count": 500
+    },
+    "difficulty": "easy",
+    "tags": ["overtime", "tls-44", "tööinspektsioon", "working-hours"]
+  },
+  {
+    "id": "emp-004",
+    "category": "employment",
+    "language": "et",
+    "question": "Olen rase ja boss ütles, et katseaja lõpus mind ei jätka. Kas tal on õigus mind katseajal vallandada raseduse tõttu?",
+    "expected": {
+      "must_mention_laws": ["TLS", "SoVS"],
+      "must_include": [
+        "katseajal võib lepingu üles öelda 15-päevase etteteatamisega (TLS § 86)",
+        "ÜLESÜTLEMINE RASEDUSE TÕTTU ON KEELATUD (TLS § 92 lg 1 p 5)",
+        "soolise võrdsuse seadus keelab raseduse alusel diskrimineerimise",
+        "tõendamiskoormus tööandjal — peab põhjendama et üles ütlemine ei ole raseduse tõttu",
+        "vaidlustamise tähtaeg 30 päeva",
+        "hüvitis kuni 12 kuu keskmist töötasu",
+        "Võrdõigusvolinik või TVK"
+      ],
+      "must_not_include": [
+        "väide et katseajal saab vallandada igal põhjusel",
+        "väär nõuanne et rasedus pole takistuseks"
+      ],
+      "tone": "empaatiline, kaitsev, selge",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "hard",
+    "tags": ["pregnancy", "discrimination", "probation", "tls-92"]
+  },
+  {
+    "id": "emp-005",
+    "category": "employment",
+    "language": "et",
+    "question": "Tahan ise töölt lahkuda. Mis on etteteatamise tähtaeg ja kas saan puhkusehüvitist?",
+    "expected": {
+      "must_mention_laws": ["TLS"],
+      "must_include": [
+        "töötaja korraline ülesütlemine: etteteatamise tähtaeg 30 kalendripäeva (TLS § 98)",
+        "katseajal: 15 kalendripäeva",
+        "ülesütlemine peab olema kirjalikult taasesitatavas vormis (TLS § 95)",
+        "kasutamata põhipuhkuse hüvitamine rahas töösuhte lõppemisel (TLS § 71)",
+        "lõpparvel kirjas: töötasu, ületunnid, puhkusehüvitis",
+        "tööandja peab lõpparve välja maksma viimasel tööpäeval (TLS § 84)"
+      ],
+      "must_not_include": [
+        "ebatäpne tähtaeg (näiteks 14 päeva)",
+        "väide et puhkusehüvitist ei tule maksta"
+      ],
+      "tone": "praktiline, sõbralik",
+      "min_word_count": 100,
+      "max_word_count": 450
+    },
+    "difficulty": "easy",
+    "tags": ["resignation", "notice-period", "vacation-pay", "tls-98"]
+  }
+]

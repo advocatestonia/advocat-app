@@ -93,7 +93,7 @@ export interface QuotaResult {
 }
 
 export interface AnthropicCallArgs {
-  systemBlocks: Array<{ type: "text"; text: string; cache_control?: { type: "ephemeral" } }>;
+  systemBlocks: Array<{ type: "text"; text: string; cache_control?: { type: "ephemeral"; ttl?: string } }>;
   userMessage: string;
   maxTokens: number;
   temperature: number;
@@ -280,7 +280,7 @@ function safeJson(v: unknown): string {
 export function buildSystemBlocks(contextSuffix: string): Array<{
   type: "text";
   text: string;
-  cache_control?: { type: "ephemeral" };
+  cache_control?: { type: "ephemeral"; ttl?: string };
 }> {
   // Replace placeholders in the static prefix with their constants; the
   // remaining dynamic placeholders inside <context> are NOT in the cached
@@ -291,6 +291,13 @@ export function buildSystemBlocks(contextSuffix: string): Array<{
   // runtime from EMAIL_AGENT_PROMPT_VERSION env var (defaults to
   // v1.1-final). v1.2-final adds Rules 31–35 — flip via Supabase secret
   // after staging soak.
+  //
+  // TTL pinned to "1h" — Anthropic silently regressed the cache_control
+  // default from 1h to 5m in March 2026. Email triage prompt prefix is
+  // ~30KB of stable system rules; without an explicit TTL each thread's
+  // follow-up replies (often 10-60 min apart) miss the 5m window. The 2x
+  // write premium pays back inside the first cached re-triage of the
+  // thread. Keep in sync with claude-proxy/prompt_caching.ts CACHE_TTL.
   const { prompt: activePrompt } = pickPromptVersion();
   const prefixRaw = activePrompt
     .split(/<context>[\s\S]*<\/context>/)[0]
@@ -302,7 +309,7 @@ export function buildSystemBlocks(contextSuffix: string): Array<{
     {
       type: "text",
       text: prefixRaw,
-      cache_control: { type: "ephemeral" },
+      cache_control: { type: "ephemeral", ttl: "1h" },
     },
     {
       type: "text",

@@ -1604,5 +1604,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Vertrag prüfen",
+    "contractReviews": "Vertragsprüfungen",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 Vertragsprüfung (lebenslange Testversion)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 Vertragsprüfungen pro Monat",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 Vertragsprüfungen pro Monat",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} Vertragsprüfungen übrig in diesem Monat",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Keine Vertragsprüfungen mehr in diesem Monat",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Kostenlose Testversion: 1 Vertragsprüfung",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Testversion verbraucht — upgraden",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Vertragsprüfungen verbraucht",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Sie haben Ihre kostenlose Vertragsprüfung verbraucht. Upgraden Sie für monatliche Prüfungen.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Sie haben {used} von {cap} Prüfungen diesen Monat verbraucht. Upgraden Sie für ein höheres Limit.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Upgrade auf Counsel (€19,99/Mon.) — 5 Prüfungen",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Upgrade auf Pro (€29,99/Mon.) — 20 Prüfungen",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Upgrade auf Pro — 20/Mon.",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Nicht jetzt",
+    "@notNow": {}
 }

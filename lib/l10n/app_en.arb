@@ -1345,5 +1345,91 @@
     "plannerTrailEmpty": "no items",
     "@plannerTrailEmpty": {
         "description": "Reasoning Trail placeholder shown when a list section is empty."
-    }
+    },
+    "supportTitle": "Need help?",
+    "@supportTitle": {
+        "description": "Title of the in-app support sheet (also FAB tooltip)."
+    },
+    "supportSubtitle": "We usually reply within 1-2 hours.",
+    "@supportSubtitle": {},
+    "supportWhatsapp": "WhatsApp",
+    "@supportWhatsapp": {},
+    "supportEmail": "Email",
+    "@supportEmail": {},
+    "supportInApp": "Message us here",
+    "@supportInApp": {},
+    "supportCategoryLabel": "Category",
+    "@supportCategoryLabel": {},
+    "supportCategoryBug": "Bug",
+    "@supportCategoryBug": {},
+    "supportCategoryPayment": "Payment issue",
+    "@supportCategoryPayment": {},
+    "supportCategoryQuestion": "Question",
+    "@supportCategoryQuestion": {},
+    "supportCategoryFeature": "Feature request",
+    "@supportCategoryFeature": {},
+    "supportCategoryOther": "Other",
+    "@supportCategoryOther": {},
+    "supportMessagePlaceholder": "Describe your problem...",
+    "@supportMessagePlaceholder": {},
+    "supportEmailLabel": "Email (optional)",
+    "@supportEmailLabel": {},
+    "supportSend": "Send",
+    "@supportSend": {},
+    "supportSentSuccess": "Message sent! We'll reply soon.",
+    "@supportSentSuccess": {},
+    "supportError": "Something went wrong. Try again.",
+    "@supportError": {},
+    "supportErrorTooShort": "Please write at least 10 characters.",
+    "@supportErrorTooShort": {},
+    "supportErrorTooLong": "Maximum 2000 characters.",
+    "@supportErrorTooLong": {},
+    "supportPrivacyNotice": "Your message is stored securely.",
+    "@supportPrivacyNotice": {},
+    "reviewThisContract": "Review this contract",
+    "@reviewThisContract": {
+        "description": "Chip shown after uploading a PDF that the classifier flagged as a contract. Tapping it triggers the analyze_contract tool."
+    },
+    "contractReviews": "Contract Reviews",
+    "@contractReviews": {
+        "description": "Subscription-screen feature label for the Contract Review quota line."
+    },
+    "contractReviewsFreeFeature": "1 contract review (lifetime trial)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 contract reviews per month",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 contract reviews per month",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} contract reviews left this month",
+    "@contractReviewsLeft": {
+        "description": "Quota pill shown near chat upload button when remaining > 0.",
+        "placeholders": {
+            "count": {"type": "int"}
+        }
+    },
+    "contractReviewsExhausted": "No contract reviews left this month",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Free trial: 1 contract review",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Free trial used \u2014 upgrade for more",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Contract reviews used up",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "You used your free contract review. Upgrade for monthly contract reviews.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {"type": "int"},
+            "cap": {"type": "int"}
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (\u20AC19.99/mo) \u2014 5 reviews",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Upgrade to Pro (\u20AC29.99/mo) \u2014 20 reviews",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Upgrade to Pro \u2014 20/mo",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Not now",
+    "@notNow": {}
 }

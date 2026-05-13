@@ -3253,4 +3253,120 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'no items';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Vertrag prüfen';
+
+  @override
+  String get contractReviews => 'Vertragsprüfungen';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 Vertragsprüfung (lebenslange Testversion)';
+
+  @override
+  String get contractReviewsCounselFeature => '5 Vertragsprüfungen pro Monat';
+
+  @override
+  String get contractReviewsProFeature => '20 Vertragsprüfungen pro Monat';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return '$count Vertragsprüfungen übrig in diesem Monat';
+  }
+
+  @override
+  String get contractReviewsExhausted =>
+      'Keine Vertragsprüfungen mehr in diesem Monat';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Kostenlose Testversion: 1 Vertragsprüfung';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Testversion verbraucht — upgraden';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Vertragsprüfungen verbraucht';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Sie haben Ihre kostenlose Vertragsprüfung verbraucht. Upgraden Sie für monatliche Prüfungen.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Sie haben $used von $cap Prüfungen diesen Monat verbraucht. Upgraden Sie für ein höheres Limit.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Upgrade auf Counsel (€19,99/Mon.) — 5 Prüfungen';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Upgrade auf Pro (€29,99/Mon.) — 20 Prüfungen';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Upgrade auf Pro — 20/Mon.';
+
+  @override
+  String get notNow => 'Nicht jetzt';
 }

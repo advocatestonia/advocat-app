@@ -1288,5 +1288,51 @@
     "plannerTrailEvidenceGaps": "Todistepuutteet",
     "plannerTrailMaterialGapTrue": "Olennainen puute havaittu",
     "plannerTrailRegeneratedBadge": "Uudelleen luotu",
-    "plannerTrailEmpty": "ei kohteita"
+    "plannerTrailEmpty": "ei kohteita",
+    "reviewThisContract": "Tarkista sopimus",
+    "contractReviews": "Sopimusten tarkistukset",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 sopimuksen tarkistus (elinikäinen kokeilu)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 sopimustarkistusta kuukaudessa",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 sopimustarkistusta kuukaudessa",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} sopimustarkistusta jäljellä tässä kuussa",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Tässä kuussa ei ole sopimustarkistuksia jäljellä",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Ilmainen kokeilu: 1 sopimustarkistus",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Ilmainen kokeilu käytetty — päivitä",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Sopimustarkistukset käytetty",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Käytit ilmaisen sopimustarkistuksesi. Päivitä saadaksesi kuukausittaisia tarkistuksia.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Käytit {used} / {cap} tarkistuksesta tässä kuussa. Päivitä suurempaa kuukausirajaa varten.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Päivitä Counsel (€19,99/kk) — 5 tarkistusta",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Päivitä Pro (€29,99/kk) — 20 tarkistusta",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Päivitä Pro — 20/kk",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Ei nyt",
+    "@notNow": {}
 }

@@ -3220,4 +3220,120 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'kirjeid pole';
+
+  @override
+  String get supportTitle => 'Vajad abi?';
+
+  @override
+  String get supportSubtitle => 'Vastame tavaliselt 1-2 tunni jooksul.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'E-post';
+
+  @override
+  String get supportInApp => 'Kirjuta meile siin';
+
+  @override
+  String get supportCategoryLabel => 'Kategooria';
+
+  @override
+  String get supportCategoryBug => 'Viga rakenduses';
+
+  @override
+  String get supportCategoryPayment => 'Maksega seotud';
+
+  @override
+  String get supportCategoryQuestion => 'Küsimus';
+
+  @override
+  String get supportCategoryFeature => 'Soovin uut funktsiooni';
+
+  @override
+  String get supportCategoryOther => 'Muu';
+
+  @override
+  String get supportMessagePlaceholder => 'Kirjelda probleemi...';
+
+  @override
+  String get supportEmailLabel => 'E-post (valikuline)';
+
+  @override
+  String get supportSend => 'Saada';
+
+  @override
+  String get supportSentSuccess => 'Sõnum saadetud! Vastame peagi.';
+
+  @override
+  String get supportError => 'Tekkis viga. Proovi uuesti.';
+
+  @override
+  String get supportErrorTooShort => 'Palun kirjuta vähemalt 10 tähemärki.';
+
+  @override
+  String get supportErrorTooLong => 'Maksimum 2000 tähemärki.';
+
+  @override
+  String get supportPrivacyNotice => 'Sinu sõnum salvestatakse turvaliselt.';
+
+  @override
+  String get reviewThisContract => 'Vaata leping üle';
+
+  @override
+  String get contractReviews => 'Lepingute ülevaatus';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 lepingu ülevaatus (eluaegne prooviversioon)';
+
+  @override
+  String get contractReviewsCounselFeature => '5 lepingu ülevaatust kuus';
+
+  @override
+  String get contractReviewsProFeature => '20 lepingu ülevaatust kuus';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return '$count lepingu ülevaatust selles kuus alles';
+  }
+
+  @override
+  String get contractReviewsExhausted =>
+      'Selles kuus ei ole lepingu ülevaatusi alles';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Tasuta proovi: 1 lepingu ülevaatus';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Tasuta proov kasutatud — uuenda paketti';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Lepingu ülevaatused on otsas';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Kasutasid oma tasuta lepingu ülevaatuse. Uuenda paketti, et saada kuiseid ülevaatusi.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Kasutasid $used ülevaatust $cap-st selles kuus. Uuenda paketti suurema kuulimiidi jaoks.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Uuenda Counsel paketiks (€19,99/kuu) — 5 ülevaatust';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Uuenda Pro paketiks (€29,99/kuu) — 20 ülevaatust';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Uuenda Pro — 20/kuu';
+
+  @override
+  String get notNow => 'Mitte praegu';
 }

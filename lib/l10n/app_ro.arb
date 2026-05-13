@@ -997,5 +997,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Verifică contractul",
+    "contractReviews": "Verificări contracte",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 verificare contract (probă pe viață)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 verificări contracte pe lună",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 verificări contracte pe lună",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Au mai rămas {count} verificări contracte luna aceasta",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Nu mai sunt verificări contracte luna aceasta",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Probă gratuită: 1 verificare contract",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Probă gratuită folosită — actualizați",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Verificări contracte epuizate",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Ați folosit verificarea gratuită de contract. Actualizați pentru verificări lunare.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Ați folosit {used} din {cap} verificări luna aceasta. Actualizați pentru o limită lunară mai mare.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Treceți la Counsel (€19,99/lună) — 5 verificări",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Treceți la Pro (€29,99/lună) — 20 verificări",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Treceți la Pro — 20/lună",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Nu acum",
+    "@notNow": {}
 }

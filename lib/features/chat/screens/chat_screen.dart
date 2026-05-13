@@ -20,6 +20,7 @@ import '../../../services/chat_stream_event.dart';
 import '../../../services/claude_service.dart'
     show ClaudeService, ClaudeServiceException;
 import '../../../services/legal_planner.dart';
+import '../widgets/contract_detected_chip.dart';
 import '../widgets/planner_trail.dart';
 import '../../../services/chat_attachment_service.dart';
 import '../../../services/client_knowledge_service.dart';
@@ -34,6 +35,9 @@ import '../../../widgets/feedback_buttons.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../services/chat_tool_bridge.dart';
 import '../utils/message_speaker.dart';
+import '../services/contract_review_quota_service.dart';
+import '../widgets/contract_review_quota_pill.dart';
+import '../widgets/contract_review_upgrade_dialog.dart';
 import '../widgets/quota_error_snackbar.dart';
 import '../widgets/reasoning_trail.dart';
 import '../widgets/tool_result_card.dart';
@@ -233,6 +237,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   // content block. Streaming does not yet support vision — turns with
   // _pendingImageAttachment set skip the streaming path.
   ChatAttachment? _pendingImageAttachment;
+
+  // -- Contract auto-detection chip (2026-05-13) --
+  //
+  // After a PDF upload we call classify-contract (Haiku, ~200 tokens on the
+  // first page). If confidence > 0.7 we surface a one-tap chip that fires
+  // the analyze_contract tool in the user's locale. The chip is shown once
+  // per upload; tapping or starting a new upload clears it.
+  String? _detectedContractDocumentId;
+  String? _detectedContractTypeHint;
+  String? _detectedContractFilename;
 
   @override
   void initState() {
@@ -2035,6 +2049,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           if (_isQuotaExhausted && !ref.read(aiServiceProvider).isProUser)
             _buildQuotaExhaustedBanner(),
 
+          // Pkg Contract Review (2026-05-13) — pill near upload button.
+          // Read-only display of remaining monthly reviews. Tapping the
+          // exhausted-state CTA opens the upgrade dialog.
+          _buildContractReviewQuotaPill(),
+
           // Input bar with voice button
           _buildInputBar(),
         ],
@@ -2625,6 +2644,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // (controller is non-null), render the visible-thinking pill in its own
     // ListView slot just below the messages.
     final trailSlot = _trailController != null ? 1 : 0;
+    // Contract-detected chip (2026-05-13): renders directly under the
+    // upload bubble when classify-contract reported is_contract == true.
+    // The chip is single-use — tapping or starting a new upload clears it.
+    final contractChipSlot = _detectedContractDocumentId != null ? 1 : 0;
     // fix/copy-selection: wrap the message list in SelectionArea so users
     // can drag-select text across bubbles on Flutter Web without the
     // per-bubble GestureDetector swallowing pan events. This is the
@@ -2637,14 +2660,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           vertical: AppSpacing.sm,
         ),
         itemCount: _messages.length +
+            contractChipSlot +
             chipsSlot +
             intakeSlot +
             typingSlot +
             trailSlot,
         itemBuilder: (context, index) {
-          // Order: messages → welcome chips (if active) → quick-profile
-          // intake (if active) → typing indicator → reasoning trail.
-          if (_showWelcomeChips && index == _messages.length) {
+          // Order: messages → contract chip (if pending) → welcome chips
+          // (if active) → quick-profile intake (if active) → typing
+          // indicator → reasoning trail.
+          if (contractChipSlot == 1 && index == _messages.length) {
+            return ContractDetectedChip(
+              key: const Key('contract_detected_chip'),
+              contractTypeHint: _detectedContractTypeHint,
+              onTap: _onContractChipTap,
+            );
+          }
+          final messagesAndContract = _messages.length + contractChipSlot;
+          if (_showWelcomeChips && index == messagesAndContract) {
             final locale = Localizations.localeOf(context).languageCode;
             return ChatWelcomeChips(
               locale: locale,
@@ -2652,7 +2685,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               onSkip: _onWelcomeSkip,
             );
           }
-          final messagesAndChips = _messages.length + chipsSlot;
+          final messagesAndChips = messagesAndContract + chipsSlot;
           if (_showQuickProfile && index == messagesAndChips) {
             final locale = Localizations.localeOf(context).languageCode;
             return QuickProfileIntake(
@@ -3744,10 +3777,107 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       // - for PDF: a "use read_document with id X" instruction,
       // - for image: the caption alongside an inline image content block.
       unawaited(_sendMessage(aiVisibleMessage));
+
+      // Contract auto-detection chip (2026-05-13). Only PDFs that
+      // successfully uploaded get classified — images and text inlines
+      // are skipped because they are not contracts the way users mean
+      // when they upload a "contract".
+      if (classification.kind == AttachmentKind.pdf && documentId != null) {
+        unawaited(
+          _maybeShowContractChip(documentId, fileName: fileName),
+        );
+      }
     } catch (e) {
       // Silently fail — the user can try again
       debugPrint('File picker error: $e');
     }
+  }
+
+  /// Calls the `classify-contract` edge function for a newly uploaded PDF.
+  /// If Haiku reports `is_contract == true` (confidence > 0.7 enforced
+  /// server-side), surface the [ContractDetectedChip] for one-tap review.
+  ///
+  /// Never throws — classifier errors silently leave the chip hidden so
+  /// the upload UX is unaffected.
+  Future<void> _maybeShowContractChip(
+    String documentId, {
+    required String fileName,
+  }) async {
+    try {
+      final supabase = ref.read(supabaseServiceProvider);
+      final resp = await supabase.callEdgeFunction(
+        'classify-contract',
+        body: {'case_document_id': documentId},
+      );
+      if (!mounted) return;
+      if (resp == null) return;
+      final isContract = resp['is_contract'] == true;
+      if (!isContract) return;
+      final hint = resp['contract_type_hint'];
+      setState(() {
+        _detectedContractDocumentId = documentId;
+        _detectedContractTypeHint = hint is String ? hint : null;
+        _detectedContractFilename = fileName;
+      });
+    } catch (e) {
+      debugPrint('classify-contract failed: $e');
+      // Swallow — chip stays hidden, normal chat continues.
+    }
+  }
+
+  /// Tapped the contract-detected chip → trigger the contract-review tool
+  /// against the most recently uploaded PDF, in the user's locale. The
+  /// edge function gates quota and returns 402 on its own; we feed the
+  /// resulting flow back through the existing chat pipeline so the user
+  /// sees normal progress / errors. If the server returns 402 we open the
+  /// existing upgrade dialog.
+  Future<void> _onContractChipTap([String? hintArg]) async {
+    final docId = _detectedContractDocumentId;
+    final filename = _detectedContractFilename;
+    if (docId == null) return;
+    final locale = Localizations.localeOf(context).languageCode;
+    final hint = hintArg ?? _detectedContractTypeHint;
+
+    // Clear the chip immediately so the user can't double-tap. If the
+    // server returns 402 we surface the upgrade dialog separately; the
+    // chip itself is single-use.
+    setState(() {
+      _detectedContractDocumentId = null;
+      _detectedContractTypeHint = null;
+      _detectedContractFilename = null;
+    });
+
+    final supabase = ref.read(supabaseServiceProvider);
+    final body = <String, dynamic>{
+      'case_document_ids': [docId],
+      'output_language': locale,
+      if (hint != null && hint.isNotEmpty) 'industry_hint': hint,
+    };
+    final resp = await supabase.callEdgeFunction(
+      'contract-review',
+      body: body,
+    );
+    if (!mounted) return;
+
+    // 402 quota exhausted → reuse existing upgrade dialog with current quota.
+    final error = resp?['error'];
+    if (error == 'quota_exceeded') {
+      final quotaAsync = ref.read(contractReviewQuotaProvider);
+      final quota = quotaAsync.valueOrNull;
+      if (quota != null) {
+        unawaited(_onContractReviewUpgrade(quota));
+      }
+      return;
+    }
+
+    // Anything else: let the AI summarise the result in chat. The
+    // contract-review function already produces a markdown email +
+    // summary + score, so we ask Claude to surface them.
+    final hintEcho = filename == null ? '' : ' (file: $filename)';
+    unawaited(_sendMessage(
+      '[system] contract_review just ran for the last uploaded contract$hintEcho. '
+      'Summarise the findings and risks in the user\'s language ($locale).',
+    ));
   }
 
   String _attachFallbackLabel(String lang, String fileName) {
@@ -3815,6 +3945,48 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final ai = ref.read(aiServiceProvider);
     if (ai.isProUser) return false;
     return _freeMessagesRemaining == 0;
+  }
+
+  // ── Contract Review quota pill ──────────────────────────────────────
+  //
+  // Sits immediately above the chat input bar. Reads from the Riverpod
+  // `contractReviewQuotaProvider` which selects the caller's row from
+  // `public.user_quotas` (RLS-scoped). Three visual states (normal /
+  // near-limit / exhausted) are owned by [ContractReviewQuotaPill]; the
+  // exhausted state shows an inline CTA that opens the upgrade dialog.
+  Widget _buildContractReviewQuotaPill() {
+    final quotaAsync = ref.watch(contractReviewQuotaProvider);
+    final quota = quotaAsync.valueOrNull;
+    if (quota == null) {
+      // Loading or no session — keep the layout slot empty (no pill).
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: ContractReviewQuotaPill(
+          quota: quota,
+          onUpgrade: () => _onContractReviewUpgrade(quota),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onContractReviewUpgrade(ContractReviewQuota quota) async {
+    final choice =
+        await showContractReviewUpgradeDialog(context, quota: quota);
+    if (choice == null || !mounted) return;
+    // Deep-link the user into the existing subscription flow — keeps the
+    // checkout path single-sourced. Memory: reference_landing_v25 +
+    // reference_payment_flow_state.
+    final route = switch (choice) {
+      ContractReviewUpgradeChoice.counsel =>
+        '/subscription?plan=basic&billing=monthly',
+      ContractReviewUpgradeChoice.pro =>
+        '/subscription?plan=premium&billing=monthly',
+    };
+    if (mounted) unawaited(context.push(route));
   }
 
   Widget _buildInputBar() {

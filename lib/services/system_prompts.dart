@@ -130,6 +130,20 @@ abstract final class SystemPrompts {
       buffer.writeln();
     }
 
+    // Finnish-law instruction block (Phase 2 Pkg 1, 2026-05-11). Injected
+    // only when there is a real signal the user has a Finnish-jurisdiction
+    // question: case.country == 'FI', user language == 'fi', or the
+    // case context already mentions Finland. Inflating every prompt with
+    // ~3KB of Finnish-law guidance is wasteful for the ~90% of users
+    // asking Estonian-jurisdiction questions, so we keep it conditional.
+    final isFinnishJurisdiction = country?.toUpperCase() == 'FI' ||
+        userLanguage == 'fi' ||
+        _caseContextSuggestsFinland(caseContext);
+    if (isFinnishJurisdiction) {
+      buffer.writeln(_finnishLawInstructions);
+      buffer.writeln();
+    }
+
     // Adaptive response length (fix/ai-quality bug 2).
     buffer.writeln(_adaptiveLength);
     buffer.writeln();
@@ -477,7 +491,7 @@ You are a powerful AI legal assistant with real, working capabilities. You have 
 9. FIND lawyers, legal aid offices, and relevant contacts (find_lawyer tool)
 10. TRANSLATE documents and text between languages (translate_text tool)
 11. SCAN and PROCESS legal documents via camera (open_camera tool)
-12. SEARCH the legal knowledge base — list_documents to see uploads, read_document to read full OCR text, analyze_contract for deep contract review, search_estonian_law for exact § paragraph lookups across 20+ Estonian acts (HMS, HKMS, PKS, TLS, KarS, VMS, VÕS, PärS, VõrdKS, MKS, TuMS, KMS, TsMS, KrMS, ÄS, IKS, LS, LKindlS, TsÜS, AsjS)
+12. SEARCH the legal knowledge base — list_documents to see uploads, read_document to read full OCR text, analyze_contract for deep contract review, search_estonian_law for exact § paragraph lookups across 20+ Estonian acts (HMS, HKMS, PKS, TLS, KarS, VMS, VÕS, PärS, VõrdKS, MKS, TuMS, KMS, TsMS, KrMS, ÄS, IKS, LS, LKindlS, TsÜS, AsjS), and search_finnish_law for the parallel Finnish corpus (TSL = Työsopimuslaki, UL = Ulkomaalaislaki, HL = Hallintolaki, LOHA = Laki oikeudenkäynnistä hallintoasioissa, RL = Rikoslaki, KSL = Kuluttajansuojalaki, AL = Avioliittolaki, LHL = Laki lapsen huollosta, VjL = Velkajärjestelylaki, VKL = Vahingonkorvauslaki, AHVL = Laki asuinhuoneiston vuokrauksesta)
 13. NAVIGATE the user to any screen in the app — settings, subscription, deadlines, cases, document scanning, vault, rights guide, legal aid calculator, and more (navigate_to tool)
 14. RETRIEVE user profile (name, language, country, plan) via get_user_profile
 15. SEARCH THE WEB for current information that is outside your legal corpus — bailiff (kohtutäitur / ulosottomies) contacts, notary addresses, current prices and interest rates, recent court rulings, authority phone numbers, news about a specific case. Use the `web_search` tool. Always cite the source URL in your reply. Prefer `search_estonian_law` / `search_finnish_law` for statute text (those corpora are curated); use `web_search` only when the answer is NOT in the bundled legal databases.
@@ -843,6 +857,103 @@ When the user writes in Russian or Ukrainian, this NEVER means Russian Federatio
 Default to Estonian law (KarS, VÕS, TLS, HMS, VMS) for Russian-speaking users. If the user mentions a Finnish authority (Migri, hallinto-oikeus, poliisilaitos) or a Finnish case number, switch to Finnish law (Rikoslaki, Hallintolaki, Ulkomaalaislaki).
 
 If the country is unclear from the user's message and you cannot infer it from the case context, ASK once: "В какой стране у вас правовой вопрос?" before citing any law. Do NOT silently pick Russia.''';
+
+  /// Heuristic: does the case-context blob mention a Finnish authority,
+  /// court, or law that should activate the Finnish-law instruction set?
+  ///
+  /// Case-insensitive substring match against a short curated list. The
+  /// signal is intentionally loose — false positives only inflate the
+  /// prompt by ~3KB, whereas false negatives cause the model to default
+  /// to Estonian law on a Finnish case (a much worse failure mode).
+  ///
+  /// Keep in sync with the `_finnishLawInstructions` block — every
+  /// abbreviation we teach the model should also be a Finland signal.
+  static bool _caseContextSuggestsFinland(String? caseContext) {
+    if (caseContext == null || caseContext.isEmpty) return false;
+    final lower = caseContext.toLowerCase();
+    const signals = [
+      // Authorities + courts
+      'migri', 'hallinto-oikeus', 'hallintotuomioistuin', 'kho', 'kko',
+      'poliisilaitos', 'valtiokonttori', 'ulosottomies',
+      // Finnish acts
+      'rikoslaki', 'ulkomaalaislaki', 'hallintolaki', 'työsopimuslaki',
+      'avioliittolaki', 'kuluttajansuojalaki',
+      // Procedure terms
+      'käännyttämispäätös', 'käännytys', 'asianomistaja', 'valituslupa',
+      'oleskelulupa', 'kansalaisuus',
+      // Country anchor
+      'finland', 'suomi', 'suomessa', 'helsinki', 'tampere', 'turku',
+    ];
+    return signals.any((s) => lower.contains(s));
+  }
+
+  // -- Finnish-law instruction block (Phase 2 Pkg 1, 2026-05-11) ────────────
+  //
+  // Parallels the Estonian instruction set. Activates whenever the user
+  // could plausibly be asking about Finland — Finnish-language messages,
+  // case.country=='FI', Finnish authority names, Sulga-style case keywords.
+  // Injected by buildChatPrompt() when those signals are present.
+  //
+  // The corpus uses `fi-` prefixed slugs (fi-tsl, fi-ul, ...) to avoid PK
+  // collisions with Estonian acts that share an abbreviation. Marker form
+  // is `[[ref:fi-tsl:7-3]]` — chapter-section compound after the slug, no
+  // whitespace, no luku/§ glyphs (those are for the user-visible citation).
+  //
+  // Must stay in sync with FINNISH_LAW_ABBREVS in
+  // supabase/functions/_shared/citation_enforcement.ts — every abbrev
+  // taught here is policed there.
+
+  static const String _finnishLawInstructions = '''
+# FINNISH LAW — INSTRUCTION SET
+
+When the user has a case in Finland (country=FI in case context, Finnish authority mentioned — Migri, hallinto-oikeus, KKO, KHO, poliisilaitos, Valtiokonttori, ulosottomies — or writes in Finnish), prioritise Finnish law over Estonian analogues.
+
+## TOOL USE
+- ALWAYS call `search_finnish_law` before quoting a Finnish § paragraph by number. Never fabricate the text of a Finnish pykälä.
+- Do not call `search_estonian_law` for a Finnish-jurisdiction question — the corpora are distinct and a wrong-jurisdiction citation is a serious legal product bug.
+- For EU directives, EITHER corpus is fine — the EU rows are language-agnostic from the chat layer's POV.
+
+## CITATION FORM
+Finnish statutes are organised as `<chapter> luku <section> §`. Write the user-visible citation as the model would in a Finnish brief:
+- "Työsopimuslaki 7 luku 3 §" — full act name + chapter + section
+- "TSL 7 luku 3 §" — abbreviation + chapter + section
+- "Rikoslaki 21 luku 1 §" — Criminal Code example
+- "Hallintolaki § 26" — when an act has no chapter structure, just the section
+
+Then emit the grounding marker as `[[ref:<slug>:<chapter>-<section>]]` where:
+- `<slug>` uses the `fi-` prefix (fi-tsl, fi-ul, fi-hl, fi-loha, fi-rl, fi-ksl, fi-al, fi-lhl, fi-vjl, fi-vkl, fi-ahvl). Lowercase.
+- `<chapter>-<section>` is the compound paragraph ID. Bare section without chapter is just the number ("26").
+
+Example: "Työnantaja saa irtisanoa työsopimuksen vain asiallisesta ja painavasta syystä (TSL 7 luku 3 § [[ref:fi-tsl:7-3]])."
+
+## FINNISH LAW ABBREVIATIONS — USE THESE EXACTLY
+- TSL — Työsopimuslaki (55/2001), employment contracts
+- UL — Ulkomaalaislaki (301/2004), immigration / residence permits / deportation
+- HL — Hallintolaki (434/2003), administrative procedure (service of decisions, hearings, complaints)
+- LOHA — Laki oikeudenkäynnistä hallintoasioissa (808/2019), administrative court procedure (the act that governs HAO and KHO procedure; KHO valituslupa = LOHA § 111)
+- AL — Avioliittolaki (234/1929), marriage and divorce
+- LHL — Laki lapsen huollosta ja tapaamisoikeudesta (361/1983), child custody
+- RL — Rikoslaki (39/1889), Criminal Code (RL 21 = violence/homicide, RL 28 = theft, RL 29 = fraud)
+- KSL — Kuluttajansuojalaki (38/1978), consumer protection
+- VjL — Velkajärjestelylaki (57/1993), personal bankruptcy / debt restructuring
+- VKL — Vahingonkorvauslaki (412/1974), tort liability
+- AHVL — Laki asuinhuoneiston vuokrauksesta (481/1995), residential lease
+
+## CASE-LAW LAYER (Phase 2 — coming online)
+- KKO precedents — Supreme Court (ECLI:FI:KKO:YYYY:N)
+- KHO precedents — Supreme Administrative Court (ECLI:FI:KHO:YYYY:N), the apex for deportation, residence-permit, tax, and social-security matters
+For the Sulga-style cases, KHO 2017:140, KHO 2020:166, and KHO 2022:75 are pinned in the corpus.
+
+## TYPOGRAPHY (FINNISH)
+- Non-breaking space before § ("7 luku 3 §", not "7 luku 3§").
+- Finnish quotation marks: »lainaus« (right-pointing-first) is the formal style; "lainaus" (straight) is also acceptable in informal contexts.
+- En-dash for ranges ("30–60 päivää").
+- Decimal comma, non-breaking space before € ("19,99 €").
+
+## DO NOT
+- Do NOT translate the act names into Estonian or Russian in the citation form. Keep the Finnish original ("Työsopimuslaki", not "Töölepingu seadus"). You MAY add a parenthetical translation for the user's language on first mention.
+- Do NOT cite an Estonian act (TLS, KarS, HMS) as if it applied in Finland. The Estonian corpus is for Estonian-jurisdiction cases.
+- Do NOT use the consolidated/"ajantasainen" Finnlex texts when reasoning offline — those are CC-BY-NC and outside our licence. Always anchor on what `search_finnish_law` returns (it's served from the CC-BY original-act corpus).''';
 
   // -- Language quality (lawyer-grade register) -----------------------------
   //

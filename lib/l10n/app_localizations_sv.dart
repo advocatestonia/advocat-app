@@ -3221,4 +3221,120 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get plannerTrailEmpty => 'no items';
+
+  @override
+  String get supportTitle => 'Need help?';
+
+  @override
+  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportEmail => 'Email';
+
+  @override
+  String get supportInApp => 'Message us here';
+
+  @override
+  String get supportCategoryLabel => 'Category';
+
+  @override
+  String get supportCategoryBug => 'Bug';
+
+  @override
+  String get supportCategoryPayment => 'Payment issue';
+
+  @override
+  String get supportCategoryQuestion => 'Question';
+
+  @override
+  String get supportCategoryFeature => 'Feature request';
+
+  @override
+  String get supportCategoryOther => 'Other';
+
+  @override
+  String get supportMessagePlaceholder => 'Describe your problem...';
+
+  @override
+  String get supportEmailLabel => 'Email (optional)';
+
+  @override
+  String get supportSend => 'Send';
+
+  @override
+  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+
+  @override
+  String get supportError => 'Something went wrong. Try again.';
+
+  @override
+  String get supportErrorTooShort => 'Please write at least 10 characters.';
+
+  @override
+  String get supportErrorTooLong => 'Maximum 2000 characters.';
+
+  @override
+  String get supportPrivacyNotice => 'Your message is stored securely.';
+
+  @override
+  String get reviewThisContract => 'Granska kontraktet';
+
+  @override
+  String get contractReviews => 'Avtalsgranskningar';
+
+  @override
+  String get contractReviewsFreeFeature =>
+      '1 avtalsgranskning (provning för livstid)';
+
+  @override
+  String get contractReviewsCounselFeature => '5 avtalsgranskningar per månad';
+
+  @override
+  String get contractReviewsProFeature => '20 avtalsgranskningar per månad';
+
+  @override
+  String contractReviewsLeft(int count) {
+    return '$count avtalsgranskningar kvar denna månad';
+  }
+
+  @override
+  String get contractReviewsExhausted =>
+      'Inga avtalsgranskningar kvar denna månad';
+
+  @override
+  String get contractReviewsFreeTrialLeft =>
+      'Gratis provning: 1 avtalsgranskning';
+
+  @override
+  String get contractReviewsFreeTrialUsed =>
+      'Gratis provning använd — uppgradera';
+
+  @override
+  String get contractReviewsUpgradeTitle => 'Avtalsgranskningar slut';
+
+  @override
+  String get contractReviewsUpgradeBodyFree =>
+      'Du har använt din gratis avtalsgranskning. Uppgradera för månatliga granskningar.';
+
+  @override
+  String contractReviewsUpgradeBodyPaid(int used, int cap) {
+    return 'Du har använt $used av $cap granskningar denna månad. Uppgradera för en högre månadsgräns.';
+  }
+
+  @override
+  String get contractReviewsUpgradeCounselCta =>
+      'Uppgradera till Counsel (€19,99/mån) — 5 granskningar';
+
+  @override
+  String get contractReviewsUpgradeProCta =>
+      'Uppgradera till Pro (€29,99/mån) — 20 granskningar';
+
+  @override
+  String get contractReviewsUpgradeToProShort => 'Uppgradera till Pro — 20/mån';
+
+  @override
+  String get notNow => 'Inte nu';
 }

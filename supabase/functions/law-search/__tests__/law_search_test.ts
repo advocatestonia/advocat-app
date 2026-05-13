@@ -64,13 +64,14 @@ Deno.test("index.ts — wire format matches law_search_client.dart", () => {
 });
 
 Deno.test("index.ts — validates lang against supported set", () => {
-  // Function must reject anything outside et/ru/en with a 400.
+  // Function must reject anything outside the supported set with a 400.
+  // Supported langs after Phase 2 Pkg 1 (Finland, 2026-05-11): et, ru, en, fi.
   assertStringIncludes(indexCode, "SUPPORTED_LANGS");
-  // Confirm the set contains the three langs the client will send.
+  // Confirm the set contains the four langs the client will send.
   assert(
-    /SUPPORTED_LANGS\s*=\s*new Set\(\[\s*"et"\s*,\s*"ru"\s*,\s*"en"\s*\]\)/
+    /SUPPORTED_LANGS\s*=\s*new Set\(\[\s*"et"\s*,\s*"ru"\s*,\s*"en"\s*,\s*"fi"\s*\]\)/
       .test(indexCode),
-    "SUPPORTED_LANGS must be exactly {et, ru, en}",
+    "SUPPORTED_LANGS must contain {et, ru, en, fi}",
   );
   // And there is a 400 path on the lang check.
   assert(

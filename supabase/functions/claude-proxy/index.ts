@@ -12,6 +12,13 @@ import {
 import { mapAnthropicError } from "./error_mapping.ts";
 import { classifyComplexity } from "./classify_complexity.ts";
 import {
+  classifyQuery,
+  estimateCostCents,
+  formatTelemetry,
+  HAIKU_MODEL,
+  SONNET_MODEL,
+} from "./model_router.ts";
+import {
   applyActiveCaseToBody,
   isValidCaseId,
   loadActiveCase,
@@ -23,6 +30,10 @@ import {
   verifyCitations,
 } from "../_shared/citation_grounder.ts";
 import {
+  enforceCitations,
+  summariseViolations,
+} from "../_shared/citation_enforcement.ts";
+import {
   buildCitationRows,
   isValidMessageId,
   persistCitations,
@@ -30,6 +41,14 @@ import {
 import { wrapAnthropicStreamWithCitations } from "./streaming_citations.ts";
 import { runLegalPlannerLoop } from "../_shared/legal_planner.ts";
 import { persistPlannerTrace } from "./planner_trace_persistence.ts";
+import {
+  buildSelfCorrectionAddendum,
+  type CorrectionRow,
+  formatCorrectionsBlock,
+  retrieveCorrections,
+  selfCorrectionScan,
+} from "../_shared/corrections_retriever.ts";
+import { enqueueGoldCandidate } from "../_shared/gold_enqueue.ts";
 import { runConsilium, shouldRunConsilium } from "../_shared/consilium.ts";
 import { extractAndPatchFacts } from "../_shared/fact_extractor.ts";
 import { appendAdviceDigest } from "../_shared/advice_digest.ts";
@@ -38,11 +57,28 @@ import {
   executeToolCalls,
   extractToolUseBlocks,
 } from "./tool_handlers.ts";
+import {
+  type AnthropicShapedResponse,
+  callLlamaFallback,
+  type FallbackReason,
+  fallbackReasonFromStatus,
+  forceFallbackEnabled,
+  LLAMA_MODEL_ID,
+  LLAMA_TIMEOUT_MS,
+  shouldFallback,
+} from "./llama_fallback.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY =
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+// Memory-of-Wrong-Answers retrieval (Pkg #13). OPENAI_API_KEY is optional —
+// when absent the retrieval gracefully no-ops (corrections is an additive
+// uplift, not a blocker). Threshold defaults to 0.75 matching the RPC default.
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
+const CORRECTIONS_SIMILARITY_THRESHOLD = parseFloat(
+  Deno.env.get("CORRECTIONS_SIMILARITY_THRESHOLD") ?? "0.75",
+);
 
 // SECURITY 2026-05-04 U1+U2+U3 — claude-proxy hardening.
 // -----------------------------------------------------------------------------
@@ -176,6 +212,63 @@ serve(async (req) => {
     // Enforce allowed model
     if (!body.model || !ALLOWED_MODELS.has(body.model)) {
       body.model = "claude-haiku-4-5-20251001";
+    }
+
+    // ── Smart model routing (2026-05-11) ─────────────────────────────────
+    // Pre-screen the user's last message with a tiny Haiku call (~$0.00075)
+    // to decide whether the main response really needs Sonnet. The router:
+    //   - Skips entirely for anon callers (already Haiku-clamped to 500 tok)
+    //   - Skips when the caller explicitly requested Sonnet (Pro UI override)
+    //   - Falls back to a heuristic on any failure (never blocks chat)
+    //
+    // We honour the `router_skip` body flag so internal callers (planner,
+    // consilium, smoke tests) can opt out. The flag is stripped before
+    // forwarding to Anthropic.
+    const routerSkip = (body as { router_skip?: unknown }).router_skip === true;
+    delete (body as { router_skip?: unknown }).router_skip;
+
+    // Detect explicit Sonnet request — Pro users clicking "use Sonnet for
+    // this turn" pass body.model === SONNET_MODEL. We keep their choice.
+    const clientRequestedSonnet = body.model === SONNET_MODEL ||
+      body.model === "claude-3-5-sonnet-20241022";
+
+    if (!routerSkip && !isAnon && !clientRequestedSonnet && CLAUDE_API_KEY) {
+      const cls = await classifyQuery(body.messages ?? [], isAnon, {
+        apiKey: CLAUDE_API_KEY,
+      });
+      const targetModel = cls.recommended_model === "sonnet"
+        ? SONNET_MODEL
+        : HAIKU_MODEL;
+      // Only downgrade-aware: if the client picked Sonnet but router says
+      // Haiku is enough, switch to Haiku and trim max_tokens.
+      // If the client picked Haiku and router agrees, keep Haiku.
+      // If the client picked Haiku but router says complex → upgrade to Sonnet.
+      const previousModel = body.model;
+      body.model = targetModel;
+      // Cap max_tokens to the recommendation (clients usually request more
+      // than they need). Never raise above what the client asked for.
+      if (typeof body.max_tokens === "number" && body.max_tokens > 0) {
+        body.max_tokens = Math.min(body.max_tokens, cls.recommended_max_tokens);
+      } else {
+        body.max_tokens = cls.recommended_max_tokens;
+      }
+      // Telemetry: log one structured line per routed turn so we can later
+      // build a dashboard and measure routing accuracy.
+      const inTokens = Array.isArray(body.messages)
+        ? body.messages.reduce((acc: number, m: { content?: unknown }) => {
+            const t = typeof m.content === "string" ? m.content : "";
+            return acc + Math.ceil(t.length / 4);
+          }, 0)
+        : 0;
+      const costCents = estimateCostCents(
+        targetModel,
+        inTokens,
+        body.max_tokens ?? 0,
+      );
+      console.log(
+        formatTelemetry(cls, targetModel, costCents) +
+        ` previous_model=${previousModel}`,
+      );
     }
 
     // Enforce limits — global 4096 cap applies to everyone.
@@ -395,11 +488,36 @@ serve(async (req) => {
       // ── End consilium upgrade path ────────────────────────────────────────
 
       try {
-        const loopResult = await runLegalPlannerLoop({
+        // ── Memory-of-Wrong-Answers retrieval (Pkg #13) ─────────────────────
+        // Retrieve up to 3 corrections semantically similar to the user's
+        // question and render them as a <learned_corrections> block prepended
+        // to every planner pass. Fails open on every failure mode:
+        //   • OPENAI_API_KEY missing      → empty rows, empty block.
+        //   • match_corrections RPC fails → empty rows, empty block.
+        //   • Embedding cap (1536) fails  → empty rows, empty block.
+        // See corrections_retriever.ts (retrieveCorrections) which already
+        // catches its own errors and returns []. The planner runs unchanged
+        // when correctionsBlock is "" (legacy contract — covered by tests).
+        let correctionsRows: CorrectionRow[] = [];
+        let correctionsBlock = "";
+        if (userMessage && OPENAI_API_KEY) {
+          correctionsRows = await retrieveCorrections({
+            question: userMessage,
+            jurisdiction: null, // detection lives in legal_planner; null = no filter
+            threshold: CORRECTIONS_SIMILARITY_THRESHOLD,
+            supabaseUrl: SUPABASE_URL,
+            serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+            openaiApiKey: OPENAI_API_KEY,
+          });
+          correctionsBlock = formatCorrectionsBlock(correctionsRows);
+        }
+
+        let loopResult = await runLegalPlannerLoop({
           apiKey: CLAUDE_API_KEY,
           systemPrompt,
           messages,
           messageId: persistMessageId ?? undefined,
+          correctionsBlock,
           traceWriter: persistMessageId
             ? (trace) =>
               persistPlannerTrace(trace, {
@@ -418,11 +536,78 @@ serve(async (req) => {
           }), { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } });
         }
 
+        // ── Self-correction reflex (Pkg #13) ────────────────────────────────
+        // Scan the planner's final draft against the retrieved corrections'
+        // wrong_advice phrases. If we caught a paraphrase of a known-wrong
+        // pattern, fire ONE additional regen with a DO_NOT_REPEAT addendum.
+        // The regen is bounded — runLegalPlannerLoop's own MAX_REGENERATIONS
+        // guard caps further iteration inside the planner. Fails open: any
+        // error in the scan or the second loop falls through to the first
+        // draft so the user always gets an answer.
+        if (correctionsRows.length > 0) {
+          try {
+            const matches = selfCorrectionScan(
+              loopResult.replyText,
+              correctionsRows,
+            );
+            if (matches.length > 0) {
+              const addendum = buildSelfCorrectionAddendum(matches);
+              console.warn(
+                `claude-proxy: self-correction reflex fired — ${matches.length} match(es), regenerating`,
+              );
+              const regenerated = await runLegalPlannerLoop({
+                apiKey: CLAUDE_API_KEY,
+                systemPrompt,
+                messages,
+                messageId: persistMessageId ?? undefined,
+                correctionsBlock,
+                selfCorrectionAddendum: addendum,
+                forceRegenForSelfCorrection: true,
+                traceWriter: persistMessageId
+                  ? (trace) =>
+                    persistPlannerTrace(trace, {
+                      supabaseUrl: SUPABASE_URL,
+                      serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+                    })
+                  : undefined,
+              });
+              if (regenerated.kind === "completed") {
+                loopResult = regenerated;
+              }
+            }
+          } catch (e) {
+            console.warn(
+              `claude-proxy: self-correction scan failed (using first draft): ${
+                String(e).slice(0, 200)
+              }`,
+            );
+          }
+        }
+
         // Reuse Pkg 2 verifier on the final draft. Reuse Pkg 0 UPL footer
         // is already in `systemPrompt` (system_prompts.dart bakes it in
         // for every assistant turn). The verifier downgrades unverified
         // markers — invented citations don't earn a "verified" badge.
         const citations = verifyCitations(loopResult.replyText, ragChunks);
+
+        // ── Fail-closed enforcement (2026-05-11) ─────────────────────────
+        // The verifier only catches WHAT the model marked. It is silent on
+        // citations the model SHOULD have marked but did not. The enforcer
+        // scans the reply text for known law-citation shapes (TLS § 88,
+        // Directive 2019/1152 art 5, ECHR Article 8) and strips any
+        // paragraph-level claim that lacks a `[[ref:...:...]]` marker.
+        // Generic mentions ("üürilepingu seadustes on sätestatud") are
+        // explicitly left alone — see citation_enforcement.ts §4.
+        const enforced = enforceCitations(loopResult.replyText, citations);
+        if (enforced.violations.length > 0) {
+          console.warn(
+            `claude-proxy: citation enforcement (planner) stripped ` +
+              `${enforced.violations.length} bare cite(s): ${
+                JSON.stringify(summariseViolations(enforced.violations))
+              }`,
+          );
+        }
+        const enforcedReplyText = enforced.cleanedText;
 
         if (
           persistMessageId !== null &&
@@ -482,18 +667,45 @@ serve(async (req) => {
           );
         }
 
+        // ── Sofia Gold Corpus enqueue (Phase A) ─────────────────────────────
+        // Fire-and-forget queue insert. The helper handles sampling
+        // (GOLD_CORPUS_SAMPLE_RATE, default 0.5), anon skip, and short-message
+        // skip (<50 chars). All failure modes are swallowed inside the helper
+        // — the user reply is never blocked on this.
+        if (!isAnon && persistUserId) {
+          const plannerUserMessage = messages.length > 0
+            ? String(messages[messages.length - 1].content ?? "")
+            : "";
+          enqueueGoldCandidate({
+            userId: persistUserId,
+            sourceMessageId: persistMessageId ?? null,
+            userQuestion: plannerUserMessage,
+            aiAnswer: enforcedReplyText,
+            aiModel: typeof body.model === "string" ? body.model : null,
+            aiCitations: citations.map((c) => c.marker ?? "").filter(Boolean),
+            language: null,
+            category: null,
+            jurisdiction: null,
+            supabaseUrl: SUPABASE_URL,
+            serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+          }).catch(() => {/* helper already logs */});
+        }
+
         // Shape: mirror the non-streaming Anthropic response so the
         // existing Flutter parser keeps working. `mode: "legal_planner"`
         // is echoed back for client-side telemetry / trace fetch.
+        // NOTE: we ship `enforcedReplyText` (post-strip) — bare paragraph
+        // citations without a marker were stripped above.
         const augmented = {
           mode: "legal_planner",
-          content: [{ type: "text", text: loopResult.replyText }],
+          content: [{ type: "text", text: enforcedReplyText }],
           citations,
           message_id: persistMessageId ?? undefined,
           planner: {
             regenerated_once: loopResult.regeneratedOnce,
             latency_ms: loopResult.latencyMs,
             cost_cents: loopResult.costCents,
+            citation_violations: enforced.violations.length,
           },
         };
         return new Response(JSON.stringify(augmented), {
@@ -528,19 +740,81 @@ serve(async (req) => {
     }
 
     if (body.stream) {
-      const claudeStreamResponse = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: buildAnthropicHeaders(CLAUDE_API_KEY),
-        body: JSON.stringify(body),
-      });
+      // ── Llama fallback path A: ADVOCAT_FORCE_FALLBACK=true ─────────────
+      // Manual override (ops drills, ToS contingency) — skip Claude entirely
+      // and go straight to Llama. We synthesise SSE from the non-streaming
+      // Llama response so the Flutter client (which sent stream:true) still
+      // parses the reply correctly. Citation verifier runs on the joined text.
+      if (forceFallbackEnabled()) {
+        console.warn(
+          "claude-proxy: ADVOCAT_FORCE_FALLBACK=true — routing to Llama",
+        );
+        return await runLlamaFallbackForStream({
+          body,
+          reason: "force_fallback_env",
+          ragChunks,
+          persistMessageId,
+          persistUserId,
+          persistCaseId,
+        });
+      }
+
+      // Claude call with 30s timeout. Network errors / aborts both surface
+      // as caught exceptions and route to Llama; HTTP error statuses are
+      // handled below per shouldFallback() classifier.
+      let claudeStreamResponse: Response;
+      try {
+        claudeStreamResponse = await fetchClaudeWithTimeout(body);
+      } catch (e) {
+        const isAbort = (e as { name?: string })?.name === "AbortError";
+        const reason: FallbackReason = isAbort
+          ? "claude_timeout"
+          : "claude_network_error";
+        console.warn(
+          `claude-proxy: Claude ${reason} — routing to Llama: ${
+            String(e).slice(0, 200)
+          }`,
+        );
+        return await runLlamaFallbackForStream({
+          body,
+          reason,
+          ragChunks,
+          persistMessageId,
+          persistUserId,
+          persistCaseId,
+        });
+      }
 
       if (!claudeStreamResponse.ok) {
+        // Llama fallback path B: classify the upstream status. 429 and 5xx
+        // route to Llama; everything else (4xx other than 429) is forwarded
+        // unchanged because Llama wouldn't fix a real client-side bug.
+        if (shouldFallback(claudeStreamResponse.status)) {
+          const reason = fallbackReasonFromStatus(claudeStreamResponse.status);
+          console.warn(
+            `claude-proxy: Claude HTTP ${claudeStreamResponse.status} (${reason}) — routing to Llama`,
+          );
+          // Drain the body so we don't leak the response.
+          await claudeStreamResponse.body?.cancel().catch(() => {});
+          return await runLlamaFallbackForStream({
+            body,
+            reason,
+            ragChunks,
+            persistMessageId,
+            persistUserId,
+            persistCaseId,
+          });
+        }
         const errorText = await claudeStreamResponse.text();
         // Pre-launch (2026-04-29): translate 429 / 529 into a friendly
         // shape so the Flutter client can show a localized message
         // ("service is temporarily overloaded, try again in 1-2 min")
         // instead of the generic «Временная ошибка AI». All other
         // statuses keep the legacy { error: <text> } body.
+        //
+        // NOTE: with fallback active, 429 / 5xx no longer reach this branch
+        // (handled above). This stays defensive in case of a future status
+        // we'd want translated but NOT fallback'd.
         const mapped = mapAnthropicError({
           status: claudeStreamResponse.status,
           body: errorText,
@@ -597,16 +871,51 @@ serve(async (req) => {
           "Cache-Control": "no-cache",
           "Connection": "keep-alive",
           "X-Accel-Buffering": "no",
+          "X-Advocat-Model-Used": (body.model as string) ?? "claude-haiku-4-5-20251001",
         },
       });
     }
 
     // Non-streaming mode (existing behavior)
-    const claudeResponse = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: buildAnthropicHeaders(CLAUDE_API_KEY),
-      body: JSON.stringify(body),
-    });
+    //
+    // Llama fallback path A: ADVOCAT_FORCE_FALLBACK=true short-circuits the
+    // Claude call entirely (ops drill / ToS contingency).
+    if (forceFallbackEnabled()) {
+      console.warn(
+        "claude-proxy: ADVOCAT_FORCE_FALLBACK=true — routing to Llama",
+      );
+      return await runLlamaFallbackForJson({
+        body,
+        reason: "force_fallback_env",
+        ragChunks,
+        persistMessageId,
+        persistUserId,
+        persistCaseId,
+      });
+    }
+
+    let claudeResponse: Response;
+    try {
+      claudeResponse = await fetchClaudeWithTimeout(body);
+    } catch (e) {
+      const isAbort = (e as { name?: string })?.name === "AbortError";
+      const reason: FallbackReason = isAbort
+        ? "claude_timeout"
+        : "claude_network_error";
+      console.warn(
+        `claude-proxy: Claude ${reason} — routing to Llama: ${
+          String(e).slice(0, 200)
+        }`,
+      );
+      return await runLlamaFallbackForJson({
+        body,
+        reason,
+        ragChunks,
+        persistMessageId,
+        persistUserId,
+        persistCaseId,
+      });
+    }
 
     // Happy path: forward Anthropic's JSON augmented with grounded citations.
     if (claudeResponse.ok) {
@@ -681,6 +990,29 @@ serve(async (req) => {
             );
             const followUpCitations = verifyCitations(followUpText, ragChunks);
 
+            // Fail-closed enforcement on the follow-up reply too. Tool
+            // results often prompt the model to summarise law in prose;
+            // it can slip in bare § citations without markers there.
+            const followUpEnforced = enforceCitations(
+              followUpText,
+              followUpCitations,
+            );
+            if (followUpEnforced.violations.length > 0) {
+              console.warn(
+                `claude-proxy: citation enforcement (tool follow-up) ` +
+                  `stripped ${followUpEnforced.violations.length} bare ` +
+                  `cite(s): ${
+                    JSON.stringify(summariseViolations(followUpEnforced.violations))
+                  }`,
+              );
+              // Replace the text block in result.content so the synthetic
+              // SSE downstream sees the cleaned text. We rebuild content
+              // as a single text block (the only thing the client renders).
+              followUpResult.content = [
+                { type: "text", text: followUpEnforced.cleanedText },
+              ];
+            }
+
             // The client sent stream:true so it expects SSE, not JSON.
             // Wrap the follow-up result as synthetic SSE so the Flutter
             // SSE parser receives it correctly (message_start → text deltas
@@ -721,6 +1053,26 @@ serve(async (req) => {
       );
       const citations = verifyCitations(replyText, ragChunks);
 
+      // ── Fail-closed enforcement (2026-05-11) ──────────────────────────
+      // Same rationale as the planner branch above: bare paragraph
+      // citations without a `[[ref:ACT:PARA]]` marker are stripped before
+      // the reply ships. We rebuild `result.content` as a single text
+      // block when violations are found so the augmented response
+      // downstream (and any caller reading from .content) sees the
+      // cleaned text.
+      const enforced = enforceCitations(replyText, citations);
+      if (enforced.violations.length > 0) {
+        console.warn(
+          `claude-proxy: citation enforcement stripped ` +
+            `${enforced.violations.length} bare cite(s): ${
+              JSON.stringify(summariseViolations(enforced.violations))
+            }`,
+        );
+        result.content = [
+          { type: "text", text: enforced.cleanedText },
+        ];
+      }
+
       // ── Persistence (Pkg 2 closeout) ──────────────────────────────────
       // Opt-in via body.message_id (validated above as `persistMessageId`).
       // Required prereqs: (1) valid UUID, (2) authenticated user, (3) a
@@ -749,18 +1101,50 @@ serve(async (req) => {
       // with Flutter parser which expects the field). message_id echoed
       // back ONLY when persistence was opted in, so the client can wire
       // its chat_messages row to the same UUID.
+      //
+      // model_used metadata: emitted into BOTH the JSON body AND the
+      // X-Advocat-Model-Used response header so ops can grep for fallback
+      // activations and clients can route quality signals.
+      const claudeModelUsed = (body.model as string) ?? "claude-haiku-4-5-20251001";
       const augmented = persistMessageId !== null
-        ? { ...result, citations, message_id: persistMessageId }
-        : { ...result, citations };
+        ? {
+          ...result,
+          citations,
+          message_id: persistMessageId,
+          model_used: claudeModelUsed,
+        }
+        : { ...result, citations, model_used: claudeModelUsed };
       return new Response(JSON.stringify(augmented), {
         status: claudeResponse.status,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+          "X-Advocat-Model-Used": claudeModelUsed,
+        },
       });
     }
 
-    // Error path: map 429 / 529 to the friendly shape (see comment in
-    // streaming branch above). Other 4xx/5xx keep the legacy body so
-    // upstream callers (auth/quota/etc.) keep working unchanged.
+    // Error path: 429 / 5xx → route to Llama fallback. Other 4xx (400/401/
+    // 403/404/etc.) keep the legacy shape so upstream callers (auth/quota)
+    // keep working unchanged — Llama wouldn't fix a bad request.
+    if (shouldFallback(claudeResponse.status)) {
+      const reason = fallbackReasonFromStatus(claudeResponse.status);
+      console.warn(
+        `claude-proxy: Claude HTTP ${claudeResponse.status} (${reason}) — routing to Llama`,
+      );
+      await claudeResponse.body?.cancel().catch(() => {});
+      return await runLlamaFallbackForJson({
+        body,
+        reason,
+        ragChunks,
+        persistMessageId,
+        persistUserId,
+        persistCaseId,
+      });
+    }
+
+    // Map other 4xx (e.g. 400/401) to the friendly shape (see comment in
+    // streaming branch above).
     const errorText = await claudeResponse.text();
     const mapped = mapAnthropicError({
       status: claudeResponse.status,
@@ -794,6 +1178,232 @@ serve(async (req) => {
  * curl-bypassing the 7-msg cap, which is a strictly smaller blast radius
  * than killing chat for everyone during a partial outage.
  */
+
+// =============================================================================
+// Llama fallback helpers (2026-05-11)
+// =============================================================================
+
+/**
+ * Call Anthropic with a hard 30s timeout. Returns the raw Response on
+ * success (HTTP status may still be 4xx/5xx — caller classifies). Throws on
+ * network errors and AbortError (timeout); the caller catches and routes to
+ * Llama via runLlamaFallback{ForJson,ForStream}.
+ *
+ * 30s matches the Llama timeout — symmetric so a Claude tail-latency event
+ * doesn't double the user-visible delay (we abort Claude, then try Llama
+ * with its own 30s budget = worst case ~60s, acceptable for chat).
+ */
+async function fetchClaudeWithTimeout(body: unknown): Promise<Response> {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), LLAMA_TIMEOUT_MS);
+  try {
+    return await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: buildAnthropicHeaders(CLAUDE_API_KEY!),
+      body: JSON.stringify(body),
+      signal: ctrl.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+interface FallbackContext {
+  // deno-lint-ignore no-explicit-any
+  body: any;
+  reason: FallbackReason;
+  ragChunks: GroundingChunk[];
+  persistMessageId: string | null;
+  persistUserId: string | null;
+  persistCaseId: string | null;
+}
+
+/**
+ * Run the Llama fallback for a non-streaming request. Returns an Anthropic-
+ * shaped JSON response — same fields as a happy-path Claude reply, plus:
+ *   - `model_used: "llama-3.3-70b-fallback"` in the body
+ *   - `X-Advocat-Model-Used: llama-3.3-70b-fallback` response header
+ *   - bilingual disclosure prepended to the assistant text
+ *
+ * Citation verifier runs over the joined text just like the Claude path so
+ * any `[[ref:slug:para]]` markers Llama emits (it won't, typically) still
+ * get verified.
+ */
+async function runLlamaFallbackForJson(
+  ctx: FallbackContext,
+): Promise<Response> {
+  const messages = Array.isArray(ctx.body.messages) ? ctx.body.messages : [];
+  const maxTokens = typeof ctx.body.max_tokens === "number"
+    ? ctx.body.max_tokens
+    : 4096;
+
+  const result = await callLlamaFallback({
+    systemPrompt: ctx.body.system,
+    messages,
+    maxTokens,
+    reason: ctx.reason,
+  });
+
+  if (!result.ok || !result.response) {
+    // Llama also unavailable — return a generic 503 so the Flutter client
+    // shows the localized "service unavailable" toast. Do NOT pretend to
+    // succeed: that would silently swallow a real outage.
+    console.error(
+      `claude-proxy: Llama fallback also failed: ${result.error ?? "unknown"}`,
+    );
+    return new Response(
+      JSON.stringify({
+        error: "service_unavailable",
+        user_message_key: "ai_error_overload",
+        details: result.error ?? "Llama fallback failed",
+      }),
+      {
+        status: 503,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+          "X-Advocat-Model-Used": "none",
+        },
+      },
+    );
+  }
+
+  const llamaResponse: AnthropicShapedResponse = result.response;
+  const replyText = llamaResponse.content
+    .map((b) => b.text ?? "")
+    .join("");
+  const citations = verifyCitations(replyText, ctx.ragChunks);
+
+  if (
+    ctx.persistMessageId !== null &&
+    ctx.persistUserId !== null &&
+    ctx.persistCaseId !== null &&
+    citations.length > 0
+  ) {
+    const rows = buildCitationRows({
+      message_id: ctx.persistMessageId,
+      user_id: ctx.persistUserId,
+      case_id: ctx.persistCaseId,
+      citations,
+    });
+    await persistCitations(rows, {
+      supabaseUrl: SUPABASE_URL,
+      serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+    });
+  }
+
+  const augmented = {
+    ...llamaResponse,
+    citations,
+    model_used: LLAMA_MODEL_ID,
+    ...(ctx.persistMessageId !== null
+      ? { message_id: ctx.persistMessageId }
+      : {}),
+  };
+
+  return new Response(JSON.stringify(augmented), {
+    status: 200,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json",
+      "X-Advocat-Model-Used": LLAMA_MODEL_ID,
+    },
+  });
+}
+
+/**
+ * Run the Llama fallback for a streaming request. The Deepinfra call is
+ * non-streaming (simpler, same UX outcome since we synthesise SSE deltas);
+ * we wrap the result as synthetic SSE so the Flutter SSE parser keeps
+ * working unchanged. This is the same approach the tool-use branch uses
+ * for its follow-up response (see buildSseFromAnthropicResult).
+ */
+async function runLlamaFallbackForStream(
+  ctx: FallbackContext,
+): Promise<Response> {
+  const messages = Array.isArray(ctx.body.messages) ? ctx.body.messages : [];
+  const maxTokens = typeof ctx.body.max_tokens === "number"
+    ? ctx.body.max_tokens
+    : 4096;
+
+  const result = await callLlamaFallback({
+    systemPrompt: ctx.body.system,
+    messages,
+    maxTokens,
+    reason: ctx.reason,
+  });
+
+  if (!result.ok || !result.response) {
+    console.error(
+      `claude-proxy: Llama fallback also failed: ${result.error ?? "unknown"}`,
+    );
+    return new Response(
+      JSON.stringify({
+        error: "service_unavailable",
+        user_message_key: "ai_error_overload",
+        details: result.error ?? "Llama fallback failed",
+      }),
+      {
+        status: 503,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+          "X-Advocat-Model-Used": "none",
+        },
+      },
+    );
+  }
+
+  const llamaResponse: AnthropicShapedResponse = result.response;
+  const replyText = llamaResponse.content.map((b) => b.text ?? "").join("");
+  const citations = verifyCitations(replyText, ctx.ragChunks);
+
+  if (
+    ctx.persistMessageId !== null &&
+    ctx.persistUserId !== null &&
+    ctx.persistCaseId !== null &&
+    citations.length > 0
+  ) {
+    const rows = buildCitationRows({
+      message_id: ctx.persistMessageId,
+      user_id: ctx.persistUserId,
+      case_id: ctx.persistCaseId,
+      citations,
+    });
+    await persistCitations(rows, {
+      supabaseUrl: SUPABASE_URL,
+      serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+    });
+  }
+
+  const encoder = new TextEncoder();
+  // Cast: buildSseFromAnthropicResult takes a structural bag (with index
+  // signature). AnthropicShapedResponse is structurally compatible but TS
+  // does not widen a strict shape to an index-signature shape.
+  const sseInput = llamaResponse as unknown as {
+    content?: unknown;
+    usage?: unknown;
+    model?: unknown;
+    id?: unknown;
+    [key: string]: unknown;
+  };
+  const sseBody = buildSseFromAnthropicResult(
+    sseInput,
+    citations,
+    ctx.persistMessageId,
+    [],
+  );
+  return new Response(encoder.encode(sseBody), {
+    status: 200,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      "X-Advocat-Model-Used": LLAMA_MODEL_ID,
+    },
+  });
+}
+
 /**
  * Wrap a completed Anthropic non-streaming result as synthetic SSE so the
  * Flutter client (which sent stream:true) can parse it correctly.

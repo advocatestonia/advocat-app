@@ -1598,5 +1598,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Pārskatīt līgumu",
+    "contractReviews": "Līgumu pārbaudes",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 līguma pārbaude (mūža izmēģinājums)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 līgumu pārbaudes mēnesī",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 līgumu pārbaudes mēnesī",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Šomēnes palikušas {count} līgumu pārbaudes",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Šomēnes vairs nav līgumu pārbaužu",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Bezmaksas izmēģinājums: 1 līguma pārbaude",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Bezmaksas izmēģinājums izmantots — jaunini",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Līgumu pārbaudes izmantotas",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Tu izmantoji savu bezmaksas līguma pārbaudi. Jaunini, lai saņemtu ikmēneša pārbaudes.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Tu izmantoji {used} no {cap} pārbaudēm šomēnes. Jaunini augstākam mēneša limitam.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Jaunini uz Counsel (€19,99/mēn.) — 5 pārbaudes",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Jaunini uz Pro (€29,99/mēn.) — 20 pārbaudes",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Jaunini uz Pro — 20/mēn.",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Ne tagad",
+    "@notNow": {}
 }

@@ -1004,5 +1004,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Розібрати договір",
+    "contractReviews": "Перевірки договорів",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 перевірка договору (пробна назавжди)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 перевірок договорів на місяць",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 перевірок договорів на місяць",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Залишилось {count} перевірок договорів цього місяця",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Цього місяця перевірок договорів не залишилось",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Пробна версія: 1 перевірка договору",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Пробну версію використано — оновіть план",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Перевірки договорів вичерпано",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Ви використали безкоштовну перевірку договору. Оновіть план для щомісячних перевірок.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Ви використали {used} з {cap} перевірок цього місяця. Оновіть план для більшого ліміту.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Перейти на Counsel (€19,99/міс) — 5 перевірок",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Перейти на Pro (€29,99/міс) — 20 перевірок",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Перейти на Pro — 20/міс",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Не зараз",
+    "@notNow": {}
 }

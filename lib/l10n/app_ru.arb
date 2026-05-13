@@ -1288,5 +1288,51 @@
     "plannerTrailEvidenceGaps": "Пробелы в доказательствах",
     "plannerTrailMaterialGapTrue": "Обнаружен существенный пробел",
     "plannerTrailRegeneratedBadge": "Перегенерировано",
-    "plannerTrailEmpty": "пусто"
+    "plannerTrailEmpty": "пусто",
+    "reviewThisContract": "Разобрать контракт",
+    "contractReviews": "Проверка договоров",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 проверка договора (пожизненная пробная)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 проверок договоров в месяц",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 проверок договоров в месяц",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Осталось {count} проверок договоров в этом месяце",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "В этом месяце проверок договоров не осталось",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Пробная версия: 1 проверка договора",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Пробная версия использована — повысьте план",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Проверки договоров закончились",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Вы использовали бесплатную проверку договора. Повысьте план для ежемесячных проверок.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Вы использовали {used} из {cap} проверок в этом месяце. Повысьте план для большего лимита.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Перейти на Counsel (€19,99/мес) — 5 проверок",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Перейти на Pro (€29,99/мес) — 20 проверок",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Перейти на Pro — 20/мес",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Не сейчас",
+    "@notNow": {}
 }

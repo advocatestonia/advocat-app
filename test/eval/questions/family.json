@@ -1,0 +1,143 @@
+[
+  {
+    "id": "fam-001",
+    "category": "family",
+    "language": "et",
+    "question": "Tahan abielu lahutada. Abikaasaga oleme kokku leppinud, et lahkume rahulikult, lapsi pole. Mis on lihtsaim viis?",
+    "expected": {
+      "must_mention_laws": ["PKS", "PKTS"],
+      "must_include": [
+        "kahel viisil lahutuseks: perekonnaseisuasutuses (PKTS) kui ühine soov ja nõuded täidetud, või kohtus (PKS)",
+        "perekonnaseisuasutuses (vallavalitsus / linnavalitsus / notar): kui mõlemad abikaasad on ühisel meelel ja pole vaidlust",
+        "minimaalne 1-kuuline mõtlemisaeg perekonnaseisuasutuses (PKTS § 64 / abielu lõpetamise menetlus)",
+        "varaline kokkulepe — kui vara on ühine, peaks olema kirjalik kokkulepe",
+        "riigilõiv perekonnaseisuasutuses on tunduvalt madalam kui kohtus",
+        "soovitus: kui kahtlus vara üle, sõlmida lahutuseelne kokkulepe notari juures"
+      ],
+      "must_not_include": [
+        "väide et lahutus on Eestis võimalik ainult kohtus",
+        "ebatäpne mõtlemisaeg"
+      ],
+      "tone": "rahulik, juhendav",
+      "min_word_count": 120,
+      "max_word_count": 500
+    },
+    "difficulty": "easy",
+    "tags": ["divorce", "pkts", "amicable", "no-children"]
+  },
+  {
+    "id": "fam-002",
+    "category": "family",
+    "language": "et",
+    "question": "Lapse isa keeldub elatist maksmast. Lapsel 7 aastat, isa Eestis, ei tööta ametlikult. Kuidas elatist nõuda?",
+    "expected": {
+      "must_mention_laws": ["PKS", "TsMS"],
+      "must_include": [
+        "vanemate kohustus last ülal pidada (PKS § 96)",
+        "elatise miinimum on seotud Vabariigi Valitsuse poolt kehtestatud miinimumiga (PKS § 101 lg 1 — alates 2026 reformitud, miinimum sõltub vanemate sissetulekust)",
+        "elatisnõue esitatakse maakohtus (TsMS)",
+        "saab nõuda elatist tagasiulatuvalt kuni 1 aasta (PKS § 108)",
+        "riigilõivuvabastus elatisasjades (TsMS § 138)",
+        "kohtutäitur — täitemenetlus kui isa ei maksa otsuse järgi",
+        "Elatisabi Fond (Sotsiaalkindlustusamet) — riik maksab kuni 100 € kuus kui kohtutäitur ei saa kätte (Elatisabi seadus)",
+        "soovitus: tasuta õigusabi (Eesti Juristide Liit / riigi õigusabi kui sissetulek alla piiri)"
+      ],
+      "must_not_include": [
+        "lubadus konkreetses summas",
+        "väide et isa kohustus kaob kui ta ametlikult ei tööta"
+      ],
+      "tone": "praktiline, lapse huve esiplaanile seadev",
+      "min_word_count": 150,
+      "max_word_count": 650
+    },
+    "difficulty": "medium",
+    "tags": ["child-support", "elatis", "pks-101", "elatisabi"]
+  },
+  {
+    "id": "fam-003",
+    "category": "family",
+    "language": "et",
+    "question": "Lahutame mehega, lapsed on 4- ja 8-aastased. Mees tahab, et lapsed elaksid temaga. Mina tahan jagatud hooldust. Kuidas otsustatakse?",
+    "expected": {
+      "must_mention_laws": ["PKS"],
+      "must_include": [
+        "vanemate võrdsed õigused ja kohustused (PKS § 116)",
+        "lapse hooldusõigus — ühine hooldusõigus säilib vaikimisi lahutusel (PKS § 117)",
+        "elukoha määramine — kui vanemad ei kokku lepi, otsustab kohus lapse huvist lähtuvalt (PKS § 118)",
+        "kohus võtab arvesse: lapse seotus vanemaga, lapse vanus, vanemate olukord, lapse enda arvamus (vanusega kasvavalt)",
+        "lapse arvamuse kuulamine kohtus alates ca 10 a (PKS § 144 jt) — 4 ja 8 a puhul kohus võib kuulata, kuid arvestab tema küpsusega",
+        "võimalik: vahelduva elukoha mudel (jagatud hooldus) — nõuab vanemate koostöövõimet",
+        "lastekaitsetöötaja / kohaliku omavalitsuse arvamus kohtumenetluses",
+        "soovitus: perelepitus enne kohut (Sotsiaalkindlustusameti perelepitusteenus)"
+      ],
+      "must_not_include": [
+        "soolised stereotüübid (emale eelistus jne)",
+        "ennustus konkreetsest tulemusest"
+      ],
+      "tone": "tasakaalukas, lapse huvi keskne, empaatiline",
+      "min_word_count": 180,
+      "max_word_count": 700
+    },
+    "difficulty": "hard",
+    "tags": ["custody", "shared-parenting", "pks-117", "child-best-interest"]
+  },
+  {
+    "id": "fam-004",
+    "category": "family",
+    "language": "et",
+    "question": "Vanaema kannatab dementsuse all ja tema tütar kasutab tema panga arveldusvõimalust ära. Kuidas teda kaitsta?",
+    "expected": {
+      "must_mention_laws": ["TsÜS", "PKS"],
+      "must_include": [
+        "eestkoste seadmine täisealisele teovõime piirangu korral (TsÜS § 8, PKS §-d 203 jj)",
+        "eestkostja määramise pädevus kohtul — maakohus, hagita menetlus",
+        "kohus määrab eestkostja arvestades lähedasi ja isiku enda eelistust",
+        "ekspertiis (psühhiaater / psühholoog) tuvastamaks teovõime piiratus",
+        "ajutise eestkoste määramine kuni põhimenetluseni",
+        "panga blokeerimine / kahtlase tegevuse teavitus — pank võib peatada kahtlased tehingud",
+        "kriminaalne aspekt — KarS § 215 (omastamine) või KarS § 209 (kelmus) kui tütar omakasu eesmärgil kasutab vara",
+        "soovitus: lastekaitse asemel sotsiaalhoolekande / kohaliku omavalitsuse poole pöördumine + politseiavaldus rahatagajärgede puhul"
+      ],
+      "must_not_include": [
+        "soovitus tegutseda ilma kohtuta",
+        "väide et eestkostja saab vabalt arvele ligi ilma määramata"
+      ],
+      "tone": "tundlik, juhendav",
+      "min_word_count": 170,
+      "max_word_count": 700
+    },
+    "difficulty": "hard",
+    "tags": ["guardianship", "elderly-abuse", "dementia", "eestkoste", "kars-215"]
+  },
+  {
+    "id": "fam-005",
+    "category": "family",
+    "language": "et",
+    "question": "Mu mees on viimase aasta jooksul mind korduvalt löönud. Lapsed näevad seda. Tahan eralduda. Mida pean kõigepealt tegema?",
+    "expected": {
+      "must_mention_laws": ["KarS", "PKS", "LasteKS"],
+      "must_include": [
+        "ohutus ESMALT — politsei 112, ohuolukord enne mistahes õiguslikku sammu",
+        "Naiste Tugikeskus (1492 — tasuta 24/7) ja varjupaiga võimalused üle Eesti",
+        "lähenemiskeeld kohtu kaudu (TsMS § 544^1 / KarS § 331^1)",
+        "ajutine kiirelt rakendatav lähenemiskeeld ohu korral",
+        "kuriteoteade politseile — kehavigastuse tekitamine (KarS § 121 — kehaline väärkohtlemine)",
+        "lapse huvi kaalumine — laste tugikeskus, kohaliku omavalitsuse lastekaitse",
+        "lahutus + ühise eluaseme kasutamise küsimus (PKS § 144)",
+        "elatisnõue laste ja enda kasuks (PKS) + ohvriabi (Sotsiaalkindlustusamet)",
+        "ohvriabi seadus — psühholoogiline tugi, hüvitis kuni piirides",
+        "soovitus: dokumenteerida tõendid (foto vigastustest, kohtuekspertiis, tunnistajad)"
+      ],
+      "must_not_include": [
+        "soovitus 'rääkida läbi' vägivallatsejaga",
+        "minimeerivad fraasid",
+        "ainult juriidiline samm ilma ohutuse rõhutamiseta"
+      ],
+      "tone": "empaatiline ESMALT, seejärel selge tegevuskava — turvalisuse prioriteet",
+      "min_word_count": 200,
+      "max_word_count": 800
+    },
+    "difficulty": "hard",
+    "tags": ["domestic-violence", "restraining-order", "kars-121", "victim-support", "safety-first"]
+  }
+]

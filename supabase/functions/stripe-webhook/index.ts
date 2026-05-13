@@ -12,6 +12,11 @@ import {
   verifyProfileWrite,
   verifySubscriptionWrite,
 } from "./idempotency.ts";
+import {
+  decideQuotaReset,
+  resetContractReviewWindow,
+  type Tier,
+} from "./contract_review_period_reset.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
@@ -35,6 +40,48 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 // Stripe recommends rejecting events older than 5 minutes to block replays.
 const MAX_WEBHOOK_AGE_SEC = 300;
+
+/**
+ * Read the user's prior subscription tier from profiles so the
+ * Contract Review quota window can be reset on real tier changes.
+ * Returns "free" if the row is missing — that's the safe default and
+ * makes a brand-new checkout count as a real free→paid change.
+ */
+// deno-lint-ignore no-explicit-any
+async function readPriorTier(sb: any, userId: string): Promise<Tier> {
+  try {
+    const { data } = await sb
+      .from("profiles")
+      .select("subscription_tier")
+      .eq("id", userId)
+      .maybeSingle();
+    const t = data?.subscription_tier as string | undefined;
+    if (t === "basic" || t === "premium" || t === "free") return t;
+    return "free";
+  } catch (_) {
+    return "free";
+  }
+}
+
+/**
+ * Apply the Contract Review window reset side-effect when the tier really
+ * changes. Best-effort — failures are logged inside resetContractReviewWindow().
+ */
+// deno-lint-ignore no-explicit-any
+async function maybeResetContractReviewQuota(
+  sb: any,
+  userId: string,
+  prev: Tier,
+  next: Tier,
+): Promise<void> {
+  const action = decideQuotaReset(prev, next);
+  if (action.kind === "reset") {
+    await resetContractReviewWindow(sb, userId, new Date().toISOString());
+    console.log(
+      `[stripe-webhook] contract-review quota reset user=${userId} ${prev}->${next}`,
+    );
+  }
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -185,6 +232,11 @@ serve(async (req) => {
 
         resolvedUserId = userId;
 
+        // Capture the user's prior tier BEFORE the upsert overwrites it so
+        // we can decide whether to reset the Contract Review window. See
+        // contract_review_period_reset.ts for the policy.
+        const priorTierCheckout = await readPriorTier(supabase, userId);
+
         // Upsert — if the profile row doesn't exist yet (trigger gap), create
         // it. This eliminates the silent-failure class where a paying user
         // had no profile row and their Pro never activated.
@@ -228,6 +280,17 @@ serve(async (req) => {
           throw new Error(`subscriptions upsert failed: ${subUpErr.message}`);
         }
         await verifySubscriptionWrite(supabase, userId, { status: "active" });
+
+        // Reset the Contract Review 30-day window only when the tier
+        // actually changed (real upgrade or first-paid checkout). Renewals
+        // of the same tier are a no-op so we don't refresh the counter
+        // mid-cycle.
+        await maybeResetContractReviewQuota(
+          supabase,
+          userId,
+          priorTierCheckout,
+          tier as Tier,
+        );
 
         // Send our own confirmation email so customers always get one,
         // regardless of Stripe Dashboard "Customer emails" toggle.
@@ -300,6 +363,9 @@ serve(async (req) => {
           if (users && users.length > 0) {
             const userId = users[0].id;
             resolvedUserId = userId;
+            // Capture prior tier before the update so the Contract Review
+            // window only resets on a real tier change (not on renewal).
+            const priorTierExtend = await readPriorTier(supabase, userId);
             const { error: pErr } = await supabase.from("profiles").update({
               subscription_tier: action.tier,
               subscription_expires_at: action.expires_at,
@@ -324,6 +390,12 @@ serve(async (req) => {
               throw new Error(`subscriptions upsert (extend) failed: ${sErr.message}`);
             }
             await verifySubscriptionWrite(supabase, userId, { status: "active" });
+            await maybeResetContractReviewQuota(
+              supabase,
+              userId,
+              priorTierExtend,
+              action.tier as Tier,
+            );
             console.log(
               `subscription.updated: extended customer=${stripeCustomerId} ` +
                 `tier=${action.tier} until=${action.expires_at}`,
@@ -359,6 +431,7 @@ serve(async (req) => {
           if (users && users.length > 0) {
             const userId = users[0].id;
             resolvedUserId = userId;
+            const priorTierDowngrade = await readPriorTier(supabase, userId);
             const { error: pErr } = await supabase.from("profiles").update({
               subscription_tier: "free",
               subscription_expires_at: null,
@@ -376,6 +449,12 @@ serve(async (req) => {
               throw new Error(`subscriptions update (downgrade) failed: ${sErr.message}`);
             }
             await verifySubscriptionWrite(supabase, userId, { status: "canceled" });
+            await maybeResetContractReviewQuota(
+              supabase,
+              userId,
+              priorTierDowngrade,
+              "free",
+            );
             console.log(
               `subscription.updated: downgraded customer=${stripeCustomerId}`,
             );
@@ -403,6 +482,7 @@ serve(async (req) => {
         if (users && users.length > 0) {
           const userId = users[0].id;
           resolvedUserId = userId;
+          const priorTierDeleted = await readPriorTier(supabase, userId);
           const { error: pErr } = await supabase.from("profiles").update({
             subscription_tier: "free",
             subscription_expires_at: null,
@@ -420,6 +500,12 @@ serve(async (req) => {
             throw new Error(`subscriptions update (deleted) failed: ${sErr.message}`);
           }
           await verifySubscriptionWrite(supabase, userId, { status: "canceled" });
+          await maybeResetContractReviewQuota(
+            supabase,
+            userId,
+            priorTierDeleted,
+            "free",
+          );
 
           console.log(
             `subscription.deleted: customer=${stripeCustomerId}`,

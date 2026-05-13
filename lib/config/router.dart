@@ -64,6 +64,8 @@ import '../features/case_memory/state/case_deadline_providers.dart'
     as cm_deadline_providers;
 import '../features/case_memory/models/case_deadline.dart'
     as cm_deadline_model;
+// Sofia Gold Corpus admin (Phase A) — gated on GOLD_REVIEWER_IDS allowlist.
+import '../features/admin/gold_review_screen.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -109,6 +111,10 @@ abstract final class AppRoutes {
   static const String caseV2New = '/cases-v2/new';
   static const String caseV2Detail = '/cases-v2/:id';
   static const String caseV2Edit = '/cases-v2/:id/edit';
+
+  /// Sofia Gold Corpus review console. Auth-gated server-side; the route
+  /// itself is mounted unconditionally so reviewers can deep-link to it.
+  static const String adminGoldReview = '/admin/gold-review';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -408,6 +414,17 @@ final routerProvider = Provider<GoRouter>((ref) {
           final caseId = state.uri.queryParameters['caseId'];
           return CaseFileScreen(caseId: caseId);
         },
+      ),
+
+      // ── Sofia Gold Corpus review (Phase A) ─────────────────────────
+      // Client-side display: hidden unless the current user's id is in
+      // the GOLD_REVIEWER_IDS compile-time list. Server-side: the
+      // gold-review edge function enforces the same allowlist, so even
+      // a hand-crafted URL cannot bypass the gate.
+      GoRoute(
+        path: AppRoutes.adminGoldReview,
+        name: 'adminGoldReview',
+        builder: (context, state) => const GoldReviewScreen(),
       ),
 
       // ── 404 recovery redirects ─────────────────────────────────────

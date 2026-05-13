@@ -10,6 +10,7 @@ import 'config/theme.dart';
 import 'config/router.dart';
 import 'l10n/app_localizations.dart';
 import 'shared/error_boundary.dart';
+import 'widgets/support/support_fab.dart';
 
 /// Language data used across the app (onboarding, home, settings).
 class LanguageOption {
@@ -98,6 +99,22 @@ class AdvocatApp extends ConsumerWidget {
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       routerConfig: router,
+      // The global support FAB lives in a Stack overlay above every route.
+      // It is mounted via [MaterialApp.builder] so it survives navigation
+      // (rather than being attached per-screen). The FAB itself is small,
+      // dependency-light, and Material-localised — see widgets/support/.
+      builder: (context, child) {
+        return Stack(
+          children: [
+            if (child != null) child,
+            const Positioned(
+              right: 0,
+              bottom: 0,
+              child: SafeArea(child: SupportFab()),
+            ),
+          ],
+        );
+      },
     );
   }
 }

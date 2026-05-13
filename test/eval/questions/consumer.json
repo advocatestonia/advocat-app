@@ -1,0 +1,150 @@
+[
+  {
+    "id": "con-001",
+    "category": "consumer",
+    "language": "et",
+    "question": "Ostsin uue telefoni poest. Pool aastat hiljem ekraan hakkas vilkuma. Kauplus ütleb, et ma ise lõhkusin ja ei taga garantiid. Mida teha?",
+    "expected": {
+      "must_mention_laws": ["VÕS", "TKS"],
+      "must_include": [
+        "müüjavastutus puuduste eest 2 aastat (VÕS § 218 lg 2)",
+        "esimese 1 aasta jooksul eeldatakse, et puudus oli olemas üleandmise hetkel — TÕENDAMISKOORMUS MÜÜJAL (VÕS § 218 lg 2 — pööratud tõendamiskoormus 1 aasta)",
+        "tarbijakaitseseaduse (TKS) reeglid lisaks",
+        "tarbijal õigus nõuda: parandamist, asendamist, hinnaalandust või lepingu lõpetamist (VÕS § 222)",
+        "samm 1: kirjalik reklamatsioon müüjale + lepingu lõpetamise / asendamise nõue",
+        "samm 2: Tarbijavaidluste komisjon (TVK, Tarbijakaitse ja Tehnilise Järelevalve Amet) — tasuta, otsus siduv",
+        "samm 3: maakohus kui TVK otsust ei täideta",
+        "soovitus: säilitada ostutšekk, fotograafia, suhtluse logi",
+        "müüja väide 'ise lõhkusid' — peab TÕENDAMA, mitte lihtsalt väitma"
+      ],
+      "must_not_include": [
+        "väide et garantii on ainult 6 kuud",
+        "soovitus loobuda",
+        "väide et tõendamiskoormus on tarbijal"
+      ],
+      "tone": "tarbija õigusi rõhutav, julgustav",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "medium",
+    "tags": ["warranty", "vos-218", "burden-of-proof", "tarbijakaitse", "tvk"]
+  },
+  {
+    "id": "con-002",
+    "category": "consumer",
+    "language": "et",
+    "question": "Tellisin internetist mööbli, sai üleantud, kuid kvaliteet on jube. Tahan tagastada. Kas saan?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "sidevahendi abil sõlmitud lepingu (kaugmüügi) taganemisõigus (VÕS § 56)",
+        "TARBIJAL õigus lepingust taganeda 14 päeva jooksul ALATES kauba kättesaamisest (VÕS § 56 lg 1)",
+        "põhjust ei pea esitama — 14 päeva 'jahtumisaeg'",
+        "müüja peab raha tagastama 14 päeva jooksul taganemisteate saamisest (VÕS § 56^2)",
+        "tagastamiskulud — üldjuhul tarbija kannab, KUI müüja eelnevalt teavitas (vastasel juhul müüja)",
+        "kohandatud / individualiseeritud kauba puhul taganemisõigust ei ole (VÕS § 56 lg 4)",
+        "kui lisaks on kvaliteediprobleem — VÕS § 218 puuduste reeglid kohalduvad samuti",
+        "samm 1: kirjalik taganemisavaldus 14 päeva jooksul",
+        "samm 2: kui müüja keeldub — Tarbijavaidluste komisjon"
+      ],
+      "must_not_include": [
+        "väide et internetist tellitud asju ei saa tagastada",
+        "vale tähtaeg",
+        "väär väide et tarbija peab põhjenduse esitama"
+      ],
+      "tone": "praktiline, sõbralik",
+      "min_word_count": 130,
+      "max_word_count": 550
+    },
+    "difficulty": "easy",
+    "tags": ["distance-sales", "vos-56", "14-day-return", "online-shopping"]
+  },
+  {
+    "id": "con-003",
+    "category": "consumer",
+    "language": "et",
+    "question": "Reisifirma tühistas mu paketreisi 3 päeva enne väljumist põhjusel 'lend tühistati'. Tahavad pakkuda kupong, mitte raha. Mida nõuda?",
+    "expected": {
+      "must_mention_laws": ["TPS", "TKS"],
+      "must_include": [
+        "turismiseadus (TPS) reguleerib pakettreise",
+        "reisikorraldaja tühistamisel — tarbijal ÕIGUS NÕUDA RAHA TAGASI 14 päeva jooksul (TPS § 27 / § 32)",
+        "kupong on ainult vabatahtlik valik, mitte kohustuslik tarbijale",
+        "lisaks rahale võib olla õigus hüvitisele (ebamugavus, kahju), välja arvatud erakorralised asjaolud (force majeure)",
+        "lennu tühistamine ei ole ALATI erakorraline asjaolu — sõltub konkreetsest põhjusest",
+        "lennureisijate õigused — määrus (EÜ) nr 261/2004 (kompensatsioon 250-600 €, sõltuvalt lennu pikkusest)",
+        "samm 1: kirjalik nõue reisifirmale + tähtaeg (14 päeva)",
+        "samm 2: Tarbijavaidluste komisjon või TKTJA",
+        "kindlustus — kui reisikindlustus, esitada nõue ka kindlustusandjale"
+      ],
+      "must_not_include": [
+        "väide et kupong on ainus võimalus",
+        "väär väide et lennu tühistamine on alati force majeure"
+      ],
+      "tone": "kindel, tarbija õigusi rõhutav",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "medium",
+    "tags": ["package-travel", "tps", "ec-261-2004", "refund", "cancellation"]
+  },
+  {
+    "id": "con-004",
+    "category": "consumer",
+    "language": "et",
+    "question": "Pank võttis mu kontolt 50 € kuus 'haldustasu', millest ei olnud minuga kokku lepitud. See on toimunud 8 kuud. Kas saan raha tagasi?",
+    "expected": {
+      "must_mention_laws": ["VÕS", "MERAS"],
+      "must_include": [
+        "panga teenuste tingimused peavad olema selged ja eelnevalt kooskõlastatud",
+        "ühepoolne tingimuste muutmine — tarbijale tüüptingimuste osas piirangud (VÕS § 42, § 44)",
+        "ebamõistlikult kahjustavad tüüptingimused on tühised (VÕS § 42 lg 3)",
+        "panga teavituskohustus muudatustest piisav ette (üldjuhul 2 kuud)",
+        "kui tarbija pole nõustunud — õigus leping üles öelda ilma tagajärgedeta",
+        "alusetult saadud raha tagastamise nõue (VÕS § 1027)",
+        "samm 1: kirjalik nõue pangale tasude tagastamiseks",
+        "samm 2: Finantsinspektsioonile kaebus (krediidiasutused) või Tarbijavaidluste komisjon",
+        "Finantsinspektsiooni vahendamine ja krediidiasutuste seadus",
+        "soovitus: koguda lepingu tekst + tariifimuudatuste teavitused"
+      ],
+      "must_not_include": [
+        "väide et pank võib kõiki tingimusi vabalt muuta",
+        "soovitus mitte vaielda"
+      ],
+      "tone": "kindel, tehniline kuid arusaadav",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "medium",
+    "tags": ["bank-fees", "unfair-terms", "vos-42", "fi", "finantsinspektsioon"]
+  },
+  {
+    "id": "con-005",
+    "category": "consumer",
+    "language": "et",
+    "question": "Allkirjastasin spordiklubi lepingu kohapeal müüja survel. Kodus mõtlesin järele — see on 2-aastane leping 70 €/kuus. Tahan tühistada. Kas saan?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "väljaspool äriruume sõlmitud lepingu (kodumüük / tänavamüük) — TAGANEMISÕIGUS (VÕS § 47 / § 56)",
+        "kuid SPORDIKLUBI lepinguid kohapeal sõlmides ei pruugi automaatselt mahtuda 'väljaspool äriruume' alla — sõltub konkreetsest sõlmimise kohast",
+        "üldine olukord: tarbijale 14 päeva taganemisõigus väljaspool äriruume sõlmitud lepingutele",
+        "müüja eksitamine / tüüptingimused — kontrollida lepingu sõlmimise tingimusi",
+        "ebaõiglased lepingutingimused (VÕS § 42) — pikkade lepingute puhul vaielda kui ebamõistlikult kahjustav",
+        "samm 1: kirjalik taganemis- või tühistamisavaldus 14 päeva jooksul",
+        "samm 2: kui klubi keeldub — Tarbijavaidluste komisjon",
+        "kui taganemisõigust ei kohaldu — lepingu lõpetamise tingimuste analüüs (etteteatamisaeg)",
+        "soovitus: kontrollida lepingu teksti 'taganemisõigus' / 'lepingust loobumine' punkte"
+      ],
+      "must_not_include": [
+        "väide et alllkiri annab automaatselt kohustuse 2 aastaks ilma teisi võimalusi",
+        "garantii et tarbija saab loobuda"
+      ],
+      "tone": "tarbija huve kaitsev, kuid realistlik (ei luba garanteeritud edu)",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "medium",
+    "tags": ["off-premises", "vos-47", "gym-contract", "withdrawal", "unfair-terms"]
+  }
+]

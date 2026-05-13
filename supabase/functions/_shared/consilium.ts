@@ -5,26 +5,42 @@
 //   • Deno tests for the consilium contract
 //
 // What it does:
-//   Runs 4 specialised legal-AI roles in PARALLEL (Promise.all), then
+//   Runs N specialised legal-AI roles in PARALLEL (Promise.all), then
 //   streams a Sonnet-synthesised answer via an onEvent callback. The caller
 //   converts onEvent calls into SSE frames and pipes them to the HTTP response.
 //
-// Roles (all non-blocking, parallel):
-//   • Процессуалист   — procedural questions, deadlines, jurisdiction, form
-//   • Материальный юрист — substantive law, EU directives, [[ref:slug:para]] markers
-//   • Тактик          — step-by-step tactics, what to say / not say
-//   • Risk Auditor    — weak spots and omissions only; no duplication
+// Role architecture (v2.2 — two-layer):
+//   Layer 1 — DomainExpert (statute-anchored):
+//     immigration-fi, criminal-fi, criminal-ee, contract-ee, contract-de,
+//     employment-ee, employment-fi, gdpr-eu, tax-ee, family-ee, consumer-eu
+//   Layer 2 — StrategicPosition (reasoning patterns):
+//     decision-maker-risk, procedural-posture, silent-concession, long-game,
+//     23-test, deadline-strategist
+//
+// The router selectConsiliumRoles(caseContext) picks 2-3 domain + 2-3 strategic
+// (4-6 total). If no domain expert applies, the runner falls back to the
+// legacy 6 generic roles (kept below) so existing callers don't break.
 //
 // Routing: shouldRunConsilium() uses Haiku to classify the user message.
 // The caller should invoke it BEFORE deciding to call runConsilium().
 //
 // SSE event sequence (emitted via onEvent):
-//   consilium_start → role_done × 4 (order depends on completion) →
+//   consilium_start → role_done × N (order depends on completion) →
 //   synthesis_start → delta × N → done
 //
 // Error handling: per-role try/catch; a failed role passes "[роль недоступна]"
 // to synthesis. runConsilium() itself NEVER throws.
 // -----------------------------------------------------------------------------
+
+import {
+  type CaseContext,
+  type CompiledRole,
+  compileRoles,
+  DenoMemoryReader,
+  type MemoryReader,
+  resolveDefaultMemoryDir,
+  selectConsiliumRoles,
+} from "./consilium_roles/index.ts";
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 
@@ -47,7 +63,25 @@ interface ConsiliumRole {
   name: string;
   model: string;
   maxTokens: number;
+  /** Role focus / specialised body. For legacy roles this is a 1-2 sentence
+   *  focus line. For v2.2 compiled roles this is the full pre-built prompt
+   *  body (statute shortlist + pitfalls + memory + reasoning pattern). The
+   *  runner concatenates this to the base lawyer persona. */
   focus: string;
+  /** True for roles compiled from the v2.2 router. Suppresses the legacy
+   *  "Ты выступаешь в роли: …" preamble that's redundant for the new style. */
+  isCompiled?: boolean;
+}
+
+/** Adapter from the v2.2 CompiledRole shape to the runner's ConsiliumRole. */
+function compiledToConsiliumRole(c: CompiledRole): ConsiliumRole {
+  return {
+    name: c.name,
+    model: c.model,
+    maxTokens: c.maxTokens,
+    focus: c.systemBody,
+    isCompiled: true,
+  };
 }
 
 const ROLES: ReadonlyArray<ConsiliumRole> = [
@@ -279,12 +313,23 @@ async function runRole(
     contextParts.push(`\n\n<law_context>\n${ragContext}\n</law_context>`);
   }
 
-  contextParts.push(
-    `\n\n${CALIBRATION_BLOCK}\n\n` +
-    `Ты выступаешь в роли: ${role.name}.\nТвоя задача: ${role.focus}\n` +
-      `Максимальная длина ответа: ${role.maxTokens} токенов. ` +
-      `Будь конкретен, лаконичен. Отвечай строго в рамках своей роли.`,
-  );
+  if (role.isCompiled) {
+    // v2.2 compiled roles ship a self-contained body that already includes
+    // statute shortlist, pitfalls, memory, and reasoning pattern. Append the
+    // calibration block + token cap reminder.
+    contextParts.push(
+      `\n\n${CALIBRATION_BLOCK}\n\n${role.focus}\n\n` +
+        `Максимальная длина ответа: ${role.maxTokens} токенов. ` +
+        `Будь конкретен, лаконичен. Отвечай строго в рамках своей роли.`,
+    );
+  } else {
+    contextParts.push(
+      `\n\n${CALIBRATION_BLOCK}\n\n` +
+      `Ты выступаешь в роли: ${role.name}.\nТвоя задача: ${role.focus}\n` +
+        `Максимальная длина ответа: ${role.maxTokens} токенов. ` +
+        `Будь конкретен, лаконичен. Отвечай строго в рамках своей роли.`,
+    );
+  }
 
   const system = contextParts.join("");
 
@@ -374,17 +419,23 @@ export async function shouldRunConsilium(
   }
 }
 
-/** Run the full 4-role consilium and stream synthesis via onEvent.
+/** Run the full N-role consilium and stream synthesis via onEvent.
  *  NEVER throws — all errors are caught internally.
  *
- * @param params.userMessage      The user's legal question.
- * @param params.systemPrompt     Base system prompt (the capable lawyer persona).
- * @param params.ragContext       Law chunks injected from law-search.
- * @param params.caseContext      Active case memory (Pkg 1).
- * @param params.anthropicApiKey  API key for Anthropic.
- * @param params.onEvent          Callback for each SSE event; called synchronously
- *                                in the order: consilium_start, role_done × 4,
- *                                synthesis_start, delta × N, done.
+ * v2.2 behaviour:
+ *   • If `caseClassification` is provided AND the router finds at least one
+ *     applicable DomainExpert, the new 4-6 role roster is used.
+ *   • Otherwise the legacy 6 generic roles run (full backward compat).
+ *
+ * @param params.userMessage         The user's legal question.
+ * @param params.systemPrompt        Base system prompt (the capable lawyer persona).
+ * @param params.ragContext          Law chunks injected from law-search.
+ * @param params.caseContext         Active case memory text (Pkg 1).
+ * @param params.anthropicApiKey     API key for Anthropic.
+ * @param params.onEvent             Callback for each SSE event.
+ * @param params.caseClassification  Optional structured case context for the
+ *                                   v2.2 router (case type, jurisdiction, …).
+ * @param params.memoryReader        Optional custom memory reader (tests).
  * @returns Full synthesis text (same text emitted via delta events).
  */
 export async function runConsilium(params: {
@@ -394,6 +445,8 @@ export async function runConsilium(params: {
   caseContext: string;
   anthropicApiKey: string;
   onEvent: (event: ConsiliumSSEEvent) => void;
+  caseClassification?: CaseContext;
+  memoryReader?: MemoryReader;
 }): Promise<string> {
   const {
     userMessage,
@@ -402,21 +455,49 @@ export async function runConsilium(params: {
     caseContext,
     anthropicApiKey,
     onEvent,
+    caseClassification,
+    memoryReader,
   } = params;
 
-  // ── 1. Announce start ───────────────────────────────────────────────────
+  // ── 1. Decide which role roster to run ──────────────────────────────────
+  // Try the v2.2 router first; on any failure fall back to legacy roster.
+  let activeRoles: ConsiliumRole[] = [...ROLES];
+  let usedV22Router = false;
+
+  if (caseClassification) {
+    try {
+      const selection = selectConsiliumRoles(caseClassification);
+      if (selection.hasDomainMatch) {
+        const reader = memoryReader ?? new DenoMemoryReader(resolveDefaultMemoryDir());
+        const compiled = await compileRoles({
+          selection,
+          ctx: caseClassification,
+          memoryReader: reader,
+        });
+        activeRoles = compiled.map(compiledToConsiliumRole);
+        usedV22Router = true;
+      }
+    } catch (e) {
+      console.warn(
+        `consilium: v2.2 router failed, falling back to legacy: ${String(e).slice(0, 200)}`,
+      );
+      activeRoles = [...ROLES];
+    }
+  }
+
+  // ── 2. Announce start ───────────────────────────────────────────────────
   onEvent({
     type: "consilium_start",
-    roles: ROLES.map((r) => r.name),
+    roles: activeRoles.map((r) => r.name),
   });
 
-  // ── 2. Run all 4 roles in parallel ──────────────────────────────────────
+  // ── 3. Run all roles in parallel ────────────────────────────────────────
   // Each role resolves independently; Promise.all() waits for all before
   // synthesis. Failures are caught INSIDE runRole — they return the sentinel.
   //
   // We want to emit role_done as each role completes, not in fixed order,
   // so we wrap each promise to call onEvent immediately on settle.
-  const rolePromises = ROLES.map((role) => {
+  const rolePromises = activeRoles.map((role) => {
     const p = runRole(
       role,
       userMessage,
@@ -442,8 +523,9 @@ export async function runConsilium(params: {
     console.error(
       `consilium: unexpected error in Promise.all: ${String(e).slice(0, 200)}`,
     );
-    opinions = ROLES.map((r) => ({ name: r.name, opinion: "[роль недоступна]" }));
+    opinions = activeRoles.map((r) => ({ name: r.name, opinion: "[роль недоступна]" }));
   }
+  void usedV22Router; // reserved for future telemetry
 
   // ── 3. Synthesise — streaming ────────────────────────────────────────────
   onEvent({ type: "synthesis_start" });
@@ -571,3 +653,20 @@ export async function runConsilium(params: {
 
   return fullSynthesis;
 }
+
+// ─── v2.2 re-exports for callers that prefer a single import surface ─────────
+
+export {
+  type CaseContext,
+  type CompiledRole,
+  compileRoles,
+  DenoMemoryReader,
+  DOMAIN_EXPERTS,
+  getDomainExpert,
+  getStrategicPosition,
+  type MemoryReader,
+  type RoleSelection,
+  selectConsiliumRoles,
+  STRATEGIC_POSITIONS,
+  StubMemoryReader,
+} from "./consilium_roles/index.ts";

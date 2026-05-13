@@ -1598,5 +1598,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Przeanalizuj umowę",
+    "contractReviews": "Przeglądy umów",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 przegląd umowy (próba dożywotnia)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 przeglądów umów miesięcznie",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 przeglądów umów miesięcznie",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Pozostało {count} przeglądów umów w tym miesiącu",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Brak pozostałych przeglądów umów w tym miesiącu",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Darmowa próba: 1 przegląd umowy",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Darmowa próba wykorzystana — zaktualizuj",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Przeglądy umów wyczerpane",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Wykorzystałeś darmowy przegląd umowy. Zaktualizuj, aby uzyskać miesięczne przeglądy.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Wykorzystałeś {used} z {cap} przeglądów w tym miesiącu. Zaktualizuj, aby uzyskać wyższy miesięczny limit.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Przejdź na Counsel (€19,99/mies.) — 5 przeglądów",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Przejdź na Pro (€29,99/mies.) — 20 przeglądów",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Przejdź na Pro — 20/mies.",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Nie teraz",
+    "@notNow": {}
 }

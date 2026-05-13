@@ -1598,5 +1598,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Granska kontraktet",
+    "contractReviews": "Avtalsgranskningar",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 avtalsgranskning (provning för livstid)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 avtalsgranskningar per månad",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 avtalsgranskningar per månad",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} avtalsgranskningar kvar denna månad",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Inga avtalsgranskningar kvar denna månad",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Gratis provning: 1 avtalsgranskning",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Gratis provning använd — uppgradera",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Avtalsgranskningar slut",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Du har använt din gratis avtalsgranskning. Uppgradera för månatliga granskningar.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Du har använt {used} av {cap} granskningar denna månad. Uppgradera för en högre månadsgräns.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Uppgradera till Counsel (€19,99/mån) — 5 granskningar",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Uppgradera till Pro (€29,99/mån) — 20 granskningar",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Uppgradera till Pro — 20/mån",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Inte nu",
+    "@notNow": {}
 }

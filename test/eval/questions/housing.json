@@ -1,0 +1,136 @@
+[
+  {
+    "id": "hou-001",
+    "category": "housing",
+    "language": "et",
+    "question": "Üürileandja tahab mind välja tõsta, sest tema poeg tuleb Eestisse tagasi ja vajab korterit. Üürileping on tähtajatu, elan siin 5 aastat. Kas ta võib seda teha?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "tähtajatu üürilepingu ülesütlemine VÕS § 312 alusel — vajadus kasutada eluruumi enda või lähedase tarbeks",
+        "etteteatamise tähtaeg vähemalt 3 kuud (VÕS § 312 lg 1)",
+        "ülesütlemisavaldus peab olema kirjalikku taasesitamist võimaldavas vormis",
+        "põhjus tuleb avalduses täpselt esitada",
+        "üürniku õigus vaidlustada — kohus / üürikomisjon (Tallinnas, Tartus)",
+        "soovitus: nõuda kirjalikult dokumendid + säilitada kõik",
+        "kui ülesütlemine on ebaõige — võimalik kahju hüvitamise nõue"
+      ],
+      "must_not_include": [
+        "väide et üürileandja võib igal hetkel välja tõsta",
+        "soovitus jätta kohale ilma menetluseta"
+      ],
+      "tone": "selgitav, üürniku huve kaitsev, mitte paanikatekitav",
+      "min_word_count": 130,
+      "max_word_count": 550
+    },
+    "difficulty": "medium",
+    "tags": ["eviction", "vos-312", "own-use", "indefinite-lease"]
+  },
+  {
+    "id": "hou-002",
+    "category": "housing",
+    "language": "et",
+    "question": "Üürileandja tahab tagatisraha (1500 €) endale jätta, kuigi korter on heas korras. Üürilepingus on punkt et tagatisraha tagastatakse 'omaniku otsusel'. Mida teha?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "tagatisraha eesmärk: katta üürniku rikutud kohustused (VÕS § 308)",
+        "tagatisraha tuleb tagastada pärast üürilepingu lõppu kui pole nõuet (VÕS § 308 lg 3)",
+        "tagatisraha hoitakse eraldi kontol",
+        "lepingupunkt 'omaniku otsusel' on tüüptingimusena ebamõistlik / tühine (VÕS § 42)",
+        "üürileandja peab tõendama kahju olemasolu ja suurust",
+        "samm 1: nõude saatmine kirjalikult, tähtaja andmine",
+        "samm 2: kohus (kuni 6400 € lihtmenetlus) või Tarbijavaidluste komisjon kui tarbija"
+      ],
+      "must_not_include": [
+        "väide et leping on alati pööramatu",
+        "soovitus pelgalt loobuda rahast"
+      ],
+      "tone": "praktiline, üürniku õigusi rõhutav",
+      "min_word_count": 130,
+      "max_word_count": 550
+    },
+    "difficulty": "medium",
+    "tags": ["deposit", "vos-308", "unfair-terms", "small-claims"]
+  },
+  {
+    "id": "hou-003",
+    "category": "housing",
+    "language": "et",
+    "question": "Korteriühistu nõuab minult 3000 € võlga remondifondi maksete eest. Ostsin korteri 1 aasta tagasi ja võlg kogunes eelmise omaniku ajal. Kas pean maksma?",
+    "expected": {
+      "must_mention_laws": ["KrtS", "VÕS"],
+      "must_include": [
+        "korteriomandi- ja korteriühistuseadus (KrtS)",
+        "uus omanik vastutab kõikide korteriomandiga seotud kohustuste eest, mis seotud asjaga (KrtS § 40 lg 3) — sealhulgas teatud osakaalu eelmise omaniku võlgadest",
+        "müüja teavituskohustus võlgadest (VÕS / müügileping)",
+        "regressinõue eelmise omaniku vastu kui müüja varjas võlga",
+        "soovitus: kontrollida müügilepingut + KÜ otsuste protokolle ostueelsest perioodist",
+        "valikud: maksta + esitada regressinõue, või vaielda korteriühistuga kohtus kui kogunemise alus ebaselge"
+      ],
+      "must_not_include": [
+        "kategooriline väide et uus omanik ei vastuta üldse",
+        "soovitus eirata KÜ nõuet"
+      ],
+      "tone": "tehnilisem, kuid arusaadav",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "hard",
+    "tags": ["condominium", "krts", "debt-inheritance", "new-owner"]
+  },
+  {
+    "id": "hou-004",
+    "category": "housing",
+    "language": "et",
+    "question": "Üürileandja tahab tõsta üüri 30% ühe kuu jooksul. Kas tal on selleks õigus?",
+    "expected": {
+      "must_mention_laws": ["VÕS"],
+      "must_include": [
+        "üüri tõstmine ainult tähtajatu lepingu puhul ja seaduses sätestatud korras",
+        "üürniku eelnev teavitus vähemalt 30 päeva (VÕS § 299)",
+        "üüri tõstmine peab olema põhjendatud — tavapärane turuhind, hinnaindeks, halduskulud",
+        "ebamõistlikult kõrge tõus on vaidlustatav (VÕS § 296 — ebamõistlikult kõrge üür)",
+        "üürikomisjon (Tallinnas/Tartus) või kohus",
+        "tähtajalise lepingu puhul üüri ei saa lepinguperioodi sees tõsta"
+      ],
+      "must_not_include": [
+        "väide et igasugune tõus on automaatselt seaduslik",
+        "ebatäpne tähtaeg"
+      ],
+      "tone": "informatiivne, üürniku huve kaitsev",
+      "min_word_count": 110,
+      "max_word_count": 500
+    },
+    "difficulty": "medium",
+    "tags": ["rent-increase", "vos-299", "unreasonable-rent", "notice"]
+  },
+  {
+    "id": "hou-005",
+    "category": "housing",
+    "language": "et",
+    "question": "Naabri ülemine korter lekib ja vesi rikkus mu lae ja mööbli. Kahju u 4000 €. Naaber keeldub maksmast. Mida teha?",
+    "expected": {
+      "must_mention_laws": ["VÕS", "KrtS"],
+      "must_include": [
+        "deliktivastutus — VÕS § 1043 (üldine kahju hüvitamise alus)",
+        "naabri vastutus kui kahju tekkis tema valduses oleva vara seisukorra tõttu (VÕS § 1058)",
+        "ka KÜ vastutus võib tekkida ühisvara osa lekkimisel",
+        "samm 1: fotod, akt, üürileandja/KÜ teavitamine",
+        "samm 2: kindlustusandja kontaktimine (oma kodukindlustus + naabri kindlustus)",
+        "samm 3: kirjalik kahjunõue naabrile + 14-30 päeva tähtaeg",
+        "samm 4: kohtuasi (lihtmenetlus kuni 6400 €) või tarbijavaidlused ei kohaldu",
+        "aegumistähtaeg 3 aastat (VÕS § 150)"
+      ],
+      "must_not_include": [
+        "soovitus mitte midagi teha",
+        "väär aegumistähtaeg"
+      ],
+      "tone": "praktiline, samm-sammult",
+      "min_word_count": 150,
+      "max_word_count": 600
+    },
+    "difficulty": "medium",
+    "tags": ["water-damage", "tort", "vos-1043", "neighbor"]
+  }
+]

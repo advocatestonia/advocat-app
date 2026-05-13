@@ -997,5 +997,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Esamina questo contratto",
+    "contractReviews": "Revisioni contrattuali",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 revisione contrattuale (prova a vita)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 revisioni contrattuali al mese",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 revisioni contrattuali al mese",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "{count} revisioni contrattuali rimaste questo mese",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Nessuna revisione contrattuale rimasta questo mese",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Prova gratuita: 1 revisione contrattuale",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Prova gratuita usata — aggiorna",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Revisioni contrattuali esaurite",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Hai usato la tua revisione contrattuale gratuita. Aggiorna per revisioni mensili.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Hai usato {used} di {cap} revisioni questo mese. Aggiorna per un limite mensile più alto.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Passa a Counsel (€19,99/mese) — 5 revisioni",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Passa a Pro (€29,99/mese) — 20 revisioni",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Passa a Pro — 20/mese",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Non ora",
+    "@notNow": {}
 }

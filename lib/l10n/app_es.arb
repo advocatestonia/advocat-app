@@ -997,5 +997,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Revisar este contrato",
+    "contractReviews": "Revisiones de contrato",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 revisión de contrato (prueba de por vida)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "5 revisiones de contrato al mes",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "20 revisiones de contrato al mes",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Quedan {count} revisiones de contrato este mes",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "No quedan revisiones de contrato este mes",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Prueba gratuita: 1 revisión de contrato",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Prueba gratuita usada — actualiza",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Revisiones de contrato agotadas",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Has usado tu revisión de contrato gratuita. Actualiza para revisiones mensuales.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Has usado {used} de {cap} revisiones este mes. Actualiza para un límite mensual mayor.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Actualiza a Counsel (€19,99/mes) — 5 revisiones",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Actualiza a Pro (€29,99/mes) — 20 revisiones",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Actualiza a Pro — 20/mes",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Ahora no",
+    "@notNow": {}
 }

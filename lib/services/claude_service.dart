@@ -332,13 +332,94 @@ class ClaudeService {
     required String lang,
     int matchCount = LawSearchClient.defaultMatchCount,
     double similarityThreshold = LawSearchClient.defaultSimilarityThreshold,
+    String? queryJurisdiction,
   }) async {
     return LawSearchClient.search(
       query: query,
       lang: lang,
       matchCount: matchCount,
       similarityThreshold: similarityThreshold,
+      queryJurisdiction: queryJurisdiction,
     );
+  }
+
+  /// Decide which `query_jurisdiction` value to pass to `law-search` for a
+  /// given turn. Returns one of:
+  ///   • `'FI'`   — user is in Finland OR query language is Finnish OR
+  ///                the message text carries Finnish-jurisdiction signals.
+  ///   • `'EE'`   — user is in Estonia OR query language is Estonian (and
+  ///                there is no Finnish signal).
+  ///   • `null`   — fallthrough: search every jurisdiction (the law-search
+  ///                RPC default; EE + FI + EU + ... all considered).
+  ///
+  /// Phase 2 Pkg 1 (Finland corpus, 2026-05-11). The routing layer is
+  /// intentionally permissive: when in doubt, we return `null` so the
+  /// retrieval is multi-jurisdiction and the model picks the right corpus
+  /// based on the rest of the prompt. This avoids the wrong-jurisdiction
+  /// failure mode (Estonian user gets Finnish law) at the cost of slightly
+  /// noisier retrieval for users with ambiguous signals.
+  ///
+  /// Inputs:
+  ///   • [userCountry]    ISO 3166-1 alpha-2 (FI, EE, ...) from the user
+  ///                      profile, when available.
+  ///   • [caseCountry]    Optional override from the active case (a Finnish
+  ///                      user with an Estonian case should get EE; a
+  ///                      Estonian user with a Finnish case gets FI).
+  ///   • [userLanguage]   ISO 639-1 (fi, et, ru, ...).
+  ///   • [messageText]    Last user message. Cheap Finnish-script + keyword
+  ///                      detector triggers FI when the user starts asking
+  ///                      about a Finnish authority even if profile=EE.
+  ///
+  /// Precedence (highest first):
+  ///   1. caseCountry (the active case wins over user profile)
+  ///   2. messageText Finnish signals (lets a profile-EE user pivot mid-chat)
+  ///   3. userCountry
+  ///   4. userLanguage
+  ///   5. null (multi-jurisdiction default)
+  static String? chooseQueryJurisdiction({
+    String? userCountry,
+    String? caseCountry,
+    String? userLanguage,
+    String? messageText,
+  }) {
+    // 1. Active case wins.
+    final caseUpper = caseCountry?.toUpperCase();
+    if (caseUpper == 'FI') return 'FI';
+    if (caseUpper == 'EE') return 'EE';
+
+    // 2. Message-text Finnish signals — keyword + Finnish-glyph detector.
+    if (_messageHasFinnishJurisdictionSignal(messageText)) return 'FI';
+
+    // 3. User profile country.
+    final userUpper = userCountry?.toUpperCase();
+    if (userUpper == 'FI') return 'FI';
+    if (userUpper == 'EE') return 'EE';
+
+    // 4. Language signal.
+    if (userLanguage == 'fi') return 'FI';
+    if (userLanguage == 'et') return 'EE';
+
+    // 5. Fallthrough — let the RPC search everything (multi-jurisdiction).
+    return null;
+  }
+
+  /// Cheap detector for Finnish-jurisdiction keywords. Used by
+  /// [chooseQueryJurisdiction] to flip an otherwise-Estonian profile when
+  /// the user starts asking about a Finnish authority. Keep in sync with
+  /// the analogous list in `SystemPrompts._caseContextSuggestsFinland`.
+  static bool _messageHasFinnishJurisdictionSignal(String? text) {
+    if (text == null || text.isEmpty) return false;
+    final lower = text.toLowerCase();
+    // Authority + court + procedural signals. Short, unambiguous words
+    // only — broader matches (e.g. raw country names in other languages)
+    // would inflate the false-positive rate.
+    const signals = [
+      'migri', 'hallinto-oikeus', 'kho', 'kko', 'poliisilaitos',
+      'rikoslaki', 'ulkomaalaislaki', 'hallintolaki', 'työsopimuslaki',
+      'käännyttämispäätös', 'käännytys', 'valituslupa', 'oleskelulupa',
+      'suomessa', 'finland',
+    ];
+    return signals.any((s) => lower.contains(s));
   }
 
   /// Choose a model for a tool-eligible turn (Anthropic engineer consilium,

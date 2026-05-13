@@ -997,5 +997,51 @@
     "workspaceTimelineEmpty": "No events yet.",
     "workspaceDocumentsEmpty": "No documents. Upload from Scan.",
     "workspaceDraftsEmpty": "No drafts yet.",
-    "workspaceInboxEmpty": "No related email."
+    "workspaceInboxEmpty": "No related email.",
+    "reviewThisContract": "Sözleşmeyi incele",
+    "contractReviews": "Sözleşme incelemeleri",
+    "@contractReviews": {},
+    "contractReviewsFreeFeature": "1 sözleşme incelemesi (ömür boyu deneme)",
+    "@contractReviewsFreeFeature": {},
+    "contractReviewsCounselFeature": "Ayda 5 sözleşme incelemesi",
+    "@contractReviewsCounselFeature": {},
+    "contractReviewsProFeature": "Ayda 20 sözleşme incelemesi",
+    "@contractReviewsProFeature": {},
+    "contractReviewsLeft": "Bu ay {count} sözleşme incelemesi kaldı",
+    "@contractReviewsLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsExhausted": "Bu ay sözleşme incelemesi kalmadı",
+    "@contractReviewsExhausted": {},
+    "contractReviewsFreeTrialLeft": "Ücretsiz deneme: 1 sözleşme incelemesi",
+    "@contractReviewsFreeTrialLeft": {},
+    "contractReviewsFreeTrialUsed": "Ücretsiz deneme kullanıldı — yükseltin",
+    "@contractReviewsFreeTrialUsed": {},
+    "contractReviewsUpgradeTitle": "Sözleşme incelemeleri tükendi",
+    "@contractReviewsUpgradeTitle": {},
+    "contractReviewsUpgradeBodyFree": "Ücretsiz sözleşme incelemenizi kullandınız. Aylık incelemeler için yükseltin.",
+    "@contractReviewsUpgradeBodyFree": {},
+    "contractReviewsUpgradeBodyPaid": "Bu ay {cap} incelemenin {used} tanesini kullandınız. Daha yüksek aylık limit için yükseltin.",
+    "@contractReviewsUpgradeBodyPaid": {
+        "placeholders": {
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
+        }
+    },
+    "contractReviewsUpgradeCounselCta": "Counsel'a yükselt (€19,99/ay) — 5 inceleme",
+    "@contractReviewsUpgradeCounselCta": {},
+    "contractReviewsUpgradeProCta": "Pro'ya yükselt (€29,99/ay) — 20 inceleme",
+    "@contractReviewsUpgradeProCta": {},
+    "contractReviewsUpgradeToProShort": "Pro'ya yükselt — 20/ay",
+    "@contractReviewsUpgradeToProShort": {},
+    "notNow": "Şimdi değil",
+    "@notNow": {}
 }
