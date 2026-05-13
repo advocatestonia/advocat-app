@@ -244,11 +244,14 @@ class AiRevision {
   final List<String> changesMade;
 
   factory AiRevision.fromJson(Map<String, dynamic> json) {
+    final raw = (json['changes_made'] as List?) ?? const <dynamic>[];
     return AiRevision(
       revisedText: (json['revised_text'] as String?) ?? '',
       explanation: (json['explanation'] as String?) ?? '',
-      changesMade: ((json['changes_made'] as List?) ?? const [])
-          .map((e) => e?.toString() ?? '')
+      // Keep only string entries; reject null / int / empty so the dialog
+      // doesn't render misleading bullets.
+      changesMade: raw
+          .whereType<String>()
           .where((s) => s.isNotEmpty)
           .toList(growable: false),
     );
