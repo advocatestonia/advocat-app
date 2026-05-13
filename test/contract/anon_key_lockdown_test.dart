@@ -29,7 +29,7 @@ library;
 //
 //   AUTHENTICATED-ONLY (JWT, no anon possible):
 //     - check-ai-quota, send-email, intent-classifier, case-load-active,
-//       cite-verifier (when wired), founder-spots, etc.
+//       cite-verifier (when wired), etc.
 //
 // This test enumerates the STRICT-LOCK endpoints and the DEMO-RATE-LIMITED
 // endpoints separately so a future regression that flips a strict-lock back

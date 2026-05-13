@@ -165,7 +165,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _knowledgeService = ClientKnowledgeService();
   bool _upgradeBannerDismissed = false;
   int _freeMessagesUsed = 0;
-  // Mirrors AIService.freeTotalLimit (7, per Founder's Beta refund policy).
+  // Mirrors AIService.freeTotalLimit (7, per launch pricing refund policy).
   // Updated at runtime from the server response so the UI never drifts from
   // the real quota.
   int _freeMessagesTotal = AIService.freeTotalLimit;

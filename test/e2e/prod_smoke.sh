@@ -16,7 +16,6 @@
 #     webhook signature, 401 without cron secret)
 #   - POST smoke path for each function (not only OPTIONS)
 #   - Refund eligibility endpoint presence probe
-#   - Founder cap probe (403 when capped)
 #   - AI response length sanity (if SMOKE_AUTH_JWT is set)
 #   - GDPR delete endpoint presence probe
 #

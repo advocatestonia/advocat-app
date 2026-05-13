@@ -6,7 +6,6 @@
 // touch:
 //
 //   • Landing → CTA → app.html deep-link with plan/billing query params
-//   • Early Access flow (founder pricing, 100-seat cap)
 //   • Yearly billing (€159.99 counsel)
 //   • Premium plan (€29.99/mo)
 //   • Customer-portal cancellation (Stripe webhook customer.subscription.updated)
@@ -56,10 +55,10 @@ class FakeUser {
 class FakeSub {
   final String id;
   final String userId;
-  final String plan; // basic | premium | founder
-  final String billingPeriod; // monthly | yearly | early-access | founding
+  final String plan; // basic | premium
+  final String billingPeriod; // monthly | yearly
   final String status; // active | canceled | trialing | past_due
-  final String? introType; // 'early-access-100' for founders
+  final String? introType; // grandfathered founder rows only (null for new subs)
   final DateTime subscribedAt;
   final DateTime? canceledAt;
   final int messagesUsed;
@@ -127,18 +126,9 @@ class JourneyV2World {
   final Map<String, FakeSub> subs = {};
   final List<FakeMemory> memories = [];
   final List<FakeCorrespondence> outbox = [];
-  // Founder cap: 100 (Early Access program), per
-  // commit 24a2d1a feat(early-access): lifetime €14.99 founder program.
-  static const int founderCap = 100;
-  static const int freeQuotaCap = 7; // mirrors FREE_LIMIT in check-ai-quota
+  // Free-tier quota cap (mirrors FREE_LIMIT in check-ai-quota).
+  static const int freeQuotaCap = 7;
   static const int freeQuotaResetDays = 30;
-
-  int activeFounderCount() => subs.values
-      .where((s) =>
-          s.plan == 'founder' &&
-          s.billingPeriod == 'early-access' &&
-          s.status == 'active')
-      .length;
 }
 
 // ---------------------------------------------------------------------------
@@ -173,12 +163,12 @@ void main() {
   // SCENARIO V2-01..V2-04 — Landing → CTA → /app.html deep link parsing
   // -------------------------------------------------------------------------
   group('V2 / scenario 01-04 — landing CTA deep-links', () {
-    test('V2-01 Early Access CTA → ?plan=counsel&billing=early-access', () {
+    test('V2-01 Pro monthly CTA → ?plan=counsel&billing=monthly', () {
       final dl = parseDeepLink(
-        'https://advocat.ee/app.html?plan=counsel&billing=early-access',
+        'https://advocat.ee/app.html?plan=counsel&billing=monthly',
       );
       expect(dl.plan, 'counsel');
-      expect(dl.billing, 'early-access');
+      expect(dl.billing, 'monthly');
     });
 
     test('V2-02 Pro yearly CTA → ?plan=counsel&billing=yearly', () {
@@ -201,72 +191,16 @@ void main() {
     test('V2-04 unknown billing falls through (client must reject)', () {
       final dl = parseDeepLink('https://advocat.ee/app.html?plan=counsel'
           '&billing=lifetime'); // not in valid set
-      const validBilling = {'monthly', 'yearly', 'early-access', 'founding'};
+      const validBilling = {'monthly', 'yearly'};
       expect(validBilling.contains(dl.billing), isFalse,
           reason: 'create-checkout must reject unknown billing periods');
     });
-  });
 
-  // -------------------------------------------------------------------------
-  // SCENARIO V2-05..V2-07 — Free → Early Access founder activation
-  // -------------------------------------------------------------------------
-  group('V2 / scenario 05-07 — Early Access founder activation', () {
-    test('V2-05 webhook activates Pro with intro_type=early-access-100', () {
-      final u = FakeUser(id: 'u-fa', email: 'founder1@test.ee');
-      w.users[u.id] = u;
-      // Simulated webhook outcome: stripe-webhook writes profile + sub
-      w.subs[u.id] = FakeSub(
-        id: 'sub_ea_${u.id}',
-        userId: u.id,
-        plan: 'founder',
-        billingPeriod: 'early-access',
-        status: 'active',
-        introType: 'early-access-100',
-        subscribedAt: DateTime.now(),
-      );
-      expect(w.subs[u.id]!.introType, 'early-access-100');
-      expect(w.subs[u.id]!.status, 'active');
-      expect(w.activeFounderCount(), 1);
-    });
-
-    test('V2-06 founder cap = 100 — 101st checkout blocked', () {
-      for (var i = 0; i < JourneyV2World.founderCap; i++) {
-        final id = 'founder-$i';
-        w.users[id] = FakeUser(id: id, email: '$id@test.ee');
-        w.subs[id] = FakeSub(
-          id: 'sub_$id',
-          userId: id,
-          plan: 'founder',
-          billingPeriod: 'early-access',
-          status: 'active',
-          introType: 'early-access-100',
-          subscribedAt: DateTime.now(),
-        );
-      }
-      expect(w.activeFounderCount(), JourneyV2World.founderCap);
-      final canAccept = w.activeFounderCount() < JourneyV2World.founderCap;
-      expect(canAccept, isFalse,
-          reason: 'founder-spots Edge Fn must return 403 once cap reached');
-    });
-
-    test('V2-07 cancellation frees a founder slot', () {
-      w.users['fX'] = FakeUser(id: 'fX', email: 'fx@test.ee');
-      w.subs['fX'] = FakeSub(
-        id: 'sub_fX',
-        userId: 'fX',
-        plan: 'founder',
-        billingPeriod: 'early-access',
-        status: 'active',
-        introType: 'early-access-100',
-        subscribedAt: DateTime.now(),
-      );
-      expect(w.activeFounderCount(), 1);
-      w.subs['fX'] = w.subs['fX']!.copyWith(
-        status: 'canceled',
-        canceledAt: DateTime.now(),
-      );
-      expect(w.activeFounderCount(), 0,
-          reason: 'cancel must free the founder slot for the next signup');
+    test('V2-04b retired founder billing periods are NOT in the valid set', () {
+      // Founder program retired — both legacy periods must be rejected.
+      const validBilling = {'monthly', 'yearly'};
+      expect(validBilling.contains('early-access'), isFalse);
+      expect(validBilling.contains('founding'), isFalse);
     });
   });
 
@@ -631,7 +565,7 @@ void main() {
       // billing_period (snake-case mirrors the Edge Function body).
       final captured = <String, String>{
         'plan_id': 'counsel',
-        'billing_period': 'early-access',
+        'billing_period': 'monthly',
       };
       expect(captured.containsKey('plan_id'), isTrue);
       expect(captured.containsKey('billing_period'), isTrue);

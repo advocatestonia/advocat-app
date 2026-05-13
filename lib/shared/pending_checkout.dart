@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Pricing plan deep-link captured from the URL on app boot.
 ///
 /// The marketing landing (`web/landing-v25-draft.html`) sends users into
-/// the app with query params, e.g. `/app.html?plan=counsel&billing=early-access`.
+/// the app with query params, e.g. `/app.html?plan=counsel&billing=monthly`.
 /// Once captured this is held until either:
 ///   - the user authenticates, at which point the post-login flow consumes
 ///     it via [consume] and triggers Stripe Checkout, or
@@ -18,15 +18,14 @@ class PendingCheckout {
   /// Stripe-side plan id: `counsel` (Pro) or `representation` (Premium).
   final String planId;
 
-  /// `monthly`, `yearly`, or `early-access`. Mirrors create-checkout's
-  /// price table — kept in sync via [_validBillingPeriods].
+  /// `monthly` or `yearly`. Mirrors create-checkout's price table —
+  /// kept in sync via [_validBillingPeriods].
   final String billingPeriod;
 
   static const Set<String> _validPlanIds = {'counsel', 'representation'};
   static const Set<String> _validBillingPeriods = {
     'monthly',
     'yearly',
-    'early-access',
   };
 
   /// Build from a URL's query parameters. Returns `null` if either field

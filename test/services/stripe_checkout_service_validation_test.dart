@@ -7,8 +7,9 @@ import 'package:advocat/services/stripe_checkout_service.dart';
 /// stripe_checkout_service_test.dart and stripe_plan_mapping_test.dart:
 ///
 ///   - startFoundingCheckout sends billing_period='founding' which the
-///     edge function REJECTS (PRICES has no 'founding' key, only
-///     'early-access'). Documents this dead-code path so deletion is safe.
+///     edge function REJECTS (PRICES has no 'founding' key — the founder
+///     Early Access program was retired). Documents this dead-code path
+///     so deletion is safe.
 ///
 ///   - startCheckoutWithBilling validates billing_period strictly so the
 ///     deep-link flow can't smuggle invalid values through.
@@ -24,11 +25,11 @@ void main() {
   });
 
   group('startFoundingCheckout — dead-code path (legacy name)', () {
-    // The edge function PRICES table only knows monthly|yearly|early-access.
-    // 'founding' returns 400 'Unknown billing_period: founding for plan ...'.
-    // The function isn't called anywhere in the app today (verified via
-    // grep). These tests pin its current behaviour so deletion is a clean
-    // refactor.
+    // The edge function PRICES table only knows monthly|yearly (founder
+    // Early Access program retired). 'founding' returns 400
+    // 'Unknown billing_period: founding for plan ...'. The function isn't
+    // called anywhere in the app today (verified via grep). These tests
+    // pin its current behaviour so deletion is a clean refactor.
 
     test('SCV-T01 — startFoundingCheckout exists on service surface', () {
       // We can't invoke it without Supabase init, but we can confirm the
@@ -60,8 +61,9 @@ void main() {
       // cleanup), this test should be deleted too.
       //
       // Owner note: the edge function PRICES table only accepts
-      // monthly|yearly|early-access. Calling startFoundingCheckout would
-      // 400 with "Unknown billing_period: founding for plan counsel".
+      // monthly|yearly (founder Early Access retired). Calling
+      // startFoundingCheckout would 400 with
+      // "Unknown billing_period: founding for plan counsel".
       try {
         await service.startFoundingCheckout(uiPlanId: 'basic');
         fail('expected init exception');
@@ -96,10 +98,10 @@ void main() {
       );
     });
 
-    test('SCV-T06 — rejects legacy "founding" billing_period (renamed)',
+    test('SCV-T06 — rejects legacy "founding" billing_period (retired)',
         () async {
-      // The validBillingPeriods set was tightened to {monthly, yearly,
-      // early-access}. The legacy 'founding' is NOT in there.
+      // The validBillingPeriods set is {monthly, yearly}. The legacy
+      // 'founding' is NOT in there.
       expect(
         () => service.startCheckoutWithBilling(
           stripePlanId: 'counsel',
@@ -109,23 +111,24 @@ void main() {
       );
     });
 
-    test('SCV-T07 — accepts representation + early-access (today\'s contract)',
+    test('SCV-T07 — rejects legacy "early-access" billing_period (retired)',
         () async {
-      // Today the frontend allows this combination but the edge function
-      // rejects it (no representation.early-access entry in PRICES).
-      // We pin "frontend allows; backend rejects" so the gap is visible.
-      try {
-        await service.startCheckoutWithBilling(
+      // The founder Early Access program is retired. The frontend
+      // allow-list no longer includes 'early-access' for either plan.
+      expect(
+        () => service.startCheckoutWithBilling(
+          stripePlanId: 'counsel',
+          billingPeriod: 'early-access',
+        ),
+        throwsA(isA<Exception>()),
+      );
+      expect(
+        () => service.startCheckoutWithBilling(
           stripePlanId: 'representation',
           billingPeriod: 'early-access',
-        );
-        fail('expected init exception');
-      } catch (e) {
-        // The init guard catches first; if it didn't, we'd see ArgumentError
-        // from the frontend. The edge function's 400 only fires once
-        // Supabase is wired in.
-        expect(e.toString(), contains('not initialised'));
-      }
+        ),
+        throwsA(isA<Exception>()),
+      );
     });
   });
 

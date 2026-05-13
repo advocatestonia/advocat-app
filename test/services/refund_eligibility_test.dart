@@ -1,4 +1,4 @@
-// TDD (RED) — Refund eligibility policy for Founder's Beta pricing.
+// TDD (RED) — Refund eligibility policy for launch pricing.
 // -----------------------------------------------------------------------------
 // Policy (owner-confirmed 2026-04-21):
 //   A paying subscriber may request a full refund if BOTH:

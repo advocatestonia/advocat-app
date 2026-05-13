@@ -7,7 +7,7 @@
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Advocat — AI õigusabi · Defend Your Rights</title>
-<meta name="description" content="AI-powered legal assistant for Estonia and the EU. Cited sources, 17 languages, GDPR-aligned. Free to start. Early Access €14.99/mo forever (then €19.99/mo) — vs €100-200/h at a traditional law firm.">
+<meta name="description" content="AI-powered legal assistant for Estonia and the EU. Cited sources, 17 languages, GDPR-aligned. Free to start, €19.99/mo for unlimited access — vs €100-200/h at a traditional law firm.">
 <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://advocat.ee/">
   <link rel="alternate" hreflang="et" href="https://advocat.ee/">
@@ -19,13 +19,13 @@
   <link rel="alternate" hreflang="lt" href="https://advocat.ee/?lang=lt">
   <link rel="alternate" hreflang="x-default" href="https://advocat.ee/">
   <meta property="og:title" content="Advocat — AI Legal Assistant for Estonia & EU">
-  <meta property="og:description" content="AI-powered legal information for Estonia and the EU. Cited sources, 17 languages, GDPR-aligned. Early Access €14.99/mo (then €19.99) — vs €100-200/h at a law firm.">
+  <meta property="og:description" content="AI-powered legal information for Estonia and the EU. Cited sources, 17 languages, GDPR-aligned. €19.99/mo — vs €100-200/h at a law firm.">
   <meta property="og:image" content="https://advocat.ee/logo.png">
   <meta property="og:url" content="https://advocat.ee/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Advocat — AI Legal Assistant">
-  <meta name="twitter:description" content="AI legal info for Estonia & EU. Cited sources, 17 languages. €14.99/mo Early Access. Informational service — not a substitute for a sworn advocate.">
+  <meta name="twitter:description" content="AI legal info for Estonia & EU. Cited sources, 17 languages. €19.99/mo. Informational service — not a substitute for a sworn advocate.">
   <meta name="twitter:image" content="https://advocat.ee/logo.png">
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=premium">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=premium">
@@ -1040,19 +1040,6 @@ img, svg { display: block; max-width: 100%; }
 .plan-price .currency { font-size: 20px; font-weight: 700; color: var(--navy); align-self: flex-start; margin-top: 6px; opacity: .75; }
 .plan-price .per { font-size: 13px; color: var(--faint); font-weight: 500; }
 .plan-price .strike { font-size: 13px; color: var(--faint); text-decoration: line-through; margin-left: 6px; font-weight: 500; }
-/* Early-access dual-price display: struck-through original sits inline-left of the founder price */
-.plan-price .plan-price-old {
-  font-size: 22px; font-weight: 700; color: var(--faint);
-  text-decoration: line-through; text-decoration-thickness: 2px;
-  margin-right: 6px; line-height: 1; opacity: .7;
-  align-self: center;
-}
-.plan-price-tag {
-  display: inline-block; margin: 2px 0 8px;
-  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--teal);
-  background: rgba(13,148,136,0.10); padding: 4px 9px; border-radius: 999px;
-}
 .plan-annual { font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 .plan-intro { font-size: 12px; color: var(--teal2); font-weight: 600; margin: 4px 0 12px; padding: 6px 10px; background: rgba(13,148,136,0.08); border-radius: 6px; display: inline-block; }
 .plan-intro strong { color: var(--teal); font-weight: 700; }
@@ -1379,61 +1366,9 @@ footer { padding: 48px 0 28px; background: #fff; border-top: 1px solid var(--lin
 html[dir="rtl"] body { direction: rtl; }
 html[dir="rtl"] .chat-msg.user { align-self: flex-start; border-bottom-right-radius: 14px; border-bottom-left-radius: 3px; }
 html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius: 14px; border-bottom-right-radius: 3px; }
-  /* ── Founder counter (Early Access — first 100 founders) ────────── */
-  .founder-counter {
-    margin: 6px 0 8px;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: linear-gradient(90deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
-    border: 1px solid rgba(212, 175, 55, 0.35);
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #B8860B;
-    letter-spacing: 0.2px;
-    text-align: center;
-    line-height: 1.35;
-  }
-  .founder-counter .founder-spots-num {
-    font-size: 14px;
-    font-weight: 800;
-    color: #8B6508;
-    margin-right: 2px;
-  }
-  .founder-closed-badge {
-    margin: 6px 0 8px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: #FFF4E5;
-    border: 1px solid #E07B00;
-    color: #B25E00;
-    font-size: 13px;
-    font-weight: 600;
-    text-align: center;
-  }
-
-  /* ── EARLY ACCESS visibility state machine ─────────────────────────
-     Default page state = Early Access OPEN: show .early-access-only,
-     hide .early-access-only-closed. When founder-spots fetch returns
-     {closed:true}, JS adds `body.ea-closed`, which flips visibility.
-     Using !important + explicit display values to defeat sibling
-     rules (.plan-price{display:flex}, .promo-banner padding, etc.). */
-  .early-access-only-closed { display: none !important; }
-
-  body.ea-closed .early-access-only { display: none !important; }
-  body.ea-closed #plan2-price-closed { display: flex !important; }
-  body.ea-closed #founder-closed-badge { display: block !important; }
-
-  /* Hide founder-counter chip until at least one founder seat is taken.
-     JS adds body.founder-active when founder-spots returns taken > 0. */
-  body:not(.founder-active) #founder-counter { display: none !important; }
 </style>
 </head>
 <body>
-
-<!-- ── PROMO BANNER (Early Access) ── -->
-<div class="promo-banner early-access-only" id="promo-banner">
-  <span data-i18n-html="promo">Early Access: €14.99/mo forever — first 100 founders. Then €19.99/mo — <a href="/app.html?plan=counsel&amp;billing=early-access">claim yours →</a></span>
-</div>
 
 <!-- ── NAV ── -->
 <header class="nav">
@@ -1746,11 +1681,11 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 
     <!-- ─── SAVINGS COUNTER BANNER ─── -->
     <div class="cmp-savings" id="cmpSavings"
-         data-us-target="180" data-them-target="18000" data-save-target="17820">
+         data-us-target="240" data-them-target="18000" data-save-target="17760">
       <div class="cmp-save-cell">
         <div class="cmp-save-label" data-i18n="compare.year_advocat">Advocat · per year</div>
-        <div class="cmp-save-num" data-counter="us">€180</div>
-        <div class="cmp-save-sub" data-i18n="compare.year_advocat_sub">€14.99 × 12 months</div>
+        <div class="cmp-save-num" data-counter="us">€240</div>
+        <div class="cmp-save-sub" data-i18n="compare.year_advocat_sub">€19.99 × 12 months</div>
       </div>
       <div class="cmp-save-cell cmp-save-cell--bureau">
         <div class="cmp-save-label" data-i18n="compare.year_bureau">Law firm · per year</div>
@@ -1806,25 +1741,13 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <img class="plan-watermark" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy">
         <span class="plan-name-eyebrow" data-i18n="plan2.eyebrow">For families</span>
         <div class="plan-name" data-i18n="plan2.name">Pro</div>
-        <!-- EARLY ACCESS price (€14.99 with €19.99 struck through) — shown while founder seats remain -->
-        <div class="plan-price early-access-only" id="plan2-price-open">
-          <s class="plan-price-old" aria-label="Regular price 19.99">€19.99</s>
-          <span class="currency">€</span><span class="amount">14.99</span><span class="per" data-i18n="plan2.per">/ month</span>
-        </div>
-        <span class="plan-price-tag early-access-only" data-i18n="plan2.price_tag">Founder price · forever</span>
-        <!-- POST-EARLY-ACCESS price (€19.99) — revealed once seats sell out (visibility via body.ea-closed CSS) -->
-        <div class="plan-price early-access-only-closed" id="plan2-price-closed">
+        <div class="plan-price">
           <span class="currency">€</span><span class="amount">19.99</span><span class="per" data-i18n="plan2.per">/ month</span>
         </div>
         <div class="plan-annual">
           <span data-i18n="plan2.annual">or €159.99/year — save 33%</span>
           <span class="plan-save-badge">SAVE 33%</span>
         </div>
-        <div class="plan-intro" data-i18n-html="plan2.intro">Locked in for life · cancel anytime</div>
-        <div class="founder-counter early-access-only" id="founder-counter" aria-live="polite">
-          <span class="founder-spots-num" id="founder-spots-num">—</span><span class="founder-counter-tail" data-i18n="pricing.founder_counter_tail"> / 100 founder seats remaining</span>
-        </div>
-        <div class="founder-closed-badge early-access-only-closed" id="founder-closed-badge" data-i18n="pricing.founder_closed">Early Access closed — Pro €19.99/mo available</div>
         <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. Unlimited AI, full document drafting.</div>
         <ul class="plan-features">
           <li data-i18n="plan2.f1">100 AI messages / day</li>
@@ -1834,7 +1757,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
         </ul>
-        <a class="btn btn-primary" id="plan2-cta" href="/app.html?plan=counsel&amp;billing=early-access" data-i18n="plan2.cta" data-href-open="/app.html?plan=counsel&amp;billing=early-access" data-href-closed="/app.html?plan=counsel&amp;billing=monthly">Start Early Access</a>
+        <a class="btn btn-primary" id="plan2-cta" href="/app.html?plan=counsel&amp;billing=monthly" data-i18n="plan2.cta">Choose Pro</a>
       </div>
 
       <!-- PREMIUM -->
@@ -1870,7 +1793,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
       </div>
     </div>
     <p class="pricing-note">
-      <span data-i18n-html="pricing.note">Early Access: €14.99/mo for life — limited to the first 100 founders. After that, regular Pro pricing applies. Save 30-33% with annual billing.</span>
+      <span data-i18n-html="pricing.note">Save 30-33% with annual billing. Cancel anytime — EU 14-day refund right.</span>
     </p>
   </div>
 </section>
@@ -2077,10 +2000,6 @@ const RTL = { ar: true, fa: true };
 
 const I18N = {
   en: {
-    'promo': 'Early Access: €14.99/mo <em>forever</em> — first 100 founders. Then €19.99/mo — <a href="/app.html?plan=counsel&amp;billing=early-access">claim yours →</a>',
-    'pricing.founder_counter_tail': ' / 100 founder seats remaining',
-    'pricing.founder_closed': 'Early Access closed — Pro €19.99/mo available',
-    'plan2.cta_closed': 'Choose Pro €19.99/mo',
     'cookie.title': 'Cookies & privacy',
     'cookie.body': 'We use cookies needed to keep you signed in. After your consent, we also use anonymous analytics to improve the service. See our <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>. Questions: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Accept',
@@ -2119,7 +2038,7 @@ const I18N = {
     'compare.t3': 'Often only Estonian or English', 'compare.t4': 'From memory — verbal advice, no log', 'compare.t5': 'Every question = a new invoice',
     'compare.cta_them': 'Book a consultation',
     'compare.year_advocat': 'Advocat · per year',
-    'compare.year_advocat_sub': '€14.99 × 12 months',
+    'compare.year_advocat_sub': '€19.99 × 12 months',
     'compare.year_bureau': 'Law firm · per year',
     'compare.year_bureau_sub': '€150 × 120h average',
     'compare.year_save': 'You save',
@@ -2131,18 +2050,16 @@ const I18N = {
     'plan1.f1': '7 AI messages total', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
     'plan1.cta': 'Start free',
     'plan2.badge': 'Most popular', 'plan2.eyebrow': 'For families', 'plan2.name': 'Pro', 'plan2.per': '/ month', 'plan2.annual': 'or €159.99/year — save 33%',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Daily legal help for you and your family. Unlimited AI, full document drafting.',
     'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
     'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
-    'plan2.cta': 'Start Early Access',
+    'plan2.cta': 'Choose Pro',
     'plan3.eyebrow': 'Full defense', 'plan3.name': 'Premium', 'plan3.per': '/ month', 'plan3.annual': 'or €249.99/year — save 30%',
     'plan3.desc': 'Full defense — unlimited everything, priority response, all features.',
     'plan3.f1': 'Unlimited AI messages', 'plan3.f2': 'Unlimited cases', 'plan3.f3': 'Unlimited document scans',
     'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
     'plan3.cta': 'Choose Premium',
-    'pricing.note': 'Early Access: €14.99/mo for life — limited to the first 100 founders. After that, regular Pro pricing applies. Save 30-33% with annual billing.',
+    'pricing.note': 'Save 30-33% with annual billing. Cancel anytime — EU 14-day refund right.',
     'faq.label': 'FAQ', 'faq.title': 'Honest <em>answers</em> to common questions.',
     'faq.items': [
       { q: 'Is this legal? Can I really use AI for legal questions?', a: 'Yes. Advocat is a legal information service — it explains laws and helps you draft documents. It does not replace a licensed attorney for court representation, but for understanding your situation and writing letters it works fine. The same way reading legal articles online is legal, using a tool that does it for you is legal.' },
@@ -2177,10 +2094,6 @@ const I18N = {
   },
 
   et: {
-    'promo': 'Asutajahind: €14.99/kuu <em>eluaegselt</em> — esimesele 100 kasutajale. Pärast seda €19.99/kuu — <a href="/app.html?plan=counsel&amp;billing=early-access">võta oma koht →</a>',
-    'pricing.founder_counter_tail': ' / 100 asutajakohast veel vaba',
-    'pricing.founder_closed': 'Asutajahind on välja müüdud — Pro €19.99/kuu',
-    'plan2.cta_closed': 'Vali Pro €19.99/kuu',
     'cookie.title': 'Küpsised ja privaatsus',
     'cookie.body': 'Kasutame küpsiseid, mis on vajalikud sisselogimiseks. Pärast sinu nõusolekut kasutame ka anonüümset analüütikat teenuse parandamiseks. Vaata <a href="/privacy.html" target="_blank" rel="noopener">privaatsuspoliitikat</a>. Küsimused: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Nõustu',
@@ -2219,7 +2132,7 @@ const I18N = {
     'compare.t3': 'Sageli ainult eesti või inglise keel', 'compare.t4': 'Suuline nõu — kirjalikku kokkuvõtet ei jää', 'compare.t5': 'Iga uus küsimus = uus arve',
     'compare.cta_them': 'Broneeri aeg',
     'compare.year_advocat': 'Advocat · aastas',
-    'compare.year_advocat_sub': '€14.99 × 12 kuud',
+    'compare.year_advocat_sub': '€19.99 × 12 kuud',
     'compare.year_bureau': 'Advokaadibüroo · aastas',
     'compare.year_bureau_sub': 'Keskmiselt €150 × 120 tundi',
     'compare.year_save': 'Sinu sääst',
@@ -2231,18 +2144,16 @@ const I18N = {
     'plan1.f1': '7 AI-sõnumit kokku', 'plan1.f2': '1 aktiivne juhtum', 'plan1.f3': 'Dokumendiskann (3 faili)', 'plan1.f4': 'Viited Eesti ja EL õigusele', 'plan1.f5': 'Pangakaarti pole vaja',
     'plan1.cta': 'Alusta tasuta',
     'plan2.badge': 'POPULAARSEIM', 'plan2.eyebrow': 'Perele', 'plan2.name': 'Pro', 'plan2.per': '/ kuus', 'plan2.annual': 'või €159.99 aastas — säästad 33%',
-    'plan2.intro': 'Hind kinnitatud eluaegselt · tühista igal ajal',
-    'plan2.price_tag': 'Asutajahind · eluaegselt',
     'plan2.desc': 'Igapäevane õigustugi sulle ja perele. Piiranguteta vestlused, dokumentide koostamine algusest lõpuni.',
     'plan2.f1': '100 AI-sõnumit päevas', 'plan2.f2': '3 aktiivset juhtumit', 'plan2.f3': 'Dokumendiskann (20 faili)',
     'plan2.f4': 'Kirjade ja kaebuste täisvormistus', 'plan2.f5': 'Häälsisestus', 'plan2.f6': 'Veebiotsing värske kohtupraktika jaoks',
-    'plan2.cta': 'Võta asutajahind',
+    'plan2.cta': 'Vali Pro',
     'plan3.eyebrow': 'Täiskaitse', 'plan3.name': 'Premium', 'plan3.per': '/ kuus', 'plan3.annual': 'või €249.99 aastas — säästad 30%',
     'plan3.desc': 'Täiskaitse — kõik piiranguteta, prioriteetne järjekord, kõik funktsioonid avatud.',
     'plan3.f1': 'AI-sõnumid piiranguteta', 'plan3.f2': 'Juhtumeid piiranguteta', 'plan3.f3': 'Dokumendiskannid piiranguteta',
     'plan3.f4': 'Prioriteetne järjekord', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirjade ja dokumentide eksport',
     'plan3.cta': 'Vali Premium',
-    'pricing.note': 'Asutajahind €14.99/kuu jääb sulle eluaegselt — saadaval esimesele 100 kasutajale. Pärast seda kehtib tavaline Pro hind. Aastamaksuga säästad 30–33%.',
+    'pricing.note': 'Säästa 30–33% aastamaksuga. Tühista igal ajal — EL 14-päevane tagastusõigus.',
     'faq.label': 'KKK', 'faq.title': 'Ausad <em>vastused</em> levinud küsimustele.',
     'faq.items': [
       { q: 'Kas see on üldse seaduslik? Kas AI-d tohib õigusasjades kasutada?', a: 'Jah. Advocat pakub õigusinfot — selgitab seadusi ja aitab kirju koostada. Kohtusaalis vandeadvokaati ta ei asenda, küll aga aitab olukorrast aru saada ja esimese kirja ära saata. Sama loogika nagu Riigi Teataja lugemisel: seadusega tutvumine ja selle järgi tegutsemine on igaühe õigus.' },
@@ -2277,10 +2188,6 @@ const I18N = {
   },
 
   ru: {
-    'promo': 'Ранний доступ: €14.99/мес <em>навсегда</em> — первые 100 фаундеров. Затем €19.99/мес — <a href="/app.html?plan=counsel&amp;billing=early-access">забрать своё →</a>',
-    'pricing.founder_counter_tail': ' / 100 мест для основателей осталось',
-    'pricing.founder_closed': 'Ранний доступ закрыт — доступен Pro €19.99/мес',
-    'plan2.cta_closed': 'Выбрать Pro €19.99/мес',
     'cookie.title': 'Файлы cookie и конфиденциальность',
     'cookie.body': 'Мы используем файлы cookie, необходимые для входа в систему. После вашего согласия мы также используем анонимную аналитику для улучшения сервиса. Подробнее в <a href="/privacy.html" target="_blank" rel="noopener">Политике конфиденциальности</a>. Вопросы: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Принять',
@@ -2319,7 +2226,7 @@ const I18N = {
     'compare.t3': 'Часто только эстонский или английский', 'compare.t4': 'По памяти — устно, без записи', 'compare.t5': 'Каждый вопрос = новый счёт',
     'compare.cta_them': 'Записаться на консультацию',
     'compare.year_advocat': 'Advocat · в год',
-    'compare.year_advocat_sub': '€14.99 × 12 мес',
+    'compare.year_advocat_sub': '€19.99 × 12 мес',
     'compare.year_bureau': 'Адв. бюро · в год',
     'compare.year_bureau_sub': '€150 × 120 ч в среднем',
     'compare.year_save': 'Вы экономите',
@@ -2331,18 +2238,16 @@ const I18N = {
     'plan1.f1': '7 AI-сообщений всего', 'plan1.f2': '1 активное дело', 'plan1.f3': 'Сканирование документов (3 шт)', 'plan1.f4': 'Ссылки на EE и ЕС законы', 'plan1.f5': 'Без карты',
     'plan1.cta': 'Начать',
     'plan2.badge': 'Популярный', 'plan2.eyebrow': 'Для семьи', 'plan2.name': 'Pro', 'plan2.per': '/ месяц', 'plan2.annual': 'или €159.99/год — экономия 33%',
-    'plan2.intro': 'Цена зафиксирована навсегда · отмена в любой момент',
-    'plan2.price_tag': 'Цена фаундера · навсегда',
     'plan2.desc': 'Ежедневная юридическая помощь тебе и семье. Безлимит ИИ, полное составление документов.',
     'plan2.f1': '100 AI-сообщений в день', 'plan2.f2': '3 активных дела', 'plan2.f3': 'Сканирование документов (20 шт)',
     'plan2.f4': 'Полное составление документов (письма, жалобы)', 'plan2.f5': 'Голосовой ввод', 'plan2.f6': 'Веб-поиск свежего права',
-    'plan2.cta': 'Начать ранний доступ',
+    'plan2.cta': 'Выбрать Pro',
     'plan3.eyebrow': 'Полная защита', 'plan3.name': 'Premium', 'plan3.per': '/ месяц', 'plan3.annual': 'или €249.99/год — экономия 30%',
     'plan3.desc': 'Полная защита — безлимит во всём, приоритетный ответ, все функции.',
     'plan3.f1': 'Безлимит AI-сообщений', 'plan3.f2': 'Безлимит дел', 'plan3.f3': 'Безлимит сканирований',
     'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Экспорт писем и документов',
     'plan3.cta': 'Выбрать Premium',
-    'pricing.note': 'Ранний доступ: €14.99/мес пожизненно — только для первых 100 фаундеров. Затем действует обычная цена Pro. Экономия 30-33% с годовой оплатой.',
+    'pricing.note': 'Экономия 30-33% с годовой оплатой. Отмена в любой момент — право возврата 14 дней по правилам ЕС.',
     'faq.label': 'FAQ', 'faq.title': 'Честные <em>ответы</em> на частые вопросы.',
     'faq.items': [
       { q: 'Это законно? Можно ли вообще использовать ИИ для юридических вопросов?', a: 'Да. Advocat — это сервис правовой информации: объясняет законы и помогает составлять документы. Он не заменяет лицензированного адвоката в суде, но для понимания ситуации и написания писем подходит. Так же, как читать юридические статьи в интернете законно, законно и пользоваться инструментом, который делает то же самое за тебя.' },
@@ -2377,10 +2282,6 @@ const I18N = {
   },
 
   uk: {
-    'promo': 'Ранній доступ: €14.99/міс <em>назавжди</em> — перші 100 фаундерів. Потім €19.99/міс — <a href="/app.html?plan=counsel&amp;billing=early-access">забрати своє →</a>',
-    'pricing.founder_counter_tail': ' / 100 місць для засновників залишилось',
-    'pricing.founder_closed': 'Ранній доступ закрито — доступний Pro €19.99/міс',
-    'plan2.cta_closed': 'Обрати Pro €19.99/міс',
     'cookie.title': 'Файли cookie та конфіденційність',
     'cookie.body': 'Ми використовуємо файли cookie, необхідні для входу в систему. Після вашої згоди ми також використовуємо анонімну аналітику для покращення сервісу. Докладніше в <a href="/privacy.html" target="_blank" rel="noopener">Політиці конфіденційності</a>. Питання: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Прийняти',
@@ -2419,7 +2320,7 @@ const I18N = {
     'compare.t3': 'Часто лише естонська або англійська', 'compare.t4': 'З пам\'яті — усно, без запису', 'compare.t5': 'Кожне питання = новий рахунок',
     'compare.cta_them': 'Записатися на консультацію',
     'compare.year_advocat': 'Advocat · на рік',
-    'compare.year_advocat_sub': '€14.99 × 12 місяців',
+    'compare.year_advocat_sub': '€19.99 × 12 місяців',
     'compare.year_bureau': 'Адв. бюро · на рік',
     'compare.year_bureau_sub': '€150 × 120 год у середньому',
     'compare.year_save': 'Ви економите',
@@ -2431,18 +2332,16 @@ const I18N = {
     'plan1.f1': '7 AI-повідомлень загалом', 'plan1.f2': '1 активна справа', 'plan1.f3': 'Сканування документів (3 шт)', 'plan1.f4': 'Посилання на EE та ЄС закони', 'plan1.f5': 'Без картки',
     'plan1.cta': 'Почати',
     'plan2.badge': 'Популярний', 'plan2.eyebrow': 'Для сім\'ї', 'plan2.name': 'Pro', 'plan2.per': '/ місяць', 'plan2.annual': 'або €159.99/рік — економія 33%',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Щоденна юридична допомога тобі та родині. Безліміт ШІ, повне складання документів.',
     'plan2.f1': '100 AI-повідомлень на день', 'plan2.f2': '3 активні справи', 'plan2.f3': 'Сканування документів (20 шт)',
     'plan2.f4': 'Повне складання документів', 'plan2.f5': 'Голосовий ввід', 'plan2.f6': 'Веб-пошук свіжого права',
-    'plan2.cta': 'Почати ранній доступ',
+    'plan2.cta': 'Обрати Pro',
     'plan3.eyebrow': 'Повний захист', 'plan3.name': 'Premium', 'plan3.per': '/ місяць', 'plan3.annual': 'або €249.99/рік — економія 30%',
     'plan3.desc': 'Повний захист — безліміт у всьому, пріоритетна відповідь, усі функції.',
     'plan3.f1': 'Безліміт AI-повідомлень', 'plan3.f2': 'Безліміт справ', 'plan3.f3': 'Безліміт сканувань',
     'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Експорт листів і документів',
     'plan3.cta': 'Обрати Premium',
-    'pricing.note': 'Ранній доступ: €14.99/міс довічно — лише для перших 100 засновників. Потім діє звичайна ціна Pro. Економія 30-33% з річною оплатою.',
+    'pricing.note': 'Економія 30-33% з річною оплатою. Скасування у будь-який час — право повернення 14 днів за правилами ЄС.',
     'faq.label': 'FAQ', 'faq.title': 'Чесні <em>відповіді</em> на часті питання.',
     'faq.items': [
       { q: 'Це законно? Чи можна використовувати ШІ для юридичних питань?', a: 'Так. Advocat — це сервіс правової інформації: пояснює закони і допомагає складати документи. Він не замінює ліцензованого адвоката в суді, але для розуміння ситуації та написання листів підходить. Так само, як читати юридичні статті в інтернеті законно, законно і користуватися інструментом, який робить те саме за тебе.' },
@@ -2477,10 +2376,6 @@ const I18N = {
   },
 
   fi: {
-    'promo': 'Varhainen pääsy: €14.99/kk <em>ikuisesti</em> — ensimmäiset 100 perustajaa. Sen jälkeen €19.99/kk — <a href="/app.html?plan=counsel&amp;billing=early-access">varaa omasi →</a>',
-    'pricing.founder_counter_tail': ' / 100 perustajapaikkaa jäljellä',
-    'pricing.founder_closed': 'Varhainen pääsy suljettu — Pro €19.99/kk saatavilla',
-    'plan2.cta_closed': 'Valitse Pro €19.99/kk',
     'cookie.title': 'Evästeet ja yksityisyys',
     'cookie.body': 'Käytämme evästeitä, jotka tarvitaan sisäänkirjautumisen ylläpitämiseen. Suostumuksesi jälkeen käytämme myös anonyymiä analytiikkaa palvelun parantamiseksi. Lue <a href="/privacy.html" target="_blank" rel="noopener">tietosuojakäytäntömme</a>. Kysymykset: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Hyväksy',
@@ -2519,7 +2414,7 @@ const I18N = {
     'compare.t3': 'Usein vain viroa tai englantia', 'compare.t4': 'Muistista — suullinen, ei kirjattu', 'compare.t5': 'Jokainen kysymys = uusi lasku',
     'compare.cta_them': 'Varaa konsultaatio',
     'compare.year_advocat': 'Advocat · vuodessa',
-    'compare.year_advocat_sub': '€14.99 × 12 kk',
+    'compare.year_advocat_sub': '€19.99 × 12 kk',
     'compare.year_bureau': 'Lakitoimisto · vuodessa',
     'compare.year_bureau_sub': '€150 × 120 t keskimäärin',
     'compare.year_save': 'Säästät',
@@ -2531,18 +2426,16 @@ const I18N = {
     'plan1.f1': '7 AI-viestiä yhteensä', 'plan1.f2': '1 aktiivinen tapaus', 'plan1.f3': 'Asiakirjojen skannaus (3 kpl)', 'plan1.f4': 'Lähteet EE & EU-laista', 'plan1.f5': 'Ei korttia',
     'plan1.cta': 'Aloita',
     'plan2.badge': 'Suosituin', 'plan2.eyebrow': 'Perheille', 'plan2.name': 'Pro', 'plan2.per': '/ kuukausi', 'plan2.annual': 'tai €159.99/vuosi — säästä 33%',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. Rajaton AI, täysi asiakirjojen laadinta.',
     'plan2.f1': '100 AI-viestiä päivässä', 'plan2.f2': '3 aktiivista tapausta', 'plan2.f3': 'Asiakirjojen skannaus (20 kpl)',
     'plan2.f4': 'Täysi asiakirjojen laadinta', 'plan2.f5': 'Äänisyöte', 'plan2.f6': 'Verkkohaku tuoreesta laista',
-    'plan2.cta': 'Hanki varhainen pääsy',
+    'plan2.cta': 'Valitse Pro',
     'plan3.eyebrow': 'Täysi puolustus', 'plan3.name': 'Premium', 'plan3.per': '/ kuukausi', 'plan3.annual': 'tai €249.99/vuosi — säästä 30%',
     'plan3.desc': 'Täysi puolustus — rajaton kaikki, prioriteetti, kaikki ominaisuudet.',
     'plan3.f1': 'Rajattomat AI-viestit', 'plan3.f2': 'Rajattomat tapaukset', 'plan3.f3': 'Rajattomat skannaukset',
     'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköposti- ja asiakirjavienti',
     'plan3.cta': 'Valitse Premium',
-    'pricing.note': 'Varhainen pääsy: €14.99/kk eliniäksi — rajoitettu ensimmäisille 100 perustajalle. Sen jälkeen sovelletaan tavallista Pro-hintaa. Säästä 30-33% vuosilaskutuksella.',
+    'pricing.note': 'Säästä 30-33% vuosilaskutuksella. Peruuta milloin tahansa — EU:n 14 päivän palautusoikeus.',
     'faq.label': 'UKK', 'faq.title': 'Rehellisiä <em>vastauksia</em> yleisiin kysymyksiin.',
     'faq.items': [
       { q: 'Onko tämä laillista? Voiko tekoälyä käyttää lakikysymyksiin?', a: 'Kyllä. Advocat on lakitiedotuspalvelu — selittää lakeja ja auttaa laatimaan asiakirjoja. Se ei korvaa lisensoitua asianajajaa oikeudessa, mutta tilanteen ymmärtämiseen ja kirjeiden kirjoittamiseen se toimii.' },
@@ -2577,10 +2470,6 @@ const I18N = {
   },
 
   de: {
-    'promo': 'Frühzugang: 14,99 €/Monat <em>auf Lebenszeit</em> — die ersten 100 Founder. Danach 19,99 €/Monat — <a href="/app.html?plan=counsel&amp;billing=early-access">Platz sichern →</a>',
-    'pricing.founder_counter_tail': ' / 100 Founder-Plätze noch frei',
-    'pricing.founder_closed': 'Frühzugang geschlossen — Pro 19,99 €/Monat verfügbar',
-    'plan2.cta_closed': 'Pro 19,99 €/Monat wählen',
     'cookie.title': 'Cookies und Datenschutz',
     'cookie.body': 'Wir verwenden Cookies, die erforderlich sind, um Sie angemeldet zu halten. Nach Ihrer Einwilligung nutzen wir zusätzlich anonyme Analysen, um den Dienst zu verbessern. Siehe unsere <a href="/privacy.html" target="_blank" rel="noopener">Datenschutzerklärung</a>. Fragen: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Akzeptieren',
@@ -2619,7 +2508,7 @@ const I18N = {
     'compare.t3': 'Oft nur Estnisch oder Englisch', 'compare.t4': 'Mündlich aus dem Gedächtnis — keine Aufzeichnung', 'compare.t5': 'Jede Frage = neue Rechnung',
     'compare.cta_them': 'Termin vereinbaren',
     'compare.year_advocat': 'Advocat · pro Jahr',
-    'compare.year_advocat_sub': '14,99 € × 12 Monate',
+    'compare.year_advocat_sub': '19,99 € × 12 Monate',
     'compare.year_bureau': 'Kanzlei · pro Jahr',
     'compare.year_bureau_sub': '150 € × 120 h Durchschnitt',
     'compare.year_save': 'Ihre Ersparnis',
@@ -2631,18 +2520,16 @@ const I18N = {
     'plan1.f1': '7 KI-Nachrichten insgesamt', 'plan1.f2': '1 aktiver Fall', 'plan1.f3': 'Dokumentenscan (3 Stück)', 'plan1.f4': 'Quellen aus EE- und EU-Recht', 'plan1.f5': 'Keine Kreditkarte nötig',
     'plan1.cta': 'Kostenlos starten',
     'plan2.badge': 'Am beliebtesten', 'plan2.eyebrow': 'Für Familien', 'plan2.name': 'Pro', 'plan2.per': '/ Monat', 'plan2.annual': 'oder 159,99 €/Jahr — 33 % sparen',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Tägliche Rechtshilfe für Sie und Ihre Familie. Unbegrenzte KI, vollständige Dokumentenerstellung.',
     'plan2.f1': '100 KI-Nachrichten / Tag', 'plan2.f2': '3 aktive Fälle', 'plan2.f3': 'Dokumentenscan (20 Stück)',
     'plan2.f4': 'Vollständige Dokumentenerstellung (Schreiben, Beschwerden)', 'plan2.f5': 'Spracheingabe', 'plan2.f6': 'Websuche nach aktueller Rechtsprechung',
-    'plan2.cta': 'Frühzugang sichern',
+    'plan2.cta': 'Pro wählen',
     'plan3.eyebrow': 'Volle Verteidigung', 'plan3.name': 'Premium', 'plan3.per': '/ Monat', 'plan3.annual': 'oder 249,99 €/Jahr — 30 % sparen',
     'plan3.desc': 'Volle Verteidigung — alles unbegrenzt, vorrangige Bearbeitung, alle Funktionen.',
     'plan3.f1': 'Unbegrenzte KI-Nachrichten', 'plan3.f2': 'Unbegrenzte Fälle', 'plan3.f3': 'Unbegrenzte Dokumentenscans',
     'plan3.f4': 'Vorrangige Bearbeitung', 'plan3.f5': 'Alles aus Pro', 'plan3.f6': 'E-Mail- und Dokumentenexport',
     'plan3.cta': 'Premium wählen',
-    'pricing.note': 'Frühzugang: 14,99 €/Monat auf Lebenszeit — beschränkt auf die ersten 100 Founder. Danach gilt der reguläre Pro-Preis. Mit Jahresabrechnung 30–33 % sparen.',
+    'pricing.note': 'Mit Jahresabrechnung 30–33 % sparen. Jederzeit kündbar — EU-Widerrufsrecht 14 Tage.',
     'faq.label': 'FAQ', 'faq.title': 'Ehrliche <em>Antworten</em> auf häufige Fragen.',
     'faq.items': [
       { q: 'Ist das überhaupt erlaubt? Darf ich KI für Rechtsfragen nutzen?', a: 'Ja. Advocat ist ein Rechtsinformationsdienst — er erklärt Gesetze und hilft beim Aufsetzen von Schreiben. Er ersetzt keinen zugelassenen Rechtsanwalt vor Gericht, eignet sich aber sehr wohl, um Ihre Lage zu verstehen und ein erstes Schreiben zu verfassen. Genauso wie es zulässig ist, juristische Fachartikel im Internet zu lesen, ist es zulässig, ein Werkzeug zu nutzen, das Ihnen genau das abnimmt.' },
@@ -2677,10 +2564,6 @@ const I18N = {
   },
 
   fr: {
-    'promo': 'Accès anticipé : 14,99 €/mois <em>à vie</em> — les 100 premiers fondateurs. Ensuite 19,99 €/mois — <a href="/app.html?plan=counsel&amp;billing=early-access">réservez votre place →</a>',
-    'pricing.founder_counter_tail': ' / 100 places fondateur restantes',
-    'pricing.founder_closed': 'Accès anticipé clos — Pro 19,99 €/mois disponible',
-    'plan2.cta_closed': 'Choisir Pro 19,99 €/mois',
     'cookie.title': 'Cookies et confidentialité',
     'cookie.body': 'Nous utilisons les cookies nécessaires pour vous maintenir connecté. Avec votre consentement, nous utilisons aussi des analyses anonymes pour améliorer le service. Consultez notre <a href="/privacy.html" target="_blank" rel="noopener">politique de confidentialité</a>. Questions : <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Accepter',
@@ -2719,7 +2602,7 @@ const I18N = {
     'compare.t3': 'Souvent estonien ou anglais uniquement', 'compare.t4': 'De mémoire, à l\'oral — sans trace écrite', 'compare.t5': 'Chaque question = nouvelle facture',
     'compare.cta_them': 'Prendre rendez-vous',
     'compare.year_advocat': 'Advocat · par an',
-    'compare.year_advocat_sub': '14,99 € × 12 mois',
+    'compare.year_advocat_sub': '19,99 € × 12 mois',
     'compare.year_bureau': 'Cabinet · par an',
     'compare.year_bureau_sub': '150 € × 120 h en moyenne',
     'compare.year_save': 'Vous économisez',
@@ -2731,18 +2614,16 @@ const I18N = {
     'plan1.f1': '7 messages IA au total', 'plan1.f2': '1 dossier actif', 'plan1.f3': 'Lecture de documents (3 fichiers)', 'plan1.f4': 'Sources du droit estonien et UE', 'plan1.f5': 'Sans carte bancaire',
     'plan1.cta': 'Commencer',
     'plan2.badge': 'Le plus populaire', 'plan2.eyebrow': 'Pour la famille', 'plan2.name': 'Pro', 'plan2.per': '/ mois', 'plan2.annual': 'ou 159,99 €/an — économisez 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Aide juridique quotidienne pour vous et votre famille. IA illimitée, rédaction complète des documents.',
     'plan2.f1': '100 messages IA / jour', 'plan2.f2': '3 dossiers actifs', 'plan2.f3': 'Lecture de documents (20 fichiers)',
     'plan2.f4': 'Rédaction complète (courriers, plaintes)', 'plan2.f5': 'Saisie vocale', 'plan2.f6': 'Recherche web sur la jurisprudence à jour',
-    'plan2.cta': 'Obtenir l\'accès anticipé',
+    'plan2.cta': 'Choisir Pro',
     'plan3.eyebrow': 'Défense complète', 'plan3.name': 'Premium', 'plan3.per': '/ mois', 'plan3.annual': 'ou 249,99 €/an — économisez 30 %',
     'plan3.desc': 'Défense complète — tout illimité, traitement prioritaire, toutes les fonctionnalités.',
     'plan3.f1': 'Messages IA illimités', 'plan3.f2': 'Dossiers illimités', 'plan3.f3': 'Lectures illimitées',
     'plan3.f4': 'Traitement prioritaire', 'plan3.f5': 'Tout Pro inclus', 'plan3.f6': 'Export e-mail et documents',
     'plan3.cta': 'Choisir Premium',
-    'pricing.note': 'Accès anticipé : 14,99 €/mois à vie — limité aux 100 premiers fondateurs. Au-delà, tarif Pro standard. Avec la facturation annuelle, économisez 30 à 33 %.',
+    'pricing.note': 'Économisez 30 à 33 % avec la facturation annuelle. Résiliable à tout moment — droit de rétractation UE 14 jours.',
     'faq.label': 'FAQ', 'faq.title': 'Réponses <em>honnêtes</em> aux questions courantes.',
     'faq.items': [
       { q: 'Est-ce légal ? Peut-on vraiment utiliser l\'IA pour des questions juridiques ?', a: 'Oui. Advocat est un service d\'information juridique : il explique la loi et aide à rédiger des documents. Il ne remplace pas un avocat agréé pour la représentation au tribunal, mais pour comprendre votre situation et écrire vos courriers, il fait l\'affaire. De la même façon que lire des articles de droit en ligne est légal, utiliser un outil qui le fait pour vous l\'est aussi.' },
@@ -2777,10 +2658,6 @@ const I18N = {
   },
 
   es: {
-    'promo': 'Acceso anticipado: 14,99 €/mes <em>de por vida</em> — los 100 primeros fundadores. Después 19,99 €/mes — <a href="/app.html?plan=counsel&amp;billing=early-access">reserva tu plaza →</a>',
-    'pricing.founder_counter_tail': ' / 100 plazas de fundador disponibles',
-    'pricing.founder_closed': 'Acceso anticipado cerrado — Pro 19,99 €/mes disponible',
-    'plan2.cta_closed': 'Elegir Pro 19,99 €/mes',
     'cookie.title': 'Cookies y privacidad',
     'cookie.body': 'Utilizamos las cookies necesarias para mantener tu sesión iniciada. Tras tu consentimiento, también usamos analíticas anónimas para mejorar el servicio. Consulta nuestra <a href="/privacy.html" target="_blank" rel="noopener">Política de privacidad</a>. Consultas: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Aceptar',
@@ -2819,7 +2696,7 @@ const I18N = {
     'compare.t3': 'A menudo solo estonio o inglés', 'compare.t4': 'De memoria — verbal, sin registro', 'compare.t5': 'Cada pregunta = nueva factura',
     'compare.cta_them': 'Pedir cita',
     'compare.year_advocat': 'Advocat · al año',
-    'compare.year_advocat_sub': '14,99 € × 12 meses',
+    'compare.year_advocat_sub': '19,99 € × 12 meses',
     'compare.year_bureau': 'Despacho · al año',
     'compare.year_bureau_sub': '150 € × 120 h de media',
     'compare.year_save': 'Usted ahorra',
@@ -2831,18 +2708,16 @@ const I18N = {
     'plan1.f1': '7 mensajes IA en total', 'plan1.f2': '1 caso activo', 'plan1.f3': 'Escaneo de documentos (3)', 'plan1.f4': 'Fuentes de derecho EE y UE', 'plan1.f5': 'Sin tarjeta',
     'plan1.cta': 'Empezar gratis',
     'plan2.badge': 'El más popular', 'plan2.eyebrow': 'Para familias', 'plan2.name': 'Pro', 'plan2.per': '/ mes', 'plan2.annual': 'o 159,99 €/año — ahorre 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Asistencia jurídica diaria para usted y su familia. IA ilimitada, redacción completa de documentos.',
     'plan2.f1': '100 mensajes IA / día', 'plan2.f2': '3 casos activos', 'plan2.f3': 'Escaneo de documentos (20)',
     'plan2.f4': 'Redacción completa (cartas, reclamaciones)', 'plan2.f5': 'Entrada por voz', 'plan2.f6': 'Búsqueda web de jurisprudencia reciente',
-    'plan2.cta': 'Obtener acceso anticipado',
+    'plan2.cta': 'Elegir Pro',
     'plan3.eyebrow': 'Defensa completa', 'plan3.name': 'Premium', 'plan3.per': '/ mes', 'plan3.annual': 'o 249,99 €/año — ahorre 30 %',
     'plan3.desc': 'Defensa completa — todo ilimitado, prioridad de respuesta, todas las funciones.',
     'plan3.f1': 'Mensajes IA ilimitados', 'plan3.f2': 'Casos ilimitados', 'plan3.f3': 'Escaneos ilimitados',
     'plan3.f4': 'Procesamiento prioritario', 'plan3.f5': 'Todo lo de Pro', 'plan3.f6': 'Exportación de correo y documentos',
     'plan3.cta': 'Elegir Premium',
-    'pricing.note': 'Acceso anticipado: 14,99 €/mes de por vida — limitado a los 100 primeros fundadores. Después rige el precio Pro habitual. Con facturación anual ahorre 30–33 %.',
+    'pricing.note': 'Ahorre 30–33 % con facturación anual. Cancele cuando quiera — derecho de desistimiento UE 14 días.',
     'faq.label': 'FAQ', 'faq.title': 'Respuestas <em>honestas</em> a las dudas más frecuentes.',
     'faq.items': [
       { q: '¿Es legal? ¿De verdad puedo usar IA para temas jurídicos?', a: 'Sí. Advocat es un servicio de información jurídica: explica las leyes y ayuda a redactar documentos. No sustituye a un abogado colegiado para representación en juicio, pero para entender su situación y escribir cartas funciona. Igual que es legal leer artículos jurídicos en internet, es legal usar una herramienta que lo haga por usted.' },
@@ -2877,10 +2752,6 @@ const I18N = {
   },
 
   it: {
-    'promo': 'Accesso anticipato: 14,99 €/mese <em>a vita</em> — i primi 100 founder. Poi 19,99 €/mese — <a href="/app.html?plan=counsel&amp;billing=early-access">prendi il tuo posto →</a>',
-    'pricing.founder_counter_tail': ' / 100 posti founder ancora disponibili',
-    'pricing.founder_closed': 'Accesso anticipato chiuso — Pro 19,99 €/mese disponibile',
-    'plan2.cta_closed': 'Scegli Pro 19,99 €/mese',
     'cookie.title': 'Cookie e privacy',
     'cookie.body': 'Utilizziamo i cookie necessari per mantenerti connesso. Dopo il tuo consenso, usiamo anche analisi anonime per migliorare il servizio. Consulta la nostra <a href="/privacy.html" target="_blank" rel="noopener">Informativa sulla privacy</a>. Domande: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Accetta',
@@ -2919,7 +2790,7 @@ const I18N = {
     'compare.t3': 'Spesso solo estone o inglese', 'compare.t4': 'A memoria — verbale, senza traccia scritta', 'compare.t5': 'Ogni domanda = nuova parcella',
     'compare.cta_them': 'Prenota un appuntamento',
     'compare.year_advocat': 'Advocat · all\'anno',
-    'compare.year_advocat_sub': '14,99 € × 12 mesi',
+    'compare.year_advocat_sub': '19,99 € × 12 mesi',
     'compare.year_bureau': 'Studio legale · all\'anno',
     'compare.year_bureau_sub': '150 € × 120 h in media',
     'compare.year_save': 'Lei risparmia',
@@ -2931,18 +2802,16 @@ const I18N = {
     'plan1.f1': '7 messaggi IA in totale', 'plan1.f2': '1 caso attivo', 'plan1.f3': 'Scansione documenti (3)', 'plan1.f4': 'Fonti dal diritto EE e UE', 'plan1.f5': 'Senza carta',
     'plan1.cta': 'Inizia gratis',
     'plan2.badge': 'Il più scelto', 'plan2.eyebrow': 'Per le famiglie', 'plan2.name': 'Pro', 'plan2.per': '/ mese', 'plan2.annual': 'oppure 159,99 €/anno — risparmio 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Assistenza legale quotidiana per Lei e la Sua famiglia. IA illimitata, redazione completa dei documenti.',
     'plan2.f1': '100 messaggi IA / giorno', 'plan2.f2': '3 casi attivi', 'plan2.f3': 'Scansione documenti (20)',
     'plan2.f4': 'Redazione completa (lettere, reclami)', 'plan2.f5': 'Dettatura vocale', 'plan2.f6': 'Ricerca web della giurisprudenza più recente',
-    'plan2.cta': 'Ottieni l\'accesso anticipato',
+    'plan2.cta': 'Scegli Pro',
     'plan3.eyebrow': 'Difesa totale', 'plan3.name': 'Premium', 'plan3.per': '/ mese', 'plan3.annual': 'oppure 249,99 €/anno — risparmio 30 %',
     'plan3.desc': 'Difesa totale — tutto illimitato, corsia prioritaria, tutte le funzioni.',
     'plan3.f1': 'Messaggi IA illimitati', 'plan3.f2': 'Casi illimitati', 'plan3.f3': 'Scansioni illimitate',
     'plan3.f4': 'Elaborazione prioritaria', 'plan3.f5': 'Tutto Pro incluso', 'plan3.f6': 'Esportazione email e documenti',
     'plan3.cta': 'Scegli Premium',
-    'pricing.note': 'Accesso anticipato: 14,99 €/mese a vita — limitato ai primi 100 founder. Successivamente si applica il prezzo Pro standard. Con la fatturazione annuale risparmia il 30–33 %.',
+    'pricing.note': 'Risparmia il 30–33 % con la fatturazione annuale. Disdici in qualsiasi momento — diritto di recesso UE 14 giorni.',
     'faq.label': 'FAQ', 'faq.title': 'Risposte <em>oneste</em> alle domande più comuni.',
     'faq.items': [
       { q: 'È legale? Posso davvero usare l\'IA per questioni giuridiche?', a: 'Sì. Advocat è un servizio di informazione giuridica: spiega le leggi e aiuta a redigere documenti. Non sostituisce un avvocato iscritto all\'albo per la rappresentanza in tribunale, ma per capire la Sua situazione e scrivere lettere funziona benissimo. Allo stesso modo in cui è legale leggere articoli giuridici online, è legale usare uno strumento che lo fa al posto Suo.' },
@@ -2977,10 +2846,6 @@ const I18N = {
   },
 
   pl: {
-    'promo': 'Wczesny dostęp: 14,99 €/mies. <em>na zawsze</em> — dla pierwszych 100 founderów. Później 19,99 €/mies. — <a href="/app.html?plan=counsel&amp;billing=early-access">zarezerwuj swoje miejsce →</a>',
-    'pricing.founder_counter_tail': ' / pozostało 100 miejsc dla founderów',
-    'pricing.founder_closed': 'Wczesny dostęp zamknięty — dostępny Pro 19,99 €/mies.',
-    'plan2.cta_closed': 'Wybierz Pro 19,99 €/mies.',
     'cookie.title': 'Pliki cookie i prywatność',
     'cookie.body': 'Używamy plików cookie potrzebnych do utrzymania Twojego logowania. Po Twojej zgodzie korzystamy również z anonimowej analityki, aby ulepszać usługę. Zobacz naszą <a href="/privacy.html" target="_blank" rel="noopener">Politykę prywatności</a>. Pytania: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Akceptuję',
@@ -3019,7 +2884,7 @@ const I18N = {
     'compare.t3': 'Często tylko estoński lub angielski', 'compare.t4': 'Z pamięci — ustnie, bez śladu', 'compare.t5': 'Każde pytanie = nowa faktura',
     'compare.cta_them': 'Umów konsultację',
     'compare.year_advocat': 'Advocat · rocznie',
-    'compare.year_advocat_sub': '14,99 € × 12 miesięcy',
+    'compare.year_advocat_sub': '19,99 € × 12 miesięcy',
     'compare.year_bureau': 'Kancelaria · rocznie',
     'compare.year_bureau_sub': '150 € × 120 godz. średnio',
     'compare.year_save': 'Oszczędność',
@@ -3031,18 +2896,16 @@ const I18N = {
     'plan1.f1': '7 wiadomości AI łącznie', 'plan1.f2': '1 aktywna sprawa', 'plan1.f3': 'Skanowanie dokumentów (3)', 'plan1.f4': 'Źródła z prawa EE i UE', 'plan1.f5': 'Bez karty',
     'plan1.cta': 'Zacznij za darmo',
     'plan2.badge': 'Najpopularniejszy', 'plan2.eyebrow': 'Dla rodzin', 'plan2.name': 'Pro', 'plan2.per': '/ mies.', 'plan2.annual': 'lub 159,99 €/rok — oszczędność 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Codzienna pomoc prawna dla Pana/Pani i rodziny. AI bez limitu, pełne pisanie dokumentów.',
     'plan2.f1': '100 wiadomości AI / dzień', 'plan2.f2': '3 aktywne sprawy', 'plan2.f3': 'Skanowanie dokumentów (20)',
     'plan2.f4': 'Pełne pisma (wezwania, skargi)', 'plan2.f5': 'Dyktowanie głosem', 'plan2.f6': 'Wyszukiwanie aktualnego orzecznictwa',
-    'plan2.cta': 'Wybierz wczesny dostęp',
+    'plan2.cta': 'Wybierz Pro',
     'plan3.eyebrow': 'Pełna obrona', 'plan3.name': 'Premium', 'plan3.per': '/ mies.', 'plan3.annual': 'lub 249,99 €/rok — oszczędność 30 %',
     'plan3.desc': 'Pełna obrona — wszystko bez limitu, priorytetowa kolejka, wszystkie funkcje.',
     'plan3.f1': 'Wiadomości AI bez limitu', 'plan3.f2': 'Sprawy bez limitu', 'plan3.f3': 'Skany bez limitu',
     'plan3.f4': 'Priorytetowe przetwarzanie', 'plan3.f5': 'Wszystko z Pro', 'plan3.f6': 'Eksport e-mail i dokumentów',
     'plan3.cta': 'Wybierz Premium',
-    'pricing.note': 'Wczesny dostęp: 14,99 €/mies. dożywotnio — limit do pierwszych 100 founderów. Następnie obowiązuje standardowa cena Pro. Przy rocznym rozliczeniu oszczędzasz 30–33 %.',
+    'pricing.note': 'Oszczędź 30–33 % przy rocznym rozliczeniu. Anuluj w dowolnym momencie — prawo odstąpienia UE 14 dni.',
     'faq.label': 'FAQ', 'faq.title': 'Uczciwe <em>odpowiedzi</em> na najczęstsze pytania.',
     'faq.items': [
       { q: 'Czy to legalne? Czy naprawdę można używać AI do pytań prawnych?', a: 'Tak. Advocat to usługa informacji prawnej — wyjaśnia przepisy i pomaga przygotowywać pisma. Nie zastępuje uprawnionego adwokata w sądzie, ale do zrozumienia sytuacji i napisania pierwszego pisma nadaje się świetnie. Tak samo, jak czytanie artykułów prawniczych w internecie jest legalne, legalne jest korzystanie z narzędzia, które robi to za Ciebie.' },
@@ -3077,10 +2940,6 @@ const I18N = {
   },
 
   sv: {
-    'promo': 'Tidig åtkomst: 14,99 €/mån <em>för alltid</em> — de första 100 founders. Sedan 19,99 €/mån — <a href="/app.html?plan=counsel&amp;billing=early-access">säkra din plats →</a>',
-    'pricing.founder_counter_tail': ' / 100 founder-platser kvar',
-    'pricing.founder_closed': 'Tidig åtkomst stängd — Pro 19,99 €/mån tillgängligt',
-    'plan2.cta_closed': 'Välj Pro 19,99 €/mån',
     'cookie.title': 'Cookies och integritet',
     'cookie.body': 'Vi använder cookies som behövs för att hålla dig inloggad. Efter ditt samtycke använder vi även anonym analys för att förbättra tjänsten. Läs vår <a href="/privacy.html" target="_blank" rel="noopener">integritetspolicy</a>. Frågor: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Acceptera',
@@ -3119,7 +2978,7 @@ const I18N = {
     'compare.t3': 'Ofta bara estniska eller engelska', 'compare.t4': 'Ur minnet — muntligt, inget protokoll', 'compare.t5': 'Varje fråga = ny faktura',
     'compare.cta_them': 'Boka konsultation',
     'compare.year_advocat': 'Advocat · per år',
-    'compare.year_advocat_sub': '14,99 € × 12 månader',
+    'compare.year_advocat_sub': '19,99 € × 12 månader',
     'compare.year_bureau': 'Advokatbyrå · per år',
     'compare.year_bureau_sub': '150 € × 120 h i snitt',
     'compare.year_save': 'Du sparar',
@@ -3131,18 +2990,16 @@ const I18N = {
     'plan1.f1': '7 AI-meddelanden totalt', 'plan1.f2': '1 aktivt ärende', 'plan1.f3': 'Dokumentskanning (3 st)', 'plan1.f4': 'Källor från EE- och EU-rätt', 'plan1.f5': 'Inget kort behövs',
     'plan1.cta': 'Börja gratis',
     'plan2.badge': 'Mest populär', 'plan2.eyebrow': 'För familjer', 'plan2.name': 'Pro', 'plan2.per': '/ månad', 'plan2.annual': 'eller 159,99 €/år — spara 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Daglig juridisk hjälp för dig och familjen. Obegränsad AI, full dokumentskrivning.',
     'plan2.f1': '100 AI-meddelanden / dag', 'plan2.f2': '3 aktiva ärenden', 'plan2.f3': 'Dokumentskanning (20 st)',
     'plan2.f4': 'Full skrivning (brev, klagomål)', 'plan2.f5': 'Röstinmatning', 'plan2.f6': 'Webbsökning efter färsk rättspraxis',
-    'plan2.cta': 'Skaffa tidig åtkomst',
+    'plan2.cta': 'Välj Pro',
     'plan3.eyebrow': 'Fullt försvar', 'plan3.name': 'Premium', 'plan3.per': '/ månad', 'plan3.annual': 'eller 249,99 €/år — spara 30 %',
     'plan3.desc': 'Fullt försvar — allt obegränsat, prioriterad hantering, alla funktioner.',
     'plan3.f1': 'Obegränsade AI-meddelanden', 'plan3.f2': 'Obegränsade ärenden', 'plan3.f3': 'Obegränsade skanningar',
     'plan3.f4': 'Prioriterad hantering', 'plan3.f5': 'Allt från Pro', 'plan3.f6': 'E-post- och dokumentexport',
     'plan3.cta': 'Välj Premium',
-    'pricing.note': 'Tidig åtkomst: 14,99 €/mån livet ut — begränsat till de första 100 founders. Därefter gäller ordinarie Pro-pris. Med årsbetalning sparar du 30–33 %.',
+    'pricing.note': 'Spara 30–33 % med årsbetalning. Avsluta när som helst — EU-ångerrätt 14 dagar.',
     'faq.label': 'Vanliga frågor', 'faq.title': 'Ärliga <em>svar</em> på vanliga frågor.',
     'faq.items': [
       { q: 'Är det här lagligt? Får man verkligen använda AI för juridiska frågor?', a: 'Ja. Advocat är en juridisk informationstjänst — den förklarar lagar och hjälper dig skriva dokument. Den ersätter inte en behörig advokat i rätten, men för att förstå din situation och skriva brev fungerar den utmärkt. På samma sätt som det är lagligt att läsa juridiska artiklar online är det lagligt att använda ett verktyg som gör det åt dig.' },
@@ -3177,10 +3034,6 @@ const I18N = {
   },
 
   lv: {
-    'promo': 'Agrīnā piekļuve: 14,99 €/mēn. <em>uz mūžu</em> — pirmajiem 100 dibinātājiem. Pēc tam 19,99 €/mēn. — <a href="/app.html?plan=counsel&amp;billing=early-access">rezervē savu vietu →</a>',
-    'pricing.founder_counter_tail': ' / atlikušas 100 dibinātāja vietas',
-    'pricing.founder_closed': 'Agrīnā piekļuve slēgta — pieejams Pro 19,99 €/mēn.',
-    'plan2.cta_closed': 'Izvēlēties Pro 19,99 €/mēn.',
     'cookie.title': 'Sīkdatnes un privātums',
     'cookie.body': 'Mēs izmantojam sīkdatnes, kas nepieciešamas, lai jūs paliktu pieteicies. Pēc jūsu piekrišanas mēs izmantojam arī anonīmu analītiku, lai uzlabotu pakalpojumu. Skatiet mūsu <a href="/privacy.html" target="_blank" rel="noopener">Privātuma politiku</a>. Jautājumi: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Piekrītu',
@@ -3219,7 +3072,7 @@ const I18N = {
     'compare.t3': 'Bieži tikai igauņu vai angļu valoda', 'compare.t4': 'No atmiņas — mutiski, bez ieraksta', 'compare.t5': 'Katrs jautājums = jauns rēķins',
     'compare.cta_them': 'Pieteikties konsultācijai',
     'compare.year_advocat': 'Advocat · gadā',
-    'compare.year_advocat_sub': '14,99 € × 12 mēneši',
+    'compare.year_advocat_sub': '19,99 € × 12 mēneši',
     'compare.year_bureau': 'Advokātu birojs · gadā',
     'compare.year_bureau_sub': '150 € × 120 h vidēji',
     'compare.year_save': 'Jūs ietaupāt',
@@ -3231,18 +3084,16 @@ const I18N = {
     'plan1.f1': '7 MI ziņas kopā', 'plan1.f2': '1 aktīva lieta', 'plan1.f3': 'Dokumentu skenēšana (3)', 'plan1.f4': 'Atsauces uz EE un ES tiesībām', 'plan1.f5': 'Bez kartes',
     'plan1.cta': 'Sākt bez maksas',
     'plan2.badge': 'Populārākais', 'plan2.eyebrow': 'Ģimenēm', 'plan2.name': 'Pro', 'plan2.per': '/ mēnesī', 'plan2.annual': 'vai 159,99 €/gadā — ietaupiet 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Ikdienas juridiskā palīdzība jums un ģimenei. Neierobežots MI, pilna dokumentu sagatavošana.',
     'plan2.f1': '100 MI ziņu dienā', 'plan2.f2': '3 aktīvas lietas', 'plan2.f3': 'Dokumentu skenēšana (20)',
     'plan2.f4': 'Pilna sagatavošana (vēstules, sūdzības)', 'plan2.f5': 'Balss ievade', 'plan2.f6': 'Tīmekļa meklēšana aktuālajai praksei',
-    'plan2.cta': 'Iegūt agrīno piekļuvi',
+    'plan2.cta': 'Izvēlēties Pro',
     'plan3.eyebrow': 'Pilna aizsardzība', 'plan3.name': 'Premium', 'plan3.per': '/ mēnesī', 'plan3.annual': 'vai 249,99 €/gadā — ietaupiet 30 %',
     'plan3.desc': 'Pilna aizsardzība — viss bez ierobežojumiem, prioritāte, visas funkcijas.',
     'plan3.f1': 'Neierobežotas MI ziņas', 'plan3.f2': 'Neierobežotas lietas', 'plan3.f3': 'Neierobežoti skenējumi',
     'plan3.f4': 'Prioritāra apstrāde', 'plan3.f5': 'Viss no Pro', 'plan3.f6': 'E-pasta un dokumentu eksports',
     'plan3.cta': 'Izvēlēties Premium',
-    'pricing.note': 'Agrīnā piekļuve: 14,99 €/mēn. uz mūžu — ierobežota līdz pirmajiem 100 dibinātājiem. Pēc tam piemēro standarta Pro cenu. Ar gada apmaksu ietaupiet 30–33 %.',
+    'pricing.note': 'Ietaupiet 30–33 % ar gada apmaksu. Atceliet jebkurā laikā — ES 14 dienu atteikuma tiesības.',
     'faq.label': 'BUJ', 'faq.title': 'Godīgas <em>atbildes</em> uz biežiem jautājumiem.',
     'faq.items': [
       { q: 'Vai tas ir likumīgi? Vai tiešām var izmantot MI juridiskiem jautājumiem?', a: 'Jā. Advocat ir juridiskās informācijas pakalpojums — paskaidro likumus un palīdz sagatavot dokumentus. Tas neaizstāj licencētu advokātu tiesā, bet, lai saprastu situāciju un sagatavotu vēstuli, pilnībā der. Tāpat kā ir likumīgi lasīt juridiskus rakstus internetā, ir likumīgi izmantot rīku, kas to izdara jūsu vietā.' },
@@ -3277,10 +3128,6 @@ const I18N = {
   },
 
   lt: {
-    'promo': 'Ankstyvoji prieiga: 14,99 €/mėn. <em>visam laikui</em> — pirmiesiems 100 steigėjų. Vėliau 19,99 €/mėn. — <a href="/app.html?plan=counsel&amp;billing=early-access">užsitikrinkite vietą →</a>',
-    'pricing.founder_counter_tail': ' / liko 100 steigėjo vietų',
-    'pricing.founder_closed': 'Ankstyvoji prieiga uždaryta — galima Pro 19,99 €/mėn.',
-    'plan2.cta_closed': 'Pasirinkti Pro 19,99 €/mėn.',
     'cookie.title': 'Slapukai ir privatumas',
     'cookie.body': 'Naudojame slapukus, reikalingus jūsų prisijungimui palaikyti. Po jūsų sutikimo taip pat naudojame anoniminę analitiką paslaugai gerinti. Žr. mūsų <a href="/privacy.html" target="_blank" rel="noopener">Privatumo politiką</a>. Klausimai: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Sutinku',
@@ -3319,7 +3166,7 @@ const I18N = {
     'compare.t3': 'Dažnai tik estų ar anglų', 'compare.t4': 'Iš atminties — žodžiu, be įrašo', 'compare.t5': 'Kiekvienas klausimas = nauja sąskaita',
     'compare.cta_them': 'Užsiregistruoti konsultacijai',
     'compare.year_advocat': 'Advocat · per metus',
-    'compare.year_advocat_sub': '14,99 € × 12 mėn.',
+    'compare.year_advocat_sub': '19,99 € × 12 mėn.',
     'compare.year_bureau': 'Advokatų kontora · per metus',
     'compare.year_bureau_sub': '150 € × 120 val. vidutiniškai',
     'compare.year_save': 'Sutaupote',
@@ -3331,18 +3178,16 @@ const I18N = {
     'plan1.f1': '7 DI žinutės iš viso', 'plan1.f2': '1 aktyvi byla', 'plan1.f3': 'Dokumentų skenavimas (3)', 'plan1.f4': 'Šaltiniai iš EE ir ES teisės', 'plan1.f5': 'Be kortelės',
     'plan1.cta': 'Pradėti nemokamai',
     'plan2.badge': 'Populiariausias', 'plan2.eyebrow': 'Šeimoms', 'plan2.name': 'Pro', 'plan2.per': '/ mėn.', 'plan2.annual': 'arba 159,99 €/metus — sutaupote 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Kasdienė teisinė pagalba jums ir šeimai. Neribotas DI, pilnas dokumentų rengimas.',
     'plan2.f1': '100 DI žinučių per dieną', 'plan2.f2': '3 aktyvios bylos', 'plan2.f3': 'Dokumentų skenavimas (20)',
     'plan2.f4': 'Pilnas dokumentų rengimas (raštai, skundai)', 'plan2.f5': 'Balso įvestis', 'plan2.f6': 'Žiniatinklio paieška šviežiai praktikai',
-    'plan2.cta': 'Gauti ankstyvąją prieigą',
+    'plan2.cta': 'Pasirinkti Pro',
     'plan3.eyebrow': 'Pilna gynyba', 'plan3.name': 'Premium', 'plan3.per': '/ mėn.', 'plan3.annual': 'arba 249,99 €/metus — sutaupote 30 %',
     'plan3.desc': 'Pilna gynyba — viskas neribotai, prioritetas, visos funkcijos.',
     'plan3.f1': 'Neribotos DI žinutės', 'plan3.f2': 'Neribotos bylos', 'plan3.f3': 'Neriboti skenavimai',
     'plan3.f4': 'Prioritetinis apdorojimas', 'plan3.f5': 'Viskas iš Pro', 'plan3.f6': 'El. pašto ir dokumentų eksportas',
     'plan3.cta': 'Pasirinkti Premium',
-    'pricing.note': 'Ankstyvoji prieiga: 14,99 €/mėn. visam laikui — riba pirmiesiems 100 steigėjų. Vėliau galioja standartinė Pro kaina. Su metiniu mokėjimu sutaupote 30–33 %.',
+    'pricing.note': 'Sutaupykite 30–33 % su metiniu mokėjimu. Atšaukite bet kada — ES 14 dienų grąžinimo teisė.',
     'faq.label': 'DUK', 'faq.title': 'Sąžiningi <em>atsakymai</em> į dažniausius klausimus.',
     'faq.items': [
       { q: 'Ar tai teisėta? Ar tikrai galima naudoti DI teisiniams klausimams?', a: 'Taip. Advocat — tai teisinės informacijos paslauga: paaiškina įstatymus ir padeda parengti dokumentus. Ji nepakeičia licencijuoto advokato teisme, bet situacijai suprasti ir laiškui parašyti puikiai tinka. Lygiai kaip teisėta skaityti teisinius straipsnius internete, taip teisėta naudotis įrankiu, kuris tai daro už jus.' },
@@ -3377,10 +3222,6 @@ const I18N = {
   },
 
   ro: {
-    'promo': 'Acces anticipat: 14,99 €/lună <em>pe viață</em> — primii 100 fondatori. Apoi 19,99 €/lună — <a href="/app.html?plan=counsel&amp;billing=early-access">rezervă-ți locul →</a>',
-    'pricing.founder_counter_tail': ' / 100 locuri de fondator rămase',
-    'pricing.founder_closed': 'Acces anticipat închis — Pro 19,99 €/lună disponibil',
-    'plan2.cta_closed': 'Alege Pro 19,99 €/lună',
     'cookie.title': 'Cookie-uri și confidențialitate',
     'cookie.body': 'Folosim cookie-uri necesare pentru a vă menține autentificat. După consimțământul dvs., folosim și analize anonime pentru a îmbunătăți serviciul. Consultați <a href="/privacy.html" target="_blank" rel="noopener">Politica de confidențialitate</a>. Întrebări: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Accept',
@@ -3419,7 +3260,7 @@ const I18N = {
     'compare.t3': 'Adesea doar estoniană sau engleză', 'compare.t4': 'Din memorie — verbal, fără înscris', 'compare.t5': 'Fiecare întrebare = factură nouă',
     'compare.cta_them': 'Programează o consultație',
     'compare.year_advocat': 'Advocat · pe an',
-    'compare.year_advocat_sub': '14,99 € × 12 luni',
+    'compare.year_advocat_sub': '19,99 € × 12 luni',
     'compare.year_bureau': 'Casă de avocatură · pe an',
     'compare.year_bureau_sub': '150 € × 120 ore în medie',
     'compare.year_save': 'Economisiți',
@@ -3431,18 +3272,16 @@ const I18N = {
     'plan1.f1': '7 mesaje AI în total', 'plan1.f2': '1 caz activ', 'plan1.f3': 'Scanare documente (3)', 'plan1.f4': 'Surse din dreptul EE și UE', 'plan1.f5': 'Fără card',
     'plan1.cta': 'Începe gratuit',
     'plan2.badge': 'Cel mai popular', 'plan2.eyebrow': 'Pentru familii', 'plan2.name': 'Pro', 'plan2.per': '/ lună', 'plan2.annual': 'sau 159,99 €/an — economisiți 33 %',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Asistență juridică zilnică pentru dumneavoastră și familie. AI nelimitat, redactare completă a documentelor.',
     'plan2.f1': '100 mesaje AI / zi', 'plan2.f2': '3 cazuri active', 'plan2.f3': 'Scanare documente (20)',
     'plan2.f4': 'Redactare completă (somații, plângeri)', 'plan2.f5': 'Dictare vocală', 'plan2.f6': 'Căutare web pentru jurisprudență recentă',
-    'plan2.cta': 'Obține accesul anticipat',
+    'plan2.cta': 'Alege Pro',
     'plan3.eyebrow': 'Apărare totală', 'plan3.name': 'Premium', 'plan3.per': '/ lună', 'plan3.annual': 'sau 249,99 €/an — economisiți 30 %',
     'plan3.desc': 'Apărare totală — totul nelimitat, prioritate, toate funcțiile.',
     'plan3.f1': 'Mesaje AI nelimitate', 'plan3.f2': 'Cazuri nelimitate', 'plan3.f3': 'Scanări nelimitate',
     'plan3.f4': 'Procesare prioritară', 'plan3.f5': 'Tot ce este în Pro', 'plan3.f6': 'Export e-mail și documente',
     'plan3.cta': 'Alege Premium',
-    'pricing.note': 'Acces anticipat: 14,99 €/lună pe viață — limitat la primii 100 fondatori. Apoi se aplică prețul Pro standard. Cu plata anuală economisiți 30–33 %.',
+    'pricing.note': 'Economisiți 30–33 % cu plata anuală. Anulați oricând — drept de retragere UE 14 zile.',
     'faq.label': 'Întrebări frecvente', 'faq.title': 'Răspunsuri <em>oneste</em> la întrebările uzuale.',
     'faq.items': [
       { q: 'Este legal? Pot folosi cu adevărat AI pentru întrebări juridice?', a: 'Da. Advocat este un serviciu de informare juridică — explică legile și ajută la redactarea documentelor. Nu înlocuiește un avocat înscris în barou pentru reprezentarea în instanță, dar pentru a vă înțelege situația și a scrie scrisori funcționează foarte bine. La fel cum este legal să citiți articole juridice online, este legal să folosiți un instrument care face asta în locul dumneavoastră.' },
@@ -3477,10 +3316,6 @@ const I18N = {
   },
 
   tr: {
-    'promo': 'Erken erişim: 14,99 €/ay <em>ömür boyu</em> — ilk 100 kurucu için. Sonrasında 19,99 €/ay — <a href="/app.html?plan=counsel&amp;billing=early-access">yerinizi alın →</a>',
-    'pricing.founder_counter_tail': ' / 100 kurucu yerinden geriye',
-    'pricing.founder_closed': 'Erken erişim kapandı — Pro 19,99 €/ay mevcut',
-    'plan2.cta_closed': 'Pro 19,99 €/ay seç',
     'cookie.title': 'Çerezler ve gizlilik',
     'cookie.body': 'Oturumunuzu açık tutmak için gerekli çerezleri kullanıyoruz. Onayınızdan sonra hizmeti geliştirmek için anonim analitik de kullanıyoruz. <a href="/privacy.html" target="_blank" rel="noopener">Gizlilik Politikamıza</a> bakın. Sorular: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'Kabul et',
@@ -3519,7 +3354,7 @@ const I18N = {
     'compare.t3': 'Çoğunlukla yalnız Estonca veya İngilizce', 'compare.t4': 'Hafızadan — sözlü, kayıt yok', 'compare.t5': 'Her soru = yeni fatura',
     'compare.cta_them': 'Görüşme ayarla',
     'compare.year_advocat': 'Advocat · yıllık',
-    'compare.year_advocat_sub': '14,99 € × 12 ay',
+    'compare.year_advocat_sub': '19,99 € × 12 ay',
     'compare.year_bureau': 'Hukuk bürosu · yıllık',
     'compare.year_bureau_sub': 'Ortalama 150 € × 120 saat',
     'compare.year_save': 'Tasarrufunuz',
@@ -3531,18 +3366,16 @@ const I18N = {
     'plan1.f1': 'Toplam 7 YZ mesajı', 'plan1.f2': '1 aktif dosya', 'plan1.f3': 'Belge tarama (3 adet)', 'plan1.f4': 'EE ve AB hukukundan kaynaklar', 'plan1.f5': 'Kart gerekmez',
     'plan1.cta': 'Ücretsiz başla',
     'plan2.badge': 'En çok tercih edilen', 'plan2.eyebrow': 'Aileler için', 'plan2.name': 'Pro', 'plan2.per': '/ ay', 'plan2.annual': 'veya 159,99 €/yıl — %33 tasarruf',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'Sizin ve aileniz için günlük hukuki destek. Sınırsız YZ, eksiksiz belge yazımı.',
     'plan2.f1': 'Günde 100 YZ mesajı', 'plan2.f2': '3 aktif dosya', 'plan2.f3': 'Belge tarama (20 adet)',
     'plan2.f4': 'Eksiksiz belge yazımı (mektup, şikâyet)', 'plan2.f5': 'Sesli giriş', 'plan2.f6': 'Güncel içtihat için web araması',
-    'plan2.cta': 'Erken erişim al',
+    'plan2.cta': 'Pro\'yu seç',
     'plan3.eyebrow': 'Tam savunma', 'plan3.name': 'Premium', 'plan3.per': '/ ay', 'plan3.annual': 'veya 249,99 €/yıl — %30 tasarruf',
     'plan3.desc': 'Tam savunma — her şey sınırsız, öncelikli işlem, tüm özellikler açık.',
     'plan3.f1': 'Sınırsız YZ mesajı', 'plan3.f2': 'Sınırsız dosya', 'plan3.f3': 'Sınırsız belge tarama',
     'plan3.f4': 'Öncelikli işlem', 'plan3.f5': 'Pro\'daki her şey', 'plan3.f6': 'E-posta ve belge dışa aktarımı',
     'plan3.cta': 'Premium\'u seç',
-    'pricing.note': 'Erken erişim: 14,99 €/ay ömür boyu — yalnızca ilk 100 kurucuyla sınırlı. Sonrasında standart Pro fiyatı geçerli olur. Yıllık ödemeyle %30–33 tasarruf edersiniz.',
+    'pricing.note': 'Yıllık ödemeyle %30–33 tasarruf edin. Dilediğiniz zaman iptal — AB 14 günlük cayma hakkı.',
     'faq.label': 'SSS', 'faq.title': 'Sık sorulanlara <em>dürüst yanıtlar</em>.',
     'faq.items': [
       { q: 'Bu yasal mı? Hukuki sorular için gerçekten YZ kullanabilir miyim?', a: 'Evet. Advocat bir hukuki bilgi hizmetidir — yasaları açıklar ve belge hazırlamanıza yardım eder. Mahkemede sizi temsil edecek ruhsatlı bir avukatın yerini tutmaz, ancak durumu anlamak ve mektup yazmak için gayet uygundur. İnternette hukuk makalesi okumak nasıl yasalsa, bunu sizin için yapan bir aracı kullanmak da yasaldır.' },
@@ -3577,10 +3410,6 @@ const I18N = {
   },
 
   ar: {
-    'promo': 'الوصول المبكر: 14٫99 €/شهر <em>مدى الحياة</em> — لأول 100 مؤسس. بعد ذلك 19٫99 €/شهر — <a href="/app.html?plan=counsel&amp;billing=early-access">احجز مكانك ←</a>',
-    'pricing.founder_counter_tail': ' / تبقّى 100 مقعد للمؤسسين',
-    'pricing.founder_closed': 'الوصول المبكر مغلق — Pro 19٫99 €/شهر متاح',
-    'plan2.cta_closed': 'اختر Pro 19٫99 €/شهر',
     'cookie.title': 'ملفات تعريف الارتباط والخصوصية',
     'cookie.body': 'نستخدم ملفات تعريف الارتباط اللازمة لإبقائك مسجل الدخول. بعد موافقتك، نستخدم أيضًا تحليلات مجهولة الهوية لتحسين الخدمة. اطّلع على <a href="/privacy.html" target="_blank" rel="noopener">سياسة الخصوصية</a>. للاستفسارات: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'موافق',
@@ -3619,7 +3448,7 @@ const I18N = {
     'compare.t3': 'غالباً الإستونية أو الإنجليزية فقط', 'compare.t4': 'من الذاكرة — شفهياً دون تدوين', 'compare.t5': 'كل سؤال = فاتورة جديدة',
     'compare.cta_them': 'حجز استشارة',
     'compare.year_advocat': 'Advocat · سنوياً',
-    'compare.year_advocat_sub': '14٫99 € × 12 شهراً',
+    'compare.year_advocat_sub': '19٫99 € × 12 شهراً',
     'compare.year_bureau': 'مكتب محاماة · سنوياً',
     'compare.year_bureau_sub': '150 € × 120 ساعة وسطياً',
     'compare.year_save': 'توفّر',
@@ -3631,18 +3460,16 @@ const I18N = {
     'plan1.f1': '7 رسائل ذكاء اصطناعي بالمجمل', 'plan1.f2': 'قضية فعّالة واحدة', 'plan1.f3': 'مسح المستندات (3)', 'plan1.f4': 'مصادر من القانون الإستوني والأوروبي', 'plan1.f5': 'بدون بطاقة',
     'plan1.cta': 'ابدأ مجاناً',
     'plan2.badge': 'الأكثر شيوعاً', 'plan2.eyebrow': 'للعائلات', 'plan2.name': 'Pro', 'plan2.per': '/ شهر', 'plan2.annual': 'أو 159٫99 €/سنة — وفّر 33%',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'دعم قانوني يومي لك ولعائلتك. ذكاء اصطناعي بلا حدود، صياغة مستندات كاملة.',
     'plan2.f1': '100 رسالة ذكاء اصطناعي / يوم', 'plan2.f2': '3 قضايا فعّالة', 'plan2.f3': 'مسح المستندات (20)',
     'plan2.f4': 'صياغة كاملة (خطابات، شكاوى)', 'plan2.f5': 'إدخال صوتي', 'plan2.f6': 'بحث على الويب عن السوابق الحديثة',
-    'plan2.cta': 'احصل على الوصول المبكر',
+    'plan2.cta': 'اختر Pro',
     'plan3.eyebrow': 'الدفاع الكامل', 'plan3.name': 'Premium', 'plan3.per': '/ شهر', 'plan3.annual': 'أو 249٫99 €/سنة — وفّر 30%',
     'plan3.desc': 'دفاع كامل — كل شيء بلا حدود، أولوية في الخدمة، جميع الميزات.',
     'plan3.f1': 'رسائل ذكاء اصطناعي بلا حدود', 'plan3.f2': 'قضايا بلا حدود', 'plan3.f3': 'مسح بلا حدود',
     'plan3.f4': 'معالجة ذات أولوية', 'plan3.f5': 'كل ما في Pro', 'plan3.f6': 'تصدير البريد الإلكتروني والمستندات',
     'plan3.cta': 'اختر Premium',
-    'pricing.note': 'الوصول المبكر: 14٫99 €/شهر مدى الحياة — لأول 100 مؤسس فقط. ثم يُطبَّق سعر Pro الاعتيادي. مع الفوترة السنوية توفّر 30–33%.',
+    'pricing.note': 'وفّر 30–33% مع الفوترة السنوية. إلغاء في أي وقت — حق الاسترداد لمدة 14 يومًا وفق قانون الاتحاد الأوروبي.',
     'faq.label': 'الأسئلة الشائعة', 'faq.title': 'إجابات <em>صادقة</em> على الأسئلة المتكرّرة.',
     'faq.items': [
       { q: 'هل هذا قانوني؟ هل يصحّ فعلاً استخدام الذكاء الاصطناعي للأسئلة القانونية؟', a: 'نعم. Advocat خدمة معلومات قانونية — تشرح القوانين وتساعد في صياغة المستندات. لا تحلّ محل المحامي المرخّص أمام القضاء، لكنها تكفي لفهم وضعك ولكتابة خطابك الأول. كما أن قراءة المقالات القانونية على الإنترنت قانونية، فإن استخدام أداة تنوب عنك في ذلك قانوني أيضاً.' },
@@ -3677,10 +3504,6 @@ const I18N = {
   },
 
   fa: {
-    'promo': 'دسترسی زودهنگام: ۱۴٫۹۹ €/ماه <em>مادام‌العمر</em> — برای ۱۰۰ بنیان‌گذار نخست. پس از آن ۱۹٫۹۹ €/ماه — <a href="/app.html?plan=counsel&amp;billing=early-access">جای خود را رزرو کنید ←</a>',
-    'pricing.founder_counter_tail': ' / ۱۰۰ صندلی بنیان‌گذاری باقی‌مانده',
-    'pricing.founder_closed': 'دسترسی زودهنگام بسته شد — Pro با ۱۹٫۹۹ €/ماه در دسترس است',
-    'plan2.cta_closed': 'انتخاب Pro با ۱۹٫۹۹ €/ماه',
     'cookie.title': 'کوکی‌ها و حریم خصوصی',
     'cookie.body': 'ما از کوکی‌های لازم برای حفظ ورود شما استفاده می‌کنیم. پس از رضایت شما، از تحلیل ناشناس برای بهبود سرویس نیز استفاده می‌کنیم. <a href="/privacy.html" target="_blank" rel="noopener">سیاست حریم خصوصی</a> ما را ببینید. سؤالات: <a href="mailto:support@advocat.ee">support@advocat.ee</a>.',
     'cookie.accept': 'پذیرفتن',
@@ -3719,7 +3542,7 @@ const I18N = {
     'compare.t3': 'اغلب فقط استونی یا انگلیسی', 'compare.t4': 'از حافظه — شفاهی، بدون ثبت', 'compare.t5': 'هر سؤال = صورتحساب جدید',
     'compare.cta_them': 'رزرو مشاوره',
     'compare.year_advocat': 'Advocat · سالانه',
-    'compare.year_advocat_sub': '۱۴٫۹۹ € × ۱۲ ماه',
+    'compare.year_advocat_sub': '۱۹٫۹۹ € × ۱۲ ماه',
     'compare.year_bureau': 'دفتر وکالت · سالانه',
     'compare.year_bureau_sub': '۱۵۰ € × میانگین ۱۲۰ ساعت',
     'compare.year_save': 'صرفه‌جویی شما',
@@ -3731,18 +3554,16 @@ const I18N = {
     'plan1.f1': 'مجموعاً ۷ پیام هوش مصنوعی', 'plan1.f2': 'یک پرونده فعّال', 'plan1.f3': 'اسکن سند (۳ مورد)', 'plan1.f4': 'منابع از حقوق استونی و اتحادیه اروپا', 'plan1.f5': 'بدون نیاز به کارت',
     'plan1.cta': 'رایگان شروع کنید',
     'plan2.badge': 'محبوب‌ترین', 'plan2.eyebrow': 'برای خانواده‌ها', 'plan2.name': 'Pro', 'plan2.per': '/ ماه', 'plan2.annual': 'یا ۱۵۹٫۹۹ €/سال — ۳۳٪ صرفه‌جویی',
-    'plan2.intro': 'Locked in for life · cancel anytime',
-    'plan2.price_tag': 'Founder price · forever',
     'plan2.desc': 'پشتیبانی حقوقی روزانه برای شما و خانواده. هوش مصنوعی نامحدود، تنظیم کامل اسناد.',
     'plan2.f1': 'روزانه ۱۰۰ پیام هوش مصنوعی', 'plan2.f2': 'سه پرونده فعّال', 'plan2.f3': 'اسکن سند (۲۰ مورد)',
     'plan2.f4': 'تنظیم کامل (نامه، شکایت)', 'plan2.f5': 'ورودی صوتی', 'plan2.f6': 'جستجوی وب برای رویه‌ی روز',
-    'plan2.cta': 'دسترسی زودهنگام را بگیرید',
+    'plan2.cta': 'انتخاب Pro',
     'plan3.eyebrow': 'دفاع کامل', 'plan3.name': 'Premium', 'plan3.per': '/ ماه', 'plan3.annual': 'یا ۲۴۹٫۹۹ €/سال — ۳۰٪ صرفه‌جویی',
     'plan3.desc': 'دفاع کامل — همه چیز نامحدود، اولویت در پاسخ، تمامی امکانات.',
     'plan3.f1': 'پیام‌های هوش مصنوعی نامحدود', 'plan3.f2': 'پرونده‌های نامحدود', 'plan3.f3': 'اسکن نامحدود',
     'plan3.f4': 'پردازش با اولویت', 'plan3.f5': 'همه‌ی امکانات Pro', 'plan3.f6': 'خروجی ایمیل و سند',
     'plan3.cta': 'انتخاب Premium',
-    'pricing.note': 'دسترسی زودهنگام: ۱۴٫۹۹ €/ماه مادام‌العمر — محدود به ۱۰۰ بنیان‌گذار نخست. پس از آن قیمت معمول Pro اعمال می‌شود. با پرداخت سالانه ۳۰ تا ۳۳٪ صرفه‌جویی کنید.',
+    'pricing.note': 'با پرداخت سالانه ۳۰ تا ۳۳٪ صرفه‌جویی کنید. لغو در هر زمان — حق برگشت ۱۴ روزه طبق قوانین اتحادیه اروپا.',
     'faq.label': 'سؤالات متداول', 'faq.title': 'پاسخ‌های <em>صادقانه</em> به پرسش‌های رایج.',
     'faq.items': [
       { q: 'آیا این قانونی است؟ آیا واقعاً می‌توان از هوش مصنوعی برای پرسش‌های حقوقی استفاده کرد؟', a: 'بله. Advocat یک خدمت اطلاع‌رسانی حقوقی است — قانون را توضیح می‌دهد و در تنظیم اسناد یاری می‌رساند. در دادگاه جایگزین وکیل دارای پروانه نمی‌شود، اما برای فهم وضعیت و نوشتن نخستین نامه کاملاً مناسب است. همان‌طور که خواندن مقالات حقوقی در اینترنت قانونی است، استفاده از ابزاری که این کار را به‌جای شما انجام می‌دهد نیز قانونی است.' },
@@ -4125,88 +3946,6 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
   } else {
     // Fallback: just set final values
     paint(targets);
-  }
-})();
-</script>
-
-<!-- ── Founder spots counter (Early Access — first 100 founders) ── -->
-<script>
-(function () {
-  // Resolve i18n strings safely — the I18N table is defined above. Pull
-  // current language via the same setting the rest of the page uses
-  // (localStorage 'advocat-lang' or navigator.language fallback).
-  function currentLang() {
-    try {
-      var saved = localStorage.getItem('advocat-lang');
-      if (saved) return saved;
-    } catch (e) {}
-    var nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
-    return ['en','et','ru','uk','fi'].indexOf(nav) >= 0 ? nav : 'en';
-  }
-
-  function tr(key) {
-    try {
-      var lang = currentLang();
-      var pack = (typeof I18N !== 'undefined') && I18N[lang] ? I18N[lang] : null;
-      if (pack && pack[key]) return pack[key];
-      var en = (typeof I18N !== 'undefined') && I18N.en ? I18N.en : null;
-      if (en && en[key]) return en[key];
-    } catch (e) {}
-    return null;
-  }
-
-  function applyClosedState() {
-    // Primary mechanism: flip CSS state machine via body class.
-    // CSS rules (search "EARLY ACCESS visibility state machine") then
-    // hide every .early-access-only and reveal #plan2-price-closed +
-    // #founder-closed-badge with !important. This is the ONE source of
-    // truth — no inline display juggling, no `hidden` attribute races.
-    document.body.classList.add('ea-closed');
-
-    var badge = document.getElementById('founder-closed-badge');
-    var cta = document.getElementById('plan2-cta');
-    if (badge) {
-      var msg = tr('pricing.founder_closed');
-      if (msg) badge.textContent = msg;
-    }
-    if (cta) {
-      var altHref = cta.getAttribute('data-href-closed');
-      if (altHref) cta.setAttribute('href', altHref);
-      var altLabel = tr('plan2.cta_closed');
-      if (altLabel) cta.textContent = altLabel;
-    }
-  }
-
-  function loadFounderSpots() {
-    fetch('https://okgnkucgwsytsondrjye.supabase.co/functions/v1/founder-spots', {
-      method: 'GET',
-      mode: 'cors',
-      cache: 'default'
-    })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (data) {
-        if (!data) return;
-        if (data.closed) { applyClosedState(); return; }
-        var el = document.getElementById('founder-spots-num');
-        if (el && typeof data.remaining === 'number') {
-          el.textContent = String(data.remaining);
-        }
-        // Only reveal the founder-counter chip once at least one seat is taken.
-        // taken may arrive directly or be derived from (100 - remaining).
-        var taken = (typeof data.taken === 'number')
-          ? data.taken
-          : (typeof data.remaining === 'number' ? (100 - data.remaining) : 0);
-        if (taken > 0) {
-          document.body.classList.add('founder-active');
-        }
-      })
-      .catch(function () { /* silent fallback — leave dash */ });
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadFounderSpots);
-  } else {
-    loadFounderSpots();
   }
 })();
 </script>

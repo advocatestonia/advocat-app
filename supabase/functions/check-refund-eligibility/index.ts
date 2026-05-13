@@ -1,7 +1,7 @@
 // check-refund-eligibility Edge Function
 // -----------------------------------------------------------------------------
 // Reports whether the currently authenticated user is still within the
-// Founder's Beta refund window (14 days OR 7 AI responses, whichever comes
+// launch pricing refund window (14 days OR 7 AI responses, whichever comes
 // first). Read-only — never mutates state.
 //
 // Contract:

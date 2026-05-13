@@ -627,7 +627,7 @@ class AIService {
     _responseCache[key] = _CachedResponse(response, DateTime.now());
   }
 
-  // ── Free-tier TOTAL limit (7 AI responses, per Founder's Beta policy) ──
+  // ── Free-tier TOTAL limit (7 AI responses, per launch pricing policy) ──
   //
   // Enforced server-side in the `check-ai-quota` Edge Function. This
   // constant is the fallback limit used when building fall-closed
@@ -635,7 +635,7 @@ class AIService {
   // supabase/functions/check-ai-quota/index.ts.
   //
 
-  /// Maximum free AI responses per user (aligned with the Founder's Beta
+  /// Maximum free AI responses per user (aligned with the launch pricing
   /// refund policy: 14 days OR 7 AI responses).
   static const int _freeTotalLimit = 7;
 

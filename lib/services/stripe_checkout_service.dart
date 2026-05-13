@@ -29,7 +29,6 @@ class _PlanMapping {
   static const Set<String> validBillingPeriods = {
     'monthly',
     'yearly',
-    'early-access',
   };
 
   /// Determine the billing_period string for the edge function.
@@ -133,10 +132,9 @@ class StripeCheckoutService {
 
   /// Opens a Stripe Checkout using a Stripe-side plan id (`counsel` or
   /// `representation`) and an exact `billing_period` string. Used by the
-  /// landing-page deep-link flow (`/app.html?plan=counsel&billing=early-access`).
+  /// landing-page deep-link flow (`/app.html?plan=counsel&billing=monthly`).
   ///
-  /// Unlike [startCheckout], this does NOT translate UI plan ids and accepts
-  /// `early-access` as a billing period (in addition to `monthly` / `yearly`).
+  /// Unlike [startCheckout], this does NOT translate UI plan ids.
   /// Throws [ArgumentError] for an unknown plan or billing period — the
   /// landing always controls the URL, so an invalid value is a bug.
   Future<bool> startCheckoutWithBilling({
@@ -214,7 +212,11 @@ class StripeCheckoutService {
     return true;
   }
 
-  /// Opens a Stripe Checkout for founding member pricing.
+  /// DEPRECATED — retired founder/founding-member pricing flow.
+  ///
+  /// Sends `billing_period='founding'`, which the create-checkout Edge
+  /// Function no longer accepts (it returns 400). Kept on the surface only
+  /// because dead-code-path tests pin its existence; do not call it.
   Future<bool> startFoundingCheckout({
     required String uiPlanId,
     String? customerEmail,

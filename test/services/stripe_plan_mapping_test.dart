@@ -110,21 +110,18 @@ void main() {
 
   group('startCheckoutWithBilling — direct Stripe-id + billing period', () {
     // The deep-link flow (landing → /app.html?plan=...&billing=...) uses
-    // raw Stripe ids and must accept `early-access` in addition to
-    // monthly/yearly. ArgumentError is raised before reaching Supabase
-    // for any unknown value.
+    // raw Stripe ids and accepts only monthly/yearly. ArgumentError is
+    // raised before reaching Supabase for any unknown value (founder
+    // Early Access program retired).
 
-    test('counsel + early-access reaches init-check', () async {
-      try {
-        await service.startCheckoutWithBilling(
+    test('counsel + early-access rejected (founder program retired)', () async {
+      expect(
+        () => service.startCheckoutWithBilling(
           stripePlanId: 'counsel',
           billingPeriod: 'early-access',
-        );
-        fail('expected exception');
-      } catch (e) {
-        expect(e.toString(), contains('not initialised'));
-        expect(e, isNot(isA<ArgumentError>()));
-      }
+        ),
+        throwsA(isA<Exception>()),
+      );
     });
 
     test('counsel + monthly reaches init-check', () async {
@@ -184,11 +181,9 @@ void main() {
       );
     });
 
-    test('founding billing period is rejected (renamed to early-access)',
-        () async {
-      // Regression guard: the old `founding` value was retired in favour
-      // of `early-access` on 2026-04-29. Calling with the old value must
-      // fail loudly so we catch any stale callers.
+    test('founding billing period is rejected (retired)', () async {
+      // Regression guard: both legacy founder/founding billing periods are
+      // retired. Calling with the old value must fail loudly.
       expect(
         () => service.startCheckoutWithBilling(
           stripePlanId: 'counsel',

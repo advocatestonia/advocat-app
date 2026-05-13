@@ -164,9 +164,9 @@ void main() {
   });
 
   // -------------------------------------------------------------------------
-  // 3. Stripe checkout: select Basic €14.99
+  // 3. Stripe checkout: select Basic €19.99
   // -------------------------------------------------------------------------
-  group('BP-1 / scenario 3 — Basic €14.99 checkout', () {
+  group('BP-1 / scenario 3 — Basic €19.99 checkout', () {
     test('create-checkout issues a Session ID and echoes plan=basic', () {
       final u = FakeAuthUser(id: 'u-2', email: 'basic@test.ee');
       w.users[u.id] = u;

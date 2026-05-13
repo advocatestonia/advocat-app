@@ -9,16 +9,6 @@ import 'package:advocat/shared/pending_checkout.dart';
 /// silently send users into an invalid Stripe session.
 void main() {
   group('PendingCheckout.fromQuery — accepted combinations', () {
-    test('counsel + early-access', () {
-      final p = PendingCheckout.fromQuery({
-        'plan': 'counsel',
-        'billing': 'early-access',
-      });
-      expect(p, isNotNull);
-      expect(p!.planId, 'counsel');
-      expect(p.billingPeriod, 'early-access');
-    });
-
     test('counsel + monthly', () {
       final p = PendingCheckout.fromQuery({
         'plan': 'counsel',
@@ -94,22 +84,25 @@ void main() {
       );
     });
 
-    test('representation + early-access rejected (Premium has no EA tier)',
-        () {
-      // Stripe edge function only defines `early-access` under `counsel`.
-      // The frontend must mirror that: only `counsel` accepts early-access.
-      // (Currently we accept the pair at the URL layer and let the edge
-      // function reject it — but the test pins the contract for the future
-      // when we tighten it. For now we expect non-null so the edge function
-      // is the sole source of truth.)
-      final p = PendingCheckout.fromQuery({
-        'plan': 'representation',
-        'billing': 'early-access',
-      });
-      // This documents current behaviour; if we tighten validation, flip.
-      expect(p, isNotNull,
-          reason:
-              'today the edge function rejects this; flip when we add UI guard');
+    test('early-access rejected (founder program retired)', () {
+      // Founder Early Access pricing has been retired. The PendingCheckout
+      // allow-list no longer contains 'early-access' so any landing-page
+      // deep link still carrying the legacy billing period must be dropped
+      // rather than forwarded to a 400 from the edge function.
+      expect(
+        PendingCheckout.fromQuery({
+          'plan': 'counsel',
+          'billing': 'early-access',
+        }),
+        isNull,
+      );
+      expect(
+        PendingCheckout.fromQuery({
+          'plan': 'representation',
+          'billing': 'early-access',
+        }),
+        isNull,
+      );
     });
 
     test('typo in billing period rejected', () {
@@ -129,7 +122,7 @@ void main() {
       // Force an internal value (bypasses Uri.base on web).
       n.state = const PendingCheckout(
         planId: 'counsel',
-        billingPeriod: 'early-access',
+        billingPeriod: 'monthly',
       );
       final first = n.consume();
       expect(first?.planId, 'counsel');

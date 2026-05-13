@@ -5,15 +5,13 @@
 //     supabase/functions/create-checkout/__tests__/create_checkout_validation_test.ts
 //
 // Pre-launch QA pass (2026-04-29). Covers gaps not addressed by
-// create_checkout_auth_test.ts and founder_cap_test.ts:
-//   - All accepted billing_period values (monthly / yearly / early-access)
+// create_checkout_auth_test.ts:
+//   - Accepted billing_period values (monthly / yearly)
 //   - Invalid billing_period -> 400
 //   - Invalid plan_id -> 400
-//   - "founding" billing_period rejected (renamed to early-access)
-//   - representation + early-access rejected at edge function (no PRICES entry)
+//   - Legacy "founding" / "early-access" billing periods rejected
 //   - Price amounts pin EUR cents (regression-protect price changes)
 //   - Subscription mode + auto-receipt config
-//   - early-access only routes through counsel (Pro), not representation
 // -----------------------------------------------------------------------------
 
 import {
@@ -58,7 +56,7 @@ Deno.test("CCV-T03 — unknown billing_period returns 400 mentioning the plan", 
 
 // ---- Accepted billing periods ---------------------------------------------
 
-Deno.test("CCV-T04 — counsel accepts monthly + yearly + early-access (3 keys)", () => {
+Deno.test("CCV-T04 — counsel accepts ONLY monthly + yearly (no early-access)", () => {
   // Inspect the PRICES const for the counsel branch.
   const counselMatch = stripped.match(
     /counsel:\s*\{([\s\S]*?)\n\s{2}\}/,
@@ -67,13 +65,13 @@ Deno.test("CCV-T04 — counsel accepts monthly + yearly + early-access (3 keys)"
   const counselBlock = counselMatch[1];
   assert(/monthly\s*:/.test(counselBlock), "missing monthly");
   assert(/yearly\s*:/.test(counselBlock), "missing yearly");
-  assert(/"early-access"\s*:/.test(counselBlock), "missing early-access");
+  assert(
+    !/"early-access"\s*:/.test(counselBlock),
+    "early-access tier removed — launch pricing offers only monthly + yearly",
+  );
 });
 
-Deno.test("CCV-T05 — representation accepts ONLY monthly + yearly (no early-access)", () => {
-  // representation = Premium tier; early-access intro pricing is for Pro
-  // (counsel) only. If representation gained an early-access entry, the
-  // founder pool would be diluted.
+Deno.test("CCV-T05 — representation accepts ONLY monthly + yearly", () => {
   const reprMatch = stripped.match(
     /representation:\s*\{([\s\S]*?)\n\s{2}\}/,
   );
@@ -83,17 +81,20 @@ Deno.test("CCV-T05 — representation accepts ONLY monthly + yearly (no early-ac
   assert(/yearly\s*:/.test(reprBlock), "missing yearly");
   assert(
     !/"early-access"\s*:/.test(reprBlock),
-    "representation must NOT have an early-access tier — that would dilute the founder pool",
+    "representation must NOT have an early-access tier",
   );
 });
 
-Deno.test("CCV-T06 — 'founding' is NOT a valid billing period (renamed to early-access)", () => {
-  // The frontend StripeCheckoutService.startFoundingCheckout sends
-  // billing_period='founding'. That dead code path would 400 here today.
-  // Pin that no PRICES entry exists for 'founding'.
+Deno.test("CCV-T06 — legacy 'founding' / 'early-access' periods are NOT valid", () => {
+  // Founder program retired. Pin that no PRICES entry exists for either
+  // legacy billing period.
   assert(
     !/"founding"\s*:/.test(stripped),
-    "'founding' is the legacy name — only 'early-access' should appear in PRICES",
+    "'founding' is the legacy name — must not appear in PRICES",
+  );
+  assert(
+    !/"early-access"\s*:/.test(stripped),
+    "'early-access' founder tier is retired — must not appear in PRICES",
   );
 });
 
@@ -113,14 +114,6 @@ Deno.test("CCV-T08 — Pro Yearly is €159.99 (15999 cents)", () => {
   );
   assert(match, "counsel.yearly amount not found");
   assertEquals(match[1], "15999");
-});
-
-Deno.test("CCV-T09 — Early Access is €14.99 (1499 cents)", () => {
-  const match = stripped.match(
-    /counsel:[\s\S]*?"early-access":[\s\S]*?amount:\s*(\d+)/,
-  );
-  assert(match, "counsel.early-access amount not found");
-  assertEquals(match[1], "1499");
 });
 
 Deno.test("CCV-T10 — Premium Monthly is €29.99 (2999 cents)", () => {
@@ -197,15 +190,18 @@ Deno.test("CCV-T17 — metadata records plan_id + billing_period + user_id", () 
   assertStringIncludes(stripped, "user_id: gate.user.id");
 });
 
-Deno.test("CCV-T18 — early-access flow stamps metadata.intro_type", () => {
-  // The webhook keys on this to record the founder lifetime guarantee.
-  assertStringIncludes(stripped, "metadata!.intro_type = FOUNDER_INTRO_TYPE");
-});
-
-Deno.test("CCV-T19 — early-access flow also stamps metadata.early_access='true'", () => {
-  // Defence in depth: a parallel flag the webhook can use even if intro_type
-  // is later renamed.
-  assertStringIncludes(stripped, 'metadata!.early_access = "true"');
+Deno.test("CCV-T18 — founder/early-access metadata is NOT stamped (program retired)", () => {
+  // Sanity: the retired founder flow used to stamp metadata.intro_type and
+  // metadata.early_access. Pin that those writes are gone so a regression
+  // cannot silently re-introduce the program.
+  assert(
+    !/metadata!?\.intro_type\s*=/.test(stripped),
+    "metadata.intro_type assignment must be removed (founder program retired)",
+  );
+  assert(
+    !/metadata!?\.early_access\s*=/.test(stripped),
+    "metadata.early_access assignment must be removed (founder program retired)",
+  );
 });
 
 // ---- Default success/cancel URLs -------------------------------------------
@@ -240,31 +236,16 @@ Deno.test("CCV-T23 — body is parsed exactly once via req.json()", () => {
 
 // ---- jsonError shape (for frontend error parsing) -------------------------
 
-Deno.test("CCV-T24 — early_access_full response includes message field for UI", () => {
-  // The landing flips to "Pro available" when remaining=0; the app needs
-  // a human-readable message to show in the modal.
-  assertStringIncludes(stripped, "All 100 founder seats are taken");
-});
-
 Deno.test("CCV-T25 — error responses use jsonError (consistent {error,...} shape)", () => {
   // Frontend parses response.data.error. Hand-rolled responses break parsing.
-  // We expect ALL error returns to use jsonError, EXCEPT the early-access
-  // 410 which has a richer shape ({error, message}).
+  // We expect ALL error returns to use jsonError.
   const handRolledErrors = stripped.match(
     /new Response\(\s*JSON\.stringify\(\{\s*error:\s*"[^"]+"\s*\}\)/g,
   );
-  if (handRolledErrors) {
-    // The only acceptable hand-rolled is early_access_full (410). Verify
-    // there are NO others.
-    const acceptable = handRolledErrors.filter((m) =>
-      m.includes("early_access_full")
-    );
-    assertEquals(
-      handRolledErrors.length,
-      acceptable.length,
-      `Hand-rolled error responses found that are not early_access_full: ` +
-        `${JSON.stringify(handRolledErrors)}. ` +
-        `Use jsonError() helper for consistency.`,
-    );
-  }
+  assertEquals(
+    handRolledErrors,
+    null,
+    `Hand-rolled error responses found: ${JSON.stringify(handRolledErrors)}. ` +
+      `Use jsonError() helper for consistency.`,
+  );
 });

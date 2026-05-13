@@ -154,7 +154,7 @@ Future<void> reportRlsViolation({
       hint: 'rls',
     ));
 
-/// Shortcut: founder cap reached (client sees the 403 from checkout).
+/// Shortcut: server-side cap hit (client sees an error from checkout / quota).
 Future<void> reportCapHit({
   required SupabaseClient client,
   required String message,
@@ -166,7 +166,7 @@ Future<void> reportCapHit({
       errorType: 'CapHit',
       errorMessage: message,
       route: route,
-      hint: 'founder-beta',
+      hint: 'launch-pricing',
     ));
 
 /// Shortcut: cost alert (triggered by server-side Claude cost aggregator,

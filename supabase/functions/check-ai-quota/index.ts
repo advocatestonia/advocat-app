@@ -39,7 +39,7 @@ const corsHeaders = {
     "Authorization, Content-Type, apikey, x-client-info",
 };
 
-// Founder's Beta refund policy: 14 days OR 7 AI responses, whichever comes
+// Launch pricing refund policy: 14 days OR 7 AI responses, whichever comes
 // first. The free tier must enforce the 7-response ceiling so users cannot
 // rack up unlimited Claude calls on the free plan.
 const FREE_LIMIT = 7;

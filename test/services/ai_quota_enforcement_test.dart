@@ -212,12 +212,12 @@ void main() {
           reason: 'Pro shortcut must not hit the quota client at all');
     });
 
-    test('FREE_LIMIT matches Founder\'s Beta refund policy (7)', () {
+    test('FREE_LIMIT matches launch pricing refund policy (7)', () {
       // If someone bumps this to 50 again without coordinating with the
       // server-side FREE_LIMIT, the server will still block at 7 and
       // the counter UI will desync. This test is the canary.
       expect(AIService.freeTotalLimit, 7,
-          reason: 'Founder\'s Beta refund policy: 14 days OR 7 AI responses');
+          reason: 'Launch pricing refund policy: 14 days OR 7 AI responses');
     });
 
     test('consumeQuota denied response has sane shape for UI', () async {

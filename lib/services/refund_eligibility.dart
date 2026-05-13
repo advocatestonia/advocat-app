@@ -1,4 +1,4 @@
-// Refund eligibility policy for Founder's Beta pricing (v2).
+// Refund eligibility policy for launch pricing (v2).
 // -----------------------------------------------------------------------------
 // Pure evaluator — no Supabase, no HTTP, no provider dependency. Callers
 // supply the raw state (subscribedAt, messagesUsed, now) and receive a typed
