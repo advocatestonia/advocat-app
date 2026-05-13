@@ -143,8 +143,17 @@ void main() {
         // Drive through the screen, capture the handler payload, and
         // confirm it exactly matches what IcsExportService would build
         // for the same deadline. This locks in the contract.
+        //
+        // NOTE: `due` MUST be in the future relative to DateTime.now() because
+        // CaseFileScreen only renders the "urgent" deadline row (and its
+        // `case_file_calendar_export_urgent` key) when
+        // `mostUrgentDeadline(today)` returns non-null — and that filter
+        // drops any deadline strictly before today. Hard-coding a fixed
+        // calendar date here causes this test to start failing the day
+        // after that date passes. The sibling tests in this group use
+        // `DateTime.now().add(...)` for exactly this reason.
         String? captured;
-        final due = DateTime(2026, 5, 12);
+        final due = DateTime.now().add(const Duration(days: 21));
 
         await tester.pumpWidget(
           _wrap(

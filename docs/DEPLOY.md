@@ -2,16 +2,16 @@
 
 This document is the single source of truth for how to build, deploy, and roll back
 Advocat.ee. Created 2026-04-20 after the three prod-breakage incidents on
-Apr 18 and Apr 20. Stored alongside `scripts/build-and-deploy.sh`,
-`scripts/rollback.sh`, and `test/e2e/prod_smoke.sh`.
+Apr 18 and Apr 20. Stored alongside `scripts/canary-deploy.sh`,
+`scripts/build-and-deploy.sh`, `scripts/rollback.sh`, and `test/e2e/prod_smoke.sh`.
 
 **If in doubt, do NOT hand-craft `flutter build web` commands.** Use the scripts.
 
 ## TL;DR
 
 ```bash
-# deploy new version
-./scripts/build-and-deploy.sh
+# deploy new version — ONLY sanctioned path to prod
+./scripts/canary-deploy.sh
 
 # rollback to last known-good
 ./scripts/rollback.sh v24.2-frozen-2026-04-20
@@ -19,6 +19,12 @@ Apr 18 and Apr 20. Stored alongside `scripts/build-and-deploy.sh`,
 # re-run smoke tests against current prod
 ./test/e2e/prod_smoke.sh
 ```
+
+`canary-deploy.sh` wraps `build-and-deploy.sh` with: pre-flight checks → staging
+build → smoke tests → human-readable confirmation gate → promote to `gh-pages`.
+Direct `git push gh-pages` is blocked by the `prod-lock` githook. Per
+anti-regression rule #2, this script is the only path. See
+[Override keys](#override-keys) below for the one escape hatch.
 
 ## Architecture
 
@@ -134,6 +140,30 @@ deploy that one function manually.
 
 All three incidents would have been caught by `test/e2e/prod_smoke.sh` running
 automatically after deploy. That's now mandatory — step 7 of the deploy script.
+
+## Override keys
+
+The deploy pipeline has exactly one escape hatch. Use it only during a live
+incident and only with a written reason.
+
+| Env var | Effect | When |
+|---|---|---|
+| `FORCE_DEPLOY_REASON="<text>"` | Bypasses the smoke-fail gate in `canary-deploy.sh`. Reason is recorded in the deploy commit message. | Smoke is flaky and you need to ship a known-good fix; rollback path is blocked. |
+
+```bash
+FORCE_DEPLOY_REASON="rollback hotfix — smoke 503 unrelated to change" \
+  ./scripts/canary-deploy.sh
+```
+
+Other anti-regression scripts also accept reason-based overrides:
+
+| Script | Override | Purpose |
+|---|---|---|
+| `scripts/prod-lock.sh` | `FORCE_DIRECT_PUSH=1` + `FORCE_DEPLOY_REASON` | Last-resort manual `gh-pages` push. Audit log only. |
+| `scripts/guard-gh-pages-files.sh` | `FORCE_LANDING_TOUCH=1` | Permit a deploy that touches hand-maintained landing files. |
+
+Per the anti-regression rules: never use `--no-verify`, never skip these
+gates without leaving a reason somebody else can audit.
 
 ## DO NOT
 
