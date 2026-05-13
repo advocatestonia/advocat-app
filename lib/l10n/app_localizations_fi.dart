@@ -3225,61 +3225,62 @@ class AppLocalizationsFi extends AppLocalizations {
   String get plannerTrailEmpty => 'ei kohteita';
 
   @override
-  String get supportTitle => 'Need help?';
+  String get supportTitle => 'Tuki';
 
   @override
-  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+  String get supportSubtitle => 'Miten voimme auttaa?';
 
   @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'Sähköposti';
 
   @override
-  String get supportInApp => 'Message us here';
+  String get supportInApp => 'Sovellussisäinen viesti';
 
   @override
-  String get supportCategoryLabel => 'Category';
+  String get supportCategoryLabel => 'Aihealue';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Vika';
 
   @override
-  String get supportCategoryPayment => 'Payment issue';
+  String get supportCategoryPayment => 'Maksu';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'Kysymys';
 
   @override
-  String get supportCategoryFeature => 'Feature request';
+  String get supportCategoryFeature => 'Ominaisuuspyyntö';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'Muu';
 
   @override
-  String get supportMessagePlaceholder => 'Describe your problem...';
+  String get supportMessagePlaceholder => 'Kerro mitä tapahtui…';
 
   @override
-  String get supportEmailLabel => 'Email (optional)';
+  String get supportEmailLabel => 'Sähköpostiosoitteesi';
 
   @override
-  String get supportSend => 'Send';
+  String get supportSend => 'Lähetä';
 
   @override
-  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+  String get supportSentSuccess => 'Kiitos! Vastaamme 24 tunnin sisällä.';
 
   @override
-  String get supportError => 'Something went wrong. Try again.';
+  String get supportError => 'Lähetys epäonnistui. Yritä uudelleen.';
 
   @override
-  String get supportErrorTooShort => 'Please write at least 10 characters.';
+  String get supportErrorTooShort => 'Viesti on liian lyhyt';
 
   @override
-  String get supportErrorTooLong => 'Maximum 2000 characters.';
+  String get supportErrorTooLong => 'Viesti on liian pitkä';
 
   @override
-  String get supportPrivacyNotice => 'Your message is stored securely.';
+  String get supportPrivacyNotice =>
+      'Viestisi käsitellään luottamuksellisesti.';
 
   @override
   String get reviewThisContract => 'Tarkista sopimus';

@@ -3230,61 +3230,62 @@ class AppLocalizationsRu extends AppLocalizations {
   String get plannerTrailEmpty => 'пусто';
 
   @override
-  String get supportTitle => 'Need help?';
+  String get supportTitle => 'Поддержка';
 
   @override
-  String get supportSubtitle => 'We usually reply within 1-2 hours.';
+  String get supportSubtitle => 'Чем мы можем помочь?';
 
   @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override
-  String get supportEmail => 'Email';
+  String get supportEmail => 'Электронная почта';
 
   @override
-  String get supportInApp => 'Message us here';
+  String get supportInApp => 'Сообщение в приложении';
 
   @override
-  String get supportCategoryLabel => 'Category';
+  String get supportCategoryLabel => 'Категория';
 
   @override
-  String get supportCategoryBug => 'Bug';
+  String get supportCategoryBug => 'Ошибка';
 
   @override
-  String get supportCategoryPayment => 'Payment issue';
+  String get supportCategoryPayment => 'Оплата';
 
   @override
-  String get supportCategoryQuestion => 'Question';
+  String get supportCategoryQuestion => 'Вопрос';
 
   @override
-  String get supportCategoryFeature => 'Feature request';
+  String get supportCategoryFeature => 'Запрос функции';
 
   @override
-  String get supportCategoryOther => 'Other';
+  String get supportCategoryOther => 'Другое';
 
   @override
-  String get supportMessagePlaceholder => 'Describe your problem...';
+  String get supportMessagePlaceholder => 'Расскажите, что случилось…';
 
   @override
-  String get supportEmailLabel => 'Email (optional)';
+  String get supportEmailLabel => 'Ваш email';
 
   @override
-  String get supportSend => 'Send';
+  String get supportSend => 'Отправить';
 
   @override
-  String get supportSentSuccess => 'Message sent! We\'ll reply soon.';
+  String get supportSentSuccess => 'Спасибо! Ответим в течение 24 часов.';
 
   @override
-  String get supportError => 'Something went wrong. Try again.';
+  String get supportError => 'Не удалось отправить. Попробуйте снова.';
 
   @override
-  String get supportErrorTooShort => 'Please write at least 10 characters.';
+  String get supportErrorTooShort => 'Сообщение слишком короткое';
 
   @override
-  String get supportErrorTooLong => 'Maximum 2000 characters.';
+  String get supportErrorTooLong => 'Сообщение слишком длинное';
 
   @override
-  String get supportPrivacyNotice => 'Your message is stored securely.';
+  String get supportPrivacyNotice =>
+      'Ваше сообщение обрабатывается конфиденциально.';
 
   @override
   String get reviewThisContract => 'Разобрать контракт';
