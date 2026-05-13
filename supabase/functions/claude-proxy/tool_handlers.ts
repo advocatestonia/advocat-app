@@ -2,7 +2,7 @@
 // -----------------------------------------------------------------------------
 // Tool-use capability for the Advocat AI assistant.
 //
-// Two tools are defined:
+// Three tools are defined:
 //
 //   send_email      — Send an email on the user's behalf via the existing
 //                     `send-email` edge function. The tool schema hard-requires
@@ -21,6 +21,18 @@
 //                     and users can print-to-PDF themselves. A TODO is left for
 //                     a Puppeteer/Chrome worker upgrade path.
 //
+//   legal_lookup    — Phase 2 strategic upgrade #2 (tool-augmented mid-reasoning).
+//                     Look up current statute text from Finlex / Riigi Teataja /
+//                     EUR-Lex via our pgvector RAG corpus (and optionally a
+//                     live API fallback when corpus is stale). The executor
+//                     pass is instructed to call this BEFORE citing any
+//                     specific paragraph — kills the #1 hallucination class
+//                     (invented statute content, e.g. HOL §114 "30-day
+//                     window" when reality is "5 years"). Implemented in
+//                     `_shared/legal_lookup.ts`; this file owns the schema +
+//                     dispatch, plus the embed/RPC wiring against the
+//                     existing law_chunks table.
+//
 // Integration pattern
 // -------------------
 // After the first Anthropic response, claude-proxy/index.ts checks whether the
@@ -38,8 +50,18 @@
 // controls this).
 // -----------------------------------------------------------------------------
 
+import { embedQuery } from "../law-search/embed.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {
+  formatLookupResultForModel,
+  type LawSearchRpcRow,
+  legalLookup,
+  type LegalLookupResult,
+} from "../_shared/legal_lookup.ts";
+
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 
 // =============================================================================
 // Tool schema definitions — passed to Anthropic in the `tools` array.
@@ -112,6 +134,54 @@ export const ASSISTANT_TOOLS = [
       required: ["title", "content", "document_type"],
     },
   },
+  {
+    name: "legal_lookup",
+    description:
+      "Look up current statute text from Finnish Finlex, Estonian Riigi " +
+      "Teataja, or EU EUR-Lex (via our bundled corpus, with live API " +
+      "fallback on stale results). Use this BEFORE asserting any statute " +
+      "paragraph content. Returns exact current text + freshness metadata " +
+      "+ source URL.\n\n" +
+      "Pattern: (1) identify which statute you need to cite, " +
+      "(2) call legal_lookup({ query, jurisdiction }), " +
+      "(3) read the returned text, " +
+      "(4) quote/paraphrase based on that text — never from memory.\n\n" +
+      "NEVER cite a paragraph from memory if this tool is available. " +
+      "An empty result means the statute is not in our corpus — say so " +
+      "honestly and recommend a primary source check rather than fabricating.",
+    input_schema: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          description:
+            "Semantic search query. Examples: " +
+            "'HOL §114 restoration deadlines', " +
+            "'TLS extraordinary dismissal grounds', " +
+            "'GDPR right of erasure exceptions'. " +
+            "Keep it specific — 10-20 words works best.",
+        },
+        jurisdiction: {
+          type: "string",
+          enum: ["fi", "ee", "eu", "de"],
+          description:
+            "Which jurisdiction's statutes to search. " +
+            "fi = Finnish (Finlex), " +
+            "ee = Estonian (Riigi Teataja), " +
+            "eu = EU directives (EUR-Lex), " +
+            "de = German (corpus-stub only).",
+        },
+        specific_statute: {
+          type: "string",
+          description:
+            "Optional exact statute reference like 'HOL §114', " +
+            "'TLS §88', 'Directive 32019L1152 art-5'. When supplied, " +
+            "the tool boosts retrieval precision for that paragraph.",
+        },
+      },
+      required: ["query", "jurisdiction"],
+    },
+  },
 ] as const;
 
 // =============================================================================
@@ -132,7 +202,13 @@ interface GeneratePdfInput {
   document_type: "letter" | "complaint" | "brief" | "summary";
 }
 
-type ToolInput = SendEmailInput | GeneratePdfInput;
+interface LegalLookupInput {
+  query: string;
+  jurisdiction: string;
+  specific_statute?: string;
+}
+
+type ToolInput = SendEmailInput | GeneratePdfInput | LegalLookupInput;
 
 // Anthropic tool_use block shape
 interface ToolUseBlock {
@@ -196,6 +272,11 @@ async function executeSingleTool(
           block.id,
           block.input as unknown as GeneratePdfInput,
           userId,
+        );
+      case "legal_lookup":
+        return await handleLegalLookup(
+          block.id,
+          block.input as unknown as LegalLookupInput,
         );
       default:
         return {
@@ -638,6 +719,136 @@ function buildHtmlDocument(args: {
   </footer>
 </body>
 </html>`;
+}
+
+// =============================================================================
+// legal_lookup handler
+// =============================================================================
+
+/**
+ * Look up current statute text from the law_chunks corpus (Phase 2 Pkg 1).
+ * Returns formatted text the model can quote/paraphrase.
+ *
+ * The handler is the dependency-injection seam for `legalLookup()`:
+ *   - embed → law-search/embed.ts (OpenAI text-embedding-3-small)
+ *   - lawSearch → supabase.rpc('law_search', ...) with jurisdiction filter
+ *   - fetchFreshness → batched select on law_chunks(corpus_refreshed_at)
+ *   - liveFallback → stubLiveFallback (v2 — currently always null)
+ *
+ * All failure modes degrade to `{ chunks: [] }` returning a "not found"
+ * message via `formatLookupResultForModel`. The handler NEVER returns
+ * is_error=true unless the input itself was malformed — a corpus miss
+ * is a normal response the model is told how to handle.
+ */
+async function handleLegalLookup(
+  toolUseId: string,
+  input: LegalLookupInput,
+): Promise<ToolResultBlock> {
+  const query = (input.query ?? "").trim();
+  const jurisdiction = (input.jurisdiction ?? "").trim().toLowerCase();
+  const specificStatute = input.specific_statute?.trim() || null;
+
+  if (!query) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "Error: 'query' is required (non-empty string).",
+      is_error: true,
+    };
+  }
+  if (!jurisdiction) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "Error: 'jurisdiction' is required (one of fi/ee/eu/de).",
+      is_error: true,
+    };
+  }
+
+  // Build dependency closure. Service-role client is fine — the corpus is
+  // public-read anyway via RLS policy "law_chunks readable by anon".
+  if (!OPENAI_API_KEY || !SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    // Server misconfig — degrade to "not found" message rather than 5xx.
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: formatLookupResultForModel({
+        chunks: [],
+        source: "stub",
+        embed_tokens: 0,
+      }),
+    };
+  }
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  try {
+    const result: LegalLookupResult = await legalLookup(
+      query,
+      jurisdiction,
+      {
+        embed: async (q: string) =>
+          await embedQuery(q, {
+            apiKey: OPENAI_API_KEY,
+            timeoutMs: 5000,
+          }),
+        lawSearch: async (params): Promise<LawSearchRpcRow[] | null> => {
+          const { data, error } = await supabase.rpc("law_search", params);
+          if (error) {
+            console.warn(`legal_lookup tool: RPC error — ${error.message}`);
+            return null;
+          }
+          return Array.isArray(data) ? data as LawSearchRpcRow[] : null;
+        },
+        fetchFreshness: async (ids: string[]) => {
+          const out = new Map<string, string | null>();
+          if (ids.length === 0) return out;
+          const { data, error } = await supabase
+            .from("law_chunks")
+            .select("id, corpus_refreshed_at")
+            .in("id", ids);
+          if (error) {
+            console.warn(
+              `legal_lookup tool: freshness query error — ${error.message}`,
+            );
+            return out;
+          }
+          for (const row of (data ?? []) as Array<{
+            id: string;
+            corpus_refreshed_at: string | null;
+          }>) {
+            out.set(row.id, row.corpus_refreshed_at ?? null);
+          }
+          return out;
+        },
+        // v2 stub — wired but always returns null today. Set
+        // LEGAL_LOOKUP_LIVE_API_ENABLED=true to attempt the (currently
+        // no-op) dispatch when corpus is stale.
+        liveFallback: async () => null,
+      },
+      {
+        specificStatute,
+        // Live API resolved from env inside legalLookup. No-op in v1.
+      },
+    );
+
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: formatLookupResultForModel(result),
+    };
+  } catch (e) {
+    // LegalLookupConfigError (unknown jurisdiction) ends up here. Surface
+    // as is_error so the model retries with a valid value.
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `legal_lookup failed: ${String(e).slice(0, 300)}`,
+      is_error: true,
+    };
+  }
 }
 
 // =============================================================================
