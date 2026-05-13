@@ -1582,6 +1582,33 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   <div class="hero-scroll-hint" id="hero-scroll-hint" aria-hidden="true"><span class="hero-scroll-dot"></span></div>
 </section>
 
+<!-- ── LIVE DEMO TEASER ── -->
+<!-- Layer 1 of "first 60 seconds wow": a click-through teaser that drops -->
+<!-- the visitor straight onto the full demo page at /demo.html. Kept tiny -->
+<!-- and inline-styled to avoid clashing with parallel landing CSS work; -->
+<!-- the heavy lifting (animation, PDF reveal, CTA wall) lives on /demo.html. -->
+<section class="section" id="live-demo" style="padding:48px 0;background:linear-gradient(180deg,#F8F9FA 0%,#FFFFFF 100%);border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="container" style="text-align:center;max-width:780px">
+    <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--teal);text-transform:uppercase;margin-bottom:14px">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(13,148,136,.15)"></span>
+      Live demo
+    </div>
+    <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:800;line-height:1.2;letter-spacing:-0.02em;color:var(--navy);margin-bottom:10px">
+      Watch AI review a real contract in <em style="font-style:normal;color:var(--teal)">30 seconds</em>.
+    </h2>
+    <p style="font-size:15px;color:var(--muted);margin-bottom:22px">
+      Real planner &rarr; red-team &rarr; subtraction pipeline. Real PDF report at the end.
+      <strong>No signup. No upload. No card.</strong>
+    </p>
+    <a href="/demo.html" class="btn btn-primary" style="height:48px;padding:0 22px;font-size:15px;font-weight:700" data-cta="live-demo-teaser">
+      Try AI Contract Review &rarr;
+    </a>
+    <div style="margin-top:14px;font-size:12.5px;color:var(--faint)">
+      Pre-loaded sample: German B2B distributor agreement, 14 pages.
+    </div>
+  </div>
+</section>
+
 <!-- ── HOW IT WORKS ── -->
 <section class="section section-alt" id="how">
   <div class="container">

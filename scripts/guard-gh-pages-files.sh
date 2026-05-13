@@ -28,6 +28,8 @@ REQUIRED=(
   CNAME
   blog/index.html
   blog/logo_shield.png
+  demo.html
+  og/sample-review.pdf
 )
 
 MISSING=()
