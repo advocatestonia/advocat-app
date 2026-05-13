@@ -74,10 +74,20 @@ const SUPABASE_SERVICE_ROLE_KEY =
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 // Memory-of-Wrong-Answers retrieval (Pkg #13). OPENAI_API_KEY is optional —
 // when absent the retrieval gracefully no-ops (corrections is an additive
-// uplift, not a blocker). Threshold defaults to 0.75 matching the RPC default.
+// uplift, not a blocker).
+//
+// 2026-05-14 (lesson_corrections_retrieval_debug.md): default lowered from
+// 0.75 → 0.45 because cross-language queries (RU user question → FI/EN
+// correction row) produce cosine similarities ~0.45-0.55 with OpenAI
+// text-embedding-3-small. At 0.75 every cross-language query returned
+// zero matches and the HOL §114 / KHO restoration lesson never fired on
+// gold-001 or gold-009 (eval baseline). At 0.45 we still cleanly reject
+// noise (unrelated queries score <0.40) but recover the cross-language
+// recall the corpus was designed for. Same-language queries score >0.85
+// so we never lose precision on them.
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 const CORRECTIONS_SIMILARITY_THRESHOLD = parseFloat(
-  Deno.env.get("CORRECTIONS_SIMILARITY_THRESHOLD") ?? "0.75",
+  Deno.env.get("CORRECTIONS_SIMILARITY_THRESHOLD") ?? "0.45",
 );
 
 // SECURITY 2026-05-04 U1+U2+U3 — claude-proxy hardening.
@@ -360,6 +370,64 @@ serve(async (req) => {
       return jsonError("API key not configured", 500);
     }
 
+    // ── Memory-of-Wrong-Answers retrieval (Pkg #13) — GLOBAL ────────────────
+    // 2026-05-14 (lesson_corrections_retrieval_debug.md): before today,
+    // retrieval was gated behind `mode: "legal_planner"`. The Flutter client
+    // only sets that mode for Pro users with the planner-enabled setting AND
+    // a query that looksLegalish — and the eval harness never sets it. As a
+    // result the gold-001 / gold-009 HOL §114 / KHO restoration questions
+    // went through the legacy single-pass path with NO corrections injection.
+    //
+    // Fix: lift retrieval to the top-level request handler. Three paths
+    // consume the result:
+    //   1. Legacy single-pass    — prepends to body.system below.
+    //   2. Legal-planner mode    — uses correctionsBlock passed into
+    //                              runLegalPlannerLoop (it does the prepend
+    //                              once and only once).
+    //   3. Consilium mode        — explicitly prepends to its systemPrompt
+    //                              because runConsilium has no correctionsBlock
+    //                              parameter.
+    //
+    // To avoid DOUBLE injection in the planner path, we prepend to body.system
+    // ONLY when the request is NOT going to enter the planner branch.
+    //
+    // Fails open on every failure mode (see corrections_retriever.ts):
+    //   • OPENAI_API_KEY missing      → empty rows, empty block, no prepend.
+    //   • match_corrections RPC fails → empty rows, empty block, no prepend.
+    //   • Embedding cap (1536) fails  → empty rows, empty block, no prepend.
+    const globalUserMessage = Array.isArray(body.messages) && body.messages.length > 0
+      ? String((body.messages[body.messages.length - 1] as { content?: unknown }).content ?? "")
+      : "";
+    const willEnterPlannerBranch =
+      (body as { mode?: unknown }).mode === "legal_planner" &&
+      !body.stream &&
+      !isAnon;
+    let globalCorrectionsRows: CorrectionRow[] = [];
+    let globalCorrectionsBlock = "";
+    if (globalUserMessage && OPENAI_API_KEY) {
+      globalCorrectionsRows = await retrieveCorrections({
+        question: globalUserMessage,
+        jurisdiction: null,
+        threshold: CORRECTIONS_SIMILARITY_THRESHOLD,
+        supabaseUrl: SUPABASE_URL,
+        serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+        openaiApiKey: OPENAI_API_KEY,
+      });
+      globalCorrectionsBlock = formatCorrectionsBlock(globalCorrectionsRows);
+      // Only prepend to body.system for paths that don't have their own
+      // prepend logic (legacy single-pass, streaming, anon, etc).
+      // The planner branch does its own prepend inside runLegalPlannerLoop.
+      if (globalCorrectionsBlock && !willEnterPlannerBranch) {
+        if (typeof body.system === "string") {
+          body.system = `${globalCorrectionsBlock}\n\n${body.system}`;
+        } else if (body.system == null) {
+          body.system = globalCorrectionsBlock;
+        }
+        // If body.system is already an array (caller pre-wrapped) we leave it
+        // alone — applyPromptCaching would rewrap our string anyway.
+      }
+    }
+
     // FIX-1 (Sprint 0): enable prompt caching. Wraps body.system in the
     // content-block shape with cache_control: ephemeral for blocks large
     // enough to pay back the 1.25x write cost. Flips unit economics from
@@ -419,6 +487,16 @@ serve(async (req) => {
             .filter(Boolean)
             .join("\n\n");
 
+          // 2026-05-14: consilium has no correctionsBlock parameter, and the
+          // global retrieval (above) skipped the body.system prepend because
+          // willEnterPlannerBranch was true. So we explicitly prepend here so
+          // every consilium role sees the learned mistakes. The block is
+          // ≤4 KB by formatCorrectionsBlock's cap so this never pushes the
+          // system prompt past the 50 KB ceiling.
+          const consiliumSystemPrompt = globalCorrectionsBlock
+            ? `${globalCorrectionsBlock}\n\n${systemPrompt}`
+            : systemPrompt;
+
           const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
           const writer = writable.getWriter();
           const encoder = new TextEncoder();
@@ -426,7 +504,7 @@ serve(async (req) => {
           // Run consilium asynchronously — the stream closes itself when done.
           runConsilium({
             userMessage,
-            systemPrompt,
+            systemPrompt: consiliumSystemPrompt,
             ragContext,
             caseContext: "",
             anthropicApiKey: CLAUDE_API_KEY,
@@ -488,29 +566,18 @@ serve(async (req) => {
       // ── End consilium upgrade path ────────────────────────────────────────
 
       try {
-        // ── Memory-of-Wrong-Answers retrieval (Pkg #13) ─────────────────────
-        // Retrieve up to 3 corrections semantically similar to the user's
-        // question and render them as a <learned_corrections> block prepended
-        // to every planner pass. Fails open on every failure mode:
-        //   • OPENAI_API_KEY missing      → empty rows, empty block.
-        //   • match_corrections RPC fails → empty rows, empty block.
-        //   • Embedding cap (1536) fails  → empty rows, empty block.
-        // See corrections_retriever.ts (retrieveCorrections) which already
-        // catches its own errors and returns []. The planner runs unchanged
-        // when correctionsBlock is "" (legacy contract — covered by tests).
-        let correctionsRows: CorrectionRow[] = [];
-        let correctionsBlock = "";
-        if (userMessage && OPENAI_API_KEY) {
-          correctionsRows = await retrieveCorrections({
-            question: userMessage,
-            jurisdiction: null, // detection lives in legal_planner; null = no filter
-            threshold: CORRECTIONS_SIMILARITY_THRESHOLD,
-            supabaseUrl: SUPABASE_URL,
-            serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
-            openaiApiKey: OPENAI_API_KEY,
-          });
-          correctionsBlock = formatCorrectionsBlock(correctionsRows);
-        }
+        // ── Memory-of-Wrong-Answers — rows reused from global retrieval ─────
+        // The top-level handler retrieved corrections and rendered the block.
+        // We reuse both here:
+        //   • correctionsRows  → for the self-correction reflex's substring
+        //                        scan against the planner's draft.
+        //   • correctionsBlock → passed to runLegalPlannerLoop which prepends
+        //                        it to its synthesized system prompt (this is
+        //                        the planner's ONLY exposure to corrections;
+        //                        body.system was not prepended for this
+        //                        branch — see willEnterPlannerBranch above).
+        const correctionsRows: CorrectionRow[] = globalCorrectionsRows;
+        const correctionsBlock = globalCorrectionsBlock;
 
         let loopResult = await runLegalPlannerLoop({
           apiKey: CLAUDE_API_KEY,

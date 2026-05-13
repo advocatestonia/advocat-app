@@ -40,9 +40,11 @@ import '../widgets/contract_review_quota_pill.dart';
 import '../widgets/contract_review_upgrade_dialog.dart';
 import '../widgets/quota_error_snackbar.dart';
 import '../widgets/reasoning_trail.dart';
+import '../widgets/share_result_button.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 import '../widgets/welcome_chips.dart';
+import '../../../services/share_result_service.dart' show ShareSourceType, ShareResultPayload;
 import '../quick_profile/quick_profile_gate.dart';
 import '../quick_profile/quick_profile_intake.dart';
 import '../../../services/user_memory_service.dart';
@@ -3009,6 +3011,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     if (!_isStreamingMessage(message)) ...[
                       const SizedBox(width: 8),
                       _buildFeedbackButtons(message),
+                    ],
+                    // Share-this-analysis — only on completed AI messages
+                    // with a real UUID id (persisted chat_messages row)
+                    // and substantial content (>200 chars) so we don't
+                    // clutter the row with shares for two-line replies.
+                    if (!_isStreamingMessage(message) &&
+                        message.content.length > 200 &&
+                        ShareResultPayload.isValidSourceId(message.id)) ...[
+                      const SizedBox(width: 4),
+                      ShareResultButton(
+                        sourceType: ShareSourceType.legalAdvice,
+                        sourceId: message.id,
+                      ),
                     ],
                   ],
                 ],

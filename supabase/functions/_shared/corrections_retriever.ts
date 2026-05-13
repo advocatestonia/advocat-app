@@ -16,7 +16,14 @@
 // ----------------------------------------------------------------------------
 
 export const CORRECTIONS_BLOCK_MAX_BYTES = 4 * 1024;
-export const DEFAULT_SIMILARITY_THRESHOLD = 0.75;
+// 2026-05-14 (lesson_corrections_retrieval_debug.md): lowered from 0.75
+// because cross-language queries (RU/EE user → FI/EN correction row)
+// produce cosine similarities ~0.45-0.55 with text-embedding-3-small.
+// 0.45 still cleanly rejects unrelated content (typically <0.40) but
+// captures the cross-language matches the corpus was designed for.
+// Same-language queries score >0.85, well above any reasonable noise
+// floor, so we lose no precision in the monolingual case.
+export const DEFAULT_SIMILARITY_THRESHOLD = 0.45;
 export const DEFAULT_TOP_K = 3;
 
 const OPENAI_URL = "https://api.openai.com/v1/embeddings";

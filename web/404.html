@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advocat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<script>
+(function () {
+  // ── GitHub Pages 404 → SPA-style routing ─────────────────────────────
+  // GH Pages serves this file for any path that doesn't map to a static
+  // asset. We use it for two routes:
+  //
+  //   1. /s/<8-char-slug>   → /share.html?s=<slug>  (Share-this-analysis)
+  //
+  // Anything else falls through to a normal "page not found" view.
+  var path = window.location.pathname || '';
+  var search = window.location.search || '';
+  var hash = window.location.hash || '';
+
+  // Share routing: /s/<slug> with optional trailing slash.
+  var share = path.match(/^\/s\/([0-9A-Za-z]{8})\/?$/);
+  if (share) {
+    var slug = share[1];
+    var target = '/share.html?s=' + encodeURIComponent(slug) + search + hash;
+    window.location.replace(target);
+    return;
+  }
+})();
+</script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+         display: flex; align-items: center; justify-content: center;
+         min-height: 100vh; margin: 0; background: #F8FAFC; color: #0F172A; }
+  .box { text-align: center; padding: 40px; }
+  h1 { font-size: 32px; margin-bottom: 12px; }
+  p { color: #64748B; margin-bottom: 20px; }
+  a { color: #0F766E; font-weight: 600; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>Page not found</h1>
+    <p>This page doesn't exist.</p>
+    <a href="/">Back to Advocat →</a>
+  </div>
+</body>
+</html>

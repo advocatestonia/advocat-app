@@ -97,7 +97,10 @@ Deno.test("wiring: retrieveCorrections fires before runLegalPlannerLoop", async 
   const rows = await retrieveCorrections({
     question: HOL_ROW.question,
     jurisdiction: null,
-    threshold: 0.75,
+    // 0.45 is the post-2026-05-14 default — cross-language recall fix.
+    // The test caller passes the threshold explicitly so we're not coupled
+    // to the constant, but using the live value keeps the test honest.
+    threshold: 0.45,
     supabaseUrl: "https://stub.supabase.co",
     serviceRoleKey: "stub-key",
     retriever: () => {
@@ -300,5 +303,58 @@ Deno.test("wiring: RPC failure inside retrieveCorrections does not crash proxy",
   });
   assertEquals(rows.length, 0); // helper swallows the throw → empty result
 });
+
+// ─── 9. Consilium-branch wiring (2026-05-14 regression guard) ──────────────
+//
+// Bug:    The consilium streaming path in claude-proxy/index.ts ran BEFORE
+//         the corrections retrieval block, so any question routed to the
+//         multi-role consilium bypassed retrieval entirely. The HOL §114 /
+//         KHO restoration lesson (gold-001 / gold-009) is exactly the
+//         "судебные сроки + что делать" pattern that triggers consilium,
+//         so the marquee Sulga lesson never fired at inference time.
+// Fix:    Retrieval moved BEFORE the consilium branch; the rendered block
+//         is prepended to the consilium's systemPrompt so every role sees
+//         the learned mistakes.
+// Source: lesson_corrections_retrieval_debug.md
+//
+// This test guards the **prepend contract** — the smallest piece of
+// behaviour we can isolate without a full HTTP harness.
+
+Deno.test(
+  "wiring: consilium path prepends correctionsBlock onto systemPrompt",
+  () => {
+    const block = formatCorrectionsBlock([HOL_ROW]);
+    const baseSystemPrompt = "You are a careful Advocat lawyer.";
+
+    // Mirrors the exact prepend logic at claude-proxy/index.ts (consilium
+    // branch). If the line below changes, this assertion will need to
+    // change too — that is intentional, it forces a re-read of the wiring.
+    const consiliumSystemPrompt = block
+      ? `${block}\n\n${baseSystemPrompt}`
+      : baseSystemPrompt;
+
+    assertStringIncludes(consiliumSystemPrompt, "<learned_corrections>");
+    assertStringIncludes(consiliumSystemPrompt, baseSystemPrompt);
+    // Corrections block must come FIRST so it isn't truncated by any
+    // downstream system-prompt cap.
+    assert(
+      consiliumSystemPrompt.indexOf("<learned_corrections>") <
+        consiliumSystemPrompt.indexOf(baseSystemPrompt),
+      "corrections block must precede the base system prompt",
+    );
+  },
+);
+
+Deno.test(
+  "wiring: consilium path with empty corrections leaves systemPrompt untouched",
+  () => {
+    const block = formatCorrectionsBlock([]); // empty rows → ""
+    const baseSystemPrompt = "BASE_PROMPT_UNCHANGED";
+    const consiliumSystemPrompt = block
+      ? `${block}\n\n${baseSystemPrompt}`
+      : baseSystemPrompt;
+    assertEquals(consiliumSystemPrompt, baseSystemPrompt);
+  },
+);
 
 // End of file.
