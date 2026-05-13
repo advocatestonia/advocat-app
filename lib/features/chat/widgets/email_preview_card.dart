@@ -35,6 +35,17 @@ typedef SendViaAdvocatCallback = void Function({
   required String body,
 });
 
+/// Callback for the "Draft a reply" button — Pkg 7 Drafting Studio. The host
+/// opens the editor pre-filled with the bilingual email so the user can
+/// fine-tune it before sending. The widget hands back the current edited
+/// subject + body (which may differ from the originally-generated emailMd
+/// if the user typed in the Plain text tab).
+typedef DraftReplyCallback = void Function({
+  required String subject,
+  required String body,
+  required String language,
+});
+
 /// Renders the bilingual counterparty email produced by Contract Review.
 class EmailPreviewCard extends StatefulWidget {
   const EmailPreviewCard({
@@ -44,6 +55,8 @@ class EmailPreviewCard extends StatefulWidget {
     this.subject,
     this.qualityWarnings = const <String>[],
     this.onSendViaAdvocat,
+    this.onDraftReply,
+    this.counterpartyName,
   });
 
   /// Markdown body returned by the planner (`email_to_counterparty`).
@@ -63,6 +76,15 @@ class EmailPreviewCard extends StatefulWidget {
   /// When non-null, the "Send via Advocat" button is enabled and this
   /// callback fires after the user types a recipient address.
   final SendViaAdvocatCallback? onSendViaAdvocat;
+
+  /// When non-null, a "Draft a reply" button is shown and this callback
+  /// fires with the current subject + body so the host can route to the
+  /// Drafting Studio editor. Pkg 7 (Drafting Studio MVP).
+  final DraftReplyCallback? onDraftReply;
+
+  /// Optional counterparty name for the draft title ("Reply to {name}").
+  /// When null, the host falls back to a generic "Reply" title.
+  final String? counterpartyName;
 
   @override
   State<EmailPreviewCard> createState() => _EmailPreviewCardState();
@@ -267,6 +289,7 @@ class _EmailPreviewCardState extends State<EmailPreviewCard>
 
   Widget _actionRow(ThemeData theme) {
     final canSend = widget.onSendViaAdvocat != null;
+    final canDraft = widget.onDraftReply != null;
     return Padding(
       padding: const EdgeInsets.all(12),
       child: Wrap(
@@ -285,6 +308,13 @@ class _EmailPreviewCardState extends State<EmailPreviewCard>
             icon: const Icon(Icons.open_in_new, size: 16),
             label: const Text('Open in email app'),
           ),
+          if (canDraft)
+            OutlinedButton.icon(
+              key: const Key('email_preview_draft_reply_btn'),
+              onPressed: _draftReply,
+              icon: const Icon(Icons.edit_note, size: 16),
+              label: const Text('Draft a reply'),
+            ),
           FilledButton.icon(
             key: const Key('email_preview_send_btn'),
             onPressed: canSend ? _sendViaAdvocat : null,
@@ -293,6 +323,16 @@ class _EmailPreviewCardState extends State<EmailPreviewCard>
           ),
         ],
       ),
+    );
+  }
+
+  void _draftReply() {
+    final cb = widget.onDraftReply;
+    if (cb == null) return;
+    cb(
+      subject: _subjectCtrl.text,
+      body: _bodyCtrl.text,
+      language: widget.originalLanguage,
     );
   }
 

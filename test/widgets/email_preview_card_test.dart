@@ -213,4 +213,67 @@ void main() {
       expect(written, isNot(contains('**Subject:**')));
     });
   });
+
+  // ─── Pkg 7 Drafting Studio — "Draft a reply" CTA ──────────────────────────
+  group('EmailPreviewCard — Draft a reply', () {
+    testWidgets('Draft a reply button is hidden when callback is null',
+        (tester) async {
+      await tester.pumpWidget(_wrap(
+        const EmailPreviewCard(
+          emailMd: _germanEmail,
+          originalLanguage: 'de',
+        ),
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('email_preview_draft_reply_btn')),
+          findsNothing);
+    });
+
+    testWidgets('Draft a reply button is shown when callback is provided',
+        (tester) async {
+      await tester.pumpWidget(_wrap(
+        EmailPreviewCard(
+          emailMd: _germanEmail,
+          originalLanguage: 'de',
+          onDraftReply: ({
+            required String subject,
+            required String body,
+            required String language,
+          }) {},
+        ),
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('email_preview_draft_reply_btn')),
+          findsOneWidget);
+    });
+
+    testWidgets('Draft a reply callback receives subject, body, language',
+        (tester) async {
+      String? capturedSubject;
+      String? capturedBody;
+      String? capturedLang;
+      await tester.pumpWidget(_wrap(
+        EmailPreviewCard(
+          emailMd: _germanEmail,
+          originalLanguage: 'de',
+          onDraftReply: ({
+            required String subject,
+            required String body,
+            required String language,
+          }) {
+            capturedSubject = subject;
+            capturedBody = body;
+            capturedLang = language;
+          },
+        ),
+      ));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('email_preview_draft_reply_btn')));
+      await tester.pump();
+      expect(capturedLang, 'de');
+      expect(capturedSubject, isNotNull);
+      expect(capturedSubject, contains('Händlervertrag'));
+      expect(capturedBody, contains('Sehr geehrte Damen und Herren'));
+    });
+  });
 }
