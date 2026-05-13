@@ -48,6 +48,21 @@
     <priority>0.5</priority>
   </url>
 
+  <!-- Public quality scorecard (radical-transparency moat) -->
+  <url>
+    <loc>https://advocat.ee/scorecard.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/scorecard/methodology.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
   <!-- Blog index pages (trilingual) -->
   <url>
     <loc>https://advocat.ee/blog/</loc>
