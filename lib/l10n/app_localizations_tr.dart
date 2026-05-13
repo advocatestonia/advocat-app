@@ -3336,4 +3336,59 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get notNow => 'Şimdi değil';
+
+  @override
+  String get referralTitle => 'Arkadaşlarını davet et';
+
+  @override
+  String get referralSubtitle =>
+      'Bir ay ücretsiz kazan. Bir ay ücretsiz hediye et.';
+
+  @override
+  String get referralYourLink => 'BAĞLANTIN';
+
+  @override
+  String get referralCopyLink => 'Bağlantıyı kopyala';
+
+  @override
+  String get referralShare => 'Paylaş';
+
+  @override
+  String get referralLinkCopied => 'Bağlantı kopyalandı';
+
+  @override
+  String get referralStatsInvited => 'Davet edilen';
+
+  @override
+  String get referralStatsConverted => 'Kayıt olan';
+
+  @override
+  String get referralStatsEarned => 'Kazanılan ay';
+
+  @override
+  String get referralShareWhatsApp => 'WhatsApp\'ta paylaş';
+
+  @override
+  String get referralShareTelegram => 'Telegram\'da paylaş';
+
+  @override
+  String get referralShareEmail => 'E-posta ile paylaş';
+
+  @override
+  String get referralEmailSubject =>
+      'Advocat\'ı dene — yapay zekâ hukuk asistanın';
+
+  @override
+  String get referralLoadError =>
+      'Veriler yüklenemedi. Yenilemek için aşağı çek.';
+
+  @override
+  String get referralRetry => 'Tekrar dene';
+
+  @override
+  String get referralSettingsTile => 'Arkadaşlarını davet et';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Beğendin mi? Bir arkadaşını davet et — ikiniz de bir ay ücretsiz kazanın.';
 }

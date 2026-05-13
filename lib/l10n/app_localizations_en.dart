@@ -3329,4 +3329,57 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notNow => 'Not now';
+
+  @override
+  String get referralTitle => 'Invite friends';
+
+  @override
+  String get referralSubtitle => 'Get a free month. Give a free month.';
+
+  @override
+  String get referralYourLink => 'YOUR LINK';
+
+  @override
+  String get referralCopyLink => 'Copy link';
+
+  @override
+  String get referralShare => 'Share';
+
+  @override
+  String get referralLinkCopied => 'Link copied';
+
+  @override
+  String get referralStatsInvited => 'Invited';
+
+  @override
+  String get referralStatsConverted => 'Converted';
+
+  @override
+  String get referralStatsEarned => 'Months earned';
+
+  @override
+  String get referralShareWhatsApp => 'Share on WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Share on Telegram';
+
+  @override
+  String get referralShareEmail => 'Share by email';
+
+  @override
+  String get referralEmailSubject => 'Try Advocat — your AI legal assistant';
+
+  @override
+  String get referralLoadError =>
+      'Could not load referral info. Pull to refresh.';
+
+  @override
+  String get referralRetry => 'Retry';
+
+  @override
+  String get referralSettingsTile => 'Invite friends';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Loved this? Invite a friend — both get a free month.';
 }

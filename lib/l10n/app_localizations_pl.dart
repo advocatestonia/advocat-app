@@ -3349,4 +3349,59 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get notNow => 'Nie teraz';
+
+  @override
+  String get referralTitle => 'Zaproś znajomych';
+
+  @override
+  String get referralSubtitle =>
+      'Otrzymaj darmowy miesiąc. Daj darmowy miesiąc.';
+
+  @override
+  String get referralYourLink => 'TWÓJ LINK';
+
+  @override
+  String get referralCopyLink => 'Kopiuj link';
+
+  @override
+  String get referralShare => 'Udostępnij';
+
+  @override
+  String get referralLinkCopied => 'Link skopiowany';
+
+  @override
+  String get referralStatsInvited => 'Zaproszeni';
+
+  @override
+  String get referralStatsConverted => 'Dołączyli';
+
+  @override
+  String get referralStatsEarned => 'Darmowe miesiące';
+
+  @override
+  String get referralShareWhatsApp => 'Udostępnij na WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Udostępnij na Telegram';
+
+  @override
+  String get referralShareEmail => 'Udostępnij e-mailem';
+
+  @override
+  String get referralEmailSubject =>
+      'Wypróbuj Advocat — twój asystent prawny AI';
+
+  @override
+  String get referralLoadError =>
+      'Nie udało się załadować danych. Pociągnij w dół, by odświeżyć.';
+
+  @override
+  String get referralRetry => 'Spróbuj ponownie';
+
+  @override
+  String get referralSettingsTile => 'Zaproś znajomych';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Spodobało się? Zaproś znajomego — obaj dostaniecie darmowy miesiąc.';
 }

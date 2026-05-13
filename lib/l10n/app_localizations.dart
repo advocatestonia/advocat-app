@@ -6139,6 +6139,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not now'**
   String get notNow;
+
+  /// No description provided for @referralTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends'**
+  String get referralTitle;
+
+  /// No description provided for @referralSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a free month. Give a free month.'**
+  String get referralSubtitle;
+
+  /// No description provided for @referralYourLink.
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR LINK'**
+  String get referralYourLink;
+
+  /// No description provided for @referralCopyLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy link'**
+  String get referralCopyLink;
+
+  /// No description provided for @referralShare.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get referralShare;
+
+  /// No description provided for @referralLinkCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get referralLinkCopied;
+
+  /// No description provided for @referralStatsInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited'**
+  String get referralStatsInvited;
+
+  /// No description provided for @referralStatsConverted.
+  ///
+  /// In en, this message translates to:
+  /// **'Converted'**
+  String get referralStatsConverted;
+
+  /// No description provided for @referralStatsEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Months earned'**
+  String get referralStatsEarned;
+
+  /// No description provided for @referralShareWhatsApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on WhatsApp'**
+  String get referralShareWhatsApp;
+
+  /// No description provided for @referralShareTelegram.
+  ///
+  /// In en, this message translates to:
+  /// **'Share on Telegram'**
+  String get referralShareTelegram;
+
+  /// No description provided for @referralShareEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Share by email'**
+  String get referralShareEmail;
+
+  /// No description provided for @referralEmailSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'Try Advocat — your AI legal assistant'**
+  String get referralEmailSubject;
+
+  /// No description provided for @referralLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load referral info. Pull to refresh.'**
+  String get referralLoadError;
+
+  /// No description provided for @referralRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get referralRetry;
+
+  /// No description provided for @referralSettingsTile.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite friends'**
+  String get referralSettingsTile;
+
+  /// No description provided for @referralAfterReviewCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Loved this? Invite a friend — both get a free month.'**
+  String get referralAfterReviewCta;
 }
 
 class _AppLocalizationsDelegate

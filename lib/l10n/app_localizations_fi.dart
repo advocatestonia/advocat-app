@@ -3341,4 +3341,58 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get notNow => 'Ei nyt';
+
+  @override
+  String get referralTitle => 'Kutsu ystäviä';
+
+  @override
+  String get referralSubtitle =>
+      'Saa kuukausi ilmaiseksi. Anna kuukausi ilmaiseksi.';
+
+  @override
+  String get referralYourLink => 'LINKKISI';
+
+  @override
+  String get referralCopyLink => 'Kopioi linkki';
+
+  @override
+  String get referralShare => 'Jaa';
+
+  @override
+  String get referralLinkCopied => 'Linkki kopioitu';
+
+  @override
+  String get referralStatsInvited => 'Kutsuttu';
+
+  @override
+  String get referralStatsConverted => 'Liittynyt';
+
+  @override
+  String get referralStatsEarned => 'Ilmaisia kuukausia';
+
+  @override
+  String get referralShareWhatsApp => 'Jaa WhatsAppissa';
+
+  @override
+  String get referralShareTelegram => 'Jaa Telegramissa';
+
+  @override
+  String get referralShareEmail => 'Jaa sähköpostitse';
+
+  @override
+  String get referralEmailSubject => 'Kokeile Advocatia — tekoälyjuristisi';
+
+  @override
+  String get referralLoadError =>
+      'Tietoja ei voitu ladata. Vedä alas päivittääksesi.';
+
+  @override
+  String get referralRetry => 'Yritä uudelleen';
+
+  @override
+  String get referralSettingsTile => 'Kutsu ystäviä';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Tykkäsitkö? Kutsu ystävä — molemmat saavat kuukauden ilmaiseksi.';
 }

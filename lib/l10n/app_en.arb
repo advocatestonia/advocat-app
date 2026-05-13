@@ -1404,14 +1404,16 @@
     "@contractReviewsLeft": {
         "description": "Quota pill shown near chat upload button when remaining > 0.",
         "placeholders": {
-            "count": {"type": "int"}
+            "count": {
+                "type": "int"
+            }
         }
     },
     "contractReviewsExhausted": "No contract reviews left this month",
     "@contractReviewsExhausted": {},
     "contractReviewsFreeTrialLeft": "Free trial: 1 contract review",
     "@contractReviewsFreeTrialLeft": {},
-    "contractReviewsFreeTrialUsed": "Free trial used \u2014 upgrade for more",
+    "contractReviewsFreeTrialUsed": "Free trial used — upgrade for more",
     "@contractReviewsFreeTrialUsed": {},
     "contractReviewsUpgradeTitle": "Contract reviews used up",
     "@contractReviewsUpgradeTitle": {},
@@ -1420,16 +1422,54 @@
     "contractReviewsUpgradeBodyPaid": "You used {used} of {cap} reviews this month. Upgrade for a higher monthly cap.",
     "@contractReviewsUpgradeBodyPaid": {
         "placeholders": {
-            "used": {"type": "int"},
-            "cap": {"type": "int"}
+            "used": {
+                "type": "int"
+            },
+            "cap": {
+                "type": "int"
+            }
         }
     },
-    "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (\u20AC19.99/mo) \u2014 5 reviews",
+    "contractReviewsUpgradeCounselCta": "Upgrade to Counsel (€19.99/mo) — 5 reviews",
     "@contractReviewsUpgradeCounselCta": {},
-    "contractReviewsUpgradeProCta": "Upgrade to Pro (\u20AC29.99/mo) \u2014 20 reviews",
+    "contractReviewsUpgradeProCta": "Upgrade to Pro (€29.99/mo) — 20 reviews",
     "@contractReviewsUpgradeProCta": {},
-    "contractReviewsUpgradeToProShort": "Upgrade to Pro \u2014 20/mo",
+    "contractReviewsUpgradeToProShort": "Upgrade to Pro — 20/mo",
     "@contractReviewsUpgradeToProShort": {},
     "notNow": "Not now",
-    "@notNow": {}
+    "@notNow": {},
+    "referralTitle": "Invite friends",
+    "@referralTitle": {},
+    "referralSubtitle": "Get a free month. Give a free month.",
+    "@referralSubtitle": {},
+    "referralYourLink": "YOUR LINK",
+    "@referralYourLink": {},
+    "referralCopyLink": "Copy link",
+    "@referralCopyLink": {},
+    "referralShare": "Share",
+    "@referralShare": {},
+    "referralLinkCopied": "Link copied",
+    "@referralLinkCopied": {},
+    "referralStatsInvited": "Invited",
+    "@referralStatsInvited": {},
+    "referralStatsConverted": "Converted",
+    "@referralStatsConverted": {},
+    "referralStatsEarned": "Months earned",
+    "@referralStatsEarned": {},
+    "referralShareWhatsApp": "Share on WhatsApp",
+    "@referralShareWhatsApp": {},
+    "referralShareTelegram": "Share on Telegram",
+    "@referralShareTelegram": {},
+    "referralShareEmail": "Share by email",
+    "@referralShareEmail": {},
+    "referralEmailSubject": "Try Advocat — your AI legal assistant",
+    "@referralEmailSubject": {},
+    "referralLoadError": "Could not load referral info. Pull to refresh.",
+    "@referralLoadError": {},
+    "referralRetry": "Retry",
+    "@referralRetry": {},
+    "referralSettingsTile": "Invite friends",
+    "@referralSettingsTile": {},
+    "referralAfterReviewCta": "Loved this? Invite a friend — both get a free month.",
+    "@referralAfterReviewCta": {}
 }

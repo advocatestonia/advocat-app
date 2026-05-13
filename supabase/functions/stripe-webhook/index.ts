@@ -17,6 +17,14 @@ import {
   resetContractReviewWindow,
   type Tier,
 } from "./contract_review_period_reset.ts";
+// Referral program — best-effort hooks fired on first paid conversion.
+// Pure functions; the Stripe-side calls are isolated in stripe_adapter.ts.
+import {
+  creditInviterForReferred,
+  processConversionForReferred,
+  type PlanPrice,
+} from "../referral/conversion.ts";
+import { makeStripeAdapter } from "../referral/stripe_adapter.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
@@ -80,6 +88,80 @@ async function maybeResetContractReviewQuota(
     console.log(
       `[stripe-webhook] contract-review quota reset user=${userId} ${prev}->${next}`,
     );
+  }
+}
+
+/**
+ * Plan price in cents, indexed by Tier. Mirrors the live launch pricing
+ * (Pro €19.99, Premium €29.99 monthly). Used to size the inviter's credit.
+ */
+function planPriceFromTier(tier: Tier): PlanPrice {
+  switch (tier) {
+    case "premium":
+      return { currency: "eur", amountCents: 2999 };
+    case "basic":
+      return { currency: "eur", amountCents: 1999 };
+    case "free":
+    default:
+      // Defensive: free tier should never reach the referral hooks, but if
+      // it does we credit the smaller amount.
+      return { currency: "eur", amountCents: 1999 };
+  }
+}
+
+/**
+ * Run the referral program hooks for a newly-paid user. Best-effort: any
+ * exception is caught and logged so subscription activation cannot fail
+ * because of a referral side-effect.
+ */
+// deno-lint-ignore no-explicit-any
+async function applyReferralHooks(
+  sb: any,
+  referredUserId: string,
+  referredCustomerId: string,
+  planPrice: PlanPrice,
+): Promise<void> {
+  const stripeKey = Deno.env.get("STRIPE_SECRET_KEY");
+  if (!stripeKey) {
+    console.warn("[stripe-webhook] referral skipped: STRIPE_SECRET_KEY unset");
+    return;
+  }
+  try {
+    const stripe = makeStripeAdapter(stripeKey);
+    const conv = await processConversionForReferred(
+      sb,
+      stripe,
+      referredUserId,
+      referredCustomerId,
+    );
+    if (conv.kind === "converted") {
+      console.log(
+        `[stripe-webhook] referral converted ` +
+          `attribution=${conv.attributionId} inviter=${conv.inviterUserId}`,
+      );
+      const credit = await creditInviterForReferred(
+        sb,
+        stripe,
+        referredUserId,
+        planPrice,
+      );
+      if (credit.kind === "credited") {
+        console.log(
+          `[stripe-webhook] referral credited inviter=${credit.inviterUserId} ` +
+            `txn=${credit.balanceTxnId} amount=${credit.amountCents}`,
+        );
+      } else if (credit.kind === "abuse_blocked") {
+        console.warn(
+          `[stripe-webhook] referral abuse-blocked inviter=${credit.inviterUserId} ` +
+            `recent=${credit.recentCreditCount}`,
+        );
+      } else {
+        console.log(`[stripe-webhook] referral credit noop: ${credit.reason}`);
+      }
+    }
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error(`[stripe-webhook] referral hook failed: ${msg.slice(0, 300)}`);
   }
 }
 
@@ -290,6 +372,18 @@ serve(async (req) => {
           userId,
           priorTierCheckout,
           tier as Tier,
+        );
+
+        // Referral program: if this user was referred, give them a free
+        // month (coupon on their Stripe customer) and credit the inviter
+        // on their next renewal. Best-effort — failures are logged and
+        // never block subscription activation. Anti-abuse is enforced in
+        // creditInviterForReferred (max 12 free months/year).
+        await applyReferralHooks(
+          supabase,
+          userId,
+          session.customer as string,
+          planPriceFromTier(tier as Tier),
         );
 
         // Send our own confirmation email so customers always get one,

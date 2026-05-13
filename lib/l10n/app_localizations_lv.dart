@@ -3346,4 +3346,58 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get notNow => 'Ne tagad';
+
+  @override
+  String get referralTitle => 'Uzaicināt draugus';
+
+  @override
+  String get referralSubtitle =>
+      'Iegūsti bezmaksas mēnesi. Uzdāvini bezmaksas mēnesi.';
+
+  @override
+  String get referralYourLink => 'TAVA SAITE';
+
+  @override
+  String get referralCopyLink => 'Kopēt saiti';
+
+  @override
+  String get referralShare => 'Kopīgot';
+
+  @override
+  String get referralLinkCopied => 'Saite nokopēta';
+
+  @override
+  String get referralStatsInvited => 'Uzaicināti';
+
+  @override
+  String get referralStatsConverted => 'Pievienojušies';
+
+  @override
+  String get referralStatsEarned => 'Bezmaksas mēneši';
+
+  @override
+  String get referralShareWhatsApp => 'Kopīgot WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Kopīgot Telegram';
+
+  @override
+  String get referralShareEmail => 'Kopīgot e-pastā';
+
+  @override
+  String get referralEmailSubject => 'Pamēģini Advocat — tavu MI juristu';
+
+  @override
+  String get referralLoadError =>
+      'Nevarēja ielādēt datus. Velc uz leju, lai atjauninātu.';
+
+  @override
+  String get referralRetry => 'Mēģināt vēlreiz';
+
+  @override
+  String get referralSettingsTile => 'Uzaicināt draugus';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Patika? Uzaicini draugu — abi saņemsiet bezmaksas mēnesi.';
 }

@@ -3336,4 +3336,56 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get notNow => 'Mitte praegu';
+
+  @override
+  String get referralTitle => 'Kutsu sõpru';
+
+  @override
+  String get referralSubtitle => 'Saa kuu tasuta. Kingi kuu tasuta.';
+
+  @override
+  String get referralYourLink => 'SINU LINK';
+
+  @override
+  String get referralCopyLink => 'Kopeeri link';
+
+  @override
+  String get referralShare => 'Jaga';
+
+  @override
+  String get referralLinkCopied => 'Link kopeeritud';
+
+  @override
+  String get referralStatsInvited => 'Kutsutud';
+
+  @override
+  String get referralStatsConverted => 'Liitunud';
+
+  @override
+  String get referralStatsEarned => 'Tasuta kuud';
+
+  @override
+  String get referralShareWhatsApp => 'Jaga WhatsAppis';
+
+  @override
+  String get referralShareTelegram => 'Jaga Telegramis';
+
+  @override
+  String get referralShareEmail => 'Jaga e-postiga';
+
+  @override
+  String get referralEmailSubject => 'Proovi Advocati — sinu AI-juristi';
+
+  @override
+  String get referralLoadError => 'Andmeid ei õnnestunud laadida. Tõmba alla.';
+
+  @override
+  String get referralRetry => 'Proovi uuesti';
+
+  @override
+  String get referralSettingsTile => 'Kutsu sõpru';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Meeldis? Kutsu sõber — mõlemad saavad kuu tasuta.';
 }

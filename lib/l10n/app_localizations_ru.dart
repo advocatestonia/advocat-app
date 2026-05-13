@@ -3345,4 +3345,57 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get notNow => 'Не сейчас';
+
+  @override
+  String get referralTitle => 'Пригласить друзей';
+
+  @override
+  String get referralSubtitle =>
+      'Получи месяц бесплатно. Подари месяц бесплатно.';
+
+  @override
+  String get referralYourLink => 'ВАША ССЫЛКА';
+
+  @override
+  String get referralCopyLink => 'Копировать';
+
+  @override
+  String get referralShare => 'Поделиться';
+
+  @override
+  String get referralLinkCopied => 'Ссылка скопирована';
+
+  @override
+  String get referralStatsInvited => 'Приглашено';
+
+  @override
+  String get referralStatsConverted => 'Подписалось';
+
+  @override
+  String get referralStatsEarned => 'Бесплатных месяцев';
+
+  @override
+  String get referralShareWhatsApp => 'Поделиться в WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Поделиться в Telegram';
+
+  @override
+  String get referralShareEmail => 'Отправить по email';
+
+  @override
+  String get referralEmailSubject => 'Попробуй Advocat — твой ИИ-юрист';
+
+  @override
+  String get referralLoadError => 'Не удалось загрузить данные. Потяните вниз.';
+
+  @override
+  String get referralRetry => 'Повторить';
+
+  @override
+  String get referralSettingsTile => 'Пригласить друзей';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Понравилось? Пригласи друга — оба получите месяц бесплатно.';
 }

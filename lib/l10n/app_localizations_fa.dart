@@ -3334,4 +3334,58 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get notNow => 'Not now';
+
+  @override
+  String get referralTitle => 'دعوت از دوستان';
+
+  @override
+  String get referralSubtitle => 'یک ماه رایگان بگیر. یک ماه رایگان هدیه بده.';
+
+  @override
+  String get referralYourLink => 'لینک شما';
+
+  @override
+  String get referralCopyLink => 'کپی لینک';
+
+  @override
+  String get referralShare => 'اشتراک‌گذاری';
+
+  @override
+  String get referralLinkCopied => 'لینک کپی شد';
+
+  @override
+  String get referralStatsInvited => 'دعوت‌شده';
+
+  @override
+  String get referralStatsConverted => 'عضو شده';
+
+  @override
+  String get referralStatsEarned => 'ماه‌های رایگان';
+
+  @override
+  String get referralShareWhatsApp => 'اشتراک در واتساپ';
+
+  @override
+  String get referralShareTelegram => 'اشتراک در تلگرام';
+
+  @override
+  String get referralShareEmail => 'اشتراک با ایمیل';
+
+  @override
+  String get referralEmailSubject =>
+      'Advocat را امتحان کن — دستیار حقوقی هوش مصنوعی تو';
+
+  @override
+  String get referralLoadError =>
+      'بارگذاری اطلاعات ممکن نشد. برای تازه‌سازی بکشید.';
+
+  @override
+  String get referralRetry => 'تلاش دوباره';
+
+  @override
+  String get referralSettingsTile => 'دعوت از دوستان';
+
+  @override
+  String get referralAfterReviewCta =>
+      'خوشت آمد؟ یک دوست را دعوت کن — هر دو یک ماه رایگان می‌گیرید.';
 }

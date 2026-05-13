@@ -3337,4 +3337,58 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get notNow => 'Inte nu';
+
+  @override
+  String get referralTitle => 'Bjud in vänner';
+
+  @override
+  String get referralSubtitle => 'Få en gratis månad. Ge en gratis månad.';
+
+  @override
+  String get referralYourLink => 'DIN LÄNK';
+
+  @override
+  String get referralCopyLink => 'Kopiera länk';
+
+  @override
+  String get referralShare => 'Dela';
+
+  @override
+  String get referralLinkCopied => 'Länk kopierad';
+
+  @override
+  String get referralStatsInvited => 'Inbjudna';
+
+  @override
+  String get referralStatsConverted => 'Konverterade';
+
+  @override
+  String get referralStatsEarned => 'Gratis månader';
+
+  @override
+  String get referralShareWhatsApp => 'Dela på WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Dela på Telegram';
+
+  @override
+  String get referralShareEmail => 'Dela via e-post';
+
+  @override
+  String get referralEmailSubject =>
+      'Prova Advocat — din juridiska AI-assistent';
+
+  @override
+  String get referralLoadError =>
+      'Kunde inte ladda data. Dra nedåt för att uppdatera.';
+
+  @override
+  String get referralRetry => 'Försök igen';
+
+  @override
+  String get referralSettingsTile => 'Bjud in vänner';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Gillade du det? Bjud in en vän — båda får en gratis månad.';
 }

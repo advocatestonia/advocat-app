@@ -3319,4 +3319,57 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notNow => 'Not now';
+
+  @override
+  String get referralTitle => 'ادعُ الأصدقاء';
+
+  @override
+  String get referralSubtitle => 'احصل على شهر مجاني. اهدِ شهرًا مجانيًا.';
+
+  @override
+  String get referralYourLink => 'رابطك';
+
+  @override
+  String get referralCopyLink => 'نسخ الرابط';
+
+  @override
+  String get referralShare => 'مشاركة';
+
+  @override
+  String get referralLinkCopied => 'تم نسخ الرابط';
+
+  @override
+  String get referralStatsInvited => 'المدعوون';
+
+  @override
+  String get referralStatsConverted => 'المشتركون';
+
+  @override
+  String get referralStatsEarned => 'أشهر مجانية';
+
+  @override
+  String get referralShareWhatsApp => 'مشاركة عبر واتساب';
+
+  @override
+  String get referralShareTelegram => 'مشاركة عبر تيليجرام';
+
+  @override
+  String get referralShareEmail => 'مشاركة عبر البريد';
+
+  @override
+  String get referralEmailSubject =>
+      'جرّب Advocat — مساعدك القانوني بالذكاء الاصطناعي';
+
+  @override
+  String get referralLoadError => 'تعذّر تحميل البيانات. اسحب للتحديث.';
+
+  @override
+  String get referralRetry => 'أعد المحاولة';
+
+  @override
+  String get referralSettingsTile => 'ادعُ الأصدقاء';
+
+  @override
+  String get referralAfterReviewCta =>
+      'أعجبك؟ ادعُ صديقًا — كلاكما يحصل على شهر مجاني.';
 }

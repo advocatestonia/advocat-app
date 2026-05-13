@@ -3349,4 +3349,59 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get notNow => 'Ne dabar';
+
+  @override
+  String get referralTitle => 'Pakviesti draugų';
+
+  @override
+  String get referralSubtitle =>
+      'Gauk nemokamą mėnesį. Padovanok nemokamą mėnesį.';
+
+  @override
+  String get referralYourLink => 'JŪSŲ NUORODA';
+
+  @override
+  String get referralCopyLink => 'Kopijuoti nuorodą';
+
+  @override
+  String get referralShare => 'Dalintis';
+
+  @override
+  String get referralLinkCopied => 'Nuoroda nukopijuota';
+
+  @override
+  String get referralStatsInvited => 'Pakviesta';
+
+  @override
+  String get referralStatsConverted => 'Prisijungė';
+
+  @override
+  String get referralStatsEarned => 'Nemokami mėnesiai';
+
+  @override
+  String get referralShareWhatsApp => 'Dalintis WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Dalintis Telegram';
+
+  @override
+  String get referralShareEmail => 'Dalintis el. paštu';
+
+  @override
+  String get referralEmailSubject =>
+      'Išbandyk Advocat — savo DI teisės asistentą';
+
+  @override
+  String get referralLoadError =>
+      'Nepavyko įkelti duomenų. Tempkite žemyn atnaujinti.';
+
+  @override
+  String get referralRetry => 'Bandyti dar kartą';
+
+  @override
+  String get referralSettingsTile => 'Pakviesti draugų';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Patiko? Pakviesk draugą — abu gausite nemokamą mėnesį.';
 }

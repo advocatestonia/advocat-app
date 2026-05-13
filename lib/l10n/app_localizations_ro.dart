@@ -3355,4 +3355,58 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get notNow => 'Nu acum';
+
+  @override
+  String get referralTitle => 'Invită prieteni';
+
+  @override
+  String get referralSubtitle => 'Primește o lună gratis. Oferă o lună gratis.';
+
+  @override
+  String get referralYourLink => 'LINKUL TĂU';
+
+  @override
+  String get referralCopyLink => 'Copiază linkul';
+
+  @override
+  String get referralShare => 'Distribuie';
+
+  @override
+  String get referralLinkCopied => 'Link copiat';
+
+  @override
+  String get referralStatsInvited => 'Invitați';
+
+  @override
+  String get referralStatsConverted => 'Convertiți';
+
+  @override
+  String get referralStatsEarned => 'Luni câștigate';
+
+  @override
+  String get referralShareWhatsApp => 'Distribuie pe WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Distribuie pe Telegram';
+
+  @override
+  String get referralShareEmail => 'Distribuie prin email';
+
+  @override
+  String get referralEmailSubject =>
+      'Încearcă Advocat — asistentul tău juridic AI';
+
+  @override
+  String get referralLoadError =>
+      'Nu s-au putut încărca datele. Trage în jos pentru reîmprospătare.';
+
+  @override
+  String get referralRetry => 'Încearcă din nou';
+
+  @override
+  String get referralSettingsTile => 'Invită prieteni';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Ți-a plăcut? Invită un prieten — amândoi primiți o lună gratis.';
 }

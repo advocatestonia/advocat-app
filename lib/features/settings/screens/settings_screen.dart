@@ -105,6 +105,21 @@ class SettingsScreen extends ConsumerWidget {
 
           const _SectionDivider(),
 
+          // ── Invite friends ────────────────────────────────────────────
+          // Growth loop: tap → /referral screen with copyable link + share.
+          _SettingsTile(
+            icon: Icons.card_giftcard_outlined,
+            title: l.referralSettingsTile,
+            subtitle: l.referralSubtitle,
+            trailing: const Icon(
+              AppIcons.chevronRight,
+              color: AppColors.textTertiary,
+            ),
+            onTap: () => context.push(AppRoutes.referral),
+          ),
+
+          const _SectionDivider(),
+
           // ── Data & Privacy ────────────────────────────────────────────
           _SectionHeader(title: l.dataAndPrivacy),
           // ADR-001 Tier 1 — let users review & wipe what the AI has

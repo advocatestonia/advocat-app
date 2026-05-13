@@ -3339,4 +3339,58 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get notNow => 'Не зараз';
+
+  @override
+  String get referralTitle => 'Запросити друзів';
+
+  @override
+  String get referralSubtitle =>
+      'Отримай безплатний місяць. Подаруй безплатний місяць.';
+
+  @override
+  String get referralYourLink => 'ВАШЕ ПОСИЛАННЯ';
+
+  @override
+  String get referralCopyLink => 'Копіювати посилання';
+
+  @override
+  String get referralShare => 'Поділитися';
+
+  @override
+  String get referralLinkCopied => 'Посилання скопійоване';
+
+  @override
+  String get referralStatsInvited => 'Запрошено';
+
+  @override
+  String get referralStatsConverted => 'Приєдналося';
+
+  @override
+  String get referralStatsEarned => 'Безплатних місяців';
+
+  @override
+  String get referralShareWhatsApp => 'Поділитися у WhatsApp';
+
+  @override
+  String get referralShareTelegram => 'Поділитися в Telegram';
+
+  @override
+  String get referralShareEmail => 'Надіслати email';
+
+  @override
+  String get referralEmailSubject => 'Спробуй Advocat — твій ШІ-юрист';
+
+  @override
+  String get referralLoadError =>
+      'Не вдалося завантажити дані. Потягніть униз.';
+
+  @override
+  String get referralRetry => 'Повторити';
+
+  @override
+  String get referralSettingsTile => 'Запросити друзів';
+
+  @override
+  String get referralAfterReviewCta =>
+      'Сподобалось? Запроси друга — обидва отримаєте безплатний місяць.';
 }

@@ -33,6 +33,7 @@ import '../features/rights/screens/rights_guide_screen.dart';
 import '../features/rights/screens/rights_detail_screen.dart';
 import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
 import '../features/profile/screens/ai_memory_screen.dart';
+import '../features/referral/screens/referral_screen.dart';
 import '../features/case_file/screens/case_file_screen.dart';
 // Pkg 1.D — new "Мои дела" / Case Memory screens. Live alongside the
 // legacy /cases routes; gradually replacing them.
@@ -100,6 +101,10 @@ abstract final class AppRoutes {
   static const String rightsDetail = '/rights/:id';
   static const String legalAid = '/legal-aid';
   static const String aiMemory = '/profile/ai-memory';
+
+  /// Referral program ("Invite friends"). Reached from Settings and from
+  /// the after-Contract-Review CTA chip.
+  static const String referral = '/referral';
 
   /// Case File — auto-built dossier. Optional `?caseId=` query param scopes
   /// to one case; without it the screen shows the cross-case view.
@@ -406,6 +411,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.aiMemory,
         name: 'aiMemory',
         builder: (context, state) => const AiMemoryScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.referral,
+        name: 'referral',
+        builder: (context, state) => const ReferralScreen(),
       ),
       GoRoute(
         path: AppRoutes.caseFile,
