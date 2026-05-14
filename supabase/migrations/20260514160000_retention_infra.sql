@@ -172,9 +172,16 @@ create index if not exists email_events_user_idx
     on public.email_events (user_id, sent_at desc);
 create index if not exists email_events_kind_idx
     on public.email_events (kind, sent_at desc);
--- Prevent double-send of the same winback step within 1 day
+-- Prevent double-send of the same winback step within 1 day.
+-- Use date_trunc('day', sent_at AT TIME ZONE 'UTC') instead of sent_at::date
+-- because timestamptz::date is STABLE not IMMUTABLE (depends on session TZ).
+-- The AT TIME ZONE 'UTC' conversion makes the expression IMMUTABLE.
 create unique index if not exists email_events_user_kind_day_idx
-    on public.email_events (user_id, kind, (sent_at::date))
+    on public.email_events (
+        user_id,
+        kind,
+        (date_trunc('day', sent_at at time zone 'UTC'))
+    )
     where kind in ('winback_d3','winback_d7','winback_d14','weekly_digest');
 
 alter table public.email_events enable row level security;
@@ -280,7 +287,7 @@ as $$
             select count(*) from user_cases c
             where c.user_id = u.id and c.status = 'active'
         ) as active_case_count
-    from public.users u
+    from public.profiles u
     left join public.notification_preferences np on np.user_id = u.id
     left join public.user_engagement e on e.user_id = u.id
     where coalesce(np.all_email_disabled, false) = false
@@ -344,7 +351,7 @@ as $$
                      and e.last_active_at >= (p_now - interval '7 days') then 'd3'
                 else null
             end as target_step
-        from public.users u
+        from public.profiles u
         join public.user_engagement e on e.user_id = u.id
         left join public.notification_preferences np on np.user_id = u.id
         where coalesce(np.all_email_disabled, false) = false
