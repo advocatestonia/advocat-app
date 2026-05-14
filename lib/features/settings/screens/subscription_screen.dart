@@ -297,7 +297,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         title: l10n.legalFighter,
         tierLabel: 'COUNSEL',
         monthlyPrice: 19.99,
-        annualPrice: 119.99,
+        annualPrice: 159.99,
         isAnnual: isAnnual,
         isCurrent: currentTier == SubscriptionTier.basic,
         isLoading: loadingPlan == 'basic',
