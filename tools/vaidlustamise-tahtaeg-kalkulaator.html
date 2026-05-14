@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vaidlustamise tähtaja kalkulaator — arvuta kaebamise tähtaeg | Advocat</title>
+    <meta name="description" content="Tasuta kalkulaator otsuse vaidlustamise tähtaja arvutamiseks. Töövaidluskomisjon, halduskohus, PPA, Migri. Sisesta otsuse kuupäev, näe täpset tähtaega.">
+    <meta name="keywords" content="vaidlustamise tähtaeg, kaebamise tähtaeg, edasikaebamise tähtaeg, halduskohus tähtaeg, töövaidluskomisjon tähtaeg, PPA otsus vaidlustamine">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html">
+    <meta property="og:title" content="Vaidlustamise tähtaja kalkulaator — tasuta tööriist">
+    <meta property="og:description" content="Arvuta otsuse vaidlustamise tähtaeg sekundiga. Töövaidluskomisjon, halduskohus, PPA, Migri.">
+    <meta property="og:url" content="https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Advocat">
+    <meta property="og:locale" content="et_EE">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+        .breadcrumb { max-width: 900px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
+        .breadcrumb a { color: #0A8F6C; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+        .tool-header { margin: 24px 0 32px; text-align: center; }
+        .tool-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; background: #F0FDFA; color: #0A8F6C; margin-bottom: 16px; }
+        .tool-header h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; color: #1A2B4A; }
+        .tool-header p { font-size: 17px; color: #5A6A7A; max-width: 640px; margin: 0 auto; }
+        .calc-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(26,43,74,0.08); border: 1px solid #E2E8F0; margin-bottom: 24px; }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #1A2B4A; margin-bottom: 8px; }
+        .form-group select, .form-group input { width: 100%; padding: 14px 16px; font-size: 16px; border: 1px solid #E2E8F0; border-radius: 10px; font-family: inherit; color: #1A2B4A; background: #fff; }
+        .form-group select:focus, .form-group input:focus { outline: none; border-color: #0A8F6C; box-shadow: 0 0 0 3px rgba(10,143,108,0.1); }
+        .form-group .helper { font-size: 13px; color: #8A9AAA; margin-top: 6px; }
+        .result-card { border-radius: 16px; padding: 36px 32px; margin-top: 24px; transition: all 0.3s; }
+        .result-card.green { background: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%); border: 2px solid #0A8F6C; }
+        .result-card.yellow { background: linear-gradient(135deg, #FFFAF0 0%, #FEF5E7 100%); border: 2px solid #D69E2E; }
+        .result-card.red { background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%); border: 2px solid #C53030; }
+        .result-card.expired { background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%); border: 2px solid #1A202C; color: #fff; }
+        .result-label { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .result-card.green .result-label { color: #0A8F6C; }
+        .result-card.yellow .result-label { color: #D69E2E; }
+        .result-card.red .result-label { color: #C53030; }
+        .result-card.expired .result-label { color: rgba(255,255,255,0.7); }
+        .result-deadline { font-size: 36px; font-weight: 800; color: #1A2B4A; line-height: 1.2; margin-bottom: 12px; }
+        .result-card.expired .result-deadline { color: #fff; }
+        .result-countdown { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+        .result-card.green .result-countdown { color: #0A8F6C; }
+        .result-card.yellow .result-countdown { color: #D69E2E; }
+        .result-card.red .result-countdown { color: #C53030; }
+        .result-card.expired .result-countdown { color: #FED7D7; }
+        .result-subtitle { font-size: 15px; color: #2D3748; margin-bottom: 16px; line-height: 1.7; }
+        .result-card.expired .result-subtitle { color: rgba(255,255,255,0.85); }
+        .consequence-box { background: rgba(255,255,255,0.7); border-radius: 10px; padding: 16px 20px; margin-top: 16px; font-size: 14px; line-height: 1.6; }
+        .result-card.expired .consequence-box { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); }
+        .consequence-box strong { color: #1A2B4A; }
+        .result-card.expired .consequence-box strong { color: #fff; }
+        .decision-types { background: #fff; border-radius: 12px; padding: 28px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .decision-types h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
+        .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+        .type-card { background: #F7F8FA; border: 1px solid #E2E8F0; border-radius: 10px; padding: 16px 18px; }
+        .type-card h3 { font-size: 14px; font-weight: 700; color: #1A2B4A; margin-bottom: 4px; }
+        .type-card .deadline { font-size: 13px; color: #0A8F6C; font-weight: 600; margin-bottom: 6px; }
+        .type-card p { font-size: 13px; color: #5A6A7A; line-height: 1.5; }
+        .info-section { background: #fff; border-radius: 12px; padding: 28px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .info-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
+        .info-section h3 { font-size: 16px; font-weight: 600; margin: 18px 0 8px; color: #1A2B4A; }
+        .info-section p { font-size: 15px; color: #2D3748; margin-bottom: 12px; line-height: 1.7; }
+        .info-section ul { padding-left: 24px; margin: 12px 0; }
+        .info-section li { font-size: 15px; color: #2D3748; margin-bottom: 6px; }
+        .law-box { background: #F0FDFA; border-left: 4px solid #0A8F6C; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 14px; }
+        .law-box strong { color: #0A8F6C; }
+        .cta-box { background: linear-gradient(135deg, #1A2B4A 0%, #2C4274 100%); border-radius: 16px; padding: 36px 28px; margin: 36px 0; text-align: center; color: #fff; }
+        .cta-box h3 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 16px; }
+        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+        .cta-btn:hover { background: #078a63; text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,143,108,0.3); }
+        .disclaimer { background: #FFFAF0; border-left: 4px solid #DD6B20; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; font-size: 14px; color: #5A6A7A; }
+        .disclaimer strong { color: #DD6B20; }
+        .related { background: #fff; border-radius: 12px; padding: 24px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .related h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .related ul { list-style: none; padding: 0; }
+        .related li { margin-bottom: 8px; font-size: 14px; }
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); }
+        @media (max-width: 600px) {
+            .tool-header h1 { font-size: 26px; }
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .calc-card { padding: 20px; }
+            .result-card { padding: 24px 20px; }
+            .result-deadline { font-size: 28px; }
+            .result-countdown { font-size: 18px; }
+            .header-nav a { margin-left: 12px; font-size: 13px; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "Vaidlustamise tähtaja kalkulaator",
+                "url": "https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html",
+                "description": "Tasuta tööriist otsuse vaidlustamise tähtaja arvutamiseks Eestis ja Soomes. Töövaidluskomisjon, halduskohus, PPA, Migri.",
+                "applicationCategory": "LegalService",
+                "operatingSystem": "Web",
+                "browserRequirements": "Vajab JavaScripti",
+                "inLanguage": "et",
+                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+                "publisher": {"@type": "Organization", "name": "Advocat", "url": "https://advocat.ee/"}
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Advocat", "item": "https://advocat.ee/"},
+                    {"@type": "ListItem", "position": 2, "name": "Tööriistad", "item": "https://advocat.ee/tools/"},
+                    {"@type": "ListItem", "position": 3, "name": "Vaidlustamise tähtaja kalkulaator"}
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Mis juhtub kui ma jätan vaidlustamise tähtaja kasutamata?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Otsus jõustub ja muutub lõplikuks. Edasikaebamise õigus kaob. Erandlikult on võimalik taotleda kohtul tähtaja ennistamist (menetlusseadustiku § 67), kuid pead tõestama, et mööda lasid tähtaeg mitte sinu süü tõttu (raske haigus, posti tõrge). See on raske."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Mis päev läheb arvesse — kättesaamine või dateerimine?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Üldreegel: tähtaeg algab otsuse kättesaamise päeva järgmisest tööpäevast (HMS § 33 lg 1, HKMS § 46). Kui otsus saadeti tähitud kirjaga ja sa ei läinud seda välja võtma, loetakse see 7 päeva pärast posti laekumist kättesaaduks."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas nädalavahetus läheb tähtaja sisse?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Jah, üldjuhul on tähtaeg kalendripäevades — nädalavahetus läheb sisse. Aga kui tähtaja viimane päev langeb nädalavahetusele või riigipühale, siis tähtaeg pikeneb järgmise tööpäevani (HMS § 33 lg 4)."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas saan tähtaega pikendada?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Üldjuhul ei. Vaidlustamise tähtajad on jäigad (preklusiivsed). Erandlikult saab kohtul taotleda möödunud tähtaja ennistamist (TsMS § 67, HKMS § 71) — kuid pead tõestama mõjuvat takistust (raske haigus, posti tõrge, kättesaadeti vale aadressile)."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas kohtutee on parem kui haldusotsuse vaidlustamine?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Sageli on enne kohtusse pöördumist vaja esitada vaie (haldusotsuse läbivaatamine sama asutuse poolt) — HMS § 71-75. See on tasuta ja kiirem. Alles vaide rahuldamatuks jätmise korral saab pöörduda halduskohtusse."
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
+            <nav class="header-nav">
+                <a href="https://advocat.ee">Avaleht</a>
+                <a href="/tools/">Tööriistad</a>
+                <a href="/blog/">Blogi</a>
+                <a href="/app.html">Proovi tasuta</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="https://advocat.ee">Advocat</a> &rsaquo; <a href="/tools/">Tööriistad</a> &rsaquo; Vaidlustamise tähtaja kalkulaator
+    </div>
+
+    <div class="container">
+        <div class="tool-header">
+            <span class="tool-tag">Tasuta tööriist</span>
+            <h1>Vaidlustamise tähtaja kalkulaator</h1>
+            <p>Arvuta kaebamise tähtaeg otsuse kuupäeva järgi. Arvestab nädalavahetustega — kui tähtaeg langeb nädalavahetusele, pikeneb järgmise tööpäevani.</p>
+        </div>
+
+        <div class="calc-card">
+            <div class="form-group">
+                <label for="decisionType">Otsuse tüüp *</label>
+                <select id="decisionType">
+                    <option value="tvk">Töövaidluskomisjoni otsus → 30 päeva kohtusse</option>
+                    <option value="halduskohus">Halduskohtu otsus → 30 päeva Riigikohtusse</option>
+                    <option value="ppa">PPA elamisloa otsus → 30 päeva halduskohtusse</option>
+                    <option value="tax">Maksu- ja Tolliameti otsus → 30 päeva vaidekomisjoni</option>
+                    <option value="migri">Migri (Soome) otsus → 30 päeva halduskohtusse</option>
+                    <option value="eviction">Väljatõstmise teade → 14 päeva</option>
+                    <option value="kho">KHO valitusluba (Soome) → 30 päeva</option>
+                    <option value="custom">Muu otsus — käsitsi tähtaeg</option>
+                </select>
+                <div class="helper" id="decisionHelper">Töövaidluskomisjoni otsus — kaeba edasi maakohtusse 30 päeva jooksul (ITVS § 27 lg 1).</div>
+            </div>
+
+            <div class="form-group" id="customDaysGroup" style="display:none;">
+                <label for="customDays">Tähtaja päevad</label>
+                <input type="number" id="customDays" min="1" max="365" value="30">
+            </div>
+
+            <div class="form-group">
+                <label for="decisionDate">Otsuse kuupäev (kättesaamise päev) *</label>
+                <input type="date" id="decisionDate">
+                <div class="helper">Tähtaeg hakkab tavaliselt järgmisest tööpäevast (HMS § 33).</div>
+            </div>
+
+            <div class="result-card green" id="resultCard">
+                <div class="result-label" id="resultLabel">Sinu vaidlustamise tähtaeg</div>
+                <div class="result-deadline" id="resultDeadline">—</div>
+                <div class="result-countdown" id="resultCountdown">—</div>
+                <div class="result-subtitle" id="resultSubtitle">Vali otsuse tüüp ja sisesta kuupäev.</div>
+                <div class="consequence-box" id="consequenceBox">
+                    <strong>Mis juhtub, kui jätad tähtaja kasutamata?</strong><br>
+                    Kaotad õiguse otsust vaidlustada. Otsus jõustub lõplikult.
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h3>Tähtaeg läheneb? Advocat aitab kaebust koostada</h3>
+            <p>Vaie või kaebus on keeruline juriidiline dokument — Advocat AI advokaat aitab seda koostada ja õigeaegselt esitada. Eesti, vene, inglise ja soome keeles.</p>
+            <a href="/app.html?from=tahtaeg-kalkulaator" class="cta-btn">Saa Advocat õigusabi &rarr;</a>
+        </div>
+
+        <div class="decision-types">
+            <h2>Otsuse tüübid ja tähtajad</h2>
+            <div class="types-grid">
+                <div class="type-card">
+                    <h3>Töövaidluskomisjon (TVK)</h3>
+                    <div class="deadline">30 päeva</div>
+                    <p>TVK otsuse vaidlustamiseks pöördu maakohtu poole (ITVS § 27).</p>
+                </div>
+                <div class="type-card">
+                    <h3>Halduskohus → Riigikohus</h3>
+                    <div class="deadline">30 päeva</div>
+                    <p>Halduskohtu otsuse edasikaebamine kassatsiooni korras (HKMS § 192).</p>
+                </div>
+                <div class="type-card">
+                    <h3>PPA elamisloa otsus</h3>
+                    <div class="deadline">30 päeva</div>
+                    <p>Esmalt vaie PPA-le (15 päeva) või kohe halduskohtusse 30 päeva jooksul (VMS § 295).</p>
+                </div>
+                <div class="type-card">
+                    <h3>MTA maksuotsus</h3>
+                    <div class="deadline">30 päeva</div>
+                    <p>Esmalt vaie MTA vaidekomisjoni (MKS § 137). Hiljem halduskohus.</p>
+                </div>
+                <div class="type-card">
+                    <h3>Migri (Soome)</h3>
+                    <div class="deadline">30 päeva</div>
+                    <p>Käännytys-/karkotuspäätös → kaebus halduskohtusse (HAO). HOL § 7.</p>
+                </div>
+                <div class="type-card">
+                    <h3>Väljatõstmise teade</h3>
+                    <div class="deadline">14 päeva</div>
+                    <p>Üürilepingu erakorraline ülesütlemine — vaidlustamine 14 päeva (VÕS § 326).</p>
+                </div>
+                <div class="type-card">
+                    <h3>KHO valitusluba (Soome)</h3>
+                    <div class="deadline">30 päeva</div>
+                    <p>HAO otsuse edasikaebamine — KHO valituslupahakemus 30 päeva jooksul. HOL § 107.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Kuidas tähtaeg arvutatakse?</h2>
+
+            <p>Eesti haldusmenetluse seaduse § 33 ja halduskohtumenetluse seadustiku § 46 alusel kehtib üldine reegel:</p>
+
+            <div class="law-box">
+                <strong>Tähtaja algus:</strong> Otsuse kättesaamise päevale järgneva päeva keskööst.<br>
+                <strong>Tähtaja lõpp:</strong> Viimase päeva keskööni (24:00).<br>
+                <strong>Nädalavahetus:</strong> Kui tähtaja viimane päev langeb laupäevale, pühapäevale või riigipühale, pikeneb tähtaeg järgmise tööpäevani.
+            </div>
+
+            <h3>Näide:</h3>
+            <p>Otsus on tehtud 1. juunil ja sa said selle kätte. Tähtaeg algab 2. juunist. Kui tähtaeg on 30 päeva, lõpeb see 1. juulil keskööl. Kui 1. juuli on pühapäev, siis tähtaeg pikeneb esmaspäevani, 2. juulini.</p>
+
+            <h3>Tähtsad nüansid:</h3>
+            <ul>
+                <li><strong>Tähitud kiri:</strong> Kui posti ei läinud välja võtma, loetakse otsus kättesaaduks 7 päeva pärast posti laekumist</li>
+                <li><strong>E-post:</strong> Otsus loetakse kättesaaduks selle saatmise päeval</li>
+                <li><strong>eesti.ee:</strong> Otsus loetakse kättesaaduks selle teadaande tegemise päeval (HMS § 31 lg 3)</li>
+                <li><strong>Posti tõrge:</strong> Saab tähtaja ennistamist taotleda — pead tõestama, et ei saanud teadet õigeaegselt</li>
+            </ul>
+
+            <h3>Mis juhtub, kui jätad tähtaja kasutamata?</h3>
+            <p>Otsus jõustub ja muutub lõplikuks. Edasikaebamise õigus kaob. Erandlikult on võimalik kohtul taotleda <strong>möödunud tähtaja ennistamist</strong> (TsMS § 67, HKMS § 71) — kuid pead tõestama mõjuvat takistust:</p>
+            <ul>
+                <li>Raske haigus (haiglas viibimine)</li>
+                <li>Posti tõrge või vale aadressile saatmine</li>
+                <li>Vahistamine või eraldatus</li>
+                <li>Force majeure (loodusõnnetus, sõda)</li>
+            </ul>
+
+            <div class="law-box">
+                <strong>Tähtis:</strong> Ennistamise taotlus tuleb esitada 14 päeva jooksul takistuse möödumisest. Ärge oodake — kohe pärast takistuse möödumist pöörduge advokaadi poole.
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Õiguslik märkus:</strong> See kalkulaator annab orienteeruva tähtaja PKS § 100-103, HMS § 33, HKMS § 46 ja sektorispetsiifiliste seaduste alusel. Konkreetses olukorras kontrolli täpset tähtaega otsuse tekstist (peab olema märgitud edasikaebamise kord ja tähtaeg). Siduva nõu saamiseks pöördu Advocat AI assistendi või vandeadvokaadi poole.
+        </div>
+
+        <div class="related">
+            <h3>Loe lähemalt</h3>
+            <ul>
+                <li><a href="/blog/valjasaatmiskorralduse-vaidlustamine.html">Väljasaatmiskorralduse vaidlustamine</a></li>
+                <li><a href="/blog/valjasaatmine-vaidlustamine.html">Väljasaatmise vaidlustamine — üldine juhend</a></li>
+                <li><a href="/blog/toooigus-vallandamine.html">Töövaidlused Eestis</a></li>
+                <li><a href="/blog/tasuta-oigusabi-eestis-2026.html">Tasuta õigusabi Eestis 2026</a></li>
+                <li><a href="/tools/">Kõik tasuta tööriistad</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Advocat. Kõik õigused kaitstud. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong>Õiguslik märkus:</strong> See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</p>
+    </footer>
+
+    <script>
+        (function() {
+            const DECISION_TYPES = {
+                tvk: { days: 30, label: 'Töövaidluskomisjoni otsuse vaidlustamiseks pöördu maakohtu poole.', law: 'ITVS § 27 lg 1' },
+                halduskohus: { days: 30, label: 'Halduskohtu otsuse edasikaebamine kassatsiooni korras Riigikohtule.', law: 'HKMS § 192' },
+                ppa: { days: 30, label: 'PPA elamisloa otsuse vaidlustamiseks pöördu halduskohtu poole.', law: 'VMS § 295, HKMS § 46' },
+                tax: { days: 30, label: 'Maksu- ja Tolliameti otsuse vaidlustamiseks esita vaie MTA vaidekomisjoni.', law: 'MKS § 137' },
+                migri: { days: 30, label: 'Migri otsuse (käännytys, oleskelulupa) vaidlustamiseks pöördu halduskohtu poole (HAO).', law: 'HOL § 7, UlkomaalaisL § 190' },
+                eviction: { days: 14, label: 'Üürilepingu erakorralise ülesütlemise vaidlustamiseks pöördu kohtu poole.', law: 'VÕS § 326' },
+                kho: { days: 30, label: 'HAO otsuse edasikaebamiseks esita KHO-le valituslupahakemus.', law: 'HOL § 107' },
+                custom: { days: 30, label: 'Käsitsi määratud tähtaeg.', law: 'Kontrolli otsuse tekstist' }
+            };
+
+            const decisionType = document.getElementById('decisionType');
+            const customDays = document.getElementById('customDays');
+            const customDaysGroup = document.getElementById('customDaysGroup');
+            const decisionDate = document.getElementById('decisionDate');
+            const decisionHelper = document.getElementById('decisionHelper');
+
+            // Default: today
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            decisionDate.value = today.toISOString().slice(0, 10);
+
+            function fmtDate(d) {
+                const months = ['jaanuar','veebruar','märts','aprill','mai','juuni','juuli','august','september','oktoober','november','detsember'];
+                return `${d.getDate()}. ${months[d.getMonth()]} ${d.getFullYear()}`;
+            }
+
+            function adjustForWeekend(date) {
+                // 0 = Sunday, 6 = Saturday
+                const day = date.getDay();
+                if (day === 0) date.setDate(date.getDate() + 1); // Sunday -> Monday
+                else if (day === 6) date.setDate(date.getDate() + 2); // Saturday -> Monday
+                return date;
+            }
+
+            function calculate() {
+                const type = decisionType.value;
+                const info = DECISION_TYPES[type];
+                const days = type === 'custom' ? parseInt(customDays.value, 10) || 30 : info.days;
+                const dateStr = decisionDate.value;
+                if (!dateStr) return;
+
+                const decision = new Date(dateStr + 'T00:00:00');
+                const deadline = new Date(decision);
+                deadline.setDate(deadline.getDate() + days);
+                adjustForWeekend(deadline);
+
+                const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+
+                document.getElementById('resultDeadline').textContent = fmtDate(deadline);
+
+                const card = document.getElementById('resultCard');
+                card.className = 'result-card';
+
+                let countdownText, subtitle, urgencyClass;
+
+                if (daysLeft < 0) {
+                    urgencyClass = 'expired';
+                    countdownText = `Tähtaeg möödas ${Math.abs(daysLeft)} päeva tagasi`;
+                    subtitle = `Tähtaeg lõppes ${fmtDate(deadline)}. Otsus on jõustunud. Erandlikult saab taotleda kohtul tähtaja ennistamist — pöördu kiiresti advokaadi poole.`;
+                } else if (daysLeft === 0) {
+                    urgencyClass = 'red';
+                    countdownText = `Tähtaeg lõppeb täna!`;
+                    subtitle = `Sul on aega kuni täna keskööni. Pöördu kiiresti advokaadi poole — kaebus tuleb esitada täna.`;
+                } else if (daysLeft <= 7) {
+                    urgencyClass = 'red';
+                    countdownText = `${daysLeft} päeva jäänud!`;
+                    subtitle = `Tähtaeg läheneb kiiresti. Pöördu kohe advokaadi poole — kaebuse koostamine võtab aega.`;
+                } else if (daysLeft <= 14) {
+                    urgencyClass = 'yellow';
+                    countdownText = `${daysLeft} päeva jäänud`;
+                    subtitle = `Sul on veel aega, kuid ära viivita. Kaebuse koostamiseks on hea varuda vähemalt nädal aega.`;
+                } else {
+                    urgencyClass = 'green';
+                    countdownText = `${daysLeft} päeva jäänud`;
+                    subtitle = `Sul on piisavalt aega kaebuse ettevalmistamiseks. Kogu vajalikud dokumendid ja konsulteeri advokaadiga.`;
+                }
+
+                card.classList.add(urgencyClass);
+                document.getElementById('resultLabel').textContent = `Sinu vaidlustamise tähtaeg (${days} päeva, ${info.law})`;
+                document.getElementById('resultCountdown').textContent = countdownText;
+                document.getElementById('resultSubtitle').textContent = subtitle;
+
+                const consequenceBox = document.getElementById('consequenceBox');
+                if (daysLeft < 0) {
+                    consequenceBox.innerHTML = `<strong>Mis nüüd?</strong><br>Esita kohtule taotlus möödunud tähtaja ennistamiseks (TsMS § 67, HKMS § 71). Pead tõestama mõjuva takistuse: raske haigus, posti tõrge, vahistamine. Taotlus tuleb esitada 14 päeva jooksul takistuse möödumisest.`;
+                } else {
+                    consequenceBox.innerHTML = `<strong>Mis juhtub, kui jätad tähtaja kasutamata?</strong><br>Kaotad õiguse otsust vaidlustada. Otsus jõustub lõplikult. Hiline ennistamise taotlus on raskelt rahuldatav.`;
+                }
+
+                decisionHelper.textContent = info.label;
+                customDaysGroup.style.display = type === 'custom' ? 'block' : 'none';
+            }
+
+            decisionType.addEventListener('change', calculate);
+            customDays.addEventListener('input', calculate);
+            decisionDate.addEventListener('input', calculate);
+
+            calculate();
+        })();
+    </script>
+</body>
+</html>
