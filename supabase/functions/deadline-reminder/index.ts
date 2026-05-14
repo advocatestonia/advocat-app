@@ -55,16 +55,16 @@ serve(async (req) => {
     const now = new Date();
     const threeDaysFromNow = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
 
-    // Active deadlines are those not yet completed or cancelled.
-    // The deadline_status enum is: 'upcoming' | 'overdue' | 'completed' | 'cancelled'.
-    // Previous code used "pending" which does not exist in the enum, so the
-    // query silently returned zero rows and reminders were never generated.
+    // Active deadlines are those not yet completed. Prod schema has no
+    // `status` column — it has `is_completed boolean`, `due_date date`,
+    // `priority text`. Previous code referenced a non-existent `status`
+    // enum, so the cron returned 500 on every run (schema drift).
     const { data: urgentDeadlines, error: fetchError } = await supabase
       .from("deadlines")
       .select("*, cases(title, user_id)")
       .gte("due_date", now.toISOString())
       .lte("due_date", threeDaysFromNow.toISOString())
-      .in("status", ["upcoming", "overdue"]);
+      .eq("is_completed", false);
 
     if (fetchError) {
       console.error("deadline-reminder: fetch failed:", fetchError);
