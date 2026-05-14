@@ -26,7 +26,7 @@ import {
   parseTravauxOutput,
 } from "../extractor_prompt.ts";
 import { ALL_SEEDS, EE_EELNOU_SEEDS, FI_HE_SEEDS } from "../seed.ts";
-import { htmlToText } from "../fetch_source.ts";
+import { bytesToBase64, htmlToText } from "../fetch_source.ts";
 import { clampInt, parseCountRange, seedFromPayload } from "../index.ts";
 
 // =============================================================================
@@ -36,9 +36,11 @@ Deno.test("HEF-T01 — model is Sonnet (consilium requirement, not Haiku)", () =
   assert(HE_FETCHER_MODEL.includes("sonnet"));
 });
 
-Deno.test("HEF-T02 — timeout is within 10s..120s", () => {
+Deno.test("HEF-T02 — timeout is within 10s..300s", () => {
+  // Claude native PDF support raises latency vs raw text input; 180s gives
+  // headroom for 30+ page HE PDFs without exceeding Supabase's 5 min ceiling.
   assert(HE_FETCHER_TIMEOUT_MS >= 10_000);
-  assert(HE_FETCHER_TIMEOUT_MS <= 120_000);
+  assert(HE_FETCHER_TIMEOUT_MS <= 300_000);
 });
 
 Deno.test("HEF-T03 — max tokens leaves headroom but bounds cost", () => {
@@ -172,7 +174,11 @@ Deno.test("HEF-S05 — every FI seed has doc_kind=HE and jurisdiction=fi", () =>
   for (const s of FI_HE_SEEDS) {
     assertEquals(s.doc_kind, "HE");
     assertEquals(s.jurisdiction, "fi");
-    assert(s.url.includes("eduskunta.fi"), `FI seed url: ${s.url}`);
+    // FI HE source: Finlex (primary) or eduskunta.fi (legacy).
+    assert(
+      s.url.includes("finlex.fi") || s.url.includes("eduskunta.fi"),
+      `FI seed url not on a recognised host: ${s.url}`,
+    );
   }
 });
 
@@ -183,7 +189,12 @@ Deno.test("HEF-S06 — every EE seed is eelnõu/seletuskiri and jurisdiction=ee"
       `unexpected doc_kind: ${s.doc_kind}`,
     );
     assertEquals(s.jurisdiction, "ee");
-    assert(s.url.includes("riigikogu.ee"), `EE seed url: ${s.url}`);
+    // Primary host: Riigikogu eelnõude infosüsteem.
+    // Exception: Põhiseadus 1992 predates Riigikogu IS — uses Riigi Teataja.
+    assert(
+      s.url.includes("riigikogu.ee") || s.url.includes("riigiteataja.ee"),
+      `EE seed url not on a recognised host: ${s.url}`,
+    );
   }
 });
 
@@ -371,6 +382,34 @@ Deno.test("HEF-H05 — block tags become newlines", () => {
   const html = "<p>a</p><p>b</p><p>c</p>";
   const txt = htmlToText(html);
   assert(txt.split(/\n/).filter((l) => l.trim().length > 0).length === 3);
+});
+
+// =============================================================================
+// 7.5. bytesToBase64 — round-trip + chunked correctness
+// =============================================================================
+Deno.test("HEF-B01 — bytesToBase64 round-trip on small bytes", () => {
+  const bytes = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f]); // "Hello"
+  assertEquals(bytesToBase64(bytes), "SGVsbG8=");
+});
+
+Deno.test("HEF-B02 — bytesToBase64 handles >32KB (chunked path)", () => {
+  // 100KB of repeating bytes — exercises the 32KB chunking loop.
+  const n = 100 * 1024;
+  const bytes = new Uint8Array(n);
+  for (let i = 0; i < n; i++) bytes[i] = (i * 7) & 0xff;
+  const b64 = bytesToBase64(bytes);
+  // Decode via atob and compare lengths byte-for-byte.
+  const decoded = atob(b64);
+  assertEquals(decoded.length, n);
+  // Spot-check a few bytes.
+  assertEquals(decoded.charCodeAt(0), 0);
+  assertEquals(decoded.charCodeAt(1), 7);
+  assertEquals(decoded.charCodeAt(100), (100 * 7) & 0xff);
+  assertEquals(decoded.charCodeAt(n - 1), ((n - 1) * 7) & 0xff);
+});
+
+Deno.test("HEF-B03 — bytesToBase64 empty input → empty string", () => {
+  assertEquals(bytesToBase64(new Uint8Array(0)), "");
 });
 
 // =============================================================================

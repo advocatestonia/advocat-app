@@ -6,16 +6,16 @@
 // something to return.
 //
 // FI side: Hallituksen esitykset (HE) for the 15 most-cited statutes in
-// our case corpus. URL pattern is the Finlex / eduskunta document store:
-//   https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/HE_{n}_{yyyy}.pdf
-// (Older HEs from before ~2000 may live under /Vaski/ instead of /vaski/.
-//  The actual fetch handles either; we keep the canonical URL the user
-//  can click through to.)
+// our case corpus. The Finlex `/fi/hallituksen-esitykset/{year}/{n}` URL
+// is a stable, deterministic HTML page that always renders the HE.
+// (Finlex doesn't have pre-1994 HEs digitised — those entries fail.)
 //
 // EE side: eelnõud + seletuskirjad from the Riigikogu eelnõude infosüsteem.
-// URL pattern: https://www.riigikogu.ee/tegevus/eelnoud/eelnou/{uuid}/
-// (The {uuid} segment is the Riigikogu's eelnõu identifier — opaque, not
-//  user-readable. We store it as source_id so subsequent runs are idempotent.)
+// URL pattern: https://www.riigikogu.ee/tegevus/eelnoud/eelnou/{uuid}/slug
+// The {uuid} is the canonical Riigikogu bill UUID. UUIDs were discovered
+// via api.riigikogu.ee/api/volumes/drafts?mark=N&membership=K (2026-05-14).
+// The worker post-fetches the HTML page, extracts the first "Seletuskiri
+// pdf" or "Algtekst" /download/{guid} link, then fetches that PDF.
 //
 // IMPORTANT — provenance:
 //   The HE / eelnõu numbers below are the ones the consilium picked as
@@ -55,6 +55,8 @@ export interface TravauxSeed {
 // -----------------------------------------------------------------------------
 // FI — 15 Hallituksen esitykset for top-cited statutes
 // -----------------------------------------------------------------------------
+// Finlex HE pages: https://www.finlex.fi/fi/hallituksen-esitykset/{year}/{n}
+// (verified 2026-05-14: 12/15 work; pre-1994 HEs are not in Finlex).
 export const FI_HE_SEEDS: TravauxSeed[] = [
   {
     source_id: "fi-he-94-1993",
@@ -64,8 +66,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-rikoslaki",
     title:
       "Hallituksen esitys rikoslainsäädännön kokonaisuudistuksen toisen vaiheen käsittäviksi rikoslain ja eräiden muiden lakien muutoksiksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_94+1993.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/1993/94",
     jurisdiction: "fi",
   },
   {
@@ -76,8 +77,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-rol",
     title:
       "Hallituksen esitys oikeudenkäynnistä rikosasioissa annetun lain muuttamisesta",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_271+2004.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2004/271",
     jurisdiction: "fi",
   },
   {
@@ -88,8 +88,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-ok",
     title:
       "Hallituksen esitys riita-asiain oikeudenkäyntimenettelyn uudistamista alioikeuksissa koskevaksi lainsäädännöksi (oikeudenkäymiskaari)",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_15+1990.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/1990/15",
     jurisdiction: "fi",
   },
   {
@@ -100,8 +99,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-hol",
     title:
       "Hallituksen esitys laiksi hallintolainkäytöstä ja siihen liittyväksi lainsäädännöksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_217+1995.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/1995/217",
     jurisdiction: "fi",
   },
   {
@@ -112,8 +110,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-oho",
     title:
       "Hallituksen esitys laeiksi oikeudenkäynnin viivästymisen hyvittämisestä ja hallintolainkäyttölain muuttamisesta",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_226+2009.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2009/226",
     jurisdiction: "fi",
   },
   {
@@ -123,8 +120,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     year: 2003,
     related_act_slug: "fi-ulkomaalaislaki",
     title: "Hallituksen esitys ulkomaalaislaiksi ja eräiksi siihen liittyviksi laeiksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_28+2003.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2003/28",
     jurisdiction: "fi",
   },
   {
@@ -134,8 +130,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     year: 2010,
     related_act_slug: "fi-poliisilaki",
     title: "Hallituksen esitys poliisilaiksi sekä eräiksi siihen liittyviksi laeiksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_224+2010.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2010/224",
     jurisdiction: "fi",
   },
   {
@@ -146,8 +141,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-esitutkintalaki",
     title:
       "Hallituksen esitys esitutkinta- ja pakkokeinolainsäädännön uudistamiseksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_222+2010.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2010/222",
     jurisdiction: "fi",
   },
   {
@@ -158,8 +152,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-pakkokeinolaki",
     title:
       "Hallituksen esitys esitutkinta- ja pakkokeinolainsäädännön uudistamiseksi (pakkokeinolaki)",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_222+2010.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2010/222",
     jurisdiction: "fi",
   },
   {
@@ -169,8 +162,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     year: 1973,
     related_act_slug: "fi-vahingonkorvauslaki",
     title: "Hallituksen esitys vahingonkorvausta koskevaksi lainsäädännöksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_187+1973.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/1973/187",
     jurisdiction: "fi",
   },
   {
@@ -181,8 +173,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-rikosvahinkolaki",
     title:
       "Hallituksen esitys rikosvahinkolaiksi ja eräiksi siihen liittyviksi laeiksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_192+2005.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2005/192",
     jurisdiction: "fi",
   },
   {
@@ -192,8 +183,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     year: 1998,
     related_act_slug: "fi-perustuslaki",
     title: "Hallituksen esitys uudeksi Suomen Hallitusmuodoksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_1+1998.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/1998/1",
     jurisdiction: "fi",
   },
   {
@@ -204,8 +194,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-yhdenvertaisuuslaki",
     title:
       "Hallituksen esitys yhdenvertaisuuslaiksi ja eräiksi siihen liittyviksi laeiksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_19+2014.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2014/19",
     jurisdiction: "fi",
   },
   {
@@ -215,8 +204,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     year: 2000,
     related_act_slug: "fi-tyosopimuslaki",
     title: "Hallituksen esitys työsopimuslaiksi ja eräiksi siihen liittyviksi laeiksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_157+2000.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2000/157",
     jurisdiction: "fi",
   },
   {
@@ -227,8 +215,7 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
     related_act_slug: "fi-kuluttajansuojalaki",
     title:
       "Hallituksen esitys laiksi kuluttajansuojalain muuttamisesta ja eräiksi siihen liittyviksi laeiksi",
-    url:
-      "https://www.eduskunta.fi/FI/vaski/HallituksenEsitys/Documents/he_218+2008.pdf",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2008/218",
     jurisdiction: "fi",
   },
 ];
@@ -236,9 +223,12 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
 // -----------------------------------------------------------------------------
 // EE — 15 eelnõud / seletuskirjad for top EE statutes
 // -----------------------------------------------------------------------------
-// Riigikogu's eelnõude infosüsteem assigns each bill a numeric SE identifier
-// followed by the Riigikogu coosseis (parliamentary term) number. We store
-// the canonical URL slug as source_id (e.g. "ee-eelnou-554-se-x").
+// Riigikogu's eelnõude infosüsteem assigns each bill a numeric SE mark and
+// a coosseis (parliamentary term) number. UUIDs below were resolved via
+// api.riigikogu.ee/api/volumes/drafts?mark=N&membership=K (2026-05-14).
+//
+// URL points to the bill landing page; the worker resolves the actual
+// Seletuskiri / Algtekst PDF /download/{guid} from that page.
 //
 // Where the consilium spec called for a specific § interpretation, the
 // linked bill is the one that introduced or last meaningfully revised the
@@ -246,124 +236,124 @@ export const FI_HE_SEEDS: TravauxSeed[] = [
 // -----------------------------------------------------------------------------
 export const EE_EELNOU_SEEDS: TravauxSeed[] = [
   {
-    source_id: "ee-eelnou-554-se-x",
-    doc_kind: "seletuskiri",
-    doc_number: "554 SE X",
+    source_id: "ee-eelnou-119-se-ix",
+    doc_kind: "eelnõu",
+    doc_number: "119 SE IX",
     year: 2001,
     related_act_slug: "ee-karistusseadustik",
-    title: "Karistusseadustiku eelnõu seletuskiri",
+    title: "Karistusseadustiku eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/4d2b1e4a-2f5d-4f4e-89cb-c00e3a72e5e1/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/5c321fb1-dc00-3e2a-aef2-a88bef6d0f5c/karistusseadustik",
+    jurisdiction: "ee",
+  },
+  {
+    source_id: "ee-eelnou-594-se-ix",
+    doc_kind: "eelnõu",
+    doc_number: "594 SE IX",
+    year: 2003,
+    related_act_slug: "ee-kriminaalmenetluse-seadustik",
+    title: "Kriminaalmenetluse seadustiku eelnõu",
+    url:
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/3cbbe022-95f6-32ec-be3c-9c4aa0001f34/kriminaalmenetluse-seadustik",
     jurisdiction: "ee",
   },
   {
     source_id: "ee-eelnou-208-se-x",
-    doc_kind: "seletuskiri",
+    doc_kind: "eelnõu",
     doc_number: "208 SE X",
-    year: 2000,
-    related_act_slug: "ee-kriminaalmenetluse-seadustik",
-    title: "Kriminaalmenetluse seadustiku eelnõu seletuskiri",
-    url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/4d22f9e5-1c40-471a-89e4-2bb35e7cf0e8/",
-    jurisdiction: "ee",
-  },
-  {
-    source_id: "ee-eelnou-208-se-tsms",
-    doc_kind: "seletuskiri",
-    doc_number: "208 SE X (TsMS)",
     year: 2005,
     related_act_slug: "ee-tsiviilkohtumenetluse-seadustik",
-    title: "Tsiviilkohtumenetluse seadustiku eelnõu seletuskiri",
+    title: "Tsiviilkohtumenetluse seadustiku eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/9e2b6a8c-6d3a-4f7b-9a8e-2e8f5c1d0a3b/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/4343fca8-f625-3b19-9916-b7c4402ee41d/tsiviilkohtumenetluse-seadustik",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-93-se-x-hms",
-    doc_kind: "seletuskiri",
-    doc_number: "93 SE X",
+    source_id: "ee-eelnou-456-se-ix",
+    doc_kind: "eelnõu",
+    doc_number: "456 SE IX",
     year: 2001,
     related_act_slug: "ee-haldusmenetluse-seadus",
-    title: "Haldusmenetluse seaduse eelnõu seletuskiri",
+    title: "Haldusmenetluse seaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/56c84d2f-3d7b-4dca-a06a-6c91e6f3a1c8/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/b685a9e5-b035-3e9c-8205-90d9ed5eddd0/haldusmenetluse-seadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-94-se-x-hkms",
-    doc_kind: "seletuskiri",
-    doc_number: "94 SE X",
-    year: 1999,
+    source_id: "ee-eelnou-902-se-xi",
+    doc_kind: "eelnõu",
+    doc_number: "902 SE XI",
+    year: 2011,
     related_act_slug: "ee-halduskohtumenetluse-seadustik",
-    title: "Halduskohtumenetluse seadustiku eelnõu seletuskiri",
+    title: "Halduskohtumenetluse seadustiku eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/1f8c5a7b-4d2e-4a6f-9c3d-5e8b2f7a1c9d/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/997fa4fe-67bd-beab-7916-e6b9747dca8e/halduskohtumenetluse-seadustik",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-352-se-vols",
-    doc_kind: "seletuskiri",
-    doc_number: "352 SE IX",
+    source_id: "ee-eelnou-116-se-ix",
+    doc_kind: "eelnõu",
+    doc_number: "116 SE IX",
     year: 2001,
     related_act_slug: "ee-volaoigusseadus",
-    title: "Võlaõigusseaduse eelnõu seletuskiri",
+    title: "Võlaõigusseaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/2a8d5e3b-7f4c-4a9e-8b1d-6c3e7f5a2b9d/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/0d9390ea-974c-35ab-a6c7-cb14062c3ad3/volaoigusseadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-115-se-tsus",
-    doc_kind: "seletuskiri",
-    doc_number: "115 SE IX",
-    year: 2001,
+    source_id: "ee-eelnou-515-se-vii",
+    doc_kind: "eelnõu",
+    doc_number: "515 SE VII",
+    year: 1994,
     related_act_slug: "ee-tsiviilseadustiku-uldosa-seadus",
-    title: "Tsiviilseadustiku üldosa seaduse eelnõu seletuskiri",
+    title: "Tsiviilseadustiku üldosa seaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/3b9e6c4d-8f2a-4b1e-9c7d-1a4b8e6f3c2a/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/b226703a-6b23-31e6-86cd-9c3a6200037a/tsiviilseadustiku-uldosa-seadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-180-se-x-ulks",
-    doc_kind: "seletuskiri",
-    doc_number: "180 SE X",
+    source_id: "ee-eelnou-537-se-xi",
+    doc_kind: "eelnõu",
+    doc_number: "537 SE XI",
     year: 2009,
     related_act_slug: "ee-valismaalaste-seadus",
-    title: "Välismaalaste seaduse eelnõu seletuskiri",
+    title: "Välismaalaste seaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/4ca7d5e8-1b3f-4c9a-8e2d-7f5b3c1a9e6d/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/a9269107-b4ab-c542-3a15-c72dd03d8488/valismaalaste-seadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-72-se-xi-kors",
-    doc_kind: "seletuskiri",
-    doc_number: "72 SE XI",
-    year: 2009,
+    source_id: "ee-eelnou-49-se-xi",
+    doc_kind: "eelnõu",
+    doc_number: "49 SE XI",
+    year: 2011,
     related_act_slug: "ee-korrakaitseseadus",
-    title: "Korrakaitseseaduse eelnõu seletuskiri",
+    title: "Korrakaitseseaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/5d8e1c7f-2a4b-4d6e-9f3c-8a5b1e7c4d2f/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/8a9c2286-06fc-65d2-957b-bd9e11a940c4/korrakaitseseadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-301-se-x-ts",
-    doc_kind: "seletuskiri",
-    doc_number: "301 SE XI",
+    source_id: "ee-eelnou-299-se-xi",
+    doc_kind: "eelnõu",
+    doc_number: "299 SE XI",
     year: 2008,
     related_act_slug: "ee-tooleping-seadus",
-    title: "Töölepingu seaduse eelnõu seletuskiri",
+    title: "Töölepingu seaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/6e9d2a5c-4f7b-4e8d-1a3c-9b6f4e2d8c1a/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/92c984a5-95ab-8584-38cd-05fc754e99c4/toolepingu-seadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-185-se-xi-vss",
-    doc_kind: "seletuskiri",
-    doc_number: "185 SE XI",
+    source_id: "ee-eelnou-384-se-xi",
+    doc_kind: "eelnõu",
+    doc_number: "384 SE XI",
     year: 2008,
     related_act_slug: "ee-vordse-kohtlemise-seadus",
-    title: "Võrdse kohtlemise seaduse eelnõu seletuskiri",
+    title: "Võrdse kohtlemise seaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/7f6c1b8a-5d9e-4f2c-3a8b-1e7d5c9f4a6b/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/cc5e0cc0-2620-3f44-e381-071e238b4195/vordse-kohtlemise-seadus",
     jurisdiction: "ee",
   },
   {
@@ -374,42 +364,45 @@ export const EE_EELNOU_SEEDS: TravauxSeed[] = [
     related_act_slug: "ee-pohiseadus",
     title:
       "Eesti Vabariigi põhiseaduse Assamblee seletuskiri ja eelnõu materjalid",
-    url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/8a7d3c2e-6f1b-4a5d-2c9e-8b3f1d6a7c4e/",
+    // Põhiseadus 1992 predates Riigikogu eelnõude infosüsteem.
+    // Best stable proxy: the Riigi Teataja base text of põhiseadus.
+    // Will likely fail in Sonnet extraction (no §-keyed seletuskiri exists);
+    // we ship it as a placeholder so the row reserves a slot for future
+    // manual ingestion of Põhiseaduse Assamblee materjalid.
+    url: "https://www.riigiteataja.ee/akt/115052015002",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-tarbijakaitse-seadus-2015",
-    doc_kind: "seletuskiri",
-    doc_number: "778 SE XII",
+    source_id: "ee-eelnou-37-se-xiii",
+    doc_kind: "eelnõu",
+    doc_number: "37 SE XIII",
     year: 2015,
     related_act_slug: "ee-tarbijakaitseseadus",
-    title: "Tarbijakaitseseaduse eelnõu seletuskiri",
+    title: "Tarbijakaitseseaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/9b2e4f8a-7c1d-4b6e-3f5a-2c8d1e9b6f3a/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/523b11ef-443a-421c-ad77-12afca358c06/tarbijakaitseseadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-vois-2009-rikosvahinkojen",
-    doc_kind: "seletuskiri",
-    doc_number: "566 SE XI",
-    year: 2009,
+    source_id: "ee-eelnou-702-se-xiv",
+    doc_kind: "eelnõu",
+    doc_number: "702 SE XIV",
+    year: 2023,
     related_act_slug: "ee-ohvriabi-seadus",
-    title:
-      "Ohvriabi seaduse ja sellega seonduvate seaduste muutmise eelnõu seletuskiri",
+    title: "Ohvriabi seaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/1c3d5b9e-8a2f-4c7b-4d6e-3f1a5b8c2d9e/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/60f3902f-47aa-43c5-b28f-88101027e454/ohvriabi-seadus",
     jurisdiction: "ee",
   },
   {
-    source_id: "ee-eelnou-vp-2017-perekonna",
-    doc_kind: "seletuskiri",
-    doc_number: "508 SE XIII",
-    year: 2017,
+    source_id: "ee-eelnou-55-se-xi",
+    doc_kind: "eelnõu",
+    doc_number: "55 SE XI",
+    year: 2009,
     related_act_slug: "ee-perekonnaseadus",
-    title: "Perekonnaseaduse muutmise eelnõu seletuskiri",
+    title: "Perekonnaseaduse eelnõu",
     url:
-      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/2d4f6c1b-9e3a-4d8c-5b7a-4f2c6b9d1e3a/",
+      "https://www.riigikogu.ee/tegevus/eelnoud/eelnou/982033c7-c2e1-2ce6-0479-ef2bf925488b/perekonnaseadus",
     jurisdiction: "ee",
   },
 ];

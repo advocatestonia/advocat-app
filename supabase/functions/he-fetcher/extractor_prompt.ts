@@ -1,8 +1,8 @@
 // he-fetcher/extractor_prompt.ts — Sonnet prompt for travaux section split.
 // -----------------------------------------------------------------------------
-// We hand Sonnet the raw text of a free-form legislative document (HE PDF or
-// eelnõu HTML) and ask it to slice the explanatory commentary by the
-// statute § it interprets, returning strict JSON.
+// We hand Sonnet the raw text of a free-form legislative document (FI HE PDF/
+// HTML or EE eelnõu / seletuskiri PDF/HTML) and ask it to slice the
+// explanatory commentary by the statute § it interprets, returning strict JSON.
 //
 // Free-form bill documents have a predictable structure on both sides:
 //
@@ -15,15 +15,23 @@
 //     3. Voimaantulo                          (skip — no § ref)
 //     4. Suhde perustuslakiin                 (optional, low yield)
 //
-//   EE seletuskiri:
-//     1. Sissejuhatus                         (skip — preamble)
-//     2. Eelnõu sisu ja võrdlev analüüs       (HOT: §-by-§ explanation)
-//        2.1 § 1
-//        2.2 § 2
-//     3. Eelnõu vastavus Euroopa Liidu õigusele (skip)
-//     4. Seaduse mõjud                        (skip)
+//   EE seletuskiri / eelnõu (note: structure varies more than FI HE!):
+//     Newer bills (post-2007):
+//       1. Sissejuhatus                       (skip — preamble)
+//       2. Eelnõu sisu ja võrdlev analüüs     (HOT: §-by-§ explanation,
+//          2.1 § 1                              "Eelnõu §-ga 12 muudetakse...")
+//          2.2 § 2
+//       3. Eelnõu terminoloogia               (skip — glossary)
+//       4. Eelnõu vastavus Euroopa Liidu õigusele (skip)
+//       5. Seaduse mõjud / Mõjuanalüüs        (skip)
+//     Older bills (1992-2006 IX/X-coosseis):
+//       Often NO seletuskiri exists — only the algtekst (bill text itself).
+//       The bill text is structured as `§ 1. ...`, `§ 2. ...` headings.
+//       In this case, Sonnet should chunk each § as its own entry with the
+//       § number as section_ref and the § body as text.
 //
-// Our extraction prompt below targets the HOT section explicitly.
+// Our extraction prompt below targets both structures and tells Sonnet to
+// detect the input language + structure automatically.
 //
 // Output contract — STRICT JSON, single top-level array:
 //   [
@@ -46,20 +54,36 @@
 //   ~10K tok out, ≈$0.15 per document. Budget for 30 docs ≈ $4.50.
 // -----------------------------------------------------------------------------
 
-export const HE_FETCHER_MODEL = "claude-sonnet-4-6";
+// Sonnet 4 (May 2025 stable). Matches the model used elsewhere in the codebase
+// (claude-proxy SONNET_MODEL). PDF input is supported on this model.
+export const HE_FETCHER_MODEL = "claude-sonnet-4-20250514";
 /** Output budget. HOL §114 alone is ~3K tok; 30+ §§ × 1.5K each ≈ 45K cap. */
 export const HE_FETCHER_MAX_TOKENS = 8000;
-/** 60s — free-form PDFs are slow to reason over. */
-export const HE_FETCHER_TIMEOUT_MS = 60_000;
+/** 180s — Claude native PDF support adds latency, and 30+ page HEs need time. */
+export const HE_FETCHER_TIMEOUT_MS = 180_000;
 /** Hard cap on the input we send to Sonnet (chars). 200K-tok context = ~600K chars; we leave headroom. */
 export const HE_FETCHER_MAX_INPUT_CHARS = 350_000;
 
 export const HE_FETCHER_SYSTEM_PROMPT = [
   "You are a legal-information extractor for the Advocat app.",
   "",
-  "Your job: read a Finnish Hallituksen esitys (HE) PDF text OR an Estonian",
-  "eelnõu / seletuskiri HTML text, and emit STRICT JSON that maps each",
-  "explanatory passage to the statute § it interprets.",
+  "Your job: read a Finnish Hallituksen esitys (HE) OR an Estonian eelnõu /",
+  "seletuskiri document, and emit STRICT JSON that maps each explanatory or",
+  "normative passage to the statute § it interprets / introduces.",
+  "",
+  "INPUT DETECTION — detect the language and structure BEFORE chunking:",
+  "  - Finnish HE: look for `Hallituksen esitys`, `Yksityiskohtaiset",
+  "    perustelut`, `Yleisperustelut`, `voimaantulosäännös`. The HOT zone",
+  "    is `Yksityiskohtaiset perustelut`, where you find headings like",
+  "    `1 §`, `12 §`, `114 §` followed by 1-6 pages of prose per §.",
+  "  - Estonian eelnõu/seletuskiri: look for `Eelnõu`, `Seletuskiri`,",
+  "    `§ 1.`, `§ 2.`, or phrases like `Eelnõu §-ga 12 muudetakse`,",
+  "    `Eelnõu § 3 lõige 1 sätestab`. Modern seletuskirjad have a",
+  "    `Eelnõu sisu ja võrdlev analüüs` section organised by §.",
+  "    Older bills (IX/X coosseis, pre-2007) often have NO separate",
+  "    seletuskiri — the document IS the algtekst (bill text). In that",
+  "    case the structure is `§ 1. Title. Body...` `§ 2. Title. Body...`",
+  "    and you should output each § body as its own chunk.",
   "",
   "OUTPUT FORMAT — single JSON array, nothing before or after:",
   '  [ { "section_ref": "114", "text": "..." }, ... ]',
@@ -67,21 +91,36 @@ export const HE_FETCHER_SYSTEM_PROMPT = [
   "RULES:",
   '  1. section_ref is the bare § number — no "§", no "vp", no "art." prefix.',
   '     Examples: "114", "114.1", "12 a", "29 b".',
-  '  2. Sub-sections / "momentit": parent "." subnum. "1 mom." → ".1", "2 mom." → ".2".',
-  "  3. If a passage discusses multiple §§ (e.g. 114-117 §§), repeat the entry",
-  "     once per §, splitting the prose if any sentence is § specific.",
-  '  4. If the passage is a general motive (yleisperustelu / sissejuhatus) with',
-  '     no § reference, use "section_ref": null. Include only if substantive.',
+  "  2. Sub-sections / momentit / lõiked:",
+  '     - FI "1 mom." → parent + ".1" suffix (e.g. "114.1")',
+  '     - FI "2 mom." → ".2"',
+  '     - EE "lg 1" / "lõige 1" → ".1"',
+  '     - EE "lg 2" / "lõige 2" → ".2"',
+  "  3. If a passage discusses multiple §§ (e.g. FI `114-117 §§` or EE",
+  "     `§§ 5-7`), repeat the entry once per §, splitting the prose if",
+  "     any sentence is § specific. If the prose is generic across the",
+  '     range, emit one entry per § with section_ref set per §.',
+  '  4. If the passage is a general motive (FI yleisperustelu /',
+  '     EE sissejuhatus) with no § reference, use "section_ref": null.',
+  "     Include only if substantive (200+ chars of actual legal reasoning).",
   "  5. SKIP boilerplate: title page, table of contents, voimaantulosäännös,",
-  "     säädöskokoelma, ELI-metadata. They have no interpretive value.",
+  "     säädöskokoelma, ELI-metadata, EU-direktiivi viited, eelnõu menetluse",
+  "     etapid, koosseisu liikmete nimekiri. They have no interpretive value.",
   '  6. Each "text" field: 200-3000 characters. If a single § discussion is',
   "     longer than 3000 chars, split into two entries with the SAME section_ref.",
   "  7. Preserve the source language (Finnish / Swedish / Estonian) verbatim.",
-  '     Do NOT translate. Do NOT summarise. Output the actual prose.',
+  "     Do NOT translate. Do NOT summarise. Output the actual prose.",
   "  8. Output ONLY the JSON array. No markdown fences, no commentary.",
   "",
-  "If the document is unreadable / pure scan / wrong format, emit []. Do not",
-  "make up section numbers.",
+  "EE-specific extraction tips:",
+  "  - References like `Eelnõu §-ga 5 muudetakse` → section_ref `5`.",
+  "  - References like `KarS § 199 lg 2` → section_ref `199.2`.",
+  "  - If the document is just the algtekst (bill text without seletuskiri),",
+  "    each `§ N. Pealkiri. Body...` block is one chunk with section_ref `N`.",
+  "    The pealkiri (title) is part of the text.",
+  "",
+  "If the document is unreadable / pure scan / wrong format / contains no",
+  "§-keyed content, emit []. Do not make up section numbers.",
 ].join("\n");
 
 export interface ExtractedTravauxChunk {

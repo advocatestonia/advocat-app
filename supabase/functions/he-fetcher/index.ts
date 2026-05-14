@@ -59,6 +59,7 @@ import { ALL_SEEDS, TravauxSeed } from "./seed.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ??
   "";
+const CRON_SECRET = Deno.env.get("CRON_SECRET") ?? "";
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY") ?? "";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 
@@ -105,11 +106,17 @@ serve(async (req) => {
     return jsonError("method not allowed", 405);
   }
 
-  // ── Auth: service-role only ───────────────────────────────────────────────
+  // ── Auth: service-role JWT OR CRON_SECRET ─────────────────────────────────
+  // Two equivalent paths:
+  //   - Authorization: Bearer <SUPABASE_SERVICE_ROLE_KEY>  (legacy worker path)
+  //   - x-cron-secret: <CRON_SECRET>                       (operator/cron path)
   const auth = req.headers.get("authorization") ?? "";
-  const expected = `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
-  if (!SUPABASE_SERVICE_ROLE_KEY || auth !== expected) {
-    return jsonError("service-role required", 401);
+  const cronHdr = req.headers.get("x-cron-secret") ?? "";
+  const okServiceRole = !!SUPABASE_SERVICE_ROLE_KEY &&
+    auth === `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
+  const okCron = !!CRON_SECRET && cronHdr === CRON_SECRET;
+  if (!okServiceRole && !okCron) {
+    return jsonError("service-role or x-cron-secret required", 401);
   }
 
   const url = new URL(req.url);
@@ -353,19 +360,26 @@ async function handleWork(
 // processOneDoc — fetch → Sonnet → embed → upsert
 // -----------------------------------------------------------------------------
 export async function processOneDoc(seed: TravauxSeed): Promise<number> {
-  // 1. Fetch the source bytes → plain text.
+  // 1. Resolve the seed URL to either:
+  //    (a) a PDF URL that Anthropic can fetch directly (preferred path), or
+  //    (b) HTML-derived plain text we send inline.
   const fetched = await fetchSource(seed.url);
-  if (!fetched.text || fetched.text.length < 200) {
-    throw new Error(`source too short: ${fetched.text.length} chars`);
+
+  // 2. Sonnet extraction.
+  let sonnetRaw: string | null;
+  if (fetched.contentType === "pdf") {
+    // We HEAD-fetched the PDF only to confirm it exists; hand the URL to
+    // Anthropic and let them ingest it server-side.
+    sonnetRaw = await callSonnetWithPdfUrl(fetched.resolvedUrl, seed);
+  } else {
+    if (!fetched.text || fetched.text.length < 200) {
+      throw new Error(`html source too short: ${fetched.text.length} chars`);
+    }
+    const text = fetched.text.length > HE_FETCHER_MAX_INPUT_CHARS
+      ? fetched.text.slice(0, HE_FETCHER_MAX_INPUT_CHARS)
+      : fetched.text;
+    sonnetRaw = await callSonnetWithText(text, seed);
   }
-
-  // 2. Truncate to Sonnet context cap.
-  const text = fetched.text.length > HE_FETCHER_MAX_INPUT_CHARS
-    ? fetched.text.slice(0, HE_FETCHER_MAX_INPUT_CHARS)
-    : fetched.text;
-
-  // 3. Sonnet extraction.
-  const sonnetRaw = await callSonnet(text, seed);
   if (!sonnetRaw) throw new Error("sonnet returned null");
   const chunks = parseTravauxOutput(sonnetRaw);
   if (chunks.length === 0) throw new Error("sonnet returned 0 chunks");
@@ -418,27 +432,68 @@ export async function processOneDoc(seed: TravauxSeed): Promise<number> {
 // =============================================================================
 // Anthropic call — single-shot Sonnet extraction
 // =============================================================================
-async function callSonnet(
+function buildDocHeader(seed: TravauxSeed): string {
+  return [
+    `Document: ${seed.doc_kind} ${seed.doc_number}`,
+    `Title: ${seed.title}`,
+    `Year: ${seed.year}`,
+    `Jurisdiction: ${seed.jurisdiction.toUpperCase()}`,
+    `Statute this document explains: ${seed.related_act_slug}`,
+    "",
+    "Read the attached document and emit JSON per the system prompt.",
+  ].join("\n");
+}
+
+async function callSonnetWithText(
   text: string,
   seed: TravauxSeed,
 ): Promise<string | null> {
+  const userPayload = [
+    buildDocHeader(seed),
+    "",
+    "---- BEGIN DOCUMENT TEXT ----",
+    text,
+    "---- END DOCUMENT TEXT ----",
+  ].join("\n");
+  return await callAnthropic({
+    model: HE_FETCHER_MODEL,
+    max_tokens: HE_FETCHER_MAX_TOKENS,
+    system: HE_FETCHER_SYSTEM_PROMPT,
+    messages: [{ role: "user", content: userPayload }],
+  });
+}
+
+async function callSonnetWithPdfUrl(
+  pdfUrl: string,
+  seed: TravauxSeed,
+): Promise<string | null> {
+  // Claude PDF URL source: Anthropic fetches the PDF directly. This avoids
+  // base64-encoding multi-MB PDFs inside the Edge Function (Supabase memory
+  // budget is 256 MB and base64 expansion + JSON envelope can OOM).
+  return await callAnthropic({
+    model: HE_FETCHER_MODEL,
+    max_tokens: HE_FETCHER_MAX_TOKENS,
+    system: HE_FETCHER_SYSTEM_PROMPT,
+    messages: [{
+      role: "user",
+      content: [
+        {
+          type: "document",
+          source: { type: "url", url: pdfUrl },
+        },
+        { type: "text", text: buildDocHeader(seed) },
+      ],
+    }],
+  });
+}
+
+async function callAnthropic(body: Record<string, unknown>): Promise<string | null> {
   const ctl = new AbortController();
   const timer = setTimeout(
     () => ctl.abort("sonnet_timeout"),
     HE_FETCHER_TIMEOUT_MS,
   );
   try {
-    const userPayload = [
-      `Document: ${seed.doc_kind} ${seed.doc_number}`,
-      `Title: ${seed.title}`,
-      `Year: ${seed.year}`,
-      `Jurisdiction: ${seed.jurisdiction.toUpperCase()}`,
-      `Statute this document explains: ${seed.related_act_slug}`,
-      "",
-      "---- BEGIN DOCUMENT TEXT ----",
-      text,
-      "---- END DOCUMENT TEXT ----",
-    ].join("\n");
     const res = await fetch(ANTHROPIC_API_URL, {
       method: "POST",
       headers: {
@@ -446,30 +501,36 @@ async function callSonnet(
         "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: HE_FETCHER_MODEL,
-        max_tokens: HE_FETCHER_MAX_TOKENS,
-        system: HE_FETCHER_SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userPayload }],
-      }),
+      body: JSON.stringify(body),
       signal: ctl.signal,
     });
     clearTimeout(timer);
     if (!res.ok) {
-      console.warn(
-        `he-fetcher: sonnet ${res.status} — ${(await res.text()).slice(0, 240)}`,
-      );
-      return null;
+      const errText = (await res.text()).slice(0, 500);
+      console.warn(`he-fetcher: sonnet ${res.status} — ${errText}`);
+      // Surface the error to the caller instead of just null so failJob() can
+      // record a useful last_error.
+      throw new Error(`anthropic ${res.status}: ${errText.slice(0, 240)}`);
     }
     const json = await res.json() as {
       content?: Array<{ type?: string; text?: string }>;
+      stop_reason?: string;
     };
     const block = json.content?.find((b) => b?.type === "text");
-    return typeof block?.text === "string" ? block.text : null;
+    if (typeof block?.text !== "string") {
+      console.warn(
+        `he-fetcher: sonnet returned no text block — stop_reason=${
+          json.stop_reason ?? "?"
+        } content=${JSON.stringify(json.content ?? []).slice(0, 200)}`,
+      );
+      return null;
+    }
+    return block.text;
   } catch (e) {
     clearTimeout(timer);
-    console.warn(`he-fetcher: sonnet call threw: ${String(e).slice(0, 240)}`);
-    return null;
+    const msg = String(e).slice(0, 240);
+    console.warn(`he-fetcher: sonnet call threw: ${msg}`);
+    throw e;
   }
 }
 
