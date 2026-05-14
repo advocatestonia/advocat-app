@@ -115,6 +115,11 @@
             body { background: #fff; }
         }
     </style>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
 </head>
 <body>
     <header class="header">
@@ -981,5 +986,44 @@
         setLang(detectInitialLang());
     })();
     </script>
+<!-- Conversion tracking: tool_used fires once on first meaningful interaction. -->
+<script>
+(function () {
+  var TOOL_SLUG = 'rental_termination_notice';
+  if (window.__advocatToolTracked) return;
+  function fire(action) {
+    if (window.__advocatToolTracked) return;
+    if (!window.advocatTrack) return;
+    window.__advocatToolTracked = true;
+    window.advocatTrack('tool_used', { tool: TOOL_SLUG, action: action });
+  }
+  // Fire on print, copy, generate, calculate clicks — the real conversion
+  // moment. Falls back to any form submit if the page uses one.
+  document.addEventListener('click', function (ev) {
+    try {
+      var t = ev.target;
+      while (t && t !== document) {
+        if (t.id === 'printBtn' || t.id === 'copyBtn' || t.id === 'generateBtn' ||
+            t.id === 'downloadBtn' || t.id === 'calculateBtn') {
+          fire(t.id);
+          return;
+        }
+        t = t.parentNode;
+      }
+    } catch (e) {}
+  }, true);
+  document.addEventListener('submit', function () { fire('submit'); }, true);
+  // Also fire when the user finishes filling the calculator and a result
+  // appears (heuristic: any change to a #resultAmount node).
+  document.addEventListener('DOMContentLoaded', function () {
+    var result = document.getElementById('resultAmount') ||
+                 document.getElementById('result') ||
+                 document.getElementById('output');
+    if (!result || typeof MutationObserver === 'undefined') return;
+    var obs = new MutationObserver(function () { fire('result_shown'); });
+    obs.observe(result, { childList: true, characterData: true, subtree: true });
+  });
+})();
+</script>
 </body>
 </html>

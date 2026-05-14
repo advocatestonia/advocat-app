@@ -1196,6 +1196,11 @@ html[dir="rtl"] body { direction: rtl; }
 html[dir="rtl"] .chat-msg.user { align-self: flex-start; border-bottom-right-radius: 14px; border-bottom-left-radius: 3px; }
 html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius: 14px; border-bottom-right-radius: 3px; }
 </style>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
 </head>
 <body>
 
@@ -2569,5 +2574,30 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
 })();
 </script>
 
+<!-- Conversion tracking: begin_signup on any CTA pointing to /app.html. -->
+<script>
+(function () {
+  if (window.__advocatSignupTracked) return;
+  document.addEventListener('click', function (ev) {
+    try {
+      var t = ev.target;
+      while (t && t !== document) {
+        if (t.tagName === 'A') {
+          var href = t.getAttribute('href') || '';
+          if (href.indexOf('/app.html') === 0 || href.indexOf('app.html') !== -1) {
+            if (window.advocatTrack && !window.__advocatSignupTracked) {
+              window.__advocatSignupTracked = true;
+              var plan = t.getAttribute('data-plan') || '';
+              window.advocatTrack('begin_signup', plan ? { plan: plan } : {});
+            }
+          }
+          return;
+        }
+        t = t.parentNode;
+      }
+    } catch (e) {}
+  }, true);
+})();
+</script>
 </body>
 </html>

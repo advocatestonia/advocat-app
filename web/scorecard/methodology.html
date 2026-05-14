@@ -63,6 +63,11 @@
     .footer { background: var(--navy2); color: rgba(255,255,255,0.6); padding: 28px 24px; text-align: center; font-size: 13px; }
     .footer a { color: rgba(255,255,255,0.82); }
   </style>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
 </head>
 <body>
 

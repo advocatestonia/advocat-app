@@ -86,13 +86,35 @@ serve(async (req: Request) => {
   try {
     // FIX-7: ignore `customer_email` from the body entirely. We use only
     // the JWT-verified email. Destructure the remaining fields only.
-    const { plan_id, billing_period, success_url, cancel_url } = await req
-      .json();
+    // UTM / click-id params are attribution-only — we forward them to Stripe
+    // metadata for revenue attribution but never trust them for billing.
+    const {
+      plan_id,
+      billing_period,
+      success_url,
+      cancel_url,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+      gclid,
+      fbclid,
+      ttclid,
+    } = await req.json();
 
     // Validate inputs
     if (!plan_id || !billing_period) {
       return jsonError("plan_id and billing_period are required", 400);
     }
+
+    // Sanitise UTM strings: Stripe metadata value cap is 500 chars per key,
+    // and we want to defend against ad-network injection garbage. Coerce to
+    // string, trim, and truncate. Drop empties so we don't pollute metadata.
+    const utmStr = (v: unknown): string => {
+      if (typeof v !== "string") return "";
+      return v.slice(0, 200);
+    };
 
     const planPrices = PRICES[plan_id];
     if (!planPrices) {
@@ -131,6 +153,18 @@ serve(async (req: Request) => {
         // Record the authenticated user ID so the webhook can resolve the
         // row in `profiles` even if the email later changes.
         user_id: gate.user.id,
+        // Attribution metadata — forwarded from the landing page's UTM
+        // capture. The webhook (or any downstream BI job) can read these
+        // from `session.metadata` for revenue attribution. Empty strings
+        // are fine; Stripe accepts them and BI tools filter them out.
+        utm_source: utmStr(utm_source),
+        utm_medium: utmStr(utm_medium),
+        utm_campaign: utmStr(utm_campaign),
+        utm_content: utmStr(utm_content),
+        utm_term: utmStr(utm_term),
+        gclid: utmStr(gclid),
+        fbclid: utmStr(fbclid),
+        ttclid: utmStr(ttclid),
       },
       // In subscription mode Stripe auto-generates an invoice per billing
       // cycle; putting a human-readable description on the subscription
