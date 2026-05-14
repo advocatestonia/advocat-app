@@ -254,6 +254,7 @@ LANDING_FILES=(
   CNAME
   .nojekyll
   staging           # keep the staging snapshot around
+  tools             # SEO lead-magnet calculators (deployed directly to gh-pages)
 )
 RSYNC_EXCLUDE=()
 for f in "${LANDING_FILES[@]}"; do

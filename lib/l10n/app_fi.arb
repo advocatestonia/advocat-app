@@ -1406,5 +1406,65 @@
     "referralSettingsTile": "Kutsu ystäviä",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Tykkäsitkö? Kutsu ystävä — molemmat saavat kuukauden ilmaiseksi.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "referralAntiFraud": "Enintään 12 onnistunutta suositusta vuodessa.",
+    "@referralAntiFraud": {},
+    "referralEmpty": "Ei vielä suosituksia. Lähetä linkkisi ansaitaksesi.",
+    "@referralEmpty": {},
+    "referralRecentActivity": "Viimeisin toiminta",
+    "@referralRecentActivity": {},
+    "referralActivityInvited": "Kutsuttu {when}",
+    "@referralActivityInvited": {
+        "placeholders": {
+            "when": { "type": "String" }
+        }
+    },
+    "referralActivityActivated": "aktivoitui {when}",
+    "@referralActivityActivated": {
+        "placeholders": {
+            "when": { "type": "String" }
+        }
+    },
+    "referralActivityPending": "ei vielä aktivoitunut",
+    "@referralActivityPending": {},
+    "referralStatsInvitedCount": "Olet kutsunut {count, plural, =0{ei vielä ystäviä} =1{1 ystävän} other{{count} ystävää}}",
+    "@referralStatsInvitedCount": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "referralStatsConvertedCount": "{count, plural, =0{kukaan ei ole vielä aktivoitunut} =1{1 on aktivoitunut} other{{count} ovat aktivoituneet}}",
+    "@referralStatsConvertedCount": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "referralStatsEarnedCount": "Bonuksesi: {months, plural, =0{ei vielä mitään} =1{1 ilmainen kuukausi} other{{months} ilmaista kuukautta}}",
+    "@referralStatsEarnedCount": {
+        "placeholders": {
+            "months": { "type": "int" }
+        }
+    },
+    "referralNudgeMessage": "Pidätkö Advocatista? Kutsu ystävä — molemmat saavat kuukauden ilmaiseksi.",
+    "@referralNudgeMessage": {},
+    "referralNudgeAction": "Kutsu",
+    "@referralNudgeAction": {},
+    "referralLandingTitle": "Sinut on kutsuttu Advocatiin",
+    "@referralLandingTitle": {},
+    "referralLandingSubtitle": "{inviterName} kutsui sinut — lunasta ilmainen ensimmäinen kuukautesi.",
+    "@referralLandingSubtitle": {
+        "placeholders": {
+            "inviterName": { "type": "String" }
+        }
+    },
+    "referralLandingSubtitleGeneric": "Lunasta ilmainen ensimmäinen kuukautesi Advocat Pro:sta.",
+    "@referralLandingSubtitleGeneric": {},
+    "referralLandingCta": "Aktivoi ilmainen kuukausi ja rekisteröidy",
+    "@referralLandingCta": {},
+    "referralLandingCtaSecondary": "Tai lue lisää Advocatista",
+    "@referralLandingCtaSecondary": {},
+    "referralLandingFallback": "Tämä linkki on vanhentunut — mutta voit silti kokeilla Advocatia ilmaiseksi.",
+    "@referralLandingFallback": {},
+    "referralLandingBenefits": "17 kieltä • Aitoa Viron, Suomen ja EU:n lakia • 24/7 — ilman odotusta",
+    "@referralLandingBenefits": {}
 }

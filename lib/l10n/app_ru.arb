@@ -1406,5 +1406,65 @@
     "referralSettingsTile": "Пригласить друзей",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Понравилось? Пригласи друга — оба получите месяц бесплатно.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "referralAntiFraud": "До 12 успешных приглашений в год.",
+    "@referralAntiFraud": {},
+    "referralEmpty": "Приглашений пока нет. Отправь ссылку, чтобы начать.",
+    "@referralEmpty": {},
+    "referralRecentActivity": "Недавняя активность",
+    "@referralRecentActivity": {},
+    "referralActivityInvited": "Приглашён {when}",
+    "@referralActivityInvited": {
+        "placeholders": {
+            "when": { "type": "String" }
+        }
+    },
+    "referralActivityActivated": "активировал {when}",
+    "@referralActivityActivated": {
+        "placeholders": {
+            "when": { "type": "String" }
+        }
+    },
+    "referralActivityPending": "ещё не активировал",
+    "@referralActivityPending": {},
+    "referralStatsInvitedCount": "Ты пригласил {count, plural, =0{никого} =1{1 друга} few{{count} друзей} many{{count} друзей} other{{count} друзей}}",
+    "@referralStatsInvitedCount": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "referralStatsConvertedCount": "{count, plural, =0{никто пока не активировал} =1{1 активировал} few{{count} активировали} many{{count} активировали} other{{count} активировали}}",
+    "@referralStatsConvertedCount": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "referralStatsEarnedCount": "Твой бонус: {months, plural, =0{пока ничего} =1{1 бесплатный месяц} few{{months} бесплатных месяца} many{{months} бесплатных месяцев} other{{months} бесплатных месяцев}}",
+    "@referralStatsEarnedCount": {
+        "placeholders": {
+            "months": { "type": "int" }
+        }
+    },
+    "referralNudgeMessage": "Нравится Advocat? Пригласи друга — оба получите месяц бесплатно.",
+    "@referralNudgeMessage": {},
+    "referralNudgeAction": "Пригласить",
+    "@referralNudgeAction": {},
+    "referralLandingTitle": "Тебя пригласили в Advocat",
+    "@referralLandingTitle": {},
+    "referralLandingSubtitle": "{inviterName} пригласил тебя — получи первый месяц бесплатно.",
+    "@referralLandingSubtitle": {
+        "placeholders": {
+            "inviterName": { "type": "String" }
+        }
+    },
+    "referralLandingSubtitleGeneric": "Получи первый месяц Advocat Pro бесплатно.",
+    "@referralLandingSubtitleGeneric": {},
+    "referralLandingCta": "Активировать месяц и зарегистрироваться",
+    "@referralLandingCta": {},
+    "referralLandingCtaSecondary": "Или узнать больше об Advocat",
+    "@referralLandingCtaSecondary": {},
+    "referralLandingFallback": "Эта ссылка истекла — но ты всё равно можешь попробовать Advocat бесплатно.",
+    "@referralLandingFallback": {},
+    "referralLandingBenefits": "17 языков • Реальное право Эстонии, Финляндии и ЕС • 24/7 — без ожидания",
+    "@referralLandingBenefits": {}
 }

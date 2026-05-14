@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasuta õigusabi tööriistad — Advocat</title>
+    <meta name="description" content="Tasuta õigusabi tööriistad: elatis kalkulaator, töölepingu ülesütlemise avaldus, üürilepingu lõpetamise teade, vaidlustamise tähtaja kalkulaator.">
+    <meta name="keywords" content="tasuta õigusabi, juriidilised tööriistad, elatis kalkulaator, töölepingu avaldus, üürileping lõpetamine">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/tools/">
+    <meta property="og:title" content="Tasuta õigusabi tööriistad — Advocat">
+    <meta property="og:description" content="Tasuta tööriistad: elatis kalkulaator, töölepingu ülesütlemise avaldus, üürilepingu lõpetamise teade, vaidlustamise tähtaja kalkulaator.">
+    <meta property="og:url" content="https://advocat.ee/tools/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Advocat">
+    <meta property="og:locale" content="et_EE">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+        .breadcrumb { max-width: 1100px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
+        .breadcrumb a { color: #0A8F6C; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
+        .hero { text-align: center; margin: 40px 0 48px; }
+        .hero-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 6px 16px; border-radius: 20px; background: #F0FDFA; color: #0A8F6C; margin-bottom: 20px; }
+        .hero h1 { font-size: 44px; font-weight: 800; line-height: 1.15; margin-bottom: 16px; color: #1A2B4A; }
+        .hero p { font-size: 18px; color: #5A6A7A; max-width: 720px; margin: 0 auto; }
+        .tools-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 48px; }
+        @media (max-width: 800px) { .tools-grid { grid-template-columns: 1fr; } }
+        .tool-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(26,43,74,0.06); border: 1px solid #E2E8F0; transition: all 0.25s; display: flex; flex-direction: column; }
+        .tool-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,43,74,0.12); border-color: #0A8F6C; text-decoration: none; }
+        .tool-icon { width: 56px; height: 56px; border-radius: 12px; background: #F0FDFA; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 28px; }
+        .tool-card h2 { font-size: 22px; font-weight: 700; color: #1A2B4A; margin-bottom: 10px; line-height: 1.3; }
+        .tool-card p { font-size: 15px; color: #5A6A7A; line-height: 1.6; margin-bottom: 16px; flex: 1; }
+        .tool-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .tool-meta span { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 12px; background: #F7F8FA; color: #5A6A7A; }
+        .tool-card .open-btn { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; color: #0A8F6C; margin-top: auto; }
+        .tool-card:hover .open-btn { color: #078a63; }
+        .tool-card .open-btn::after { content: '→'; transition: transform 0.2s; }
+        .tool-card:hover .open-btn::after { transform: translateX(4px); }
+        .cta-box { background: linear-gradient(135deg, #1A2B4A 0%, #2C4274 100%); border-radius: 16px; padding: 40px 32px; margin: 36px 0; text-align: center; color: #fff; }
+        .cta-box h3 { font-size: 26px; margin-bottom: 12px; color: #fff; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 24px; font-size: 16px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+        .cta-btn:hover { background: #078a63; text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,143,108,0.3); }
+        .why-section { background: #fff; border-radius: 16px; padding: 36px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .why-section h2 { font-size: 24px; font-weight: 700; margin-bottom: 20px; color: #1A2B4A; text-align: center; }
+        .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 24px; }
+        .why-card { text-align: center; }
+        .why-card .icon { width: 48px; height: 48px; margin: 0 auto 12px; background: #F0FDFA; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .why-card h3 { font-size: 16px; font-weight: 700; color: #1A2B4A; margin-bottom: 6px; }
+        .why-card p { font-size: 14px; color: #5A6A7A; line-height: 1.6; }
+        .disclaimer { background: #FFFAF0; border-left: 4px solid #DD6B20; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; font-size: 14px; color: #5A6A7A; }
+        .disclaimer strong { color: #DD6B20; }
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 30px; }
+            .hero p { font-size: 16px; }
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .tool-card { padding: 24px; }
+            .header-nav a { margin-left: 12px; font-size: 13px; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Advocat tasuta õigusabi tööriistad",
+        "description": "Kogumik tasuta tööriistu õigusabi vajavale: elatis, töölepingu ülesütlemine, üürilepingu lõpetamine, vaidlustamise tähtajad.",
+        "url": "https://advocat.ee/tools/",
+        "publisher": {"@type": "Organization", "name": "Advocat", "url": "https://advocat.ee/"},
+        "hasPart": [
+            {"@type": "WebApplication", "name": "Elatis Kalkulaator", "url": "https://advocat.ee/tools/elatis-kalkulaator.html"},
+            {"@type": "WebApplication", "name": "Töölepingu ülesütlemise avaldus", "url": "https://advocat.ee/tools/toolepingu-ulesutlemise-avaldus.html"},
+            {"@type": "WebApplication", "name": "Üürilepingu lõpetamise teade", "url": "https://advocat.ee/tools/uurilepingu-lopetamise-teade.html"},
+            {"@type": "WebApplication", "name": "Vaidlustamise tähtaja kalkulaator", "url": "https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html"}
+        ]
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
+            <nav class="header-nav">
+                <a href="https://advocat.ee">Avaleht</a>
+                <a href="/tools/">Tööriistad</a>
+                <a href="/blog/">Blogi</a>
+                <a href="/app.html">Proovi tasuta</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="https://advocat.ee">Advocat</a> &rsaquo; Tööriistad
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <span class="hero-tag">Tasuta · Privaatne · Eesti seadus</span>
+            <h1>Tasuta õigusabi tööriistad</h1>
+            <p>Kalkulaatorid ja dokumendigeneraatorid, mida saad kasutada ilma registreerimiseta. Kõik andmed jäävad sinu seadmesse — midagi ei salvestata. Põhinevad Eesti seaduste hetkel kehtivatel sätetel.</p>
+        </div>
+
+        <div class="tools-grid">
+            <a href="/tools/elatis-kalkulaator.html" class="tool-card">
+                <div class="tool-icon">€</div>
+                <h2>Elatis Kalkulaator 2026</h2>
+                <p>Arvuta lapse elatise summa sekundiga. PKS § 100-103 valemi alusel. Sisesta sissetulek ja laste arv — saad hinnangu ja täieliku jaotuse.</p>
+                <div class="tool-meta">
+                    <span>Perekonnaõigus</span>
+                    <span>PKS § 101</span>
+                    <span>2026 numbrid</span>
+                </div>
+                <span class="open-btn">Ava kalkulaator</span>
+            </a>
+
+            <a href="/tools/toolepingu-ulesutlemise-avaldus.html" class="tool-card">
+                <div class="tool-icon">📝</div>
+                <h2>Töölepingu ülesütlemise avaldus</h2>
+                <p>Loo ametlik avaldus eesti keeles. Korraline, poolte kokkulepe või erakorraline ülesütlemine. Lae alla TXT või salvesta PDF-iks.</p>
+                <div class="tool-meta">
+                    <span>Tööõigus</span>
+                    <span>TLS § 85-92</span>
+                    <span>Generator</span>
+                </div>
+                <span class="open-btn">Loo avaldus</span>
+            </a>
+
+            <a href="/tools/uurilepingu-lopetamise-teade.html" class="tool-card">
+                <div class="tool-icon">🏠</div>
+                <h2>Üürilepingu lõpetamise teade</h2>
+                <p>Üürnikuna või üürileandjana — loo ametlik teade VÕS § 312 alusel. 3-kuuline etteteatamine. Tagatisraha meeldetuletus.</p>
+                <div class="tool-meta">
+                    <span>Üüriõigus</span>
+                    <span>VÕS § 311-321</span>
+                    <span>Generator</span>
+                </div>
+                <span class="open-btn">Loo teade</span>
+            </a>
+
+            <a href="/tools/vaidlustamise-tahtaeg-kalkulaator.html" class="tool-card">
+                <div class="tool-icon">⏱️</div>
+                <h2>Vaidlustamise tähtaja kalkulaator</h2>
+                <p>Töövaidluskomisjon, halduskohus, PPA, Migri otsused. Sisesta kuupäev — näe täpset tähtaega ja päevi tagasiloendust.</p>
+                <div class="tool-meta">
+                    <span>Haldusõigus</span>
+                    <span>HMS § 33</span>
+                    <span>Tähtajad</span>
+                </div>
+                <span class="open-btn">Arvuta tähtaeg</span>
+            </a>
+        </div>
+
+        <div class="why-section">
+            <h2>Miks need tööriistad on tasuta?</h2>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="icon">🔒</div>
+                    <h3>Privaatne</h3>
+                    <p>Kõik andmed jäävad sinu brauserisse. Midagi ei saadetud serverisse.</p>
+                </div>
+                <div class="why-card">
+                    <div class="icon">⚡</div>
+                    <h3>Sekundiga</h3>
+                    <p>Ilma registreerimiseta, kohese tulemusega. Töötab ka telefonis.</p>
+                </div>
+                <div class="why-card">
+                    <div class="icon">⚖️</div>
+                    <h3>Seadusepõhine</h3>
+                    <p>Põhineb Eesti seaduste hetkel kehtivatel sätetel (PKS, TLS, VÕS, HMS).</p>
+                </div>
+                <div class="why-card">
+                    <div class="icon">🤝</div>
+                    <h3>Advocat-i osa</h3>
+                    <p>Kui vajad reaalset õigusabi, on Advocat AI advokaat alati 1 klõpsu kaugusel.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h3>Vajad reaalset õigusabi?</h3>
+            <p>Tööriistad annavad hinnangu. Advocat AI annab täieliku lahendi: koostab hagid, dokumendid, kaebused; analüüsib sinu olukorda; leiab kohtupraktika viited; aitab juriidilist keelt selgitada. Eesti, vene, inglise ja soome keeles.</p>
+            <a href="/app.html?from=tools-index" class="cta-btn">Proovi Advocat tasuta &rarr;</a>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Õiguslik märkus:</strong> Need tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu. Konkreetses olukorras pöördu Advocat AI assistendi või vandeadvokaadi poole. Tööriistad põhinevad 2026. aasta seisuga kehtivatel Eesti seaduste sätetel.
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Advocat. Kõik õigused kaitstud. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong>Õiguslik märkus:</strong> Tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</p>
+    </footer>
+</body>
+</html>

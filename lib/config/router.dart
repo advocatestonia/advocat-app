@@ -34,6 +34,7 @@ import '../features/rights/screens/rights_detail_screen.dart';
 import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
 import '../features/profile/screens/ai_memory_screen.dart';
 import '../features/referral/screens/referral_screen.dart';
+import '../features/referral/screens/referral_landing_screen.dart';
 import '../features/case_file/screens/case_file_screen.dart';
 // Pkg 1.D — new "Мои дела" / Case Memory screens. Live alongside the
 // legacy /cases routes; gradually replacing them.
@@ -106,6 +107,11 @@ abstract final class AppRoutes {
   /// the after-Contract-Review CTA chip.
   static const String referral = '/referral';
 
+  /// Public landing for `/r/<code>` invite links. Reachable while
+  /// unauthenticated; stashes the code in SharedPreferences so the
+  /// register flow can claim it after auth.
+  static const String referralLanding = '/r/:code';
+
   /// Case File — auto-built dossier. Optional `?caseId=` query param scopes
   /// to one case; without it the screen shows the cross-case view.
   static const String caseFile = '/case-file';
@@ -135,9 +141,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isAuthRoute = state.matchedLocation == AppRoutes.login ||
           state.matchedLocation == AppRoutes.register ||
           state.matchedLocation == AppRoutes.onboarding;
-      // Not logged in → go to login (unless already there)
-      if (!isAuth && !isAuthRoute) return AppRoutes.login;
-      // Logged in but on auth page → go to home
+      // `/r/<code>` invite landings are public — anyone clicking a share
+      // link should reach them even when signed out. Match against the
+      // top-level path segment so the path-param doesn't break the check.
+      final isReferralLanding =
+          state.matchedLocation.startsWith('/r/');
+      // Not logged in → go to login (unless already there or on a public
+      // referral landing).
+      if (!isAuth && !isAuthRoute && !isReferralLanding) {
+        return AppRoutes.login;
+      }
+      // Logged in but on auth page → go to home. Referral landings stay
+      // accessible to authed users too (they may share their own link
+      // back to themselves while testing).
       if (isAuth && isAuthRoute) return AppRoutes.home;
       return null;
     },
@@ -416,6 +432,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.referral,
         name: 'referral',
         builder: (context, state) => const ReferralScreen(),
+      ),
+      // Public `/r/<code>` invite landing. Reachable unauthenticated; the
+      // redirect logic above has an explicit `/r/` carve-out.
+      GoRoute(
+        path: AppRoutes.referralLanding,
+        name: 'referralLanding',
+        builder: (context, state) {
+          final code = state.pathParameters['code'] ?? '';
+          return ReferralLandingScreen(code: code);
+        },
       ),
       GoRoute(
         path: AppRoutes.caseFile,

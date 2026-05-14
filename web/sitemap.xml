@@ -544,4 +544,48 @@
     <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"/>
   </url>
 
+  <!-- ============================================================ -->
+  <!-- Free Legal Tools (2026-05-14): 4 standalone web apps         -->
+  <!-- ============================================================ -->
+
+  <!-- Tools index gallery -->
+  <url>
+    <loc>https://advocat.ee/tools/</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Tool 1: Alimony Calculator / Elatis Kalkulaator -->
+  <url>
+    <loc>https://advocat.ee/tools/elatis-kalkulaator.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Tool 2: Termination Notice Generator / Toolepingu Ulesutlemise Avaldus -->
+  <url>
+    <loc>https://advocat.ee/tools/toolepingu-ulesutlemise-avaldus.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Tool 3: Lease Termination Notice / Uurilepingu Lopetamise Teade -->
+  <url>
+    <loc>https://advocat.ee/tools/uurilepingu-lopetamise-teade.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Tool 4: Appeal Deadline Calculator / Vaidlustamise Tahtaja Kalkulaator -->
+  <url>
+    <loc>https://advocat.ee/tools/vaidlustamise-tahtaeg-kalkulaator.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

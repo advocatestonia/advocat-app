@@ -3395,4 +3395,97 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get referralAfterReviewCta =>
       'Tykkäsitkö? Kutsu ystävä — molemmat saavat kuukauden ilmaiseksi.';
+
+  @override
+  String get referralAntiFraud =>
+      'Enintään 12 onnistunutta suositusta vuodessa.';
+
+  @override
+  String get referralEmpty =>
+      'Ei vielä suosituksia. Lähetä linkkisi ansaitaksesi.';
+
+  @override
+  String get referralRecentActivity => 'Viimeisin toiminta';
+
+  @override
+  String referralActivityInvited(String when) {
+    return 'Kutsuttu $when';
+  }
+
+  @override
+  String referralActivityActivated(String when) {
+    return 'aktivoitui $when';
+  }
+
+  @override
+  String get referralActivityPending => 'ei vielä aktivoitunut';
+
+  @override
+  String referralStatsInvitedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ystävää',
+      one: '1 ystävän',
+      zero: 'ei vielä ystäviä',
+    );
+    return 'Olet kutsunut $_temp0';
+  }
+
+  @override
+  String referralStatsConvertedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ovat aktivoituneet',
+      one: '1 on aktivoitunut',
+      zero: 'kukaan ei ole vielä aktivoitunut',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String referralStatsEarnedCount(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months ilmaista kuukautta',
+      one: '1 ilmainen kuukausi',
+      zero: 'ei vielä mitään',
+    );
+    return 'Bonuksesi: $_temp0';
+  }
+
+  @override
+  String get referralNudgeMessage =>
+      'Pidätkö Advocatista? Kutsu ystävä — molemmat saavat kuukauden ilmaiseksi.';
+
+  @override
+  String get referralNudgeAction => 'Kutsu';
+
+  @override
+  String get referralLandingTitle => 'Sinut on kutsuttu Advocatiin';
+
+  @override
+  String referralLandingSubtitle(String inviterName) {
+    return '$inviterName kutsui sinut — lunasta ilmainen ensimmäinen kuukautesi.';
+  }
+
+  @override
+  String get referralLandingSubtitleGeneric =>
+      'Lunasta ilmainen ensimmäinen kuukautesi Advocat Pro:sta.';
+
+  @override
+  String get referralLandingCta => 'Aktivoi ilmainen kuukausi ja rekisteröidy';
+
+  @override
+  String get referralLandingCtaSecondary => 'Tai lue lisää Advocatista';
+
+  @override
+  String get referralLandingFallback =>
+      'Tämä linkki on vanhentunut — mutta voit silti kokeilla Advocatia ilmaiseksi.';
+
+  @override
+  String get referralLandingBenefits =>
+      '17 kieltä • Aitoa Viron, Suomen ja EU:n lakia • 24/7 — ilman odotusta';
 }

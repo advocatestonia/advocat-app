@@ -2,12 +2,20 @@
 // -----------------------------------------------------------------------------
 // Thin wrapper around the `referral` Supabase edge function.
 //
-// Three calls:
-//   * fetchCode()       → POST /referral/code        — get/create the user's code
-//   * attribute(code)   → POST /referral/attribute   — claim a code at signup
-//   * fetchStats()      → POST /referral/stats       — invites/conversions/months
+// Four calls:
+//   * fetchCode()           → POST /referral/code        — get/create the
+//                             user's code.
+//   * attribute(code)       → POST /referral/attribute   — claim a code at
+//                             signup.
+//   * fetchStats()          → POST /referral/stats       — invites /
+//                             conversions / months / recent activity.
+//   * lookupCode(code)      → GET  /referral/lookup?code=…
+//                             Anon-readable preview of who is inviting (so
+//                             the /r/<code> landing can greet "Sind kutsus
+//                             Anna"). Backend MAY return 404 if the link is
+//                             dead — UI treats that as the fallback state.
 //
-// All three short-circuit in demo mode with deterministic stub data so the
+// All four short-circuit in demo mode with deterministic stub data so the
 // UI flow can be exercised offline.
 // -----------------------------------------------------------------------------
 
@@ -36,6 +44,25 @@ final class AttributeFailure extends AttributeResult {
   const AttributeFailure({required this.error, this.statusCode});
   final String error;
   final int? statusCode;
+}
+
+/// Result of [ReferralService.lookupCode] — what the /r/<code> landing
+/// shows before the visitor signs up. The inviter's first name is purely
+/// social proof; the backend MUST NOT leak email/last name/uid.
+sealed class CodeLookupResult {
+  const CodeLookupResult();
+}
+
+final class CodeLookupOk extends CodeLookupResult {
+  const CodeLookupOk({required this.inviterFirstName});
+
+  /// May be null if the inviter hasn't set a name yet. UI falls back to
+  /// generic copy ("You've been invited to Advocat") in that case.
+  final String? inviterFirstName;
+}
+
+final class CodeLookupInvalid extends CodeLookupResult {
+  const CodeLookupInvalid();
 }
 
 /// Riverpod handle.
@@ -137,6 +164,7 @@ class ReferralService {
         invitesSent: 0,
         conversions: 0,
         freeMonthsEarned: 0,
+        recentActivity: const <ReferralActivity>[],
       );
     }
     final client = _safeClient!;
@@ -160,7 +188,45 @@ class ReferralService {
       invitesSent: _toInt(data['invites_sent']),
       conversions: _toInt(data['conversions']),
       freeMonthsEarned: _toInt(data['free_months_earned']),
+      recentActivity: _parseActivity(data['recent_activity']),
     );
+  }
+
+  /// Anon-readable preview of a referral code's inviter. Used by the
+  /// `/r/<code>` landing to greet the visitor. Returns
+  /// [CodeLookupInvalid] for unknown codes (404) — the UI shows the
+  /// fallback "link expired" copy in that case.
+  Future<CodeLookupResult> lookupCode(String code) async {
+    final cleaned = code.trim().toLowerCase();
+    if (cleaned.isEmpty) return const CodeLookupInvalid();
+    if (_isDemo) {
+      // Stable demo result keyed on the code so screenshots are
+      // reproducible offline.
+      return const CodeLookupOk(inviterFirstName: 'Anna');
+    }
+    final client = _safeClient!;
+    try {
+      final res = await client.functions.invoke(
+        '$_functionName/lookup',
+        body: <String, dynamic>{'code': cleaned},
+      );
+      if (res.status == 404) return const CodeLookupInvalid();
+      if (res.status < 200 || res.status >= 300) {
+        return const CodeLookupInvalid();
+      }
+      final data = res.data;
+      if (data is Map) {
+        final rawName = data['inviter_first_name'];
+        final name = rawName is String && rawName.trim().isNotEmpty
+            ? rawName.trim()
+            : null;
+        return CodeLookupOk(inviterFirstName: name);
+      }
+      return const CodeLookupOk(inviterFirstName: null);
+    } catch (_) {
+      // Network / edge fn 5xx → degrade gracefully to the generic copy.
+      return const CodeLookupOk(inviterFirstName: null);
+    }
   }
 
   static int _toInt(dynamic v) {
@@ -168,6 +234,16 @@ class ReferralService {
     if (v is num) return v.toInt();
     if (v is String) return int.tryParse(v) ?? 0;
     return 0;
+  }
+
+  static List<ReferralActivity> _parseActivity(dynamic raw) {
+    if (raw is! List) return const <ReferralActivity>[];
+    final out = <ReferralActivity>[];
+    for (final item in raw) {
+      final row = ReferralActivity.fromJson(item);
+      if (row != null) out.add(row);
+    }
+    return out;
   }
 }
 

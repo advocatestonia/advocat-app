@@ -3388,4 +3388,96 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get referralAfterReviewCta =>
       'Meeldis? Kutsu sõber — mõlemad saavad kuu tasuta.';
+
+  @override
+  String get referralAntiFraud => 'Kuni 12 edukat soovitust aastas.';
+
+  @override
+  String get referralEmpty =>
+      'Veel pole soovitusi. Saada oma link ja alusta teenimist.';
+
+  @override
+  String get referralRecentActivity => 'Hiljutine tegevus';
+
+  @override
+  String referralActivityInvited(String when) {
+    return 'Kutsutud $when';
+  }
+
+  @override
+  String referralActivityActivated(String when) {
+    return 'aktiveerus $when';
+  }
+
+  @override
+  String get referralActivityPending => 'ei ole veel aktiveerunud';
+
+  @override
+  String referralStatsInvitedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sõpra',
+      one: '1 sõbra',
+      zero: '0 sõpra',
+    );
+    return 'Oled kutsunud $_temp0';
+  }
+
+  @override
+  String referralStatsConvertedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count on aktiveerunud',
+      one: '1 on aktiveerunud',
+      zero: 'keegi pole veel aktiveerunud',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String referralStatsEarnedCount(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months tasuta kuud',
+      one: '1 tasuta kuu',
+      zero: 'veel midagi pole',
+    );
+    return 'Sinu boonus: $_temp0';
+  }
+
+  @override
+  String get referralNudgeMessage =>
+      'Meeldib Advocat? Kutsu sõber — mõlemad saavad kuu tasuta.';
+
+  @override
+  String get referralNudgeAction => 'Kutsu';
+
+  @override
+  String get referralLandingTitle => 'Sind kutsuti Advocat\'isse';
+
+  @override
+  String referralLandingSubtitle(String inviterName) {
+    return '$inviterName kutsus sind — saa esimene kuu tasuta.';
+  }
+
+  @override
+  String get referralLandingSubtitleGeneric =>
+      'Saa Advocat Pro esimene kuu tasuta.';
+
+  @override
+  String get referralLandingCta => 'Aktiveeri tasuta kuu ja loo konto';
+
+  @override
+  String get referralLandingCtaSecondary => 'Või loe Advocati kohta lähemalt';
+
+  @override
+  String get referralLandingFallback =>
+      'See link on aegunud — kuid saad Advocati ikkagi tasuta proovida.';
+
+  @override
+  String get referralLandingBenefits =>
+      '17 keelt • Päris Eesti, Soome ja EL õigus • 24/7 — ootamiseta';
 }

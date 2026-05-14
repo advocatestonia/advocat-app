@@ -6241,6 +6241,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loved this? Invite a friend — both get a free month.'**
   String get referralAfterReviewCta;
+
+  /// No description provided for @referralAntiFraud.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum 12 successful referrals per year.'**
+  String get referralAntiFraud;
+
+  /// No description provided for @referralEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No referrals yet. Send your link to start earning.'**
+  String get referralEmpty;
+
+  /// No description provided for @referralRecentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent activity'**
+  String get referralRecentActivity;
+
+  /// No description provided for @referralActivityInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'Invited {when}'**
+  String referralActivityInvited(String when);
+
+  /// No description provided for @referralActivityActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'activated {when}'**
+  String referralActivityActivated(String when);
+
+  /// No description provided for @referralActivityPending.
+  ///
+  /// In en, this message translates to:
+  /// **'not activated yet'**
+  String get referralActivityPending;
+
+  /// No description provided for @referralStatsInvitedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve invited {count, plural, =0{no friends yet} =1{1 friend} other{{count} friends}}'**
+  String referralStatsInvitedCount(int count);
+
+  /// No description provided for @referralStatsConvertedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{none activated yet} =1{1 has activated} other{{count} have activated}}'**
+  String referralStatsConvertedCount(int count);
+
+  /// No description provided for @referralStatsEarnedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Your bonus: {months, plural, =0{nothing yet} =1{1 free month} other{{months} free months}}'**
+  String referralStatsEarnedCount(int months);
+
+  /// No description provided for @referralNudgeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Like Advocat? Invite a friend — both get a free month.'**
+  String get referralNudgeMessage;
+
+  /// No description provided for @referralNudgeAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite'**
+  String get referralNudgeAction;
+
+  /// No description provided for @referralLandingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve been invited to Advocat'**
+  String get referralLandingTitle;
+
+  /// No description provided for @referralLandingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{inviterName} invited you — claim your free first month.'**
+  String referralLandingSubtitle(String inviterName);
+
+  /// No description provided for @referralLandingSubtitleGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Claim your free first month of Advocat Pro.'**
+  String get referralLandingSubtitleGeneric;
+
+  /// No description provided for @referralLandingCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Activate free month & sign up'**
+  String get referralLandingCta;
+
+  /// No description provided for @referralLandingCtaSecondary.
+  ///
+  /// In en, this message translates to:
+  /// **'Or learn more about Advocat'**
+  String get referralLandingCtaSecondary;
+
+  /// No description provided for @referralLandingFallback.
+  ///
+  /// In en, this message translates to:
+  /// **'This link has expired — but you can still try Advocat free.'**
+  String get referralLandingFallback;
+
+  /// No description provided for @referralLandingBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting'**
+  String get referralLandingBenefits;
 }
 
 class _AppLocalizationsDelegate

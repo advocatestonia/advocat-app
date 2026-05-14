@@ -3398,4 +3398,102 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get referralAfterReviewCta =>
       'Понравилось? Пригласи друга — оба получите месяц бесплатно.';
+
+  @override
+  String get referralAntiFraud => 'До 12 успешных приглашений в год.';
+
+  @override
+  String get referralEmpty =>
+      'Приглашений пока нет. Отправь ссылку, чтобы начать.';
+
+  @override
+  String get referralRecentActivity => 'Недавняя активность';
+
+  @override
+  String referralActivityInvited(String when) {
+    return 'Приглашён $when';
+  }
+
+  @override
+  String referralActivityActivated(String when) {
+    return 'активировал $when';
+  }
+
+  @override
+  String get referralActivityPending => 'ещё не активировал';
+
+  @override
+  String referralStatsInvitedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count друзей',
+      many: '$count друзей',
+      few: '$count друзей',
+      one: '1 друга',
+      zero: 'никого',
+    );
+    return 'Ты пригласил $_temp0';
+  }
+
+  @override
+  String referralStatsConvertedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count активировали',
+      many: '$count активировали',
+      few: '$count активировали',
+      one: '1 активировал',
+      zero: 'никто пока не активировал',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String referralStatsEarnedCount(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months бесплатных месяцев',
+      many: '$months бесплатных месяцев',
+      few: '$months бесплатных месяца',
+      one: '1 бесплатный месяц',
+      zero: 'пока ничего',
+    );
+    return 'Твой бонус: $_temp0';
+  }
+
+  @override
+  String get referralNudgeMessage =>
+      'Нравится Advocat? Пригласи друга — оба получите месяц бесплатно.';
+
+  @override
+  String get referralNudgeAction => 'Пригласить';
+
+  @override
+  String get referralLandingTitle => 'Тебя пригласили в Advocat';
+
+  @override
+  String referralLandingSubtitle(String inviterName) {
+    return '$inviterName пригласил тебя — получи первый месяц бесплатно.';
+  }
+
+  @override
+  String get referralLandingSubtitleGeneric =>
+      'Получи первый месяц Advocat Pro бесплатно.';
+
+  @override
+  String get referralLandingCta => 'Активировать месяц и зарегистрироваться';
+
+  @override
+  String get referralLandingCtaSecondary => 'Или узнать больше об Advocat';
+
+  @override
+  String get referralLandingFallback =>
+      'Эта ссылка истекла — но ты всё равно можешь попробовать Advocat бесплатно.';
+
+  @override
+  String get referralLandingBenefits =>
+      '17 языков • Реальное право Эстонии, Финляндии и ЕС • 24/7 — без ожидания';
 }

@@ -65,6 +65,11 @@ class _FakeReferralService implements ReferralService {
     );
   }
 
+  @override
+  Future<CodeLookupResult> lookupCode(String code) async {
+    return const CodeLookupOk(inviterFirstName: 'TestUser');
+  }
+
   // Unused — satisfy the analyzer by punting to noSuchMethod.
   @override
   dynamic noSuchMethod(Invocation invocation) =>
@@ -141,9 +146,11 @@ void main() {
           _harness(fake: fake, child: const ReferralScreen()),
         );
         await tester.pumpAndSettle();
-        expect(find.text('5'), findsOneWidget);
-        expect(find.text('3'), findsOneWidget);
-        expect(find.text('2'), findsOneWidget);
+        // Both the tile and the copy line render the same numbers, so we
+        // get more than one match per integer.
+        expect(find.text('5'), findsWidgets);
+        expect(find.text('3'), findsWidgets);
+        expect(find.text('2'), findsWidgets);
       },
     );
 
@@ -217,6 +224,90 @@ void main() {
         expect(find.byIcon(Icons.ios_share), findsNothing);
       },
     );
+
+    testWidgets(
+      'shows anti-fraud footnote on every render',
+      (tester) async {
+        // Tall viewport so the bottom-of-list footnote paints.
+        await tester.binding.setSurfaceSize(const Size(800, 2400));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+
+        final fake = _FakeReferralService();
+        await tester.pumpWidget(
+          _harness(fake: fake, child: const ReferralScreen()),
+        );
+        await tester.pumpAndSettle();
+        // English string from app_en.arb.
+        expect(
+          find.textContaining('12 successful referrals'),
+          findsOneWidget,
+        );
+        // Info icon rendered next to the footnote.
+        expect(find.byIcon(Icons.info_outline), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'empty-state message shows when no recent activity',
+      (tester) async {
+        // Tall viewport so the recent-activity card paints in one frame.
+        await tester.binding.setSurfaceSize(const Size(800, 2400));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+
+        final fake = _FakeReferralService();
+        await tester.pumpWidget(
+          _harness(fake: fake, child: const ReferralScreen()),
+        );
+        await tester.pumpAndSettle();
+        expect(
+          find.textContaining('No referrals yet'),
+          findsOneWidget,
+        );
+        // The empty-state widget uses people_outline.
+        expect(find.byIcon(Icons.people_outline), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'renders recent activity rows when stats include some',
+      (tester) async {
+        // Tall viewport so the whole ListView paints in one frame — the
+        // RefreshIndicator wraps another Scrollable which trips up
+        // scrollUntilVisible with "Too many elements".
+        await tester.binding.setSurfaceSize(const Size(800, 2400));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+
+        final now = DateTime.now().toUtc();
+        final fake = _FakeReferralService(
+          stats: ReferralStats(
+            code: 'abc12345',
+            shareUrl: 'https://advocat.ee/r/abc12345',
+            invitesSent: 2,
+            conversions: 1,
+            freeMonthsEarned: 1,
+            recentActivity: [
+              ReferralActivity(
+                invitedAt: now.subtract(const Duration(days: 3)),
+                convertedAt: now.subtract(const Duration(days: 2)),
+                status: 'credited',
+              ),
+              ReferralActivity(
+                invitedAt: now.subtract(const Duration(hours: 5)),
+                status: 'attributed',
+              ),
+            ],
+          ),
+        );
+        await tester.pumpWidget(
+          _harness(fake: fake, child: const ReferralScreen()),
+        );
+        await tester.pumpAndSettle();
+        // No empty card.
+        expect(find.byIcon(Icons.people_outline), findsNothing);
+        // Two activity rows → two arrow separators in the formatted lines.
+        expect(find.textContaining('→'), findsNWidgets(2));
+      },
+    );
   });
 
   group('ReferralService demo mode', () {
@@ -250,6 +341,60 @@ void main() {
       expect(stats.conversions, 0);
       expect(stats.freeMonthsEarned, 0);
       expect(stats.hasCode, true);
+      expect(stats.recentActivity, isEmpty);
+      expect(stats.hasActivity, isFalse);
+    });
+
+    test('lookupCode returns a CodeLookupOk in demo mode', () async {
+      final svc = ReferralService();
+      final res = await svc.lookupCode('abc12345');
+      expect(res, isA<CodeLookupOk>());
+      final ok = res as CodeLookupOk;
+      expect(ok.inviterFirstName, isNotNull);
+    });
+
+    test('lookupCode with empty string returns CodeLookupInvalid', () async {
+      final svc = ReferralService();
+      final res = await svc.lookupCode('');
+      expect(res, isA<CodeLookupInvalid>());
+    });
+  });
+
+  group('ReferralActivity.fromJson', () {
+    test('parses a complete row', () {
+      final row = ReferralActivity.fromJson({
+        'invited_at': '2026-05-01T10:00:00Z',
+        'converted_at': '2026-05-03T10:00:00Z',
+        'status': 'credited',
+      });
+      expect(row, isNotNull);
+      expect(row!.hasConverted, isTrue);
+      expect(row.status, 'credited');
+    });
+
+    test('parses a pending row (no converted_at)', () {
+      final row = ReferralActivity.fromJson({
+        'invited_at': '2026-05-01T10:00:00Z',
+        'status': 'attributed',
+      });
+      expect(row, isNotNull);
+      expect(row!.hasConverted, isFalse);
+    });
+
+    test('returns null for unparseable input', () {
+      expect(ReferralActivity.fromJson(null), isNull);
+      expect(ReferralActivity.fromJson('not a map'), isNull);
+      expect(ReferralActivity.fromJson({'invited_at': 'garbage'}), isNull);
+      expect(ReferralActivity.fromJson(<String, dynamic>{}), isNull);
+    });
+
+    test('accepts attributed_at as an alias for invited_at', () {
+      final row = ReferralActivity.fromJson({
+        'attributed_at': '2026-05-01T10:00:00Z',
+        'status': 'attributed',
+      });
+      expect(row, isNotNull);
+      expect(row!.invitedAt.year, 2026);
     });
   });
 }

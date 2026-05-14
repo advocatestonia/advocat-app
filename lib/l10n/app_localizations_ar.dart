@@ -3372,4 +3372,96 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get referralAfterReviewCta =>
       'أعجبك؟ ادعُ صديقًا — كلاكما يحصل على شهر مجاني.';
+
+  @override
+  String get referralAntiFraud => 'Maximum 12 successful referrals per year.';
+
+  @override
+  String get referralEmpty =>
+      'No referrals yet. Send your link to start earning.';
+
+  @override
+  String get referralRecentActivity => 'Recent activity';
+
+  @override
+  String referralActivityInvited(String when) {
+    return 'Invited $when';
+  }
+
+  @override
+  String referralActivityActivated(String when) {
+    return 'activated $when';
+  }
+
+  @override
+  String get referralActivityPending => 'not activated yet';
+
+  @override
+  String referralStatsInvitedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count friends',
+      one: '1 friend',
+      zero: 'no friends yet',
+    );
+    return 'You\'ve invited $_temp0';
+  }
+
+  @override
+  String referralStatsConvertedCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count have activated',
+      one: '1 has activated',
+      zero: 'none activated yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String referralStatsEarnedCount(int months) {
+    String _temp0 = intl.Intl.pluralLogic(
+      months,
+      locale: localeName,
+      other: '$months free months',
+      one: '1 free month',
+      zero: 'nothing yet',
+    );
+    return 'Your bonus: $_temp0';
+  }
+
+  @override
+  String get referralNudgeMessage =>
+      'Like Advocat? Invite a friend — both get a free month.';
+
+  @override
+  String get referralNudgeAction => 'Invite';
+
+  @override
+  String get referralLandingTitle => 'You\'ve been invited to Advocat';
+
+  @override
+  String referralLandingSubtitle(String inviterName) {
+    return '$inviterName invited you — claim your free first month.';
+  }
+
+  @override
+  String get referralLandingSubtitleGeneric =>
+      'Claim your free first month of Advocat Pro.';
+
+  @override
+  String get referralLandingCta => 'Activate free month & sign up';
+
+  @override
+  String get referralLandingCtaSecondary => 'Or learn more about Advocat';
+
+  @override
+  String get referralLandingFallback =>
+      'This link has expired — but you can still try Advocat free.';
+
+  @override
+  String get referralLandingBenefits =>
+      '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
 }

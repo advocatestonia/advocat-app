@@ -43,7 +43,87 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _checkFirstTimeOnboarding();
     _checkGdprConsent();
     _checkPendingCheckout();
+    _maybeShowReferralNudge();
   }
+
+  /// One-time growth nudge: after the user's first AI conversation and
+  /// >24h of activity, surface a snackbar suggesting they invite a
+  /// friend. Suppressed forever once the user has either tapped it or
+  /// visited the /referral screen.
+  ///
+  /// Gating signals (all must be true):
+  ///   * Authenticated (not demo) — no point asking demo users to share.
+  ///   * `first_chat_at` is set (user has actually sent a message).
+  ///   * `now - account.createdAt > 24h` — anti-cheap-share guard.
+  ///   * `referral_seen` is false — they haven't opened the invite screen.
+  ///   * `referral_nudge_shown` is false — the snackbar fired ≥ once
+  ///     already in a prior session; don't pester.
+  Future<void> _maybeShowReferralNudge() async {
+    try {
+      final isDemo = ref.read(isDemoModeProvider);
+      if (isDemo) return;
+
+      final prefs = await SharedPreferences.getInstance();
+      // Hard kill-switches set elsewhere.
+      if (prefs.getBool('referral_nudge_shown') ?? false) return;
+      if (prefs.getBool(_referralSeenKey) ?? false) return;
+
+      // Did the user send a chat message yet? We rely on the chat screen
+      // to write `first_chat_at` on the first send — if the key is
+      // missing, the user never typed a message; skip.
+      final firstChatRaw = prefs.getString('first_chat_at');
+      if (firstChatRaw == null || firstChatRaw.isEmpty) return;
+
+      // Anti-cheap-share: require account age > 24h. Use createdAt from
+      // the user profile when available, otherwise fall back to the
+      // first-chat timestamp.
+      final user = ref.read(currentUserProvider).valueOrNull;
+      final reference = user?.createdAt ??
+          DateTime.tryParse(firstChatRaw)?.toUtc();
+      if (reference == null) return;
+      if (DateTime.now().toUtc().difference(reference).inHours < 24) {
+        return;
+      }
+
+      // Wait a bit so the home screen settles before the snackbar
+      // appears — otherwise it competes with the GDPR / onboarding
+      // sheets on a cold start.
+      await Future<void>.delayed(const Duration(milliseconds: 1200));
+      if (!mounted) return;
+
+      final l = AppLocalizations.of(context);
+      final messenger = ScaffoldMessenger.of(context);
+      messenger.clearSnackBars();
+      messenger.showSnackBar(
+        SnackBar(
+          backgroundColor: AppColors.primary,
+          duration: const Duration(seconds: 8),
+          content: Text(
+            l?.referralNudgeMessage ??
+                'Like Advocat? Invite a friend — both get a free month.',
+            style: const TextStyle(color: Colors.white),
+          ),
+          action: SnackBarAction(
+            label: l?.referralNudgeAction ?? 'Invite',
+            textColor: const Color(0xFF14B8A6), // accentTint — high contrast
+            onPressed: () {
+              if (!mounted) return;
+              context.push(AppRoutes.referral);
+            },
+          ),
+        ),
+      );
+      // Fire-and-forget the persistence flip — don't block on the await
+      // result since the snackbar is already on screen.
+      unawaited(prefs.setBool('referral_nudge_shown', true));
+    } catch (_) {
+      // Any failure here is silent; the nudge is a nice-to-have.
+    }
+  }
+
+  /// SharedPreferences key flipped by ReferralScreen on first open. Kept
+  /// in-sync with [kReferralSeenPrefKey] in referral_screen.dart.
+  static const String _referralSeenKey = 'referral_seen';
 
   /// If the landing redirected here with `?plan=...&billing=...`, kick off
   /// a Stripe Checkout once we are sure the user is signed in. We rely on

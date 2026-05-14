@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Töölepingu ülesütlemise avaldus — tasuta generaator | Advocat</title>
+    <meta name="description" content="Loo töölepingu ülesütlemise avaldus sekundiga. Tasuta tööriist TLS § 86-92 alusel. Sisesta andmed, lae alla või prindi PDF-iks.">
+    <meta name="keywords" content="töölepingu ülesütlemise avaldus, töölt lahkumise avaldus, töökoha vahetus, tööleping lõpetamine, TLS § 85">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/tools/toolepingu-ulesutlemise-avaldus.html">
+    <meta property="og:title" content="Töölepingu ülesütlemise avaldus — tasuta generaator">
+    <meta property="og:description" content="Loo ametlik töölepingu ülesütlemise avaldus sekundiga. TLS § 86-92 alusel.">
+    <meta property="og:url" content="https://advocat.ee/tools/toolepingu-ulesutlemise-avaldus.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Advocat">
+    <meta property="og:locale" content="et_EE">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+        .breadcrumb { max-width: 900px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
+        .breadcrumb a { color: #0A8F6C; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+        .tool-header { margin: 24px 0 32px; text-align: center; }
+        .tool-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; background: #F0FDFA; color: #0A8F6C; margin-bottom: 16px; }
+        .tool-header h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; color: #1A2B4A; }
+        .tool-header p { font-size: 17px; color: #5A6A7A; max-width: 640px; margin: 0 auto; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 800px) { .grid-2 { grid-template-columns: 1fr; } }
+        .form-card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 4px 24px rgba(26,43,74,0.08); border: 1px solid #E2E8F0; }
+        .form-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: #1A2B4A; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #1A2B4A; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 14px; font-size: 15px; border: 1px solid #E2E8F0; border-radius: 8px; font-family: inherit; color: #1A2B4A; background: #fff; transition: all 0.2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #0A8F6C; box-shadow: 0 0 0 3px rgba(10,143,108,0.1); }
+        .form-group textarea { resize: vertical; min-height: 70px; font-family: inherit; }
+        .preview-card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 4px 24px rgba(26,43,74,0.08); border: 1px solid #E2E8F0; position: sticky; top: 100px; }
+        .preview-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; display: flex; justify-content: space-between; align-items: center; }
+        .preview-card h2 .status { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 12px; background: #F0FDFA; color: #0A8F6C; }
+        .preview-doc { background: #FCFCFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 24px 28px; font-size: 14px; line-height: 1.8; color: #1A2B4A; white-space: pre-wrap; font-family: 'Georgia', serif; min-height: 340px; max-height: 540px; overflow-y: auto; }
+        .actions { display: flex; gap: 10px; margin-top: 16px; }
+        .btn { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; transition: all 0.2s; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn-primary { background: #0A8F6C; color: #fff; }
+        .btn-primary:hover { background: #078a63; }
+        .btn-secondary { background: #fff; color: #1A2B4A; border: 1.5px solid #E2E8F0; }
+        .btn-secondary:hover { border-color: #0A8F6C; color: #0A8F6C; }
+        .notice-info { background: #F0FDFA; border-left: 4px solid #0A8F6C; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 13px; line-height: 1.6; }
+        .notice-info strong { color: #0A8F6C; }
+        .info-section { background: #fff; border-radius: 12px; padding: 28px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .info-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
+        .info-section h3 { font-size: 16px; font-weight: 600; margin: 18px 0 8px; color: #1A2B4A; }
+        .info-section p { font-size: 15px; color: #2D3748; margin-bottom: 12px; line-height: 1.7; }
+        .info-section ul { padding-left: 24px; margin: 12px 0; }
+        .info-section li { font-size: 15px; color: #2D3748; margin-bottom: 6px; }
+        .law-box { background: #F0FDFA; border-left: 4px solid #0A8F6C; padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 14px; }
+        .law-box strong { color: #0A8F6C; }
+        .cta-box { background: linear-gradient(135deg, #1A2B4A 0%, #2C4274 100%); border-radius: 16px; padding: 36px 28px; margin: 36px 0; text-align: center; color: #fff; }
+        .cta-box h3 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 16px; }
+        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+        .cta-btn:hover { background: #078a63; text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,143,108,0.3); }
+        .disclaimer { background: #FFFAF0; border-left: 4px solid #DD6B20; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; font-size: 14px; color: #5A6A7A; }
+        .disclaimer strong { color: #DD6B20; }
+        .related { background: #fff; border-radius: 12px; padding: 24px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .related h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .related ul { list-style: none; padding: 0; }
+        .related li { margin-bottom: 8px; font-size: 14px; }
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); }
+        @media (max-width: 600px) {
+            .tool-header h1 { font-size: 26px; }
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .form-card, .preview-card { padding: 20px; }
+            .preview-doc { padding: 16px; font-size: 13px; }
+            .header-nav a { margin-left: 12px; font-size: 13px; }
+        }
+        @media print {
+            .header, .breadcrumb, .form-card, .actions, .cta-box, .info-section, .related, .footer, .disclaimer, .tool-header { display: none !important; }
+            .preview-card { box-shadow: none; border: none; padding: 0; }
+            .preview-card h2 { display: none; }
+            .preview-doc { border: none; background: #fff; padding: 0; max-height: none; overflow: visible; font-size: 13pt; line-height: 1.6; }
+            body { background: #fff; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "Töölepingu ülesütlemise avalduse generaator",
+                "url": "https://advocat.ee/tools/toolepingu-ulesutlemise-avaldus.html",
+                "description": "Tasuta tööriist ametliku töölepingu ülesütlemise avalduse koostamiseks Eestis. Põhineb TLS § 85-92 alusel.",
+                "applicationCategory": "LegalService",
+                "operatingSystem": "Web",
+                "browserRequirements": "Vajab JavaScripti",
+                "inLanguage": "et",
+                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+                "publisher": {"@type": "Organization", "name": "Advocat", "url": "https://advocat.ee/"}
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Advocat", "item": "https://advocat.ee/"},
+                    {"@type": "ListItem", "position": 2, "name": "Tööriistad", "item": "https://advocat.ee/tools/"},
+                    {"@type": "ListItem", "position": 3, "name": "Töölepingu ülesütlemise avaldus"}
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Kui pikk peab olema etteteatamise tähtaeg töölepingu ülesütlemisel?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "TLS § 98 järgi on töötaja korralise ülesütlemise puhul etteteatamise tähtaeg 30 kalendripäeva. Tööandja erakorraline ülesütlemine — sama tähtaeg, kui staaž on alla 1 aasta; pikem staaž annab pikema tähtaja (kuni 90 päeva)."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas avaldus peab olema kirjalik?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Jah. TLS § 95 nõuab kirjalikku vormi (paber + allkiri või digiallkiri). Suulist ülesütlemist seadus ei tunnusta. Soovituslik on saata e-postiga koos digiallkirjaga või edastada koopia oma allkirjaga tööandja esindajale."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas pean põhjendama, miks lahkun?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Korralise ülesütlemise korral (TLS § 85) ei pea — see on töötaja vaba otsus. Erakorralise ülesütlemise (TLS § 91) korral pead — peab olema seaduses nimetatud alus (näiteks töötasu maksmata jätmine, ohtlikud tingimused)."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Mida saan kompensatsioonina?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Kasutamata puhkusepäevad hüvitatakse rahaliselt (TLS § 71). Kui tööandja ütleb erakorraliselt üles ilma piisava põhjuseta, on sul õigus hüvitisele kuni 3 kuupalga ulatuses (TLS § 109). Töötukassa hüvitist saad, kui staaž on vähemalt 12 kuud viimase 36 kuu jooksul."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas saan ümber mõelda pärast avalduse esitamist?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Ainult tööandja nõusolekul. TLS § 95 lg 4 — ülesütlemise tühistamiseks on vaja kirjalikku kokkulepet. Tööandja ei ole kohustatud sind tagasi võtma."
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
+            <nav class="header-nav">
+                <a href="https://advocat.ee">Avaleht</a>
+                <a href="/tools/">Tööriistad</a>
+                <a href="/blog/">Blogi</a>
+                <a href="/app.html">Proovi tasuta</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="https://advocat.ee">Advocat</a> &rsaquo; <a href="/tools/">Tööriistad</a> &rsaquo; Töölepingu ülesütlemise avaldus
+    </div>
+
+    <div class="container">
+        <div class="tool-header">
+            <span class="tool-tag">Tasuta tööriist</span>
+            <h1>Töölepingu ülesütlemise avaldus</h1>
+            <p>Loo ametlik avaldus sekundiga. Põhineb töölepingu seaduse § 85-92 alusel. Andmed jäävad sinu seadmesse — midagi ei salvestata.</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="form-card">
+                <h2>Sinu andmed</h2>
+
+                <div class="form-group">
+                    <label for="employeeName">Sinu täisnimi *</label>
+                    <input type="text" id="employeeName" placeholder="Jaan Tamm">
+                </div>
+
+                <div class="form-group">
+                    <label for="jobTitle">Ametinimetus *</label>
+                    <input type="text" id="jobTitle" placeholder="Tarkvaraarendaja">
+                </div>
+
+                <div class="form-group">
+                    <label for="companyName">Tööandja (ettevõtte nimi) *</label>
+                    <input type="text" id="companyName" placeholder="OÜ Näide">
+                </div>
+
+                <div class="form-group">
+                    <label for="managerName">Juhi nimi</label>
+                    <input type="text" id="managerName" placeholder="Mart Mõts">
+                </div>
+
+                <div class="form-group">
+                    <label for="terminationType">Ülesütlemise tüüp *</label>
+                    <select id="terminationType">
+                        <option value="resignation">Korraline ülesütlemine (TLS § 85)</option>
+                        <option value="mutual">Poolte kokkuleppel (TLS § 79)</option>
+                        <option value="extraordinary">Erakorraline ülesütlemine (TLS § 91)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="reason">Põhjus (valikuline)</label>
+                    <textarea id="reason" placeholder="Näiteks: uus võimalus karjäääris, töökoha vahetus..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastDay">Viimane tööpäev *</label>
+                    <input type="date" id="lastDay">
+                </div>
+
+                <div class="notice-info">
+                    <strong>Etteteatamise tähtaeg:</strong> <span id="noticeInfo">Korraline ülesütlemine — vähemalt 30 kalendripäeva (TLS § 98 lg 1).</span>
+                </div>
+            </div>
+
+            <div class="preview-card">
+                <h2>Avalduse eelvaade <span class="status">Mustand</span></h2>
+                <div class="preview-doc" id="preview"></div>
+                <div class="actions">
+                    <button class="btn btn-primary" id="downloadBtn">Lae alla (.txt)</button>
+                    <button class="btn btn-secondary" id="printBtn">Salvesta PDF-iks</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h3>Tööandja keeldub või vaidleb?</h3>
+            <p>Kui sinu lahkumine läheb vaidluseks (kompensatsioon, hüvitis, ebaõiglane vallandamine) — Advocat AI advokaat aitab koostada nõude töövaidluskomisjoni või kohtusse.</p>
+            <a href="/app.html?from=toolepingu-avaldus" class="cta-btn">Saa Advocat õigusabi &rarr;</a>
+        </div>
+
+        <div class="info-section">
+            <h2>Millal on korraline, millal erakorraline ülesütlemine?</h2>
+
+            <h3>Korraline (TLS § 85)</h3>
+            <p>Töötaja vaba otsus ilma kohustusliku põhjenduseta. Etteteatamine 30 päeva. See on kõige levinum vorm.</p>
+
+            <h3>Poolte kokkuleppel (TLS § 79)</h3>
+            <p>Mõlemad pooled lepivad kokku. Sageli sisaldab kompensatsiooni. Etteteatamise tähtaegu pole — lõpukuupäev kokkuleppe küsimus.</p>
+
+            <h3>Erakorraline (TLS § 91)</h3>
+            <p>Mõjuv põhjus (näiteks töötasu maksmata jätmine, ohtlikud tingimused, ahistamine). Etteteatamist ei nõuta või lühem tähtaeg. Pead põhjendama.</p>
+
+            <div class="law-box">
+                <strong>Tähtis:</strong> Kasutamata puhkusepäevad tuleb tööandjal hüvitada rahaliselt (TLS § 71). Tööandja peab kõik arveldused tegema viimaseks tööpäevaks (TLS § 84).
+            </div>
+
+            <h3>Mida tööandja saab teha?</h3>
+            <ul>
+                <li>Ei saa keelduda korralisest ülesütlemisest</li>
+                <li>Ei saa muuta tähtaega ilma sinu nõusolekuta</li>
+                <li>Peab tagama lõpparvelduse õigeaegselt (viivisega TLS § 119)</li>
+                <li>Peab väljastama tööraamatu ja kõik dokumendid lõpupäevaks</li>
+            </ul>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Õiguslik märkus:</strong> See tööriist genereerib üldise näidisavalduse TLS § 85-92 alusel. Konkreetses olukorras (erakorraline ülesütlemine, vaidlused, kompensatsioon) konsulteeri Advocat AI assistendi või vandeadvokaadiga. Tööriist ei kujuta endast õigusnõu.
+        </div>
+
+        <div class="related">
+            <h3>Loe lähemalt</h3>
+            <ul>
+                <li><a href="/blog/tooandja-vallandas-mind.html">Tööandja vallandas mind — mis on minu õigused?</a></li>
+                <li><a href="/blog/toooigus-vallandamine.html">Töövaidlused Eestis — ülevaade</a></li>
+                <li><a href="/blog/tasuta-oigusabi-eestis-2026.html">Tasuta õigusabi Eestis 2026</a></li>
+                <li><a href="/tools/">Kõik tasuta tööriistad</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Advocat. Kõik õigused kaitstud. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong>Õiguslik märkus:</strong> See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</p>
+    </footer>
+
+    <script>
+        (function() {
+            const fields = ['employeeName', 'jobTitle', 'companyName', 'managerName', 'terminationType', 'reason', 'lastDay'];
+            const inputs = {};
+            fields.forEach(f => inputs[f] = document.getElementById(f));
+
+            const today = new Date();
+            const defaultLast = new Date(today);
+            defaultLast.setDate(defaultLast.getDate() + 30);
+            inputs.lastDay.value = defaultLast.toISOString().slice(0, 10);
+
+            const TYPE_LABELS = {
+                resignation: 'Korraline ülesütlemine (TLS § 85)',
+                mutual: 'Poolte kokkuleppel (TLS § 79)',
+                extraordinary: 'Erakorraline ülesütlemine (TLS § 91)'
+            };
+
+            const NOTICE_INFO = {
+                resignation: 'Korraline ülesütlemine — vähemalt 30 kalendripäeva (TLS § 98 lg 1).',
+                mutual: 'Poolte kokkuleppel — tähtaeg kokkuleppe küsimus, etteteatamist ei nõuta.',
+                extraordinary: 'Erakorraline ülesütlemine — etteteatamine sõltub põhjusest (TLS § 98 lg 2). Sageli kohene.'
+            };
+
+            function fmtDate(iso) {
+                if (!iso) return '________________';
+                const d = new Date(iso + 'T00:00:00');
+                const months = ['jaanuar','veebruar','märts','aprill','mai','juuni','juuli','august','september','oktoober','november','detsember'];
+                return `${d.getDate()}. ${months[d.getMonth()]} ${d.getFullYear()}`;
+            }
+
+            function buildDocument() {
+                const name = inputs.employeeName.value.trim() || '___________________';
+                const job = inputs.jobTitle.value.trim() || '___________________';
+                const company = inputs.companyName.value.trim() || '___________________';
+                const manager = inputs.managerName.value.trim();
+                const type = inputs.terminationType.value;
+                const reason = inputs.reason.value.trim();
+                const lastDay = inputs.lastDay.value;
+                const todayStr = fmtDate(today.toISOString().slice(0, 10));
+
+                let body;
+                if (type === 'resignation') {
+                    body = `Käesolevaga teatan, et soovin korraliselt üles öelda oma töölepingu ettevõttes ${company} alates ${fmtDate(lastDay)}.
+
+Avalduse aluseks on töölepingu seaduse § 85 lõige 1 — töötaja korraline ülesütlemine. Etteteatamise tähtaega olen järginud TLS § 98 lõike 1 kohaselt (vähemalt 30 kalendripäeva).${reason ? `\n\nLahkumise põhjus: ${reason}` : ''}
+
+Palun korraldada lõpparveldus ja kasutamata puhkusepäevade hüvitamine viimaseks tööpäevaks vastavalt TLS § 71 ja § 84.
+
+Palun väljastada minu töötamist puudutavad dokumendid (sealhulgas tõend töötamise kohta) lõpupäevaks.`;
+                } else if (type === 'mutual') {
+                    body = `Käesolevaga teen ettepaneku lõpetada minu tööleping ettevõttes ${company} poolte kokkuleppel alates ${fmtDate(lastDay)}.
+
+Avalduse aluseks on töölepingu seaduse § 79 — töölepingu lõpetamine poolte kokkuleppel.${reason ? `\n\nPõhjus: ${reason}` : ''}
+
+Palun korraldada lõpparveldus ja kasutamata puhkusepäevade hüvitamine kokkulepitud tähtajaks (TLS § 71, § 84).
+
+Olen valmis arutama lõpukokkuleppe tingimusi (sh võimaliku kompensatsiooni küsimust).`;
+                } else {
+                    body = `Käesolevaga ütlen erakorraliselt üles oma töölepingu ettevõttes ${company} alates ${fmtDate(lastDay)}.
+
+Avalduse aluseks on töölepingu seaduse § 91 — töötaja erakorraline ülesütlemine mõjuval põhjusel.
+
+Mõjuv põhjus: ${reason || '____________________________________________________ [palun täpsusta]'}
+
+Palun korraldada lõpparveldus ja kasutamata puhkusepäevade hüvitamine viimaseks tööpäevaks vastavalt TLS § 71 ja § 84. Tuletame meelde, et erakorralise ülesütlemise korral on töötajal õigus hüvitisele kuni 3 kuupalga ulatuses (TLS § 100).`;
+                }
+
+                const recipient = manager ? `${manager}\n${company}` : company;
+
+                return `${recipient}
+
+${todayStr}
+
+TÖÖLEPINGU ÜLESÜTLEMISE AVALDUS
+
+Lugupeetud ${manager || 'juhataja'},
+
+${body}
+
+Lugupidamisega,
+
+${name}
+${job}
+
+___________________
+(allkiri)`;
+            }
+
+            function update() {
+                document.getElementById('preview').textContent = buildDocument();
+                document.getElementById('noticeInfo').textContent = NOTICE_INFO[inputs.terminationType.value];
+            }
+
+            fields.forEach(f => inputs[f].addEventListener('input', update));
+
+            document.getElementById('downloadBtn').addEventListener('click', () => {
+                const text = buildDocument();
+                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'toolepingu-ulesutlemise-avaldus.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            document.getElementById('printBtn').addEventListener('click', () => {
+                window.print();
+            });
+
+            update();
+        })();
+    </script>
+</body>
+</html>
