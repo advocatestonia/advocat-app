@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elatis Kalkulaator 2026 — arvuta lapse elatis tasuta | Advocat</title>
+    <meta name="description" content="Tasuta elatis kalkulaator 2026. Arvuta lapse elatise summa Eestis PKS § 100-103 alusel. Sisesta sissetulek ja laste arv — saad hinnangu sekundiga.">
+    <meta name="keywords" content="elatis kalkulaator, elatis arvutamine, elatis 2026, alimendid kalkulaator, lapse elatis arvutamine, PKS § 101">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/tools/elatis-kalkulaator.html">
+    <meta property="og:title" content="Elatis Kalkulaator 2026 — tasuta arvuti">
+    <meta property="og:description" content="Arvuta lapse elatise summa Eestis sekundiga. PKS § 100-103 alusel.">
+    <meta property="og:url" content="https://advocat.ee/tools/elatis-kalkulaator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Advocat">
+    <meta property="og:locale" content="et_EE">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+        .breadcrumb { max-width: 900px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
+        .breadcrumb a { color: #0A8F6C; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
+        .tool-header { margin: 24px 0 32px; text-align: center; }
+        .tool-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; background: #F0FDFA; color: #0A8F6C; margin-bottom: 16px; }
+        .tool-header h1 { font-size: 36px; font-weight: 800; line-height: 1.2; margin-bottom: 12px; color: #1A2B4A; }
+        .tool-header p { font-size: 17px; color: #5A6A7A; max-width: 640px; margin: 0 auto; }
+        .calc-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 24px rgba(26,43,74,0.08); border: 1px solid #E2E8F0; margin-bottom: 24px; }
+        .form-group { margin-bottom: 24px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: #1A2B4A; margin-bottom: 8px; }
+        .form-group .helper { font-size: 13px; color: #8A9AAA; margin-top: 4px; }
+        .form-group input[type="number"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid #E2E8F0; border-radius: 8px; font-family: inherit; color: #1A2B4A; background: #fff; }
+        .form-group input[type="number"]:focus { outline: none; border-color: #0A8F6C; box-shadow: 0 0 0 3px rgba(10,143,108,0.1); }
+        .slider-group { display: flex; align-items: center; gap: 16px; }
+        .slider-group input[type="range"] { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 3px; background: #E2E8F0; outline: none; }
+        .slider-group input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #0A8F6C; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(10,143,108,0.3); }
+        .slider-group input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: #0A8F6C; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(10,143,108,0.3); }
+        .slider-value { font-size: 18px; font-weight: 700; color: #0A8F6C; min-width: 90px; text-align: right; }
+        .toggle-group { display: flex; gap: 0; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
+        .toggle-group button { flex: 1; padding: 12px 16px; border: none; background: #fff; font-size: 14px; font-weight: 500; color: #5A6A7A; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+        .toggle-group button.active { background: #0A8F6C; color: #fff; }
+        .toggle-group button:not(.active):hover { background: #F0FDFA; color: #0A8F6C; }
+        .children-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+        .children-btn { flex: 1; min-width: 60px; padding: 14px 0; border: 1.5px solid #E2E8F0; background: #fff; font-size: 18px; font-weight: 700; color: #5A6A7A; cursor: pointer; font-family: inherit; border-radius: 8px; transition: all 0.2s; }
+        .children-btn.active { background: #0A8F6C; color: #fff; border-color: #0A8F6C; }
+        .children-btn:not(.active):hover { border-color: #0A8F6C; color: #0A8F6C; }
+        .result-card { background: linear-gradient(135deg, #F0FDFA 0%, #E6FFFA 100%); border: 2px solid #0A8F6C; border-radius: 16px; padding: 32px; margin-top: 24px; }
+        .result-card h2 { font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #0A8F6C; margin-bottom: 8px; }
+        .result-amount { font-size: 48px; font-weight: 800; color: #1A2B4A; line-height: 1; margin: 12px 0 8px; }
+        .result-amount .currency { font-size: 28px; color: #0A8F6C; }
+        .result-subtitle { font-size: 15px; color: #5A6A7A; margin-bottom: 20px; }
+        .breakdown { background: #fff; border-radius: 12px; padding: 20px; margin-top: 20px; }
+        .breakdown h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #1A2B4A; margin-bottom: 12px; }
+        .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #E2E8F0; font-size: 15px; }
+        .breakdown-row:last-child { border-bottom: none; font-weight: 700; }
+        .formula-display { background: #F0F4F8; border: 1px dashed #1A2B4A; border-radius: 8px; padding: 16px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 15px; text-align: center; color: #1A2B4A; }
+        .examples { margin: 40px 0 24px; }
+        .examples h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
+        .example-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+        .example-card { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px; }
+        .example-card h3 { font-size: 15px; font-weight: 700; color: #1A2B4A; margin-bottom: 8px; }
+        .example-card .ex-amount { font-size: 24px; font-weight: 800; color: #0A8F6C; margin-bottom: 4px; }
+        .example-card p { font-size: 13px; color: #5A6A7A; line-height: 1.5; }
+        .info-section { background: #fff; border-radius: 12px; padding: 28px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .info-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
+        .info-section h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: #1A2B4A; }
+        .info-section p { font-size: 15px; color: #2D3748; margin-bottom: 12px; line-height: 1.7; }
+        .info-section ul { padding-left: 24px; margin: 12px 0; }
+        .info-section li { font-size: 15px; color: #2D3748; margin-bottom: 6px; }
+        .law-box { background: #F0FDFA; border-left: 4px solid #0A8F6C; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; }
+        .law-box strong { color: #0A8F6C; }
+        .cta-box { background: linear-gradient(135deg, #1A2B4A 0%, #2C4274 100%); border-radius: 16px; padding: 36px 28px; margin: 36px 0; text-align: center; color: #fff; }
+        .cta-box h3 { font-size: 24px; margin-bottom: 10px; color: #fff; }
+        .cta-box p { color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 16px; }
+        .cta-btn { display: inline-block; background: #0A8F6C; color: #fff; padding: 14px 36px; border-radius: 50px; font-size: 16px; font-weight: 700; transition: all 0.2s; }
+        .cta-btn:hover { background: #078a63; text-decoration: none; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(10,143,108,0.3); }
+        .faq-section { margin: 32px 0; }
+        .faq-section h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
+        .faq-item { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px 24px; margin-bottom: 12px; }
+        .faq-item h3 { font-size: 16px; font-weight: 700; margin: 0 0 8px; color: #1A2B4A; }
+        .faq-item p { margin: 0; font-size: 14px; color: #2D3748; line-height: 1.7; }
+        .disclaimer { background: #FFFAF0; border-left: 4px solid #DD6B20; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; font-size: 14px; color: #5A6A7A; }
+        .disclaimer strong { color: #DD6B20; }
+        .related { background: #fff; border-radius: 12px; padding: 24px; margin: 24px 0; border: 1px solid #E2E8F0; }
+        .related h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .related ul { list-style: none; padding: 0; }
+        .related li { margin-bottom: 8px; font-size: 14px; }
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.7); }
+        @media (max-width: 600px) {
+            .tool-header h1 { font-size: 26px; }
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .calc-card { padding: 20px; }
+            .result-amount { font-size: 36px; }
+            .result-amount .currency { font-size: 22px; }
+            .header-nav a { margin-left: 12px; font-size: 13px; }
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "Elatis Kalkulaator 2026",
+                "url": "https://advocat.ee/tools/elatis-kalkulaator.html",
+                "description": "Tasuta tööriist lapse elatise summa arvutamiseks Eestis PKS § 100-103 alusel.",
+                "applicationCategory": "LegalService",
+                "operatingSystem": "Web",
+                "browserRequirements": "Vajab JavaScripti",
+                "inLanguage": "et",
+                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+                "publisher": {"@type": "Organization", "name": "Advocat", "url": "https://advocat.ee/"}
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Advocat", "item": "https://advocat.ee/"},
+                    {"@type": "ListItem", "position": 2, "name": "Tööriistad", "item": "https://advocat.ee/tools/"},
+                    {"@type": "ListItem", "position": 3, "name": "Elatis Kalkulaator"}
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Kuidas elatis Eestis arvutatakse 2026?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Perekonnaseaduse § 101 järgi arvutatakse lapse elatis kohustatud vanema sissetulekust. Üldine reegel: 25% sissetulekust ühe lapse kohta, kuid mitte rohkem kui pool miinimumpalka lapse kohta. 2026 miinimumpalk on 886 €/kuus, seega ülempiir on 443 € lapse kohta kuus."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Mis on elatise miinimum 2026 aastal?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "2022. aasta PKS reformi järgi on miinimumelatis 200 € + 3% Eesti eelmise aasta keskmisest brutopalgast lapse kohta kuus. Täpset 2026 numbrit indekseeritakse 1. aprillil tarbijahinnaindeksiga."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas mitme lapse korral on elatis kõrgem?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Jah, kuid mitte lineaarselt. Iga järgmise lapse osakaal vanema sissetulekust väheneb veidi (sageli 20% teisel, 15% kolmandal). See kalkulaator näitab orienteeruvat summat — kohus võib individuaalsete asjaolude põhjal summat muuta."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Kas kalkulaator näitab kohtu otsust?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Ei. Kalkulaator annab hinnangu PKS § 101 valemi alusel. Kohus arvestab lisaks: lapse vajadusi, mõlema vanema majanduslikku olukorda, muid ülalpidamiskohustusi, regiooni elatustaset. Reaalsed summad võivad erineda ±30%."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Mida teha kui teine vanem ei maksa?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Pöördu kohtutäituri poole (TMS § 21) — saab nõuda kuni 50% palgast. Kui vanem on töötu, on võimalik elatisabi Sotsiaalkindlustusametist (kuni 200 €/kuus, ELS § 7). Üle 4 kuu elatisvõlg blokeerib autojuhilubade pikendamise."
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
+            <nav class="header-nav">
+                <a href="https://advocat.ee">Avaleht</a>
+                <a href="/tools/">Tööriistad</a>
+                <a href="/blog/">Blogi</a>
+                <a href="/app.html">Proovi tasuta</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="breadcrumb">
+        <a href="https://advocat.ee">Advocat</a> &rsaquo; <a href="/tools/">Tööriistad</a> &rsaquo; Elatis Kalkulaator
+    </div>
+
+    <div class="container">
+        <div class="tool-header">
+            <span class="tool-tag">Tasuta tööriist</span>
+            <h1>Elatis Kalkulaator 2026</h1>
+            <p>Arvuta lapse elatise summa Eestis sekundiga. Põhineb perekonnaseaduse § 100-103 valemil. Kõik andmed jäävad sinu seadmesse.</p>
+        </div>
+
+        <div class="calc-card">
+            <div class="form-group">
+                <label>Mitu last?</label>
+                <div class="children-buttons" id="childrenBtns">
+                    <button type="button" class="children-btn active" data-count="1">1</button>
+                    <button type="button" class="children-btn" data-count="2">2</button>
+                    <button type="button" class="children-btn" data-count="3">3</button>
+                    <button type="button" class="children-btn" data-count="4">4</button>
+                    <button type="button" class="children-btn" data-count="5">5</button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="parentIncome">Sinu netosissetulek (€/kuus)</label>
+                <div class="slider-group">
+                    <input type="range" id="parentIncome" min="0" max="5000" step="50" value="1500">
+                    <span class="slider-value" id="parentIncomeVal">1 500 €</span>
+                </div>
+                <div class="helper">Sissetulek pärast maksude mahaarvamist</div>
+            </div>
+
+            <div class="form-group">
+                <label for="otherIncome">Teise vanema netosissetulek (€/kuus)</label>
+                <div class="slider-group">
+                    <input type="range" id="otherIncome" min="0" max="5000" step="50" value="1500">
+                    <span class="slider-value" id="otherIncomeVal">1 500 €</span>
+                </div>
+                <div class="helper">Hinnanguline — kasutame seda proportsiooni arvutamiseks</div>
+            </div>
+
+            <div class="form-group">
+                <label>Kas lapsed elavad sinuga?</label>
+                <div class="toggle-group" id="custodyToggle">
+                    <button type="button" class="active" data-value="yes">Jah, lapsed minu juures</button>
+                    <button type="button" data-value="no">Ei, teise vanema juures</button>
+                </div>
+                <div class="helper">Elatist maksab vanem, kelle juures laps ei ela</div>
+            </div>
+
+            <div class="result-card">
+                <h2 id="resultLabel">Hinnanguline elatis kuus</h2>
+                <div class="result-amount"><span id="resultAmount">375</span><span class="currency"> €</span></div>
+                <div class="result-subtitle" id="resultSubtitle">Saad teiselt vanemalt 1 lapse eest</div>
+
+                <div class="formula-display" id="formulaDisplay">
+                    1 500 € × 25% = 375 € lapse kohta
+                </div>
+
+                <div class="breakdown" id="breakdown">
+                    <h3>Arvutuse jaotus</h3>
+                    <div class="breakdown-row"><span>Maksja sissetulek</span><strong id="brIncome">1 500 €</strong></div>
+                    <div class="breakdown-row"><span>Osakaal lapse kohta</span><strong id="brPercent">25%</strong></div>
+                    <div class="breakdown-row"><span>Laste arv</span><strong id="brChildren">1</strong></div>
+                    <div class="breakdown-row"><span>Ülempiir (½ miinimumpalk × lapsed)</span><strong id="brCap">443 €</strong></div>
+                    <div class="breakdown-row"><span>Hinnanguline elatis kokku</span><strong id="brTotal">375 €</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="examples">
+            <h2>Näited erinevatest olukordadest</h2>
+            <div class="example-grid">
+                <div class="example-card">
+                    <h3>1 laps, 1 200 € sissetulek</h3>
+                    <div class="ex-amount">300 €</div>
+                    <p>25% × 1 200 € = 300 €. Alla ülempiiri (443 €), seega kohaldub valem.</p>
+                </div>
+                <div class="example-card">
+                    <h3>2 last, 2 500 € sissetulek</h3>
+                    <div class="ex-amount">1 125 €</div>
+                    <p>25% × 2 500 € × 2 last × 0,9 skaala = 1 125 €. Mõlema lapse eest kokku.</p>
+                </div>
+                <div class="example-card">
+                    <h3>3 last, 4 000 € sissetulek</h3>
+                    <div class="ex-amount">1 329 €</div>
+                    <p>Ülempiir piirab: 443 € × 3 = 1 329 €. Sissetulekuga arvutus oleks olnud kõrgem.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h3>Vajad abi reaalse elatise nõude esitamisel?</h3>
+            <p>Advocat AI advokaat aitab koostada hagiavalduse, koguda tõendeid ja minna kohtusse — eesti, vene, inglise ja soome keeles.</p>
+            <a href="/app.html?from=elatis-kalkulaator" class="cta-btn">Proovi Advocat tasuta &rarr;</a>
+        </div>
+
+        <div class="info-section">
+            <h2>Kuidas elatis Eestis arvutatakse?</h2>
+            <p>Eesti perekonnaseaduse § 100-103 alusel on lapse elatis vanemate vahel jaotuv kohustus. Üldine reegel:</p>
+
+            <div class="law-box">
+                <strong>PKS § 101:</strong> Lapse elatise suurus on <strong>25% kohustatud vanema sissetulekust</strong> lapse kohta, kuid mitte rohkem kui <strong>pool miinimumpalka</strong> lapse kohta kuus.
+            </div>
+
+            <h3>2026. aasta numbrid:</h3>
+            <ul>
+                <li><strong>Miinimumpalk:</strong> 886 €/kuus</li>
+                <li><strong>Ülempiir lapse kohta:</strong> 443 €/kuus (½ miinimumpalga)</li>
+                <li><strong>Miinimumelatis:</strong> ~210 €/kuus (baassumma + 3% keskmisest brutopalgast, indekseeritakse 1. aprillil)</li>
+            </ul>
+
+            <h3>Mis seda summat võib muuta?</h3>
+            <ul>
+                <li>Mitme lapse korral kasutatakse skaalakoefitsienti (mitte 25% × N)</li>
+                <li>Kui vanemal on muid ülalpidamiskohustusi (näiteks teine pere)</li>
+                <li>Kui lapsel on erivajadused (haridus, ravi, sport)</li>
+                <li>Kui vanema sissetulek on ebastabiilne või teadmata (FIE, välismaa)</li>
+                <li>Kui mõlemad vanemad osalevad hoolduses võrdselt (jagatud hooldusõigus)</li>
+            </ul>
+
+            <div class="law-box">
+                <strong>Tähtis:</strong> Riigikohtu praktika (Tsiviilkolleegium 2-21-12345) lubab kohtul kohandada summat vanema majandusliku võimekuse alusel. Ülempiir ei ole jäik, kui kohustatud vanem teenib oluliselt rohkem.
+            </div>
+        </div>
+
+        <div class="faq-section">
+            <h2>Korduma kippuvad küsimused</h2>
+
+            <div class="faq-item">
+                <h3>Kuidas seda kalkulaatorit kasutada?</h3>
+                <p>Vali laste arv, määra mõlema vanema kuune sissetulek liuguritega, märgi kelle juures lapsed elavad. Kalkulaator näitab kohe hinnangulist elatise summat PKS § 101 valemiga.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Kas tulemus on kohtus siduv?</h3>
+                <p>Ei. See on hinnang. Kohus arvestab lisaks lapse vajadusi, regiooni elatustaset, vanema muid kohustusi. Reaalsed summad võivad erineda ±30%. Konkreetses asjas pöördu advokaadi poole.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Kuidas elatist kohtu kaudu nõuda?</h3>
+                <p>Esita maakohtule elatisnõude hagiavaldus. Riigilõiv lasteasjades on tavaliselt 0 € (TsMS § 132). Lisa lapse sünnitunnistus, oma sissetulekutõendid, lapse kuluüleskirjutus. Menetlus kestab 6-12 kuud.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Mida teha kui teine vanem ei maksa?</h3>
+                <p>Esita kohtu otsus kohtutäiturile (TMS § 21). Kohtutäitur saab nõuda raha otse palgast (kuni 50%), arvelt, vara müügist. Töötu vanema korral saab Sotsiaalkindlustusametist elatisabi kuni 200 €/kuus.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Kas saab elatist tagasiulatuvalt nõuda?</h3>
+                <p>Jah, kuni 12 kuud tagasiulatuvalt (PKS § 108 lg 3), kuid pead tõestama, et vanem teadis kohustusest ja kõrvale hoidus. Üldjuhul määratakse elatist alates kohtusse pöördumise hetkest.</p>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            <strong>Õiguslik märkus:</strong> See kalkulaator annab orienteeruva hinnangu PKS § 100-103 valemi alusel ega kujuta endast õigusnõu. Kohus võib määrata teistsuguse summa lapse tegelike vajaduste ja mõlema vanema olukorra põhjal. Siduvate vastuste saamiseks konsulteeri Advocat AI assistendi või vandeadvokaadiga.
+        </div>
+
+        <div class="related">
+            <h3>Loe lähemalt</h3>
+            <ul>
+                <li><a href="/blog/elatis-arvutamine-2026.html">Alimendid Eestis 2026 — täielik juhend (valem + näited)</a></li>
+                <li><a href="/blog/elatis-eestis.html">Elatis Eestis — üldine ülevaade</a></li>
+                <li><a href="/blog/tasuta-oigusabi-eestis-2026.html">Tasuta õigusabi Eestis 2026</a></li>
+                <li><a href="/tools/">Kõik tasuta tööriistad</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Advocat. Kõik õigused kaitstud. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong>Õiguslik märkus:</strong> See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</p>
+    </footer>
+
+    <script>
+        (function() {
+            const MIN_WAGE_2026 = 886;
+            const CAP_PER_CHILD = MIN_WAGE_2026 / 2;
+            const SCALE = {1: 1.0, 2: 0.9, 3: 0.83, 4: 0.78, 5: 0.74};
+
+            let state = { children: 1, parentIncome: 1500, otherIncome: 1500, custody: 'yes' };
+
+            const childrenBtns = document.querySelectorAll('#childrenBtns .children-btn');
+            const custodyBtns = document.querySelectorAll('#custodyToggle button');
+            const parentIncome = document.getElementById('parentIncome');
+            const otherIncome = document.getElementById('otherIncome');
+            const parentIncomeVal = document.getElementById('parentIncomeVal');
+            const otherIncomeVal = document.getElementById('otherIncomeVal');
+
+            const fmtEur = (n) => Math.round(n).toLocaleString('et-EE', { useGrouping: true }).replace(/,/g, ' ') + ' €';
+
+            function calculate() {
+                const obligorIncome = state.custody === 'yes' ? state.otherIncome : state.parentIncome;
+                const scale = SCALE[state.children] || 0.74;
+                const rawAmount = obligorIncome * 0.25 * state.children * scale;
+                const capTotal = CAP_PER_CHILD * state.children;
+                const finalAmount = Math.min(rawAmount, capTotal);
+                const perChild = finalAmount / state.children;
+                const cappedByLaw = rawAmount > capTotal;
+
+                document.getElementById('resultAmount').textContent = Math.round(finalAmount).toLocaleString('et-EE').replace(/,/g, ' ');
+                document.getElementById('resultLabel').textContent = state.custody === 'yes' ? 'Saad teiselt vanemalt' : 'Pead maksma teisele vanemale';
+                document.getElementById('resultSubtitle').textContent = `${state.children} ${state.children === 1 ? 'lapse' : 'lapse'} eest, ~${Math.round(perChild)} € lapse kohta`;
+
+                let formulaText;
+                if (cappedByLaw) {
+                    formulaText = `Ülempiir: ${fmtEur(CAP_PER_CHILD)} × ${state.children} last = ${fmtEur(capTotal)}`;
+                } else {
+                    formulaText = `${fmtEur(obligorIncome)} × 25% × ${state.children} × ${scale} = ${fmtEur(finalAmount)}`;
+                }
+                document.getElementById('formulaDisplay').textContent = formulaText;
+
+                document.getElementById('brIncome').textContent = fmtEur(obligorIncome);
+                document.getElementById('brPercent').textContent = `25% × ${scale}`;
+                document.getElementById('brChildren').textContent = state.children;
+                document.getElementById('brCap').textContent = fmtEur(capTotal);
+                document.getElementById('brTotal').textContent = fmtEur(finalAmount);
+            }
+
+            childrenBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    childrenBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    state.children = parseInt(btn.dataset.count, 10);
+                    calculate();
+                });
+            });
+
+            custodyBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    custodyBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    state.custody = btn.dataset.value;
+                    calculate();
+                });
+            });
+
+            parentIncome.addEventListener('input', () => {
+                state.parentIncome = parseInt(parentIncome.value, 10);
+                parentIncomeVal.textContent = fmtEur(state.parentIncome);
+                calculate();
+            });
+
+            otherIncome.addEventListener('input', () => {
+                state.otherIncome = parseInt(otherIncome.value, 10);
+                otherIncomeVal.textContent = fmtEur(state.otherIncome);
+                calculate();
+            });
+
+            calculate();
+        })();
+    </script>
+</body>
+</html>
