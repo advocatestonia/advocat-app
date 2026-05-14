@@ -175,6 +175,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get continueWithGoogle => 'Продолжить через Google';
 
   @override
+  String get appleComingSoon => 'Скоро';
+
+  @override
+  String get appleComingSoonMessage =>
+      'Вход через Apple скоро будет доступен. Используйте Google или email.';
+
+  @override
   String get copyText => 'Скопировать текст';
 
   @override

@@ -61,6 +61,8 @@
     "connected": "Подключено",
     "contactSupport": "Связаться с поддержкой",
     "continueWithGoogle": "Продолжить через Google",
+    "appleComingSoon": "Скоро",
+    "appleComingSoonMessage": "Вход через Apple скоро будет доступен. Используйте Google или email.",
     "copyText": "Скопировать текст",
     "correspondence": "Переписка",
     "couldNotLoadCases": "Не удалось загрузить ваши дела",

@@ -24,13 +24,16 @@
   <link rel="alternate" hreflang="x-default" href="https://advocat.ee/">
   <meta property="og:title" content="Advocat — AI Legal Assistant for Estonia & EU">
   <meta property="og:description" content="AI-powered legal information for Estonia and the EU. Cited sources, 17 languages, GDPR-aligned. €19.99/mo Pro — vs €100-200/h at a law firm.">
-  <meta property="og:image" content="https://advocat.ee/logo.png">
+  <meta property="og:image" content="https://advocat.ee/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Advocat — AI Legal Assistant for Estonia & EU, 17 languages, cited sources">
   <meta property="og:url" content="https://advocat.ee/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Advocat — AI Legal Assistant">
   <meta name="twitter:description" content="AI legal info for Estonia & EU. Cited sources, 17 languages. €19.99/mo Pro. Informational service — not a substitute for a sworn advocate.">
-  <meta name="twitter:image" content="https://advocat.ee/logo.png">
+  <meta name="twitter:image" content="https://advocat.ee/og-image.png">
 
 <!-- ── Schema.org JSON-LD ── -->
 <!-- Organization -->
@@ -360,7 +363,13 @@ img, svg { display: block; max-width: 100%; }
 .typing span:nth-child(2) { animation-delay: .15s; }
 .typing span:nth-child(3) { animation-delay: .3s; }
 .chat-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 14px 4px; }
-.chip { font-size: 12px; font-weight: 600; padding: 6px 12px; border: 1.5px solid var(--line); border-radius: 999px; color: var(--muted); background: #fff; cursor: pointer; transition: all .15s; }
+/* UX audit FIX 5 (2026-05-14): bump chip touch target to WCAG/HIG ≥44px.
+   Padding (10px × 16px) + line-height keeps the rendered chip ≥44px tall
+   even at the smaller mobile font scale; min-height makes it explicit. */
+.chip { font-size: 13px; font-weight: 600; padding: 10px 16px; min-height: 44px;
+  display: inline-flex; align-items: center; line-height: 1.2;
+  border: 1.5px solid var(--line); border-radius: 999px; color: var(--muted);
+  background: #fff; cursor: pointer; transition: all .15s; box-sizing: border-box; }
 .chip:hover { border-color: var(--teal); color: var(--teal); }
 .chat-input-row { display: flex; gap: 8px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--line); background: #fff; flex-shrink: 0; }
 .chat-input-row input { flex: 1; border: none; outline: none; font: inherit; font-size: 13.5px; color: var(--text); background: none; }
@@ -1131,6 +1140,8 @@ img, svg { display: block; max-width: 100%; }
   background: rgba(13,148,136,0.10); padding: 4px 9px; border-radius: 999px;
 }
 .plan-annual { font-size: 12px; color: var(--teal); font-weight: 600; margin-bottom: 10px; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+/* VAT disclosure under each paid-tier price. EU consumer-law compliance. */
+.plan-vat { font-size: 11px; color: var(--faint); opacity: .65; margin: -2px 0 6px; font-weight: 500; letter-spacing: 0.1px; }
 .plan-intro { font-size: 12px; color: var(--teal2); font-weight: 600; margin: 4px 0 12px; padding: 6px 10px; background: rgba(13,148,136,0.08); border-radius: 6px; display: inline-block; }
 .plan-intro strong { color: var(--teal); font-weight: 700; }
 .plan-desc { font-size: 13.5px; color: var(--muted); margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid var(--line); line-height: 1.5; }
@@ -1231,9 +1242,12 @@ img, svg { display: block; max-width: 100%; }
   border-radius: 999px;
   position: relative; left: 50%; transform: translateX(-50%);
 }
+/* UX audit FIX 5 (2026-05-14): toggle was 35px tall, below WCAG ≥44px. */
 .billing-toggle-btn {
   font-size: 14px; font-weight: 600; color: var(--muted);
-  padding: 9px 22px; border-radius: 999px;
+  padding: 11px 22px; min-height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px; box-sizing: border-box;
   transition: background .2s, color .2s, box-shadow .2s;
 }
 .billing-toggle-btn:hover { color: var(--text); }
@@ -2130,6 +2144,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="plan-price">
           <span class="currency">€</span><span class="amount">19.99</span><span class="per" data-i18n="plan2.per">/ month</span>
         </div>
+        <div class="plan-vat" data-i18n="pricing.vat_included">incl. 22% VAT</div>
         <div class="plan-annual">
           <span data-i18n="plan2.annual">or €159.99/year — save 33%</span>
           <span class="plan-save-badge">SAVE 33%</span>
@@ -2162,6 +2177,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="plan-price">
           <span class="currency">€</span><span class="amount">29.99</span><span class="per" data-i18n="plan3.per">/ month</span>
         </div>
+        <div class="plan-vat" data-i18n="pricing.vat_included">incl. 22% VAT</div>
         <div class="plan-annual">
           <span data-i18n="plan3.annual">or €249.99/year — save 30%</span>
           <span class="plan-save-badge">SAVE 30%</span>
@@ -2262,6 +2278,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="plan-price plan-price-billing" data-billing-show="annual">
           <span class="currency">€</span><span class="amount">13.33</span><span class="per" data-i18n="plan2.per_eff_month">/ month, billed yearly</span>
         </div>
+        <div class="plan-vat" data-i18n="pricing.vat_included">incl. 22% VAT</div>
         <div class="plan-annual plan-annual-billing" data-billing-show="annual">
           <span data-i18n="plan2.annual_full">€159.99 per year — save €79.89 (33% off)</span>
           <span class="plan-save-badge">SAVE 33%</span>
@@ -2302,6 +2319,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="plan-price plan-price-billing" data-billing-show="annual">
           <span class="currency">€</span><span class="amount">20.83</span><span class="per" data-i18n="plan3.per_eff_month">/ month, billed yearly</span>
         </div>
+        <div class="plan-vat" data-i18n="pricing.vat_included">incl. 22% VAT</div>
         <div class="plan-annual plan-annual-billing" data-billing-show="annual">
           <span data-i18n="plan3.annual_full">€249.99 per year — save €109.89 (30% off)</span>
           <span class="plan-save-badge">SAVE 30%</span>
@@ -2591,6 +2609,7 @@ const I18N = {
     'cookie.manage': 'Manage cookies',
     'nav.how': 'How it works', 'nav.compare': 'Compare', 'nav.pricing': 'Pricing', 'nav.faq': 'FAQ',
     'nav.login': 'Sign in', 'nav.cta': 'Try free',
+    'meta.title': 'Advocat — AI Legal Assistant · Defend Your Rights',
     'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
     'hero.title': 'Legal <em>AI</em> built for Estonia and the EU.',
     'hero.sub': 'Citations to statutes and case law, draft correspondence ready for your review, and case material organization — with multilingual support.',
@@ -2669,6 +2688,7 @@ const I18N = {
     'plan3.f1': 'Unlimited AI messages', 'plan3.f2': 'Unlimited cases', 'plan3.f3': 'Unlimited document scans',
     'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
     'plan3.cta': 'Choose Premium',
+    'pricing.vat_included': 'incl. 22% VAT',
     'pricing.note': 'Cancel anytime. Save 30-33% with annual billing.',
     'pricing.note.v2': 'Cancel anytime. 14-day refund before first AI message. Save 30–33% with annual billing.',
     'faq.label': 'FAQ', 'faq.title': 'Honest <em>answers</em> to common questions.',
@@ -2702,7 +2722,7 @@ const I18N = {
       { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'I can draft a formal demand letter for you. Estonian or English?' },
     ],
-    'chat.chips': ['Tenancy deposit', 'Work dispute', 'Deportation', 'Other'],
+    'chat.chips': ['Work dispute', 'Tenancy deposit', 'Other', 'Deportation'],
     'chat.reply': 'Got it. I can draft the formal demand letter right now — would you like that?',
   },
 
@@ -2715,6 +2735,7 @@ const I18N = {
     'cookie.manage': 'Halda küpsiseid',
     'nav.how': 'Kuidas see töötab', 'nav.compare': 'Võrdlus', 'nav.pricing': 'Hinnad', 'nav.faq': 'KKK',
     'nav.login': 'Logi sisse', 'nav.cta': 'Proovi tasuta',
+    'meta.title': 'Advocat — AI õigusabi · Kaitse oma õigusi',
     'hero.eyebrow': 'AI-ÕIGUSABI · 2026',
     'hero.title': '<em>AI-assistent</em> Eesti ja EL õiguses.',
     'hero.sub': 'Struktureeritud vastused õigusküsimustele, kirjade mustandid sinu ülevaatuseks ja juhtumi materjalide korraldus — kõik ühes vestluses.',
@@ -2773,6 +2794,7 @@ const I18N = {
     'plan3.f1': 'AI-sõnumid piiranguteta', 'plan3.f2': 'Juhtumeid piiranguteta', 'plan3.f3': 'Dokumendiskannid piiranguteta',
     'plan3.f4': 'Prioriteetne järjekord', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirjade ja dokumentide eksport',
     'plan3.cta': 'Vali Premium',
+    'pricing.vat_included': 'Sis. käibemaks 22%',
     'pricing.note': 'Lõpeta millal tahad. Aastamaksuga säästad 30-33%.',
     'pricing.note.v2': 'Lõpeta millal tahad. 14-päevane tagasimakse enne esimese AI-sõnumi saatmist. Aastamaksuga säästad 30–33%.',
     'pricing.title.v2': 'Selge hind. <em>Lõpeta millal tahad.</em>',
@@ -2826,7 +2848,7 @@ const I18N = {
       { who: 'bot', t: 'Selge. VÕS § 308 lg 3 järgi võib üürileandja tagatisrahast kinni pidada vaid põhjendatud nõude. Ta peab oma nõude esitama kahe kuu jooksul pärast lepingu lõppu — pärast seda saad kogu tagatisraha tagasi nõuda.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Saan sulle ametliku nõudekirja kohe paberile panna. Eesti või vene keeles?' },
     ],
-    'chat.chips': ['Üüritagatis', 'Töövaidlus', 'Väljasaatmine', 'Muu'],
+    'chat.chips': ['Töövaidlus', 'Üüritagatis', 'Muu', 'Väljasaatmine'],
     'chat.reply': 'Selge. Panen nõudekirja kohe paberile — teeme nii?',
   },
 
@@ -2839,6 +2861,7 @@ const I18N = {
     'cookie.manage': 'Управление cookie',
     'nav.how': 'Как это работает', 'nav.compare': 'Сравнение', 'nav.pricing': 'Тарифы', 'nav.faq': 'FAQ',
     'nav.login': 'Войти', 'nav.cta': 'Попробовать',
+    'meta.title': 'Advocat — AI юрист · Защитите свои права',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
     'hero.title': '<em>AI-ассистент</em> по эстонскому и европейскому праву.',
     'hero.sub': 'Отвечает на юридические вопросы, готовит черновики писем для вашей проверки и помогает систематизировать материалы дела.',
@@ -2897,6 +2920,7 @@ const I18N = {
     'plan3.f1': 'Безлимит AI-сообщений', 'plan3.f2': 'Безлимит дел', 'plan3.f3': 'Безлимит сканирований',
     'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Экспорт писем и документов',
     'plan3.cta': 'Выбрать Premium',
+    'pricing.vat_included': 'Включая НДС 22%',
     'pricing.note': 'Отмена в любой момент. Экономия 30-33% с годовой оплатой.',
     'pricing.note.v2': 'Отмена в любой момент. Возврат за 14 дней до отправки первого сообщения ИИ. Экономия 30–33% с годовой оплатой.',
     'pricing.title.v2': 'Прозрачная цена. <em>Отмена в один клик.</em>',
@@ -2950,7 +2974,7 @@ const I18N = {
       { who: 'bot', t: 'Понятная ситуация. По VÕS § 308 ч. 3 арендодатель вправе удержать залог только под обоснованное требование. Своё требование он должен заявить в течение двух месяцев после окончания договора — после этого вы вправе требовать возврата всего залога.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Могу подготовить официальную претензию. На русском или эстонском?' },
     ],
-    'chat.chips': ['Залог за аренду', 'Трудовой спор', 'Депортация', 'Другое'],
+    'chat.chips': ['Трудовой спор', 'Залог за аренду', 'Другое', 'Депортация'],
     'chat.reply': 'Понял. Могу прямо сейчас подготовить официальную претензию — хочешь?',
   },
 
@@ -2963,6 +2987,7 @@ const I18N = {
     'cookie.manage': 'Керування cookie',
     'nav.how': 'Як працює', 'nav.compare': 'Порівняння', 'nav.pricing': 'Тарифи', 'nav.faq': 'FAQ',
     'nav.login': 'Увійти', 'nav.cta': 'Спробувати',
+    'meta.title': 'Advocat — AI юрист · Захистіть свої права',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
     'hero.title': '<em>AI-асистент</em> з естонського та європейського права.',
     'hero.sub': 'Відповідає на юридичні запитання, готує чернетки листів для вашої перевірки та допомагає систематизувати матеріали справи.',
@@ -3014,6 +3039,7 @@ const I18N = {
     'plan3.f1': 'Безліміт AI-повідомлень', 'plan3.f2': 'Безліміт справ', 'plan3.f3': 'Безліміт сканувань',
     'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Експорт листів і документів',
     'plan3.cta': 'Обрати Premium',
+    'pricing.vat_included': 'З ПДВ 22%',
     'pricing.note': 'Скасування будь-коли. Економія 30-33% з річною оплатою.',
     'faq.label': 'FAQ', 'faq.title': 'Чесні <em>відповіді</em> на часті питання.',
     'faq.items': [
@@ -3044,7 +3070,7 @@ const I18N = {
       { who: 'bot', t: 'Зрозуміла ситуація. За VÕS § 308 ч. 3 орендодавець може утримати заставу лише під обґрунтовану вимогу. Свою вимогу він повинен заявити протягом двох місяців після завершення договору — після цього ви маєте право вимагати повернення всієї застави.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Можу підготувати офіційну претензію. Українською чи естонською?' },
     ],
-    'chat.chips': ['Застава за оренду', 'Трудовий спір', 'Депортація', 'Інше'],
+    'chat.chips': ['Трудовий спір', 'Застава за оренду', 'Інше', 'Депортація'],
     'chat.reply': 'Зрозуміло. Можу прямо зараз підготувати офіційну претензію — хочеш?',
   },
 
@@ -3057,6 +3083,7 @@ const I18N = {
     'cookie.manage': 'Hallitse evästeitä',
     'nav.how': 'Miten toimii', 'nav.compare': 'Vertailu', 'nav.pricing': 'Hinnat', 'nav.faq': 'UKK',
     'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
+    'meta.title': 'Advocat — Tekoälyjuristi · Puolusta oikeuksiasi',
     'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
     'hero.title': '<em>Tekoälyavustaja</em> Viron ja EU:n oikeuteen.',
     'hero.sub': 'Vastaa juridisiin kysymyksiin, laatii kirjeluonnoksia tarkastettavaksesi ja auttaa järjestämään asiakirja-aineistoa.',
@@ -3115,6 +3142,7 @@ const I18N = {
     'plan3.f1': 'Rajattomat AI-viestit', 'plan3.f2': 'Rajattomat tapaukset', 'plan3.f3': 'Rajattomat skannaukset',
     'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköposti- ja asiakirjavienti',
     'plan3.cta': 'Valitse Premium',
+    'pricing.vat_included': 'Sis. ALV 22%',
     'pricing.note': 'Peruuta milloin tahansa. Säästä 30-33% vuosilaskutuksella.',
     'faq.label': 'UKK', 'faq.title': 'Rehellisiä <em>vastauksia</em> yleisiin kysymyksiin.',
     'faq.items': [
@@ -3142,10 +3170,10 @@ const I18N = {
     'chat.welcome': 'Hei! Olen Advocat — AI-juristisi.\nMikä on oikeudellinen kysymyksesi?',
     'chat.sample': [
       { who: 'user', t: 'Vuokranantaja ei palauta vakuutta jo 3 viikon ajan.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Selvä. VÕS § 308 (3) mom. mukaan vuokranantaja saa pidättää vakuuden vain perustellun vaatimuksen vuoksi. Vaatimus on esitettävä kahden kuukauden kuluessa vuokrasuhteen päättymisestä — sen jälkeen voit vaatia koko vakuuden takaisin.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Voin laatia virallisen vaatimuskirjeen. Suomeksi vai viroksi?' },
     ],
-    'chat.chips': ['Vuokravakuus', 'Työriita', 'Karkotus', 'Muu'],
+    'chat.chips': ['Työriita', 'Vuokravakuus', 'Muu', 'Karkotus'],
     'chat.reply': 'Selvä. Voin laatia vaatimuskirjeen heti — haluatko?',
   },
 
@@ -3158,6 +3186,7 @@ const I18N = {
     'cookie.manage': 'Cookies verwalten',
     'nav.how': 'So funktioniert\'s', 'nav.compare': 'Vergleich', 'nav.pricing': 'Preise', 'nav.faq': 'FAQ',
     'nav.login': 'Anmelden', 'nav.cta': 'Kostenlos testen',
+    'meta.title': 'Advocat — KI-Rechtsassistent · Verteidigen Sie Ihre Rechte',
     'hero.eyebrow': 'KI-RECHTSASSISTENT · 2026',
     'hero.title': '<em>KI-Assistent</em> für estnisches und europäisches Recht.',
     'hero.sub': 'Beantwortet rechtliche Fragen, erstellt Schreiben-Entwürfe zu Ihrer Prüfung und hilft beim Ordnen Ihrer Fallunterlagen.',
@@ -3209,6 +3238,7 @@ const I18N = {
     'plan3.f1': 'Unbegrenzte KI-Nachrichten', 'plan3.f2': 'Unbegrenzte Fälle', 'plan3.f3': 'Unbegrenzte Dokumentenscans',
     'plan3.f4': 'Vorrangige Bearbeitung', 'plan3.f5': 'Alles aus Pro', 'plan3.f6': 'E-Mail- und Dokumentenexport',
     'plan3.cta': 'Premium wählen',
+    'pricing.vat_included': 'inkl. 22 % MwSt.',
     'pricing.note': 'Jederzeit kündbar. Mit Jahresabrechnung 30-33 % sparen.',
     'faq.label': 'FAQ', 'faq.title': 'Ehrliche <em>Antworten</em> auf häufige Fragen.',
     'faq.items': [
@@ -3236,10 +3266,10 @@ const I18N = {
     'chat.welcome': 'Hallo! Ich bin Advocat — Ihr KI-Rechtsassistent.\nWobei kann ich rechtlich helfen?',
     'chat.sample': [
       { who: 'user', t: 'Mein Vermieter hat die Kaution seit 3 Wochen nicht zurückgezahlt.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Verstanden. Nach VÕS § 308 Abs. 3 darf der Vermieter die Kaution nur bei einer belegten Forderung einbehalten. Diese Forderung muss er binnen zwei Monaten nach Vertragsende geltend machen — danach können Sie die volle Kaution zurückverlangen.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Ich kann Ihnen sofort ein förmliches Aufforderungsschreiben aufsetzen. Auf Deutsch oder Estnisch?' },
     ],
-    'chat.chips': ['Mietkaution', 'Arbeitsstreit', 'Abschiebung', 'Anderes'],
+    'chat.chips': ['Arbeitsstreit', 'Mietkaution', 'Anderes', 'Abschiebung'],
     'chat.reply': 'Verstanden. Ich kann das Aufforderungsschreiben sofort aufsetzen — soll ich?',
   },
 
@@ -3252,6 +3282,7 @@ const I18N = {
     'cookie.manage': 'Gérer les cookies',
     'nav.how': 'Comment ça marche', 'nav.compare': 'Comparer', 'nav.pricing': 'Tarifs', 'nav.faq': 'FAQ',
     'nav.login': 'Se connecter', 'nav.cta': 'Essai gratuit',
+    'meta.title': 'Advocat — Assistant juridique IA · Défendez vos droits',
     'hero.eyebrow': 'ASSISTANT JURIDIQUE IA · 2026',
     'hero.title': '<em>Assistant IA</em> en droit estonien et européen.',
     'hero.sub': 'Répond à vos questions juridiques, rédige des projets de courriers à votre relecture et aide à organiser votre dossier.',
@@ -3303,6 +3334,7 @@ const I18N = {
     'plan3.f1': 'Messages IA illimités', 'plan3.f2': 'Dossiers illimités', 'plan3.f3': 'Lectures illimitées',
     'plan3.f4': 'Traitement prioritaire', 'plan3.f5': 'Tout Pro inclus', 'plan3.f6': 'Export e-mail et documents',
     'plan3.cta': 'Choisir Premium',
+    'pricing.vat_included': 'TVA 22 % incluse',
     'pricing.note': 'Résiliable à tout moment. Avec la facturation annuelle, économisez 30 à 33 %.',
     'faq.label': 'FAQ', 'faq.title': 'Réponses <em>honnêtes</em> aux questions courantes.',
     'faq.items': [
@@ -3330,10 +3362,10 @@ const I18N = {
     'chat.welcome': 'Bonjour ! Je suis Advocat — votre assistant juridique IA.\nQuelle question juridique puis-je traiter ?',
     'chat.sample': [
       { who: 'user', t: 'Mon propriétaire ne me rend pas la caution depuis 3 semaines.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Compris. Selon VÕS § 308 al. 3, le bailleur ne peut retenir la caution qu\'en présence d\'une créance justifiée. Il doit faire valoir cette créance dans les deux mois suivant la fin du bail — passé ce délai, vous pouvez exiger le remboursement intégral.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Je peux rédiger une mise en demeure formelle. En français ou en estonien ?' },
     ],
-    'chat.chips': ['Caution de loyer', 'Litige du travail', 'Expulsion', 'Autre'],
+    'chat.chips': ['Litige du travail', 'Caution de loyer', 'Autre', 'Expulsion'],
     'chat.reply': 'Compris. Je peux rédiger la mise en demeure tout de suite — vous voulez ?',
   },
 
@@ -3346,6 +3378,7 @@ const I18N = {
     'cookie.manage': 'Gestionar cookies',
     'nav.how': 'Cómo funciona', 'nav.compare': 'Comparar', 'nav.pricing': 'Precios', 'nav.faq': 'FAQ',
     'nav.login': 'Iniciar sesión', 'nav.cta': 'Probar gratis',
+    'meta.title': 'Advocat — Asistente jurídico IA · Defiende tus derechos',
     'hero.eyebrow': 'ASISTENTE JURÍDICO IA · 2026',
     'hero.title': '<em>Asistente de IA</em> en Derecho estonio y europeo.',
     'hero.sub': 'Responde a sus preguntas legales, prepara borradores de escritos para su revisión y le ayuda a organizar el material de su caso.',
@@ -3397,6 +3430,7 @@ const I18N = {
     'plan3.f1': 'Mensajes IA ilimitados', 'plan3.f2': 'Casos ilimitados', 'plan3.f3': 'Escaneos ilimitados',
     'plan3.f4': 'Procesamiento prioritario', 'plan3.f5': 'Todo lo de Pro', 'plan3.f6': 'Exportación de correo y documentos',
     'plan3.cta': 'Elegir Premium',
+    'pricing.vat_included': 'IVA 22 % incl.',
     'pricing.note': 'Cancela en cualquier momento. Con facturación anual ahorra 30-33 %.',
     'faq.label': 'FAQ', 'faq.title': 'Respuestas <em>honestas</em> a las dudas más frecuentes.',
     'faq.items': [
@@ -3424,10 +3458,10 @@ const I18N = {
     'chat.welcome': '¡Hola! Soy Advocat — su asistente jurídico con IA.\n¿En qué cuestión legal puedo ayudarle?',
     'chat.sample': [
       { who: 'user', t: 'Mi casero no me devuelve la fianza desde hace 3 semanas.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Entendido. Según VÕS § 308 ap. 3, el arrendador solo puede retener la fianza ante una reclamación justificada. Debe presentar dicha reclamación en los dos meses posteriores al fin del contrato — pasado ese plazo, puede exigir la devolución íntegra.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Puedo redactarle una reclamación formal ahora mismo. ¿En español o estonio?' },
     ],
-    'chat.chips': ['Fianza de alquiler', 'Conflicto laboral', 'Expulsión', 'Otro'],
+    'chat.chips': ['Conflicto laboral', 'Fianza de alquiler', 'Otro', 'Expulsión'],
     'chat.reply': 'Entendido. Puedo redactar la reclamación formal ahora mismo — ¿lo hago?',
   },
 
@@ -3440,6 +3474,7 @@ const I18N = {
     'cookie.manage': 'Gestisci cookie',
     'nav.how': 'Come funziona', 'nav.compare': 'Confronto', 'nav.pricing': 'Prezzi', 'nav.faq': 'FAQ',
     'nav.login': 'Accedi', 'nav.cta': 'Prova gratis',
+    'meta.title': 'Advocat — Assistente legale IA · Difendi i tuoi diritti',
     'hero.eyebrow': 'ASSISTENTE LEGALE IA · 2026',
     'hero.title': '<em>Assistente IA</em> in diritto estone ed europeo.',
     'hero.sub': 'Risponde a quesiti giuridici, redige bozze di lettere per la Sua revisione e aiuta a organizzare il materiale del Suo caso.',
@@ -3491,6 +3526,7 @@ const I18N = {
     'plan3.f1': 'Messaggi IA illimitati', 'plan3.f2': 'Casi illimitati', 'plan3.f3': 'Scansioni illimitate',
     'plan3.f4': 'Elaborazione prioritaria', 'plan3.f5': 'Tutto Pro incluso', 'plan3.f6': 'Esportazione email e documenti',
     'plan3.cta': 'Scegli Premium',
+    'pricing.vat_included': 'IVA 22 % inclusa',
     'pricing.note': 'Disdici in qualsiasi momento. Con la fatturazione annuale risparmia il 30-33 %.',
     'faq.label': 'FAQ', 'faq.title': 'Risposte <em>oneste</em> alle domande più comuni.',
     'faq.items': [
@@ -3518,10 +3554,10 @@ const I18N = {
     'chat.welcome': 'Salve! Sono Advocat — il Suo assistente legale IA.\nCon quale questione legale posso aiutarLa?',
     'chat.sample': [
       { who: 'user', t: 'Il mio locatore non mi restituisce la cauzione da 3 settimane.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Capito. Ai sensi del VÕS § 308 c. 3, il locatore può trattenere la cauzione solo a fronte di una pretesa documentata. Deve far valere tale pretesa entro due mesi dalla fine del contratto — trascorso il termine, può richiedere la restituzione integrale.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Posso preparare subito una diffida formale. In italiano o in estone?' },
     ],
-    'chat.chips': ['Cauzione affitto', 'Vertenza di lavoro', 'Espulsione', 'Altro'],
+    'chat.chips': ['Vertenza di lavoro', 'Cauzione affitto', 'Altro', 'Espulsione'],
     'chat.reply': 'Capito. Posso redigere subito la diffida formale — procedo?',
   },
 
@@ -3534,6 +3570,7 @@ const I18N = {
     'cookie.manage': 'Zarządzaj plikami cookie',
     'nav.how': 'Jak to działa', 'nav.compare': 'Porównanie', 'nav.pricing': 'Cennik', 'nav.faq': 'FAQ',
     'nav.login': 'Zaloguj się', 'nav.cta': 'Wypróbuj za darmo',
+    'meta.title': 'Advocat — Asystent prawny AI · Broń swoich praw',
     'hero.eyebrow': 'ASYSTENT PRAWNY AI · 2026',
     'hero.title': '<em>Asystent AI</em> w prawie estońskim i europejskim.',
     'hero.sub': 'Odpowiada na pytania prawne, przygotowuje projekty pism do Twojej weryfikacji i pomaga porządkować materiały sprawy.',
@@ -3585,6 +3622,7 @@ const I18N = {
     'plan3.f1': 'Wiadomości AI bez limitu', 'plan3.f2': 'Sprawy bez limitu', 'plan3.f3': 'Skany bez limitu',
     'plan3.f4': 'Priorytetowe przetwarzanie', 'plan3.f5': 'Wszystko z Pro', 'plan3.f6': 'Eksport e-mail i dokumentów',
     'plan3.cta': 'Wybierz Premium',
+    'pricing.vat_included': 'zawiera 22% VAT',
     'pricing.note': 'Anuluj w dowolnym momencie. Przy rocznym rozliczeniu oszczędzasz 30-33 %.',
     'faq.label': 'FAQ', 'faq.title': 'Uczciwe <em>odpowiedzi</em> na najczęstsze pytania.',
     'faq.items': [
@@ -3612,10 +3650,10 @@ const I18N = {
     'chat.welcome': 'Cześć! Jestem Advocat — Twój asystent prawny AI.\nW jakiej sprawie prawnej mogę pomóc?',
     'chat.sample': [
       { who: 'user', t: 'Wynajmujący nie zwraca mi kaucji od 3 tygodni.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Rozumiem. Zgodnie z VÕS § 308 ust. 3 wynajmujący może zatrzymać kaucję wyłącznie na poczet udokumentowanego roszczenia. Roszczenie musi zgłosić w ciągu dwóch miesięcy od zakończenia najmu — po tym terminie możesz domagać się zwrotu całej kaucji.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Mogę od razu przygotować formalne wezwanie do zapłaty. Po polsku czy po estońsku?' },
     ],
-    'chat.chips': ['Kaucja najmu', 'Spór pracowniczy', 'Wydalenie', 'Inne'],
+    'chat.chips': ['Spór pracowniczy', 'Kaucja najmu', 'Inne', 'Wydalenie'],
     'chat.reply': 'Jasne. Mogę od razu napisać formalne wezwanie — wysłać projekt?',
   },
 
@@ -3628,6 +3666,7 @@ const I18N = {
     'cookie.manage': 'Hantera cookies',
     'nav.how': 'Så funkar det', 'nav.compare': 'Jämför', 'nav.pricing': 'Priser', 'nav.faq': 'Vanliga frågor',
     'nav.login': 'Logga in', 'nav.cta': 'Prova gratis',
+    'meta.title': 'Advocat — AI-juristassistent · Försvara dina rättigheter',
     'hero.eyebrow': 'AI-JURISTASSISTENT · 2026',
     'hero.title': '<em>AI-assistent</em> i estnisk och europeisk rätt.',
     'hero.sub': 'Besvarar juridiska frågor, skriver utkast till brev för din granskning och hjälper dig organisera ärendematerialet.',
@@ -3679,6 +3718,7 @@ const I18N = {
     'plan3.f1': 'Obegränsade AI-meddelanden', 'plan3.f2': 'Obegränsade ärenden', 'plan3.f3': 'Obegränsade skanningar',
     'plan3.f4': 'Prioriterad hantering', 'plan3.f5': 'Allt från Pro', 'plan3.f6': 'E-post- och dokumentexport',
     'plan3.cta': 'Välj Premium',
+    'pricing.vat_included': 'inkl. 22 % moms',
     'pricing.note': 'Avsluta när som helst. Med årsbetalning sparar du 30-33 %.',
     'faq.label': 'Vanliga frågor', 'faq.title': 'Ärliga <em>svar</em> på vanliga frågor.',
     'faq.items': [
@@ -3706,10 +3746,10 @@ const I18N = {
     'chat.welcome': 'Hej! Jag är Advocat — din AI-juristassistent.\nVilken juridisk fråga kan jag hjälpa till med?',
     'chat.sample': [
       { who: 'user', t: 'Min hyresvärd har inte återbetalat depositionen på 3 veckor.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Jag förstår. Enligt VÕS § 308 st. 3 får hyresvärden hålla inne depositionen endast för ett dokumenterat krav. Kravet ska framställas inom två månader efter hyrestidens slut — därefter kan du kräva tillbaka hela depositionen.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Jag kan skriva ett formellt kravbrev åt dig nu. På svenska eller estniska?' },
     ],
-    'chat.chips': ['Hyresdeposition', 'Arbetstvist', 'Utvisning', 'Annat'],
+    'chat.chips': ['Arbetstvist', 'Hyresdeposition', 'Annat', 'Utvisning'],
     'chat.reply': 'Klart. Jag kan skriva kravbrevet direkt — ska jag?',
   },
 
@@ -3722,6 +3762,7 @@ const I18N = {
     'cookie.manage': 'Pārvaldīt sīkdatnes',
     'nav.how': 'Kā tas darbojas', 'nav.compare': 'Salīdzinājums', 'nav.pricing': 'Cenas', 'nav.faq': 'BUJ',
     'nav.login': 'Pieslēgties', 'nav.cta': 'Izmēģināt',
+    'meta.title': 'Advocat — MI juridiskais asistents · Aizstāvi savas tiesības',
     'hero.eyebrow': 'MI JURIDISKAIS ASISTENTS · 2026',
     'hero.title': '<em>MI asistents</em> Igaunijas un Eiropas tiesībās.',
     'hero.sub': 'Atbild uz tiesību jautājumiem, sagatavo vēstuļu uzmetumus jūsu pārbaudei un palīdz sakārtot lietas materiālus.',
@@ -3773,6 +3814,7 @@ const I18N = {
     'plan3.f1': 'Neierobežotas MI ziņas', 'plan3.f2': 'Neierobežotas lietas', 'plan3.f3': 'Neierobežoti skenējumi',
     'plan3.f4': 'Prioritāra apstrāde', 'plan3.f5': 'Viss no Pro', 'plan3.f6': 'E-pasta un dokumentu eksports',
     'plan3.cta': 'Izvēlēties Premium',
+    'pricing.vat_included': 'ar 22 % PVN',
     'pricing.note': 'Atcelt jebkurā laikā. Ar gada apmaksu ietaupiet 30-33 %.',
     'faq.label': 'BUJ', 'faq.title': 'Godīgas <em>atbildes</em> uz biežiem jautājumiem.',
     'faq.items': [
@@ -3800,10 +3842,10 @@ const I18N = {
     'chat.welcome': 'Sveiki! Es esmu Advocat — jūsu MI juridiskais asistents.\nKāds juridisks jautājums jums ir?',
     'chat.sample': [
       { who: 'user', t: 'Izīrētājs jau 3 nedēļas neatdod drošības naudu.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Sapratu. Saskaņā ar VÕS § 308 3. daļu izīrētājs drīkst ieturēt drošības naudu tikai pamatota prasījuma dēļ. Prasījums jāpiesaka divu mēnešu laikā pēc nomas līguma beigām — pēc tam jūs varat prasīt visu drošības naudu atpakaļ.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Varu uzreiz sagatavot oficiālu prasības vēstuli. Latviski vai igauniski?' },
     ],
-    'chat.chips': ['Īres drošības nauda', 'Darba strīds', 'Izraidīšana', 'Cits'],
+    'chat.chips': ['Darba strīds', 'Īres drošības nauda', 'Cits', 'Izraidīšana'],
     'chat.reply': 'Saprotu. Varu uzreiz sagatavot oficiālu prasības vēstuli — gatavojam?',
   },
 
@@ -3816,6 +3858,7 @@ const I18N = {
     'cookie.manage': 'Valdyti slapukus',
     'nav.how': 'Kaip veikia', 'nav.compare': 'Palyginimas', 'nav.pricing': 'Kainos', 'nav.faq': 'DUK',
     'nav.login': 'Prisijungti', 'nav.cta': 'Išbandyti nemokamai',
+    'meta.title': 'Advocat — DI teisės asistentas · Apgink savo teises',
     'hero.eyebrow': 'DI TEISĖS ASISTENTAS · 2026',
     'hero.title': '<em>DI asistentas</em> Estijos ir Europos teisėje.',
     'hero.sub': 'Atsako į teisinius klausimus, rengia raštų projektus jūsų peržiūrai ir padeda sutvarkyti bylos medžiagą.',
@@ -3867,6 +3910,7 @@ const I18N = {
     'plan3.f1': 'Neribotos DI žinutės', 'plan3.f2': 'Neribotos bylos', 'plan3.f3': 'Neriboti skenavimai',
     'plan3.f4': 'Prioritetinis apdorojimas', 'plan3.f5': 'Viskas iš Pro', 'plan3.f6': 'El. pašto ir dokumentų eksportas',
     'plan3.cta': 'Pasirinkti Premium',
+    'pricing.vat_included': 'su 22 % PVM',
     'pricing.note': 'Atšaukite bet kada. Su metiniu mokėjimu sutaupote 30-33 %.',
     'faq.label': 'DUK', 'faq.title': 'Sąžiningi <em>atsakymai</em> į dažniausius klausimus.',
     'faq.items': [
@@ -3894,10 +3938,10 @@ const I18N = {
     'chat.welcome': 'Sveiki! Aš Advocat — jūsų DI teisės asistentas.\nKuo galiu padėti teisiniame klausime?',
     'chat.sample': [
       { who: 'user', t: 'Nuomotojas jau 3 savaites negrąžina užstato.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Suprantama. Pagal VÕS § 308 3 dalį nuomotojas užstatą gali sulaikyti tik dėl pagrįsto reikalavimo. Reikalavimą jis turi pateikti per du mėnesius nuo sutarties pabaigos — po šio termino galite reikalauti grąžinti visą užstatą.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Galiu iš karto parengti oficialų reikalavimo raštą. Lietuviškai ar estiškai?' },
     ],
-    'chat.chips': ['Nuomos užstatas', 'Darbo ginčas', 'Išsiuntimas', 'Kita'],
+    'chat.chips': ['Darbo ginčas', 'Nuomos užstatas', 'Kita', 'Išsiuntimas'],
     'chat.reply': 'Aišku. Galiu iš karto parengti oficialų reikalavimo raštą — rengti?',
   },
 
@@ -3910,6 +3954,7 @@ const I18N = {
     'cookie.manage': 'Gestionează cookie-urile',
     'nav.how': 'Cum funcționează', 'nav.compare': 'Comparație', 'nav.pricing': 'Prețuri', 'nav.faq': 'Întrebări frecvente',
     'nav.login': 'Autentificare', 'nav.cta': 'Încearcă gratuit',
+    'meta.title': 'Advocat — Asistent juridic AI · Apără-ți drepturile',
     'hero.eyebrow': 'ASISTENT JURIDIC AI · 2026',
     'hero.title': '<em>Asistent AI</em> în dreptul estonian și european.',
     'hero.sub': 'Răspunde la întrebări de drept, redactează proiecte de scrisori pentru verificarea dvs. și vă ajută să organizați materialele dosarului.',
@@ -3961,6 +4006,7 @@ const I18N = {
     'plan3.f1': 'Mesaje AI nelimitate', 'plan3.f2': 'Cazuri nelimitate', 'plan3.f3': 'Scanări nelimitate',
     'plan3.f4': 'Procesare prioritară', 'plan3.f5': 'Tot ce este în Pro', 'plan3.f6': 'Export e-mail și documente',
     'plan3.cta': 'Alege Premium',
+    'pricing.vat_included': 'TVA 22 % inclus',
     'pricing.note': 'Anulați oricând. Cu plata anuală economisiți 30-33 %.',
     'faq.label': 'Întrebări frecvente', 'faq.title': 'Răspunsuri <em>oneste</em> la întrebările uzuale.',
     'faq.items': [
@@ -3988,10 +4034,10 @@ const I18N = {
     'chat.welcome': 'Bună! Sunt Advocat — asistentul dumneavoastră juridic AI.\nCu ce întrebare juridică vă pot ajuta?',
     'chat.sample': [
       { who: 'user', t: 'Proprietarul nu mi-a returnat garanția de 3 săptămâni.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Înțeles. Conform VÕS § 308 alin. 3, locatorul poate reține garanția doar în baza unei pretenții documentate. Pretenția trebuie formulată în termen de două luni de la încetarea contractului — după acest termen, puteți cere restituirea integrală a garanției.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Pot să redactez chiar acum o somație formală. În română sau estoniană?' },
     ],
-    'chat.chips': ['Garanție de chirie', 'Conflict de muncă', 'Expulzare', 'Altul'],
+    'chat.chips': ['Conflict de muncă', 'Garanție de chirie', 'Altul', 'Expulzare'],
     'chat.reply': 'Am înțeles. Pot să redactez somația imediat — facem așa?',
   },
 
@@ -4004,6 +4050,7 @@ const I18N = {
     'cookie.manage': 'Çerezleri yönet',
     'nav.how': 'Nasıl çalışır', 'nav.compare': 'Karşılaştır', 'nav.pricing': 'Fiyatlar', 'nav.faq': 'SSS',
     'nav.login': 'Giriş yap', 'nav.cta': 'Ücretsiz dene',
+    'meta.title': 'Advocat — Yapay zekâ hukuk asistanı · Haklarını savun',
     'hero.eyebrow': 'YAPAY ZEKÂ HUKUK ASİSTANI · 2026',
     'hero.title': 'Estonya ve Avrupa hukukuna özel <em>yapay zekâ asistanı</em>.',
     'hero.sub': 'Hukuki sorularınızı yanıtlar, incelemeniz için yazışma taslakları hazırlar ve dosya materyallerinizi düzenlemenize yardımcı olur.',
@@ -4055,6 +4102,7 @@ const I18N = {
     'plan3.f1': 'Sınırsız YZ mesajı', 'plan3.f2': 'Sınırsız dosya', 'plan3.f3': 'Sınırsız belge tarama',
     'plan3.f4': 'Öncelikli işlem', 'plan3.f5': 'Pro\'daki her şey', 'plan3.f6': 'E-posta ve belge dışa aktarımı',
     'plan3.cta': 'Premium\'u seç',
+    'pricing.vat_included': 'KDV %22 dahil',
     'pricing.note': 'İstediğiniz zaman iptal edin. Yıllık ödemeyle %30-33 tasarruf edersiniz.',
     'faq.label': 'SSS', 'faq.title': 'Sık sorulanlara <em>dürüst yanıtlar</em>.',
     'faq.items': [
@@ -4082,10 +4130,10 @@ const I18N = {
     'chat.welcome': 'Merhaba! Ben Advocat — yapay zekâ hukuk asistanınız.\nHangi hukuki konuda yardımcı olabilirim?',
     'chat.sample': [
       { who: 'user', t: 'Ev sahibim 3 haftadır depozitomu iade etmiyor.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'Anlaşıldı. VÕS § 308 fıkra 3 uyarınca ev sahibi depozitoyu yalnızca belgelenmiş bir talep karşılığında alıkoyabilir. Bu talebi kira sözleşmesinin sona ermesinden itibaren iki ay içinde ileri sürmelidir — bu süreden sonra depozitonun tamamını geri isteyebilirsiniz.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'Hemen resmi bir ihtarname hazırlayabilirim. Türkçe mi Estonca mı?' },
     ],
-    'chat.chips': ['Kira depozitosu', 'İş uyuşmazlığı', 'Sınır dışı', 'Diğer'],
+    'chat.chips': ['İş uyuşmazlığı', 'Kira depozitosu', 'Diğer', 'Sınır dışı'],
     'chat.reply': 'Anlaşıldı. Resmi ihtarnameyi hemen hazırlayabilirim — başlayayım mı?',
   },
 
@@ -4098,6 +4146,7 @@ const I18N = {
     'cookie.manage': 'إدارة ملفات تعريف الارتباط',
     'nav.how': 'كيف يعمل', 'nav.compare': 'المقارنة', 'nav.pricing': 'الأسعار', 'nav.faq': 'الأسئلة الشائعة',
     'nav.login': 'تسجيل الدخول', 'nav.cta': 'جرّب مجاناً',
+    'meta.title': 'Advocat — مساعد قانوني بالذكاء الاصطناعي · دافع عن حقوقك',
     'hero.eyebrow': 'مساعد قانوني بالذكاء الاصطناعي · 2026',
     'hero.title': '<em>مساعد ذكاء اصطناعي</em> للقانون الإستوني والأوروبي.',
     'hero.sub': 'يجيب عن الأسئلة القانونية، ويُعدّ مسودات المراسلات لمراجعتك، ويساعد على تنظيم مواد القضية.',
@@ -4149,6 +4198,7 @@ const I18N = {
     'plan3.f1': 'رسائل ذكاء اصطناعي بلا حدود', 'plan3.f2': 'قضايا بلا حدود', 'plan3.f3': 'مسح بلا حدود',
     'plan3.f4': 'معالجة ذات أولوية', 'plan3.f5': 'كل ما في Pro', 'plan3.f6': 'تصدير البريد الإلكتروني والمستندات',
     'plan3.cta': 'اختر Premium',
+    'pricing.vat_included': 'شامل ضريبة القيمة المضافة 22%',
     'pricing.note': 'إلغاء في أي وقت. وفّر 30-33% مع الفوترة السنوية.',
     'faq.label': 'الأسئلة الشائعة', 'faq.title': 'إجابات <em>صادقة</em> على الأسئلة المتكرّرة.',
     'faq.items': [
@@ -4176,10 +4226,10 @@ const I18N = {
     'chat.welcome': 'مرحباً! أنا Advocat — مساعدك القانوني بالذكاء الاصطناعي.\nبأي مسألة قانونية أستطيع المساعدة؟',
     'chat.sample': [
       { who: 'user', t: 'لم يردّ المؤجِّر التأمين منذ 3 أسابيع.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'مفهوم. بموجب VÕS § 308 الفقرة 3، لا يحقّ للمؤجِّر حجز مبلغ التأمين إلا في مقابل مطالبة موثَّقة. وعليه أن يقدّم تلك المطالبة خلال شهرين من انتهاء عقد الإيجار — وبعد ذلك يحقّ لك المطالبة بإعادة كامل مبلغ التأمين.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'يمكنني فوراً صياغة إنذار رسمي. بالعربية أم بالإستونية؟' },
     ],
-    'chat.chips': ['تأمين الإيجار', 'نزاع عمل', 'إبعاد', 'أخرى'],
+    'chat.chips': ['نزاع عمل', 'تأمين الإيجار', 'أخرى', 'إبعاد'],
     'chat.reply': 'حسناً. يمكنني صياغة الإنذار الرسمي حالاً — أمضي قُدُماً؟',
   },
 
@@ -4192,6 +4242,7 @@ const I18N = {
     'cookie.manage': 'مدیریت کوکی‌ها',
     'nav.how': 'چگونه کار می‌کند', 'nav.compare': 'مقایسه', 'nav.pricing': 'قیمت‌ها', 'nav.faq': 'سؤالات متداول',
     'nav.login': 'ورود', 'nav.cta': 'امتحان رایگان',
+    'meta.title': 'Advocat — دستیار حقوقی هوش مصنوعی · از حقوق خود دفاع کنید',
     'hero.eyebrow': 'دستیار حقوقی هوش مصنوعی · ۲۰۲۶',
     'hero.title': '<em>دستیار هوش مصنوعی</em> در حقوق استونی و اروپایی.',
     'hero.sub': 'به پرسش‌های حقوقی پاسخ می‌دهد، پیش‌نویس نامه‌ها را برای بازبینی شما آماده می‌کند و در نظم‌دهی به مواد پرونده یاری می‌رساند.',
@@ -4243,6 +4294,7 @@ const I18N = {
     'plan3.f1': 'پیام‌های هوش مصنوعی نامحدود', 'plan3.f2': 'پرونده‌های نامحدود', 'plan3.f3': 'اسکن نامحدود',
     'plan3.f4': 'پردازش با اولویت', 'plan3.f5': 'همه‌ی امکانات Pro', 'plan3.f6': 'خروجی ایمیل و سند',
     'plan3.cta': 'انتخاب Premium',
+    'pricing.vat_included': 'شامل ۲۲٪ مالیات بر ارزش افزوده',
     'faq.label': 'سؤالات متداول', 'faq.title': 'پاسخ‌های <em>صادقانه</em> به پرسش‌های رایج.',
     'faq.items': [
       { q: 'آیا این قانونی است؟ آیا واقعاً می‌توان از هوش مصنوعی برای پرسش‌های حقوقی استفاده کرد؟', a: 'بله. Advocat یک خدمت اطلاع‌رسانی حقوقی است — قانون را توضیح می‌دهد و در تنظیم اسناد یاری می‌رساند. در دادگاه جایگزین وکیل دارای پروانه نمی‌شود، اما برای فهم وضعیت و نوشتن نخستین نامه کاملاً مناسب است. همان‌طور که خواندن مقالات حقوقی در اینترنت قانونی است، استفاده از ابزاری که این کار را به‌جای شما انجام می‌دهد نیز قانونی است.' },
@@ -4269,10 +4321,10 @@ const I18N = {
     'chat.welcome': 'سلام! من Advocat هستم — دستیار حقوقی هوش مصنوعی شما.\nدر چه پرسش حقوقی می‌توانم کمک کنم؟',
     'chat.sample': [
       { who: 'user', t: 'موجر سه هفته است که ودیعه‌ام را بازپس نداده.' },
-      { who: 'bot', t: 'Understood. Under VÕS § 308 lg 3, the landlord may withhold the deposit only against a documented claim. They must assert any claim within 2 months of lease end — after that, you may demand the full deposit back.', cite: 'VÕS § 308 lg 3' },
+      { who: 'bot', t: 'متوجه شدم. بر اساس VÕS § 308 بند ۳، موجر تنها در قبال یک مطالبه‌ی مستند می‌تواند ودیعه را نگه دارد. این مطالبه باید ظرف دو ماه پس از پایان اجاره مطرح شود — پس از آن می‌توانید بازگرداندن کل ودیعه را بخواهید.', cite: 'VÕS § 308 lg 3' },
       { who: 'bot', t: 'هم‌اکنون می‌توانم یک اظهارنامه‌ی رسمی تنظیم کنم. به فارسی یا استونی؟' },
     ],
-    'chat.chips': ['ودیعه‌ی اجاره', 'اختلاف کاری', 'اخراج از کشور', 'سایر'],
+    'chat.chips': ['اختلاف کاری', 'ودیعه‌ی اجاره', 'سایر', 'اخراج از کشور'],
     'chat.reply': 'بسیار خوب. می‌توانم اظهارنامه‌ی رسمی را همین حالا تنظیم کنم — انجام بدهم؟',
   },
 };
@@ -4350,6 +4402,14 @@ function setLang(code) {
   }
   document.documentElement.lang = code;
   document.documentElement.dir = RTL[code] ? 'rtl' : 'ltr';
+  // Localise <title> + tab visibility per UX audit FIX 1 (2026-05-14).
+  // Fall back to the original Estonian title only if the dict lookup fails.
+  try {
+    var localisedTitle =
+      (I18N[CUR_LANG] && I18N[CUR_LANG]['meta.title']) ||
+      (I18N.en && I18N.en['meta.title']);
+    if (localisedTitle) document.title = localisedTitle;
+  } catch (e) {}
   try { localStorage.setItem('advocat-landing-lang', code); } catch(e){}
   applyTranslations();
 }
@@ -4653,6 +4713,53 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
       }
     } catch (e) {}
   }, true);
+})();
+</script>
+
+<!-- Carry landing language into Flutter app. Any anchor pointing at
+     /app.html gets `lang=<CUR_LANG>` appended at click-time, preserving
+     existing query params (plan=, billing=, etc). Flutter's
+     main.dart#_loadSavedLocale() reads `?lang=` first and persists it to
+     SharedPreferences so the next visit (without ?lang) keeps the choice.
+     UX audit 2026-05-14. -->
+<script>
+(function () {
+  function carryLang(ev) {
+    try {
+      var t = ev.target;
+      while (t && t !== document) {
+        if (t.tagName === 'A') {
+          var href = t.getAttribute('href') || '';
+          // Match any /app.html link (root-relative or relative).
+          var isApp = href.indexOf('/app.html') === 0 ||
+                      href === 'app.html' ||
+                      href.indexOf('app.html?') === 0 ||
+                      href.indexOf('/app.html?') === 0;
+          if (!isApp) return;
+          var lang = (typeof CUR_LANG !== 'undefined' && CUR_LANG) ||
+                     (function () {
+                        try { return localStorage.getItem('advocat-landing-lang'); }
+                        catch (e) { return null; }
+                      })();
+          if (!lang) return;
+          // Don't overwrite an explicit ?lang= in the original href.
+          if (/[?&]lang=/.test(href)) return;
+          var sep = href.indexOf('?') === -1 ? '?' : '&';
+          // Rewrite href just-in-time. The browser uses the new value
+          // for the navigation that follows this same click event.
+          t.setAttribute('href', href + sep + 'lang=' + encodeURIComponent(lang));
+          return;
+        }
+        t = t.parentNode;
+      }
+    } catch (e) {}
+  }
+  // Capture phase so we run BEFORE the tracking handler above and BEFORE
+  // the browser follows the link.
+  document.addEventListener('click', carryLang, true);
+  // Also handle middle-click / cmd-click which fire mousedown but not click.
+  document.addEventListener('mousedown', carryLang, true);
+  document.addEventListener('auxclick', carryLang, true);
 })();
 </script>
 </body>

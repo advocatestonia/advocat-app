@@ -21,12 +21,18 @@ import '../../../models/case_model.dart';
 // [onCategorySelected] with the category + the pre-filled text, and the
 // parent decides whether to immediately send or let the user edit.
 
+// UX audit FIX 6 (2026-05-14): rendering order matters for first-impression
+// framing. Per memory `feedback_canon_outdated_use_real_features.md` we
+// must NOT lead with deportation — most prospects need employment,
+// housing, or family help. Put deportation last so the broader
+// categories surface first. Enum declaration order drives
+// `WelcomeCategory.values` iteration in the widget.
 enum WelcomeCategory {
-  deportation,
   workDispute,
-  familyLaw,
   housing,
-  other;
+  familyLaw,
+  other,
+  deportation;
 
   /// Corresponding CaseType for auto-created cases.
   CaseType get caseType {

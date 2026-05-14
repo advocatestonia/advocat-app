@@ -176,6 +176,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get continueWithGoogle => 'Jatka Googlella';
 
   @override
+  String get appleComingSoon => 'Tulossa';
+
+  @override
+  String get appleComingSoonMessage =>
+      'Apple-kirjautuminen tulossa pian. Käytä Googlea tai sähköpostia.';
+
+  @override
   String get copyText => 'Kopioi teksti';
 
   @override

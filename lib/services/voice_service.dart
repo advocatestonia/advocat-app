@@ -7,6 +7,7 @@ import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 import '../config/app_config.dart';
+import 'language_detector.dart';
 import 'web_speech.dart' as web_speech;
 
 // ---------------------------------------------------------------------------
@@ -730,16 +731,27 @@ class VoiceService {
     }
     text = cleaned;
 
+    // ── UX audit FIX 4 (2026-05-14) ────────────────────────────────────
+    // Bug: when the user types Urdu (or any language outside the 17 we
+    // support for TTS) the caller still passes the app locale as
+    // `langCode`. The Google / ElevenLabs engine then tries to read
+    // Arabic-script Urdu with an Estonian phoneme model, producing
+    // garbled audio. Detect the language of the text first and, if it
+    // sits outside the supported TTS set, downshift to English so the
+    // user hears a recognisable Latin-alphabet read-through instead.
+    final effectiveLangCode = _resolveTtsLangCode(text, langCode);
+
     // Stop any audio still playing from a previous reply before we start
     // a new one. This is defence-in-depth — `advocatPlayBlob` also does
     // it — and plugs the race where two fetches from rapid sends both
     // complete and both try to play.
     await stopSpeaking();
 
-    final engine = ttsEngineFor(langCode);
+    final engine = ttsEngineFor(effectiveLangCode);
 
     // Primary: the engine that owns this language.
-    final primaryStarted = await _tryEngine(engine, text, langCode: langCode);
+    final primaryStarted =
+        await _tryEngine(engine, text, langCode: effectiveLangCode);
     if (primaryStarted) return;
 
     // Primary never started audio — safe to try the other cloud engine
@@ -748,15 +760,82 @@ class VoiceService {
     final other = engine == TtsEngine.elevenLabs
         ? TtsEngine.google
         : TtsEngine.elevenLabs;
-    final otherStarted = await _tryEngine(other, text, langCode: langCode);
+    final otherStarted =
+        await _tryEngine(other, text, langCode: effectiveLangCode);
     if (otherStarted) return;
 
     // Last resort: browser SpeechSynthesis. Better than silence.
     try {
-      await _speakWithBrowserTts(text, langCode: langCode);
+      await _speakWithBrowserTts(text, langCode: effectiveLangCode);
     } catch (e) {
       if (kDebugMode) debugPrint('TTS: Browser TTS exception: $e');
     }
+  }
+
+  /// Language codes that have a real TTS voice in either ElevenLabs
+  /// (`tts-proxy`) or Google (`google-tts` Chirp3-HD / Gemini Flash 3.1).
+  /// Anything outside this set must NOT be voiced with the app locale
+  /// — see UX audit FIX 4 (2026-05-14).
+  static const Set<String> _supportedTtsLangs = {
+    'en', 'et', 'ru', 'uk', 'fi', 'sv', 'de', 'fr', 'es', 'it',
+    'pl', 'ro', 'lt', 'lv', 'tr', 'ar', 'fa',
+  };
+
+  /// Resolves the language code the engine should be configured with.
+  ///
+  /// Rules:
+  ///   * Detect language from the actual text via [LanguageDetector].
+  ///   * If detection succeeds AND the detected base is in
+  ///     [_supportedTtsLangs] → use the detected code.
+  ///   * If detection succeeds but the language is NOT supported →
+  ///     downshift to `'en'` so the engine reads it with a generic
+  ///     Latin-script voice instead of mangling it with the app locale.
+  ///   * If detection fails (short / ambiguous text) → keep the caller's
+  ///     `langCode` when it is in [_supportedTtsLangs], else fall back
+  ///     to `'en'`.
+  ///
+  /// Exposed `@visibleForTesting` so the contract can be locked.
+  @visibleForTesting
+  static String resolveTtsLangCode(String text, String langCode) =>
+      _resolveTtsLangCode(text, langCode);
+
+  /// Regex for scripts we do NOT have a TTS voice for. If the text is
+  /// dominated by any of these and the LanguageDetector returns `null`
+  /// (no keyword hits in the 17 supported langs), force `'en'` rather
+  /// than letting the caller's app locale read mismatched glyphs.
+  static final RegExp _unsupportedScriptRe = RegExp(
+    // CJK ideographs, Hiragana/Katakana, Hangul, Devanagari/Bengali/Tamil/
+    // Telugu/Gujarati/Gurmukhi/Kannada/Malayalam/Sinhala, Thai, Lao,
+    // Khmer, Myanmar, Hebrew, Georgian, Armenian.
+    r'[\u3400-\u4DBF\u4E00-\u9FFF\u3040-\u309F\u30A0-\u30FF'
+    r'\uAC00-\uD7AF\u0900-\u097F\u0980-\u09FF\u0B80-\u0BFF'
+    r'\u0C00-\u0C7F\u0A80-\u0AFF\u0A00-\u0A7F\u0C80-\u0CFF'
+    r'\u0D00-\u0D7F\u0D80-\u0DFF\u0E00-\u0E7F\u0E80-\u0EFF'
+    r'\u1780-\u17FF\u1000-\u109F\u0590-\u05FF\u10A0-\u10FF'
+    r'\u0530-\u058F]',
+  );
+
+  static String _resolveTtsLangCode(String text, String langCode) {
+    final callerBase = _normaliseLangBase(langCode);
+    final detected = LanguageDetector.detect(text);
+
+    if (detected != null) {
+      if (_supportedTtsLangs.contains(detected)) return detected;
+      // Detected language is real but we have no voice for it. Read in
+      // English so the user hears something intelligible.
+      return 'en';
+    }
+
+    // Detection failed but the text uses a script we do not voice at all
+    // (Chinese, Japanese, Hindi, Hebrew, etc.). Speaking it with the app
+    // locale (often Estonian) would produce the garbled-audio bug the
+    // UX audit flagged. Read in English instead.
+    if (_unsupportedScriptRe.hasMatch(text)) return 'en';
+
+    // Detection failed AND the script is one we do voice — trust the
+    // caller's locale unless it too is outside the supported set.
+    if (_supportedTtsLangs.contains(callerBase)) return callerBase;
+    return 'en';
   }
 
   /// Attempts to start audio on [engine]. Returns true only if the engine

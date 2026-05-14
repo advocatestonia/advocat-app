@@ -49,6 +49,8 @@
     "connected": "Yhdistetty",
     "contactSupport": "Ota yhteyttä tukeen",
     "continueWithGoogle": "Jatka Googlella",
+    "appleComingSoon": "Tulossa",
+    "appleComingSoonMessage": "Apple-kirjautuminen tulossa pian. Käytä Googlea tai sähköpostia.",
     "copyText": "Kopioi teksti",
     "correspondence": "Kirjeenvaihto",
     "couldNotLoadCases": "Asioiden lataaminen epäonnistui",

@@ -452,6 +452,18 @@ abstract class AppLocalizations {
   /// **'Continue with Google'**
   String get continueWithGoogle;
 
+  /// No description provided for @appleComingSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get appleComingSoon;
+
+  /// No description provided for @appleComingSoonMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple Sign-In becomes available soon. Use Google or email to continue.'**
+  String get appleComingSoonMessage;
+
   /// No description provided for @copyText.
   ///
   /// In en, this message translates to:

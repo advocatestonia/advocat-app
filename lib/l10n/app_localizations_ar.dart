@@ -176,6 +176,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get continueWithGoogle => 'المتابعة باستخدام جوجل';
 
   @override
+  String get appleComingSoon => 'Coming soon';
+
+  @override
+  String get appleComingSoonMessage =>
+      'Apple Sign-In becomes available soon. Use Google or email to continue.';
+
+  @override
   String get copyText => 'نسخ النص';
 
   @override

@@ -7,6 +7,17 @@ class ClientKnowledgeService {
   String? _cachedUserId;
   int _messageCount = 0;
 
+  /// Strict UUID regex (8-4-4-4-12 hex). Mirrors SupabaseService._uuidRegex.
+  /// Synthetic ids like 'general' or 'case-new-<ts>' return false so we
+  /// avoid hitting Postgres with `case_id=eq.general` (PostgREST 400).
+  static final _uuidRegex = RegExp(
+    r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+    caseSensitive: false,
+  );
+
+  static bool _isRealUuid(String? id) =>
+      id != null && _uuidRegex.hasMatch(id);
+
   /// Get the cached context without waiting for refresh.
   /// Returns null if no cache exists (first message).
   String? getCachedContext() => _cachedContext;
@@ -85,19 +96,28 @@ class ClientKnowledgeService {
       }
     }
     if (caseId != null) {
+      // Synthetic caseIds (e.g. 'general' general chat) are not UUIDs —
+      // PostgREST returns 400 for `case_id=eq.general`. Short-circuit
+      // case-scoped queries to empty lists; user-scoped queries still run
+      // so cross-case memory still works.
+      final hasRealCase = _isRealUuid(caseId);
       // Run all 5 queries in parallel for faster loading
       final parallelResults = await Future.wait([
-        _client.from('documents').select().eq('case_id', caseId).order('created_at', ascending: false).catchError((_) => <dynamic>[]),
+        hasRealCase
+            ? _client.from('documents').select().eq('case_id', caseId).order('created_at', ascending: false).catchError((_) => <dynamic>[])
+            : Future.value(<dynamic>[]),
         _client.from('deadlines').select().eq('user_id', uid).order('due_date', ascending: true).catchError((_) => <dynamic>[]),
-        _client.from('chat_messages').select().eq('case_id', caseId).order('created_at', ascending: true).catchError((_) => <dynamic>[]),
+        hasRealCase
+            ? _client.from('chat_messages').select().eq('case_id', caseId).order('created_at', ascending: true).catchError((_) => <dynamic>[])
+            : Future.value(<dynamic>[]),
         _client.from('conversation_summaries').select('summary, case_id, created_at').eq('user_id', uid).order('created_at', ascending: false).limit(10).catchError((_) => <dynamic>[]),
         _client.from('chat_messages').select('role, content, created_at').eq('user_id', uid).order('created_at', ascending: false).limit(20).catchError((_) => <dynamic>[]),
       ]);
-      final docs = parallelResults[0] as List;
-      final deadlines = parallelResults[1] as List;
-      final msgs = parallelResults[2] as List;
-      final summaries = parallelResults[3] as List;
-      final allMsgs = parallelResults[4] as List;
+      final docs = parallelResults[0];
+      final deadlines = parallelResults[1];
+      final msgs = parallelResults[2];
+      final summaries = parallelResults[3];
+      final allMsgs = parallelResults[4];
 
       if (docs.isNotEmpty) {
         buf.writeln('=== DOCUMENTS (${docs.length}) ===');
@@ -166,6 +186,10 @@ class ClientKnowledgeService {
   Future<void> saveConversationSummary({required String caseId}) async {
     final uid = _client.auth.currentUser?.id;
     if (uid == null) return;
+    // Synthetic caseIds (general chat) have no row in cases — nothing
+    // to summarise against. Skip silently rather than hitting Postgres
+    // with a non-UUID and getting a 400.
+    if (!_isRealUuid(caseId)) return;
 
     try {
       // Get recent messages for this case

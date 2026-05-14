@@ -176,6 +176,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get continueWithGoogle => 'Kontynuuj z Google';
 
   @override
+  String get appleComingSoon => 'Coming soon';
+
+  @override
+  String get appleComingSoonMessage =>
+      'Apple Sign-In becomes available soon. Use Google or email to continue.';
+
+  @override
   String get copyText => 'Kopiuj tekst';
 
   @override

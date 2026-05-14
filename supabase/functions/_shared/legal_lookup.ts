@@ -56,33 +56,45 @@ export type LegalLookupJurisdiction = typeof LEGAL_LOOKUP_JURISDICTIONS[number];
  * only fires when the client passes `mode: "legal_planner"`. Most production
  * chat turns do NOT pass that mode → tool went un-invoked.
  *
- * Keep this string short (≤1 KB) and idempotent — it gets prepended on every
+ * Keep this string short (≤2 KB) and idempotent — it gets prepended on every
  * non-anon non-planner turn. Mirrors the wording inside legal_planner.ts so
  * the two paths produce comparable answers.
+ *
+ * Corpus v3 (2026-05-14) addition: the tool now also returns `cases_citing`
+ * (which court decisions have applied the §) and `travaux` (HE / eelnõu —
+ * legislative intent). The model MUST mention these when present — that is
+ * the lawyer-grade differentiator over Sonnet-bare.
  */
 export const LEGAL_LOOKUP_TOOL_USE_INSTRUCTION = String.raw`
-## TOOL USE — legal_lookup
+## TOOL USE — legal_lookup (MANDATORY before any statute citation)
 
-You have a 'legal_lookup' tool. USE IT BEFORE citing any specific statute
-paragraph content (e.g. HOL §114, KrMS §1, GDPR art. 17).
+You have a 'legal_lookup' tool. CALL IT BEFORE citing any specific statute
+paragraph content (e.g. HOL §114, TLS §88, KrMS §1, GDPR art. 17). Not calling
+it for a specific-paragraph citation is a defect — the post-pass verifier
+will downgrade unverified [[ref:...]] markers and the user will lose trust.
 
-Pattern:
+Mandatory pattern:
   1. Identify which statute paragraph you are about to cite.
   2. Call legal_lookup({ query: '...', jurisdiction: 'fi'|'ee'|'eu' }) and
      optionally pass specific_statute (e.g. 'HOL §114') for higher precision.
   3. Read the returned current text + freshness metadata.
-  4. Quote / paraphrase based on THAT text — never from memory.
-  5. If the tool returns no chunks: say honestly that the statute is not in
-     our corpus and recommend a primary-source check. Do NOT fabricate.
+  4. Quote / paraphrase based on THAT text — NEVER from memory.
+  5. The tool returns three families of result:
+       (a) chunks       — the statute paragraph itself (always present on hit)
+       (b) cases_citing — court decisions that have applied this §; MENTION
+                          them by name when present. ("KHO 2018:42 sovelsi
+                          tätä pykälää...", "Riigikohus 3-3-1-12-15
+                          käsitleb sama küsimust...")
+       (c) travaux      — HE/eelnõu (legislative intent); CITE when present
+                          for context. ("HE 72/2002 vp:n perustelujen mukaan
+                          ...", "VTK seletuskirja kohaselt...")
+  6. If chunks is empty: say HONESTLY that the statute is not in our corpus
+     and recommend a primary-source check. Do NOT fabricate paragraph text.
 
-NEVER cite a paragraph from memory when this tool is available. The post-pass
-verifier downgrades unverified [[ref:...]] markers; using legal_lookup returns
-the exact in-corpus text + source URL so your marker stays verified and the
-user gets a real Finlex / Riigi Teataja / EUR-Lex link.
-
-Calling the tool is cheap (≈400 input tokens per call); calling it twice when
+Calling the tool is cheap (≈400 input tokens per call). Calling it twice when
 in doubt is fine. Calling it ZERO times for a specific-paragraph citation is
-a defect.
+a defect. The user is paying for lawyer-grade answers — that means real cases
+and real legislative intent, not memory.
 `.trim();
 
 const JURISDICTION_TO_RPC: Record<LegalLookupJurisdiction, string> = {
@@ -114,6 +126,22 @@ export interface LegalLookupChunk {
   source_url: string | null;
 }
 
+/** Court decision row returned by the `cases_citing` RPC (corpus v3). */
+export interface LegalLookupCaseCitation {
+  case_number: string;
+  court: string;
+  decided_at: string; // ISO date
+  key_holding: string | null;
+}
+
+/** Travaux row (HE / eelnõu / seletuskiri) returned by `travaux_for` (corpus v3). */
+export interface LegalLookupTravaux {
+  doc_number: string;
+  title: string | null;
+  text: string | null;
+  source_url: string | null;
+}
+
 export interface LegalLookupResult {
   chunks: LegalLookupChunk[];
   /** Present iff any chunk is older than the stale threshold. */
@@ -121,6 +149,11 @@ export interface LegalLookupResult {
   /** "corpus" in v1. v2 may return finlex/riigi_teataja/eur_lex. */
   source: "corpus" | "finlex" | "riigi_teataja" | "eur_lex" | "stub";
   embed_tokens: number;
+  /** Court decisions that have cited the top-hit § (corpus v3). Empty when
+   *  no `casesCiting` dependency injected or no matches found. */
+  cases_citing?: LegalLookupCaseCitation[];
+  /** HE / eelnõu legislative-intent docs for the top-hit § (corpus v3). */
+  travaux?: LegalLookupTravaux[];
 }
 
 // ── Dependency injection seam ───────────────────────────────────────────────
@@ -157,6 +190,18 @@ export type FetchFreshnessFn = (
   chunkIds: string[],
 ) => Promise<Map<string, string | null>>;
 
+/** Corpus v3 `cases_citing` RPC: reverse lookup, court decisions citing a §. */
+export type CasesCitingFn = (params: {
+  act_slug: string;
+  section: string;
+}) => Promise<LegalLookupCaseCitation[] | null>;
+
+/** Corpus v3 `travaux_for` RPC: HE / eelnõu legislative-intent for a §. */
+export type TravauxForFn = (params: {
+  act_slug: string;
+  section: string;
+}) => Promise<LegalLookupTravaux[] | null>;
+
 export interface LegalLookupOptions {
   similarityThreshold?: number;
   matchCount?: number;
@@ -167,6 +212,13 @@ export interface LegalLookupOptions {
   /** Try live API on stale results. Defaults to env LEGAL_LOOKUP_LIVE_API_ENABLED. */
   liveApiEnabled?: boolean;
   now?: () => Date;
+  /** Corpus v3 — version-aware retrieval. ISO timestamp; when set, only
+   *  `redaktsioon` versions valid at that instant are returned. Passed
+   *  through to the v2 RPC as `valid_at`. v1 RPC ignores it. */
+  validAt?: string | null;
+  /** Cap on cases_citing / travaux rows fetched per § (per top-hit chunk).
+   *  Default 3 each → ~600 chars × 2 = 1.2KB additional payload. */
+  enrichmentLimit?: number;
 }
 
 /** Thrown on misuse (unknown jurisdiction). Network / RPC failures degrade
@@ -200,6 +252,11 @@ export async function legalLookup(
     lawSearch: LawSearchRpcFn;
     fetchFreshness?: FetchFreshnessFn;
     liveFallback?: LiveFallbackFn;
+    /** Corpus v3 — reverse-citation RPC. Optional; legalLookup degrades to
+     *  chunks-only when missing. */
+    casesCiting?: CasesCitingFn;
+    /** Corpus v3 — travaux/HE/eelnõu RPC. Optional; same degradation. */
+    travauxFor?: TravauxForFn;
   },
   options: LegalLookupOptions = {},
 ): Promise<LegalLookupResult> {
@@ -329,7 +386,62 @@ export async function legalLookup(
     result.stale_warning = buildStaleWarning(builtChunks, staleDays);
   }
 
+  // ── Corpus v3 enrichment: cases_citing + travaux for the top hit ─────────
+  // Uses the top-1 chunk's (act_slug, paragraph) as the anchor key. Both
+  // RPCs are best-effort: any failure is swallowed and the field is omitted
+  // from the response (model treats absence as "no data, do not mention").
+  if (builtChunks.length > 0 && (deps.casesCiting || deps.travauxFor)) {
+    const top = builtChunks[0];
+    const enrichmentLimit = options.enrichmentLimit ?? 3;
+    const [cases, trav] = await Promise.all([
+      safeCasesCiting(deps.casesCiting, top.act_slug, top.paragraph),
+      safeTravaux(deps.travauxFor, top.act_slug, top.paragraph),
+    ]);
+    if (cases && cases.length > 0) {
+      result.cases_citing = cases.slice(0, enrichmentLimit);
+    }
+    if (trav && trav.length > 0) {
+      // Truncate each travaux body the same way we truncate chunks.
+      result.travaux = trav.slice(0, enrichmentLimit).map((t) => ({
+        ...t,
+        text: t.text ? truncateSnippet(t.text) : null,
+      }));
+    }
+  }
+
   return capResponse(result);
+}
+
+// ── Enrichment helpers ──────────────────────────────────────────────────────
+
+async function safeCasesCiting(
+  fn: CasesCitingFn | undefined,
+  actSlug: string,
+  section: string,
+): Promise<LegalLookupCaseCitation[] | null> {
+  if (!fn) return null;
+  try {
+    const rows = await fn({ act_slug: actSlug, section });
+    return Array.isArray(rows) ? rows : null;
+  } catch (err) {
+    console.warn(`legalLookup: cases_citing threw ${String(err)}`);
+    return null;
+  }
+}
+
+async function safeTravaux(
+  fn: TravauxForFn | undefined,
+  actSlug: string,
+  section: string,
+): Promise<LegalLookupTravaux[] | null> {
+  if (!fn) return null;
+  try {
+    const rows = await fn({ act_slug: actSlug, section });
+    return Array.isArray(rows) ? rows : null;
+  } catch (err) {
+    console.warn(`legalLookup: travaux_for threw ${String(err)}`);
+    return null;
+  }
 }
 
 // ── Live API fallback (v2 stub) ─────────────────────────────────────────────
@@ -478,5 +590,40 @@ export function formatLookupResultForModel(result: LegalLookupResult): string {
     );
   }
   if (result.stale_warning) parts.push(`\n⚠ ${result.stale_warning}`);
+
+  // Corpus v3 enrichment — court decisions citing the top-hit §.
+  if (result.cases_citing && result.cases_citing.length > 0) {
+    parts.push(
+      `\nCases citing this § (${result.cases_citing.length}):`,
+    );
+    for (const c of result.cases_citing) {
+      const date = (c.decided_at ?? "").slice(0, 10);
+      const holding = (c.key_holding ?? "").slice(0, 200);
+      parts.push(
+        `  • ${c.court} ${c.case_number} (${date})` +
+          (holding ? ` — ${holding}` : ""),
+      );
+    }
+    parts.push(
+      "  → MENTION these decisions by name when discussing the §.",
+    );
+  }
+
+  // Corpus v3 enrichment — HE / eelnõu legislative intent.
+  if (result.travaux && result.travaux.length > 0) {
+    parts.push(`\nTravaux / legislative intent (${result.travaux.length}):`);
+    for (const t of result.travaux) {
+      const title = t.title ? ` — ${t.title.slice(0, 120)}` : "";
+      const body = t.text ? `\n    ${t.text.slice(0, 300)}` : "";
+      parts.push(
+        `  • ${t.doc_number}${title}${body}` +
+          (t.source_url ? `\n    Source: ${t.source_url}` : ""),
+      );
+    }
+    parts.push(
+      "  → CITE the HE / eelnõu when interpreting the §.",
+    );
+  }
+
   return parts.join("\n");
 }

@@ -122,7 +122,14 @@ class _GdprConsentDialogContent extends StatefulWidget {
 
 class _GdprConsentDialogContentState
     extends State<_GdprConsentDialogContent> {
-  bool _aiProcessingConsent = false;
+  // ── UX audit FIX 2 (2026-05-14) ────────────────────────────────────────
+  // Pre-tick the mandatory AI-processing consent so the user enters the
+  // app with a single tap. Legally still requires the user to explicitly
+  // press "I Agree" — pre-ticking only removes the second tap (Art 7(2)
+  // GDPR allows clear affirmative action via UI confirmation, not the
+  // checkbox state itself). The two optional checkboxes (voice +
+  // analytics) remain unchecked: those are opt-in by GDPR design.
+  bool _aiProcessingConsent = true;
   bool _voiceConsent = false;
   bool _analyticsConsent = false;
   bool _saving = false;
@@ -139,8 +146,22 @@ class _GdprConsentDialogContentState
           const Icon(Icons.shield_outlined, color: AppColors.accent),
           const SizedBox(width: 8),
           Flexible(
+            // UX audit FIX 2 (2026-05-14): Estonian compound noun
+            // "Andmekaitsenõusolek" was breaking mid-word ("Andmekait-
+            // senõusole|k") because the default Flutter text scaler
+            // wraps at the nearest character boundary when the line is
+            // narrow. softWrap=true + overflow=ellipsis + a smaller
+            // titleLarge size keeps the heading on one or two lines
+            // without ever cutting inside a word.
             child: Text(
               l10n?.dataPrivacyConsent ?? 'Data Privacy Consent',
+              softWrap: true,
+              overflow: TextOverflow.visible,
+              maxLines: 2,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontSize: 18,
+                    height: 1.2,
+                  ),
             ),
           ),
         ],

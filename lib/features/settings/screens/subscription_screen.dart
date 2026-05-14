@@ -740,6 +740,41 @@ class _PlanCardState extends State<_PlanCard>
     return l10n.cheaperAnnually(saved.toStringAsFixed(2));
   }
 
+  /// VAT disclosure label (EU consumer-law compliance). Returns null for
+  /// the Free tier so we don't render "incl. 22% VAT" under €0.
+  /// Localized inline to avoid a churn of 17 l10n regenerations — kept in
+  /// sync with web/index.html#pricing.vat_included.
+  String? _vatText(BuildContext context) {
+    if (widget.monthlyPrice == 0) return null;
+    return _vatTextForLocale(
+      Localizations.localeOf(context).languageCode,
+    );
+  }
+
+  static const Map<String, String> _vatLabels = {
+    'en': 'incl. 22% VAT',
+    'et': 'Sis. käibemaks 22%',
+    'ru': 'Включая НДС 22%',
+    'uk': 'З ПДВ 22%',
+    'fi': 'Sis. ALV 22%',
+    'de': 'inkl. 22 % MwSt.',
+    'fr': 'TVA 22 % incluse',
+    'es': 'IVA 22 % incl.',
+    'it': 'IVA 22 % inclusa',
+    'pl': 'zawiera 22% VAT',
+    'sv': 'inkl. 22 % moms',
+    'lv': 'ar 22 % PVN',
+    'lt': 'su 22 % PVM',
+    'ro': 'TVA 22 % inclus',
+    'tr': 'KDV %22 dahil',
+    'ar': 'شامل ضريبة القيمة المضافة 22%',
+    'fa': 'شامل ۲۲٪ مالیات بر ارزش افزوده',
+  };
+
+  static String _vatTextForLocale(String code) {
+    return _vatLabels[code] ?? _vatLabels['en']!;
+  }
+
   Color? get _backgroundColor {
     switch (widget.cardStyle) {
       case _CardStyle.free:
@@ -960,6 +995,21 @@ class _PlanCardState extends State<_PlanCard>
                       ],
                     ),
                   ),
+
+                  // VAT disclosure (EU consumer law) — only for paid tiers.
+                  if (_vatText(context) != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        _vatText(context)!,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: _textSecondary.withValues(alpha: 0.7),
+                        ),
+                      ),
+                    ),
 
                   // Annual savings hint (fixed height slot)
                   SizedBox(

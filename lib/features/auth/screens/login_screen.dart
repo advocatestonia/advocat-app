@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/pending_checkout.dart';
 import '../../../shared/widgets/gdpr_consent_dialog.dart';
 import '../../../shared/widgets/max_width_wrapper.dart';
 import '../providers/auth_provider.dart';
@@ -65,13 +66,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     await ref.read(authControllerProvider.notifier).loginWithGoogle();
   }
 
-  Future<void> _handleAppleLogin() async {
-    try {
-      await ref.read(authControllerProvider.notifier).loginWithApple();
-    } catch (e) {
-      if (!mounted) return;
-      _showSnackBar('Apple Sign-In failed. Please try email.');
-    }
+  /// Apple Sign-In is intentionally disabled at the UI layer until the
+  /// Supabase Apple provider is configured (pending Apple Developer Program
+  /// enrollment). Instead of triggering a broken OAuth flow, we surface a
+  /// localized "coming soon" snackbar. See `appleComingSoonMessage` in l10n.
+  void _handleAppleComingSoon() {
+    final l = AppLocalizations.of(context)!;
+    _showSnackBar(l.appleComingSoonMessage);
   }
 
   Future<void> _handleForgotPassword() async {
@@ -202,6 +203,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     final isCompact = screenHeight < 750;
     final logoSize = isCompact ? 160.0 : 240.0;
 
+    // UX audit FIX 3 (2026-05-14): if the user came from a landing pricing
+    // CTA (e.g. /app.html?plan=counsel&billing=monthly) show a plan-context
+    // banner so they know what they're signing in to activate. Eliminates
+    // the "Estonian login from Finnish funnel" abandonment risk.
+    final pending = ref.watch(pendingCheckoutProvider);
+    final langCode = Localizations.localeOf(context).languageCode;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -210,6 +218,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: isCompact ? 4.0 : 8.0),
+
+          // -- Plan-context banner (only when user arrived from a pricing CTA) --
+          if (pending != null) _PlanContextBanner(
+            planId: pending.planId,
+            billingPeriod: pending.billingPeriod,
+            languageCode: langCode,
+          ),
 
           // -- Logo --
           Center(
@@ -476,48 +491,102 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           ),
           const SizedBox(height: 6),
 
-          // -- Apple sign-in --
-          _ScaleOnTapButton(
-            onTap: authState.isLoading ? null : _handleAppleLogin,
-            child: Container(
-              height: 44,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(AppRadius.md),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.15),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: OutlinedButton(
-                onPressed: authState.isLoading ? null : _handleAppleLogin,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black,
-                  side: BorderSide.none,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                  ),
-                  minimumSize: const Size.fromHeight(44),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.apple, size: 22, color: Colors.white),
-                    SizedBox(width: 10),
-                    Text(
-                      'Continue with Apple',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+          // -- Apple sign-in (disabled — "Coming soon") --
+          //
+          // The button is intentionally kept visible so the auth surface
+          // looks complete, but Apple OAuth is not yet wired in Supabase
+          // (awaiting Apple Developer Program enrollment). Tapping it
+          // shows a localized snackbar via _handleAppleComingSoon().
+          Semantics(
+            label: 'Apple Sign-In — coming soon',
+            button: true,
+            enabled: false,
+            child: _ScaleOnTapButton(
+              onTap: authState.isLoading ? null : _handleAppleComingSoon,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Opacity(
+                    opacity: 0.6,
+                    child: Container(
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.10),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: OutlinedButton(
+                        // Disable OAuth entirely; tap is handled by the
+                        // outer _ScaleOnTapButton which shows the snackbar.
+                        onPressed: null,
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: Colors.black,
+                          disabledForegroundColor: Colors.white,
+                          disabledBackgroundColor: Colors.black,
+                          side: BorderSide.none,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.md),
+                          ),
+                          minimumSize: const Size.fromHeight(44),
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.apple, size: 22, color: Colors.white),
+                            SizedBox(width: 10),
+                            Text(
+                              'Continue with Apple',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  // "Tulemas" / "Coming soon" pill badge — top-right corner.
+                  Positioned(
+                    top: -6,
+                    right: -4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.accent,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.accent.withValues(alpha: 0.35),
+                            blurRadius: 6,
+                            offset: const Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: Text(
+                        l.appleComingSoon,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -684,6 +753,246 @@ class _ScaleOnTapButtonState extends State<_ScaleOnTapButton> {
         duration: const Duration(milliseconds: 100),
         curve: Curves.easeInOut,
         child: IgnorePointer(child: widget.child),
+      ),
+    );
+  }
+}
+
+/// Banner displayed at the top of the login screen when the user arrives
+/// from a marketing-page pricing CTA (`/app.html?plan=…&billing=…`). Shows
+/// "Sign in to activate <Plan> — <price> (incl. 22% VAT)" so the user
+/// understands they're committing to a paid plan after they sign in.
+///
+/// Kept in sync with web/index.html#plan2/plan3 prices and
+/// subscription_screen.dart#_PlanCard.
+///
+/// Stable PendingCheckout.planId values: 'counsel' (Pro) | 'representation'
+/// (Premium). Billing: 'monthly' | 'yearly' | 'annual'.
+class _PlanContextBanner extends StatefulWidget {
+  const _PlanContextBanner({
+    required this.planId,
+    required this.billingPeriod,
+    required this.languageCode,
+  });
+
+  final String planId;
+  final String billingPeriod;
+  final String languageCode;
+
+  @override
+  State<_PlanContextBanner> createState() => _PlanContextBannerState();
+}
+
+class _PlanContextBannerState extends State<_PlanContextBanner>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _pulse;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulse = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    )..repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _pulse.dispose();
+    super.dispose();
+  }
+
+  // ── Plan display name (no localization needed — brand names) ──
+  String get _planDisplayName {
+    switch (widget.planId) {
+      case 'counsel':
+        return 'Pro';
+      case 'representation':
+        return 'Premium';
+      default:
+        return widget.planId;
+    }
+  }
+
+  // ── Price by plan + billing ──
+  // Source of truth: subscription_screen.dart#monthlyPrice / annualPrice.
+  String get _priceText {
+    final isAnnual = widget.billingPeriod == 'annual' ||
+        widget.billingPeriod == 'yearly';
+    if (widget.planId == 'counsel') {
+      return isAnnual ? '€159.99' : '€19.99';
+    }
+    if (widget.planId == 'representation') {
+      return isAnnual ? '€249.99' : '€29.99';
+    }
+    return '';
+  }
+
+  /// Localised banner template:
+  ///   "{prompt} {planName} — {price}{periodSuffix} ({vatNote})"
+  /// Each part is localized; assembled here to avoid 17 separate l10n keys
+  /// for what is essentially a single composed string.
+  String get _bannerText {
+    final code = widget.languageCode;
+    final isAnnual = widget.billingPeriod == 'annual' ||
+        widget.billingPeriod == 'yearly';
+
+    // 1. Action prompt: "Sign in to activate"
+    final prompt = _signInPrompts[code] ?? _signInPrompts['en']!;
+    // 2. Billing suffix: "/mo" or "/yr"
+    final periodSuffix = (isAnnual ? _yrSuffix : _moSuffix)[code] ??
+        (isAnnual ? _yrSuffix : _moSuffix)['en']!;
+    // 3. VAT note
+    final vat = _vatNotes[code] ?? _vatNotes['en']!;
+
+    return '$prompt $_planDisplayName — $_priceText$periodSuffix ($vat)';
+  }
+
+  // Per-locale strings. Kept tight to fit a one-line banner on phones.
+  static const Map<String, String> _signInPrompts = {
+    'en': 'Sign in to activate',
+    'et': 'Logi sisse, et aktiveerida',
+    'ru': 'Войдите, чтобы активировать',
+    'uk': 'Увійдіть, щоб активувати',
+    'fi': 'Kirjaudu aktivoidaksesi',
+    'de': 'Anmelden zur Aktivierung von',
+    'fr': 'Connectez-vous pour activer',
+    'es': 'Inicia sesión para activar',
+    'it': 'Accedi per attivare',
+    'pl': 'Zaloguj się, aby aktywować',
+    'sv': 'Logga in för att aktivera',
+    'lv': 'Pierakstieties, lai aktivizētu',
+    'lt': 'Prisijunkite norėdami aktyvuoti',
+    'ro': 'Conectați-vă pentru a activa',
+    'tr': 'Etkinleştirmek için giriş yapın',
+    'ar': 'سجِّل الدخول لتفعيل',
+    'fa': 'برای فعال‌سازی وارد شوید',
+  };
+
+  static const Map<String, String> _moSuffix = {
+    'en': '/mo',
+    'et': '/kuus',
+    'ru': '/мес',
+    'uk': '/міс',
+    'fi': '/kk',
+    'de': '/Mon.',
+    'fr': '/mois',
+    'es': '/mes',
+    'it': '/mese',
+    'pl': '/mies.',
+    'sv': '/mån',
+    'lv': '/mēn.',
+    'lt': '/mėn.',
+    'ro': '/lună',
+    'tr': '/ay',
+    'ar': '/شهر',
+    'fa': '/ماه',
+  };
+
+  static const Map<String, String> _yrSuffix = {
+    'en': '/yr',
+    'et': '/aastas',
+    'ru': '/год',
+    'uk': '/рік',
+    'fi': '/vuosi',
+    'de': '/Jahr',
+    'fr': '/an',
+    'es': '/año',
+    'it': '/anno',
+    'pl': '/rok',
+    'sv': '/år',
+    'lv': '/gadā',
+    'lt': '/metus',
+    'ro': '/an',
+    'tr': '/yıl',
+    'ar': '/سنة',
+    'fa': '/سال',
+  };
+
+  static const Map<String, String> _vatNotes = {
+    'en': 'incl. 22% VAT',
+    'et': 'sis. käibemaks 22%',
+    'ru': 'вкл. НДС 22%',
+    'uk': 'з ПДВ 22%',
+    'fi': 'sis. ALV 22%',
+    'de': 'inkl. 22 % MwSt.',
+    'fr': 'TVA 22 % incl.',
+    'es': 'IVA 22 % incl.',
+    'it': 'IVA 22 % incl.',
+    'pl': 'zawiera 22% VAT',
+    'sv': 'inkl. 22 % moms',
+    'lv': 'ar 22 % PVN',
+    'lt': 'su 22 % PVM',
+    'ro': 'TVA 22 % inclus',
+    'tr': 'KDV %22 dahil',
+    'ar': 'شامل ضريبة 22%',
+    'fa': 'شامل ۲۲٪ مالیات',
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    // Skip rendering for unknown plan ids — defensive.
+    if (_priceText.isEmpty) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+      child: AnimatedBuilder(
+        animation: _pulse,
+        builder: (context, _) {
+          // Soft pulse on the accent border so the banner reads as a live
+          // active commitment, not a static label.
+          final t = _pulse.value;
+          return Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 12,
+            ),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.accent,
+                  // Slight hue shift for depth — uses primary navy.
+                  Color.lerp(AppColors.accent, AppColors.primary, 0.25)!,
+                ],
+              ),
+              borderRadius: BorderRadius.circular(AppRadius.md),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.accent.withValues(
+                    alpha: 0.20 + 0.15 * t,
+                  ),
+                  blurRadius: 10 + 4 * t,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                // Pin / lock icon — communicates "this purchase is held for you".
+                const Icon(
+                  Icons.push_pin_rounded,
+                  size: 18,
+                  color: Colors.white,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    _bannerText,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.1,
+                      height: 1.3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

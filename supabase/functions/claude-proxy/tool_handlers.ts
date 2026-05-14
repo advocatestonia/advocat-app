@@ -55,8 +55,10 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
   formatLookupResultForModel,
   type LawSearchRpcRow,
+  type LegalLookupCaseCitation,
   legalLookup,
   type LegalLookupResult,
+  type LegalLookupTravaux,
 } from "../_shared/legal_lookup.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -178,6 +180,15 @@ export const ASSISTANT_TOOLS = [
             "'TLS §88', 'Directive 32019L1152 art-5'. When supplied, " +
             "the tool boosts retrieval precision for that paragraph.",
         },
+        valid_at: {
+          type: "string",
+          description:
+            "Optional ISO-8601 timestamp for version-aware retrieval " +
+            "(corpus v3). When set, returns only redaktsioon versions " +
+            "valid at that instant. Use when the user asks 'what did " +
+            "the law say on 2024-01-01' or analysing a case decided " +
+            "under earlier text. Omit for current text.",
+        },
       },
       required: ["query", "jurisdiction"],
     },
@@ -206,6 +217,11 @@ interface LegalLookupInput {
   query: string;
   jurisdiction: string;
   specific_statute?: string;
+  /** Corpus v3 — version-aware retrieval. ISO timestamp; when set, only
+   *  redaktsioon versions valid at that instant are returned. Used when the
+   *  user asks "what did the statute say on 2024-01-01" or for legacy-case
+   *  analysis. Optional; omit for "current text". */
+  valid_at?: string;
 }
 
 type ToolInput = SendEmailInput | GeneratePdfInput | LegalLookupInput;
@@ -827,9 +843,47 @@ async function handleLegalLookup(
         // LEGAL_LOOKUP_LIVE_API_ENABLED=true to attempt the (currently
         // no-op) dispatch when corpus is stale.
         liveFallback: async () => null,
+        // Corpus v3 — reverse-citation graph. Returns court decisions
+        // that have applied the top-hit §. When law_chunks_v2 is empty
+        // (pre-ingestion), the RPC simply returns 0 rows and the
+        // enrichment is omitted silently. No fallback to a different
+        // table — the RPC only knows law_chunks_v2.
+        casesCiting: async ({ act_slug, section }): Promise<LegalLookupCaseCitation[] | null> => {
+          const { data, error } = await supabase.rpc("cases_citing", {
+            p_act_slug: act_slug,
+            p_section: section,
+          });
+          if (error) {
+            console.warn(
+              `legal_lookup tool: cases_citing RPC error — ${error.message}`,
+            );
+            return null;
+          }
+          return Array.isArray(data) ? data as LegalLookupCaseCitation[] : null;
+        },
+        // Corpus v3 — HE / eelnõu / seletuskiri (legislative intent).
+        // Same emptiness behaviour as cases_citing.
+        travauxFor: async ({ act_slug, section }): Promise<LegalLookupTravaux[] | null> => {
+          const { data, error } = await supabase.rpc("travaux_for", {
+            p_act_slug: act_slug,
+            p_section: section,
+          });
+          if (error) {
+            console.warn(
+              `legal_lookup tool: travaux_for RPC error — ${error.message}`,
+            );
+            return null;
+          }
+          return Array.isArray(data) ? data as LegalLookupTravaux[] : null;
+        },
       },
       {
         specificStatute,
+        // Forward an optional valid_at timestamp from the tool input
+        // (corpus v3 — version-aware retrieval). Today's v1 law_search
+        // RPC ignores it; once a caller switches the lookup over to the
+        // law_search_v2 RPC, this becomes the redaktsioon anchor.
+        validAt: input.valid_at ?? null,
         // Live API resolved from env inside legalLookup. No-op in v1.
       },
     );

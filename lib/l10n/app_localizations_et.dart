@@ -176,6 +176,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String get continueWithGoogle => 'Jätka Google\'iga';
 
   @override
+  String get appleComingSoon => 'Tulemas';
+
+  @override
+  String get appleComingSoonMessage =>
+      'Apple sisselogimine peagi saadaval. Kasuta Google\'i või e-posti.';
+
+  @override
   String get copyText => 'Kopeeri tekst';
 
   @override

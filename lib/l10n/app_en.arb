@@ -61,6 +61,8 @@
     "connected": "Connected",
     "contactSupport": "Contact Support",
     "continueWithGoogle": "Continue with Google",
+    "appleComingSoon": "Coming soon",
+    "appleComingSoonMessage": "Apple Sign-In becomes available soon. Use Google or email to continue.",
     "copyText": "Copy Text",
     "correspondence": "Correspondence",
     "couldNotLoadCases": "Could not load your cases",

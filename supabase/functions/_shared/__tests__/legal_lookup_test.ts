@@ -16,20 +16,25 @@ import {
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
 import {
+  type CasesCitingFn,
   type EmbedQueryFn,
   type FetchFreshnessFn,
   formatLookupResultForModel,
   formatStatute,
   type LawSearchRpcFn,
   type LawSearchRpcRow,
+  type LegalLookupCaseCitation,
+  type LegalLookupTravaux,
   LEGAL_LOOKUP_MATCH_COUNT,
   LEGAL_LOOKUP_MAX_RESPONSE_BYTES,
   LEGAL_LOOKUP_SIMILARITY_THRESHOLD,
   LEGAL_LOOKUP_SNIPPET_MAX_CHARS,
   LEGAL_LOOKUP_STALE_THRESHOLD_DAYS,
+  LEGAL_LOOKUP_TOOL_USE_INSTRUCTION,
   legalLookup,
   LegalLookupConfigError,
   type LiveFallbackFn,
+  type TravauxForFn,
   computeFreshnessDays,
   stubLiveFallback,
 } from "../legal_lookup.ts";
@@ -505,4 +510,258 @@ Deno.test("LLK-T20 — STALE threshold constants match spec (60 days, 0.75 cos)"
   assertEquals(LEGAL_LOOKUP_SIMILARITY_THRESHOLD, 0.75);
   assertEquals(LEGAL_LOOKUP_MAX_RESPONSE_BYTES, 4096);
   assertEquals(LEGAL_LOOKUP_MATCH_COUNT, 5);
+});
+
+// =============================================================================
+// Corpus v3 additions — cases_citing + travaux + validAt + stronger TOOL USE
+// =============================================================================
+
+const SAMPLE_CASE_HOL114: LegalLookupCaseCitation = {
+  case_number: "KHO 2018:42",
+  court: "KHO",
+  decided_at: "2018-03-15",
+  key_holding: "Sotaperäisen tilan vuoksi annettu lupa ei poistanut " +
+    "kantajan oikeutta hakea palauttamista.",
+};
+
+const SAMPLE_TRAVAUX_HOL114: LegalLookupTravaux = {
+  doc_number: "HE 72/2002 vp",
+  title: "Hallintolaki — perustelut",
+  text: "Pykälä vastaa pääosin hallintolainkäyttölain 61 §:n nykyistä " +
+    "sääntelyä. Erityisen painavalla syyllä tarkoitetaan...",
+  source_url: "https://www.eduskunta.fi/...HE_72+2002",
+};
+
+function casesReturning(rows: LegalLookupCaseCitation[]): CasesCitingFn {
+  return async () => rows;
+}
+
+function travauxReturning(rows: LegalLookupTravaux[]): TravauxForFn {
+  return async () => rows;
+}
+
+// ─── LLK-T21 — cases_citing enrichment populates result ─────────────────────
+
+Deno.test("LLK-T21 — cases_citing populates result.cases_citing for top hit", async () => {
+  let casesArgs: { act_slug: string; section: string } | null = null;
+  const cases: CasesCitingFn = async (params) => {
+    casesArgs = params;
+    return [SAMPLE_CASE_HOL114];
+  };
+
+  const result = await legalLookup(
+    "HOL §114",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([makeRow()]),
+      fetchFreshness: freshnessReturning({ "hol-§114-0": FRESH_REFRESHED }),
+      casesCiting: cases,
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(casesArgs?.act_slug, "hol");
+  assertEquals(casesArgs?.section, "114");
+  assertEquals(result.cases_citing?.length, 1);
+  assertEquals(result.cases_citing?.[0].case_number, "KHO 2018:42");
+});
+
+// ─── LLK-T22 — travaux enrichment populates result.travaux ──────────────────
+
+Deno.test("LLK-T22 — travauxFor populates result.travaux for top hit", async () => {
+  const travaux: TravauxForFn = travauxReturning([SAMPLE_TRAVAUX_HOL114]);
+
+  const result = await legalLookup(
+    "HOL §114",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([makeRow()]),
+      fetchFreshness: freshnessReturning({ "hol-§114-0": FRESH_REFRESHED }),
+      travauxFor: travaux,
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.travaux?.length, 1);
+  assertEquals(result.travaux?.[0].doc_number, "HE 72/2002 vp");
+  // Body truncated by the same SNIPPET cap.
+  assert(
+    (result.travaux?.[0].text?.length ?? 0) <= LEGAL_LOOKUP_SNIPPET_MAX_CHARS,
+  );
+});
+
+// ─── LLK-T23 — enrichment is best-effort: throwing RPC swallowed ────────────
+
+Deno.test("LLK-T23 — cases_citing throws → chunks still returned, cases_citing absent", async () => {
+  const throwingCases: CasesCitingFn = async () => {
+    throw new Error("cases_citing boom");
+  };
+  const throwingTrav: TravauxForFn = async () => {
+    throw new Error("travaux boom");
+  };
+
+  const result = await legalLookup(
+    "HOL §114",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([makeRow()]),
+      fetchFreshness: freshnessReturning({ "hol-§114-0": FRESH_REFRESHED }),
+      casesCiting: throwingCases,
+      travauxFor: throwingTrav,
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks.length, 1);
+  assertEquals(result.cases_citing, undefined);
+  assertEquals(result.travaux, undefined);
+});
+
+// ─── LLK-T24 — enrichment skipped when no chunks ─────────────────────────────
+
+Deno.test("LLK-T24 — empty chunks → enrichment RPCs are NOT invoked", async () => {
+  let casesCalled = false;
+  let travauxCalled = false;
+  const cases: CasesCitingFn = async () => {
+    casesCalled = true;
+    return [SAMPLE_CASE_HOL114];
+  };
+  const travaux: TravauxForFn = async () => {
+    travauxCalled = true;
+    return [SAMPLE_TRAVAUX_HOL114];
+  };
+
+  const result = await legalLookup(
+    "HOL §114",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([]), // empty RPC result
+      casesCiting: cases,
+      travauxFor: travaux,
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks.length, 0);
+  assertEquals(casesCalled, false);
+  assertEquals(travauxCalled, false);
+});
+
+// ─── LLK-T25 — enrichmentLimit caps cases and travaux lists ─────────────────
+
+Deno.test("LLK-T25 — enrichmentLimit caps cases_citing/travaux arrays", async () => {
+  const many = Array.from({ length: 10 }, (_, i): LegalLookupCaseCitation => ({
+    case_number: `KHO 2020:${i}`,
+    court: "KHO",
+    decided_at: `2020-01-0${(i % 9) + 1}`,
+    key_holding: `holding ${i}`,
+  }));
+  const cases: CasesCitingFn = casesReturning(many);
+
+  const result = await legalLookup(
+    "HOL §114",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([makeRow()]),
+      fetchFreshness: freshnessReturning({ "hol-§114-0": FRESH_REFRESHED }),
+      casesCiting: cases,
+    },
+    { now: () => FROZEN_NOW, enrichmentLimit: 2 },
+  );
+
+  assertEquals(result.cases_citing?.length, 2);
+});
+
+// ─── LLK-T26 — validAt option passes through to RPC params ──────────────────
+
+Deno.test("LLK-T26 — validAt option is accepted without breaking RPC contract", async () => {
+  // The v1 RPC signature does NOT have valid_at, so legalLookup just stores
+  // the option for downstream use (the handler injects it into the v2 RPC
+  // call). This test verifies the option is accepted, doesn't throw, and
+  // leaves the existing RPC contract intact.
+  let capturedParams: unknown = null;
+  const rpc: LawSearchRpcFn = async (params) => {
+    capturedParams = params;
+    return [];
+  };
+
+  const result = await legalLookup(
+    "HOL §114",
+    "fi",
+    { embed: okEmbed, lawSearch: rpc },
+    {
+      now: () => FROZEN_NOW,
+      validAt: "2026-05-14T00:00:00Z",
+    },
+  );
+
+  // Existing contract unchanged: 5 fields go to the RPC.
+  assert(capturedParams !== null);
+  assertEquals(typeof (capturedParams as Record<string, unknown>).match_count, "number");
+  assertEquals(result.chunks.length, 0);
+});
+
+// ─── LLK-T27 — formatLookupResultForModel renders cases + travaux ───────────
+
+Deno.test("LLK-T27 — formatter renders cases_citing + travaux sections", () => {
+  const out = formatLookupResultForModel({
+    chunks: [
+      {
+        statute: "HOL §114",
+        act_slug: "hol",
+        paragraph: "114",
+        text: "Pykälän nykyinen teksti...",
+        similarity: 0.93,
+        freshness_days: 5,
+        source_url: "https://finlex.fi/...",
+      },
+    ],
+    cases_citing: [SAMPLE_CASE_HOL114],
+    travaux: [SAMPLE_TRAVAUX_HOL114],
+    source: "corpus",
+    embed_tokens: 12,
+  });
+
+  assertStringIncludes(out, "Cases citing this §");
+  assertStringIncludes(out, "KHO 2018:42");
+  assertStringIncludes(out, "MENTION these decisions");
+  assertStringIncludes(out, "Travaux / legislative intent");
+  assertStringIncludes(out, "HE 72/2002 vp");
+  assertStringIncludes(out, "CITE the HE / eelnõu");
+});
+
+// ─── LLK-T28 — TOOL_USE_INSTRUCTION mentions cases_citing + travaux ─────────
+
+Deno.test("LLK-T28 — TOOL_USE_INSTRUCTION mentions cases_citing + travaux", () => {
+  assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "cases_citing");
+  assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "travaux");
+  assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "MANDATORY");
+  // Must still be under 2KB.
+  assert(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length < 2048);
+});
+
+// ─── LLK-T29 — backward-compat: legalLookup without v3 deps still works ─────
+
+Deno.test("LLK-T29 — legalLookup without casesCiting/travauxFor deps works unchanged", async () => {
+  const result = await legalLookup(
+    "HOL §114",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([makeRow()]),
+      fetchFreshness: freshnessReturning({ "hol-§114-0": FRESH_REFRESHED }),
+      // No casesCiting, no travauxFor → result must omit those fields.
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks.length, 1);
+  assertEquals(result.cases_citing, undefined);
+  assertEquals(result.travaux, undefined);
+  assertEquals(result.source, "corpus");
 });

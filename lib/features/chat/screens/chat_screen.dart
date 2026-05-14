@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:printing/printing.dart';
@@ -2719,7 +2720,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
           return Column(
             children: [
-              if (showDate) _buildDateSeparator(message.timestamp),
+              if (showDate) _buildDateSeparator(context, message.timestamp),
               _buildMessageBubble(message, index),
             ],
           );
@@ -4325,7 +4326,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   // -- Date separator --
 
-  Widget _buildDateSeparator(DateTime date) {
+  Widget _buildDateSeparator(BuildContext context, DateTime date) {
     return Padding(
       padding:
           const EdgeInsets.symmetric(vertical: AppSpacing.md),
@@ -4337,7 +4338,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.sm),
             child: Text(
-              _formatDate(date),
+              _formatDate(context, date),
               style: const TextStyle(
                 fontSize: 12,
                 color: AppColors.textTertiary,
@@ -4360,29 +4361,71 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         a.day == b.day;
   }
 
-  String _formatDate(DateTime date) {
+  // UX audit FIX 3 (2026-05-14): the date separator was hard-coded to
+  // Russian ("Сегодня" / "Вчера" / "5 мая") regardless of the active UI
+  // locale. We now derive the label from the current Localizations,
+  // using intl's `DateFormat` for the month portion (which already
+  // ships translations for every locale shipped with the app) and a
+  // small per-language map for "Today" / "Yesterday".
+  static const Map<String, String> _todayByLang = {
+    'en': 'Today',
+    'et': 'Täna',
+    'ru': 'Сегодня',
+    'uk': 'Сьогодні',
+    'fi': 'Tänään',
+    'sv': 'Idag',
+    'de': 'Heute',
+    'fr': "Aujourd'hui",
+    'es': 'Hoy',
+    'it': 'Oggi',
+    'pl': 'Dziś',
+    'ro': 'Astăzi',
+    'lt': 'Šiandien',
+    'lv': 'Šodien',
+    'tr': 'Bugün',
+    'ar': 'اليوم',
+    'fa': 'امروز',
+  };
+
+  static const Map<String, String> _yesterdayByLang = {
+    'en': 'Yesterday',
+    'et': 'Eile',
+    'ru': 'Вчера',
+    'uk': 'Вчора',
+    'fi': 'Eilen',
+    'sv': 'Igår',
+    'de': 'Gestern',
+    'fr': 'Hier',
+    'es': 'Ayer',
+    'it': 'Ieri',
+    'pl': 'Wczoraj',
+    'ro': 'Ieri',
+    'lt': 'Vakar',
+    'lv': 'Vakar',
+    'tr': 'Dün',
+    'ar': 'أمس',
+    'fa': 'دیروز',
+  };
+
+  String _formatDate(BuildContext context, DateTime date) {
+    final lang =
+        Localizations.maybeLocaleOf(context)?.languageCode ?? 'en';
     final now = DateTime.now();
-    if (_isSameDay(date, now)) return 'Сегодня';
-    if (_isSameDay(
-        date, now.subtract(const Duration(days: 1)))) {
-      return 'Вчера';
+    if (_isSameDay(date, now)) {
+      return _todayByLang[lang] ?? _todayByLang['en']!;
     }
-    const months = [
-      '',
-      'января',
-      'февраля',
-      'марта',
-      'апреля',
-      'мая',
-      'июня',
-      'июля',
-      'августа',
-      'сентября',
-      'октября',
-      'ноября',
-      'декабря',
-    ];
-    return '${date.day} ${months[date.month]}';
+    if (_isSameDay(date, now.subtract(const Duration(days: 1)))) {
+      return _yesterdayByLang[lang] ?? _yesterdayByLang['en']!;
+    }
+    // Use intl DateFormat — locale-aware "5 May" / "5 мая" / "5. mai"
+    // for any other date. Fall back to ISO "MMM d" if the locale data
+    // hasn't been loaded yet (shouldn't happen in practice because
+    // the app boots with initializeDateFormatting).
+    try {
+      return DateFormat.MMMd(lang).format(date);
+    } catch (_) {
+      return DateFormat.MMMd().format(date);
+    }
   }
 
   String _formatTime(DateTime date) {
