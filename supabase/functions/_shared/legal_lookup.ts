@@ -47,6 +47,44 @@ export const LEGAL_LOOKUP_SNIPPET_MAX_CHARS = 700;
 export const LEGAL_LOOKUP_JURISDICTIONS = ["fi", "ee", "eu", "de", "ru"] as const;
 export type LegalLookupJurisdiction = typeof LEGAL_LOOKUP_JURISDICTIONS[number];
 
+/**
+ * TOOL USE directive injected into the DEFAULT chat system prompt whenever the
+ * `legal_lookup` tool is being attached to the request. Without this header
+ * the model never knows the tool exists for the user's turn — Phase 2 eval
+ * (2026-05-13) measured citation_validity flat at 2.10 because the original
+ * header lived inside `legal_planner.ts EXECUTOR_INSTRUCTIONS_HEADER`, which
+ * only fires when the client passes `mode: "legal_planner"`. Most production
+ * chat turns do NOT pass that mode → tool went un-invoked.
+ *
+ * Keep this string short (≤1 KB) and idempotent — it gets prepended on every
+ * non-anon non-planner turn. Mirrors the wording inside legal_planner.ts so
+ * the two paths produce comparable answers.
+ */
+export const LEGAL_LOOKUP_TOOL_USE_INSTRUCTION = String.raw`
+## TOOL USE — legal_lookup
+
+You have a 'legal_lookup' tool. USE IT BEFORE citing any specific statute
+paragraph content (e.g. HOL §114, KrMS §1, GDPR art. 17).
+
+Pattern:
+  1. Identify which statute paragraph you are about to cite.
+  2. Call legal_lookup({ query: '...', jurisdiction: 'fi'|'ee'|'eu' }) and
+     optionally pass specific_statute (e.g. 'HOL §114') for higher precision.
+  3. Read the returned current text + freshness metadata.
+  4. Quote / paraphrase based on THAT text — never from memory.
+  5. If the tool returns no chunks: say honestly that the statute is not in
+     our corpus and recommend a primary-source check. Do NOT fabricate.
+
+NEVER cite a paragraph from memory when this tool is available. The post-pass
+verifier downgrades unverified [[ref:...]] markers; using legal_lookup returns
+the exact in-corpus text + source URL so your marker stays verified and the
+user gets a real Finlex / Riigi Teataja / EUR-Lex link.
+
+Calling the tool is cheap (≈400 input tokens per call); calling it twice when
+in doubt is fine. Calling it ZERO times for a specific-paragraph citation is
+a defect.
+`.trim();
+
 const JURISDICTION_TO_RPC: Record<LegalLookupJurisdiction, string> = {
   fi: "FI", ee: "EE", eu: "EU", de: "DE", ru: "RU",
 };

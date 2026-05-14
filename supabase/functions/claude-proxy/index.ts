@@ -52,6 +52,7 @@ import { enqueueGoldCandidate } from "../_shared/gold_enqueue.ts";
 import { runConsilium, shouldRunConsilium } from "../_shared/consilium.ts";
 import { extractAndPatchFacts } from "../_shared/fact_extractor.ts";
 import { appendAdviceDigest } from "../_shared/advice_digest.ts";
+import { LEGAL_LOOKUP_TOOL_USE_INSTRUCTION } from "../_shared/legal_lookup.ts";
 import {
   ASSISTANT_TOOLS,
   executeToolCalls,
@@ -425,6 +426,50 @@ serve(async (req) => {
         }
         // If body.system is already an array (caller pre-wrapped) we leave it
         // alone — applyPromptCaching would rewrap our string anyway.
+      }
+    }
+
+    // ── legal_lookup TOOL USE wiring (Phase 2 fix, 2026-05-13) ──────────────
+    // The tool is registered in ASSISTANT_TOOLS and auto-attached below
+    // (≈line 800) for non-anon callers, BUT the TOOL USE directive only lived
+    // inside legal_planner.ts EXECUTOR_INSTRUCTIONS_HEADER — which fires only
+    // when the client passes `mode: "legal_planner"`. Most prod chat turns
+    // don't pass that mode, so Claude never saw an instruction to invoke the
+    // tool. Eval Phase 2 measured citation_validity flat at 2.10 because of
+    // exactly this gap.
+    //
+    // Fix: inject the directive into body.system whenever legal_lookup will
+    // actually be available for this turn. Three gates:
+    //   1. Skip anon — anon never gets tools (see !isAnon at body.tools=…).
+    //   2. Skip legal_planner mode — its own header already covers this.
+    //   3. If the caller pre-set body.tools to an array, only inject when
+    //      legal_lookup is in it. If they did NOT pre-set (most callers),
+    //      we know ASSISTANT_TOOLS will be auto-attached and includes the
+    //      tool, so inject.
+    //
+    // Idempotent: if the directive substring is already present we skip,
+    // so the planner branch's own header is never duplicated.
+    if (!isAnon && !willEnterPlannerBranch) {
+      const callerToolsArray = Array.isArray(body.tools)
+        ? (body.tools as Array<{ name?: unknown }>)
+        : null;
+      const legalLookupWillBeAvailable = callerToolsArray
+        ? callerToolsArray.some((t) => t && t.name === "legal_lookup")
+        : true; // ASSISTANT_TOOLS auto-injection covers this case
+      if (legalLookupWillBeAvailable) {
+        const directive = LEGAL_LOOKUP_TOOL_USE_INSTRUCTION;
+        const marker = "## TOOL USE — legal_lookup";
+        if (typeof body.system === "string") {
+          if (!body.system.includes(marker)) {
+            body.system = `${body.system}\n\n${directive}`;
+          }
+        } else if (body.system == null) {
+          body.system = directive;
+        }
+        // Array form (caller pre-wrapped content blocks): leave untouched —
+        // applyPromptCaching has not run yet for the string path, and a pre-
+        // wrapped array means the caller is asserting full control of the
+        // system prompt shape. Conservative: skip rather than mutate.
       }
     }
 
