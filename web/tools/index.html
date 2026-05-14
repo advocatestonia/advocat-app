@@ -3,11 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasuta õigusabi tööriistad — Advocat</title>
-    <meta name="description" content="Tasuta õigusabi tööriistad: elatis kalkulaator, töölepingu ülesütlemise avaldus, üürilepingu lõpetamise teade, vaidlustamise tähtaja kalkulaator.">
+    <title data-i18n="meta.title">Tasuta õigusabi tööriistad — Advocat</title>
+    <meta name="description" data-i18n-attr="content" data-i18n="meta.description" content="Tasuta õigusabi tööriistad: elatis kalkulaator, töölepingu ülesütlemise avaldus, üürilepingu lõpetamise teade, vaidlustamise tähtaja kalkulaator.">
     <meta name="keywords" content="tasuta õigusabi, juriidilised tööriistad, elatis kalkulaator, töölepingu avaldus, üürileping lõpetamine">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://advocat.ee/tools/">
+    <link rel="alternate" hreflang="et" href="https://advocat.ee/tools/?lang=et">
+    <link rel="alternate" hreflang="en" href="https://advocat.ee/tools/?lang=en">
+    <link rel="alternate" hreflang="ru" href="https://advocat.ee/tools/?lang=ru">
+    <link rel="alternate" hreflang="fi" href="https://advocat.ee/tools/?lang=fi">
+    <link rel="alternate" hreflang="de" href="https://advocat.ee/tools/?lang=de">
+    <link rel="alternate" hreflang="fr" href="https://advocat.ee/tools/?lang=fr">
+    <link rel="alternate" hreflang="es" href="https://advocat.ee/tools/?lang=es">
+    <link rel="alternate" hreflang="it" href="https://advocat.ee/tools/?lang=it">
+    <link rel="alternate" hreflang="uk" href="https://advocat.ee/tools/?lang=uk">
+    <link rel="alternate" hreflang="lv" href="https://advocat.ee/tools/?lang=lv">
+    <link rel="alternate" hreflang="lt" href="https://advocat.ee/tools/?lang=lt">
+    <link rel="alternate" hreflang="pl" href="https://advocat.ee/tools/?lang=pl">
+    <link rel="alternate" hreflang="sv" href="https://advocat.ee/tools/?lang=sv">
+    <link rel="alternate" hreflang="ar" href="https://advocat.ee/tools/?lang=ar">
+    <link rel="alternate" hreflang="fa" href="https://advocat.ee/tools/?lang=fa">
+    <link rel="alternate" hreflang="tr" href="https://advocat.ee/tools/?lang=tr">
+    <link rel="alternate" hreflang="ro" href="https://advocat.ee/tools/?lang=ro">
+    <link rel="alternate" hreflang="x-default" href="https://advocat.ee/tools/">
     <meta property="og:title" content="Tasuta õigusabi tööriistad — Advocat">
     <meta property="og:description" content="Tasuta tööriistad: elatis kalkulaator, töölepingu ülesütlemise avaldus, üürilepingu lõpetamise teade, vaidlustamise tähtaja kalkulaator.">
     <meta property="og:url" content="https://advocat.ee/tools/">
@@ -24,12 +42,25 @@
         a { color: #0A8F6C; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
-        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
         .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
         .logo img { height: 80px; width: auto; }
         .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-right { display: flex; align-items: center; gap: 16px; }
         .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:first-child { margin-left: 0; }
         .header-nav a:hover { color: #fff; text-decoration: none; }
+        /* Language switcher */
+        .lang-wrap { position: relative; }
+        .lang-btn { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; padding: 7px 12px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; letter-spacing: 0.04em; transition: background 0.15s; }
+        .lang-btn:hover { background: rgba(255,255,255,0.14); }
+        .lang-btn .caret { font-size: 10px; opacity: 0.7; }
+        .lang-menu { position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #E2E8F0; border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 200px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; }
+        .lang-menu.open { display: block; }
+        .lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 6px; font-size: 14px; color: #1A2B4A; font-weight: 500; background: #fff; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+        .lang-menu button:hover { background: #F7F8FA; }
+        .lang-menu button.active { background: rgba(10,143,108,.08); color: #0A8F6C; font-weight: 700; }
+        .lang-menu .lang-code { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: #8A9AAA; }
         .breadcrumb { max-width: 1100px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
         .breadcrumb a { color: #0A8F6C; }
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 60px; }
@@ -66,6 +97,9 @@
         .disclaimer strong { color: #DD6B20; }
         .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
         .footer a { color: rgba(255,255,255,0.7); }
+        [dir="rtl"] .tool-card .open-btn::after { content: '←'; }
+        [dir="rtl"] .tool-card:hover .open-btn::after { transform: translateX(-4px); }
+        [dir="rtl"] .lang-menu { right: auto; left: 0; }
         @media (max-width: 600px) {
             .hero h1 { font-size: 30px; }
             .hero p { font-size: 16px; }
@@ -73,6 +107,7 @@
             .logo-text { font-size: 22px; }
             .tool-card { padding: 24px; }
             .header-nav a { margin-left: 12px; font-size: 13px; }
+            .header-nav .nav-blog { display: none; }
         }
     </style>
     <script type="application/ld+json">
@@ -82,6 +117,7 @@
         "name": "Advocat tasuta õigusabi tööriistad",
         "description": "Kogumik tasuta tööriistu õigusabi vajavale: elatis, töölepingu ülesütlemine, üürilepingu lõpetamine, vaidlustamise tähtajad.",
         "url": "https://advocat.ee/tools/",
+        "inLanguage": ["et", "en", "ru", "fi", "de", "fr", "es", "it", "uk", "lv", "lt", "pl", "sv", "ar", "fa", "tr", "ro"],
         "publisher": {"@type": "Organization", "name": "Advocat", "url": "https://advocat.ee/"},
         "hasPart": [
             {"@type": "WebApplication", "name": "Elatis Kalkulaator", "url": "https://advocat.ee/tools/elatis-kalkulaator.html"},
@@ -96,116 +132,788 @@
     <header class="header">
         <div class="header-inner">
             <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
-            <nav class="header-nav">
-                <a href="https://advocat.ee">Avaleht</a>
-                <a href="/tools/">Tööriistad</a>
-                <a href="/blog/">Blogi</a>
-                <a href="/app.html">Proovi tasuta</a>
-            </nav>
+            <div class="header-right">
+                <nav class="header-nav">
+                    <a href="https://advocat.ee" data-i18n="nav.home">Avaleht</a>
+                    <a href="/tools/" data-i18n="nav.tools">Tööriistad</a>
+                    <a href="/blog/" class="nav-blog" data-i18n="nav.blog">Blogi</a>
+                    <a href="/app.html" data-i18n="nav.try">Proovi tasuta</a>
+                </nav>
+                <div class="lang-wrap">
+                    <button class="lang-btn" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+                        <span id="lang-current">ET</span><span class="caret">▾</span>
+                    </button>
+                    <div class="lang-menu" id="lang-menu" role="menu"></div>
+                </div>
+            </div>
         </div>
     </header>
 
     <div class="breadcrumb">
-        <a href="https://advocat.ee">Advocat</a> &rsaquo; Tööriistad
+        <a href="https://advocat.ee">Advocat</a> &rsaquo; <span data-i18n="bc.tools">Tööriistad</span>
     </div>
 
     <div class="container">
         <div class="hero">
-            <span class="hero-tag">Tasuta · Privaatne · Eesti seadus</span>
-            <h1>Tasuta õigusabi tööriistad</h1>
-            <p>Kalkulaatorid ja dokumendigeneraatorid, mida saad kasutada ilma registreerimiseta. Kõik andmed jäävad sinu seadmesse — midagi ei salvestata. Põhinevad Eesti seaduste hetkel kehtivatel sätetel.</p>
+            <span class="hero-tag" data-i18n="hero.tag">Tasuta · Privaatne · Eesti seadus</span>
+            <h1 data-i18n="hero.title">Tasuta õigusabi tööriistad</h1>
+            <p data-i18n="hero.subtitle">Kalkulaatorid ja dokumendigeneraatorid, mida saad kasutada ilma registreerimiseta. Kõik andmed jäävad sinu seadmesse — midagi ei salvestata. Põhinevad Eesti seaduste hetkel kehtivatel sätetel.</p>
         </div>
 
         <div class="tools-grid">
-            <a href="/tools/elatis-kalkulaator.html" class="tool-card">
+            <a href="/tools/elatis-kalkulaator.html" class="tool-card" id="card-elatis">
                 <div class="tool-icon">€</div>
-                <h2>Elatis Kalkulaator 2026</h2>
-                <p>Arvuta lapse elatise summa sekundiga. PKS § 100-103 valemi alusel. Sisesta sissetulek ja laste arv — saad hinnangu ja täieliku jaotuse.</p>
+                <h2 data-i18n="card1.title">Elatis Kalkulaator 2026</h2>
+                <p data-i18n="card1.desc">Arvuta lapse elatise summa sekundiga. PKS § 100-103 valemi alusel. Sisesta sissetulek ja laste arv — saad hinnangu ja täieliku jaotuse.</p>
                 <div class="tool-meta">
-                    <span>Perekonnaõigus</span>
+                    <span data-i18n="card1.tag1">Perekonnaõigus</span>
                     <span>PKS § 101</span>
-                    <span>2026 numbrid</span>
+                    <span data-i18n="card1.tag3">2026 numbrid</span>
                 </div>
-                <span class="open-btn">Ava kalkulaator</span>
+                <span class="open-btn" data-i18n="card1.btn">Ava kalkulaator</span>
             </a>
 
-            <a href="/tools/toolepingu-ulesutlemise-avaldus.html" class="tool-card">
+            <a href="/tools/toolepingu-ulesutlemise-avaldus.html" class="tool-card" id="card-toolepingu">
                 <div class="tool-icon">📝</div>
-                <h2>Töölepingu ülesütlemise avaldus</h2>
-                <p>Loo ametlik avaldus eesti keeles. Korraline, poolte kokkulepe või erakorraline ülesütlemine. Lae alla TXT või salvesta PDF-iks.</p>
+                <h2 data-i18n="card2.title">Töölepingu ülesütlemise avaldus</h2>
+                <p data-i18n="card2.desc">Loo ametlik avaldus eesti keeles. Korraline, poolte kokkulepe või erakorraline ülesütlemine. Lae alla TXT või salvesta PDF-iks.</p>
                 <div class="tool-meta">
-                    <span>Tööõigus</span>
+                    <span data-i18n="card2.tag1">Tööõigus</span>
                     <span>TLS § 85-92</span>
-                    <span>Generator</span>
+                    <span data-i18n="card2.tag3">Generaator</span>
                 </div>
-                <span class="open-btn">Loo avaldus</span>
+                <span class="open-btn" data-i18n="card2.btn">Loo avaldus</span>
             </a>
 
-            <a href="/tools/uurilepingu-lopetamise-teade.html" class="tool-card">
+            <a href="/tools/uurilepingu-lopetamise-teade.html" class="tool-card" id="card-uurileping">
                 <div class="tool-icon">🏠</div>
-                <h2>Üürilepingu lõpetamise teade</h2>
-                <p>Üürnikuna või üürileandjana — loo ametlik teade VÕS § 312 alusel. 3-kuuline etteteatamine. Tagatisraha meeldetuletus.</p>
+                <h2 data-i18n="card3.title">Üürilepingu lõpetamise teade</h2>
+                <p data-i18n="card3.desc">Üürnikuna või üürileandjana — loo ametlik teade VÕS § 312 alusel. 3-kuuline etteteatamine. Tagatisraha meeldetuletus.</p>
                 <div class="tool-meta">
-                    <span>Üüriõigus</span>
+                    <span data-i18n="card3.tag1">Üüriõigus</span>
                     <span>VÕS § 311-321</span>
-                    <span>Generator</span>
+                    <span data-i18n="card3.tag3">Generaator</span>
                 </div>
-                <span class="open-btn">Loo teade</span>
+                <span class="open-btn" data-i18n="card3.btn">Loo teade</span>
             </a>
 
-            <a href="/tools/vaidlustamise-tahtaeg-kalkulaator.html" class="tool-card">
+            <a href="/tools/vaidlustamise-tahtaeg-kalkulaator.html" class="tool-card" id="card-vaidlustamine">
                 <div class="tool-icon">⏱️</div>
-                <h2>Vaidlustamise tähtaja kalkulaator</h2>
-                <p>Töövaidluskomisjon, halduskohus, PPA, Migri otsused. Sisesta kuupäev — näe täpset tähtaega ja päevi tagasiloendust.</p>
+                <h2 data-i18n="card4.title">Vaidlustamise tähtaja kalkulaator</h2>
+                <p data-i18n="card4.desc">Töövaidluskomisjon, halduskohus, PPA, Migri otsused. Sisesta kuupäev — näe täpset tähtaega ja päevi tagasiloendust.</p>
                 <div class="tool-meta">
-                    <span>Haldusõigus</span>
+                    <span data-i18n="card4.tag1">Haldusõigus</span>
                     <span>HMS § 33</span>
-                    <span>Tähtajad</span>
+                    <span data-i18n="card4.tag3">Tähtajad</span>
                 </div>
-                <span class="open-btn">Arvuta tähtaeg</span>
+                <span class="open-btn" data-i18n="card4.btn">Arvuta tähtaeg</span>
             </a>
         </div>
 
         <div class="why-section">
-            <h2>Miks need tööriistad on tasuta?</h2>
+            <h2 data-i18n="why.title">Miks need tööriistad on tasuta?</h2>
             <div class="why-grid">
                 <div class="why-card">
                     <div class="icon">🔒</div>
-                    <h3>Privaatne</h3>
-                    <p>Kõik andmed jäävad sinu brauserisse. Midagi ei saadetud serverisse.</p>
+                    <h3 data-i18n="why.card1.h">Privaatne</h3>
+                    <p data-i18n="why.card1.p">Kõik andmed jäävad sinu brauserisse. Midagi ei saadetud serverisse.</p>
                 </div>
                 <div class="why-card">
                     <div class="icon">⚡</div>
-                    <h3>Sekundiga</h3>
-                    <p>Ilma registreerimiseta, kohese tulemusega. Töötab ka telefonis.</p>
+                    <h3 data-i18n="why.card2.h">Sekundiga</h3>
+                    <p data-i18n="why.card2.p">Ilma registreerimiseta, kohese tulemusega. Töötab ka telefonis.</p>
                 </div>
                 <div class="why-card">
                     <div class="icon">⚖️</div>
-                    <h3>Seadusepõhine</h3>
-                    <p>Põhineb Eesti seaduste hetkel kehtivatel sätetel (PKS, TLS, VÕS, HMS).</p>
+                    <h3 data-i18n="why.card3.h">Seadusepõhine</h3>
+                    <p data-i18n="why.card3.p">Põhineb Eesti seaduste hetkel kehtivatel sätetel (PKS, TLS, VÕS, HMS).</p>
                 </div>
                 <div class="why-card">
                     <div class="icon">🤝</div>
-                    <h3>Advocat-i osa</h3>
-                    <p>Kui vajad reaalset õigusabi, on Advocat AI advokaat alati 1 klõpsu kaugusel.</p>
+                    <h3 data-i18n="why.card4.h">Advocat-i osa</h3>
+                    <p data-i18n="why.card4.p">Kui vajad reaalset õigusabi, on Advocat AI advokaat alati 1 klõpsu kaugusel.</p>
                 </div>
             </div>
         </div>
 
         <div class="cta-box">
-            <h3>Vajad reaalset õigusabi?</h3>
-            <p>Tööriistad annavad hinnangu. Advocat AI annab täieliku lahendi: koostab hagid, dokumendid, kaebused; analüüsib sinu olukorda; leiab kohtupraktika viited; aitab juriidilist keelt selgitada. Eesti, vene, inglise ja soome keeles.</p>
-            <a href="/app.html?from=tools-index" class="cta-btn">Proovi Advocat tasuta &rarr;</a>
+            <h3 data-i18n="cta.title">Vajad reaalset õigusabi?</h3>
+            <p data-i18n="cta.body">Tööriistad annavad hinnangu. Advocat AI annab täieliku lahendi: koostab hagid, dokumendid, kaebused; analüüsib sinu olukorda; leiab kohtupraktika viited; aitab juriidilist keelt selgitada. 17 keeles.</p>
+            <a href="/app.html?from=tools-index" class="cta-btn" data-i18n="cta.btn">Proovi Advocat tasuta →</a>
         </div>
 
         <div class="disclaimer">
-            <strong>Õiguslik märkus:</strong> Need tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu. Konkreetses olukorras pöördu Advocat AI assistendi või vandeadvokaadi poole. Tööriistad põhinevad 2026. aasta seisuga kehtivatel Eesti seaduste sätetel.
+            <strong data-i18n="disclaimer.label">Õiguslik märkus:</strong> <span data-i18n="disclaimer.body">Need tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu. Konkreetses olukorras pöördu Advocat AI assistendi või vandeadvokaadi poole. Tööriistad põhinevad 2026. aasta seisuga kehtivatel Eesti seaduste sätetel.</span>
         </div>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2026 Advocat. Kõik õigused kaitstud. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
-        <p style="margin-top:8px;"><strong>Õiguslik märkus:</strong> Tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</p>
+        <p>&copy; <span data-i18n="footer.copy">2026 Advocat. Kõik õigused kaitstud.</span> | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong data-i18n="disclaimer.label">Õiguslik märkus:</strong> <span data-i18n="footer.note">Tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</span></p>
     </footer>
+
+    <script>
+    /* ===== Advocat tools i18n bootstrap ===== */
+    const LANGS = [
+      { code: 'et', label: 'Eesti' },
+      { code: 'en', label: 'English' },
+      { code: 'ru', label: 'Русский' },
+      { code: 'fi', label: 'Suomi' },
+      { code: 'de', label: 'Deutsch' },
+      { code: 'fr', label: 'Français' },
+      { code: 'es', label: 'Español' },
+      { code: 'it', label: 'Italiano' },
+      { code: 'uk', label: 'Українська' },
+      { code: 'lv', label: 'Latviešu' },
+      { code: 'lt', label: 'Lietuvių' },
+      { code: 'pl', label: 'Polski' },
+      { code: 'sv', label: 'Svenska' },
+      { code: 'ar', label: 'العربية' },
+      { code: 'fa', label: 'فارسی' },
+      { code: 'tr', label: 'Türkçe' },
+      { code: 'ro', label: 'Română' }
+    ];
+    const RTL = { ar: true, fa: true };
+
+    const I18N = {
+      et: {
+        'meta.title': 'Tasuta õigusabi tööriistad — Advocat',
+        'meta.description': 'Tasuta õigusabi tööriistad: elatis kalkulaator, töölepingu ülesütlemise avaldus, üürilepingu lõpetamise teade, vaidlustamise tähtaja kalkulaator.',
+        'nav.home': 'Avaleht', 'nav.tools': 'Tööriistad', 'nav.blog': 'Blogi', 'nav.try': 'Proovi tasuta',
+        'bc.tools': 'Tööriistad',
+        'hero.tag': 'Tasuta · Privaatne · Eesti seadus',
+        'hero.title': 'Tasuta õigusabi tööriistad',
+        'hero.subtitle': 'Kalkulaatorid ja dokumendigeneraatorid, mida saad kasutada ilma registreerimiseta. Kõik andmed jäävad sinu seadmesse — midagi ei salvestata. Põhinevad Eesti seaduste hetkel kehtivatel sätetel.',
+        'card1.title': 'Elatis Kalkulaator 2026',
+        'card1.desc': 'Arvuta lapse elatise summa sekundiga. PKS § 100-103 valemi alusel. Sisesta sissetulek ja laste arv — saad hinnangu ja täieliku jaotuse.',
+        'card1.tag1': 'Perekonnaõigus', 'card1.tag3': '2026 numbrid', 'card1.btn': 'Ava kalkulaator',
+        'card2.title': 'Töölepingu ülesütlemise avaldus',
+        'card2.desc': 'Loo ametlik avaldus eesti keeles. Korraline, poolte kokkulepe või erakorraline ülesütlemine. Lae alla TXT või salvesta PDF-iks.',
+        'card2.tag1': 'Tööõigus', 'card2.tag3': 'Generaator', 'card2.btn': 'Loo avaldus',
+        'card3.title': 'Üürilepingu lõpetamise teade',
+        'card3.desc': 'Üürnikuna või üürileandjana — loo ametlik teade VÕS § 312 alusel. 3-kuuline etteteatamine. Tagatisraha meeldetuletus.',
+        'card3.tag1': 'Üüriõigus', 'card3.tag3': 'Generaator', 'card3.btn': 'Loo teade',
+        'card4.title': 'Vaidlustamise tähtaja kalkulaator',
+        'card4.desc': 'Töövaidluskomisjon, halduskohus, PPA, Migri otsused. Sisesta kuupäev — näe täpset tähtaega ja päevi tagasiloendust.',
+        'card4.tag1': 'Haldusõigus', 'card4.tag3': 'Tähtajad', 'card4.btn': 'Arvuta tähtaeg',
+        'why.title': 'Miks need tööriistad on tasuta?',
+        'why.card1.h': 'Privaatne', 'why.card1.p': 'Kõik andmed jäävad sinu brauserisse. Midagi ei saadeta serverisse.',
+        'why.card2.h': 'Sekundiga', 'why.card2.p': 'Ilma registreerimiseta, kohese tulemusega. Töötab ka telefonis.',
+        'why.card3.h': 'Seadusepõhine', 'why.card3.p': 'Põhineb Eesti seaduste hetkel kehtivatel sätetel (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Advocat-i osa', 'why.card4.p': 'Kui vajad reaalset õigusabi, on Advocat AI advokaat alati 1 klõpsu kaugusel.',
+        'cta.title': 'Vajad reaalset õigusabi?',
+        'cta.body': 'Tööriistad annavad hinnangu. Advocat AI annab täieliku lahendi: koostab hagid, dokumendid, kaebused; analüüsib sinu olukorda; leiab kohtupraktika viited; aitab juriidilist keelt selgitada. 17 keeles.',
+        'cta.btn': 'Proovi Advocat tasuta →',
+        'disclaimer.label': 'Õiguslik märkus:',
+        'disclaimer.body': 'Need tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu. Konkreetses olukorras pöördu Advocat AI assistendi või vandeadvokaadi poole. Tööriistad põhinevad 2026. aasta seisuga kehtivatel Eesti seaduste sätetel.',
+        'footer.copy': '2026 Advocat. Kõik õigused kaitstud.',
+        'footer.note': 'Tööriistad on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.'
+      },
+      en: {
+        'meta.title': 'Free legal tools — Advocat',
+        'meta.description': 'Free legal tools: child support calculator, employment termination notice, lease termination notice, appeal deadline calculator. Based on Estonian law.',
+        'nav.home': 'Home', 'nav.tools': 'Tools', 'nav.blog': 'Blog', 'nav.try': 'Try free',
+        'bc.tools': 'Tools',
+        'hero.tag': 'Free · Private · Estonian law',
+        'hero.title': 'Free legal tools',
+        'hero.subtitle': 'Calculators and document generators you can use without signing up. All data stays on your device — nothing is saved. Based on currently valid provisions of Estonian law.',
+        'card1.title': 'Child Support Calculator 2026',
+        'card1.desc': 'Calculate child maintenance in seconds. Based on the Family Law Act § 100-103 formula. Enter income and number of children — get an estimate with a full breakdown.',
+        'card1.tag1': 'Family law', 'card1.tag3': '2026 figures', 'card1.btn': 'Open calculator',
+        'card2.title': 'Employment termination notice',
+        'card2.desc': 'Generate a formal letter in Estonian. Ordinary, mutual agreement, or extraordinary termination. Download as TXT or save as PDF.',
+        'card2.tag1': 'Labour law', 'card2.tag3': 'Generator', 'card2.btn': 'Create letter',
+        'card3.title': 'Lease termination notice',
+        'card3.desc': 'As a tenant or landlord — generate a formal notice under § 312 of the Estonian Law of Obligations Act. 3-month notice period. Deposit reminder included.',
+        'card3.tag1': 'Tenancy law', 'card3.tag3': 'Generator', 'card3.btn': 'Create notice',
+        'card4.title': 'Appeal deadline calculator',
+        'card4.desc': 'Labour Dispute Committee, administrative court, PPA, Finnish Migri decisions. Enter the date — see the exact deadline and a daily countdown.',
+        'card4.tag1': 'Administrative law', 'card4.tag3': 'Deadlines', 'card4.btn': 'Calculate deadline',
+        'why.title': 'Why are these tools free?',
+        'why.card1.h': 'Private', 'why.card1.p': 'All data stays in your browser. Nothing is sent to a server.',
+        'why.card2.h': 'In seconds', 'why.card2.p': 'No sign-up, instant results. Works on mobile too.',
+        'why.card3.h': 'Law-based', 'why.card3.p': 'Built on the currently valid provisions of Estonian law (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Part of Advocat', 'why.card4.p': 'When you need real legal help, Advocat AI is always one click away.',
+        'cta.title': 'Need real legal help?',
+        'cta.body': 'These tools give you an estimate. Advocat AI gives you the full solution: drafts claims, documents and appeals; analyses your situation; finds case-law references; explains legal language. In 17 languages.',
+        'cta.btn': 'Try Advocat free →',
+        'disclaimer.label': 'Legal notice:',
+        'disclaimer.body': 'These tools are informational in nature and do not constitute individual legal advice. For your specific situation, consult Advocat AI or a sworn advocate. The tools are based on Estonian law in force as of 2026.',
+        'footer.copy': '2026 Advocat. All rights reserved.',
+        'footer.note': 'These tools are informational in nature and do not constitute individual legal advice.'
+      },
+      ru: {
+        'meta.title': 'Бесплатные юридические инструменты — Advocat',
+        'meta.description': 'Бесплатные юридические инструменты: калькулятор алиментов, заявление об увольнении, уведомление о расторжении договора аренды, калькулятор сроков обжалования.',
+        'nav.home': 'Главная', 'nav.tools': 'Инструменты', 'nav.blog': 'Блог', 'nav.try': 'Попробовать бесплатно',
+        'bc.tools': 'Инструменты',
+        'hero.tag': 'Бесплатно · Конфиденциально · Эстонское право',
+        'hero.title': 'Бесплатные юридические инструменты',
+        'hero.subtitle': 'Калькуляторы и генераторы документов, которыми можно пользоваться без регистрации. Все данные остаются на вашем устройстве — ничего не сохраняется. Основаны на действующих положениях эстонского права.',
+        'card1.title': 'Калькулятор алиментов 2026',
+        'card1.desc': 'Рассчитайте алименты на ребёнка за секунду. По формуле Закона о семье (PKS) § 100-103. Введите доход и количество детей — получите оценку и полную разбивку.',
+        'card1.tag1': 'Семейное право', 'card1.tag3': 'Цифры 2026', 'card1.btn': 'Открыть калькулятор',
+        'card2.title': 'Заявление о расторжении трудового договора',
+        'card2.desc': 'Создайте официальное заявление на эстонском языке. По собственной инициативе, по соглашению сторон или в экстренном порядке. Скачайте TXT или сохраните в PDF.',
+        'card2.tag1': 'Трудовое право', 'card2.tag3': 'Генератор', 'card2.btn': 'Создать заявление',
+        'card3.title': 'Уведомление о расторжении договора аренды',
+        'card3.desc': 'Как арендатор или арендодатель — создайте официальное уведомление по § 312 Обязательственно-правового закона (VÕS). Срок предупреждения 3 месяца. Напоминание о залоге.',
+        'card3.tag1': 'Арендное право', 'card3.tag3': 'Генератор', 'card3.btn': 'Создать уведомление',
+        'card4.title': 'Калькулятор сроков обжалования',
+        'card4.desc': 'Комиссия по трудовым спорам, административный суд, PPA, Migri (Финляндия). Введите дату — увидите точный срок и обратный отсчёт по дням.',
+        'card4.tag1': 'Административное право', 'card4.tag3': 'Сроки', 'card4.btn': 'Рассчитать срок',
+        'why.title': 'Почему эти инструменты бесплатны?',
+        'why.card1.h': 'Конфиденциально', 'why.card1.p': 'Все данные остаются в вашем браузере. На сервер ничего не отправляется.',
+        'why.card2.h': 'За секунду', 'why.card2.p': 'Без регистрации, результат сразу. Работает и на телефоне.',
+        'why.card3.h': 'По закону', 'why.card3.p': 'Основано на действующих положениях эстонского права (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Часть Advocat', 'why.card4.p': 'Если нужна настоящая юридическая помощь — Advocat AI всегда в одном клике.',
+        'cta.title': 'Нужна реальная юридическая помощь?',
+        'cta.body': 'Инструменты дают оценку. Advocat AI даёт полное решение: составляет иски, документы, жалобы; анализирует вашу ситуацию; находит судебную практику; объясняет юридический язык. На 17 языках.',
+        'cta.btn': 'Попробовать Advocat бесплатно →',
+        'disclaimer.label': 'Юридическая оговорка:',
+        'disclaimer.body': 'Эти инструменты носят информационный характер и не являются индивидуальной юридической консультацией. В конкретной ситуации обратитесь к Advocat AI или присяжному адвокату. Инструменты основаны на эстонском законодательстве, действующем на 2026 год.',
+        'footer.copy': '2026 Advocat. Все права защищены.',
+        'footer.note': 'Инструменты носят информационный характер и не являются индивидуальной юридической консультацией.'
+      },
+      fi: {
+        'meta.title': 'Ilmaiset oikeudelliset työkalut — Advocat',
+        'meta.description': 'Ilmaiset oikeudelliset työkalut: elatusapulaskuri, työsopimuksen irtisanomisilmoitus, vuokrasopimuksen päättämisilmoitus, valitusajan laskuri. Perustuvat Viron lakiin.',
+        'nav.home': 'Etusivu', 'nav.tools': 'Työkalut', 'nav.blog': 'Blogi', 'nav.try': 'Kokeile ilmaiseksi',
+        'bc.tools': 'Työkalut',
+        'hero.tag': 'Ilmainen · Yksityinen · Viron laki',
+        'hero.title': 'Ilmaiset oikeudelliset työkalut',
+        'hero.subtitle': 'Laskureita ja asiakirjageneraattoreita, joita voit käyttää ilman rekisteröitymistä. Kaikki tieto pysyy laitteellasi — mitään ei tallenneta. Perustuvat voimassa olevaan Viron lainsäädäntöön.',
+        'card1.title': 'Elatusapulaskuri 2026',
+        'card1.desc': 'Laske lapsen elatusapu sekunneissa. Viron perhelain (PKS) § 100-103 kaavalla. Anna tulot ja lasten määrä — saat arvion ja täydellisen erittelyn.',
+        'card1.tag1': 'Perheoikeus', 'card1.tag3': '2026 luvut', 'card1.btn': 'Avaa laskuri',
+        'card2.title': 'Työsopimuksen irtisanomisilmoitus',
+        'card2.desc': 'Luo virallinen ilmoitus viron kielellä. Tavallinen irtisanominen, sopimusperusteinen tai purku erityisistä syistä. Lataa TXT tai tallenna PDF.',
+        'card2.tag1': 'Työoikeus', 'card2.tag3': 'Generaattori', 'card2.btn': 'Luo ilmoitus',
+        'card3.title': 'Vuokrasopimuksen päättämisilmoitus',
+        'card3.desc': 'Vuokralaisena tai vuokranantajana — luo virallinen ilmoitus Viron velvoiteoikeuslain (VÕS) § 312 mukaisesti. 3 kk irtisanomisaika. Vakuusmuistutus.',
+        'card3.tag1': 'Vuokraoikeus', 'card3.tag3': 'Generaattori', 'card3.btn': 'Luo ilmoitus',
+        'card4.title': 'Valitusajan laskuri',
+        'card4.desc': 'Työriitalautakunta, hallinto-oikeus, PPA, Migrin päätökset. Anna päivämäärä — näet tarkan määräajan ja päivien laskurin.',
+        'card4.tag1': 'Hallinto-oikeus', 'card4.tag3': 'Määräajat', 'card4.btn': 'Laske määräaika',
+        'why.title': 'Miksi nämä työkalut ovat ilmaisia?',
+        'why.card1.h': 'Yksityinen', 'why.card1.p': 'Kaikki tieto pysyy selaimessasi. Mitään ei lähetetä palvelimelle.',
+        'why.card2.h': 'Sekunneissa', 'why.card2.p': 'Ilman rekisteröitymistä, välittömät tulokset. Toimii myös puhelimella.',
+        'why.card3.h': 'Lakiperusteinen', 'why.card3.p': 'Perustuu voimassa oleviin Viron lain pykäliin (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Osa Advocatia', 'why.card4.p': 'Kun tarvitset oikeaa oikeusapua, Advocat AI on aina yhden klikkauksen päässä.',
+        'cta.title': 'Tarvitsetko oikeaa oikeusapua?',
+        'cta.body': 'Työkalut antavat arvion. Advocat AI antaa täyden ratkaisun: laatii kanteet, asiakirjat ja valitukset; analysoi tilanteesi; löytää oikeuskäytännön viitteet; selittää oikeudellisen kielen. 17 kielellä.',
+        'cta.btn': 'Kokeile Advocatia ilmaiseksi →',
+        'disclaimer.label': 'Oikeudellinen huomautus:',
+        'disclaimer.body': 'Nämä työkalut ovat luonteeltaan yleisiä informatiivisia eivätkä ole henkilökohtaista oikeudellista neuvontaa. Tarkemmissa tilanteissa ota yhteyttä Advocat AI:hin tai asianajajaan. Työkalut perustuvat Viron lainsäädäntöön sellaisena kuin se on voimassa vuonna 2026.',
+        'footer.copy': '2026 Advocat. Kaikki oikeudet pidätetään.',
+        'footer.note': 'Työkalut ovat luonteeltaan yleisiä informatiivisia eivätkä ole henkilökohtaista oikeudellista neuvontaa.'
+      },
+      de: {
+        'meta.title': 'Kostenlose Rechtstools — Advocat',
+        'meta.description': 'Kostenlose Rechtstools: Unterhaltsrechner, Kündigungsschreiben Arbeitsvertrag, Mietkündigung, Fristenrechner. Basierend auf estnischem Recht.',
+        'nav.home': 'Startseite', 'nav.tools': 'Tools', 'nav.blog': 'Blog', 'nav.try': 'Kostenlos testen',
+        'bc.tools': 'Tools',
+        'hero.tag': 'Kostenlos · Privat · Estnisches Recht',
+        'hero.title': 'Kostenlose Rechtstools',
+        'hero.subtitle': 'Rechner und Dokumentvorlagen, die Sie ohne Registrierung nutzen können. Alle Daten bleiben auf Ihrem Gerät — nichts wird gespeichert. Basierend auf den derzeit geltenden estnischen Rechtsnormen.',
+        'card1.title': 'Kindesunterhaltsrechner 2026',
+        'card1.desc': 'Berechnen Sie den Kindesunterhalt in Sekunden. Auf Grundlage der Formel des estnischen Familiengesetzes (PKS) § 100-103. Einkommen und Kinderzahl eingeben — Sie erhalten eine Schätzung mit vollständiger Aufschlüsselung.',
+        'card1.tag1': 'Familienrecht', 'card1.tag3': 'Zahlen für 2026', 'card1.btn': 'Rechner öffnen',
+        'card2.title': 'Kündigung des Arbeitsvertrags',
+        'card2.desc': 'Erstellen Sie ein formelles Schreiben auf Estnisch. Ordentliche Kündigung, Aufhebungsvereinbarung oder außerordentliche Kündigung. Als TXT herunterladen oder als PDF speichern.',
+        'card2.tag1': 'Arbeitsrecht', 'card2.tag3': 'Generator', 'card2.btn': 'Schreiben erstellen',
+        'card3.title': 'Mietvertragskündigung',
+        'card3.desc': 'Als Mieter oder Vermieter — erstellen Sie eine formelle Kündigung gemäß § 312 des estnischen Schuldrechtsgesetzes (VÕS). 3 Monate Kündigungsfrist. Hinweis zur Kaution.',
+        'card3.tag1': 'Mietrecht', 'card3.tag3': 'Generator', 'card3.btn': 'Kündigung erstellen',
+        'card4.title': 'Fristenrechner für Rechtsmittel',
+        'card4.desc': 'Arbeitsstreitkommission, Verwaltungsgericht, PPA, Migri-Entscheidungen. Datum eingeben — exakte Frist und Tages-Countdown ansehen.',
+        'card4.tag1': 'Verwaltungsrecht', 'card4.tag3': 'Fristen', 'card4.btn': 'Frist berechnen',
+        'why.title': 'Warum sind diese Tools kostenlos?',
+        'why.card1.h': 'Privat', 'why.card1.p': 'Alle Daten bleiben in Ihrem Browser. Nichts wird an einen Server gesendet.',
+        'why.card2.h': 'In Sekunden', 'why.card2.p': 'Ohne Registrierung, sofortige Ergebnisse. Funktioniert auch auf dem Handy.',
+        'why.card3.h': 'Gesetzesbasiert', 'why.card3.p': 'Basiert auf den derzeit geltenden estnischen Rechtsvorschriften (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Teil von Advocat', 'why.card4.p': 'Wenn Sie echte Rechtshilfe brauchen, ist Advocat AI immer nur einen Klick entfernt.',
+        'cta.title': 'Brauchen Sie echte Rechtshilfe?',
+        'cta.body': 'Die Tools liefern eine Schätzung. Advocat AI liefert die vollständige Lösung: erstellt Klagen, Dokumente, Beschwerden; analysiert Ihre Situation; findet Rechtsprechungshinweise; erklärt juristische Sprache. In 17 Sprachen.',
+        'cta.btn': 'Advocat kostenlos testen →',
+        'disclaimer.label': 'Rechtlicher Hinweis:',
+        'disclaimer.body': 'Diese Tools sind allgemein informativ und stellen keine individuelle Rechtsberatung dar. Wenden Sie sich in Ihrer konkreten Situation an Advocat AI oder einen vereidigten Rechtsanwalt. Die Tools basieren auf dem für 2026 geltenden estnischen Recht.',
+        'footer.copy': '2026 Advocat. Alle Rechte vorbehalten.',
+        'footer.note': 'Diese Tools sind allgemein informativ und stellen keine individuelle Rechtsberatung dar.'
+      },
+      fr: {
+        'meta.title': 'Outils juridiques gratuits — Advocat',
+        'meta.description': 'Outils juridiques gratuits : calculateur de pension alimentaire, lettre de démission, résiliation de bail, calculateur de délais de recours. Droit estonien.',
+        'nav.home': 'Accueil', 'nav.tools': 'Outils', 'nav.blog': 'Blog', 'nav.try': 'Essayer gratuitement',
+        'bc.tools': 'Outils',
+        'hero.tag': 'Gratuit · Privé · Droit estonien',
+        'hero.title': 'Outils juridiques gratuits',
+        'hero.subtitle': 'Calculateurs et générateurs de documents utilisables sans inscription. Toutes les données restent sur votre appareil — rien n\'est enregistré. Basés sur les dispositions du droit estonien en vigueur.',
+        'card1.title': 'Calculateur de pension alimentaire 2026',
+        'card1.desc': 'Calculez la pension alimentaire pour enfant en quelques secondes. Selon la formule de la loi estonienne sur la famille (PKS) § 100-103. Saisissez le revenu et le nombre d\'enfants — vous obtenez une estimation avec le détail complet.',
+        'card1.tag1': 'Droit de la famille', 'card1.tag3': 'Chiffres 2026', 'card1.btn': 'Ouvrir le calculateur',
+        'card2.title': 'Lettre de démission / résiliation du contrat de travail',
+        'card2.desc': 'Créez une lettre officielle en estonien. Démission ordinaire, accord mutuel ou résiliation extraordinaire. Téléchargez en TXT ou enregistrez en PDF.',
+        'card2.tag1': 'Droit du travail', 'card2.tag3': 'Générateur', 'card2.btn': 'Créer la lettre',
+        'card3.title': 'Résiliation du bail',
+        'card3.desc': 'En tant que locataire ou bailleur — créez une notification officielle conformément au § 312 de la loi estonienne sur les obligations (VÕS). Préavis de 3 mois. Rappel sur le dépôt de garantie.',
+        'card3.tag1': 'Droit du bail', 'card3.tag3': 'Générateur', 'card3.btn': 'Créer la notification',
+        'card4.title': 'Calculateur de délais de recours',
+        'card4.desc': 'Commission de conciliation du travail, tribunal administratif, PPA, décisions de Migri. Saisissez la date — voyez le délai exact et le compte à rebours quotidien.',
+        'card4.tag1': 'Droit administratif', 'card4.tag3': 'Délais', 'card4.btn': 'Calculer le délai',
+        'why.title': 'Pourquoi ces outils sont-ils gratuits ?',
+        'why.card1.h': 'Privé', 'why.card1.p': 'Toutes les données restent dans votre navigateur. Rien n\'est envoyé à un serveur.',
+        'why.card2.h': 'En quelques secondes', 'why.card2.p': 'Sans inscription, résultats immédiats. Fonctionne aussi sur mobile.',
+        'why.card3.h': 'Basé sur la loi', 'why.card3.p': 'Fondé sur les dispositions du droit estonien en vigueur (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Partie d\'Advocat', 'why.card4.p': 'Quand vous avez besoin d\'une aide juridique réelle, Advocat AI est toujours à un clic.',
+        'cta.title': 'Besoin d\'une aide juridique réelle ?',
+        'cta.body': 'Les outils donnent une estimation. Advocat AI apporte la solution complète : rédige les requêtes, documents et recours ; analyse votre situation ; trouve les références jurisprudentielles ; explique le langage juridique. En 17 langues.',
+        'cta.btn': 'Essayer Advocat gratuitement →',
+        'disclaimer.label': 'Mention légale :',
+        'disclaimer.body': 'Ces outils sont de nature informative générale et ne constituent pas un conseil juridique individuel. Pour votre situation particulière, consultez Advocat AI ou un avocat assermenté. Les outils sont fondés sur le droit estonien en vigueur en 2026.',
+        'footer.copy': '2026 Advocat. Tous droits réservés.',
+        'footer.note': 'Ces outils sont de nature informative générale et ne constituent pas un conseil juridique individuel.'
+      },
+      es: {
+        'meta.title': 'Herramientas legales gratuitas — Advocat',
+        'meta.description': 'Herramientas legales gratuitas: calculadora de pensión alimenticia, carta de renuncia, terminación de arrendamiento, calculadora de plazos de recurso. Derecho estonio.',
+        'nav.home': 'Inicio', 'nav.tools': 'Herramientas', 'nav.blog': 'Blog', 'nav.try': 'Prueba gratis',
+        'bc.tools': 'Herramientas',
+        'hero.tag': 'Gratis · Privado · Derecho estonio',
+        'hero.title': 'Herramientas legales gratuitas',
+        'hero.subtitle': 'Calculadoras y generadores de documentos que puedes usar sin registro. Todos los datos permanecen en tu dispositivo — nada se guarda. Basadas en las disposiciones del derecho estonio vigente.',
+        'card1.title': 'Calculadora de pensión alimenticia 2026',
+        'card1.desc': 'Calcula la pensión alimenticia en segundos. Según la fórmula de la Ley de Familia estonia (PKS) § 100-103. Introduce ingresos y número de hijos — obtienes una estimación con desglose completo.',
+        'card1.tag1': 'Derecho de familia', 'card1.tag3': 'Cifras 2026', 'card1.btn': 'Abrir calculadora',
+        'card2.title': 'Carta de terminación del contrato laboral',
+        'card2.desc': 'Genera una carta oficial en estonio. Renuncia ordinaria, acuerdo mutuo o terminación extraordinaria. Descarga en TXT o guarda en PDF.',
+        'card2.tag1': 'Derecho laboral', 'card2.tag3': 'Generador', 'card2.btn': 'Crear carta',
+        'card3.title': 'Notificación de terminación de arrendamiento',
+        'card3.desc': 'Como inquilino o arrendador — genera una notificación oficial conforme al § 312 de la Ley estonia de Obligaciones (VÕS). Plazo de preaviso de 3 meses. Recordatorio sobre la fianza.',
+        'card3.tag1': 'Derecho de arrendamiento', 'card3.tag3': 'Generador', 'card3.btn': 'Crear notificación',
+        'card4.title': 'Calculadora de plazos de recurso',
+        'card4.desc': 'Comisión de Conflictos Laborales, tribunal administrativo, PPA, decisiones de Migri. Introduce la fecha — verás el plazo exacto y la cuenta atrás diaria.',
+        'card4.tag1': 'Derecho administrativo', 'card4.tag3': 'Plazos', 'card4.btn': 'Calcular plazo',
+        'why.title': '¿Por qué son gratis estas herramientas?',
+        'why.card1.h': 'Privadas', 'why.card1.p': 'Todos los datos permanecen en tu navegador. No se envía nada a ningún servidor.',
+        'why.card2.h': 'En segundos', 'why.card2.p': 'Sin registro, resultados inmediatos. Funciona también en el móvil.',
+        'why.card3.h': 'Basadas en la ley', 'why.card3.p': 'Basadas en las disposiciones vigentes del derecho estonio (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Parte de Advocat', 'why.card4.p': 'Cuando necesitas ayuda legal real, Advocat AI está siempre a un clic.',
+        'cta.title': '¿Necesitas ayuda legal real?',
+        'cta.body': 'Las herramientas dan una estimación. Advocat AI aporta la solución completa: redacta demandas, documentos y recursos; analiza tu situación; encuentra referencias jurisprudenciales; explica el lenguaje jurídico. En 17 idiomas.',
+        'cta.btn': 'Prueba Advocat gratis →',
+        'disclaimer.label': 'Aviso legal:',
+        'disclaimer.body': 'Estas herramientas tienen carácter informativo general y no constituyen asesoramiento jurídico individual. Para tu situación específica consulta con Advocat AI o con un abogado jurado. Las herramientas se basan en el derecho estonio vigente en 2026.',
+        'footer.copy': '2026 Advocat. Todos los derechos reservados.',
+        'footer.note': 'Estas herramientas tienen carácter informativo general y no constituyen asesoramiento jurídico individual.'
+      },
+      it: {
+        'meta.title': 'Strumenti legali gratuiti — Advocat',
+        'meta.description': 'Strumenti legali gratuiti: calcolatore degli alimenti per i figli, lettera di dimissioni, disdetta di locazione, calcolatore dei termini di ricorso. Diritto estone.',
+        'nav.home': 'Home', 'nav.tools': 'Strumenti', 'nav.blog': 'Blog', 'nav.try': 'Prova gratis',
+        'bc.tools': 'Strumenti',
+        'hero.tag': 'Gratis · Privato · Diritto estone',
+        'hero.title': 'Strumenti legali gratuiti',
+        'hero.subtitle': 'Calcolatori e generatori di documenti utilizzabili senza registrazione. Tutti i dati restano sul tuo dispositivo — nulla viene salvato. Basati sulle norme del diritto estone in vigore.',
+        'card1.title': 'Calcolatore degli alimenti 2026',
+        'card1.desc': 'Calcola gli alimenti per il figlio in pochi secondi. In base alla formula della legge estone sulla famiglia (PKS) § 100-103. Inserisci reddito e numero di figli — ottieni una stima con dettaglio completo.',
+        'card1.tag1': 'Diritto di famiglia', 'card1.tag3': 'Dati 2026', 'card1.btn': 'Apri il calcolatore',
+        'card2.title': 'Lettera di disdetta del contratto di lavoro',
+        'card2.desc': 'Genera una lettera ufficiale in estone. Dimissioni ordinarie, accordo consensuale o recesso per giusta causa. Scarica in TXT o salva in PDF.',
+        'card2.tag1': 'Diritto del lavoro', 'card2.tag3': 'Generatore', 'card2.btn': 'Crea lettera',
+        'card3.title': 'Disdetta del contratto di locazione',
+        'card3.desc': 'Come inquilino o locatore — genera una disdetta ufficiale ai sensi del § 312 della legge estone sulle obbligazioni (VÕS). Preavviso di 3 mesi. Promemoria sulla cauzione.',
+        'card3.tag1': 'Diritto della locazione', 'card3.tag3': 'Generatore', 'card3.btn': 'Crea disdetta',
+        'card4.title': 'Calcolatore dei termini di ricorso',
+        'card4.desc': 'Commissione conflitti di lavoro, tribunale amministrativo, PPA, decisioni Migri. Inserisci la data — vedrai il termine esatto e il conto alla rovescia giornaliero.',
+        'card4.tag1': 'Diritto amministrativo', 'card4.tag3': 'Termini', 'card4.btn': 'Calcola termine',
+        'why.title': 'Perché questi strumenti sono gratuiti?',
+        'why.card1.h': 'Privati', 'why.card1.p': 'Tutti i dati restano nel tuo browser. Nulla viene inviato a un server.',
+        'why.card2.h': 'In pochi secondi', 'why.card2.p': 'Senza registrazione, risultati immediati. Funziona anche da telefono.',
+        'why.card3.h': 'Basati sulla legge', 'why.card3.p': 'Fondati sulle disposizioni del diritto estone in vigore (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Parte di Advocat', 'why.card4.p': 'Quando ti serve un\'assistenza legale reale, Advocat AI è sempre a un clic di distanza.',
+        'cta.title': 'Hai bisogno di vera assistenza legale?',
+        'cta.body': 'Gli strumenti danno una stima. Advocat AI offre la soluzione completa: redige istanze, documenti e ricorsi; analizza la tua situazione; trova riferimenti giurisprudenziali; chiarisce il linguaggio giuridico. In 17 lingue.',
+        'cta.btn': 'Prova Advocat gratis →',
+        'disclaimer.label': 'Avviso legale:',
+        'disclaimer.body': 'Questi strumenti hanno carattere informativo generale e non costituiscono consulenza legale individuale. Per la tua situazione specifica rivolgiti ad Advocat AI o a un avvocato giurato. Gli strumenti si basano sul diritto estone in vigore nel 2026.',
+        'footer.copy': '2026 Advocat. Tutti i diritti riservati.',
+        'footer.note': 'Questi strumenti hanno carattere informativo generale e non costituiscono consulenza legale individuale.'
+      },
+      uk: {
+        'meta.title': 'Безкоштовні юридичні інструменти — Advocat',
+        'meta.description': 'Безкоштовні юридичні інструменти: калькулятор аліментів, заява про звільнення, повідомлення про розірвання договору оренди, калькулятор строків оскарження.',
+        'nav.home': 'Головна', 'nav.tools': 'Інструменти', 'nav.blog': 'Блог', 'nav.try': 'Спробувати безкоштовно',
+        'bc.tools': 'Інструменти',
+        'hero.tag': 'Безкоштовно · Конфіденційно · Естонське право',
+        'hero.title': 'Безкоштовні юридичні інструменти',
+        'hero.subtitle': 'Калькулятори та генератори документів, якими можна користуватися без реєстрації. Усі дані залишаються на вашому пристрої — нічого не зберігається. Базуються на чинних нормах естонського права.',
+        'card1.title': 'Калькулятор аліментів 2026',
+        'card1.desc': 'Обчисліть аліменти на дитину за секунду. За формулою Закону про сім\'ю Естонії (PKS) § 100-103. Введіть дохід і кількість дітей — отримаєте оцінку та повний розрахунок.',
+        'card1.tag1': 'Сімейне право', 'card1.tag3': 'Цифри 2026', 'card1.btn': 'Відкрити калькулятор',
+        'card2.title': 'Заява про розірвання трудового договору',
+        'card2.desc': 'Створіть офіційну заяву естонською. Звичайне розірвання, за згодою сторін або в надзвичайному порядку. Завантажте TXT або збережіть PDF.',
+        'card2.tag1': 'Трудове право', 'card2.tag3': 'Генератор', 'card2.btn': 'Створити заяву',
+        'card3.title': 'Повідомлення про розірвання договору оренди',
+        'card3.desc': 'Як орендар або орендодавець — створіть офіційне повідомлення згідно з § 312 Закону Естонії про зобов\'язання (VÕS). 3-місячний строк попередження. Нагадування про заставу.',
+        'card3.tag1': 'Орендне право', 'card3.tag3': 'Генератор', 'card3.btn': 'Створити повідомлення',
+        'card4.title': 'Калькулятор строків оскарження',
+        'card4.desc': 'Комісія з трудових спорів, адміністративний суд, PPA, рішення Migri (Фінляндія). Введіть дату — побачите точний строк та зворотний відлік у днях.',
+        'card4.tag1': 'Адміністративне право', 'card4.tag3': 'Строки', 'card4.btn': 'Обчислити строк',
+        'why.title': 'Чому ці інструменти безкоштовні?',
+        'why.card1.h': 'Конфіденційно', 'why.card1.p': 'Усі дані залишаються у вашому браузері. На сервер нічого не надсилається.',
+        'why.card2.h': 'За секунду', 'why.card2.p': 'Без реєстрації, миттєвий результат. Працює і на телефоні.',
+        'why.card3.h': 'На основі закону', 'why.card3.p': 'Базується на чинних нормах естонського права (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Частина Advocat', 'why.card4.p': 'Коли потрібна справжня юридична допомога, Advocat AI завжди за один клік.',
+        'cta.title': 'Потрібна справжня юридична допомога?',
+        'cta.body': 'Інструменти дають оцінку. Advocat AI дає повне рішення: складає позови, документи, скарги; аналізує ситуацію; знаходить судову практику; пояснює юридичну мову. 17 мовами.',
+        'cta.btn': 'Спробувати Advocat безкоштовно →',
+        'disclaimer.label': 'Юридичне застереження:',
+        'disclaimer.body': 'Ці інструменти мають загальний інформативний характер і не є індивідуальною юридичною консультацією. У конкретній ситуації зверніться до Advocat AI або присяжного адвоката. Інструменти ґрунтуються на естонському праві станом на 2026 рік.',
+        'footer.copy': '2026 Advocat. Усі права захищені.',
+        'footer.note': 'Інструменти мають загальний інформативний характер і не є індивідуальною юридичною консультацією.'
+      },
+      lv: {
+        'meta.title': 'Bezmaksas juridiskie rīki — Advocat',
+        'meta.description': 'Bezmaksas juridiskie rīki: uzturlīdzekļu kalkulators, darba līguma uzteikuma vēstule, īres līguma izbeigšanas paziņojums, pārsūdzības termiņa kalkulators.',
+        'nav.home': 'Sākums', 'nav.tools': 'Rīki', 'nav.blog': 'Blogs', 'nav.try': 'Izmēģināt bez maksas',
+        'bc.tools': 'Rīki',
+        'hero.tag': 'Bez maksas · Privāti · Igaunijas tiesības',
+        'hero.title': 'Bezmaksas juridiskie rīki',
+        'hero.subtitle': 'Kalkulatori un dokumentu ģeneratori, ko vari izmantot bez reģistrācijas. Visi dati paliek tavā ierīcē — nekas netiek saglabāts. Pamatā ir Igaunijas tiesību normas, kas ir spēkā šobrīd.',
+        'card1.title': 'Uzturlīdzekļu kalkulators 2026',
+        'card1.desc': 'Aprēķini uzturlīdzekļus bērnam dažu sekunžu laikā. Pēc Igaunijas Ģimenes likuma (PKS) § 100-103 formulas. Ievadi ienākumus un bērnu skaitu — saņemsi novērtējumu un pilnu sadalījumu.',
+        'card1.tag1': 'Ģimenes tiesības', 'card1.tag3': '2026 rādītāji', 'card1.btn': 'Atvērt kalkulatoru',
+        'card2.title': 'Darba līguma uzteikuma iesniegums',
+        'card2.desc': 'Izveido oficiālu iesniegumu igauņu valodā. Parasta uzteikšana, vienošanās ceļā vai ārkārtas uzteikšana. Lejupielādē TXT vai saglabā PDF formātā.',
+        'card2.tag1': 'Darba tiesības', 'card2.tag3': 'Ģenerators', 'card2.btn': 'Izveidot iesniegumu',
+        'card3.title': 'Īres līguma izbeigšanas paziņojums',
+        'card3.desc': 'Kā īrnieks vai izīrētājs — izveido oficiālu paziņojumu saskaņā ar Igaunijas Saistību tiesību likuma (VÕS) § 312. 3 mēnešu uzteikuma termiņš. Atgādinājums par drošības naudu.',
+        'card3.tag1': 'Īres tiesības', 'card3.tag3': 'Ģenerators', 'card3.btn': 'Izveidot paziņojumu',
+        'card4.title': 'Pārsūdzības termiņa kalkulators',
+        'card4.desc': 'Darba strīdu komisija, administratīvā tiesa, PPA, Migri lēmumi. Ievadi datumu — redzēsi precīzu termiņu un atlikušo dienu skaitu.',
+        'card4.tag1': 'Administratīvās tiesības', 'card4.tag3': 'Termiņi', 'card4.btn': 'Aprēķināt termiņu',
+        'why.title': 'Kāpēc šie rīki ir bez maksas?',
+        'why.card1.h': 'Privāti', 'why.card1.p': 'Visi dati paliek tavā pārlūkprogrammā. Nekas netiek sūtīts uz serveri.',
+        'why.card2.h': 'Sekundēs', 'why.card2.p': 'Bez reģistrācijas, tūlītēji rezultāti. Darbojas arī telefonā.',
+        'why.card3.h': 'Balstīti likumā', 'why.card3.p': 'Balstīti pašreiz spēkā esošajās Igaunijas tiesību normās (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Daļa no Advocat', 'why.card4.p': 'Ja nepieciešama reāla juridiskā palīdzība, Advocat AI vienmēr ir tikai viena klikšķa attālumā.',
+        'cta.title': 'Vai nepieciešama reāla juridiskā palīdzība?',
+        'cta.body': 'Rīki sniedz aplēsi. Advocat AI sniedz pilnu risinājumu: sagatavo prasības, dokumentus un sūdzības; analizē tavu situāciju; atrod tiesu prakses atsauces; izskaidro juridisko valodu. 17 valodās.',
+        'cta.btn': 'Izmēģināt Advocat bez maksas →',
+        'disclaimer.label': 'Juridiska piezīme:',
+        'disclaimer.body': 'Šie rīki ir vispārīga informatīva rakstura un nav individuāla juridiska konsultācija. Konkrētā situācijā vērsies pie Advocat AI vai zvērināta advokāta. Rīki balstās uz Igaunijas tiesībām, kas ir spēkā 2026. gadā.',
+        'footer.copy': '2026 Advocat. Visas tiesības aizsargātas.',
+        'footer.note': 'Šie rīki ir vispārīga informatīva rakstura un nav individuāla juridiska konsultācija.'
+      },
+      lt: {
+        'meta.title': 'Nemokami teisiniai įrankiai — Advocat',
+        'meta.description': 'Nemokami teisiniai įrankiai: išlaikymo skaičiuoklė, darbo sutarties nutraukimo pareiškimas, nuomos sutarties nutraukimo pranešimas, apskundimo terminų skaičiuoklė.',
+        'nav.home': 'Pradžia', 'nav.tools': 'Įrankiai', 'nav.blog': 'Tinklaraštis', 'nav.try': 'Išbandyti nemokamai',
+        'bc.tools': 'Įrankiai',
+        'hero.tag': 'Nemokama · Privatu · Estijos teisė',
+        'hero.title': 'Nemokami teisiniai įrankiai',
+        'hero.subtitle': 'Skaičiuoklės ir dokumentų generatoriai, kuriais galite naudotis be registracijos. Visi duomenys lieka jūsų įrenginyje — niekas neišsaugoma. Pagrįsta galiojančiomis Estijos teisės nuostatomis.',
+        'card1.title': 'Vaiko išlaikymo skaičiuoklė 2026',
+        'card1.desc': 'Apskaičiuokite vaiko išlaikymą per sekundes. Pagal Estijos Šeimos įstatymo (PKS) § 100-103 formulę. Įveskite pajamas ir vaikų skaičių — gausite vertinimą su išsamiu paskirstymu.',
+        'card1.tag1': 'Šeimos teisė', 'card1.tag3': '2026 m. duomenys', 'card1.btn': 'Atidaryti skaičiuoklę',
+        'card2.title': 'Darbo sutarties nutraukimo pareiškimas',
+        'card2.desc': 'Sukurkite oficialų pareiškimą estų kalba. Įprastinis nutraukimas, šalių susitarimu arba ypatingas nutraukimas. Atsisiųskite TXT arba išsaugokite PDF.',
+        'card2.tag1': 'Darbo teisė', 'card2.tag3': 'Generatorius', 'card2.btn': 'Sukurti pareiškimą',
+        'card3.title': 'Nuomos sutarties nutraukimo pranešimas',
+        'card3.desc': 'Kaip nuomininkas ar nuomotojas — sukurkite oficialų pranešimą pagal Estijos Prievolių teisės įstatymo (VÕS) § 312. 3 mėnesių įspėjimo terminas. Užstato priminimas.',
+        'card3.tag1': 'Nuomos teisė', 'card3.tag3': 'Generatorius', 'card3.btn': 'Sukurti pranešimą',
+        'card4.title': 'Apskundimo terminų skaičiuoklė',
+        'card4.desc': 'Darbo ginčų komisija, administracinis teismas, PPA, Migri sprendimai. Įveskite datą — pamatysite tikslų terminą ir dienų atskaitą.',
+        'card4.tag1': 'Administracinė teisė', 'card4.tag3': 'Terminai', 'card4.btn': 'Apskaičiuoti terminą',
+        'why.title': 'Kodėl šie įrankiai nemokami?',
+        'why.card1.h': 'Privatu', 'why.card1.p': 'Visi duomenys lieka jūsų naršyklėje. Niekas nesiunčiama į serverį.',
+        'why.card2.h': 'Per sekundes', 'why.card2.p': 'Be registracijos, momentinis rezultatas. Veikia ir telefone.',
+        'why.card3.h': 'Pagrįsta įstatymais', 'why.card3.p': 'Pagrįsta galiojančiomis Estijos teisės nuostatomis (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Advocat dalis', 'why.card4.p': 'Kai reikia tikros teisinės pagalbos, Advocat AI visada vos vienu paspaudimu.',
+        'cta.title': 'Reikia tikros teisinės pagalbos?',
+        'cta.body': 'Įrankiai pateikia vertinimą. Advocat AI suteikia visą sprendimą: parengia ieškinius, dokumentus, skundus; išnagrinėja jūsų situaciją; randa teismų praktikos nuorodas; paaiškina teisinę kalbą. 17 kalbų.',
+        'cta.btn': 'Išbandyti Advocat nemokamai →',
+        'disclaimer.label': 'Teisinis pranešimas:',
+        'disclaimer.body': 'Šie įrankiai yra bendro informacinio pobūdžio ir nėra individuali teisinė konsultacija. Konkrečioje situacijoje kreipkitės į Advocat AI arba prisiekusįjį advokatą. Įrankiai pagrįsti 2026 m. galiojančia Estijos teise.',
+        'footer.copy': '2026 Advocat. Visos teisės saugomos.',
+        'footer.note': 'Šie įrankiai yra bendro informacinio pobūdžio ir nėra individuali teisinė konsultacija.'
+      },
+      pl: {
+        'meta.title': 'Bezpłatne narzędzia prawne — Advocat',
+        'meta.description': 'Bezpłatne narzędzia prawne: kalkulator alimentów, wypowiedzenie umowy o pracę, wypowiedzenie najmu, kalkulator terminów odwołania. Prawo estońskie.',
+        'nav.home': 'Strona główna', 'nav.tools': 'Narzędzia', 'nav.blog': 'Blog', 'nav.try': 'Wypróbuj za darmo',
+        'bc.tools': 'Narzędzia',
+        'hero.tag': 'Bezpłatne · Prywatne · Prawo estońskie',
+        'hero.title': 'Bezpłatne narzędzia prawne',
+        'hero.subtitle': 'Kalkulatory i generatory dokumentów, z których można korzystać bez rejestracji. Wszystkie dane pozostają na Twoim urządzeniu — nic nie jest zapisywane. Oparte na obowiązujących przepisach prawa estońskiego.',
+        'card1.title': 'Kalkulator alimentów 2026',
+        'card1.desc': 'Oblicz alimenty na dziecko w kilka sekund. Na podstawie wzoru z estońskiej ustawy rodzinnej (PKS) § 100-103. Wpisz dochód i liczbę dzieci — otrzymasz szacunek wraz z pełnym wyliczeniem.',
+        'card1.tag1': 'Prawo rodzinne', 'card1.tag3': 'Dane 2026', 'card1.btn': 'Otwórz kalkulator',
+        'card2.title': 'Wypowiedzenie umowy o pracę',
+        'card2.desc': 'Wygeneruj oficjalne pismo w języku estońskim. Wypowiedzenie zwykłe, za porozumieniem stron lub rozwiązanie w trybie nadzwyczajnym. Pobierz TXT lub zapisz jako PDF.',
+        'card2.tag1': 'Prawo pracy', 'card2.tag3': 'Generator', 'card2.btn': 'Utwórz pismo',
+        'card3.title': 'Wypowiedzenie umowy najmu',
+        'card3.desc': 'Jako najemca lub wynajmujący — wygeneruj oficjalne wypowiedzenie zgodnie z § 312 estońskiej ustawy o zobowiązaniach (VÕS). 3-miesięczne wypowiedzenie. Przypomnienie o kaucji.',
+        'card3.tag1': 'Prawo najmu', 'card3.tag3': 'Generator', 'card3.btn': 'Utwórz wypowiedzenie',
+        'card4.title': 'Kalkulator terminów odwołania',
+        'card4.desc': 'Komisja sporów pracy, sąd administracyjny, PPA, decyzje fińskiego Migri. Wpisz datę — zobaczysz dokładny termin i odliczanie dni.',
+        'card4.tag1': 'Prawo administracyjne', 'card4.tag3': 'Terminy', 'card4.btn': 'Oblicz termin',
+        'why.title': 'Dlaczego te narzędzia są darmowe?',
+        'why.card1.h': 'Prywatne', 'why.card1.p': 'Wszystkie dane pozostają w Twojej przeglądarce. Nic nie jest wysyłane na serwer.',
+        'why.card2.h': 'W kilka sekund', 'why.card2.p': 'Bez rejestracji, natychmiastowy wynik. Działa również na telefonie.',
+        'why.card3.h': 'Oparte na prawie', 'why.card3.p': 'Oparte na obowiązujących przepisach prawa estońskiego (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Część Advocat', 'why.card4.p': 'Gdy potrzebujesz prawdziwej pomocy prawnej, Advocat AI jest zawsze o jedno kliknięcie.',
+        'cta.title': 'Potrzebujesz prawdziwej pomocy prawnej?',
+        'cta.body': 'Narzędzia podają szacunkową kwotę. Advocat AI oferuje pełne rozwiązanie: sporządza pozwy, dokumenty i odwołania; analizuje sytuację; znajduje odniesienia do orzecznictwa; tłumaczy język prawniczy. W 17 językach.',
+        'cta.btn': 'Wypróbuj Advocat za darmo →',
+        'disclaimer.label': 'Informacja prawna:',
+        'disclaimer.body': 'Te narzędzia mają charakter ogólnoinformacyjny i nie stanowią indywidualnej porady prawnej. W konkretnej sprawie skontaktuj się z Advocat AI lub adwokatem przysięgłym. Narzędzia opierają się na prawie estońskim obowiązującym w 2026 roku.',
+        'footer.copy': '2026 Advocat. Wszelkie prawa zastrzeżone.',
+        'footer.note': 'Te narzędzia mają charakter ogólnoinformacyjny i nie stanowią indywidualnej porady prawnej.'
+      },
+      sv: {
+        'meta.title': 'Gratis juridiska verktyg — Advocat',
+        'meta.description': 'Gratis juridiska verktyg: underhållsbidragskalkylator, uppsägning av anställning, uppsägning av hyresavtal, kalkylator för överklagandetider. Estnisk rätt.',
+        'nav.home': 'Hem', 'nav.tools': 'Verktyg', 'nav.blog': 'Blogg', 'nav.try': 'Prova gratis',
+        'bc.tools': 'Verktyg',
+        'hero.tag': 'Gratis · Privat · Estnisk rätt',
+        'hero.title': 'Gratis juridiska verktyg',
+        'hero.subtitle': 'Kalkylatorer och dokumentmallar som du kan använda utan att registrera dig. All data stannar på din enhet — inget sparas. Bygger på gällande estniska lagbestämmelser.',
+        'card1.title': 'Underhållsbidragskalkylator 2026',
+        'card1.desc': 'Beräkna underhållsbidraget på sekunder. Enligt den estniska familjelagens (PKS) § 100-103 formel. Ange inkomst och antal barn — du får en uppskattning med full uppdelning.',
+        'card1.tag1': 'Familjerätt', 'card1.tag3': '2026 års siffror', 'card1.btn': 'Öppna kalkylatorn',
+        'card2.title': 'Uppsägning av anställningsavtal',
+        'card2.desc': 'Skapa ett officiellt brev på estniska. Ordinarie uppsägning, överenskommelse mellan parterna eller hävning. Ladda ner som TXT eller spara som PDF.',
+        'card2.tag1': 'Arbetsrätt', 'card2.tag3': 'Generator', 'card2.btn': 'Skapa brev',
+        'card3.title': 'Uppsägning av hyresavtal',
+        'card3.desc': 'Som hyresgäst eller hyresvärd — skapa en officiell uppsägning enligt § 312 i estniska obligationsrättslagen (VÕS). 3 månaders uppsägningstid. Påminnelse om deposition.',
+        'card3.tag1': 'Hyresrätt', 'card3.tag3': 'Generator', 'card3.btn': 'Skapa uppsägning',
+        'card4.title': 'Kalkylator för överklagandetider',
+        'card4.desc': 'Arbetstvistnämnd, förvaltningsdomstol, PPA, beslut från finska Migri. Ange datum — se exakt tidsfrist och daglig nedräkning.',
+        'card4.tag1': 'Förvaltningsrätt', 'card4.tag3': 'Tidsfrister', 'card4.btn': 'Beräkna tidsfrist',
+        'why.title': 'Varför är dessa verktyg gratis?',
+        'why.card1.h': 'Privat', 'why.card1.p': 'All data stannar i din webbläsare. Inget skickas till en server.',
+        'why.card2.h': 'På sekunder', 'why.card2.p': 'Ingen registrering, omedelbart resultat. Fungerar även på mobilen.',
+        'why.card3.h': 'Lagbaserat', 'why.card3.p': 'Bygger på gällande estniska lagbestämmelser (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'En del av Advocat', 'why.card4.p': 'När du behöver verklig juridisk hjälp är Advocat AI alltid bara ett klick bort.',
+        'cta.title': 'Behöver du verklig juridisk hjälp?',
+        'cta.body': 'Verktygen ger en uppskattning. Advocat AI ger den fullständiga lösningen: utformar stämningar, handlingar och överklaganden; analyserar din situation; hittar rättspraxis; förklarar juridiskt språk. På 17 språk.',
+        'cta.btn': 'Prova Advocat gratis →',
+        'disclaimer.label': 'Juridisk information:',
+        'disclaimer.body': 'Dessa verktyg är allmänt informativa och utgör inte individuell juridisk rådgivning. För din specifika situation, kontakta Advocat AI eller en auktoriserad advokat. Verktygen bygger på estnisk rätt som gäller 2026.',
+        'footer.copy': '2026 Advocat. Alla rättigheter förbehållna.',
+        'footer.note': 'Dessa verktyg är allmänt informativa och utgör inte individuell juridisk rådgivning.'
+      },
+      ar: {
+        'meta.title': 'أدوات قانونية مجانية — Advocat',
+        'meta.description': 'أدوات قانونية مجانية: حاسبة نفقة الأطفال، إنهاء عقد العمل، إنهاء عقد الإيجار، حاسبة مواعيد الطعن. مبنية على القانون الإستوني.',
+        'nav.home': 'الرئيسية', 'nav.tools': 'الأدوات', 'nav.blog': 'المدونة', 'nav.try': 'جرّب مجانًا',
+        'bc.tools': 'الأدوات',
+        'hero.tag': 'مجاني · خاص · القانون الإستوني',
+        'hero.title': 'أدوات قانونية مجانية',
+        'hero.subtitle': 'حاسبات ومولّدات مستندات يمكنك استخدامها دون تسجيل. تبقى جميع البيانات على جهازك — لا يُحفظ شيء. مبنية على الأحكام السارية في القانون الإستوني.',
+        'card1.title': 'حاسبة نفقة الأطفال 2026',
+        'card1.desc': 'احسب نفقة الطفل في ثوانٍ. وفقًا لمعادلة قانون الأسرة الإستوني (PKS) المواد 100-103. أدخل الدخل وعدد الأطفال — احصل على تقدير مع تفصيل كامل.',
+        'card1.tag1': 'قانون الأسرة', 'card1.tag3': 'أرقام 2026', 'card1.btn': 'افتح الحاسبة',
+        'card2.title': 'طلب إنهاء عقد العمل',
+        'card2.desc': 'أنشئ خطابًا رسميًا باللغة الإستونية. إنهاء عادي، باتفاق الطرفين، أو إنهاء استثنائي. حمّله كملف TXT أو احفظه PDF.',
+        'card2.tag1': 'قانون العمل', 'card2.tag3': 'مولّد', 'card2.btn': 'أنشئ الطلب',
+        'card3.title': 'إشعار إنهاء عقد الإيجار',
+        'card3.desc': 'كمستأجر أو مؤجر — أنشئ إشعارًا رسميًا وفق المادة 312 من قانون الالتزامات الإستوني (VÕS). إشعار قبل 3 أشهر. تذكير بمبلغ التأمين.',
+        'card3.tag1': 'قانون الإيجار', 'card3.tag3': 'مولّد', 'card3.btn': 'أنشئ الإشعار',
+        'card4.title': 'حاسبة مواعيد الطعن',
+        'card4.desc': 'لجنة نزاعات العمل، المحكمة الإدارية، شرطة الحدود (PPA)، قرارات Migri الفنلندية. أدخل التاريخ — شاهد الموعد الدقيق وعدّاد الأيام التنازلي.',
+        'card4.tag1': 'القانون الإداري', 'card4.tag3': 'المواعيد', 'card4.btn': 'احسب الموعد',
+        'why.title': 'لماذا هذه الأدوات مجانية؟',
+        'why.card1.h': 'خصوصية تامة', 'why.card1.p': 'تبقى جميع البيانات في متصفحك. لا يُرسل أي شيء إلى أي خادم.',
+        'why.card2.h': 'في ثوانٍ', 'why.card2.p': 'بدون تسجيل، نتائج فورية. تعمل على الهاتف أيضًا.',
+        'why.card3.h': 'مستندة إلى القانون', 'why.card3.p': 'مبنية على الأحكام السارية للقانون الإستوني (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'جزء من Advocat', 'why.card4.p': 'عندما تحتاج إلى مساعدة قانونية حقيقية، Advocat AI دائمًا على بعد نقرة واحدة.',
+        'cta.title': 'هل تحتاج إلى مساعدة قانونية حقيقية؟',
+        'cta.body': 'الأدوات تقدّم تقديرًا. Advocat AI يقدّم الحل الكامل: صياغة الدعاوى والمستندات والطعون؛ تحليل وضعك؛ إيجاد المراجع القضائية؛ شرح اللغة القانونية. بـ17 لغة.',
+        'cta.btn': 'جرّب Advocat مجانًا ←',
+        'disclaimer.label': 'تنبيه قانوني:',
+        'disclaimer.body': 'هذه الأدوات ذات طابع معلوماتي عام ولا تشكّل استشارة قانونية فردية. في الحالات الخاصة استعن بـ Advocat AI أو بمحامٍ مرخّص. تستند الأدوات إلى القانون الإستوني الساري في 2026.',
+        'footer.copy': '2026 Advocat. جميع الحقوق محفوظة.',
+        'footer.note': 'هذه الأدوات ذات طابع معلوماتي عام ولا تشكّل استشارة قانونية فردية.'
+      },
+      fa: {
+        'meta.title': 'ابزارهای حقوقی رایگان — Advocat',
+        'meta.description': 'ابزارهای حقوقی رایگان: محاسبه نفقه فرزند، استعفا از کار، فسخ قرارداد اجاره، محاسبه مهلت اعتراض. بر اساس قانون استونی.',
+        'nav.home': 'صفحه اصلی', 'nav.tools': 'ابزارها', 'nav.blog': 'وبلاگ', 'nav.try': 'امتحان رایگان',
+        'bc.tools': 'ابزارها',
+        'hero.tag': 'رایگان · خصوصی · قانون استونی',
+        'hero.title': 'ابزارهای حقوقی رایگان',
+        'hero.subtitle': 'ماشین‌حساب‌ها و مولّدهای سند که می‌توانید بدون ثبت‌نام از آن‌ها استفاده کنید. همه داده‌ها روی دستگاه شما باقی می‌مانند — چیزی ذخیره نمی‌شود. بر اساس مفاد جاری قانون استونی.',
+        'card1.title': 'محاسبه‌گر نفقه فرزند ۲۰۲۶',
+        'card1.desc': 'نفقه فرزند را در چند ثانیه محاسبه کنید. طبق فرمول قانون خانواده استونی (PKS) ماده‌های ۱۰۰ تا ۱۰۳. درآمد و تعداد فرزندان را وارد کنید — برآورد و تفکیک کامل را دریافت کنید.',
+        'card1.tag1': 'حقوق خانواده', 'card1.tag3': 'ارقام ۲۰۲۶', 'card1.btn': 'باز کردن ماشین‌حساب',
+        'card2.title': 'درخواست فسخ قرارداد کار',
+        'card2.desc': 'نامه رسمی به زبان استونیایی ایجاد کنید. فسخ عادی، توافق طرفین یا فسخ استثنایی. به‌صورت TXT دانلود یا به‌عنوان PDF ذخیره کنید.',
+        'card2.tag1': 'حقوق کار', 'card2.tag3': 'مولّد', 'card2.btn': 'ایجاد درخواست',
+        'card3.title': 'اطلاعیه فسخ قرارداد اجاره',
+        'card3.desc': 'به‌عنوان مستأجر یا موجر — اطلاعیه‌ای رسمی طبق ماده ۳۱۲ قانون تعهدات استونی (VÕS) ایجاد کنید. مهلت سه ماهه. یادآوری ودیعه.',
+        'card3.tag1': 'حقوق اجاره', 'card3.tag3': 'مولّد', 'card3.btn': 'ایجاد اطلاعیه',
+        'card4.title': 'محاسبه‌گر مهلت اعتراض',
+        'card4.desc': 'کمیسیون اختلافات کار، دادگاه اداری، PPA، تصمیمات Migri (فنلاند). تاریخ را وارد کنید — مهلت دقیق و شمارش معکوس روزانه را ببینید.',
+        'card4.tag1': 'حقوق اداری', 'card4.tag3': 'مهلت‌ها', 'card4.btn': 'محاسبه مهلت',
+        'why.title': 'چرا این ابزارها رایگان هستند؟',
+        'why.card1.h': 'خصوصی', 'why.card1.p': 'همه داده‌ها در مرورگر شما باقی می‌مانند. چیزی به سرور ارسال نمی‌شود.',
+        'why.card2.h': 'در چند ثانیه', 'why.card2.p': 'بدون ثبت‌نام، نتیجه فوری. روی موبایل هم کار می‌کند.',
+        'why.card3.h': 'مبتنی بر قانون', 'why.card3.p': 'بر اساس مفاد جاری قانون استونی (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'بخشی از Advocat', 'why.card4.p': 'وقتی به کمک حقوقی واقعی نیاز دارید، Advocat AI همیشه فقط یک کلیک با شما فاصله دارد.',
+        'cta.title': 'به کمک حقوقی واقعی نیاز دارید؟',
+        'cta.body': 'ابزارها برآورد می‌دهند. Advocat AI راه‌حل کامل ارائه می‌دهد: تنظیم دادخواست، اسناد و شکایات؛ تحلیل وضعیت شما؛ یافتن رویه قضایی؛ توضیح زبان حقوقی. به ۱۷ زبان.',
+        'cta.btn': 'Advocat را رایگان امتحان کنید ←',
+        'disclaimer.label': 'یادداشت حقوقی:',
+        'disclaimer.body': 'این ابزارها ماهیتی اطلاع‌رسانی عمومی دارند و مشاوره حقوقی فردی محسوب نمی‌شوند. در موقعیت‌های خاص با Advocat AI یا یک وکیل رسمی مشورت کنید. ابزارها بر اساس قانون استونی در سال ۲۰۲۶ تنظیم شده‌اند.',
+        'footer.copy': '۲۰۲۶ Advocat. تمامی حقوق محفوظ است.',
+        'footer.note': 'این ابزارها ماهیتی اطلاع‌رسانی عمومی دارند و مشاوره حقوقی فردی محسوب نمی‌شوند.'
+      },
+      tr: {
+        'meta.title': 'Ücretsiz hukuki araçlar — Advocat',
+        'meta.description': 'Ücretsiz hukuki araçlar: çocuk nafakası hesaplayıcı, iş sözleşmesi fesih dilekçesi, kira sözleşmesi fesih bildirimi, itiraz süresi hesaplayıcı. Estonya hukukuna dayalı.',
+        'nav.home': 'Anasayfa', 'nav.tools': 'Araçlar', 'nav.blog': 'Blog', 'nav.try': 'Ücretsiz dene',
+        'bc.tools': 'Araçlar',
+        'hero.tag': 'Ücretsiz · Gizli · Estonya hukuku',
+        'hero.title': 'Ücretsiz hukuki araçlar',
+        'hero.subtitle': 'Kayıt olmadan kullanabileceğiniz hesaplayıcılar ve belge üreticileri. Tüm veriler cihazınızda kalır — hiçbir şey kaydedilmez. Yürürlükteki Estonya hukuku hükümlerine dayanır.',
+        'card1.title': 'Çocuk nafakası hesaplayıcı 2026',
+        'card1.desc': 'Çocuk nafakasını saniyeler içinde hesaplayın. Estonya Aile Kanunu (PKS) § 100-103 formülüne göre. Gelir ve çocuk sayısını girin — tahmini tutar ve ayrıntılı dökümünü görün.',
+        'card1.tag1': 'Aile hukuku', 'card1.tag3': '2026 rakamları', 'card1.btn': 'Hesaplayıcıyı aç',
+        'card2.title': 'İş sözleşmesi fesih dilekçesi',
+        'card2.desc': 'Estonca resmi bir dilekçe oluşturun. Olağan fesih, karşılıklı anlaşma veya haklı nedenle fesih. TXT olarak indirin veya PDF olarak kaydedin.',
+        'card2.tag1': 'İş hukuku', 'card2.tag3': 'Üretici', 'card2.btn': 'Dilekçe oluştur',
+        'card3.title': 'Kira sözleşmesi fesih bildirimi',
+        'card3.desc': 'Kiracı veya kiraya veren olarak — Estonya Borçlar Kanunu (VÕS) § 312\'ye göre resmi bildirim oluşturun. 3 aylık fesih süresi. Depozito hatırlatması.',
+        'card3.tag1': 'Kira hukuku', 'card3.tag3': 'Üretici', 'card3.btn': 'Bildirim oluştur',
+        'card4.title': 'İtiraz süresi hesaplayıcı',
+        'card4.desc': 'İş Uyuşmazlıkları Kurulu, idare mahkemesi, PPA, Migri (Finlandiya) kararları. Tarihi girin — tam süreyi ve günlük geri sayımı görün.',
+        'card4.tag1': 'İdare hukuku', 'card4.tag3': 'Süreler', 'card4.btn': 'Süreyi hesapla',
+        'why.title': 'Bu araçlar neden ücretsiz?',
+        'why.card1.h': 'Gizli', 'why.card1.p': 'Tüm veriler tarayıcınızda kalır. Hiçbir şey sunucuya gönderilmez.',
+        'why.card2.h': 'Saniyeler içinde', 'why.card2.p': 'Kayıt yok, anında sonuç. Telefonda da çalışır.',
+        'why.card3.h': 'Yasal dayanaklı', 'why.card3.p': 'Yürürlükteki Estonya hukuku hükümlerine dayanır (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Advocat\'ın bir parçası', 'why.card4.p': 'Gerçek hukuki yardıma ihtiyacınız olduğunda Advocat AI her zaman bir tık uzakta.',
+        'cta.title': 'Gerçek hukuki yardıma mı ihtiyacınız var?',
+        'cta.body': 'Araçlar tahmini verir. Advocat AI tam çözüm sunar: dilekçeler, belgeler ve itirazlar hazırlar; durumunuzu analiz eder; içtihat kaynakları bulur; hukuki dili açıklar. 17 dilde.',
+        'cta.btn': 'Advocat\'ı ücretsiz dene →',
+        'disclaimer.label': 'Yasal uyarı:',
+        'disclaimer.body': 'Bu araçlar genel bilgilendirme amaçlıdır ve kişisel hukuki danışmanlık niteliği taşımaz. Somut durumunuz için Advocat AI veya yeminli bir avukata başvurun. Araçlar 2026 yılı itibarıyla yürürlükteki Estonya hukukuna dayanır.',
+        'footer.copy': '2026 Advocat. Tüm hakları saklıdır.',
+        'footer.note': 'Bu araçlar genel bilgilendirme amaçlıdır ve kişisel hukuki danışmanlık niteliği taşımaz.'
+      },
+      ro: {
+        'meta.title': 'Instrumente juridice gratuite — Advocat',
+        'meta.description': 'Instrumente juridice gratuite: calculator pensie alimentară, cerere de încetare a contractului de muncă, notificare de încetare a locațiunii, calculator termene de contestare.',
+        'nav.home': 'Acasă', 'nav.tools': 'Instrumente', 'nav.blog': 'Blog', 'nav.try': 'Încearcă gratuit',
+        'bc.tools': 'Instrumente',
+        'hero.tag': 'Gratuit · Privat · Dreptul estonian',
+        'hero.title': 'Instrumente juridice gratuite',
+        'hero.subtitle': 'Calculatoare și generatoare de documente pe care le poți folosi fără înregistrare. Toate datele rămân pe dispozitivul tău — nimic nu se salvează. Bazate pe prevederile în vigoare ale dreptului estonian.',
+        'card1.title': 'Calculator pensie alimentară 2026',
+        'card1.desc': 'Calculează pensia alimentară pentru copil în câteva secunde. Pe baza formulei din Codul Familiei estonian (PKS) § 100-103. Introdu venitul și numărul de copii — primești o estimare cu detalierea completă.',
+        'card1.tag1': 'Dreptul familiei', 'card1.tag3': 'Cifre 2026', 'card1.btn': 'Deschide calculatorul',
+        'card2.title': 'Cerere de încetare a contractului de muncă',
+        'card2.desc': 'Generează o cerere oficială în limba estoniană. Demisie obișnuită, acord între părți sau reziliere extraordinară. Descarcă în TXT sau salvează în PDF.',
+        'card2.tag1': 'Dreptul muncii', 'card2.tag3': 'Generator', 'card2.btn': 'Creează cererea',
+        'card3.title': 'Notificare de încetare a locațiunii',
+        'card3.desc': 'Ca chiriaș sau proprietar — generează o notificare oficială în baza § 312 din Codul obligațiilor estonian (VÕS). Preaviz de 3 luni. Reamintire despre garanție.',
+        'card3.tag1': 'Dreptul locațiunii', 'card3.tag3': 'Generator', 'card3.btn': 'Creează notificarea',
+        'card4.title': 'Calculator termene de contestare',
+        'card4.desc': 'Comisia de soluționare a litigiilor de muncă, instanța de contencios administrativ, PPA, deciziile Migri (Finlanda). Introdu data — vezi termenul exact și numărătoarea inversă pe zile.',
+        'card4.tag1': 'Drept administrativ', 'card4.tag3': 'Termene', 'card4.btn': 'Calculează termenul',
+        'why.title': 'De ce sunt aceste instrumente gratuite?',
+        'why.card1.h': 'Confidențiale', 'why.card1.p': 'Toate datele rămân în browserul tău. Nimic nu este trimis pe un server.',
+        'why.card2.h': 'În câteva secunde', 'why.card2.p': 'Fără înregistrare, rezultat instantaneu. Funcționează și pe telefon.',
+        'why.card3.h': 'Bazate pe lege', 'why.card3.p': 'Bazate pe prevederile în vigoare ale dreptului estonian (PKS, TLS, VÕS, HMS).',
+        'why.card4.h': 'Parte din Advocat', 'why.card4.p': 'Când ai nevoie de asistență juridică reală, Advocat AI este mereu la un clic distanță.',
+        'cta.title': 'Ai nevoie de asistență juridică reală?',
+        'cta.body': 'Instrumentele oferă o estimare. Advocat AI oferă soluția completă: redactează acțiuni, documente și contestații; analizează situația ta; găsește referințe de jurisprudență; explică limbajul juridic. În 17 limbi.',
+        'cta.btn': 'Încearcă Advocat gratuit →',
+        'disclaimer.label': 'Notă juridică:',
+        'disclaimer.body': 'Aceste instrumente au caracter informativ general și nu constituie consultanță juridică individuală. Pentru situația ta concretă consultă Advocat AI sau un avocat. Instrumentele se bazează pe dreptul estonian în vigoare în 2026.',
+        'footer.copy': '2026 Advocat. Toate drepturile rezervate.',
+        'footer.note': 'Aceste instrumente au caracter informativ general și nu constituie consultanță juridică individuală.'
+      }
+    };
+
+    let CUR_LANG = 'et';
+
+    function buildLangMenu(){
+      const menu = document.getElementById('lang-menu');
+      LANGS.forEach(function(l){
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.dataset.lang = l.code;
+        b.innerHTML = '<span>' + l.label + '</span><span class="lang-code">' + l.code.toUpperCase() + '</span>';
+        b.onclick = function(){ setLang(l.code); document.getElementById('lang-menu').classList.remove('open'); };
+        menu.appendChild(b);
+      });
+      const tog = document.getElementById('lang-toggle');
+      tog.addEventListener('click', function(e){
+        e.stopPropagation();
+        const m = document.getElementById('lang-menu');
+        m.classList.toggle('open');
+        tog.setAttribute('aria-expanded', m.classList.contains('open') ? 'true' : 'false');
+      });
+      document.addEventListener('click', function(){ document.getElementById('lang-menu').classList.remove('open'); });
+    }
+
+    function applyI18n() {
+      const dict = I18N[CUR_LANG] || I18N.et;
+      const fallback = I18N.et;
+      document.querySelectorAll('[data-i18n]').forEach(function(el){
+        const k = el.getAttribute('data-i18n');
+        const val = (dict[k] !== undefined) ? dict[k] : (fallback[k] !== undefined ? fallback[k] : null);
+        if (val === null) return;
+        const attrName = el.getAttribute('data-i18n-attr');
+        if (attrName) el.setAttribute(attrName, val);
+        else el.textContent = val;
+      });
+      // Title
+      if (dict['meta.title']) document.title = dict['meta.title'];
+      // Active button
+      document.getElementById('lang-current').textContent = CUR_LANG.toUpperCase();
+      document.querySelectorAll('#lang-menu button').forEach(function(b){
+        b.classList.toggle('active', b.dataset.lang === CUR_LANG);
+      });
+    }
+
+    function setLang(code) {
+      if (!I18N[code]) code = 'et';
+      CUR_LANG = code;
+      document.documentElement.lang = code;
+      document.documentElement.dir = RTL[code] ? 'rtl' : 'ltr';
+      try { localStorage.setItem('advocat-tools-lang', code); } catch(e){}
+      applyI18n();
+    }
+
+    function detectInitialLang() {
+      // 1. URL ?lang= takes priority
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const urlLang = params.get('lang');
+        if (urlLang && I18N[urlLang]) return urlLang;
+      } catch(e){}
+      // 2. localStorage
+      try {
+        const saved = localStorage.getItem('advocat-tools-lang');
+        if (saved && I18N[saved]) return saved;
+      } catch(e){}
+      // 3. browser language
+      const nav = (navigator.language || '').toLowerCase();
+      const short = nav.split('-')[0];
+      if (I18N[short]) return short;
+      // 4. fallback
+      return 'et';
+    }
+
+    (function init(){
+      buildLangMenu();
+      setLang(detectInitialLang());
+    })();
+    </script>
 </body>
 </html>
