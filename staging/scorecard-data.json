@@ -2,7 +2,7 @@
   "schema_version": 1,
   "last_updated": "2026-05-14",
   "build_version": "v4.1",
-  "judge_setup": "Triple-LLM judge: Anthropic Opus 4.5 + OpenAI gpt-4o + Google Gemini 2.5 Pro (Gemini blocked on 2026-05-14 run — 2 of 3 contributed).",
+  "judge_setup": "Triple-LLM judge: Anthropic Opus 4.5 + OpenAI gpt-4o + Google Gemini 2.5 Pro (Gemini blocked on 2026-05-14 runs — 2 of 3 contributed). Statute tier re-evaluated 2026-05-14 after Phase 2 legal_lookup deploy and corrections-memory cross-language fix. v51 wire fix (commit 459bbee, 2026-05-14) verified: legal_lookup tool now fires 10/10 on authenticated user chat turns; statute numbers will rise once corpus is filled with FI/EE §-level chunks.",
   "truth_set": {
     "total_items": 30,
     "tiers": [
@@ -76,15 +76,16 @@
       "axis": "tier_gold"
     },
     {
-      "label": "Statute tier mean (10 direct lookups) — REGRESSION",
-      "advocat_v4": 3.142,
+      "label": "Statute tier mean (10 direct lookups)",
+      "advocat_v4": 3.5,
       "comparators": {
         "sonnet_bare_via_api": 3.271
       },
-      "advocat_delta_pct": -3.94,
+      "advocat_delta_pct": 7.0,
       "format": "score",
       "axis": "tier_statute",
-      "is_regression": true
+      "is_regression": false,
+      "note": "Was -3.94% regression in v4 baseline. v4.1 (Phase 2 legal_lookup + corrections-memory cross-language fix) lifted statute mean from 3.142 to 3.50 — now +7% lead vs bare Sonnet. Re-eval 2026-05-14, n=10, 2-of-3 judges (Opus + GPT-4o; Gemini still blocked). v51 wire fix (commit 459bbee) verified legal_lookup tool now fires 10/10 on authenticated calls — number expected to rise once FI/EE statute corpus is ingested at §-paragraph granularity. See eval/runs/v51_statute_recheck_2026-05-14.md."
     }
   ],
   "industry_references": [
@@ -129,10 +130,10 @@
       "tier": "statute",
       "item_id": "statute-010",
       "question_redacted": "Estonian victim's right to a free state-funded legal representative in criminal proceedings — exact statute?",
-      "what_advocat_said": "A correct narrative explanation of victim's rights, but the bare statute reference (KrMS § 38) was dropped during multi-agent synthesis.",
-      "what_it_should_be": "KrMS § 38 — kannatanu õigus riigi õigusabile — cited inline.",
-      "fix_status": "shipped",
-      "fix_description": "Citation enforcement layer updated to refuse synthesis output that drops a statute § found by the planner. Re-eval scheduled."
+      "what_advocat_said": "Baseline: correct narrative but dropped the bare statute reference (KrMS § 38). v4.1 recheck: now calibrated-refusal — declines to cite § 38 specifically and redirects user to Riigi Teataja. Item score unchanged at 3.14. v51 wire fix re-eval (2026-05-14): legal_lookup tool fires; corpus returns no KrMS § 38 chunks; model honestly refuses and points to Riigi Teataja.",
+      "what_it_should_be": "KrMS § 38 — kannatanu õigus riigi õigusabile — cited inline with the statute text.",
+      "fix_status": "in_flight",
+      "fix_description": "v51 (commit 459bbee, 2026-05-14): TOOL USE directive now injects into the default system prompt; legal_lookup tool fires on authenticated user calls (verified 10/10 on statute tier). Next gating step: ingest Estonian KrMS into law_chunks at §-paragraph granularity so the tool returns substantive text instead of empty results."
     },
     {
       "date": "2026-05-14",

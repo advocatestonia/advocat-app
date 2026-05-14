@@ -1,8 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="refresh" content="0;url=/app.html#/payment-success">
-<script>window.location.replace('/app.html#/payment-success');</script>
+<meta charset="UTF-8">
+<title>Payment success — Advocat</title>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js"></script>
+<script>
+  // Fire purchase conversion to GA4 + Meta + TikTok before redirecting to
+  // the Flutter SPA. Reads Stripe session_id and (optional) plan / billing
+  // from the URL so we can pass them through without trusting server state.
+  // The webhook still owns the source of truth for real revenue.
+  (function () {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var sessionId = params.get('session_id') || params.get('checkout_session_id') || '';
+      var plan = (params.get('plan') || 'pro').toLowerCase();
+      var billing = (params.get('billing') || 'monthly').toLowerCase();
+      var value = 19.99; // Pro monthly default
+      if (plan === 'representation' || plan === 'premium') {
+        value = billing === 'yearly' ? 249.99 : 29.99;
+      } else if (billing === 'yearly') {
+        value = 159.99;
+      }
+      if (window.advocatTrack) {
+        window.advocatTrack('purchase', {
+          transaction_id: sessionId || 'unknown',
+          currency: 'EUR',
+          value: value,
+          items: [{
+            item_name: (plan === 'representation' || plan === 'premium') ? 'Advocat Premium' : 'Advocat Pro',
+            item_category: 'subscription',
+            item_variant: billing,
+            price: value,
+            quantity: 1
+          }]
+        });
+      }
+    } catch (e) {
+      // Never block the redirect on analytics.
+    }
+    // Brief delay so pixel beacons can flush before the SPA takes over.
+    setTimeout(function () {
+      window.location.replace('/app.html#/payment-success' + window.location.search);
+    }, 400);
+  })();
+</script>
+<meta http-equiv="refresh" content="2;url=/app.html#/payment-success">
 </head>
-<body>Redirecting...</body>
+<body>Redirecting to your account...</body>
 </html>
