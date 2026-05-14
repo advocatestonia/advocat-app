@@ -71,7 +71,7 @@
   "name": "Advocat",
   "url": "https://advocat.ee",
   "applicationCategory": "LegalService",
-  "operatingSystem": "Web, iOS, Android",
+  "operatingSystem": "Web",
   "offers": [
     {
       "@type": "Offer",
@@ -86,7 +86,7 @@
       "price": "19.99",
       "priceCurrency": "EUR",
       "billingDuration": "P1M",
-      "description": "Unlimited messages + advanced features"
+      "description": "100 AI messages per day + advanced features"
     }
   ],
   "featureList": [
@@ -96,14 +96,7 @@
     "Email triage agent",
     "Deadline tracking",
     "Contract review"
-  ],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "4.8",
-    "ratingCount": "50",
-    "bestRating": "5",
-    "worstRating": "1"
-  }
+  ]
 }
 </script>
 
@@ -141,34 +134,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- GA4 LOAD: do NOT inject googletagmanager script tag here at deploy time. GA is loaded conditionally via the consent-gating script below (GDPR Art 6 / ePrivacy Art 5(3)). -->
-<script>
-/* GA4 deferred until cookie consent. Storage key matches the existing
-   cookie banner: 'advocat_cookie_consent_v1' with shape { choice: 'accept'|'reject'|'dnt', ts, version }.
-   Banner accept handler dispatches 'advocat:cookie-consent' (detail.accepted=true). */
-(function(){
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
-  function loadGA(){
-    if (window.__advGaLoaded) return; window.__advGaLoaded = true;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-J5LGKRTMJ7';
-    document.head.appendChild(s);
-    gtag('js', new Date());
-    gtag('config', 'G-J5LGKRTMJ7', { 'anonymize_ip': true });
-  }
-  // Honour an existing accept stored from a prior visit.
-  try {
-    var c = JSON.parse(localStorage.getItem('advocat_cookie_consent_v1') || 'null');
-    if (c && c.choice === 'accept') loadGA();
-  } catch (e) {}
-  // Listen for new consent decisions from the banner.
-  window.addEventListener('advocat:cookie-consent', function(e){
-    if (e && e.detail && e.detail.accepted) loadGA();
-  });
-})();
-</script>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -1947,7 +1917,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
             </li>
             <li>
               <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-              <span data-i18n-html="compare.u2">From €19.99/month — unlimited Pro</span>
+              <span data-i18n-html="compare.u2">From €19.99/month — Pro plan, 100 messages/day</span>
             </li>
             <li>
               <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
@@ -1959,7 +1929,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
             </li>
             <li>
               <span class="cmp-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
-              <span data-i18n="compare.u5">Cancel anytime — EU 14-day refund</span>
+              <span data-i18n="compare.u5">Cancel anytime — 14-day refund before first AI message</span>
             </li>
           </ul>
 
@@ -2125,7 +2095,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div style="text-align:center">
       <div class="section-label" style="justify-content:center" data-i18n="pricing.label">PRICING</div>
       <h2 data-i18n-html="pricing.title">Clear price. No <em>surprises</em>.</h2>
-      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.sub">Cancel anytime. Full refund within the first 14 days under EU consumer law.</p>
+      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.sub">Cancel anytime. Full refund within 14 days if you haven't sent your first AI message yet.</p>
     </div>
     <div class="pricing-grid">
       <!-- FREE -->
@@ -2164,7 +2134,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <span data-i18n="plan2.annual">or €159.99/year — save 33%</span>
           <span class="plan-save-badge">SAVE 33%</span>
         </div>
-        <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. Unlimited AI, full document drafting.</div>
+        <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. 100 AI messages/day, full document drafting.</div>
         <ul class="plan-features">
           <li data-i18n="plan2.f1">100 AI messages / day</li>
           <li data-i18n="plan2.f2">3 active cases</li>
@@ -2237,7 +2207,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div style="text-align:center">
       <div class="section-label" style="justify-content:center" data-i18n="pricing.label">PRICING</div>
       <h2 data-i18n-html="pricing.title.v2">Clear price. <em>Cancel anytime.</em></h2>
-      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.sub.v2">14-day full refund under EU consumer law. No card required to start.</p>
+      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.sub.v2">14-day full refund — before your first AI message. No card required to start.</p>
     </div>
 
     <!-- Optional launch promo banner — appended/shown by JS only when banner copy + active window are set. -->
@@ -2300,7 +2270,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <span data-i18n="plan2.annual_hint">Switch to annual to save €79.89/year (33%)</span>
         </div>
 
-        <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. Unlimited AI, full document drafting.</div>
+        <div class="plan-desc" data-i18n="plan2.desc">Daily legal help for you and your family. 100 AI messages/day, full document drafting.</div>
         <ul class="plan-features">
           <li data-i18n="plan2.f1">100 AI messages / day</li>
           <li data-i18n="plan2.f2">3 active cases</li>
@@ -2358,7 +2328,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="pricing-trust-row" aria-label="Guarantees">
       <div class="pricing-trust-badge">
         <span class="pricing-trust-icon" aria-hidden="true">✓</span>
-        <span data-i18n="pricing.trust.refund">14-day money-back — EU consumer law</span>
+        <span data-i18n="pricing.trust.refund">14-day refund — before your first AI message</span>
       </div>
       <div class="pricing-trust-badge">
         <span class="pricing-trust-icon" aria-hidden="true">✓</span>
@@ -2406,7 +2376,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     </div>
 
     <p class="pricing-note">
-      <span data-i18n="pricing.note.v2">Cancel anytime. 14-day EU refund. Save 30–33% with annual billing.</span>
+      <span data-i18n="pricing.note.v2">Cancel anytime. 14-day refund before first AI message. Save 30–33% with annual billing.</span>
     </p>
   </div>
 </section>
@@ -2432,7 +2402,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <h2 data-i18n-html="cta.title">Don't face your rights <em>alone</em>.</h2>
     <p data-i18n="cta.sub">Ask the first question. Cited answer in 30 seconds. No card required.</p>
     <a class="btn btn-primary" href="/app.html" data-i18n="cta.btn">Open the chat →</a>
-    <span class="micro" data-i18n="cta.micro">7 messages free · cancel anytime · EU 14-day refund</span>
+    <span class="micro" data-i18n="cta.micro">7 messages free · cancel anytime · 14-day refund before first AI message</span>
   </div>
 </section>
 
@@ -2644,10 +2614,10 @@ const I18N = {
     'compare.sub': 'A lawyer is the right answer for court. For the other 95% of legal life, there\'s a faster way.',
     'compare.us_tag': 'AI legal assistant',
     'compare.u1': 'Answer in 30 seconds, 24/7',
-    'compare.u2': 'From €19.99/month — unlimited Pro',
+    'compare.u2': 'From €19.99/month — Pro plan, 100 messages/day',
     'compare.u3': '17 languages — incl. Russian, Ukrainian',
     'compare.u4': 'Every claim cites the law',
-    'compare.u5': 'Cancel anytime — EU 14-day refund',
+    'compare.u5': 'Cancel anytime — 14-day refund before first AI message',
     'compare.cta_us': 'Start free',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ hour',
     'compare.us_price_note': 'First 7 messages free · Cancel anytime',
@@ -2665,15 +2635,15 @@ const I18N = {
     'compare.year_save_sub': 'Every single year.',
     'pricing.label': 'PRICING', 'pricing.title': 'Clear price. No <em>surprises</em>.',
     'pricing.title.v2': 'Clear price. <em>Cancel anytime.</em>',
-    'pricing.sub': 'Cancel anytime. Full refund within the first 14 days under EU consumer law.',
-    'pricing.sub.v2': '14-day full refund under EU consumer law. No card required to start.',
+    'pricing.sub': 'Cancel anytime. Full refund within 14 days if you haven\'t sent your first AI message yet.',
+    'pricing.sub.v2': '14-day full refund — before your first AI message. No card required to start.',
     'pricing.anchor.them_label': 'A lawyer charges', 'pricing.anchor.us_label': 'Advocat costs',
     'pricing.anchor.per_hour': '/ hour', 'pricing.anchor.per_month': '/ month',
     'pricing.anchor.note': 'One hour with a lawyer costs more than a year of Advocat.',
     'pricing.promo.text': 'Launch month: first month 50% off — code <strong>LAUNCH50</strong>',
     'billing.monthly': 'Monthly', 'billing.annual': 'Annual',
     'billing.savings_pill': 'Save up to 33%',
-    'pricing.trust.refund': '14-day money-back — EU consumer law',
+    'pricing.trust.refund': '14-day refund — before your first AI message',
     'pricing.trust.cancel': 'Cancel anytime, one click',
     'pricing.trust.gdpr': 'GDPR · EU servers (Frankfurt)',
     'pricing.trust.nocard': 'No card to start',
@@ -2690,7 +2660,7 @@ const I18N = {
     'plan1.f1': '7 AI messages total', 'plan1.f2': '1 active case', 'plan1.f3': 'Document scanning (3 docs)', 'plan1.f4': 'Cited sources from EU & EE law', 'plan1.f5': 'No card required',
     'plan1.cta': 'Start free',
     'plan2.badge': 'Most popular', 'plan2.eyebrow': 'For families', 'plan2.name': 'Pro', 'plan2.per': '/ month', 'plan2.per_eff_month': '/ month, billed yearly', 'plan2.annual': 'or €159.99/year — save 33%', 'plan2.annual_full': '€159.99 per year — save €79.89 (33% off)', 'plan2.annual_hint': 'Switch to annual to save €79.89/year (33%)',
-    'plan2.desc': 'Daily legal help for you and your family. Unlimited AI, full document drafting.',
+    'plan2.desc': 'Daily legal help for you and your family. 100 AI messages/day, full document drafting.',
     'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
     'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
     'plan2.cta': 'Start now',
@@ -2700,14 +2670,14 @@ const I18N = {
     'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
     'plan3.cta': 'Choose Premium',
     'pricing.note': 'Cancel anytime. Save 30-33% with annual billing.',
-    'pricing.note.v2': 'Cancel anytime. 14-day EU refund. Save 30–33% with annual billing.',
+    'pricing.note.v2': 'Cancel anytime. 14-day refund before first AI message. Save 30–33% with annual billing.',
     'faq.label': 'FAQ', 'faq.title': 'Honest <em>answers</em> to common questions.',
     'faq.items': [
       { q: 'Is this real legal advice?', a: 'No — it is legal information. Advocat explains what the law says, cites the specific statute, and drafts letters and complaints for you. A licensed attorney still represents you in court. For most everyday situations (contracts, deposits, deadlines, employer disputes) the information layer is what people actually need — and that is where a lawyer would otherwise charge €250–600/hour. Advocat is built to save you those billable hours.' },
       { q: 'What if the AI is wrong?', a: 'AI can make mistakes — we never hide that. Every Advocat answer cites the specific statute (e.g. VÕS § 308 lg 3) so you can verify it on Riigi Teataja yourself. We also publish our quality scorecard publicly — see /scorecard for current accuracy numbers across Estonian and EU law domains. For court filings or binding opinions, always have a licensed attorney review the draft.' },
       { q: 'Is my data safe?', a: 'Yes. Encrypted at rest, hosted on EU servers (Frankfurt). Conversations are never used to train AI models. We are GDPR-aligned and follow strict data minimisation. You can delete your data at any time.' },
       { q: 'Which languages do you support?', a: '17 languages, including Finnish, Estonian, Russian, Swedish, Ukrainian, English, German, French, Spanish, Italian, Latvian, Lithuanian, Polish, Arabic, Persian, Turkish, and Romanian. You can ask in one language and request the answer or draft letter in another — e.g. ask in Russian, receive an Estonian formal letter ready to send.' },
-      { q: 'Can I get a refund?', a: 'Yes. Cancel anytime in one click — no questions. Under EU consumer law, you have 14 days from purchase to get a full refund. After that, your subscription stays active until the end of the billing period. Need help? Write to support@advocat.ee.' },
+      { q: 'Can I get a refund?', a: 'Yes. Cancel anytime in one click — no questions. You can get a full refund within 14 days of purchase, provided you haven\'t yet sent your first AI message (under EU law, sending the first AI message constitutes the start of an immediately performed digital service and waives the 14-day withdrawal right per Art 16(m) CRD). After that, your subscription stays active until the end of the billing period. Need help? Write to support@advocat.ee.' },
       { q: 'Why is this better than ChatGPT?', a: 'Advocat is specialised for Estonian and EU law: it cites specific statutes (e.g. VÕS § 308), remembers your case across sessions, and can write formal letters in the right legal format. ChatGPT can hallucinate fake citations — Advocat cites real ones from Riigi Teataja.' },
       { q: 'Are these documents legally binding?', a: 'The documents Advocat drafts are templates and starting points. They become legally meaningful when you sign and send them. For documents going to court, we strongly recommend a licensed attorney review them first. Advocat is your draft author, not your lawyer in court.' },
       { q: 'Will Advocat represent me in court?', a: 'No. Advocat is for preparation, not representation. We help you understand your rights, write to the other party, and prepare your case file. For appearing in court itself, you need a licensed Estonian advocate (vandeadvokaat). We can help you find one when needed.' },
@@ -2716,7 +2686,7 @@ const I18N = {
     'cta.title': "Don't face your rights <em>alone</em>.",
     'cta.sub': 'Ask the first question. Cited answer in 30 seconds. No card required.',
     'cta.btn': 'Open the chat →',
-    'cta.micro': '7 messages free · cancel anytime · EU 14-day refund',
+    'cta.micro': '7 messages free · cancel anytime · 14-day refund before first AI message',
     'disclaimer.full': 'Advocat provides legal information, not legal advice. This service does not replace a licensed attorney. For court representation, judgments, or binding legal opinions, consult a qualified lawyer. Information may vary by jurisdiction.',
     'foot.about': 'AI-powered legal assistant for Estonia and the EU. Built in Tallinn by Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
@@ -2768,10 +2738,10 @@ const I18N = {
     'compare.sub': 'Kohtusaalis on advokaat õige valik. Ülejäänud 95% igapäevaõigusest saab kiiremini lahendada.',
     'compare.us_tag': 'AI-ÕIGUSABI',
     'compare.u1': 'Vastus 30 sekundiga, 24/7',
-    'compare.u2': 'Alates €19.99/kuus — Pro piiranguteta',
+    'compare.u2': 'Alates €19.99/kuus — Pro plaan, 100 sõnumit päevas',
     'compare.u3': '17 keelt — sh vene ja ukraina',
     'compare.u4': 'Iga väite taga seaduseviide',
-    'compare.u5': 'Lõpetad, kui tahad — 14 päeva tagasimakse EL-i õiguse järgi',
+    'compare.u5': 'Lõpetad, kui tahad — 14-päevane tagasimakse enne esimese AI-sõnumi saatmist',
     'compare.cta_us': 'Proovi tasuta',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ tund',
     'compare.us_price_note': 'Esimesed 7 sõnumit tasuta · Lõpeta millal tahad',
@@ -2788,13 +2758,13 @@ const I18N = {
     'compare.year_save': 'Sinu sääst',
     'compare.year_save_sub': 'Iga aasta uuesti.',
     'pricing.label': 'HINNAKIRI', 'pricing.title': 'Aus hind. Ilma <em>peenkirjata</em>.',
-    'pricing.sub': 'Lõpeta millal tahad. EL-i tarbijakaitse järgi saad esimese 14 päeva jooksul raha täies mahus tagasi.',
+    'pricing.sub': 'Lõpeta millal tahad. Täielik tagasimakse 14 päeva jooksul, kui sa pole veel esimest AI-sõnumit saatnud.',
     'plan1.eyebrow': 'Tutvumiseks', 'plan1.name': 'Tasuta', 'plan1.per': '/ alati',
     'plan1.desc': 'Pane Advocat proovile. Saad esimese seadusepõhise vastuse, enne kui maksad sentigi.',
     'plan1.f1': '7 AI-sõnumit kokku', 'plan1.f2': '1 aktiivne juhtum', 'plan1.f3': 'Dokumendiskann (3 faili)', 'plan1.f4': 'Viited Eesti ja EL õigusele', 'plan1.f5': 'Pangakaarti pole vaja',
     'plan1.cta': 'Alusta tasuta',
     'plan2.badge': 'POPULAARSEIM', 'plan2.eyebrow': 'Perele', 'plan2.name': 'Pro', 'plan2.per': '/ kuus', 'plan2.annual': 'või €159.99 aastas — säästad 33%',
-    'plan2.desc': 'Igapäevane õigustugi sulle ja perele. Piiranguteta vestlused, dokumentide koostamine algusest lõpuni.',
+    'plan2.desc': 'Igapäevane õigustugi sulle ja perele. 100 AI-sõnumit päevas, dokumentide koostamine algusest lõpuni.',
     'plan2.f1': '100 AI-sõnumit päevas', 'plan2.f2': '3 aktiivset juhtumit', 'plan2.f3': 'Dokumendiskann (20 faili)',
     'plan2.f4': 'Kirjade ja kaebuste täisvormistus', 'plan2.f5': 'Häälsisestus', 'plan2.f6': 'Veebiotsing värske kohtupraktika jaoks',
     'plan2.cta': 'Alusta kohe',
@@ -2804,16 +2774,16 @@ const I18N = {
     'plan3.f4': 'Prioriteetne järjekord', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirjade ja dokumentide eksport',
     'plan3.cta': 'Vali Premium',
     'pricing.note': 'Lõpeta millal tahad. Aastamaksuga säästad 30-33%.',
-    'pricing.note.v2': 'Lõpeta millal tahad. 14-päevane EL tagasimakse. Aastamaksuga säästad 30–33%.',
+    'pricing.note.v2': 'Lõpeta millal tahad. 14-päevane tagasimakse enne esimese AI-sõnumi saatmist. Aastamaksuga säästad 30–33%.',
     'pricing.title.v2': 'Selge hind. <em>Lõpeta millal tahad.</em>',
-    'pricing.sub.v2': '14-päevane täielik tagasimakse EL-i tarbijaõiguse järgi. Pangakaarti pole vaja, et alustada.',
+    'pricing.sub.v2': '14-päevane täielik tagasimakse — enne esimese AI-sõnumi saatmist. Pangakaarti pole vaja, et alustada.',
     'pricing.anchor.them_label': 'Advokaat võtab', 'pricing.anchor.us_label': 'Advocat maksab',
     'pricing.anchor.per_hour': '/ tund', 'pricing.anchor.per_month': '/ kuus',
     'pricing.anchor.note': 'Üks tund advokaadiga maksab rohkem kui aasta Advocatiga.',
     'pricing.promo.text': 'Avamiskuu: esimene kuu 50% soodsamalt — kood <strong>LAUNCH50</strong>',
     'billing.monthly': 'Kuumakse', 'billing.annual': 'Aastamakse',
     'billing.savings_pill': 'Säästa kuni 33%',
-    'pricing.trust.refund': '14-päevane raha tagasi — EL-i tarbijaõigus',
+    'pricing.trust.refund': '14-päevane tagasimakse — enne esimese AI-sõnumi saatmist',
     'pricing.trust.cancel': 'Lõpeta millal tahad, ühe klikiga',
     'pricing.trust.gdpr': 'GDPR · EL-i serverid (Frankfurt)',
     'pricing.trust.nocard': 'Pangakaarti pole vaja',
@@ -2832,7 +2802,7 @@ const I18N = {
       { q: 'Kas see on üldse seaduslik? Kas AI-d tohib õigusasjades kasutada?', a: 'Jah. Advocat pakub õigusinfot — selgitab seadusi ja aitab kirju koostada. Kohtusaalis vandeadvokaati ta ei asenda, küll aga aitab olukorrast aru saada ja esimese kirja ära saata. Sama loogika nagu Riigi Teataja lugemisel: seadusega tutvumine ja selle järgi tegutsemine on igaühe õigus.' },
       { q: 'Kas mu andmed on kaitstud?', a: 'Jah. Andmed liiguvad krüpteeritult ja püsivad EL-i serverites Frankfurdis. Sinu vestlusi ei kasutata kunagi mudeli treenimiseks. Töötame GDPR-i järgi ja kogume ainult seda, mis on hädavajalik. Oma andmed saad ühe klikiga kustutada.' },
       { q: 'Mille poolest see ChatGPT-st erineb?', a: 'Advocat on häälestatud Eesti ja EL-i õigusele: viitab konkreetsetele sätetele (nt VÕS § 308), peab sinu juhtumit meeles ka järgmisel külastusel ja oskab kirjutada kirju õiges juriidilises vormis. Kus ChatGPT võib viite ise välja mõelda, seal Advocat tugineb Riigi Teataja kehtivale tekstile.' },
-      { q: 'Kas saan raha tagasi?', a: 'Jah. Tellimuse lõpetad ühe klikiga, põhjust küsimata. EL-i tarbijakaitse seaduse järgi on sul ostust 14 päeva, mille jooksul saad raha täies mahus tagasi. Pärast seda jookseb tellimus arveldusperioodi lõpuni. Vajad abi? Kirjuta support@advocat.ee.' },
+      { q: 'Kas saan raha tagasi?', a: 'Jah. Tellimuse lõpetad ühe klikiga, põhjust küsimata. Täielik tagasimakse 14 päeva jooksul on võimalik, kui sa pole veel oma esimest AI-sõnumit saatnud (EL-i õiguse järgi tähendab esimese AI-sõnumi saatmine kohese digiteenuse algust ja sellega kaotab tarbija 14-päevase taganemisõiguse — CRD art 16(m)). Pärast seda jookseb tellimus arveldusperioodi lõpuni. Vajad abi? Kirjuta support@advocat.ee.' },
       { q: 'Kas need dokumendid on juriidiliselt siduvad?', a: 'Advocati koostatud dokumendid on mustandid — õigusliku jõu saavad nad siis, kui sa allkirjastad ja saadad ära. Kohtumenetlusse minevaid pabereid soovitame tungivalt enne esitamist vandeadvokaadiga üle vaadata. Advocat on sinu mustandi autor, mitte sinu kohtuesindaja.' },
       { q: 'Kas Advocat esindab mind kohtus?', a: 'Ei. Advocat aitab asja ette valmistada, kohtus aga ta sind ei esinda. Aitame õigustest aru saada, vastaspoolele kirjutada ja toimikut kokku panna. Kohtuistungiks on vaja Eesti vandeadvokaati — vajadusel suuname sind sobiva büroo juurde.' },
       { q: 'Kes saadab kirja?', a: 'Sina. Iga kiri vajab sinu kinnitust modaalaknas enne saatmist. Saadetakse sinu Gmaili kontolt (kui ühendatud) või meie teenuse kaudu allkirjaga \'sinu nimel\'. AI ei saada midagi iseseisvalt.' },
@@ -2840,7 +2810,7 @@ const I18N = {
     'cta.title': 'Ära jää oma <em>murega</em> üksi.',
     'cta.sub': 'Esita esimene küsimus. Seaduseviidetega vastus 30 sekundiga. Pangakaarti pole vaja.',
     'cta.btn': 'Ava vestlus →',
-    'cta.micro': '7 sõnumit tasuta · lõpeta ühe klikiga · 14 päeva tagasimakse EL-i õiguse järgi',
+    'cta.micro': '7 sõnumit tasuta · lõpeta ühe klikiga · 14-päevane tagasimakse enne esimese AI-sõnumi saatmist',
     'disclaimer.full': 'Advocat annab õigusinfot, mitte õigusnõu. Teenus ei asenda vandeadvokaati. Kohtus esindamiseks, ametlike kohtuotsuste või siduvate õigusarvamuste saamiseks pöördu kvalifitseeritud juristi poole. Info võib jurisdiktsiooniti erineda.',
     'foot.about': 'AI-õigusabi Eesti ja EL-i jaoks. Tehtud Tallinnas, Vorantis OÜ.',
     'foot.powered': 'Toetab Claude (Anthropic)',
@@ -2892,10 +2862,10 @@ const I18N = {
     'compare.sub': 'В суде адвокат — правильный ответ. Для остальных 95% юридической жизни есть способ быстрее.',
     'compare.us_tag': 'AI-ассистент',
     'compare.u1': 'Ответ за 30 секунд, 24/7',
-    'compare.u2': 'От €19.99/мес — безлимит Pro',
+    'compare.u2': 'От €19.99/мес — Pro, 100 сообщений в день',
     'compare.u3': '17 языков — вкл. русский и украинский',
     'compare.u4': 'Каждое утверждение со ссылкой на закон',
-    'compare.u5': 'Отмена в любой момент — возврат за 14 дней по закону ЕС',
+    'compare.u5': 'Отмена в любой момент — возврат за 14 дней до отправки первого сообщения ИИ',
     'compare.cta_us': 'Попробовать бесплатно',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ час',
     'compare.us_price_note': 'Первые 7 сообщений бесплатно · Отмена в любой момент',
@@ -2912,13 +2882,13 @@ const I18N = {
     'compare.year_save': 'Вы экономите',
     'compare.year_save_sub': 'Каждый год.',
     'pricing.label': 'ТАРИФЫ', 'pricing.title': 'Прозрачная цена. Без <em>сюрпризов</em>.',
-    'pricing.sub': 'Отмени в любой момент. По закону ЕС — полный возврат в первые 14 дней.',
+    'pricing.sub': 'Отмени в любой момент. Полный возврат в течение 14 дней, если ещё не отправил первое сообщение ИИ.',
     'plan1.eyebrow': 'Старт', 'plan1.name': 'Бесплатно', 'plan1.per': '/ навсегда',
     'plan1.desc': 'Попробуй систему. Получи реальный ответ со ссылками на закон, прежде чем решать.',
     'plan1.f1': '7 AI-сообщений всего', 'plan1.f2': '1 активное дело', 'plan1.f3': 'Сканирование документов (3 шт)', 'plan1.f4': 'Ссылки на EE и ЕС законы', 'plan1.f5': 'Без карты',
     'plan1.cta': 'Начать',
     'plan2.badge': 'Популярный', 'plan2.eyebrow': 'Для семьи', 'plan2.name': 'Pro', 'plan2.per': '/ месяц', 'plan2.annual': 'или €159.99/год — экономия 33%',
-    'plan2.desc': 'Ежедневная юридическая помощь тебе и семье. Безлимит ИИ, полное составление документов.',
+    'plan2.desc': 'Ежедневная юридическая помощь тебе и семье. 100 сообщений ИИ в день, полное составление документов.',
     'plan2.f1': '100 AI-сообщений в день', 'plan2.f2': '3 активных дела', 'plan2.f3': 'Сканирование документов (20 шт)',
     'plan2.f4': 'Полное составление документов (письма, жалобы)', 'plan2.f5': 'Голосовой ввод', 'plan2.f6': 'Веб-поиск свежего права',
     'plan2.cta': 'Начать сейчас',
@@ -2928,16 +2898,16 @@ const I18N = {
     'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Экспорт писем и документов',
     'plan3.cta': 'Выбрать Premium',
     'pricing.note': 'Отмена в любой момент. Экономия 30-33% с годовой оплатой.',
-    'pricing.note.v2': 'Отмена в любой момент. Возврат по закону ЕС в течение 14 дней. Экономия 30–33% с годовой оплатой.',
+    'pricing.note.v2': 'Отмена в любой момент. Возврат за 14 дней до отправки первого сообщения ИИ. Экономия 30–33% с годовой оплатой.',
     'pricing.title.v2': 'Прозрачная цена. <em>Отмена в один клик.</em>',
-    'pricing.sub.v2': 'Полный возврат в первые 14 дней по закону ЕС. Карта не нужна, чтобы начать.',
+    'pricing.sub.v2': 'Полный возврат в течение 14 дней — до отправки первого сообщения ИИ. Карта не нужна, чтобы начать.',
     'pricing.anchor.them_label': 'Адвокат берёт', 'pricing.anchor.us_label': 'Advocat стоит',
     'pricing.anchor.per_hour': '/ час', 'pricing.anchor.per_month': '/ месяц',
     'pricing.anchor.note': 'Час с адвокатом стоит больше, чем год Advocat.',
     'pricing.promo.text': 'Месяц запуска: первый месяц -50% — код <strong>LAUNCH50</strong>',
     'billing.monthly': 'Помесячно', 'billing.annual': 'Годовая',
     'billing.savings_pill': 'Экономия до 33%',
-    'pricing.trust.refund': '14 дней возврата — закон ЕС',
+    'pricing.trust.refund': '14 дней возврата — до отправки первого сообщения ИИ',
     'pricing.trust.cancel': 'Отмена в один клик',
     'pricing.trust.gdpr': 'GDPR · серверы ЕС (Франкфурт)',
     'pricing.trust.nocard': 'Карта не нужна',
@@ -2956,7 +2926,7 @@ const I18N = {
       { q: 'Это законно? Можно ли вообще использовать ИИ для юридических вопросов?', a: 'Да. Advocat — это сервис правовой информации: объясняет законы и помогает составлять документы. Он не заменяет лицензированного адвоката в суде, но для понимания ситуации и написания писем подходит. Так же, как читать юридические статьи в интернете законно, законно и пользоваться инструментом, который делает то же самое за тебя.' },
       { q: 'Безопасны ли мои данные?', a: 'Да. Шифрование, хранение на серверах ЕС (Франкфурт). Разговоры никогда не используются для обучения моделей. Соблюдаем GDPR и принцип минимизации данных. Свои данные можно удалить в любой момент.' },
       { q: 'Чем это лучше ChatGPT?', a: 'Advocat специализирован на эстонском и европейском праве: цитирует конкретные статьи (например, VÕS § 308), помнит твоё дело между сессиями и умеет писать официальные письма в правильном юридическом формате. ChatGPT может выдумывать ссылки — Advocat ссылается на реальные источники из Riigi Teataja.' },
-      { q: 'Можно ли вернуть деньги?', a: 'Да. Отмена в один клик в любое время — без лишних вопросов. По закону ЕС о защите прав потребителей у тебя есть 14 дней с момента покупки на полный возврат. После этого подписка действует до конца расчётного периода. Нужна помощь? Напиши на support@advocat.ee.' },
+      { q: 'Можно ли вернуть деньги?', a: 'Да. Отмена в один клик в любое время — без лишних вопросов. Полный возврат в течение 14 дней с момента покупки доступен, если ты ещё не отправил первое сообщение ИИ (по праву ЕС отправка первого сообщения ИИ означает начало немедленно исполняемой цифровой услуги и приводит к отказу от 14-дневного права на возврат — ст. 16(m) Директивы о правах потребителей). После этого подписка действует до конца расчётного периода. Нужна помощь? Напиши на support@advocat.ee.' },
       { q: 'Эти документы юридически обязательны?', a: 'Документы, которые составляет Advocat, — это шаблоны и отправные точки. Они становятся юридически значимыми, когда ты их подписываешь и отправляешь. Документы для суда настоятельно рекомендуем показать лицензированному адвокату. Advocat — автор твоего черновика, а не твой представитель в суде.' },
       { q: 'Будет ли Advocat представлять меня в суде?', a: 'Нет. Advocat — для подготовки, а не для представительства. Помогаем понять права, написать другой стороне и подготовить материалы дела. Для выступления в суде нужен лицензированный эстонский присяжный адвокат (vandeadvokaat). При необходимости поможем найти.' },
       { q: 'Кто на самом деле отправляет письмо?', a: 'Вы. Каждое письмо требует вашего подтверждения в модальном окне перед отправкой. Уходит с вашего Gmail (если подключен) или через наш сервис с подписью \'от имени [имя]\'. AI ничего не отправляет автономно.' },
@@ -2964,7 +2934,7 @@ const I18N = {
     'cta.title': 'Не оставайся <em>один</em> со своими правами.',
     'cta.sub': 'Задай первый вопрос. Ответ со ссылками на закон за 30 секунд. Без карты.',
     'cta.btn': 'Открыть чат →',
-    'cta.micro': '7 сообщений бесплатно · отмена в один клик · возврат за 14 дней по закону ЕС',
+    'cta.micro': '7 сообщений бесплатно · отмена в один клик · возврат за 14 дней до первого сообщения ИИ',
     'disclaimer.full': 'Advocat предоставляет правовую информацию, а не юридическую консультацию. Сервис не заменяет лицензированного адвоката. Для представления в суде, судебных решений или обязывающих юридических заключений обратитесь к квалифицированному юристу. Информация может различаться в зависимости от юрисдикции.',
     'foot.about': 'Юридический ассистент на ИИ для Эстонии и ЕС. Сделано в Таллинне, Vorantis OÜ.',
     'foot.powered': 'На основе Claude (Anthropic)',
@@ -3009,10 +2979,10 @@ const I18N = {
     'compare.sub': 'У суді адвокат — правильна відповідь. Для решти 95% юридичного життя є швидший спосіб.',
     'compare.us_tag': 'AI-асистент',
     'compare.u1': 'Відповідь за 30 секунд, 24/7',
-    'compare.u2': 'Від €19.99/міс — безліміт Pro',
+    'compare.u2': 'Від €19.99/міс — Pro, 100 повідомлень на день',
     'compare.u3': '17 мов — вкл. українську та російську',
     'compare.u4': 'Кожне твердження з посиланням на закон',
-    'compare.u5': 'Скасування будь-коли — повернення за 14 днів за законом ЄС',
+    'compare.u5': 'Скасування будь-коли — повернення за 14 днів до першого повідомлення ШІ',
     'compare.cta_us': 'Спробувати безкоштовно',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ год',
     'compare.us_price_note': 'Перші 7 повідомлень безкоштовно · Скасування будь-коли',
@@ -3029,13 +2999,13 @@ const I18N = {
     'compare.year_save': 'Ви економите',
     'compare.year_save_sub': 'Щороку.',
     'pricing.label': 'ТАРИФИ', 'pricing.title': 'Прозора ціна. Без <em>сюрпризів</em>.',
-    'pricing.sub': 'Скасуй будь-коли. За законом ЄС — повне повернення в перші 14 днів.',
+    'pricing.sub': 'Скасуй будь-коли. Повне повернення протягом 14 днів, якщо ще не надсилав перше повідомлення ШІ.',
     'plan1.eyebrow': 'Старт', 'plan1.name': 'Безкоштовно', 'plan1.per': '/ назавжди',
     'plan1.desc': 'Спробуй систему. Отримай реальну відповідь із посиланнями на закон.',
     'plan1.f1': '7 AI-повідомлень загалом', 'plan1.f2': '1 активна справа', 'plan1.f3': 'Сканування документів (3 шт)', 'plan1.f4': 'Посилання на EE та ЄС закони', 'plan1.f5': 'Без картки',
     'plan1.cta': 'Почати',
     'plan2.badge': 'Популярний', 'plan2.eyebrow': 'Для сім\'ї', 'plan2.name': 'Pro', 'plan2.per': '/ місяць', 'plan2.annual': 'або €159.99/рік — економія 33%',
-    'plan2.desc': 'Щоденна юридична допомога тобі та родині. Безліміт ШІ, повне складання документів.',
+    'plan2.desc': 'Щоденна юридична допомога тобі та родині. 100 повідомлень ШІ на день, повне складання документів.',
     'plan2.f1': '100 AI-повідомлень на день', 'plan2.f2': '3 активні справи', 'plan2.f3': 'Сканування документів (20 шт)',
     'plan2.f4': 'Повне складання документів', 'plan2.f5': 'Голосовий ввід', 'plan2.f6': 'Веб-пошук свіжого права',
     'plan2.cta': 'Почати зараз',
@@ -3050,7 +3020,7 @@ const I18N = {
       { q: 'Це законно? Чи можна використовувати ШІ для юридичних питань?', a: 'Так. Advocat — це сервіс правової інформації: пояснює закони і допомагає складати документи. Він не замінює ліцензованого адвоката в суді, але для розуміння ситуації та написання листів підходить. Так само, як читати юридичні статті в інтернеті законно, законно і користуватися інструментом, який робить те саме за тебе.' },
       { q: 'Чи безпечні мої дані?', a: 'Так. Шифрування, зберігання на серверах ЄС (Франкфурт). Розмови ніколи не використовуються для навчання моделей. Дотримуємося GDPR і принципу мінімізації даних. Свої дані можна видалити в будь-який момент.' },
       { q: 'Чим це краще за ChatGPT?', a: 'Advocat спеціалізований на естонському та європейському праві: цитує конкретні статті (наприклад, VÕS § 308), пам\'ятає твою справу між сесіями, вміє писати офіційні листи у правильному юридичному форматі. ChatGPT може вигадувати посилання — Advocat посилається на реальні джерела з Riigi Teataja.' },
-      { q: 'Чи можна повернути гроші?', a: 'Так. Скасування в один клік будь-коли — без зайвих питань. За законом ЄС про захист прав споживачів у тебе є 14 днів від покупки на повне повернення. Після цього підписка діє до кінця розрахункового періоду. Потрібна допомога? Напиши на support@advocat.ee.' },
+      { q: 'Чи можна повернути гроші?', a: 'Так. Скасування в один клік будь-коли — без зайвих питань. Повне повернення протягом 14 днів від покупки можливе, якщо ти ще не надсилав перше повідомлення ШІ (за правом ЄС надсилання першого повідомлення ШІ означає початок негайно виконуваної цифрової послуги і призводить до відмови від 14-денного права на повернення — ст. 16(m) Директиви про права споживачів). Після цього підписка діє до кінця розрахункового періоду. Потрібна допомога? Напиши на support@advocat.ee.' },
       { q: 'Чи юридично обов\'язкові ці документи?', a: 'Документи, які складає Advocat, — це шаблони та відправні точки. Вони стають юридично значущими, коли ти їх підписуєш і надсилаєш. Документи для суду настійно рекомендуємо показати ліцензованому адвокату. Advocat — автор твоєї чернетки, а не твій представник у суді.' },
       { q: 'Чи представлятиме Advocat мене в суді?', a: 'Ні. Advocat — для підготовки, а не для представництва. Допомагаємо зрозуміти права, написати іншій стороні та підготувати матеріали справи. Для виступу в суді потрібен ліцензований естонський присяжний адвокат (vandeadvokaat). За потреби допоможемо знайти.' },
       { q: 'Хто насправді надсилає лист?', a: 'Ти. Кожен лист потребує твого підтвердження в модальному вікні перед надсиланням. Відправляється з твоєї Gmail (якщо під\'єднана) або через наш сервіс із підписом \'від імені [твоє ім\'я]\'. AI нічого не надсилає самостійно.' },
@@ -3058,7 +3028,7 @@ const I18N = {
     'cta.title': 'Не залишайся <em>сам</em> зі своїми правами.',
     'cta.sub': 'Постав перше питання. Відповідь із посиланнями на закон за 30 секунд. Без картки.',
     'cta.btn': 'Відкрити чат →',
-    'cta.micro': '7 повідомлень безкоштовно · скасування в один клік · повернення за 14 днів за законом ЄС',
+    'cta.micro': '7 повідомлень безкоштовно · скасування в один клік · повернення за 14 днів до першого повідомлення ШІ',
     'disclaimer.full': 'Advocat надає правову інформацію, а не юридичну консультацію. Сервіс не замінює ліцензованого адвоката. Для представництва в суді, судових рішень або обов\'язкових юридичних висновків зверніться до кваліфікованого юриста. Інформація може відрізнятися залежно від юрисдикції.',
     'foot.about': 'Юридичний асистент на ШІ для Естонії та ЄС. Створено в Таллінні, Vorantis OÜ.',
     'foot.powered': 'На основі Claude (Anthropic)',
@@ -3110,10 +3080,10 @@ const I18N = {
     'compare.sub': 'Oikeudessa asianajaja on oikea vastaus. Muille 95 %:lle lakiasioista — on nopeampi tapa.',
     'compare.us_tag': 'AI-lakiapu',
     'compare.u1': 'Vastaus 30 sekunnissa, 24/7',
-    'compare.u2': 'Alkaen €19.99/kk — rajaton Pro',
+    'compare.u2': 'Alkaen €19.99/kk — Pro, 100 viestiä päivässä',
     'compare.u3': '17 kieltä — ml. venäjä ja ukraina',
     'compare.u4': 'Jokainen väite lähteineen',
-    'compare.u5': 'Peruuta milloin tahansa — EU:n 14 pv:n palautusoikeus',
+    'compare.u5': 'Peruuta milloin tahansa — 14 pv:n palautus ennen ensimmäistä AI-viestiä',
     'compare.cta_us': 'Kokeile ilmaiseksi',
     'compare.us_price_num': '€0.49', 'compare.us_price_unit': '/ tunti',
     'compare.us_price_note': 'Ensimmäiset 7 viestiä ilmaiseksi · Peru milloin tahansa',
@@ -3130,13 +3100,13 @@ const I18N = {
     'compare.year_save': 'Säästät',
     'compare.year_save_sub': 'Joka vuosi.',
     'pricing.label': 'HINNAT', 'pricing.title': 'Selkeä hinta. Ei <em>yllätyksiä</em>.',
-    'pricing.sub': 'Peruuta milloin tahansa. EU-kuluttajalain mukaan täysi palautus 14 päivän sisällä.',
+    'pricing.sub': 'Peruuta milloin tahansa. Täysi palautus 14 päivän sisällä, jos et ole vielä lähettänyt ensimmäistä AI-viestiä.',
     'plan1.eyebrow': 'Aloitus', 'plan1.name': 'Ilmainen', 'plan1.per': '/ ikuisesti',
     'plan1.desc': 'Kokeile järjestelmää. Saat oikean vastauksen lähteineen ennen päätöstä.',
     'plan1.f1': '7 AI-viestiä yhteensä', 'plan1.f2': '1 aktiivinen tapaus', 'plan1.f3': 'Asiakirjojen skannaus (3 kpl)', 'plan1.f4': 'Lähteet EE & EU-laista', 'plan1.f5': 'Ei korttia',
     'plan1.cta': 'Aloita',
     'plan2.badge': 'Suosituin', 'plan2.eyebrow': 'Perheille', 'plan2.name': 'Pro', 'plan2.per': '/ kuukausi', 'plan2.annual': 'tai €159.99/vuosi — säästä 33%',
-    'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. Rajaton AI, täysi asiakirjojen laadinta.',
+    'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. 100 AI-viestiä päivässä, täysi asiakirjojen laadinta.',
     'plan2.f1': '100 AI-viestiä päivässä', 'plan2.f2': '3 aktiivista tapausta', 'plan2.f3': 'Asiakirjojen skannaus (20 kpl)',
     'plan2.f4': 'Täysi asiakirjojen laadinta', 'plan2.f5': 'Äänisyöte', 'plan2.f6': 'Verkkohaku tuoreesta laista',
     'plan2.cta': 'Aloita nyt',
@@ -3151,7 +3121,7 @@ const I18N = {
       { q: 'Onko tämä laillista? Voiko tekoälyä käyttää lakikysymyksiin?', a: 'Kyllä. Advocat on lakitiedotuspalvelu — selittää lakeja ja auttaa laatimaan asiakirjoja. Se ei korvaa lisensoitua asianajajaa oikeudessa, mutta tilanteen ymmärtämiseen ja kirjeiden kirjoittamiseen se toimii.' },
       { q: 'Ovatko tietoni turvassa?', a: 'Kyllä. Salattu, EU-palvelimilla (Frankfurt). Keskusteluja ei käytetä mallin koulutukseen. GDPR-yhteensopiva ja noudatamme tietojen minimointia.' },
       { q: 'Miksi tämä on parempi kuin ChatGPT?', a: 'Advocat on erikoistunut Viron ja EU:n lakiin: siteeraa konkreettisia pykäliä (esim. VÕS § 308), muistaa tapauksesi ja osaa kirjoittaa virallisia kirjeitä oikeassa juridisessa muodossa. ChatGPT voi keksiä viittauksia — Advocat siteeraa oikeita lähteitä Riigi Teatajasta.' },
-      { q: 'Saanko rahat takaisin?', a: 'Kyllä. Peruutus yhdellä klikkauksella milloin tahansa. EU-kuluttajalain mukaan sinulla on 14 päivää oston jälkeen täyteen palautukseen. Tarvitsetko apua? Kirjoita osoitteeseen support@advocat.ee.' },
+      { q: 'Saanko rahat takaisin?', a: 'Kyllä. Peruutus yhdellä klikkauksella milloin tahansa. Täysi palautus 14 päivän sisällä ostosta on mahdollinen, jos et ole vielä lähettänyt ensimmäistä AI-viestiäsi (EU-oikeuden mukaan ensimmäisen AI-viestin lähettäminen tarkoittaa välittömästi suoritettavan digipalvelun aloittamista ja luopumista 14 päivän peruutusoikeudesta — kuluttajansuojadirektiivin 16(m) artikla). Tarvitsetko apua? Kirjoita osoitteeseen support@advocat.ee.' },
       { q: 'Ovatko nämä asiakirjat juridisesti sitovia?', a: 'Advocatin laatimat asiakirjat ovat malleja ja lähtökohtia. Niistä tulee juridisesti merkityksellisiä, kun allekirjoitat ja lähetät ne. Oikeuteen meneville asiakirjoille suosittelemme vahvasti lisensoidun asianajajan tarkastusta.' },
       { q: 'Edustaako Advocat minua oikeudessa?', a: 'Ei. Advocat on valmistautumiseen, ei edustamiseen. Autamme ymmärtämään oikeuksiasi, kirjoittamaan toiselle osapuolelle ja kokoamaan asiakirjasi. Oikeudessa tarvitset lisensoidun virolaisen asianajajan.' },
       { q: 'Kuka oikeasti lähettää kirjeen?', a: 'Sinä. Jokainen sähköposti vaatii nimenomaisen vahvistuksesi modaali-ikkunassa ennen lähtöä. Lähetetään omasta Gmailistasi (jos yhdistetty) tai palvelumme kautta allekirjoituksella \'[nimesi] puolesta\'. Tekoäly ei koskaan lähetä itsenäisesti.' },
@@ -3159,7 +3129,7 @@ const I18N = {
     'cta.title': 'Älä jää oikeuksiesi kanssa <em>yksin</em>.',
     'cta.sub': 'Esitä ensimmäinen kysymys. Lähteistetty vastaus 30 sekunnissa. Ei korttia.',
     'cta.btn': 'Avaa chat →',
-    'cta.micro': '7 viestiä ilmaiseksi · peruutus milloin tahansa · EU:n 14 pv:n palautusoikeus',
+    'cta.micro': '7 viestiä ilmaiseksi · peruutus milloin tahansa · 14 pv:n palautus ennen ensimmäistä AI-viestiä',
     'disclaimer.full': 'Advocat tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. Tämä palvelu ei korvaa lisensoitua asianajajaa. Tuomioistuinedustusta, tuomioita tai sitovia oikeudellisia lausuntoja varten käänny pätevän juristin puoleen. Tiedot voivat vaihdella oikeudenkäyntialueittain.',
     'foot.about': 'Tekoälyyn perustuva lakiapu Virolle ja EU:lle. Tehty Tallinnassa, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
@@ -3204,10 +3174,10 @@ const I18N = {
     'compare.sub': 'Vor Gericht ist der Anwalt die richtige Wahl. Für die übrigen 95 % des Rechtsalltags gibt es einen schnelleren Weg.',
     'compare.us_tag': 'KI-RECHTSHILFE',
     'compare.u1': 'Antwort in 30 Sekunden, rund um die Uhr',
-    'compare.u2': 'Ab 19,99 €/Monat — Pro unbegrenzt',
+    'compare.u2': 'Ab 19,99 €/Monat — Pro, 100 Nachrichten pro Tag',
     'compare.u3': '17 Sprachen — inkl. Russisch und Ukrainisch',
     'compare.u4': 'Jede Aussage mit Gesetzesfundstelle',
-    'compare.u5': 'Jederzeit kündbar — 14-Tage-Widerruf nach EU-Recht',
+    'compare.u5': 'Jederzeit kündbar — 14-Tage-Rückerstattung vor der ersten KI-Nachricht',
     'compare.cta_us': 'Kostenlos starten',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ Stunde',
     'compare.us_price_note': 'Erste 7 Nachrichten gratis · Jederzeit kündbar',
@@ -3224,13 +3194,13 @@ const I18N = {
     'compare.year_save': 'Ihre Ersparnis',
     'compare.year_save_sub': 'Jedes Jahr aufs Neue.',
     'pricing.label': 'PREISE', 'pricing.title': 'Klarer Preis. Keine <em>Überraschungen</em>.',
-    'pricing.sub': 'Jederzeit kündbar. Nach EU-Verbraucherrecht volle Rückerstattung in den ersten 14 Tagen.',
+    'pricing.sub': 'Jederzeit kündbar. Volle Rückerstattung innerhalb von 14 Tagen, sofern Sie noch keine erste KI-Nachricht gesendet haben.',
     'plan1.eyebrow': 'Einstieg', 'plan1.name': 'Kostenlos', 'plan1.per': '/ für immer',
     'plan1.desc': 'Probieren Sie das System aus. Erhalten Sie eine echte Antwort mit Gesetzesfundstelle, bevor Sie sich entscheiden.',
     'plan1.f1': '7 KI-Nachrichten insgesamt', 'plan1.f2': '1 aktiver Fall', 'plan1.f3': 'Dokumentenscan (3 Stück)', 'plan1.f4': 'Quellen aus EE- und EU-Recht', 'plan1.f5': 'Keine Kreditkarte nötig',
     'plan1.cta': 'Kostenlos starten',
     'plan2.badge': 'Am beliebtesten', 'plan2.eyebrow': 'Für Familien', 'plan2.name': 'Pro', 'plan2.per': '/ Monat', 'plan2.annual': 'oder 159,99 €/Jahr — 33 % sparen',
-    'plan2.desc': 'Tägliche Rechtshilfe für Sie und Ihre Familie. Unbegrenzte KI, vollständige Dokumentenerstellung.',
+    'plan2.desc': 'Tägliche Rechtshilfe für Sie und Ihre Familie. 100 KI-Nachrichten pro Tag, vollständige Dokumentenerstellung.',
     'plan2.f1': '100 KI-Nachrichten / Tag', 'plan2.f2': '3 aktive Fälle', 'plan2.f3': 'Dokumentenscan (20 Stück)',
     'plan2.f4': 'Vollständige Dokumentenerstellung (Schreiben, Beschwerden)', 'plan2.f5': 'Spracheingabe', 'plan2.f6': 'Websuche nach aktueller Rechtsprechung',
     'plan2.cta': 'Jetzt starten',
@@ -3245,7 +3215,7 @@ const I18N = {
       { q: 'Ist das überhaupt erlaubt? Darf ich KI für Rechtsfragen nutzen?', a: 'Ja. Advocat ist ein Rechtsinformationsdienst — er erklärt Gesetze und hilft beim Aufsetzen von Schreiben. Er ersetzt keinen zugelassenen Rechtsanwalt vor Gericht, eignet sich aber sehr wohl, um Ihre Lage zu verstehen und ein erstes Schreiben zu verfassen. Genauso wie es zulässig ist, juristische Fachartikel im Internet zu lesen, ist es zulässig, ein Werkzeug zu nutzen, das Ihnen genau das abnimmt.' },
       { q: 'Sind meine Daten sicher?', a: 'Ja. Verschlüsselt gespeichert, gehostet auf EU-Servern in Frankfurt. Ihre Gespräche werden niemals zum Training von KI-Modellen verwendet. Wir arbeiten DSGVO-konform und nach dem Grundsatz der Datenminimierung. Sie können Ihre Daten jederzeit löschen.' },
       { q: 'Was unterscheidet das von ChatGPT?', a: 'Advocat ist auf estnisches und EU-Recht spezialisiert: zitiert konkrete Paragraphen (z. B. VÕS § 308), merkt sich Ihren Fall über Sitzungen hinweg und verfasst formelle Schreiben in der korrekten juristischen Form. ChatGPT erfindet manchmal Fundstellen — Advocat zitiert echte Quellen aus dem Riigi Teataja.' },
-      { q: 'Kann ich mein Geld zurückbekommen?', a: 'Ja. Kündigung jederzeit mit einem Klick — ohne Begründung. Nach EU-Verbraucherrecht haben Sie ab Kauf 14 Tage Widerrufsrecht mit voller Rückerstattung. Danach läuft Ihr Abo bis zum Ende des Abrechnungszeitraums weiter. Hilfe nötig? Schreiben Sie an support@advocat.ee.' },
+      { q: 'Kann ich mein Geld zurückbekommen?', a: 'Ja. Kündigung jederzeit mit einem Klick — ohne Begründung. Volle Rückerstattung innerhalb von 14 Tagen ab Kauf ist möglich, sofern Sie noch keine erste KI-Nachricht gesendet haben (nach EU-Recht gilt das Senden der ersten KI-Nachricht als Beginn einer sofort erbrachten digitalen Leistung und führt zum Verzicht auf das 14-tägige Widerrufsrecht — Art. 16(m) der Verbraucherrechte-Richtlinie). Danach läuft Ihr Abo bis zum Ende des Abrechnungszeitraums weiter. Hilfe nötig? Schreiben Sie an support@advocat.ee.' },
       { q: 'Sind diese Dokumente rechtlich verbindlich?', a: 'Die von Advocat erstellten Dokumente sind Vorlagen und Ausgangspunkte. Rechtliche Bedeutung erlangen sie erst, wenn Sie sie unterschreiben und versenden. Bei Schriftsätzen, die ans Gericht gehen, empfehlen wir dringend, sie vorher von einem zugelassenen Anwalt prüfen zu lassen. Advocat ist Ihr Entwurfsverfasser, nicht Ihr Anwalt vor Gericht.' },
       { q: 'Vertritt Advocat mich vor Gericht?', a: 'Nein. Advocat ist für die Vorbereitung da, nicht für die Vertretung. Wir helfen Ihnen, Ihre Rechte zu verstehen, der Gegenseite zu schreiben und Ihre Akte aufzubauen. Für die Verhandlung selbst brauchen Sie einen zugelassenen estnischen Rechtsanwalt (vandeadvokaat). Bei Bedarf vermitteln wir.' },
       { q: 'Wer verschickt das Schreiben tatsächlich?', a: 'Sie. Jede E-Mail bedarf vor dem Versand Ihrer ausdrücklichen Freigabe in einem Bestätigungsdialog. Versand erfolgt aus Ihrem Gmail-Konto (sofern verbunden) oder über unseren Dienst mit der Signatur \'im Auftrag von [Ihr Name]\'. Die KI versendet niemals eigenständig.' },
@@ -3253,7 +3223,7 @@ const I18N = {
     'cta.title': 'Stehen Sie nicht <em>allein</em> da.',
     'cta.sub': 'Stellen Sie die erste Frage. Antwort mit Gesetzesfundstelle in 30 Sekunden. Keine Karte nötig.',
     'cta.btn': 'Chat öffnen →',
-    'cta.micro': '7 Nachrichten gratis · jederzeit kündbar · 14-Tage-Widerruf nach EU-Recht',
+    'cta.micro': '7 Nachrichten gratis · jederzeit kündbar · 14-Tage-Rückerstattung vor der ersten KI-Nachricht',
     'disclaimer.full': 'Advocat bietet Rechtsinformation, keine Rechtsberatung. Dieser Dienst ersetzt keinen zugelassenen Rechtsanwalt. Für eine Vertretung vor Gericht, gerichtliche Entscheidungen oder verbindliche Rechtsgutachten wenden Sie sich an einen qualifizierten Juristen. Die Informationen können je nach Rechtsordnung abweichen.',
     'foot.about': 'KI-gestützte Rechtshilfe für Estland und die EU. Entwickelt in Tallinn von Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
@@ -3298,10 +3268,10 @@ const I18N = {
     'compare.sub': 'Au tribunal, l\'avocat est la bonne réponse. Pour les 95 % restants de la vie juridique, il existe une voie plus rapide.',
     'compare.us_tag': 'AIDE JURIDIQUE IA',
     'compare.u1': 'Réponse en 30 secondes, 24h/24',
-    'compare.u2': 'À partir de 19,99 €/mois — Pro illimité',
+    'compare.u2': 'À partir de 19,99 €/mois — Pro, 100 messages/jour',
     'compare.u3': '17 langues — dont russe et ukrainien',
     'compare.u4': 'Chaque affirmation avec sa source légale',
-    'compare.u5': 'Résiliation à tout moment — remboursement 14 jours selon le droit UE',
+    'compare.u5': 'Résiliation à tout moment — remboursement 14 jours avant le premier message IA',
     'compare.cta_us': 'Commencer gratuitement',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ heure',
     'compare.us_price_note': 'Les 7 premiers messages gratuits · Résiliable à tout moment',
@@ -3318,13 +3288,13 @@ const I18N = {
     'compare.year_save': 'Vous économisez',
     'compare.year_save_sub': 'Chaque année.',
     'pricing.label': 'TARIFS', 'pricing.title': 'Prix clair. Sans <em>surprise</em>.',
-    'pricing.sub': 'Résiliable à tout moment. Selon le droit de la consommation UE, remboursement intégral pendant les 14 premiers jours.',
+    'pricing.sub': 'Résiliable à tout moment. Remboursement intégral dans les 14 jours, tant que vous n\'avez pas envoyé votre premier message IA.',
     'plan1.eyebrow': 'Découverte', 'plan1.name': 'Gratuit', 'plan1.per': '/ pour toujours',
     'plan1.desc': 'Essayez le service. Obtenez une vraie réponse avec sources citées avant de décider.',
     'plan1.f1': '7 messages IA au total', 'plan1.f2': '1 dossier actif', 'plan1.f3': 'Lecture de documents (3 fichiers)', 'plan1.f4': 'Sources du droit estonien et UE', 'plan1.f5': 'Sans carte bancaire',
     'plan1.cta': 'Commencer',
     'plan2.badge': 'Le plus populaire', 'plan2.eyebrow': 'Pour la famille', 'plan2.name': 'Pro', 'plan2.per': '/ mois', 'plan2.annual': 'ou 159,99 €/an — économisez 33 %',
-    'plan2.desc': 'Aide juridique quotidienne pour vous et votre famille. IA illimitée, rédaction complète des documents.',
+    'plan2.desc': 'Aide juridique quotidienne pour vous et votre famille. 100 messages IA/jour, rédaction complète des documents.',
     'plan2.f1': '100 messages IA / jour', 'plan2.f2': '3 dossiers actifs', 'plan2.f3': 'Lecture de documents (20 fichiers)',
     'plan2.f4': 'Rédaction complète (courriers, plaintes)', 'plan2.f5': 'Saisie vocale', 'plan2.f6': 'Recherche web sur la jurisprudence à jour',
     'plan2.cta': 'Commencer',
@@ -3339,7 +3309,7 @@ const I18N = {
       { q: 'Est-ce légal ? Peut-on vraiment utiliser l\'IA pour des questions juridiques ?', a: 'Oui. Advocat est un service d\'information juridique : il explique la loi et aide à rédiger des documents. Il ne remplace pas un avocat agréé pour la représentation au tribunal, mais pour comprendre votre situation et écrire vos courriers, il fait l\'affaire. De la même façon que lire des articles de droit en ligne est légal, utiliser un outil qui le fait pour vous l\'est aussi.' },
       { q: 'Mes données sont-elles en sécurité ?', a: 'Oui. Chiffrées au repos, hébergées sur des serveurs UE (Francfort). Vos conversations ne servent jamais à entraîner des modèles d\'IA. Nous sommes conformes au RGPD et appliquons strictement la minimisation des données. Vous pouvez supprimer vos données à tout moment.' },
       { q: 'En quoi est-ce mieux que ChatGPT ?', a: 'Advocat est spécialisé en droit estonien et européen : il cite des articles précis (par ex. VÕS § 308), retient votre dossier d\'une session à l\'autre et rédige des courriers formels dans le bon format juridique. ChatGPT peut inventer des références — Advocat cite de vraies sources issues de Riigi Teataja.' },
-      { q: 'Puis-je être remboursé ?', a: 'Oui. Résiliation en un clic, à tout moment, sans justification. Selon le droit de la consommation UE, vous disposez de 14 jours après l\'achat pour un remboursement intégral. Au-delà, votre abonnement court jusqu\'à la fin de la période de facturation. Besoin d\'aide ? Écrivez à support@advocat.ee.' },
+      { q: 'Puis-je être remboursé ?', a: 'Oui. Résiliation en un clic, à tout moment, sans justification. Remboursement intégral dans les 14 jours suivant l\'achat possible tant que vous n\'avez pas envoyé votre premier message IA (selon le droit UE, l\'envoi du premier message IA constitue le début d\'un service numérique exécuté immédiatement et entraîne la renonciation au droit de rétractation de 14 jours — art. 16(m) de la Directive sur les droits des consommateurs). Au-delà, votre abonnement court jusqu\'à la fin de la période de facturation. Besoin d\'aide ? Écrivez à support@advocat.ee.' },
       { q: 'Ces documents ont-ils valeur juridique ?', a: 'Les documents rédigés par Advocat sont des modèles et points de départ. Ils acquièrent une portée juridique lorsque vous les signez et les envoyez. Pour les actes destinés au tribunal, nous recommandons fortement une relecture par un avocat agréé. Advocat est l\'auteur de votre brouillon, pas votre avocat à l\'audience.' },
       { q: 'Advocat me représente-t-il au tribunal ?', a: 'Non. Advocat sert à préparer, pas à représenter. Nous vous aidons à comprendre vos droits, à écrire à la partie adverse et à constituer votre dossier. Pour plaider, vous avez besoin d\'un avocat estonien agréé (vandeadvokaat). Au besoin, nous vous orientons.' },
       { q: 'Qui envoie réellement le courrier ?', a: 'Vous. Chaque e-mail requiert votre validation explicite dans une fenêtre de confirmation avant l\'envoi. Expédition depuis votre Gmail (si connecté) ou via notre service avec la signature \'pour le compte de [votre nom]\'. L\'IA n\'envoie jamais de façon autonome.' },
@@ -3347,7 +3317,7 @@ const I18N = {
     'cta.title': 'N\'affrontez pas vos droits <em>seul</em>.',
     'cta.sub': 'Posez la première question. Réponse sourcée en 30 secondes. Sans carte bancaire.',
     'cta.btn': 'Ouvrir le chat →',
-    'cta.micro': '7 messages gratuits · résiliable à tout moment · remboursement 14 jours selon le droit UE',
+    'cta.micro': '7 messages gratuits · résiliable à tout moment · remboursement 14 jours avant le premier message IA',
     'disclaimer.full': 'Advocat fournit des informations juridiques, et non des conseils juridiques. Ce service ne remplace pas un avocat agréé. Pour une représentation au tribunal, un jugement ou un avis juridique contraignant, consultez un juriste qualifié. Les informations peuvent varier selon la juridiction.',
     'foot.about': 'Assistant juridique IA pour l\'Estonie et l\'UE. Conçu à Tallinn par Vorantis OÜ.',
     'foot.powered': 'Propulsé par Claude (Anthropic)',
@@ -3392,10 +3362,10 @@ const I18N = {
     'compare.sub': 'Para juicio, el abogado es la respuesta correcta. Para el otro 95 % de la vida jurídica hay un camino más rápido.',
     'compare.us_tag': 'ASISTENTE JURÍDICO IA',
     'compare.u1': 'Respuesta en 30 segundos, 24/7',
-    'compare.u2': 'Desde 19,99 €/mes — Pro ilimitado',
+    'compare.u2': 'Desde 19,99 €/mes — Pro, 100 mensajes/día',
     'compare.u3': '17 idiomas — incl. ruso y ucraniano',
     'compare.u4': 'Cada afirmación cita la ley',
-    'compare.u5': 'Cancele cuando quiera — reembolso 14 días según derecho UE',
+    'compare.u5': 'Cancele cuando quiera — reembolso 14 días antes del primer mensaje IA',
     'compare.cta_us': 'Empezar gratis',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ hora',
     'compare.us_price_note': 'Los 7 primeros mensajes gratis · Cancele cuando quiera',
@@ -3412,13 +3382,13 @@ const I18N = {
     'compare.year_save': 'Usted ahorra',
     'compare.year_save_sub': 'Cada año.',
     'pricing.label': 'PRECIOS', 'pricing.title': 'Precio claro. Sin <em>sorpresas</em>.',
-    'pricing.sub': 'Cancele cuando quiera. Por la legislación UE de consumo, reembolso íntegro durante los primeros 14 días.',
+    'pricing.sub': 'Cancele cuando quiera. Reembolso íntegro en 14 días si aún no ha enviado su primer mensaje IA.',
     'plan1.eyebrow': 'Inicio', 'plan1.name': 'Gratis', 'plan1.per': '/ para siempre',
     'plan1.desc': 'Pruebe el sistema. Reciba una respuesta real con cita legal antes de decidir.',
     'plan1.f1': '7 mensajes IA en total', 'plan1.f2': '1 caso activo', 'plan1.f3': 'Escaneo de documentos (3)', 'plan1.f4': 'Fuentes de derecho EE y UE', 'plan1.f5': 'Sin tarjeta',
     'plan1.cta': 'Empezar gratis',
     'plan2.badge': 'El más popular', 'plan2.eyebrow': 'Para familias', 'plan2.name': 'Pro', 'plan2.per': '/ mes', 'plan2.annual': 'o 159,99 €/año — ahorre 33 %',
-    'plan2.desc': 'Asistencia jurídica diaria para usted y su familia. IA ilimitada, redacción completa de documentos.',
+    'plan2.desc': 'Asistencia jurídica diaria para usted y su familia. 100 mensajes IA/día, redacción completa de documentos.',
     'plan2.f1': '100 mensajes IA / día', 'plan2.f2': '3 casos activos', 'plan2.f3': 'Escaneo de documentos (20)',
     'plan2.f4': 'Redacción completa (cartas, reclamaciones)', 'plan2.f5': 'Entrada por voz', 'plan2.f6': 'Búsqueda web de jurisprudencia reciente',
     'plan2.cta': 'Empezar ahora',
@@ -3433,7 +3403,7 @@ const I18N = {
       { q: '¿Es legal? ¿De verdad puedo usar IA para temas jurídicos?', a: 'Sí. Advocat es un servicio de información jurídica: explica las leyes y ayuda a redactar documentos. No sustituye a un abogado colegiado para representación en juicio, pero para entender su situación y escribir cartas funciona. Igual que es legal leer artículos jurídicos en internet, es legal usar una herramienta que lo haga por usted.' },
       { q: '¿Mis datos están seguros?', a: 'Sí. Cifrados en reposo, alojados en servidores UE (Fráncfort). Sus conversaciones nunca se usan para entrenar modelos de IA. Cumplimos el RGPD y aplicamos minimización de datos. Puede borrar sus datos en cualquier momento.' },
       { q: '¿Por qué es mejor que ChatGPT?', a: 'Advocat está especializado en derecho estonio y de la UE: cita artículos concretos (p. ej. VÕS § 308), recuerda su caso entre sesiones y escribe cartas formales en el formato jurídico correcto. ChatGPT puede inventar referencias — Advocat cita fuentes reales de Riigi Teataja.' },
-      { q: '¿Puedo obtener un reembolso?', a: 'Sí. Cancele con un clic en cualquier momento, sin preguntas. Por la normativa europea de consumo, dispone de 14 días desde la compra para un reembolso íntegro. Tras ese plazo, su suscripción sigue activa hasta el final del período facturado. ¿Necesita ayuda? Escriba a support@advocat.ee.' },
+      { q: '¿Puedo obtener un reembolso?', a: 'Sí. Cancele con un clic en cualquier momento, sin preguntas. Reembolso íntegro en los 14 días posteriores a la compra siempre que aún no haya enviado su primer mensaje IA (según el derecho de la UE, enviar el primer mensaje IA implica el inicio de un servicio digital ejecutado de inmediato y supone la renuncia al derecho de desistimiento de 14 días — art. 16(m) de la Directiva de derechos de los consumidores). Tras ese plazo, su suscripción sigue activa hasta el final del período facturado. ¿Necesita ayuda? Escriba a support@advocat.ee.' },
       { q: '¿Estos documentos son jurídicamente vinculantes?', a: 'Los documentos que redacta Advocat son plantillas y puntos de partida. Adquieren valor jurídico cuando los firma y los envía. Para escritos destinados a juicio, recomendamos firmemente que un abogado colegiado los revise antes. Advocat es el autor de su borrador, no su abogado en sala.' },
       { q: '¿Advocat me representará en juicio?', a: 'No. Advocat es para preparar, no para representar. Le ayudamos a entender sus derechos, a escribir a la otra parte y a montar su expediente. Para comparecer en juicio necesita un abogado colegiado estonio (vandeadvokaat). Si lo necesita, le ayudamos a encontrar uno.' },
       { q: '¿Quién envía realmente la carta?', a: 'Usted. Cada correo requiere su confirmación expresa en una ventana modal antes de salir. Se envía desde su Gmail (si está conectado) o a través de nuestro servicio con la firma \'en nombre de [su nombre]\'. La IA nunca envía de forma autónoma.' },
@@ -3441,7 +3411,7 @@ const I18N = {
     'cta.title': 'No se enfrente a sus derechos <em>solo</em>.',
     'cta.sub': 'Plantee la primera pregunta. Respuesta con cita legal en 30 segundos. Sin tarjeta.',
     'cta.btn': 'Abrir el chat →',
-    'cta.micro': '7 mensajes gratis · cancele cuando quiera · reembolso 14 días según derecho UE',
+    'cta.micro': '7 mensajes gratis · cancele cuando quiera · reembolso 14 días antes del primer mensaje IA',
     'disclaimer.full': 'Advocat ofrece información legal, no asesoramiento legal. Este servicio no sustituye a un abogado colegiado. Para representación en juicio, sentencias o dictámenes jurídicos vinculantes, consulte a un jurista cualificado. La información puede variar según la jurisdicción.',
     'foot.about': 'Asistente jurídico con IA para Estonia y la UE. Hecho en Tallin por Vorantis OÜ.',
     'foot.powered': 'Con tecnología de Claude (Anthropic)',
@@ -3486,10 +3456,10 @@ const I18N = {
     'compare.sub': 'In tribunale l\'avvocato è la risposta giusta. Per il restante 95 % della vita giuridica c\'è una via più rapida.',
     'compare.us_tag': 'ASSISTENTE LEGALE IA',
     'compare.u1': 'Risposta in 30 secondi, 24/7',
-    'compare.u2': 'Da 19,99 €/mese — Pro illimitato',
+    'compare.u2': 'Da 19,99 €/mese — Pro, 100 messaggi/giorno',
     'compare.u3': '17 lingue — incl. russo e ucraino',
     'compare.u4': 'Ogni affermazione con citazione di legge',
-    'compare.u5': 'Disdetta in qualsiasi momento — rimborso 14 giorni per legge UE',
+    'compare.u5': 'Disdetta in qualsiasi momento — rimborso 14 giorni prima del primo messaggio IA',
     'compare.cta_us': 'Inizia gratis',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ ora',
     'compare.us_price_note': 'Primi 7 messaggi gratis · Disdetta in qualsiasi momento',
@@ -3506,13 +3476,13 @@ const I18N = {
     'compare.year_save': 'Lei risparmia',
     'compare.year_save_sub': 'Ogni anno.',
     'pricing.label': 'PREZZI', 'pricing.title': 'Prezzo chiaro. Senza <em>sorprese</em>.',
-    'pricing.sub': 'Disdetta in qualsiasi momento. Per il diritto dei consumatori UE, rimborso integrale entro i primi 14 giorni.',
+    'pricing.sub': 'Disdetta in qualsiasi momento. Rimborso integrale entro 14 giorni se non ha ancora inviato il primo messaggio IA.',
     'plan1.eyebrow': 'Inizio', 'plan1.name': 'Gratis', 'plan1.per': '/ per sempre',
     'plan1.desc': 'Provi il sistema. Riceva una risposta vera con citazione di legge prima di decidere.',
     'plan1.f1': '7 messaggi IA in totale', 'plan1.f2': '1 caso attivo', 'plan1.f3': 'Scansione documenti (3)', 'plan1.f4': 'Fonti dal diritto EE e UE', 'plan1.f5': 'Senza carta',
     'plan1.cta': 'Inizia gratis',
     'plan2.badge': 'Il più scelto', 'plan2.eyebrow': 'Per le famiglie', 'plan2.name': 'Pro', 'plan2.per': '/ mese', 'plan2.annual': 'oppure 159,99 €/anno — risparmio 33 %',
-    'plan2.desc': 'Assistenza legale quotidiana per Lei e la Sua famiglia. IA illimitata, redazione completa dei documenti.',
+    'plan2.desc': 'Assistenza legale quotidiana per Lei e la Sua famiglia. 100 messaggi IA/giorno, redazione completa dei documenti.',
     'plan2.f1': '100 messaggi IA / giorno', 'plan2.f2': '3 casi attivi', 'plan2.f3': 'Scansione documenti (20)',
     'plan2.f4': 'Redazione completa (lettere, reclami)', 'plan2.f5': 'Dettatura vocale', 'plan2.f6': 'Ricerca web della giurisprudenza più recente',
     'plan2.cta': 'Inizia ora',
@@ -3527,7 +3497,7 @@ const I18N = {
       { q: 'È legale? Posso davvero usare l\'IA per questioni giuridiche?', a: 'Sì. Advocat è un servizio di informazione giuridica: spiega le leggi e aiuta a redigere documenti. Non sostituisce un avvocato iscritto all\'albo per la rappresentanza in tribunale, ma per capire la Sua situazione e scrivere lettere funziona benissimo. Allo stesso modo in cui è legale leggere articoli giuridici online, è legale usare uno strumento che lo fa al posto Suo.' },
       { q: 'I miei dati sono al sicuro?', a: 'Sì. Cifrati a riposo, ospitati su server UE (Francoforte). Le Sue conversazioni non vengono mai usate per addestrare modelli di IA. Siamo conformi al GDPR e seguiamo il principio di minimizzazione dei dati. Può cancellare i Suoi dati in qualsiasi momento.' },
       { q: 'Perché è meglio di ChatGPT?', a: 'Advocat è specializzato sul diritto estone ed europeo: cita articoli precisi (es. VÕS § 308), ricorda il Suo caso tra una sessione e l\'altra e sa redigere lettere formali nel formato giuridico corretto. ChatGPT può inventarsi i riferimenti — Advocat cita fonti reali da Riigi Teataja.' },
-      { q: 'Posso ottenere un rimborso?', a: 'Sì. Disdetta con un clic in qualsiasi momento, senza fare domande. Per il diritto dei consumatori UE ha 14 giorni dall\'acquisto per un rimborso integrale. Dopodiché l\'abbonamento resta attivo fino alla fine del periodo di fatturazione. Le serve aiuto? Scriva a support@advocat.ee.' },
+      { q: 'Posso ottenere un rimborso?', a: 'Sì. Disdetta con un clic in qualsiasi momento, senza fare domande. Rimborso integrale entro 14 giorni dall\'acquisto possibile se non ha ancora inviato il primo messaggio IA (secondo il diritto UE, l\'invio del primo messaggio IA costituisce l\'inizio di un servizio digitale eseguito immediatamente e comporta la rinuncia al diritto di recesso di 14 giorni — art. 16(m) della Direttiva sui diritti dei consumatori). Dopodiché l\'abbonamento resta attivo fino alla fine del periodo di fatturazione. Le serve aiuto? Scriva a support@advocat.ee.' },
       { q: 'Questi documenti sono giuridicamente vincolanti?', a: 'I documenti redatti da Advocat sono modelli e punti di partenza. Acquistano rilievo giuridico nel momento in cui Lei li firma e li invia. Per atti destinati al tribunale raccomandiamo vivamente la revisione di un avvocato iscritto all\'albo. Advocat è l\'autore della Sua bozza, non il Suo difensore in udienza.' },
       { q: 'Advocat mi rappresenterà in tribunale?', a: 'No. Advocat serve a preparare, non a rappresentare. La aiutiamo a capire i Suoi diritti, a scrivere alla controparte e a costruire il fascicolo. Per comparire in udienza serve un avvocato estone iscritto all\'albo (vandeadvokaat). All\'occorrenza La indirizziamo.' },
       { q: 'Chi invia davvero la lettera?', a: 'Lei. Ogni e-mail richiede la Sua conferma esplicita in una finestra modale prima di partire. Inviata dal Suo Gmail (se collegato) o tramite il nostro servizio con la firma \'per conto di [Suo nome]\'. L\'IA non invia mai in autonomia.' },
@@ -3535,7 +3505,7 @@ const I18N = {
     'cta.title': 'Non affronti i Suoi diritti <em>da solo</em>.',
     'cta.sub': 'Faccia la prima domanda. Risposta con citazione di legge in 30 secondi. Senza carta.',
     'cta.btn': 'Apri la chat →',
-    'cta.micro': '7 messaggi gratis · disdetta in qualsiasi momento · rimborso 14 giorni per legge UE',
+    'cta.micro': '7 messaggi gratis · disdetta in qualsiasi momento · rimborso 14 giorni prima del primo messaggio IA',
     'disclaimer.full': 'Advocat fornisce informazioni legali, non consulenza legale. Questo servizio non sostituisce un avvocato iscritto all\'albo. Per la rappresentanza in tribunale, le sentenze o i pareri legali vincolanti, si rivolga a un giurista qualificato. Le informazioni possono variare in base alla giurisdizione.',
     'foot.about': 'Assistente legale IA per Estonia e UE. Realizzato a Tallinn da Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
@@ -3580,10 +3550,10 @@ const I18N = {
     'compare.sub': 'W sądzie adwokat to właściwy wybór. Dla pozostałych 95 % codziennego prawa istnieje szybsza droga.',
     'compare.us_tag': 'ASYSTENT PRAWNY AI',
     'compare.u1': 'Odpowiedź w 30 sekund, 24/7',
-    'compare.u2': 'Od 19,99 €/mies. — Pro bez limitu',
+    'compare.u2': 'Od 19,99 €/mies. — Pro, 100 wiadomości dziennie',
     'compare.u3': '17 języków — w tym rosyjski i ukraiński',
     'compare.u4': 'Każde stwierdzenie z odniesieniem do przepisu',
-    'compare.u5': 'Rezygnacja w każdej chwili — zwrot w ciągu 14 dni zgodnie z prawem UE',
+    'compare.u5': 'Rezygnacja w każdej chwili — zwrot w 14 dni przed pierwszą wiadomością AI',
     'compare.cta_us': 'Zacznij za darmo',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ godz.',
     'compare.us_price_note': 'Pierwsze 7 wiadomości za darmo · Rezygnacja w każdej chwili',
@@ -3600,13 +3570,13 @@ const I18N = {
     'compare.year_save': 'Oszczędność',
     'compare.year_save_sub': 'Co roku.',
     'pricing.label': 'CENNIK', 'pricing.title': 'Jasna cena. Bez <em>niespodzianek</em>.',
-    'pricing.sub': 'Rezygnacja w każdej chwili. Zgodnie z prawem konsumenckim UE — pełny zwrot w ciągu pierwszych 14 dni.',
+    'pricing.sub': 'Rezygnacja w każdej chwili. Pełny zwrot w 14 dni, jeśli nie wysłałeś jeszcze pierwszej wiadomości AI.',
     'plan1.eyebrow': 'Start', 'plan1.name': 'Bezpłatnie', 'plan1.per': '/ na zawsze',
     'plan1.desc': 'Sprawdź system. Otrzymaj prawdziwą odpowiedź z odniesieniem do przepisu, zanim zdecydujesz.',
     'plan1.f1': '7 wiadomości AI łącznie', 'plan1.f2': '1 aktywna sprawa', 'plan1.f3': 'Skanowanie dokumentów (3)', 'plan1.f4': 'Źródła z prawa EE i UE', 'plan1.f5': 'Bez karty',
     'plan1.cta': 'Zacznij za darmo',
     'plan2.badge': 'Najpopularniejszy', 'plan2.eyebrow': 'Dla rodzin', 'plan2.name': 'Pro', 'plan2.per': '/ mies.', 'plan2.annual': 'lub 159,99 €/rok — oszczędność 33 %',
-    'plan2.desc': 'Codzienna pomoc prawna dla Pana/Pani i rodziny. AI bez limitu, pełne pisanie dokumentów.',
+    'plan2.desc': 'Codzienna pomoc prawna dla Pana/Pani i rodziny. 100 wiadomości AI dziennie, pełne pisanie dokumentów.',
     'plan2.f1': '100 wiadomości AI / dzień', 'plan2.f2': '3 aktywne sprawy', 'plan2.f3': 'Skanowanie dokumentów (20)',
     'plan2.f4': 'Pełne pisma (wezwania, skargi)', 'plan2.f5': 'Dyktowanie głosem', 'plan2.f6': 'Wyszukiwanie aktualnego orzecznictwa',
     'plan2.cta': 'Zacznij teraz',
@@ -3621,7 +3591,7 @@ const I18N = {
       { q: 'Czy to legalne? Czy naprawdę można używać AI do pytań prawnych?', a: 'Tak. Advocat to usługa informacji prawnej — wyjaśnia przepisy i pomaga przygotowywać pisma. Nie zastępuje uprawnionego adwokata w sądzie, ale do zrozumienia sytuacji i napisania pierwszego pisma nadaje się świetnie. Tak samo, jak czytanie artykułów prawniczych w internecie jest legalne, legalne jest korzystanie z narzędzia, które robi to za Ciebie.' },
       { q: 'Czy moje dane są bezpieczne?', a: 'Tak. Szyfrowane w spoczynku, hostowane na serwerach UE (Frankfurt). Twoje rozmowy nigdy nie są wykorzystywane do trenowania modeli AI. Działamy zgodnie z RODO i stosujemy zasadę minimalizacji danych. Swoje dane możesz usunąć w każdej chwili.' },
       { q: 'Czym to jest lepsze od ChatGPT?', a: 'Advocat jest wyspecjalizowany w prawie estońskim i unijnym: cytuje konkretne artykuły (np. VÕS § 308), pamięta Twoją sprawę między sesjami i potrafi pisać formalne pisma w odpowiedniej formie prawnej. ChatGPT bywa, że zmyśla podstawy prawne — Advocat cytuje realne źródła z Riigi Teataja.' },
-      { q: 'Czy mogę odzyskać pieniądze?', a: 'Tak. Rezygnacja jednym kliknięciem, w każdej chwili, bez zbędnych pytań. Zgodnie z prawem konsumenckim UE masz 14 dni od zakupu na pełny zwrot. Po tym czasie subskrypcja działa do końca okresu rozliczeniowego. Potrzebujesz pomocy? Napisz na support@advocat.ee.' },
+      { q: 'Czy mogę odzyskać pieniądze?', a: 'Tak. Rezygnacja jednym kliknięciem, w każdej chwili, bez zbędnych pytań. Pełny zwrot w 14 dni od zakupu jest możliwy, jeśli nie wysłałeś jeszcze pierwszej wiadomości AI (zgodnie z prawem UE wysłanie pierwszej wiadomości AI oznacza rozpoczęcie usługi cyfrowej wykonanej natychmiast i prowadzi do zrzeczenia się 14-dniowego prawa odstąpienia — art. 16(m) dyrektywy o prawach konsumentów). Po tym czasie subskrypcja działa do końca okresu rozliczeniowego. Potrzebujesz pomocy? Napisz na support@advocat.ee.' },
       { q: 'Czy te dokumenty są prawnie wiążące?', a: 'Dokumenty przygotowane przez Advocat to wzory i punkt wyjścia. Stają się prawnie znaczące, gdy je podpiszesz i wyślesz. Przy pismach kierowanych do sądu zdecydowanie zalecamy wcześniejszą weryfikację przez uprawnionego adwokata. Advocat jest autorem Twojego projektu, nie Twoim pełnomocnikiem na sali.' },
       { q: 'Czy Advocat będzie mnie reprezentował w sądzie?', a: 'Nie. Advocat służy do przygotowania, nie do reprezentacji. Pomagamy zrozumieć prawa, napisać do drugiej strony i ułożyć akta sprawy. Do występowania przed sądem potrzebujesz uprawnionego estońskiego adwokata (vandeadvokaat). W razie potrzeby pomożemy go znaleźć.' },
       { q: 'Kto faktycznie wysyła pismo?', a: 'Ty. Każdy e-mail przed wysyłką wymaga Twojego wyraźnego potwierdzenia w okienku modalnym. Wysyłka z Twojego Gmaila (jeśli podpięty) lub przez naszą usługę z podpisem \'w imieniu [Twoje imię i nazwisko]\'. AI nigdy nie wysyła samodzielnie.' },
@@ -3629,7 +3599,7 @@ const I18N = {
     'cta.title': 'Nie zostań ze swoimi prawami <em>sam</em>.',
     'cta.sub': 'Zadaj pierwsze pytanie. Odpowiedź z odniesieniem do przepisu w 30 sekund. Bez karty.',
     'cta.btn': 'Otwórz czat →',
-    'cta.micro': '7 wiadomości za darmo · rezygnacja jednym kliknięciem · zwrot w 14 dni zgodnie z prawem UE',
+    'cta.micro': '7 wiadomości za darmo · rezygnacja jednym kliknięciem · zwrot w 14 dni przed pierwszą wiadomością AI',
     'disclaimer.full': 'Advocat udziela informacji prawnej, nie porady prawnej. Usługa nie zastępuje uprawnionego adwokata. W sprawach reprezentacji w sądzie, wyroków lub wiążących opinii prawnych skontaktuj się z wykwalifikowanym prawnikiem. Informacje mogą się różnić w zależności od jurysdykcji.',
     'foot.about': 'Asystent prawny oparty na AI dla Estonii i UE. Stworzony w Tallinie przez Vorantis OÜ.',
     'foot.powered': 'Napędzany przez Claude (Anthropic)',
@@ -3674,10 +3644,10 @@ const I18N = {
     'compare.sub': 'I rätten är advokaten rätt svar. För övriga 95 % av juridiken finns en snabbare väg.',
     'compare.us_tag': 'AI-JURISTHJÄLP',
     'compare.u1': 'Svar på 30 sekunder, dygnet runt',
-    'compare.u2': 'Från 19,99 €/mån — Pro obegränsat',
+    'compare.u2': 'Från 19,99 €/mån — Pro, 100 meddelanden/dag',
     'compare.u3': '17 språk — inkl. ryska och ukrainska',
     'compare.u4': 'Varje påstående med lagstöd',
-    'compare.u5': 'Säg upp när som helst — 14 dagars ångerrätt enligt EU-rätt',
+    'compare.u5': 'Säg upp när som helst — 14 dagars återbetalning före första AI-meddelandet',
     'compare.cta_us': 'Börja gratis',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ timme',
     'compare.us_price_note': 'Första 7 meddelandena gratis · Säg upp när som helst',
@@ -3694,13 +3664,13 @@ const I18N = {
     'compare.year_save': 'Du sparar',
     'compare.year_save_sub': 'Varje år.',
     'pricing.label': 'PRISER', 'pricing.title': 'Tydligt pris. Inga <em>överraskningar</em>.',
-    'pricing.sub': 'Säg upp när som helst. Enligt EU:s konsumentlag — full återbetalning de första 14 dagarna.',
+    'pricing.sub': 'Säg upp när som helst. Full återbetalning inom 14 dagar om du inte har skickat ditt första AI-meddelande än.',
     'plan1.eyebrow': 'Start', 'plan1.name': 'Gratis', 'plan1.per': '/ för alltid',
     'plan1.desc': 'Prova systemet. Få ett riktigt svar med lagstöd innan du bestämmer dig.',
     'plan1.f1': '7 AI-meddelanden totalt', 'plan1.f2': '1 aktivt ärende', 'plan1.f3': 'Dokumentskanning (3 st)', 'plan1.f4': 'Källor från EE- och EU-rätt', 'plan1.f5': 'Inget kort behövs',
     'plan1.cta': 'Börja gratis',
     'plan2.badge': 'Mest populär', 'plan2.eyebrow': 'För familjer', 'plan2.name': 'Pro', 'plan2.per': '/ månad', 'plan2.annual': 'eller 159,99 €/år — spara 33 %',
-    'plan2.desc': 'Daglig juridisk hjälp för dig och familjen. Obegränsad AI, full dokumentskrivning.',
+    'plan2.desc': 'Daglig juridisk hjälp för dig och familjen. 100 AI-meddelanden/dag, full dokumentskrivning.',
     'plan2.f1': '100 AI-meddelanden / dag', 'plan2.f2': '3 aktiva ärenden', 'plan2.f3': 'Dokumentskanning (20 st)',
     'plan2.f4': 'Full skrivning (brev, klagomål)', 'plan2.f5': 'Röstinmatning', 'plan2.f6': 'Webbsökning efter färsk rättspraxis',
     'plan2.cta': 'Börja nu',
@@ -3715,7 +3685,7 @@ const I18N = {
       { q: 'Är det här lagligt? Får man verkligen använda AI för juridiska frågor?', a: 'Ja. Advocat är en juridisk informationstjänst — den förklarar lagar och hjälper dig skriva dokument. Den ersätter inte en behörig advokat i rätten, men för att förstå din situation och skriva brev fungerar den utmärkt. På samma sätt som det är lagligt att läsa juridiska artiklar online är det lagligt att använda ett verktyg som gör det åt dig.' },
       { q: 'Är mina uppgifter säkra?', a: 'Ja. Krypterade i vila, hostade på EU-servrar (Frankfurt). Dina samtal används aldrig till att träna AI-modeller. Vi följer GDPR och tillämpar strikt dataminimering. Du kan radera dina uppgifter när som helst.' },
       { q: 'Varför är detta bättre än ChatGPT?', a: 'Advocat är specialiserad på estnisk och EU-rätt: citerar specifika paragrafer (t.ex. VÕS § 308), kommer ihåg ditt ärende mellan sessioner och kan skriva formella brev i rätt juridisk form. ChatGPT kan hitta på paragrafer — Advocat citerar riktiga källor från Riigi Teataja.' },
-      { q: 'Kan jag få pengarna tillbaka?', a: 'Ja. Säg upp med ett klick när som helst — inga frågor. Enligt EU:s konsumentlag har du 14 dagar från köp för full återbetalning. Därefter löper prenumerationen ut vid faktureringsperiodens slut. Behöver du hjälp? Skriv till support@advocat.ee.' },
+      { q: 'Kan jag få pengarna tillbaka?', a: 'Ja. Säg upp med ett klick när som helst — inga frågor. Full återbetalning inom 14 dagar från köp är möjlig om du inte har skickat ditt första AI-meddelande än (enligt EU-rätten innebär att skicka det första AI-meddelandet att en omedelbart utförd digital tjänst påbörjas och att du avstår från 14 dagars ångerrätt — art. 16(m) i konsumenträttighetsdirektivet). Därefter löper prenumerationen ut vid faktureringsperiodens slut. Behöver du hjälp? Skriv till support@advocat.ee.' },
       { q: 'Är dokumenten juridiskt bindande?', a: 'Dokumenten Advocat skriver är mallar och utgångspunkter. De får juridisk verkan när du undertecknar och skickar dem. För dokument som ska till domstol rekommenderar vi starkt att en behörig jurist granskar dem först. Advocat är ditt utkasts författare, inte ditt ombud i rätten.' },
       { q: 'Företräder Advocat mig i domstol?', a: 'Nej. Advocat är till för förberedelse, inte ombudskap. Vi hjälper dig förstå dina rättigheter, skriva till motparten och bygga din akt. För själva förhandlingen behöver du en behörig estnisk advokat (vandeadvokaat). Vid behov hjälper vi dig hitta en.' },
       { q: 'Vem skickar egentligen brevet?', a: 'Du. Varje e-post kräver ditt uttryckliga godkännande i en bekräftelseruta innan den skickas. Skickas från din Gmail (om ansluten) eller via vår tjänst med signaturen \'på uppdrag av [ditt namn]\'. AI:n skickar aldrig på egen hand.' },
@@ -3723,7 +3693,7 @@ const I18N = {
     'cta.title': 'Möt inte dina rättigheter <em>ensam</em>.',
     'cta.sub': 'Ställ den första frågan. Källhänvisat svar på 30 sekunder. Inget kort.',
     'cta.btn': 'Öppna chatten →',
-    'cta.micro': '7 meddelanden gratis · säg upp när som helst · 14 dagars ångerrätt enligt EU-rätt',
+    'cta.micro': '7 meddelanden gratis · säg upp när som helst · 14 dagars återbetalning före första AI-meddelandet',
     'disclaimer.full': 'Advocat tillhandahåller juridisk information, inte juridisk rådgivning. Tjänsten ersätter inte en behörig advokat. För ombud i domstol, domar eller bindande juridiska utlåtanden, vänd dig till en kvalificerad jurist. Informationen kan variera mellan jurisdiktioner.',
     'foot.about': 'AI-driven juridisk assistent för Estland och EU. Byggd i Tallinn av Vorantis OÜ.',
     'foot.powered': 'Drivs av Claude (Anthropic)',
@@ -3768,10 +3738,10 @@ const I18N = {
     'compare.sub': 'Tiesā advokāts ir pareizā atbilde. Pārējiem 95 % juridisko jautājumu ir ātrāks ceļš.',
     'compare.us_tag': 'MI JURIDISKĀ PALĪDZĪBA',
     'compare.u1': 'Atbilde 30 sekundēs, 24/7',
-    'compare.u2': 'No 19,99 €/mēn. — neierobežots Pro',
+    'compare.u2': 'No 19,99 €/mēn. — Pro, 100 ziņas dienā',
     'compare.u3': '17 valodas — t.sk. krievu un ukraiņu',
     'compare.u4': 'Katrs apgalvojums ar likuma atsauci',
-    'compare.u5': 'Atcelšana jebkurā brīdī — atmaksa 14 dienās saskaņā ar ES tiesībām',
+    'compare.u5': 'Atcelšana jebkurā brīdī — atmaksa 14 dienās pirms pirmās MI ziņas',
     'compare.cta_us': 'Sākt bez maksas',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ stunda',
     'compare.us_price_note': 'Pirmās 7 ziņas bez maksas · Atcelšana jebkurā brīdī',
@@ -3788,13 +3758,13 @@ const I18N = {
     'compare.year_save': 'Jūs ietaupāt',
     'compare.year_save_sub': 'Katru gadu.',
     'pricing.label': 'CENAS', 'pricing.title': 'Skaidra cena. Bez <em>pārsteigumiem</em>.',
-    'pricing.sub': 'Atcelšana jebkurā brīdī. Saskaņā ar ES patērētāju tiesībām — pilna atmaksa pirmajās 14 dienās.',
+    'pricing.sub': 'Atcelšana jebkurā brīdī. Pilna atmaksa 14 dienās, ja vēl neesat nosūtījis pirmo MI ziņu.',
     'plan1.eyebrow': 'Sākums', 'plan1.name': 'Bez maksas', 'plan1.per': '/ uz mūžu',
     'plan1.desc': 'Izmēģiniet sistēmu. Saņemiet īstu atbildi ar likuma atsauci, pirms izšķirties.',
     'plan1.f1': '7 MI ziņas kopā', 'plan1.f2': '1 aktīva lieta', 'plan1.f3': 'Dokumentu skenēšana (3)', 'plan1.f4': 'Atsauces uz EE un ES tiesībām', 'plan1.f5': 'Bez kartes',
     'plan1.cta': 'Sākt bez maksas',
     'plan2.badge': 'Populārākais', 'plan2.eyebrow': 'Ģimenēm', 'plan2.name': 'Pro', 'plan2.per': '/ mēnesī', 'plan2.annual': 'vai 159,99 €/gadā — ietaupiet 33 %',
-    'plan2.desc': 'Ikdienas juridiskā palīdzība jums un ģimenei. Neierobežots MI, pilna dokumentu sagatavošana.',
+    'plan2.desc': 'Ikdienas juridiskā palīdzība jums un ģimenei. 100 MI ziņas dienā, pilna dokumentu sagatavošana.',
     'plan2.f1': '100 MI ziņu dienā', 'plan2.f2': '3 aktīvas lietas', 'plan2.f3': 'Dokumentu skenēšana (20)',
     'plan2.f4': 'Pilna sagatavošana (vēstules, sūdzības)', 'plan2.f5': 'Balss ievade', 'plan2.f6': 'Tīmekļa meklēšana aktuālajai praksei',
     'plan2.cta': 'Sākt tagad',
@@ -3809,7 +3779,7 @@ const I18N = {
       { q: 'Vai tas ir likumīgi? Vai tiešām var izmantot MI juridiskiem jautājumiem?', a: 'Jā. Advocat ir juridiskās informācijas pakalpojums — paskaidro likumus un palīdz sagatavot dokumentus. Tas neaizstāj licencētu advokātu tiesā, bet, lai saprastu situāciju un sagatavotu vēstuli, pilnībā der. Tāpat kā ir likumīgi lasīt juridiskus rakstus internetā, ir likumīgi izmantot rīku, kas to izdara jūsu vietā.' },
       { q: 'Vai mani dati ir drošībā?', a: 'Jā. Šifrēti glabāšanā, izmitināti ES serveros (Frankfurte). Jūsu sarunas nekad netiek izmantotas modeļu apmācībai. Strādājam saskaņā ar VDAR un piemērojam datu minimizācijas principu. Savus datus varat dzēst jebkurā brīdī.' },
       { q: 'Ar ko tas ir labāks par ChatGPT?', a: 'Advocat ir specializēts uz Igaunijas un ES tiesībām: citē konkrētus pantus (piem., VÕS § 308), atceras jūsu lietu starp sesijām un prot rakstīt formālas vēstules pareizajā juridiskajā formā. ChatGPT mēdz izdomāt atsauces — Advocat atsaucas uz reāliem avotiem no Riigi Teataja.' },
-      { q: 'Vai varu saņemt naudu atpakaļ?', a: 'Jā. Atcelšana ar vienu klikšķi jebkurā brīdī, bez liekiem jautājumiem. Saskaņā ar ES patērētāju tiesībām jums ir 14 dienas no pirkuma pilnai atmaksai. Pēc tam abonements darbojas līdz norēķinu perioda beigām. Vajadzīga palīdzība? Rakstiet uz support@advocat.ee.' },
+      { q: 'Vai varu saņemt naudu atpakaļ?', a: 'Jā. Atcelšana ar vienu klikšķi jebkurā brīdī, bez liekiem jautājumiem. Pilna atmaksa 14 dienu laikā no pirkuma ir iespējama, ja vēl neesat nosūtījis savu pirmo MI ziņu (saskaņā ar ES tiesībām pirmās MI ziņas nosūtīšana nozīmē nekavējoties izpildīta digitālā pakalpojuma sākumu un atteikšanos no 14 dienu atteikuma tiesībām — Patērētāju tiesību direktīvas 16(m) pants). Pēc tam abonements darbojas līdz norēķinu perioda beigām. Vajadzīga palīdzība? Rakstiet uz support@advocat.ee.' },
       { q: 'Vai šie dokumenti ir juridiski saistoši?', a: 'Advocat sagatavotie dokumenti ir veidnes un sākumpunkts. Juridisku spēku tie iegūst brīdī, kad jūs tos parakstāt un nosūtāt. Tiesā iesniedzamiem dokumentiem stingri iesakām advokāta pārbaudi. Advocat ir jūsu projekta autors, nevis pārstāvis tiesā.' },
       { q: 'Vai Advocat pārstāvēs mani tiesā?', a: 'Nē. Advocat ir paredzēts sagatavošanai, nevis pārstāvībai. Palīdzam saprast tiesības, sazināties ar otru pusi un sakomplektēt lietas materiālus. Tiesas procesam vajadzīgs licencēts Igaunijas advokāts (vandeadvokaat). Pēc nepieciešamības palīdzam atrast.' },
       { q: 'Kas patiesībā nosūta vēstuli?', a: 'Jūs. Pirms nosūtīšanas katrai e-pasta vēstulei nepieciešams jūsu skaidri izteikts apstiprinājums modāla logā. Tiek nosūtīts no jūsu Gmail (ja pievienots) vai caur mūsu pakalpojumu ar parakstu \'[jūsu vārds] vārdā\'. MI nekad nesūta patstāvīgi.' },
@@ -3817,7 +3787,7 @@ const I18N = {
     'cta.title': 'Nepalieciet ar savām tiesībām <em>viens</em>.',
     'cta.sub': 'Uzdodiet pirmo jautājumu. Atbilde ar likuma atsauci 30 sekundēs. Bez kartes.',
     'cta.btn': 'Atvērt tērzēšanu →',
-    'cta.micro': '7 ziņas bez maksas · atcelšana ar vienu klikšķi · atmaksa 14 dienās saskaņā ar ES tiesībām',
+    'cta.micro': '7 ziņas bez maksas · atcelšana ar vienu klikšķi · atmaksa 14 dienās pirms pirmās MI ziņas',
     'disclaimer.full': 'Advocat sniedz juridisko informāciju, nevis juridisko konsultāciju. Pakalpojums neaizstāj licencētu advokātu. Pārstāvībai tiesā, tiesas spriedumiem vai saistošiem juridiskiem atzinumiem vērsieties pie kvalificēta jurista. Informācija var atšķirties atkarībā no jurisdikcijas.',
     'foot.about': 'MI juridiskais asistents Igaunijai un ES. Veidots Tallinā, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
@@ -3862,10 +3832,10 @@ const I18N = {
     'compare.sub': 'Teisme advokatas — teisingas pasirinkimas. Likusiai 95 % teisinio gyvenimo daliai yra greitesnis kelias.',
     'compare.us_tag': 'DI TEISINĖ PAGALBA',
     'compare.u1': 'Atsakymas per 30 sekundžių, 24/7',
-    'compare.u2': 'Nuo 19,99 €/mėn. — neribotas Pro',
+    'compare.u2': 'Nuo 19,99 €/mėn. — Pro, 100 žinučių per dieną',
     'compare.u3': '17 kalbų — įsk. rusų ir ukrainiečių',
     'compare.u4': 'Kiekvienas teiginys su įstatymo nuoroda',
-    'compare.u5': 'Atšauksite bet kada — 14 dienų grąžinimas pagal ES teisę',
+    'compare.u5': 'Atšauksite bet kada — 14 dienų grąžinimas iki pirmos DI žinutės',
     'compare.cta_us': 'Pradėti nemokamai',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ val.',
     'compare.us_price_note': 'Pirmosios 7 žinutės nemokamos · Galima atšaukti bet kada',
@@ -3882,13 +3852,13 @@ const I18N = {
     'compare.year_save': 'Sutaupote',
     'compare.year_save_sub': 'Kasmet.',
     'pricing.label': 'KAINOS', 'pricing.title': 'Aiški kaina. Be <em>staigmenų</em>.',
-    'pricing.sub': 'Atšauksite bet kada. Pagal ES vartotojų teisę — pilnas grąžinimas pirmas 14 dienų.',
+    'pricing.sub': 'Atšauksite bet kada. Pilnas grąžinimas per 14 dienų, jei dar neišsiuntėte pirmos DI žinutės.',
     'plan1.eyebrow': 'Pradžia', 'plan1.name': 'Nemokamai', 'plan1.per': '/ visam laikui',
     'plan1.desc': 'Išbandykite sistemą. Gaukite tikrą atsakymą su įstatymo nuoroda prieš nuspręsdami.',
     'plan1.f1': '7 DI žinutės iš viso', 'plan1.f2': '1 aktyvi byla', 'plan1.f3': 'Dokumentų skenavimas (3)', 'plan1.f4': 'Šaltiniai iš EE ir ES teisės', 'plan1.f5': 'Be kortelės',
     'plan1.cta': 'Pradėti nemokamai',
     'plan2.badge': 'Populiariausias', 'plan2.eyebrow': 'Šeimoms', 'plan2.name': 'Pro', 'plan2.per': '/ mėn.', 'plan2.annual': 'arba 159,99 €/metus — sutaupote 33 %',
-    'plan2.desc': 'Kasdienė teisinė pagalba jums ir šeimai. Neribotas DI, pilnas dokumentų rengimas.',
+    'plan2.desc': 'Kasdienė teisinė pagalba jums ir šeimai. 100 DI žinučių per dieną, pilnas dokumentų rengimas.',
     'plan2.f1': '100 DI žinučių per dieną', 'plan2.f2': '3 aktyvios bylos', 'plan2.f3': 'Dokumentų skenavimas (20)',
     'plan2.f4': 'Pilnas dokumentų rengimas (raštai, skundai)', 'plan2.f5': 'Balso įvestis', 'plan2.f6': 'Žiniatinklio paieška šviežiai praktikai',
     'plan2.cta': 'Pradėti dabar',
@@ -3903,7 +3873,7 @@ const I18N = {
       { q: 'Ar tai teisėta? Ar tikrai galima naudoti DI teisiniams klausimams?', a: 'Taip. Advocat — tai teisinės informacijos paslauga: paaiškina įstatymus ir padeda parengti dokumentus. Ji nepakeičia licencijuoto advokato teisme, bet situacijai suprasti ir laiškui parašyti puikiai tinka. Lygiai kaip teisėta skaityti teisinius straipsnius internete, taip teisėta naudotis įrankiu, kuris tai daro už jus.' },
       { q: 'Ar mano duomenys saugūs?', a: 'Taip. Užšifruoti, laikomi ES serveriuose (Frankfurte). Jūsų pokalbiai niekada nenaudojami modelio mokymui. Laikomės BDAR ir duomenų minimizavimo principo. Savo duomenis galite ištrinti bet kada.' },
       { q: 'Kuo tai geriau už ChatGPT?', a: 'Advocat specializuotas Estijos ir ES teisėje: cituoja konkrečius straipsnius (pvz., VÕS § 308), prisimena jūsų bylą tarp seansų ir geba rašyti oficialius raštus tinkama teisine forma. ChatGPT kartais išgalvoja šaltinius — Advocat remiasi realiais Riigi Teataja šaltiniais.' },
-      { q: 'Ar galiu atgauti pinigus?', a: 'Taip. Atšauksite vienu paspaudimu bet kada, be klausimų. Pagal ES vartotojų teisę turite 14 dienų nuo pirkimo pilnam grąžinimui. Vėliau prenumerata galioja iki sąskaitos laikotarpio pabaigos. Reikia pagalbos? Rašykite į support@advocat.ee.' },
+      { q: 'Ar galiu atgauti pinigus?', a: 'Taip. Atšauksite vienu paspaudimu bet kada, be klausimų. Pilnas grąžinimas per 14 dienų nuo pirkimo galimas, jei dar neišsiuntėte savo pirmos DI žinutės (pagal ES teisę pirmos DI žinutės išsiuntimas reiškia iš karto įvykdomos skaitmeninės paslaugos pradžią ir atsisakymą 14 dienų atsisakymo teisės — Vartotojų teisių direktyvos 16(m) straipsnis). Vėliau prenumerata galioja iki sąskaitos laikotarpio pabaigos. Reikia pagalbos? Rašykite į support@advocat.ee.' },
       { q: 'Ar šie dokumentai teisiškai privalomi?', a: 'Advocat parengti dokumentai yra šablonai ir atspirties taškai. Teisinę reikšmę jie įgauna, kai juos pasirašote ir išsiunčiate. Į teismą siunčiamus dokumentus primygtinai rekomenduojame leisti peržiūrėti licencijuotam advokatui. Advocat — jūsų projekto autorius, ne atstovas teisme.' },
       { q: 'Ar Advocat atstovaus mane teisme?', a: 'Ne. Advocat skirtas pasiruošimui, ne atstovavimui. Padedame suprasti teises, parašyti kitai šaliai ir sutvarkyti bylos medžiagą. Pasirodyti teisme reikia licencijuoto Estijos advokato (vandeadvokaat). Esant reikalui padedame jį surasti.' },
       { q: 'Kas iš tikrųjų išsiunčia laišką?', a: 'Jūs. Prieš išsiunčiant kiekvienam el. laiškui reikalingas Jūsų aiškus patvirtinimas modaliame lange. Siunčiama iš Jūsų Gmail (jei prijungta) arba per mūsų paslaugą su parašu \'[Jūsų vardas] vardu\'. DI niekada nesiunčia savarankiškai.' },
@@ -3911,7 +3881,7 @@ const I18N = {
     'cta.title': 'Nestovėkite su savo teisėmis <em>vienas</em>.',
     'cta.sub': 'Užduokite pirmą klausimą. Atsakymas su įstatymo nuoroda per 30 sekundžių. Be kortelės.',
     'cta.btn': 'Atidaryti pokalbį →',
-    'cta.micro': '7 žinutės nemokamai · atšauksite bet kada · 14 dienų grąžinimas pagal ES teisę',
+    'cta.micro': '7 žinutės nemokamai · atšauksite bet kada · 14 dienų grąžinimas iki pirmos DI žinutės',
     'disclaimer.full': 'Advocat teikia teisinę informaciją, ne teisinę konsultaciją. Paslauga nepakeičia licencijuoto advokato. Atstovavimui teisme, sprendimams ar privalomoms teisinėms išvadoms kreipkitės į kvalifikuotą teisininką. Informacija gali skirtis priklausomai nuo jurisdikcijos.',
     'foot.about': 'DI teisės asistentas Estijai ir ES. Sukurta Taline, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
@@ -3956,10 +3926,10 @@ const I18N = {
     'compare.sub': 'În instanță, avocatul este răspunsul corect. Pentru restul de 95 % din viața juridică există o cale mai rapidă.',
     'compare.us_tag': 'ASISTENT JURIDIC AI',
     'compare.u1': 'Răspuns în 30 de secunde, 24/7',
-    'compare.u2': 'De la 19,99 €/lună — Pro nelimitat',
+    'compare.u2': 'De la 19,99 €/lună — Pro, 100 mesaje/zi',
     'compare.u3': '17 limbi — incl. rusă și ucraineană',
     'compare.u4': 'Fiecare afirmație cu trimitere la lege',
-    'compare.u5': 'Anulare oricând — rambursare 14 zile conform dreptului UE',
+    'compare.u5': 'Anulare oricând — rambursare 14 zile înainte de primul mesaj AI',
     'compare.cta_us': 'Începe gratuit',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ oră',
     'compare.us_price_note': 'Primele 7 mesaje gratuite · Anulare oricând',
@@ -3976,13 +3946,13 @@ const I18N = {
     'compare.year_save': 'Economisiți',
     'compare.year_save_sub': 'În fiecare an.',
     'pricing.label': 'PREȚURI', 'pricing.title': 'Preț clar. Fără <em>surprize</em>.',
-    'pricing.sub': 'Anulare oricând. Conform dreptului consumatorilor UE — rambursare integrală în primele 14 zile.',
+    'pricing.sub': 'Anulare oricând. Rambursare integrală în 14 zile dacă nu ați trimis încă primul mesaj AI.',
     'plan1.eyebrow': 'Început', 'plan1.name': 'Gratuit', 'plan1.per': '/ pentru totdeauna',
     'plan1.desc': 'Încercați sistemul. Primiți un răspuns real cu trimitere la lege înainte să decideți.',
     'plan1.f1': '7 mesaje AI în total', 'plan1.f2': '1 caz activ', 'plan1.f3': 'Scanare documente (3)', 'plan1.f4': 'Surse din dreptul EE și UE', 'plan1.f5': 'Fără card',
     'plan1.cta': 'Începe gratuit',
     'plan2.badge': 'Cel mai popular', 'plan2.eyebrow': 'Pentru familii', 'plan2.name': 'Pro', 'plan2.per': '/ lună', 'plan2.annual': 'sau 159,99 €/an — economisiți 33 %',
-    'plan2.desc': 'Asistență juridică zilnică pentru dumneavoastră și familie. AI nelimitat, redactare completă a documentelor.',
+    'plan2.desc': 'Asistență juridică zilnică pentru dumneavoastră și familie. 100 mesaje AI/zi, redactare completă a documentelor.',
     'plan2.f1': '100 mesaje AI / zi', 'plan2.f2': '3 cazuri active', 'plan2.f3': 'Scanare documente (20)',
     'plan2.f4': 'Redactare completă (somații, plângeri)', 'plan2.f5': 'Dictare vocală', 'plan2.f6': 'Căutare web pentru jurisprudență recentă',
     'plan2.cta': 'Începe acum',
@@ -4005,7 +3975,7 @@ const I18N = {
     'cta.title': 'Nu vă înfruntați drepturile <em>singur</em>.',
     'cta.sub': 'Puneți prima întrebare. Răspuns cu trimitere la lege în 30 de secunde. Fără card.',
     'cta.btn': 'Deschide chatul →',
-    'cta.micro': '7 mesaje gratuite · anulare cu un clic · rambursare 14 zile conform dreptului UE',
+    'cta.micro': '7 mesaje gratuite · anulare cu un clic · rambursare 14 zile înainte de primul mesaj AI',
     'disclaimer.full': 'Advocat oferă informații juridice, nu consultanță juridică. Acest serviciu nu înlocuiește un avocat înscris în barou. Pentru reprezentare în instanță, hotărâri judecătorești sau opinii juridice obligatorii, consultați un jurist calificat. Informațiile pot varia în funcție de jurisdicție.',
     'foot.about': 'Asistent juridic AI pentru Estonia și UE. Construit la Tallinn de Vorantis OÜ.',
     'foot.powered': 'Pus în funcțiune de Claude (Anthropic)',
@@ -4050,10 +4020,10 @@ const I18N = {
     'compare.sub': 'Mahkemede avukat doğru cevap. Hukuki hayatın geri kalan %95\'i için ise daha hızlı bir yol var.',
     'compare.us_tag': 'YZ HUKUK ASİSTANI',
     'compare.u1': '30 saniyede yanıt, 7/24',
-    'compare.u2': '19,99 €/ay\'dan başlar — sınırsız Pro',
+    'compare.u2': '19,99 €/ay\'dan başlar — Pro, günde 100 mesaj',
     'compare.u3': '17 dil — Rusça ve Ukraynaca dahil',
     'compare.u4': 'Her ifade yasal dayanağıyla',
-    'compare.u5': 'Dilediğiniz an iptal — AB hukukuna göre 14 gün cayma',
+    'compare.u5': 'Dilediğiniz an iptal — ilk YZ mesajından önce 14 gün iade',
     'compare.cta_us': 'Ücretsiz başla',
     'compare.us_price_num': '0,49 €', 'compare.us_price_unit': '/ saat',
     'compare.us_price_note': 'İlk 7 mesaj ücretsiz · Dilediğiniz an iptal',
@@ -4070,13 +4040,13 @@ const I18N = {
     'compare.year_save': 'Tasarrufunuz',
     'compare.year_save_sub': 'Her yıl yeniden.',
     'pricing.label': 'FİYATLAR', 'pricing.title': 'Net fiyat. <em>Sürpriz</em> yok.',
-    'pricing.sub': 'Dilediğiniz an iptal edin. AB tüketici mevzuatına göre ilk 14 gün içinde tam iade.',
+    'pricing.sub': 'Dilediğiniz an iptal edin. Henüz ilk YZ mesajınızı göndermediyseniz 14 gün içinde tam iade.',
     'plan1.eyebrow': 'Başlangıç', 'plan1.name': 'Ücretsiz', 'plan1.per': '/ ömür boyu',
     'plan1.desc': 'Sistemi deneyin. Karar vermeden önce yasal kaynaklı gerçek bir cevap alın.',
     'plan1.f1': 'Toplam 7 YZ mesajı', 'plan1.f2': '1 aktif dosya', 'plan1.f3': 'Belge tarama (3 adet)', 'plan1.f4': 'EE ve AB hukukundan kaynaklar', 'plan1.f5': 'Kart gerekmez',
     'plan1.cta': 'Ücretsiz başla',
     'plan2.badge': 'En çok tercih edilen', 'plan2.eyebrow': 'Aileler için', 'plan2.name': 'Pro', 'plan2.per': '/ ay', 'plan2.annual': 'veya 159,99 €/yıl — %33 tasarruf',
-    'plan2.desc': 'Sizin ve aileniz için günlük hukuki destek. Sınırsız YZ, eksiksiz belge yazımı.',
+    'plan2.desc': 'Sizin ve aileniz için günlük hukuki destek. Günde 100 YZ mesajı, eksiksiz belge yazımı.',
     'plan2.f1': 'Günde 100 YZ mesajı', 'plan2.f2': '3 aktif dosya', 'plan2.f3': 'Belge tarama (20 adet)',
     'plan2.f4': 'Eksiksiz belge yazımı (mektup, şikâyet)', 'plan2.f5': 'Sesli giriş', 'plan2.f6': 'Güncel içtihat için web araması',
     'plan2.cta': 'Hemen başla',
@@ -4099,7 +4069,7 @@ const I18N = {
     'cta.title': 'Haklarınızla <em>yalnız</em> kalmayın.',
     'cta.sub': 'İlk sorunuzu yazın. 30 saniyede yasal dayanaklı yanıt. Kart gerekmez.',
     'cta.btn': 'Sohbeti aç →',
-    'cta.micro': '7 mesaj ücretsiz · tek tıkla iptal · AB hukukuna göre 14 gün iade',
+    'cta.micro': '7 mesaj ücretsiz · tek tıkla iptal · ilk YZ mesajından önce 14 gün iade',
     'disclaimer.full': 'Advocat hukuki bilgi sağlar, hukuki danışmanlık değil. Bu hizmet ruhsatlı bir avukatın yerini almaz. Mahkemede temsil, kararlar veya bağlayıcı hukuki görüşler için yetkin bir hukukçuya başvurun. Bilgiler yargı yetkisine göre değişebilir.',
     'foot.about': 'Estonya ve AB için yapay zekâ destekli hukuk asistanı. Tallinn\'de, Vorantis OÜ tarafından geliştirildi.',
     'foot.powered': 'Powered by Claude (Anthropic)',
@@ -4144,10 +4114,10 @@ const I18N = {
     'compare.sub': 'في المحكمة، المحامي هو الإجابة الصحيحة. أما لـ 95% الباقية من الحياة القانونية فثمة طريق أسرع.',
     'compare.us_tag': 'مساعد قانوني بالذكاء الاصطناعي',
     'compare.u1': 'إجابة خلال 30 ثانية، على مدار الساعة',
-    'compare.u2': 'بدءاً من 19٫99 €/شهر — Pro غير محدود',
+    'compare.u2': 'بدءاً من 19٫99 €/شهر — Pro، 100 رسالة يومياً',
     'compare.u3': '17 لغة — منها الروسية والأوكرانية',
     'compare.u4': 'كل ادعاء بإسناد قانوني',
-    'compare.u5': 'إلغاء في أي وقت — استرداد خلال 14 يوماً وفق قانون الاتحاد الأوروبي',
+    'compare.u5': 'إلغاء في أي وقت — استرداد خلال 14 يوماً قبل أوّل رسالة ذكاء اصطناعي',
     'compare.cta_us': 'ابدأ مجاناً',
     'compare.us_price_num': '0٫49 €', 'compare.us_price_unit': '/ ساعة',
     'compare.us_price_note': 'أول 7 رسائل مجاناً · إلغاء في أي وقت',
@@ -4164,13 +4134,13 @@ const I18N = {
     'compare.year_save': 'توفّر',
     'compare.year_save_sub': 'كل عام من جديد.',
     'pricing.label': 'الأسعار', 'pricing.title': 'سعر واضح. بلا <em>مفاجآت</em>.',
-    'pricing.sub': 'إلغاء في أي وقت. وفق قانون المستهلك الأوروبي — استرداد كامل خلال أول 14 يوماً.',
+    'pricing.sub': 'إلغاء في أي وقت. استرداد كامل خلال 14 يوماً إذا لم ترسل بعد أوّل رسالة ذكاء اصطناعي.',
     'plan1.eyebrow': 'البداية', 'plan1.name': 'مجاني', 'plan1.per': '/ إلى الأبد',
     'plan1.desc': 'جرّب النظام. احصل على إجابة حقيقية موثّقة بالقانون قبل أن تقرر.',
     'plan1.f1': '7 رسائل ذكاء اصطناعي بالمجمل', 'plan1.f2': 'قضية فعّالة واحدة', 'plan1.f3': 'مسح المستندات (3)', 'plan1.f4': 'مصادر من القانون الإستوني والأوروبي', 'plan1.f5': 'بدون بطاقة',
     'plan1.cta': 'ابدأ مجاناً',
     'plan2.badge': 'الأكثر شيوعاً', 'plan2.eyebrow': 'للعائلات', 'plan2.name': 'Pro', 'plan2.per': '/ شهر', 'plan2.annual': 'أو 159٫99 €/سنة — وفّر 33%',
-    'plan2.desc': 'دعم قانوني يومي لك ولعائلتك. ذكاء اصطناعي بلا حدود، صياغة مستندات كاملة.',
+    'plan2.desc': 'دعم قانوني يومي لك ولعائلتك. 100 رسالة ذكاء اصطناعي يومياً، صياغة مستندات كاملة.',
     'plan2.f1': '100 رسالة ذكاء اصطناعي / يوم', 'plan2.f2': '3 قضايا فعّالة', 'plan2.f3': 'مسح المستندات (20)',
     'plan2.f4': 'صياغة كاملة (خطابات، شكاوى)', 'plan2.f5': 'إدخال صوتي', 'plan2.f6': 'بحث على الويب عن السوابق الحديثة',
     'plan2.cta': 'ابدأ الآن',
@@ -4185,7 +4155,7 @@ const I18N = {
       { q: 'هل هذا قانوني؟ هل يصحّ فعلاً استخدام الذكاء الاصطناعي للأسئلة القانونية؟', a: 'نعم. Advocat خدمة معلومات قانونية — تشرح القوانين وتساعد في صياغة المستندات. لا تحلّ محل المحامي المرخّص أمام القضاء، لكنها تكفي لفهم وضعك ولكتابة خطابك الأول. كما أن قراءة المقالات القانونية على الإنترنت قانونية، فإن استخدام أداة تنوب عنك في ذلك قانوني أيضاً.' },
       { q: 'هل بياناتي آمنة؟', a: 'نعم. مشفّرة في التخزين، ومستضافة على خوادم الاتحاد الأوروبي (فرانكفورت). محادثاتك لا تُستخدم أبداً لتدريب نماذج الذكاء الاصطناعي. نلتزم بـ GDPR ونطبّق مبدأ تقليل البيانات. يمكنك حذف بياناتك في أي وقت.' },
       { q: 'بِمَ يتفوّق على ChatGPT؟', a: 'Advocat متخصّص في القانون الإستوني والأوروبي: يستشهد بمواد بعينها (مثل VÕS § 308)، ويتذكّر قضيتك بين الجلسات، ويصيغ الخطابات الرسمية بالشكل القانوني الصحيح. قد يختلق ChatGPT المراجع — أما Advocat فيستند إلى مصادر حقيقية من Riigi Teataja.' },
-      { q: 'هل يمكنني استرداد المبلغ؟', a: 'نعم. الإلغاء بنقرة واحدة في أي وقت، دون أسئلة. وفق قانون المستهلك الأوروبي لديك 14 يوماً من تاريخ الشراء لاسترداد كامل المبلغ. بعد ذلك يستمرّ الاشتراك حتى نهاية فترة الفوترة. تحتاج مساعدة؟ راسلنا على support@advocat.ee.' },
+      { q: 'هل يمكنني استرداد المبلغ؟', a: 'نعم. الإلغاء بنقرة واحدة في أي وقت، دون أسئلة. الاسترداد الكامل خلال 14 يوماً من الشراء ممكن إذا لم ترسل بعد أوّل رسالة ذكاء اصطناعي (وفق قانون الاتحاد الأوروبي، إرسال أوّل رسالة ذكاء اصطناعي يُعدّ بدءاً لخدمة رقمية تُؤدّى فوراً ويؤدّي إلى التنازل عن حقّ الانسحاب لمدة 14 يوماً — المادة 16(m) من توجيه حقوق المستهلك). بعد ذلك يستمرّ الاشتراك حتى نهاية فترة الفوترة. تحتاج مساعدة؟ راسلنا على support@advocat.ee.' },
       { q: 'هل لهذه المستندات إلزامية قانونية؟', a: 'المستندات التي يصيغها Advocat قوالب ونقاط انطلاق، تكتسب قيمة قانونية حين توقّعها وترسلها. أما المستندات الموجَّهة للمحكمة فننصح بشدة بمراجعتها مع محامٍ مرخّص. Advocat هو محرّر مسوَّدتك، لا وكيلك في القاعة.' },
       { q: 'هل سيمثّلني Advocat أمام المحكمة؟', a: 'لا. Advocat للإعداد لا للتمثيل. نساعدك على فهم حقوقك، ومراسلة الطرف الآخر، وترتيب ملفّ قضيتك. للمثول أمام المحكمة تحتاج محامياً إستونياً مرخّصاً (vandeadvokaat). وعند الحاجة نوجّهك إلى الجهة المناسبة.' },
       { q: 'مَن يرسل الخطاب فعلاً؟', a: 'أنت. كل بريد إلكتروني يستلزم موافقتك الصريحة في نافذة تأكيد قبل إرساله. يُرسَل من Gmail الخاص بك (إن كان متّصلاً) أو عبر خدمتنا بتوقيع \'بالنيابة عن [اسمك]\'. لا يرسل الذكاء الاصطناعي شيئاً من تلقاء نفسه.' },
@@ -4193,7 +4163,7 @@ const I18N = {
     'cta.title': 'لا تواجه حقوقك <em>وحدك</em>.',
     'cta.sub': 'اطرح أول سؤال. إجابة موثّقة بالقانون خلال 30 ثانية. بدون بطاقة.',
     'cta.btn': 'افتح المحادثة ←',
-    'cta.micro': '7 رسائل مجاناً · إلغاء بنقرة · استرداد خلال 14 يوماً وفق قانون الاتحاد الأوروبي',
+    'cta.micro': '7 رسائل مجاناً · إلغاء بنقرة · استرداد خلال 14 يوماً قبل أوّل رسالة ذكاء اصطناعي',
     'disclaimer.full': 'يقدّم Advocat معلومات قانونية، لا استشارة قانونية. لا تحلّ هذه الخدمة محل المحامي المرخّص. للتمثيل أمام القضاء أو الأحكام أو الآراء القانونية المُلزِمة، استشر محامياً مؤهّلاً. قد تختلف المعلومات بحسب الاختصاص القضائي.',
     'foot.about': 'مساعد قانوني بالذكاء الاصطناعي لإستونيا والاتحاد الأوروبي. صُنع في تالين بواسطة Vorantis OÜ.',
     'foot.powered': 'مدعوم بـ Claude (Anthropic)',
@@ -4238,10 +4208,10 @@ const I18N = {
     'compare.sub': 'در دادگاه، وکیل پاسخ درست است. برای ۹۵ درصد دیگر زندگی حقوقی، راه سریع‌تری وجود دارد.',
     'compare.us_tag': 'دستیار حقوقی هوش مصنوعی',
     'compare.u1': 'پاسخ در ۳۰ ثانیه، شبانه‌روزی',
-    'compare.u2': 'از ۱۹٫۹۹ €/ماه — Pro نامحدود',
+    'compare.u2': 'از ۱۹٫۹۹ €/ماه — Pro، ۱۰۰ پیام در روز',
     'compare.u3': '۱۷ زبان — از جمله روسی و اوکراینی',
     'compare.u4': 'هر ادعا با استناد قانونی',
-    'compare.u5': 'لغو در هر زمان — بازپرداخت ۱۴ روزه طبق حقوق اتحادیه اروپا',
+    'compare.u5': 'لغو در هر زمان — بازپرداخت ۱۴ روزه پیش از اولین پیام هوش مصنوعی',
     'compare.cta_us': 'رایگان شروع کنید',
     'compare.us_price_num': '۰٫۴۹ €', 'compare.us_price_unit': '/ ساعت',
     'compare.us_price_note': '۷ پیام نخست رایگان · لغو در هر زمان',
@@ -4258,13 +4228,13 @@ const I18N = {
     'compare.year_save': 'صرفه‌جویی شما',
     'compare.year_save_sub': 'هر سال دوباره.',
     'pricing.label': 'قیمت‌ها', 'pricing.title': 'قیمت روشن. بدون <em>غافلگیری</em>.',
-    'pricing.sub': 'لغو در هر زمان. طبق قانون مصرف‌کننده‌ی اتحادیه اروپا — بازپرداخت کامل در ۱۴ روز نخست.',
+    'pricing.sub': 'لغو در هر زمان. بازپرداخت کامل ظرف ۱۴ روز اگر هنوز اولین پیام هوش مصنوعی را نفرستاده‌اید.',
     'plan1.eyebrow': 'شروع', 'plan1.name': 'رایگان', 'plan1.per': '/ همیشه',
     'plan1.desc': 'سامانه را امتحان کنید. پیش از تصمیم‌گیری، یک پاسخ واقعی همراه با استناد قانونی دریافت کنید.',
     'plan1.f1': 'مجموعاً ۷ پیام هوش مصنوعی', 'plan1.f2': 'یک پرونده فعّال', 'plan1.f3': 'اسکن سند (۳ مورد)', 'plan1.f4': 'منابع از حقوق استونی و اتحادیه اروپا', 'plan1.f5': 'بدون نیاز به کارت',
     'plan1.cta': 'رایگان شروع کنید',
     'plan2.badge': 'محبوب‌ترین', 'plan2.eyebrow': 'برای خانواده‌ها', 'plan2.name': 'Pro', 'plan2.per': '/ ماه', 'plan2.annual': 'یا ۱۵۹٫۹۹ €/سال — ۳۳٪ صرفه‌جویی',
-    'plan2.desc': 'پشتیبانی حقوقی روزانه برای شما و خانواده. هوش مصنوعی نامحدود، تنظیم کامل اسناد.',
+    'plan2.desc': 'پشتیبانی حقوقی روزانه برای شما و خانواده. ۱۰۰ پیام هوش مصنوعی در روز، تنظیم کامل اسناد.',
     'plan2.f1': 'روزانه ۱۰۰ پیام هوش مصنوعی', 'plan2.f2': 'سه پرونده فعّال', 'plan2.f3': 'اسکن سند (۲۰ مورد)',
     'plan2.f4': 'تنظیم کامل (نامه، شکایت)', 'plan2.f5': 'ورودی صوتی', 'plan2.f6': 'جستجوی وب برای رویه‌ی روز',
     'plan2.cta': 'اکنون شروع کنید',
@@ -4278,7 +4248,7 @@ const I18N = {
       { q: 'آیا این قانونی است؟ آیا واقعاً می‌توان از هوش مصنوعی برای پرسش‌های حقوقی استفاده کرد؟', a: 'بله. Advocat یک خدمت اطلاع‌رسانی حقوقی است — قانون را توضیح می‌دهد و در تنظیم اسناد یاری می‌رساند. در دادگاه جایگزین وکیل دارای پروانه نمی‌شود، اما برای فهم وضعیت و نوشتن نخستین نامه کاملاً مناسب است. همان‌طور که خواندن مقالات حقوقی در اینترنت قانونی است، استفاده از ابزاری که این کار را به‌جای شما انجام می‌دهد نیز قانونی است.' },
       { q: 'آیا داده‌های من امن هستند؟', a: 'بله. در حالت ذخیره رمزگذاری می‌شوند و روی سرورهای اتحادیه اروپا (فرانکفورت) قرار دارند. گفتگوهای شما هرگز برای آموزش مدل‌ها استفاده نمی‌شوند. ما با GDPR هم‌خوانیم و اصل کم‌سازی داده را به‌سختی اجرا می‌کنیم. می‌توانید هر زمان داده‌های خود را پاک کنید.' },
       { q: 'چرا این بهتر از ChatGPT است؟', a: 'Advocat در حقوق استونی و اتحادیه اروپا تخصّص دارد: به مواد مشخص استناد می‌کند (مثلاً VÕS § 308)، پرونده‌ی شما را میان جلسات به یاد می‌سپارد، و نامه‌های رسمی را در قالب حقوقی صحیح می‌نگارد. ChatGPT گاه ارجاع‌های جعلی می‌سازد — اما Advocat به منابع واقعی Riigi Teataja استناد می‌کند.' },
-      { q: 'آیا می‌توانم بازپرداخت بگیرم؟', a: 'بله. لغو با یک کلیک، در هر زمان، بدون پرسش. طبق قانون مصرف‌کننده‌ی اتحادیه اروپا، از زمان خرید ۱۴ روز فرصت دارید برای بازپرداخت کامل. پس از آن، اشتراک تا پایان دوره‌ی صورت‌حساب فعال می‌ماند. کمک می‌خواهید؟ به support@advocat.ee بنویسید.' },
+      { q: 'آیا می‌توانم بازپرداخت بگیرم؟', a: 'بله. لغو با یک کلیک، در هر زمان، بدون پرسش. بازپرداخت کامل ظرف ۱۴ روز پس از خرید در صورتی ممکن است که هنوز اولین پیام هوش مصنوعی خود را نفرستاده باشید (طبق حقوق اتحادیه اروپا، فرستادن اولین پیام هوش مصنوعی به‌منزله‌ی آغاز خدمت دیجیتالِ فوراً ارائه‌شده است و موجب چشم‌پوشی از حق ۱۴ روزه‌ی انصراف می‌شود — ماده ۱۶(m) دستورالعمل حقوق مصرف‌کننده). پس از آن، اشتراک تا پایان دوره‌ی صورت‌حساب فعال می‌ماند. کمک می‌خواهید؟ به support@advocat.ee بنویسید.' },
       { q: 'آیا این اسناد از نظر حقوقی الزام‌آورند؟', a: 'اسنادی که Advocat تهیه می‌کند الگو و نقطه‌ی آغازند. زمانی اعتبار حقوقی می‌یابند که شما آن‌ها را امضا و ارسال کنید. برای اسناد مرتبط با دادگاه به‌شدت توصیه می‌کنیم که نخست وکیل دارای پروانه آن‌ها را بازبینی کند. Advocat نگارنده‌ی پیش‌نویس شماست، نه نماینده‌ی شما در جلسه.' },
       { q: 'آیا Advocat در دادگاه نماینده‌ی من می‌شود؟', a: 'خیر. Advocat برای آماده‌سازی است، نه نمایندگی. به شما کمک می‌کنیم حقوق خود را بفهمید، به طرف مقابل بنویسید، و پرونده را گرد آورید. برای حضور در دادگاه به یک وکیل استونیایی دارای پروانه (vandeadvokaat) نیاز دارید. در صورت لزوم شما را راهنمایی می‌کنیم.' },
       { q: 'در واقع چه کسی نامه را ارسال می‌کند؟', a: 'شما. هر ایمیل پیش از ارسال نیازمند تأیید صریح شما در یک پنجره‌ی تأیید است. از Gmail شخصی شما (در صورت اتصال) یا از طریق خدمت ما با امضای \'به نمایندگی از [نام شما]\' ارسال می‌شود. هوش مصنوعی هرگز به‌طور مستقل ارسال نمی‌کند.' },
@@ -4286,7 +4256,7 @@ const I18N = {
     'cta.title': 'با حقوق خود <em>تنها</em> روبه‌رو نشوید.',
     'cta.sub': 'نخستین پرسش را مطرح کنید. پاسخ همراه با استناد قانونی در ۳۰ ثانیه. بدون کارت.',
     'cta.btn': 'گفتگو را باز کنید ←',
-    'cta.micro': '۷ پیام رایگان · لغو با یک کلیک · بازپرداخت ۱۴ روزه طبق حقوق اتحادیه اروپا',
+    'cta.micro': '۷ پیام رایگان · لغو با یک کلیک · بازپرداخت ۱۴ روزه پیش از اولین پیام هوش مصنوعی',
     'disclaimer.full': 'Advocat اطلاعات حقوقی ارائه می‌دهد، نه مشاوره‌ی حقوقی. این خدمت جایگزین وکیل دارای پروانه نیست. برای نمایندگی در دادگاه، احکام قضایی یا نظر حقوقی الزام‌آور به یک حقوق‌دان واجد صلاحیت مراجعه کنید. اطلاعات ممکن است بسته به حوزه‌ی صلاحیت قضایی متفاوت باشد.',
     'foot.about': 'دستیار حقوقی هوش مصنوعی برای استونی و اتحادیه اروپا. ساخت تالین، Vorantis OÜ.',
     'foot.powered': 'با نیروی Claude (Anthropic)',
@@ -4659,5 +4629,31 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
 })();
 </script>
 
+<!-- Conversion tracking: begin_signup on any CTA pointing to /app.html. -->
+<script>
+(function () {
+  if (window.__advocatSignupTracked) return;
+  document.addEventListener('click', function (ev) {
+    try {
+      var t = ev.target;
+      while (t && t !== document) {
+        if (t.tagName === 'A') {
+          var href = t.getAttribute('href') || '';
+          // Match /app.html and any deep-link variant (e.g. /app.html?plan=...)
+          if (href.indexOf('/app.html') === 0 || href.indexOf('app.html') !== -1) {
+            if (window.advocatTrack && !window.__advocatSignupTracked) {
+              window.__advocatSignupTracked = true;
+              var plan = t.getAttribute('data-plan') || '';
+              window.advocatTrack('begin_signup', plan ? { plan: plan } : {});
+            }
+          }
+          return;
+        }
+        t = t.parentNode;
+      }
+    } catch (e) {}
+  }, true);
+})();
+</script>
 </body>
 </html>

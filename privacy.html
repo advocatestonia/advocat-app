@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privaatsuspoliitika — Privacy Policy | Advocat</title>
-    <meta name="description" content="Advocat privaatsuspoliitika — GDPR-aligned Privacy Policy. How Vorantis OÜ processes your data: Supabase EU, Stripe, Anthropic Claude, Google Cloud, ElevenLabs.">
+    <meta name="description" content="Advocat privaatsuspoliitika — GDPR-aligned Privacy Policy. How Vorantis OÜ processes your data: Supabase EU, Stripe, Anthropic Claude, OpenAI Whisper, Google Cloud, ElevenLabs, Replicate, GitHub Pages, Firebase.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://advocat.ee/privacy.html">
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -111,6 +111,11 @@
             .header-nav a { margin-left: 14px; font-size: 13px; }
         }
     </style>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
 </head>
 <body>
 
@@ -147,9 +152,9 @@
 <!-- ============================================================== -->
 <main class="container" data-lang="et">
     <div class="doc-meta">
-        <p><strong>Jõustub:</strong> 29. aprill 2026</p>
-        <p><strong>Viimati uuendatud:</strong> 29. aprill 2026</p>
-        <p><strong>Versioon:</strong> 3.0</p>
+        <p><strong>Jõustub:</strong> 6. mai 2026</p>
+        <p><strong>Viimati uuendatud:</strong> 6. mai 2026</p>
+        <p><strong>Versioon:</strong> 3.1</p>
     </div>
 
     <div class="callout-key">
@@ -169,11 +174,26 @@
     <ul>
         <li><strong>Konto andmed:</strong> e-posti aadress, nimi (vabatahtlik), keele-eelistus, autentimisinfo (krüpteeritud).</li>
         <li><strong>Vestluste sisu:</strong> teie sõnumid AI-le ja AI vastused.</li>
-        <li><strong>Üleslaaditud dokumendid:</strong> failid, mille olete teadlikult analüüsiks Teenusele edastanud.</li>
+        <li><strong>Üleslaaditud dokumendid:</strong> failid, mille olete teadlikult analüüsiks Teenusele edastanud (kohtulahendid, politseiraportid, meditsiinitõendid jms).</li>
+        <li><strong>Häälsalvestised:</strong> lühikesed audioklipid (kuni 5 min), mille saadate kõnetuvastuseks (Whisper STT).</li>
         <li><strong>Maksete metaandmed:</strong> tellimuse staatus, summad, kuupäevad. <em>Kaardiandmeid me ei näe ega säilita</em> — neid töötleb Stripe (PCI DSS Level 1).</li>
         <li><strong>Tehnilised logid:</strong> IP-aadress, brauser, sessiooni-ID, vea- ja turbelogid.</li>
         <li><strong>Kasutusstatistika:</strong> sõnumite arv, funktsioonide kasutamine (üldistatud kujul).</li>
     </ul>
+
+    <h2>2a. Eriliigilised isikuandmed (GDPR artikkel 9 ja 10)</h2>
+    <p>Õigusabi konteksti tõttu võivad teie üleslaaditud dokumendid sisaldada eriliigilisi isikuandmeid:</p>
+    <ul>
+        <li><strong>Terviseandmed</strong> — meditsiinitõendid, psühhiaatrilised hinnangud, vigastusraportid (nt vägivallaohvri nõuete või deportatsioonivaidluste tarbeks).</li>
+        <li><strong>Kriminaalandmed</strong> (artikkel 10) — politsei süüdistused, kohtulahendid, karistusregistri andmed, kus te olete kahtlustatav, süüdistatav või kannatanu.</li>
+        <li><strong>Biomeetrilised häälnäidised</strong> — Whisperi kõnetuvastuse audiosisend.</li>
+    </ul>
+    <p><strong>Õiguslik alus:</strong> teie sõnaselge nõusolek (artikkel 9 lõige 2 punkt a), mille annate dokumendi üleslaadimisel. Nõusolekut saab igal ajal tagasi võtta — kuid see ei mõjuta enne tagasivõtmist toimunud töötlemise õiguspärasust. Kolmandate osapoolte (politseinikud, kohtunikud, vastaspool, tunnistajad) andmed pseudonümiseeritakse <code>PERSON_1</code>, <code>PERSON_2</code> jne enne LLM-ile saatmist (andmete minimeerimine).</p>
+
+    <h2>2b. Automaatne otsuste tegemine (GDPR artikkel 22)</h2>
+    <div class="callout-warn">
+        <strong>Advocat EI tee automatiseeritud otsuseid, millel on teie suhtes õiguslik mõju.</strong> Kõik otsused — kas esitada hagi, vastata politseile, sõlmida kompromiss — teete teie ise. AI väljund on ainult teabeline ja ei asenda kvalifitseeritud advokaadi nõu. Te ei kuulu artikli 22 lõike 1 kaitse alla, kuna automaatset otsustamist ei toimu.
+    </div>
 
     <h2>3. Õiguslikud alused (GDPR artikkel 6)</h2>
     <ul>
@@ -186,27 +206,40 @@
     <h2>4. Kellega me andmeid jagame (alamtöötlejad)</h2>
     <div class="table-wrap">
     <table>
-        <thead><tr><th>Töötleja</th><th>Eesmärk</th><th>Asukoht</th><th>Kaitse</th></tr></thead>
+        <thead><tr><th>Töötleja</th><th>Riik</th><th>Eesmärk</th><th>DPA</th><th>Ei treenita</th></tr></thead>
         <tbody>
-        <tr><td><strong>Supabase</strong></td><td>Andmete majutus (kasutajad, vestlused)</td><td>EL (eu-west-2)</td><td>EL-sisene, RLS, krüpteeritud</td></tr>
-        <tr><td><strong>Anthropic</strong></td><td>AI töötlemine (Claude API)</td><td>USA</td><td>EL standardsed lepingusätted (SCC)</td></tr>
-        <tr><td><strong>Stripe</strong></td><td>Maksed</td><td>USA / EL</td><td>PCI DSS Level 1, SCC</td></tr>
-        <tr><td><strong>Google Cloud</strong></td><td>Kõnesüntees (TTS)</td><td>EL piirkond</td><td>EL-sisene töötlus</td></tr>
-        <tr><td><strong>ElevenLabs</strong></td><td>Kõnesüntees (mõned keeled)</td><td>USA</td><td>SCC</td></tr>
-        <tr><td><strong>Resend / Gmail</strong></td><td>Tehnilised e-kirjad</td><td>EL / USA</td><td>SCC</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>USA</td><td>AI vestlus (Claude Haiku/Sonnet)</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Jah (SCC + opt-out)</td></tr>
+        <tr><td><strong>OpenAI</strong></td><td>USA</td><td>Whisper STT, text-embedding-3-small</td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Jah (vaikimisi opt-out API kaudu)</td></tr>
+        <tr><td><strong>Supabase</strong></td><td>EL (Frankfurt)</td><td>Andmebaas, salvestus, autentimine</td><td><a href="https://supabase.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (andmed jäävad EL-i)</td></tr>
+        <tr><td><strong>ElevenLabs</strong></td><td>USA</td><td>Kõnesüntees video VO jaoks</td><td><a href="https://elevenlabs.io/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Brave Search</strong></td><td>USA</td><td>Veebiotsing</td><td>N/A</td><td>N/A</td></tr>
+        <tr><td><strong>Resend</strong></td><td>USA</td><td>Tehnilised e-kirjad</td><td><a href="https://resend.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Google Cloud</strong></td><td>EL</td><td>Chirp3-HD TTS (eesti keel)</td><td><a href="https://cloud.google.com/terms/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Stripe</strong></td><td>USA / EL</td><td>Maksed</td><td><a href="https://stripe.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Replicate</strong></td><td>USA</td><td>Avalehe taustavideote ja kujundite genereerimine (sisu ainult, ei mingit isikuandmete edastamist)</td><td><a href="https://replicate.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (ainult sisuks)</td></tr>
+        <tr><td><strong>GitHub (Pages)</strong></td><td>USA / EL CDN</td><td>Staatiline majutus (advocat.ee maandumisleht, blogi)</td><td><a href="https://docs.github.com/en/site-policy/privacy-policies/github-data-protection-agreement" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Google (Gmail OAuth)</strong></td><td>USA / EL</td><td>E-posti agent (kui kasutaja annab nõusoleku Gmaili ühendamiseks): kirjade lugemine ja saatmine kasutaja nimel</td><td><a href="https://workspace.google.com/terms/dpa_terms.html" target="_blank" rel="noopener">DPA</a></td><td>N/A (volitatud OAuth-i ulatus)</td></tr>
+        <tr><td><strong>Firebase / Google Cloud Messaging (FCM)</strong></td><td>USA / EL</td><td>Push-teavitused tähtaegade kohta (Deadline Radar) — kavandatud, mitte aktiivne v1-s</td><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
         </tbody>
     </table>
     </div>
     <p>Kõik alamtöötlejad on lepingu alusel kohustatud andmeid kaitsma vähemalt samal tasemel kui meie ise.</p>
 
     <h2>5. Säilitusajad</h2>
-    <ul>
-        <li><strong>Konto andmed</strong> — kuni konto kustutamiseni.</li>
-        <li><strong>Vestluste ajalugu</strong> — kuni 24 kuud, kui te ei kustuta varem.</li>
-        <li><strong>Üleslaaditud dokumendid</strong> — kuni teie poolt kustutamiseni või konto kustutamiseni.</li>
-        <li><strong>Maksedokumendid</strong> — <strong>7 aastat</strong> raamatupidamise seaduse alusel.</li>
-        <li><strong>Turvalogid</strong> — 12 kuud.</li>
-    </ul>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Andmete kategooria</th><th>Säilitusaeg</th></tr></thead>
+        <tbody>
+        <tr><td>Vestluste sõnumid</td><td>2 aastat alates viimasest tegevusest</td></tr>
+        <tr><td>Meditsiini- / kriminaaldokumendid (PDF)</td><td>Kuni juhtumi staatus = "suletud" + 30 päeva</td></tr>
+        <tr><td>Häälsalvestised (Whisper)</td><td>7 päeva</td></tr>
+        <tr><td>Vektorid (embeddings)</td><td>Sama, mis lähtedokumendil</td></tr>
+        <tr><td>Auditilogi</td><td>7 aastat (õiguslik säilitamiskohustus)</td></tr>
+        <tr><td>Konto andmed</td><td>Kuni te kustutate konto</td></tr>
+        <tr><td>Maksedokumendid</td><td>7 aastat (raamatupidamise seadus)</td></tr>
+        </tbody>
+    </table>
+    </div>
 
     <h2 id="gdpr">6. Teie GDPR õigused</h2>
     <p>Teil on õigus:</p>
@@ -219,7 +252,11 @@
         <li>esitada <strong>vastuväide</strong> töötlemisele õigustatud huvi alusel (art 21);</li>
         <li>võtta tagasi <strong>nõusolek</strong> igal ajal (art 7).</li>
     </ul>
-    <p>Õiguste teostamiseks kirjutage <a href="mailto:support@advocat.ee">support@advocat.ee</a>. Vastame 30 päeva jooksul.</p>
+    <p>Õiguste teostamiseks kirjutage <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a>. Vastame 30 päeva jooksul.</p>
+
+    <div class="callout">
+        <strong>Andmete kustutamine rakenduses:</strong> Avage rakenduses <a href="/account/privacy">/account/privacy</a> ja vajutage "Kustuta kõik andmed". Andmed kustutatakse kaskaadina (juhtumid, dokumendid, sõnumid, vektorid) 24 tunni jooksul.
+    </div>
 
     <div class="callout">
         <strong>Õigus esitada kaebus:</strong> Teil on õigus pöörduda Eesti Andmekaitse Inspektsiooni (AKI) poole — <a href="mailto:aki@aki.ee">aki@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">aki.ee</a>.
@@ -229,7 +266,8 @@
     <p>Kasutame ainult <strong>tehniliselt vajalikke küpsiseid</strong> (sessiooni säilitamine, autentimine, eelistused). <strong>Turundusküpsiseid ega kolmandate osapoolte jälgimist me vaikimisi ei kasuta.</strong> Kui tulevikus võtame analüütika kasutusele, küsime selleks selget nõusolekut küpsisebänneri kaudu.</p>
 
     <h2>8. Rahvusvahelised andmeedastused</h2>
-    <p>Mõned alamtöötlejad (Anthropic, Stripe, ElevenLabs) asuvad väljaspool EL-i. Edastused toimuvad Euroopa Komisjoni kinnitatud <strong>standardsete lepingusätete (SCC)</strong> alusel ja vajaduse korral täiendavate kaitsemeetmetega.</p>
+    <p>Mõned alamtöötlejad (Anthropic, OpenAI, Stripe, ElevenLabs, Brave, Resend, Replicate, GitHub, Google/Firebase) asuvad USA-s. Edastused toimuvad Euroopa Komisjoni kinnitatud <strong>standardsete lepingusätete (SCC, 2021/914/EÜ)</strong> alusel.</p>
+    <p><strong>Schrems-II täiendavad kaitsemeetmed</strong> (eelkõige Anthropicu puhul, kuhu liigub AI-vestluse sisu): krüpteerimine ülekandes (TLS 1.3), <em>no-train</em> klausel (teie andmeid ei kasutata mudelite treenimiseks), minimaalse konteksti põhimõte (kolmandate osapoolte PII pseudonümiseeritakse enne LLM-ile saatmist) ja USA valitsuse päringutele lepinguline vastuseis. Üksikasjalik ülekandemõju hinnang (TIA) on olemas DPO-l.</p>
 
     <h2>9. Turvalisus</h2>
     <ul>
@@ -249,8 +287,8 @@
     <h2>12. Kontakt</h2>
     <div class="contact-box">
         <strong>Vorantis OÜ</strong>
-        E-post: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
-        Andmekaitse kontakt: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Üldkontakt: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Andmekaitsespetsialist (DPO):</strong> Dmitri Sulga — <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
         Aadress: Tornimäe tn 5, 15010 Tallinn, Eesti
     </div>
 </main>
@@ -260,9 +298,9 @@
 <!-- ============================================================== -->
 <main class="container" data-lang="en">
     <div class="doc-meta">
-        <p><strong>Effective:</strong> 29 April 2026</p>
-        <p><strong>Last updated:</strong> 29 April 2026</p>
-        <p><strong>Version:</strong> 3.0</p>
+        <p><strong>Effective:</strong> 6 May 2026</p>
+        <p><strong>Last updated:</strong> 6 May 2026</p>
+        <p><strong>Version:</strong> 3.1</p>
     </div>
 
     <div class="callout-key">
@@ -282,11 +320,26 @@
     <ul>
         <li><strong>Account data:</strong> email address, name (optional), language preference, authentication data (encrypted).</li>
         <li><strong>Chat content:</strong> your messages to the AI and the AI's responses.</li>
-        <li><strong>Uploaded documents:</strong> files you knowingly submit to the Service for analysis.</li>
+        <li><strong>Uploaded documents:</strong> files you knowingly submit to the Service for analysis (court decisions, police reports, medical certificates, etc.).</li>
+        <li><strong>Voice clips:</strong> short audio recordings (up to 5 min) you submit for speech-to-text (Whisper STT).</li>
         <li><strong>Payment metadata:</strong> subscription status, charges, dates. <em>We never see or store full card numbers</em> — those are handled by Stripe (PCI DSS Level 1).</li>
         <li><strong>Technical logs:</strong> IP address, browser, session ID, error and security logs.</li>
         <li><strong>Usage stats:</strong> message count, feature usage (aggregated).</li>
     </ul>
+
+    <h2>2a. Special categories of personal data (GDPR Art. 9 and Art. 10)</h2>
+    <p>Because we provide legal-assistant context, your uploaded documents may contain special categories of personal data:</p>
+    <ul>
+        <li><strong>Health data</strong> — medical certificates, psychiatric assessments, injury reports (e.g., for assault-victim claims or deportation appeals).</li>
+        <li><strong>Criminal-record data</strong> (Art. 10) — police charges, court decisions, criminal-record entries where you are the suspect, defendant, or victim.</li>
+        <li><strong>Biometric voice samples</strong> — raw audio submitted to Whisper STT.</li>
+    </ul>
+    <p><strong>Lawful basis: your explicit consent (Art. 9(2)(a))</strong>, given when you upload such a document. You can withdraw consent at any time — withdrawal does not affect the lawfulness of processing performed before withdrawal. Third parties named in your documents (police officers, judges, opposing parties, witnesses) are pseudonymized as <code>PERSON_1</code>, <code>PERSON_2</code>, etc. before the data is sent to the LLM (data minimization).</p>
+
+    <h2>2b. Automated decision-making (GDPR Art. 22)</h2>
+    <div class="callout-warn">
+        <strong>Advocat does NOT make automated decisions producing legal effects concerning you.</strong> All decisions — whether to file a claim, respond to police, accept a settlement — are made by you, the human user. AI output is informational only and does not replace qualified legal counsel. You are not subject to Art. 22(1) protection because no automated decision-making takes place.
+    </div>
 
     <h2>3. Legal bases (GDPR Article 6)</h2>
     <ul>
@@ -299,27 +352,40 @@
     <h2>4. Who we share data with (sub-processors)</h2>
     <div class="table-wrap">
     <table>
-        <thead><tr><th>Processor</th><th>Purpose</th><th>Location</th><th>Safeguard</th></tr></thead>
+        <thead><tr><th>Processor</th><th>Country</th><th>Purpose</th><th>DPA</th><th>No-train</th></tr></thead>
         <tbody>
-        <tr><td><strong>Supabase</strong></td><td>Data hosting (users, chats)</td><td>EU (eu-west-2)</td><td>In-EU, RLS, encrypted</td></tr>
-        <tr><td><strong>Anthropic</strong></td><td>AI processing (Claude API)</td><td>USA</td><td>EU Standard Contractual Clauses (SCC)</td></tr>
-        <tr><td><strong>Stripe</strong></td><td>Payments</td><td>USA / EU</td><td>PCI DSS Level 1, SCC</td></tr>
-        <tr><td><strong>Google Cloud</strong></td><td>Voice synthesis (TTS)</td><td>EU region</td><td>In-EU processing</td></tr>
-        <tr><td><strong>ElevenLabs</strong></td><td>Voice synthesis (some languages)</td><td>USA</td><td>SCC</td></tr>
-        <tr><td><strong>Resend / Gmail</strong></td><td>Transactional email</td><td>EU / USA</td><td>SCC</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>USA</td><td>AI chat (Claude Haiku/Sonnet)</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Yes (SCC + opt-out)</td></tr>
+        <tr><td><strong>OpenAI</strong></td><td>USA</td><td>Whisper STT, text-embedding-3-small</td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Yes (default opt-out via API)</td></tr>
+        <tr><td><strong>Supabase</strong></td><td>EU (Frankfurt)</td><td>Database, storage, auth</td><td><a href="https://supabase.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (data stays in EU)</td></tr>
+        <tr><td><strong>ElevenLabs</strong></td><td>USA</td><td>TTS for video VO</td><td><a href="https://elevenlabs.io/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Brave Search</strong></td><td>USA</td><td>Web search</td><td>N/A</td><td>N/A</td></tr>
+        <tr><td><strong>Resend</strong></td><td>USA</td><td>Transactional email</td><td><a href="https://resend.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Google Cloud</strong></td><td>EU</td><td>Chirp3-HD TTS for Estonian</td><td><a href="https://cloud.google.com/terms/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Stripe</strong></td><td>USA / EU</td><td>Payments</td><td><a href="https://stripe.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Replicate</strong></td><td>USA</td><td>Generating landing-page background video and imagery (content only, no personal data transmitted)</td><td><a href="https://replicate.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (content only)</td></tr>
+        <tr><td><strong>GitHub (Pages)</strong></td><td>USA / EU CDN</td><td>Static hosting (advocat.ee landing page, blog)</td><td><a href="https://docs.github.com/en/site-policy/privacy-policies/github-data-protection-agreement" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Google (Gmail OAuth)</strong></td><td>USA / EU</td><td>Email Agent (when user consents to connect Gmail): reading and sending mail on user's behalf</td><td><a href="https://workspace.google.com/terms/dpa_terms.html" target="_blank" rel="noopener">DPA</a></td><td>N/A (authorized OAuth scopes)</td></tr>
+        <tr><td><strong>Firebase / Google Cloud Messaging (FCM)</strong></td><td>USA / EU</td><td>Push notifications for deadlines (Deadline Radar) — planned, not yet active in v1</td><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
         </tbody>
     </table>
     </div>
     <p>All sub-processors are contractually bound to protect data at least to the same level as we do.</p>
 
     <h2>5. Retention</h2>
-    <ul>
-        <li><strong>Account data</strong> — until you delete the account.</li>
-        <li><strong>Chat history</strong> — up to 24 months, unless you delete it earlier.</li>
-        <li><strong>Uploaded documents</strong> — until you delete them or the account.</li>
-        <li><strong>Payment records</strong> — <strong>7 years</strong> as required by Estonian Accounting Act.</li>
-        <li><strong>Security logs</strong> — 12 months.</li>
-    </ul>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Data category</th><th>Retention period</th></tr></thead>
+        <tbody>
+        <tr><td>Chat messages</td><td>2 years from last activity</td></tr>
+        <tr><td>Medical / criminal PDFs</td><td>Until <code>case_status = closed</code> + 30 days</td></tr>
+        <tr><td>Voice clips (Whisper)</td><td>7 days</td></tr>
+        <tr><td>Embeddings</td><td>Same as parent document</td></tr>
+        <tr><td>Audit log</td><td>7 years (legal retention)</td></tr>
+        <tr><td>Account data</td><td>Until you delete your account</td></tr>
+        <tr><td>Payment records</td><td>7 years (Estonian Accounting Act)</td></tr>
+        </tbody>
+    </table>
+    </div>
 
     <h2 id="gdpr-en">6. Your GDPR rights</h2>
     <p>You have the right to:</p>
@@ -332,7 +398,11 @@
         <li><strong>object</strong> to processing based on legitimate interest (art 21);</li>
         <li><strong>withdraw consent</strong> at any time (art 7).</li>
     </ul>
-    <p>To exercise these rights, email <a href="mailto:support@advocat.ee">support@advocat.ee</a>. We respond within 30 days.</p>
+    <p>To exercise these rights, email <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a>. We respond within 30 days.</p>
+
+    <div class="callout">
+        <strong>Erase all your data from inside the app:</strong> Visit <a href="/account/privacy">/account/privacy</a> and click "Delete all my data". We perform a cascade purge (cases, documents, messages, embeddings) within 24 hours.
+    </div>
 
     <div class="callout">
         <strong>Right to lodge a complaint:</strong> You have the right to complain to the Estonian Data Protection Inspectorate (AKI) — <a href="mailto:aki@aki.ee">aki@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">aki.ee</a>.
@@ -342,7 +412,8 @@
     <p>We use only <strong>strictly necessary cookies</strong> (session, authentication, preferences). <strong>We do not use marketing cookies or third-party tracking</strong> by default. If we add any analytics in the future, we will request explicit consent through a cookie banner.</p>
 
     <h2>8. International data transfers</h2>
-    <p>Some sub-processors (Anthropic, Stripe, ElevenLabs) are located outside the EU. Transfers are carried out under <strong>European Commission Standard Contractual Clauses (SCC)</strong>, with supplementary measures where needed.</p>
+    <p>Some sub-processors (Anthropic, OpenAI, Stripe, ElevenLabs, Brave, Resend, Replicate, GitHub, Google/Firebase) are located in the USA. Transfers are carried out under <strong>European Commission Standard Contractual Clauses (SCC, 2021/914/EU)</strong>.</p>
+    <p><strong>Schrems-II supplementary measures</strong> (in particular for Anthropic, which receives AI-chat content): encryption in transit (TLS 1.3), <em>no-train</em> clause (your data is not used to train models), minimum-context principle (third-party PII is pseudonymized before being sent to the LLM), and contractual challenge of US government access requests. A detailed transfer impact assessment (TIA) is on file with the DPO.</p>
 
     <h2>9. Security</h2>
     <ul>
@@ -362,8 +433,8 @@
     <h2>12. Contact</h2>
     <div class="contact-box">
         <strong>Vorantis OÜ</strong>
-        Email: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
-        Data protection contact: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        General: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Data Protection Officer (DPO):</strong> Dmitri Sulga — <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
         Address: Tornimäe tn 5, 15010 Tallinn, Estonia
     </div>
 </main>
@@ -373,9 +444,9 @@
 <!-- ============================================================== -->
 <main class="container" data-lang="ru">
     <div class="doc-meta">
-        <p><strong>Вступает в силу:</strong> 29 апреля 2026</p>
-        <p><strong>Последнее обновление:</strong> 29 апреля 2026</p>
-        <p><strong>Версия:</strong> 3.0</p>
+        <p><strong>Вступает в силу:</strong> 6 мая 2026</p>
+        <p><strong>Последнее обновление:</strong> 6 мая 2026</p>
+        <p><strong>Версия:</strong> 3.1</p>
     </div>
 
     <div class="callout-key">
@@ -395,11 +466,26 @@
     <ul>
         <li><strong>Данные аккаунта:</strong> e-mail, имя (по желанию), языковые настройки, данные аутентификации (зашифровано).</li>
         <li><strong>Содержимое чата:</strong> ваши сообщения AI и ответы AI.</li>
-        <li><strong>Загруженные документы:</strong> файлы, которые вы осознанно отправляете Сервису для анализа.</li>
+        <li><strong>Загруженные документы:</strong> файлы, которые вы осознанно отправляете Сервису для анализа (судебные решения, полицейские протоколы, медицинские справки и т.п.).</li>
+        <li><strong>Голосовые записи:</strong> короткие аудиоклипы (до 5 мин), которые вы отправляете для распознавания речи (Whisper STT).</li>
         <li><strong>Метаданные платежей:</strong> статус подписки, суммы, даты. <em>Полные номера карт мы не видим и не храним</em> — их обрабатывает Stripe (PCI DSS Level 1).</li>
         <li><strong>Технические логи:</strong> IP-адрес, браузер, ID сессии, логи ошибок и безопасности.</li>
         <li><strong>Статистика использования:</strong> количество сообщений, использование функций (агрегировано).</li>
     </ul>
+
+    <h2>2a. Особые категории персональных данных (GDPR ст. 9 и ст. 10)</h2>
+    <p>Из-за специфики юридической помощи ваши загруженные документы могут содержать особые категории персональных данных:</p>
+    <ul>
+        <li><strong>Данные о здоровье</strong> — медицинские справки, психиатрические заключения, отчёты о травмах (например, для исков потерпевших от насилия или обжалования депортации).</li>
+        <li><strong>Данные о судимости</strong> (ст. 10) — обвинения полиции, судебные решения, записи в реестре наказаний, где вы выступаете подозреваемым, обвиняемым или потерпевшим.</li>
+        <li><strong>Биометрические голосовые образцы</strong> — аудио, отправленное в Whisper STT.</li>
+    </ul>
+    <p><strong>Правовое основание: ваше явное согласие (ст. 9(2)(а))</strong>, которое вы даёте при загрузке такого документа. Согласие можно отозвать в любой момент — отзыв не влияет на правомерность обработки до отзыва. Третьи лица, упомянутые в ваших документах (полицейские, судьи, противная сторона, свидетели), псевдонимизируются как <code>PERSON_1</code>, <code>PERSON_2</code> и т.д. перед отправкой данных в LLM (минимизация данных).</p>
+
+    <h2>2b. Автоматизированное принятие решений (GDPR ст. 22)</h2>
+    <div class="callout-warn">
+        <strong>Advocat НЕ принимает автоматизированных решений с юридическими последствиями для вас.</strong> Все решения — подавать ли иск, отвечать ли полиции, принять ли мировое соглашение — принимаете вы сами. Вывод AI носит исключительно информационный характер и не заменяет квалифицированную юридическую помощь. На вас не распространяется защита ст. 22(1), поскольку автоматизированного принятия решений не происходит.
+    </div>
 
     <h2>3. Правовые основания (GDPR ст. 6)</h2>
     <ul>
@@ -412,27 +498,40 @@
     <h2>4. С кем мы делимся данными (субобработчики)</h2>
     <div class="table-wrap">
     <table>
-        <thead><tr><th>Обработчик</th><th>Цель</th><th>Локация</th><th>Защита</th></tr></thead>
+        <thead><tr><th>Обработчик</th><th>Страна</th><th>Цель</th><th>DPA</th><th>Без обучения</th></tr></thead>
         <tbody>
-        <tr><td><strong>Supabase</strong></td><td>Хранение данных (пользователи, чаты)</td><td>ЕС (eu-west-2)</td><td>Внутри ЕС, RLS, шифрование</td></tr>
-        <tr><td><strong>Anthropic</strong></td><td>Обработка AI (Claude API)</td><td>США</td><td>Стандартные договорные условия ЕС (SCC)</td></tr>
-        <tr><td><strong>Stripe</strong></td><td>Платежи</td><td>США / ЕС</td><td>PCI DSS Level 1, SCC</td></tr>
-        <tr><td><strong>Google Cloud</strong></td><td>Синтез речи (TTS)</td><td>Регион ЕС</td><td>Обработка внутри ЕС</td></tr>
-        <tr><td><strong>ElevenLabs</strong></td><td>Синтез речи (некоторые языки)</td><td>США</td><td>SCC</td></tr>
-        <tr><td><strong>Resend / Gmail</strong></td><td>Транзакционные e-mail</td><td>ЕС / США</td><td>SCC</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>США</td><td>AI-чат (Claude Haiku/Sonnet)</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Да (SCC + opt-out)</td></tr>
+        <tr><td><strong>OpenAI</strong></td><td>США</td><td>Whisper STT, text-embedding-3-small</td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Да (по умолчанию opt-out через API)</td></tr>
+        <tr><td><strong>Supabase</strong></td><td>ЕС (Франкфурт)</td><td>База данных, хранилище, аутентификация</td><td><a href="https://supabase.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (данные остаются в ЕС)</td></tr>
+        <tr><td><strong>ElevenLabs</strong></td><td>США</td><td>TTS для видео-озвучки</td><td><a href="https://elevenlabs.io/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Brave Search</strong></td><td>США</td><td>Поиск в интернете</td><td>N/A</td><td>N/A</td></tr>
+        <tr><td><strong>Resend</strong></td><td>США</td><td>Транзакционные e-mail</td><td><a href="https://resend.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Google Cloud</strong></td><td>ЕС</td><td>Chirp3-HD TTS (эстонский)</td><td><a href="https://cloud.google.com/terms/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Stripe</strong></td><td>США / ЕС</td><td>Платежи</td><td><a href="https://stripe.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Replicate</strong></td><td>США</td><td>Генерация фонового видео и изображений для лендинга (только контент, без передачи персональных данных)</td><td><a href="https://replicate.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (только контент)</td></tr>
+        <tr><td><strong>GitHub (Pages)</strong></td><td>США / EU CDN</td><td>Статический хостинг (лендинг advocat.ee, блог)</td><td><a href="https://docs.github.com/en/site-policy/privacy-policies/github-data-protection-agreement" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
+        <tr><td><strong>Google (Gmail OAuth)</strong></td><td>США / ЕС</td><td>Email-агент (когда пользователь даёт согласие на подключение Gmail): чтение и отправка писем от имени пользователя</td><td><a href="https://workspace.google.com/terms/dpa_terms.html" target="_blank" rel="noopener">DPA</a></td><td>N/A (авторизованные OAuth-области)</td></tr>
+        <tr><td><strong>Firebase / Google Cloud Messaging (FCM)</strong></td><td>США / ЕС</td><td>Push-уведомления о сроках (Deadline Radar) — запланировано, не активно в v1</td><td><a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
         </tbody>
     </table>
     </div>
     <p>Все субобработчики договорно обязаны защищать данные не ниже нашего собственного уровня.</p>
 
     <h2>5. Сроки хранения</h2>
-    <ul>
-        <li><strong>Данные аккаунта</strong> — до удаления аккаунта.</li>
-        <li><strong>История чатов</strong> — до 24 месяцев, если вы не удалите раньше.</li>
-        <li><strong>Загруженные документы</strong> — до удаления вами или удаления аккаунта.</li>
-        <li><strong>Платёжные документы</strong> — <strong>7 лет</strong> в соответствии с Законом Эстонии о бухгалтерском учёте.</li>
-        <li><strong>Логи безопасности</strong> — 12 месяцев.</li>
-    </ul>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Категория данных</th><th>Срок хранения</th></tr></thead>
+        <tbody>
+        <tr><td>Сообщения чата</td><td>2 года с момента последней активности</td></tr>
+        <tr><td>Медицинские / уголовные PDF</td><td>До <code>case_status = closed</code> + 30 дней</td></tr>
+        <tr><td>Голосовые записи (Whisper)</td><td>7 дней</td></tr>
+        <tr><td>Векторы (embeddings)</td><td>Те же, что у исходного документа</td></tr>
+        <tr><td>Журнал аудита</td><td>7 лет (требование закона)</td></tr>
+        <tr><td>Данные аккаунта</td><td>До удаления аккаунта вами</td></tr>
+        <tr><td>Платёжные документы</td><td>7 лет (Закон Эстонии о бухгалтерском учёте)</td></tr>
+        </tbody>
+    </table>
+    </div>
 
     <h2>6. Ваши права по GDPR</h2>
     <p>У вас есть право:</p>
@@ -445,7 +544,11 @@
         <li>на <strong>возражение</strong> против обработки на основании законного интереса (ст. 21);</li>
         <li><strong>отозвать согласие</strong> в любой момент (ст. 7).</li>
     </ul>
-    <p>Чтобы воспользоваться этими правами, напишите на <a href="mailto:support@advocat.ee">support@advocat.ee</a>. Мы отвечаем в течение 30 дней.</p>
+    <p>Чтобы воспользоваться этими правами, напишите на <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a>. Мы отвечаем в течение 30 дней.</p>
+
+    <div class="callout">
+        <strong>Удаление всех данных в приложении:</strong> Откройте в приложении <a href="/account/privacy">/account/privacy</a> и нажмите «Удалить все мои данные». Каскадное удаление (дела, документы, сообщения, векторы) произойдёт в течение 24 часов.
+    </div>
 
     <div class="callout">
         <strong>Право на жалобу:</strong> Вы имеете право обратиться в Эстонскую инспекцию по защите данных (AKI) — <a href="mailto:aki@aki.ee">aki@aki.ee</a>, <a href="https://www.aki.ee" target="_blank" rel="noopener">aki.ee</a>.
@@ -455,7 +558,8 @@
     <p>Мы используем только <strong>строго необходимые cookies</strong> (сессия, аутентификация, настройки). <strong>Мы не используем рекламные cookies и стороннее отслеживание</strong> по умолчанию. Если в будущем будет добавлена аналитика, мы запросим явное согласие через cookie-баннер.</p>
 
     <h2>8. Международная передача данных</h2>
-    <p>Некоторые субобработчики (Anthropic, Stripe, ElevenLabs) находятся вне ЕС. Передачи осуществляются на основании <strong>стандартных договорных условий Европейской комиссии (SCC)</strong>, при необходимости — с дополнительными мерами защиты.</p>
+    <p>Некоторые субобработчики (Anthropic, OpenAI, Stripe, ElevenLabs, Brave, Resend, Replicate, GitHub, Google/Firebase) находятся в США. Передачи осуществляются на основании <strong>стандартных договорных условий Европейской комиссии (SCC, 2021/914/ЕС)</strong>.</p>
+    <p><strong>Дополнительные меры по Schrems-II</strong> (особенно для Anthropic, куда поступает содержимое AI-чата): шифрование при передаче (TLS 1.3), оговорка <em>no-train</em> (ваши данные не используются для обучения моделей), принцип минимального контекста (PII третьих лиц псевдонимизируется до отправки в LLM), а также договорное противодействие запросам государственных органов США. Подробная оценка влияния передачи (TIA) хранится у DPO.</p>
 
     <h2>9. Безопасность</h2>
     <ul>
@@ -475,8 +579,8 @@
     <h2>12. Контакт</h2>
     <div class="contact-box">
         <strong>Vorantis OÜ</strong>
-        E-mail: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
-        Контакт по защите данных: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        Общий контакт: <a href="mailto:support@advocat.ee">support@advocat.ee</a><br>
+        <strong>Специалист по защите данных (DPO):</strong> Дмитрий Шульга — <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a><br>
         Адрес: Tornimäe tn 5, 15010 Tallinn, Эстония
     </div>
 </main>
