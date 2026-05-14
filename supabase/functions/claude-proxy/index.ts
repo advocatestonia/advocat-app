@@ -68,6 +68,11 @@ import {
   LLAMA_TIMEOUT_MS,
   shouldFallback,
 } from "./llama_fallback.ts";
+import {
+  anonDisabledResponse,
+  flagOn,
+  maintenanceResponse,
+} from "../_shared/kill_switches.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -141,6 +146,13 @@ serve(async (req) => {
     return jsonError("Method not allowed", 405);
   }
 
+  // ── 0. Kill switch: CLAUDE_PROXY_MAINTENANCE ──────────────────────────
+  // Severe shutdown — trumps every downstream check (auth, quota, anon).
+  // See _shared/kill_switches.ts and /tmp/hn_launch_runbook.md.
+  if (flagOn("CLAUDE_PROXY_MAINTENANCE")) {
+    return maintenanceResponse();
+  }
+
   try {
     // ── 1. AuthN + per-user rate limit ────────────────────────────────────
     // 2026-05-05 DEMO RESTORE: anonymousPerMinute=3 lets demo-mode callers
@@ -154,6 +166,13 @@ serve(async (req) => {
     });
     if (gate.kind === "deny") return gate.response;
     const isAnon = gate.user.id.startsWith("anon:");
+
+    // ── 1b. Kill switch: ANON_CHAT_DISABLED ───────────────────────────────
+    // Lets us shut the open demo while paid users keep working. Runs AFTER
+    // the auth gate so we know `isAnon` reliably.
+    if (isAnon && flagOn("ANON_CHAT_DISABLED")) {
+      return anonDisabledResponse();
+    }
 
     // ── 2. Server-side quota check (SECURITY U3) ──────────────────────────
     // Even an authenticated free-tier user cannot bypass the 7-message cap

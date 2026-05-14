@@ -35,6 +35,10 @@ import {
   type SubscriptionTier,
   validateRequest,
 } from "./handler.ts";
+import {
+  contractReviewDisabledResponse,
+  flagOn,
+} from "../_shared/kill_switches.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -55,6 +59,12 @@ serve(async (req: Request) => {
   }
   if (req.method !== "POST") {
     return jsonError("Method not allowed", 405);
+  }
+
+  // Kill switch: CONTRACT_REVIEW_DISABLED — short-circuit before auth/DB.
+  // See _shared/kill_switches.ts and /tmp/hn_launch_runbook.md.
+  if (flagOn("CONTRACT_REVIEW_DISABLED")) {
+    return contractReviewDisabledResponse();
   }
 
   // Auth — user JWT required, anon NEVER accepted.

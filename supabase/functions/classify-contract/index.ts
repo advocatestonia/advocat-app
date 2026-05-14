@@ -30,6 +30,10 @@ import {
   type HaikuResponse,
   validateRequest,
 } from "./handler.ts";
+import {
+  contractReviewDisabledResponse,
+  flagOn,
+} from "../_shared/kill_switches.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -47,6 +51,14 @@ serve(async (req: Request) => {
   }
   if (req.method !== "POST") {
     return jsonError("Method not allowed", 405);
+  }
+
+  // Kill switch: CONTRACT_REVIEW_DISABLED — short-circuit before classify
+  // call (Haiku is cheap, but the early return saves a round-trip and
+  // gives users a uniform message across both contract-review entry points).
+  // See _shared/kill_switches.ts and /tmp/hn_launch_runbook.md.
+  if (flagOn("CONTRACT_REVIEW_DISABLED")) {
+    return contractReviewDisabledResponse();
   }
 
   // Auth — user JWT required; anon NEVER accepted (memory:
