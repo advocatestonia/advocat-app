@@ -133,6 +133,49 @@ Deno.test("CIT-T12 — ECtHR with dot also matches", () => {
 });
 
 // =============================================================================
+// 5. Source-code contract: server-side filter on statutes_cited
+// =============================================================================
+//
+// 2026-05-13 fix: previously the .limit(N) query returned the SAME oldest
+// rows every invocation, with the "skip if already populated" check done
+// client-side AFTER fetching. That meant once those N rows were processed
+// the cron spun forever on rows-with-citations and newer chunks never
+// got reached. The fix adds a server-side .or() filter so each run
+// advances past chunks that already have entries in statutes_cited.
+
+Deno.test("CIT-T20 — index.ts applies server-side filter on statutes_cited", async () => {
+  const source = await Deno.readTextFile(
+    new URL("../index.ts", import.meta.url),
+  );
+  // Both NULL and empty-array branches must be present in the filter.
+  // PostgREST `.or()` accepts a comma-separated list.
+  if (!source.includes("statutes_cited.is.null")) {
+    throw new Error(
+      "citation-extractor must filter statutes_cited IS NULL server-side",
+    );
+  }
+  if (!source.includes("statutes_cited.eq.{}")) {
+    throw new Error(
+      "citation-extractor must filter statutes_cited = '{}' server-side",
+    );
+  }
+});
+
+Deno.test("CIT-T21 — index.ts selects statutes_cited column for defensive skip", async () => {
+  const source = await Deno.readTextFile(
+    new URL("../index.ts", import.meta.url),
+  );
+  // The SELECT list must include statutes_cited so the post-fetch
+  // existingStatutes.length>0 check still works for the race case.
+  const re = /\.select\(\s*"[^"]*statutes_cited[^"]*"/;
+  if (!re.test(source)) {
+    throw new Error(
+      "citation-extractor must include statutes_cited in SELECT list",
+    );
+  }
+});
+
+// =============================================================================
 // 5. De-duplication + ordering
 // =============================================================================
 

@@ -84,18 +84,33 @@ serve(async (req: Request) => {
   });
 
   // Fetch candidate chunks.
+  //
+  // 2026-05-13 fix: previously this query had no server-side filter on
+  // statutes_cited, so every invocation pulled the SAME oldest N rows
+  // ordered by ingested_at. Once those N were processed (or had no
+  // citations), subsequent cron runs spun on the same rows forever and
+  // newer chunks never got reached. We now filter at the DB layer using
+  //   statutes_cited IS NULL OR statutes_cited = '{}'
+  // so each run advances past chunks already populated. The targeted
+  // single-chunk path (`case_chunk_id` in body) bypasses the filter so
+  // idempotency re-runs still work for tests.
+  //
+  // Also select statutes_cited so the post-fetch defensive skip below
+  // (`existingStatutes.length > 0`) still works on the rare race where a
+  // chunk gets populated between filter eval and SELECT — belt+suspenders.
   let query = supabase
     .from("case_chunks")
-    .select("id, text, lang, court")
+    .select("id, text, lang, court, statutes_cited")
     .order("ingested_at", { ascending: true })
     .limit(maxChunks);
 
   if (targetChunkId) {
     query = query.eq("id", targetChunkId);
   } else {
-    // statutes_cited is text[]; we want chunks where it's empty/null.
-    // PostgREST: use `cardinality` server-side via filter on length is not
-    // exposed → we filter in app code below after fetching.
+    // PostgREST `.or()` accepts a comma-separated list of filter expressions.
+    // Both branches are needed because Postgres distinguishes NULL from an
+    // empty array, and historical rows exist in both states.
+    query = query.or("statutes_cited.is.null,statutes_cited.eq.{}");
   }
 
   const { data: chunks, error } = await query;

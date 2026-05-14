@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
   corsHeaders,
   jsonError,
@@ -10,6 +11,13 @@ import {
   buildAnthropicHeaders,
 } from "./prompt_caching.ts";
 import { mapAnthropicError } from "./error_mapping.ts";
+import {
+  buildEmbedFn,
+  buildRagOnlyJsonResponse,
+  buildRagOnlyResponse,
+  buildRagOnlySseResponse,
+  isCreditBalanceError,
+} from "./credit_fallback.ts";
 import { classifyComplexity } from "./classify_complexity.ts";
 import {
   classifyQuery,
@@ -112,16 +120,22 @@ const CORRECTIONS_SIMILARITY_THRESHOLD = parseFloat(
 //
 // 2026-05-05 DEMO RESTORE: f8f6a58 set anonymousPerMinute=0, which 401'd
 // the "Proovi demorežiimi" → "AI õigusabi" flow (chat UI showed "Временная
-// ошибка AI"). We restore demo with a HARD CAP that keeps cost bounded:
-//   • anonymousPerMinute = 3            — IP rate-limit, 3 msgs / min
-//   • ANON_MAX_TOKENS = 500             — clamp anon responses to 500 tokens
-//                                         (vs 4096 for authenticated users)
-// Worst case per anon IP: 3 calls/min × 500 tokens × ~$1.5/1M out tokens
-// (Haiku 4.5) ≈ $0.13/hour. Authenticated callers retain the full 4096 cap.
+// ошибка AI"). We restored demo with a HARD CAP that keeps cost bounded.
+//
+// 2026-05-13 TIGHTEN (post $0-balance): owner had to top up Anthropic
+// credits; to stretch each top-up further for PAID users we cut anon and
+// auth limits to a third:
+//   • anonymousPerMinute   3 → 1
+//   • ANON_MAX_TOKENS    500 → 200
+//   • RATE_LIMIT_MAX      10 → 5     (auth users / minute / IP bucket)
+// Worst case per anon IP: 1 call/min × 200 tokens × ~$1.5/1M out tokens
+// (Haiku 4.5) ≈ $0.018/hour (was $0.13). Free-tier never burns through a
+// $20 wallet in a day even under abuse. Authenticated free-tier users are
+// also rate-limited at 5/min so a paid user's call always wins the race.
 // -----------------------------------------------------------------------------
 
-const RATE_LIMIT_MAX = 10;
-const ANON_RATE_LIMIT_PER_MINUTE = 3;
+const RATE_LIMIT_MAX = 5;
+const ANON_RATE_LIMIT_PER_MINUTE = 1;
 
 const ALLOWED_MODELS = new Set([
   "claude-sonnet-4-20250514",
@@ -134,7 +148,7 @@ const ALLOWED_MODELS = new Set([
 // No artificial cap — AI writes contracts, pleadings, full legal dossiers
 // without stopping mid-document. Anon callers stay clamped at 500 (demo).
 const MAX_TOKENS_LIMIT = 32000;
-const ANON_MAX_TOKENS = 500;
+const ANON_MAX_TOKENS = 200;
 const MAX_MESSAGES = 20;
 
 serve(async (req) => {
@@ -182,8 +196,8 @@ serve(async (req) => {
     // For anon callers, check-ai-quota returns a synthetic
     // { allowed: true, plan: "free" } payload (see check-ai-quota/index.ts
     // lines 75-84) — no real per-IP counter is persisted server-side. The
-    // bound on anon abuse is the rate-limit (3/min/IP) + ANON_MAX_TOKENS
-    // clamp below.
+    // bound on anon abuse is the rate-limit (1/min/IP, see ANON_RATE_LIMIT_PER_MINUTE)
+    // + ANON_MAX_TOKENS clamp below.
     const authHeader = req.headers.get("Authorization") ?? "";
     const quotaAllowed = await checkQuota(authHeader);
     if (!quotaAllowed.ok) {
@@ -305,10 +319,11 @@ serve(async (req) => {
     body.max_tokens = Math.min(body.max_tokens || MAX_TOKENS_LIMIT, MAX_TOKENS_LIMIT);
 
     // 2026-05-05 DEMO RESTORE: tighten the cap for anon callers to
-    // ANON_MAX_TOKENS (500). This is a defence-in-depth bound on per-call
-    // cost — even if the rate-limit (3/min/IP) is somehow bypassed, an anon
-    // caller cannot get a full-cost 4096-token response. Authenticated
-    // users keep the full 4096 cap unchanged.
+    // ANON_MAX_TOKENS (200 post 2026-05-13 tighten). This is a
+    // defence-in-depth bound on per-call cost — even if the rate-limit
+    // (1/min/IP) is somehow bypassed, an anon caller cannot get a
+    // full-cost 4096-token response. Authenticated users keep the
+    // 32000 cap unchanged.
     if (isAnon) {
       body.max_tokens = Math.min(body.max_tokens, ANON_MAX_TOKENS);
     }
@@ -937,6 +952,25 @@ serve(async (req) => {
           });
         }
         const errorText = await claudeStreamResponse.text();
+
+        // ── $0-balance graceful degradation (2026-05-13) ──────────────────
+        // Anthropic returns 400 with "credit balance" body when the org
+        // wallet hits zero. shouldFallback() does NOT route 400 to Llama
+        // (Llama wouldn't fix a real client-side bug, normally), so we
+        // intercept HERE and ship a RAG-only reply built from law_search
+        // instead. The user sees a banner + real statute text — much
+        // better than the generic «Временная ошибка AI» they'd get from
+        // the mapAnthropicError 400 passthrough.
+        if (isCreditBalanceError(claudeStreamResponse.status, errorText)) {
+          const fallback = await runCreditExhaustedFallback(
+            body,
+            true,
+            persistMessageId,
+          );
+          if (fallback) return fallback;
+          // No OpenAI key configured — fall through to legacy 400 shape.
+        }
+
         // Pre-launch (2026-04-29): translate 429 / 529 into a friendly
         // shape so the Flutter client can show a localized message
         // ("service is temporarily overloaded, try again in 1-2 min")
@@ -1277,6 +1311,20 @@ serve(async (req) => {
     // Map other 4xx (e.g. 400/401) to the friendly shape (see comment in
     // streaming branch above).
     const errorText = await claudeResponse.text();
+
+    // ── $0-balance graceful degradation (2026-05-13) ──────────────────────
+    // Mirror the streaming branch: a 400 with "credit balance" body means
+    // the Anthropic wallet is empty. Ship a RAG-only reply instead of the
+    // generic 400 passthrough.
+    if (isCreditBalanceError(claudeResponse.status, errorText)) {
+      const fallback = await runCreditExhaustedFallback(
+        body,
+        false,
+        persistMessageId,
+      );
+      if (fallback) return fallback;
+    }
+
     const mapped = mapAnthropicError({
       status: claudeResponse.status,
       body: errorText,
@@ -1347,6 +1395,116 @@ interface FallbackContext {
   persistMessageId: string | null;
   persistUserId: string | null;
   persistCaseId: string | null;
+}
+
+// =============================================================================
+// Anthropic $0-balance graceful degradation
+// =============================================================================
+//
+// When Anthropic returns 400 with "credit balance" we cannot route to Llama
+// (Llama doesn't know our user's specific question is a legal one, and we want
+// to ship REAL statute text instead of a paraphrase). The credit_fallback
+// module runs an embedding via OpenAI (separate budget) + a law_search RPC and
+// formats the top-K chunks as the assistant reply. Cost ≈ $0.0001 per call,
+// well within the OpenAI budget the owner funds independently from Anthropic.
+//
+// Telemetry: `anthropic_credit_exhausted` count is exported via console.warn
+// so ops can grep the function logs. We deliberately do NOT increment a
+// counter table — credit exhaustion is supposed to be a brief window between
+// "balance hit zero" and "owner tops up", not a steady-state condition.
+
+/** Run the RAG-only fallback. Returns null if the OpenAI client / law_search
+ *  RPC are not configured (the caller then falls through to the legacy 400
+ *  passthrough so we never silently swallow a real bug). */
+async function runCreditExhaustedFallback(
+  body: unknown,
+  isStreamRequest: boolean,
+  persistMessageId: string | null,
+): Promise<Response | null> {
+  if (!OPENAI_API_KEY) {
+    console.warn(
+      "claude-proxy: credit-exhausted fallback skipped (no OPENAI_API_KEY)",
+    );
+    return null;
+  }
+
+  // Pull the user's last message + a jurisdiction hint off the request.
+  const userQuery = extractLastUserText(body);
+  const jurisdiction = extractJurisdictionHint(body);
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+
+  console.warn(
+    `claude-proxy: anthropic_credit_exhausted — running RAG-only fallback ` +
+      `(query_len=${userQuery.length}, jur=${jurisdiction ?? "FI"})`,
+  );
+
+  const result = await buildRagOnlyResponse(
+    userQuery,
+    {
+      embed: buildEmbedFn(OPENAI_API_KEY),
+      lawSearch: async (params) => {
+        const { data, error } = await supabase.rpc("law_search", params);
+        if (error) {
+          console.warn(
+            `claude-proxy: fallback law_search RPC error — ${error.message}`,
+          );
+          return null;
+        }
+        return Array.isArray(data) ? data : null;
+      },
+      casesCiting: async (params) => {
+        const { data, error } = await supabase.rpc("cases_citing", params);
+        if (error) {
+          // cases_citing is optional — silent on missing RPC.
+          return null;
+        }
+        return Array.isArray(data) ? data : null;
+      },
+    },
+    { jurisdiction },
+  );
+
+  return isStreamRequest
+    ? buildRagOnlySseResponse(result, { messageId: persistMessageId })
+    : buildRagOnlyJsonResponse(result, { messageId: persistMessageId });
+}
+
+/** Pull the most recent user-role message text from the Anthropic body. */
+function extractLastUserText(body: unknown): string {
+  if (!body || typeof body !== "object") return "";
+  // deno-lint-ignore no-explicit-any
+  const messages = (body as any).messages;
+  if (!Array.isArray(messages)) return "";
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i];
+    if (m && m.role === "user") {
+      if (typeof m.content === "string") return m.content;
+      if (Array.isArray(m.content)) {
+        const text = m.content
+          .map((b: { type?: string; text?: string }) =>
+            b && b.type === "text" && typeof b.text === "string" ? b.text : ""
+          )
+          .join("\n")
+          .trim();
+        if (text) return text;
+      }
+    }
+  }
+  return "";
+}
+
+/** Best-effort jurisdiction guess. Defaults to FI when unknown — that matches
+ *  the production user base (FI/EE bilingual, FI majority). */
+function extractJurisdictionHint(body: unknown): string | null {
+  if (!body || typeof body !== "object") return null;
+  // deno-lint-ignore no-explicit-any
+  const b = body as any;
+  if (typeof b.jurisdiction === "string") return b.jurisdiction;
+  if (typeof b.query_jurisdiction === "string") return b.query_jurisdiction;
+  return null;
 }
 
 /**

@@ -200,30 +200,32 @@ const indexCode = indexSrc
   .replace(/^\s*\/\/.*$/gm, "");
 
 Deno.test({
-  name: "T1-static — index.ts passes anonymousPerMinute: 3 to the gate",
+  name: "T1-static — index.ts passes anonymousPerMinute: 1 to the gate",
   // Earlier tests in this file boot supabase-js which keeps internal timers
   // alive across tests. The static-source tests below don't touch the SDK
   // but inherit those timers; relax sanitisation for consistency.
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
-    // Owner-approved cap: 3 messages/minute per IP for anon callers.
-    // Accept either an inline literal (`anonymousPerMinute: 3`) or a
-    // named constant whose declared value is 3 (e.g.
-    // `const ANON_RATE_LIMIT_PER_MINUTE = 3`). Either form locks the
+    // 2026-05-13 TIGHTEN (post Anthropic $0 balance): cut anon rate-limit
+    // 3 → 1 to stretch each top-up further for PAID users. See the comment
+    // block above RATE_LIMIT_MAX in index.ts for the cost math.
+    // Accept either an inline literal (`anonymousPerMinute: 1`) or a
+    // named constant whose declared value is 1 (e.g.
+    // `const ANON_RATE_LIMIT_PER_MINUTE = 1`). Either form locks the
     // contract; we don't care which is used.
     const inlineMatch = indexCode.match(/anonymousPerMinute\s*:\s*(\d+)/);
     if (inlineMatch) {
       assertEquals(
         inlineMatch[1],
-        "3",
-        `anonymousPerMinute must be 3 (owner-approved cap), got ${
+        "1",
+        `anonymousPerMinute must be 1 (post 2026-05-13 tighten), got ${
           inlineMatch[1]
         }`,
       );
       return;
     }
-    // Named-constant form: anonymousPerMinute: <NAME>, with NAME defined as 3.
+    // Named-constant form: anonymousPerMinute: <NAME>, with NAME defined as 1.
     const namedMatch = indexCode.match(
       /anonymousPerMinute\s*:\s*([A-Z_][A-Z0-9_]*)/,
     );
@@ -244,8 +246,8 @@ Deno.test({
     );
     assertEquals(
       declMatch[1],
-      "3",
-      `${constName} must equal 3 (owner-approved cap), got ${declMatch[1]}`,
+      "1",
+      `${constName} must equal 1 (post 2026-05-13 tighten), got ${declMatch[1]}`,
     );
   },
 });
@@ -253,26 +255,21 @@ Deno.test({
 // ---- T2 — anon caller's max_tokens is clamped to 500 -----------------------
 
 Deno.test({
-  name: "T2 — index.ts clamps max_tokens to 500 for anon callers",
+  name: "T2 — index.ts clamps max_tokens to 200 for anon callers",
   sanitizeOps: false,
   sanitizeResources: false,
   fn: () => {
-    // Locks the exact line that prevents an anon caller from sending
-    // max_tokens=4096 and burning a full-cost response.
+    // 2026-05-13 TIGHTEN: anon clamp cut 500 → 200 post Anthropic $0
+    // balance. Locks the exact line that prevents an anon caller from
+    // sending max_tokens=32000 and burning a full-cost response.
     //
-    // We accept any of:
-    //   if (isAnon) body.max_tokens = Math.min(body.max_tokens, 500);
-    //   if (isAnon) maxTokens = Math.min(maxTokens, 500);
-    //   const ANON_MAX_TOKENS = 500; ... Math.min(..., ANON_MAX_TOKENS)
-    //
-    // The contract: somewhere after the gate decides anon vs authenticated,
-    // there must be a Math.min(...) involving the literal 500.
-    const has500 = /Math\.min\([^)]*500[^)]*\)/.test(indexCode) ||
-      /\b500\s*[,)]/.test(indexCode);
+    // Accept the named-constant form (preferred) or the literal.
+    const hasAnonConst = /const\s+ANON_MAX_TOKENS\s*=\s*200\b/.test(indexCode);
+    const has200Literal = /Math\.min\([^)]*\b200\b[^)]*\)/.test(indexCode);
     assert(
-      has500,
-      "claude-proxy/index.ts must clamp anon max_tokens to 500 " +
-        "(no `500` literal found in a Math.min context)",
+      hasAnonConst || has200Literal,
+      "claude-proxy/index.ts must clamp anon max_tokens to 200 " +
+        "(no ANON_MAX_TOKENS=200 nor `200` literal in a Math.min context)",
     );
 
     // And the anon-detection branch must exist — we look for any of the
