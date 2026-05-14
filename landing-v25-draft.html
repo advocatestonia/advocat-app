@@ -33,34 +33,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- GA4 LOAD: do NOT inject googletagmanager script tag here at deploy time. GA is loaded conditionally via the consent-gating script below (GDPR Art 6 / ePrivacy Art 5(3)). -->
-<script>
-/* GA4 deferred until cookie consent. Storage key matches the existing
-   cookie banner: 'advocat_cookie_consent_v1' with shape { choice: 'accept'|'reject'|'dnt', ts, version }.
-   Banner accept handler dispatches 'advocat:cookie-consent' (detail.accepted=true). */
-(function(){
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function(){ dataLayer.push(arguments); };
-  function loadGA(){
-    if (window.__advGaLoaded) return; window.__advGaLoaded = true;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-J5LGKRTMJ7';
-    document.head.appendChild(s);
-    gtag('js', new Date());
-    gtag('config', 'G-J5LGKRTMJ7', { 'anonymize_ip': true });
-  }
-  // Honour an existing accept stored from a prior visit.
-  try {
-    var c = JSON.parse(localStorage.getItem('advocat_cookie_consent_v1') || 'null');
-    if (c && c.choice === 'accept') loadGA();
-  } catch (e) {}
-  // Listen for new consent decisions from the banner.
-  window.addEventListener('advocat:cookie-consent', function(e){
-    if (e && e.detail && e.detail.accepted) loadGA();
-  });
-})();
-</script>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -3950,5 +3927,30 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
 })();
 </script>
 
+<!-- Conversion tracking: begin_signup on any CTA pointing to /app.html. -->
+<script>
+(function () {
+  if (window.__advocatSignupTracked) return;
+  document.addEventListener('click', function (ev) {
+    try {
+      var t = ev.target;
+      while (t && t !== document) {
+        if (t.tagName === 'A') {
+          var href = t.getAttribute('href') || '';
+          if (href.indexOf('/app.html') === 0 || href.indexOf('app.html') !== -1) {
+            if (window.advocatTrack && !window.__advocatSignupTracked) {
+              window.__advocatSignupTracked = true;
+              var plan = t.getAttribute('data-plan') || '';
+              window.advocatTrack('begin_signup', plan ? { plan: plan } : {});
+            }
+          }
+          return;
+        }
+        t = t.parentNode;
+      }
+    } catch (e) {}
+  }, true);
+})();
+</script>
 </body>
 </html>

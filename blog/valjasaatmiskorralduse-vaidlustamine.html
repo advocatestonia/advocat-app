@@ -195,6 +195,11 @@
         ]
     }
     </script>
+<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
+     All vendor scripts are loaded conditionally inside _analytics.js
+     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
 </head>
 <body>
     <header class="header">
@@ -493,6 +498,7 @@
         <div class="related">
             <h3>Loe ka</h3>
             <ul>
+                <li><a href="/tools/vaidlustamise-tahtaeg-kalkulaator.html"><strong>Tasuta tööriist: Vaidlustamise tähtaja kalkulaator</strong> — arvuta tähtaeg sekundiga</a></li>
                 <li><a href="/blog/valjasaatmine-vaidlustamine.html">Väljasaatmine Eestist — üldjuhend</a></li>
                 <li><a href="/blog/tasuta-oigusabi-eestis-2026.html">Tasuta õigusabi Eestis 2026 — kõik võimalused</a></li>
                 <li><a href="/blog/tooandja-vallandas-mind.html">Tööandja vallandas mind — mis on minu õigused?</a></li>
