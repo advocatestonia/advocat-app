@@ -48,6 +48,21 @@
     <priority>0.5</priority>
   </url>
 
+  <!-- Public quality scorecard (radical-transparency moat) -->
+  <url>
+    <loc>https://advocat.ee/scorecard.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://advocat.ee/scorecard/methodology.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.65</priority>
+  </url>
+
   <!-- Blog index pages (trilingual) -->
   <url>
     <loc>https://advocat.ee/blog/</loc>
@@ -358,6 +373,175 @@
     <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/kkk-oigusabi.html"/>
     <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/chasto-zadavaemye-voprosy.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://advocat.ee/blog/en/faq-legal-help-estonia.html"/>
+  </url>
+
+  <!-- ============================================================ -->
+  <!-- SEO Wave 2 (2026-05-14): 15 deep-content articles ET+RU+FI    -->
+  <!-- ============================================================ -->
+
+  <!-- 12. Wrongful dismissal deep-dive / Tooandja vallandas mind (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/tooandja-vallandas-mind.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tooandja-vallandas-mind.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html"/>
+  </url>
+
+  <!-- 13. Rental contract termination / Uurileping lopetamine (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/uurileping-lopetamine.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/uurileping-lopetamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html"/>
+  </url>
+
+  <!-- 14. Free legal aid 2026 (CRITICAL — SERP vacuum) / Tasuta oigusabi Eestis 2026 (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html"/>
+  </url>
+
+  <!-- 15. Alimony calculation 2026 / Elatis arvutamine 2026 (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/elatis-arvutamine-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-arvutamine-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html"/>
+  </url>
+
+  <!-- 16. Deportation order appeal / Valjasaatmiskorralduse vaidlustamine (ET) -->
+  <url>
+    <loc>https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"/>
+  </url>
+
+  <!-- 17. Dismissal Estonia (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tooandja-vallandas-mind.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html"/>
+  </url>
+
+  <!-- 18. Rental contract Estonia (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/uurileping-lopetamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html"/>
+  </url>
+
+  <!-- 19. Free legal aid 2026 (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html"/>
+  </url>
+
+  <!-- 20. Alimony calculation (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-arvutamine-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html"/>
+  </url>
+
+  <!-- 21. Residence permit denial (RU) -->
+  <url>
+    <loc>https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"/>
+  </url>
+
+  <!-- 22. Dismissal Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tooandja-vallandas-mind.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/uvolnenie-rabota-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/irtisanominen-suomessa-oikeudet.html"/>
+  </url>
+
+  <!-- 23. Rental contract termination Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/uurileping-lopetamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/dogovor-arendy-estoniya.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/vuokrasopimus-paattaminen-suomi.html"/>
+  </url>
+
+  <!-- 24. Free legal aid Finland 2026 (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/tasuta-oigusabi-eestis-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/besplatnaya-yuridicheskaya-pomoshch-estoniya-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/ilmainen-oikeusapu-suomi-2026.html"/>
+  </url>
+
+  <!-- 25. Child support Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/elatis-arvutamine-2026.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/alimenty-estoniya-raschet.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/elatusapu-suomi-laskeminen.html"/>
+  </url>
+
+  <!-- 26. Residence permit denial appeal Finland (FI) -->
+  <url>
+    <loc>https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="et" href="https://advocat.ee/blog/valjasaatmiskorralduse-vaidlustamine.html"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://advocat.ee/blog/ru/vid-na-zhitelstvo-otkaz.html"/>
+    <xhtml:link rel="alternate" hreflang="fi" href="https://advocat.ee/blog/fi/oleskelulupa-hylkaaminen-valitus.html"/>
   </url>
 
 </urlset>
