@@ -65,6 +65,7 @@ import {
   parseStatuteXml,
   sectionLabel,
 } from "./parser.ts";
+import { splitAllOversize } from "../_shared/chunk_splitter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -318,13 +319,14 @@ async function processStatuteJob(
   const validFrom = toIsoOrNull(md.kehtivuseAlgus);
   const validTo = toIsoOrNull(md.kehtivuseLopp);
 
-  const chunkRows = sections.map((s) => ({
+  const rawChunkRows = sections.map((s) => ({
     jurisdiction: "ee",
     act_slug: meta.act_slug,
     act_full_name: meta.act_full_name,
     act_number: null, // RT has no FI-style act_number — global_id lives in version_hash
     chapter: s.chapter ?? null,
     section: s.num,
+    subsection: null as string | null,
     section_label: sectionLabel(meta.act_abbrev, s.num, s.chapter),
     text: s.heading ? `${s.heading}\n\n${s.text}` : s.text,
     lang: meta.lang,
@@ -335,6 +337,10 @@ async function processStatuteJob(
     redaktsioon_valid_from: validFrom,
     redaktsioon_valid_to: validTo,
   }));
+  // Split any § that exceeds the embedding-safe MAX_CHARS into "osa N/M"
+  // parts so the corpus-embedder can process every chunk in one shot.
+  // Two known offenders today: TuMS § 61 (19_716 chars), VÕS § 380 (15_468).
+  const chunkRows = splitAllOversize(rawChunkRows);
 
   for (let i = 0; i < chunkRows.length; i += 500) {
     const slice = chunkRows.slice(i, i + 500);

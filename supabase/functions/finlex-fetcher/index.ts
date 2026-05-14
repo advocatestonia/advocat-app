@@ -68,6 +68,7 @@ import {
   parseStatuteXml,
   sectionLabel,
 } from "./parser.ts";
+import { splitAllOversize } from "../_shared/chunk_splitter.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -340,14 +341,17 @@ async function processStatuteJob(
     throw new Error(`delete statute_aliases: ${aliasDelErr.message}`);
   }
 
-  // Build chunk + alias batches.
-  const chunkRows = sections.map((s) => ({
+  // Build chunk + alias batches. `subsection` defaults to null; the splitter
+  // overrides it to "osa N/M" when a § is too dense for OpenAI's 8192-token
+  // embedding cap.
+  const rawChunkRows = sections.map((s) => ({
     jurisdiction: "fi",
     act_slug: meta.act_slug,
     act_full_name: meta.act_full_name,
     act_number: meta.act_number,
     chapter: s.chapter ?? null,
     section: s.num,
+    subsection: null as string | null,
     section_label: sectionLabel(meta.act_abbrev, s.num, s.chapter),
     text: s.heading ? `${s.heading}\n\n${s.text}` : s.text,
     lang: meta.lang,
@@ -358,6 +362,9 @@ async function processStatuteJob(
     redaktsioon_valid_from: null,
     redaktsioon_valid_to: null,
   }));
+  // Split any § that exceeds the embedding-safe MAX_CHARS into "osa N/M"
+  // parts so the corpus-embedder can process every chunk in one shot.
+  const chunkRows = splitAllOversize(rawChunkRows);
 
   // Batch insert in 500-row chunks (PG keeps complaining over ~1000 cols total).
   for (let i = 0; i < chunkRows.length; i += 500) {
