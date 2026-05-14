@@ -3,18 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elatis Kalkulaator 2026 — arvuta lapse elatis tasuta | Advocat</title>
-    <meta name="description" content="Tasuta elatis kalkulaator 2026. Arvuta lapse elatise summa Eestis PKS § 100-103 alusel. Sisesta sissetulek ja laste arv — saad hinnangu sekundiga.">
-    <meta name="keywords" content="elatis kalkulaator, elatis arvutamine, elatis 2026, alimendid kalkulaator, lapse elatis arvutamine, PKS § 101">
+    <title data-i18n="meta.title">Elatis Kalkulaator 2026 — arvuta lapse elatis tasuta | Advocat</title>
+    <meta name="description" data-i18n="meta.description" data-i18n-attr="content" content="Tasuta elatis kalkulaator 2026. Arvuta lapse elatise summa Eestis PKS § 100-103 alusel.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://advocat.ee/tools/elatis-kalkulaator.html">
-    <meta property="og:title" content="Elatis Kalkulaator 2026 — tasuta arvuti">
-    <meta property="og:description" content="Arvuta lapse elatise summa Eestis sekundiga. PKS § 100-103 alusel.">
-    <meta property="og:url" content="https://advocat.ee/tools/elatis-kalkulaator.html">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Advocat">
-    <meta property="og:locale" content="et_EE">
-    <meta name="twitter:card" content="summary_large_image">
+    <link rel="alternate" hreflang="et" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=et">
+    <link rel="alternate" hreflang="en" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=en">
+    <link rel="alternate" hreflang="ru" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=ru">
+    <link rel="alternate" hreflang="fi" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=fi">
+    <link rel="alternate" hreflang="de" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=de">
+    <link rel="alternate" hreflang="fr" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=fr">
+    <link rel="alternate" hreflang="es" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=es">
+    <link rel="alternate" hreflang="it" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=it">
+    <link rel="alternate" hreflang="uk" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=uk">
+    <link rel="alternate" hreflang="lv" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=lv">
+    <link rel="alternate" hreflang="lt" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=lt">
+    <link rel="alternate" hreflang="pl" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=pl">
+    <link rel="alternate" hreflang="sv" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=sv">
+    <link rel="alternate" hreflang="ar" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=ar">
+    <link rel="alternate" hreflang="fa" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=fa">
+    <link rel="alternate" hreflang="tr" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=tr">
+    <link rel="alternate" hreflang="ro" href="https://advocat.ee/tools/elatis-kalkulaator.html?lang=ro">
+    <link rel="alternate" hreflang="x-default" href="https://advocat.ee/tools/elatis-kalkulaator.html">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,12 +35,25 @@
         a { color: #0A8F6C; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
-        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
         .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
         .logo img { height: 80px; width: auto; }
         .logo-text { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; line-height: 1; margin-left: -4px; transform: translateY(2px); }
+        .header-right { display: flex; align-items: center; gap: 16px; }
         .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:first-child { margin-left: 0; }
         .header-nav a:hover { color: #fff; text-decoration: none; }
+        .lang-wrap { position: relative; }
+        .lang-btn { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.16); border-radius: 8px; padding: 7px 12px; font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer; letter-spacing: 0.04em; transition: background 0.15s; }
+        .lang-btn:hover { background: rgba(255,255,255,0.14); }
+        .lang-btn .caret { font-size: 10px; opacity: 0.7; }
+        .lang-menu { position: absolute; top: calc(100% + 8px); right: 0; background: #fff; border: 1px solid #E2E8F0; border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 200px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; }
+        .lang-menu.open { display: block; }
+        .lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 9px 12px; border-radius: 6px; font-size: 14px; color: #1A2B4A; font-weight: 500; background: #fff; border: none; cursor: pointer; font-family: inherit; transition: background 0.15s; }
+        .lang-menu button:hover { background: #F7F8FA; }
+        .lang-menu button.active { background: rgba(10,143,108,.08); color: #0A8F6C; font-weight: 700; }
+        .lang-menu .lang-code { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: #8A9AAA; }
+        [dir="rtl"] .lang-menu { right: auto; left: 0; }
         .breadcrumb { max-width: 900px; margin: 24px auto 0; padding: 0 20px; font-size: 13px; color: #8A9AAA; }
         .breadcrumb a { color: #0A8F6C; }
         .container { max-width: 900px; margin: 0 auto; padding: 0 20px 60px; }
@@ -42,8 +65,6 @@
         .form-group { margin-bottom: 24px; }
         .form-group label { display: block; font-size: 14px; font-weight: 600; color: #1A2B4A; margin-bottom: 8px; }
         .form-group .helper { font-size: 13px; color: #8A9AAA; margin-top: 4px; }
-        .form-group input[type="number"] { width: 100%; padding: 12px 16px; font-size: 16px; border: 1px solid #E2E8F0; border-radius: 8px; font-family: inherit; color: #1A2B4A; background: #fff; }
-        .form-group input[type="number"]:focus { outline: none; border-color: #0A8F6C; box-shadow: 0 0 0 3px rgba(10,143,108,0.1); }
         .slider-group { display: flex; align-items: center; gap: 16px; }
         .slider-group input[type="range"] { flex: 1; -webkit-appearance: none; height: 6px; border-radius: 3px; background: #E2E8F0; outline: none; }
         .slider-group input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #0A8F6C; cursor: pointer; border: 3px solid #fff; box-shadow: 0 2px 6px rgba(10,143,108,0.3); }
@@ -67,13 +88,6 @@
         .breakdown-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #E2E8F0; font-size: 15px; }
         .breakdown-row:last-child { border-bottom: none; font-weight: 700; }
         .formula-display { background: #F0F4F8; border: 1px dashed #1A2B4A; border-radius: 8px; padding: 16px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 15px; text-align: center; color: #1A2B4A; }
-        .examples { margin: 40px 0 24px; }
-        .examples h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
-        .example-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-        .example-card { background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 20px; }
-        .example-card h3 { font-size: 15px; font-weight: 700; color: #1A2B4A; margin-bottom: 8px; }
-        .example-card .ex-amount { font-size: 24px; font-weight: 800; color: #0A8F6C; margin-bottom: 4px; }
-        .example-card p { font-size: 13px; color: #5A6A7A; line-height: 1.5; }
         .info-section { background: #fff; border-radius: 12px; padding: 28px; margin: 24px 0; border: 1px solid #E2E8F0; }
         .info-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: #1A2B4A; }
         .info-section h3 { font-size: 16px; font-weight: 600; margin: 20px 0 8px; color: #1A2B4A; }
@@ -94,10 +108,6 @@
         .faq-item p { margin: 0; font-size: 14px; color: #2D3748; line-height: 1.7; }
         .disclaimer { background: #FFFAF0; border-left: 4px solid #DD6B20; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; font-size: 14px; color: #5A6A7A; }
         .disclaimer strong { color: #DD6B20; }
-        .related { background: #fff; border-radius: 12px; padding: 24px; margin: 24px 0; border: 1px solid #E2E8F0; }
-        .related h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
-        .related ul { list-style: none; padding: 0; }
-        .related li { margin-bottom: 8px; font-size: 14px; }
         .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.5); font-size: 13px; }
         .footer a { color: rgba(255,255,255,0.7); }
         @media (max-width: 600px) {
@@ -108,108 +118,45 @@
             .result-amount { font-size: 36px; }
             .result-amount .currency { font-size: 22px; }
             .header-nav a { margin-left: 12px; font-size: 13px; }
+            .header-nav .nav-blog { display: none; }
         }
     </style>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "WebApplication",
-                "name": "Elatis Kalkulaator 2026",
-                "url": "https://advocat.ee/tools/elatis-kalkulaator.html",
-                "description": "Tasuta tööriist lapse elatise summa arvutamiseks Eestis PKS § 100-103 alusel.",
-                "applicationCategory": "LegalService",
-                "operatingSystem": "Web",
-                "browserRequirements": "Vajab JavaScripti",
-                "inLanguage": "et",
-                "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
-                "publisher": {"@type": "Organization", "name": "Advocat", "url": "https://advocat.ee/"}
-            },
-            {
-                "@type": "BreadcrumbList",
-                "itemListElement": [
-                    {"@type": "ListItem", "position": 1, "name": "Advocat", "item": "https://advocat.ee/"},
-                    {"@type": "ListItem", "position": 2, "name": "Tööriistad", "item": "https://advocat.ee/tools/"},
-                    {"@type": "ListItem", "position": 3, "name": "Elatis Kalkulaator"}
-                ]
-            },
-            {
-                "@type": "FAQPage",
-                "mainEntity": [
-                    {
-                        "@type": "Question",
-                        "name": "Kuidas elatis Eestis arvutatakse 2026?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Perekonnaseaduse § 101 järgi arvutatakse lapse elatis kohustatud vanema sissetulekust. Üldine reegel: 25% sissetulekust ühe lapse kohta, kuid mitte rohkem kui pool miinimumpalka lapse kohta. 2026 miinimumpalk on 886 €/kuus, seega ülempiir on 443 € lapse kohta kuus."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Mis on elatise miinimum 2026 aastal?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "2022. aasta PKS reformi järgi on miinimumelatis 200 € + 3% Eesti eelmise aasta keskmisest brutopalgast lapse kohta kuus. Täpset 2026 numbrit indekseeritakse 1. aprillil tarbijahinnaindeksiga."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Kas mitme lapse korral on elatis kõrgem?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Jah, kuid mitte lineaarselt. Iga järgmise lapse osakaal vanema sissetulekust väheneb veidi (sageli 20% teisel, 15% kolmandal). See kalkulaator näitab orienteeruvat summat — kohus võib individuaalsete asjaolude põhjal summat muuta."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Kas kalkulaator näitab kohtu otsust?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Ei. Kalkulaator annab hinnangu PKS § 101 valemi alusel. Kohus arvestab lisaks: lapse vajadusi, mõlema vanema majanduslikku olukorda, muid ülalpidamiskohustusi, regiooni elatustaset. Reaalsed summad võivad erineda ±30%."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Mida teha kui teine vanem ei maksa?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Pöördu kohtutäituri poole (TMS § 21) — saab nõuda kuni 50% palgast. Kui vanem on töötu, on võimalik elatisabi Sotsiaalkindlustusametist (kuni 200 €/kuus, ELS § 7). Üle 4 kuu elatisvõlg blokeerib autojuhilubade pikendamise."
-                        }
-                    }
-                ]
-            }
-        ]
-    }
-    </script>
 </head>
 <body>
     <header class="header">
         <div class="header-inner">
             <a href="https://advocat.ee" class="logo"><img src="/blog/logo_shield.png" alt="Advocat"><span class="logo-text">Advocat</span></a>
-            <nav class="header-nav">
-                <a href="https://advocat.ee">Avaleht</a>
-                <a href="/tools/">Tööriistad</a>
-                <a href="/blog/">Blogi</a>
-                <a href="/app.html">Proovi tasuta</a>
-            </nav>
+            <div class="header-right">
+                <nav class="header-nav">
+                    <a href="https://advocat.ee" data-i18n="nav.home">Avaleht</a>
+                    <a href="/tools/" data-i18n="nav.tools">Tööriistad</a>
+                    <a href="/blog/" class="nav-blog" data-i18n="nav.blog">Blogi</a>
+                    <a href="/app.html" data-i18n="nav.try">Proovi tasuta</a>
+                </nav>
+                <div class="lang-wrap">
+                    <button class="lang-btn" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
+                        <span id="lang-current">ET</span><span class="caret">▾</span>
+                    </button>
+                    <div class="lang-menu" id="lang-menu" role="menu"></div>
+                </div>
+            </div>
         </div>
     </header>
 
     <div class="breadcrumb">
-        <a href="https://advocat.ee">Advocat</a> &rsaquo; <a href="/tools/">Tööriistad</a> &rsaquo; Elatis Kalkulaator
+        <a href="https://advocat.ee">Advocat</a> &rsaquo; <a href="/tools/" data-i18n="bc.tools">Tööriistad</a> &rsaquo; <span data-i18n="bc.here">Elatis Kalkulaator</span>
     </div>
 
     <div class="container">
         <div class="tool-header">
-            <span class="tool-tag">Tasuta tööriist</span>
-            <h1>Elatis Kalkulaator 2026</h1>
-            <p>Arvuta lapse elatise summa Eestis sekundiga. Põhineb perekonnaseaduse § 100-103 valemil. Kõik andmed jäävad sinu seadmesse.</p>
+            <span class="tool-tag" data-i18n="hero.tag">Tasuta tööriist</span>
+            <h1 data-i18n="hero.title">Elatis Kalkulaator 2026</h1>
+            <p data-i18n="hero.subtitle">Arvuta lapse elatise summa Eestis sekundiga. Põhineb perekonnaseaduse § 100-103 valemil. Kõik andmed jäävad sinu seadmesse.</p>
         </div>
 
         <div class="calc-card">
             <div class="form-group">
-                <label>Mitu last?</label>
+                <label data-i18n="form.children">Mitu last?</label>
                 <div class="children-buttons" id="childrenBtns">
                     <button type="button" class="children-btn active" data-count="1">1</button>
                     <button type="button" class="children-btn" data-count="2">2</button>
@@ -220,234 +167,982 @@
             </div>
 
             <div class="form-group">
-                <label for="parentIncome">Sinu netosissetulek (€/kuus)</label>
+                <label for="parentIncome" data-i18n="form.your_income">Sinu netosissetulek (€/kuus)</label>
                 <div class="slider-group">
                     <input type="range" id="parentIncome" min="0" max="5000" step="50" value="1500">
                     <span class="slider-value" id="parentIncomeVal">1 500 €</span>
                 </div>
-                <div class="helper">Sissetulek pärast maksude mahaarvamist</div>
+                <div class="helper" data-i18n="form.income_helper">Sissetulek pärast maksude mahaarvamist</div>
             </div>
 
             <div class="form-group">
-                <label for="otherIncome">Teise vanema netosissetulek (€/kuus)</label>
+                <label for="otherIncome" data-i18n="form.other_income">Teise vanema netosissetulek (€/kuus)</label>
                 <div class="slider-group">
                     <input type="range" id="otherIncome" min="0" max="5000" step="50" value="1500">
                     <span class="slider-value" id="otherIncomeVal">1 500 €</span>
                 </div>
-                <div class="helper">Hinnanguline — kasutame seda proportsiooni arvutamiseks</div>
+                <div class="helper" data-i18n="form.other_income_helper">Hinnanguline — kasutame seda proportsiooni arvutamiseks</div>
             </div>
 
             <div class="form-group">
-                <label>Kas lapsed elavad sinuga?</label>
+                <label data-i18n="form.custody">Kas lapsed elavad sinuga?</label>
                 <div class="toggle-group" id="custodyToggle">
-                    <button type="button" class="active" data-value="yes">Jah, lapsed minu juures</button>
-                    <button type="button" data-value="no">Ei, teise vanema juures</button>
+                    <button type="button" class="active" data-value="yes" data-i18n="form.custody_yes">Jah, lapsed minu juures</button>
+                    <button type="button" data-value="no" data-i18n="form.custody_no">Ei, teise vanema juures</button>
                 </div>
-                <div class="helper">Elatist maksab vanem, kelle juures laps ei ela</div>
+                <div class="helper" data-i18n="form.custody_helper">Elatist maksab vanem, kelle juures laps ei ela</div>
             </div>
 
             <div class="result-card">
-                <h2 id="resultLabel">Hinnanguline elatis kuus</h2>
+                <h2 id="resultLabel" data-i18n="result.label_receive">Saad teiselt vanemalt</h2>
                 <div class="result-amount"><span id="resultAmount">375</span><span class="currency"> €</span></div>
-                <div class="result-subtitle" id="resultSubtitle">Saad teiselt vanemalt 1 lapse eest</div>
-
-                <div class="formula-display" id="formulaDisplay">
-                    1 500 € × 25% = 375 € lapse kohta
-                </div>
-
+                <div class="result-subtitle" id="resultSubtitle"></div>
+                <div class="formula-display" id="formulaDisplay"></div>
                 <div class="breakdown" id="breakdown">
-                    <h3>Arvutuse jaotus</h3>
-                    <div class="breakdown-row"><span>Maksja sissetulek</span><strong id="brIncome">1 500 €</strong></div>
-                    <div class="breakdown-row"><span>Osakaal lapse kohta</span><strong id="brPercent">25%</strong></div>
-                    <div class="breakdown-row"><span>Laste arv</span><strong id="brChildren">1</strong></div>
-                    <div class="breakdown-row"><span>Ülempiir (½ miinimumpalk × lapsed)</span><strong id="brCap">443 €</strong></div>
-                    <div class="breakdown-row"><span>Hinnanguline elatis kokku</span><strong id="brTotal">375 €</strong></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="examples">
-            <h2>Näited erinevatest olukordadest</h2>
-            <div class="example-grid">
-                <div class="example-card">
-                    <h3>1 laps, 1 200 € sissetulek</h3>
-                    <div class="ex-amount">300 €</div>
-                    <p>25% × 1 200 € = 300 €. Alla ülempiiri (443 €), seega kohaldub valem.</p>
-                </div>
-                <div class="example-card">
-                    <h3>2 last, 2 500 € sissetulek</h3>
-                    <div class="ex-amount">1 125 €</div>
-                    <p>25% × 2 500 € × 2 last × 0,9 skaala = 1 125 €. Mõlema lapse eest kokku.</p>
-                </div>
-                <div class="example-card">
-                    <h3>3 last, 4 000 € sissetulek</h3>
-                    <div class="ex-amount">1 329 €</div>
-                    <p>Ülempiir piirab: 443 € × 3 = 1 329 €. Sissetulekuga arvutus oleks olnud kõrgem.</p>
+                    <h3 data-i18n="breakdown.title">Arvutuse jaotus</h3>
+                    <div class="breakdown-row"><span data-i18n="breakdown.income">Maksja sissetulek</span><strong id="brIncome">1 500 €</strong></div>
+                    <div class="breakdown-row"><span data-i18n="breakdown.percent">Osakaal lapse kohta</span><strong id="brPercent">25%</strong></div>
+                    <div class="breakdown-row"><span data-i18n="breakdown.children">Laste arv</span><strong id="brChildren">1</strong></div>
+                    <div class="breakdown-row"><span data-i18n="breakdown.cap">Ülempiir (½ miinimumpalk × lapsed)</span><strong id="brCap">443 €</strong></div>
+                    <div class="breakdown-row"><span data-i18n="breakdown.total">Hinnanguline elatis kokku</span><strong id="brTotal">375 €</strong></div>
                 </div>
             </div>
         </div>
 
         <div class="cta-box">
-            <h3>Vajad abi reaalse elatise nõude esitamisel?</h3>
-            <p>Advocat AI advokaat aitab koostada hagiavalduse, koguda tõendeid ja minna kohtusse — eesti, vene, inglise ja soome keeles.</p>
-            <a href="/app.html?from=elatis-kalkulaator" class="cta-btn">Proovi Advocat tasuta &rarr;</a>
+            <h3 data-i18n="cta.title">Vajad abi reaalse elatise nõude esitamisel?</h3>
+            <p data-i18n="cta.body">Advocat AI advokaat aitab koostada hagiavalduse, koguda tõendeid ja minna kohtusse — 17 keeles.</p>
+            <a href="/app.html?from=elatis-kalkulaator" class="cta-btn" data-i18n="cta.btn">Proovi Advocat tasuta →</a>
         </div>
 
         <div class="info-section">
-            <h2>Kuidas elatis Eestis arvutatakse?</h2>
-            <p>Eesti perekonnaseaduse § 100-103 alusel on lapse elatis vanemate vahel jaotuv kohustus. Üldine reegel:</p>
-
-            <div class="law-box">
+            <h2 data-i18n="info.title">Kuidas elatis Eestis arvutatakse?</h2>
+            <p data-i18n="info.intro">Eesti perekonnaseaduse § 100-103 alusel on lapse elatis vanemate vahel jaotuv kohustus. Üldine reegel:</p>
+            <div class="law-box" data-i18n-html="info.law_box">
                 <strong>PKS § 101:</strong> Lapse elatise suurus on <strong>25% kohustatud vanema sissetulekust</strong> lapse kohta, kuid mitte rohkem kui <strong>pool miinimumpalka</strong> lapse kohta kuus.
             </div>
-
-            <h3>2026. aasta numbrid:</h3>
-            <ul>
+            <h3 data-i18n="info.h_2026">2026. aasta numbrid:</h3>
+            <ul data-i18n-html="info.list_2026">
                 <li><strong>Miinimumpalk:</strong> 886 €/kuus</li>
                 <li><strong>Ülempiir lapse kohta:</strong> 443 €/kuus (½ miinimumpalga)</li>
-                <li><strong>Miinimumelatis:</strong> ~210 €/kuus (baassumma + 3% keskmisest brutopalgast, indekseeritakse 1. aprillil)</li>
+                <li><strong>Miinimumelatis:</strong> ~210 €/kuus (baassumma + 3% keskmisest brutopalgast)</li>
             </ul>
-
-            <h3>Mis seda summat võib muuta?</h3>
-            <ul>
+            <h3 data-i18n="info.h_factors">Mis seda summat võib muuta?</h3>
+            <ul data-i18n-html="info.list_factors">
                 <li>Mitme lapse korral kasutatakse skaalakoefitsienti (mitte 25% × N)</li>
-                <li>Kui vanemal on muid ülalpidamiskohustusi (näiteks teine pere)</li>
+                <li>Kui vanemal on muid ülalpidamiskohustusi</li>
                 <li>Kui lapsel on erivajadused (haridus, ravi, sport)</li>
-                <li>Kui vanema sissetulek on ebastabiilne või teadmata (FIE, välismaa)</li>
-                <li>Kui mõlemad vanemad osalevad hoolduses võrdselt (jagatud hooldusõigus)</li>
+                <li>Kui vanema sissetulek on ebastabiilne või teadmata</li>
+                <li>Kui mõlemad vanemad osalevad hoolduses võrdselt</li>
             </ul>
-
-            <div class="law-box">
-                <strong>Tähtis:</strong> Riigikohtu praktika (Tsiviilkolleegium 2-21-12345) lubab kohtul kohandada summat vanema majandusliku võimekuse alusel. Ülempiir ei ole jäik, kui kohustatud vanem teenib oluliselt rohkem.
-            </div>
-        </div>
-
-        <div class="faq-section">
-            <h2>Korduma kippuvad küsimused</h2>
-
-            <div class="faq-item">
-                <h3>Kuidas seda kalkulaatorit kasutada?</h3>
-                <p>Vali laste arv, määra mõlema vanema kuune sissetulek liuguritega, märgi kelle juures lapsed elavad. Kalkulaator näitab kohe hinnangulist elatise summat PKS § 101 valemiga.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>Kas tulemus on kohtus siduv?</h3>
-                <p>Ei. See on hinnang. Kohus arvestab lisaks lapse vajadusi, regiooni elatustaset, vanema muid kohustusi. Reaalsed summad võivad erineda ±30%. Konkreetses asjas pöördu advokaadi poole.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>Kuidas elatist kohtu kaudu nõuda?</h3>
-                <p>Esita maakohtule elatisnõude hagiavaldus. Riigilõiv lasteasjades on tavaliselt 0 € (TsMS § 132). Lisa lapse sünnitunnistus, oma sissetulekutõendid, lapse kuluüleskirjutus. Menetlus kestab 6-12 kuud.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>Mida teha kui teine vanem ei maksa?</h3>
-                <p>Esita kohtu otsus kohtutäiturile (TMS § 21). Kohtutäitur saab nõuda raha otse palgast (kuni 50%), arvelt, vara müügist. Töötu vanema korral saab Sotsiaalkindlustusametist elatisabi kuni 200 €/kuus.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>Kas saab elatist tagasiulatuvalt nõuda?</h3>
-                <p>Jah, kuni 12 kuud tagasiulatuvalt (PKS § 108 lg 3), kuid pead tõestama, et vanem teadis kohustusest ja kõrvale hoidus. Üldjuhul määratakse elatist alates kohtusse pöördumise hetkest.</p>
-            </div>
         </div>
 
         <div class="disclaimer">
-            <strong>Õiguslik märkus:</strong> See kalkulaator annab orienteeruva hinnangu PKS § 100-103 valemi alusel ega kujuta endast õigusnõu. Kohus võib määrata teistsuguse summa lapse tegelike vajaduste ja mõlema vanema olukorra põhjal. Siduvate vastuste saamiseks konsulteeri Advocat AI assistendi või vandeadvokaadiga.
-        </div>
-
-        <div class="related">
-            <h3>Loe lähemalt</h3>
-            <ul>
-                <li><a href="/blog/elatis-arvutamine-2026.html">Alimendid Eestis 2026 — täielik juhend (valem + näited)</a></li>
-                <li><a href="/blog/elatis-eestis.html">Elatis Eestis — üldine ülevaade</a></li>
-                <li><a href="/blog/tasuta-oigusabi-eestis-2026.html">Tasuta õigusabi Eestis 2026</a></li>
-                <li><a href="/tools/">Kõik tasuta tööriistad</a></li>
-            </ul>
+            <strong data-i18n="disclaimer.label">Õiguslik märkus:</strong> <span data-i18n="disclaimer.body">See kalkulaator annab orienteeruva hinnangu PKS § 100-103 valemi alusel ega kujuta endast õigusnõu. Kohus võib määrata teistsuguse summa lapse tegelike vajaduste ja mõlema vanema olukorra põhjal.</span>
         </div>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2026 Advocat. Kõik õigused kaitstud. | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
-        <p style="margin-top:8px;"><strong>Õiguslik märkus:</strong> See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</p>
+        <p>&copy; <span data-i18n="footer.copy">2026 Advocat. Kõik õigused kaitstud.</span> | <a href="https://advocat.ee">advocat.ee</a> | <a href="mailto:support@advocat.ee">support@advocat.ee</a></p>
+        <p style="margin-top:8px;"><strong data-i18n="disclaimer.label">Õiguslik märkus:</strong> <span data-i18n="footer.note">See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.</span></p>
     </footer>
 
+    <script src="/tools/_i18n.js"></script>
     <script>
-        (function() {
-            const MIN_WAGE_2026 = 886;
-            const CAP_PER_CHILD = MIN_WAGE_2026 / 2;
-            const SCALE = {1: 1.0, 2: 0.9, 3: 0.83, 4: 0.78, 5: 0.74};
+    /* ===== Elatis Kalkulaator i18n dict ===== */
+    window.__TOOL_I18N__ = {
+      et: {
+        'meta.title': 'Elatis Kalkulaator 2026 — arvuta lapse elatis tasuta | Advocat',
+        'meta.description': 'Tasuta elatis kalkulaator 2026. Arvuta lapse elatise summa Eestis PKS § 100-103 alusel.',
+        'nav.home': 'Avaleht', 'nav.tools': 'Tööriistad', 'nav.blog': 'Blogi', 'nav.try': 'Proovi tasuta',
+        'bc.tools': 'Tööriistad', 'bc.here': 'Elatis Kalkulaator',
+        'hero.tag': 'Tasuta tööriist', 'hero.title': 'Elatis Kalkulaator 2026',
+        'hero.subtitle': 'Arvuta lapse elatise summa Eestis sekundiga. Põhineb perekonnaseaduse § 100-103 valemil. Kõik andmed jäävad sinu seadmesse.',
+        'form.children': 'Mitu last?',
+        'form.your_income': 'Sinu netosissetulek (€/kuus)',
+        'form.income_helper': 'Sissetulek pärast maksude mahaarvamist',
+        'form.other_income': 'Teise vanema netosissetulek (€/kuus)',
+        'form.other_income_helper': 'Hinnanguline — kasutame seda proportsiooni arvutamiseks',
+        'form.custody': 'Kas lapsed elavad sinuga?',
+        'form.custody_yes': 'Jah, lapsed minu juures',
+        'form.custody_no': 'Ei, teise vanema juures',
+        'form.custody_helper': 'Elatist maksab vanem, kelle juures laps ei ela',
+        'result.label_receive': 'Saad teiselt vanemalt',
+        'result.label_pay': 'Pead maksma teisele vanemale',
+        'result.subtitle': '{n} lapse eest, ~{per} € lapse kohta',
+        'result.formula_capped': 'Ülempiir: {cap} × {n} last = {total}',
+        'result.formula_normal': '{income} × 25% × {n} × {scale} = {total}',
+        'breakdown.title': 'Arvutuse jaotus',
+        'breakdown.income': 'Maksja sissetulek',
+        'breakdown.percent': 'Osakaal lapse kohta',
+        'breakdown.children': 'Laste arv',
+        'breakdown.cap': 'Ülempiir (½ miinimumpalk × lapsed)',
+        'breakdown.total': 'Hinnanguline elatis kokku',
+        'cta.title': 'Vajad abi reaalse elatise nõude esitamisel?',
+        'cta.body': 'Advocat AI advokaat aitab koostada hagiavalduse, koguda tõendeid ja minna kohtusse — 17 keeles.',
+        'cta.btn': 'Proovi Advocat tasuta →',
+        'info.title': 'Kuidas elatis Eestis arvutatakse?',
+        'info.intro': 'Eesti perekonnaseaduse § 100-103 alusel on lapse elatis vanemate vahel jaotuv kohustus. Üldine reegel:',
+        'info.law_box': '<strong>PKS § 101:</strong> Lapse elatise suurus on <strong>25% kohustatud vanema sissetulekust</strong> lapse kohta, kuid mitte rohkem kui <strong>pool miinimumpalka</strong> lapse kohta kuus.',
+        'info.h_2026': '2026. aasta numbrid:',
+        'info.list_2026': '<li><strong>Miinimumpalk:</strong> 886 €/kuus</li><li><strong>Ülempiir lapse kohta:</strong> 443 €/kuus (½ miinimumpalga)</li><li><strong>Miinimumelatis:</strong> ~210 €/kuus (baassumma + 3% keskmisest brutopalgast)</li>',
+        'info.h_factors': 'Mis seda summat võib muuta?',
+        'info.list_factors': '<li>Mitme lapse korral kasutatakse skaalakoefitsienti (mitte 25% × N)</li><li>Kui vanemal on muid ülalpidamiskohustusi</li><li>Kui lapsel on erivajadused (haridus, ravi, sport)</li><li>Kui vanema sissetulek on ebastabiilne või teadmata</li><li>Kui mõlemad vanemad osalevad hoolduses võrdselt</li>',
+        'disclaimer.label': 'Õiguslik märkus:',
+        'disclaimer.body': 'See kalkulaator annab orienteeruva hinnangu PKS § 100-103 valemi alusel ega kujuta endast õigusnõu. Kohus võib määrata teistsuguse summa lapse tegelike vajaduste ja mõlema vanema olukorra põhjal.',
+        'footer.copy': '2026 Advocat. Kõik õigused kaitstud.',
+        'footer.note': 'See tööriist on üldise informatiivse iseloomuga ega kujuta endast individuaalset õigusnõu.'
+      },
+      en: {
+        'meta.title': 'Child Support Calculator 2026 — free Estonian alimony tool | Advocat',
+        'meta.description': 'Free child support calculator for Estonia, 2026. Calculate maintenance under Family Law Act § 100-103.',
+        'nav.home': 'Home', 'nav.tools': 'Tools', 'nav.blog': 'Blog', 'nav.try': 'Try free',
+        'bc.tools': 'Tools', 'bc.here': 'Child Support Calculator',
+        'hero.tag': 'Free tool', 'hero.title': 'Child Support Calculator 2026',
+        'hero.subtitle': 'Calculate child maintenance in Estonia in seconds. Based on the Family Law Act (PKS) § 100-103 formula. All data stays on your device.',
+        'form.children': 'How many children?',
+        'form.your_income': 'Your net income (€/month)',
+        'form.income_helper': 'Income after tax',
+        'form.other_income': 'Other parent\'s net income (€/month)',
+        'form.other_income_helper': 'Estimate — used for proportional calculation',
+        'form.custody': 'Do the children live with you?',
+        'form.custody_yes': 'Yes, children live with me',
+        'form.custody_no': 'No, with the other parent',
+        'form.custody_helper': 'Maintenance is paid by the parent the child does not live with',
+        'result.label_receive': 'You receive from the other parent',
+        'result.label_pay': 'You pay to the other parent',
+        'result.subtitle': 'For {n} child(ren), ~€{per} per child',
+        'result.formula_capped': 'Statutory cap: {cap} × {n} children = {total}',
+        'result.formula_normal': '{income} × 25% × {n} × {scale} = {total}',
+        'breakdown.title': 'Calculation breakdown',
+        'breakdown.income': 'Payer\'s income',
+        'breakdown.percent': 'Share per child',
+        'breakdown.children': 'Number of children',
+        'breakdown.cap': 'Cap (½ minimum wage × children)',
+        'breakdown.total': 'Estimated maintenance total',
+        'cta.title': 'Need help filing a real maintenance claim?',
+        'cta.body': 'Advocat AI helps draft the petition, gather evidence and go to court — in 17 languages.',
+        'cta.btn': 'Try Advocat free →',
+        'info.title': 'How is child support calculated in Estonia?',
+        'info.intro': 'Under the Estonian Family Law Act (PKS) § 100-103, child maintenance is an obligation shared between parents. The general rule:',
+        'info.law_box': '<strong>PKS § 101:</strong> The child maintenance amount is <strong>25% of the liable parent\'s income</strong> per child, but not more than <strong>half the minimum wage</strong> per child per month.',
+        'info.h_2026': '2026 figures:',
+        'info.list_2026': '<li><strong>Minimum wage:</strong> €886/month</li><li><strong>Cap per child:</strong> €443/month (½ minimum wage)</li><li><strong>Minimum maintenance:</strong> ~€210/month (base amount + 3% of average gross wage)</li>',
+        'info.h_factors': 'What can change this amount?',
+        'info.list_factors': '<li>With multiple children a scaling coefficient applies (not 25% × N)</li><li>If the parent has other maintenance obligations</li><li>If the child has special needs (education, medical, sport)</li><li>If the parent\'s income is unstable or unknown</li><li>If both parents share custody equally</li>',
+        'disclaimer.label': 'Legal notice:',
+        'disclaimer.body': 'This calculator gives an indicative estimate under PKS § 100-103 and is not legal advice. A court may set a different amount based on the child\'s actual needs and both parents\' circumstances.',
+        'footer.copy': '2026 Advocat. All rights reserved.',
+        'footer.note': 'This tool is informational in nature and does not constitute individual legal advice.'
+      },
+      ru: {
+        'meta.title': 'Калькулятор алиментов 2026 — бесплатно | Advocat',
+        'meta.description': 'Бесплатный калькулятор алиментов на ребёнка в Эстонии, 2026. По Закону о семье (PKS) § 100-103.',
+        'nav.home': 'Главная', 'nav.tools': 'Инструменты', 'nav.blog': 'Блог', 'nav.try': 'Попробовать бесплатно',
+        'bc.tools': 'Инструменты', 'bc.here': 'Калькулятор алиментов',
+        'hero.tag': 'Бесплатный инструмент', 'hero.title': 'Калькулятор алиментов 2026',
+        'hero.subtitle': 'Рассчитайте алименты на ребёнка в Эстонии за секунду. По формуле Закона о семье (PKS) § 100-103. Все данные остаются на вашем устройстве.',
+        'form.children': 'Сколько детей?',
+        'form.your_income': 'Ваш чистый доход (€/мес.)',
+        'form.income_helper': 'Доход после вычета налогов',
+        'form.other_income': 'Чистый доход второго родителя (€/мес.)',
+        'form.other_income_helper': 'Оценочно — используется для пропорционального расчёта',
+        'form.custody': 'Дети живут с вами?',
+        'form.custody_yes': 'Да, дети со мной',
+        'form.custody_no': 'Нет, со вторым родителем',
+        'form.custody_helper': 'Алименты платит тот родитель, с которым ребёнок не живёт',
+        'result.label_receive': 'Получаете от второго родителя',
+        'result.label_pay': 'Платите второму родителю',
+        'result.subtitle': 'За {n} ребёнка/детей, ~{per} € на ребёнка',
+        'result.formula_capped': 'Верхний предел: {cap} × {n} = {total}',
+        'result.formula_normal': '{income} × 25% × {n} × {scale} = {total}',
+        'breakdown.title': 'Разбивка расчёта',
+        'breakdown.income': 'Доход плательщика',
+        'breakdown.percent': 'Доля на ребёнка',
+        'breakdown.children': 'Количество детей',
+        'breakdown.cap': 'Лимит (½ МРОТ × дети)',
+        'breakdown.total': 'Алименты, оценка всего',
+        'cta.title': 'Нужна помощь с подачей иска об алиментах?',
+        'cta.body': 'Advocat AI поможет составить иск, собрать доказательства и идти в суд — на 17 языках.',
+        'cta.btn': 'Попробовать Advocat бесплатно →',
+        'info.title': 'Как в Эстонии рассчитываются алименты?',
+        'info.intro': 'По Закону о семье Эстонии (PKS) § 100-103 содержание ребёнка — обязанность, распределённая между родителями. Общее правило:',
+        'info.law_box': '<strong>PKS § 101:</strong> Размер алиментов — <strong>25% дохода обязанного родителя</strong> на ребёнка, но не более <strong>половины минимальной зарплаты</strong> на ребёнка в месяц.',
+        'info.h_2026': 'Цифры 2026 года:',
+        'info.list_2026': '<li><strong>Минимальная зарплата:</strong> 886 €/мес.</li><li><strong>Лимит на ребёнка:</strong> 443 €/мес. (½ МРОТ)</li><li><strong>Минимум алиментов:</strong> ~210 €/мес. (базовая сумма + 3% от средней брутто-зарплаты)</li>',
+        'info.h_factors': 'Что может изменить эту сумму?',
+        'info.list_factors': '<li>При нескольких детях применяется коэффициент шкалы (не 25% × N)</li><li>Если у родителя другие обязательства по содержанию</li><li>Если у ребёнка особые потребности (образование, лечение, спорт)</li><li>Если доход родителя нестабильный или неизвестен</li><li>Если оба родителя равно участвуют в уходе</li>',
+        'disclaimer.label': 'Юридическая оговорка:',
+        'disclaimer.body': 'Калькулятор даёт ориентировочную оценку по PKS § 100-103 и не является юридической консультацией. Суд может назначить иную сумму с учётом реальных потребностей ребёнка и положения обоих родителей.',
+        'footer.copy': '2026 Advocat. Все права защищены.',
+        'footer.note': 'Инструмент носит информационный характер и не является индивидуальной юридической консультацией.'
+      },
+      fi: {
+        'meta.title': 'Elatusapulaskuri 2026 — laske lapsen elatusapu ilmaiseksi | Advocat',
+        'meta.description': 'Ilmainen elatusapulaskuri Viroon, 2026. Laskee perhelain (PKS) § 100-103 mukaan.',
+        'nav.home': 'Etusivu', 'nav.tools': 'Työkalut', 'nav.blog': 'Blogi', 'nav.try': 'Kokeile ilmaiseksi',
+        'bc.tools': 'Työkalut', 'bc.here': 'Elatusapulaskuri',
+        'hero.tag': 'Ilmainen työkalu', 'hero.title': 'Elatusapulaskuri 2026',
+        'hero.subtitle': 'Laske lapsen elatusapu Virossa sekunneissa. Perustuu Viron perhelain (PKS) § 100-103 kaavaan. Kaikki tieto pysyy laitteellasi.',
+        'form.children': 'Kuinka monta lasta?',
+        'form.your_income': 'Nettotulosi (€/kk)',
+        'form.income_helper': 'Tulot verojen jälkeen',
+        'form.other_income': 'Toisen vanhemman nettotulot (€/kk)',
+        'form.other_income_helper': 'Arvio — käytetään suhteelliseen laskentaan',
+        'form.custody': 'Asuvatko lapset sinun luonasi?',
+        'form.custody_yes': 'Kyllä, lapset luonani',
+        'form.custody_no': 'Ei, toisen vanhemman luona',
+        'form.custody_helper': 'Elatusapua maksaa se vanhempi, jonka luona lapsi ei asu',
+        'result.label_receive': 'Saat toiselta vanhemmalta',
+        'result.label_pay': 'Maksat toiselle vanhemmalle',
+        'result.subtitle': '{n} lapsesta, ~{per} €/lapsi',
+        'result.formula_capped': 'Yläraja: {cap} × {n} lasta = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Laskennan erittely',
+        'breakdown.income': 'Maksajan tulot',
+        'breakdown.percent': 'Osuus lasta kohti',
+        'breakdown.children': 'Lasten määrä',
+        'breakdown.cap': 'Yläraja (½ minimipalkka × lapset)',
+        'breakdown.total': 'Arvioitu elatusapu yhteensä',
+        'cta.title': 'Tarvitsetko apua oikean elatuskanteen jättämiseen?',
+        'cta.body': 'Advocat AI auttaa laatimaan haasteen, keräämään näytön ja viemään asian oikeuteen — 17 kielellä.',
+        'cta.btn': 'Kokeile Advocatia ilmaiseksi →',
+        'info.title': 'Miten elatusapu lasketaan Virossa?',
+        'info.intro': 'Viron perhelain (PKS) § 100-103 mukaan lapsen elatusapu on vanhempien välillä jaettava velvollisuus. Pääsääntö:',
+        'info.law_box': '<strong>PKS § 101:</strong> Elatusavun määrä on <strong>25 % velvollisen vanhemman tuloista</strong> lasta kohti, mutta enintään <strong>puolet minimipalkasta</strong> lasta kohti kuukaudessa.',
+        'info.h_2026': 'Vuoden 2026 luvut:',
+        'info.list_2026': '<li><strong>Minimipalkka:</strong> 886 €/kk</li><li><strong>Yläraja per lapsi:</strong> 443 €/kk (½ minimipalkka)</li><li><strong>Minimi elatus:</strong> ~210 €/kk (perusmäärä + 3 % keskimääräisestä bruttopalkasta)</li>',
+        'info.h_factors': 'Mikä voi muuttaa summaa?',
+        'info.list_factors': '<li>Usean lapsen tapauksessa käytetään asteikkokerrointa (ei 25 % × N)</li><li>Jos vanhemmalla on muita elatusvelvollisuuksia</li><li>Jos lapsella on erityistarpeita (koulu, hoito, urheilu)</li><li>Jos vanhemman tulot ovat epävakaita tai tuntemattomia</li><li>Jos molemmat vanhemmat hoitavat lasta tasapuolisesti</li>',
+        'disclaimer.label': 'Oikeudellinen huomautus:',
+        'disclaimer.body': 'Laskuri antaa suuntaa-antavan arvion PKS § 100-103 mukaan eikä ole oikeudellista neuvontaa. Tuomioistuin voi määrätä toisen summan lapsen todellisten tarpeiden ja molempien vanhempien tilanteen perusteella.',
+        'footer.copy': '2026 Advocat. Kaikki oikeudet pidätetään.',
+        'footer.note': 'Työkalu on luonteeltaan yleinen informatiivinen eikä ole henkilökohtaista oikeudellista neuvontaa.'
+      },
+      de: {
+        'meta.title': 'Unterhaltsrechner 2026 — kostenloser Kindesunterhalt Estland | Advocat',
+        'meta.description': 'Kostenloser Unterhaltsrechner für Estland, 2026. Nach Familiengesetz (PKS) § 100-103.',
+        'nav.home': 'Startseite', 'nav.tools': 'Tools', 'nav.blog': 'Blog', 'nav.try': 'Kostenlos testen',
+        'bc.tools': 'Tools', 'bc.here': 'Unterhaltsrechner',
+        'hero.tag': 'Kostenloses Tool', 'hero.title': 'Unterhaltsrechner 2026',
+        'hero.subtitle': 'Berechnen Sie den Kindesunterhalt in Estland in Sekunden. Basierend auf der Formel des estnischen Familiengesetzes (PKS) § 100-103. Alle Daten bleiben auf Ihrem Gerät.',
+        'form.children': 'Wie viele Kinder?',
+        'form.your_income': 'Ihr Nettoeinkommen (€/Monat)',
+        'form.income_helper': 'Einkommen nach Steuern',
+        'form.other_income': 'Nettoeinkommen des anderen Elternteils (€/Monat)',
+        'form.other_income_helper': 'Schätzung — wird für die anteilige Berechnung verwendet',
+        'form.custody': 'Leben die Kinder bei Ihnen?',
+        'form.custody_yes': 'Ja, Kinder leben bei mir',
+        'form.custody_no': 'Nein, beim anderen Elternteil',
+        'form.custody_helper': 'Den Unterhalt zahlt der Elternteil, bei dem das Kind nicht lebt',
+        'result.label_receive': 'Sie erhalten vom anderen Elternteil',
+        'result.label_pay': 'Sie zahlen an den anderen Elternteil',
+        'result.subtitle': 'Für {n} Kind(er), ~{per} € pro Kind',
+        'result.formula_capped': 'Gesetzliche Obergrenze: {cap} × {n} Kinder = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Berechnung im Detail',
+        'breakdown.income': 'Einkommen des Zahlungspflichtigen',
+        'breakdown.percent': 'Anteil pro Kind',
+        'breakdown.children': 'Anzahl der Kinder',
+        'breakdown.cap': 'Obergrenze (½ Mindestlohn × Kinder)',
+        'breakdown.total': 'Geschätzter Unterhalt insgesamt',
+        'cta.title': 'Brauchen Sie Hilfe bei einer echten Unterhaltsklage?',
+        'cta.body': 'Advocat AI hilft, die Klageschrift zu verfassen, Beweise zu sammeln und vor Gericht zu gehen — in 17 Sprachen.',
+        'cta.btn': 'Advocat kostenlos testen →',
+        'info.title': 'Wie wird der Kindesunterhalt in Estland berechnet?',
+        'info.intro': 'Nach dem estnischen Familiengesetz (PKS) § 100-103 ist der Kindesunterhalt eine zwischen den Eltern aufgeteilte Pflicht. Grundregel:',
+        'info.law_box': '<strong>PKS § 101:</strong> Der Kindesunterhalt beträgt <strong>25 % des Einkommens des unterhaltspflichtigen Elternteils</strong> pro Kind, jedoch höchstens <strong>die Hälfte des Mindestlohns</strong> pro Kind und Monat.',
+        'info.h_2026': 'Werte für 2026:',
+        'info.list_2026': '<li><strong>Mindestlohn:</strong> 886 €/Monat</li><li><strong>Obergrenze pro Kind:</strong> 443 €/Monat (½ Mindestlohn)</li><li><strong>Mindestunterhalt:</strong> ~210 €/Monat (Sockelbetrag + 3 % des durchschnittlichen Bruttolohns)</li>',
+        'info.h_factors': 'Was kann diesen Betrag verändern?',
+        'info.list_factors': '<li>Bei mehreren Kindern gilt ein Staffelkoeffizient (nicht 25 % × N)</li><li>Wenn der Elternteil weitere Unterhaltspflichten hat</li><li>Wenn das Kind besonderen Bedarf hat (Schule, Medizin, Sport)</li><li>Wenn das Einkommen unregelmäßig oder unbekannt ist</li><li>Wenn beide Eltern die Betreuung paritätisch übernehmen</li>',
+        'disclaimer.label': 'Rechtlicher Hinweis:',
+        'disclaimer.body': 'Dieser Rechner liefert eine orientierende Schätzung nach PKS § 100-103 und stellt keine Rechtsberatung dar. Ein Gericht kann je nach Bedarf des Kindes und Situation beider Eltern einen anderen Betrag festsetzen.',
+        'footer.copy': '2026 Advocat. Alle Rechte vorbehalten.',
+        'footer.note': 'Dieses Tool ist allgemein informativ und stellt keine individuelle Rechtsberatung dar.'
+      },
+      fr: {
+        'meta.title': 'Calculateur de pension alimentaire 2026 — gratuit | Advocat',
+        'meta.description': 'Calculateur gratuit de pension alimentaire pour enfant en Estonie, 2026. Selon le Code de la famille (PKS) § 100-103.',
+        'nav.home': 'Accueil', 'nav.tools': 'Outils', 'nav.blog': 'Blog', 'nav.try': 'Essayer gratuitement',
+        'bc.tools': 'Outils', 'bc.here': 'Calculateur de pension alimentaire',
+        'hero.tag': 'Outil gratuit', 'hero.title': 'Calculateur de pension alimentaire 2026',
+        'hero.subtitle': 'Calculez la pension alimentaire pour enfant en Estonie en quelques secondes. Selon la formule du Code de la famille (PKS) § 100-103. Toutes les données restent sur votre appareil.',
+        'form.children': 'Combien d\'enfants ?',
+        'form.your_income': 'Votre revenu net (€/mois)',
+        'form.income_helper': 'Revenu après impôts',
+        'form.other_income': 'Revenu net de l\'autre parent (€/mois)',
+        'form.other_income_helper': 'Estimation — utilisée pour le calcul proportionnel',
+        'form.custody': 'Les enfants vivent-ils avec vous ?',
+        'form.custody_yes': 'Oui, les enfants vivent avec moi',
+        'form.custody_no': 'Non, avec l\'autre parent',
+        'form.custody_helper': 'La pension est versée par le parent chez qui l\'enfant ne vit pas',
+        'result.label_receive': 'Vous recevez de l\'autre parent',
+        'result.label_pay': 'Vous versez à l\'autre parent',
+        'result.subtitle': 'Pour {n} enfant(s), ~{per} € par enfant',
+        'result.formula_capped': 'Plafond légal : {cap} × {n} enfants = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Détail du calcul',
+        'breakdown.income': 'Revenu du débiteur',
+        'breakdown.percent': 'Part par enfant',
+        'breakdown.children': 'Nombre d\'enfants',
+        'breakdown.cap': 'Plafond (½ SMIC × enfants)',
+        'breakdown.total': 'Pension alimentaire estimée totale',
+        'cta.title': 'Besoin d\'aide pour une vraie demande de pension ?',
+        'cta.body': 'Advocat AI rédige la requête, rassemble les preuves et vous accompagne au tribunal — en 17 langues.',
+        'cta.btn': 'Essayer Advocat gratuitement →',
+        'info.title': 'Comment la pension alimentaire est-elle calculée en Estonie ?',
+        'info.intro': 'Selon le Code estonien de la famille (PKS) § 100-103, l\'entretien de l\'enfant est une obligation partagée entre les parents. Règle générale :',
+        'info.law_box': '<strong>PKS § 101 :</strong> Le montant de la pension est de <strong>25 % du revenu du parent débiteur</strong> par enfant, sans dépasser <strong>la moitié du salaire minimum</strong> par enfant et par mois.',
+        'info.h_2026': 'Chiffres pour 2026 :',
+        'info.list_2026': '<li><strong>Salaire minimum :</strong> 886 €/mois</li><li><strong>Plafond par enfant :</strong> 443 €/mois (½ salaire minimum)</li><li><strong>Pension minimale :</strong> ~210 €/mois (montant de base + 3 % du salaire brut moyen)</li>',
+        'info.h_factors': 'Qu\'est-ce qui peut modifier ce montant ?',
+        'info.list_factors': '<li>Pour plusieurs enfants, on applique un coefficient d\'échelle (et non 25 % × N)</li><li>Si le parent a d\'autres obligations alimentaires</li><li>Si l\'enfant a des besoins particuliers (école, soins, sport)</li><li>Si le revenu du parent est instable ou inconnu</li><li>Si les deux parents partagent la garde à parts égales</li>',
+        'disclaimer.label': 'Avertissement juridique :',
+        'disclaimer.body': 'Ce calculateur fournit une estimation indicative selon PKS § 100-103 et ne constitue pas un conseil juridique. Un tribunal peut fixer un montant différent selon les besoins réels de l\'enfant et la situation des deux parents.',
+        'footer.copy': '2026 Advocat. Tous droits réservés.',
+        'footer.note': 'Cet outil est de nature informative générale et ne constitue pas un conseil juridique individuel.'
+      },
+      es: {
+        'meta.title': 'Calculadora de pensión alimenticia 2026 — gratis | Advocat',
+        'meta.description': 'Calculadora gratuita de pensión alimenticia para Estonia, 2026. Según la Ley de Familia (PKS) § 100-103.',
+        'nav.home': 'Inicio', 'nav.tools': 'Herramientas', 'nav.blog': 'Blog', 'nav.try': 'Prueba gratis',
+        'bc.tools': 'Herramientas', 'bc.here': 'Calculadora de pensión alimenticia',
+        'hero.tag': 'Herramienta gratuita', 'hero.title': 'Calculadora de pensión alimenticia 2026',
+        'hero.subtitle': 'Calcula la pensión alimenticia en Estonia en segundos. Según la fórmula de la Ley de Familia (PKS) § 100-103. Todos los datos permanecen en tu dispositivo.',
+        'form.children': '¿Cuántos hijos?',
+        'form.your_income': 'Tu ingreso neto (€/mes)',
+        'form.income_helper': 'Ingreso después de impuestos',
+        'form.other_income': 'Ingreso neto del otro progenitor (€/mes)',
+        'form.other_income_helper': 'Estimación — se usa para el cálculo proporcional',
+        'form.custody': '¿Los hijos viven contigo?',
+        'form.custody_yes': 'Sí, los hijos viven conmigo',
+        'form.custody_no': 'No, con el otro progenitor',
+        'form.custody_helper': 'La pensión la paga el progenitor con quien el menor no vive',
+        'result.label_receive': 'Recibes del otro progenitor',
+        'result.label_pay': 'Pagas al otro progenitor',
+        'result.subtitle': 'Por {n} hijo(s), ~{per} € por hijo',
+        'result.formula_capped': 'Tope legal: {cap} × {n} hijos = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Desglose del cálculo',
+        'breakdown.income': 'Ingreso del obligado',
+        'breakdown.percent': 'Porcentaje por hijo',
+        'breakdown.children': 'Número de hijos',
+        'breakdown.cap': 'Tope (½ salario mínimo × hijos)',
+        'breakdown.total': 'Pensión estimada total',
+        'cta.title': '¿Necesitas ayuda con una demanda real de alimentos?',
+        'cta.body': 'Advocat AI redacta la demanda, reúne pruebas y te lleva al tribunal — en 17 idiomas.',
+        'cta.btn': 'Prueba Advocat gratis →',
+        'info.title': '¿Cómo se calcula la pensión alimenticia en Estonia?',
+        'info.intro': 'Según la Ley de Familia de Estonia (PKS) § 100-103, los alimentos son una obligación compartida entre los progenitores. Regla general:',
+        'info.law_box': '<strong>PKS § 101:</strong> La pensión es del <strong>25 % del ingreso del progenitor obligado</strong> por hijo, pero no más de <strong>la mitad del salario mínimo</strong> por hijo al mes.',
+        'info.h_2026': 'Cifras 2026:',
+        'info.list_2026': '<li><strong>Salario mínimo:</strong> 886 €/mes</li><li><strong>Tope por hijo:</strong> 443 €/mes (½ salario mínimo)</li><li><strong>Pensión mínima:</strong> ~210 €/mes (importe base + 3 % del salario bruto medio)</li>',
+        'info.h_factors': '¿Qué puede modificar este importe?',
+        'info.list_factors': '<li>Con varios hijos se aplica un coeficiente de escala (no 25 % × N)</li><li>Si el progenitor tiene otras obligaciones de alimentos</li><li>Si el menor tiene necesidades especiales (escuela, salud, deporte)</li><li>Si el ingreso es inestable o desconocido</li><li>Si ambos progenitores comparten la custodia por igual</li>',
+        'disclaimer.label': 'Aviso legal:',
+        'disclaimer.body': 'Esta calculadora ofrece una estimación orientativa según PKS § 100-103 y no es asesoramiento jurídico. El juez puede fijar un importe distinto en función de las necesidades reales del menor y de la situación de ambos progenitores.',
+        'footer.copy': '2026 Advocat. Todos los derechos reservados.',
+        'footer.note': 'Esta herramienta tiene carácter informativo general y no constituye asesoramiento jurídico individual.'
+      },
+      it: {
+        'meta.title': 'Calcolatore degli alimenti 2026 — gratuito | Advocat',
+        'meta.description': 'Calcolatore gratuito degli alimenti per figli in Estonia, 2026. Secondo la Legge sulla famiglia (PKS) § 100-103.',
+        'nav.home': 'Home', 'nav.tools': 'Strumenti', 'nav.blog': 'Blog', 'nav.try': 'Prova gratis',
+        'bc.tools': 'Strumenti', 'bc.here': 'Calcolatore degli alimenti',
+        'hero.tag': 'Strumento gratuito', 'hero.title': 'Calcolatore degli alimenti 2026',
+        'hero.subtitle': 'Calcola gli alimenti in Estonia in pochi secondi. Secondo la formula della Legge sulla famiglia (PKS) § 100-103. Tutti i dati restano sul tuo dispositivo.',
+        'form.children': 'Quanti figli?',
+        'form.your_income': 'Il tuo reddito netto (€/mese)',
+        'form.income_helper': 'Reddito al netto delle imposte',
+        'form.other_income': 'Reddito netto dell\'altro genitore (€/mese)',
+        'form.other_income_helper': 'Stima — usata per il calcolo proporzionale',
+        'form.custody': 'I figli vivono con te?',
+        'form.custody_yes': 'Sì, i figli vivono con me',
+        'form.custody_no': 'No, con l\'altro genitore',
+        'form.custody_helper': 'L\'assegno lo versa il genitore con cui il minore non vive',
+        'result.label_receive': 'Ricevi dall\'altro genitore',
+        'result.label_pay': 'Versi all\'altro genitore',
+        'result.subtitle': 'Per {n} figlio/i, ~{per} € a figlio',
+        'result.formula_capped': 'Tetto legale: {cap} × {n} figli = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Dettaglio del calcolo',
+        'breakdown.income': 'Reddito dell\'obbligato',
+        'breakdown.percent': 'Quota per figlio',
+        'breakdown.children': 'Numero di figli',
+        'breakdown.cap': 'Tetto (½ salario minimo × figli)',
+        'breakdown.total': 'Assegno stimato totale',
+        'cta.title': 'Ti serve aiuto con una vera richiesta di alimenti?',
+        'cta.body': 'Advocat AI redige il ricorso, raccoglie le prove e ti porta in tribunale — in 17 lingue.',
+        'cta.btn': 'Prova Advocat gratis →',
+        'info.title': 'Come si calcolano gli alimenti in Estonia?',
+        'info.intro': 'Secondo la Legge estone sulla famiglia (PKS) § 100-103, gli alimenti sono un obbligo ripartito tra i genitori. Regola generale:',
+        'info.law_box': '<strong>PKS § 101:</strong> L\'assegno è pari al <strong>25 % del reddito del genitore obbligato</strong> per figlio, ma non oltre <strong>metà del salario minimo</strong> per figlio al mese.',
+        'info.h_2026': 'Dati 2026:',
+        'info.list_2026': '<li><strong>Salario minimo:</strong> 886 €/mese</li><li><strong>Tetto per figlio:</strong> 443 €/mese (½ salario minimo)</li><li><strong>Assegno minimo:</strong> ~210 €/mese (importo base + 3 % del salario lordo medio)</li>',
+        'info.h_factors': 'Cosa può modificare l\'importo?',
+        'info.list_factors': '<li>Con più figli si applica un coefficiente di scala (non 25 % × N)</li><li>Se il genitore ha altri obblighi di mantenimento</li><li>Se il figlio ha bisogni speciali (scuola, sanità, sport)</li><li>Se il reddito è instabile o sconosciuto</li><li>Se entrambi i genitori condividono l\'affido alla pari</li>',
+        'disclaimer.label': 'Avviso legale:',
+        'disclaimer.body': 'Questo calcolatore fornisce una stima indicativa secondo PKS § 100-103 e non costituisce consulenza legale. Il giudice può stabilire un importo diverso in base ai bisogni effettivi del minore e alla situazione di entrambi i genitori.',
+        'footer.copy': '2026 Advocat. Tutti i diritti riservati.',
+        'footer.note': 'Questo strumento ha carattere informativo generale e non costituisce consulenza legale individuale.'
+      },
+      uk: {
+        'meta.title': 'Калькулятор аліментів 2026 — безкоштовно | Advocat',
+        'meta.description': 'Безкоштовний калькулятор аліментів на дитину в Естонії, 2026. За Законом про сім\'ю (PKS) § 100-103.',
+        'nav.home': 'Головна', 'nav.tools': 'Інструменти', 'nav.blog': 'Блог', 'nav.try': 'Спробувати безкоштовно',
+        'bc.tools': 'Інструменти', 'bc.here': 'Калькулятор аліментів',
+        'hero.tag': 'Безкоштовний інструмент', 'hero.title': 'Калькулятор аліментів 2026',
+        'hero.subtitle': 'Обчисліть аліменти на дитину в Естонії за секунду. За формулою Закону про сім\'ю (PKS) § 100-103. Усі дані залишаються на вашому пристрої.',
+        'form.children': 'Скільки дітей?',
+        'form.your_income': 'Ваш чистий дохід (€/міс.)',
+        'form.income_helper': 'Дохід після сплати податків',
+        'form.other_income': 'Чистий дохід другого з батьків (€/міс.)',
+        'form.other_income_helper': 'Оцінка — використовується для пропорційного розрахунку',
+        'form.custody': 'Діти живуть із вами?',
+        'form.custody_yes': 'Так, діти зі мною',
+        'form.custody_no': 'Ні, з другим із батьків',
+        'form.custody_helper': 'Аліменти сплачує той з батьків, з ким дитина не живе',
+        'result.label_receive': 'Ви отримуєте від другого з батьків',
+        'result.label_pay': 'Ви сплачуєте другому з батьків',
+        'result.subtitle': 'За {n} дитину(дітей), ~{per} € на дитину',
+        'result.formula_capped': 'Граничний розмір: {cap} × {n} дітей = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Розклад розрахунку',
+        'breakdown.income': 'Дохід платника',
+        'breakdown.percent': 'Частка на дитину',
+        'breakdown.children': 'Кількість дітей',
+        'breakdown.cap': 'Межа (½ мінімальної зарплати × діти)',
+        'breakdown.total': 'Орієнтовний розмір аліментів',
+        'cta.title': 'Потрібна допомога з реальним позовом про аліменти?',
+        'cta.body': 'Advocat AI допоможе скласти позов, зібрати докази та піти до суду — 17 мовами.',
+        'cta.btn': 'Спробувати Advocat безкоштовно →',
+        'info.title': 'Як в Естонії розраховуються аліменти?',
+        'info.intro': 'За Законом про сім\'ю Естонії (PKS) § 100-103 утримання дитини — обов\'язок, розподілений між батьками. Загальне правило:',
+        'info.law_box': '<strong>PKS § 101:</strong> Розмір аліментів — <strong>25 % доходу зобов\'язаного з батьків</strong> на дитину, але не більше <strong>половини мінімальної зарплати</strong> на дитину на місяць.',
+        'info.h_2026': 'Дані 2026 року:',
+        'info.list_2026': '<li><strong>Мінімальна зарплата:</strong> 886 €/міс.</li><li><strong>Межа на дитину:</strong> 443 €/міс. (½ мін. зп)</li><li><strong>Мінімальні аліменти:</strong> ~210 €/міс. (базова сума + 3 % від середньої брутто-зарплати)</li>',
+        'info.h_factors': 'Що може змінити цю суму?',
+        'info.list_factors': '<li>За кількох дітей застосовується коефіцієнт шкали (не 25 % × N)</li><li>Якщо у платника є інші обов\'язки з утримання</li><li>Якщо у дитини особливі потреби (освіта, медицина, спорт)</li><li>Якщо дохід нестабільний чи невідомий</li><li>Якщо обоє батьків порівну виконують обов\'язки з догляду</li>',
+        'disclaimer.label': 'Юридичне застереження:',
+        'disclaimer.body': 'Калькулятор дає орієнтовну оцінку за PKS § 100-103 і не є юридичною консультацією. Суд може визначити іншу суму з огляду на реальні потреби дитини та становище обох батьків.',
+        'footer.copy': '2026 Advocat. Усі права захищені.',
+        'footer.note': 'Цей інструмент має загальний інформативний характер і не є індивідуальною юридичною консультацією.'
+      },
+      lv: {
+        'meta.title': 'Uzturlīdzekļu kalkulators 2026 — bezmaksas | Advocat',
+        'meta.description': 'Bezmaksas uzturlīdzekļu kalkulators Igaunijā, 2026. Saskaņā ar Ģimenes likumu (PKS) § 100-103.',
+        'nav.home': 'Sākums', 'nav.tools': 'Rīki', 'nav.blog': 'Blogs', 'nav.try': 'Izmēģināt bez maksas',
+        'bc.tools': 'Rīki', 'bc.here': 'Uzturlīdzekļu kalkulators',
+        'hero.tag': 'Bezmaksas rīks', 'hero.title': 'Uzturlīdzekļu kalkulators 2026',
+        'hero.subtitle': 'Aprēķini uzturlīdzekļus Igaunijā dažu sekunžu laikā. Pēc Ģimenes likuma (PKS) § 100-103 formulas. Visi dati paliek tavā ierīcē.',
+        'form.children': 'Cik bērnu?',
+        'form.your_income': 'Tavi neto ienākumi (€/mēnesī)',
+        'form.income_helper': 'Ienākumi pēc nodokļu atskaitīšanas',
+        'form.other_income': 'Otra vecāka neto ienākumi (€/mēnesī)',
+        'form.other_income_helper': 'Aplēse — izmanto proporcionālajam aprēķinam',
+        'form.custody': 'Vai bērni dzīvo ar tevi?',
+        'form.custody_yes': 'Jā, bērni pie manis',
+        'form.custody_no': 'Nē, pie otra vecāka',
+        'form.custody_helper': 'Uzturlīdzekļus maksā tas vecāks, ar kuru bērns nedzīvo',
+        'result.label_receive': 'Saņem no otra vecāka',
+        'result.label_pay': 'Maksā otram vecākam',
+        'result.subtitle': 'Par {n} bērnu(iem), ~{per} € uz bērnu',
+        'result.formula_capped': 'Maksimālais griests: {cap} × {n} bērni = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Aprēķina detalizācija',
+        'breakdown.income': 'Maksātāja ienākumi',
+        'breakdown.percent': 'Daļa uz bērnu',
+        'breakdown.children': 'Bērnu skaits',
+        'breakdown.cap': 'Griests (½ min. alga × bērni)',
+        'breakdown.total': 'Aplēstā uzturlīdzekļu summa',
+        'cta.title': 'Vai nepieciešama palīdzība reālā prasībā par uzturlīdzekļiem?',
+        'cta.body': 'Advocat AI palīdz sagatavot prasību, savākt pierādījumus un doties uz tiesu — 17 valodās.',
+        'cta.btn': 'Izmēģināt Advocat bez maksas →',
+        'info.title': 'Kā Igaunijā aprēķina uzturlīdzekļus?',
+        'info.intro': 'Saskaņā ar Igaunijas Ģimenes likuma (PKS) § 100-103 bērna uzturēšana ir starp vecākiem dalīts pienākums. Vispārīgais noteikums:',
+        'info.law_box': '<strong>PKS § 101:</strong> Uzturlīdzekļu apmērs ir <strong>25 % no uzturlīdzekļu maksātāja ienākumiem</strong> uz vienu bērnu, bet ne vairāk kā <strong>puse no minimālās algas</strong> uz bērnu mēnesī.',
+        'info.h_2026': '2026. gada dati:',
+        'info.list_2026': '<li><strong>Minimālā alga:</strong> 886 €/mēnesī</li><li><strong>Griests uz bērnu:</strong> 443 €/mēnesī (½ min. alga)</li><li><strong>Minimālie uzturlīdzekļi:</strong> ~210 €/mēnesī (bāzes summa + 3 % no vidējās bruto algas)</li>',
+        'info.h_factors': 'Kas var ietekmēt summu?',
+        'info.list_factors': '<li>Pie vairākiem bērniem piemēro skalas koeficientu (ne 25 % × N)</li><li>Ja vecākam ir citas uzturēšanas saistības</li><li>Ja bērnam ir īpašas vajadzības (izglītība, medicīna, sports)</li><li>Ja ienākumi nav stabili vai nav zināmi</li><li>Ja abi vecāki rūpēm dalās līdzvērtīgi</li>',
+        'disclaimer.label': 'Juridiska piezīme:',
+        'disclaimer.body': 'Šis kalkulators sniedz orientējošu aplēsi saskaņā ar PKS § 100-103 un nav juridiska konsultācija. Tiesa var noteikt citu summu, ņemot vērā bērna patiesās vajadzības un abu vecāku situāciju.',
+        'footer.copy': '2026 Advocat. Visas tiesības aizsargātas.',
+        'footer.note': 'Šis rīks ir vispārīga informatīva rakstura un nav individuāla juridiska konsultācija.'
+      },
+      lt: {
+        'meta.title': 'Vaiko išlaikymo skaičiuoklė 2026 — nemokama | Advocat',
+        'meta.description': 'Nemokama vaiko išlaikymo skaičiuoklė Estijoje, 2026. Pagal Šeimos įstatymą (PKS) § 100-103.',
+        'nav.home': 'Pradžia', 'nav.tools': 'Įrankiai', 'nav.blog': 'Tinklaraštis', 'nav.try': 'Išbandyti nemokamai',
+        'bc.tools': 'Įrankiai', 'bc.here': 'Vaiko išlaikymo skaičiuoklė',
+        'hero.tag': 'Nemokamas įrankis', 'hero.title': 'Vaiko išlaikymo skaičiuoklė 2026',
+        'hero.subtitle': 'Apskaičiuokite vaiko išlaikymą Estijoje per sekundes. Pagal Šeimos įstatymo (PKS) § 100-103 formulę. Visi duomenys lieka jūsų įrenginyje.',
+        'form.children': 'Kiek vaikų?',
+        'form.your_income': 'Jūsų grynosios pajamos (€/mėn.)',
+        'form.income_helper': 'Pajamos po mokesčių',
+        'form.other_income': 'Kito tėvo / motinos grynosios pajamos (€/mėn.)',
+        'form.other_income_helper': 'Įvertinimas — naudojamas proporciniam skaičiavimui',
+        'form.custody': 'Ar vaikai gyvena su jumis?',
+        'form.custody_yes': 'Taip, vaikai su manimi',
+        'form.custody_no': 'Ne, su kitu tėvu / motina',
+        'form.custody_helper': 'Išlaikymą moka tas iš tėvų, su kuriuo vaikas negyvena',
+        'result.label_receive': 'Gaunate iš kito tėvo / motinos',
+        'result.label_pay': 'Mokate kitam tėvui / motinai',
+        'result.subtitle': 'Už {n} vaiką(-us), ~{per} € vaikui',
+        'result.formula_capped': 'Įstatyminė riba: {cap} × {n} vaikai = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Skaičiavimo detalizacija',
+        'breakdown.income': 'Mokėtojo pajamos',
+        'breakdown.percent': 'Dalis vienam vaikui',
+        'breakdown.children': 'Vaikų skaičius',
+        'breakdown.cap': 'Riba (½ MMA × vaikai)',
+        'breakdown.total': 'Numatomas išlaikymas iš viso',
+        'cta.title': 'Reikia pagalbos su tikru ieškiniu dėl išlaikymo?',
+        'cta.body': 'Advocat AI padės parengti ieškinį, surinkti įrodymus ir kreiptis į teismą — 17 kalbų.',
+        'cta.btn': 'Išbandyti Advocat nemokamai →',
+        'info.title': 'Kaip Estijoje skaičiuojamas išlaikymas?',
+        'info.intro': 'Pagal Estijos Šeimos įstatymo (PKS) § 100-103 vaiko išlaikymas yra tarp tėvų pasidalyta pareiga. Bendra taisyklė:',
+        'info.law_box': '<strong>PKS § 101:</strong> Išlaikymo dydis — <strong>25 % iš įpareigoto tėvo / motinos pajamų</strong> vaikui, bet ne daugiau kaip <strong>pusė minimaliosios algos</strong> vaikui per mėnesį.',
+        'info.h_2026': '2026 m. duomenys:',
+        'info.list_2026': '<li><strong>Minimalioji alga:</strong> 886 €/mėn.</li><li><strong>Riba vaikui:</strong> 443 €/mėn. (½ MMA)</li><li><strong>Minimalus išlaikymas:</strong> ~210 €/mėn. (bazinė suma + 3 % nuo vidutinio bruto darbo užmokesčio)</li>',
+        'info.h_factors': 'Kas gali pakeisti šią sumą?',
+        'info.list_factors': '<li>Esant keliems vaikams taikomas skalės koeficientas (ne 25 % × N)</li><li>Jei tėvas / motina turi kitų išlaikymo pareigų</li><li>Jei vaikas turi specialiųjų poreikių (mokykla, medicina, sportas)</li><li>Jei pajamos nestabilios ar nežinomos</li><li>Jei abu tėvai lygiomis dalimis dalyvauja vaiko priežiūroje</li>',
+        'disclaimer.label': 'Teisinis pranešimas:',
+        'disclaimer.body': 'Ši skaičiuoklė pateikia orientacinį įvertinimą pagal PKS § 100-103 ir nėra teisinė konsultacija. Teismas gali nustatyti kitokią sumą pagal realius vaiko poreikius ir abiejų tėvų situaciją.',
+        'footer.copy': '2026 Advocat. Visos teisės saugomos.',
+        'footer.note': 'Šis įrankis yra bendro informacinio pobūdžio ir nėra individuali teisinė konsultacija.'
+      },
+      pl: {
+        'meta.title': 'Kalkulator alimentów 2026 — darmowy | Advocat',
+        'meta.description': 'Darmowy kalkulator alimentów w Estonii, 2026. Według ustawy rodzinnej (PKS) § 100-103.',
+        'nav.home': 'Strona główna', 'nav.tools': 'Narzędzia', 'nav.blog': 'Blog', 'nav.try': 'Wypróbuj za darmo',
+        'bc.tools': 'Narzędzia', 'bc.here': 'Kalkulator alimentów',
+        'hero.tag': 'Bezpłatne narzędzie', 'hero.title': 'Kalkulator alimentów 2026',
+        'hero.subtitle': 'Oblicz alimenty w Estonii w kilka sekund. Według wzoru z ustawy rodzinnej (PKS) § 100-103. Wszystkie dane pozostają na Twoim urządzeniu.',
+        'form.children': 'Ile dzieci?',
+        'form.your_income': 'Twój dochód netto (€/mies.)',
+        'form.income_helper': 'Dochód po opodatkowaniu',
+        'form.other_income': 'Dochód netto drugiego rodzica (€/mies.)',
+        'form.other_income_helper': 'Szacunek — używany do obliczeń proporcjonalnych',
+        'form.custody': 'Czy dzieci mieszkają z Tobą?',
+        'form.custody_yes': 'Tak, dzieci mieszkają ze mną',
+        'form.custody_no': 'Nie, z drugim rodzicem',
+        'form.custody_helper': 'Alimenty płaci rodzic, z którym dziecko nie mieszka',
+        'result.label_receive': 'Otrzymujesz od drugiego rodzica',
+        'result.label_pay': 'Płacisz drugiemu rodzicowi',
+        'result.subtitle': 'Za {n} dziecko(a), ~{per} € na dziecko',
+        'result.formula_capped': 'Górny limit: {cap} × {n} dzieci = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Szczegóły obliczeń',
+        'breakdown.income': 'Dochód płatnika',
+        'breakdown.percent': 'Udział na dziecko',
+        'breakdown.children': 'Liczba dzieci',
+        'breakdown.cap': 'Limit (½ płacy minimalnej × dzieci)',
+        'breakdown.total': 'Szacowane alimenty łącznie',
+        'cta.title': 'Potrzebujesz pomocy w prawdziwej sprawie o alimenty?',
+        'cta.body': 'Advocat AI pomoże sporządzić pozew, zebrać dowody i pójść do sądu — w 17 językach.',
+        'cta.btn': 'Wypróbuj Advocat za darmo →',
+        'info.title': 'Jak liczone są alimenty w Estonii?',
+        'info.intro': 'Według estońskiej ustawy rodzinnej (PKS) § 100-103 alimenty są obowiązkiem dzielonym między rodziców. Reguła ogólna:',
+        'info.law_box': '<strong>PKS § 101:</strong> Wysokość alimentów to <strong>25 % dochodu rodzica zobowiązanego</strong> na dziecko, lecz nie więcej niż <strong>połowa płacy minimalnej</strong> na dziecko miesięcznie.',
+        'info.h_2026': 'Dane na 2026 r.:',
+        'info.list_2026': '<li><strong>Płaca minimalna:</strong> 886 €/mies.</li><li><strong>Limit na dziecko:</strong> 443 €/mies. (½ płacy minimalnej)</li><li><strong>Alimenty minimalne:</strong> ~210 €/mies. (kwota bazowa + 3 % średniej płacy brutto)</li>',
+        'info.h_factors': 'Co może zmienić tę kwotę?',
+        'info.list_factors': '<li>Przy wielu dzieciach stosuje się współczynnik skali (nie 25 % × N)</li><li>Gdy rodzic ma inne zobowiązania alimentacyjne</li><li>Gdy dziecko ma szczególne potrzeby (szkoła, leczenie, sport)</li><li>Gdy dochód jest niestabilny lub nieznany</li><li>Gdy oboje rodzice sprawują opiekę po równo</li>',
+        'disclaimer.label': 'Informacja prawna:',
+        'disclaimer.body': 'Kalkulator daje orientacyjną estymację według PKS § 100-103 i nie jest poradą prawną. Sąd może ustalić inną kwotę w oparciu o rzeczywiste potrzeby dziecka i sytuację obojga rodziców.',
+        'footer.copy': '2026 Advocat. Wszelkie prawa zastrzeżone.',
+        'footer.note': 'To narzędzie ma charakter ogólnoinformacyjny i nie stanowi indywidualnej porady prawnej.'
+      },
+      sv: {
+        'meta.title': 'Underhållsbidragskalkylator 2026 — gratis | Advocat',
+        'meta.description': 'Gratis underhållsbidragskalkylator för Estland, 2026. Enligt familjelagen (PKS) § 100-103.',
+        'nav.home': 'Hem', 'nav.tools': 'Verktyg', 'nav.blog': 'Blogg', 'nav.try': 'Prova gratis',
+        'bc.tools': 'Verktyg', 'bc.here': 'Underhållsbidragskalkylator',
+        'hero.tag': 'Gratis verktyg', 'hero.title': 'Underhållsbidragskalkylator 2026',
+        'hero.subtitle': 'Beräkna underhållsbidraget i Estland på sekunder. Enligt formeln i familjelagen (PKS) § 100-103. All data stannar på din enhet.',
+        'form.children': 'Hur många barn?',
+        'form.your_income': 'Din nettoinkomst (€/mån)',
+        'form.income_helper': 'Inkomst efter skatt',
+        'form.other_income': 'Andra förälderns nettoinkomst (€/mån)',
+        'form.other_income_helper': 'Uppskattning — används för proportionell beräkning',
+        'form.custody': 'Bor barnen hos dig?',
+        'form.custody_yes': 'Ja, barnen bor hos mig',
+        'form.custody_no': 'Nej, hos andra föräldern',
+        'form.custody_helper': 'Underhållsbidraget betalas av den förälder som barnet inte bor hos',
+        'result.label_receive': 'Du får från den andra föräldern',
+        'result.label_pay': 'Du betalar till den andra föräldern',
+        'result.subtitle': 'För {n} barn, ~{per} € per barn',
+        'result.formula_capped': 'Lagligt tak: {cap} × {n} barn = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Beräkningsdetaljer',
+        'breakdown.income': 'Betalarens inkomst',
+        'breakdown.percent': 'Andel per barn',
+        'breakdown.children': 'Antal barn',
+        'breakdown.cap': 'Tak (½ minimilön × barn)',
+        'breakdown.total': 'Beräknat underhåll totalt',
+        'cta.title': 'Behöver du hjälp med en riktig underhållsansökan?',
+        'cta.body': 'Advocat AI hjälper dig att utforma stämningsansökan, samla bevis och gå till domstol — på 17 språk.',
+        'cta.btn': 'Prova Advocat gratis →',
+        'info.title': 'Hur beräknas underhållsbidrag i Estland?',
+        'info.intro': 'Enligt den estniska familjelagen (PKS) § 100-103 är barnets underhåll en skyldighet delad mellan föräldrarna. Huvudregel:',
+        'info.law_box': '<strong>PKS § 101:</strong> Underhållsbidragets storlek är <strong>25 % av den underhållsskyldiges inkomst</strong> per barn, men inte mer än <strong>halva minimilönen</strong> per barn och månad.',
+        'info.h_2026': 'Siffror för 2026:',
+        'info.list_2026': '<li><strong>Minimilön:</strong> 886 €/mån</li><li><strong>Tak per barn:</strong> 443 €/mån (½ minimilön)</li><li><strong>Lägsta underhåll:</strong> ~210 €/mån (grundbelopp + 3 % av genomsnittlig bruttolön)</li>',
+        'info.h_factors': 'Vad kan ändra beloppet?',
+        'info.list_factors': '<li>Vid flera barn används en skalkoefficient (inte 25 % × N)</li><li>Om föräldern har andra underhållsskyldigheter</li><li>Om barnet har särskilda behov (skola, vård, idrott)</li><li>Om inkomsten är instabil eller okänd</li><li>Om båda föräldrarna delar omsorgen lika</li>',
+        'disclaimer.label': 'Juridisk information:',
+        'disclaimer.body': 'Kalkylatorn ger en vägledande uppskattning enligt PKS § 100-103 och utgör inte juridisk rådgivning. Domstolen kan fastställa ett annat belopp baserat på barnets faktiska behov och båda föräldrarnas situation.',
+        'footer.copy': '2026 Advocat. Alla rättigheter förbehållna.',
+        'footer.note': 'Detta verktyg är allmänt informativt och utgör inte individuell juridisk rådgivning.'
+      },
+      ar: {
+        'meta.title': 'حاسبة نفقة الأطفال 2026 — مجانية | Advocat',
+        'meta.description': 'حاسبة مجانية لنفقة الأطفال في إستونيا، 2026. وفق قانون الأسرة (PKS) المواد 100-103.',
+        'nav.home': 'الرئيسية', 'nav.tools': 'الأدوات', 'nav.blog': 'المدونة', 'nav.try': 'جرّب مجانًا',
+        'bc.tools': 'الأدوات', 'bc.here': 'حاسبة نفقة الأطفال',
+        'hero.tag': 'أداة مجانية', 'hero.title': 'حاسبة نفقة الأطفال 2026',
+        'hero.subtitle': 'احسب نفقة الطفل في إستونيا في ثوانٍ. وفقًا لمعادلة قانون الأسرة (PKS) المواد 100-103. تبقى جميع البيانات على جهازك.',
+        'form.children': 'كم عدد الأطفال؟',
+        'form.your_income': 'دخلك الصافي (€/شهريًا)',
+        'form.income_helper': 'الدخل بعد الضرائب',
+        'form.other_income': 'الدخل الصافي للوالد الآخر (€/شهريًا)',
+        'form.other_income_helper': 'تقدير — يُستخدم للحساب النسبي',
+        'form.custody': 'هل يعيش الأطفال معك؟',
+        'form.custody_yes': 'نعم، الأطفال معي',
+        'form.custody_no': 'لا، مع الوالد الآخر',
+        'form.custody_helper': 'النفقة يدفعها الوالد الذي لا يعيش الطفل معه',
+        'result.label_receive': 'تتلقّى من الوالد الآخر',
+        'result.label_pay': 'تدفع للوالد الآخر',
+        'result.subtitle': 'عن {n} طفل/أطفال، ~{per} € لكل طفل',
+        'result.formula_capped': 'الحد الأقصى القانوني: {cap} × {n} أطفال = {total}',
+        'result.formula_normal': '{income} × 25٪ × {n} × {scale} = {total}',
+        'breakdown.title': 'تفاصيل الحساب',
+        'breakdown.income': 'دخل الملتزم بالدفع',
+        'breakdown.percent': 'النسبة لكل طفل',
+        'breakdown.children': 'عدد الأطفال',
+        'breakdown.cap': 'الحد الأقصى (½ الحد الأدنى للأجور × الأطفال)',
+        'breakdown.total': 'إجمالي النفقة المقدّرة',
+        'cta.title': 'هل تحتاج إلى مساعدة في دعوى نفقة حقيقية؟',
+        'cta.body': 'يساعدك Advocat AI في إعداد الدعوى وجمع الأدلة والترافع — بـ17 لغة.',
+        'cta.btn': 'جرّب Advocat مجانًا ←',
+        'info.title': 'كيف تُحسب نفقة الأطفال في إستونيا؟',
+        'info.intro': 'وفقًا لقانون الأسرة الإستوني (PKS) المواد 100-103 فإن نفقة الطفل التزام مشترك بين الوالدين. القاعدة العامة:',
+        'info.law_box': '<strong>PKS § 101:</strong> مقدار النفقة هو <strong>25٪ من دخل الوالد الملزم</strong> لكل طفل، على ألا تتجاوز <strong>نصف الحد الأدنى للأجور</strong> لكل طفل شهريًا.',
+        'info.h_2026': 'أرقام 2026:',
+        'info.list_2026': '<li><strong>الحد الأدنى للأجور:</strong> 886 €/شهر</li><li><strong>الحد الأقصى لكل طفل:</strong> 443 €/شهر (½ الحد الأدنى)</li><li><strong>الحد الأدنى للنفقة:</strong> ~210 €/شهر (المبلغ الأساسي + 3٪ من متوسط الأجر الإجمالي)</li>',
+        'info.h_factors': 'ما الذي قد يغيّر هذا المبلغ؟',
+        'info.list_factors': '<li>عند تعدد الأطفال يُطبَّق معامل تدرّج (وليس 25٪ × N)</li><li>إذا كان على الوالد التزامات نفقة أخرى</li><li>إذا كانت لدى الطفل احتياجات خاصة (تعليم، رعاية صحية، رياضة)</li><li>إذا كان الدخل غير مستقر أو غير معروف</li><li>إذا كان كلا الوالدين يتشاركان الحضانة بالتساوي</li>',
+        'disclaimer.label': 'تنبيه قانوني:',
+        'disclaimer.body': 'تعطي هذه الحاسبة تقديرًا توجيهيًا وفق PKS § 100-103 ولا تشكّل استشارة قانونية. قد تحدّد المحكمة مبلغًا مختلفًا بناءً على الاحتياجات الفعلية للطفل ووضع الوالدين.',
+        'footer.copy': '2026 Advocat. جميع الحقوق محفوظة.',
+        'footer.note': 'هذه الأداة ذات طابع معلوماتي عام ولا تشكّل استشارة قانونية فردية.'
+      },
+      fa: {
+        'meta.title': 'محاسبه‌گر نفقه فرزند ۲۰۲۶ — رایگان | Advocat',
+        'meta.description': 'محاسبه‌گر رایگان نفقه فرزند در استونی، ۲۰۲۶. طبق قانون خانواده (PKS) ماده‌های ۱۰۰ تا ۱۰۳.',
+        'nav.home': 'صفحه اصلی', 'nav.tools': 'ابزارها', 'nav.blog': 'وبلاگ', 'nav.try': 'امتحان رایگان',
+        'bc.tools': 'ابزارها', 'bc.here': 'محاسبه‌گر نفقه فرزند',
+        'hero.tag': 'ابزار رایگان', 'hero.title': 'محاسبه‌گر نفقه فرزند ۲۰۲۶',
+        'hero.subtitle': 'نفقه فرزند را در استونی در چند ثانیه محاسبه کنید. بر اساس فرمول قانون خانواده (PKS) § 100-103. همه داده‌ها در دستگاه شما باقی می‌مانند.',
+        'form.children': 'چند فرزند؟',
+        'form.your_income': 'درآمد خالص شما (€/ماه)',
+        'form.income_helper': 'درآمد پس از کسر مالیات',
+        'form.other_income': 'درآمد خالص والد دیگر (€/ماه)',
+        'form.other_income_helper': 'برآورد — برای محاسبه نسبی استفاده می‌شود',
+        'form.custody': 'آیا فرزندان با شما زندگی می‌کنند؟',
+        'form.custody_yes': 'بله، فرزندان با من',
+        'form.custody_no': 'خیر، با والد دیگر',
+        'form.custody_helper': 'نفقه را والدی پرداخت می‌کند که فرزند با او زندگی نمی‌کند',
+        'result.label_receive': 'از والد دیگر دریافت می‌کنید',
+        'result.label_pay': 'به والد دیگر پرداخت می‌کنید',
+        'result.subtitle': 'برای {n} فرزند، ~{per} € برای هر فرزند',
+        'result.formula_capped': 'حد قانونی: {cap} × {n} فرزند = {total}',
+        'result.formula_normal': '{income} × ۲۵٪ × {n} × {scale} = {total}',
+        'breakdown.title': 'جزئیات محاسبه',
+        'breakdown.income': 'درآمد پرداخت‌کننده',
+        'breakdown.percent': 'سهم هر فرزند',
+        'breakdown.children': 'تعداد فرزندان',
+        'breakdown.cap': 'سقف (½ حداقل دستمزد × فرزندان)',
+        'breakdown.total': 'مجموع نفقه برآوردی',
+        'cta.title': 'به کمک برای پرونده واقعی نفقه نیاز دارید؟',
+        'cta.body': 'Advocat AI در تنظیم دادخواست، جمع‌آوری مدارک و رفتن به دادگاه کمک می‌کند — به ۱۷ زبان.',
+        'cta.btn': 'Advocat را رایگان امتحان کنید ←',
+        'info.title': 'محاسبه نفقه فرزند در استونی چگونه است؟',
+        'info.intro': 'طبق قانون خانواده استونی (PKS) § 100-103 نفقه فرزند یک تعهد مشترک میان والدین است. قاعده کلی:',
+        'info.law_box': '<strong>PKS § 101:</strong> میزان نفقه <strong>۲۵٪ از درآمد والد متعهد</strong> برای هر فرزند است، اما بیش از <strong>نصف حداقل دستمزد</strong> برای هر فرزند در ماه نخواهد بود.',
+        'info.h_2026': 'ارقام ۲۰۲۶:',
+        'info.list_2026': '<li><strong>حداقل دستمزد:</strong> ۸۸۶ €/ماه</li><li><strong>سقف به ازای هر فرزند:</strong> ۴۴۳ €/ماه (½ حداقل دستمزد)</li><li><strong>حداقل نفقه:</strong> ~۲۱۰ €/ماه (مبلغ پایه + ۳٪ از میانگین دستمزد ناخالص)</li>',
+        'info.h_factors': 'چه چیزی این مبلغ را تغییر می‌دهد؟',
+        'info.list_factors': '<li>در صورت چند فرزند ضریب مقیاس اعمال می‌شود (نه ۲۵٪ × N)</li><li>اگر والد تعهدات دیگری برای نفقه داشته باشد</li><li>اگر فرزند نیازهای خاص (آموزش، درمان، ورزش) داشته باشد</li><li>اگر درآمد نامنظم یا نامعلوم باشد</li><li>اگر هر دو والد مراقبت را به‌طور برابر بر عهده داشته باشند</li>',
+        'disclaimer.label': 'یادداشت حقوقی:',
+        'disclaimer.body': 'این محاسبه‌گر برآوردی راهنما بر اساس PKS § 100-103 ارائه می‌دهد و مشاوره حقوقی محسوب نمی‌شود. دادگاه می‌تواند بر اساس نیازهای واقعی فرزند و وضعیت والدین مبلغ متفاوتی تعیین کند.',
+        'footer.copy': '۲۰۲۶ Advocat. تمامی حقوق محفوظ است.',
+        'footer.note': 'این ابزار ماهیتی اطلاع‌رسانی عمومی دارد و مشاوره حقوقی فردی محسوب نمی‌شود.'
+      },
+      tr: {
+        'meta.title': 'Çocuk nafakası hesaplayıcı 2026 — ücretsiz | Advocat',
+        'meta.description': 'Estonya için ücretsiz çocuk nafakası hesaplayıcı, 2026. Aile Kanunu (PKS) § 100-103\'e göre.',
+        'nav.home': 'Anasayfa', 'nav.tools': 'Araçlar', 'nav.blog': 'Blog', 'nav.try': 'Ücretsiz dene',
+        'bc.tools': 'Araçlar', 'bc.here': 'Çocuk nafakası hesaplayıcı',
+        'hero.tag': 'Ücretsiz araç', 'hero.title': 'Çocuk nafakası hesaplayıcı 2026',
+        'hero.subtitle': 'Estonya\'da çocuk nafakasını saniyeler içinde hesaplayın. Aile Kanunu (PKS) § 100-103 formülüne göre. Tüm veriler cihazınızda kalır.',
+        'form.children': 'Kaç çocuk?',
+        'form.your_income': 'Net geliriniz (€/ay)',
+        'form.income_helper': 'Vergi sonrası gelir',
+        'form.other_income': 'Diğer ebeveynin net geliri (€/ay)',
+        'form.other_income_helper': 'Tahmin — orantılı hesaplama için kullanılır',
+        'form.custody': 'Çocuklar sizinle mi yaşıyor?',
+        'form.custody_yes': 'Evet, çocuklar yanımda',
+        'form.custody_no': 'Hayır, diğer ebeveynin yanında',
+        'form.custody_helper': 'Nafakayı, çocuğun yanında yaşamadığı ebeveyn öder',
+        'result.label_receive': 'Diğer ebeveynden alırsınız',
+        'result.label_pay': 'Diğer ebeveyne ödersiniz',
+        'result.subtitle': '{n} çocuk için, ~{per} € çocuk başına',
+        'result.formula_capped': 'Yasal üst sınır: {cap} × {n} çocuk = {total}',
+        'result.formula_normal': '{income} × %25 × {n} × {scale} = {total}',
+        'breakdown.title': 'Hesaplama dökümü',
+        'breakdown.income': 'Ödeyenin geliri',
+        'breakdown.percent': 'Çocuk başına oran',
+        'breakdown.children': 'Çocuk sayısı',
+        'breakdown.cap': 'Üst sınır (½ asgari ücret × çocuk)',
+        'breakdown.total': 'Tahmini nafaka toplamı',
+        'cta.title': 'Gerçek bir nafaka davası için yardım mı gerek?',
+        'cta.body': 'Advocat AI dilekçeyi hazırlar, delilleri toplar ve mahkemeye gitmenize yardım eder — 17 dilde.',
+        'cta.btn': 'Advocat\'ı ücretsiz dene →',
+        'info.title': 'Estonya\'da çocuk nafakası nasıl hesaplanır?',
+        'info.intro': 'Estonya Aile Kanunu (PKS) § 100-103\'e göre çocuğun bakımı ebeveynler arasında paylaşılan bir yükümlülüktür. Genel kural:',
+        'info.law_box': '<strong>PKS § 101:</strong> Nafaka tutarı, yükümlü ebeveynin gelirinin <strong>çocuk başına %25\'idir</strong>; ancak ayda <strong>asgari ücretin yarısından</strong> fazla olamaz.',
+        'info.h_2026': '2026 rakamları:',
+        'info.list_2026': '<li><strong>Asgari ücret:</strong> 886 €/ay</li><li><strong>Çocuk başına üst sınır:</strong> 443 €/ay (½ asgari ücret)</li><li><strong>Asgari nafaka:</strong> ~210 €/ay (taban tutar + ortalama brüt ücretin %3\'ü)</li>',
+        'info.h_factors': 'Bu tutarı ne değiştirebilir?',
+        'info.list_factors': '<li>Birden fazla çocukta kademe katsayısı uygulanır (%25 × N değil)</li><li>Ebeveynin başka bakım yükümlülükleri varsa</li><li>Çocuğun özel ihtiyaçları varsa (okul, tedavi, spor)</li><li>Gelir istikrarsız veya bilinmiyorsa</li><li>Her iki ebeveyn bakımı eşit paylaşıyorsa</li>',
+        'disclaimer.label': 'Yasal uyarı:',
+        'disclaimer.body': 'Bu hesaplayıcı PKS § 100-103\'e göre yön gösterici bir tahmin verir ve hukuki danışmanlık niteliği taşımaz. Mahkeme, çocuğun gerçek ihtiyaçlarına ve her iki ebeveynin durumuna göre farklı bir tutar belirleyebilir.',
+        'footer.copy': '2026 Advocat. Tüm hakları saklıdır.',
+        'footer.note': 'Bu araç genel bilgilendirme amaçlıdır ve kişisel hukuki danışmanlık niteliği taşımaz.'
+      },
+      ro: {
+        'meta.title': 'Calculator pensie alimentară 2026 — gratuit | Advocat',
+        'meta.description': 'Calculator gratuit de pensie alimentară pentru Estonia, 2026. Conform Codului familiei (PKS) § 100-103.',
+        'nav.home': 'Acasă', 'nav.tools': 'Instrumente', 'nav.blog': 'Blog', 'nav.try': 'Încearcă gratuit',
+        'bc.tools': 'Instrumente', 'bc.here': 'Calculator pensie alimentară',
+        'hero.tag': 'Instrument gratuit', 'hero.title': 'Calculator pensie alimentară 2026',
+        'hero.subtitle': 'Calculează pensia alimentară în Estonia în câteva secunde. Pe baza formulei din Codul familiei (PKS) § 100-103. Toate datele rămân pe dispozitivul tău.',
+        'form.children': 'Câți copii?',
+        'form.your_income': 'Venitul tău net (€/lună)',
+        'form.income_helper': 'Venitul după impozite',
+        'form.other_income': 'Venitul net al celuilalt părinte (€/lună)',
+        'form.other_income_helper': 'Estimare — folosită pentru calculul proporțional',
+        'form.custody': 'Copiii locuiesc cu tine?',
+        'form.custody_yes': 'Da, copiii sunt cu mine',
+        'form.custody_no': 'Nu, cu celălalt părinte',
+        'form.custody_helper': 'Pensia se plătește de către părintele cu care copilul nu locuiește',
+        'result.label_receive': 'Primești de la celălalt părinte',
+        'result.label_pay': 'Plătești celuilalt părinte',
+        'result.subtitle': 'Pentru {n} copil/copii, ~{per} € pe copil',
+        'result.formula_capped': 'Plafon legal: {cap} × {n} copii = {total}',
+        'result.formula_normal': '{income} × 25 % × {n} × {scale} = {total}',
+        'breakdown.title': 'Detaliul calculului',
+        'breakdown.income': 'Venitul plătitorului',
+        'breakdown.percent': 'Procent pe copil',
+        'breakdown.children': 'Numărul de copii',
+        'breakdown.cap': 'Plafon (½ salariu minim × copii)',
+        'breakdown.total': 'Pensie estimată totală',
+        'cta.title': 'Ai nevoie de ajutor pentru o cerere reală de pensie?',
+        'cta.body': 'Advocat AI te ajută să redactezi cererea, să aduni probele și să mergi în instanță — în 17 limbi.',
+        'cta.btn': 'Încearcă Advocat gratuit →',
+        'info.title': 'Cum se calculează pensia alimentară în Estonia?',
+        'info.intro': 'Conform Codului estonian al familiei (PKS) § 100-103, întreținerea copilului este o obligație împărțită între părinți. Regula generală:',
+        'info.law_box': '<strong>PKS § 101:</strong> Cuantumul pensiei este de <strong>25 % din venitul părintelui debitor</strong> pe copil, dar nu mai mult de <strong>jumătate din salariul minim</strong> pe copil și lună.',
+        'info.h_2026': 'Cifrele pentru 2026:',
+        'info.list_2026': '<li><strong>Salariul minim:</strong> 886 €/lună</li><li><strong>Plafon pe copil:</strong> 443 €/lună (½ salariu minim)</li><li><strong>Pensie minimă:</strong> ~210 €/lună (suma de bază + 3 % din salariul brut mediu)</li>',
+        'info.h_factors': 'Ce poate modifica această sumă?',
+        'info.list_factors': '<li>La mai mulți copii se aplică un coeficient de scară (nu 25 % × N)</li><li>Dacă părintele are alte obligații de întreținere</li><li>Dacă copilul are nevoi speciale (școală, sănătate, sport)</li><li>Dacă venitul este instabil sau necunoscut</li><li>Dacă ambii părinți împart custodia în mod egal</li>',
+        'disclaimer.label': 'Notă juridică:',
+        'disclaimer.body': 'Acest calculator oferă o estimare orientativă conform PKS § 100-103 și nu reprezintă consultanță juridică. Instanța poate stabili o sumă diferită în funcție de nevoile reale ale copilului și de situația ambilor părinți.',
+        'footer.copy': '2026 Advocat. Toate drepturile rezervate.',
+        'footer.note': 'Acest instrument are caracter informativ general și nu reprezintă consultanță juridică individuală.'
+      }
+    };
+    </script>
+    <script>
+    /* ===== Calculator logic + i18n wire-up ===== */
+    (function() {
+        const I18N = window.__TOOL_I18N__;
+        const LANGS = [
+          { code: 'et', label: 'Eesti' }, { code: 'en', label: 'English' },
+          { code: 'ru', label: 'Русский' }, { code: 'fi', label: 'Suomi' },
+          { code: 'de', label: 'Deutsch' }, { code: 'fr', label: 'Français' },
+          { code: 'es', label: 'Español' }, { code: 'it', label: 'Italiano' },
+          { code: 'uk', label: 'Українська' }, { code: 'lv', label: 'Latviešu' },
+          { code: 'lt', label: 'Lietuvių' }, { code: 'pl', label: 'Polski' },
+          { code: 'sv', label: 'Svenska' }, { code: 'ar', label: 'العربية' },
+          { code: 'fa', label: 'فارسی' }, { code: 'tr', label: 'Türkçe' },
+          { code: 'ro', label: 'Română' }
+        ];
+        const RTL = { ar: true, fa: true };
+        let CUR_LANG = 'et';
 
-            let state = { children: 1, parentIncome: 1500, otherIncome: 1500, custody: 'yes' };
+        function tr(key) {
+          const d = I18N[CUR_LANG] || I18N.et;
+          if (d[key] !== undefined) return d[key];
+          return I18N.et[key] !== undefined ? I18N.et[key] : key;
+        }
 
-            const childrenBtns = document.querySelectorAll('#childrenBtns .children-btn');
-            const custodyBtns = document.querySelectorAll('#custodyToggle button');
-            const parentIncome = document.getElementById('parentIncome');
-            const otherIncome = document.getElementById('otherIncome');
-            const parentIncomeVal = document.getElementById('parentIncomeVal');
-            const otherIncomeVal = document.getElementById('otherIncomeVal');
+        function applyI18n() {
+          const dict = I18N[CUR_LANG] || I18N.et;
+          const fallback = I18N.et;
+          document.querySelectorAll('[data-i18n]').forEach(function(el){
+            const k = el.getAttribute('data-i18n');
+            const val = (dict[k] !== undefined) ? dict[k] : (fallback[k] !== undefined ? fallback[k] : null);
+            if (val === null) return;
+            const attrName = el.getAttribute('data-i18n-attr');
+            if (attrName) el.setAttribute(attrName, val);
+            else el.textContent = val;
+          });
+          document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+            const k = el.getAttribute('data-i18n-html');
+            const val = (dict[k] !== undefined) ? dict[k] : (fallback[k] !== undefined ? fallback[k] : null);
+            if (val !== null) el.innerHTML = val;
+          });
+          if (dict['meta.title']) document.title = dict['meta.title'];
+          document.getElementById('lang-current').textContent = CUR_LANG.toUpperCase();
+          document.querySelectorAll('#lang-menu button').forEach(function(b){
+            b.classList.toggle('active', b.dataset.lang === CUR_LANG);
+          });
+          calculate();
+        }
 
-            const fmtEur = (n) => Math.round(n).toLocaleString('et-EE', { useGrouping: true }).replace(/,/g, ' ') + ' €';
+        function setLang(code) {
+          if (!I18N[code]) code = 'et';
+          CUR_LANG = code;
+          document.documentElement.lang = code;
+          document.documentElement.dir = RTL[code] ? 'rtl' : 'ltr';
+          try { localStorage.setItem('advocat-tools-lang', code); } catch(e){}
+          applyI18n();
+        }
 
-            function calculate() {
-                const obligorIncome = state.custody === 'yes' ? state.otherIncome : state.parentIncome;
-                const scale = SCALE[state.children] || 0.74;
-                const rawAmount = obligorIncome * 0.25 * state.children * scale;
-                const capTotal = CAP_PER_CHILD * state.children;
-                const finalAmount = Math.min(rawAmount, capTotal);
-                const perChild = finalAmount / state.children;
-                const cappedByLaw = rawAmount > capTotal;
+        function detectInitialLang() {
+          try {
+            const params = new URLSearchParams(window.location.search);
+            const u = params.get('lang');
+            if (u && I18N[u]) return u;
+          } catch(e){}
+          try {
+            const saved = localStorage.getItem('advocat-tools-lang');
+            if (saved && I18N[saved]) return saved;
+          } catch(e){}
+          const nav = (navigator.language || '').toLowerCase().split('-')[0];
+          if (I18N[nav]) return nav;
+          return 'et';
+        }
 
-                document.getElementById('resultAmount').textContent = Math.round(finalAmount).toLocaleString('et-EE').replace(/,/g, ' ');
-                document.getElementById('resultLabel').textContent = state.custody === 'yes' ? 'Saad teiselt vanemalt' : 'Pead maksma teisele vanemale';
-                document.getElementById('resultSubtitle').textContent = `${state.children} ${state.children === 1 ? 'lapse' : 'lapse'} eest, ~${Math.round(perChild)} € lapse kohta`;
+        function buildLangMenu(){
+          const menu = document.getElementById('lang-menu');
+          LANGS.forEach(function(l){
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.dataset.lang = l.code;
+            b.innerHTML = '<span>' + l.label + '</span><span class="lang-code">' + l.code.toUpperCase() + '</span>';
+            b.onclick = function(){ setLang(l.code); document.getElementById('lang-menu').classList.remove('open'); };
+            menu.appendChild(b);
+          });
+          const tog = document.getElementById('lang-toggle');
+          tog.addEventListener('click', function(e){
+            e.stopPropagation();
+            const m = document.getElementById('lang-menu');
+            m.classList.toggle('open');
+            tog.setAttribute('aria-expanded', m.classList.contains('open') ? 'true' : 'false');
+          });
+          document.addEventListener('click', function(){ document.getElementById('lang-menu').classList.remove('open'); });
+        }
 
-                let formulaText;
-                if (cappedByLaw) {
-                    formulaText = `Ülempiir: ${fmtEur(CAP_PER_CHILD)} × ${state.children} last = ${fmtEur(capTotal)}`;
-                } else {
-                    formulaText = `${fmtEur(obligorIncome)} × 25% × ${state.children} × ${scale} = ${fmtEur(finalAmount)}`;
-                }
-                document.getElementById('formulaDisplay').textContent = formulaText;
+        // === Calculator logic ===
+        const MIN_WAGE_2026 = 886;
+        const CAP_PER_CHILD = MIN_WAGE_2026 / 2;
+        const SCALE = {1: 1.0, 2: 0.9, 3: 0.83, 4: 0.78, 5: 0.74};
+        let state = { children: 1, parentIncome: 1500, otherIncome: 1500, custody: 'yes' };
 
-                document.getElementById('brIncome').textContent = fmtEur(obligorIncome);
-                document.getElementById('brPercent').textContent = `25% × ${scale}`;
-                document.getElementById('brChildren').textContent = state.children;
-                document.getElementById('brCap').textContent = fmtEur(capTotal);
-                document.getElementById('brTotal').textContent = fmtEur(finalAmount);
-            }
+        const childrenBtns = document.querySelectorAll('#childrenBtns .children-btn');
+        const custodyBtns = document.querySelectorAll('#custodyToggle button');
+        const parentIncome = document.getElementById('parentIncome');
+        const otherIncome = document.getElementById('otherIncome');
+        const parentIncomeVal = document.getElementById('parentIncomeVal');
+        const otherIncomeVal = document.getElementById('otherIncomeVal');
 
-            childrenBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    childrenBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    state.children = parseInt(btn.dataset.count, 10);
-                    calculate();
-                });
+        function fmtEur(n) {
+          const rounded = Math.round(n);
+          // Use space as thousand separator (works visually across all langs)
+          return rounded.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+        }
+
+        function fillTemplate(tpl, vars) {
+          return tpl.replace(/\{(\w+)\}/g, function(_, k){ return vars[k] !== undefined ? vars[k] : ''; });
+        }
+
+        function calculate() {
+            const obligorIncome = state.custody === 'yes' ? state.otherIncome : state.parentIncome;
+            const scale = SCALE[state.children] || 0.74;
+            const rawAmount = obligorIncome * 0.25 * state.children * scale;
+            const capTotal = CAP_PER_CHILD * state.children;
+            const finalAmount = Math.min(rawAmount, capTotal);
+            const perChild = finalAmount / state.children;
+            const cappedByLaw = rawAmount > capTotal;
+
+            document.getElementById('resultAmount').textContent = Math.round(finalAmount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+            document.getElementById('resultLabel').textContent = state.custody === 'yes' ? tr('result.label_receive') : tr('result.label_pay');
+            document.getElementById('resultSubtitle').textContent = fillTemplate(tr('result.subtitle'), {
+              n: state.children, per: Math.round(perChild)
             });
 
-            custodyBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    custodyBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    state.custody = btn.dataset.value;
-                    calculate();
-                });
+            const formulaTpl = cappedByLaw ? tr('result.formula_capped') : tr('result.formula_normal');
+            document.getElementById('formulaDisplay').textContent = fillTemplate(formulaTpl, {
+              cap: fmtEur(CAP_PER_CHILD),
+              n: state.children,
+              total: fmtEur(finalAmount),
+              income: fmtEur(obligorIncome),
+              scale: scale
             });
 
-            parentIncome.addEventListener('input', () => {
-                state.parentIncome = parseInt(parentIncome.value, 10);
-                parentIncomeVal.textContent = fmtEur(state.parentIncome);
+            document.getElementById('brIncome').textContent = fmtEur(obligorIncome);
+            document.getElementById('brPercent').textContent = '25% × ' + scale;
+            document.getElementById('brChildren').textContent = state.children;
+            document.getElementById('brCap').textContent = fmtEur(capTotal);
+            document.getElementById('brTotal').textContent = fmtEur(finalAmount);
+        }
+
+        childrenBtns.forEach(function(btn){
+            btn.addEventListener('click', function(){
+                childrenBtns.forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                state.children = parseInt(btn.dataset.count, 10);
                 calculate();
             });
-
-            otherIncome.addEventListener('input', () => {
-                state.otherIncome = parseInt(otherIncome.value, 10);
-                otherIncomeVal.textContent = fmtEur(state.otherIncome);
+        });
+        custodyBtns.forEach(function(btn){
+            btn.addEventListener('click', function(){
+                custodyBtns.forEach(function(b){ b.classList.remove('active'); });
+                btn.classList.add('active');
+                state.custody = btn.dataset.value;
                 calculate();
             });
-
+        });
+        parentIncome.addEventListener('input', function(){
+            state.parentIncome = parseInt(parentIncome.value, 10);
+            parentIncomeVal.textContent = fmtEur(state.parentIncome);
             calculate();
-        })();
+        });
+        otherIncome.addEventListener('input', function(){
+            state.otherIncome = parseInt(otherIncome.value, 10);
+            otherIncomeVal.textContent = fmtEur(state.otherIncome);
+            calculate();
+        });
+
+        buildLangMenu();
+        setLang(detectInitialLang());
+    })();
     </script>
 </body>
 </html>
