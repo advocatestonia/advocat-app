@@ -1,8 +1,52 @@
 {
   "schema_version": 1,
-  "last_updated": "2026-05-14",
-  "build_version": "v4.1",
-  "judge_setup": "Triple-LLM judge: Anthropic Opus 4.5 + OpenAI gpt-4o + Google Gemini 2.5 Pro (Gemini blocked on 2026-05-14 runs — 2 of 3 contributed). Statute tier re-evaluated 2026-05-14 after Phase 2 legal_lookup deploy and corrections-memory cross-language fix. v51 wire fix (commit 459bbee, 2026-05-14) verified: legal_lookup tool now fires 10/10 on authenticated user chat turns; statute numbers will rise once corpus is filled with FI/EE §-level chunks.",
+  "last_updated": "2026-05-15",
+  "build_version": "v4.1+corpus_v3",
+  "judge_setup": "Triple-LLM judge: Anthropic Opus 4.5 + OpenAI gpt-4o + Google Gemini 2.5 Pro (Gemini blocked on 2026-05-14 runs — 2 of 3 contributed). Statute tier re-evaluated 2026-05-14 after Phase 2 legal_lookup deploy and corrections-memory cross-language fix. v51 wire fix (commit 459bbee, 2026-05-14) verified: legal_lookup tool now fires 10/10 on authenticated user chat turns. Corpus v3 (FI+EE+EU+cases+graph) deployed 2026-05-15; ivfflat.probes fix shipped; section-aware re-ranking shipped.",
+  "corpus_v3_state": {
+    "status": "live in prod (HN-launch-ready, retrieval continues hardening)",
+    "ingested_2026-05-15": true,
+    "law_chunks_v2": 11604,
+    "case_chunks": 7879,
+    "travaux": 0,
+    "statute_aliases": 89250,
+    "case_statute_citations": 603,
+    "total_chunks": 19483,
+    "distinct_acts": 54,
+    "jurisdictions": { "fi": 25, "ee": 25, "eu": 4 },
+    "embedded_pct": 100,
+    "post_launch_followups": [
+      "HE/eelnõud ingestion (travaux table at 0 — he-fetcher worker shipped but not yet run for prod batch)",
+      "ECHR full HUDOC ingest beyond seed",
+      "HNSW migration for law_chunks_v2 (current ivfflat probes=25 lift is good but HNSW would beat it)"
+    ],
+    "golden_qa_2026-05-15": {
+      "total_queries": 20,
+      "recall_at_3_strict_act_and_section": 0.50,
+      "recall_at_3_act_only": 0.75,
+      "recall_at_5_strict": 0.50,
+      "recall_at_5_act_only": 0.75,
+      "target_recall_at_3": 0.85,
+      "verdict": "FAIL on 0.85 strict gate; PASS on 0.75 act-level gate. Section-aware rerank shipped to close the section-mismatch gap; next QA rerun after fresh deploy will confirm.",
+      "cost_usd": 0.000004,
+      "tokens": 214,
+      "run_file": "eval/runs/corpus_v3_golden_qa_FULL_2026-05-14.md",
+      "failure_breakdown": {
+        "truth_set_wrong": 1,
+        "act_correct_section_wrong": 5,
+        "corpus_gap_eu_regs": 2,
+        "corpus_ranking_bias": 2
+      },
+      "fixes_shipped_since_qa": [
+        "ivfflat.probes=25 migration (recall@3 25% → 50% jump already counted in this run)",
+        "Section-aware re-ranking (LLK-T30..T37 — targets 5 'act-correct, section-wrong' failures)",
+        "FI genitive alias expansion (aliases 76,623 → 89,250)",
+        "Citation extractor (case→statute graph: 603 edges)",
+        "Phase-1 EU/ECHR seed (GDPR, Brussels Ia, ECHR Art 6+8)"
+      ],
+      "index_tuning_bug_found": "Default ivfflat.probes=1 with 100 lists caused some queries to return zero rows. Migration 20260515020000_law_search_v2_probes_fix.sql tunes per-call to probes=25. Pre-fix recall@3 was 25%; post-fix 50%. HNSW migration is the next step for further lift."
+    }
+  },
   "truth_set": {
     "total_items": 30,
     "tiers": [
@@ -107,6 +151,26 @@
   "recent_mistakes": [
     {
       "date": "2026-05-14",
+      "tier": "retrieval",
+      "item_id": "corpus-ivfflat-probes",
+      "question_redacted": "Why does law_search_v2 return empty results for certain legitimate queries (e.g. 'kehaline väärkohtlemine', 'third-country return procedure') even though the relevant chunks are in the corpus?",
+      "what_advocat_said": "Returns empty array — user-visible effect is 'no statute found' for queries whose embedding doesn't land near an IVFFlat centroid.",
+      "what_it_should_be": "Should return the §121 KarS (assault) chunk for 'kehaline väärkohtlemine'. The chunk IS in the corpus, embedded.",
+      "fix_status": "in_flight",
+      "fix_description": "Root cause: ivfflat index uses default probes=1 with lists=100, so most queries only scan 1% of the index. Investigated 2026-05-14 during golden QA on the full 18,546-chunk corpus. Wrapper RPC law_search_v2_qa created with per-call SET ivfflat.probes; production RPC needs same fix or migration to HNSW. Pre-fix recall@3 on the 20-query golden set = 25%; post-fix = 50%."
+    },
+    {
+      "date": "2026-05-14",
+      "tier": "truth-set",
+      "item_id": "golden-g01-stale-taxonomy",
+      "question_redacted": "menetetyn määräajan palauttaminen KHO — which statute and §?",
+      "what_advocat_said": "Corpus correctly retrieved fi-oho §114, §115, §116 (Laki oikeudenkäynnistä hallintoasioissa 808/2019).",
+      "what_it_should_be": "fi-oho §114 — but our golden query expected fi-hol §114, which is the OLD taxonomy. The truth-set entry is stale.",
+      "fix_status": "in_flight",
+      "fix_description": "Update eval/golden_corpus_queries.jsonl g01 expected_act from 'fi-hol' to 'fi-oho'. The corpus retrieval is correct; the truth set was wrong. Filed as 'we got the test wrong, not the AI'."
+    },
+    {
+      "date": "2026-05-14",
       "tier": "gold",
       "item_id": "gold-001",
       "question_redacted": "Restoration of expired appeal deadline after Supreme Administrative Court refused leave to appeal — which court, which statute, what evidence?",
@@ -175,6 +239,7 @@
   "challenge_email": "support@advocat.ee",
   "source_files": [
     "eval/runs/v4_vs_sonnet_baseline_2026-05-14.md",
-    "eval/runs/2026-05-14_summary.json"
+    "eval/runs/2026-05-14_summary.json",
+    "eval/runs/corpus_v3_golden_qa_FULL_2026-05-14.md"
   ]
 }
