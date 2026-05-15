@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../config/feature_flags.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -60,6 +61,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ///     already in a prior session; don't pester.
   Future<void> _maybeShowReferralNudge() async {
     try {
+      // Soft-launch gate (consilium 2026-05-15) — referral surfaces are
+      // disabled by default; the rest of the gating logic is kept compiled
+      // so the feature can be re-enabled via dart-define without churn.
+      if (!kReferralEnabled) return;
+
       final isDemo = ref.read(isDemoModeProvider);
       if (isDemo) return;
 

@@ -58,3 +58,28 @@ bool gmailScopeIncludesReadonly(String? scope) {
   if (scope == null || scope.isEmpty) return false;
   return scope.contains('gmail.readonly');
 }
+
+// -----------------------------------------------------------------------------
+// Referral programme — soft-launch gate (consilium 2026-05-15).
+// -----------------------------------------------------------------------------
+
+/// Master switch for the in-app referral programme ("Invite a friend").
+///
+/// When `false` (current production default):
+///   * The settings-screen "Invite friends" tile is hidden.
+///   * The post-first-conversation snackbar nudge is suppressed.
+///   * The /referral and /r/:code routes remain registered so that inbound
+///     shared links (web/r.html → /r/<code>) still resolve — that surface
+///     is governed by the server-side referral attribution endpoint, not
+///     by the UI.
+///   * The referral_service / providers / models stay compiled and
+///     reachable from code; only the UI entry points are dark.
+///
+/// Flip via `--dart-define=ADVOCAT_REFERRAL_ENABLED=true` at build time to
+/// re-enable without touching source.
+///
+/// Ref: consilium 2026-05-15 (soft-launch decision).
+const bool kReferralEnabled = bool.fromEnvironment(
+  'ADVOCAT_REFERRAL_ENABLED',
+  defaultValue: false,
+);

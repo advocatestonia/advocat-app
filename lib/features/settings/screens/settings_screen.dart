@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../config/feature_flags.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -107,18 +108,22 @@ class SettingsScreen extends ConsumerWidget {
 
           // ── Invite friends ────────────────────────────────────────────
           // Growth loop: tap → /referral screen with copyable link + share.
-          _SettingsTile(
-            icon: Icons.card_giftcard_outlined,
-            title: l.referralSettingsTile,
-            subtitle: l.referralSubtitle,
-            trailing: const Icon(
-              AppIcons.chevronRight,
-              color: AppColors.textTertiary,
+          // Soft-launched (consilium 2026-05-15): the tile is hidden behind
+          // `kReferralEnabled`; route + service stay compiled so flipping
+          // the flag re-exposes the surface with zero further work.
+          if (kReferralEnabled)
+            _SettingsTile(
+              icon: Icons.card_giftcard_outlined,
+              title: l.referralSettingsTile,
+              subtitle: l.referralSubtitle,
+              trailing: const Icon(
+                AppIcons.chevronRight,
+                color: AppColors.textTertiary,
+              ),
+              onTap: () => context.push(AppRoutes.referral),
             ),
-            onTap: () => context.push(AppRoutes.referral),
-          ),
 
-          const _SectionDivider(),
+          if (kReferralEnabled) const _SectionDivider(),
 
           // ── Data & Privacy ────────────────────────────────────────────
           _SectionHeader(title: l.dataAndPrivacy),
