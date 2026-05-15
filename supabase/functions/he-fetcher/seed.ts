@@ -412,11 +412,24 @@ export const EE_EELNOU_SEEDS: TravauxSeed[] = [
 // -----------------------------------------------------------------------------
 // Three high-value bills the original 15-doc catalogue missed:
 //
-//   1. HE 226/2018 vp — Oikeudenkäynnistä hallintoasioissa (OHO 808/2019).
-//      Critical for Sulga: §114 "menetetyn määräajan palauttaminen" / KHO
-//      restoration jurisdiction. The previous fi-oho seed (HE 226/2009) is
-//      an OLDER amendment to the *predecessor* (HLL) statute; the actual
-//      OHO travaux live in this 2018 bill.
+//   1. HE 29/2018 vp — Oikeudenkäynnistä hallintoasioissa (OHO 808/2019).
+//      Critical for Sulga: §111 valituslupa, §114 "menetetyn määräajan
+//      palauttaminen" / KHO restoration jurisdiction. The previous fi-oho
+//      seed (HE 226/2009) is an OLDER amendment to the *predecessor* (HLL)
+//      statute; the actual OHO travaux live in this 2018 bill.
+//
+//      Fix #89 round 3 (2026-05-15): the previous priority entry used
+//      HE 226/2018 vp, which on Finlex resolves to a completely different
+//      bill about "turvallisuusverkosta" (security networks / Suomen
+//      Erillisverkot Oy — §§ 250–325, §271a, §318). That bill was ingested
+//      and contaminated the fi-oho travaux retrieval (30 chunks of unrelated
+//      security-network commentary attributed to OHO). Corrected to
+//      HE 29/2018 vp — verified Finlex title:
+//        "Hallituksen esitys eduskunnalle laiksi oikeudenkäynnistä
+//         hallintoasioissa ja eräiksi siihen liittyviksi laeiksi"
+//      Source: eduskunta.fi/FI/vaski → HE 29/2018, became 808/2019.
+//      Cross-ref: edilex.fi/saadoskokoelma/20190808.pdf; tyotapaturmatieto.fi
+//      lists HE 29/2018 as the OHO 808/2019 government proposal.
 //
 //   2. HE 72/2002 vp — Hallintolaki (HL 434/2003). Foundational FI admin
 //      law (good faith, hyvä hallinto). Many Migri / KHO opinions cite
@@ -428,18 +441,20 @@ export const EE_EELNOU_SEEDS: TravauxSeed[] = [
 //      §149 deportation + §51 oleskelulupa interpretation.
 //
 // URLs verified 200 + embedded PDF discoverable on 2026-05-15.
-// PDF page counts: 81 / 143 / 45 — within the pdf_splitter's HARD_MAX_PAGES.
+// PDF page counts: ~250 (HE 29/2018) / 143 (HE 72/2002) / 45 (HE 1/2016) —
+// within the pdf_splitter's HARD_MAX_PAGES (400). HE 29/2018 will use 5–6
+// segments through the streaming splitter (round 3 fix in pdf_splitter.ts).
 // -----------------------------------------------------------------------------
 export const FI_HE_PRIORITY_SEEDS: TravauxSeed[] = [
   {
-    source_id: "fi-he-226-2018-oho",
+    source_id: "fi-he-29-2018-oho",
     doc_kind: "HE",
-    doc_number: "HE 226/2018 vp",
+    doc_number: "HE 29/2018 vp",
     year: 2018,
     related_act_slug: "fi-oho",
     title:
-      "Hallituksen esitys laiksi oikeudenkäynnistä hallintoasioissa ja eräiksi siihen liittyviksi laeiksi",
-    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2018/226",
+      "Hallituksen esitys eduskunnalle laiksi oikeudenkäynnistä hallintoasioissa ja eräiksi siihen liittyviksi laeiksi",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2018/29",
     jurisdiction: "fi",
   },
   {

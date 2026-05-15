@@ -37,6 +37,7 @@ import {
   HARD_MAX_PAGES,
   MAX_PDF_BYTES,
   PAGES_PER_SEGMENT,
+  planAndStream,
   segmentBytesToBase64,
   splitPdfBytes,
 } from "../pdf_splitter.ts";
@@ -176,18 +177,34 @@ Deno.test("HEF-S03 — combined catalogue is 33 docs (30 original + 3 priority)"
   assertEquals(ALL_SEEDS.length, 33);
 });
 
-Deno.test("HEF-S03b — 3 priority FI HE seeds added (HE 226/2018, HE 72/2002, HE 1/2016)", () => {
+Deno.test("HEF-S03b — 3 priority FI HE seeds added (HE 29/2018, HE 72/2002, HE 1/2016)", () => {
+  // Fix #89 round 3 (2026-05-15): HE 226/2018 vp was the WRONG bill — that
+  // Finlex URL resolves to a "turvallisuusverkosta" (security network)
+  // amendment, not the OHO 808/2019 procedure law. The correct OHO travaux
+  // is HE 29/2018 vp. See seed.ts header comment for verification chain.
   assertEquals(FI_HE_PRIORITY_SEEDS.length, 3);
   const docNumbers = new Set(FI_HE_PRIORITY_SEEDS.map((s) => s.doc_number));
-  assert(docNumbers.has("HE 226/2018 vp"), "missing HE 226/2018 vp (OHO)");
+  assert(docNumbers.has("HE 29/2018 vp"), "missing HE 29/2018 vp (OHO)");
   assert(docNumbers.has("HE 72/2002 vp"), "missing HE 72/2002 vp (Hallintolaki)");
   assert(docNumbers.has("HE 1/2016 vp"), "missing HE 1/2016 vp (UlkL)");
+  // Regression guard: the wrong bill must NEVER be in the seed list again.
+  assertFalse(
+    docNumbers.has("HE 226/2018 vp"),
+    "HE 226/2018 vp is the security-network bill, not OHO — must not appear",
+  );
   // All three target Finlex (CC-BY licensed).
   for (const s of FI_HE_PRIORITY_SEEDS) {
     assert(s.url.includes("finlex.fi"), `priority seed not on Finlex: ${s.url}`);
     assertEquals(s.jurisdiction, "fi");
     assertEquals(s.doc_kind, "HE");
   }
+  // OHO entry must point at the correct Finlex page.
+  const ohoSeed = FI_HE_PRIORITY_SEEDS.find((s) => s.related_act_slug === "fi-oho");
+  assert(ohoSeed, "fi-oho priority seed missing");
+  assert(
+    ohoSeed!.url.endsWith("/hallituksen-esitykset/2018/29"),
+    `fi-oho seed url should be /hallituksen-esitykset/2018/29; got ${ohoSeed!.url}`,
+  );
 });
 
 Deno.test("HEF-S04 — all source_ids unique (PK constraint relies on this)", () => {
@@ -554,5 +571,56 @@ Deno.test("HEF-SPLIT08 — corrupt bytes throw a useful error", async () => {
   } catch (e) {
     const msg = String(e);
     assert(msg.includes("pdf-lib load failed") || msg.includes("load"), msg);
+  }
+});
+
+// =============================================================================
+// 9.5. pdf_splitter — streaming API (planAndStream) — Fix #89 round 3
+// =============================================================================
+Deno.test("HEF-STREAM01 — planAndStream single-segment PDF yields exactly 1", async () => {
+  const bytes = await buildBlankPdf(PAGES_PER_SEGMENT);
+  const { plan, iterator } = await planAndStream(bytes);
+  assertEquals(plan.segment_count, 1);
+  assertEquals(plan.total_pages, PAGES_PER_SEGMENT);
+  const segs = [];
+  for await (const s of iterator) segs.push(s);
+  assertEquals(segs.length, 1);
+  assertEquals(segs[0].start_page, 1);
+  assertEquals(segs[0].end_page, PAGES_PER_SEGMENT);
+  // Fast path passes the original bytes through unchanged.
+  assertEquals(segs[0].bytes, bytes);
+});
+
+Deno.test("HEF-STREAM02 — planAndStream multi-segment yields N PDFs lazily", async () => {
+  // 3-segment case mirrors HE 72/2002 vp (143 pages at 50-page cap).
+  const totalPages = PAGES_PER_SEGMENT * 2 + 5;
+  const bytes = await buildBlankPdf(totalPages);
+  const { plan, iterator } = await planAndStream(bytes);
+  assertEquals(plan.total_pages, totalPages);
+  assertEquals(plan.segment_count, 3);
+  let i = 0;
+  let totalPagesYielded = 0;
+  for await (const seg of iterator) {
+    i++;
+    const sub = await PDFDocument.load(seg.bytes, { ignoreEncryption: true });
+    const subPages = sub.getPageCount();
+    assertEquals(subPages, seg.end_page - seg.start_page + 1);
+    totalPagesYielded += subPages;
+    // Each yielded `seg` reference is the only handle to those bytes — the
+    // caller can let it fall out of scope.
+  }
+  assertEquals(i, 3);
+  assertEquals(totalPagesYielded, totalPages);
+});
+
+Deno.test("HEF-STREAM03 — planAndStream rejects HARD_MAX_PAGES overflow before iteration", async () => {
+  // Verify the guard fires at plan() time (early failure), not on first yield.
+  const bytes = await buildBlankPdf(HARD_MAX_PAGES + 1);
+  try {
+    await planAndStream(bytes);
+    throw new Error("expected throw");
+  } catch (e) {
+    const msg = String(e);
+    assert(msg.includes("HARD_MAX_PAGES") || msg.includes("too long"), msg);
   }
 });

@@ -15,6 +15,7 @@ import {
 import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 import {
   downloadAndSplit,
+  downloadAndStream,
   PAGES_PER_SEGMENT,
 } from "../pdf_splitter.ts";
 
@@ -40,14 +41,28 @@ Deno.test({
 });
 
 Deno.test({
-  name: "splitter-integration — HE 226/2018 vp segments match page count",
+  name: "splitter-integration — streaming HE 72/2002 vp yields ceil(pages/cap)",
   ignore: Deno.env.get("RUN_LIVE_PDF_TESTS") !== "1",
   fn: async () => {
-    const url =
-      "https://www.finlex.fi/api/media/government-proposal/696640/mainPdf/main.pdf";
-    const out = await downloadAndSplit(url, UA, 60_000);
-    // 81 pages — at 50-page cap that's 2 segments; at 90 it was 1.
-    assert(out.total_pages > 50 && out.total_pages < 100);
-    assertEquals(out.segments.length, Math.ceil(out.total_pages / PAGES_PER_SEGMENT));
+    // Fix #89 round 3 — verify the streaming path used by the hot path in
+    // index.ts. Each yielded segment is a valid sub-PDF and total count
+    // matches the plan.
+    const { plan, iterator } = await downloadAndStream(
+      HE_72_2002_PDF,
+      UA,
+      60_000,
+    );
+    assert(plan.total_pages > 100);
+    let count = 0;
+    let totalSubPages = 0;
+    for await (const seg of iterator) {
+      count++;
+      const sub = await PDFDocument.load(seg.bytes, { ignoreEncryption: true });
+      const subPages = sub.getPageCount();
+      assertEquals(subPages, seg.end_page - seg.start_page + 1);
+      totalSubPages += subPages;
+    }
+    assertEquals(count, plan.segment_count);
+    assertEquals(totalSubPages, plan.total_pages);
   },
 });

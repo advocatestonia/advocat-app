@@ -55,7 +55,7 @@ import {
 } from "./extractor_prompt.ts";
 import { fetchSource } from "./fetch_source.ts";
 import {
-  downloadAndSplit,
+  downloadAndStream,
   PdfSegment,
   segmentBytesToBase64,
 } from "./pdf_splitter.ts";
@@ -486,11 +486,17 @@ async function callSonnetWithText(
  * content block (URL or base64 path). The previous URL-passthrough
  * implementation failed on 24/30 seed jobs because most FI HEs are >100p.
  *
- * New flow:
+ * Round 3 fix (Fix #89): the per-segment buffers used to be all materialised
+ * upfront (downloadAndSplit returned PdfSegment[]); on HE 72/2002 (143p, 3
+ * segments) that blew through Supabase Edge's ~256 MB worker memory cap
+ * (WORKER_RESOURCE_LIMIT 546). We now consume segments from an async
+ * generator one at a time; each iteration's sub-PDF bytes + base64 string
+ * fall out of scope before the next segment is built.
+ *
+ * Flow:
  *   1. Download the PDF bytes once (≤50 MB guard in pdf_splitter).
- *   2. pdf-lib splits into 90-page segments.
- *   3. Send each segment to Sonnet as a base64 `document` block.
- *   4. Concatenate the per-segment JSON arrays.
+ *   2. pdf-lib parses once → AsyncGenerator yields sub-PDFs lazily.
+ *   3. For each yielded segment: base64 → Sonnet → parse → discard.
  *
  * Cost: 1 Sonnet call per segment × ~$0.05–0.15 per call. A 200-page HE
  * costs ~$0.30. Worst case (400p cap) ≈ $0.60. Within the consilium's
@@ -500,41 +506,61 @@ async function extractChunksFromPdf(
   pdfUrl: string,
   seed: TravauxSeed,
 ): Promise<ExtractedTravauxChunk[]> {
-  const split = await downloadAndSplit(
+  const { plan, iterator } = await downloadAndStream(
     pdfUrl,
     PDF_USER_AGENT,
     PDF_FETCH_TIMEOUT_MS,
   );
   console.log(
-    `he-fetcher: ${seed.doc_number} → ${split.total_pages} pages → ` +
-      `${split.segments.length} segment(s)`,
+    `he-fetcher: ${seed.doc_number} → ${plan.total_pages} pages → ` +
+      `${plan.segment_count} segment(s) (streaming)`,
   );
   const all: ExtractedTravauxChunk[] = [];
-  for (let i = 0; i < split.segments.length; i++) {
-    const seg = split.segments[i];
-    const segChunks = await extractChunksFromSegment(seg, seed, i + 1);
+  let segmentIdx = 0;
+  for await (const seg of iterator) {
+    segmentIdx++;
+    // extractChunksFromSegment owns the lifetime of `b64` (the largest live
+    // string) — it returns parsed chunks ONLY, so the base64 and the
+    // segment bytes are unreferenced as soon as this call returns.
+    const segChunks = await extractChunksFromSegment(seg, seed, segmentIdx);
     all.push(...segChunks);
     // Hard cap across the whole doc — if Sonnet starts emitting hundreds of
     // chunks per segment we cut off early and let CHUNKS_PER_DOC_CAP downstream
     // do final slicing.
     if (all.length >= CHUNKS_PER_DOC_CAP * 2) {
       console.warn(
-        `he-fetcher: chunk flood — stopping after segment ${i + 1}/` +
-          `${split.segments.length} (${all.length} chunks)`,
+        `he-fetcher: chunk flood — stopping after segment ${segmentIdx}/` +
+          `${plan.segment_count} (${all.length} chunks)`,
       );
+      // Best-effort: drain the rest of the generator so any internal pdf-lib
+      // state can be released; we ignore the yielded bytes.
+      try {
+        for await (const _drain of iterator) { /* discard */ }
+      } catch (_) { /* ignore */ }
       break;
     }
+    // Loop-local `seg` is about to be rebound, allowing pdf-lib's sub-PDF
+    // and its saved Uint8Array to become unreachable. No explicit free
+    // available in JS — we rely on scope + GC.
   }
   return all;
 }
 
-/** Call Sonnet for ONE segment's base64-encoded sub-PDF. */
+/**
+ * Call Sonnet for ONE segment's base64-encoded sub-PDF.
+ *
+ * Memory note: we deliberately do NOT keep references to `segment.bytes` or
+ * the local `b64` beyond the Sonnet call. The function returns the parsed
+ * chunks (small JSON objects) only; the ~13 MB base64 string is released
+ * when this function returns.
+ */
 async function extractChunksFromSegment(
   segment: PdfSegment,
   seed: TravauxSeed,
   segmentIdx: number,
 ): Promise<ExtractedTravauxChunk[]> {
-  const b64 = segmentBytesToBase64(segment.bytes);
+  // Build the segment header BEFORE base64 so we don't hold two big strings
+  // at once when we construct the JSON body.
   const segHeader = [
     buildDocHeader(seed),
     "",
@@ -542,39 +568,54 @@ async function extractChunksFromSegment(
     "Emit chunks only for §§ discussed in THIS segment. Other segments cover",
     "the rest of the document.",
   ].join("\n");
-  const raw = await callAnthropic({
-    model: HE_FETCHER_MODEL,
-    max_tokens: HE_FETCHER_MAX_TOKENS,
-    system: HE_FETCHER_SYSTEM_PROMPT,
-    messages: [{
-      role: "user",
-      content: [
-        {
-          type: "document",
-          source: {
-            type: "base64",
-            media_type: "application/pdf",
-            data: b64,
+
+  const segPages = segment.end_page - segment.start_page + 1;
+  const segBytes = segment.bytes.byteLength;
+
+  // Encode → call → forget. `b64` is the largest live string at this point
+  // (~13 MB for a 10 MB sub-PDF) and goes out of scope when we return.
+  let b64: string | null = segmentBytesToBase64(segment.bytes);
+  let raw: string | null = null;
+  try {
+    raw = await callAnthropic({
+      model: HE_FETCHER_MODEL,
+      max_tokens: HE_FETCHER_MAX_TOKENS,
+      system: HE_FETCHER_SYSTEM_PROMPT,
+      messages: [{
+        role: "user",
+        content: [
+          {
+            type: "document",
+            source: {
+              type: "base64",
+              media_type: "application/pdf",
+              data: b64,
+            },
           },
-        },
-        { type: "text", text: segHeader },
-      ],
-    }],
-  });
+          { type: "text", text: segHeader },
+        ],
+      }],
+    });
+  } finally {
+    // Drop the large reference even before the function returns — Anthropic
+    // SDK internally retains the request body string until the response
+    // resolves, but our local `b64` no longer needs to keep the parts array
+    // alive once the fetch body has been serialised+sent.
+    b64 = null;
+  }
+
   if (!raw) {
     console.warn(
       `he-fetcher: ${seed.doc_number} segment ${segmentIdx} returned null`,
     );
     return [];
   }
-  // Diagnostic logging for "0 chunks" investigation (Fix #89 round 2).
-  // Helps distinguish: Sonnet refused vs Sonnet replied but parser rejected.
+  // Diagnostic logging for "0 chunks" investigation (Fix #89 round 2/3).
   const parsed = parseTravauxOutput(raw);
-  const segPages = segment.end_page - segment.start_page + 1;
   console.log(
     `he-fetcher: ${seed.doc_number} seg ${segmentIdx} ` +
       `pages=${segPages} (${segment.start_page}-${segment.end_page}) ` +
-      `bytes=${segment.bytes.byteLength} ` +
+      `bytes=${segBytes} ` +
       `sonnet_text_len=${raw.length} ` +
       `parsed_chunks=${parsed.length} ` +
       `${parsed.length === 0 ? `head=${raw.slice(0, 200).replace(/\s+/g, " ")}` : ""}`,
