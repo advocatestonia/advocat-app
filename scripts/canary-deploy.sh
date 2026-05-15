@@ -133,7 +133,12 @@ log "Checking for changed Edge Functions"
 PROJECT_REF="${SUPABASE_PROJECT_REF:-okgnkucgwsytsondrjye}"
 LAST_PROD=$(git rev-parse github/gh-pages 2>/dev/null || echo "")
 CHANGED_FNS=()
-if [[ -n "$LAST_PROD" ]]; then
+if [[ -z "$LAST_PROD" ]]; then
+  warn "No merge base with github/gh-pages — deploying ALL edge functions (safe over-deploy)"
+  while IFS= read -r fn; do
+    [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
+  done < <(ls supabase/functions/ | grep -v '^_' | sort -u)
+else
   CHANGED_FILES=$(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null || true)
   # If any _shared module changed, redeploy all functions that import it.
   # _shared changes are invisible to the per-function diff but affect all dependents.
