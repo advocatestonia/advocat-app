@@ -24,6 +24,8 @@ import '../../cases/providers/cases_provider.dart';
 import '../../cases/widgets/case_card.dart';
 import '../../case_memory/widgets/deadline_radar_widget.dart';
 import '../../deadlines/providers/deadlines_provider.dart';
+import '../../onboarding/data/sample_case_messages.dart';
+import '../../onboarding/widgets/welcome_modal.dart';
 
 // ---------------------------------------------------------------------------
 // Home Dashboard
@@ -240,107 +242,50 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     } catch (_) {}
   }
 
+  /// SharedPreferences key for the v1 welcome modal seen flag (backlog #36).
+  /// Independent from the legacy `onboarding_seen` key so QA can reset just
+  /// the new modal without disturbing existing users.
+  static const String _welcomeModalSeenKey = 'advocat_onboarding_v1_seen';
+
   Future<void> _checkFirstTimeOnboarding() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final seen = prefs.getBool('onboarding_seen') ?? false;
-      if (!seen && mounted) {
-        // Small delay so the screen renders first
-        await Future.delayed(const Duration(milliseconds: 600));
-        if (mounted) {
-          _showOnboardingSheet();
-          await prefs.setBool('onboarding_seen', true);
-        }
+      final seen = prefs.getBool(_welcomeModalSeenKey) ?? false;
+      if (seen) return;
+
+      // Demo users are exploring — don't seed sample-case noise.
+      final isDemo = ref.read(isDemoModeProvider);
+      if (isDemo) {
+        unawaited(prefs.setBool(_welcomeModalSeenKey, true));
+        return;
+      }
+
+      // Settle a frame so the screen paints under the modal.
+      await Future.delayed(const Duration(milliseconds: 600));
+      if (!mounted) return;
+
+      final locale = Localizations.localeOf(context).languageCode;
+      final action = await showWelcomeModal(context, locale: locale);
+      // Mark seen regardless of choice — the user has had their one shot.
+      unawaited(prefs.setBool(_welcomeModalSeenKey, true));
+      if (!mounted) return;
+
+      switch (action) {
+        case WelcomeAction.sampleCase:
+          unawaited(context.push('/chat/${SampleCase.id}'));
+          break;
+        case WelcomeAction.uploadContract:
+          unawaited(context.push(AppRoutes.scan));
+          break;
+        case WelcomeAction.askQuestion:
+          unawaited(context.push('/chat/general'));
+          break;
+        case WelcomeAction.skip:
+          break;
       }
     } catch (_) {
       // SharedPreferences failure — skip onboarding silently
     }
-  }
-
-  void _showOnboardingSheet() {
-    final l = AppLocalizations.of(context)!;
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.surface,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (ctx) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.border,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              const Text(
-                'How it works',
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 22,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              _OnboardingStep(
-                number: '1',
-                icon: Icons.chat_bubble_outline_rounded,
-                color: AppColors.accent,
-                title: l.tutorialStep1Title,
-                description: l.tutorialStep1Desc,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              _OnboardingStep(
-                number: '2',
-                icon: Icons.document_scanner_outlined,
-                color: AppColors.info,
-                title: l.tutorialStep3Title,
-                description: l.tutorialStep3Desc,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              _OnboardingStep(
-                number: '3',
-                icon: Icons.check_circle_outline_rounded,
-                color: AppColors.success,
-                title: l.tutorialStep4Title,
-                description: l.tutorialStep4Desc,
-              ),
-              const SizedBox(height: AppSpacing.lg),
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(ctx),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.accent,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  child: Text(l.tutorialStep4Title),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -1337,98 +1282,6 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
           },
         ),
       ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Onboarding Step (for first-time bottom sheet)
-// ---------------------------------------------------------------------------
-
-class _OnboardingStep extends StatelessWidget {
-  const _OnboardingStep({
-    required this.number,
-    required this.icon,
-    required this.color,
-    required this.title,
-    required this.description,
-  });
-
-  final String number;
-  final IconData icon;
-  final Color color;
-  final String title;
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Step number circle
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Icon(icon, color: color, size: 24),
-              Positioned(
-                top: 2,
-                right: 2,
-                child: Container(
-                  width: 18,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: color,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: Text(
-                      number,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 2),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                description,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondary,
-                  height: 1.3,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

@@ -44,7 +44,9 @@ import '../widgets/reasoning_trail.dart';
 import '../widgets/share_result_button.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
+import '../widgets/example_prompt_cards.dart';
 import '../widgets/welcome_chips.dart';
+import '../../onboarding/data/sample_case_messages.dart';
 import '../../../services/share_result_service.dart' show ShareSourceType, ShareResultPayload;
 import '../quick_profile/quick_profile_gate.dart';
 import '../quick_profile/quick_profile_intake.dart';
@@ -255,10 +257,15 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void initState() {
     super.initState();
     _loadMessages();
-    _initVoice();
-    _loadFreeMessageCount();
-    _loadCase();
-    _knowledgeService.buildClientContext(caseId: widget.caseId);
+    // Sample-case mode (backlog #36) skips every network side-effect:
+    // no voice priming, no quota lookup, no case fetch, no context build.
+    // The transcript is canned and the input is replaced with a CTA.
+    if (widget.caseId != SampleCase.id) {
+      _initVoice();
+      _loadFreeMessageCount();
+      _loadCase();
+      _knowledgeService.buildClientContext(caseId: widget.caseId);
+    }
   }
 
   Future<void> _loadFreeMessageCount() async {
@@ -380,7 +387,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   void dispose() {
-    _knowledgeService.saveConversationSummary(caseId: widget.caseId);
+    if (widget.caseId != SampleCase.id) {
+      _knowledgeService.saveConversationSummary(caseId: widget.caseId);
+    }
     _voiceSilenceTimer?.cancel();
     _messageController.dispose();
     _scrollController.dispose();
@@ -590,7 +599,45 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   // -- Data loading --
 
+  /// Backlog #36 (Layer 3): sample-case mode renders a canned transcript
+  /// without touching Supabase or Anthropic. Triggered when the welcome
+  /// modal routes the user to `/chat/sample`.
+  bool get _isSampleCase => widget.caseId == SampleCase.id;
+
   Future<void> _loadMessages() async {
+    // Sample case short-circuit: seed canned messages + skip every network
+    // hop (chat history, AI seed, deadlines, knowledge context). The
+    // transcript is read-only — the input bar is replaced with a CTA.
+    if (_isSampleCase) {
+      // Use the in-app override locale (driven by localeProvider) so the
+      // sample matches the language the user just picked. mounted is true
+      // here because _loadMessages is invoked from initState and we have
+      // not yet hit any `await`.
+      final locale = Localizations.maybeLocaleOf(context)?.languageCode ??
+          WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+      final src = SampleCase.messages(locale);
+      final now = DateTime.now();
+      final canned = <ChatMessage>[];
+      for (var i = 0; i < src.length; i++) {
+        canned.add(ChatMessage(
+          id: 'sample_$i',
+          role: src[i].role == 'user'
+              ? MessageRole.user
+              : MessageRole.assistant,
+          content: src[i].content,
+          timestamp: now.subtract(Duration(minutes: (src.length - i) * 2)),
+        ));
+      }
+      if (!mounted) return;
+      setState(() {
+        _messages = canned;
+        _isLoading = false;
+        _chatPhase = _ChatPhase.afterAnalysis;
+      });
+      _scrollToBottom(animated: false);
+      return;
+    }
+
     try {
       final supabase = ref.read(supabaseServiceProvider);
       final rawMessages = await supabase.getChatMessages(widget.caseId);
@@ -702,6 +749,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     setState(() {
       _showWelcomeChips = false;
     });
+  }
+
+  /// Backlog #36 Layer 4: user tapped one of the example prompt cards.
+  /// Inserts the prompt into the input and focuses — unlike the category
+  /// chips above, we deliberately do NOT auto-send: the user is supposed
+  /// to be able to edit the prompt first. Cards stay visible until the
+  /// user actually hits send (_showWelcomeChips flips to false in
+  /// _sendMessage), so accidental taps don't lose the example.
+  void _onExamplePromptSelected(String prompt) {
+    _messageController.text = prompt;
+    _messageController.selection = TextSelection.fromPosition(
+      TextPosition(offset: prompt.length),
+    );
+    _focusNode.requestFocus();
   }
 
   // -- Quick Profile intake handlers (2026-05-05, redesigned 2026-05-08) --
@@ -2003,16 +2064,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       body: Column(
         children: [
           // Status bar with free message counter
-          _buildStatusBar(),
+          if (!_isSampleCase) _buildStatusBar(),
+
+          // Backlog #36 Layer 3 — sample case banner
+          if (_isSampleCase) _buildSampleCaseBanner(),
 
           // Upgrade banner (after 3+ user messages, dismissible)
-          if (!_upgradeBannerDismissed &&
+          if (!_isSampleCase &&
+              !_upgradeBannerDismissed &&
               _messages.where((m) => m.role == MessageRole.user).length >= 3 &&
               !ref.read(aiServiceProvider).isProUser)
             _buildUpgradeBanner(),
 
           // Disclaimer banner
-          _buildDisclaimerBanner(),
+          if (!_isSampleCase) _buildDisclaimerBanner(),
 
           // Messages with subtle gradient background
           Expanded(
@@ -2032,33 +2097,40 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
 
           // Quick action chips
-          if (!_isSending) _buildQuickActions(),
+          if (!_isSampleCase && !_isSending) _buildQuickActions(),
 
           // Pkg 9 — Critical-deadline banner for the active case.
           // Renders nothing when no active case OR no deadline ≤ 3d OR
           // the user already dismissed the current urgency band.
-          const DeadlineBanner(),
+          if (!_isSampleCase) const DeadlineBanner(),
 
           // Pkg 1.D — Case Memory composer chip. Shows the active case
           // badge (or a "Link to case" chip) above the input bar so the
           // user always knows whether the next message will be folded
           // into a case file by claude-proxy (Pkg 1.B).
-          const ActiveCaseChip(),
+          if (!_isSampleCase) const ActiveCaseChip(),
 
           // Quota-exhausted inline banner — sits immediately above the
           // input bar when the free limit is hit. Complements the upgrade
           // CTA inside the input bar; visible even if the user has not
           // dismissed a prior snackbar.
-          if (_isQuotaExhausted && !ref.read(aiServiceProvider).isProUser)
+          if (!_isSampleCase &&
+              _isQuotaExhausted &&
+              !ref.read(aiServiceProvider).isProUser)
             _buildQuotaExhaustedBanner(),
 
           // Pkg Contract Review (2026-05-13) — pill near upload button.
           // Read-only display of remaining monthly reviews. Tapping the
           // exhausted-state CTA opens the upgrade dialog.
-          _buildContractReviewQuotaPill(),
+          if (!_isSampleCase) _buildContractReviewQuotaPill(),
 
-          // Input bar with voice button
-          _buildInputBar(),
+          // Input bar — replaced with a "Start your own conversation" CTA
+          // for the sample case (Layer 3) so the user moves into a real
+          // chat instead of typing into a fake one.
+          if (_isSampleCase)
+            _buildSampleCaseCta()
+          else
+            _buildInputBar(),
         ],
       ),
     );
@@ -2636,6 +2708,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     // BUG 3: add one trailing slot for the welcome chips when active.
     final chipsSlot = _showWelcomeChips ? 1 : 0;
+    // Backlog #36 Layer 4 — example prompt cards. Shown alongside the
+    // welcome chips on an empty conversation (no user message sent yet)
+    // and never on the sample case (input is disabled there).
+    final examplePromptsSlot =
+        (_showWelcomeChips && !_isSampleCase) ? 1 : 0;
     // Quick Profile intake slot (2026-05-05): rendered just after the
     // welcome chips slot when both are simultaneously active. In
     // practice they don't usually co-render — the intake is a global
@@ -2665,6 +2742,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         itemCount: _messages.length +
             contractChipSlot +
             chipsSlot +
+            examplePromptsSlot +
             intakeSlot +
             typingSlot +
             trailSlot,
@@ -2689,7 +2767,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             );
           }
           final messagesAndChips = messagesAndContract + chipsSlot;
-          if (_showQuickProfile && index == messagesAndChips) {
+          if (examplePromptsSlot == 1 && index == messagesAndChips) {
+            final locale = Localizations.localeOf(context).languageCode;
+            return ExamplePromptCards(
+              key: const Key('example_prompt_cards'),
+              locale: locale,
+              onPromptSelected: _onExamplePromptSelected,
+            );
+          }
+          final messagesChipsExamples =
+              messagesAndChips + examplePromptsSlot;
+          if (_showQuickProfile && index == messagesChipsExamples) {
             final locale = Localizations.localeOf(context).languageCode;
             return QuickProfileIntake(
               locale: locale,
@@ -2697,7 +2785,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               onSkip: _onQuickProfileSkip,
             );
           }
-          final messagesChipsIntake = messagesAndChips + intakeSlot;
+          final messagesChipsIntake = messagesChipsExamples + intakeSlot;
           if (index == messagesChipsIntake && _isTyping) {
             return _buildTypingIndicator();
           }
@@ -4003,6 +4091,82 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         '/subscription?plan=premium&billing=monthly',
     };
     if (mounted) unawaited(context.push(route));
+  }
+
+  // -------------------------------------------------------------------------
+  // Backlog #36 Layer 3 — sample-case banner + CTA
+  // -------------------------------------------------------------------------
+
+  Widget _buildSampleCaseBanner() {
+    final locale = Localizations.localeOf(context).languageCode;
+    return Container(
+      key: const Key('sample_case_banner'),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: 10,
+      ),
+      color: AppColors.accent.withValues(alpha: 0.10),
+      child: Row(
+        children: [
+          const Icon(Icons.auto_awesome_rounded,
+              size: 18, color: AppColors.accent),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              SampleCase.banner(locale),
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textPrimary,
+                height: 1.35,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSampleCaseCta() {
+    final locale = Localizations.localeOf(context).languageCode;
+    return Container(
+      key: const Key('sample_case_cta'),
+      padding: EdgeInsets.only(
+        left: AppSpacing.md,
+        right: AppSpacing.md,
+        top: AppSpacing.sm,
+        bottom: MediaQuery.of(context).padding.bottom + AppSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(
+          top: BorderSide(color: AppColors.border.withValues(alpha: 0.3)),
+        ),
+      ),
+      child: SizedBox(
+        width: double.infinity,
+        height: 52,
+        child: ElevatedButton.icon(
+          onPressed: () {
+            context.go('/chat/general');
+          },
+          icon: const Icon(Icons.send_rounded, size: 18),
+          label: Text(SampleCase.startRealCta(locale)),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.accent,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppRadius.md),
+            ),
+            textStyle: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildInputBar() {
