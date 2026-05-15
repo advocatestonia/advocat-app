@@ -9,8 +9,12 @@
 // actual paragraph text prevents this whole class of failure.
 //
 // Architecture:
-//   v1 (this file) — pgvector RAG against `law_chunks` (aka legal_rag_corpus).
-//                    Top-5 cosine matches, threshold ≥0.75, 4KB total cap.
+//   v1 (this file) — pgvector RAG against `law_chunks_v2` via the
+//                    `law_search_v2` RPC. Top-5 cosine matches, threshold
+//                    ≥0.45, 4KB total cap. (2026-05-13: switched from the
+//                    v1 `law_chunks`/`law_search` pair to v2 — v1 was
+//                    EE-only with stale embeddings, v2 covers FI + EE + EU
+//                    with current text.)
 //   v2 (TODO stubs) — live API fallback when corpus is stale (>60 days):
 //                       FI → Finlex Open Data API
 //                       EE → Riigi Teataja JSON API
@@ -27,9 +31,14 @@
  *  default 8 to keep the tool_result payload under 4KB. */
 export const LEGAL_LOOKUP_MATCH_COUNT = 5;
 
-/** Cosine-similarity floor. RAG default is 0.60; we want precision over
- *  recall here since the model latches onto whatever we hand back. */
-export const LEGAL_LOOKUP_SIMILARITY_THRESHOLD = 0.75;
+/** Cosine-similarity floor. Aligned with `law_search_v2`'s built-in default of
+ *  0.45 (2026-05-13 launch P0 fix). Earlier 0.75 was tuned for the legacy v1
+ *  corpus where embeddings were tighter; against the 15K-row v2 corpus
+ *  (FI + EE + EU) the higher floor pushed recall@5 to 0 on production
+ *  queries like "OHO §114 menetetyn määräajan palauttaminen". 0.45 brings
+ *  recall back without contaminating with off-topic chunks (the v2 RPC
+ *  already does its own filter at this exact threshold). */
+export const LEGAL_LOOKUP_SIMILARITY_THRESHOLD = 0.45;
 
 /** Days after corpus_refreshed_at before flagging stale. Tighter than
  *  citation_grounder's 90-day threshold — this drives a live-API fallback,

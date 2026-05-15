@@ -8,9 +8,11 @@
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 import {
   ASSISTANT_TOOLS,
+  adaptV2RowToLegacy,
   executeToolCalls,
   extractToolUseBlocks,
   isToolUseBlock,
+  paragraphFromSectionLabel,
 } from "../tool_handlers.ts";
 
 // =============================================================================
@@ -378,4 +380,93 @@ Deno.test("executeToolCalls: executes multiple tool blocks and returns all resul
     assertEquals(results[0].is_error, undefined);
     assertEquals(results[1].is_error, undefined);
   });
+});
+
+// =============================================================================
+// law_search_v2 row adapter — 2026-05-13 launch P0 fix
+// =============================================================================
+//
+// The legal_lookup tool was reading the legacy `law_search` RPC (EE-only,
+// 6584 stale rows). We swapped it to `law_search_v2` (15 295 rows: FI/EE/EU)
+// and added an adapter that maps the v2 row shape back to the legacy
+// LawSearchRpcRow consumed by _shared/legal_lookup.ts. These tests pin the
+// adapter so future migrations cannot silently break the conversion.
+
+Deno.test("paragraphFromSectionLabel: FI 'HOL 1:114 §' → '114'", () => {
+  assertEquals(paragraphFromSectionLabel("HOL 1:114 §"), "114");
+});
+
+Deno.test("paragraphFromSectionLabel: FI 'PL 10:114 §' (chapter:section) → '114'", () => {
+  assertEquals(paragraphFromSectionLabel("PL 10:114 §"), "114");
+});
+
+Deno.test("paragraphFromSectionLabel: EE 'KarS § 114' → '114'", () => {
+  assertEquals(paragraphFromSectionLabel("KarS § 114"), "114");
+});
+
+Deno.test("paragraphFromSectionLabel: EE superscript suffix 'AÕS § 114¹' → '114¹'", () => {
+  assertEquals(paragraphFromSectionLabel("AÕS § 114¹"), "114¹");
+});
+
+Deno.test("paragraphFromSectionLabel: EU EN 'Article 39' → '39'", () => {
+  assertEquals(paragraphFromSectionLabel("Article 39"), "39");
+});
+
+Deno.test("paragraphFromSectionLabel: EU ET 'Artikkel 28' → '28'", () => {
+  assertEquals(paragraphFromSectionLabel("Artikkel 28"), "28");
+});
+
+Deno.test("paragraphFromSectionLabel: EU FI '39 artikla' → '39'", () => {
+  assertEquals(paragraphFromSectionLabel("39 artikla"), "39");
+});
+
+Deno.test("paragraphFromSectionLabel: empty string → ''", () => {
+  assertEquals(paragraphFromSectionLabel(""), "");
+});
+
+Deno.test("adaptV2RowToLegacy: maps v2 → legacy shape with all fields", () => {
+  const v2Row = {
+    id: "11111111-2222-3333-4444-555555555555",
+    act_slug: "fi-hol",
+    section_label: "HOL 13:114 §",
+    text: "Menetetyn määräajan palauttaminen — sample body.",
+    similarity: 0.82,
+    source_url: "https://www.finlex.fi/fi/laki/ajantasa/2003/20030434",
+    license: "CC-BY-NC-4.0",
+    display_policy: "snippet_only",
+  };
+  const legacy = adaptV2RowToLegacy(v2Row);
+  assertEquals(legacy.id, "11111111-2222-3333-4444-555555555555");
+  assertEquals(legacy.act_slug, "fi-hol");
+  assertEquals(legacy.paragraph, "114");
+  assertEquals(legacy.title, "HOL 13:114 §");
+  assertEquals(legacy.body, "Menetetyn määräajan palauttaminen — sample body.");
+  assertEquals(legacy.source_url, "https://www.finlex.fi/fi/laki/ajantasa/2003/20030434");
+  assertEquals(legacy.similarity, 0.82);
+  assertEquals(legacy.license, "CC-BY-NC-4.0");
+  assertEquals(legacy.display_policy, "snippet_only");
+  // jurisdiction / act_name are null in v2 — the verifier and formatter
+  // tolerate this; they only need (act_slug, paragraph) as the anchor key.
+  assertEquals(legacy.jurisdiction, null);
+  assertEquals(legacy.act_name, null);
+});
+
+Deno.test("adaptV2RowToLegacy: missing optional fields default safely", () => {
+  // Simulate a row with nullable columns absent (license/display_policy
+  // pre-dating the 2026-05-15 license migration on the v2 RPC return).
+  const v2Row = {
+    id: "abc",
+    act_slug: "ee-kars",
+    section_label: "KarS § 114",
+    text: "body",
+    similarity: 0.5,
+    source_url: null,
+    license: null,
+    display_policy: null,
+  };
+  const legacy = adaptV2RowToLegacy(v2Row);
+  assertEquals(legacy.paragraph, "114");
+  assertEquals(legacy.source_url, null);
+  assertEquals(legacy.license, null);
+  assertEquals(legacy.display_policy, null);
 });

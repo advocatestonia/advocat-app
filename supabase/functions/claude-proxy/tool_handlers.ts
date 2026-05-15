@@ -738,17 +738,104 @@ function buildHtmlDocument(args: {
 }
 
 // =============================================================================
+// legal_lookup handler — law_search_v2 row adapter
+// =============================================================================
+
+/** Shape of one row returned by `law_search_v2`. Differs from the legacy
+ *  `LawSearchRpcRow` in two material ways:
+ *    - `section_label` instead of `paragraph`/`title` (combined human label)
+ *    - `text` instead of `body`
+ *  Plus: `id` is uuid (string at JSON layer), no `jurisdiction` / `act_name`
+ *  columns (we have `act_slug` only). */
+interface LawSearchV2Row {
+  id: string;
+  act_slug: string;
+  section_label: string;
+  text: string;
+  similarity: number;
+  source_url: string | null;
+  license: string | null;
+  display_policy: string | null;
+}
+
+/**
+ * Extract the bare paragraph/article identifier from a v2 `section_label`.
+ *
+ * Examples (covering FI / EE / EU / multi-lang):
+ *   "HOL 1:114 §"     → "114"      (FI: ACT CHAPTER:SECTION §)
+ *   "KarS § 114"      → "114"      (EE: ACT § SECTION)
+ *   "KarS § 114¹"     → "114¹"     (EE: with superscript suffix)
+ *   "Article 39"      → "39"       (EU EN)
+ *   "Artikkel 28"     → "28"       (EU ET)
+ *   "39 artikla"      → "39"       (EU FI)
+ *   "TLS § 88"        → "88"
+ *
+ * Returns the original string lowercased if nothing matches — downstream
+ * formatStatute / extractSectionFromQuery already tolerate odd inputs.
+ */
+export function paragraphFromSectionLabel(label: string): string {
+  if (!label) return "";
+  const trimmed = label.trim();
+
+  // FI pattern: "ACT CHAPTER:SECTION §" or "ACT CHAPTER:SECTION§"
+  const fi = trimmed.match(/\d+:(\d+[a-zA-Z¹²³⁰⁴⁵⁶⁷⁸⁹]?)\s*§?\s*$/);
+  if (fi) return fi[1];
+
+  // EE pattern: "ACT § SECTION" — section may carry sup/sub like 114¹
+  const ee = trimmed.match(/§\s*(\d+[a-zA-Z¹²³⁰⁴⁵⁶⁷⁸⁹]?)\s*$/);
+  if (ee) return ee[1];
+
+  // EU EN: "Article 39" / "Article 39.1"
+  const enArt = trimmed.match(/^Article\s+(\d+(?:[.\-]\d+)?)/i);
+  if (enArt) return enArt[1];
+
+  // EU ET: "Artikkel 28"
+  const etArt = trimmed.match(/^Artikkel\s+(\d+(?:[.\-]\d+)?)/i);
+  if (etArt) return etArt[1];
+
+  // EU FI: "39 artikla"
+  const fiArt = trimmed.match(/^(\d+(?:[.\-]\d+)?)\s+artikla/i);
+  if (fiArt) return fiArt[1];
+
+  // Last-resort: first digit run after a § / colon / space, else the label.
+  const digits = trimmed.match(/(\d+[a-zA-Z¹²³⁰⁴⁵⁶⁷⁸⁹]?)/);
+  return digits ? digits[1] : trimmed;
+}
+
+/** Adapt a `law_search_v2` row to the legacy `LawSearchRpcRow` shape so the
+ *  `legalLookup()` pipeline stays untouched. */
+export function adaptV2RowToLegacy(row: LawSearchV2Row): LawSearchRpcRow {
+  return {
+    id: row.id,
+    act_slug: row.act_slug ?? "",
+    act_name: null,
+    paragraph: paragraphFromSectionLabel(row.section_label ?? ""),
+    title: row.section_label ?? null,
+    body: row.text ?? "",
+    source_url: row.source_url ?? null,
+    jurisdiction: null,
+    similarity: typeof row.similarity === "number" ? row.similarity : 0,
+    license: row.license ?? null,
+    display_policy: row.display_policy ?? null,
+  };
+}
+
+// =============================================================================
 // legal_lookup handler
 // =============================================================================
 
 /**
- * Look up current statute text from the law_chunks corpus (Phase 2 Pkg 1).
- * Returns formatted text the model can quote/paraphrase.
+ * Look up current statute text from the law_chunks_v2 corpus (2026-05-13 P0
+ * fix — v1 `law_chunks`/`law_search` returned an EE-only stale 6584-row set;
+ * v2 covers 15 295 rows: 3355 FI + 7288 EE + 2692 EU).
  *
  * The handler is the dependency-injection seam for `legalLookup()`:
  *   - embed → law-search/embed.ts (OpenAI text-embedding-3-small)
- *   - lawSearch → supabase.rpc('law_search', ...) with jurisdiction filter
- *   - fetchFreshness → batched select on law_chunks(corpus_refreshed_at)
+ *   - lawSearch → supabase.rpc('law_search_v2', ...) + row adapter (v2 returns
+ *                 (id, act_slug, section_label, text, similarity, source_url,
+ *                  license, display_policy); we map this back to the
+ *                 LawSearchRpcRow shape the rest of the pipeline expects)
+ *   - fetchFreshness → batched select on law_chunks_v2(last_verified_at)
  *   - liveFallback → stubLiveFallback (v2 — currently always null)
  *
  * All failure modes degrade to `{ chunks: [] }` returning a "not found"
@@ -811,19 +898,62 @@ async function handleLegalLookup(
             timeoutMs: 5000,
           }),
         lawSearch: async (params): Promise<LawSearchRpcRow[] | null> => {
-          const { data, error } = await supabase.rpc("law_search", params);
+          // 2026-05-13 P0 fix: swap to law_search_v2 (15,295 rows: FI/EE/EU)
+          // away from the legacy law_search (EE-only, 6584 rows, stale).
+          // v2 takes a different positional shape AND returns a different
+          // column set — adapt both directions here so the legal_lookup
+          // pipeline upstream stays unchanged.
+          //
+          // v2 RPC contract:
+          //   IN:  query_embedding, jurisdiction_filter, act_slug_filter,
+          //        lang_filter, valid_at, match_threshold, match_count
+          //   OUT: id, act_slug, section_label, text, similarity,
+          //        source_url, license, display_policy
+          //
+          // v1 (legacy) row shape we adapt back to:
+          //   id, act_slug, act_name, paragraph, title, body, source_url,
+          //   jurisdiction, similarity
+          //
+          // jurisdiction_filter: legacy callers pass "FI"/"EE"/"EU"
+          // (uppercase, see JURISDICTION_TO_RPC in legal_lookup.ts). v2's
+          // `law_chunks_v2.jurisdiction` stores lowercase ("fi"/"ee"/"eu"),
+          // so we lowercase here. Same for `lang_filter`.
+          const v2Params = {
+            query_embedding: params.query_embedding,
+            jurisdiction_filter: params.query_jurisdiction
+              ? params.query_jurisdiction.toLowerCase()
+              : null,
+            act_slug_filter: null as string | null,
+            lang_filter: params.query_lang
+              ? params.query_lang.toLowerCase()
+              : null,
+            valid_at: null as string | null,
+            match_threshold: params.similarity_threshold,
+            match_count: params.match_count,
+          };
+          const { data, error } = await supabase.rpc(
+            "law_search_v2",
+            v2Params,
+          );
           if (error) {
-            console.warn(`legal_lookup tool: RPC error — ${error.message}`);
+            console.warn(
+              `legal_lookup tool: law_search_v2 RPC error — ${error.message}`,
+            );
             return null;
           }
-          return Array.isArray(data) ? data as LawSearchRpcRow[] : null;
+          if (!Array.isArray(data)) return null;
+          return (data as LawSearchV2Row[]).map(adaptV2RowToLegacy);
         },
         fetchFreshness: async (ids: string[]) => {
           const out = new Map<string, string | null>();
           if (ids.length === 0) return out;
+          // law_chunks_v2 has no `corpus_refreshed_at`; we use
+          // `last_verified_at` (preferred) and fall back to `ingested_at`.
+          // The legalLookup pipeline only cares about a "when was this
+          // chunk last known-current" timestamp for the stale_warning.
           const { data, error } = await supabase
-            .from("law_chunks")
-            .select("id, corpus_refreshed_at")
+            .from("law_chunks_v2")
+            .select("id, last_verified_at, ingested_at")
             .in("id", ids);
           if (error) {
             console.warn(
@@ -833,9 +963,10 @@ async function handleLegalLookup(
           }
           for (const row of (data ?? []) as Array<{
             id: string;
-            corpus_refreshed_at: string | null;
+            last_verified_at: string | null;
+            ingested_at: string | null;
           }>) {
-            out.set(row.id, row.corpus_refreshed_at ?? null);
+            out.set(row.id, row.last_verified_at ?? row.ingested_at ?? null);
           }
           return out;
         },

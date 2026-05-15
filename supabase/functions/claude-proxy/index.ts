@@ -1413,7 +1413,31 @@ interface FallbackContext {
 // counter table — credit exhaustion is supposed to be a brief window between
 // "balance hit zero" and "owner tops up", not a steady-state condition.
 
-/** Run the RAG-only fallback. Returns null if the OpenAI client / law_search
+/** Extract the bare paragraph id from a `law_search_v2.section_label`.
+ *  Mirrors `paragraphFromSectionLabel` in tool_handlers.ts — duplicated here
+ *  to keep the credit_fallback path free of cross-module imports beyond the
+ *  ones it already has. */
+function ragParagraphFromLabel(label: string): string {
+  if (!label) return "";
+  const trimmed = label.trim();
+  // FI: "HOL 1:114 §"
+  const fi = trimmed.match(/\d+:(\d+[a-zA-Z¹²³⁰⁴⁵⁶⁷⁸⁹]?)\s*§?\s*$/);
+  if (fi) return fi[1];
+  // EE: "KarS § 114" / "KarS § 114¹"
+  const ee = trimmed.match(/§\s*(\d+[a-zA-Z¹²³⁰⁴⁵⁶⁷⁸⁹]?)\s*$/);
+  if (ee) return ee[1];
+  // EU EN/ET/FI variants
+  const enArt = trimmed.match(/^Article\s+(\d+(?:[.\-]\d+)?)/i);
+  if (enArt) return enArt[1];
+  const etArt = trimmed.match(/^Artikkel\s+(\d+(?:[.\-]\d+)?)/i);
+  if (etArt) return etArt[1];
+  const fiArt = trimmed.match(/^(\d+(?:[.\-]\d+)?)\s+artikla/i);
+  if (fiArt) return fiArt[1];
+  const digits = trimmed.match(/(\d+[a-zA-Z¹²³⁰⁴⁵⁶⁷⁸⁹]?)/);
+  return digits ? digits[1] : trimmed;
+}
+
+/** Run the RAG-only fallback. Returns null if the OpenAI client / law_search_v2
  *  RPC are not configured (the caller then falls through to the legacy 400
  *  passthrough so we never silently swallow a real bug). */
 async function runCreditExhaustedFallback(
@@ -1446,14 +1470,53 @@ async function runCreditExhaustedFallback(
     {
       embed: buildEmbedFn(OPENAI_API_KEY),
       lawSearch: async (params) => {
-        const { data, error } = await supabase.rpc("law_search", params);
+        // 2026-05-13 P0 fix: route the credit-exhausted RAG fallback at the
+        // same v2 corpus as the legal_lookup tool. `law_search_v2` covers
+        // 15 295 rows (FI + EE + EU); v1 was EE-only with stale embeddings.
+        // We translate the legacy positional params and adapt the response
+        // back to `RagChunk` so buildRagOnlyResponse stays untouched.
+        const v2Params = {
+          query_embedding: params.query_embedding,
+          jurisdiction_filter: params.query_jurisdiction
+            ? params.query_jurisdiction.toLowerCase()
+            : null,
+          act_slug_filter: null as string | null,
+          lang_filter: params.query_lang
+            ? params.query_lang.toLowerCase()
+            : null,
+          valid_at: null as string | null,
+          match_threshold: params.similarity_threshold,
+          match_count: params.match_count,
+        };
+        const { data, error } = await supabase.rpc(
+          "law_search_v2",
+          v2Params,
+        );
         if (error) {
           console.warn(
-            `claude-proxy: fallback law_search RPC error — ${error.message}`,
+            `claude-proxy: fallback law_search_v2 RPC error — ${error.message}`,
           );
           return null;
         }
-        return Array.isArray(data) ? data : null;
+        if (!Array.isArray(data)) return null;
+        // Map v2 → RagChunk: section_label → paragraph (extract bare id),
+        // text → body. RagChunk's optional fields stay null.
+        return data.map((r: {
+          id: string;
+          act_slug: string;
+          section_label: string;
+          text: string;
+          similarity: number;
+          source_url: string | null;
+        }) => ({
+          act_slug: r.act_slug ?? "",
+          act_name: null,
+          paragraph: ragParagraphFromLabel(r.section_label ?? ""),
+          title: r.section_label ?? null,
+          body: r.text ?? "",
+          source_url: r.source_url ?? null,
+          similarity: typeof r.similarity === "number" ? r.similarity : 0,
+        }));
       },
       casesCiting: async (params) => {
         const { data, error } = await supabase.rpc("cases_citing", params);

@@ -510,9 +510,14 @@ Deno.test("LLK-T19 — formatLookupResultForModel includes stale warning + sourc
 
 // ─── LLK-T20 — stale threshold default value sanity check ───────────────────
 
-Deno.test("LLK-T20 — STALE threshold constants match spec (60 days, 0.75 cos)", () => {
+Deno.test("LLK-T20 — STALE threshold constants match spec (60 days, 0.45 cos)", () => {
   assertEquals(LEGAL_LOOKUP_STALE_THRESHOLD_DAYS, 60);
-  assertEquals(LEGAL_LOOKUP_SIMILARITY_THRESHOLD, 0.75);
+  // 2026-05-13 P0 fix: similarity threshold lowered 0.75 → 0.45 so the
+  // 15K-row `law_chunks_v2` corpus surfaces matches that the legacy
+  // (EE-only) v1 corpus would have stopped at. Matches `law_search_v2`'s
+  // built-in default; keeping the two in sync avoids a "tool says
+  // threshold=X, RPC ignores it" footgun.
+  assertEquals(LEGAL_LOOKUP_SIMILARITY_THRESHOLD, 0.45);
   assertEquals(LEGAL_LOOKUP_MAX_RESPONSE_BYTES, 4096);
   assertEquals(LEGAL_LOOKUP_MATCH_COUNT, 5);
 });
