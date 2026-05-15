@@ -31,7 +31,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
-const QA_SECRET = Deno.env.get("QA_TEMP_SECRET") ?? "";
+// QA harness shared secret. The header `X-QA-Secret` MUST match either
+// CORPUS_EMBEDDER_SECRET (the active prod secret name, used by the eval
+// runner) or the legacy QA_TEMP_SECRET fallback.
+const QA_SECRET = Deno.env.get("CORPUS_EMBEDDER_SECRET") ??
+  Deno.env.get("QA_TEMP_SECRET") ??
+  "";
 
 const OPENAI_EMBED_URL = "https://api.openai.com/v1/embeddings";
 const OPENAI_MODEL = "text-embedding-3-small";
@@ -105,6 +110,12 @@ serve(async (req) => {
     jurisdiction?: string;
     top_k?: number;
     threshold?: number;
+    /** Hybrid (BM25 + dense RRF) mode toggle. When true the standard
+     *  jurisdiction path routes to `law_search_hybrid_qa` instead of
+     *  `law_search_v2_qa`. Echr path is unchanged (it does its own
+     *  substring scoring against case_chunks). Default false to preserve
+     *  baseline-comparable behaviour. */
+    hybrid?: boolean;
   };
   try {
     body = await req.json();
@@ -130,6 +141,7 @@ serve(async (req) => {
     typeof body.threshold === "number" && body.threshold >= -1 && body.threshold <= 1
       ? body.threshold
       : -1.0;
+  const hybridMode = body.hybrid === true;
 
   const tStart = performance.now();
 
@@ -208,7 +220,7 @@ serve(async (req) => {
     );
   }
 
-  // ─── Standard path: embed + law_search_v2 RPC ────────────────────────
+  // ─── Standard path: embed + law_search_v2 (or hybrid) RPC ──────────────
   const embRes = await embed(query);
   if (!embRes) return err("Embedding failed", 502);
   const embed_ms = Math.round(performance.now() - tStart);
@@ -220,20 +232,30 @@ serve(async (req) => {
 
   // The IVFFlat index has `lists=100` and pgvector's default `probes=1`
   // which causes recall to collapse on queries whose embedding doesn't fall
-  // near a centroid. We bump probes to 25 via a custom GUC over PostgREST's
-  // pre-request hook. PostgREST 11+ supports `Prefer: ...` headers passing
-  // GUC values; in lieu of that we bake the SET into the RPC body via a
-  // wrapper. The simplest reliable approach: call a wrapper RPC that does
-  // `PERFORM set_config('ivfflat.probes','25', true)` then RETURN QUERY.
-  // For this QA harness we just call set_config via a separate RPC call.
-  const rpcResp = await fetch(`${SUPABASE_URL}/rest/v1/rpc/law_search_v2_qa`, {
-    method: "POST",
-    headers: {
-      "apikey": SUPABASE_SERVICE_ROLE_KEY,
-      "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  // near a centroid. The QA wrapper RPCs (`*_qa`) bump probes via
+  // `set_config('ivfflat.probes', ...)`. We pass 100 (full scan) so QA
+  // recall is upper-bounded by retrieval quality, not index sparsity.
+  //
+  // Hybrid mode (vabank A1 — 2026-05-15): `law_search_hybrid_qa` fuses
+  // cosine + BM25 (RRF k=60) over law_chunks_v2.chunk_tsv. Target:
+  // recall@3 50% → 70% on terminology-heavy FI/EE queries
+  // ("menetetyn määräajan palauttaminen", "asianomistaja").
+  const rpcUrl = hybridMode
+    ? `${SUPABASE_URL}/rest/v1/rpc/law_search_hybrid_qa`
+    : `${SUPABASE_URL}/rest/v1/rpc/law_search_v2_qa`;
+  const rpcBody = hybridMode
+    ? {
+      p_query_embedding: vectorLit,
+      p_query_text: query,
+      p_jurisdiction: jurisdiction,
+      p_lang: null,
+      p_act_slug: null,
+      p_valid_at: null,
+      p_match_threshold: threshold,
+      p_limit: topK,
+      p_probes: 100,
+    }
+    : {
       query_embedding: vectorLit,
       jurisdiction_filter: jurisdiction,
       act_slug_filter: null,
@@ -242,11 +264,20 @@ serve(async (req) => {
       match_threshold: threshold,
       match_count: topK,
       probes: 100,
-    }),
+    };
+  const rpcResp = await fetch(rpcUrl, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_SERVICE_ROLE_KEY,
+      "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(rpcBody),
   });
   if (!rpcResp.ok) {
     const detail = await rpcResp.text().catch(() => "");
-    return err(`law_search_v2 HTTP ${rpcResp.status}: ${detail.slice(0, 200)}`, 502);
+    const rpcName = hybridMode ? "law_search_hybrid_qa" : "law_search_v2_qa";
+    return err(`${rpcName} HTTP ${rpcResp.status}: ${detail.slice(0, 200)}`, 502);
   }
   const rawText = await rpcResp.text();
   // Replace stray NaN tokens with 0 before parsing (PostgREST emits raw NaN
@@ -256,16 +287,36 @@ serve(async (req) => {
   try {
     rows = JSON.parse(safeJson);
   } catch (e) {
-    return err(`law_search_v2 JSON parse failed: ${String(e)}`, 502);
+    const rpcName = hybridMode ? "law_search_hybrid_qa" : "law_search_v2_qa";
+    return err(`${rpcName} JSON parse failed: ${String(e)}`, 502);
   }
+
+  // Hybrid RPC adds bm25_rank/rrf_score/source_type columns; normalise to the
+  // same row shape the QA runner consumes (id, act_slug, section_label,
+  // text, similarity, source_url) so the eval contract is unchanged.
+  const normalised = Array.isArray(rows)
+    ? (rows as Array<Record<string, unknown>>).map((r) => ({
+      id: r.id,
+      act_slug: r.act_slug,
+      section_label: r.section_label,
+      text: r.text,
+      similarity: typeof r.similarity === "number" ? r.similarity : 0,
+      source_url: r.source_url ?? null,
+      // Hybrid-only diagnostic fields (omitted on baseline path):
+      bm25_rank: typeof r.bm25_rank === "number" ? r.bm25_rank : undefined,
+      rrf_score: typeof r.rrf_score === "number" ? r.rrf_score : undefined,
+      source_type: typeof r.source_type === "string" ? r.source_type : undefined,
+    }))
+    : [];
 
   return new Response(
     JSON.stringify({
-      rows: Array.isArray(rows) ? rows : [],
+      rows: normalised,
       embed_tokens: embRes.tokens,
       embed_ms,
       rpc_ms: Math.round(performance.now() - rpcStart),
       total_ms: Math.round(performance.now() - tStart),
+      mode: hybridMode ? "hybrid" : "v2",
     }),
     { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
   );

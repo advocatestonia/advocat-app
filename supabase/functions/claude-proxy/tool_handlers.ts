@@ -944,6 +944,51 @@ async function handleLegalLookup(
           if (!Array.isArray(data)) return null;
           return (data as LawSearchV2Row[]).map(adaptV2RowToLegacy);
         },
+        // Vabank A1 (2026-05-15) — hybrid BM25+dense RRF retriever.
+        //   `legalLookup` calls this first when query has >=2 tokens and
+        //   transparently falls back to the dense `lawSearch` above on
+        //   null/empty/error. So wiring it in is strictly additive — worst
+        //   case is the dense baseline.
+        //
+        //   law_search_hybrid contract:
+        //     IN:  p_query_embedding, p_query_text, p_jurisdiction, p_lang,
+        //          p_act_slug, p_valid_at, p_match_threshold, p_limit
+        //     OUT: id, act_slug, section_label, text, similarity, source_url,
+        //          bm25_rank, rrf_score, source_type
+        //
+        //   The hybrid row has the same columns the v2 adapter cares about;
+        //   bm25_rank / rrf_score / source_type are debug-only and dropped
+        //   by `adaptV2RowToLegacy`. Rows arrive pre-ordered by rrf_score
+        //   DESC, so the downstream section-rerank still does its
+        //   tie-break on top.
+        lawSearchHybrid: async (params): Promise<LawSearchRpcRow[] | null> => {
+          const hybridParams = {
+            p_query_embedding: params.query_embedding,
+            p_query_text: params.query_text,
+            p_jurisdiction: params.query_jurisdiction
+              ? params.query_jurisdiction.toLowerCase()
+              : null,
+            p_lang: params.query_lang ? params.query_lang.toLowerCase() : null,
+            p_act_slug: null as string | null,
+            p_valid_at: null as string | null,
+            p_match_threshold: params.similarity_threshold,
+            p_limit: params.match_count,
+          };
+          const { data, error } = await supabase.rpc(
+            "law_search_hybrid",
+            hybridParams,
+          );
+          if (error) {
+            // Surface the RPC error but degrade silently — `legalLookup`
+            // will retry on the dense path.
+            console.warn(
+              `legal_lookup tool: law_search_hybrid RPC error — ${error.message}`,
+            );
+            return null;
+          }
+          if (!Array.isArray(data)) return null;
+          return (data as LawSearchV2Row[]).map(adaptV2RowToLegacy);
+        },
         fetchFreshness: async (ids: string[]) => {
           const out = new Map<string, string | null>();
           if (ids.length === 0) return out;
