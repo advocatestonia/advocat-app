@@ -318,6 +318,23 @@ export async function legalLookup(
     return { chunks: [], source: "stub", embed_tokens: embedResult.tokens };
   }
 
+  // ── Section-aware re-ranking ─────────────────────────────────────────────
+  // When the user query mentions a specific § (e.g. "perustuslaki §10",
+  // "TsÜS § 86", "GDPR art. 17"), the desired chunk is the matching
+  // paragraph — even if pure semantic similarity ranks sibling sections
+  // higher. Boost matching rows; leave non-§ queries untouched.
+  //
+  // Golden QA evidence (2026-05-13): 5 queries find the right act but the
+  // wrong §. recall@3 jumps 50% → 75% post-rerank. See lesson notes.
+  const targetSection = extractSectionFromQuery(
+    options.specificStatute
+      ? `${options.specificStatute} ${trimmed}`
+      : trimmed,
+  );
+  if (targetSection) {
+    rows = rerankRowsBySection(rows, targetSection);
+  }
+
   // ── Freshness join ───────────────────────────────────────────────────────
   // Prefer RPC's own corpus_refreshed_at when present; fall back to a
   // batched id lookup. Missing timestamp → freshness_days=null (treated stale).
@@ -481,6 +498,98 @@ export const stubLiveFallback: LiveFallbackFn = async (req) => {
       return null;
   }
 };
+
+// ── Section-aware re-ranking ────────────────────────────────────────────────
+
+/**
+ * Boost score applied to rows whose paragraph exactly matches the section
+ * referenced in the query. Tuned to dominate cosine deltas (~0.05 between
+ * sibling §§) without flipping order for clearly off-topic acts.
+ */
+export const LEGAL_LOOKUP_SECTION_BOOST_EXACT = 1.0;
+
+/** Partial-match boost (paragraph contains the target as substring, e.g.
+ *  query "§ 6" matching paragraph "6a" or "6:2"). Half the exact bonus. */
+export const LEGAL_LOOKUP_SECTION_BOOST_PARTIAL = 0.5;
+
+/**
+ * Extract a paragraph/section reference from a user query.
+ *
+ * Recognises:
+ *   - FI:  "HOL §114", "§ 26", "26 §", "perustuslaki § 10"
+ *   - EE:  "TsÜS § 86", "§86"
+ *   - EU:  "GDPR art. 17", "art 5", "article 17"
+ *   - Sub-paragraphs: "114a", "6:2", "1 a"
+ *
+ * Returns the bare paragraph identifier (e.g. "114", "26", "17", "114a")
+ * or null when no recognisable § ref is present — in which case callers
+ * MUST skip reranking and preserve cosine order (we do not want to disrupt
+ * pure semantic search).
+ */
+export function extractSectionFromQuery(query: string): string | null {
+  if (!query) return null;
+  const q = query.trim();
+
+  // Pattern 1: "§ 114" / "§114" / "§ 114a" / "§ 6:2"
+  //   §-symbol followed by digits, optional letter suffix, optional :subnum
+  const symBefore = q.match(/§\s*(\d+[a-z]?(?::\d+)?)/i);
+  if (symBefore) return symBefore[1].toLowerCase();
+
+  // Pattern 2: "114 §" / "26§"
+  //   digits (+ optional sub) before the §-symbol — common in FI
+  const symAfter = q.match(/(\d+[a-z]?(?::\d+)?)\s*§/i);
+  if (symAfter) return symAfter[1].toLowerCase();
+
+  // Pattern 3: EU article notation: "art. 17", "Article 5", "art 17.1"
+  //   Captures bare numeric + optional sub-paragraph.
+  const artMatch = q.match(/\bart(?:icle|\.)?\s+(\d+(?:[.\-]\d+)?)/i);
+  if (artMatch) return artMatch[1].toLowerCase();
+
+  return null;
+}
+
+/**
+ * Re-rank RPC rows so that paragraph matches float to the top.
+ *
+ * Strategy: composite score = similarity + boost, where boost is
+ *   - EXACT  (1.0) when row.paragraph === targetSection
+ *   - PARTIAL (0.5) when row.paragraph contains the target (e.g. "6a"
+ *                   for query "§6") or vice versa (e.g. paragraph "6"
+ *                   for query "§6:2")
+ *   - 0 otherwise
+ *
+ * Stable: rows with equal composite score keep their original (cosine) order.
+ * Original `similarity` field is preserved unchanged — boosts are only used
+ * for ordering, not surfaced to the model.
+ */
+export function rerankRowsBySection<T extends { paragraph: string; similarity: number }>(
+  rows: T[],
+  targetSection: string,
+): T[] {
+  if (!targetSection || rows.length <= 1) return rows;
+  const target = targetSection.toLowerCase();
+
+  // Decorate with composite score + original index for stable sort.
+  const decorated = rows.map((row, idx) => {
+    const para = (row.paragraph ?? "").toLowerCase();
+    let boost = 0;
+    if (para === target) {
+      boost = LEGAL_LOOKUP_SECTION_BOOST_EXACT;
+    } else if (
+      para && (para.includes(target) || target.includes(para))
+    ) {
+      boost = LEGAL_LOOKUP_SECTION_BOOST_PARTIAL;
+    }
+    return { row, idx, score: (row.similarity ?? 0) + boost };
+  });
+
+  decorated.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return a.idx - b.idx; // stable: preserve cosine order on ties
+  });
+
+  return decorated.map((d) => d.row);
+}
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 

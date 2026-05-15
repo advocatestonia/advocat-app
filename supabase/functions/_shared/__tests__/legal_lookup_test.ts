@@ -18,6 +18,7 @@ import {
 import {
   type CasesCitingFn,
   type EmbedQueryFn,
+  extractSectionFromQuery,
   type FetchFreshnessFn,
   formatLookupResultForModel,
   formatStatute,
@@ -27,6 +28,8 @@ import {
   type LegalLookupTravaux,
   LEGAL_LOOKUP_MATCH_COUNT,
   LEGAL_LOOKUP_MAX_RESPONSE_BYTES,
+  LEGAL_LOOKUP_SECTION_BOOST_EXACT,
+  LEGAL_LOOKUP_SECTION_BOOST_PARTIAL,
   LEGAL_LOOKUP_SIMILARITY_THRESHOLD,
   LEGAL_LOOKUP_SNIPPET_MAX_CHARS,
   LEGAL_LOOKUP_STALE_THRESHOLD_DAYS,
@@ -34,6 +37,7 @@ import {
   legalLookup,
   LegalLookupConfigError,
   type LiveFallbackFn,
+  rerankRowsBySection,
   type TravauxForFn,
   computeFreshnessDays,
   stubLiveFallback,
@@ -764,4 +768,188 @@ Deno.test("LLK-T29 — legalLookup without casesCiting/travauxFor deps works unc
   assertEquals(result.cases_citing, undefined);
   assertEquals(result.travaux, undefined);
   assertEquals(result.source, "corpus");
+});
+
+// =============================================================================
+// Section-aware re-ranking (2026-05-13) — fixes 5 golden QA queries where the
+// right act was retrieved but a sibling § ranked above the target.
+// =============================================================================
+
+// ─── LLK-T30 — extractSectionFromQuery: FI patterns ─────────────────────────
+
+Deno.test("LLK-T30 — extractSectionFromQuery handles FI § patterns", () => {
+  // §-symbol BEFORE number
+  assertEquals(extractSectionFromQuery("perustuslaki §10"), "10");
+  assertEquals(extractSectionFromQuery("perustuslaki § 10"), "10");
+  assertEquals(extractSectionFromQuery("HOL §114"), "114");
+  assertEquals(extractSectionFromQuery("HOL § 114a"), "114a");
+  // §-symbol AFTER number (FI usage)
+  assertEquals(extractSectionFromQuery("hallintolain 26 § kielelliset oikeudet"), "26");
+  assertEquals(extractSectionFromQuery("114§"), "114");
+  // Sub-paragraph "6:2"
+  assertEquals(extractSectionFromQuery("§ 6:2 erityissäännös"), "6:2");
+});
+
+// ─── LLK-T31 — extractSectionFromQuery: EE + EU + null cases ────────────────
+
+Deno.test("LLK-T31 — extractSectionFromQuery handles EE, EU, and null cases", () => {
+  // EE — same §-symbol notation as FI
+  assertEquals(extractSectionFromQuery("TsÜS § 86"), "86");
+  assertEquals(extractSectionFromQuery("TsÜS §86 hea usk"), "86");
+  // EU article notation
+  assertEquals(extractSectionFromQuery("GDPR art. 17 right to be forgotten"), "17");
+  assertEquals(extractSectionFromQuery("Article 5 GDPR"), "5");
+  assertEquals(extractSectionFromQuery("art 17.1"), "17.1");
+  // No § reference → null (preserves semantic-search order)
+  assertEquals(extractSectionFromQuery("what is the deadline for restoration"), null);
+  assertEquals(extractSectionFromQuery("hallintolaki kielelliset oikeudet"), null);
+  assertEquals(extractSectionFromQuery(""), null);
+  // "5 years" without § symbol must NOT match (would have been a false-positive
+  // in a naive \d+ regex).
+  assertEquals(extractSectionFromQuery("5 years to file"), null);
+});
+
+// ─── LLK-T32 — rerankRowsBySection: exact match floats to top ───────────────
+
+Deno.test("LLK-T32 — rerankRowsBySection: §26 exact match overcomes sibling cosine lead", () => {
+  // Simulates the production failure: HOL is the right act, but §6 (general
+  // hyvän hallinnon perusteet) ranks above §26 (kielelliset oikeudet) by
+  // cosine alone.
+  const rows: LawSearchRpcRow[] = [
+    makeRow({ id: "hol-§6-0", paragraph: "6", similarity: 0.88 }),
+    makeRow({ id: "hol-§9-0", paragraph: "9", similarity: 0.84 }),
+    makeRow({ id: "hol-§26-0", paragraph: "26", similarity: 0.79 }),
+  ];
+
+  const reranked = rerankRowsBySection(rows, "26");
+  assertEquals(reranked[0].paragraph, "26", "§26 must float to top after rerank");
+  // Original cosine order preserved among non-matches.
+  assertEquals(reranked[1].paragraph, "6");
+  assertEquals(reranked[2].paragraph, "9");
+  // Similarity field itself is NOT mutated (boost is order-only).
+  assertEquals(reranked[0].similarity, 0.79);
+});
+
+// ─── LLK-T33 — rerankRowsBySection: no target → preserves cosine order ──────
+
+Deno.test("LLK-T33 — rerankRowsBySection: empty target preserves original order", () => {
+  const rows: LawSearchRpcRow[] = [
+    makeRow({ id: "a", paragraph: "6", similarity: 0.88 }),
+    makeRow({ id: "b", paragraph: "26", similarity: 0.79 }),
+  ];
+  // Empty target → identity (semantic search undisturbed).
+  const out = rerankRowsBySection(rows, "");
+  assertEquals(out, rows);
+  // Single-row arrays are trivially identity too.
+  assertEquals(rerankRowsBySection([rows[0]], "26"), [rows[0]]);
+});
+
+// ─── LLK-T34 — rerankRowsBySection: partial match ranks below exact ─────────
+
+Deno.test("LLK-T34 — rerankRowsBySection: partial match boosts less than exact", () => {
+  // Query "§6" → exact match "6" must beat partial match "6a" (substring),
+  // and partial must beat unrelated "9".
+  const rows: LawSearchRpcRow[] = [
+    makeRow({ id: "a", paragraph: "9", similarity: 0.90 }),
+    makeRow({ id: "b", paragraph: "6a", similarity: 0.85 }),
+    makeRow({ id: "c", paragraph: "6", similarity: 0.80 }),
+  ];
+  const out = rerankRowsBySection(rows, "6");
+  assertEquals(out[0].paragraph, "6");   // exact: 0.80 + 1.0 = 1.80
+  assertEquals(out[1].paragraph, "6a");  // partial: 0.85 + 0.5 = 1.35
+  assertEquals(out[2].paragraph, "9");   // none: 0.90
+  // Sanity: the boost constants we exposed actually drive this ordering.
+  assertEquals(LEGAL_LOOKUP_SECTION_BOOST_EXACT > LEGAL_LOOKUP_SECTION_BOOST_PARTIAL, true);
+});
+
+// ─── LLK-T35 — legalLookup end-to-end: §-aware boost flips the top hit ──────
+
+Deno.test("LLK-T35 — legalLookup: query with §26 ref promotes §26 to top hit", async () => {
+  // The bug under test: cosine returns §6 first; we want §26 first when
+  // the user explicitly asked about §26.
+  const rows: LawSearchRpcRow[] = [
+    makeRow({ id: "hol-§6-0",  paragraph: "6",  similarity: 0.88,
+              body: "Hyvän hallinnon perusteet" }),
+    makeRow({ id: "hol-§26-0", paragraph: "26", similarity: 0.79,
+              body: "Kielelliset oikeudet" }),
+  ];
+
+  const result = await legalLookup(
+    "hallintolain 26 § kielelliset oikeudet",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning(rows),
+      fetchFreshness: freshnessReturning({
+        "hol-§6-0": FRESH_REFRESHED,
+        "hol-§26-0": FRESH_REFRESHED,
+      }),
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks.length, 2);
+  assertEquals(result.chunks[0].paragraph, "26",
+    "§26 should now lead the result for a §26-targeted query");
+  // Similarity numbers we surface are still the underlying cosines, not the
+  // boosted score. Important for the model's confidence display.
+  assertEquals(result.chunks[0].similarity, 0.79);
+});
+
+// ─── LLK-T36 — legalLookup: query WITHOUT §ref → original cosine order ──────
+
+Deno.test("LLK-T36 — legalLookup: query without § reference preserves cosine order", async () => {
+  // Mirror of LLK-T35 but with a semantic query (no §). Must NOT rerank.
+  // This guards against the rerank disrupting normal semantic search.
+  const rows: LawSearchRpcRow[] = [
+    makeRow({ id: "hol-§6-0",  paragraph: "6",  similarity: 0.88 }),
+    makeRow({ id: "hol-§26-0", paragraph: "26", similarity: 0.79 }),
+  ];
+
+  const result = await legalLookup(
+    "hallintolaki kielelliset oikeudet", // no § symbol → no rerank
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning(rows),
+      fetchFreshness: freshnessReturning({
+        "hol-§6-0": FRESH_REFRESHED,
+        "hol-§26-0": FRESH_REFRESHED,
+      }),
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks[0].paragraph, "6",
+    "without explicit § ref the original cosine order must be preserved");
+  assertEquals(result.chunks[1].paragraph, "26");
+});
+
+// ─── LLK-T37 — legalLookup: §-ref via specificStatute option also triggers rerank ─
+
+Deno.test("LLK-T37 — legalLookup: specificStatute 'TsÜS §86' triggers rerank", async () => {
+  // Query alone has no §-symbol, but specificStatute does. The implementation
+  // must consider both inputs for section extraction.
+  const rows: LawSearchRpcRow[] = [
+    makeRow({ id: "ts-§5-0",  act_slug: "tsus", paragraph: "5",  similarity: 0.90 }),
+    makeRow({ id: "ts-§86-0", act_slug: "tsus", paragraph: "86", similarity: 0.81 }),
+  ];
+
+  const result = await legalLookup(
+    "hea usk",
+    "ee",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning(rows),
+      fetchFreshness: freshnessReturning({
+        "ts-§5-0": FRESH_REFRESHED,
+        "ts-§86-0": FRESH_REFRESHED,
+      }),
+    },
+    { specificStatute: "TsÜS § 86", now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks[0].paragraph, "86",
+    "specificStatute hint must seed the section rerank");
+  assertEquals(result.chunks[0].statute, "TSUS §86");
 });
