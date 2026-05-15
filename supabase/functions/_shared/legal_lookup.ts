@@ -43,6 +43,15 @@ export const LEGAL_LOOKUP_MAX_RESPONSE_BYTES = 4096;
 /** Per-chunk snippet cap. 5 × 700 ≈ 3.5KB before metadata. */
 export const LEGAL_LOOKUP_SNIPPET_MAX_CHARS = 700;
 
+/** Hard cap for chunks marked `display_policy='snippet_only'` (Finlex CC-BY-NC
+ *  ajantasa rows). Option B from
+ *  `business/legal/finlex_licensing_decision_2026-05-14.md` §7: the model is
+ *  allowed at most a ~200-char excerpt + a deep link to the Finlex source so
+ *  we never reprint > 200 chars of consolidated text the way the market norm
+ *  treats it as commercially-restricted. DO NOT raise this without owner
+ *  sign-off — bumping it past 200 re-opens the licence-risk envelope. */
+export const LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS = 200;
+
 /** Accepted jurisdictions. Matches law_chunks.jurisdiction CHECK. */
 export const LEGAL_LOOKUP_JURISDICTIONS = ["fi", "ee", "eu", "de", "ru"] as const;
 export type LegalLookupJurisdiction = typeof LEGAL_LOOKUP_JURISDICTIONS[number];
@@ -91,10 +100,20 @@ Mandatory pattern:
   6. If chunks is empty: say HONESTLY that the statute is not in our corpus
      and recommend a primary-source check. Do NOT fabricate paragraph text.
 
+LICENSE / DISPLAY POLICY (Option B, 2026-05-15):
+  Chunks tagged display_policy='snippet_only' (Finlex CC-BY-NC ajantasa text)
+  carry a licence-safe 200-char excerpt and a 'link_required' flag:
+    • Quote at MOST the returned snippet text (≤200 chars). Never reprint
+      additional consolidated paragraph text from memory.
+    • Always surface the source URL with explicit phrasing such as
+      "Read full text on Finlex: <url>".
+    • Format: "[OHO §114] — 'short quote...' (source: <Finlex link>)"
+  Chunks with display_policy='full' (alkup / public-domain) can be quoted
+  freely up to the returned snippet length.
+
 Calling the tool is cheap (≈400 input tokens per call). Calling it twice when
 in doubt is fine. Calling it ZERO times for a specific-paragraph citation is
-a defect. The user is paying for lawyer-grade answers — that means real cases
-and real legislative intent, not memory.
+a defect.
 `.trim();
 
 const JURISDICTION_TO_RPC: Record<LegalLookupJurisdiction, string> = {
@@ -117,13 +136,29 @@ export interface LegalLookupChunk {
   act_slug: string;
   /** Paragraph identifier (verbatim). */
   paragraph: string;
-  /** Verbatim body, truncated at LEGAL_LOOKUP_SNIPPET_MAX_CHARS. */
+  /** Verbatim body, truncated at LEGAL_LOOKUP_SNIPPET_MAX_CHARS for full
+   *  display, or LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS for `snippet_only`. */
   text: string;
   /** Cosine similarity in [0, 1]. */
   similarity: number;
   /** Days since corpus_refreshed_at. Null = unknown (treated stale). */
   freshness_days: number | null;
   source_url: string | null;
+  /** License tag for the underlying chunk (Option B, 2026-05-15).
+   *  - 'public-domain' = alkup statute under Tekijänoikeuslaki §9 (default)
+   *  - 'CC-BY-4.0'     = Finlex alkup, original-as-enacted
+   *  - 'CC-BY-NC-4.0'  = Finlex ajantasa, consolidated (snippet_only)
+   *  - 'CC-BY-EUR-LEX' = EUR-Lex directives */
+  license?: string;
+  /** UI/model display constraint (Option B, 2026-05-15).
+   *  - 'full'          = quote/display freely (alkup; default)
+   *  - 'snippet_only'  = ≤200 chars + Finlex source link required
+   *  - 'citation_only' = cite reference + link, no body */
+  display_policy?: "full" | "snippet_only" | "citation_only";
+  /** Set to true for `display_policy='snippet_only'` chunks. Model MUST
+   *  surface the source_url and MUST NOT reproduce more than the returned
+   *  text. Renders as an explicit "Read full text on Finlex" CTA in the UI. */
+  link_required?: boolean;
 }
 
 /** Court decision row returned by the `cases_citing` RPC (corpus v3). */
@@ -183,6 +218,10 @@ export interface LawSearchRpcRow {
   similarity: number;
   /** Optional — current production RPC does NOT surface this. */
   corpus_refreshed_at?: string | null;
+  /** Optional — present once law_search_v2 RPC is wired (post 2026-05-15
+   *  migration). Defaults to 'public-domain' / 'full' for legacy callers. */
+  license?: string | null;
+  display_policy?: string | null;
 }
 
 /** Batched freshness lookup. Used when the RPC row lacks corpus_refreshed_at. */
@@ -357,16 +396,37 @@ export async function legalLookup(
   }
 
   // ── Build chunks ─────────────────────────────────────────────────────────
+  // Per-row display_policy drives the truncation cap (Option B). Rows that
+  // pre-date the 2026-05-15 license columns get the conservative defaults
+  // 'full' / 'public-domain' so legacy alkup behaviour is unchanged.
   const nowMs = now().getTime();
-  const builtChunks: LegalLookupChunk[] = rows.map((r) => ({
-    statute: formatStatute(r.act_slug, r.paragraph),
-    act_slug: r.act_slug.toLowerCase(),
-    paragraph: r.paragraph,
-    text: truncateSnippet(r.body),
-    similarity: typeof r.similarity === "number" ? r.similarity : 0,
-    freshness_days: computeFreshnessDays(freshness.get(r.id) ?? null, nowMs),
-    source_url: r.source_url ?? null,
-  }));
+  const builtChunks: LegalLookupChunk[] = rows.map((r) => {
+    const displayPolicy = normaliseDisplayPolicy(r.display_policy);
+    const license = (r.license && r.license.length > 0)
+      ? r.license
+      : "public-domain";
+    const text = displayPolicy === "snippet_only"
+      ? truncateForSnippetOnly(r.body)
+      : truncateSnippet(r.body);
+    const chunk: LegalLookupChunk = {
+      statute: formatStatute(r.act_slug, r.paragraph),
+      act_slug: r.act_slug.toLowerCase(),
+      paragraph: r.paragraph,
+      text,
+      similarity: typeof r.similarity === "number" ? r.similarity : 0,
+      freshness_days: computeFreshnessDays(freshness.get(r.id) ?? null, nowMs),
+      source_url: r.source_url ?? null,
+      license,
+      display_policy: displayPolicy,
+    };
+    if (displayPolicy === "snippet_only") {
+      // Snippet-only chunks REQUIRE a Finlex link for the model to surface.
+      // The flag is the runtime signal — keeps the formatter / UI logic
+      // declarative instead of re-deriving from display_policy at each site.
+      chunk.link_required = true;
+    }
+    return chunk;
+  });
 
   // ── Stale detection + optional live fallback ─────────────────────────────
   const anyStale = builtChunks.some((c) =>
@@ -623,6 +683,28 @@ function truncateSnippet(body: string | null | undefined): string {
     : body.slice(0, LEGAL_LOOKUP_SNIPPET_MAX_CHARS);
 }
 
+/** Stricter truncation for `display_policy='snippet_only'` rows (Option B).
+ *  Caps at LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS (=200) so we never emit more
+ *  than the licence-safe quotation length for Finlex CC-BY-NC ajantasa text.
+ *  Kept as a separate function (not parameterised) to make the call sites
+ *  grep-able and the cap easy to audit. */
+function truncateForSnippetOnly(body: string | null | undefined): string {
+  if (!body) return "";
+  return body.length <= LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS
+    ? body
+    : body.slice(0, LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS);
+}
+
+/** Normalise the display_policy column to the union the runtime expects.
+ *  Unknown / null values fall back to 'full' so legacy rows surface their
+ *  text the way they did before the 2026-05-15 license columns existed. */
+function normaliseDisplayPolicy(
+  raw: string | null | undefined,
+): "full" | "snippet_only" | "citation_only" {
+  if (raw === "snippet_only" || raw === "citation_only") return raw;
+  return "full";
+}
+
 function buildStaleWarning(
   chunks: ReadonlyArray<LegalLookupChunk>,
   thresholdDays: number,
@@ -693,10 +775,22 @@ export function formatLookupResultForModel(result: LegalLookupResult): string {
     const age = c.freshness_days === null
       ? "unknown age"
       : `${c.freshness_days}d old`;
-    parts.push(
-      `\n[${c.statute}] (sim ${sim}, ${age})\n${c.text}` +
-        (c.source_url ? `\nSource: ${c.source_url}` : ""),
-    );
+    // Option B (2026-05-15): snippet_only chunks carry the licence-safe
+    // 200-char excerpt. We surface the Finlex link explicitly and append a
+    // policy reminder so the model never reproduces more than `c.text`.
+    const isSnippetOnly = c.display_policy === "snippet_only";
+    const header = isSnippetOnly
+      ? `\n[${c.statute}] (sim ${sim}, ${age}, display_policy=snippet_only, license=${c.license ?? "CC-BY-NC-4.0"})`
+      : `\n[${c.statute}] (sim ${sim}, ${age})`;
+    const body = isSnippetOnly
+      ? `\n"${c.text}..." (max 200 chars; do NOT quote more than this snippet)`
+      : `\n${c.text}`;
+    const link = c.source_url
+      ? (isSnippetOnly
+        ? `\nRead full text on Finlex: ${c.source_url}`
+        : `\nSource: ${c.source_url}`)
+      : "";
+    parts.push(header + body + link);
   }
   if (result.stale_warning) parts.push(`\n⚠ ${result.stale_warning}`);
 

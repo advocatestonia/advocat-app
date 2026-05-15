@@ -32,6 +32,7 @@ import {
   LEGAL_LOOKUP_SECTION_BOOST_PARTIAL,
   LEGAL_LOOKUP_SIMILARITY_THRESHOLD,
   LEGAL_LOOKUP_SNIPPET_MAX_CHARS,
+  LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS,
   LEGAL_LOOKUP_STALE_THRESHOLD_DAYS,
   LEGAL_LOOKUP_TOOL_USE_INSTRUCTION,
   legalLookup,
@@ -565,8 +566,11 @@ Deno.test("LLK-T21 — cases_citing populates result.cases_citing for top hit", 
     { now: () => FROZEN_NOW },
   );
 
-  assertEquals(casesArgs?.act_slug, "hol");
-  assertEquals(casesArgs?.section, "114");
+  // Cast: TS control-flow narrows casesArgs to `never` after the async
+  // closure assignment because it cannot prove the callback ran.
+  const seenArgs = casesArgs as { act_slug: string; section: string } | null;
+  assertEquals(seenArgs?.act_slug, "hol");
+  assertEquals(seenArgs?.section, "114");
   assertEquals(result.cases_citing?.length, 1);
   assertEquals(result.cases_citing?.[0].case_number, "KHO 2018:42");
 });
@@ -745,8 +749,11 @@ Deno.test("LLK-T28 — TOOL_USE_INSTRUCTION mentions cases_citing + travaux", ()
   assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "cases_citing");
   assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "travaux");
   assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "MANDATORY");
-  // Must still be under 2KB.
-  assert(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length < 2048);
+  // Hard ceiling 2560 bytes — the LLK-T43 clause for Option B snippet
+  // handling pushed the canonical text to ~2.1 KB. Headroom kept tight so
+  // accidental Option-C expansions trip the test rather than bloating the
+  // executor system prompt budget.
+  assert(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length < 2560);
 });
 
 // ─── LLK-T29 — backward-compat: legalLookup without v3 deps still works ─────
@@ -952,4 +959,223 @@ Deno.test("LLK-T37 — legalLookup: specificStatute 'TsÜS §86' triggers rerank
   assertEquals(result.chunks[0].paragraph, "86",
     "specificStatute hint must seed the section rerank");
   assertEquals(result.chunks[0].statute, "TSUS §86");
+});
+
+// =============================================================================
+// Option B (2026-05-15) — Ajantasa license / display_policy snippet handling.
+// Per business/legal/finlex_licensing_decision_2026-05-14.md: chunks marked
+// display_policy='snippet_only' (Finlex CC-BY-NC ajantasa rows) must be
+// truncated to 200 chars and surfaced with a Finlex link so the model
+// (and any future UI) never reprints > 200 chars of consolidated text.
+// =============================================================================
+
+// ─── LLK-T38 — snippet_only chunk: 200-char truncate + link_required flag ────
+
+Deno.test("LLK-T38 — display_policy='snippet_only' truncates to 200 chars + flag", async () => {
+  const longBody = "A".repeat(800); // 4× the snippet cap; must be cut to 200
+  const result = await legalLookup(
+    "menetetyn määräajan palauttaminen",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([
+        makeRow({
+          id: "oho-§114-0",
+          act_slug: "fi-oho",
+          paragraph: "114",
+          body: longBody,
+          source_url:
+            "https://opendata.finlex.fi/finlex/avoindata/v1/akn/fi/" +
+            "act/statute-consolidated/2019/808/fin@",
+          // Cast — these fields will be added to LawSearchRpcRow below.
+          license: "CC-BY-NC-4.0",
+          display_policy: "snippet_only",
+        } as Partial<LawSearchRpcRow>),
+      ]),
+      fetchFreshness: freshnessReturning({ "oho-§114-0": FRESH_REFRESHED }),
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks.length, 1);
+  const c = result.chunks[0];
+  assertEquals(
+    c.text.length,
+    LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS,
+    `snippet_only rows must truncate to ${LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS} chars`,
+  );
+  assertEquals(c.link_required, true);
+  assertEquals(c.display_policy, "snippet_only");
+  assertEquals(c.license, "CC-BY-NC-4.0");
+});
+
+// ─── LLK-T39 — public-domain chunk: full 700-char snippet, no link_required ──
+
+Deno.test("LLK-T39 — display_policy='full' uses regular 700-char snippet cap", async () => {
+  const longBody = "B".repeat(2000);
+  const result = await legalLookup(
+    "soveltamisala",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([
+        makeRow({
+          id: "hol-§1-0",
+          body: longBody,
+          license: "public-domain",
+          display_policy: "full",
+        } as Partial<LawSearchRpcRow>),
+      ]),
+      fetchFreshness: freshnessReturning({ "hol-§1-0": FRESH_REFRESHED }),
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks.length, 1);
+  const c = result.chunks[0];
+  assertEquals(c.text.length, LEGAL_LOOKUP_SNIPPET_MAX_CHARS);
+  // link_required is opt-in; full-display rows are undefined OR false.
+  assert(!c.link_required, "full-display chunks must NOT set link_required");
+  assertEquals(c.display_policy, "full");
+});
+
+// ─── LLK-T40 — snippet_only constants are conservative (≤200) ───────────────
+
+Deno.test("LLK-T40 — SNIPPET_ONLY_MAX_CHARS ≤ 200 (license-safe limit)", () => {
+  // Hard ceiling per finlex_licensing_decision_2026-05-14.md §7. The 200-char
+  // cap is the market-norm threshold for fair-dealing under Tekijänoikeuslaki
+  // §22; raising it without owner sign-off is a licence-risk regression.
+  assert(
+    LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS <= 200,
+    `SNIPPET_ONLY_MAX_CHARS must be ≤ 200, got ${LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS}`,
+  );
+  // And meaningfully shorter than the public-domain 700-char snippet — that
+  // gap is what makes the policy enforceable: 200 ≠ 700 visibly.
+  assert(LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS < LEGAL_LOOKUP_SNIPPET_MAX_CHARS);
+});
+
+// ─── LLK-T41 — missing license/display_policy → safe defaults ───────────────
+
+Deno.test("LLK-T41 — RPC row without license/display_policy → public-domain/full defaults", async () => {
+  // Tolerate older RPC signatures that pre-date the Option B columns. The
+  // chunk surfaces conservative defaults (full + public-domain) so legacy
+  // alkup rows continue to display unchanged.
+  const longBody = "C".repeat(2000);
+  const result = await legalLookup(
+    "test",
+    "fi",
+    {
+      embed: okEmbed,
+      // makeRow's default has no license/display_policy → simulates v1 RPC.
+      lawSearch: rpcReturning([makeRow({ body: longBody })]),
+      fetchFreshness: freshnessReturning({ "hol-§114-0": FRESH_REFRESHED }),
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  const c = result.chunks[0];
+  assertEquals(c.display_policy, "full");
+  assertEquals(c.license, "public-domain");
+  assertEquals(c.text.length, LEGAL_LOOKUP_SNIPPET_MAX_CHARS);
+  assert(!c.link_required);
+});
+
+// ─── LLK-T42 — formatLookupResultForModel renders snippet-only link warning ─
+
+Deno.test("LLK-T42 — formatter surfaces Finlex link + license warning for snippet_only", () => {
+  const out = formatLookupResultForModel({
+    chunks: [
+      {
+        statute: "OHO §114",
+        act_slug: "fi-oho",
+        paragraph: "114",
+        text:
+          "Korkein hallinto-oikeus voi palauttaa menetetyn määräajan sille, " +
+          "joka laillisen esteen tai muun erittäin painavan syyn vuoksi...",
+        similarity: 0.91,
+        freshness_days: 5,
+        source_url:
+          "https://opendata.finlex.fi/finlex/avoindata/v1/akn/fi/" +
+          "act/statute-consolidated/2019/808/fin@",
+        license: "CC-BY-NC-4.0",
+        display_policy: "snippet_only",
+        link_required: true,
+      },
+    ],
+    source: "corpus",
+    embed_tokens: 14,
+  });
+
+  // Must include the Finlex URL.
+  assertStringIncludes(out, "https://opendata.finlex.fi");
+  // Must tell the model NOT to quote more than the returned snippet.
+  assertStringIncludes(out, "snippet_only");
+  // Must mention the link-required directive in human-readable form.
+  assertStringIncludes(out, "Read full text on Finlex");
+});
+
+// ─── LLK-T43 — TOOL_USE_INSTRUCTION mentions snippet-only quotation rule ─────
+
+Deno.test("LLK-T43 — TOOL_USE_INSTRUCTION mentions snippet_only + 200-char cap", () => {
+  // The model needs to see explicit guidance not to quote > 200 chars from
+  // snippet_only chunks. If this assertion fails, the runtime header drifted
+  // from the licensing decision.
+  assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "snippet_only");
+  assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "200");
+  assertStringIncludes(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION, "Finlex");
+  // Must remain under 2.5KB — the new clause adds ~400 chars; keep headroom.
+  assert(
+    LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length < 2560,
+    `TOOL_USE_INSTRUCTION ${LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length} bytes ≥ 2560`,
+  );
+});
+
+// ─── LLK-T44 — mixed batch: full + snippet_only chunks coexist correctly ────
+
+Deno.test("LLK-T44 — mixed batch returns each chunk under its own policy", async () => {
+  const longBody = "X".repeat(800);
+  const result = await legalLookup(
+    "deadlines",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([
+        // alkup row — full display, public-domain
+        makeRow({
+          id: "hol-§22-0",
+          paragraph: "22",
+          body: longBody,
+          license: "public-domain",
+          display_policy: "full",
+        } as Partial<LawSearchRpcRow>),
+        // ajantasa row — snippet only, CC-BY-NC
+        makeRow({
+          id: "oho-§114-0",
+          act_slug: "fi-oho",
+          paragraph: "114",
+          body: longBody,
+          license: "CC-BY-NC-4.0",
+          display_policy: "snippet_only",
+        } as Partial<LawSearchRpcRow>),
+      ]),
+      fetchFreshness: freshnessReturning({
+        "hol-§22-0": FRESH_REFRESHED,
+        "oho-§114-0": FRESH_REFRESHED,
+      }),
+    },
+    { now: () => FROZEN_NOW },
+  );
+
+  assertEquals(result.chunks.length, 2);
+
+  const full = result.chunks.find((c) => c.act_slug === "hol")!;
+  const snippet = result.chunks.find((c) => c.act_slug === "fi-oho")!;
+
+  assertEquals(full.display_policy, "full");
+  assertEquals(full.text.length, LEGAL_LOOKUP_SNIPPET_MAX_CHARS);
+  assert(!full.link_required);
+
+  assertEquals(snippet.display_policy, "snippet_only");
+  assertEquals(snippet.text.length, LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS);
+  assertEquals(snippet.link_required, true);
 });
