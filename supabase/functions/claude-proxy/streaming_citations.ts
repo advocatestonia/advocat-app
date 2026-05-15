@@ -158,6 +158,18 @@ export function wrapAnthropicStreamWithCitations(
     /** Persistence hook — invoked AFTER the verifier runs, BEFORE the
      *  citations SSE event is emitted. Best-effort; errors swallowed. */
     onCitations?: (citations: Citation[]) => Promise<void> | void;
+    /**
+     * Optional trailing-text hook (halt-rail, A7 of вабанк, 2026-05-15).
+     * Called once with the fully-assembled assistant text just before the
+     * citations SSE event is emitted. Return a string to be injected as
+     * one extra Anthropic-shaped `content_block_delta` SSE frame; return
+     * empty string / null / undefined to inject nothing.
+     *
+     * Use case: append a serious-case advisory banner ("⚠️ consult licensed
+     * asianajaja…") so the user always sees the rail even if Claude failed
+     * to weave it in. Best-effort; errors swallowed.
+     */
+    onAssembledText?: (text: string) => string | null | undefined;
   },
 ): ReadableStream<Uint8Array> {
   const decoder = new TextDecoder();
@@ -199,6 +211,34 @@ export function wrapAnthropicStreamWithCitations(
             } catch (e) {
               console.warn(
                 `claude-proxy stream: onCitations threw (ignored): ${
+                  String(e).slice(0, 200)
+                }`,
+              );
+            }
+          }
+          // Halt-rail trailing-text injection (best-effort, swallows errors).
+          if (opts.onAssembledText) {
+            try {
+              const extra = opts.onAssembledText(assembled.text);
+              if (typeof extra === "string" && extra.length > 0) {
+                // Emit one Anthropic-shaped content_block_delta frame so the
+                // Flutter SSE parser routes it through the same text-streaming
+                // codepath as the model's own deltas. We use index 0 to match
+                // the original content block; Anthropic clients tolerate
+                // multiple deltas for the same block.
+                const railFrame =
+                  `event: content_block_delta\ndata: ${
+                    JSON.stringify({
+                      type: "content_block_delta",
+                      index: 0,
+                      delta: { type: "text_delta", text: extra },
+                    })
+                  }\n\n`;
+                controller.enqueue(encoder.encode(railFrame));
+              }
+            } catch (e) {
+              console.warn(
+                `claude-proxy stream: onAssembledText threw (ignored): ${
                   String(e).slice(0, 200)
                 }`,
               );

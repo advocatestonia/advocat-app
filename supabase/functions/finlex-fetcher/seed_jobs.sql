@@ -49,6 +49,52 @@ INSERT INTO ingest_jobs (source, source_id, target_table, payload, priority) VAL
   ('finlex', '1997/1270', 'law_chunks_v2', '{"act_slug":"fi-ulkrekl","act_name":"Laki ulkomaalaisrekisteristä","act_number":"1270/1997","lang":"fi","act_abbrev":"UlkRekL"}'::jsonb, 4)
 ON CONFLICT (source, source_id, target_table) DO NOTHING;
 
+-- ── Top-18 missing FI statutes (A3 вабанк, 2026-05-15) ──────────────────────
+-- Consilium-prioritised statutes for high-volume domains: immigration,
+-- employment, social security, civil obligations, family, tax, corporate,
+-- housing. ALL ingested as ajantasa (consolidated current text) because the
+-- alkup baseline for some of these is decades old and rendered obsolete by
+-- amendments (e.g. Vuosilomalaki 162/2005 has been amended 30+ times; the
+-- 1947 Velkakirjalaki baseline pre-dates modern banking entirely).
+--
+-- redaktsioon='ajantasa' → CC-BY-NC-4.0, display_policy='snippet_only' is
+-- auto-stamped by index.ts (≤200 chars + Finlex link enforced downstream
+-- in legal_lookup). See business/legal/finlex_licensing_decision_2026-05-14.md.
+--
+-- source_id format `YYYY/N:ajantasa` mirrors the existing HOL/OHO/UlkL/PolL
+-- ajantasa-rerun rows so the UNIQUE(source, source_id, target_table) constraint
+-- does not collide if/when an alkup row is ever added later.
+
+INSERT INTO ingest_jobs (source, source_id, target_table, payload, priority) VALUES
+  -- Immigration (3)
+  ('finlex', '2011/746:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-vol","act_name":"Laki kansainvälistä suojelua hakevan vastaanotosta","act_number":"746/2011","lang":"fi","act_abbrev":"VOL","redaktsioon":"ajantasa"}'::jsonb, 1),
+  ('finlex', '2002/116:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-sailool","act_name":"Laki säilöön otettujen ulkomaalaisten kohtelusta ja säilöönottoyksiköstä","act_number":"116/2002","lang":"fi","act_abbrev":"SäilL","redaktsioon":"ajantasa"}'::jsonb, 1),
+  ('finlex', '2003/359:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-kansall","act_name":"Kansalaisuuslaki","act_number":"359/2003","lang":"fi","act_abbrev":"KansalL","redaktsioon":"ajantasa"}'::jsonb, 1),
+  -- Admin / Language (1; Kuntalaki and Julkisuusl already in corpus)
+  ('finlex', '2003/423:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-kielil","act_name":"Kielilaki","act_number":"423/2003","lang":"fi","act_abbrev":"KieliL","redaktsioon":"ajantasa"}'::jsonb, 2),
+  -- Employment (3)
+  ('finlex', '2005/162:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-vuosilomal","act_name":"Vuosilomalaki","act_number":"162/2005","lang":"fi","act_abbrev":"VLL","redaktsioon":"ajantasa"}'::jsonb, 2),
+  ('finlex', '2021/1333:ajantasa', 'law_chunks_v2', '{"act_slug":"fi-yhteistoimintal","act_name":"Yhteistoimintalaki","act_number":"1333/2021","lang":"fi","act_abbrev":"YTL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  ('finlex', '2002/738:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-tyoturvallisuusl","act_name":"Työturvallisuuslaki","act_number":"738/2002","lang":"fi","act_abbrev":"TTurvL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  -- Social security (3)
+  ('finlex', '2004/1224:ajantasa', 'law_chunks_v2', '{"act_slug":"fi-sairausvakuutusl","act_name":"Sairausvakuutuslaki","act_number":"1224/2004","lang":"fi","act_abbrev":"SVL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  ('finlex', '2002/1290:ajantasa', 'law_chunks_v2', '{"act_slug":"fi-tyottomyysturval","act_name":"Työttömyysturvalaki","act_number":"1290/2002","lang":"fi","act_abbrev":"TTTL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  ('finlex', '1997/1412:ajantasa', 'law_chunks_v2', '{"act_slug":"fi-toimeentulotukil","act_name":"Laki toimeentulotuesta","act_number":"1412/1997","lang":"fi","act_abbrev":"ToimTukiL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  -- Civil obligations (3; Korkolaki already in corpus)
+  ('finlex', '1947/622:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-velkakirjal","act_name":"Velkakirjalaki","act_number":"622/1947","lang":"fi","act_abbrev":"VekKirL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  ('finlex', '1995/540:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-maakaari","act_name":"Maakaari","act_number":"540/1995","lang":"fi","act_abbrev":"MK","redaktsioon":"ajantasa"}'::jsonb, 3),
+  ('finlex', '1995/481:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-asuinhuoneistovuokrausl","act_name":"Laki asuinhuoneiston vuokrauksesta","act_number":"481/1995","lang":"fi","act_abbrev":"AHVL","redaktsioon":"ajantasa"}'::jsonb, 2),
+  -- Family (2)
+  ('finlex', '1975/704:ajantasa',  'law_chunks_v2', '{"act_slug":"fi-elatusl","act_name":"Laki lapsen elatuksesta","act_number":"704/1975","lang":"fi","act_abbrev":"ElatusL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  ('finlex', '2015/11:ajantasa',   'law_chunks_v2', '{"act_slug":"fi-isyysl","act_name":"Isyyslaki","act_number":"11/2015","lang":"fi","act_abbrev":"IsyysL","redaktsioon":"ajantasa"}'::jsonb, 4),
+  -- Tax (1)
+  ('finlex', '1995/1558:ajantasa', 'law_chunks_v2', '{"act_slug":"fi-verotusmenettelyl","act_name":"Laki verotusmenettelystä","act_number":"1558/1995","lang":"fi","act_abbrev":"VMenL","redaktsioon":"ajantasa"}'::jsonb, 3),
+  -- Corporate (1)
+  ('finlex', '1997/1336:ajantasa', 'law_chunks_v2', '{"act_slug":"fi-kirjanpitol","act_name":"Kirjanpitolaki","act_number":"1336/1997","lang":"fi","act_abbrev":"KPL","redaktsioon":"ajantasa"}'::jsonb, 4),
+  -- Housing (1)
+  ('finlex', '2009/1599:ajantasa', 'law_chunks_v2', '{"act_slug":"fi-asuntoosakeyhtiol","act_name":"Asunto-osakeyhtiölaki","act_number":"1599/2009","lang":"fi","act_abbrev":"AOYL","redaktsioon":"ajantasa"}'::jsonb, 3)
+ON CONFLICT (source, source_id, target_table) DO NOTHING;
+
 -- ── 80 KKO/KHO cases — currently blocked (see index.ts comment) ──────────────
 -- Top-40 KKO + top-40 KHO from 2022-2024 (highest-volume recent years).
 -- All payloads use `court` + `case_year` + `case_number` so a future

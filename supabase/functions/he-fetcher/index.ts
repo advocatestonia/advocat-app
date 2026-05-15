@@ -67,6 +67,15 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ??
 const CRON_SECRET = Deno.env.get("CRON_SECRET") ?? "";
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY") ?? "";
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
+// PDF-worker offload (Round 4 / A6): when set, the PDF extraction path is
+// delegated to a Railway micro-service (services/pdf-worker/) to escape the
+// Supabase Edge ~256MB worker memory cap that killed HE 72/2002 (143p) and
+// HE 29/2018 (250p). When unset, the legacy in-process pdf-lib + Sonnet path
+// (extractChunksFromPdf) runs — same code as before, kept for fallback / small
+// PDFs / parity tests.
+const PDF_WORKER_URL = Deno.env.get("PDF_WORKER_URL") ?? "";
+const PDF_WORKER_SECRET = Deno.env.get("PDF_WORKER_SECRET") ?? "";
+const PDF_WORKER_TIMEOUT_MS = 540_000; // 9 min — big HEs can take 5-7 min
 
 const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
 const OPENAI_EMBEDDINGS_URL = "https://api.openai.com/v1/embeddings";
@@ -340,6 +349,31 @@ async function handleWork(
     }
 
     try {
+      // Round 4 / A6: when pdf-worker is configured AND the source resolves to
+      // a PDF, dispatch async via /ingest. The worker handles extract+embed+
+      // insert+markJob on its own — Edge fn returns immediately, well within
+      // Supabase's ~300s wall-clock. Edge fn here merely holds the lease until
+      // dispatch ACK (~1-2s round-trip).
+      //
+      // We pre-resolve the PDF URL via fetchSource so we can choose async vs
+      // sync. HTML-only sources stay on the legacy in-process path (small,
+      // fast, fits well inside the Edge wall-clock).
+      if (PDF_WORKER_URL && PDF_WORKER_SECRET) {
+        const fetched = await fetchSource(seed.url);
+        if (fetched.contentType === "pdf") {
+          await dispatchToPdfWorker(job.id, fetched.resolvedUrl, seed);
+          outcomes.push({
+            job_id: job.id,
+            source_id: job.source_id,
+            doc_number: seed.doc_number,
+            status: "done", // dispatched; worker will overwrite to done/failed
+            inserted_chunks: 0,
+          });
+          continue;
+        }
+        // HTML fall-through — handled by processOneDoc (sync, in-process).
+      }
+
       const inserted = await processOneDoc(seed);
       await markDone(job.id);
       outcomes.push({
@@ -381,12 +415,18 @@ export async function processOneDoc(seed: TravauxSeed): Promise<number> {
   //    call (HTML path).
   let chunks: ExtractedTravauxChunk[];
   if (fetched.contentType === "pdf") {
-    // Download bytes, split via pdf-lib, call Sonnet per ≤PAGES_PER_SEGMENT
-    // (currently 50) segment. This is the fix for the 100-page-cap that
-    // broke 24/30 jobs in 2026-05-14, plus Fix #89 round 2: dropped from 90→50
-    // because dense FI parliamentary text ran the 200K-token context cap
-    // (90p × ~3500 tok/page ≈ 315K).
-    chunks = await extractChunksFromPdf(fetched.resolvedUrl, seed);
+    // Round 4 (A6 / 2026-05-15): PDF heavy-lifting is offloaded to Railway
+    // pdf-worker when PDF_WORKER_URL is configured. The Edge runtime has a
+    // ~256MB cap that killed HE 72/2002 (143p) and HE 29/2018 (250p) on the
+    // in-process pdf-lib + Sonnet path. Railway containers have 512MB-2GB so
+    // we ship the URL + metadata over and get back the chunks JSON.
+    // Falls back to the legacy in-process path if env is unset (small PDFs,
+    // local dev, integration tests).
+    if (PDF_WORKER_URL && PDF_WORKER_SECRET) {
+      chunks = await callPdfWorker(fetched.resolvedUrl, seed);
+    } else {
+      chunks = await extractChunksFromPdf(fetched.resolvedUrl, seed);
+    }
   } else {
     if (!fetched.text || fetched.text.length < 200) {
       throw new Error(`html source too short: ${fetched.text.length} chars`);
@@ -502,6 +542,90 @@ async function callSonnetWithText(
  * costs ~$0.30. Worst case (400p cap) ≈ $0.60. Within the consilium's
  * $5/doc budget.
  */
+/**
+ * Round 4 / A6: ASYNC dispatch to Railway pdf-worker (services/pdf-worker/).
+ *
+ * Why async: Supabase Edge wall-clock is ~300s. Worst-case PDF extract
+ * (8 segments × 60s Sonnet calls = ~8 min) exceeds that — even though Railway
+ * itself has no such cap. So Edge fn fires-and-forgets via POST /ingest, and
+ * pdf-worker takes over the entire pipeline (extract → embed → insert →
+ * mark ingest_jobs done/failed). The Edge fn returns within seconds.
+ *
+ * Wire:   PDF_WORKER_URL + PDF_WORKER_SECRET in Supabase secrets.
+ * Auth:   `Authorization: Bearer ${PDF_WORKER_SECRET}`.
+ * Body:   {
+ *           pdf_url, doc_kind, doc_number, title, year, jurisdiction,
+ *           related_act_slug,
+ *           job_id,
+ *           anthropic_api_key, openai_api_key,
+ *           supabase_url, supabase_service_role_key
+ *         }
+ * Reply:  202 Accepted { ok: true, accepted: true, job_id, doc_number }
+ *
+ * The worker then marks the ingest_jobs row done/failed itself via PATCH
+ * (we pass the service-role key in the body — TLS in transit, key only lives
+ * in worker memory for the duration of the job).
+ */
+async function dispatchToPdfWorker(
+  jobId: string,
+  pdfUrl: string,
+  seed: TravauxSeed,
+): Promise<void> {
+  const url = `${PDF_WORKER_URL.replace(/\/$/, "")}/ingest`;
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort("dispatch_timeout"), 30_000);
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${PDF_WORKER_SECRET}`,
+      },
+      body: JSON.stringify({
+        pdf_url: pdfUrl,
+        doc_kind: seed.doc_kind,
+        doc_number: seed.doc_number,
+        title: seed.title,
+        year: seed.year,
+        jurisdiction: seed.jurisdiction,
+        related_act_slug: seed.related_act_slug,
+        source_url: seed.url,
+        job_id: jobId,
+        anthropic_api_key: CLAUDE_API_KEY,
+        openai_api_key: OPENAI_API_KEY,
+        supabase_url: SUPABASE_URL,
+        supabase_service_role_key: SUPABASE_SERVICE_ROLE_KEY,
+      }),
+      signal: ctl.signal,
+    });
+    clearTimeout(timer);
+    const text = await res.text();
+    if (!res.ok) {
+      throw new Error(`pdf-worker ${res.status}: ${text.slice(0, 240)}`);
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      throw new Error(
+        `pdf-worker non-JSON: ${text.slice(0, 200)}`,
+      );
+    }
+    const obj = parsed as { ok?: boolean; accepted?: boolean; error?: string };
+    if (!obj.accepted) {
+      throw new Error(
+        `pdf-worker did not accept: ${obj.error ?? "unknown"}`,
+      );
+    }
+    console.log(
+      `he-fetcher: dispatched ${seed.doc_number} (job=${jobId}) to pdf-worker`,
+    );
+  } catch (e) {
+    clearTimeout(timer);
+    throw e;
+  }
+}
+
 async function extractChunksFromPdf(
   pdfUrl: string,
   seed: TravauxSeed,

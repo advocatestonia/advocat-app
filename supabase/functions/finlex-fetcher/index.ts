@@ -342,6 +342,22 @@ interface StatutePayload {
    * it without that gate re-opens the licence-risk envelope.
    */
   redaktsioon?: "alkup" | "ajantasa";
+
+  /**
+   * Optional pre-resolved canonical Finlex URI. When present the fetcher
+   * skips the listing-walk inside findOriginalActUri / findConsolidatedActUri
+   * and goes straight to the body fetch. This was added 2026-05-15 (A3 task)
+   * because the listing walk on busy years (2002, 2003, 2011) routinely
+   * exceeded the Supabase Edge WORKER_RESOURCE_LIMIT / 150s idle timeout —
+   * the walk can hit 100+ pages × 1.1s and the worker dies mid-scan.
+   *
+   * Format: absolute AKN-LD3 URI exactly as returned by Finlex listing, e.g.
+   *   https://opendata.finlex.fi/finlex/avoindata/v1/akn/fi/act/statute-consolidated/2005/162/fin@20250742
+   *
+   * If omitted, the legacy listing-walk path is used (still correct, just
+   * compute-heavy for some acts).
+   */
+  source_url?: string;
 }
 
 interface CasePayload {
@@ -422,10 +438,29 @@ async function processStatuteJob(
   const redaktsioon: "alkup" | "ajantasa" =
     payload.redaktsioon === "ajantasa" ? "ajantasa" : "alkup";
 
-  await sleep(REQ_INTERVAL_MS);
-  const discovered = redaktsioon === "ajantasa"
-    ? await findConsolidatedActUri(year, actNumber)
-    : await findOriginalActUri(year, actNumber);
+  // Fast path (A3, 2026-05-15): if the operator pre-resolved the URI and
+  // stuck it in payload.source_url, skip the listing walk entirely. Validates
+  // that the URI shape matches the redaktsioon so a caller cannot point an
+  // 'ajantasa' job at an 'alkup' URI (or vice versa) and end up with the
+  // wrong license tag on every chunk.
+  let discovered: { uri: string } | null;
+  if (typeof payload.source_url === "string" && payload.source_url.length > 0) {
+    const wantSegment = redaktsioon === "ajantasa"
+      ? "/act/statute-consolidated/"
+      : "/act/statute/";
+    if (!payload.source_url.includes(wantSegment)) {
+      throw new Error(
+        `payload.source_url (${payload.source_url}) does not match ` +
+          `redaktsioon=${redaktsioon} (expected segment ${wantSegment})`,
+      );
+    }
+    discovered = { uri: payload.source_url };
+  } else {
+    await sleep(REQ_INTERVAL_MS);
+    discovered = redaktsioon === "ajantasa"
+      ? await findConsolidatedActUri(year, actNumber)
+      : await findOriginalActUri(year, actNumber);
+  }
   if (!discovered) {
     const which = redaktsioon === "ajantasa"
       ? "statute-consolidated (CC-BY-NC-4.0)"

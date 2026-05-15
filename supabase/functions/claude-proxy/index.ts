@@ -81,6 +81,12 @@ import {
   flagOn,
   maintenanceResponse,
 } from "../_shared/kill_switches.ts";
+import {
+  appendHaltRailToResponse,
+  appendHaltRailToSystem,
+  detectSeriousCase,
+  type HaltDetection,
+} from "../_shared/halt_rail.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -437,6 +443,38 @@ serve(async (req) => {
       (body as { mode?: unknown }).mode === "legal_planner" &&
       !body.stream &&
       !isAnon;
+
+    // ── Halt-rail: serious-case detection (A7 of вабанк, 2026-05-15) ────────
+    // Detects deportation / custody / criminal / big-claim (>€20K) / ECHR
+    // queries and (a) injects a model-facing directive into body.system so
+    // Claude weaves a "consult licensed asianajaja/vandeadvokaat" advisory
+    // into its reply, and (b) post-appends a visible banner to the final
+    // response text regardless of model compliance. The post-append is the
+    // belt-and-suspenders insurance — never let a high-stakes reply ship
+    // without the "go talk to a licensed advocate" footer.
+    //
+    // Pure-string helpers, no I/O, no exceptions. Safe to call always.
+    // Risk-mitigation rationale: eliminate any "unauthorized practice of law"
+    // claim from Eesti Advokatuur / Suomen Asianajajaliitto.
+    const haltDetection: HaltDetection = detectSeriousCase(globalUserMessage);
+    if (haltDetection.isSerious) {
+      // Inject the model-facing directive. The system_prompt_guard already
+      // approved body.system; we are only APPENDING to it (idempotent), so
+      // no re-validation is needed. The guard 50 KB cap accommodates this
+      // (~1.2 KB directive).
+      if (typeof body.system === "string") {
+        body.system = appendHaltRailToSystem(body.system, haltDetection);
+      } else if (body.system == null) {
+        body.system = appendHaltRailToSystem("", haltDetection);
+      }
+      // Array-form (pre-wrapped content blocks): we leave untouched. The
+      // post-response banner will still fire, so the user still sees the
+      // advisory.
+      console.log(
+        `claude-proxy: halt-rail fired: ${haltDetection.category} ` +
+          `(${haltDetection.reason.slice(0, 80)})`,
+      );
+    }
     let globalCorrectionsRows: CorrectionRow[] = [];
     let globalCorrectionsBlock = "";
     if (globalUserMessage && OPENAI_API_KEY) {
@@ -581,6 +619,11 @@ serve(async (req) => {
           const encoder = new TextEncoder();
 
           // Run consilium asynchronously — the stream closes itself when done.
+          // We intercept the `done` event so we can inject a halt-rail delta
+          // frame BEFORE the client sees `done`. The consilium emits roughly:
+          //   role_start → role_done × N → synthesis_start → delta × M → done
+          // We re-issue `delta` with the banner just before forwarding `done`.
+          let consiliumSynthesisAccumulator = "";
           runConsilium({
             userMessage,
             systemPrompt: consiliumSystemPrompt,
@@ -588,15 +631,50 @@ serve(async (req) => {
             caseContext: "",
             anthropicApiKey: CLAUDE_API_KEY,
             onEvent: (event) => {
+              // Track synthesis text so the halt-rail idempotency check has
+              // accurate "did the model already include the banner" info.
+              if (
+                (event as { type?: string }).type === "delta" &&
+                typeof (event as { text?: string }).text === "string"
+              ) {
+                consiliumSynthesisAccumulator +=
+                  (event as { text: string }).text;
+              }
+              // Halt-rail injection: when consilium signals "done" and the
+              // user message qualified as serious, append the banner BEFORE
+              // forwarding done to the client. We do this inline so a single
+              // SSE pipe still serialises events in order.
+              if (
+                (event as { type?: string }).type === "done" &&
+                haltDetection.isSerious
+              ) {
+                const banner = appendHaltRailToResponse(
+                  consiliumSynthesisAccumulator,
+                  haltDetection,
+                  userMessage,
+                ).slice(consiliumSynthesisAccumulator.length); // banner-only
+                if (banner.length > 0) {
+                  const bannerFrame =
+                    `data: ${JSON.stringify({ type: "delta", text: banner })}\n\n`;
+                  writer.write(encoder.encode(bannerFrame)).catch(() => {});
+                }
+              }
               const frame = `data: ${JSON.stringify(event)}\n\n`;
               writer.write(encoder.encode(frame)).catch(() => {});
             },
           }).then((synthesisText) => {
-            // Fire-and-forget advice digest after consilium.
-            if (!isAnon && persistCaseId && synthesisText) {
+            // Fire-and-forget advice digest after consilium. Use the
+            // banner-augmented text so the digest sees what the user actually
+            // received.
+            const persistedReplyText = appendHaltRailToResponse(
+              synthesisText ?? "",
+              haltDetection,
+              userMessage,
+            );
+            if (!isAnon && persistCaseId && persistedReplyText) {
               appendAdviceDigest({
                 caseId: persistCaseId,
-                replyText: synthesisText,
+                replyText: persistedReplyText,
                 probabilitySignal: "",
                 supabaseUrl: SUPABASE_URL,
                 serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
@@ -842,9 +920,19 @@ serve(async (req) => {
         // is echoed back for client-side telemetry / trace fetch.
         // NOTE: we ship `enforcedReplyText` (post-strip) — bare paragraph
         // citations without a marker were stripped above.
+        //
+        // Halt-rail (A7): if the user message triggered serious-case detection
+        // we append the visible "consult licensed advocate" banner to the
+        // planner's final reply. Idempotent — if the model already wove in
+        // the advisory phrase, the appender no-ops.
+        const finalPlannerText = appendHaltRailToResponse(
+          enforcedReplyText,
+          haltDetection,
+          globalUserMessage,
+        );
         const augmented = {
           mode: "legal_planner",
-          content: [{ type: "text", text: enforcedReplyText }],
+          content: [{ type: "text", text: finalPlannerText }],
           citations,
           message_id: persistMessageId ?? undefined,
           planner: {
@@ -853,6 +941,9 @@ serve(async (req) => {
             cost_cents: loopResult.costCents,
             citation_violations: enforced.violations.length,
           },
+          halt_rail: haltDetection.isSerious
+            ? { category: haltDetection.category }
+            : undefined,
         };
         return new Response(JSON.stringify(augmented), {
           status: 200,
@@ -1027,6 +1118,23 @@ serve(async (req) => {
               serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
             });
           },
+          // Halt-rail trailing banner (A7 of вабанк, 2026-05-15). For serious
+          // cases, return ONLY the banner suffix (not the whole text — that
+          // is what the stream already emitted). The wrapper enqueues it as
+          // one final content_block_delta frame so the Flutter SSE parser
+          // appends it to the visible reply.
+          onAssembledText: haltDetection.isSerious
+            ? (assembled) => {
+              const full = appendHaltRailToResponse(
+                assembled,
+                haltDetection,
+                globalUserMessage,
+              );
+              return full.length > assembled.length
+                ? full.slice(assembled.length)
+                : "";
+            }
+            : undefined,
         });
       return new Response(wrappedBody, {
         status: 200,
@@ -1236,6 +1344,27 @@ serve(async (req) => {
         result.content = [
           { type: "text", text: enforced.cleanedText },
         ];
+      }
+
+      // ── Halt-rail post-append (A7 of вабанк, 2026-05-15) ─────────────────
+      // For serious-case queries (deportation / custody / criminal / >€20K /
+      // ECHR) append the visible "consult licensed asianajaja/vandeadvokaat"
+      // banner to the reply. Idempotent — if the model already wove the
+      // advisory in (it should because of the system directive), this is a
+      // no-op. Rebuild result.content with the augmented text so any
+      // downstream consumer (citations, persistence) sees the final shape.
+      if (haltDetection.isSerious) {
+        const cleanedText = enforced.violations.length > 0
+          ? enforced.cleanedText
+          : replyText;
+        const railedText = appendHaltRailToResponse(
+          cleanedText,
+          haltDetection,
+          globalUserMessage,
+        );
+        if (railedText !== cleanedText) {
+          result.content = [{ type: "text", text: railedText }];
+        }
       }
 
       // ── Persistence (Pkg 2 closeout) ──────────────────────────────────
