@@ -502,13 +502,15 @@ Deno.test("HEF-SPLIT03 — PDF at PAGES_PER_SEGMENT+1 splits into 2 segments", a
   assertEquals(out.segments[1].end_page, PAGES_PER_SEGMENT + 1);
 });
 
-Deno.test("HEF-SPLIT04 — splitting 200 pages → 3 segments (90+90+20)", async () => {
+Deno.test("HEF-SPLIT04 — splitting 200 pages into ceil(200/PAGES_PER_SEGMENT) segments", async () => {
   // 200 pages exercises the realistic HE 28/2003 ulkomaalaislaki case
   // (≈280p but 200 is enough to verify the loop boundary math).
+  // Expected: ceil(200 / PAGES_PER_SEGMENT) segments. With current 50-page cap
+  // that's 4 segments (50+50+50+50); at 90 it was 3 (90+90+20).
   const bytes = await buildBlankPdf(200);
   const out = await splitPdfBytes(bytes);
   assertEquals(out.total_pages, 200);
-  assertEquals(out.segments.length, 3); // ceil(200/90)
+  assertEquals(out.segments.length, Math.ceil(200 / PAGES_PER_SEGMENT));
   // Each segment is a real PDF — verify by reloading.
   for (const seg of out.segments) {
     const reload = await PDFDocument.load(seg.bytes, { ignoreEncryption: true });

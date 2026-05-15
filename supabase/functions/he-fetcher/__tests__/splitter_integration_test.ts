@@ -24,11 +24,11 @@ const HE_72_2002_PDF =
   "https://www.finlex.fi/api/media/government-proposal/715521/mainPdf/main.pdf";
 
 Deno.test({
-  name: "splitter-integration — HE 72/2002 vp splits into 2 segments",
+  name: "splitter-integration — HE 72/2002 vp splits into ceil(pages/cap) segments",
   ignore: Deno.env.get("RUN_LIVE_PDF_TESTS") !== "1",
   fn: async () => {
     const out = await downloadAndSplit(HE_72_2002_PDF, UA, 60_000);
-    // 143 / 90 = 2 segments.
+    // 143 / 50 = 3 segments (was 2 with old 90-page cap).
     assert(out.total_pages > 100, `expected >100 pages, got ${out.total_pages}`);
     assertEquals(out.segments.length, Math.ceil(out.total_pages / PAGES_PER_SEGMENT));
     // Verify each segment is a valid PDF and the page math is right.
@@ -40,14 +40,14 @@ Deno.test({
 });
 
 Deno.test({
-  name: "splitter-integration — HE 226/2018 vp fits in single segment",
+  name: "splitter-integration — HE 226/2018 vp segments match page count",
   ignore: Deno.env.get("RUN_LIVE_PDF_TESTS") !== "1",
   fn: async () => {
     const url =
       "https://www.finlex.fi/api/media/government-proposal/696640/mainPdf/main.pdf";
     const out = await downloadAndSplit(url, UA, 60_000);
-    // 81 pages — single segment.
-    assert(out.total_pages > 50 && out.total_pages < 90);
-    assertEquals(out.segments.length, 1);
+    // 81 pages — at 50-page cap that's 2 segments; at 90 it was 1.
+    assert(out.total_pages > 50 && out.total_pages < 100);
+    assertEquals(out.segments.length, Math.ceil(out.total_pages / PAGES_PER_SEGMENT));
   },
 });

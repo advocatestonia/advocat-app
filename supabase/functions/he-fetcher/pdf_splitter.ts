@@ -1,15 +1,25 @@
 // he-fetcher/pdf_splitter.ts — split large PDFs into ≤PAGES_PER_SEGMENT-page
-// sub-PDFs that fit inside Anthropic's 100-page-per-document cap.
+// sub-PDFs that fit inside Anthropic's 100-page-per-document cap AND the
+// 200K-token context-window cap.
 // -----------------------------------------------------------------------------
-// Problem we are solving (recorded in lesson 2026-05-15):
+// Problem we are solving (recorded in lesson 2026-05-15 — Fix #89 round 2):
 //
-//   Anthropic Messages API rejects a `document` content block whose source
-//   PDF has > 100 pages with:
-//       "messages.0.content.0.pdf.source.base64.data:
-//        A maximum of 100 PDF pages may be provided."
+//   Anthropic Messages API rejects a `document` content block on TWO axes:
 //
-//   This held for both `source.type: "url"` (Anthropic fetches it) and
-//   `source.type: "base64"` paths — the cap is server-side per document.
+//     (a) Page cap — hard server-side:
+//         "messages.0.content.0.pdf.source.base64.data:
+//          A maximum of 100 PDF pages may be provided."
+//
+//     (b) Token cap — context window:
+//         "prompt is too long: 217922 tokens > 200000 maximum"
+//
+//   Round 1 (90-page cap) cleared (a) but not (b): dense Finnish parliamentary
+//   text runs ~3000-3500 tokens/page. 90p × 3500 = 315K tokens → fails.
+//
+//   Round 2 fix: drop PAGES_PER_SEGMENT to 50.
+//     50p × ~3500 tok/page ≈ 175K tokens ≪ 200K cap.
+//     Headroom of ~25K tokens absorbs the system prompt + JSON instructions
+//     + Anthropic's PDF-vision overhead.
 //
 //   The earlier he-fetcher tried `npm:pdfjs-dist@4.0.379/legacy/build/pdf.mjs`
 //   for text extraction but Supabase Edge started rejecting that specifier
@@ -26,16 +36,21 @@
 //
 // Cost guard:
 //   - HARD_MAX_PAGES (default 400) — refuses to split if input is absurdly
-//     long. Sonnet pricing × 4 segments × ~30K tok/segment ≈ $0.45/doc.
-//     A 400-page HE is the long tail; we accept that cost. Anything longer
-//     is almost certainly a misclassified scan or appendix bundle.
+//     long. With 50p segments that's up to 8 Sonnet calls × ~$0.10/call
+//     ≈ $0.80/doc worst case. Anything longer is almost certainly a
+//     misclassified scan or appendix bundle.
 //   - MAX_PDF_BYTES (50 MB) — same as fetch_source.ts to prevent OOM.
 // -----------------------------------------------------------------------------
 
 import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 
-/** Anthropic accepts ≤100 pages/document; we leave 10p headroom. */
-export const PAGES_PER_SEGMENT = 90;
+/**
+ * Anthropic caps: 100 pages/document AND 200K tokens/request.
+ * Finnish parliamentary PDFs run ~3000-3500 tok/page (dense legal prose),
+ * so 50 pages ≈ 175K tokens — well under the 200K token cap with headroom
+ * for the system prompt + JSON output instructions.
+ */
+export const PAGES_PER_SEGMENT = 50;
 /** Refuse to process anything longer than this — cost guard. */
 export const HARD_MAX_PAGES = 400;
 /** Same byte ceiling as fetch_source.ts. */

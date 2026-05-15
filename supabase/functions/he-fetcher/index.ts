@@ -381,9 +381,11 @@ export async function processOneDoc(seed: TravauxSeed): Promise<number> {
   //    call (HTML path).
   let chunks: ExtractedTravauxChunk[];
   if (fetched.contentType === "pdf") {
-    // Download bytes, split via pdf-lib, call Sonnet per ≤90-page segment.
-    // This is the fix for the 100-page Anthropic cap that broke 24/30 jobs
-    // in the 2026-05-14 run.
+    // Download bytes, split via pdf-lib, call Sonnet per ≤PAGES_PER_SEGMENT
+    // (currently 50) segment. This is the fix for the 100-page-cap that
+    // broke 24/30 jobs in 2026-05-14, plus Fix #89 round 2: dropped from 90→50
+    // because dense FI parliamentary text ran the 200K-token context cap
+    // (90p × ~3500 tok/page ≈ 315K).
     chunks = await extractChunksFromPdf(fetched.resolvedUrl, seed);
   } else {
     if (!fetched.text || fetched.text.length < 200) {
@@ -565,7 +567,19 @@ async function extractChunksFromSegment(
     );
     return [];
   }
-  return parseTravauxOutput(raw);
+  // Diagnostic logging for "0 chunks" investigation (Fix #89 round 2).
+  // Helps distinguish: Sonnet refused vs Sonnet replied but parser rejected.
+  const parsed = parseTravauxOutput(raw);
+  const segPages = segment.end_page - segment.start_page + 1;
+  console.log(
+    `he-fetcher: ${seed.doc_number} seg ${segmentIdx} ` +
+      `pages=${segPages} (${segment.start_page}-${segment.end_page}) ` +
+      `bytes=${segment.bytes.byteLength} ` +
+      `sonnet_text_len=${raw.length} ` +
+      `parsed_chunks=${parsed.length} ` +
+      `${parsed.length === 0 ? `head=${raw.slice(0, 200).replace(/\s+/g, " ")}` : ""}`,
+  );
+  return parsed;
 }
 
 async function callAnthropic(body: Record<string, unknown>): Promise<string | null> {
