@@ -50,10 +50,12 @@ Deno.test("LEGAL_LOOKUP_TOOL_USE_INSTRUCTION contains required marker", () => {
     LEGAL_LOOKUP_TOOL_USE_INSTRUCTION,
     LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.trim(),
   );
-  // Sanity: directive is non-trivial but bounded (≤2 KB).
+  // Sanity: directive is non-trivial but bounded. Hard ceiling 2560 — the
+  // Option B (2026-05-15) snippet-only clause pushed the canonical text past
+  // 2 KB. See LLK-T43 in the _shared test suite for the matching guard.
   assert(LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length > 200);
   assert(
-    LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length < 2048,
+    LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length < 2560,
     `directive too long: ${LEGAL_LOOKUP_TOOL_USE_INSTRUCTION.length} bytes`,
   );
 });

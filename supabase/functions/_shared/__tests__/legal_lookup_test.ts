@@ -1130,6 +1130,91 @@ Deno.test("LLK-T43 — TOOL_USE_INSTRUCTION mentions snippet_only + 200-char cap
   );
 });
 
+// ─── LLK-T45 — Phase 1 ajantasa E2E shape: OHO §114 via legal_lookup ────────
+//
+// End-to-end shape test for the Option B Phase-1 ajantasa rollout. Uses the
+// real ROW we INSERTed into law_chunks_v2 for OHO 808/2019 §114 (verified
+// via Management API after ingestion): section_label "OHO 13:114 §",
+// license CC-BY-NC-4.0, display_policy snippet_only, source URL points to
+// the consolidated AKN endpoint.
+//
+// What this test pins down (regression guard):
+//   1. legalLookup truncates the §114 body to ≤200 chars.
+//   2. link_required=true is set on the chunk.
+//   3. The formatter renders the canonical "Read full text on Finlex" link
+//      that the task brief calls out.
+//   4. The rendered model-payload contains "snippet_only" so the model
+//      sees the policy constraint at the prompt level.
+// The actual OHO §114 text is reproduced verbatim from production —
+// `act/statute-consolidated/2019/808/fin@` returned 220 KB AKN-LD3 XML on
+// 2026-05-15; parser yielded `Korkein hallinto-oikeus voi palauttaa...`
+// (Menetetyn määräajan palauttaminen) for section "114" with chapter "13".
+
+Deno.test("LLK-T45 — OHO §114 ajantasa E2E shape: snippet + link + policy", async () => {
+  const PROD_BODY =
+    "Menetetyn määräajan palauttaminen\n\n" +
+    "Korkein hallinto-oikeus voi palauttaa menetetyn määräajan sille, " +
+    "joka 53 §:ssä tarkoitetun laillisen esteen tai muun erittäin painavan " +
+    "syyn vuoksi ei ole voinut määräajassa: panna vireille oikaisuvaatimusta " +
+    "tai valitusta hallintotuomioistuimessa; pyytää muutoksenhakuluvan; " +
+    "tehdä muun toimenpiteen oikeudenkäynnissä.";
+  const PROD_URL =
+    "https://opendata.finlex.fi/finlex/avoindata/v1/akn/fi/" +
+    "act/statute-consolidated/2019/808/fin@";
+
+  const result = await legalLookup(
+    "menetetyn määräajan palauttaminen KHO",
+    "fi",
+    {
+      embed: okEmbed,
+      lawSearch: rpcReturning([
+        // Shape mirrors what law_search_v2 returns post-migration —
+        // section "114", license + display_policy populated.
+        makeRow({
+          id: "ce0b0000-0000-0000-0000-00000000114",
+          act_slug: "fi-oho",
+          act_name: "Laki oikeudenkäynnistä hallintoasioissa",
+          paragraph: "114",
+          title: "Menetetyn määräajan palauttaminen",
+          body: PROD_BODY,
+          source_url: PROD_URL,
+          license: "CC-BY-NC-4.0",
+          display_policy: "snippet_only",
+        } as Partial<LawSearchRpcRow>),
+      ]),
+      fetchFreshness: freshnessReturning({
+        "ce0b0000-0000-0000-0000-00000000114": FRESH_REFRESHED,
+      }),
+    },
+    {
+      specificStatute: "OHO §114",
+      now: () => FROZEN_NOW,
+    },
+  );
+
+  // 1) Chunk surfaces the licence-safe truncation
+  assertEquals(result.chunks.length, 1);
+  const c = result.chunks[0];
+  assertEquals(
+    c.text.length,
+    LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS,
+    "OHO §114 body must be cut to 200 chars",
+  );
+  assertEquals(c.license, "CC-BY-NC-4.0");
+  assertEquals(c.display_policy, "snippet_only");
+  assertEquals(c.link_required, true);
+  assertEquals(c.source_url, PROD_URL);
+
+  // 2) Formatter renders the Finlex link in the way the task brief mandates
+  const formatted = formatLookupResultForModel(result);
+  assertStringIncludes(formatted, "Read full text on Finlex:");
+  assertStringIncludes(formatted, PROD_URL);
+  assertStringIncludes(formatted, "snippet_only");
+  assertStringIncludes(formatted, "do NOT quote more than this snippet");
+  // The opening 200 chars must be visible in the rendered payload.
+  assertStringIncludes(formatted, "Korkein hallinto-oikeus voi palauttaa");
+});
+
 // ─── LLK-T44 — mixed batch: full + snippet_only chunks coexist correctly ────
 
 Deno.test("LLK-T44 — mixed batch returns each chunk under its own policy", async () => {
