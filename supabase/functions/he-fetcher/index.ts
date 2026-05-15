@@ -54,6 +54,11 @@ import {
   parseTravauxOutput,
 } from "./extractor_prompt.ts";
 import { fetchSource } from "./fetch_source.ts";
+import {
+  downloadAndSplit,
+  PdfSegment,
+  segmentBytesToBase64,
+} from "./pdf_splitter.ts";
 import { ALL_SEEDS, TravauxSeed } from "./seed.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
@@ -74,6 +79,11 @@ const MAX_BATCH = 10;
 const CHUNKS_PER_DOC_CAP = 80;
 /** Embed-call timeout — generous because we batch sequentially. */
 const EMBED_TIMEOUT_MS = 10_000;
+/** User-Agent for the PDF download — matches fetch_source.ts. */
+const PDF_USER_AGENT =
+  "AdvocatTravauxFetcher/1.0 (+https://advocat.ee; legal-aid AI)";
+/** GET-PDF timeout. Some Finlex PDFs are 30+ MB so we allow 60s. */
+const PDF_FETCH_TIMEOUT_MS = 60_000;
 
 // -----------------------------------------------------------------------------
 // Types
@@ -361,16 +371,20 @@ async function handleWork(
 // -----------------------------------------------------------------------------
 export async function processOneDoc(seed: TravauxSeed): Promise<number> {
   // 1. Resolve the seed URL to either:
-  //    (a) a PDF URL that Anthropic can fetch directly (preferred path), or
+  //    (a) a PDF URL — download bytes, split into ≤90-page segments, call
+  //        Sonnet per segment with base64 document. Anthropic caps each
+  //        document at 100 pages, so 80+ page HEs MUST be split.
   //    (b) HTML-derived plain text we send inline.
   const fetched = await fetchSource(seed.url);
 
-  // 2. Sonnet extraction.
-  let sonnetRaw: string | null;
+  // 2. Sonnet extraction → aggregate chunks across segments (PDF path) or one
+  //    call (HTML path).
+  let chunks: ExtractedTravauxChunk[];
   if (fetched.contentType === "pdf") {
-    // We HEAD-fetched the PDF only to confirm it exists; hand the URL to
-    // Anthropic and let them ingest it server-side.
-    sonnetRaw = await callSonnetWithPdfUrl(fetched.resolvedUrl, seed);
+    // Download bytes, split via pdf-lib, call Sonnet per ≤90-page segment.
+    // This is the fix for the 100-page Anthropic cap that broke 24/30 jobs
+    // in the 2026-05-14 run.
+    chunks = await extractChunksFromPdf(fetched.resolvedUrl, seed);
   } else {
     if (!fetched.text || fetched.text.length < 200) {
       throw new Error(`html source too short: ${fetched.text.length} chars`);
@@ -378,10 +392,10 @@ export async function processOneDoc(seed: TravauxSeed): Promise<number> {
     const text = fetched.text.length > HE_FETCHER_MAX_INPUT_CHARS
       ? fetched.text.slice(0, HE_FETCHER_MAX_INPUT_CHARS)
       : fetched.text;
-    sonnetRaw = await callSonnetWithText(text, seed);
+    const sonnetRaw = await callSonnetWithText(text, seed);
+    if (!sonnetRaw) throw new Error("sonnet returned null");
+    chunks = parseTravauxOutput(sonnetRaw);
   }
-  if (!sonnetRaw) throw new Error("sonnet returned null");
-  const chunks = parseTravauxOutput(sonnetRaw);
   if (chunks.length === 0) throw new Error("sonnet returned 0 chunks");
   const capped = chunks.slice(0, CHUNKS_PER_DOC_CAP);
 
@@ -463,14 +477,70 @@ async function callSonnetWithText(
   });
 }
 
-async function callSonnetWithPdfUrl(
+/**
+ * PDF extraction with page-splitting.
+ *
+ * Background: Anthropic Messages API has a 100-page hard cap per `document`
+ * content block (URL or base64 path). The previous URL-passthrough
+ * implementation failed on 24/30 seed jobs because most FI HEs are >100p.
+ *
+ * New flow:
+ *   1. Download the PDF bytes once (≤50 MB guard in pdf_splitter).
+ *   2. pdf-lib splits into 90-page segments.
+ *   3. Send each segment to Sonnet as a base64 `document` block.
+ *   4. Concatenate the per-segment JSON arrays.
+ *
+ * Cost: 1 Sonnet call per segment × ~$0.05–0.15 per call. A 200-page HE
+ * costs ~$0.30. Worst case (400p cap) ≈ $0.60. Within the consilium's
+ * $5/doc budget.
+ */
+async function extractChunksFromPdf(
   pdfUrl: string,
   seed: TravauxSeed,
-): Promise<string | null> {
-  // Claude PDF URL source: Anthropic fetches the PDF directly. This avoids
-  // base64-encoding multi-MB PDFs inside the Edge Function (Supabase memory
-  // budget is 256 MB and base64 expansion + JSON envelope can OOM).
-  return await callAnthropic({
+): Promise<ExtractedTravauxChunk[]> {
+  const split = await downloadAndSplit(
+    pdfUrl,
+    PDF_USER_AGENT,
+    PDF_FETCH_TIMEOUT_MS,
+  );
+  console.log(
+    `he-fetcher: ${seed.doc_number} → ${split.total_pages} pages → ` +
+      `${split.segments.length} segment(s)`,
+  );
+  const all: ExtractedTravauxChunk[] = [];
+  for (let i = 0; i < split.segments.length; i++) {
+    const seg = split.segments[i];
+    const segChunks = await extractChunksFromSegment(seg, seed, i + 1);
+    all.push(...segChunks);
+    // Hard cap across the whole doc — if Sonnet starts emitting hundreds of
+    // chunks per segment we cut off early and let CHUNKS_PER_DOC_CAP downstream
+    // do final slicing.
+    if (all.length >= CHUNKS_PER_DOC_CAP * 2) {
+      console.warn(
+        `he-fetcher: chunk flood — stopping after segment ${i + 1}/` +
+          `${split.segments.length} (${all.length} chunks)`,
+      );
+      break;
+    }
+  }
+  return all;
+}
+
+/** Call Sonnet for ONE segment's base64-encoded sub-PDF. */
+async function extractChunksFromSegment(
+  segment: PdfSegment,
+  seed: TravauxSeed,
+  segmentIdx: number,
+): Promise<ExtractedTravauxChunk[]> {
+  const b64 = segmentBytesToBase64(segment.bytes);
+  const segHeader = [
+    buildDocHeader(seed),
+    "",
+    `This is segment ${segmentIdx} (pages ${segment.start_page}–${segment.end_page}).`,
+    "Emit chunks only for §§ discussed in THIS segment. Other segments cover",
+    "the rest of the document.",
+  ].join("\n");
+  const raw = await callAnthropic({
     model: HE_FETCHER_MODEL,
     max_tokens: HE_FETCHER_MAX_TOKENS,
     system: HE_FETCHER_SYSTEM_PROMPT,
@@ -479,12 +549,23 @@ async function callSonnetWithPdfUrl(
       content: [
         {
           type: "document",
-          source: { type: "url", url: pdfUrl },
+          source: {
+            type: "base64",
+            media_type: "application/pdf",
+            data: b64,
+          },
         },
-        { type: "text", text: buildDocHeader(seed) },
+        { type: "text", text: segHeader },
       ],
     }],
   });
+  if (!raw) {
+    console.warn(
+      `he-fetcher: ${seed.doc_number} segment ${segmentIdx} returned null`,
+    );
+    return [];
+  }
+  return parseTravauxOutput(raw);
 }
 
 async function callAnthropic(body: Record<string, unknown>): Promise<string | null> {

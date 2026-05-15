@@ -25,9 +25,22 @@ import {
   normaliseSectionRef,
   parseTravauxOutput,
 } from "../extractor_prompt.ts";
-import { ALL_SEEDS, EE_EELNOU_SEEDS, FI_HE_SEEDS } from "../seed.ts";
+import {
+  ALL_SEEDS,
+  EE_EELNOU_SEEDS,
+  FI_HE_PRIORITY_SEEDS,
+  FI_HE_SEEDS,
+} from "../seed.ts";
 import { bytesToBase64, htmlToText } from "../fetch_source.ts";
 import { clampInt, parseCountRange, seedFromPayload } from "../index.ts";
+import {
+  HARD_MAX_PAGES,
+  MAX_PDF_BYTES,
+  PAGES_PER_SEGMENT,
+  segmentBytesToBase64,
+  splitPdfBytes,
+} from "../pdf_splitter.ts";
+import { PDFDocument } from "https://esm.sh/pdf-lib@1.17.1";
 
 // =============================================================================
 // 1. Model + budget pins
@@ -158,8 +171,23 @@ Deno.test("HEF-S02 — exactly 15 EE eelnõu seeds (consilium spec)", () => {
   assertEquals(EE_EELNOU_SEEDS.length, 15);
 });
 
-Deno.test("HEF-S03 — combined catalogue is 30 docs", () => {
-  assertEquals(ALL_SEEDS.length, 30);
+Deno.test("HEF-S03 — combined catalogue is 33 docs (30 original + 3 priority)", () => {
+  // 15 FI HE + 15 EE eelnõu + 3 FI priority HE (consilium 2026-05-15) = 33
+  assertEquals(ALL_SEEDS.length, 33);
+});
+
+Deno.test("HEF-S03b — 3 priority FI HE seeds added (HE 226/2018, HE 72/2002, HE 1/2016)", () => {
+  assertEquals(FI_HE_PRIORITY_SEEDS.length, 3);
+  const docNumbers = new Set(FI_HE_PRIORITY_SEEDS.map((s) => s.doc_number));
+  assert(docNumbers.has("HE 226/2018 vp"), "missing HE 226/2018 vp (OHO)");
+  assert(docNumbers.has("HE 72/2002 vp"), "missing HE 72/2002 vp (Hallintolaki)");
+  assert(docNumbers.has("HE 1/2016 vp"), "missing HE 1/2016 vp (UlkL)");
+  // All three target Finlex (CC-BY licensed).
+  for (const s of FI_HE_PRIORITY_SEEDS) {
+    assert(s.url.includes("finlex.fi"), `priority seed not on Finlex: ${s.url}`);
+    assertEquals(s.jurisdiction, "fi");
+    assertEquals(s.doc_kind, "HE");
+  }
 });
 
 Deno.test("HEF-S04 — all source_ids unique (PK constraint relies on this)", () => {
@@ -428,4 +456,101 @@ Deno.test("HEF-X01 — ExtractedTravauxChunk shape", () => {
   assertEquals(parsed.length, 1);
   assertEquals(parsed[0].section_ref, "114");
   assertNotEquals(parsed[0].text.length, 0);
+});
+
+// =============================================================================
+// 9. pdf_splitter — splitPdfBytes + helpers
+// =============================================================================
+//
+// We build small in-memory PDFs (1, 90, 91, 200 pages) and verify splitting.
+// pdf-lib runs in Deno cleanly via esm.sh — no native deps.
+// -----------------------------------------------------------------------------
+
+/** Build a synthetic PDF with N blank A4 pages. */
+async function buildBlankPdf(pages: number): Promise<Uint8Array> {
+  const doc = await PDFDocument.create();
+  for (let i = 0; i < pages; i++) doc.addPage([595, 842]); // A4 in points
+  return await doc.save({ useObjectStreams: true });
+}
+
+Deno.test("HEF-SPLIT01 — single-page PDF returns ONE segment, full bytes", async () => {
+  const bytes = await buildBlankPdf(1);
+  const out = await splitPdfBytes(bytes);
+  assertEquals(out.total_pages, 1);
+  assertEquals(out.segments.length, 1);
+  assertEquals(out.segments[0].start_page, 1);
+  assertEquals(out.segments[0].end_page, 1);
+  // Single-segment fast path: same bytes passed through.
+  assertEquals(out.segments[0].bytes, bytes);
+});
+
+Deno.test("HEF-SPLIT02 — PDF at PAGES_PER_SEGMENT stays single segment", async () => {
+  const bytes = await buildBlankPdf(PAGES_PER_SEGMENT);
+  const out = await splitPdfBytes(bytes);
+  assertEquals(out.segments.length, 1);
+  assertEquals(out.segments[0].end_page, PAGES_PER_SEGMENT);
+});
+
+Deno.test("HEF-SPLIT03 — PDF at PAGES_PER_SEGMENT+1 splits into 2 segments", async () => {
+  const bytes = await buildBlankPdf(PAGES_PER_SEGMENT + 1);
+  const out = await splitPdfBytes(bytes);
+  assertEquals(out.total_pages, PAGES_PER_SEGMENT + 1);
+  assertEquals(out.segments.length, 2);
+  assertEquals(out.segments[0].start_page, 1);
+  assertEquals(out.segments[0].end_page, PAGES_PER_SEGMENT);
+  assertEquals(out.segments[1].start_page, PAGES_PER_SEGMENT + 1);
+  assertEquals(out.segments[1].end_page, PAGES_PER_SEGMENT + 1);
+});
+
+Deno.test("HEF-SPLIT04 — splitting 200 pages → 3 segments (90+90+20)", async () => {
+  // 200 pages exercises the realistic HE 28/2003 ulkomaalaislaki case
+  // (≈280p but 200 is enough to verify the loop boundary math).
+  const bytes = await buildBlankPdf(200);
+  const out = await splitPdfBytes(bytes);
+  assertEquals(out.total_pages, 200);
+  assertEquals(out.segments.length, 3); // ceil(200/90)
+  // Each segment is a real PDF — verify by reloading.
+  for (const seg of out.segments) {
+    const reload = await PDFDocument.load(seg.bytes, { ignoreEncryption: true });
+    assertEquals(reload.getPageCount(), seg.end_page - seg.start_page + 1);
+  }
+});
+
+Deno.test("HEF-SPLIT05 — HARD_MAX_PAGES guard rejects absurdly long PDFs", async () => {
+  // Build something just over the cap. We use a tiny page count (3) and
+  // assert the helper rejects when totalPages > HARD_MAX_PAGES by stubbing
+  // the assertion via a synthetic PDF of HARD_MAX_PAGES+1 pages.
+  // (HARD_MAX_PAGES is 400 — building it takes a moment but pdf-lib handles it.)
+  const bytes = await buildBlankPdf(HARD_MAX_PAGES + 1);
+  try {
+    await splitPdfBytes(bytes);
+    throw new Error("expected splitPdfBytes to throw");
+  } catch (e) {
+    const msg = String(e);
+    assert(msg.includes("HARD_MAX_PAGES") || msg.includes("too long"), msg);
+  }
+});
+
+Deno.test("HEF-SPLIT06 — segmentBytesToBase64 round-trip", () => {
+  const bytes = new Uint8Array([0x25, 0x50, 0x44, 0x46]); // "%PDF"
+  assertEquals(segmentBytesToBase64(bytes), "JVBERg==");
+});
+
+Deno.test("HEF-SPLIT07 — invariants: PAGES_PER_SEGMENT ≤ 100 (Anthropic cap)", () => {
+  // Anthropic's hard cap is 100 pages/document. We leave headroom.
+  assert(PAGES_PER_SEGMENT > 0);
+  assert(PAGES_PER_SEGMENT <= 100);
+  assert(HARD_MAX_PAGES >= PAGES_PER_SEGMENT);
+  assert(MAX_PDF_BYTES > 0);
+});
+
+Deno.test("HEF-SPLIT08 — corrupt bytes throw a useful error", async () => {
+  const bytes = new TextEncoder().encode("not a pdf");
+  try {
+    await splitPdfBytes(bytes);
+    throw new Error("expected throw");
+  } catch (e) {
+    const msg = String(e);
+    assert(msg.includes("pdf-lib load failed") || msg.includes("load"), msg);
+  }
 });

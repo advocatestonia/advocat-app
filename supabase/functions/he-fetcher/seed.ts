@@ -407,4 +407,66 @@ export const EE_EELNOU_SEEDS: TravauxSeed[] = [
   },
 ];
 
-export const ALL_SEEDS: TravauxSeed[] = [...FI_HE_SEEDS, ...EE_EELNOU_SEEDS];
+// -----------------------------------------------------------------------------
+// FI — Priority HE additions (consilium 2026-05-15, Sulga + admin-law leverage)
+// -----------------------------------------------------------------------------
+// Three high-value bills the original 15-doc catalogue missed:
+//
+//   1. HE 226/2018 vp — Oikeudenkäynnistä hallintoasioissa (OHO 808/2019).
+//      Critical for Sulga: §114 "menetetyn määräajan palauttaminen" / KHO
+//      restoration jurisdiction. The previous fi-oho seed (HE 226/2009) is
+//      an OLDER amendment to the *predecessor* (HLL) statute; the actual
+//      OHO travaux live in this 2018 bill.
+//
+//   2. HE 72/2002 vp — Hallintolaki (HL 434/2003). Foundational FI admin
+//      law (good faith, hyvä hallinto). Many Migri / KHO opinions cite
+//      HE 72/2002 directly to explain §6 (yhdenvertaisuus) and §31
+//      (selvittämisvelvollisuus).
+//
+//   3. HE 1/2016 vp — Ulkomaalaislain muutos (UlkL). Major 2016 reform
+//      of removal and protection grounds. Sulga case relevance:
+//      §149 deportation + §51 oleskelulupa interpretation.
+//
+// URLs verified 200 + embedded PDF discoverable on 2026-05-15.
+// PDF page counts: 81 / 143 / 45 — within the pdf_splitter's HARD_MAX_PAGES.
+// -----------------------------------------------------------------------------
+export const FI_HE_PRIORITY_SEEDS: TravauxSeed[] = [
+  {
+    source_id: "fi-he-226-2018-oho",
+    doc_kind: "HE",
+    doc_number: "HE 226/2018 vp",
+    year: 2018,
+    related_act_slug: "fi-oho",
+    title:
+      "Hallituksen esitys laiksi oikeudenkäynnistä hallintoasioissa ja eräiksi siihen liittyviksi laeiksi",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2018/226",
+    jurisdiction: "fi",
+  },
+  {
+    source_id: "fi-he-72-2002-hl",
+    doc_kind: "HE",
+    doc_number: "HE 72/2002 vp",
+    year: 2002,
+    related_act_slug: "fi-hallintolaki",
+    title: "Hallituksen esitys hallintolaiksi ja laiksi hallintolainkäyttölain muuttamisesta",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2002/72",
+    jurisdiction: "fi",
+  },
+  {
+    source_id: "fi-he-1-2016-ulkl",
+    doc_kind: "HE",
+    doc_number: "HE 1/2016 vp",
+    year: 2016,
+    related_act_slug: "fi-ulkl",
+    title:
+      "Hallituksen esitys eduskunnalle laeiksi ulkomaalaislain ja eräiden siihen liittyvien lakien muuttamisesta",
+    url: "https://www.finlex.fi/fi/hallituksen-esitykset/2016/1",
+    jurisdiction: "fi",
+  },
+];
+
+export const ALL_SEEDS: TravauxSeed[] = [
+  ...FI_HE_SEEDS,
+  ...EE_EELNOU_SEEDS,
+  ...FI_HE_PRIORITY_SEEDS,
+];
