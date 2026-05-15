@@ -222,6 +222,7 @@ async function uploadToStorage(
     method: "POST",
     headers: {
       "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      "apikey": SUPABASE_SERVICE_ROLE_KEY,
       "Content-Type": contentType,
       "x-upsert": "true",
     },
@@ -243,6 +244,7 @@ async function createSignedUrl(storagePath: string): Promise<string> {
     method: "POST",
     headers: {
       "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      "apikey": SUPABASE_SERVICE_ROLE_KEY,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ expiresIn: SIGNED_URL_EXPIRES_IN }),

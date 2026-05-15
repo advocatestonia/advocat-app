@@ -1,9 +1,9 @@
 // reconcile-subscriptions
 // -----------------------------------------------------------------------------
-// Sprint 0 — daily safety-net for the Sofia bug.
+// Sprint 0 — daily safety-net for the payment activation bug.
 //
-// Problem: stripe-webhook had a hole. Sofia paid, Stripe charged her, but the
-// `checkout.session.completed` event didn't activate Pro in our DB. She was
+// Problem: stripe-webhook had a hole. A user paid, Stripe charged them, but the
+// `checkout.session.completed` event didn't activate Pro in our DB. The user was
 // stuck on free for hours until manually fixed.
 //
 // Fix: even after the webhook is hardened, we run this reconciler daily.

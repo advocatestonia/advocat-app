@@ -325,7 +325,7 @@ serve(async (req) => {
         //
         // is_pro = true is REQUIRED — check-ai-quota Edge Function reads
         // is_pro to decide if quota is enforced; subscription_tier alone is
-        // not enough. Sofia's manual activation 2026-04-26 surfaced this.
+        // not enough. A manual activation in 2026-04-26 surfaced this.
         const { error: profUpErr } = await supabase.from("profiles").upsert({
           id: userId,
           subscription_tier: tier,

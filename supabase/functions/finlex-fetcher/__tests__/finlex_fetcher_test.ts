@@ -56,17 +56,18 @@ Deno.test("index.ts — idempotent insert (delete-then-insert per act_slug)", ()
   );
 });
 
-Deno.test("index.ts — Finlex base URL + statute (alkup, CC-BY 4.0) path", () => {
-  // Licence compliance: we MUST ingest original-statute text (CC BY 4.0)
-  // and NOT statute-consolidated (CC BY-NC 4.0). See
-  // docs/legal/corpus_licences.md §2.2.
+Deno.test("index.ts — Finlex base URL + both alkup + consolidated paths", () => {
+  // Licence posture (2026-05-15 update):
+  //   • alkup (statute, CC BY 4.0)          — default, full display
+  //   • ajantasa (statute-consolidated, CC BY-NC 4.0) — opt-in via
+  //     payload.redaktsioon='ajantasa', tagged snippet_only at ingest.
+  // Both paths must be present. Per Option B from
+  // business/legal/finlex_licensing_decision_2026-05-14.md, the consolidated
+  // pass is now allowed because we cap downstream display at 200 chars +
+  // link-out (legal_lookup.ts LEGAL_LOOKUP_SNIPPET_ONLY_MAX_CHARS).
   assertStringIncludes(indexSrc, "opendata.finlex.fi/finlex/avoindata/v1");
   assertStringIncludes(indexSrc, "act/statute/list");
-  // The forbidden path must NOT appear anywhere in production source.
-  assert(
-    !indexSrc.includes("act/statute-consolidated"),
-    "CC-BY-NC `statute-consolidated` path must not appear in production source",
-  );
+  assertStringIncludes(indexSrc, "act/statute-consolidated");
 });
 
 Deno.test("index.ts — User-Agent header required by Finlex API", () => {
@@ -334,4 +335,72 @@ Deno.test("parseStatuteXml — minimum body length: skips empty sections", () =>
   const sections = parseStatuteXml(akn);
   assertEquals(sections.length, 1);
   assertEquals(sections[0].num, "2");
+});
+
+// ── Option B (2026-05-15) — ajantasa pass + license tagging ─────────────────
+// Per business/legal/finlex_licensing_decision_2026-05-14.md, we ingest
+// consolidated/ajantasa text from /act/statute-consolidated/{year}/{num}/fin@
+// and tag every inserted row with license='CC-BY-NC-4.0' +
+// display_policy='snippet_only'. Original-text (alkup) ingestion remains
+// the default for backward compatibility — payload must opt in via
+// "redaktsioon": "ajantasa".
+
+Deno.test("index.ts — ajantasa pass uses statute-consolidated URI path", () => {
+  // The consolidated ingestion path is the licence-tagged one. It MUST
+  // appear in source — otherwise the ajantasa work is unreachable.
+  assertStringIncludes(indexSrc, "statute-consolidated");
+});
+
+Deno.test("index.ts — ajantasa payload opts in via redaktsioon=ajantasa", () => {
+  // Payload contract: { redaktsioon: 'ajantasa' } switches the fetcher to
+  // the consolidated pass. Without this key the fetcher stays on alkup
+  // (preserves all existing seed_jobs.sql behaviour).
+  assertStringIncludes(indexSrc, "ajantasa");
+  assertStringIncludes(indexSrc, "redaktsioon");
+});
+
+Deno.test("index.ts — ajantasa chunks tagged CC-BY-NC-4.0 / snippet_only", () => {
+  // The licence/policy tagging is what the entire Option B decision pivots
+  // on. If a future refactor drops these literals, snippet enforcement in
+  // legal_lookup silently degrades to full-quote behaviour.
+  assertStringIncludes(indexSrc, "CC-BY-NC-4.0");
+  assertStringIncludes(indexSrc, "snippet_only");
+});
+
+Deno.test("index.ts — source_id accepts YYYY/N AND YYYY/N:ajantasa", () => {
+  // The ajantasa seed (20260515040000_seed_ajantasa_phase1.sql) uses
+  // source_id="YYYY/N:ajantasa" so the UNIQUE constraint on
+  // (source, source_id, target_table) does NOT collide with the matching
+  // alkup row. The fetcher MUST accept both shapes.
+  assertStringIncludes(indexSrc, ":ajantasa");
+  // Regex source matches both forms — anchor on the literal pattern so a
+  // future refactor that drops the suffix tolerance trips this test.
+  assert(
+    /\/\^\(\\d\{4\}\)\\\/\(\\d\+\)\(\?:\\?:ajantasa\)\??\\?\$\//.test(indexSrc) ||
+      indexSrc.includes("(?::ajantasa)?"),
+    "expected source_id regex to tolerate optional :ajantasa suffix",
+  );
+});
+
+Deno.test("index.ts — alkup pass keeps public-domain default (no NC tag)", () => {
+  // The licence assignment must be a CONDITIONAL ternary on redaktsioon
+  // (not an unconditional CC-BY-NC stamp). We detect the ternary by looking
+  // for the structural pattern, then sanity-check that the alkup branch
+  // resolves to 'public-domain'.
+  //
+  // Resilient to formatting — both `?:` operands matched; explicit anchor
+  // on the redaktsioon variable so future refactors that keep the gate but
+  // rename the local don't silently break the assertion.
+  assertStringIncludes(indexSrc, "CC-BY-NC-4.0");
+  assertStringIncludes(indexSrc, "public-domain");
+  assertStringIncludes(indexSrc, "redaktsioon === \"ajantasa\"");
+  // The ternary expression that produces the licence tag must be visible:
+  //   redaktsioon === "ajantasa" ? "CC-BY-NC-4.0" : "public-domain"
+  // (whitespace-tolerant via the regex)
+  const ternary =
+    /redaktsioon\s*===\s*"ajantasa"\s*\?\s*\n?\s*"CC-BY-NC-4\.0"\s*\n?\s*:\s*\n?\s*"public-domain"/;
+  assert(
+    ternary.test(indexSrc),
+    "expected ternary `redaktsioon === 'ajantasa' ? 'CC-BY-NC-4.0' : 'public-domain'`",
+  );
 });

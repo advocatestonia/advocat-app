@@ -215,6 +215,100 @@ async function findOriginalActUri(
   return null;
 }
 
+/**
+ * For a given act (year, number), discover the LATEST consolidated/ajantasa
+ * URI under /akn/fi/act/statute-consolidated/{year}/{num}/fin@.
+ *
+ * Licence posture (Option B, 2026-05-15): consolidated text is Finlex
+ * CC-BY-NC-4.0. We tag every chunk inserted from this URI with
+ * license='CC-BY-NC-4.0' and display_policy='snippet_only' so legal_lookup
+ * caps user-facing quotes at 200 chars + Finlex link. See
+ * `business/legal/finlex_licensing_decision_2026-05-14.md`.
+ *
+ * URL discovery strategy mirrors `findOriginalActUri` (alkup) with two key
+ * differences:
+ *   1. Direct shape `{year}/{num}/fin@` works for some acts (OHO 808/2019
+ *      returns a 220 KB XML body). HOL 434/2003 — and most older acts that
+ *      have been amended multiple times — return 404 on that shape; their
+ *      canonical URI carries an `@YYYYNNNN` expressionId suffix selecting
+ *      the latest redaktsioon.
+ *   2. The listing endpoint is /statute-consolidated/list and emits URIs
+ *      like `2003/434/fin@20250541`. When multiple expression versions are
+ *      present we pick the lexically GREATEST (=latest @-date) because
+ *      Finlex sorts redaktsioonit chronologically and dates are zero-padded.
+ *
+ * Returns null when the act is not present in the consolidated index (some
+ * very old acts have alkup but no consolidated entry).
+ */
+async function findConsolidatedActUri(
+  year: string,
+  actNumber: string,
+): Promise<{ uri: string } | null> {
+  // 1. Direct shape — fast path for un-amended acts.
+  const directUri =
+    `${FINLEX_BASE}/akn/fi/act/statute-consolidated/${year}/${actNumber}/fin@`;
+  const direct = await finlexFetch(directUri);
+  if (direct.ok) {
+    const text = await direct.text();
+    if (text.length > 1000 && text.startsWith("<akomaNtoso")) {
+      return { uri: directUri };
+    }
+  }
+
+  // 2. Listing-based discovery. The endpoint returns `{num}/fin@{expressionId}`
+  // entries for amended acts. We collect every match and pick the latest
+  // expression by lexicographic max (Finlex pads expressionIds, so string
+  // ordering matches chronological ordering for the same act_number).
+  let latestUri: string | null = null;
+  let latestExpressionId: string | null = null;
+  let page = 1;
+  while (page <= 200) {
+    const url = new URL(
+      `${FINLEX_BASE}/akn/fi/act/statute-consolidated/list`,
+    );
+    url.searchParams.set("startYear", year);
+    url.searchParams.set("endYear", year);
+    url.searchParams.set("limit", "10");
+    url.searchParams.set("page", String(page));
+    const resp = await finlexFetch(url.toString(), "application/json");
+    if (!resp.ok) {
+      throw new Error(
+        `Finlex consolidated list ${url}: HTTP ${resp.status}`,
+      );
+    }
+    const rows: Array<{ akn_uri: string; status?: string }> = await resp
+      .json();
+    if (!Array.isArray(rows) || rows.length === 0) break;
+
+    for (const row of rows) {
+      // statute-consolidated URIs have NO `-NNN` file index, only an
+      // optional `@YYYYNNNN` expressionId after `fin@`.
+      const m = row.akn_uri.match(
+        /\/act\/statute-consolidated\/(\d{4})\/(\d+)\/fin@(\d*)$/,
+      );
+      if (!m) continue;
+      const [, yYear, yActNum, expressionId] = m;
+      if (yYear !== year || yActNum !== actNumber) continue;
+      // Empty expression → the "head" URI (rare in this endpoint); take it
+      // if no dated version found yet.
+      if (!expressionId) {
+        if (!latestUri) latestUri = row.akn_uri;
+      } else if (
+        !latestExpressionId || expressionId > latestExpressionId
+      ) {
+        latestExpressionId = expressionId;
+        latestUri = row.akn_uri;
+      }
+    }
+
+    if (rows.length < 10) break;
+    page++;
+    await sleep(REQ_INTERVAL_MS);
+  }
+
+  return latestUri ? { uri: latestUri } : null;
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
@@ -229,6 +323,25 @@ interface StatutePayload {
   act_number: string;   // "434/2003"
   act_abbrev?: string;  // override; otherwise derived from slug
   lang: string;         // "fi"
+  /**
+   * Which Finlex redaktsioon to ingest (Option B, 2026-05-15).
+   *
+   *   'alkup'    — original-as-enacted, /act/statute/.../fin@.
+   *                License: CC-BY-4.0 / public-domain text under §9.
+   *                Display: full (no truncation beyond 700-char snippet).
+   *
+   *   'ajantasa' — consolidated current text,
+   *                /act/statute-consolidated/.../fin@.
+   *                License: CC-BY-NC-4.0 (Finlex compilation right).
+   *                Display: snippet_only (≤200 chars + Finlex link required).
+   *
+   * Defaults to 'alkup' so the existing seed_jobs.sql payloads (which omit
+   * the field) keep their current behaviour. Per
+   * business/legal/finlex_licensing_decision_2026-05-14.md the 'ajantasa'
+   * path is gated by display_policy='snippet_only' in legal_lookup; raising
+   * it without that gate re-opens the licence-risk envelope.
+   */
+  redaktsioon?: "alkup" | "ajantasa";
 }
 
 interface CasePayload {
@@ -287,18 +400,38 @@ async function processStatuteJob(
     throw new Error("payload missing act_slug/act_name/act_number");
   }
 
-  // source_id format: "YYYY/NNN" — split into year + actNumber for listing.
-  const sm = job.source_id.match(/^(\d{4})\/(\d+)$/);
+  // source_id format: "YYYY/NNN" (alkup) or "YYYY/NNN:ajantasa" (Option B,
+  // 2026-05-15). Ajantasa rows use a distinct source_id so the UNIQUE index
+  // on (source, source_id, target_table) does not collide with the matching
+  // alkup row. We strip the suffix here — the discriminator that selects
+  // alkup vs ajantasa endpoint lives in `payload.redaktsioon`, not in the
+  // job key. Either format parses to the same (year, actNumber) pair.
+  const sm = job.source_id.match(/^(\d{4})\/(\d+)(?::ajantasa)?$/);
   if (!sm) {
-    throw new Error(`bad source_id (expected YYYY/N): ${job.source_id}`);
+    throw new Error(
+      `bad source_id (expected YYYY/N or YYYY/N:ajantasa): ${job.source_id}`,
+    );
   }
   const [, year, actNumber] = sm;
 
+  // ── Redaktsioon selection (Option B, 2026-05-15) ──────────────────────
+  // 'alkup'    : default; CC-BY-4.0 / public-domain text, display_policy full.
+  // 'ajantasa' : opt-in; CC-BY-NC-4.0, display_policy snippet_only.
+  // Anything else falls back to 'alkup' rather than throwing — old payloads
+  // (omit the field) remain valid.
+  const redaktsioon: "alkup" | "ajantasa" =
+    payload.redaktsioon === "ajantasa" ? "ajantasa" : "alkup";
+
   await sleep(REQ_INTERVAL_MS);
-  const original = await findOriginalActUri(year, actNumber);
-  if (!original) {
+  const discovered = redaktsioon === "ajantasa"
+    ? await findConsolidatedActUri(year, actNumber)
+    : await findOriginalActUri(year, actNumber);
+  if (!discovered) {
+    const which = redaktsioon === "ajantasa"
+      ? "statute-consolidated (CC-BY-NC-4.0)"
+      : "statute (alkup, CC-BY 4.0)";
     throw new Error(
-      `no statute (alkup, CC-BY 4.0) found for ${year}/${actNumber} (lang=fin)`,
+      `no ${which} found for ${year}/${actNumber} (lang=fin)`,
     );
   }
   const meta: ActMeta = {
@@ -307,24 +440,42 @@ async function processStatuteJob(
     act_full_name: payload.act_name,
     act_number: payload.act_number,
     lang: payload.lang || "fi",
-    source_url: original.uri,
+    source_url: discovered.uri,
   };
 
+  // License + display_policy tags for this pass. Mirrors the column defaults
+  // in law_chunks_v2: alkup rows can rely on the DB defaults, but we set
+  // them explicitly so the ingest is self-documenting and re-runs are
+  // idempotent if the defaults ever change.
+  const chunkLicense = redaktsioon === "ajantasa"
+    ? "CC-BY-NC-4.0"
+    : "public-domain";
+  const chunkDisplayPolicy = redaktsioon === "ajantasa"
+    ? "snippet_only"
+    : "full";
+
   await sleep(REQ_INTERVAL_MS);
-  const resp = await finlexFetch(original.uri);
+  const resp = await finlexFetch(discovered.uri);
   if (!resp.ok) {
-    throw new Error(`fetch ${original.uri}: HTTP ${resp.status}`);
+    throw new Error(`fetch ${discovered.uri}: HTTP ${resp.status}`);
   }
   const xml = await resp.text();
   if (xml.length < 1000) {
-    throw new Error(`fetch ${original.uri}: body too small (${xml.length} bytes)`);
+    throw new Error(
+      `fetch ${discovered.uri}: body too small (${xml.length} bytes)`,
+    );
   }
   const sections = parseStatuteXml(xml);
   if (sections.length === 0) {
-    throw new Error(`parser yielded 0 sections from ${original.uri}`);
+    throw new Error(`parser yielded 0 sections from ${discovered.uri}`);
   }
 
   // ── Idempotent insert: delete existing rows for this (act_slug, lang) first.
+  // Both alkup and ajantasa share the same (act_slug, lang) key; running an
+  // ajantasa pass therefore REPLACES the alkup corpus for that act. This is
+  // intentional — ajantasa is the superset (alkup baseline + amendments +
+  // post-enactment sections like OHO §114), and the legal_lookup display
+  // policy is what enforces the snippet cap downstream.
   const { error: delErr } = await supabase
     .from("law_chunks_v2")
     .delete()
@@ -356,9 +507,12 @@ async function processStatuteJob(
     text: s.heading ? `${s.heading}\n\n${s.text}` : s.text,
     lang: meta.lang,
     source_url: meta.source_url,
-    // version_hash records the source FRBR fileIdx so we can detect when
-    // Finlex republishes the canonical -001 file (rare but possible).
-    version_hash: `alkup-${meta.act_number}`,
+    license: chunkLicense,
+    display_policy: chunkDisplayPolicy,
+    // version_hash records the source redaktsioon — alkup keeps the original
+    // "alkup-{actNumber}" tag; ajantasa rows are stamped "ajantasa-{actNumber}"
+    // so a follow-up reconciliation pass can tell them apart from alkup runs.
+    version_hash: `${redaktsioon}-${meta.act_number}`,
     redaktsioon_valid_from: null,
     redaktsioon_valid_to: null,
   }));

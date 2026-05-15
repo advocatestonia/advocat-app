@@ -72,8 +72,8 @@ export function pickPromptVersion(): {
   version: string;
 } {
   const v = Deno.env.get("EMAIL_AGENT_PROMPT_VERSION") ?? "v1.1-final";
-  if (v === "v1.2-final") {
-    return { prompt: SYSTEM_PROMPT_V1_2, version: "v1.2-final" };
+  if (v === "v1.2.1-final" || v === "v1.2-final") {
+    return { prompt: SYSTEM_PROMPT_V1_2, version: v };
   }
   return { prompt: SYSTEM_PROMPT_V1_1, version: "v1.1-final" };
 }

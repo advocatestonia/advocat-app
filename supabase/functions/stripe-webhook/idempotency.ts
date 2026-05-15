@@ -1,8 +1,8 @@
 // Idempotency + verification helpers for stripe-webhook.
 // -----------------------------------------------------------------------------
 // Ref: silent-failure mode #3 — webhook returns 2xx but DB write was lost.
-// Sofia's manual activation 2026-04-26 surfaced this: profiles.is_pro stayed
-// false even though Stripe charged her. After this fix, a failed write throws,
+// A manual activation in 2026-04-26 surfaced this: profiles.is_pro stayed
+// false even though Stripe charged the user. After this fix, a failed write throws,
 // the catch branch marks status='error', and the function returns 500 so
 // Stripe retries. The bug becomes loud instead of silent.
 //
@@ -74,7 +74,7 @@ export async function checkAndMarkProcessing(
 
 /**
  * Mark the event as successfully processed. user_id is recorded when known
- * so we can later audit "did Sofia's evt_xxx land?" without joining four tables.
+ * so we can later audit whether a given event landed without joining four tables.
  */
 export async function markOk(
   supabase: SupabaseLike,
@@ -134,7 +134,7 @@ export async function markError(
 /**
  * After a profiles upsert/update intended to grant Pro, read the row back and
  * confirm is_pro is the expected value. THIS is the line that would have
- * caught Sofia's bug — without it, the webhook silently returned 200 even
+ * caught the payment activation bug — without it, the webhook silently returned 200 even
  * when the write evaporated.
  */
 export async function verifyProfileWrite(

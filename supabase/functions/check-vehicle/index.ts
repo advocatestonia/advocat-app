@@ -120,43 +120,84 @@ function isPlateValid(plate: string): boolean {
   return /^[A-Za-zÅÄÖÕÜа-яА-Я0-9\-\s]+$/.test(plate);
 }
 
-// Estonia-specific: check insurance via the LKF public endpoint.
-// The endpoint is a JSON-RPC style POST. We wrap any error so callers
-// still get a meaningful response.
+// Estonia-specific: check insurance via the real LKF Oracle form.
+// Step 1: GET the form to extract p_key session token.
+// Step 2: POST the plate number with that token.
+// Parse the HTML response for insurer name and validity.
 async function checkEstonianInsurance(plate: string): Promise<{
   insuranceValid: boolean | null;
   insurer: string | null;
   raw: unknown;
 }> {
+  const LKF_BASE = "https://vs.lkf.ee/pls/xlk/!sysadm.ic_insurance_cover_pkt.show_form";
   try {
-    // Public LKF lookup (no auth). Uses a different endpoint than the
-    // private claims portal; returns { data: { insurer, validUntil } }.
-    const url =
-      "https://www.lkf.ee/api/public/insurance-lookup?reg=" +
-      encodeURIComponent(plate.replace(/\s+/g, "").toUpperCase());
-    const response = await fetch(url, {
+    // Step 1: GET form to get session key
+    const getResp = await fetch(`${LKF_BASE}?p_purpose=CLAIM`, {
       headers: {
-        "Accept": "application/json",
-        "User-Agent":
-          "Mozilla/5.0 (compatible; AdvocatBot/1.0; +https://advocat.ee)",
+        "User-Agent": "Mozilla/5.0 (compatible; AdvocatBot/1.0; +https://advocat.ee)",
+        "Accept": "text/html",
       },
-      // Abort after 5 s so we never block the user longer than necessary.
-      signal: AbortSignal.timeout(5000),
+      signal: AbortSignal.timeout(8000),
     });
-    if (!response.ok) {
-      return { insuranceValid: null, insurer: null, raw: null };
-    }
-    const body = await response.json();
-    const insurer: string | null = body?.insurer ?? body?.data?.insurer ?? null;
-    const validUntil: string | null =
-      body?.validUntil ?? body?.data?.validUntil ?? null;
-    const stillValid = validUntil
-      ? new Date(validUntil) > new Date()
-      : !!insurer;
+    if (!getResp.ok) return { insuranceValid: null, insurer: null, raw: null };
+
+    const html = await getResp.text();
+
+    // Extract p_key hidden field
+    const keyMatch = html.match(/name="p_key"\s+value="([^"]+)"/);
+    if (!keyMatch) return { insuranceValid: null, insurer: null, raw: null };
+    const pKey = keyMatch[1];
+
+    // Today's date in DD.MM.YYYY HH:MM format (Estonian format)
+    const now = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const dateStr = `${pad(now.getDate())}.${pad(now.getMonth() + 1)}.${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+
+    // Step 2: POST plate number
+    const formData = new URLSearchParams({
+      p_key: pKey,
+      p_lang: "EST",
+      p_purpose: "CLAIM",
+      p_reg_no: plate.replace(/\s+/g, "").toUpperCase(),
+      p_vin: "",
+      p_policy_no: "",
+      p_validity_date: dateStr,
+      p_validity_area: "EST",
+      p_victims_area: "EST",
+    });
+
+    const postResp = await fetch(LKF_BASE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "Mozilla/5.0 (compatible; AdvocatBot/1.0; +https://advocat.ee)",
+        "Referer": LKF_BASE,
+      },
+      body: formData.toString(),
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (!postResp.ok) return { insuranceValid: null, insurer: null, raw: null };
+    const resultHtml = await postResp.text();
+
+    // Parse insurer name from result table
+    // LKF returns a table with rows containing insurer name and validity
+    const insurerMatch = resultHtml.match(/Kindlustusandja[^<]*<\/td>\s*<td[^>]*>([^<]+)/i)
+      ?? resultHtml.match(/<td[^>]*class="[^"]*result[^"]*"[^>]*>([^<]{3,60})<\/td>/i);
+    const insurer = insurerMatch ? insurerMatch[1].trim() : null;
+
+    // Check for "not found" or error messages
+    const notFound = /ei leitud|not found|kindlustuseta|puudub/i.test(resultHtml);
+    const hasError = /viga|error|errorMessage/i.test(resultHtml) && !insurer;
+
+    if (notFound) return { insuranceValid: false, insurer: null, raw: { notFound: true } };
+    if (hasError && !insurer) return { insuranceValid: null, insurer: null, raw: null };
+
+    // If insurer found — insurance is valid
     return {
-      insuranceValid: stillValid,
+      insuranceValid: !!insurer,
       insurer,
-      raw: body,
+      raw: { parsed: true },
     };
   } catch (_) {
     return { insuranceValid: null, insurer: null, raw: null };
@@ -218,43 +259,44 @@ serve(async (req) => {
       }, 200);
     }
 
-    // Estonia — attempt the public LKF insurance lookup.
-    const insurance = await checkEstonianInsurance(plate_number);
-
-    const insuranceLookupSucceeded = insurance.insuranceValid !== null;
-    if (!insuranceLookupSucceeded) {
-      return json({
-        found: false,
-        plate: plate_number,
-        country: iso,
-        sourceUrl: registry.sourceUrl,
-        sourceName: registry.sourceName,
-        language: registry.language,
-        isPaidSource: registry.isPaidSource,
-        message:
-          "Estonian Transpordiamet does not publish a free public vehicle-data API. " +
-          "Insurance status could not be verified automatically — please use the portal " +
-          "links below for manual lookup.",
-        inspectionPortal: "https://eteenindus.mnt.ee/",
-        insurancePortal: "https://www.lkf.ee/kindlustuse-kontroll",
-      }, 200);
-    }
-
+    // Estonia: LKF requires reCAPTCHA and Transpordiamet requires X-Road
+    // authentication — neither has a freely callable public API.
+    // Return structured deep-links so the user can check in one tap.
+    const plateCleaned = plate_number.replace(/\s+/g, "").toUpperCase();
     return json({
-      found: true,
-      plate: plate_number.toUpperCase(),
+      found: null, // null = "redirecting, not checked"
+      plate: plateCleaned,
       country: iso,
-      insuranceValid: insurance.insuranceValid,
-      insurer: insurance.insurer,
+      message: "Kontrollimine toimub ametliku portaali kaudu. Palun kasutage allolevaid linke.",
+      message_en: "Vehicle lookup requires official portals. Use the links below to check in one tap.",
+      checkLinks: [
+        {
+          name: "Transpordiamet — sõiduki andmed",
+          url: `https://eteenindus.mnt.ee/main.html#tahistused`,
+          description: "Registreerimistunnistus, tehniline ülevaatus, omanik",
+          free: true,
+          requiresAuth: true,
+        },
+        {
+          name: "LKF — kindlustuse kontroll",
+          url: `https://vs.lkf.ee/pls/xlk/!sysadm.ic_insurance_cover_pkt.show_form?p_purpose=CLAIM`,
+          description: "Liikluskindlustuse kehtivus ja kindlustusandja",
+          free: true,
+          requiresAuth: false,
+          hint: `Sisesta reg. number: ${plateCleaned}`,
+        },
+        {
+          name: "ARK e-teenindus",
+          url: "https://ark.riik.ee/et",
+          description: "Registreerimistunnistuse duplikaat, andmete muutmine",
+          free: false,
+          requiresAuth: true,
+        },
+      ],
       sourceUrl: registry.sourceUrl,
       sourceName: registry.sourceName,
       language: registry.language,
-      isPaidSource: registry.isPaidSource,
-      inspectionPortal: "https://eteenindus.mnt.ee/",
-      insurancePortal: "https://www.lkf.ee/kindlustuse-kontroll",
-      note:
-        "Insurance status from LKF public lookup. Make / model / year / mileage " +
-        "require authenticated access to Transpordiamet (eteenindus.mnt.ee).",
+      isPaidSource: false,
     }, 200);
   } catch (error) {
     return json({ error: String(error) }, 500);

@@ -1,6 +1,6 @@
 // Pure reconciliation logic for reconcile-subscriptions.
 // -----------------------------------------------------------------------------
-// Sprint 0 — daily safety-net for the Sofia bug. Even if a webhook drops,
+// Sprint 0 — daily safety-net for the payment activation bug. Even if a webhook drops,
 // paying users get fixed within 24h.
 //
 // The actual HTTP handler in index.ts wires this to:
@@ -98,7 +98,7 @@ export function tierFromSub(sub: StripeSubscription): string {
 /**
  * Find a profile to attach a Stripe subscription to.
  *   1. stripe_customer_id match (canonical)
- *   2. email match (Sofia's webhook-miss case — customer existed, link missing)
+ *   2. email match (the webhook-miss case — customer existed, link missing)
  *   3. metadata.user_id from the original checkout (last resort)
  */
 export function matchProfile(
