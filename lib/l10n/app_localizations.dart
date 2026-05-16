@@ -4775,7 +4775,7 @@ abstract class AppLocalizations {
   /// No description provided for @freeQuotaExhausted.
   ///
   /// In en, this message translates to:
-  /// **'You\'ve used all 7 free messages this month.'**
+  /// **'You\'ve used all 10 free messages this month.'**
   String get freeQuotaExhausted;
 
   /// No description provided for @upgradeForUnlimited.

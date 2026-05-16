@@ -2601,7 +2601,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get freeQuotaExhausted =>
-      'Olet käyttänyt kaikki 7 ilmaista viestiä tässä kuussa.';
+      'Olet käyttänyt kaikki 10 ilmaista viestiä tässä kuussa.';
 
   @override
   String get upgradeForUnlimited =>

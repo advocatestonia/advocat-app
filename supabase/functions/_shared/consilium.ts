@@ -42,11 +42,11 @@ import {
   selectConsiliumRoles,
 } from "./consilium_roles/index.ts";
 
-const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
+export const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 
 // Model IDs — pinned; update here if rotated.
-const MODEL_SONNET = "claude-sonnet-4-6";
-const MODEL_HAIKU = "claude-haiku-4-5-20251001";
+export const MODEL_SONNET = "claude-sonnet-4-6";
+export const MODEL_HAIKU = "claude-haiku-4-5-20251001";
 
 // ─── SSE event types ─────────────────────────────────────────────────────────
 
@@ -59,7 +59,7 @@ export type ConsiliumSSEEvent =
 
 // ─── Role definitions ────────────────────────────────────────────────────────
 
-interface ConsiliumRole {
+export interface ConsiliumRole {
   name: string;
   model: string;
   maxTokens: number;
@@ -74,7 +74,7 @@ interface ConsiliumRole {
 }
 
 /** Adapter from the v2.2 CompiledRole shape to the runner's ConsiliumRole. */
-function compiledToConsiliumRole(c: CompiledRole): ConsiliumRole {
+export function compiledToConsiliumRole(c: CompiledRole): ConsiliumRole {
   return {
     name: c.name,
     model: c.model,
@@ -84,7 +84,7 @@ function compiledToConsiliumRole(c: CompiledRole): ConsiliumRole {
   };
 }
 
-const ROLES: ReadonlyArray<ConsiliumRole> = [
+export const ROLES: ReadonlyArray<ConsiliumRole> = [
   {
     name: "Процессуалист",
     model: MODEL_SONNET,
@@ -215,7 +215,7 @@ const CLASSIFIER_SYSTEM = `Ты классификатор запросов дл
 // ─── Calibration base rates (injected into every role) ───────────────────────
 // Anchors probability estimates to real-world outcomes, not case-specific optimism.
 
-const CALIBRATION_BLOCK = `
+export const CALIBRATION_BLOCK = `
 ## БАЗОВЫЕ ВЕРОЯТНОСТИ (используй как отправную точку для оценок)
 - KHO valituslupa (право на обжалование): ~15–20% заявок
 - Восстановление пропущенного срока (menetetyn määräajan palauttaminen): ~10–15%
@@ -230,7 +230,7 @@ const CALIBRATION_BLOCK = `
 
 /** Checks if any role opinion signals a dead end (probability < 20% or closed path).
  *  If detected, the Поисковик альтернатив role is forced to activate. */
-function hasDeadEnd(opinions: Array<{ name: string; opinion: string }>): boolean {
+export function hasDeadEnd(opinions: Array<{ name: string; opinion: string }>): boolean {
   const realistOpinion = opinions.find((o) => o.name === "Реалист")?.opinion ?? "";
   // Look for explicit low probability signals
   const lowProbMatch = realistOpinion.match(/(\d+)\s*[–—-]\s*(\d+)\s*%/);
@@ -249,7 +249,7 @@ function hasDeadEnd(opinions: Array<{ name: string; opinion: string }>): boolean
 
 // ─── Internal helpers ─────────────────────────────────────────────────────────
 
-function buildAnthropicHeaders(apiKey: string): Record<string, string> {
+export function buildAnthropicHeaders(apiKey: string): Record<string, string> {
   return {
     "Content-Type": "application/json",
     "x-api-key": apiKey,
@@ -258,7 +258,7 @@ function buildAnthropicHeaders(apiKey: string): Record<string, string> {
 }
 
 /** Call Anthropic non-streaming and return the full text response. */
-async function callAnthropicBlocking(opts: {
+export async function callAnthropicBlocking(opts: {
   model: string;
   system: string;
   userMessage: string;
@@ -295,7 +295,7 @@ async function callAnthropicBlocking(opts: {
 
 /** Run a single role non-streaming. Returns the role opinion text.
  *  Catches all errors and returns the unavailable sentinel instead. */
-async function runRole(
+export async function runRole(
   role: ConsiliumRole,
   userMessage: string,
   baseSystemPrompt: string,

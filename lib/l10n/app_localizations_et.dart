@@ -2600,7 +2600,7 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get freeQuotaExhausted =>
-      'Olete kasutanud kõik 7 tasuta sõnumit selles kuus.';
+      'Olete kasutanud kõik 10 tasuta sõnumit selles kuus.';
 
   @override
   String get upgradeForUnlimited => 'Uuenda Pro-le piiramatuks kasutamiseks';

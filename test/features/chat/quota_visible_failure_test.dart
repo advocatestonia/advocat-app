@@ -98,7 +98,7 @@ void main() {
 
       // The user sees BOTH the limit-reached line and the upgrade hint.
       expect(
-        find.textContaining("You've used all 7 free messages this month."),
+        find.textContaining("You've used all 10 free messages this month."),
         findsOneWidget,
       );
       // Upgrade CTA is present and works.
@@ -189,7 +189,7 @@ void main() {
       // Asserts l10n wiring without locking the exact phrasing — we just
       // confirm the EN string is NOT shown when locale=et.
       expect(
-        find.textContaining("You've used all 7 free messages this month."),
+        find.textContaining("You've used all 10 free messages this month."),
         findsNothing,
       );
     });

@@ -996,7 +996,7 @@
     "quickProfileSavedAck": "Selvä. Mikä on kysymyksesi?",
     "demoLimitReached": "Demoraja saavutettu. Rekisteröidy ilmaiseksi jatkaaksesi.",
     "demoLimitSignUpCta": "Rekisteröidy",
-    "freeQuotaExhausted": "Olet käyttänyt kaikki 7 ilmaista viestiä tässä kuussa.",
+    "freeQuotaExhausted": "Olet käyttänyt kaikki 10 ilmaista viestiä tässä kuussa.",
     "rateLimitTryAgain": "Lähetät liian nopeasti. Yritä uudelleen muutaman sekunnin kuluttua.",
     "upgradeCta": "Päivitä",
     "upgradeForUnlimited": "Päivitä Pro-tilaan saadaksesi rajattomat viestit",

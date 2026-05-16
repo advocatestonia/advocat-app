@@ -22,6 +22,7 @@ import '../../../services/claude_service.dart'
     show ClaudeService, ClaudeServiceException;
 import '../../../services/legal_planner.dart';
 import '../widgets/contract_detected_chip.dart';
+import '../widgets/contract_upsell_card.dart';
 import '../widgets/planner_trail.dart';
 import '../../../services/chat_attachment_service.dart';
 import '../../../services/client_knowledge_service.dart';
@@ -174,11 +175,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   final _knowledgeService = ClientKnowledgeService();
   bool _upgradeBannerDismissed = false;
   int _freeMessagesUsed = 0;
-  // Mirrors AIService.freeTotalLimit (7, per launch pricing refund policy).
+  // Mirrors AIService.freeTotalLimit (10/mo as of Bentley P8 2026-05-16).
   // Updated at runtime from the server response so the UI never drifts from
   // the real quota.
   int _freeMessagesTotal = AIService.freeTotalLimit;
   int _freeMessagesRemaining = AIService.freeTotalLimit;
+
+  // -- Mid-conversation contract upsell (Bentley P8, 2026-05-16) --
+  //
+  // Free users see a one-shot soft nudge to upload a contract once their
+  // message counter crosses the threshold (default 7 of 10). The card
+  // sits inline in the chat list, NOT as a modal. It is dismissed either
+  // by tapping the "X" or by tapping the CTA (which also triggers file
+  // picker). Pro users never see it (no friction).
+  //
+  // The threshold is intentionally NOT at 9 because we want users to act
+  // on the nudge while they still have a few free messages left to react
+  // to the resulting contract review summary.
+  static const int _contractUpsellTriggerCount = 7;
+  bool _contractUpsellDismissed = false;
   LegalCase? _currentCase;
 
   // -- Voice state --
@@ -2385,7 +2400,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               padding:
                   const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: _freeMessagesUsed >= _freeMessagesTotal - 5
+                color: _freeMessagesUsed >= _freeMessagesTotal - 3
                     ? AppColors.warning.withValues(alpha: 0.12)
                     : AppColors.accent.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppRadius.full),
@@ -2396,7 +2411,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   Icon(
                     Icons.chat_bubble_outline_rounded,
                     size: 12,
-                    color: _freeMessagesUsed >= _freeMessagesTotal - 5
+                    color: _freeMessagesUsed >= _freeMessagesTotal - 3
                         ? AppColors.warning
                         : AppColors.accent,
                   ),
@@ -2406,7 +2421,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w700,
-                      color: _freeMessagesUsed >= _freeMessagesTotal - 5
+                      color: _freeMessagesUsed >= _freeMessagesTotal - 3
                           ? AppColors.warning
                           : AppColors.accent,
                     ),
@@ -2728,6 +2743,19 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     // upload bubble when classify-contract reported is_contract == true.
     // The chip is single-use — tapping or starting a new upload clears it.
     final contractChipSlot = _detectedContractDocumentId != null ? 1 : 0;
+    // Mid-conversation contract upsell (Bentley P8, 2026-05-16): shown to
+    // free users once they cross _contractUpsellTriggerCount messages.
+    // Pro users + dismissed-this-session + sample-case view never see it.
+    // Also suppressed while a contract-detected chip is already pending
+    // (the user just uploaded something — no need to nag).
+    final aiSvc = ref.read(aiServiceProvider);
+    final shouldShowContractUpsell = !aiSvc.isProUser &&
+        widget.caseId != SampleCase.id &&
+        !_contractUpsellDismissed &&
+        _detectedContractDocumentId == null &&
+        _freeMessagesUsed >= _contractUpsellTriggerCount &&
+        _freeMessagesUsed < _freeMessagesTotal;
+    final contractUpsellSlot = shouldShowContractUpsell ? 1 : 0;
     // fix/copy-selection: wrap the message list in SelectionArea so users
     // can drag-select text across bubbles on Flutter Web without the
     // per-bubble GestureDetector swallowing pan events. This is the
@@ -2741,15 +2769,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
         itemCount: _messages.length +
             contractChipSlot +
+            contractUpsellSlot +
             chipsSlot +
             examplePromptsSlot +
             intakeSlot +
             typingSlot +
             trailSlot,
         itemBuilder: (context, index) {
-          // Order: messages → contract chip (if pending) → welcome chips
-          // (if active) → quick-profile intake (if active) → typing
-          // indicator → reasoning trail.
+          // Order: messages → contract chip (if pending) → contract upsell
+          // (mid-flow nudge) → welcome chips (if active) → quick-profile
+          // intake (if active) → typing indicator → reasoning trail.
           if (contractChipSlot == 1 && index == _messages.length) {
             return ContractDetectedChip(
               key: const Key('contract_detected_chip'),
@@ -2758,7 +2787,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             );
           }
           final messagesAndContract = _messages.length + contractChipSlot;
-          if (_showWelcomeChips && index == messagesAndContract) {
+          if (contractUpsellSlot == 1 && index == messagesAndContract) {
+            final locale = Localizations.localeOf(context).languageCode;
+            return ContractUpsellCard(
+              key: const Key('contract_upsell_card_slot'),
+              locale: locale,
+              onUpload: _onContractUpsellUpload,
+              onDismiss: _onContractUpsellDismiss,
+            );
+          }
+          final messagesAndUpsell = messagesAndContract + contractUpsellSlot;
+          if (_showWelcomeChips && index == messagesAndUpsell) {
             final locale = Localizations.localeOf(context).languageCode;
             return ChatWelcomeChips(
               locale: locale,
@@ -2766,7 +2805,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               onSkip: _onWelcomeSkip,
             );
           }
-          final messagesAndChips = messagesAndContract + chipsSlot;
+          final messagesAndChips = messagesAndUpsell + chipsSlot;
           if (examplePromptsSlot == 1 && index == messagesAndChips) {
             final locale = Localizations.localeOf(context).languageCode;
             return ExamplePromptCards(
@@ -3927,6 +3966,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       debugPrint('classify-contract failed: $e');
       // Swallow — chip stays hidden, normal chat continues.
     }
+  }
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // Mid-conversation contract upsell (Bentley P8, 2026-05-16)
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /// User tapped the upsell CTA — open the file picker and dismiss the
+  /// card for the rest of the session. The card itself already wrote a
+  /// `contract_upsell_click` event to `ab_events`; we only need to clean
+  /// up local state and route to upload.
+  void _onContractUpsellUpload() {
+    setState(() => _contractUpsellDismissed = true);
+    unawaited(_pickAndAttachFile());
+  }
+
+  /// User tapped the "X" — hide for the rest of the session. The card
+  /// already wrote `contract_upsell_dismiss` before invoking us.
+  void _onContractUpsellDismiss() {
+    setState(() => _contractUpsellDismissed = true);
   }
 
   /// Tapped the contract-detected chip → trigger the contract-review tool

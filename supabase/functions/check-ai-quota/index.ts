@@ -39,10 +39,14 @@ const corsHeaders = {
     "Authorization, Content-Type, apikey, x-client-info",
 };
 
-// Launch pricing refund policy: 14 days OR 7 AI responses, whichever comes
-// first. The free tier must enforce the 7-response ceiling so users cannot
-// rack up unlimited Claude calls on the free plan.
-const FREE_LIMIT = 7;
+// Free tier monthly quota (conversion lever, Bentley P8 2026-05-16).
+// Bumped 7 → 10 to give users more room to hit "aha" before paywall —
+// avg conversation = 8 messages, so 7 was cutting them off mid-train.
+// NOTE: the launch pricing REFUND policy (14 days OR 7 AI responses) is a
+// separate ceiling in supabase/functions/_shared/refund_policy.ts and is
+// intentionally NOT bumped — refund eligibility is a legal/financial
+// promise to paying users and stays at 7.
+const FREE_LIMIT = 10;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {

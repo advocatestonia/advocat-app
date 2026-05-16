@@ -627,17 +627,22 @@ class AIService {
     _responseCache[key] = _CachedResponse(response, DateTime.now());
   }
 
-  // ── Free-tier TOTAL limit (7 AI responses, per launch pricing policy) ──
+  // ── Free-tier TOTAL limit (conversion lever, Bentley P8 2026-05-16) ──
   //
   // Enforced server-side in the `check-ai-quota` Edge Function. This
   // constant is the fallback limit used when building fall-closed
   // denials and must match `FREE_LIMIT` in
   // supabase/functions/check-ai-quota/index.ts.
   //
+  // Bumped 7 → 10 on 2026-05-16: financial analyst observed avg
+  // conversation = 8 messages, so the old 7 cap was cutting users off
+  // before they hit the "aha" moment. Predicted 2-3x conversion lift.
+  // The refund policy (14 days OR 7 AI responses) is a separate ceiling
+  // in supabase/functions/_shared/refund_policy.ts and stays at 7.
+  //
 
-  /// Maximum free AI responses per user (aligned with the launch pricing
-  /// refund policy: 14 days OR 7 AI responses).
-  static const int _freeTotalLimit = 7;
+  /// Maximum free AI responses per user per month.
+  static const int _freeTotalLimit = 10;
 
   /// Public accessor for [_freeTotalLimit] so UI layers can render the
   /// current limit without duplicating the constant. Matches the server

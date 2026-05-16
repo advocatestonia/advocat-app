@@ -58,6 +58,7 @@ import {
 } from "../_shared/corrections_retriever.ts";
 import { enqueueGoldCandidate } from "../_shared/gold_enqueue.ts";
 import { runConsilium, shouldRunConsilium } from "../_shared/consilium.ts";
+import { runConsiliumV3 } from "../_shared/consilium_v3.ts";
 import { extractAndPatchFacts } from "../_shared/fact_extractor.ts";
 import { appendAdviceDigest } from "../_shared/advice_digest.ts";
 import { LEGAL_LOOKUP_TOOL_USE_INSTRUCTION } from "../_shared/legal_lookup.ts";
@@ -84,9 +85,23 @@ import {
 import {
   appendHaltRailToResponse,
   appendHaltRailToSystem,
+  detectLangFromMessage,
   detectSeriousCase,
   type HaltDetection,
+  recordHaltRailTrigger,
 } from "../_shared/halt_rail.ts";
+// P3 anti-abuse (Bentley batch, 2026-05-15):
+//   • spend_tracker  — soft daily cap on Anthropic API spend ($500/day)
+//   • rate_limit     — DB-backed sliding-window per-user / per-IP limiter
+// Both are best-effort: fail OPEN on DB errors so the proxy stays up.
+import {
+  capExceededBody,
+  checkDailyCap,
+  DAILY_CAP_CENTS,
+  logIncident,
+  recordSpend,
+} from "../_shared/spend_tracker.ts";
+import { checkAndRecordRateLimit } from "../_shared/rate_limit.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -143,6 +158,18 @@ const CORRECTIONS_SIMILARITY_THRESHOLD = parseFloat(
 const RATE_LIMIT_MAX = 5;
 const ANON_RATE_LIMIT_PER_MINUTE = 1;
 
+// P3 anti-abuse (2026-05-15) — DB-backed hard cap on top of the in-process
+// limiter. The in-process counter (auth.ts) handles the common case fast;
+// the DB-backed cap below is authoritative across cold starts/regions and
+// catches an attacker who burns cold starts to bypass the Map.
+//
+//   USER_HARD_CAP_PER_MINUTE = 30    one user, 30 requests / 60s, regardless of plan
+//   DEMO_IP_HARD_CAP_PER_MINUTE = 60 demo IP cap (already 1/min in-process, this is
+//                                     the absolute ceiling; useful if owner ever
+//                                     raises ANON_RATE_LIMIT_PER_MINUTE).
+const USER_HARD_CAP_PER_MINUTE = 30;
+const DEMO_IP_HARD_CAP_PER_MINUTE = 60;
+
 const ALLOWED_MODELS = new Set([
   "claude-sonnet-4-20250514",
   "claude-haiku-4-5-20251001",
@@ -192,6 +219,96 @@ serve(async (req) => {
     // the auth gate so we know `isAnon` reliably.
     if (isAnon && flagOn("ANON_CHAT_DISABLED")) {
       return anonDisabledResponse();
+    }
+
+    // ── 1c. P3 anti-abuse: DB-backed hard cap (2026-05-15) ────────────────
+    // The in-process Map in auth.ts is fast but only authoritative per
+    // cold-start instance. A determined attacker can cycle cold starts to
+    // bypass it. The DB-backed hit_rate_limit RPC is the authoritative
+    // ceiling across instances/regions.
+    //   • Authenticated user:  30 req / 60s / user
+    //   • Demo (anon) caller:  60 req / 60s / IP
+    // Fails open on DB errors (degraded=true ⇒ log warn, allow through —
+    // the in-process Map already kept us inside a safe envelope).
+    const principalForHardCap = gate.user.id; // 'anon:<ip>' or user UUID
+    const hardCapLimit = isAnon
+      ? DEMO_IP_HARD_CAP_PER_MINUTE
+      : USER_HARD_CAP_PER_MINUTE;
+    const hardCap = await checkAndRecordRateLimit({
+      bucket: isAnon ? "claude-proxy-demo" : "claude-proxy",
+      principal: principalForHardCap,
+      maxPerMinute: hardCapLimit,
+    });
+    if (!hardCap.allowed) {
+      // Best-effort: log incident for the owner's incident review query.
+      logIncident({
+        kind: "rate_limit_triggered",
+        severity: "warn",
+        source: "claude-proxy",
+        message: `hard cap ${hardCapLimit}/min exceeded`,
+        details: { count: hardCap.count, isAnon },
+        principal: principalForHardCap,
+      }).catch(() => {});
+      return new Response(
+        JSON.stringify({
+          error: "Rate limit exceeded. Try again in a minute.",
+          bucket: isAnon ? "claude-proxy-demo" : "claude-proxy",
+          limit: hardCapLimit,
+          windowMs: hardCap.windowMs,
+          count: hardCap.count,
+        }),
+        {
+          status: 429,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+            "Retry-After": String(Math.ceil(hardCap.windowMs / 1000)),
+          },
+        },
+      );
+    }
+
+    // ── 1d. P3 anti-abuse: Anthropic daily spend cap (soft) ───────────────
+    // $500/day default (override via ANTHROPIC_DAILY_CAP_CENTS env). Refuses
+    // new requests with 503 once the cap is hit. The Anthropic CONSOLE limit
+    // is the hard cap — this is defence-in-depth that gives us better UX
+    // (503 "try later" vs broken chat) and a chance to pause before hitting
+    // the console cap. Skip for anon callers — their volume is bounded by
+    // ANON_MAX_TOKENS and the 1/min demo limit; the cap is for paid abuse.
+    if (!isAnon) {
+      const spendCheck = await checkDailyCap();
+      if (!spendCheck.allowed) {
+        // Cap breached — refuse and log.
+        logIncident({
+          kind: "cap_breach",
+          severity: "critical",
+          source: "claude-proxy",
+          message: `Anthropic daily cap ${DAILY_CAP_CENTS}c reached`,
+          details: {
+            spent_cents: spendCheck.spentCents,
+            cap_cents: spendCheck.capCents,
+          },
+          principal: principalForHardCap,
+        }).catch(() => {});
+        return new Response(
+          JSON.stringify(capExceededBody(spendCheck.spentCents)),
+          {
+            status: 503,
+            headers: {
+              ...corsHeaders,
+              "Content-Type": "application/json",
+              "Retry-After": "3600",
+            },
+          },
+        );
+      }
+      if (spendCheck.warning) {
+        // Approaching cap — log so the owner can top up Anthropic or raise
+        // the limit before traffic gets refused.
+        console.warn(
+          `claude-proxy: anthropic daily spend at ${spendCheck.spentCents}c / ${spendCheck.capCents}c`,
+        );
+      }
     }
 
     // ── 2. Server-side quota check (SECURITY U3) ──────────────────────────
@@ -474,6 +591,19 @@ serve(async (req) => {
         `claude-proxy: halt-rail fired: ${haltDetection.category} ` +
           `(${haltDetection.reason.slice(0, 80)})`,
       );
+
+      // P5 (2026-05-15): persist one row per trigger to halt_rail_triggers.
+      // Fire-and-forget; the helper swallows all errors. We pass userId
+      // only for authenticated callers — anon callers get NULL (the
+      // anon:<hash> pseudo-id is never persisted, see migration notes).
+      const metricUserId = isAnon ? null : gate.user.id;
+      recordHaltRailTrigger({
+        detection: haltDetection,
+        language: detectLangFromMessage(globalUserMessage),
+        userId: metricUserId,
+        supabaseUrl: SUPABASE_URL,
+        serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
+      }).catch(() => {/* already swallowed inside */});
     }
     let globalCorrectionsRows: CorrectionRow[] = [];
     let globalCorrectionsBlock = "";
@@ -622,9 +752,22 @@ serve(async (req) => {
           // We intercept the `done` event so we can inject a halt-rail delta
           // frame BEFORE the client sees `done`. The consilium emits roughly:
           //   role_start → role_done × N → synthesis_start → delta × M → done
+          //   (v3 adds: round_1_done, round_2_attack×3, round_2_done,
+          //    round_3_defense×N, round_3_done, synthesis_done, verifier_ok)
           // We re-issue `delta` with the banner just before forwarding `done`.
+          //
+          // CONSILIUM_V3_ENABLED feature flag (default OFF in prod for safety).
+          // Set to "1" or "true" in Supabase env to enable adversarial v3.
+          // After manual testing flip flag → 100% v3.
           let consiliumSynthesisAccumulator = "";
-          runConsilium({
+          const consiliumV3Enabled =
+            (Deno.env.get("CONSILIUM_V3_ENABLED") ?? "")
+              .toLowerCase().trim() === "true" ||
+            Deno.env.get("CONSILIUM_V3_ENABLED") === "1";
+          const consiliumRunner = consiliumV3Enabled
+            ? runConsiliumV3
+            : runConsilium;
+          consiliumRunner({
             userMessage,
             systemPrompt: consiliumSystemPrompt,
             ragContext,
@@ -1093,6 +1236,13 @@ serve(async (req) => {
       // updater. Persistence opt-in is the same as the non-streaming branch:
       // when persistMessageId / persistCaseId / persistUserId are all set,
       // the wrap fires onCitations to upsert rows via service-role.
+      // P3 anti-abuse — record an estimated spend for this streaming turn.
+      // We can't snoop the usage block out of the SSE pipe without extra
+      // parsing, so we conservatively estimate using request-side numbers
+      // (input tokens from messages, output tokens = max_tokens upper bound).
+      // Overcounts vs reality — safe direction for a soft cap.
+      recordAnthropicSpendFromRequest(body);
+
       const wrappedBody = claudeStreamResponse.body === null
         ? null
         : wrapAnthropicStreamWithCitations(claudeStreamResponse.body, {
@@ -1198,6 +1348,11 @@ serve(async (req) => {
         [key: string]: unknown;
       };
 
+      // P3 anti-abuse — book this turn's spend against the daily cap.
+      // Best-effort, fire-and-forget. Uses Anthropic's authoritative
+      // usage.input/output_tokens, so this is the most accurate path.
+      recordAnthropicSpendFromResult(result, body);
+
       // ── Tool-use execution (2026-05-07) ───────────────────────────────
       // When Anthropic returns stop_reason="tool_use", extract the
       // tool_use blocks, execute them (send_email / generate_pdf), and
@@ -1257,6 +1412,10 @@ serve(async (req) => {
               content?: unknown;
               [key: string]: unknown;
             };
+            // P3 anti-abuse — book the follow-up's spend too. Tool follow-ups
+            // can be expensive (full max_tokens budget for the final answer),
+            // so missing this would underreport the per-turn cost ~2x.
+            recordAnthropicSpendFromResult(followUpResult, followUpBody);
             // Run citations on the follow-up text.
             const followUpText = concatAnthropicTextBlocks(
               followUpResult.content,
@@ -1883,6 +2042,72 @@ async function runLlamaFallbackForStream(
       "X-Advocat-Model-Used": LLAMA_MODEL_ID,
     },
   });
+}
+
+/**
+ * P3 anti-abuse helper — record an Anthropic response in
+ * `anthropic_daily_spend` for the soft daily cap. Best-effort; never
+ * throws. Reads `usage.input_tokens` / `usage.output_tokens` from the
+ * Anthropic result blob and the model id from `result.model` (falling
+ * back to the request body's model when absent — happens for synthetic
+ * results from credit-fallback / Llama).
+ *
+ * Streaming branch note: Anthropic emits `usage` in the final
+ * `message_delta` event. We can't easily snoop that without re-parsing
+ * the SSE wrapper, so for streaming we fall back to estimating output
+ * tokens from `body.max_tokens` (worst case). This overcounts when the
+ * model finishes early, which is the SAFE direction for a soft cap.
+ */
+function recordAnthropicSpendFromResult(
+  result: Record<string, unknown>,
+  body: Record<string, unknown>,
+): void {
+  try {
+    const usage = (result.usage as Record<string, unknown>) ?? {};
+    const inputTokens = Number(usage.input_tokens ?? 0);
+    const outputTokens = Number(usage.output_tokens ?? 0);
+    const model = String(
+      result.model ?? body.model ?? "claude-haiku-4-5-20251001",
+    );
+    if (inputTokens === 0 && outputTokens === 0) return; // nothing to record
+    recordSpend(inputTokens, outputTokens, model).catch(() => {});
+  } catch (_e) {
+    /* best-effort */
+  }
+}
+
+/**
+ * Streaming-branch estimator: when we forward the SSE pipe to the client we
+ * don't read usage out of the stream, so we record a conservative estimate
+ * built from request-side numbers. Always overcounts vs reality, which is
+ * the safe direction for a soft cap.
+ */
+function recordAnthropicSpendFromRequest(
+  body: Record<string, unknown>,
+): void {
+  try {
+    const model = String(body.model ?? "claude-haiku-4-5-20251001");
+    let inputTokens = 0;
+    if (Array.isArray(body.messages)) {
+      for (const m of body.messages as Array<{ content?: unknown }>) {
+        if (typeof m.content === "string") {
+          inputTokens += Math.ceil(m.content.length / 4);
+        } else if (Array.isArray(m.content)) {
+          for (const part of m.content as Array<{ text?: unknown }>) {
+            if (typeof part.text === "string") {
+              inputTokens += Math.ceil(part.text.length / 4);
+            }
+          }
+        }
+      }
+    }
+    const outputTokens = typeof body.max_tokens === "number"
+      ? body.max_tokens
+      : 1024;
+    recordSpend(inputTokens, outputTokens, model).catch(() => {});
+  } catch (_e) {
+    /* best-effort */
+  }
 }
 
 /**

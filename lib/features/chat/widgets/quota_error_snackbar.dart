@@ -98,9 +98,12 @@ SnackBar buildQuotaErrorSnackBar({
       break;
     case QuotaDenialReason.freeQuotaExhausted:
       // Combine the two l10n keys so the user sees both lines in one
-      // snackbar — "you've used all 7 / upgrade to Pro for unlimited".
+      // snackbar — "you've used all 10 / upgrade to Pro for unlimited".
+      // Free-tier limit bumped 7 → 10 in Bentley P8 (2026-05-16); the
+      // localised string ships with {count} so this fallback is the only
+      // place a literal needs updating.
       final exhausted = l10n?.freeQuotaExhausted ??
-          "You've used all 7 free messages this month.";
+          "You've used all 10 free messages this month.";
       final upgrade = l10n?.upgradeForUnlimited ?? 'Upgrade to Pro for unlimited';
       message = '$exhausted $upgrade';
       ctaLabel = l10n?.upgradeCta ?? 'Upgrade';

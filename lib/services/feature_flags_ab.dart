@@ -34,8 +34,24 @@ import 'dart:math' as math;
 class AbExperiment {
   static const String pricing = 'pricing';
 
+  /// Bentley P8 (2026-05-16) — mid-conversation contract-review upsell
+  /// shown at message 7 of the 10-message free tier. Tracks impression
+  /// vs CTR vs subsequent upload so we can measure whether nudging the
+  /// user mid-flow lifts contract review starts.
+  ///
+  /// Events used:
+  ///   - contract_upsell_shown   : card rendered into the chat stream
+  ///   - contract_upsell_click   : user tapped the upload CTA
+  ///   - contract_upsell_dismiss : user tapped the dismiss "X"
+  ///   - contract_upsell_upload  : a contract upload completed within the
+  ///                                same session after a `shown` event
+  ///
+  /// Currently single-variant ("v1") so we get baseline CTR before we
+  /// branch into copy / placement experiments.
+  static const String contractUpsell = 'contract_upsell';
+
   /// All registered experiment keys — used by tests + admin tooling.
-  static const Set<String> known = {pricing};
+  static const Set<String> known = {pricing, contractUpsell};
 
   /// Returns true if [key] is a registered experiment. Unknown keys are
   /// rejected to prevent silent typos.

@@ -1011,7 +1011,7 @@
     "refresh": "Refresh",
     "demoLimitReached": "Demo limit reached. Sign up for free to continue.",
     "demoLimitSignUpCta": "Sign up",
-    "freeQuotaExhausted": "You've used all 7 free messages this month.",
+    "freeQuotaExhausted": "You've used all 10 free messages this month.",
     "upgradeForUnlimited": "Upgrade to Pro for unlimited",
     "upgradeCta": "Upgrade",
     "rateLimitTryAgain": "Sending too fast. Try again in a few seconds.",

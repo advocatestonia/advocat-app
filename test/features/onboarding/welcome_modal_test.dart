@@ -95,6 +95,12 @@ void main() {
       );
       await tester.tap(find.text('open'));
       await tester.pumpAndSettle();
+      // The featured upload card (Bentley P8 reorder, 2026-05-16) made the
+      // modal taller than the default 800x600 test viewport — the lower
+      // cards can scroll partially off-screen. `ensureVisible` brings the
+      // target row into the SingleChildScrollView before we tap it.
+      await tester.ensureVisible(find.byKey(cardKey));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(cardKey));
       await tester.pumpAndSettle();
       return out!;

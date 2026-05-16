@@ -1,3 +1,5 @@
+import 'dart:async' show unawaited;
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +12,7 @@ import 'config/theme.dart';
 import 'config/router.dart';
 import 'l10n/app_localizations.dart';
 import 'shared/error_boundary.dart';
+import 'shared/telemetry_sink.dart';
 import 'widgets/support/support_fab.dart';
 
 /// Language data used across the app (onboarding, home, settings).
@@ -67,6 +70,22 @@ Future<void> main() async {
   const supabaseAnonKey = AppConfig.supabaseAnonKey;
   if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
     await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+
+    // P5 of Bentley batch (2026-05-15): wire the Sentry-lite telemetry sink
+    // to the global error boundary. The sink is a no-op in debug builds
+    // AND when the user has not opted into telemetry — see
+    // lib/shared/telemetry_sink.dart for the consent gate. Without this
+    // install call, the boundary catches errors but they never reach
+    // public.app_errors, leaving the owner blind to production crashes.
+    //
+    // Fire-and-forget — the sink installer is async because it touches
+    // SharedPreferences, but main() should not block on it.
+    final localeCode = _prefs.getString(_localeKey);
+    unawaited(installTelemetrySinkIfConsented(
+      client: Supabase.instance.client,
+      appVersion: AppConfig.appVersion,
+      locale: localeCode,
+    ));
   }
 
   // Firebase.initializeApp() requires firebase_options.dart — run flutterfire configure first

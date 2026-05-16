@@ -2610,7 +2610,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get freeQuotaExhausted =>
-      'Вы использовали все 7 бесплатных сообщений в этом месяце.';
+      'Вы использовали все 10 бесплатных сообщений в этом месяце.';
 
   @override
   String get upgradeForUnlimited => 'Оформите Pro для безлимитного доступа';

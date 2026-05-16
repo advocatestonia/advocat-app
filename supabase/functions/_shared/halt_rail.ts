@@ -80,6 +80,11 @@ const KEYWORDS: Record<HaltCategory, readonly string[]> = {
     "käännytet",      // käännytetään / käännytettiin
     "maastapoist",    // maastapoistaminen / maastapoistoa
     "maahantulokielt", // maahantulokielto
+    // Production-gap closer (P5 smoke 2026-05-15): live Finnish callers
+    // colloquially write "deportointi / deportaatio" alongside the formal
+    // "käännyttäminen / karkottaminen". Adding both stems closes Q06.
+    "deportoin",      // deportointi / deportointia / deportointipäätös
+    "deportaat",      // deportaatio / deportaatioon
     // Estonian stems
     "väljasaatm",     // väljasaatmine / väljasaatmise / väljasaatmisel
     "väljasaadet",    // väljasaadetakse
@@ -114,6 +119,12 @@ const KEYWORDS: Record<HaltCategory, readonly string[]> = {
     "опеку ребёнка",
     "опека ребенка",
     "опеку ребенка",
+    // P5 smoke 2026-05-15: live users also write "опека на ребёнка"
+    // (preposition variant — informal but common in Russian).
+    "опека на ребёнка",
+    "опеку на ребёнка",
+    "опека на ребенка",
+    "опеку на ребенка",
     "опекунств",
     "лишение родительских прав",
     "родительские права",
@@ -141,6 +152,16 @@ const KEYWORDS: Record<HaltCategory, readonly string[]> = {
     "süüdistatav",
     "kohtu alla",
     "vahistatud",
+    // P5 smoke 2026-05-15: live Estonian callers write "kuritegu" (crime,
+    // KarS terminology) and its declensions far more often than the formal
+    // "kriminaalsüüdistus". "uurimine" (investigation) + "kuriteo tunnustega"
+    // is the typical police-summons phrasing — closes Q08.
+    "kuritegu",       // kuritegu
+    "kuriteo",        // kuriteo (sg gen) — "kuriteo tunnustega"
+    "kuritegude",     // kuritegude (pl gen)
+    "kuritöö",        // synonym, criminal act
+    "süütegu",        // misdemeanour, often paired with criminal proceedings
+    "süüteo",         // süüteo (sg gen)
     // Russian stems
     "уголовное дело",
     "уголовное преследование",
@@ -539,6 +560,73 @@ export function detectLangFromMessage(
   if (best === fiHits && fiHits >= etHits) return "fi";
   if (best === etHits) return "et";
   return "en";
+}
+
+// ─── Metric write (P5 of Bentley batch, 2026-05-15) ─────────────────────
+//
+// Fire-and-forget POST to PostgREST inserting one row into
+// public.halt_rail_triggers. Never throws — telemetry must never break a
+// chat reply. The caller awaits nothing.
+//
+// We keep this in halt_rail.ts (not claude-proxy/index.ts) so any future
+// edge-fn that runs the detector (e.g. legal_planner standalone) can use
+// the same persistence call without duplicating fetch boilerplate.
+
+export interface HaltRailMetricInput {
+  detection: HaltDetection;
+  language: "ru" | "fi" | "et" | "en" | null;
+  /** Auth user UUID, or null for anon callers. NEVER pass the anon:<hash> pseudo-id. */
+  userId: string | null;
+  supabaseUrl: string;
+  serviceRoleKey: string;
+}
+
+/**
+ * Persist one halt-rail trigger to public.halt_rail_triggers. No-ops when:
+ *   • detection.isSerious is false (nothing to record)
+ *   • supabaseUrl or serviceRoleKey is empty (dev / test environments)
+ *
+ * Returns void; errors are swallowed (logged at warn level).
+ */
+export async function recordHaltRailTrigger(
+  input: HaltRailMetricInput,
+): Promise<void> {
+  const { detection, language, userId, supabaseUrl, serviceRoleKey } = input;
+  if (!detection.isSerious || !detection.category) return;
+  if (!supabaseUrl || !serviceRoleKey) return;
+  try {
+    const row = {
+      category: detection.category,
+      language: language ?? null,
+      user_id: userId ?? null,
+      reason: detection.reason.slice(0, 200),
+      amount_eur: detection.category === "big_claim"
+        ? Math.min(detection.matchedAmount, 2_000_000_000)
+        : null,
+    };
+    const url = `${supabaseUrl.replace(/\/$/, "")}/rest/v1/halt_rail_triggers`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "apikey": serviceRoleKey,
+        "Authorization": `Bearer ${serviceRoleKey}`,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal",
+      },
+      body: JSON.stringify(row),
+    });
+    if (!res.ok) {
+      // Read once for the warn line; ignore the body content otherwise.
+      const text = await res.text().catch(() => "");
+      console.warn(
+        `halt_rail metric write failed http=${res.status} body=${
+          text.slice(0, 200)
+        }`,
+      );
+    }
+  } catch (e) {
+    console.warn(`halt_rail metric write threw: ${String(e).slice(0, 200)}`);
+  }
 }
 
 /**

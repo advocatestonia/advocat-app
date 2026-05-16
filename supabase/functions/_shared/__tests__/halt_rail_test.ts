@@ -10,6 +10,8 @@ import {
   detectLangFromMessage,
   detectSeriousCase,
   extractLargestEuroAmount,
+  type HaltDetection,
+  recordHaltRailTrigger,
 } from "../halt_rail.ts";
 
 // ─── detectSeriousCase ──────────────────────────────────────────────────────
@@ -67,6 +69,39 @@ Deno.test("detect: benign message does not fire", () => {
   const d = detectSeriousCase("сколько стоит подписка Pro?");
   assertEquals(d.isSerious, false);
   assertEquals(d.category, null);
+});
+
+// ─── P5 regression tests: production smoke gaps closed 2026-05-15 ──────────
+//
+// These three queries fired in production smoke (P5 of Bentley batch) but
+// were silently missed by the detector. Each represents a real
+// linguistic gap the consilium did not surface during the A7 unit tests.
+// Pin them so they never regress.
+
+Deno.test("detect: Finnish deportointi (colloquial) fires", () => {
+  // Live caller wrote "deportointi päätöksestä" instead of the formal
+  // "käännyttämispäätöksestä". Both must trigger the deportation rail.
+  const d = detectSeriousCase(
+    "miten teen valituslupahakemuksen KHO:lle deportointi päätöksestä",
+  );
+  assert(d.isSerious);
+  assertEquals(d.category, "deportation");
+});
+
+Deno.test("detect: Russian 'опека на ребёнка' (preposition variant) fires", () => {
+  // The keyword table originally only contained "опека ребёнка" (genitive,
+  // formal). Live users almost always write the colloquial preposition form.
+  const d = detectSeriousCase("развод и опека на ребёнка, муж тоже хочет");
+  assert(d.isSerious);
+  assertEquals(d.category, "custody");
+});
+
+Deno.test("detect: Estonian 'kuriteo tunnustega' fires", () => {
+  // The Estonian criminal-investigation stems missed "kuritegu / kuriteo"
+  // — actually the most common term in police summons text.
+  const d = detectSeriousCase("uurimine algatatud minu vastu kuriteo tunnustega");
+  assert(d.isSerious);
+  assertEquals(d.category, "criminal");
 });
 
 Deno.test("detect: small claim does not fire", () => {
@@ -302,4 +337,150 @@ Deno.test("lang: English", () => {
     detectLangFromMessage("hello I want to file a claim with the court"),
     "en",
   );
+});
+
+// ─── recordHaltRailTrigger (P5 metric write) ────────────────────────────
+
+const SERIOUS: HaltDetection = {
+  isSerious: true,
+  category: "deportation",
+  reason: "keyword:deportation:депорт",
+  matchedAmount: 0,
+};
+const BIG_CLAIM: HaltDetection = {
+  isSerious: true,
+  category: "big_claim",
+  reason: "amount:50000EUR>threshold:20000",
+  matchedAmount: 50000,
+};
+const NOT_SERIOUS: HaltDetection = {
+  isSerious: false,
+  category: null,
+  reason: "",
+  matchedAmount: 0,
+};
+
+async function withFetchMock<T>(
+  handler: (req: Request) => Response | Promise<Response>,
+  fn: () => Promise<T>,
+): Promise<{ requests: Request[]; result: T }> {
+  const original = globalThis.fetch;
+  const requests: Request[] = [];
+  globalThis.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    const req = input instanceof Request ? input : new Request(input, init);
+    requests.push(req.clone());
+    return await handler(req);
+  }) as typeof fetch;
+  try {
+    const result = await fn();
+    return { requests, result };
+  } finally {
+    globalThis.fetch = original;
+  }
+}
+
+Deno.test("recordHaltRailTrigger: writes one row on serious detection", async () => {
+  const { requests } = await withFetchMock(
+    () => new Response(null, { status: 201 }),
+    () =>
+      recordHaltRailTrigger({
+        detection: SERIOUS,
+        language: "ru",
+        userId: "11111111-1111-1111-1111-111111111111",
+        supabaseUrl: "https://example.supabase.co",
+        serviceRoleKey: "sk_test",
+      }),
+  );
+  assertEquals(requests.length, 1);
+  const url = new URL(requests[0].url);
+  assertEquals(url.pathname, "/rest/v1/halt_rail_triggers");
+  assertEquals(requests[0].method, "POST");
+  const body = await requests[0].json();
+  assertEquals(body.category, "deportation");
+  assertEquals(body.language, "ru");
+  assertEquals(body.user_id, "11111111-1111-1111-1111-111111111111");
+  assert(typeof body.reason === "string" && body.reason.length > 0);
+  assertEquals(body.amount_eur, null);
+});
+
+Deno.test("recordHaltRailTrigger: big_claim writes amount_eur", async () => {
+  const { requests } = await withFetchMock(
+    () => new Response(null, { status: 201 }),
+    () =>
+      recordHaltRailTrigger({
+        detection: BIG_CLAIM,
+        language: "en",
+        userId: null,
+        supabaseUrl: "https://example.supabase.co",
+        serviceRoleKey: "sk_test",
+      }),
+  );
+  const body = await requests[0].json();
+  assertEquals(body.category, "big_claim");
+  assertEquals(body.amount_eur, 50000);
+  assertEquals(body.user_id, null);
+});
+
+Deno.test("recordHaltRailTrigger: no-op when not serious", async () => {
+  const { requests } = await withFetchMock(
+    () => new Response(null, { status: 500 }), // would fail if called
+    () =>
+      recordHaltRailTrigger({
+        detection: NOT_SERIOUS,
+        language: "ru",
+        userId: null,
+        supabaseUrl: "https://example.supabase.co",
+        serviceRoleKey: "sk_test",
+      }),
+  );
+  assertEquals(requests.length, 0);
+});
+
+Deno.test("recordHaltRailTrigger: no-op when service-role key empty", async () => {
+  const { requests } = await withFetchMock(
+    () => new Response(null, { status: 500 }),
+    () =>
+      recordHaltRailTrigger({
+        detection: SERIOUS,
+        language: "ru",
+        userId: null,
+        supabaseUrl: "https://example.supabase.co",
+        serviceRoleKey: "",
+      }),
+  );
+  assertEquals(requests.length, 0);
+});
+
+Deno.test("recordHaltRailTrigger: swallows PostgREST 4xx without throwing", async () => {
+  // Returns 400 — must NOT throw. The caller fire-and-forgets so a thrown
+  // error here would surface as an unhandled-promise warning in Edge logs.
+  const { requests } = await withFetchMock(
+    () => new Response("bad column", { status: 400 }),
+    () =>
+      recordHaltRailTrigger({
+        detection: SERIOUS,
+        language: "ru",
+        userId: null,
+        supabaseUrl: "https://example.supabase.co",
+        serviceRoleKey: "sk_test",
+      }),
+  );
+  assertEquals(requests.length, 1); // request fired, but call resolved
+});
+
+Deno.test("recordHaltRailTrigger: swallows network failure", async () => {
+  await withFetchMock(
+    () => {
+      throw new TypeError("network down");
+    },
+    () =>
+      recordHaltRailTrigger({
+        detection: SERIOUS,
+        language: "ru",
+        userId: null,
+        supabaseUrl: "https://example.supabase.co",
+        serviceRoleKey: "sk_test",
+      }),
+  );
+  // No assertion needed — the test passes iff the call resolves.
 });

@@ -1,0 +1,113 @@
+name: Nightly DB backup
+
+# ============================================================================
+# Runs scripts/db_dump.sh every night at 03:00 UTC (06:00 Tallinn).
+# Produces an additional, independent dump on S3-compatible storage so we
+# survive "Supabase deletes our project" or a billing lapse.
+#
+# Acts as a verifier: writes a row to public.backup_audit_log so the owner
+# can see "last successful backup" without logging into Supabase.
+#
+# Required GitHub secrets (set in repo Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL              postgres://postgres:<pw>@db.okgnkucg...:6543/postgres
+#   SUPABASE_SERVICE_KEY         service role JWT (for audit log writes)
+#   BACKUP_BUCKET_URL            s3://advocat-backups   (OPTIONAL — omit for MVP local-only)
+#   AWS_ACCESS_KEY_ID            (for R2/B2/S3 upload)
+#   AWS_SECRET_ACCESS_KEY
+#   AWS_ENDPOINT_URL             R2: https://<acct>.r2.cloudflarestorage.com
+#   TELEGRAM_BOT_TOKEN           (OPTIONAL — failure alerts)
+#   TELEGRAM_CHAT_ID
+# ============================================================================
+
+on:
+  schedule:
+    # 03:00 UTC daily. Avoids Supabase Pro's own 00:00 UTC backup window.
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: "Backup kind"
+        required: true
+        default: "manual"
+        type: choice
+        options:
+          - manual
+          - pre_migration
+      local_only:
+        description: "Skip cloud upload (MVP)"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: db-backup
+  cancel-in-progress: false
+
+jobs:
+  dump:
+    name: pg_dump + upload
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Postgres 15 client (matches Supabase)
+        run: |
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq postgresql-client-15
+          pg_dump --version
+
+      - name: Install AWS CLI (for R2/B2/S3 upload)
+        if: ${{ inputs.local_only != true }}
+        run: |
+          if ! command -v aws >/dev/null 2>&1; then
+            curl -sS "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o awscli.zip
+            unzip -q awscli.zip
+            sudo ./aws/install --update
+          fi
+          aws --version
+
+      - name: Run backup
+        env:
+          SUPABASE_DB_URL:       ${{ secrets.SUPABASE_DB_URL }}
+          SUPABASE_PROJECT_REF:  okgnkucgwsytsondrjye
+          SUPABASE_SERVICE_KEY:  ${{ secrets.SUPABASE_SERVICE_KEY }}
+          BACKUP_BUCKET_URL:     ${{ secrets.BACKUP_BUCKET_URL }}
+          AWS_ACCESS_KEY_ID:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ENDPOINT_URL:      ${{ secrets.AWS_ENDPOINT_URL }}
+          TELEGRAM_BOT_TOKEN:    ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:      ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          chmod +x scripts/db_dump.sh
+          if [[ "${{ inputs.local_only }}" == "true" ]]; then
+            ./scripts/db_dump.sh --kind "${{ inputs.kind || 'nightly' }}" --local-only
+          else
+            ./scripts/db_dump.sh --kind "${{ inputs.kind || 'nightly' }}"
+          fi
+
+      - name: Upload dump as GitHub artifact (last-resort retention)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-dump-${{ github.run_number }}
+          path: backups/advocat_*.sql.gz
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Telegram alert on failure
+        if: failure()
+        env:
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TG_CHAT:  ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [[ -n "$TG_TOKEN" && -n "$TG_CHAT" ]]; then
+            curl -sS -X POST \
+              "https://api.telegram.org/bot${TG_TOKEN}/sendMessage" \
+              -d "chat_id=${TG_CHAT}" \
+              -d "text=Advocat DB backup FAILED — run ${{ github.run_id }}: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          fi

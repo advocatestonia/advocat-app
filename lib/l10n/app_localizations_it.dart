@@ -2626,7 +2626,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get freeQuotaExhausted =>
-      'You\'ve used all 7 free messages this month.';
+      'You\'ve used all 10 free messages this month.';
 
   @override
   String get upgradeForUnlimited => 'Upgrade to Pro for unlimited';

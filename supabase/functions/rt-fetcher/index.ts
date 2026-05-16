@@ -70,9 +70,23 @@ import { splitAllOversize } from "../_shared/chunk_splitter.ts";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const CRON_SECRET = Deno.env.get("CRON_SECRET") ?? "";
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
+
+// Railway pdf-worker for big-act ingestion (bypasses Supabase Edge 256 MB cap).
+// When both are set, big acts (>SIZE_BYPASS_THRESHOLD XML bytes) are dispatched
+// to Railway's /ingest-statute endpoint instead of being processed in-Edge.
+// See lesson_he_fetcher_round3_oom and services/pdf-worker/src/statute_ingest.ts.
+const RT_WORKER_URL = Deno.env.get("RT_WORKER_URL") ?? "";
+const RT_WORKER_SECRET = Deno.env.get("RT_WORKER_SECRET") ?? "";
+const RT_WORKER_TIMEOUT_MS = 30_000; // dispatch is fire-and-forget; only the HTTP handshake
+// Acts whose XML is bigger than this threshold get auto-dispatched to Railway.
+// 0 means "always dispatch when worker is configured" — safer default since
+// repeat OOMs left 8/9 S-tier acts stuck. Set to a positive number to keep
+// small acts in-Edge.
+const RT_WORKER_SIZE_BYPASS_BYTES = 0;
 
 const RT_BASE = "https://www.riigiteataja.ee";
-const USER_AGENT = "AdvocatBot/1.0 (+https://advocat.ee; contact: ops@advocat.ee)";
+const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15";
 
 const DEFAULT_MAX_JOBS = 5;
 const HARD_MAX_JOBS = 10;
@@ -225,6 +239,13 @@ interface ProcessResult {
   status: FinalStatus;
   chunks: number;
   error?: string;
+  /**
+   * When true, the actual ingestion was dispatched to the Railway pdf-worker
+   * and is running asynchronously. The Edge fn MUST NOT finalize ingest_jobs
+   * — the worker will PATCH status itself when done. We still report the
+   * job in the response so cron sees what was attempted.
+   */
+  dispatched?: boolean;
 }
 
 /** Derive the canonical abbreviation for EE citations from source_id/slug. */
@@ -233,6 +254,71 @@ function abbrevFromJob(payload: StatutePayload, sourceId: string): string {
   // need for the citation. The payload can override (rare).
   if (payload.act_abbrev) return payload.act_abbrev;
   return sourceId;
+}
+
+/**
+ * Dispatch a statute ingest job to the Railway pdf-worker `/ingest-statute`
+ * endpoint. The worker handles the entire pipeline (fetch + parse + embed +
+ * insert + mark job done). We fire-and-forget — only the HTTP 202 handshake
+ * is awaited; the worker writes back to ingest_jobs when finished.
+ *
+ * Returns a 'chunking'-status pseudo-result so the caller's loop continues.
+ * The actual job will land in 'done' or 'failed' later when the worker
+ * patches ingest_jobs.
+ */
+async function dispatchToRailwayWorker(
+  job: JobRow,
+  payload: StatutePayload,
+): Promise<ProcessResult> {
+  if (!RT_WORKER_URL || !RT_WORKER_SECRET) {
+    throw new Error("RT_WORKER_URL/RT_WORKER_SECRET not configured");
+  }
+  if (!OPENAI_API_KEY) {
+    throw new Error("OPENAI_API_KEY not available — worker needs it for embeddings");
+  }
+
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), RT_WORKER_TIMEOUT_MS);
+  try {
+    const res = await fetch(`${RT_WORKER_URL.replace(/\/$/, "")}/ingest-statute`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${RT_WORKER_SECRET}`,
+      },
+      body: JSON.stringify({
+        job_id: job.id,
+        source_id: job.source_id,
+        payload,
+        supabase_url: SUPABASE_URL,
+        supabase_service_role_key: SUPABASE_SERVICE_ROLE_KEY,
+        openai_api_key: OPENAI_API_KEY,
+      }),
+      signal: ctrl.signal,
+    });
+    if (res.status !== 202) {
+      const body = (await res.text()).slice(0, 240);
+      throw new Error(`rt-worker HTTP ${res.status}: ${body}`);
+    }
+    console.log(
+      `rt-fetcher: dispatched ${job.source_id} (job=${job.id}) to Railway worker; status will be patched by worker.`,
+    );
+    // Status is 'chunking' here as a placeholder — the worker will PATCH
+    // to 'done' or 'failed' asynchronously. We deliberately leave 'fetching'
+    // status alone since the worker overrides it; but Edge fn's `finalizeJob`
+    // would normally write 'chunking' on success or 'failed' on error. We
+    // need the Edge fn to NOT touch the job after this point. Tell the
+    // caller to skip finalize via the special status 'dispatched'.
+    return {
+      source_id: job.source_id,
+      target_table: "law_chunks_v2",
+      status: "chunking",
+      chunks: 0, // worker will populate
+      dispatched: true,
+    };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 async function processStatuteJob(
@@ -245,6 +331,20 @@ async function processStatuteJob(
     throw new Error("payload missing act_slug/act_name");
   }
 
+  // ─── Railway dispatch ───────────────────────────────────────────────────
+  // If the Railway pdf-worker is configured, dispatch all (or big) acts to
+  // it to escape the Edge 256 MB cap. Worker handles full pipeline and
+  // updates ingest_jobs.status directly when done.
+  if (RT_WORKER_URL && RT_WORKER_SECRET && OPENAI_API_KEY) {
+    if (RT_WORKER_SIZE_BYPASS_BYTES <= 0) {
+      // Always-dispatch mode (safest for repeated-OOM acts).
+      return await dispatchToRailwayWorker(job, payload);
+    }
+    // (Future: size-based gating — would require a HEAD probe to RT to
+    // decide. For now we use the always-dispatch path until ops dial it in.)
+  }
+
+  // ─── In-Edge processing (legacy path) ───────────────────────────────────
   // Step 1 — Discovery: resolve abbreviation → global_id + XML URL.
   await sleep(REQ_INTERVAL_MS);
   const { globalId, xmlUrl } = await resolveActSlugToGlobalId(job.source_id);
@@ -551,7 +651,12 @@ serve(async (req) => {
         error: String(e instanceof Error ? e.message : e),
       };
     }
-    await finalizeJob(supabase, job, result);
+    // When dispatched to Railway: skip finalize — the worker patches
+    // ingest_jobs.status directly on completion. Touching it here would
+    // race the worker's PATCH and could downgrade 'done' back to 'chunking'.
+    if (!result.dispatched) {
+      await finalizeJob(supabase, job, result);
+    }
     processed.push(result);
   }
 

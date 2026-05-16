@@ -126,8 +126,9 @@ class JourneyV2World {
   final Map<String, FakeSub> subs = {};
   final List<FakeMemory> memories = [];
   final List<FakeCorrespondence> outbox = [];
-  // Free-tier quota cap (mirrors FREE_LIMIT in check-ai-quota).
-  static const int freeQuotaCap = 7;
+  // Free-tier quota cap (mirrors FREE_LIMIT in check-ai-quota; bumped
+  // 7 → 10 in Bentley P8 2026-05-16 conversion lever).
+  static const int freeQuotaCap = 10;
   static const int freeQuotaResetDays = 30;
 }
 
@@ -365,25 +366,29 @@ void main() {
   });
 
   // -------------------------------------------------------------------------
-  // SCENARIO V2-17 — Free quota gate at 7th message
+  // SCENARIO V2-17 — Free quota gate at the (freeQuotaCap+1)-th message.
+  // Bumped 7 → 10 in Bentley P8 2026-05-16; the loop drives a generic counter
+  // bounded by `freeQuotaCap` so this test stays correct on future bumps.
   // -------------------------------------------------------------------------
   group('V2 / scenario 17 — free quota gate', () {
-    test('V2-17 7th message blocked, 1-6 allowed (matches FREE_LIMIT=7)', () {
+    test('V2-17 (cap+1)-th message blocked, prior allowed (matches FREE_LIMIT)',
+        () {
       final u = FakeUser(id: 'u-q', email: 'q@test.ee');
       w.users[u.id] = u;
       var used = 0;
-      // Send 7 messages — first 6 must be allowed, 7th blocked
+      // Drive cap+1 attempts — first `cap` must be allowed, the next blocked.
       bool? firstBlockedAt;
-      for (var i = 0; i < 8; i++) {
-        final allowed = used < JourneyV2World.freeQuotaCap;
+      final cap = JourneyV2World.freeQuotaCap;
+      for (var i = 0; i < cap + 1; i++) {
+        final allowed = used < cap;
         if (!allowed && firstBlockedAt == null) {
           firstBlockedAt = true;
           break;
         }
         used += 1;
       }
-      expect(used, JourneyV2World.freeQuotaCap,
-          reason: 'must allow exactly 7 free messages before blocking');
+      expect(used, cap,
+          reason: 'must allow exactly $cap free messages before blocking');
       expect(firstBlockedAt, isTrue);
     });
   });
