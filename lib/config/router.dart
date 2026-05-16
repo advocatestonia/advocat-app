@@ -35,6 +35,7 @@ import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
 import '../features/profile/screens/ai_memory_screen.dart';
 import '../features/referral/screens/referral_screen.dart';
 import '../features/referral/screens/referral_landing_screen.dart';
+import '../features/lawyer_verification/screens/lawyer_verification_screen.dart';
 import '../features/case_file/screens/case_file_screen.dart';
 // Pkg 1.D — new "Мои дела" / Case Memory screens. Live alongside the
 // legacy /cases routes; gradually replacing them.
@@ -126,6 +127,10 @@ abstract final class AppRoutes {
   /// Sofia Gold Corpus review console. Auth-gated server-side; the route
   /// itself is mounted unconditionally so reviewers can deep-link to it.
   static const String adminGoldReview = '/admin/gold-review';
+
+  /// "AI for verified attorneys — free forever" verification form.
+  /// Reached from the /lawyers web landing (deep-link) and from Settings.
+  static const String lawyerVerification = '/lawyers/verify';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -432,6 +437,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.referral,
         name: 'referral',
         builder: (context, state) => const ReferralScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.lawyerVerification,
+        name: 'lawyerVerification',
+        builder: (context, state) => const LawyerVerificationScreen(),
       ),
       // Public `/r/<code>` invite landing. Reachable unauthenticated; the
       // redirect logic above has an explicit `/r/` carve-out.

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Advocat for Attorneys — Free Premium for Verified Lawyers</title>
+<meta name="description" content="Estonian and Finnish bar members get Advocat Premium free, forever. Validate the corpus, get a productivity edge, no obligation.">
+<meta name="robots" content="index,follow">
+
+<!-- OpenGraph -->
+<meta property="og:title" content="Advocat for Attorneys — Free Premium for Verified Lawyers">
+<meta property="og:description" content="Verified bar members in Estonia and Finland get Premium free, forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://advocat.ee/lawyers">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="et_EE">
+<meta property="og:locale:alternate" content="fi_FI">
+<meta property="og:locale:alternate" content="ru_RU">
+
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#F0EEEB;
+  --bg-grad:linear-gradient(168deg,#F0EEEB 0%,#E2E0DD 40%,#DCDAE0 100%);
+  --text:#0F172A;
+  --text-secondary:#475569;
+  --accent:#0B7A70;
+  --accent-light:#0D9488;
+  --accent-glow:rgba(13,148,136,0.25);
+  --accent-tint:rgba(13,148,136,0.08);
+  --card:#FFFFFF;
+  --border:#DCD9D5;
+  --success:#14532D;
+  --success-bg:#D1FAE5;
+}
+html{background:var(--bg);min-height:100vh;font-family:'Inter',system-ui,sans-serif;color:var(--text);scroll-behavior:smooth}
+body{margin:0;padding:0;background:var(--bg-grad);min-height:100vh}
+.page{max-width:980px;margin:0 auto;padding:32px 20px 80px}
+
+/* Top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:48px}
+.topbar .brand{font-weight:700;font-size:18px;color:var(--text);text-decoration:none}
+.topbar .brand-accent{color:var(--accent)}
+.lang-pills{display:flex;gap:6px}
+.lang-pill{appearance:none;border:1.5px solid rgba(15,23,42,0.15);background:transparent;color:var(--text);font-family:inherit;font-size:12px;font-weight:500;padding:4px 12px;border-radius:14px;cursor:pointer;transition:all .15s}
+.lang-pill.active{border-color:var(--accent);background:var(--accent-tint);color:var(--accent);font-weight:600}
+.lang-pill:hover:not(.active){border-color:var(--accent);color:var(--accent)}
+
+/* Hero */
+.hero{text-align:center;margin-bottom:56px}
+.eyebrow{display:inline-block;padding:6px 14px;background:var(--accent-tint);color:var(--accent);font-size:12px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;border-radius:20px;margin-bottom:16px}
+.h1{font-size:42px;font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:14px;max-width:760px;margin-left:auto;margin-right:auto}
+.h1-sub{font-size:18px;color:var(--text-secondary);line-height:1.55;max-width:620px;margin:0 auto 30px}
+.cta-row{display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.cta-btn{display:inline-block;background:var(--accent);color:#fff;font-family:inherit;font-size:15px;font-weight:600;padding:14px 28px;border-radius:12px;text-decoration:none;box-shadow:0 4px 18px var(--accent-glow);transition:transform .15s,box-shadow .15s}
+.cta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 22px var(--accent-glow)}
+.cta-btn.outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent);box-shadow:none}
+.cta-btn.outline:hover{background:var(--accent-tint)}
+.privacy-note{font-size:12px;color:var(--text-secondary);margin-top:14px}
+.privacy-note .lock{display:inline-block;vertical-align:-2px;margin-right:4px}
+
+/* Why card */
+.why{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px 32px;margin-bottom:48px;box-shadow:0 1px 3px rgba(15,23,42,0.04)}
+.why h2{font-size:24px;font-weight:700;margin-bottom:8px;letter-spacing:-0.01em}
+.why p{font-size:15px;color:var(--text-secondary);line-height:1.6;max-width:680px}
+
+/* Use cases */
+.section-title{font-size:22px;font-weight:700;text-align:center;margin-bottom:8px;letter-spacing:-0.01em}
+.section-sub{font-size:14px;color:var(--text-secondary);text-align:center;margin-bottom:28px}
+.use-cases{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:56px}
+.uc{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 22px;transition:transform .15s,box-shadow .15s}
+.uc:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(15,23,42,0.06)}
+.uc-icon{width:40px;height:40px;background:var(--accent-tint);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;color:var(--accent);font-size:20px;font-weight:700}
+.uc h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.uc p{font-size:13.5px;color:var(--text-secondary);line-height:1.55}
+
+/* How it works */
+.how{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px 32px;margin-bottom:56px}
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:24px}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step-num{flex:0 0 28px;width:28px;height:28px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.step-body h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.step-body p{font-size:13px;color:var(--text-secondary);line-height:1.5}
+
+/* Eligibility */
+.eligibility{background:var(--success-bg);border:1px solid rgba(20,83,45,0.2);border-radius:16px;padding:24px 28px;margin-bottom:56px}
+.eligibility h3{font-size:16px;font-weight:700;color:var(--success);margin-bottom:8px}
+.eligibility ul{list-style:none;padding:0;margin:0}
+.eligibility li{padding:6px 0 6px 28px;position:relative;font-size:14px;color:var(--text);line-height:1.5}
+.eligibility li::before{content:"✓";position:absolute;left:0;top:6px;color:var(--success);font-weight:700}
+
+/* Final CTA */
+.final-cta{text-align:center;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-light) 100%);color:#fff;border-radius:20px;padding:44px 32px;margin-bottom:32px}
+.final-cta h2{font-size:26px;font-weight:700;margin-bottom:10px;letter-spacing:-0.01em}
+.final-cta p{font-size:15px;opacity:0.95;margin-bottom:22px;max-width:540px;margin-left:auto;margin-right:auto;line-height:1.5}
+.final-cta .cta-btn{background:#fff;color:var(--accent);box-shadow:0 4px 18px rgba(0,0,0,0.15)}
+
+/* Footer */
+.footer{text-align:center;font-size:12px;color:var(--text-secondary);opacity:0.7;padding:24px 0}
+.footer a{color:var(--accent);text-decoration:none}
+
+/* Responsive */
+@media(max-width:720px){
+  .page{padding:20px 16px 60px}
+  .topbar{margin-bottom:32px;flex-wrap:wrap;gap:12px}
+  .h1{font-size:30px}
+  .h1-sub{font-size:15px}
+  .use-cases,.how-steps{grid-template-columns:1fr;gap:14px}
+  .why,.how,.final-cta{padding:26px 22px}
+  .final-cta h2{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <a class="brand" href="/">Advoc<span class="brand-accent">at</span></a>
+    <div class="lang-pills" role="group" aria-label="Language">
+      <button class="lang-pill active" data-lang="en">EN</button>
+      <button class="lang-pill" data-lang="et">ET</button>
+      <button class="lang-pill" data-lang="fi">FI</button>
+      <button class="lang-pill" data-lang="ru">RU</button>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <span class="eyebrow" data-i18n="eyebrow">Verified bar members only</span>
+    <h1 class="h1" data-i18n="h1">AI for verified attorneys —<br>free forever</h1>
+    <p class="h1-sub" data-i18n="h1Sub">
+      If you are a member of the Estonian Advokatuur or the Finnish Asianajajaliitto,
+      activate Advocat Premium at no cost — for as long as you remain in active practice.
+      No card. No trial period. No obligation.
+    </p>
+    <div class="cta-row">
+      <a class="cta-btn" href="/app.html#/lawyers/verify" data-i18n="ctaPrimary">Verify and activate Premium</a>
+      <a class="cta-btn outline" href="#how" data-i18n="ctaSecondary">How verification works</a>
+    </div>
+    <p class="privacy-note" data-i18n="privacy">
+      <span class="lock">🔒</span> Your bar ID is checked against the public registry only — never shared.
+    </p>
+  </section>
+
+  <!-- Why -->
+  <section class="why">
+    <h2 data-i18n="whyTitle">Why we offer this</h2>
+    <p data-i18n="whyBody">
+      Advocat works against a corpus of more than 21,000 Finnish, Estonian and EU
+      legal chunks. Practising attorneys are the most demanding test we have —
+      every Premium query you make is a real-world validation of our retrieval and
+      our citation accuracy. We want your scrutiny, and we are happy to trade
+      free Premium for it.
+    </p>
+  </section>
+
+  <!-- Use cases -->
+  <h2 class="section-title" data-i18n="ucTitle">Three ways colleagues use Premium</h2>
+  <p class="section-sub" data-i18n="ucSub">No marketing fluff — these are the patterns we see on Premium accounts.</p>
+  <section class="use-cases">
+    <div class="uc">
+      <div class="uc-icon">📚</div>
+      <h3 data-i18n="uc1Title">Deeper research</h3>
+      <p data-i18n="uc1Body">
+        Find a Riigikohus or KKO precedent in seconds, with full statute citations,
+        across 21k+ indexed chunks of FI, EE and EU law. No 5-result paywall.
+      </p>
+    </div>
+    <div class="uc">
+      <div class="uc-icon">📝</div>
+      <h3 data-i18n="uc2Title">First-draft generation</h3>
+      <p data-i18n="uc2Body">
+        Memorandum skeletons, hakemus / kaebus drafts, contract review with
+        per-clause risk flags — all referenced to the source clause.
+      </p>
+    </div>
+    <div class="uc">
+      <div class="uc-icon">🔍</div>
+      <h3 data-i18n="uc3Title">Second opinion</h3>
+      <p data-i18n="uc3Body">
+        Run your own analysis through an adversarial planner that argues the
+        opposing side first. Cheaper than a colleague's coffee.
+      </p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how" id="how">
+    <h2 class="section-title" data-i18n="howTitle">How verification works</h2>
+    <p class="section-sub" data-i18n="howSub">From form to active Premium in under a minute.</p>
+    <div class="how-steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4 data-i18n="how1Title">Submit your bar details</h4>
+          <p data-i18n="how1Body">Country, membership ID, full name, and the email on your account.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4 data-i18n="how2Title">We cross-check the registry</h4>
+          <p data-i18n="how2Body">Against the public Advokatuur or Asianajajaliitto directory. No human is in the loop on the happy path.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4 data-i18n="how3Title">Premium activates instantly</h4>
+          <p data-i18n="how3Body">If anything is ambiguous, our team reviews within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Eligibility -->
+  <section class="eligibility">
+    <h3 data-i18n="eligTitle">You qualify if</h3>
+    <ul>
+      <li data-i18n="elig1">You are a registered member of the Estonian Bar Association (Advokatuur)</li>
+      <li data-i18n="elig2">… or a member of the Finnish Bar Association (Asianajajaliitto)</li>
+      <li data-i18n="elig3">Your name appears on the public member registry</li>
+      <li data-i18n="elig4">The email on your Advocat account matches your professional email</li>
+    </ul>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <h2 data-i18n="finalTitle">Ready in 30 seconds</h2>
+    <p data-i18n="finalBody">Sign in to Advocat with the email on your bar record, submit your membership ID, and Premium activates the moment we match you.</p>
+    <a class="cta-btn" href="/app.html#/lawyers/verify" data-i18n="finalCta">Start verification</a>
+  </section>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span data-i18n="footer">Advocat is an AI legal assistant, not a substitute for licensed legal counsel. </span>
+    <a href="/">advocat.ee</a>
+  </div>
+</div>
+
+<script>
+// Four-language copy. Switching is purely client-side — no reload.
+const COPY = {
+  en: {
+    eyebrow: 'Verified bar members only',
+    h1: 'AI for verified attorneys —<br>free forever',
+    h1Sub: 'If you are a member of the Estonian Advokatuur or the Finnish Asianajajaliitto, activate Advocat Premium at no cost — for as long as you remain in active practice. No card. No trial period. No obligation.',
+    ctaPrimary: 'Verify and activate Premium',
+    ctaSecondary: 'How verification works',
+    privacy: '🔒 Your bar ID is checked against the public registry only — never shared.',
+    whyTitle: 'Why we offer this',
+    whyBody: 'Advocat works against a corpus of more than 21,000 Finnish, Estonian and EU legal chunks. Practising attorneys are the most demanding test we have — every Premium query you make is a real-world validation of our retrieval and our citation accuracy. We want your scrutiny, and we are happy to trade free Premium for it.',
+    ucTitle: 'Three ways colleagues use Premium',
+    ucSub: 'No marketing fluff — these are the patterns we see on Premium accounts.',
+    uc1Title: 'Deeper research',
+    uc1Body: 'Find a Riigikohus or KKO precedent in seconds, with full statute citations, across 21k+ indexed chunks of FI, EE and EU law. No 5-result paywall.',
+    uc2Title: 'First-draft generation',
+    uc2Body: 'Memorandum skeletons, hakemus / kaebus drafts, contract review with per-clause risk flags — all referenced to the source clause.',
+    uc3Title: 'Second opinion',
+    uc3Body: 'Run your own analysis through an adversarial planner that argues the opposing side first. Cheaper than a colleague\'s coffee.',
+    howTitle: 'How verification works',
+    howSub: 'From form to active Premium in under a minute.',
+    how1Title: 'Submit your bar details',
+    how1Body: 'Country, membership ID, full name, and the email on your account.',
+    how2Title: 'We cross-check the registry',
+    how2Body: 'Against the public Advokatuur or Asianajajaliitto directory. No human is in the loop on the happy path.',
+    how3Title: 'Premium activates instantly',
+    how3Body: 'If anything is ambiguous, our team reviews within 24 hours.',
+    eligTitle: 'You qualify if',
+    elig1: 'You are a registered member of the Estonian Bar Association (Advokatuur)',
+    elig2: '… or a member of the Finnish Bar Association (Asianajajaliitto)',
+    elig3: 'Your name appears on the public member registry',
+    elig4: 'The email on your Advocat account matches your professional email',
+    finalTitle: 'Ready in 30 seconds',
+    finalBody: 'Sign in to Advocat with the email on your bar record, submit your membership ID, and Premium activates the moment we match you.',
+    finalCta: 'Start verification',
+    footer: 'Advocat is an AI legal assistant, not a substitute for licensed legal counsel. ',
+  },
+  et: {
+    eyebrow: 'Ainult kinnitatud vandeadvokaatidele',
+    h1: 'AI vandeadvokaatidele —<br>tasuta igavesti, kui kinnitad litsentsi',
+    h1Sub: 'Kui oled Eesti Advokatuuri liige või Soome Asianajajaliitto liige, aktiveeri Advocat Premium tasuta — kuni oled aktiivses praktikas. Kaarti ei küsi. Prooviperioodi pole. Kohustusi pole.',
+    ctaPrimary: 'Kinnita litsents ja aktiveeri Premium',
+    ctaSecondary: 'Kuidas kinnitamine käib',
+    privacy: '🔒 Su litsentsi number kontrollitakse ainult avalikust registrist — me ei jaga seda kellelegi.',
+    whyTitle: 'Miks me seda pakume',
+    whyBody: 'Advocat töötab korpusega, milles on üle 21 000 Soome, Eesti ja EL õigusakti lõigu. Praktiseerivad advokaadid on meie kõige nõudlikum test — iga Premium päring, mille esitad, on meie otsingu ja viidete täpsuse reaalne kontroll. Tahame teie kriitikat ja oleme rõõmsad, et saame tasuta Premiumiga teid premeerida.',
+    ucTitle: 'Kolm viisi, kuidas kolleegid Premiumi kasutavad',
+    ucSub: 'Ilma reklaamita — need on Premium-kontodel päriselt nähtud mustrid.',
+    uc1Title: 'Sügavam uurimine',
+    uc1Body: 'Leia Riigikohtu või KKO pretsedent sekunditega koos täielike viidetega — 21k+ indekseeritud Soome, Eesti ja EL õiguse lõigus. Ilma 5-tulemuse piiranguta.',
+    uc2Title: 'Esimese mustandi koostamine',
+    uc2Body: 'Memorandumi mustandid, hakemus / kaebuse mustandid, lepingute ülevaatus klauslipõhise riskimärgistusega — kõik viidatud allikaklauslile.',
+    uc3Title: 'Teine arvamus',
+    uc3Body: 'Käi oma analüüs läbi vastaspoolt argumenteeriva planneri kaudu. Odavam kui kolleegi kohv.',
+    howTitle: 'Kuidas kinnitamine käib',
+    howSub: 'Vormist aktiivse Premiumini vähem kui minutiga.',
+    how1Title: 'Saada oma litsentsi andmed',
+    how1Body: 'Riik, litsentsi number, täisnimi ja konto e-post.',
+    how2Title: 'Me võrdleme registriga',
+    how2Body: 'Avaliku Advokatuuri või Asianajajaliitto andmebaasiga. Õnnestumise korral inimene protsessis ei osale.',
+    how3Title: 'Premium aktiveerub kohe',
+    how3Body: 'Kui midagi on ebaselge, vaatab meie tiim selle 24 tunni jooksul üle.',
+    eligTitle: 'Sa kvalifitseerud, kui',
+    elig1: 'Oled Eesti Advokatuuri registreeritud liige',
+    elig2: '… või Soome Asianajajaliitto liige',
+    elig3: 'Su nimi on avalikus liikmete registris',
+    elig4: 'Sinu Advocat konto e-post langeb kokku professionaalse e-postiga',
+    finalTitle: 'Valmis 30 sekundiga',
+    finalBody: 'Logi Advocati sisse litsentsi e-postiga, sisesta oma litsentsi number ja Premium aktiveerub kohe, kui me oleme su tuvastanud.',
+    finalCta: 'Alusta kinnitamist',
+    footer: 'Advocat on AI õigusabiline, mitte litsentseeritud advokaadi asendaja. ',
+  },
+  fi: {
+    eyebrow: 'Vain vahvistetuille asianajajille',
+    h1: 'Tekoäly asianajajille —<br>ilmainen ikuisesti vahvistetuille',
+    h1Sub: 'Jos kuulut Suomen Asianajajaliittoon tai Viron Advokatuuriin, aktivoi Advocat Premium ilmaiseksi — niin kauan kuin pysyt aktiivisessa toiminnassa. Ei korttia. Ei koeaikaa. Ei velvoitteita.',
+    ctaPrimary: 'Vahvista ja aktivoi Premium',
+    ctaSecondary: 'Miten vahvistus toimii',
+    privacy: '🔒 Jäsennumerosi tarkistetaan vain julkisesta rekisteristä — emme jaa sitä eteenpäin.',
+    whyTitle: 'Miksi tarjoamme tämän',
+    whyBody: 'Advocat toimii yli 21 000 suomalaisen, virolaisen ja EU-oikeudellisen tekstinpätkän korpuksella. Käytännön asianajajat ovat vaativin testimme — jokainen Premium-kyselysi on todellisuuden tarkistus haku- ja viitetarkkuudellemme. Haluamme tarkastusta ja olemme iloisia voidessamme tarjota ilmaisen Premiumin sitä vastaan.',
+    ucTitle: 'Kolme tapaa, joilla kollegat käyttävät Premiumia',
+    ucSub: 'Ei markkinointipuhetta — nämä ovat oikeasti nähtyjä Premium-tilien käyttötapoja.',
+    uc1Title: 'Syvempi tutkimus',
+    uc1Body: 'Löydä KKO- tai Riigikohus-ennakkopäätös sekunneissa täydellisin viitteinen — 21k+ indeksoidussa pätkässä suomen, viron ja EU-oikeutta. Ei viiden tuloksen rajaa.',
+    uc2Title: 'Ensimmäisen luonnoksen tuotanto',
+    uc2Body: 'Muistioluonnokset, hakemus- / valituspohjat, sopimusarviointi kohtakohtaisilla riskimerkinnöillä — kaikki viitattuna lähdekohtaan.',
+    uc3Title: 'Toinen mielipide',
+    uc3Body: 'Aja oma analyysisi vastapuolen argumentoinnin kautta. Halvempaa kuin kollegan kahvi.',
+    howTitle: 'Miten vahvistus toimii',
+    howSub: 'Lomakkeesta aktiiviseen Premiumiin alle minuutissa.',
+    how1Title: 'Lähetä jäsentietosi',
+    how1Body: 'Maa, jäsennumero, koko nimi ja tilisi sähköposti.',
+    how2Title: 'Tarkistamme rekisteristä',
+    how2Body: 'Julkisesta Asianajajaliiton tai Advokatuurin luettelosta. Onnistuneessa polussa ihminen ei ole mukana.',
+    how3Title: 'Premium aktivoituu heti',
+    how3Body: 'Jos jokin on epäselvää, tiimimme tarkistaa sen 24 tunnin sisällä.',
+    eligTitle: 'Olet kelpoinen, jos',
+    elig1: 'Olet Suomen Asianajajaliiton rekisteröity jäsen',
+    elig2: '… tai Viron Advokatuurin jäsen',
+    elig3: 'Nimesi näkyy julkisessa jäsenrekisterissä',
+    elig4: 'Advocat-tilisi sähköposti vastaa ammatillista sähköpostiosoitettasi',
+    finalTitle: 'Valmis 30 sekunnissa',
+    finalBody: 'Kirjaudu Advocatiin samalla sähköpostilla kuin jäsenrekisterissä, lähetä jäsennumerosi ja Premium aktivoituu hetkellä, jolloin tunnistamme sinut.',
+    finalCta: 'Aloita vahvistus',
+    footer: 'Advocat on tekoälyavustaja, ei lisensoitu asianajaja. ',
+  },
+  ru: {
+    eyebrow: 'Только для верифицированных адвокатов',
+    h1: 'AI для юристов —<br>бесплатно навсегда после верификации',
+    h1Sub: 'Если вы член Эстонской Advokatuur или Финской Asianajajaliitto, активируйте Advocat Premium бесплатно — пока вы продолжаете активную практику. Без карты. Без триала. Без обязательств.',
+    ctaPrimary: 'Верифицироваться и активировать Premium',
+    ctaSecondary: 'Как работает верификация',
+    privacy: '🔒 Номер вашей лицензии сверяется только с публичным реестром — мы не передаём его третьим сторонам.',
+    whyTitle: 'Зачем мы это делаем',
+    whyBody: 'Advocat работает с корпусом из более чем 21 000 финских, эстонских и европейских юридических фрагментов. Практикующие юристы — наш самый требовательный тест: каждый запрос Premium — это реальная проверка нашей выборки и точности цитирования. Нам нужна ваша критика, и мы готовы обменять её на бесплатный Premium.',
+    ucTitle: 'Три способа, как коллеги используют Premium',
+    ucSub: 'Без маркетинга — это реальные сценарии на Premium-аккаунтах.',
+    uc1Title: 'Глубокий ресёрч',
+    uc1Body: 'Найдите прецедент Riigikohus или KKO за секунды с полными ссылками — 21k+ индексированных фрагментов FI, EE и EU права. Без лимита в 5 результатов.',
+    uc2Title: 'Первый черновик',
+    uc2Body: 'Каркас меморандумов, проекты hakemus / kaebus, ревью договоров с риск-флагами по каждому пункту — всё со ссылкой на исходный пункт.',
+    uc3Title: 'Второе мнение',
+    uc3Body: 'Прогоните свой анализ через адверсального планнера, который сначала играет за противника. Дешевле кофе с коллегой.',
+    howTitle: 'Как работает верификация',
+    howSub: 'От формы до активного Premium — меньше минуты.',
+    how1Title: 'Отправьте данные лицензии',
+    how1Body: 'Страна, номер членства, ФИО и email вашего аккаунта.',
+    how2Title: 'Мы сверяем с реестром',
+    how2Body: 'С публичным списком Advokatuur или Asianajajaliitto. По happy path человек не участвует.',
+    how3Title: 'Premium активируется сразу',
+    how3Body: 'Если что-то неоднозначно, наша команда смотрит вручную в течение 24 часов.',
+    eligTitle: 'Вы подходите, если',
+    elig1: 'Вы зарегистрированный член Эстонской палаты адвокатов (Advokatuur)',
+    elig2: '… или член Финской палаты адвокатов (Asianajajaliitto)',
+    elig3: 'Ваше имя есть в публичном реестре членов',
+    elig4: 'Email на аккаунте Advocat совпадает с вашим профессиональным email',
+    finalTitle: 'Готово за 30 секунд',
+    finalBody: 'Войдите в Advocat с тем же email, который указан в реестре, отправьте номер членства, и Premium активируется в момент совпадения.',
+    finalCta: 'Начать верификацию',
+    footer: 'Advocat — AI-юридический ассистент, не замена лицензированному адвокату. ',
+  },
+};
+
+function setLang(lang){
+  if (!COPY[lang]) return;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-pill').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  const c = COPY[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (c[key] !== undefined) el.innerHTML = c[key];
+  });
+  try { localStorage.setItem('advocat_lawyers_lang', lang); } catch (e) {}
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Wire pill clicks.
+  document.querySelectorAll('.lang-pill').forEach(b => {
+    b.addEventListener('click', () => setLang(b.dataset.lang));
+  });
+  // Initial language: localStorage > URL ?lang= > navigator.language > 'en'.
+  let initial = 'en';
+  try {
+    const stored = localStorage.getItem('advocat_lawyers_lang');
+    if (stored && COPY[stored]) initial = stored;
+  } catch (e) {}
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl = params.get('lang');
+  if (fromUrl && COPY[fromUrl]) initial = fromUrl;
+  if (initial === 'en') {
+    const nav = (navigator.language || 'en').slice(0,2).toLowerCase();
+    if (COPY[nav]) initial = nav;
+  }
+  setLang(initial);
+});
+</script>
+</body>
+</html>

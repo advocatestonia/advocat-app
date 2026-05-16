@@ -49,6 +49,14 @@ import {
   resolveDefaultMemoryDir,
   selectConsiliumRoles,
 } from "./consilium_roles/index.ts";
+import {
+  type LawyerAgent,
+  resolveModelId,
+} from "./lawyer_agents/index.ts";
+import {
+  type LawyerRouterDecision,
+  routeToLawyers,
+} from "./lawyer_router.ts";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -137,6 +145,45 @@ export const DISAGREEMENT_THRESHOLD_PP = 20;
 const ATTACKERS_PER_ROUND = 3;
 const MAX_DEFENDERS = 3;
 const MAX_VERIFIER_RETRIES = 1;
+
+// ─── Lawyer department feature flag ──────────────────────────────────────────
+// Default OFF. Owner enables via env LAWYER_DEPARTMENT_ENABLED=true once the
+// canary deploy is green. When OFF, consilium uses the legacy v2.2 roster
+// (DOMAIN_EXPERTS + STRATEGIC_POSITIONS) — identical to pre-P10 behaviour.
+export const LAWYER_DEPARTMENT_FLAG_ENV = "LAWYER_DEPARTMENT_ENABLED";
+
+/** Read the lawyer-department feature flag from the runtime env. Defaults to
+ *  false on any error (e.g. permission denied). */
+export function isLawyerDepartmentEnabled(): boolean {
+  try {
+    // Deno.env may be undefined in tests / some build steps — guard for it.
+    // deno-lint-ignore no-explicit-any
+    const env = (globalThis as any).Deno?.env;
+    if (!env || typeof env.get !== "function") return false;
+    const raw = env.get(LAWYER_DEPARTMENT_FLAG_ENV);
+    if (!raw) return false;
+    const normalised = raw.toLowerCase().trim();
+    return normalised === "true" || normalised === "1" || normalised === "yes";
+  } catch {
+    return false;
+  }
+}
+
+/** Convert a LawyerAgent to a ConsiliumRole the runner can consume in Round 1.
+ *  The role's `focus` is the agent's compiled system prompt. */
+export function lawyerToConsiliumRole(
+  agent: LawyerAgent,
+  query: string,
+  ctx: CaseContext,
+): ConsiliumRole {
+  return {
+    name: agent.name,
+    model: resolveModelId(agent.model),
+    maxTokens: agent.maxTokens,
+    focus: agent.systemPrompt(query, ctx),
+    isCompiled: true,
+  };
+}
 
 // ─── Round 2 prompts ─────────────────────────────────────────────────────────
 
@@ -883,6 +930,13 @@ export interface RunConsiliumV3Params {
   caller?: AnthropicCaller;
   /** Custom attackers (tests). Defaults to DEFAULT_ATTACKERS. */
   attackers?: AttackerSpec[];
+  /** Override the LAWYER_DEPARTMENT_ENABLED env flag for tests and callers
+   *  that want explicit control. Defaults to reading the env. */
+  lawyerDepartmentEnabled?: boolean;
+  /** When true AND `lawyerDepartmentEnabled === true`, force the lawyer
+   *  department to fire even on low-complexity queries. Used by tests and
+   *  callers who already know this is a high-value request. */
+  forceLawyerDepartment?: boolean;
 }
 
 /** Run the v3 adversarial consilium and stream synthesis via onEvent.
@@ -893,9 +947,43 @@ export async function runConsiliumV3(
 ): Promise<string> {
   const caller = params.caller ?? defaultAnthropicCaller(params.anthropicApiKey);
 
-  // ── 1. Pick role roster (same logic as v2) ──────────────────────────────
+  // ── 1. Pick role roster ─────────────────────────────────────────────────
+  // Priority order:
+  //   (a) Lawyer department (if feature-flagged on AND complexity ≥ 7
+  //       OR jurisdiction = "mixed" OR hasHardDeadline). Real specialised
+  //       lawyers — 3 to 5 selected by lawyer_router.
+  //   (b) v2.2 router (DOMAIN_EXPERTS + STRATEGIC_POSITIONS) — current
+  //       production default.
+  //   (c) Legacy 6 generic roles — fallback when nothing else matches.
   let activeRoles: ConsiliumRole[] = [...ROLES];
-  if (params.caseClassification) {
+  let lawyerDecision: LawyerRouterDecision | null = null;
+
+  const flagOn = params.lawyerDepartmentEnabled ?? isLawyerDepartmentEnabled();
+  if (flagOn && params.caseClassification) {
+    try {
+      const ctx = params.caseClassification;
+      const lang = (ctx.language ?? "ru") as NonNullable<CaseContext["language"]>;
+      const decision = routeToLawyers(params.userMessage, lang, ctx);
+      // Only fire when complexity / jurisdiction / deadline justifies it.
+      // The router exposes highStakes; we additionally allow it when caller
+      // forces it via `forceLawyerDepartment`.
+      if (decision.highStakes || params.forceLawyerDepartment) {
+        lawyerDecision = decision;
+        activeRoles = decision.agents.map((a) =>
+          lawyerToConsiliumRole(a, params.userMessage, ctx)
+        );
+      }
+    } catch (e) {
+      console.warn(
+        `consilium_v3: lawyer_router failed, falling back: ${
+          String(e).slice(0, 200)
+        }`,
+      );
+    }
+  }
+
+  // Fallback to v2.2 router only if the lawyer department did NOT take over.
+  if (!lawyerDecision && params.caseClassification) {
     try {
       const selection = selectConsiliumRoles(params.caseClassification);
       if (selection.hasDomainMatch) {

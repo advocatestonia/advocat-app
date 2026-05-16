@@ -83,3 +83,30 @@ const bool kReferralEnabled = bool.fromEnvironment(
   'ADVOCAT_REFERRAL_ENABLED',
   defaultValue: false,
 );
+
+// -----------------------------------------------------------------------------
+// Lawyer verification programme ("AI for verified attorneys — free forever").
+// Ref: consilium adversary 2026-05-15, Bentley+ batch P12.
+// -----------------------------------------------------------------------------
+
+/// Master switch for the lawyer verification feature.
+///
+/// When `false`:
+///   * The /lawyers landing copy still renders, but the verification form
+///     entry button is hidden.
+///   * The "Verify as attorney" tile on Settings is hidden.
+///   * Direct deep-links to /lawyers/verify show a "temporarily paused"
+///     placeholder card.
+///   * The `verify-lawyer` Supabase edge function returns 503 with reason
+///     `program_disabled` regardless of this flag (the function reads its
+///     own LAWYER_PROGRAM_ENABLED env var).
+///
+/// Default `true` per the P12 brief — the programme ships enabled and is
+/// disabled only as a fast-rollback lever if the bar registries become
+/// unreachable or we hit an abuse vector.
+///
+/// Override via `--dart-define=ADVOCAT_LAWYER_PROGRAM_ENABLED=false`.
+const bool kLawyerProgramEnabled = bool.fromEnvironment(
+  'ADVOCAT_LAWYER_PROGRAM_ENABLED',
+  defaultValue: true,
+);
