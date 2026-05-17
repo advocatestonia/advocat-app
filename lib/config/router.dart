@@ -36,6 +36,11 @@ import '../features/profile/screens/ai_memory_screen.dart';
 import '../features/referral/screens/referral_screen.dart';
 import '../features/referral/screens/referral_landing_screen.dart';
 import '../features/lawyer_verification/screens/lawyer_verification_screen.dart';
+// Day2-E — "Book a 15-min call with a partner lawyer" + lawyer dashboard.
+// Both routes render a "coming soon" placeholder until
+// `kLawyerPartnershipEnabled` flips true (set by --dart-define at build).
+import '../features/lawyer_partnership/screens/book_lawyer_call_screen.dart';
+import '../features/lawyer_partnership/screens/partner_lawyer_dashboard_screen.dart';
 import '../features/case_file/screens/case_file_screen.dart';
 // Pkg 1.D — new "Мои дела" / Case Memory screens. Live alongside the
 // legacy /cases routes; gradually replacing them.
@@ -131,6 +136,15 @@ abstract final class AppRoutes {
   /// "AI for verified attorneys — free forever" verification form.
   /// Reached from the /lawyers web landing (deep-link) and from Settings.
   static const String lawyerVerification = '/lawyers/verify';
+
+  /// Day2-E — Pro/Premium "book a 15-min call with a partner lawyer".
+  /// Optional `?caseId=` query param pre-binds the booking to a case so
+  /// the AI brief can include case_facts.
+  static const String bookLawyerCall = '/book-lawyer';
+
+  /// Day2-E — partner-lawyer dashboard (upcoming bookings, earnings,
+  /// post-call outcome form).
+  static const String partnerLawyerDashboard = '/partner-lawyer';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -442,6 +456,23 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.lawyerVerification,
         name: 'lawyerVerification',
         builder: (context, state) => const LawyerVerificationScreen(),
+      ),
+      // Day2-E — Pro/Premium "Book a lawyer call" + partner dashboard.
+      // Both screens gate on kLawyerPartnershipEnabled internally; the
+      // routes themselves are always mounted so a deep-link doesn't 404
+      // during the flag-off rollout window.
+      GoRoute(
+        path: AppRoutes.bookLawyerCall,
+        name: 'bookLawyerCall',
+        builder: (context, state) {
+          final caseId = state.uri.queryParameters['caseId'];
+          return BookLawyerCallScreen(caseId: caseId);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.partnerLawyerDashboard,
+        name: 'partnerLawyerDashboard',
+        builder: (context, state) => const PartnerLawyerDashboardScreen(),
       ),
       // Public `/r/<code>` invite landing. Reachable unauthenticated; the
       // redirect logic above has an explicit `/r/` carve-out.

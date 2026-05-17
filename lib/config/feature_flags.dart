@@ -110,3 +110,36 @@ const bool kLawyerProgramEnabled = bool.fromEnvironment(
   'ADVOCAT_LAWYER_PROGRAM_ENABLED',
   defaultValue: true,
 );
+
+// -----------------------------------------------------------------------------
+// Lawyer partnership programme — "1 human-lawyer call/quarter free" on Pro+.
+// Ref: Day2-E brief (2026-05-16). Bets HUGO+ on value (their €9.90 hybrid).
+// -----------------------------------------------------------------------------
+
+/// Master switch for the "Book a lawyer call" perk shipped on Pro+ tiers.
+///
+/// When `false` (the **production default** until the owner has at least
+/// three EE solo lawyers enrolled):
+///   * The "Book a lawyer call" tile on the Pro/Premium home is hidden.
+///   * The /book-lawyer route renders a "coming soon" placeholder card
+///     instead of the booking form (so a leaked deep-link doesn't take a
+///     fee for a service that has no providers yet).
+///   * The /partner-lawyer route renders a "not enrolled" placeholder for
+///     anyone hitting it (the dashboard is meaningless without the partner
+///     programme running).
+///   * The `lawyer-booking` Supabase edge function returns 503 with
+///     `program_disabled` regardless of this flag (it reads its own
+///     `LAWYER_PARTNERSHIP_ENABLED` env var; this flag is the client-side
+///     mirror so the UI never offers an action the server will refuse).
+///
+/// Flip via `--dart-define=ADVOCAT_LAWYER_PARTNERSHIP_ENABLED=true` at
+/// build time when the partner pool is ready. Both flags (client + server)
+/// must be true for the feature to be live end-to-end.
+///
+/// ⚠️ DO NOT default this to `true` without coordinating with the partner
+/// programme rollout — an empty "no slots available" state kills trust
+/// faster than the feature builds it.
+const bool kLawyerPartnershipEnabled = bool.fromEnvironment(
+  'ADVOCAT_LAWYER_PARTNERSHIP_ENABLED',
+  defaultValue: false,
+);

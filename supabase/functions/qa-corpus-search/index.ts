@@ -116,6 +116,15 @@ serve(async (req) => {
      *  substring scoring against case_chunks). Default false to preserve
      *  baseline-comparable behaviour. */
     hybrid?: boolean;
+    /** Hybrid-v2 §-precision mode. Routes to `law_search_hybrid_v2_qa`
+     *  which adds per-act dedup, RRF k=20, exact-§ boost. Day1-C vabank
+     *  (2026-05-16). Wins precedence over `hybrid` when both true. */
+    hybrid_v2?: boolean;
+    /** Hybrid-v2 tuning overrides (eval-time only). */
+    v2_rrf_k?: number;
+    v2_max_per_act?: number;
+    v2_section_boost?: number;
+    v2_section_label_boost?: number;
   };
   try {
     body = await req.json();
@@ -142,6 +151,7 @@ serve(async (req) => {
       ? body.threshold
       : -1.0;
   const hybridMode = body.hybrid === true;
+  const hybridV2Mode = body.hybrid_v2 === true;
 
   const tStart = performance.now();
 
@@ -240,10 +250,28 @@ serve(async (req) => {
   // cosine + BM25 (RRF k=60) over law_chunks_v2.chunk_tsv. Target:
   // recall@3 50% → 70% on terminology-heavy FI/EE queries
   // ("menetetyn määräajan palauttaminen", "asianomistaja").
-  const rpcUrl = hybridMode
+  const rpcUrl = hybridV2Mode
+    ? `${SUPABASE_URL}/rest/v1/rpc/law_search_hybrid_v2_qa`
+    : hybridMode
     ? `${SUPABASE_URL}/rest/v1/rpc/law_search_hybrid_qa`
     : `${SUPABASE_URL}/rest/v1/rpc/law_search_v2_qa`;
-  const rpcBody = hybridMode
+  const rpcBody = hybridV2Mode
+    ? {
+      p_query_embedding: vectorLit,
+      p_query_text: query,
+      p_jurisdiction: jurisdiction,
+      p_lang: null,
+      p_act_slug: null,
+      p_valid_at: null,
+      p_match_threshold: threshold,
+      p_limit: topK,
+      p_probes: 100,
+      p_max_per_act: typeof body.v2_max_per_act === "number" ? body.v2_max_per_act : 1,
+      p_rrf_k: typeof body.v2_rrf_k === "number" ? body.v2_rrf_k : 60,
+      p_section_boost: typeof body.v2_section_boost === "number" ? body.v2_section_boost : 0.5,
+      p_section_label_boost: typeof body.v2_section_label_boost === "number" ? body.v2_section_label_boost : 0.25,
+    }
+    : hybridMode
     ? {
       p_query_embedding: vectorLit,
       p_query_text: query,
@@ -276,7 +304,11 @@ serve(async (req) => {
   });
   if (!rpcResp.ok) {
     const detail = await rpcResp.text().catch(() => "");
-    const rpcName = hybridMode ? "law_search_hybrid_qa" : "law_search_v2_qa";
+    const rpcName = hybridV2Mode
+      ? "law_search_hybrid_v2_qa"
+      : hybridMode
+      ? "law_search_hybrid_qa"
+      : "law_search_v2_qa";
     return err(`${rpcName} HTTP ${rpcResp.status}: ${detail.slice(0, 200)}`, 502);
   }
   const rawText = await rpcResp.text();
@@ -287,7 +319,11 @@ serve(async (req) => {
   try {
     rows = JSON.parse(safeJson);
   } catch (e) {
-    const rpcName = hybridMode ? "law_search_hybrid_qa" : "law_search_v2_qa";
+    const rpcName = hybridV2Mode
+      ? "law_search_hybrid_v2_qa"
+      : hybridMode
+      ? "law_search_hybrid_qa"
+      : "law_search_v2_qa";
     return err(`${rpcName} JSON parse failed: ${String(e)}`, 502);
   }
 
@@ -316,8 +352,11 @@ serve(async (req) => {
       embed_ms,
       rpc_ms: Math.round(performance.now() - rpcStart),
       total_ms: Math.round(performance.now() - tStart),
-      mode: hybridMode ? "hybrid" : "v2",
+      mode: hybridV2Mode ? "hybrid_v2" : hybridMode ? "hybrid" : "v2",
     }),
     { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } },
   );
 });
+// touch 1778934521
+// touch 1778934748
+// touch 1778934926

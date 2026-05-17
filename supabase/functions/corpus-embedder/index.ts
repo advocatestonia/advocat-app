@@ -232,6 +232,132 @@ async function fetchUnembeddedRows(
 }
 
 /**
+ * Re-embed augmented mode (Day2-B vabank 2026-05-17).
+ * --------------------------------------------------------------
+ * Page through ALL rows in `law_chunks_v2` (not just NULL-embedding rows),
+ * reading from `chunk_text_augmented` instead of `text`, and overwriting
+ * the existing `embedding`. Uses a marker table `embed_reaug_progress` to
+ * resume across invocations (we can only process ~2k rows per 150s slot).
+ *
+ * Idempotency: the progress marker stores the LAST id processed; the next
+ * invocation resumes from `id > marker`. If we crash mid-batch, the worst
+ * case is re-embedding a few rows — that's still correct, just wasted $.
+ *
+ * Backup safety: `embedding_v1_backup` already snapshotted before the
+ * first invocation (migration 20260517100000). We never touch
+ * embedding_v1_backup here, so rollback stays available.
+ */
+const REAUG_MARKER_KEY = "law_chunks_v2_reembed_augmented_2026_05_17";
+
+async function fetchReaugBatch(
+  sb: SBClient,
+  limit: number,
+  lastId: string | null,
+): Promise<Array<{ id: string; text: string }>> {
+  // Cast UUID strings work with .gt — supabase-js handles type coercion.
+  // We use chunk_text_augmented when present, else fall back to text so
+  // any row that somehow has NULL augmented (shouldn't happen post-migration)
+  // still gets re-embedded.
+  let q = sb
+    .from("law_chunks_v2")
+    .select("id, chunk_text_augmented, text")
+    .order("id", { ascending: true })
+    .limit(limit);
+  if (lastId) q = q.gt("id", lastId);
+  const { data, error } = await q;
+  if (error) throw new Error(`select law_chunks_v2 (reaug): ${error.message}`);
+  return (data ?? [])
+    .map((r) => ({
+      id: r.id as string,
+      // Prefer augmented; fall back to text. Both should be non-empty.
+      text: ((r.chunk_text_augmented ?? r.text ?? "") as string).trim(),
+    }))
+    .filter((r) => r.id && r.text.length > 0);
+}
+
+async function readReaugMarker(sb: SBClient): Promise<string | null> {
+  // Use the `kv_store` table if it exists; otherwise no marker (start fresh).
+  // We fall through silently if the table is missing — caller will start at
+  // the beginning, which is harmless (idempotent re-embed).
+  try {
+    const { data, error } = await sb
+      .from("kv_store")
+      .select("value")
+      .eq("key", REAUG_MARKER_KEY)
+      .maybeSingle();
+    if (error) return null;
+    return (data?.value as string) ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function writeReaugMarker(
+  sb: SBClient,
+  id: string,
+): Promise<void> {
+  try {
+    await sb
+      .from("kv_store")
+      .upsert({ key: REAUG_MARKER_KEY, value: id }, { onConflict: "key" });
+  } catch {
+    // Marker is best-effort; failure means next invocation starts fresh,
+    // which is wasted work but not wrong.
+  }
+}
+
+/**
+ * Process one batch of re-augment re-embed. Returns the highest-id row
+ * processed (for the marker) and the count.
+ */
+async function processReaugBatch(
+  sb: SBClient,
+  batchSize: number,
+  lastId: string | null,
+): Promise<{ processed: number; tokens: number; newLastId: string | null; err?: string }> {
+  const rows = await fetchReaugBatch(sb, batchSize, lastId);
+  if (rows.length === 0) {
+    return { processed: 0, tokens: 0, newLastId: lastId };
+  }
+
+  let embeddings: number[][];
+  let tokens: number;
+  try {
+    const res = await embedBatch(rows.map((r) => r.text));
+    embeddings = res.embeddings;
+    tokens = res.tokens;
+  } catch (err) {
+    return { processed: 0, tokens: 0, newLastId: lastId, err: String(err) };
+  }
+
+  // UPDATE in parallel. Use Promise.allSettled so one bad row doesn't kill
+  // the batch.
+  const updates = rows.map((r, i) =>
+    updateEmbedding(sb, "law_chunks_v2", r.id, embeddings[i])
+  );
+  const settled = await Promise.allSettled(updates);
+  let processed = 0;
+  const failures: string[] = [];
+  let highestSuccessId: string | null = lastId;
+  for (let i = 0; i < settled.length; i++) {
+    const s = settled[i];
+    if (s.status === "fulfilled") {
+      processed++;
+      // Rows arrive ordered by id ASC, so the last fulfilled is highest.
+      highestSuccessId = rows[i].id;
+    } else {
+      failures.push(`${rows[i].id}: ${String(s.reason)}`);
+    }
+  }
+  return {
+    processed,
+    tokens,
+    newLastId: highestSuccessId,
+    err: failures.length ? failures.slice(0, 3).join(" | ") : undefined,
+  };
+}
+
+/**
  * Count rows with NULL embedding for a table (for "remaining" reporting).
  */
 async function countRemaining(
@@ -462,6 +588,15 @@ interface RequestBody {
   max_batches?: number;
   run_validators?: boolean;
   secret?: string;
+  /** Mode selector. Defaults to "fill" (process NULL embeddings).
+   *  "re-embed-augmented" re-embeds ALL law_chunks_v2 rows reading from
+   *  chunk_text_augmented; used for Day2-B §-precision push (2026-05-17). */
+  mode?: "fill" | "re-embed-augmented";
+  /** Optional resume marker for re-embed-augmented mode. If omitted, reads
+   *  marker from kv_store. Allows external orchestrator to override. */
+  resume_after_id?: string;
+  /** Force re-start of re-embed-augmented from beginning (ignores marker). */
+  reset_marker?: boolean;
 }
 
 serve(async (req: Request) => {
@@ -536,6 +671,55 @@ serve(async (req: Request) => {
   const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
+
+  // ---- Mode switch: re-embed-augmented ----
+  const mode = (body.mode ?? "fill") as "fill" | "re-embed-augmented";
+  if (mode === "re-embed-augmented") {
+    let cursor: string | null = body.reset_marker === true
+      ? null
+      : (body.resume_after_id ?? await readReaugMarker(sb));
+    let processed = 0;
+    let tokens = 0;
+    let batchesDone = 0;
+    const errs: string[] = [];
+
+    for (let pass = 0; pass < maxBatches; pass++) {
+      const out = await processReaugBatch(sb, batchSize, cursor);
+      batchesDone++;
+      if (out.err) errs.push(out.err);
+      if (out.processed === 0) break; // exhausted
+      processed += out.processed;
+      tokens += out.tokens;
+      cursor = out.newLastId;
+      // Persist marker every batch so a crash doesn't lose progress.
+      if (cursor) await writeReaugMarker(sb, cursor);
+    }
+
+    // Compute remaining: total rows with id > cursor.
+    let remaining = 0;
+    try {
+      let q = sb
+        .from("law_chunks_v2")
+        .select("id", { count: "exact", head: true });
+      if (cursor) q = q.gt("id", cursor);
+      const { count } = await q;
+      remaining = count ?? 0;
+    } catch {
+      remaining = -1;
+    }
+
+    return jsonOk({
+      mode: "re-embed-augmented",
+      processed,
+      remaining,
+      cursor,
+      cost_usd: +(tokens * PRICE_PER_TOKEN_USD).toFixed(6),
+      tokens,
+      batches_used: batchesDone,
+      elapsed_ms: Date.now() - started,
+      errors: errs.length ? errs : undefined,
+    });
+  }
 
   // Round-robin: take one batch from each table per pass until we've used
   // our batch budget OR no table has any work left.
