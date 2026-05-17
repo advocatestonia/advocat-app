@@ -2131,6 +2131,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan1.f4">Cited sources from EU & EE law</li>
           <li data-i18n="plan1.f5">No card required</li>
           <li data-i18n="pricing.free.contract_review">1 contract review (lifetime trial)</li>
+          <li data-i18n="pricing.free.lawyer_call">No human lawyer calls (upgrade for one)</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="free" href="/app.html" data-i18n="plan1.cta">Start free</a>
       </div>
@@ -2158,6 +2159,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
           <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
+          <li data-i18n="pricing.pro.lawyer_call" class="plan-feature-highlight">+ 1 human lawyer call / quarter (15 min)</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="pro" id="plan2-cta" href="/app.html?plan=counsel&amp;billing=monthly" data-i18n="plan2.cta">Start now</a>
       </div>
@@ -2191,6 +2193,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f5">Everything in Pro</li>
           <li data-i18n="plan3.f6">Email & document export</li>
           <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
+          <li data-i18n="pricing.premium.lawyer_call" class="plan-feature-highlight">+ 2 human lawyer calls / quarter (15 min each)</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="premium" href="/app.html?plan=representation&amp;billing=monthly" data-i18n="plan3.cta">Choose Premium</a>
       </div>
@@ -2259,6 +2262,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan1.f4">Cited sources from EU & EE law</li>
           <li data-i18n="plan1.f5">No card required</li>
           <li data-i18n="pricing.free.contract_review">1 contract review (lifetime trial)</li>
+          <li data-i18n="pricing.free.lawyer_call">No human lawyer calls (upgrade for one)</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v2" data-plan="free" href="/app.html" data-i18n="plan1.cta">Start free</a>
       </div>
@@ -2296,6 +2300,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
           <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
+          <li data-i18n="pricing.pro.lawyer_call" class="plan-feature-highlight">+ 1 human lawyer call / quarter (15 min)</li>
         </ul>
         <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="pro" data-href-monthly="/app.html?plan=counsel&amp;billing=monthly" data-href-annual="/app.html?plan=counsel&amp;billing=annual" href="/app.html?plan=counsel&amp;billing=annual" data-i18n="plan2.cta">Start now</a>
       </div>
@@ -2337,6 +2342,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f5">Everything in Pro</li>
           <li data-i18n="plan3.f6">Email & document export</li>
           <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
+          <li data-i18n="pricing.premium.lawyer_call" class="plan-feature-highlight">+ 2 human lawyer calls / quarter (15 min each)</li>
         </ul>
         <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="premium" data-href-monthly="/app.html?plan=representation&amp;billing=monthly" data-href-annual="/app.html?plan=representation&amp;billing=annual" href="/app.html?plan=representation&amp;billing=annual" data-i18n="plan3.cta">Choose Premium</a>
       </div>
@@ -2625,6 +2631,9 @@ const I18N = {
     'pricing.free.contract_review': '1 contract review (lifetime trial)',
     'pricing.pro.contract_review': '5 contract reviews / month',
     'pricing.premium.contract_review': '20 contract reviews / month',
+    'pricing.free.lawyer_call': 'No human lawyer calls (upgrade for one)',
+    'pricing.pro.lawyer_call': '+ 1 human lawyer call / quarter (15 min)',
+    'pricing.premium.lawyer_call': '+ 2 human lawyer calls / quarter (15 min each)',
     'how.s1h': 'Ask your question', 'how.s1p': 'Talk like you would to a friend — in any of 17 languages. Advocat asks follow-ups like a good lawyer would.', 'how.s1m': '~ 90 seconds',
     'how.s2h': 'AI cites the law', 'how.s2p': 'Every answer cites the exact statute (e.g. VÕS § 308 lg 3). You can verify it in Riigi Teataja yourself.', 'how.s2m': 'PDF · DOCX · images',
     'how.s3h': 'Send the letter from your email', 'how.s3p': 'AI drafts the letter — you send it from your own email in one click.', 'how.s3m': 'Ready to send',
@@ -2751,6 +2760,9 @@ const I18N = {
     'pricing.free.contract_review': '1 lepingu ülevaatus (eluaegne proov)',
     'pricing.pro.contract_review': '5 lepingu ülevaatust / kuus',
     'pricing.premium.contract_review': '20 lepingu ülevaatust / kuus',
+    'pricing.free.lawyer_call': 'Advokaadi kõnesid ei kuulu (uuenda paketti, et saada üks)',
+    'pricing.pro.lawyer_call': '+ 1 advokaadi kõne kvartalis (15 min)',
+    'pricing.premium.lawyer_call': '+ 2 advokaadi kõnet kvartalis (15 min kumbki)',
     'how.s1h': 'Kirjelda olukorda', 'how.s1p': 'Räägi nii, nagu räägiksid sõbrale — eesti, vene, ukraina või mõnes 17 muus keeles. Advocat küsib täpsustusi nagu hea jurist.', 'how.s1m': '~ 90 sekundit',
     'how.s2h': 'AI viitab seadusele', 'how.s2p': 'Iga vastus toob välja konkreetse sätte (nt VÕS § 308 lg 3). Saad selle Riigi Teatajast ise kontrollida.', 'how.s2m': 'PDF · DOCX · pildid',
     'how.s3h': 'Saada kiri oma postkastist', 'how.s3p': 'AI koostab kirja mustandi — saadad oma postkastist ühe klõpsuga.', 'how.s3m': 'Valmis saatmiseks',
@@ -2877,6 +2889,9 @@ const I18N = {
     'pricing.free.contract_review': '1 анализ контракта (пожизненный пробный)',
     'pricing.pro.contract_review': '5 анализов контрактов / месяц',
     'pricing.premium.contract_review': '20 анализов контрактов / месяц',
+    'pricing.free.lawyer_call': 'Звонки с юристом не включены (повысь тариф)',
+    'pricing.pro.lawyer_call': '+ 1 звонок с юристом в квартал (15 мин)',
+    'pricing.premium.lawyer_call': '+ 2 звонка с юристом в квартал (по 15 мин)',
     'how.s1h': 'Задай вопрос', 'how.s1p': 'Говори как с другом — на русском, эстонском, украинском или любом из 17 языков. Advocat задаёт уточняющие вопросы как хороший юрист.', 'how.s1m': '~ 90 сек',
     'how.s2h': 'ИИ цитирует закон', 'how.s2p': 'Каждый ответ ссылается на конкретную статью (например, VÕS § 308 ч. 3). Можно проверить в Riigi Teataja самостоятельно.', 'how.s2m': 'PDF · DOCX · фото',
     'how.s3h': 'Отправь письмо со своей почты', 'how.s3p': 'AI готовит письмо — отправляете со своей почты в один клик.', 'how.s3m': 'Готово к отправке',
@@ -3099,6 +3114,9 @@ const I18N = {
     'pricing.free.contract_review': '1 sopimuksen tarkastus (elinikäinen kokeilu)',
     'pricing.pro.contract_review': '5 sopimustarkastusta / kuukausi',
     'pricing.premium.contract_review': '20 sopimustarkastusta / kuukausi',
+    'pricing.free.lawyer_call': 'Ei lakimiespuheluja (päivitä paketti)',
+    'pricing.pro.lawyer_call': '+ 1 lakimiespuhelu / vuosineljännes (15 min)',
+    'pricing.premium.lawyer_call': '+ 2 lakimiespuhelua / vuosineljännes (à 15 min)',
     'how.s1h': 'Esitä kysymyksesi', 'how.s1p': 'Puhu kuin ystävälle — millä tahansa 17 kielellä. Advocat esittää tarkentavia kysymyksiä kuten hyvä juristi.', 'how.s1m': '~ 90 sek',
     'how.s2h': 'Tekoäly siteeraa lakia', 'how.s2p': 'Jokainen vastaus viittaa tarkkaan pykälään (esim. VÕS § 308). Voit tarkistaa sen Riigi Teatajasta itse.', 'how.s2m': 'PDF · DOCX · kuvat',
     'how.s3h': 'Lähetä kirje omasta postistasi', 'how.s3p': 'Tekoäly laatii kirjeen luonnoksen — lähetät sen omasta sähköpostistasi yhdellä klikkauksella.', 'how.s3m': 'Valmis lähetettäväksi',
