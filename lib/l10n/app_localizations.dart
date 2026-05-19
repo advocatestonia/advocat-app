@@ -1196,6 +1196,48 @@ abstract class AppLocalizations {
   /// **'Privacy Policy'**
   String get privacyPolicy;
 
+  /// No description provided for @dpaTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Processing Agreement'**
+  String get dpaTitle;
+
+  /// No description provided for @dpaCheckoutGateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you upgrade'**
+  String get dpaCheckoutGateTitle;
+
+  /// No description provided for @dpaCheckoutGateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'EU law (GDPR Art. 28) requires us to sign a Data Processing Agreement with every paying customer. Please review and accept.'**
+  String get dpaCheckoutGateBody;
+
+  /// No description provided for @dpaViewLink.
+  ///
+  /// In en, this message translates to:
+  /// **'View Data Processing Agreement'**
+  String get dpaViewLink;
+
+  /// No description provided for @dpaCheckboxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'I have read and accept the Data Processing Agreement (v1.0).'**
+  String get dpaCheckboxLabel;
+
+  /// No description provided for @dpaCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get dpaCancel;
+
+  /// No description provided for @dpaAcceptAndContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept and continue'**
+  String get dpaAcceptAndContinue;
+
   /// No description provided for @pro.
   ///
   /// In en, this message translates to:

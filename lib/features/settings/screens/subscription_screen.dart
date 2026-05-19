@@ -13,6 +13,7 @@ import '../../../shared/constants/app_icons.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/max_width_wrapper.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../../legal/widgets/dpa_checkout_gate.dart';
 
 // ── Providers ────────────────────────────────────────────────────────────
 
@@ -382,6 +383,12 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     String planId,
   ) async {
     if (planId == 'free') return;
+
+    // GDPR Art. 28 — clickwrap DPA gate. Blocks paid checkout until the
+    // user has accepted the current DPA version (cached row in
+    // public.dpa_acceptances skips the dialog on re-upgrade).
+    final dpaOk = await ensureDpaAccepted(context);
+    if (!dpaOk) return;
 
     ref.read(_isLoadingPlanProvider.notifier).state = planId;
     final isAnnual = ref.read(_isAnnualProvider);

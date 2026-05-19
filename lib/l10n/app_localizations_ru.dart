@@ -577,6 +577,29 @@ class AppLocalizationsRu extends AppLocalizations {
   String get privacyPolicy => 'Политику конфиденциальности';
 
   @override
+  String get dpaTitle => 'Соглашение об обработке данных';
+
+  @override
+  String get dpaCheckoutGateTitle => 'Перед оформлением подписки';
+
+  @override
+  String get dpaCheckoutGateBody =>
+      'Право ЕС (GDPR ст. 28) требует подписания соглашения об обработке данных с каждым платным клиентом. Пожалуйста, ознакомьтесь и примите.';
+
+  @override
+  String get dpaViewLink => 'Открыть соглашение об обработке данных';
+
+  @override
+  String get dpaCheckboxLabel =>
+      'Я прочитал и принимаю Соглашение об обработке данных (v1.0).';
+
+  @override
+  String get dpaCancel => 'Отмена';
+
+  @override
+  String get dpaAcceptAndContinue => 'Принять и продолжить';
+
+  @override
   String get pro => 'Профессиональный';
 
   @override

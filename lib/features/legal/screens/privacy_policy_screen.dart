@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
@@ -25,8 +27,71 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             _buildHeader(),
             const SizedBox(height: AppSpacing.lg),
+            _buildDpaLink(context),
+            const SizedBox(height: AppSpacing.lg),
             ..._buildSections(),
             const SizedBox(height: AppSpacing.xxl),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Inline link to the Data Processing Agreement. Required for B2B
+  /// customers and law firms reselling Advocat (GDPR Art. 28 documentation).
+  Widget _buildDpaLink(BuildContext context) {
+    return InkWell(
+      onTap: () => context.push(AppRoutes.dpa),
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: AppColors.accent.withValues(alpha: 0.06),
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(
+            color: AppColors.accent.withValues(alpha: 0.3),
+          ),
+        ),
+        child: const Row(
+          children: [
+            Icon(
+              Icons.assignment_outlined,
+              color: AppColors.accent,
+              size: 22,
+            ),
+            SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Data Processing Agreement (GDPR Art. 28)',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'Required for paying customers and B2B resellers. '
+                    'Read or download the full DPA.',
+                    style: TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 14,
+              color: AppColors.accent,
+            ),
           ],
         ),
       ),

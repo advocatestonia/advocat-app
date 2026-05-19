@@ -578,6 +578,29 @@ class AppLocalizationsFi extends AppLocalizations {
   String get privacyPolicy => 'Tietosuojakäytäntö';
 
   @override
+  String get dpaTitle => 'Tietojenkäsittelysopimus';
+
+  @override
+  String get dpaCheckoutGateTitle => 'Ennen tilauksen päivitystä';
+
+  @override
+  String get dpaCheckoutGateBody =>
+      'EU-laki (GDPR 28 art.) edellyttää tietojenkäsittelysopimuksen tekemistä jokaisen maksavan asiakkaan kanssa. Lue ja hyväksy.';
+
+  @override
+  String get dpaViewLink => 'Avaa tietojenkäsittelysopimus';
+
+  @override
+  String get dpaCheckboxLabel =>
+      'Olen lukenut ja hyväksyn tietojenkäsittelysopimuksen (v1.0).';
+
+  @override
+  String get dpaCancel => 'Peruuta';
+
+  @override
+  String get dpaAcceptAndContinue => 'Hyväksy ja jatka';
+
+  @override
   String get pro => 'Pro';
 
   @override

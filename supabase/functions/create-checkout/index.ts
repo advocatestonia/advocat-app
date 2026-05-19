@@ -14,6 +14,7 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import Stripe from "https://esm.sh/stripe@14.14.0?target=deno";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
   corsHeaders,
   jsonError,
@@ -24,6 +25,16 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2023-10-16",
   httpClient: Stripe.createFetchHttpClient(),
 });
+
+// GDPR Art. 28 — current DPA version. MUST match `kCurrentDpaVersion` in
+// `lib/features/legal/data/dpa_text.dart`. The edge function refuses to
+// mint a Stripe session unless a row exists in `public.dpa_acceptances`
+// for (user_id, this version). Defence-in-depth: even if the client UI
+// is bypassed, no charge can happen without a recorded acceptance.
+const CURRENT_DPA_VERSION = "v1.0-2026-05-20";
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 // ── Price lookup table (EUR cents) ──────────────────────────────────────
 
@@ -127,6 +138,36 @@ serve(async (req: Request) => {
         `Unknown billing_period: ${billing_period} for plan ${plan_id}`,
         400,
       );
+    }
+
+    // ── GDPR Art. 28 hard-gate ─────────────────────────────────────────
+    // Refuse to mint a session if there is no acceptance row for the
+    // current DPA version. The client-side dialog should have created
+    // this row already; this is defence-in-depth for direct API callers.
+    try {
+      const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
+      const { data: dpa, error: dpaErr } = await admin
+        .from("dpa_acceptances")
+        .select("id")
+        .eq("user_id", gate.user.id)
+        .eq("dpa_version", CURRENT_DPA_VERSION)
+        .limit(1)
+        .maybeSingle();
+      if (dpaErr) {
+        console.error("dpa_acceptances lookup failed:", dpaErr.message);
+        return jsonError("DPA verification failed", 500);
+      }
+      if (!dpa) {
+        return jsonError("dpa_not_accepted", 412, {
+          version: CURRENT_DPA_VERSION,
+        });
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error("dpa_acceptances gate error:", msg.slice(0, 200));
+      return jsonError("DPA verification failed", 500);
     }
 
     // Build Stripe Checkout Session parameters

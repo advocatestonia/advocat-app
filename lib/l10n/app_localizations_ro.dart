@@ -577,6 +577,29 @@ class AppLocalizationsRo extends AppLocalizations {
   String get privacyPolicy => 'Politica de confidențialitate';
 
   @override
+  String get dpaTitle => 'Data Processing Agreement';
+
+  @override
+  String get dpaCheckoutGateTitle => 'Before you upgrade';
+
+  @override
+  String get dpaCheckoutGateBody =>
+      'EU law (GDPR Art. 28) requires us to sign a Data Processing Agreement with every paying customer. Please review and accept.';
+
+  @override
+  String get dpaViewLink => 'View Data Processing Agreement';
+
+  @override
+  String get dpaCheckboxLabel =>
+      'I have read and accept the Data Processing Agreement (v1.0).';
+
+  @override
+  String get dpaCancel => 'Cancel';
+
+  @override
+  String get dpaAcceptAndContinue => 'Accept and continue';
+
+  @override
   String get pro => 'Pro';
 
   @override

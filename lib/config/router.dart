@@ -75,6 +75,9 @@ import '../features/case_memory/models/case_deadline.dart'
     as cm_deadline_model;
 // Sofia Gold Corpus admin (Phase A) — gated on GOLD_REVIEWER_IDS allowlist.
 import '../features/admin/gold_review_screen.dart';
+// GDPR Art. 28 — Data Processing Agreement review screen, reachable from
+// the checkout-gate dialog and from the Privacy Policy screen.
+import '../features/legal/screens/dpa_screen.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -146,6 +149,10 @@ abstract final class AppRoutes {
   /// Day2-E — partner-lawyer dashboard (upcoming bookings, earnings,
   /// post-call outcome form).
   static const String partnerLawyerDashboard = '/partner-lawyer';
+
+  /// GDPR Art. 28 — Data Processing Agreement review screen. Linked from
+  /// the checkout-gate dialog and from the Privacy Policy.
+  static const String dpa = '/legal/dpa';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -500,6 +507,13 @@ final routerProvider = Provider<GoRouter>((ref) {
           final caseId = state.uri.queryParameters['caseId'];
           return CaseFileScreen(caseId: caseId);
         },
+      ),
+
+      // ── GDPR Art. 28 — DPA review screen ───────────────────────────
+      GoRoute(
+        path: AppRoutes.dpa,
+        name: 'dpa',
+        builder: (context, state) => const DpaScreen(),
       ),
 
       // ── Sofia Gold Corpus review (Phase A) ─────────────────────────

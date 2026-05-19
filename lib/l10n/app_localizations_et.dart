@@ -576,6 +576,29 @@ class AppLocalizationsEt extends AppLocalizations {
   String get privacyPolicy => 'Privaatsuspoliitika';
 
   @override
+  String get dpaTitle => 'Andmetöötlusleping';
+
+  @override
+  String get dpaCheckoutGateTitle => 'Enne tellimuse uuendamist';
+
+  @override
+  String get dpaCheckoutGateBody =>
+      'EL õigus (GDPR art 28) kohustab meid sõlmima andmetöötluslepingu iga tasulise kliendiga. Palun tutvuge ja nõustuge.';
+
+  @override
+  String get dpaViewLink => 'Vaata andmetöötluslepingut';
+
+  @override
+  String get dpaCheckboxLabel =>
+      'Olen lugenud ja nõustun andmetöötluslepinguga (v1.0).';
+
+  @override
+  String get dpaCancel => 'Tühista';
+
+  @override
+  String get dpaAcceptAndContinue => 'Nõustun ja jätkan';
+
+  @override
   String get pro => 'Pro';
 
   @override
