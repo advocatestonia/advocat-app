@@ -125,7 +125,14 @@ class AdvocatApp extends ConsumerWidget {
       builder: (context, child) {
         return Stack(
           children: [
-            if (child != null) child,
+            if (child != null)
+              NotificationListener<UserScrollNotification>(
+                onNotification: (n) {
+                  kSupportFabBus.notifyScroll(n.direction);
+                  return false;
+                },
+                child: child,
+              ),
             const Positioned(
               right: 0,
               bottom: 0,
