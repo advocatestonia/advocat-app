@@ -25,6 +25,11 @@ import '../widgets/gmail_reauth_banner.dart';
 
 enum _EmailProvider { gmail, outlook, icloud, yahoo }
 
+/// User-facing connection-error kinds. Notifier code is widget-context-free,
+/// so we cannot resolve the localized string here — the widget maps this
+/// enum onto `AppLocalizations` when rendering. Keep the set small.
+enum _ConnectionError { generic }
+
 class _EmailConnectionState {
   const _EmailConnectionState({
     this.isConnected = false,
@@ -33,7 +38,7 @@ class _EmailConnectionState {
     this.lastSyncAt,
     this.isSyncing = false,
     this.isConnecting = false,
-    this.errorMessage,
+    this.errorKind,
     this.tokenScopeHint,
   });
 
@@ -43,7 +48,7 @@ class _EmailConnectionState {
   final DateTime? lastSyncAt;
   final bool isSyncing;
   final bool isConnecting;
-  final String? errorMessage;
+  final _ConnectionError? errorKind;
 
   /// Best-effort: the scope string from `user_oauth_tokens.scope`, lowercased.
   /// `null` when we have not yet fetched it (e.g. first launch before the
@@ -59,7 +64,7 @@ class _EmailConnectionState {
     DateTime? lastSyncAt,
     bool? isSyncing,
     bool? isConnecting,
-    String? errorMessage,
+    _ConnectionError? errorKind,
     String? tokenScopeHint,
   }) {
     return _EmailConnectionState(
@@ -69,7 +74,7 @@ class _EmailConnectionState {
       lastSyncAt: lastSyncAt ?? this.lastSyncAt,
       isSyncing: isSyncing ?? this.isSyncing,
       isConnecting: isConnecting ?? this.isConnecting,
-      errorMessage: errorMessage,
+      errorKind: errorKind,
       tokenScopeHint: tokenScopeHint ?? this.tokenScopeHint,
     );
   }
@@ -214,19 +219,20 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
         email: result.email ?? session.user.email,
         provider: _EmailProvider.gmail,
         lastSyncAt: DateTime.now(),
-        errorMessage: result.ok ? null : 'Failed to link Gmail',
+        errorKind: result.ok ? null : _ConnectionError.generic,
       );
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('[email_screen] persistGmailToken failed: $e\n$st');
       state = state.copyWith(
         isConnecting: false,
-        errorMessage: 'Could not link Gmail: ${e.toString()}',
+        errorKind: _ConnectionError.generic,
       );
     }
   }
 
   /// Connect Gmail via Google OAuth through Supabase.
   Future<void> connectGmail() async {
-    state = state.copyWith(isConnecting: true, errorMessage: null);
+    state = state.copyWith(isConnecting: true, errorKind: null);
     try {
       // Link Google identity to existing session, or sign in with Google.
       // Scope MUST include gmail.send so send-email can dispatch via the
@@ -245,10 +251,11 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
       // On web, this redirects the browser. When the user comes back,
       // _handleAuthStateChange will pick up session.providerToken and POST
       // it to oauth-callback.
-    } catch (e) {
-      state = _EmailConnectionState(
+    } catch (e, st) {
+      debugPrint('[email_screen] connectGmail failed: $e\n$st');
+      state = const _EmailConnectionState(
         isConnecting: false,
-        errorMessage: 'Failed to connect Gmail: ${e.toString()}',
+        errorKind: _ConnectionError.generic,
       );
     }
   }
@@ -466,7 +473,7 @@ class _DisconnectedView extends ConsumerWidget {
             ),
 
             // Error message
-            if (connection.errorMessage != null) ...[
+            if (connection.errorKind != null) ...[
               const SizedBox(height: AppSpacing.md),
               Container(
                 padding: const EdgeInsets.all(AppSpacing.sm),
@@ -477,7 +484,8 @@ class _DisconnectedView extends ConsumerWidget {
                       color: AppColors.error.withValues(alpha: 0.15)),
                 ),
                 child: Text(
-                  connection.errorMessage!,
+                  AppLocalizations.of(context)?.genericError ??
+                      'Something went wrong. Please try again.',
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,

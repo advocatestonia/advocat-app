@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../config/app_config.dart';
 import '../../../config/feature_flags.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
@@ -94,8 +95,8 @@ class SettingsScreen extends ConsumerWidget {
           ),
 
           // Pkg 6 — three-pass planner toggle (Pro only). Default OFF;
-          // adds ~3-6s to legal turns when on. Settings-screen copy is
-          // inline English for now — ARB keys land in a follow-up pass.
+          // adds ~3-6s to legal turns when on. Copy is localized via
+          // plannerSettings* ARB keys (see _PlannerToggleTile below).
           _PlannerToggleTile(),
 
           const _SectionDivider(),
@@ -128,12 +129,11 @@ class SettingsScreen extends ConsumerWidget {
           // ── Data & Privacy ────────────────────────────────────────────
           _SectionHeader(title: l.dataAndPrivacy),
           // ADR-001 Tier 1 — let users review & wipe what the AI has
-          // learned about them (GDPR Art. 17). Copy is inline English for
-          // now; ARB keys land once the translation pass is scheduled.
+          // learned about them (GDPR Art. 17). Localized via aiMemory* keys.
           _SettingsTile(
             icon: Icons.psychology_outlined,
-            title: 'AI memory',
-            subtitle: 'Review and forget what the AI remembers about you',
+            title: l.aiMemoryTitle,
+            subtitle: l.aiMemorySubtitle,
             trailing: const Icon(
               AppIcons.chevronRight,
               color: AppColors.textTertiary,
@@ -185,7 +185,7 @@ class SettingsScreen extends ConsumerWidget {
           _SettingsTile(
             icon: AppIcons.infoOutlined,
             title: l.appVersion,
-            subtitle: '1.0.0 (Build 1)',
+            subtitle: AppConfig.appVersion,
           ),
           _SettingsTile(
             icon: AppIcons.starOutlined,

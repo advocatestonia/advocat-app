@@ -634,6 +634,7 @@
     "severityOverview": "Ciddiyet genel bakışı",
     "sickLeave": "Hastalık izni tazminatı",
     "somethingWentWrong": "Bir şeyler yanlış gitti",
+    "genericError": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
     "stoppedByPolice": "Polis tarafından durdurulma",
     "stoppedByPoliceDesc": "Polis kontrolünde haklarınız",
     "successSubscribed": "{plan} aboneliği başarılı!",
@@ -1077,5 +1078,35 @@
     "referralSettingsTile": "Arkadaşlarını davet et",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Beğendin mi? Bir arkadaşını davet et — ikiniz de bir ay ücretsiz kazanın.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Profesyonel doğrulama araçları",
+    "checkerDataSource": "Resmî kayıtlardan alınan veriler",
+    "companyCheckerHint": "Şirket adı veya sicil numarası",
+    "companyCheckerPriceChip": "Kontrol başına €2.99  •  Pro'ya dahildir",
+    "companyCheckerEmptyState": "Tam rapor için şirket adını veya sicil\nnumarasını girin",
+    "aiMemoryTitle": "Yapay zekâ hafızası",
+    "aiMemorySubtitle": "Yapay zekânın sizinle ilgili hatırladıklarını gözden geçirin ve silin",
+    "bookLawyerCallTitle": "Avukatla görüşme planlayın",
+    "bookLawyerCallComingSoonTitle": "Gerçek avukatlarla görüşmeler — yakında",
+    "bookLawyerCallComingSoonBody": "Pro ve Premium, ortak avukatla 15 dakikalık görüşmeleri kapsar (Pro: 1/çeyrek, Premium: 2/çeyrek). Estonyalı bağımsız avukat ağını tamamlıyoruz; rezervasyon açılır açılmaz size e-posta göndereceğiz.",
+    "bookLawyerCallQuotaAvailable": "Bu çeyrekte {total} aramadan {remaining} hakkınız kaldı.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Üç aylık kontenjan kullanıldı.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro paketi çeyrekte 1, Premium 2 aramayı kapsar. Aramalar 15 dakikadır ve Google Meet üzerinden yapılır.",
+    "bookLawyerCallQuotaBodyExhausted": "Kontenjanınız bir sonraki çeyreğin ilk günü sıfırlanır. Daha erken konuşmanız mı gerekiyor? Ekstra arama için Premium'a yükseltin.",
+    "severityCritical": "KRİTİK",
+    "severityHigh": "YÜKSEK",
+    "severityMedium": "ORTA",
+    "severityLow": "DÜŞÜK",
+    "deadlineRequiredFields": "Başlık ve son tarih zorunludur",
+    "acceptTermsRequired": "Lütfen Hizmet Şartlarını kabul edin"
 }

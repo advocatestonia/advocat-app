@@ -634,6 +634,7 @@
     "severityOverview": "Allvarlighetsöversikt",
     "sickLeave": "Sjukersättning",
     "somethingWentWrong": "Något gick fel",
+    "genericError": "Något gick fel. Försök igen.",
     "stoppedByPolice": "Stoppad av polisen",
     "stoppedByPoliceDesc": "Dina rättigheter vid poliskontroll",
     "successSubscribed": "Prenumeration på {plan} lyckades!",
@@ -1678,5 +1679,35 @@
     "referralSettingsTile": "Bjud in vänner",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Gillade du det? Bjud in en vän — båda får en gratis månad.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Professionella verifieringsverktyg",
+    "checkerDataSource": "Data från officiella register",
+    "companyCheckerHint": "Företagsnamn eller organisationsnummer",
+    "companyCheckerPriceChip": "€2.99 per kontroll  •  Ingår i Pro",
+    "companyCheckerEmptyState": "Ange företagsnamn eller organisationsnummer\nför att få en fullständig rapport",
+    "aiMemoryTitle": "AI-minne",
+    "aiMemorySubtitle": "Granska och radera vad AI minns om dig",
+    "bookLawyerCallTitle": "Boka ett samtal med en jurist",
+    "bookLawyerCallComingSoonTitle": "Samtal med en riktig jurist — öppnar snart",
+    "bookLawyerCallComingSoonBody": "Pro och Premium inkluderar 15-minuters samtal med en partnerjurist (1/kvartal i Pro, 2/kvartal i Premium). Vi färdigställer det estniska nätverket av enskilda jurister och mejlar dig så snart bokning öppnar.",
+    "bookLawyerCallQuotaAvailable": "Du har {remaining} av {total} samtal kvar detta kvartal.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Kvartalskvoten är slut.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro innehåller 1 samtal/kvartal, Premium 2. Samtalen varar 15 minuter via Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Din kvot nollställs den första dagen i nästa kvartal. Behöver du prata tidigare? Uppgradera till Premium för ett extra samtal.",
+    "severityCritical": "KRITISK",
+    "severityHigh": "HÖG",
+    "severityMedium": "MEDEL",
+    "severityLow": "LÅG",
+    "deadlineRequiredFields": "Titel och slutdatum krävs",
+    "acceptTermsRequired": "Godkänn användarvillkoren"
 }

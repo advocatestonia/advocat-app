@@ -178,10 +178,11 @@ class _DraftingStudioScreenState extends ConsumerState<DraftingStudioScreen> {
       setState(() {
         _savedLabel = DraftingStrings.of(context).savedJustNow;
       });
-    } catch (e) {
+    } catch (e, st) {
+      debugPrint('[drafting_studio] manualSave failed: $e\n$st');
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${DraftingStrings.of(context).saveFailed}: $e')),
+        SnackBar(content: Text(DraftingStrings.of(context).saveFailed)),
       );
     } finally {
       if (mounted) setState(() => _busy = false);

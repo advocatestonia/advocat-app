@@ -106,7 +106,14 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
       ),
       body: docsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
+        error: (e, st) {
+          debugPrint('[document_vault] docs provider failed: $e\n$st');
+          return Center(
+            child: Text(
+              l10n.genericError,
+            ),
+          );
+        },
         data: (docs) {
           if (docs.isNotEmpty) {
             return _buildDocumentList(context, l10n, docs);

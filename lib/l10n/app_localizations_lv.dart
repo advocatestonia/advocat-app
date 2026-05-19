@@ -1212,6 +1212,9 @@ class AppLocalizationsLv extends AppLocalizations {
   String get somethingWentWrong => 'Kaut kas nogāja greizi';
 
   @override
+  String get genericError => 'Kaut kas nogāja greizi. Mēģiniet vēlreiz.';
+
+  @override
   String get retryAnalysis => 'Atkārtot analīzi';
 
   @override
@@ -3499,4 +3502,73 @@ class AppLocalizationsLv extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Profesionāli pārbaudes rīki';
+
+  @override
+  String get checkerDataSource => 'Dati no oficiālajiem reģistriem';
+
+  @override
+  String get companyCheckerHint => 'Uzņēmuma nosaukums vai reģ. numurs';
+
+  @override
+  String get companyCheckerPriceChip => '€2.99 par pārbaudi  •  Iekļauts Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Ievadiet uzņēmuma nosaukumu vai reģistrācijas\nnumuru, lai saņemtu pilnu pārskatu';
+
+  @override
+  String get aiMemoryTitle => 'MI atmiņa';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Pārskatiet un dzēsiet to, ko MI atceras par jums';
+
+  @override
+  String get bookLawyerCallTitle => 'Rezervējiet sarunu ar juristu';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Sarunas ar īstu juristu — drīzumā';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro un Premium ietver 15 minūšu sarunas ar partnera juristu (Pro – 1/ceturksnī, Premium – 2/ceturksnī). Pabeidzam Igaunijas individuālo juristu tīkla veidošanu un nosūtīsim e-pastu, tiklīdz rezervēšana būs atvērta.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Šajā ceturksnī jums atlikuši $remaining no $total zvaniem.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Ceturkšņa kvota izlietota.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro pakete ietver 1 zvanu ceturksnī, Premium – 2. Zvani ilgst 15 minūtes Google Meet vidē.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Jūsu kvota tiks atjaunota nākamā ceturkšņa pirmajā dienā. Vajag sarunu ātrāk? Atjauniniet uz Premium, lai saņemtu papildu zvanu.';
+
+  @override
+  String get severityCritical => 'KRITISKS';
+
+  @override
+  String get severityHigh => 'AUGSTS';
+
+  @override
+  String get severityMedium => 'VIDĒJS';
+
+  @override
+  String get severityLow => 'ZEMS';
+
+  @override
+  String get deadlineRequiredFields =>
+      'Nosaukums un termiņa datums ir obligāti';
+
+  @override
+  String get acceptTermsRequired => 'Lūdzu, piekrītiet Pakalpojuma noteikumiem';
 }

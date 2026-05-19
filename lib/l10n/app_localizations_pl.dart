@@ -1214,6 +1214,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get somethingWentWrong => 'Coś poszło nie tak';
 
   @override
+  String get genericError => 'Coś poszło nie tak. Spróbuj ponownie.';
+
+  @override
   String get retryAnalysis => 'Ponów analizę';
 
   @override
@@ -3503,4 +3506,72 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Profesjonalne narzędzia weryfikacji';
+
+  @override
+  String get checkerDataSource => 'Dane z oficjalnych rejestrów';
+
+  @override
+  String get companyCheckerHint => 'Nazwa firmy lub numer rejestru';
+
+  @override
+  String get companyCheckerPriceChip => '€2.99 za sprawdzenie  •  W planie Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Wprowadź nazwę firmy lub numer\nrejestru, aby uzyskać pełny raport';
+
+  @override
+  String get aiMemoryTitle => 'Pamięć AI';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Przejrzyj i usuń to, co AI zapamiętało o Tobie';
+
+  @override
+  String get bookLawyerCallTitle => 'Zarezerwuj rozmowę z prawnikiem';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Rozmowy z prawnikiem — wkrótce dostępne';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro i Premium obejmują 15-minutowe rozmowy z prawnikiem partnerskim (1/kwartał w Pro, 2/kwartał w Premium). Finalizujemy sieć estońskich prawników indywidualnych i wyślemy e-mail, gdy rezerwacje będą dostępne.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Pozostało Ci $remaining z $total rozmów w tym kwartale.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Limit kwartalny wykorzystany.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Plan Pro obejmuje 1 rozmowę/kwartał, Premium 2. Rozmowy trwają 15 minut, przez Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Twój limit zostanie zresetowany pierwszego dnia następnego kwartału. Potrzebujesz rozmowy wcześniej? Przejdź na Premium, aby uzyskać dodatkową rozmowę.';
+
+  @override
+  String get severityCritical => 'KRYTYCZNY';
+
+  @override
+  String get severityHigh => 'WYSOKI';
+
+  @override
+  String get severityMedium => 'ŚREDNI';
+
+  @override
+  String get severityLow => 'NISKI';
+
+  @override
+  String get deadlineRequiredFields => 'Tytuł i data terminu są wymagane';
+
+  @override
+  String get acceptTermsRequired => 'Zaakceptuj Warunki korzystania z usługi';
 }

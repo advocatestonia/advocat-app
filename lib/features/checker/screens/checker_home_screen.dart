@@ -66,9 +66,9 @@ class CheckerHomeScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 2),
-                        const Text(
-                          'Professional verification tools',
-                          style: TextStyle(
+                        Text(
+                          l10n.checkerProTagline,
+                          style: const TextStyle(
                             fontSize: 14,
                             color: AppColors.textTertiary,
                             fontWeight: FontWeight.w400,
@@ -123,14 +123,14 @@ class CheckerHomeScreen extends StatelessWidget {
                     color: AppColors.surfaceVariant,
                     borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.shield_outlined, size: 16, color: AppColors.textTertiary),
-                      SizedBox(width: 6),
+                      const Icon(Icons.shield_outlined, size: 16, color: AppColors.textTertiary),
+                      const SizedBox(width: 6),
                       Text(
-                        'Data from official registries',
-                        style: TextStyle(
+                        l10n.checkerDataSource,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 12,
                           fontWeight: FontWeight.w500,

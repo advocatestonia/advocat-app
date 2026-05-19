@@ -1196,6 +1196,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get somethingWentWrong => 'حدث خطأ ما';
 
   @override
+  String get genericError => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
+
+  @override
   String get retryAnalysis => 'إعادة التحليل';
 
   @override
@@ -3471,4 +3474,72 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Professional verification tools';
+
+  @override
+  String get checkerDataSource => 'Data from official registries';
+
+  @override
+  String get companyCheckerHint => 'Company name or reg. number';
+
+  @override
+  String get companyCheckerPriceChip => '€2.99 per check  •  Included in Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Enter a company name or registration\nnumber to get a full report';
+
+  @override
+  String get aiMemoryTitle => 'AI memory';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Review and forget what the AI remembers about you';
+
+  @override
+  String get bookLawyerCallTitle => 'Book a lawyer call';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Human lawyer calls — opening soon';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'You have $remaining of $total call(s) left this quarter.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Quarterly quota used.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.';
+
+  @override
+  String get severityCritical => 'CRITICAL';
+
+  @override
+  String get severityHigh => 'HIGH';
+
+  @override
+  String get severityMedium => 'MEDIUM';
+
+  @override
+  String get severityLow => 'LOW';
+
+  @override
+  String get deadlineRequiredFields => 'Title and deadline date are required';
+
+  @override
+  String get acceptTermsRequired => 'Please agree to the Terms of Service';
 }

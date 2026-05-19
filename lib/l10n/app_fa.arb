@@ -467,6 +467,7 @@
     "pdfExportComingSoon": "خروجی PDF به زودی",
     "analysisFailedRetry": "تحلیل ناموفق بود. لطفاً دوباره تلاش کنید.",
     "somethingWentWrong": "مشکلی پیش آمد",
+    "genericError": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
     "retryAnalysis": "تلاش مجدد تحلیل",
     "issuesFoundInDocument": "{count} مشکل در سند شما یافت شد",
     "@issuesFoundInDocument": {
@@ -1077,5 +1078,35 @@
     "referralSettingsTile": "دعوت از دوستان",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "خوشت آمد؟ یک دوست را دعوت کن — هر دو یک ماه رایگان می‌گیرید.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Professional verification tools",
+    "checkerDataSource": "Data from official registries",
+    "companyCheckerHint": "Company name or reg. number",
+    "companyCheckerPriceChip": "€2.99 per check  •  Included in Pro",
+    "companyCheckerEmptyState": "Enter a company name or registration\nnumber to get a full report",
+    "aiMemoryTitle": "AI memory",
+    "aiMemorySubtitle": "Review and forget what the AI remembers about you",
+    "bookLawyerCallTitle": "Book a lawyer call",
+    "bookLawyerCallComingSoonTitle": "Human lawyer calls — opening soon",
+    "bookLawyerCallComingSoonBody": "Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.",
+    "bookLawyerCallQuotaAvailable": "You have {remaining} of {total} call(s) left this quarter.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Quarterly quota used.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.",
+    "severityCritical": "CRITICAL",
+    "severityHigh": "HIGH",
+    "severityMedium": "MEDIUM",
+    "severityLow": "LOW",
+    "deadlineRequiredFields": "Title and deadline date are required",
+    "acceptTermsRequired": "Please agree to the Terms of Service"
 }

@@ -671,6 +671,7 @@
     "severityOverview": "Tõsiduse ülevaade",
     "sickLeave": "Haigushüvitis",
     "somethingWentWrong": "Midagi läks valesti",
+    "genericError": "Midagi läks valesti. Palun proovige uuesti.",
     "stoppedByPolice": "Politsei poolt peatatud",
     "strategyRecommendations": "Strateegilised soovitused",
     "stoppedByPoliceDesc": "Teie õigused politseikokkupuutel",
@@ -1399,13 +1400,17 @@
     "referralActivityInvited": "Kutsutud {when}",
     "@referralActivityInvited": {
         "placeholders": {
-            "when": { "type": "String" }
+            "when": {
+                "type": "String"
+            }
         }
     },
     "referralActivityActivated": "aktiveerus {when}",
     "@referralActivityActivated": {
         "placeholders": {
-            "when": { "type": "String" }
+            "when": {
+                "type": "String"
+            }
         }
     },
     "referralActivityPending": "ei ole veel aktiveerunud",
@@ -1413,19 +1418,25 @@
     "referralStatsInvitedCount": "Oled kutsunud {count, plural, =0{0 sõpra} =1{1 sõbra} other{{count} sõpra}}",
     "@referralStatsInvitedCount": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "referralStatsConvertedCount": "{count, plural, =0{keegi pole veel aktiveerunud} =1{1 on aktiveerunud} other{{count} on aktiveerunud}}",
     "@referralStatsConvertedCount": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "referralStatsEarnedCount": "Sinu boonus: {months, plural, =0{veel midagi pole} =1{1 tasuta kuu} other{{months} tasuta kuud}}",
     "@referralStatsEarnedCount": {
         "placeholders": {
-            "months": { "type": "int" }
+            "months": {
+                "type": "int"
+            }
         }
     },
     "referralNudgeMessage": "Meeldib Advocat? Kutsu sõber — mõlemad saavad kuu tasuta.",
@@ -1437,7 +1448,9 @@
     "referralLandingSubtitle": "{inviterName} kutsus sind — saa esimene kuu tasuta.",
     "@referralLandingSubtitle": {
         "placeholders": {
-            "inviterName": { "type": "String" }
+            "inviterName": {
+                "type": "String"
+            }
         }
     },
     "referralLandingSubtitleGeneric": "Saa Advocat Pro esimene kuu tasuta.",
@@ -1449,5 +1462,35 @@
     "referralLandingFallback": "See link on aegunud — kuid saad Advocati ikkagi tasuta proovida.",
     "@referralLandingFallback": {},
     "referralLandingBenefits": "17 keelt • Päris Eesti, Soome ja EL õigus • 24/7 — ootamiseta",
-    "@referralLandingBenefits": {}
+    "@referralLandingBenefits": {},
+    "checkerProTagline": "Professionaalsed kontrollivahendid",
+    "checkerDataSource": "Andmed ametlikest registritest",
+    "companyCheckerHint": "Ettevõtte nimi või registrikood",
+    "companyCheckerPriceChip": "€2.99 kontrolli kohta  •  Pro paketis sees",
+    "companyCheckerEmptyState": "Sisestage ettevõtte nimi või registrikood,\net saada täielik aruanne",
+    "aiMemoryTitle": "Tehisaru mälu",
+    "aiMemorySubtitle": "Vaadake üle ja kustutage, mida tehisaru teie kohta mäletab",
+    "bookLawyerCallTitle": "Broneerige juristi kõne",
+    "bookLawyerCallComingSoonTitle": "Inimjuristide kõned — varsti avatud",
+    "bookLawyerCallComingSoonBody": "Pro ja Premium pakettides sisalduvad 15-minutilised kõned partnerjuristiga (Pro – 1/kvartal, Premium – 2/kvartal). Viime EE üksiktegutsejate võrgustiku lõpule ja saadame e-kirja niipea, kui broneerimine avaneb.",
+    "bookLawyerCallQuotaAvailable": "Teil on sel kvartalil veel {remaining}/{total} kõnet.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Kvartali kvoot ära kasutatud.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro pakett sisaldab 1 kõnet kvartalis, Premium – 2. Kõned kestavad 15 minutit, Google Meeti kaudu.",
+    "bookLawyerCallQuotaBodyExhausted": "Teie kvoot uueneb järgmise kvartali esimesel päeval. Vajate kõnet varem? Uuendage Premiumiks, et saada lisakõne.",
+    "severityCritical": "KRIITILINE",
+    "severityHigh": "KÕRGE",
+    "severityMedium": "KESKMINE",
+    "severityLow": "MADAL",
+    "deadlineRequiredFields": "Pealkiri ja tähtaja kuupäev on kohustuslikud",
+    "acceptTermsRequired": "Palun nõustuge teenuse kasutustingimustega"
 }

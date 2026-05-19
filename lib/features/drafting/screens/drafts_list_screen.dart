@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../../../l10n/app_localizations.dart';
 import '../models/draft_model.dart';
 import '../services/draft_service.dart';
 import '../widgets/drafting_strings.dart';
@@ -35,7 +36,15 @@ class DraftsListScreen extends ConsumerWidget {
       ),
       body: draftsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (e, st) {
+          debugPrint('[drafts_list] myDraftsProvider failed: $e\n$st');
+          return Center(
+            child: Text(
+              AppLocalizations.of(context)?.genericError ??
+                  'Something went wrong. Please try again.',
+            ),
+          );
+        },
         data: (drafts) {
           if (drafts.isEmpty) {
             return _EmptyState(

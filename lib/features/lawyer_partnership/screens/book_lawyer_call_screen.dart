@@ -31,6 +31,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/feature_flags.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../models/lawyer_partnership_state.dart';
 import '../state/lawyer_partnership_providers.dart';
 
@@ -46,10 +47,11 @@ class BookLawyerCallScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text('Book a lawyer call'),
+        title: Text(l10n.bookLawyerCallTitle),
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
@@ -69,6 +71,7 @@ class _ComingSoonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Container(
@@ -78,27 +81,24 @@ class _ComingSoonCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(color: AppColors.info.withValues(alpha: 0.3)),
         ),
-        child: const Column(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Icon(Icons.event_available_outlined,
+            const Icon(Icons.event_available_outlined,
                 color: AppColors.info, size: 32),
-            SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: AppSpacing.sm),
             Text(
-              'Human lawyer calls — opening soon',
-              style: TextStyle(
+              l10n.bookLawyerCallComingSoonTitle,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.info,
               ),
             ),
-            SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: AppSpacing.sm),
             Text(
-              'Pro and Premium include 15-minute calls with a partner '
-              'lawyer (1/quarter on Pro, 2/quarter on Premium). We are '
-              'finalising the EE solo-practitioner pool and will email '
-              'you the moment booking opens.',
-              style: TextStyle(
+              l10n.bookLawyerCallComingSoonBody,
+              style: const TextStyle(
                 fontSize: 14,
                 color: AppColors.textPrimary,
                 height: 1.4,
@@ -191,16 +191,17 @@ class _QuotaBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final canBook = quota.canBook;
     final bgColor = canBook ? AppColors.successBg : AppColors.warningBg;
     final fgColor = canBook ? AppColors.success : AppColors.warning;
     final icon = canBook ? Icons.event_available : Icons.event_busy;
     final title = canBook
-        ? 'You have ${quota.remaining} of ${quota.quotaTotal} call(s) left this quarter.'
-        : 'Quarterly quota used.';
+        ? l10n.bookLawyerCallQuotaAvailable(quota.remaining, quota.quotaTotal)
+        : l10n.bookLawyerCallQuotaExhausted;
     final body = canBook
-        ? 'Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.'
-        : 'Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.';
+        ? l10n.bookLawyerCallQuotaBodyAvailable
+        : l10n.bookLawyerCallQuotaBodyExhausted;
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(

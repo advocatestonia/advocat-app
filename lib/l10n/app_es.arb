@@ -634,6 +634,7 @@
     "severityOverview": "Resumen de gravedad",
     "sickLeave": "Compensación por baja por enfermedad",
     "somethingWentWrong": "Algo salió mal",
+    "genericError": "Algo salió mal. Por favor, inténtelo de nuevo.",
     "stoppedByPolice": "Detenido por la policía",
     "stoppedByPoliceDesc": "Sus derechos durante un encuentro policial",
     "successSubscribed": "¡Suscripción a {plan} exitosa!",
@@ -1077,5 +1078,35 @@
     "referralSettingsTile": "Invitar amigos",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "¿Te gustó? Invita a un amigo — ambos obtienen un mes gratis.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Herramientas profesionales de verificación",
+    "checkerDataSource": "Datos de registros oficiales",
+    "companyCheckerHint": "Nombre de la empresa o nº de registro",
+    "companyCheckerPriceChip": "€2.99 por comprobación  •  Incluido en Pro",
+    "companyCheckerEmptyState": "Introduzca el nombre de la empresa o el\nnúmero de registro para obtener un informe completo",
+    "aiMemoryTitle": "Memoria de la IA",
+    "aiMemorySubtitle": "Revise y elimine lo que la IA recuerda de usted",
+    "bookLawyerCallTitle": "Reservar una llamada con un abogado",
+    "bookLawyerCallComingSoonTitle": "Llamadas con abogados reales — próximamente",
+    "bookLawyerCallComingSoonBody": "Pro y Premium incluyen llamadas de 15 minutos con un abogado asociado (1/trimestre en Pro, 2/trimestre en Premium). Estamos ultimando la red de abogados estonios independientes y le enviaremos un correo en cuanto se abran las reservas.",
+    "bookLawyerCallQuotaAvailable": "Le quedan {remaining} de {total} llamadas este trimestre.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Cuota trimestral agotada.",
+    "bookLawyerCallQuotaBodyAvailable": "El nivel Pro incluye 1 llamada al trimestre, Premium 2. Las llamadas duran 15 minutos por Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Su cuota se restablece el primer día del próximo trimestre. ¿Necesita hablar antes? Actualice a Premium para una llamada adicional.",
+    "severityCritical": "CRÍTICO",
+    "severityHigh": "ALTO",
+    "severityMedium": "MEDIO",
+    "severityLow": "BAJO",
+    "deadlineRequiredFields": "El título y la fecha límite son obligatorios",
+    "acceptTermsRequired": "Acepte los Términos del Servicio"
 }

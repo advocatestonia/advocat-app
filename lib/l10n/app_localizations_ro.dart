@@ -1214,6 +1214,10 @@ class AppLocalizationsRo extends AppLocalizations {
   String get somethingWentWrong => 'Ceva a mers greșit';
 
   @override
+  String get genericError =>
+      'Ceva a mers prost. Vă rugăm să încercați din nou.';
+
+  @override
   String get retryAnalysis => 'Reîncearcă analiza';
 
   @override
@@ -3508,4 +3512,73 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Instrumente profesionale de verificare';
+
+  @override
+  String get checkerDataSource => 'Date din registre oficiale';
+
+  @override
+  String get companyCheckerHint => 'Numele companiei sau nr. de înregistrare';
+
+  @override
+  String get companyCheckerPriceChip => '€2.99 pe verificare  •  Inclus în Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Introduceți numele companiei sau numărul\nde înregistrare pentru a obține un raport complet';
+
+  @override
+  String get aiMemoryTitle => 'Memoria AI';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Verificați și ștergeți ceea ce AI își amintește despre dvs.';
+
+  @override
+  String get bookLawyerCallTitle => 'Rezervați un apel cu un avocat';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Apeluri cu avocați reali — în curând';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro și Premium includ apeluri de 15 minute cu un avocat partener (1/trimestru pe Pro, 2/trimestru pe Premium). Finalizăm rețeaua estonă de practicieni individuali și vă vom trimite un e-mail imediat ce rezervările se vor deschide.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Vă mai rămân $remaining din $total apeluri în acest trimestru.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Cota trimestrială epuizată.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pachetul Pro include 1 apel/trimestru, Premium 2. Apelurile durează 15 minute, prin Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Cota dvs. se resetează în prima zi a trimestrului următor. Aveți nevoie să discutați mai devreme? Treceți la Premium pentru un apel suplimentar.';
+
+  @override
+  String get severityCritical => 'CRITIC';
+
+  @override
+  String get severityHigh => 'RIDICAT';
+
+  @override
+  String get severityMedium => 'MEDIU';
+
+  @override
+  String get severityLow => 'SCĂZUT';
+
+  @override
+  String get deadlineRequiredFields => 'Titlul și data limită sunt obligatorii';
+
+  @override
+  String get acceptTermsRequired =>
+      'Vă rugăm să acceptați Termenii și condițiile';
 }

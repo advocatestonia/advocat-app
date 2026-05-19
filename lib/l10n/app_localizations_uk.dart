@@ -1204,6 +1204,9 @@ class AppLocalizationsUk extends AppLocalizations {
   String get somethingWentWrong => 'Щось пішло не так';
 
   @override
+  String get genericError => 'Щось пішло не так. Спробуйте ще раз.';
+
+  @override
   String get retryAnalysis => 'Повторити аналіз';
 
   @override
@@ -3492,4 +3495,72 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Професійні інструменти перевірки';
+
+  @override
+  String get checkerDataSource => 'Дані з офіційних реєстрів';
+
+  @override
+  String get companyCheckerHint => 'Назва компанії або реєстр. номер';
+
+  @override
+  String get companyCheckerPriceChip => '€2.99 за перевірку  •  Входить у Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Введіть назву компанії або реєстраційний\nномер, щоб отримати повний звіт';
+
+  @override
+  String get aiMemoryTitle => 'Пам\'ять ШІ';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Перегляньте та видаліть те, що ШІ пам\'ятає про вас';
+
+  @override
+  String get bookLawyerCallTitle => 'Замовити дзвінок з юристом';
+
+  @override
+  String get bookLawyerCallComingSoonTitle => 'Дзвінки з живим юристом — скоро';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro та Premium включають 15-хвилинні дзвінки з юристом-партнером (1/квартал у Pro, 2/квартал у Premium). Завершуємо формування мережі естонських приватнопрактикуючих юристів і надішлемо листа, щойно бронювання відкриється.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'У вас залишилось $remaining з $total дзвінків цього кварталу.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Квартальну квоту вичерпано.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Тариф Pro включає 1 дзвінок на квартал, Premium — 2. Дзвінки тривають 15 хвилин у Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Ваша квота оновиться в перший день наступного кварталу. Потрібно поговорити раніше? Перейдіть на Premium для додаткового дзвінка.';
+
+  @override
+  String get severityCritical => 'КРИТИЧНО';
+
+  @override
+  String get severityHigh => 'ВИСОКИЙ';
+
+  @override
+  String get severityMedium => 'СЕРЕДНІЙ';
+
+  @override
+  String get severityLow => 'НИЗЬКИЙ';
+
+  @override
+  String get deadlineRequiredFields =>
+      'Заголовок і дата дедлайну є обов\'язковими';
+
+  @override
+  String get acceptTermsRequired => 'Будь ласка, прийміть Умови надання послуг';
 }

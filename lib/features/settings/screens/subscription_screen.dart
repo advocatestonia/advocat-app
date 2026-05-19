@@ -90,12 +90,17 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       // default `center`, children get loose constraints and PageView
       // collapses to a 480px fallback — keeping the desktop layout
       // squeezed even after the wrapper was loosened.
-      body: MaxWidthWrapper(
+      body: SafeArea(
+        top: false,
+        child: MaxWidthWrapper(
         child: FadeTransition(
         opacity: _fadeAnimation,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             const SizedBox(height: 16),
 
             // ── Current Plan Compact ─────────────────────────────────
@@ -113,7 +118,11 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
             const SizedBox(height: 16),
 
             // ── Horizontal Plan Cards (PageView) ─────────────────────
-            Expanded(
+            // Fixed height keeps the carousel from being squeezed on short
+            // viewports (where Expanded would shrink the card past its CTA)
+            // and lets the page scroll naturally.
+            SizedBox(
+              height: 540,
               child: PageView.builder(
                 controller: _pageController,
                 itemCount: plans.length,
@@ -123,7 +132,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                     index: index,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 4,
+                        horizontal: 6,
                         vertical: 8,
                       ),
                       child: plans[index],
@@ -133,40 +142,50 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
               ),
             ),
 
+            const SizedBox(height: 8),
+
             // ── Page Indicator ───────────────────────────────────────
-            Padding(
-              padding: const EdgeInsets.only(bottom: 4),
-              child: _PageIndicator(
-                controller: _pageController,
-                count: plans.length,
-              ),
+            _PageIndicator(
+              controller: _pageController,
+              count: plans.length,
             ),
+
+            const SizedBox(height: 16),
 
             // ── Voice disclaimer ────────────────────────────────────
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: const Color(0xFFE3F2FD),
-                borderRadius: BorderRadius.circular(8),
+                color: AppColors.surfaceVariant,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+                border: Border.all(color: AppColors.border, width: 1),
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.info_outline, size: 18, color: Color(0xFF1976D2)),
+                  const Icon(Icons.info_outline, size: 18, color: AppColors.accent),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       l10n.voiceDisclaimer,
-                      style: const TextStyle(fontSize: 12, color: Color(0xFF1976D2)),
+                      style: const TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        height: 1.4,
+                        color: AppColors.textSecondary,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
 
+            const SizedBox(height: 8),
+
             // ── Manage Subscription (Stripe Customer Portal) ────────
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: OutlinedButton.icon(
                 onPressed: () async {
                   try {
@@ -222,10 +241,17 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                 icon: const Icon(Icons.settings_outlined, size: 18),
                 label: Text(
                   l10n.manageSubscription,
-                  style: const TextStyle(fontSize: 14),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 style: OutlinedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 44),
+                  minimumSize: const Size(double.infinity, 48),
+                  foregroundColor: AppColors.textPrimary,
                   side: const BorderSide(color: AppColors.border),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppRadius.md),
@@ -234,24 +260,25 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
               ),
             ),
 
+            const SizedBox(height: 4),
+
             // ── Restore Purchases ────────────────────────────────────
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: TextButton(
-                onPressed: () => _handleRestore(context, ref),
-                child: Text(
-                  l10n.restorePurchases,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.textSecondary,
-                    decoration: TextDecoration.underline,
-                  ),
+            TextButton(
+              onPressed: () => _handleRestore(context, ref),
+              child: Text(
+                l10n.restorePurchases,
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.textSecondary,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),
-          ],
+            ],
+          ),
+        ),
         ),
       ),
       ),
@@ -441,8 +468,9 @@ class _BillingToggle extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 32),
-      height: 40,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      height: 44,
+      padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         color: AppColors.surfaceVariant,
         borderRadius: BorderRadius.circular(AppRadius.full),
@@ -470,8 +498,11 @@ class _BillingToggle extends StatelessWidget {
                       : null,
                 ),
                 alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   l10n.monthly,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,
@@ -506,26 +537,31 @@ class _BillingToggle extends StatelessWidget {
                       : null,
                 ),
                 alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      l10n.annual,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 13,
-                        fontWeight:
-                            isAnnual ? FontWeight.w600 : FontWeight.w500,
-                        color: isAnnual
-                            ? AppColors.textPrimary
-                            : AppColors.textTertiary,
+                    Flexible(
+                      child: Text(
+                        l10n.annual,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 13,
+                          fontWeight:
+                              isAnnual ? FontWeight.w600 : FontWeight.w500,
+                          color: isAnnual
+                              ? AppColors.textPrimary
+                              : AppColors.textTertiary,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 6),
                     Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 5,
-                        vertical: 1,
+                        horizontal: 6,
+                        vertical: 2,
                       ),
                       decoration: BoxDecoration(
                         color: AppColors.success,
@@ -533,11 +569,14 @@ class _BillingToggle extends StatelessWidget {
                       ),
                       child: Text(
                         l10n.saveTwentyFivePercent,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 9,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
+                          letterSpacing: 0.3,
                         ),
                       ),
                     ),
@@ -595,29 +634,38 @@ class _CompactCurrentPlan extends StatelessWidget {
             size: 20,
           ),
           const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.currentPlan,
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white60,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  l10n.currentPlan,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white70,
+                    letterSpacing: 0.2,
+                  ),
                 ),
-              ),
-              Text(
-                '$_tierText  ·  ${_label(l10n)}',
-                style: const TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  letterSpacing: 0.3,
+                const SizedBox(height: 2),
+                Text(
+                  '$_tierText  ·  ${_label(l10n)}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    letterSpacing: 0.3,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
@@ -956,15 +1004,18 @@ class _PlanCardState extends State<_PlanCard>
                   // Title
                   Text(
                     widget.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 17,
                       fontWeight: FontWeight.w700,
+                      height: 1.2,
                       color: _textPrimary,
                     ),
                   ),
 
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 6),
 
                   // ── Price ──────────────────────────────────
                   FadeTransition(
@@ -973,23 +1024,31 @@ class _PlanCardState extends State<_PlanCard>
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        Text(
-                          _priceText(l10n),
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 24,
-                            fontWeight: FontWeight.w800,
-                            color: _textPrimary,
-                            height: 1.1,
+                        Flexible(
+                          child: Text(
+                            _priceText(l10n),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w800,
+                              color: _textPrimary,
+                              height: 1.1,
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 3),
-                        Text(
-                          _periodText(l10n),
-                          style: TextStyle(
-                            fontFamily: 'Inter',
-                            fontSize: 12,
-                            color: _textSecondary,
+                        const SizedBox(width: 4),
+                        Flexible(
+                          child: Text(
+                            _periodText(l10n),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              color: _textSecondary,
+                            ),
                           ),
                         ),
                       ],
@@ -999,9 +1058,11 @@ class _PlanCardState extends State<_PlanCard>
                   // VAT disclosure (EU consumer law) — only for paid tiers.
                   if (_vatText(context) != null)
                     Padding(
-                      padding: const EdgeInsets.only(top: 2),
+                      padding: const EdgeInsets.only(top: 4),
                       child: Text(
                         _vatText(context)!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 11,
@@ -1011,28 +1072,34 @@ class _PlanCardState extends State<_PlanCard>
                       ),
                     ),
 
-                  // Annual savings hint (fixed height slot)
-                  SizedBox(
-                    height: 14,
-                    child: _annualSavingsText(l10n) != null
-                        ? Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              _annualSavingsText(l10n)!,
-                              style: TextStyle(
-                                fontFamily: 'Inter',
-                                fontSize: 11,
-                                color: _isDark
-                                    ? AppColors.accentLight
-                                    : AppColors.accent,
-                                fontWeight: FontWeight.w500,
+                  // Annual savings hint (reserved slot, avoids jitter when
+                  // toggling monthly/annual).
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: SizedBox(
+                      height: 16,
+                      child: _annualSavingsText(l10n) != null
+                          ? Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                _annualSavingsText(l10n)!,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 11,
+                                  color: _isDark
+                                      ? AppColors.accentLight
+                                      : AppColors.accent,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          )
-                        : null,
+                            )
+                          : null,
+                    ),
                   ),
 
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 12),
 
                   Divider(
                     height: 1,
@@ -1041,54 +1108,68 @@ class _PlanCardState extends State<_PlanCard>
                         : AppColors.border,
                   ),
 
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 12),
 
                   // ── Features list ──────────────────────────
                   // Cap bumped to 7 in 2026-05-13 to make room for the
                   // Contract Reviews line on every tier (Pkg Contract Review).
-                  ...List.generate(
-                    math.min(widget.features.length, 7),
-                    (i) {
-                      final f = widget.features[i];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 3),
-                        child: Row(
-                          children: [
-                            Icon(
-                              f.included
-                                  ? AppIcons.checkCircle
-                                  : Icons.cancel_rounded,
-                              size: 15,
-                              color: f.included
-                                  ? _checkColor
-                                  : _uncheckColor,
-                            ),
-                            const SizedBox(width: 7),
-                            Expanded(
-                              child: Text(
-                                f.text,
-                                style: TextStyle(
-                                  fontFamily: 'Inter',
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: f.included
-                                      ? _textPrimary
-                                      : _textSecondary,
-                                  decoration: f.included
-                                      ? null
-                                      : TextDecoration.lineThrough,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: List.generate(
+                          math.min(widget.features.length, 7),
+                          (i) {
+                            final f = widget.features[i];
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 1),
+                                    child: Icon(
+                                      f.included
+                                          ? AppIcons.checkCircle
+                                          : Icons.cancel_rounded,
+                                      size: 15,
+                                      color: f.included
+                                          ? _checkColor
+                                          : _uncheckColor,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      f.text,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: TextStyle(
+                                        fontFamily: 'Inter',
+                                        fontSize: 12.5,
+                                        height: 1.3,
+                                        fontWeight: FontWeight.w400,
+                                        color: f.included
+                                            ? _textPrimary
+                                            : _textSecondary,
+                                        decoration: f.included
+                                            ? null
+                                            : TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
-                      );
-                    },
+                      ),
+                    ),
                   ),
 
-                  const Spacer(),
+                  const SizedBox(height: 12),
 
                   // ── CTA Button ─────────────────────────────
                   _buildCta(l10n),
@@ -1125,7 +1206,7 @@ class _PlanCardState extends State<_PlanCard>
       case _CardStyle.free:
         return SizedBox(
           width: double.infinity,
-          height: 40,
+          height: 48,
           child: OutlinedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: OutlinedButton.styleFrom(
@@ -1141,8 +1222,9 @@ class _PlanCardState extends State<_PlanCard>
               ),
               textStyle: const TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w600,
+                letterSpacing: 0.2,
               ),
             ),
             child: widget.isLoading ? loader : Text(label),
@@ -1152,7 +1234,7 @@ class _PlanCardState extends State<_PlanCard>
       case _CardStyle.recommended:
         return SizedBox(
           width: double.infinity,
-          height: 40,
+          height: 48,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
@@ -1166,8 +1248,9 @@ class _PlanCardState extends State<_PlanCard>
               ),
               textStyle: const TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
               ),
             ),
             child: widget.isLoading
@@ -1184,7 +1267,7 @@ class _PlanCardState extends State<_PlanCard>
       case _CardStyle.premium:
         return SizedBox(
           width: double.infinity,
-          height: 40,
+          height: 48,
           child: ElevatedButton(
             onPressed: widget.isCurrent ? null : widget.onSelect,
             style: ElevatedButton.styleFrom(
@@ -1198,8 +1281,9 @@ class _PlanCardState extends State<_PlanCard>
               ),
               textStyle: const TextStyle(
                 fontFamily: 'Inter',
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: FontWeight.w700,
+                letterSpacing: 0.3,
               ),
             ),
             child: widget.isLoading

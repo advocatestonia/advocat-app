@@ -180,7 +180,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
     if (!_formKey.currentState!.validate()) return;
 
     if (!_agreedToTerms) {
-      _showSnackBar('Please agree to the Terms of Service');
+      _showSnackBar(
+        AppLocalizations.of(context)?.acceptTermsRequired ??
+            'Please agree to the Terms of Service',
+      );
       return;
     }
 

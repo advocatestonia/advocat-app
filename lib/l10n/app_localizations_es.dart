@@ -1220,6 +1220,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get somethingWentWrong => 'Algo salió mal';
 
   @override
+  String get genericError => 'Algo salió mal. Por favor, inténtelo de nuevo.';
+
+  @override
   String get retryAnalysis => 'Reintentar análisis';
 
   @override
@@ -3516,4 +3519,74 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Herramientas profesionales de verificación';
+
+  @override
+  String get checkerDataSource => 'Datos de registros oficiales';
+
+  @override
+  String get companyCheckerHint => 'Nombre de la empresa o nº de registro';
+
+  @override
+  String get companyCheckerPriceChip =>
+      '€2.99 por comprobación  •  Incluido en Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Introduzca el nombre de la empresa o el\nnúmero de registro para obtener un informe completo';
+
+  @override
+  String get aiMemoryTitle => 'Memoria de la IA';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Revise y elimine lo que la IA recuerda de usted';
+
+  @override
+  String get bookLawyerCallTitle => 'Reservar una llamada con un abogado';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Llamadas con abogados reales — próximamente';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro y Premium incluyen llamadas de 15 minutos con un abogado asociado (1/trimestre en Pro, 2/trimestre en Premium). Estamos ultimando la red de abogados estonios independientes y le enviaremos un correo en cuanto se abran las reservas.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Le quedan $remaining de $total llamadas este trimestre.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Cuota trimestral agotada.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'El nivel Pro incluye 1 llamada al trimestre, Premium 2. Las llamadas duran 15 minutos por Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Su cuota se restablece el primer día del próximo trimestre. ¿Necesita hablar antes? Actualice a Premium para una llamada adicional.';
+
+  @override
+  String get severityCritical => 'CRÍTICO';
+
+  @override
+  String get severityHigh => 'ALTO';
+
+  @override
+  String get severityMedium => 'MEDIO';
+
+  @override
+  String get severityLow => 'BAJO';
+
+  @override
+  String get deadlineRequiredFields =>
+      'El título y la fecha límite son obligatorios';
+
+  @override
+  String get acceptTermsRequired => 'Acepte los Términos del Servicio';
 }

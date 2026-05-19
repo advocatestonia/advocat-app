@@ -1205,6 +1205,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get somethingWentWrong => 'Что-то пошло не так';
 
   @override
+  String get genericError => 'Что-то пошло не так. Попробуйте ещё раз.';
+
+  @override
   String get retryAnalysis => 'Повторить анализ';
 
   @override
@@ -3503,4 +3506,72 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 языков • Реальное право Эстонии, Финляндии и ЕС • 24/7 — без ожидания';
+
+  @override
+  String get checkerProTagline => 'Профессиональные инструменты проверки';
+
+  @override
+  String get checkerDataSource => 'Данные из официальных реестров';
+
+  @override
+  String get companyCheckerHint => 'Название компании или рег. номер';
+
+  @override
+  String get companyCheckerPriceChip => '€2.99 за проверку  •  Включено в Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Введите название компании или регистрационный\nномер, чтобы получить полный отчёт';
+
+  @override
+  String get aiMemoryTitle => 'Память ИИ';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Просмотрите и удалите то, что ИИ помнит о вас';
+
+  @override
+  String get bookLawyerCallTitle => 'Записаться на звонок с юристом';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Звонки с живым юристом — скоро открываются';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Тарифы Pro и Premium включают 15-минутные звонки с партнёрским юристом (1/квартал на Pro, 2/квартал на Premium). Мы завершаем формирование пула эстонских частнопрактикующих юристов и пришлём письмо, как только откроется запись.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'У вас осталось $remaining из $total звонков в этом квартале.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Квартальная квота исчерпана.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Тариф Pro включает 1 звонок в квартал, Premium — 2. Звонки длятся 15 минут, через Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Ваша квота обновится в первый день следующего квартала. Нужен звонок раньше? Перейдите на Premium для дополнительного звонка.';
+
+  @override
+  String get severityCritical => 'КРИТИЧНО';
+
+  @override
+  String get severityHigh => 'ВЫСОКИЙ';
+
+  @override
+  String get severityMedium => 'СРЕДНИЙ';
+
+  @override
+  String get severityLow => 'НИЗКИЙ';
+
+  @override
+  String get deadlineRequiredFields => 'Заголовок и дата дедлайна обязательны';
+
+  @override
+  String get acceptTermsRequired => 'Пожалуйста, примите Условия использования';
 }

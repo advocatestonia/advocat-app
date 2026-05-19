@@ -467,6 +467,7 @@
     "pdfExportComingSoon": "PDF eksportas netrukus",
     "analysisFailedRetry": "Analizė nepavyko. Bandykite dar kartą.",
     "somethingWentWrong": "Kažkas nutiko ne taip",
+    "genericError": "Kažkas nepavyko. Bandykite dar kartą.",
     "retryAnalysis": "Pakartoti analizę",
     "issuesFoundInDocument": "Jūsų dokumente rasta {count} problema(-ų)",
     "@issuesFoundInDocument": {
@@ -1678,5 +1679,35 @@
     "referralSettingsTile": "Pakviesti draugų",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Patiko? Pakviesk draugą — abu gausite nemokamą mėnesį.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Profesionalūs tikrinimo įrankiai",
+    "checkerDataSource": "Duomenys iš oficialių registrų",
+    "companyCheckerHint": "Įmonės pavadinimas arba reg. numeris",
+    "companyCheckerPriceChip": "€2.99 už patikrinimą  •  Įtraukta į Pro",
+    "companyCheckerEmptyState": "Įveskite įmonės pavadinimą arba registracijos\nnumerį, kad gautumėte pilną ataskaitą",
+    "aiMemoryTitle": "DI atmintis",
+    "aiMemorySubtitle": "Peržiūrėkite ir ištrinkite, ką DI prisimena apie jus",
+    "bookLawyerCallTitle": "Užsisakykite pokalbį su teisininku",
+    "bookLawyerCallComingSoonTitle": "Pokalbiai su tikru teisininku — netrukus",
+    "bookLawyerCallComingSoonBody": "Pro ir Premium paketai apima 15 minučių pokalbius su partneriniu teisininku (Pro – 1/ketv., Premium – 2/ketv.). Užbaigiame Estijos individualių praktikuotojų tinklą ir atsiųsime el. laišką, kai užsakymas atsivers.",
+    "bookLawyerCallQuotaAvailable": "Šį ketvirtį jums liko {remaining} iš {total} skambučių.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Ketvirčio kvota išnaudota.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro paketas apima 1 skambutį per ketvirtį, Premium – 2. Skambučiai trunka 15 minučių per Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Jūsų kvota atsinaujins kito ketvirčio pirmąją dieną. Reikia kalbėtis greičiau? Pereikite į Premium ir gausite papildomą skambutį.",
+    "severityCritical": "KRITIŠKA",
+    "severityHigh": "AUKŠTA",
+    "severityMedium": "VIDUTINIS",
+    "severityLow": "ŽEMA",
+    "deadlineRequiredFields": "Pavadinimas ir termino data yra privalomi",
+    "acceptTermsRequired": "Sutikite su Paslaugos teikimo sąlygomis"
 }

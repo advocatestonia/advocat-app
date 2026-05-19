@@ -41,12 +41,13 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(companyCheckerProvider);
     final notifier = ref.read(companyCheckerProvider.notifier);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)!.checkCompany,
+          l10n.checkCompany,
           style: const TextStyle(
             fontWeight: FontWeight.w700,
             letterSpacing: -0.3,
@@ -81,7 +82,7 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                 focusNode: _searchFocusNode,
                 onChanged: notifier.setQuery,
                 decoration: InputDecoration(
-                  hintText: 'Company name or reg. number',
+                  hintText: l10n.companyCheckerHint,
                   prefixIcon: AnimatedSwitcher(
                     duration: const Duration(milliseconds: 200),
                     child: Icon(
@@ -126,7 +127,7 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
             // Check button with glow
             _GlowCheckButton(
               isLoading: state.status == CheckerStatus.loading,
-              label: AppLocalizations.of(context)!.checkCompany,
+              label: l10n.checkCompany,
               onPressed: () {
                 HapticFeedback.mediumImpact();
                 notifier.checkCompany();
@@ -148,9 +149,9 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                   color: AppColors.accent.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(AppRadius.full),
                 ),
-                child: const Text(
-                  '\u20AC2.99 per check  \u2022  Included in Pro',
-                  style: TextStyle(
+                child: Text(
+                  l10n.companyCheckerPriceChip,
+                  style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.accent,
                     fontWeight: FontWeight.w500,
@@ -230,10 +231,10 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.md),
-                    const Text(
-                      'Enter a company name or registration\nnumber to get a full report',
+                    Text(
+                      l10n.companyCheckerEmptyState,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 14,
                         height: 1.5,

@@ -471,6 +471,7 @@
     "pdfExportComingSoon": "PDF-vienti tulossa pian",
     "analysisFailedRetry": "Analyysi epäonnistui. Yritä uudelleen.",
     "somethingWentWrong": "Jokin meni pieleen",
+    "genericError": "Jotain meni pieleen. Yritä uudelleen.",
     "retryAnalysis": "Yritä analyysia uudelleen",
     "issuesFoundInDocument": "Löydettiin {count} ongelmaa asiakirjasta",
     "@issuesFoundInDocument": {
@@ -1418,13 +1419,17 @@
     "referralActivityInvited": "Kutsuttu {when}",
     "@referralActivityInvited": {
         "placeholders": {
-            "when": { "type": "String" }
+            "when": {
+                "type": "String"
+            }
         }
     },
     "referralActivityActivated": "aktivoitui {when}",
     "@referralActivityActivated": {
         "placeholders": {
-            "when": { "type": "String" }
+            "when": {
+                "type": "String"
+            }
         }
     },
     "referralActivityPending": "ei vielä aktivoitunut",
@@ -1432,19 +1437,25 @@
     "referralStatsInvitedCount": "Olet kutsunut {count, plural, =0{ei vielä ystäviä} =1{1 ystävän} other{{count} ystävää}}",
     "@referralStatsInvitedCount": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "referralStatsConvertedCount": "{count, plural, =0{kukaan ei ole vielä aktivoitunut} =1{1 on aktivoitunut} other{{count} ovat aktivoituneet}}",
     "@referralStatsConvertedCount": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "referralStatsEarnedCount": "Bonuksesi: {months, plural, =0{ei vielä mitään} =1{1 ilmainen kuukausi} other{{months} ilmaista kuukautta}}",
     "@referralStatsEarnedCount": {
         "placeholders": {
-            "months": { "type": "int" }
+            "months": {
+                "type": "int"
+            }
         }
     },
     "referralNudgeMessage": "Pidätkö Advocatista? Kutsu ystävä — molemmat saavat kuukauden ilmaiseksi.",
@@ -1456,7 +1467,9 @@
     "referralLandingSubtitle": "{inviterName} kutsui sinut — lunasta ilmainen ensimmäinen kuukautesi.",
     "@referralLandingSubtitle": {
         "placeholders": {
-            "inviterName": { "type": "String" }
+            "inviterName": {
+                "type": "String"
+            }
         }
     },
     "referralLandingSubtitleGeneric": "Lunasta ilmainen ensimmäinen kuukautesi Advocat Pro:sta.",
@@ -1468,5 +1481,35 @@
     "referralLandingFallback": "Tämä linkki on vanhentunut — mutta voit silti kokeilla Advocatia ilmaiseksi.",
     "@referralLandingFallback": {},
     "referralLandingBenefits": "17 kieltä • Aitoa Viron, Suomen ja EU:n lakia • 24/7 — ilman odotusta",
-    "@referralLandingBenefits": {}
+    "@referralLandingBenefits": {},
+    "checkerProTagline": "Ammattilaisten varmistustyökalut",
+    "checkerDataSource": "Tiedot virallisista rekistereistä",
+    "companyCheckerHint": "Yrityksen nimi tai Y-tunnus",
+    "companyCheckerPriceChip": "€2.99 / tarkistus  •  Sisältyy Pro-tilaukseen",
+    "companyCheckerEmptyState": "Anna yrityksen nimi tai Y-tunnus\nsaadaksesi täyden raportin",
+    "aiMemoryTitle": "Tekoälyn muisti",
+    "aiMemorySubtitle": "Tarkastele ja unohduta, mitä tekoäly muistaa sinusta",
+    "bookLawyerCallTitle": "Varaa puhelu lakimiehen kanssa",
+    "bookLawyerCallComingSoonTitle": "Puhelut lakimiehen kanssa — avautuvat pian",
+    "bookLawyerCallComingSoonBody": "Pro ja Premium sisältävät 15-minuuttiset puhelut kumppanilakimiehen kanssa (Pro 1/neljännes, Premium 2/neljännes). Viimeistelemme parhaillaan virolaisten yksinharjoittajien verkostoa ja lähetämme sähköpostia heti, kun varaaminen avautuu.",
+    "bookLawyerCallQuotaAvailable": "Sinulla on {remaining}/{total} puhelua jäljellä tällä neljänneksellä.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Vuosineljänneksen kiintiö käytetty.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro sisältää 1 puhelun/neljännes, Premium 2. Puhelut kestävät 15 minuuttia ja käydään Google Meetissä.",
+    "bookLawyerCallQuotaBodyExhausted": "Kiintiösi nollautuu seuraavan neljänneksen ensimmäisenä päivänä. Tarvitsetko keskustelua aiemmin? Päivitä Premiumiin saadaksesi lisäpuhelun.",
+    "severityCritical": "KRIITTINEN",
+    "severityHigh": "KORKEA",
+    "severityMedium": "KESKITASO",
+    "severityLow": "MATALA",
+    "deadlineRequiredFields": "Otsikko ja määräpäivä ovat pakollisia",
+    "acceptTermsRequired": "Hyväksy käyttöehdot"
 }

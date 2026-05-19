@@ -1207,6 +1207,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get somethingWentWrong => 'Jokin meni pieleen';
 
   @override
+  String get genericError => 'Jotain meni pieleen. Yritä uudelleen.';
+
+  @override
   String get retryAnalysis => 'Yritä analyysia uudelleen';
 
   @override
@@ -3495,4 +3498,74 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 kieltä • Aitoa Viron, Suomen ja EU:n lakia • 24/7 — ilman odotusta';
+
+  @override
+  String get checkerProTagline => 'Ammattilaisten varmistustyökalut';
+
+  @override
+  String get checkerDataSource => 'Tiedot virallisista rekistereistä';
+
+  @override
+  String get companyCheckerHint => 'Yrityksen nimi tai Y-tunnus';
+
+  @override
+  String get companyCheckerPriceChip =>
+      '€2.99 / tarkistus  •  Sisältyy Pro-tilaukseen';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Anna yrityksen nimi tai Y-tunnus\nsaadaksesi täyden raportin';
+
+  @override
+  String get aiMemoryTitle => 'Tekoälyn muisti';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Tarkastele ja unohduta, mitä tekoäly muistaa sinusta';
+
+  @override
+  String get bookLawyerCallTitle => 'Varaa puhelu lakimiehen kanssa';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Puhelut lakimiehen kanssa — avautuvat pian';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro ja Premium sisältävät 15-minuuttiset puhelut kumppanilakimiehen kanssa (Pro 1/neljännes, Premium 2/neljännes). Viimeistelemme parhaillaan virolaisten yksinharjoittajien verkostoa ja lähetämme sähköpostia heti, kun varaaminen avautuu.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Sinulla on $remaining/$total puhelua jäljellä tällä neljänneksellä.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted =>
+      'Vuosineljänneksen kiintiö käytetty.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro sisältää 1 puhelun/neljännes, Premium 2. Puhelut kestävät 15 minuuttia ja käydään Google Meetissä.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Kiintiösi nollautuu seuraavan neljänneksen ensimmäisenä päivänä. Tarvitsetko keskustelua aiemmin? Päivitä Premiumiin saadaksesi lisäpuhelun.';
+
+  @override
+  String get severityCritical => 'KRIITTINEN';
+
+  @override
+  String get severityHigh => 'KORKEA';
+
+  @override
+  String get severityMedium => 'KESKITASO';
+
+  @override
+  String get severityLow => 'MATALA';
+
+  @override
+  String get deadlineRequiredFields => 'Otsikko ja määräpäivä ovat pakollisia';
+
+  @override
+  String get acceptTermsRequired => 'Hyväksy käyttöehdot';
 }

@@ -634,6 +634,7 @@
     "severityOverview": "Schweregrad-Übersicht",
     "sickLeave": "Lohnfortzahlung im Krankheitsfall",
     "somethingWentWrong": "Etwas ist schiefgelaufen",
+    "genericError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
     "stoppedByPolice": "Von der Polizei angehalten",
     "stoppedByPoliceDesc": "Ihre Rechte bei einer Polizeikontrolle",
     "successSubscribed": "Erfolgreich für {plan} abonniert!",
@@ -1684,5 +1685,35 @@
     "referralSettingsTile": "Freunde einladen",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Gefallen? Lade einen Freund ein — beide bekommen einen Gratismonat.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Professionelle Prüfwerkzeuge",
+    "checkerDataSource": "Daten aus offiziellen Registern",
+    "companyCheckerHint": "Firmenname oder Reg.-Nr.",
+    "companyCheckerPriceChip": "€2.99 pro Prüfung  •  In Pro enthalten",
+    "companyCheckerEmptyState": "Geben Sie einen Firmennamen oder eine Reg.-Nr.\nein, um einen vollständigen Bericht zu erhalten",
+    "aiMemoryTitle": "KI-Gedächtnis",
+    "aiMemorySubtitle": "Überprüfen und löschen, was die KI über Sie gespeichert hat",
+    "bookLawyerCallTitle": "Anwaltsgespräch buchen",
+    "bookLawyerCallComingSoonTitle": "Anrufe mit echten Anwälten — bald verfügbar",
+    "bookLawyerCallComingSoonBody": "Pro und Premium beinhalten 15-minütige Gespräche mit einem Partneranwalt (Pro – 1/Quartal, Premium – 2/Quartal). Wir stellen den estnischen Einzelanwalts-Pool fertig und benachrichtigen Sie per E-Mail, sobald die Buchung verfügbar ist.",
+    "bookLawyerCallQuotaAvailable": "Sie haben dieses Quartal noch {remaining} von {total} Anruf(en) übrig.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Quartalskontingent aufgebraucht.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro umfasst 1 Anruf/Quartal, Premium 2. Anrufe dauern 15 Minuten und werden über Google Meet geführt.",
+    "bookLawyerCallQuotaBodyExhausted": "Ihr Kontingent setzt sich am ersten Tag des nächsten Quartals zurück. Brauchen Sie früher ein Gespräch? Aktualisieren Sie auf Premium für einen zusätzlichen Anruf.",
+    "severityCritical": "KRITISCH",
+    "severityHigh": "HOCH",
+    "severityMedium": "MITTEL",
+    "severityLow": "NIEDRIG",
+    "deadlineRequiredFields": "Titel und Stichtag sind erforderlich",
+    "acceptTermsRequired": "Bitte stimmen Sie den Nutzungsbedingungen zu"
 }

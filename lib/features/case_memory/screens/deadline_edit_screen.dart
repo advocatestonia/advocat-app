@@ -243,12 +243,16 @@ class _DeadlineEditScreenState extends ConsumerState<DeadlineEditScreen> {
   }
 
   Future<void> _save() async {
+    final l10n = AppLocalizations.of(context);
     final title = _title.text.trim();
     final at = _deadlineAt;
     if (title.isEmpty || at == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Title and deadline date are required'),
+        SnackBar(
+          content: Text(
+            l10n?.deadlineRequiredFields ??
+                'Title and deadline date are required',
+          ),
         ),
       );
       return;

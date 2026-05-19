@@ -636,6 +636,7 @@
     "severityOverview": "Огляд серйозності",
     "sickLeave": "Компенсація лікарняного",
     "somethingWentWrong": "Щось пішло не так",
+    "genericError": "Щось пішло не так. Спробуйте ще раз.",
     "stoppedByPolice": "Зупинений поліцією",
     "stoppedByPoliceDesc": "Ваші права під час поліцейського контролю",
     "successSubscribed": "Підписка на {plan} успішна!",
@@ -1084,5 +1085,35 @@
     "referralSettingsTile": "Запросити друзів",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Сподобалось? Запроси друга — обидва отримаєте безплатний місяць.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Професійні інструменти перевірки",
+    "checkerDataSource": "Дані з офіційних реєстрів",
+    "companyCheckerHint": "Назва компанії або реєстр. номер",
+    "companyCheckerPriceChip": "€2.99 за перевірку  •  Входить у Pro",
+    "companyCheckerEmptyState": "Введіть назву компанії або реєстраційний\nномер, щоб отримати повний звіт",
+    "aiMemoryTitle": "Пам'ять ШІ",
+    "aiMemorySubtitle": "Перегляньте та видаліть те, що ШІ пам'ятає про вас",
+    "bookLawyerCallTitle": "Замовити дзвінок з юристом",
+    "bookLawyerCallComingSoonTitle": "Дзвінки з живим юристом — скоро",
+    "bookLawyerCallComingSoonBody": "Pro та Premium включають 15-хвилинні дзвінки з юристом-партнером (1/квартал у Pro, 2/квартал у Premium). Завершуємо формування мережі естонських приватнопрактикуючих юристів і надішлемо листа, щойно бронювання відкриється.",
+    "bookLawyerCallQuotaAvailable": "У вас залишилось {remaining} з {total} дзвінків цього кварталу.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Квартальну квоту вичерпано.",
+    "bookLawyerCallQuotaBodyAvailable": "Тариф Pro включає 1 дзвінок на квартал, Premium — 2. Дзвінки тривають 15 хвилин у Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Ваша квота оновиться в перший день наступного кварталу. Потрібно поговорити раніше? Перейдіть на Premium для додаткового дзвінка.",
+    "severityCritical": "КРИТИЧНО",
+    "severityHigh": "ВИСОКИЙ",
+    "severityMedium": "СЕРЕДНІЙ",
+    "severityLow": "НИЗЬКИЙ",
+    "deadlineRequiredFields": "Заголовок і дата дедлайну є обов'язковими",
+    "acceptTermsRequired": "Будь ласка, прийміть Умови надання послуг"
 }

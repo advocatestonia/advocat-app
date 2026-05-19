@@ -483,6 +483,7 @@
     "pdfExportComingSoon": "Экспорт в PDF скоро будет доступен",
     "analysisFailedRetry": "Анализ не удался. Попробуйте снова.",
     "somethingWentWrong": "Что-то пошло не так",
+    "genericError": "Что-то пошло не так. Попробуйте ещё раз.",
     "retryAnalysis": "Повторить анализ",
     "issuesFoundInDocument": "Найдено проблем в документе: {count}",
     "@issuesFoundInDocument": {
@@ -1418,13 +1419,17 @@
     "referralActivityInvited": "Приглашён {when}",
     "@referralActivityInvited": {
         "placeholders": {
-            "when": { "type": "String" }
+            "when": {
+                "type": "String"
+            }
         }
     },
     "referralActivityActivated": "активировал {when}",
     "@referralActivityActivated": {
         "placeholders": {
-            "when": { "type": "String" }
+            "when": {
+                "type": "String"
+            }
         }
     },
     "referralActivityPending": "ещё не активировал",
@@ -1432,19 +1437,25 @@
     "referralStatsInvitedCount": "Ты пригласил {count, plural, =0{никого} =1{1 друга} few{{count} друзей} many{{count} друзей} other{{count} друзей}}",
     "@referralStatsInvitedCount": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "referralStatsConvertedCount": "{count, plural, =0{никто пока не активировал} =1{1 активировал} few{{count} активировали} many{{count} активировали} other{{count} активировали}}",
     "@referralStatsConvertedCount": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "referralStatsEarnedCount": "Твой бонус: {months, plural, =0{пока ничего} =1{1 бесплатный месяц} few{{months} бесплатных месяца} many{{months} бесплатных месяцев} other{{months} бесплатных месяцев}}",
     "@referralStatsEarnedCount": {
         "placeholders": {
-            "months": { "type": "int" }
+            "months": {
+                "type": "int"
+            }
         }
     },
     "referralNudgeMessage": "Нравится Advocat? Пригласи друга — оба получите месяц бесплатно.",
@@ -1456,7 +1467,9 @@
     "referralLandingSubtitle": "{inviterName} пригласил тебя — получи первый месяц бесплатно.",
     "@referralLandingSubtitle": {
         "placeholders": {
-            "inviterName": { "type": "String" }
+            "inviterName": {
+                "type": "String"
+            }
         }
     },
     "referralLandingSubtitleGeneric": "Получи первый месяц Advocat Pro бесплатно.",
@@ -1468,5 +1481,35 @@
     "referralLandingFallback": "Эта ссылка истекла — но ты всё равно можешь попробовать Advocat бесплатно.",
     "@referralLandingFallback": {},
     "referralLandingBenefits": "17 языков • Реальное право Эстонии, Финляндии и ЕС • 24/7 — без ожидания",
-    "@referralLandingBenefits": {}
+    "@referralLandingBenefits": {},
+    "checkerProTagline": "Профессиональные инструменты проверки",
+    "checkerDataSource": "Данные из официальных реестров",
+    "companyCheckerHint": "Название компании или рег. номер",
+    "companyCheckerPriceChip": "€2.99 за проверку  •  Включено в Pro",
+    "companyCheckerEmptyState": "Введите название компании или регистрационный\nномер, чтобы получить полный отчёт",
+    "aiMemoryTitle": "Память ИИ",
+    "aiMemorySubtitle": "Просмотрите и удалите то, что ИИ помнит о вас",
+    "bookLawyerCallTitle": "Записаться на звонок с юристом",
+    "bookLawyerCallComingSoonTitle": "Звонки с живым юристом — скоро открываются",
+    "bookLawyerCallComingSoonBody": "Тарифы Pro и Premium включают 15-минутные звонки с партнёрским юристом (1/квартал на Pro, 2/квартал на Premium). Мы завершаем формирование пула эстонских частнопрактикующих юристов и пришлём письмо, как только откроется запись.",
+    "bookLawyerCallQuotaAvailable": "У вас осталось {remaining} из {total} звонков в этом квартале.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Квартальная квота исчерпана.",
+    "bookLawyerCallQuotaBodyAvailable": "Тариф Pro включает 1 звонок в квартал, Premium — 2. Звонки длятся 15 минут, через Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Ваша квота обновится в первый день следующего квартала. Нужен звонок раньше? Перейдите на Premium для дополнительного звонка.",
+    "severityCritical": "КРИТИЧНО",
+    "severityHigh": "ВЫСОКИЙ",
+    "severityMedium": "СРЕДНИЙ",
+    "severityLow": "НИЗКИЙ",
+    "deadlineRequiredFields": "Заголовок и дата дедлайна обязательны",
+    "acceptTermsRequired": "Пожалуйста, примите Условия использования"
 }

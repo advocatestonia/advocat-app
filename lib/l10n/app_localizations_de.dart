@@ -1227,6 +1227,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get somethingWentWrong => 'Etwas ist schiefgelaufen';
 
   @override
+  String get genericError =>
+      'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.';
+
+  @override
   String get retryAnalysis => 'Analyse wiederholen';
 
   @override
@@ -3523,4 +3527,74 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Professionelle Prüfwerkzeuge';
+
+  @override
+  String get checkerDataSource => 'Daten aus offiziellen Registern';
+
+  @override
+  String get companyCheckerHint => 'Firmenname oder Reg.-Nr.';
+
+  @override
+  String get companyCheckerPriceChip =>
+      '€2.99 pro Prüfung  •  In Pro enthalten';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Geben Sie einen Firmennamen oder eine Reg.-Nr.\nein, um einen vollständigen Bericht zu erhalten';
+
+  @override
+  String get aiMemoryTitle => 'KI-Gedächtnis';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Überprüfen und löschen, was die KI über Sie gespeichert hat';
+
+  @override
+  String get bookLawyerCallTitle => 'Anwaltsgespräch buchen';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Anrufe mit echten Anwälten — bald verfügbar';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro und Premium beinhalten 15-minütige Gespräche mit einem Partneranwalt (Pro – 1/Quartal, Premium – 2/Quartal). Wir stellen den estnischen Einzelanwalts-Pool fertig und benachrichtigen Sie per E-Mail, sobald die Buchung verfügbar ist.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Sie haben dieses Quartal noch $remaining von $total Anruf(en) übrig.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Quartalskontingent aufgebraucht.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro umfasst 1 Anruf/Quartal, Premium 2. Anrufe dauern 15 Minuten und werden über Google Meet geführt.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Ihr Kontingent setzt sich am ersten Tag des nächsten Quartals zurück. Brauchen Sie früher ein Gespräch? Aktualisieren Sie auf Premium für einen zusätzlichen Anruf.';
+
+  @override
+  String get severityCritical => 'KRITISCH';
+
+  @override
+  String get severityHigh => 'HOCH';
+
+  @override
+  String get severityMedium => 'MITTEL';
+
+  @override
+  String get severityLow => 'NIEDRIG';
+
+  @override
+  String get deadlineRequiredFields => 'Titel und Stichtag sind erforderlich';
+
+  @override
+  String get acceptTermsRequired =>
+      'Bitte stimmen Sie den Nutzungsbedingungen zu';
 }

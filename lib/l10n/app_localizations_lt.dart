@@ -1211,6 +1211,9 @@ class AppLocalizationsLt extends AppLocalizations {
   String get somethingWentWrong => 'Kažkas nutiko ne taip';
 
   @override
+  String get genericError => 'Kažkas nepavyko. Bandykite dar kartą.';
+
+  @override
   String get retryAnalysis => 'Pakartoti analizę';
 
   @override
@@ -3503,4 +3506,74 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Profesionalūs tikrinimo įrankiai';
+
+  @override
+  String get checkerDataSource => 'Duomenys iš oficialių registrų';
+
+  @override
+  String get companyCheckerHint => 'Įmonės pavadinimas arba reg. numeris';
+
+  @override
+  String get companyCheckerPriceChip =>
+      '€2.99 už patikrinimą  •  Įtraukta į Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Įveskite įmonės pavadinimą arba registracijos\nnumerį, kad gautumėte pilną ataskaitą';
+
+  @override
+  String get aiMemoryTitle => 'DI atmintis';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Peržiūrėkite ir ištrinkite, ką DI prisimena apie jus';
+
+  @override
+  String get bookLawyerCallTitle => 'Užsisakykite pokalbį su teisininku';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Pokalbiai su tikru teisininku — netrukus';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro ir Premium paketai apima 15 minučių pokalbius su partneriniu teisininku (Pro – 1/ketv., Premium – 2/ketv.). Užbaigiame Estijos individualių praktikuotojų tinklą ir atsiųsime el. laišką, kai užsakymas atsivers.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Šį ketvirtį jums liko $remaining iš $total skambučių.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Ketvirčio kvota išnaudota.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro paketas apima 1 skambutį per ketvirtį, Premium – 2. Skambučiai trunka 15 minučių per Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Jūsų kvota atsinaujins kito ketvirčio pirmąją dieną. Reikia kalbėtis greičiau? Pereikite į Premium ir gausite papildomą skambutį.';
+
+  @override
+  String get severityCritical => 'KRITIŠKA';
+
+  @override
+  String get severityHigh => 'AUKŠTA';
+
+  @override
+  String get severityMedium => 'VIDUTINIS';
+
+  @override
+  String get severityLow => 'ŽEMA';
+
+  @override
+  String get deadlineRequiredFields =>
+      'Pavadinimas ir termino data yra privalomi';
+
+  @override
+  String get acceptTermsRequired => 'Sutikite su Paslaugos teikimo sąlygomis';
 }

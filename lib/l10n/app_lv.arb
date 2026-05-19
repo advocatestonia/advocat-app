@@ -467,6 +467,7 @@
     "pdfExportComingSoon": "PDF eksports drīzumā",
     "analysisFailedRetry": "Analīze neizdevās. Lūdzu, mēģiniet vēlreiz.",
     "somethingWentWrong": "Kaut kas nogāja greizi",
+    "genericError": "Kaut kas nogāja greizi. Mēģiniet vēlreiz.",
     "retryAnalysis": "Atkārtot analīzi",
     "issuesFoundInDocument": "Jūsu dokumentā atrastas {count} problēma(s)",
     "@issuesFoundInDocument": {
@@ -1678,5 +1679,35 @@
     "referralSettingsTile": "Uzaicināt draugus",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Patika? Uzaicini draugu — abi saņemsiet bezmaksas mēnesi.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Profesionāli pārbaudes rīki",
+    "checkerDataSource": "Dati no oficiālajiem reģistriem",
+    "companyCheckerHint": "Uzņēmuma nosaukums vai reģ. numurs",
+    "companyCheckerPriceChip": "€2.99 par pārbaudi  •  Iekļauts Pro",
+    "companyCheckerEmptyState": "Ievadiet uzņēmuma nosaukumu vai reģistrācijas\nnumuru, lai saņemtu pilnu pārskatu",
+    "aiMemoryTitle": "MI atmiņa",
+    "aiMemorySubtitle": "Pārskatiet un dzēsiet to, ko MI atceras par jums",
+    "bookLawyerCallTitle": "Rezervējiet sarunu ar juristu",
+    "bookLawyerCallComingSoonTitle": "Sarunas ar īstu juristu — drīzumā",
+    "bookLawyerCallComingSoonBody": "Pro un Premium ietver 15 minūšu sarunas ar partnera juristu (Pro – 1/ceturksnī, Premium – 2/ceturksnī). Pabeidzam Igaunijas individuālo juristu tīkla veidošanu un nosūtīsim e-pastu, tiklīdz rezervēšana būs atvērta.",
+    "bookLawyerCallQuotaAvailable": "Šajā ceturksnī jums atlikuši {remaining} no {total} zvaniem.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Ceturkšņa kvota izlietota.",
+    "bookLawyerCallQuotaBodyAvailable": "Pro pakete ietver 1 zvanu ceturksnī, Premium – 2. Zvani ilgst 15 minūtes Google Meet vidē.",
+    "bookLawyerCallQuotaBodyExhausted": "Jūsu kvota tiks atjaunota nākamā ceturkšņa pirmajā dienā. Vajag sarunu ātrāk? Atjauniniet uz Premium, lai saņemtu papildu zvanu.",
+    "severityCritical": "KRITISKS",
+    "severityHigh": "AUGSTS",
+    "severityMedium": "VIDĒJS",
+    "severityLow": "ZEMS",
+    "deadlineRequiredFields": "Nosaukums un termiņa datums ir obligāti",
+    "acceptTermsRequired": "Lūdzu, piekrītiet Pakalpojuma noteikumiem"
 }

@@ -183,7 +183,7 @@ class _SeverityFilterRow extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
-            label: 'CRITICAL',
+            label: l?.severityCritical ?? 'CRITICAL',
             color: AppColors.error,
             selected: active == InboxSeverity.critical,
             onTap: () => ref
@@ -192,7 +192,7 @@ class _SeverityFilterRow extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
-            label: 'HIGH',
+            label: l?.severityHigh ?? 'HIGH',
             color: AppColors.warning,
             selected: active == InboxSeverity.high,
             onTap: () => ref
@@ -201,7 +201,7 @@ class _SeverityFilterRow extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
-            label: 'MEDIUM',
+            label: l?.severityMedium ?? 'MEDIUM',
             color: AppColors.info,
             selected: active == InboxSeverity.medium,
             onTap: () => ref
@@ -210,7 +210,7 @@ class _SeverityFilterRow extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.sm),
           _FilterChip(
-            label: 'LOW',
+            label: l?.severityLow ?? 'LOW',
             color: AppColors.textSecondary,
             selected: active == InboxSeverity.low,
             onTap: () => ref

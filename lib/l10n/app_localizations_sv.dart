@@ -1207,6 +1207,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get somethingWentWrong => 'Något gick fel';
 
   @override
+  String get genericError => 'Något gick fel. Försök igen.';
+
+  @override
   String get retryAnalysis => 'Försök igen';
 
   @override
@@ -3490,4 +3493,71 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Professionella verifieringsverktyg';
+
+  @override
+  String get checkerDataSource => 'Data från officiella register';
+
+  @override
+  String get companyCheckerHint => 'Företagsnamn eller organisationsnummer';
+
+  @override
+  String get companyCheckerPriceChip => '€2.99 per kontroll  •  Ingår i Pro';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Ange företagsnamn eller organisationsnummer\nför att få en fullständig rapport';
+
+  @override
+  String get aiMemoryTitle => 'AI-minne';
+
+  @override
+  String get aiMemorySubtitle => 'Granska och radera vad AI minns om dig';
+
+  @override
+  String get bookLawyerCallTitle => 'Boka ett samtal med en jurist';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Samtal med en riktig jurist — öppnar snart';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro och Premium inkluderar 15-minuters samtal med en partnerjurist (1/kvartal i Pro, 2/kvartal i Premium). Vi färdigställer det estniska nätverket av enskilda jurister och mejlar dig så snart bokning öppnar.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Du har $remaining av $total samtal kvar detta kvartal.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Kvartalskvoten är slut.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro innehåller 1 samtal/kvartal, Premium 2. Samtalen varar 15 minuter via Google Meet.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Din kvot nollställs den första dagen i nästa kvartal. Behöver du prata tidigare? Uppgradera till Premium för ett extra samtal.';
+
+  @override
+  String get severityCritical => 'KRITISK';
+
+  @override
+  String get severityHigh => 'HÖG';
+
+  @override
+  String get severityMedium => 'MEDEL';
+
+  @override
+  String get severityLow => 'LÅG';
+
+  @override
+  String get deadlineRequiredFields => 'Titel och slutdatum krävs';
+
+  @override
+  String get acceptTermsRequired => 'Godkänn användarvillkoren';
 }

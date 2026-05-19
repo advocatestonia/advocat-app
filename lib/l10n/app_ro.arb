@@ -634,6 +634,7 @@
     "severityOverview": "Rezumat gravitate",
     "sickLeave": "Compensație concediu medical",
     "somethingWentWrong": "Ceva a mers greșit",
+    "genericError": "Ceva a mers prost. Vă rugăm să încercați din nou.",
     "stoppedByPolice": "Oprit de poliție",
     "stoppedByPoliceDesc": "Drepturile dvs. în timpul unui control de poliție",
     "successSubscribed": "Abonament {plan} activat cu succes!",
@@ -1077,5 +1078,35 @@
     "referralSettingsTile": "Invită prieteni",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Ți-a plăcut? Invită un prieten — amândoi primiți o lună gratis.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Instrumente profesionale de verificare",
+    "checkerDataSource": "Date din registre oficiale",
+    "companyCheckerHint": "Numele companiei sau nr. de înregistrare",
+    "companyCheckerPriceChip": "€2.99 pe verificare  •  Inclus în Pro",
+    "companyCheckerEmptyState": "Introduceți numele companiei sau numărul\nde înregistrare pentru a obține un raport complet",
+    "aiMemoryTitle": "Memoria AI",
+    "aiMemorySubtitle": "Verificați și ștergeți ceea ce AI își amintește despre dvs.",
+    "bookLawyerCallTitle": "Rezervați un apel cu un avocat",
+    "bookLawyerCallComingSoonTitle": "Apeluri cu avocați reali — în curând",
+    "bookLawyerCallComingSoonBody": "Pro și Premium includ apeluri de 15 minute cu un avocat partener (1/trimestru pe Pro, 2/trimestru pe Premium). Finalizăm rețeaua estonă de practicieni individuali și vă vom trimite un e-mail imediat ce rezervările se vor deschide.",
+    "bookLawyerCallQuotaAvailable": "Vă mai rămân {remaining} din {total} apeluri în acest trimestru.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Cota trimestrială epuizată.",
+    "bookLawyerCallQuotaBodyAvailable": "Pachetul Pro include 1 apel/trimestru, Premium 2. Apelurile durează 15 minute, prin Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Cota dvs. se resetează în prima zi a trimestrului următor. Aveți nevoie să discutați mai devreme? Treceți la Premium pentru un apel suplimentar.",
+    "severityCritical": "CRITIC",
+    "severityHigh": "RIDICAT",
+    "severityMedium": "MEDIU",
+    "severityLow": "SCĂZUT",
+    "deadlineRequiredFields": "Titlul și data limită sunt obligatorii",
+    "acceptTermsRequired": "Vă rugăm să acceptați Termenii și condițiile"
 }

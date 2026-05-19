@@ -22,6 +22,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/feature_flags.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../models/lawyer_partnership_state.dart';
 import '../state/lawyer_partnership_providers.dart';
 
@@ -81,7 +82,11 @@ class _DashboardBody extends ConsumerWidget {
       },
       child: bookingsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => _ErrorCard(error: '$e'),
+        error: (e, st) {
+          debugPrint(
+              '[partner_lawyer_dashboard] partnerBookings failed: $e\n$st');
+          return const _ErrorCard();
+        },
         data: (bookings) => _DashboardList(bookings: bookings),
       ),
     );
@@ -89,10 +94,10 @@ class _DashboardBody extends ConsumerWidget {
 }
 
 class _ErrorCard extends StatelessWidget {
-  const _ErrorCard({required this.error});
-  final String error;
+  const _ErrorCard();
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Container(
@@ -102,7 +107,7 @@ class _ErrorCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
         child: Text(
-          'Failed to load dashboard: $error',
+          l10n?.genericError ?? 'Something went wrong. Please try again.',
           style: const TextStyle(color: AppColors.error),
         ),
       ),

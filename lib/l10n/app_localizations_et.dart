@@ -1206,6 +1206,9 @@ class AppLocalizationsEt extends AppLocalizations {
   String get somethingWentWrong => 'Midagi läks valesti';
 
   @override
+  String get genericError => 'Midagi läks valesti. Palun proovige uuesti.';
+
+  @override
   String get retryAnalysis => 'Proovi analüüsi uuesti';
 
   @override
@@ -3487,4 +3490,75 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 keelt • Päris Eesti, Soome ja EL õigus • 24/7 — ootamiseta';
+
+  @override
+  String get checkerProTagline => 'Professionaalsed kontrollivahendid';
+
+  @override
+  String get checkerDataSource => 'Andmed ametlikest registritest';
+
+  @override
+  String get companyCheckerHint => 'Ettevõtte nimi või registrikood';
+
+  @override
+  String get companyCheckerPriceChip =>
+      '€2.99 kontrolli kohta  •  Pro paketis sees';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Sisestage ettevõtte nimi või registrikood,\net saada täielik aruanne';
+
+  @override
+  String get aiMemoryTitle => 'Tehisaru mälu';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Vaadake üle ja kustutage, mida tehisaru teie kohta mäletab';
+
+  @override
+  String get bookLawyerCallTitle => 'Broneerige juristi kõne';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Inimjuristide kõned — varsti avatud';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro ja Premium pakettides sisalduvad 15-minutilised kõned partnerjuristiga (Pro – 1/kvartal, Premium – 2/kvartal). Viime EE üksiktegutsejate võrgustiku lõpule ja saadame e-kirja niipea, kui broneerimine avaneb.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Teil on sel kvartalil veel $remaining/$total kõnet.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Kvartali kvoot ära kasutatud.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro pakett sisaldab 1 kõnet kvartalis, Premium – 2. Kõned kestavad 15 minutit, Google Meeti kaudu.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Teie kvoot uueneb järgmise kvartali esimesel päeval. Vajate kõnet varem? Uuendage Premiumiks, et saada lisakõne.';
+
+  @override
+  String get severityCritical => 'KRIITILINE';
+
+  @override
+  String get severityHigh => 'KÕRGE';
+
+  @override
+  String get severityMedium => 'KESKMINE';
+
+  @override
+  String get severityLow => 'MADAL';
+
+  @override
+  String get deadlineRequiredFields =>
+      'Pealkiri ja tähtaja kuupäev on kohustuslikud';
+
+  @override
+  String get acceptTermsRequired =>
+      'Palun nõustuge teenuse kasutustingimustega';
 }

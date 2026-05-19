@@ -1203,6 +1203,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get somethingWentWrong => 'Bir şeyler yanlış gitti';
 
   @override
+  String get genericError => 'Bir şeyler ters gitti. Lütfen tekrar deneyin.';
+
+  @override
   String get retryAnalysis => 'Analizi tekrarla';
 
   @override
@@ -3490,4 +3493,73 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get referralLandingBenefits =>
       '17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting';
+
+  @override
+  String get checkerProTagline => 'Profesyonel doğrulama araçları';
+
+  @override
+  String get checkerDataSource => 'Resmî kayıtlardan alınan veriler';
+
+  @override
+  String get companyCheckerHint => 'Şirket adı veya sicil numarası';
+
+  @override
+  String get companyCheckerPriceChip =>
+      'Kontrol başına €2.99  •  Pro\'ya dahildir';
+
+  @override
+  String get companyCheckerEmptyState =>
+      'Tam rapor için şirket adını veya sicil\nnumarasını girin';
+
+  @override
+  String get aiMemoryTitle => 'Yapay zekâ hafızası';
+
+  @override
+  String get aiMemorySubtitle =>
+      'Yapay zekânın sizinle ilgili hatırladıklarını gözden geçirin ve silin';
+
+  @override
+  String get bookLawyerCallTitle => 'Avukatla görüşme planlayın';
+
+  @override
+  String get bookLawyerCallComingSoonTitle =>
+      'Gerçek avukatlarla görüşmeler — yakında';
+
+  @override
+  String get bookLawyerCallComingSoonBody =>
+      'Pro ve Premium, ortak avukatla 15 dakikalık görüşmeleri kapsar (Pro: 1/çeyrek, Premium: 2/çeyrek). Estonyalı bağımsız avukat ağını tamamlıyoruz; rezervasyon açılır açılmaz size e-posta göndereceğiz.';
+
+  @override
+  String bookLawyerCallQuotaAvailable(int remaining, int total) {
+    return 'Bu çeyrekte $total aramadan $remaining hakkınız kaldı.';
+  }
+
+  @override
+  String get bookLawyerCallQuotaExhausted => 'Üç aylık kontenjan kullanıldı.';
+
+  @override
+  String get bookLawyerCallQuotaBodyAvailable =>
+      'Pro paketi çeyrekte 1, Premium 2 aramayı kapsar. Aramalar 15 dakikadır ve Google Meet üzerinden yapılır.';
+
+  @override
+  String get bookLawyerCallQuotaBodyExhausted =>
+      'Kontenjanınız bir sonraki çeyreğin ilk günü sıfırlanır. Daha erken konuşmanız mı gerekiyor? Ekstra arama için Premium\'a yükseltin.';
+
+  @override
+  String get severityCritical => 'KRİTİK';
+
+  @override
+  String get severityHigh => 'YÜKSEK';
+
+  @override
+  String get severityMedium => 'ORTA';
+
+  @override
+  String get severityLow => 'DÜŞÜK';
+
+  @override
+  String get deadlineRequiredFields => 'Başlık ve son tarih zorunludur';
+
+  @override
+  String get acceptTermsRequired => 'Lütfen Hizmet Şartlarını kabul edin';
 }

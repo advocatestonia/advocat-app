@@ -2378,6 +2378,12 @@ abstract class AppLocalizations {
   /// **'Something went wrong'**
   String get somethingWentWrong;
 
+  /// No description provided for @genericError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get genericError;
+
   /// No description provided for @retryAnalysis.
   ///
   /// In en, this message translates to:
@@ -6361,6 +6367,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'17 languages • Real Estonian, Finnish and EU law • 24/7 — no waiting'**
   String get referralLandingBenefits;
+
+  /// No description provided for @checkerProTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional verification tools'**
+  String get checkerProTagline;
+
+  /// No description provided for @checkerDataSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Data from official registries'**
+  String get checkerDataSource;
+
+  /// No description provided for @companyCheckerHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Company name or reg. number'**
+  String get companyCheckerHint;
+
+  /// No description provided for @companyCheckerPriceChip.
+  ///
+  /// In en, this message translates to:
+  /// **'€2.99 per check  •  Included in Pro'**
+  String get companyCheckerPriceChip;
+
+  /// No description provided for @companyCheckerEmptyState.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a company name or registration\nnumber to get a full report'**
+  String get companyCheckerEmptyState;
+
+  /// No description provided for @aiMemoryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI memory'**
+  String get aiMemoryTitle;
+
+  /// No description provided for @aiMemorySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review and forget what the AI remembers about you'**
+  String get aiMemorySubtitle;
+
+  /// No description provided for @bookLawyerCallTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a lawyer call'**
+  String get bookLawyerCallTitle;
+
+  /// No description provided for @bookLawyerCallComingSoonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Human lawyer calls — opening soon'**
+  String get bookLawyerCallComingSoonTitle;
+
+  /// No description provided for @bookLawyerCallComingSoonBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro and Premium include 15-minute calls with a partner lawyer (1/quarter on Pro, 2/quarter on Premium). We are finalising the EE solo-practitioner pool and will email you the moment booking opens.'**
+  String get bookLawyerCallComingSoonBody;
+
+  /// No description provided for @bookLawyerCallQuotaAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'You have {remaining} of {total} call(s) left this quarter.'**
+  String bookLawyerCallQuotaAvailable(int remaining, int total);
+
+  /// No description provided for @bookLawyerCallQuotaExhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'Quarterly quota used.'**
+  String get bookLawyerCallQuotaExhausted;
+
+  /// No description provided for @bookLawyerCallQuotaBodyAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro tier includes 1 call/quarter, Premium 2. Calls last 15 minutes, by Google Meet.'**
+  String get bookLawyerCallQuotaBodyAvailable;
+
+  /// No description provided for @bookLawyerCallQuotaBodyExhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'Your quota resets on the first day of next quarter. Need to talk sooner? Upgrade to Premium for an extra call.'**
+  String get bookLawyerCallQuotaBodyExhausted;
+
+  /// No description provided for @severityCritical.
+  ///
+  /// In en, this message translates to:
+  /// **'CRITICAL'**
+  String get severityCritical;
+
+  /// No description provided for @severityHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'HIGH'**
+  String get severityHigh;
+
+  /// No description provided for @severityMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'MEDIUM'**
+  String get severityMedium;
+
+  /// No description provided for @severityLow.
+  ///
+  /// In en, this message translates to:
+  /// **'LOW'**
+  String get severityLow;
+
+  /// No description provided for @deadlineRequiredFields.
+  ///
+  /// In en, this message translates to:
+  /// **'Title and deadline date are required'**
+  String get deadlineRequiredFields;
+
+  /// No description provided for @acceptTermsRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please agree to the Terms of Service'**
+  String get acceptTermsRequired;
 }
 
 class _AppLocalizationsDelegate

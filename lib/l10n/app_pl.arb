@@ -634,6 +634,7 @@
     "severityOverview": "Przegląd powagi",
     "sickLeave": "Zasiłek chorobowy",
     "somethingWentWrong": "Coś poszło nie tak",
+    "genericError": "Coś poszło nie tak. Spróbuj ponownie.",
     "stoppedByPolice": "Zatrzymany przez policję",
     "stoppedByPoliceDesc": "Twoje prawa podczas kontroli policyjnej",
     "successSubscribed": "Subskrypcja {plan} aktywowana!",
@@ -1678,5 +1679,35 @@
     "referralSettingsTile": "Zaproś znajomych",
     "@referralSettingsTile": {},
     "referralAfterReviewCta": "Spodobało się? Zaproś znajomego — obaj dostaniecie darmowy miesiąc.",
-    "@referralAfterReviewCta": {}
+    "@referralAfterReviewCta": {},
+    "checkerProTagline": "Profesjonalne narzędzia weryfikacji",
+    "checkerDataSource": "Dane z oficjalnych rejestrów",
+    "companyCheckerHint": "Nazwa firmy lub numer rejestru",
+    "companyCheckerPriceChip": "€2.99 za sprawdzenie  •  W planie Pro",
+    "companyCheckerEmptyState": "Wprowadź nazwę firmy lub numer\nrejestru, aby uzyskać pełny raport",
+    "aiMemoryTitle": "Pamięć AI",
+    "aiMemorySubtitle": "Przejrzyj i usuń to, co AI zapamiętało o Tobie",
+    "bookLawyerCallTitle": "Zarezerwuj rozmowę z prawnikiem",
+    "bookLawyerCallComingSoonTitle": "Rozmowy z prawnikiem — wkrótce dostępne",
+    "bookLawyerCallComingSoonBody": "Pro i Premium obejmują 15-minutowe rozmowy z prawnikiem partnerskim (1/kwartał w Pro, 2/kwartał w Premium). Finalizujemy sieć estońskich prawników indywidualnych i wyślemy e-mail, gdy rezerwacje będą dostępne.",
+    "bookLawyerCallQuotaAvailable": "Pozostało Ci {remaining} z {total} rozmów w tym kwartale.",
+    "@bookLawyerCallQuotaAvailable": {
+        "placeholders": {
+            "remaining": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
+        }
+    },
+    "bookLawyerCallQuotaExhausted": "Limit kwartalny wykorzystany.",
+    "bookLawyerCallQuotaBodyAvailable": "Plan Pro obejmuje 1 rozmowę/kwartał, Premium 2. Rozmowy trwają 15 minut, przez Google Meet.",
+    "bookLawyerCallQuotaBodyExhausted": "Twój limit zostanie zresetowany pierwszego dnia następnego kwartału. Potrzebujesz rozmowy wcześniej? Przejdź na Premium, aby uzyskać dodatkową rozmowę.",
+    "severityCritical": "KRYTYCZNY",
+    "severityHigh": "WYSOKI",
+    "severityMedium": "ŚREDNI",
+    "severityLow": "NISKI",
+    "deadlineRequiredFields": "Tytuł i data terminu są wymagane",
+    "acceptTermsRequired": "Zaakceptuj Warunki korzystania z usługi"
 }

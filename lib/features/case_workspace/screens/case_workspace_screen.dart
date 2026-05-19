@@ -138,10 +138,17 @@ class _CaseWorkspaceScreenState extends ConsumerState<CaseWorkspaceScreen>
       loading: () => const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       ),
-      error: (e, _) => Scaffold(
-        appBar: AppBar(),
-        body: Center(child: Text('$e')),
-      ),
+      error: (e, st) {
+        debugPrint('[case_workspace] caseByIdProvider failed: $e\n$st');
+        return Scaffold(
+          appBar: AppBar(),
+          body: Center(
+            child: Text(
+              l10n?.genericError ?? 'Something went wrong. Please try again.',
+            ),
+          ),
+        );
+      },
       data: (c) {
         if (c == null) {
           return Scaffold(
