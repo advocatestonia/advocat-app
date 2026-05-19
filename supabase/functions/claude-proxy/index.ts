@@ -42,6 +42,11 @@ import {
   summariseViolations,
 } from "../_shared/citation_enforcement.ts";
 import {
+  summariseVerifierResult,
+  type ToolUseResult as VerifierToolUseResult,
+  verifyResponseCitations,
+} from "../_shared/citation_verifier.ts";
+import {
   buildCitationRows,
   isValidMessageId,
   persistCitations,
@@ -64,6 +69,7 @@ import { appendAdviceDigest } from "../_shared/advice_digest.ts";
 import { LEGAL_LOOKUP_TOOL_USE_INSTRUCTION } from "../_shared/legal_lookup.ts";
 import {
   ASSISTANT_TOOLS,
+  consumeLegalLookupLog,
   executeToolCalls,
   extractToolUseBlocks,
 } from "./tool_handlers.ts";
@@ -183,6 +189,95 @@ const ALLOWED_MODELS = new Set([
 const MAX_TOKENS_LIMIT = 32000;
 const ANON_MAX_TOKENS = 200;
 const MAX_MESSAGES = 20;
+
+// ── Citation verifier (P0 hallucination guard, 2026-05-19) ───────────────────
+// Cross-references every prose §N / Article N in the final reply against the
+// legal_lookup tool results from the same turn. Unverified citations get a
+// `[?]` marker + a footer warning so the user sees uncertainty rather than a
+// silent hallucinated paragraph. Default ON; set to "false" to bypass for
+// instant rollback. See _shared/citation_verifier.ts.
+const CITATION_VERIFIER_ENABLED =
+  (Deno.env.get("CITATION_VERIFIER_ENABLED") ?? "true").toLowerCase() !== "false";
+
+/** Build verifier tool-use records from the tool_use blocks executed this
+ *  turn. Pulls structured legal_lookup chunks from the tool_handlers sidecar
+ *  (consumeLegalLookupLog) and casts them into the verifier's expected shape.
+ *  Returns [] when the verifier is disabled or no legal_lookup ran. */
+function buildVerifierToolLog(
+  toolBlocks: Array<{ id: string; name: string }>,
+): VerifierToolUseResult[] {
+  if (!CITATION_VERIFIER_ENABLED) return [];
+  const legalIds = toolBlocks
+    .filter((b) => b.name === "legal_lookup")
+    .map((b) => b.id);
+  if (legalIds.length === 0) {
+    // Drain any orphaned entries to avoid carry-over.
+    consumeLegalLookupLog();
+    return [];
+  }
+  const records = consumeLegalLookupLog(legalIds);
+  return records.map((r) => ({
+    tool_name: "legal_lookup",
+    input: r.input,
+    returned_chunks: r.returned_chunks.map((c) => ({
+      act_slug: c.act_slug,
+      paragraph: c.paragraph,
+      section_label: c.section_label,
+      similarity: c.similarity,
+    })),
+  }));
+}
+
+/** Async best-effort write to error_log for hallucination warnings. Fire-and-
+ *  forget — never blocks the reply. Pre-creates `kind='hallucination_warning'`
+ *  rows so ops can dashboard the unverified-cite rate over time.
+ *
+ *  Schema (migrations/20260515220031_anti_abuse_protection.sql):
+ *    kind | severity | source | message | details (jsonb) | principal | request_id
+ */
+function logHallucinationWarning(payload: {
+  user_id: string | null;
+  message_id: string | null;
+  unverified_count: number;
+  verified_count: number;
+  score: number;
+  samples: Array<{ raw: string; section: string }>;
+  surface: "planner" | "tool_followup" | "single_pass";
+}): void {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return;
+  const body = JSON.stringify({
+    kind: "hallucination_warning",
+    severity: payload.score >= 0.5 ? "warn" : "info",
+    source: "claude-proxy",
+    message:
+      `${payload.unverified_count} unverified cite(s) flagged on ${payload.surface}`,
+    details: {
+      unverified_count: payload.unverified_count,
+      verified_count: payload.verified_count,
+      score: payload.score,
+      samples: payload.samples,
+      surface: payload.surface,
+      message_id: payload.message_id,
+    },
+    principal: payload.user_id ?? null,
+  });
+  fetch(`${SUPABASE_URL}/rest/v1/error_log`, {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_SERVICE_ROLE_KEY,
+      "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      "Content-Type": "application/json",
+      "Prefer": "return=minimal",
+    },
+    body,
+  }).catch((e) =>
+    console.warn(
+      `claude-proxy: error_log insert failed (hallucination): ${
+        String(e).slice(0, 200)
+      }`,
+    )
+  );
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -974,7 +1069,47 @@ serve(async (req) => {
               }`,
           );
         }
-        const enforcedReplyText = enforced.cleanedText;
+        let enforcedReplyText = enforced.cleanedText;
+
+        // ── Citation verifier (P0, 2026-05-19) ───────────────────────────
+        // The planner loop runs its own tool_use loop (legal_lookup is
+        // included by default in ASSISTANT_TOOLS for non-anon turns). Drain
+        // any legal_lookup chunks the planner accumulated and verify the
+        // final reply's prose §-citations against them. This is the
+        // strongest closure of the 2026-05-19 hallucination eval gap on
+        // the planner path.
+        if (CITATION_VERIFIER_ENABLED) {
+          try {
+            const verifierLog = buildVerifierToolLog([]); // drain everything
+            const v = verifyResponseCitations(enforcedReplyText, verifierLog, {
+              mode: "mark",
+            });
+            if (v.unverified_citations.length > 0) {
+              console.warn(
+                `claude-proxy: citation verifier (planner) flagged ` +
+                  `${v.unverified_citations.length} unverified cite(s) ` +
+                  `[score=${v.hallucination_score.toFixed(3)}]: ` +
+                  JSON.stringify(summariseVerifierResult(v)),
+              );
+              enforcedReplyText = v.marked_text;
+              logHallucinationWarning({
+                user_id: persistUserId,
+                message_id: persistMessageId,
+                unverified_count: v.unverified_citations.length,
+                verified_count: v.verified_citations.length,
+                score: v.hallucination_score,
+                samples: summariseVerifierResult(v).samples,
+                surface: "planner",
+              });
+            }
+          } catch (e) {
+            console.warn(
+              `claude-proxy: citation verifier (planner) errored: ${
+                String(e).slice(0, 200)
+              }`,
+            );
+          }
+        }
 
         if (
           persistMessageId !== null &&
@@ -1445,6 +1580,52 @@ serve(async (req) => {
               ];
             }
 
+            // ── Citation verifier (P0, 2026-05-19) ─────────────────────────
+            // Cross-reference every prose §N / Article N against the
+            // legal_lookup calls executed THIS turn. Closes the gap that
+            // citation_enforcement.ts cannot reach: prose-only cites with
+            // no `[[ref:ACT:PARA]]` marker, which the hallucination eval
+            // showed at 37.7% rate. Unverified cites get a [?] mark; total
+            // count + samples flow to error_log + console for ops.
+            if (CITATION_VERIFIER_ENABLED) {
+              try {
+                const verifierLog = buildVerifierToolLog(toolBlocks);
+                const currentText = followUpEnforced.violations.length > 0
+                  ? followUpEnforced.cleanedText
+                  : followUpText;
+                const v = verifyResponseCitations(currentText, verifierLog, {
+                  mode: "mark",
+                });
+                if (v.unverified_citations.length > 0) {
+                  console.warn(
+                    `claude-proxy: citation verifier (tool follow-up) ` +
+                      `flagged ${v.unverified_citations.length} unverified ` +
+                      `cite(s) [score=${v.hallucination_score.toFixed(3)}]: ` +
+                      JSON.stringify(summariseVerifierResult(v)),
+                  );
+                  followUpResult.content = [
+                    { type: "text", text: v.marked_text },
+                  ];
+                  logHallucinationWarning({
+                    user_id: persistUserId ?? gate.user.id,
+                    message_id: persistMessageId,
+                    unverified_count: v.unverified_citations.length,
+                    verified_count: v.verified_citations.length,
+                    score: v.hallucination_score,
+                    samples: summariseVerifierResult(v).samples,
+                    surface: "tool_followup",
+                  });
+                }
+              } catch (e) {
+                // Never fail the user reply on verifier errors — log + skip.
+                console.warn(
+                  `claude-proxy: citation verifier (tool follow-up) errored: ${
+                    String(e).slice(0, 200)
+                  }`,
+                );
+              }
+            }
+
             // The client sent stream:true so it expects SSE, not JSON.
             // Wrap the follow-up result as synthetic SSE so the Flutter
             // SSE parser receives it correctly (message_start → text deltas
@@ -1505,6 +1686,51 @@ serve(async (req) => {
         ];
       }
 
+      // ── Citation verifier (P0, 2026-05-19) ───────────────────────────────
+      // Single-pass branch: there were no tool_use blocks in this turn (else
+      // we'd be in the follow-up branch above). buildVerifierToolLog drains
+      // any orphaned legal_lookup records and returns [], so unverified
+      // prose §-citations naturally get flagged when the model wrote them
+      // without ever asking the tool. This is the strongest signal of a
+      // raw-from-memory hallucination.
+      if (CITATION_VERIFIER_ENABLED) {
+        try {
+          const verifierLog = buildVerifierToolLog([]);
+          const currentText = enforced.violations.length > 0
+            ? enforced.cleanedText
+            : replyText;
+          const v = verifyResponseCitations(currentText, verifierLog, {
+            mode: "mark",
+          });
+          if (v.unverified_citations.length > 0) {
+            console.warn(
+              `claude-proxy: citation verifier (single-pass) flagged ` +
+                `${v.unverified_citations.length} unverified cite(s) ` +
+                `[score=${v.hallucination_score.toFixed(3)}]: ` +
+                JSON.stringify(summariseVerifierResult(v)),
+            );
+            result.content = [
+              { type: "text", text: v.marked_text },
+            ];
+            logHallucinationWarning({
+              user_id: persistUserId ?? gate.user.id,
+              message_id: persistMessageId,
+              unverified_count: v.unverified_citations.length,
+              verified_count: v.verified_citations.length,
+              score: v.hallucination_score,
+              samples: summariseVerifierResult(v).samples,
+              surface: "single_pass",
+            });
+          }
+        } catch (e) {
+          console.warn(
+            `claude-proxy: citation verifier (single-pass) errored: ${
+              String(e).slice(0, 200)
+            }`,
+          );
+        }
+      }
+
       // ── Halt-rail post-append (A7 of вабанк, 2026-05-15) ─────────────────
       // For serious-case queries (deportation / custody / criminal / >€20K /
       // ECHR) append the visible "consult licensed asianajaja/vandeadvokaat"
@@ -1513,9 +1739,15 @@ serve(async (req) => {
       // no-op. Rebuild result.content with the augmented text so any
       // downstream consumer (citations, persistence) sees the final shape.
       if (haltDetection.isSerious) {
-        const cleanedText = enforced.violations.length > 0
-          ? enforced.cleanedText
-          : replyText;
+        // Pull current text from result.content — verifier may have already
+        // rebuilt it with [?] markers, and we must NOT regress to the
+        // pre-marker text here. Falls back to enforced/replyText for
+        // pipelines that didn't touch result.content.
+        const currentBlock = Array.isArray(result.content)
+          ? (result.content[0] as { text?: string } | undefined)
+          : undefined;
+        const cleanedText = currentBlock?.text ??
+          (enforced.violations.length > 0 ? enforced.cleanedText : replyText);
         const railedText = appendHaltRailToResponse(
           cleanedText,
           haltDetection,

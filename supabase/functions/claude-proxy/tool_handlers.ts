@@ -243,6 +243,59 @@ interface ToolResultBlock {
 }
 
 // =============================================================================
+// Verifier sidecar (citation_verifier integration — 2026-05-19)
+// =============================================================================
+//
+// The citation verifier (../_shared/citation_verifier.ts) needs structured
+// access to every legal_lookup result that fired in a single turn (act_slug,
+// paragraph, section_label, plus the original tool_use input). The
+// tool_result.content string returned to Anthropic is human-prose and would
+// require parsing; instead we publish the structured records to a
+// module-scoped map keyed by tool_use_id. `consumeLegalLookupLog` drains
+// records by id so claude-proxy can hand them straight to the verifier.
+// Drained entries are dropped to prevent stale-turn cross-contamination.
+
+/** Verifier-friendly view of one legal_lookup invocation. */
+export interface LegalLookupVerifierRecord {
+  tool_use_id: string;
+  input: {
+    query?: string;
+    jurisdiction?: string;
+    specific_statute?: string;
+  };
+  returned_chunks: Array<{
+    act_slug: string | null;
+    paragraph: string | null;
+    section_label: string | null;
+    similarity: number | null;
+  }>;
+}
+
+const _legalLookupLog = new Map<string, LegalLookupVerifierRecord>();
+
+/** Drain all records whose tool_use_id is in `ids`. Returns the records and
+ *  deletes them from the internal store so a later turn cannot inherit them.
+ *  When `ids` is undefined, drains everything currently held. */
+export function consumeLegalLookupLog(
+  ids?: ReadonlyArray<string>,
+): LegalLookupVerifierRecord[] {
+  const out: LegalLookupVerifierRecord[] = [];
+  if (ids === undefined) {
+    for (const v of _legalLookupLog.values()) out.push(v);
+    _legalLookupLog.clear();
+    return out;
+  }
+  for (const id of ids) {
+    const rec = _legalLookupLog.get(id);
+    if (rec) {
+      out.push(rec);
+      _legalLookupLog.delete(id);
+    }
+  }
+  return out;
+}
+
+// =============================================================================
 // Public entry point
 // =============================================================================
 
@@ -1063,6 +1116,24 @@ async function handleLegalLookup(
         // Live API resolved from env inside legalLookup. No-op in v1.
       },
     );
+
+    // Publish a verifier-friendly view of this lookup so the post-pass
+    // citation verifier can cross-check prose §-citations against what the
+    // tool ACTUALLY returned (P0 hallucination guard, 2026-05-19).
+    _legalLookupLog.set(toolUseId, {
+      tool_use_id: toolUseId,
+      input: {
+        query,
+        jurisdiction,
+        specific_statute: specificStatute ?? undefined,
+      },
+      returned_chunks: result.chunks.map((c) => ({
+        act_slug: c.act_slug ?? null,
+        paragraph: c.paragraph ?? null,
+        section_label: c.statute ?? null,
+        similarity: c.similarity ?? null,
+      })),
+    });
 
     return {
       type: "tool_result",
