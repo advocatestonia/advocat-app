@@ -157,7 +157,9 @@ serve(async (req) => {
 
     return json({ error: `unknown action: ${action}` }, 400);
   } catch (error) {
-    return json({ error: String(error) }, 500);
+    const msg = error instanceof Error ? error.message : "unknown";
+    console.error("check-ai-quota failed:", msg.slice(0, 200));
+    return json({ error: "Internal error" }, 500);
   }
 });
 

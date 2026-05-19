@@ -508,9 +508,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       // QA report 2026-05-03 flagged these dead-end routes:
       //   /profile      → /settings  (profile lives inside settings)
       //   /chat         → /home      (chat needs a caseId; bare path is invalid)
-      //   /documents    → /home      (TODO: dedicated documents listing screen)
-      //   /case/<id>    → /home      (TODO: alias to /cases/<id> once the
-      //                              cases router accepts singular form)
+      //   /documents    → /cases     (no dedicated documents listing yet)
+      //   /case/<id>    → /cases-v2/<id>  (singular alias for /cases router)
       // These give users a graceful destination instead of a bare
       // "Page not found:" message with no recovery affordance.
       GoRoute(

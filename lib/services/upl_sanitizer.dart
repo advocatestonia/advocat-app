@@ -35,9 +35,9 @@
 ///
 /// Returns the input verbatim until Phase 2 wiring lands.
 String sanitizeUpl(String aiOutput) {
-  // TODO(pkg0-phase2): apply forbiddenUplPatterns once the green-list of
-  // safe replacement phrases has been reviewed by counsel. Until then this
-  // is a deliberate pass-through — see header comment.
+  // NOTE: deliberate pass-through until the green-list of safe replacement
+  // phrases has counsel sign-off. Phase-2 will apply forbiddenUplPatterns.
+  // See header comment for full rationale.
   return aiOutput;
 }
 

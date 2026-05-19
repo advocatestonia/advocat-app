@@ -35,14 +35,6 @@ class CasesListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)?.myCases ?? 'My Cases'),
-        // TODO: Re-enable filter when case type filtering is implemented
-        // actions: [
-        //   IconButton(
-        //     icon: const Icon(Icons.tune_outlined),
-        //     tooltip: 'Filter',
-        //     onPressed: () => _showFilterSheet(context, ref),
-        //   ),
-        // ],
       ),
       body: Column(
         children: [
@@ -178,62 +170,6 @@ class CasesListScreen extends ConsumerWidget {
 
     return result;
   }
-
-  // ignore: unused_element
-  void _showFilterSheet(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-      ),
-      builder: (context) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.lg),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Container(
-                    width: 40,
-                    height: 4,
-                    decoration: BoxDecoration(
-                      color: AppColors.border,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                Text(
-                  AppLocalizations.of(context)?.filterByType ?? 'Filter by Type',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                ),
-                const SizedBox(height: AppSpacing.md),
-                Wrap(
-                  spacing: AppSpacing.sm,
-                  runSpacing: AppSpacing.sm,
-                  children: CaseType.values.map((type) {
-                    return FilterChip(
-                      label: Text(_caseTypeLabel(context, type)),
-                      selected: false,
-                      onSelected: (_) {
-                        // Filter by case type
-                        Navigator.pop(context);
-                      },
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -301,6 +237,7 @@ class _GlowingSearchFieldState extends State<_GlowingSearchField> {
           suffixIcon: widget.searchQuery.isNotEmpty
               ? IconButton(
                   icon: const Icon(Icons.clear, size: 18),
+                  tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
                   onPressed: widget.onClear,
                 )
               : null,
@@ -482,28 +419,6 @@ class _PressableCaseCardState extends State<_PressableCaseCard>
       ),
     );
   }
-}
-
-String _caseTypeLabel(BuildContext context, CaseType type) {
-  final l10n = AppLocalizations.of(context);
-  return switch (type) {
-    CaseType.deportation => l10n?.deportation ?? 'Deportation',
-    CaseType.asylum => l10n?.asylum ?? 'Asylum',
-    CaseType.residencePermit => l10n?.residencePermit ?? 'Residence Permit',
-    CaseType.familyReunification => l10n?.familyReunification ?? 'Family Reunification',
-    CaseType.citizenship => l10n?.citizenship ?? 'Citizenship',
-    CaseType.workPermit => l10n?.workPermit ?? 'Work Permit',
-    CaseType.laborDispute => l10n?.laborDispute ?? 'Labor Dispute',
-    CaseType.tenantRights => l10n?.tenantRights ?? 'Tenant Rights',
-    CaseType.debtCollection => l10n?.debtCollection ?? 'Debt Collection',
-    CaseType.discrimination => l10n?.discrimination ?? 'Discrimination',
-    CaseType.policeMisconduct => l10n?.policeMisconduct ?? 'Police Misconduct',
-    CaseType.socialBenefits => l10n?.socialBenefits ?? 'Social Benefits',
-    CaseType.domesticViolence => l10n?.domesticViolence ?? 'Domestic Violence',
-    CaseType.consumerProtection => l10n?.consumerProtection ?? 'Consumer Protection',
-    CaseType.inheritance => l10n?.inheritance ?? 'Inheritance',
-    CaseType.other => l10n?.other ?? 'Other',
-  };
 }
 
 // ---------------------------------------------------------------------------

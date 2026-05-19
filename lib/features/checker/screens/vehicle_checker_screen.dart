@@ -61,6 +61,7 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
           onPressed: () => context.pop(),
         ),
         backgroundColor: AppColors.surface,
@@ -165,6 +166,7 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
                   suffixIcon: state.query.isNotEmpty
                       ? IconButton(
                           icon: const Icon(Icons.clear),
+                          tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
                           onPressed: () {
                             _controller.clear();
                             notifier.clearResults();

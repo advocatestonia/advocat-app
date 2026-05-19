@@ -269,7 +269,9 @@ serve(async (req) => {
       },
     );
   } catch (error) {
-    return new Response(JSON.stringify({ error: String(error) }), {
+    const msg = error instanceof Error ? error.message : "unknown";
+    console.error("check-company failed:", msg.slice(0, 200));
+    return new Response(JSON.stringify({ error: "Internal error" }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });

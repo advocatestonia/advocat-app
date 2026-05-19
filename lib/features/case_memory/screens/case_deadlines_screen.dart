@@ -90,7 +90,15 @@ class CaseDeadlinesScreen extends ConsumerWidget {
             child: asyncDeadlines.when(
               loading: () =>
                   const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Center(child: Text('$e')),
+              error: (e, _) {
+                debugPrint('deadlines load failed: $e');
+                return Center(
+                  child: Text(
+                    l10n?.genericError ??
+                        'Something went wrong. Please try again.',
+                  ),
+                );
+              },
               data: (deadlines) {
                 final filtered = _applyFilter(deadlines, filter);
                 if (filtered.isEmpty) {
@@ -176,7 +184,14 @@ class CaseDeadlinesScreen extends ConsumerWidget {
             note: note.isEmpty ? null : note,
           );
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('$e')));
+      debugPrint('deadline markComplete failed: $e');
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n?.genericError ?? 'Something went wrong. Please try again.',
+          ),
+        ),
+      );
     }
   }
 
@@ -248,20 +263,35 @@ class CaseDeadlinesScreen extends ConsumerWidget {
             newDeadlineAt: newAt,
           );
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('$e')));
+      debugPrint('deadline snooze failed: $e');
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n?.genericError ?? 'Something went wrong. Please try again.',
+          ),
+        ),
+      );
     }
   }
 
   Future<void> _onArchive(
       BuildContext context, WidgetRef ref, CaseDeadline d) async {
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context);
     try {
       await ref.read(deadlineMutationsProvider).archive(
             deadlineId: d.id,
             caseId: caseId,
           );
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('$e')));
+      debugPrint('deadline archive failed: $e');
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n?.genericError ?? 'Something went wrong. Please try again.',
+          ),
+        ),
+      );
     }
   }
 

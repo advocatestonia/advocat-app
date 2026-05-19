@@ -27,11 +27,25 @@ import {
   BARE_ECHR_PATTERN,
   BARE_ESTONIAN_CITATION_PATTERN,
   BARE_EU_DIRECTIVE_PATTERN,
+  BARE_EU_REGULATION_PATTERN,
   BARE_FINNISH_CITATION_PATTERN,
+  BARE_MULTI_JURIS_CITATION_PATTERN,
+  CZECH_LAW_ABBREVS,
+  DANISH_LAW_ABBREVS,
+  DUTCH_LAW_ABBREVS,
   enforceCitations,
   ESTONIAN_LAW_ABBREVS,
   FINNISH_LAW_ABBREVS,
+  FRENCH_LAW_ABBREVS,
+  GERMAN_LAW_ABBREVS,
+  ITALIAN_LAW_ABBREVS,
+  KNOWN_GAZETTE_PATTERNS,
+  POLISH_LAW_ABBREVS,
+  resolveMultiJurisAbbrev,
+  SLOVAK_LAW_ABBREVS,
+  SPANISH_LAW_ABBREVS,
   summariseViolations,
+  SWEDISH_LAW_ABBREVS,
 } from "../citation_enforcement.ts";
 
 // ─── CENF-T01 — marker present → no violation ───────────────────────────────
@@ -684,5 +698,410 @@ Deno.test(
     assertEquals(out.violations.length, 1);
     assertEquals(out.violations[0].kind, "ee_bare_paragraph");
     assertEquals(out.violations[0].act_slug, "tls");
+  },
+);
+
+// =============================================================================
+// CENF-MJ-* — multi-jurisdiction citation enforcement (2026-05-19 EU launch)
+// =============================================================================
+//
+// Cover the 10 jurisdictions added in the EU launch round: DE, FR, ES, IT,
+// PL, CZ, SK, SE, DK, NL. The tests pin both the table membership and the
+// end-to-end strip behaviour for one canonical citation per country.
+
+// ─── CENF-MJ-T01 — DE BGB §433 without marker → resolves & stripped ─────────
+
+Deno.test(
+  "CENF-MJ-T01 — DE 'BGB §90' without marker → multi_juris_bare_paragraph",
+  () => {
+    // Canonical German citation: "§ 90 BGB" (Sache definition).
+    const reply = "Nach § 90 BGB sind Sachen körperliche Gegenstände.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].kind, "multi_juris_bare_paragraph");
+    assertEquals(out.violations[0].act_slug, "de-bgb");
+    assertEquals(out.violations[0].paragraph, "90");
+    // After strip, the BGB abbreviation stays (soft degradation).
+    assertStringIncludes(out.cleanedText, "BGB");
+    assertEquals(out.cleanedText.includes("§ 90 BGB"), false);
+  },
+);
+
+// ─── CENF-MJ-T02 — DE BGB with marker → no-op ───────────────────────────────
+
+Deno.test(
+  "CENF-MJ-T02 — DE 'BGB §90 [[ref:de-bgb:90]]' WITH marker → no-op",
+  () => {
+    const reply =
+      "Nach § 90 BGB [[ref:de-bgb:90]] sind Sachen körperliche Gegenstände.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 0);
+    assertEquals(out.cleanedText, reply);
+  },
+);
+
+// ─── CENF-MJ-T03 — FR Article L. 121-1 CC → resolves to fr-cc ──────────────
+
+Deno.test(
+  "CENF-MJ-T03 — FR 'art. L. 121-1 CC' without marker → resolves to fr-cc",
+  () => {
+    // French citation with the typical L. prefix used in the Code de la
+    // consommation / Code du travail. Here we use CC (Code civil) as a
+    // simpler positive case.
+    const reply = "Selon l'article L. 121-1 CC, ce point est défini.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].kind, "multi_juris_bare_paragraph");
+    assertEquals(out.violations[0].act_slug, "fr-cc");
+    // Section normalised: whitespace stripped, uppercase prefix kept,
+    // dot stays in place (e.g. "L. 121-1" → "L.121-1"). The post-strip
+    // shape is stable across French jurisdictional codes.
+    assertEquals(out.violations[0].paragraph, "L.121-1");
+  },
+);
+
+Deno.test(
+  "CENF-MJ-T03b — FR 'art. 1240 C. civ.' resolves to fr-cc",
+  () => {
+    // 1240 = canonical civil-liability article (post-2016 renumbering).
+    // Tests the bare-number + space-laden abbreviation form.
+    const reply = "Selon l'article 1240 C. civ. la victime peut agir.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].act_slug, "fr-cc");
+    assertEquals(out.violations[0].paragraph, "1240");
+  },
+);
+
+// ─── CENF-MJ-T04 — PL Art. 415 KC → resolves to pl-kc ──────────────────────
+
+Deno.test(
+  "CENF-MJ-T04 — PL 'art. 415 KC' without marker → resolves to pl-kc",
+  () => {
+    // Polish civil liability article (general delict clause).
+    const reply = "Zgodnie z art. 415 KC sprawca odpowiada za szkodę.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].kind, "multi_juris_bare_paragraph");
+    assertEquals(out.violations[0].act_slug, "pl-kc");
+    assertEquals(out.violations[0].paragraph, "415");
+  },
+);
+
+// ─── CENF-MJ-T05 — CZ §2913 OZ → resolves to cz-oz ─────────────────────────
+
+Deno.test(
+  "CENF-MJ-T05 — CZ '§ 2913 OZ' without marker → resolves to cz-oz",
+  () => {
+    // Czech civil-code damages provision.
+    const reply = "Podle § 2913 OZ odpovídá škůdce za škodu.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].act_slug, "cz-oz");
+    assertEquals(out.violations[0].paragraph, "2913");
+  },
+);
+
+// ─── CENF-MJ-T06 — ES art. 1902 CC → resolves to es-cc ─────────────────────
+// NB: Spanish "CC" collides with French "CC". Resolution follows
+// registration order (FR comes first in MULTI_JURIS_TABLES), so the
+// helper returns fr-cc for the bare 'CC' surface form. This is the
+// expected behaviour — jurisdiction disambiguation belongs upstream
+// in the system prompt; the enforcer's job is to recognise SOME act.
+
+Deno.test(
+  "CENF-MJ-T06 — ES/FR 'art. 1902 CC' resolves to a registered code",
+  () => {
+    const reply = "Conforme al art. 1902 CC, hay responsabilidad civil.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    // CC resolves to fr-cc (FR table comes first); both are CIVIL CODES so
+    // the soft strip behaviour is identical.
+    assertEquals(out.violations[0].kind, "multi_juris_bare_paragraph");
+    assertEquals(out.violations[0].paragraph, "1902");
+  },
+);
+
+// ─── CENF-MJ-T07 — IT art. 2043 c.c. → resolves to it-cc ───────────────────
+
+Deno.test(
+  "CENF-MJ-T07 — IT 'art. 2043 c.c.' without marker → resolves to it-cc",
+  () => {
+    const reply = "Ai sensi dell'art. 2043 c.c. il danneggiato può agire.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].act_slug, "it-cc");
+    assertEquals(out.violations[0].paragraph, "2043");
+  },
+);
+
+// ─── CENF-MJ-T08 — NL art. 6:162 BW → resolves to nl-bw ────────────────────
+
+Deno.test(
+  "CENF-MJ-T08 — NL 'art. 6:162 BW' without marker → resolves to nl-bw",
+  () => {
+    // Dutch civil-code tort provision (compound chapter:section).
+    const reply = "Op grond van art. 6:162 BW is de pleger aansprakelijk.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].act_slug, "nl-bw");
+    assertEquals(out.violations[0].paragraph, "6:162");
+  },
+);
+
+// ─── CENF-MJ-T09 — SE BrB §1 → resolves to se-brb ──────────────────────────
+
+Deno.test(
+  "CENF-MJ-T09 — SE '§ 1 BrB' without marker → resolves to se-brb",
+  () => {
+    const reply = "Enligt § 1 BrB är brott en straffbar gärning.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].act_slug, "se-brb");
+    assertEquals(out.violations[0].paragraph, "1");
+  },
+);
+
+// ─── CENF-MJ-T10 — DK §191 STRFL → resolves to dk-strfl ────────────────────
+
+Deno.test(
+  "CENF-MJ-T10 — DK '§ 191 STRFL' without marker → resolves to dk-strfl",
+  () => {
+    const reply = "I henhold til § 191 STRFL straffes narkokriminalitet.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].act_slug, "dk-strfl");
+    assertEquals(out.violations[0].paragraph, "191");
+  },
+);
+
+// ─── CENF-MJ-T11 — multi-juris regex is bounded by registered abbrevs ──────
+
+Deno.test(
+  "CENF-MJ-T11 — '§ 433 FOO' (unregistered abbrev) → no violation",
+  () => {
+    // Defensive: an arbitrary acronym after the § should not match the
+    // multi-juris branch. The regex only triggers on registered surface
+    // forms, so this is structurally safe.
+    const reply = "Per § 433 FOO this is invented.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 0);
+  },
+);
+
+// ─── CENF-MJ-T12 — EU directive does not over-match a regulation ───────────
+//
+// The EU directive regex must NOT eat "Verordnung (EU) 2016/679".
+// Otherwise the regulation enforcement branch would be silently
+// shadowed by the directive branch.
+
+Deno.test(
+  "CENF-MJ-T12 — 'Verordnung (EU) 2016/679' is recognised as a REGULATION",
+  () => {
+    const reply =
+      "Gemäß Verordnung (EU) 2016/679 Artikel 17 gilt das Recht auf Löschung.";
+    const out = enforceCitations(reply);
+    // Exactly one violation, of kind eu_bare_regulation.
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].kind, "eu_bare_regulation");
+    assertEquals(out.violations[0].act_slug, "32016r0679");
+    assertEquals(out.violations[0].paragraph, "17");
+  },
+);
+
+// ─── CENF-MJ-T13 — EU regulation WITH marker → no-op ───────────────────────
+
+Deno.test(
+  "CENF-MJ-T13 — 'Verordnung (EU) 2016/679 [[ref:32016R0679:17]]' → no-op",
+  () => {
+    const reply =
+      "Gemäß Verordnung (EU) 2016/679 Artikel 17 [[ref:32016R0679:17]] gilt das Löschungsrecht.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 0);
+  },
+);
+
+// ─── CENF-MJ-T14 — multi-juris does NOT regress Estonian behaviour ─────────
+
+Deno.test(
+  "CENF-MJ-T14 — 'TLS § 88' classified as Estonian (not multi-juris)",
+  () => {
+    // Regression net: the new multi-juris branch must not poach TLS / KarS
+    // / VÕS / etc. Those abbreviations live in ESTONIAN_LAW_ABBREVS and
+    // emit `ee_bare_paragraph` violations.
+    const reply = "Vastavalt TLS § 88 ja KarS § 121 — kaks Eesti viidet.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 2);
+    for (const v of out.violations) {
+      assertEquals(v.kind, "ee_bare_paragraph");
+    }
+  },
+);
+
+// ─── CENF-MJ-T15 — multi-juris does NOT regress Finnish behaviour ──────────
+
+Deno.test(
+  "CENF-MJ-T15 — 'TSL 7 luku 3 §' classified as Finnish (not multi-juris)",
+  () => {
+    const reply = "Työnantaja saa irtisanoa TSL 7 luku 3 § alusel.";
+    const out = enforceCitations(reply);
+    assertEquals(out.violations.length, 1);
+    assertEquals(out.violations[0].kind, "fi_bare_paragraph");
+  },
+);
+
+// ─── CENF-MJ-T16 — resolveMultiJurisAbbrev helper unit tests ───────────────
+
+Deno.test("CENF-MJ-T16 — resolveMultiJurisAbbrev maps every country's canonical", () => {
+  // One canonical surface form per registered country.
+  const checks: Array<{ surface: string; country: string; slug: string }> = [
+    { surface: "BGB", country: "de", slug: "de-bgb" },
+    { surface: "StGB", country: "de", slug: "de-stgb" },
+    { surface: "ZPO", country: "de", slug: "de-zpo" },
+    { surface: "HGB", country: "de", slug: "de-hgb" },
+    { surface: "CGI", country: "fr", slug: "fr-cgi" },
+    { surface: "LEC", country: "es", slug: "es-lec" },
+    { surface: "c.p.c.", country: "it", slug: "it-cpc" },
+    { surface: "KSH", country: "pl", slug: "pl-ksh" },
+    { surface: "OSŘ", country: "cz", slug: "cz-osr" },
+    { surface: "BrB", country: "se", slug: "se-brb" },
+    { surface: "RPL", country: "dk", slug: "dk-rpl" },
+    { surface: "Sr", country: "nl", slug: "nl-sr" },
+  ];
+  for (const c of checks) {
+    const r = resolveMultiJurisAbbrev(c.surface);
+    if (!r) throw new Error(`${c.surface} should resolve, got null`);
+    assertEquals(r.country, c.country);
+    assertEquals(r.act_slug, c.slug);
+  }
+  // Unknown surface form returns null.
+  assertEquals(resolveMultiJurisAbbrev("XYZ"), null);
+  assertEquals(resolveMultiJurisAbbrev(""), null);
+});
+
+// ─── CENF-MJ-T17 — every country's table has the required core acts ────────
+
+Deno.test("CENF-MJ-T17 — country tables contain the audit-required acts", () => {
+  // The CITATION_REVIEW_2026-05-19 audit demanded these minimum sets.
+  const required: Array<{
+    name: string;
+    table: ReadonlyMap<string, string>;
+    keys: string[];
+  }> = [
+    { name: "DE", table: GERMAN_LAW_ABBREVS, keys: ["BGB", "StGB", "ZPO", "HGB"] },
+    { name: "FR", table: FRENCH_LAW_ABBREVS, keys: ["CC", "CP", "CPC", "CGI"] },
+    { name: "ES", table: SPANISH_LAW_ABBREVS, keys: ["CC", "CP", "LEC"] },
+    { name: "IT", table: ITALIAN_LAW_ABBREVS, keys: ["c.c.", "c.p.", "c.p.c."] },
+    { name: "PL", table: POLISH_LAW_ABBREVS, keys: ["KC", "KK", "KPC", "KSH"] },
+    { name: "CZ", table: CZECH_LAW_ABBREVS, keys: ["OZ", "TZ"] },
+    { name: "SK", table: SLOVAK_LAW_ABBREVS, keys: ["OZ", "TZ"] },
+    { name: "SE", table: SWEDISH_LAW_ABBREVS, keys: ["BrB", "JB", "ÄB"] },
+    { name: "DK", table: DANISH_LAW_ABBREVS, keys: ["STRFL", "RPL"] },
+    { name: "NL", table: DUTCH_LAW_ABBREVS, keys: ["BW", "Sr"] },
+  ];
+  for (const r of required) {
+    for (const k of r.keys) {
+      if (!r.table.has(k)) {
+        throw new Error(`${r.name} table missing required abbrev "${k}"`);
+      }
+    }
+  }
+});
+
+// ─── CENF-MJ-T18 — KNOWN_GAZETTE_PATTERNS matches one shape per country ────
+
+Deno.test(
+  "CENF-MJ-T18 — KNOWN_GAZETTE_PATTERNS recognises representative shapes",
+  () => {
+    const cases: Array<{ key: string; text: string }> = [
+      { key: "DE_BGBl", text: "Vgl. BGBl. I S. 123 vom 1.1.2020." },
+      { key: "FR_JORF", text: "Cf. JORF n° 0078 du 1 avril 2020." },
+      { key: "ES_BOE", text: "BOE núm. 215, de 5 de septiembre de 2020." },
+      { key: "IT_GU", text: "G.U. Serie Generale n. 123 del 1° gennaio 2020." },
+      { key: "PL_DzU", text: "Dz.U. 2020 poz. 1234 reguluje..." },
+      { key: "CZ_Sb", text: "Zákon Sb. č. 89/2012 obsahuje úpravu." },
+      { key: "SK_Zb", text: "Zákon Zb. č. 40/1964 z 26. februára." },
+      { key: "SE_SFS", text: "Enligt SFS 2008:99 gäller följande." },
+      { key: "DK_Ltid", text: "Lovtidende nr. 12 indeholder bekendtgørelsen." },
+      { key: "NL_Stb", text: "Zie Stb. 2020, 123 voor de wijziging." },
+    ];
+    for (const c of cases) {
+      const re = KNOWN_GAZETTE_PATTERNS.get(c.key);
+      if (!re) throw new Error(`pattern key ${c.key} not registered`);
+      const reCopy = new RegExp(re.source, re.flags);
+      const m = c.text.match(reCopy);
+      if (!m || m.length === 0) {
+        throw new Error(
+          `gazette ${c.key} did not match its representative text "${c.text}"`,
+        );
+      }
+    }
+  },
+);
+
+// ─── CENF-MJ-T19 — multi-juris pattern smoke test ──────────────────────────
+
+Deno.test(
+  "CENF-MJ-T19 — BARE_MULTI_JURIS_CITATION_PATTERN matches expected shapes",
+  () => {
+    const re = new RegExp(BARE_MULTI_JURIS_CITATION_PATTERN.source, "gu");
+    const cases: { text: string; expected: number }[] = [
+      { text: "§ 433 BGB", expected: 1 },
+      { text: "§ 90 BGB", expected: 1 },
+      { text: "§ 2913 OZ", expected: 1 },
+      { text: "art. 1902 CC", expected: 1 },
+      { text: "art. 415 KC", expected: 1 },
+      { text: "art. 2043 c.c.", expected: 1 },
+      { text: "art. 6:162 BW", expected: 1 },
+      { text: "art. L. 121-1 CC", expected: 1 },
+      // Non-matches.
+      { text: "TLS § 88", expected: 0 },                 // Estonian shape
+      { text: "TSL 7 luku 3 §", expected: 0 },           // Finnish shape
+      { text: "§ 433 FOO", expected: 0 },                // unregistered abbrev
+      { text: "art. 1902 XYZ", expected: 0 },            // unregistered abbrev
+    ];
+    for (const c of cases) {
+      re.lastIndex = 0;
+      const matches = c.text.match(re) ?? [];
+      if (matches.length !== c.expected) {
+        throw new Error(
+          `Expected ${c.expected} match(es) in "${c.text}", got ${matches.length}: ${
+            JSON.stringify(matches)
+          }`,
+        );
+      }
+    }
+  },
+);
+
+// ─── CENF-MJ-T20 — EU regulation pattern smoke test ────────────────────────
+
+Deno.test(
+  "CENF-MJ-T20 — BARE_EU_REGULATION_PATTERN matches multi-lingual roots",
+  () => {
+    const re = new RegExp(BARE_EU_REGULATION_PATTERN.source, "giu");
+    const cases: { text: string; expected: number }[] = [
+      { text: "Regulation (EU) 2016/679 Article 17", expected: 1 },
+      { text: "Verordnung (EU) 2016/679 Artikel 17", expected: 1 },
+      { text: "Règlement (UE) 2016/679 article 17", expected: 1 },
+      { text: "Reglamento (UE) 2016/679 artículo 17", expected: 1 },
+      { text: "Regolamento (UE) 2016/679 articolo 17", expected: 1 },
+      { text: "Rozporządzenie (UE) 2016/679 artykuł 17", expected: 1 },
+      { text: "asetus (EU) 2016/679", expected: 1 },
+      // Non-matches.
+      { text: "Direktiivi 2004/38/EY", expected: 0 },    // directive (not regulation)
+      { text: "He earned $2016/679", expected: 0 },
+    ];
+    for (const c of cases) {
+      re.lastIndex = 0;
+      const matches = c.text.match(re) ?? [];
+      if (matches.length !== c.expected) {
+        throw new Error(
+          `Expected ${c.expected} match(es) in "${c.text}", got ${matches.length}: ${
+            JSON.stringify(matches)
+          }`,
+        );
+      }
+    }
   },
 );

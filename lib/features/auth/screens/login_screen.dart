@@ -234,6 +234,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               height: logoSize,
               fit: BoxFit.contain,
               filterQuality: FilterQuality.high,
+              excludeFromSemantics: true,
             ),
           ),
           const SizedBox(height: 2),
@@ -286,6 +287,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               focusNode: _emailFocusNode,
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
+              autofillHints: const [AutofillHints.email, AutofillHints.username],
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
                 labelText: l.email,
@@ -326,6 +328,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               controller: _passwordController,
               focusNode: _passwordFocusNode,
               obscureText: _obscurePassword,
+              autofillHints: const [AutofillHints.password],
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (_) => _handleLogin(),
               decoration: InputDecoration(

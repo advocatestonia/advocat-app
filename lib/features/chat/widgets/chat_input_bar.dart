@@ -168,6 +168,7 @@ class ChatInputBar extends StatelessWidget {
                   ),
                   child: IconButton(
                     onPressed: isSending ? null : onVoiceTap,
+                    tooltip: AppLocalizations.of(context)?.voiceInput ?? 'Voice input',
                     icon: Icon(
                       isListening ? Icons.stop_rounded : Icons.mic_rounded,
                       color: isListening

@@ -49,9 +49,9 @@ class AppConfig {
   );
 
   // ── Claude Direct API ────────────────────────────────────────────────
-  // TODO(production): MOVE TO SERVER-SIDE PROXY before public launch.
-  // Client-side API keys can be extracted from compiled binaries.
-  // Use a Supabase Edge Function or similar backend proxy instead.
+  // NOTE (production security): client-side API keys can be extracted from
+  // compiled binaries. Public-launch builds MUST route through the Supabase
+  // Edge Function proxy (claude-proxy) instead of using this constant.
   static const String claudeApiKey = String.fromEnvironment(
     'CLAUDE_API_KEY',
     defaultValue: '',

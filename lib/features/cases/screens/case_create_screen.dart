@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -164,10 +164,15 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
         });
       }
     } catch (e) {
+      debugPrint('pick file failed: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to pick file: $e'),
+            content: Text(
+              l10n?.genericError ??
+                  'Something went wrong. Please try again.',
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -197,10 +202,15 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
         ));
       });
     } catch (e) {
+      debugPrint('take photo failed: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to take photo: $e'),
+            content: Text(
+              l10n?.genericError ??
+                  'Something went wrong. Please try again.',
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -303,6 +313,7 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
         title: Text(l?.newCase ?? 'New Case'),
         leading: IconButton(
           icon: const Icon(Icons.close),
+          tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -865,6 +876,7 @@ class _Step3Document extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.close, size: 20),
                       color: AppColors.textTertiary,
+                      tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
                       onPressed: () => onRemoveFile(index),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),

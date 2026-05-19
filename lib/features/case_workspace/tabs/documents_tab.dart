@@ -26,7 +26,14 @@ class DocumentsTab extends ConsumerWidget {
 
     return asyncDocs.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('$e')),
+      error: (e, _) {
+        debugPrint('workspace documents tab load failed: $e');
+        return Center(
+          child: Text(
+            l10n?.genericError ?? 'Something went wrong. Please try again.',
+          ),
+        );
+      },
       data: (raw) {
         // caseDocumentsProvider returns List<dynamic> by repo contract; we
         // narrow defensively. Anything that is not a CaseDocument is

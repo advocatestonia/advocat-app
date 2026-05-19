@@ -90,6 +90,10 @@ serve(async (req) => {
             "xi-api-key": ELEVENLABS_API_KEY,
           },
           body: JSON.stringify(body),
+          // 20s upper bound — ElevenLabs synthesis of a 5KB chunk normally
+          // completes in 3-8s; anything longer is a stuck call we'd rather
+          // abort than let hang.
+          signal: AbortSignal.timeout(20_000),
         },
       );
       if (r.ok) {
@@ -109,6 +113,8 @@ serve(async (req) => {
       headers: { ...corsHeaders, "Content-Type": "audio/mpeg" },
     });
   } catch (error) {
-    return jsonError("Internal error", 500, { details: String(error) });
+    const msg = error instanceof Error ? error.message : "unknown";
+    console.error("tts-proxy failed:", msg.slice(0, 200));
+    return jsonError("Internal error", 500);
   }
 });

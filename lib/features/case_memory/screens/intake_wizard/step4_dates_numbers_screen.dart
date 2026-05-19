@@ -168,6 +168,7 @@ class Step4DatesNumbersScreen extends ConsumerWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.close, size: 18),
+                tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
                 color: AppColors.error,
                 onPressed: () {
                   final next = [...draft.deadlines]..removeAt(i);

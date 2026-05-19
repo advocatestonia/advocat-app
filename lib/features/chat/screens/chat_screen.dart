@@ -4468,6 +4468,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
                 child: IconButton(
                   onPressed: _isSending ? null : _onVoiceTap,
+                  tooltip: AppLocalizations.of(context)?.voiceInput ?? 'Voice input',
                   icon: Icon(
                     isListening ? Icons.stop_rounded : Icons.mic_rounded,
                     color: isListening ? AppColors.error : AppColors.textSecondary,

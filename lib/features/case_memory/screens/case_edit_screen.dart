@@ -80,9 +80,15 @@ class _CaseEditScreenState extends ConsumerState<CaseEditScreen> {
       );
       context.pop();
     } catch (e) {
+      debugPrint('case_edit save failed: $e');
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$e')),
+        SnackBar(
+          content: Text(
+            l10n?.genericError ?? 'Something went wrong. Please try again.',
+          ),
+        ),
       );
     } finally {
       if (mounted) setState(() => _saving = false);
@@ -107,13 +113,21 @@ class _CaseEditScreenState extends ConsumerState<CaseEditScreen> {
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
                 : const Icon(Icons.check),
+            tooltip: l10n?.save ?? 'Save',
             onPressed: _saving ? null : _save,
           ),
         ],
       ),
       body: caseAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('$e')),
+        error: (e, _) {
+          debugPrint('case_edit load failed: $e');
+          return Center(
+            child: Text(
+              l10n?.genericError ?? 'Something went wrong. Please try again.',
+            ),
+          );
+        },
         data: (c) {
           if (c == null) {
             return Center(child: Text(l10n?.error ?? 'Case not found'));

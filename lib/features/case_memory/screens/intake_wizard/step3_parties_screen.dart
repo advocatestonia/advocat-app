@@ -113,6 +113,7 @@ class Step3PartiesScreen extends ConsumerWidget {
               ),
               IconButton(
                 icon: const Icon(Icons.close, size: 18),
+                tooltip: l10n?.delete ?? 'Delete',
                 color: AppColors.error,
                 onPressed: () {
                   final next = [...draft.witnesses]..removeAt(i);

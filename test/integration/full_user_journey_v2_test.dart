@@ -512,9 +512,12 @@ void main() {
       final u = FakeUser(id: 'u-d', email: 'doc@test.ee');
       w.users[u.id] = u;
 
-      // Simulate upload + AI tool call create_deadline (offline)
+      // Simulate upload + AI tool call create_deadline (offline).
+      // Date is relative to `now` so the test stays future-dated as wall
+      // clock advances. Previous hard-coded 2026-05-15 expired naturally
+      // and made the test flake red after that date.
       const extractedTitle = 'Kohtuistungi tähtaeg';
-      final extractedDate = DateTime.utc(2026, 5, 15, 10);
+      final extractedDate = DateTime.now().toUtc().add(const Duration(days: 30));
 
       // create_deadline contract requires approval gate → user clicks OK
       final approved = true;

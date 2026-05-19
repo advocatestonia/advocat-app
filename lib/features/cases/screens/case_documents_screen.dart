@@ -25,7 +25,10 @@ class CaseDocumentsScreen extends ConsumerWidget {
       body: MaxWidthWrapper(
         child: docsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('${l10n.error}: $e')),
+        error: (e, _) {
+          debugPrint('case documents load failed: $e');
+          return Center(child: Text(l10n.genericError));
+        },
         data: (docs) {
           if (docs.isEmpty) {
             return Center(

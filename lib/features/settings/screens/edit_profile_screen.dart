@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -241,10 +241,16 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         }
       }
     } catch (e) {
+      debugPrint('edit_profile save failed: $e');
       if (mounted) {
         setState(() => _saving = false);
+        final l = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Save failed: $e')),
+          SnackBar(
+            content: Text(
+              l?.genericError ?? 'Something went wrong. Please try again.',
+            ),
+          ),
         );
       }
     }
@@ -267,6 +273,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
         backgroundColor: AppColors.surface,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
           onPressed: () => Navigator.pop(context),
         ),
       ),

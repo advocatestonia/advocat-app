@@ -14,7 +14,11 @@ import {
   assertFalse,
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
-import { extractCitations, type ExtractedCitation } from "../index.ts";
+import {
+  extractCitations,
+  type ExtractedCitation,
+  resolveEcthrCitation,
+} from "../index.ts";
 
 // =============================================================================
 // 1. FI patterns
@@ -225,8 +229,119 @@ Deno.test("CIT-T16 — every output row has required fields", () => {
   );
   for (const c of cites) {
     assert(typeof c.raw === "string" && c.raw.length > 0);
-    assert(["fi", "ee", "eu", "ecthr"].includes(c.kind));
+    // 2026-05-19: added "eu_reg" to the discriminant union.
+    assert(["fi", "ee", "eu", "eu_reg", "ecthr"].includes(c.kind));
     assert(typeof c.alias === "string" && c.alias.length > 0);
     assert(typeof c.section === "string");
   }
+});
+
+// =============================================================================
+// 8. EU regulations (2026-05-19 multi-lingual launch)
+// =============================================================================
+//
+// Verordnung / Regulation / règlement → kind="eu_reg", alias="eu-reg-NNNN-MMM".
+// The directive regex must NOT eat these shapes (otherwise we'd be silently
+// downgrading regulations to directives).
+
+Deno.test("CIT-T22 — EU extracts 'Verordnung (EU) 2016/679' as eu_reg (GDPR)", () => {
+  const cites = extractCitations(
+    "Gemäß Verordnung (EU) 2016/679 Artikel 17 gilt das Löschungsrecht.",
+  );
+  const reg = cites.find((c) => c.kind === "eu_reg");
+  assert(reg, `expected EU regulation hit, got ${JSON.stringify(cites)}`);
+  assertEquals(reg!.alias, "eu-reg-2016-679");
+});
+
+Deno.test("CIT-T23 — EU extracts 'Regulation (EU) 2016/679' (English)", () => {
+  const cites = extractCitations(
+    "Pursuant to Regulation (EU) 2016/679 Article 17 the data subject ...",
+  );
+  const reg = cites.find((c) => c.kind === "eu_reg");
+  assert(reg, "expected eu_reg for English Regulation");
+  assertEquals(reg!.alias, "eu-reg-2016-679");
+});
+
+Deno.test("CIT-T24 — EU extracts 'Règlement (UE) 2016/679' (French)", () => {
+  const cites = extractCitations(
+    "Conformément au Règlement (UE) 2016/679 article 17, le droit à l'effacement ...",
+  );
+  const reg = cites.find((c) => c.kind === "eu_reg");
+  assert(reg, "expected eu_reg for French Règlement");
+  assertEquals(reg!.alias, "eu-reg-2016-679");
+});
+
+Deno.test("CIT-T25 — Verordnung is NOT classified as a directive", () => {
+  // Defensive: the directive regex must not over-eat a regulation surface
+  // form. If it did, the corpus would store GDPR as `eu-dir-2016-679`
+  // which is the wrong CELEX namespace.
+  const cites = extractCitations(
+    "Gemäß Verordnung (EU) 2016/679 Artikel 17 ...",
+  );
+  const dir = cites.find((c) => c.kind === "eu");
+  assertEquals(
+    dir,
+    undefined,
+    `Verordnung should not match directive regex, got ${JSON.stringify(dir)}`,
+  );
+});
+
+Deno.test("CIT-T26 — multi-lingual directives still extracted", () => {
+  // Round-trip: extending the directive regex to multi-lingual roots
+  // must not regress the legacy English/FI/EE forms. Test a German
+  // Richtlinie shape.
+  const cites = extractCitations(
+    "Nach Richtlinie 2008/115/EG Artikel 5 ist die Frist zu wahren.",
+  );
+  const dir = cites.find((c) => c.kind === "eu");
+  assert(dir, "expected eu directive hit for Richtlinie");
+  assertEquals(dir!.alias, "eu-dir-2008-115");
+});
+
+// =============================================================================
+// 9. ECtHR resolver (audit gap §3.2)
+// =============================================================================
+//
+// Before this commit the cron's ECtHR branch was a no-op (`return null`).
+// The lightweight resolver pulls an application number out of the text
+// when present and returns a structured shape; legacy unresolved-fallback
+// still applies when no appno is around.
+
+Deno.test("CIT-T30 — resolveEcthrCitation: '12345/67' returns ecthr_case", () => {
+  const r = resolveEcthrCitation("Maslov v Austria (application no. 12345/67)");
+  assert(r, "expected ecthr_case result");
+  assertEquals(r!.kind, "ecthr_case");
+  assertEquals(r!.appno, "12345");
+  assertEquals(r!.year, "67");
+});
+
+Deno.test("CIT-T31 — resolveEcthrCitation: 5-digit appno like '57325/00'", () => {
+  const r = resolveEcthrCitation("D.H. and Others v Czech Republic, 57325/00");
+  assert(r);
+  assertEquals(r!.appno, "57325");
+  assertEquals(r!.year, "00");
+});
+
+Deno.test("CIT-T32 — resolveEcthrCitation: 'no.' prefix variations", () => {
+  for (const text of [
+    "App. no. 5310/71",
+    "Application 5310/71 was filed.",
+    "Nr. 5310/71",
+  ]) {
+    const r = resolveEcthrCitation(text);
+    assert(r, `expected resolution for "${text}"`);
+    assertEquals(r!.appno, "5310");
+    assertEquals(r!.year, "71");
+  }
+});
+
+Deno.test("CIT-T33 — resolveEcthrCitation: no appno returns null", () => {
+  // Plain case name with no application number → still unresolved.
+  const r = resolveEcthrCitation("Maslov v Austria");
+  assertEquals(r, null);
+});
+
+Deno.test("CIT-T34 — resolveEcthrCitation: empty / whitespace returns null", () => {
+  assertEquals(resolveEcthrCitation(""), null);
+  assertEquals(resolveEcthrCitation("   "), null);
 });

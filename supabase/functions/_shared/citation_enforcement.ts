@@ -142,6 +142,243 @@ const FINNISH_ABBREV_ALTERNATION = Array.from(FINNISH_LAW_ABBREVS.keys())
   .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
   .join("|");
 
+// ─── Multi-jurisdiction abbreviation tables (2026-05-19 EU launch) ──────────
+//
+// These cover the top 10 EU member-state jurisdictions Advocat needs to ship
+// against. They are kept STRICTLY SEPARATE from FI/EE so that:
+//   1. The Estonian / Finnish enforcement branches (`ee_bare_paragraph`,
+//      `fi_bare_paragraph`) are bit-for-bit unchanged. The CI tests pinned
+//      against those branches keep passing.
+//   2. A future per-country tuning round can target a single country's
+//      table without rebuilding the global regex.
+//
+// Each map's value is the lowercase `act_slug` the corpus uses for that act.
+// Slugs follow the pattern `<country>-<short>` (e.g. `de-bgb`, `fr-cc`,
+// `pl-kc`) — same convention the Finnish corpus already uses (`fi-tsl`).
+// When a country starts ingesting real chunks, the migrator script should
+// stamp the same slug into `law_chunks_v2.act_slug` so the marker layer
+// matches the same key.
+
+/** Germany — civil/criminal/commercial codes most likely to appear in
+ *  Advocat replies. Citation form: `§ 433 BGB`, `§ 242 StGB`. */
+export const GERMAN_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["BGB", "de-bgb"],           // Bürgerliches Gesetzbuch (civil)
+  ["StGB", "de-stgb"],         // Strafgesetzbuch (criminal)
+  ["ZPO", "de-zpo"],           // Zivilprozessordnung (civil procedure)
+  ["StPO", "de-stpo"],         // Strafprozessordnung (criminal procedure)
+  ["HGB", "de-hgb"],           // Handelsgesetzbuch (commercial)
+  ["AktG", "de-aktg"],         // Aktiengesetz (corporate)
+  ["GmbHG", "de-gmbhg"],       // GmbH-Gesetz (limited-liability)
+  ["GG", "de-gg"],             // Grundgesetz (constitution)
+  ["AO", "de-ao"],             // Abgabenordnung (tax procedure)
+  ["EStG", "de-estg"],         // Einkommensteuergesetz (income tax)
+  ["UStG", "de-ustg"],         // Umsatzsteuergesetz (VAT)
+  ["BetrVG", "de-betrvg"],     // Betriebsverfassungsgesetz (works councils)
+  ["KSchG", "de-kschg"],       // Kündigungsschutzgesetz (dismissal protection)
+  ["BDSG", "de-bdsg"],         // Bundesdatenschutzgesetz (data protection)
+]);
+
+/** France — codes (CC = code civil, CP = code pénal, CPC = code de procédure
+ *  civile). French citations frequently combine `art. L. 121-1` or
+ *  `article 1240 C. civ.`. */
+export const FRENCH_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["C.civ.", "fr-cc"],          // Code civil
+  ["C. civ.", "fr-cc"],
+  ["CC", "fr-cc"],
+  ["Code civil", "fr-cc"],
+  ["C. pén.", "fr-cp"],         // Code pénal
+  ["C.pén.", "fr-cp"],
+  ["CP", "fr-cp"],
+  ["Code pénal", "fr-cp"],
+  ["CPC", "fr-cpc"],            // Code de procédure civile
+  ["C. proc. civ.", "fr-cpc"],
+  ["CPP", "fr-cpp"],            // Code de procédure pénale
+  ["C. proc. pén.", "fr-cpp"],
+  ["CGI", "fr-cgi"],            // Code général des impôts (tax)
+  ["C. com.", "fr-ccom"],       // Code de commerce
+  ["C.com.", "fr-ccom"],
+  ["C. trav.", "fr-ctrav"],     // Code du travail
+  ["C.trav.", "fr-ctrav"],
+  ["C. consom.", "fr-cconso"],  // Code de la consommation
+  ["C.consom.", "fr-cconso"],
+]);
+
+/** Spain — civil/criminal/procedure codes. Citation form: `art. 1902 CC`
+ *  or `artículo 248 CP`. */
+export const SPANISH_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["CC", "es-cc"],              // Código Civil
+  ["C.c.", "es-cc"],
+  ["Cc", "es-cc"],
+  ["CP", "es-cp"],              // Código Penal
+  ["C.P.", "es-cp"],
+  ["LEC", "es-lec"],            // Ley de Enjuiciamiento Civil
+  ["LECrim", "es-lecrim"],      // Ley de Enjuiciamiento Criminal
+  ["LOPJ", "es-lopj"],          // Ley Orgánica del Poder Judicial
+  ["ET", "es-et"],              // Estatuto de los Trabajadores
+  ["LGT", "es-lgt"],            // Ley General Tributaria
+  ["LGSS", "es-lgss"],          // Ley General de la Seguridad Social
+  ["CE", "es-ce"],              // Constitución Española
+  ["LSC", "es-lsc"],            // Ley de Sociedades de Capital
+]);
+
+/** Italy — civil/criminal codes. Italian convention is lowercase abbrevs
+ *  (`art. 2043 c.c.`, `art. 575 c.p.`). */
+export const ITALIAN_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["c.c.", "it-cc"],            // codice civile
+  ["cc", "it-cc"],
+  ["C.C.", "it-cc"],
+  ["c.p.", "it-cp"],            // codice penale
+  ["cp", "it-cp"],
+  ["C.P.", "it-cp"],
+  ["c.p.c.", "it-cpc"],         // codice di procedura civile
+  ["cpc", "it-cpc"],
+  ["c.p.p.", "it-cpp"],         // codice di procedura penale
+  ["cpp", "it-cpp"],
+  ["Cost.", "it-cost"],         // Costituzione
+  ["TUIR", "it-tuir"],          // Testo unico delle imposte sui redditi
+  ["TUB", "it-tub"],            // Testo unico bancario
+]);
+
+/** Poland — KC = Kodeks cywilny, KK = Kodeks karny, KPC = Kodeks postępowania
+ *  cywilnego, KSH = Kodeks spółek handlowych. Citation form:
+ *  `art. 415 KC`, `art. 148 KK`. */
+export const POLISH_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["KC", "pl-kc"],              // Kodeks cywilny
+  ["k.c.", "pl-kc"],
+  ["KK", "pl-kk"],              // Kodeks karny
+  ["k.k.", "pl-kk"],
+  ["KPC", "pl-kpc"],            // Kodeks postępowania cywilnego
+  ["k.p.c.", "pl-kpc"],
+  ["KPK", "pl-kpk"],            // Kodeks postępowania karnego
+  ["k.p.k.", "pl-kpk"],
+  ["KSH", "pl-ksh"],            // Kodeks spółek handlowych
+  ["k.s.h.", "pl-ksh"],
+  ["KP", "pl-kp"],              // Kodeks pracy
+  ["k.p.", "pl-kp"],
+  ["KRO", "pl-kro"],            // Kodeks rodzinny i opiekuńczy
+  ["k.r.o.", "pl-kro"],
+  ["Ord. pod.", "pl-op"],       // Ordynacja podatkowa
+  ["Konstytucja", "pl-konst"],
+]);
+
+/** Czech Republic — OZ = občanský zákoník (89/2012 Sb.), TZ = trestní
+ *  zákoník. Citation form: `§ 2913 OZ`, `§ 175 TZ`. */
+export const CZECH_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["OZ", "cz-oz"],              // občanský zákoník
+  ["TZ", "cz-tz"],              // trestní zákoník
+  ["TrZ", "cz-tz"],             // alt abbreviation
+  ["OSŘ", "cz-osr"],            // občanský soudní řád (civil procedure)
+  ["TŘ", "cz-tr"],              // trestní řád (criminal procedure)
+  ["ZOK", "cz-zok"],            // zákon o obchodních korporacích
+  ["ZP", "cz-zp"],              // zákoník práce
+  ["LZPS", "cz-lzps"],          // Listina základních práv a svobod
+]);
+
+/** Slovakia — mirrors Czech abbreviations but with slovak slugs. OZ =
+ *  Občiansky zákonník, TZ = Trestný zákon. */
+export const SLOVAK_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["OZ", "sk-oz"],              // Občiansky zákonník
+  ["TZ", "sk-tz"],              // Trestný zákon
+  ["OSP", "sk-osp"],            // Občiansky súdny poriadok (old) — kept for historical refs
+  ["CSP", "sk-csp"],            // Civilný sporový poriadok
+  ["TP", "sk-tp"],              // Trestný poriadok
+  ["ZoOK", "sk-zook"],          // Zákon o obchodných korporáciách
+  ["Zákonník práce", "sk-zp"],
+]);
+
+/** Sweden — BrB = brottsbalken (criminal), JB = jordabalken (real estate),
+ *  ÄB = ärvdabalken (inheritance), RB = rättegångsbalken (procedure). */
+export const SWEDISH_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["BrB", "se-brb"],            // Brottsbalken
+  ["JB", "se-jb"],              // Jordabalken
+  ["ÄB", "se-ab"],              // Ärvdabalken
+  ["AB", "se-ab"],              // ASCII-folded variant
+  ["RB", "se-rb"],              // Rättegångsbalken (civil & criminal procedure)
+  ["FB", "se-fb"],              // Föräldrabalken (family)
+  ["HB", "se-hb"],              // Handelsbalken
+  ["UB", "se-ub"],              // Utsökningsbalken (enforcement)
+  ["RF", "se-rf"],              // Regeringsformen (constitution)
+  ["LAS", "se-las"],            // Lag om anställningsskydd
+]);
+
+/** Denmark — STRFL = straffeloven (criminal), RPL = retsplejeloven
+ *  (procedure). */
+export const DANISH_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["STRFL", "dk-strfl"],        // Straffeloven
+  ["STRL", "dk-strfl"],         // common shortening
+  ["RPL", "dk-rpl"],            // Retsplejeloven
+  ["AFTL", "dk-aftl"],          // Aftaleloven
+  ["ARL", "dk-arl"],            // Arveloven
+  ["EBL", "dk-ebl"],            // Ejendomsbeskatningsloven
+  ["GRL", "dk-grl"],            // Grundloven (constitution)
+  ["FE", "dk-fe"],              // Funktionærloven (employees)
+]);
+
+/** Netherlands — BW = Burgerlijk Wetboek (civil, divided into 7+ books),
+ *  Sr = Wetboek van Strafrecht (criminal), Sv = Wetboek van Strafvordering
+ *  (criminal procedure), Rv = Wetboek van Burgerlijke Rechtsvordering
+ *  (civil procedure). Citation form: `art. 6:162 BW`, `art. 287 Sr`. */
+export const DUTCH_LAW_ABBREVS: ReadonlyMap<string, string> = new Map([
+  ["BW", "nl-bw"],              // Burgerlijk Wetboek
+  ["Sr", "nl-sr"],              // Wetboek van Strafrecht
+  ["Sv", "nl-sv"],              // Wetboek van Strafvordering
+  ["Rv", "nl-rv"],              // Wetboek van Burgerlijke Rechtsvordering
+  ["WvK", "nl-wvk"],            // Wetboek van Koophandel
+  ["AWB", "nl-awb"],            // Algemene wet bestuursrecht
+  ["Gw", "nl-gw"],              // Grondwet
+  ["AWR", "nl-awr"],            // Algemene wet inzake rijksbelastingen
+]);
+
+/** Combined map of every multi-jurisdiction abbreviation, keyed by the
+ *  surface form the model emits. For ambiguous keys (e.g. `CC` = either
+ *  French Code civil OR Spanish Código Civil OR Polish KC alias), the
+ *  first registered entry wins. Specific-country disambiguation happens
+ *  at the system-prompt layer (jurisdiction hint) — this map is only the
+ *  fallback recogniser. */
+const MULTI_JURIS_TABLES: ReadonlyArray<readonly [string, ReadonlyMap<string, string>]> = [
+  ["de", GERMAN_LAW_ABBREVS],
+  ["fr", FRENCH_LAW_ABBREVS],
+  ["es", SPANISH_LAW_ABBREVS],
+  ["it", ITALIAN_LAW_ABBREVS],
+  ["pl", POLISH_LAW_ABBREVS],
+  ["cz", CZECH_LAW_ABBREVS],
+  ["sk", SLOVAK_LAW_ABBREVS],
+  ["se", SWEDISH_LAW_ABBREVS],
+  ["dk", DANISH_LAW_ABBREVS],
+  ["nl", DUTCH_LAW_ABBREVS],
+];
+
+/** Lookup helper: surface-form → act_slug, scanning every country table in
+ *  registration order. Returns `null` when the abbreviation is unknown.
+ *  Used by the multi-jurisdiction enforcement branch below. Exposed for
+ *  tests so we can pin "BGB → de-bgb" / "KC → pl-kc" mappings without
+ *  re-running the regex pipeline. */
+export function resolveMultiJurisAbbrev(
+  surface: string,
+): { country: string; act_slug: string } | null {
+  if (!surface) return null;
+  for (const [country, table] of MULTI_JURIS_TABLES) {
+    const hit = table.get(surface);
+    if (hit) return { country, act_slug: hit };
+  }
+  return null;
+}
+
+/** Flat set of every multi-jurisdiction surface form, longest-first so a
+ *  regex alternation built from this list never partially-matches a longer
+ *  abbreviation. */
+const MULTI_JURIS_SURFACE_FORMS: string[] = (() => {
+  const all = new Set<string>();
+  for (const [, table] of MULTI_JURIS_TABLES) {
+    for (const k of table.keys()) all.add(k);
+  }
+  return Array.from(all).sort((a, b) => b.length - a.length);
+})();
+
+const MULTI_JURIS_ABBREV_ALTERNATION = MULTI_JURIS_SURFACE_FORMS
+  .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+  .join("|");
+
 /** Estonian bare-paragraph citation regex.
  *
  *  Shape: `<ABBR> § <NUM>` with optional `lg <NUM>`/`p <NUM>`/`-<NUM>`
@@ -215,6 +452,15 @@ export const BARE_FINNISH_CITATION_PATTERN = new RegExp(
  *    • "Directive 2019/1152, Article 5"
  *    • "Direktiivi 2002/58/EU art 5"
  *    • "EU Directive 2019/1152 (2019/1152/EU)"
+ *    • "Richtlinie 2008/115/EG Artikel 5"           — DE
+ *    • "directive 2008/115/CE article 5"            — FR
+ *    • "direttiva 96/9/CE articolo 5"               — IT
+ *    • "directiva 2008/115/CE artículo 5"           — ES
+ *    • "dyrektywa 2008/115/WE artykuł 5"            — PL
+ *    • "směrnice 2008/115/ES článek 5"              — CZ
+ *    • "smernica 2008/115/ES článok 5"              — SK
+ *    • "direktiv 2008/115/EG artikel 5"             — SE / DK
+ *    • "richtlijn 2008/115/EG artikel 5"            — NL
  *
  *  We match the YEAR/NUMBER + qualifier shape. The marker form for the
  *  same citation is CELEX-style: `[[ref:32019L1152:5]]`. Building the
@@ -226,10 +472,150 @@ export const BARE_FINNISH_CITATION_PATTERN = new RegExp(
  *  Capture groups:
  *    1 — year (2 or 4 digits)
  *    2 — directive number (1-4 digits)
- *    3 — optional article number ("artikkel 5" / "art 5" / "Article 5") */
+ *    3 — optional article number ("artikkel 5" / "art 5" / "Article 5" /
+ *        "Artikel 5" / "artykuł 5" / "článek 5" / "articolo 5" / "artículo 5") */
 export const BARE_EU_DIRECTIVE_PATTERN = new RegExp(
-  `(?<![A-Za-z0-9])(?:Direktiivi?|Directive)\\s*(?:nr\\.?\\s*)?(\\d{2,4})/(\\d{1,4})(?:/(?:EÜ|EU|EC|EEC))?(?:[^\\n]{0,40}?(?:artikkel|art\\.?|Article|artikli)\\s*(\\d+[a-z]?))?`,
+  // Directive root (multi-lingual). Word-boundaried.
+  `(?<![A-Za-z0-9])` +
+  `(?:Direktiivi?|Directive|Richtlinie|directive|direttiva|directiva|` +
+    `dyrektywa|směrnice|smernica|direktiv|richtlijn)` +
+  `\\s*(?:nr\\.?\\s*)?` +
+  // Year + number
+  `(\\d{2,4})/(\\d{1,4})` +
+  // Optional /XX or /XXX suffix for treaty namespace (EÜ/EU/EC/EEC/EG/CE/WE/ES)
+  `(?:/(?:E[ÜU]|EC|EEC|EG|CE|WE|ES))?` +
+  // Optional article-or-equivalent qualifier within ~60 chars
+  `(?:[^\\n]{0,60}?(?:artikkel|artikla|artikli|Artikel|artikel|artículo|` +
+    `articolo|artykuł|článek|článok|art\\.?|Article)\\s*(\\d+[a-z]?))?`,
   "giu",
+);
+
+/** EU regulation citation regex (added 2026-05-19 — multi-lingual launch).
+ *
+ *  Common shapes:
+ *    • "Regulation (EU) 2016/679 Article 17"
+ *    • "Verordnung (EU) 2016/679 Artikel 17"
+ *    • "Règlement (UE) 2016/679 article 17"        — FR
+ *    • "Reglamento (UE) 2016/679 artículo 17"      — ES
+ *    • "Regolamento (UE) 2016/679 articolo 17"     — IT
+ *    • "Rozporządzenie (UE) 2016/679 artykuł 17"   — PL
+ *    • "Nařízení (EU) 2016/679"                    — CZ
+ *    • "Förordning (EU) 2016/679"                  — SE
+ *    • "Forordning (EU) 2016/679"                  — DK
+ *    • "Verordening (EU) 2016/679"                 — NL
+ *    • "asetus (EU) 2016/679"                      — FI
+ *    • "määrus (EL) 2016/679"                      — EE
+ *
+ *  Same capture-group layout as the directive pattern.
+ *
+ *  Note: kept as a SEPARATE constant (and a separate enforcement branch)
+ *  rather than merging into BARE_EU_DIRECTIVE_PATTERN so the existing
+ *  CELEX-shape logic (`L` for directive vs `R` for regulation) stays
+ *  legible and the directive tests keep passing unchanged. */
+export const BARE_EU_REGULATION_PATTERN = new RegExp(
+  `(?<![A-Za-z0-9])` +
+  `(?:Regulation|Verordnung|Règlement|R[èe]glement|Reglamento|Regolamento|` +
+    `Rozporządzenie|Nařízení|Förordning|Forordning|Verordening|asetus|määrus)` +
+  // Optional treaty body marker in parens (EU)/(EL)/(UE)/(EG)/(EÜ)
+  `\\s*(?:\\((?:EU|EL|UE|EG|EÜ|EC)\\))?\\s*(?:nr\\.?\\s*)?` +
+  `(\\d{2,4})/(\\d{1,4})` +
+  `(?:/(?:E[ÜU]|EC|EEC|EG|CE|WE|ES))?` +
+  `(?:[^\\n]{0,60}?(?:artikkel|artikla|artikli|Artikel|artikel|artículo|` +
+    `articolo|artykuł|článek|článok|art\\.?|Article)\\s*(\\d+[a-z]?))?`,
+  "giu",
+);
+
+/** Country gazette publication shapes (added 2026-05-19).
+ *
+ *  These are the *primary* citation form in continental case-law:
+ *  Germany cites "BGBl. I S. 123", France "JORF n° 0078", Spain "BOE
+ *  núm. 215", Italy "GU Serie Generale n. 123", Poland "Dz.U. 2020
+ *  poz. 1234", Czech "Sb. č. 89/2012", Sweden "SFS 2008:99",
+ *  Netherlands "Stb. 2020, 123". This map is exported as a regex set
+ *  for downstream consumers (search, link expanders) — it does NOT
+ *  yet feed into the enforcer's strip path because we don't have a
+ *  matching `[[ref:...]]` marker convention for gazette refs.
+ *
+ *  Keys: ISO country code or gazette short-code.
+ *  Values: case-insensitive regex matching the gazette shape.
+ *
+ *  Conservative: each pattern requires the gazette prefix + a numeric
+ *  citation body so we never false-positive on "BGB" (German civil code,
+ *  a completely different beast) or "GU" inside "GUest". */
+export const KNOWN_GAZETTE_PATTERNS: ReadonlyMap<string, RegExp> = new Map([
+  // Germany — Bundesgesetzblatt
+  ["DE_BGBl", /\bBGBl\.?\s*(?:I{1,3}|Teil\s*[IVX]+)?\s*S\.?\s*\d+/giu],
+  // France — Journal Officiel
+  ["FR_JORF", /\bJORF\s*(?:n[°º]\s*[\d-]+|du\s+\d{1,2}[^\n]{1,20}\d{4})/giu],
+  // Spain — Boletín Oficial del Estado
+  ["ES_BOE", /\bBOE(?:[\s,]+(?:n[úu]m\.?|de))?\s*\d+/giu],
+  // Italy — Gazzetta Ufficiale. Two common shapes:
+  //   1. `G.U. Serie Generale n. 123`  (post-2008 official form)
+  //   2. `G.U. n. 123`                 (compact form)
+  // Both end on a numeric body. We allow an optional `Serie Generale`
+  // or `S.G.` segment between the gazette marker and the n.<number>.
+  // Lookbehind on letters is robust against `G\.?` boundary issues.
+  ["IT_GU", /(?<![A-Za-z])G\.?\s*U\.?\s*(?:Serie\s+Generale\s*|S\.G\.\s*)?(?:n\.?\s*)?\d+/giu],
+  // Poland — Dziennik Ustaw
+  ["PL_DzU", /\bDz\.?\s*U\.?\s*(?:\d{4}\s*(?:r\.)?)?(?:\s*poz\.\s*\d+|\s*nr\s*\d+)/giu],
+  // Czechia — Sbírka zákonů
+  ["CZ_Sb", /\b(?:Sb\.|Sbírka(?:\s+zákonů)?)\s*č?\.?\s*\d+\/\d{4}/giu],
+  // Slovakia — Zbierka zákonov
+  ["SK_Zb", /\bZ(?:b|z)\.?\s*č?\.?\s*\d+\/\d{4}/giu],
+  // Sweden — Svensk författningssamling
+  ["SE_SFS", /\bSFS\s*\d{4}:\d+/giu],
+  // Denmark — Lovtidende
+  ["DK_Ltid", /\bLovtidende\s*(?:nr\.?|af)?\s*\d+/giu],
+  // Netherlands — Staatsblad
+  ["NL_Stb", /\bStb\.?\s*\d{4}(?:[,.\s]+\d+)?/giu],
+]);
+
+/** Multi-jurisdiction bare-citation regex (DE/FR/ES/IT/PL/CZ/SK/SE/DK/NL).
+ *
+ *  Continental citation conventions vary by country:
+ *    • Germany/Austria/Czech/Slovak: `§ 433 BGB`, `§ 2913 OZ`
+ *      → number FOLLOWS the § symbol, abbreviation comes after.
+ *    • France/Italy/Spain/Poland/Netherlands: `art. 1902 CC`,
+ *      `art. L. 121-1 C. civ.`, `art. 6:162 BW`
+ *      → "art." or "article" precedes the number, abbreviation comes after.
+ *    • Sweden/Denmark: `BrB 1 kap. 1 §`, `STRFL § 191`
+ *      → mixed, abbreviation first or last.
+ *
+ *  This regex captures the dominant `<art-keyword> <section> <ABBREV>`
+ *  AND `<§> <section> <ABBREV>` shapes for the registered abbreviations.
+ *  We deliberately do NOT touch the simpler `<ABBREV> § <num>` shape
+ *  because that overlaps with the Estonian regex (TLS § 88) and would
+ *  regress FI/EE behaviour. The Estonian table takes priority on overlap;
+ *  multi-juris only runs against surface forms NOT in the EE/FI tables.
+ *
+ *  Branches:
+ *    A — `§ <num> <ABBREV>`        DE/CZ/SK style
+ *    B — `art.? <num> <ABBREV>`    FR/ES/IT/PL/NL style
+ *
+ *  Capture groups (numbered across the two alternatives):
+ *    1 — Branch A section
+ *    2 — Branch A abbreviation
+ *    3 — Branch B section (supports compound like "L. 121-1" or "6:162")
+ *    4 — Branch B abbreviation
+ *
+ *  Word-boundary lookarounds use the Latin-1+European-glyph charset so
+ *  `Ä`/`Ö`/`Ç`/`Ñ`/`Ł` adjacent to a match don't break matching. */
+export const BARE_MULTI_JURIS_CITATION_PATTERN = new RegExp(
+  // Branch A: § <num> <ABBREV>  (DE / CZ / SK)
+  `(?<![A-Za-zÄÖÜäöüßÇçÑñŁłŠšŽžÁÉÍÓÚáéíóúÀàÈèÌìÒòÙù0-9])` +
+  `§\\s*(\\d+(?:[a-z]?(?:[-–]\\d+)?))\\s+(${MULTI_JURIS_ABBREV_ALTERNATION})` +
+  `(?![A-Za-zÄÖÜäöüßÇçÑñŁłŠšŽžÁÉÍÓÚáéíóú0-9])` +
+  `|` +
+  // Branch B: art./article <num> <ABBREV>  (FR / ES / IT / PL / NL)
+  // Section can be plain number, alphanumeric (L. 121-1), or chapter-section
+  // compound (6:162). We allow optional "L." or "R." prefix common in French
+  // numbering.
+  `(?<![A-Za-zÄÖÜäöüßÇçÑñŁłŠšŽžÁÉÍÓÚáéíóúÀàÈèÌìÒòÙù0-9])` +
+  `(?:art(?:icle|ículo|icolo|ykuł|\\.?)|Art\\.?|ARTÍCULO|articolo)\\s+` +
+  `((?:[LR]\\.?\\s*)?\\d+(?:[-–:]\\d+)?(?:[a-z])?)\\s+` +
+  `(${MULTI_JURIS_ABBREV_ALTERNATION})` +
+  `(?![A-Za-zÄÖÜäöüßÇçÑñŁłŠšŽžÁÉÍÓÚáéíóú0-9])`,
+  "gu",
 );
 
 /** ECHR article citation. Shape: "EIÕK artikkel 6", "ECHR Article 8",
@@ -287,7 +673,9 @@ export type ViolationKind =
   | "ee_bare_paragraph"   // e.g. "TLS § 88" with no [[ref:TLS:88]]
   | "fi_bare_paragraph"   // e.g. "TSL 7 luku 3 §" with no [[ref:fi-tsl:7-3]]
   | "eu_bare_directive"   // e.g. "Direktiiv 96/9/EÜ artikkel 5" without marker
+  | "eu_bare_regulation"  // e.g. "Verordnung (EU) 2016/679" without marker
   | "echr_bare_article"   // e.g. "ECHR Article 8" without marker
+  | "multi_juris_bare_paragraph" // e.g. "§ 433 BGB" without [[ref:de-bgb:433]]
   ;
 
 export interface CitationViolation {
@@ -335,8 +723,19 @@ export function replacementForDirective(year: string, number: string): string {
   return `direktiiv ${year}/${number}`;
 }
 
+export function replacementForRegulation(year: string, number: string): string {
+  return `regulation ${year}/${number}`;
+}
+
 export function replacementForEchr(): string {
   return "ECHR";
+}
+
+/** Multi-jurisdiction soft-strip: same philosophy as Estonian / Finnish — we
+ *  keep the act abbreviation so the prose still flags the relevant code, but
+ *  drop the un-verifiable paragraph number. */
+export function replacementForMultiJuris(actAbbrev: string): string {
+  return actAbbrev;
 }
 
 // ── 4. The enforcer ──────────────────────────────────────────────────────────
@@ -539,6 +938,134 @@ export function enforceCitations(
         paragraph: article,
         index: idx,
         replacement: replacementForDirective(year, number),
+      });
+    }
+  }
+
+  // ── 4b-bis. EU regulations (multi-lingual, 2026-05-19) ─────────────────
+  // Mirrors directive logic but builds an `R`-flavoured CELEX
+  // (`32016R0679`). We deliberately only flag here if the surface form
+  // contains a regulation root (Verordnung / Regulation / Règlement / …).
+  // Directives are already covered by branch 4b, and the surface forms
+  // don't overlap, so no double-counting.
+  {
+    const re = new RegExp(BARE_EU_REGULATION_PATTERN.source, "giu");
+    for (const m of replyText.matchAll(re)) {
+      const fullMatch = m[0];
+      const year = m[1];
+      const number = m[2];
+      const article = m[3];
+      const idx = m.index ?? -1;
+      if (!year || !number || idx < 0) continue;
+      // CELEX: regulations use `R`, year-zero-padded
+      let fullYear: string;
+      if (year.length === 4) {
+        fullYear = year;
+      } else if (year.length === 2) {
+        const y = parseInt(year, 10);
+        fullYear = y < 50 ? `20${year}` : `19${year}`;
+      } else {
+        fullYear = year.padStart(4, "0");
+      }
+      const padded = number.padStart(4, "0");
+      const celex = `3${fullYear}R${padded}`.toLowerCase();
+
+      if (!article) {
+        // Generic regulation mention — accept if any article for this
+        // regulation has a marker, otherwise soft-replace.
+        const anyArticleCovered = Array.from(coverage).some((k) =>
+          k.startsWith(`${celex}:`)
+        );
+        if (anyArticleCovered) continue;
+        edits.push({
+          start: idx,
+          end: idx + fullMatch.length,
+          replacement: replacementForRegulation(year, number),
+        });
+        violations.push({
+          kind: "eu_bare_regulation",
+          match: fullMatch,
+          act_slug: celex,
+          paragraph: "(unspecified)",
+          index: idx,
+          replacement: replacementForRegulation(year, number),
+        });
+        continue;
+      }
+      const key = `${celex}:${article}`;
+      if (coverage.has(key)) continue;
+      edits.push({
+        start: idx,
+        end: idx + fullMatch.length,
+        replacement: replacementForRegulation(year, number),
+      });
+      violations.push({
+        kind: "eu_bare_regulation",
+        match: fullMatch,
+        act_slug: celex,
+        paragraph: article,
+        index: idx,
+        replacement: replacementForRegulation(year, number),
+      });
+    }
+  }
+
+  // ── 4b-ter. Multi-jurisdiction (DE/FR/ES/IT/PL/CZ/SK/SE/DK/NL) ──────────
+  // Continental civil-law citation forms. Resolution is purely a surface
+  // lookup against MULTI_JURIS_TABLES — no DB query. The branch is
+  // intentionally narrow on shape (Branch A: `§ <num> <ABBREV>`,
+  // Branch B: `art. <num> <ABBREV>`) so we do not regress the Estonian
+  // `<ABBREV> § <num>` enforcement above. Coverage check accepts the
+  // same `act_slug:paragraph` key shape as the Estonian / Finnish
+  // branches; markers stay `[[ref:de-bgb:433]]` / `[[ref:fr-cc:1240]]`.
+  {
+    const re = new RegExp(BARE_MULTI_JURIS_CITATION_PATTERN.source, "gu");
+    for (const m of replyText.matchAll(re)) {
+      const fullMatch = m[0];
+      const idx = m.index ?? -1;
+      if (idx < 0) continue;
+
+      // Branch A captures: m[1]=section, m[2]=abbrev
+      // Branch B captures: m[3]=section, m[4]=abbrev
+      let section: string | undefined;
+      let abbrev: string | undefined;
+      if (m[1] && m[2]) {
+        section = m[1];
+        abbrev = m[2];
+      } else if (m[3] && m[4]) {
+        // Normalise French L./R. prefix into the section so downstream
+        // markers can match either "L121-1" or "L. 121-1".
+        section = m[3].replace(/\s+/g, "").toUpperCase();
+        // Lowercase the trailing letter when present.
+        section = section.replace(/[A-Z]$/, (c) => c.toLowerCase());
+        abbrev = m[4];
+      }
+      if (!abbrev || !section) continue;
+
+      const resolved = resolveMultiJurisAbbrev(abbrev);
+      if (!resolved) continue;
+      const actSlug = resolved.act_slug;
+      const key = `${actSlug}:${section}`;
+
+      // Parent-paragraph rule (same as EE/FI branches): "BGB § 433-1"
+      // is covered by [[ref:de-bgb:433]].
+      const parentPara = section.split(/[-–:]/)[0];
+      const parentKey = `${actSlug}:${parentPara}`;
+      if (coverage.has(key) || coverage.has(parentKey)) continue;
+
+      const replacement = replacementForMultiJuris(abbrev);
+      edits.push({
+        start: idx,
+        end: idx + fullMatch.length,
+        replacement,
+      });
+      violations.push({
+        kind: "multi_juris_bare_paragraph",
+        match: fullMatch,
+        act_slug: actSlug,
+        paragraph: section,
+        index: idx,
+        replacement,
       });
     }
   }

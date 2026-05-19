@@ -35,10 +35,17 @@ class CaseDetailScreen extends ConsumerWidget {
       loading: () => const Scaffold(
         body: Center(child: CircularProgressIndicator()),
       ),
-      error: (e, _) => Scaffold(
-        appBar: AppBar(),
-        body: Center(child: Text('$e')),
-      ),
+      error: (e, _) {
+        debugPrint('case_detail load failed: $e');
+        return Scaffold(
+          appBar: AppBar(),
+          body: Center(
+            child: Text(
+              l10n?.genericError ?? 'Something went wrong. Please try again.',
+            ),
+          ),
+        );
+      },
       data: (c) {
         if (c == null) {
           return Scaffold(
@@ -97,6 +104,7 @@ class _Body extends ConsumerWidget {
           IconButton(
             key: const Key('case-edit-btn'),
             icon: const Icon(Icons.edit_outlined),
+            tooltip: l10n?.edit ?? 'Edit',
             onPressed: () => context.push('/cases-v2/${userCase.id}/edit'),
           ),
           PopupMenuButton<String>(

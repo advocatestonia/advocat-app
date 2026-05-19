@@ -93,6 +93,7 @@ class _DocumentListScreenState extends ConsumerState<DocumentListScreen> {
         leading: _isSelecting
             ? IconButton(
                 icon: const Icon(Icons.close),
+                tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
                 onPressed: _clearSelection,
               )
             : null,

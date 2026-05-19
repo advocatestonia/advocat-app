@@ -140,6 +140,7 @@ class Step5DocumentsScreen extends ConsumerWidget {
             subtitle: Text(_formatBytes(staged[i].sizeBytes)),
             trailing: IconButton(
               icon: const Icon(Icons.close, size: 18),
+              tooltip: l10n?.delete ?? 'Delete',
               color: AppColors.error,
               onPressed: () {
                 final next = [...staged]..removeAt(i);

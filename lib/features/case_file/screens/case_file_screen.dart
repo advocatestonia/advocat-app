@@ -14,7 +14,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:ui' as ui show FontFeature;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:printing/printing.dart';
@@ -233,10 +233,14 @@ class _CaseFileScreenState extends ConsumerState<CaseFileScreen> {
     try {
       await handler(ics);
     } catch (e) {
+      debugPrint('calendar export failed: $e');
       if (!mounted) return;
+      final l = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Calendar export failed: $e'),
+          content: Text(
+            l?.genericError ?? 'Something went wrong. Please try again.',
+          ),
           backgroundColor: AppColors.error,
         ),
       );
@@ -281,10 +285,14 @@ class _CaseFileScreenState extends ConsumerState<CaseFileScreen> {
       );
       await Printing.sharePdf(bytes: bytes, filename: 'case_file_$lang.pdf');
     } catch (e) {
+      debugPrint('case-file PDF export failed: $e');
       if (!mounted) return;
+      final l = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('PDF export failed: $e'),
+          content: Text(
+            l?.genericError ?? 'Something went wrong. Please try again.',
+          ),
           backgroundColor: AppColors.error,
         ),
       );

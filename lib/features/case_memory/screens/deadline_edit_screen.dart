@@ -287,7 +287,14 @@ class _DeadlineEditScreenState extends ConsumerState<DeadlineEditScreen> {
       }
       if (mounted) navigator.pop();
     } catch (e) {
-      messenger.showSnackBar(SnackBar(content: Text('$e')));
+      debugPrint('deadline save failed: $e');
+      messenger.showSnackBar(
+        SnackBar(
+          content: Text(
+            l10n?.genericError ?? 'Something went wrong. Please try again.',
+          ),
+        ),
+      );
       if (mounted) setState(() => _saving = false);
     }
   }

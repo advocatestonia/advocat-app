@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -649,11 +649,15 @@ class SettingsScreen extends ConsumerWidget {
         context.go(AppRoutes.onboarding);
       }
     } catch (e) {
+      debugPrint('delete account failed: $e');
       if (context.mounted) {
+        final l = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to delete account: $e'),
+            content: Text(
+              l?.genericError ?? 'Something went wrong. Please try again.',
+            ),
             backgroundColor: AppColors.error,
           ),
         );
@@ -747,11 +751,15 @@ class SettingsScreen extends ConsumerWidget {
         );
       }
     } catch (e) {
+      debugPrint('data export failed: $e');
       if (context.mounted) {
+        final l = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Export failed: $e'),
+            content: Text(
+              l?.genericError ?? 'Something went wrong. Please try again.',
+            ),
             backgroundColor: AppColors.error,
           ),
         );

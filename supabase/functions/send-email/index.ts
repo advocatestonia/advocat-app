@@ -96,6 +96,11 @@ function base64url(s: string): string {
     .replace(/=+$/, "");
 }
 
+// 15s upper bound on outbound provider calls. Without an explicit AbortSignal,
+// a stuck provider would hang until Supabase's wall-clock cap (~150s) and burn
+// the user's send-attempt.
+const PROVIDER_FETCH_TIMEOUT_MS = 15_000;
+
 async function sendViaGmail(params: {
   accessToken: string;
   from: string;
@@ -114,6 +119,7 @@ async function sendViaGmail(params: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ raw }),
+      signal: AbortSignal.timeout(PROVIDER_FETCH_TIMEOUT_MS),
     },
   );
   if (!resp.ok) {
@@ -153,6 +159,7 @@ async function tryRefreshGmailToken(
         clientSecret: GOOGLE_CLIENT_SECRET,
         refreshToken,
       }),
+      signal: AbortSignal.timeout(10_000),
     });
   } catch (e) {
     console.warn("send-email: refresh fetch failed:", String(e));
@@ -215,6 +222,7 @@ async function sendViaResend(params: {
       subject: params.subject,
       text: params.body,
     }),
+    signal: AbortSignal.timeout(PROVIDER_FETCH_TIMEOUT_MS),
   });
   if (!resp.ok) {
     const err = await resp.text();
@@ -427,8 +435,10 @@ serve(async (req) => {
       providerId = r.id;
       provider = "resend_fallback";
     } catch (e) {
+      const msg = e instanceof Error ? e.message : "unknown";
+      console.error("send-email: Resend failed:", msg.slice(0, 200));
       return jsonResponse(
-        { error: "Email dispatch failed", details: String(e) },
+        { error: "Email dispatch failed" },
         502,
       );
     }

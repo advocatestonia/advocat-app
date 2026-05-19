@@ -36,7 +36,8 @@ class CaseCard extends StatelessWidget {
     };
   }
 
-  // TODO: Add l10n keys for case status labels (caseStatusActive, caseStatusPending, etc.) to ARB files
+  // NOTE: case status labels are English-only — ARB keys (caseStatusActive,
+  // caseStatusPending, etc.) not yet defined. Falls through to literal English.
   String _statusLabel(CaseStatus status, BuildContext context) {
     return switch (status) {
       CaseStatus.active => 'Active',
@@ -48,7 +49,6 @@ class CaseCard extends StatelessWidget {
     };
   }
 
-  // TODO: Add l10n keys for case type labels to ARB files (reuse from case_create_screen)
   String _typeLabel(CaseType type, BuildContext context) {
     final l = AppLocalizations.of(context);
     return switch (type) {

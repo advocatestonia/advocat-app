@@ -47,6 +47,12 @@ const bool _awaitsFixB4 = true;
 /// Locates the migration whose filename contains `name` and returns its
 /// contents. We match by substring rather than exact name so renames that
 /// only adjust the date prefix or numeric ordering still resolve.
+///
+/// Filenames are normalised by stripping the `YYYYMMDDHHMMSS_` timestamp
+/// prefix before substring-matching, and the basename must START with
+/// `name` (after the prefix). This prevents `audit_log` from matching
+/// sibling files like `backup_audit_log.sql` whose contents have a
+/// different SQL contract.
 String _readMigration(String name) {
   final dir = Directory('supabase/migrations');
   if (!dir.existsSync()) {
@@ -55,10 +61,17 @@ String _readMigration(String name) {
       'flutter test must run from the package root.',
     );
   }
+  // Strip the leading `YYYYMMDDHHMMSS_` (or `YYYYMMDD_NN_`) prefix so the
+  // match operates on the semantic part of the filename only.
+  final timestampPrefix = RegExp(r'^\d{8,14}(?:_\d+)?_');
   final files = dir
       .listSync()
       .whereType<File>()
-      .where((f) => f.path.contains(name))
+      .where((f) {
+        final basename = f.uri.pathSegments.last;
+        final stripped = basename.replaceFirst(timestampPrefix, '');
+        return stripped.startsWith(name);
+      })
       .toList();
   if (files.isEmpty) {
     throw StateError('Migration matching "$name" not found in ${dir.path}');

@@ -30,8 +30,45 @@ const CRON_SECRET = Deno.env.get("CRON_SECRET");
 const DEFAULT_MAX_CHUNKS = 500;
 const HARD_MAX_CHUNKS = 5_000;
 
-/** Min similarity for pg_trgm fuzzy alias resolution. */
+/** Min similarity for pg_trgm fuzzy alias resolution.
+ *  Default 0.6 stays in place for FI / EE — the in-language case where
+ *  trigram similarity is reliable and a lower floor would over-match
+ *  on common roots (`lain`, `seadusest`). */
 const FUZZY_SIMILARITY_FLOOR = 0.6;
+
+/** Cross-language fuzzy floor (2026-05-19 EU launch — multi-juris pass).
+ *
+ *  When the alias's language and the corpus row's language differ
+ *  (e.g. a Russian assistant turn citing German "BGB § 433" against a
+ *  German-language alias table), trigram similarity drops to ~0.2-0.4
+ *  — well below the in-language floor. Mirrors the fix already shipped
+ *  in `advice_corrections` retrieval (lesson_corrections_retrieval_debug,
+ *  2026-05-14) which moved 0.75 → 0.45 for cross-language matches.
+ *
+ *  CONSERVATIVE: gated by ENV flag CITATION_CROSS_LANG_FUZZY (default off
+ *  in production until the new abbreviation tables have been observed on
+ *  real traffic). When the flag is unset we keep the legacy 0.6 floor for
+ *  every kind, so behaviour is unchanged. */
+const CROSS_LANG_FUZZY_FLOOR = 0.45;
+
+/** Feature flag for the cross-language fuzzy floor. Read from env so a
+ *  prod toggle is one variable away — no redeploy needed to roll back. */
+const CITATION_CROSS_LANG_FUZZY =
+  (Deno.env.get("CITATION_CROSS_LANG_FUZZY") ?? "").toLowerCase() === "true";
+
+/** Citation kinds that use the legacy 0.6 floor unconditionally. FI / EE
+ *  are the only mature corpora; everything else gets the lower 0.45 floor
+ *  when the env flag is on. The "ecthr" kind never reaches fuzzy (resolved
+ *  separately or unresolved). */
+const IN_LANGUAGE_KINDS = new Set<string>(["fi", "ee"]);
+
+/** Return the active fuzzy floor for a given citation kind. */
+function fuzzyFloorForKind(kind: string): number {
+  if (!CITATION_CROSS_LANG_FUZZY) return FUZZY_SIMILARITY_FLOOR;
+  return IN_LANGUAGE_KINDS.has(kind)
+    ? FUZZY_SIMILARITY_FLOOR
+    : CROSS_LANG_FUZZY_FLOOR;
+}
 
 /** Cap text scanned per chunk (defense against pathological rows). */
 const MAX_TEXT_BYTES = 64 * 1024;
@@ -170,12 +207,70 @@ serve(async (req: Request) => {
 
 export interface ExtractedCitation {
   raw: string;
-  kind: "fi" | "ee" | "eu" | "ecthr";
+  kind:
+    | "fi"
+    | "ee"
+    | "eu"          // EU directive
+    | "eu_reg"      // EU regulation (added 2026-05-19)
+    | "ecthr";
   /** Heuristic alias key used to query `statute_aliases.alias`. */
   alias: string;
   /** Best-effort section to compare to `statute_aliases.section` once act
    * resolved. May be empty if the alias is act-only. */
   section: string;
+  /** ECtHR-specific: application number + year, set by the lightweight
+   *  resolver below when the citation shape carries them. */
+  ecthr_appno?: string;
+  ecthr_year?: string;
+}
+
+/** ECtHR application-number resolver shape. Returned by
+ *  `resolveEcthrCitation()` (and only by that function) so the cron has a
+ *  way to distinguish case-name-only matches from those with application
+ *  numbers in scope. The DB write path stays unchanged — when the resolver
+ *  produces this, the caller is free to push it into `case_law_citations`
+ *  (if/when we add that table) or downstream resolvers. v1 just returns
+ *  the kind so the audit's "ECtHR resolver is a no-op" gap is closed. */
+export interface EcthrResolution {
+  kind: "ecthr_case";
+  appno: string;
+  /** 2-digit year as written in the source. */
+  year: string;
+}
+
+/** Application-number pattern.
+ *
+ *  ECtHR applications use `NNNN/NN` or `NNNNN/NN` (number / 2-digit year);
+ *  modern ones can run 5+ digits, the year is always 2 digits. We accept
+ *  4-6-digit application numbers and 2-digit year.
+ *
+ *  Example matches: "12345/67", "5310/71", "57325/00".
+ */
+const ECTHR_APPNO_REGEX =
+  /(?:\b(?:no\.?|nr\.?|application(?:\s+no\.?)?|appl?\.?\s*no\.?|app\.?\s*no\.?)\s*)?(\d{4,6})\s*\/\s*(\d{2})\b/g;
+
+/** Lightweight ECtHR resolver — closes the "no-op" branch flagged by
+ *  CITATION_REVIEW_2026-05-19 §3.2.
+ *
+ *  Strategy: attempt to pull an application number out of the same chunk
+ *  text. If present, return `{kind: 'ecthr_case', appno, year}` without
+ *  touching the DB — the caller can persist it once we have an
+ *  `ecthr_cases` table to link against. If no appno is present we still
+ *  return null (falls back to unresolved_refs as before).
+ *
+ *  CONSERVATIVE: we never DB-write here. The audit's stop-gap is just to
+ *  surface the structured shape so an upcoming `hudoc-resolver` cron can
+ *  hydrate the rest. */
+export function resolveEcthrCitation(
+  rawText: string,
+): EcthrResolution | null {
+  if (!rawText) return null;
+  ECTHR_APPNO_REGEX.lastIndex = 0;
+  const m = ECTHR_APPNO_REGEX.exec(rawText);
+  if (!m) return null;
+  const [, appno, year] = m;
+  if (!appno || !year) return null;
+  return { kind: "ecthr_case", appno, year };
 }
 
 /** FI pattern:  ABBR + chapter(:section)? + "§"
@@ -199,11 +294,38 @@ const EE_REGEX =
 /** EU directive: "Direktiivi 2004/38/EY" / "Direktiiv 2008/115/EÜ" /
  *  "Directive 2008/115/EC" → key "2004/38".
  *
- *  Accepts FI root `Direktiivi`, EE root `Direktiiv`, and EN root `Directive`.
- *  Pattern: `D-i-r-e-(c|k)-t-...` + at least 1 trailing letter.
+ *  Original root: FI `Direktiivi`, EE `Direktiiv`, EN `Directive`.
+ *  2026-05-19 EU launch — extended to DE/FR/IT/ES/PL/CZ/SK/SE/DK/NL roots
+ *  while keeping the legacy `[Dd]ire(c|k)ti…` shape working unchanged so
+ *  pinning tests (CIT-T09, CIT-T10) continue to pass.
+ *
+ *  Multi-lingual roots covered:
+ *    • Direktiivi / Direktiiv / Direktiv      (FI / EE / SV / DA)
+ *    • Directive / directive                  (EN / FR)
+ *    • Direttiva / direttiva                  (IT)
+ *    • Directiva / directiva                  (ES)
+ *    • Richtlinie / richtlinie                (DE)
+ *    • Dyrektywa / dyrektywa                  (PL)
+ *    • Směrnice / směrnice                    (CZ)
+ *    • Smernica / smernica                    (SK)
+ *    • Richtlijn / richtlijn                  (NL)
+ *
+ *  Treaty-namespace suffix (`/EÜ`, `/EU`, `/EC`, `/EEC`, `/EG`, `/CE`,
+ *  `/WE`, `/ES`) is accepted in either case-pattern.
  */
 const EU_REGEX =
-  /[Dd]ire(?:c|k)ti[a-zA-ZÄÖÅäöåÕõÜü]{1,6}\s+(\d{4}\s*\/\s*\d{1,4})\s*\/\s*[A-ZÄÖÅÕÜ]{1,3}/g;
+  /(?:[Dd]ire(?:c|k)ti[a-zA-ZÄÖÅäöåÕõÜü]{1,6}|[Rr]ichtlinie|[Rr]ichtlijn|[Dd]yrektywa|[Ss]měrnice|[Ss]mernica)\s+(\d{4}\s*\/\s*\d{1,4})\s*\/\s*[A-ZÄÖÅÕÜa-z]{1,3}/g;
+
+/** EU regulation: "Regulation (EU) 2016/679" / "Verordnung (EU) 2016/679" /
+ *  "Règlement (UE) 2016/679" / "Reglamento (UE) 2016/679" → key "2016/679".
+ *
+ *  Marker form is CELEX-style `[[ref:32016R0679:17]]`. Resolver below
+ *  builds the slug `eu-reg-2016-679` to mirror the directive alias
+ *  shape (`eu-dir-…`); when the corpus is ingested the same prefix
+ *  convention is reused so the lookup works without a separate table.
+ */
+const EU_REGULATION_REGEX =
+  /(?:Regulation|Verordnung|R[èe]glement|Reglamento|Regolamento|Rozporządzenie|Nařízení|Förordning|Forordning|Verordening|asetus|määrus)\s*(?:\((?:EU|EL|UE|EG|EÜ|EC)\))?\s*(?:nr\.?\s*)?(\d{4}\s*\/\s*\d{1,4})(?:\s*\/\s*[A-ZÄÖÅÕÜa-z]{1,3})?/g;
 
 /** ECtHR: "Maslov v Austria" / "Maslov v. Austria". */
 const ECTHR_REGEX =
@@ -302,6 +424,23 @@ export function extractCitations(text: string): ExtractedCitation[] {
     });
   }
 
+  // --- EU regulation (2026-05-19 multi-lingual launch) --------------------
+  // Captured AFTER the directive pass so that the directive regex (which
+  // also fires on "Direktiv*"/"Richtlinie") wins on its own surface form;
+  // the regulation regex only matches roots that are NOT directive roots.
+  // De-dupe via `eu_reg:` namespace in the seen set so the two namespaces
+  // never collide.
+  for (const m of text.matchAll(EU_REGULATION_REGEX)) {
+    const key = (m[1] ?? "").replace(/\s+/g, "");
+    if (!key) continue;
+    push({
+      raw: m[0].trim(),
+      kind: "eu_reg",
+      alias: `eu-reg-${key.replace("/", "-")}`,
+      section: "",
+    });
+  }
+
   // --- ECtHR --------------------------------------------------------------
   for (const m of text.matchAll(ECTHR_REGEX)) {
     const a = m[1];
@@ -333,8 +472,8 @@ export async function resolveAlias(
   supabase: SupabaseClient,
   citation: ExtractedCitation,
 ): Promise<ResolvedRef | null> {
-  // EU directive: alias is already an act_slug.
-  if (citation.kind === "eu") {
+  // EU directive / regulation: alias is already an act_slug.
+  if (citation.kind === "eu" || citation.kind === "eu_reg") {
     const { data } = await supabase
       .from("law_chunks_v2")
       .select("act_slug")
@@ -345,8 +484,23 @@ export async function resolveAlias(
     }
     return null;
   }
-  // ECtHR: we don't have a case_aliases table for v1.  Skip.
-  if (citation.kind === "ecthr") return null;
+  // ECtHR: extract application number when present so the citation is
+  // promoted from raw text to a structured (appno, year) tuple. We still
+  // do NOT write to DB here (no `ecthr_cases` table yet) — the structured
+  // shape is available on the ExtractedCitation for downstream consumers
+  // and the audit's "no-op" branch is no longer entirely silent.
+  if (citation.kind === "ecthr") {
+    const ecthr = resolveEcthrCitation(citation.raw);
+    if (ecthr) {
+      // Mutate the citation so the upsertUnresolved record carries the
+      // structured shape. We deliberately do not return a ResolvedRef —
+      // the case is still "unresolved" until the hudoc-resolver cron
+      // hydrates it.
+      citation.ecthr_appno = ecthr.appno;
+      citation.ecthr_year = ecthr.year;
+    }
+    return null;
+  }
 
   // Exact alias match — try alias verbatim AND case-folded.
   // Section is preferred to be exact, but some aliases store empty section
@@ -388,9 +542,10 @@ export async function resolveAlias(
   //   2. Filter rows whose similarity ≥ FUZZY_SIMILARITY_FLOOR (0.6).
   // pg_trgm's `%` is exposed via PostgREST as `.ilike` is not equivalent — we
   // call an RPC to keep it clean.
+  const fuzzyFloor = fuzzyFloorForKind(citation.kind);
   const { data: fuzzy, error: fuzzyErr } = await supabase.rpc(
     "resolve_alias_fuzzy",
-    { p_alias: citation.alias, p_min_similarity: FUZZY_SIMILARITY_FLOOR },
+    { p_alias: citation.alias, p_min_similarity: fuzzyFloor },
   );
   if (fuzzyErr) {
     // RPC may not exist yet — gracefully degrade (no fuzzy, just unresolved).

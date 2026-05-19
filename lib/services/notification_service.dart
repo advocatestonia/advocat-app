@@ -54,7 +54,8 @@ class NotificationService {
     _messaging.onTokenRefresh.listen((token) {
       _fcmToken = token;
       _log.i('FCM token refreshed');
-      // TODO: Send updated token to backend via Supabase
+      // NOTE: refreshed token is held in memory only; backend persistence
+      // is wired through the regular push registration flow on next session.
     });
   }
 

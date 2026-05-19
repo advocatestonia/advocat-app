@@ -99,8 +99,14 @@ class _AddVaultDocumentScreenState
     } catch (e) {
       if (kDebugMode) debugPrint('Upload error: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Upload failed: $e')),
+          SnackBar(
+            content: Text(
+              l10n?.genericError ??
+                  'Something went wrong. Please try again.',
+            ),
+          ),
         );
       }
     } finally {
@@ -142,8 +148,14 @@ class _AddVaultDocumentScreenState
     } catch (e) {
       if (kDebugMode) debugPrint('Upload error: $e');
       if (mounted) {
+        final l10n = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Upload failed: $e')),
+          SnackBar(
+            content: Text(
+              l10n?.genericError ??
+                  'Something went wrong. Please try again.',
+            ),
+          ),
         );
       }
     } finally {

@@ -336,6 +336,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                       controller: _nameController,
                       focusNode: _nameFocus,
                       textCapitalization: TextCapitalization.words,
+                      autofillHints: const [AutofillHints.name],
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         labelText: l.fullName,
@@ -356,6 +357,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                       focusNode: _emailFocus,
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
+                      autofillHints: const [AutofillHints.email, AutofillHints.username],
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         labelText: l.email,

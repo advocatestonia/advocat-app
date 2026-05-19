@@ -224,9 +224,15 @@ class _IntakeWizardScreenState extends ConsumerState<IntakeWizardScreen> {
       if (!mounted) return;
       context.go('/chat/${created.id}');
     } catch (e) {
+      debugPrint('intake wizard finish failed: $e');
       if (!mounted) return;
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$e')),
+        SnackBar(
+          content: Text(
+            l10n?.genericError ?? 'Something went wrong. Please try again.',
+          ),
+        ),
       );
     } finally {
       if (mounted) setState(() => _busy = false);
