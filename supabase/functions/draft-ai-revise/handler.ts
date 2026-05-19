@@ -30,7 +30,7 @@ export const MAX_INSTRUCTION_CHARS = 600;
 
 /** Claude model used for revisions. Sonnet is cheap for short edits and
  *  preserves legal tone better than Haiku in our benches. */
-export const REVISE_MODEL = "claude-sonnet-4-5-20250929";
+export const REVISE_MODEL = "claude-sonnet-4-6";
 
 /** Anthropic max_tokens for the revision response. Keeps the editor snappy. */
 export const REVISE_MAX_TOKENS = 4_096;

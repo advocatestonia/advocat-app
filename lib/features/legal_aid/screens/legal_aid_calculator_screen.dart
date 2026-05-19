@@ -435,6 +435,7 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen>
                   const Spacer(),
                   IconButton(
                     icon: const Icon(Icons.remove_circle_outline),
+                    tooltip: AppLocalizations.of(context)?.decreaseDependents ?? 'Decrease',
                     onPressed: _dependents > 0
                         ? () => setState(() {
                               _dependents--;
@@ -451,6 +452,7 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen>
                   ),
                   IconButton(
                     icon: const Icon(Icons.add_circle_outline),
+                    tooltip: AppLocalizations.of(context)?.increaseDependents ?? 'Increase',
                     onPressed: () => setState(() {
                       _dependents++;
                       _calculated = false;

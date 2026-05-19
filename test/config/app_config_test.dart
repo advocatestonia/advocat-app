@@ -32,10 +32,6 @@ void main() {
         expect(AppConfig.aiApiKey, isEmpty);
       });
 
-      test('claudeApiKey defaults to empty string', () {
-        expect(AppConfig.claudeApiKey, isEmpty);
-      });
-
       test('emailApiBaseUrl defaults to empty string', () {
         expect(AppConfig.emailApiBaseUrl, isEmpty);
       });
@@ -54,16 +50,16 @@ void main() {
     });
 
     group('useRealAI computed property', () {
-      // Note: Since _aiModeRaw is a compile-time constant set to 'auto',
-      // and in test environment both claudeApiKey and supabaseAnonKey are empty,
-      // useRealAI should be false when no keys are provided.
+      // _aiModeRaw is a compile-time constant set to 'auto' in tests. In
+      // 'auto' mode useRealAI === useSupabaseProxy, and the proxy needs
+      // both supabaseUrl + supabaseAnonKey. The anon key is empty in the
+      // unit-test environment, so useRealAI must resolve to false.
       test(
-        'returns false when no API keys are configured (auto mode)',
+        'returns false when proxy anon key is missing (auto mode)',
         () {
-          // In default test environment with no dart-define overrides:
-          // _aiModeRaw = 'auto', claudeApiKey = '', supabaseAnonKey = ''
-          // useRealAI = useSupabaseProxy || claudeApiKey.isNotEmpty
-          //           = false || false = false
+          // useRealAI = useSupabaseProxy
+          //           = (url != "") && (anonKey != "")
+          //           = true && false = false
           expect(AppConfig.useRealAI, isFalse);
         },
       );

@@ -204,18 +204,30 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen>
 
       String? avatarUrl;
 
-      // Upload photo if picked
+      // Upload photo if picked.
+      //
+      // NOTE on storage path: the case-documents bucket RLS policy requires
+      // the first path segment to equal auth.uid()::text (see migration
+      // 001_complete_schema.sql). The previous 'avatars/$userId/...' was
+      // silently denied by RLS, and getPublicUrl on this private bucket
+      // returned a URL that 400s. Path is now '$userId/avatars/...' and we
+      // issue a long-lived signed URL.
+      //
+      // TODO(owner): readers store the signed URL in profiles.avatar_url and
+      // do not re-fetch on expiry. With a 1-year TTL this is OK for launch,
+      // but eventually readers should re-sign on demand.
       if (_pickedImage != null) {
         final bytes = await _pickedImage!.readAsBytes();
         final filename = 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg';
+        final path = '$userId/avatars/$filename';
         await client.storage.from('case-documents').uploadBinary(
-              'avatars/$userId/$filename',
+              path,
               Uint8List.fromList(bytes),
               fileOptions: const FileOptions(contentType: 'image/jpeg', upsert: true),
             );
-        avatarUrl = client.storage
+        avatarUrl = await client.storage
             .from('case-documents')
-            .getPublicUrl('avatars/$userId/$filename');
+            .createSignedUrl(path, 60 * 60 * 24 * 365);
       }
 
       // Update profile

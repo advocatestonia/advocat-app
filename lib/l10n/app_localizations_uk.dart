@@ -3563,4 +3563,28 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Будь ласка, прийміть Умови надання послуг';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Юридичний консиліум (4 експерти)';
+
+  @override
+  String get attachFileTooltip => 'Прикріпити файл';
+
+  @override
+  String get sendMessage => 'Надіслати повідомлення';
+
+  @override
+  String get stopGenerating => 'Зупинити генерацію';
+
+  @override
+  String get showPassword => 'Показати пароль';
+
+  @override
+  String get hidePassword => 'Сховати пароль';
+
+  @override
+  String get decreaseDependents => 'Зменшити';
+
+  @override
+  String get increaseDependents => 'Збільшити';
 }

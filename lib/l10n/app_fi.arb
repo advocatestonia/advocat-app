@@ -1511,5 +1511,13 @@
     "severityMedium": "KESKITASO",
     "severityLow": "MATALA",
     "deadlineRequiredFields": "Otsikko ja määräpäivä ovat pakollisia",
-    "acceptTermsRequired": "Hyväksy käyttöehdot"
+    "acceptTermsRequired": "Hyväksy käyttöehdot",
+    "chatLegalCouncilTooltip": "Oikeudellinen konsilium (4 asiantuntijaa)",
+    "attachFileTooltip": "Liitä tiedosto",
+    "sendMessage": "Lähetä viesti",
+    "stopGenerating": "Pysäytä luonti",
+    "showPassword": "Näytä salasana",
+    "hidePassword": "Piilota salasana",
+    "decreaseDependents": "Vähennä",
+    "increaseDependents": "Lisää"
 }

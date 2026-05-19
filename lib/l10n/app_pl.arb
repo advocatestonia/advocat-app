@@ -1709,5 +1709,13 @@
     "severityMedium": "ŚREDNI",
     "severityLow": "NISKI",
     "deadlineRequiredFields": "Tytuł i data terminu są wymagane",
-    "acceptTermsRequired": "Zaakceptuj Warunki korzystania z usługi"
+    "acceptTermsRequired": "Zaakceptuj Warunki korzystania z usługi",
+    "chatLegalCouncilTooltip": "Konsylium prawne (4 ekspertów)",
+    "attachFileTooltip": "Załącz plik",
+    "sendMessage": "Wyślij wiadomość",
+    "stopGenerating": "Zatrzymaj generowanie",
+    "showPassword": "Pokaż hasło",
+    "hidePassword": "Ukryj hasło",
+    "decreaseDependents": "Zmniejsz",
+    "increaseDependents": "Zwiększ"
 }

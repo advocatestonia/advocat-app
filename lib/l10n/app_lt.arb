@@ -1709,5 +1709,13 @@
     "severityMedium": "VIDUTINIS",
     "severityLow": "ŽEMA",
     "deadlineRequiredFields": "Pavadinimas ir termino data yra privalomi",
-    "acceptTermsRequired": "Sutikite su Paslaugos teikimo sąlygomis"
+    "acceptTermsRequired": "Sutikite su Paslaugos teikimo sąlygomis",
+    "chatLegalCouncilTooltip": "Teisinė konsultacija (4 ekspertai)",
+    "attachFileTooltip": "Pridėti failą",
+    "sendMessage": "Siųsti pranešimą",
+    "stopGenerating": "Sustabdyti generavimą",
+    "showPassword": "Rodyti slaptažodį",
+    "hidePassword": "Slėpti slaptažodį",
+    "decreaseDependents": "Sumažinti",
+    "increaseDependents": "Padidinti"
 }

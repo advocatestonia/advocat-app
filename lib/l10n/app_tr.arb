@@ -1108,5 +1108,13 @@
     "severityMedium": "ORTA",
     "severityLow": "DÜŞÜK",
     "deadlineRequiredFields": "Başlık ve son tarih zorunludur",
-    "acceptTermsRequired": "Lütfen Hizmet Şartlarını kabul edin"
+    "acceptTermsRequired": "Lütfen Hizmet Şartlarını kabul edin",
+    "chatLegalCouncilTooltip": "Hukuki konsey (4 uzman)",
+    "attachFileTooltip": "Dosya ekle",
+    "sendMessage": "Mesaj gönder",
+    "stopGenerating": "Oluşturmayı durdur",
+    "showPassword": "Şifreyi göster",
+    "hidePassword": "Şifreyi gizle",
+    "decreaseDependents": "Azalt",
+    "increaseDependents": "Artır"
 }

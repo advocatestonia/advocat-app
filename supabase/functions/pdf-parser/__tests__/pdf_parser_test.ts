@@ -80,7 +80,7 @@ Deno.test("PDFP-T03 — system prompt names every required JSON field", () => {
 });
 
 Deno.test("PDFP-T04 — Sonnet config: model + max_tokens + timeout pinned", () => {
-  assertEquals(PDF_EXTRACTOR_MODEL, "claude-sonnet-4-5-20250929");
+  assertEquals(PDF_EXTRACTOR_MODEL, "claude-sonnet-4-6");
   assertEquals(PDF_EXTRACTOR_MAX_TOKENS, 2_000);
   assertEquals(PDF_EXTRACTOR_TIMEOUT_MS, 120_000);
 });

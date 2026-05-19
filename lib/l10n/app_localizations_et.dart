@@ -3561,4 +3561,28 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get acceptTermsRequired =>
       'Palun nõustuge teenuse kasutustingimustega';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Õiguskonsiilium (4 eksperti)';
+
+  @override
+  String get attachFileTooltip => 'Lisa fail';
+
+  @override
+  String get sendMessage => 'Saada sõnum';
+
+  @override
+  String get stopGenerating => 'Peata genereerimine';
+
+  @override
+  String get showPassword => 'Näita parooli';
+
+  @override
+  String get hidePassword => 'Peida parool';
+
+  @override
+  String get decreaseDependents => 'Vähenda';
+
+  @override
+  String get increaseDependents => 'Suurenda';
 }

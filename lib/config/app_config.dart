@@ -3,15 +3,12 @@
 /// All sensitive values are read from compile-time environment variables
 /// using `--dart-define`. Never hard-code secrets here.
 ///
-/// **SECURITY NOTE — MVP ONLY:**
-/// API keys below are embedded as compile-time constants via `--dart-define`.
-/// While not visible in source code, they ARE present in the compiled binary
-/// and can be extracted via reverse-engineering. Before production launch,
-/// ALL API calls must be routed through a server-side proxy so that keys
-/// never leave the backend. See: https://docs.anthropic.com/en/docs/build-with-claude
-///
 /// **NEVER log or print any of these values.** They must not appear in
 /// console output, crash reports, or analytics payloads.
+///
+/// All Claude API traffic goes through the `claude-proxy` Supabase Edge
+/// Function — the Anthropic key lives server-side only. There is no
+/// direct-API client path; do not add one back.
 class AppConfig {
   AppConfig._();
 
@@ -48,30 +45,23 @@ class AppConfig {
     defaultValue: '',
   );
 
-  // ── Claude Direct API ────────────────────────────────────────────────
-  // NOTE (production security): client-side API keys can be extracted from
-  // compiled binaries. Public-launch builds MUST route through the Supabase
-  // Edge Function proxy (claude-proxy) instead of using this constant.
-  static const String claudeApiKey = String.fromEnvironment(
-    'CLAUDE_API_KEY',
-    defaultValue: '',
-  );
-
-  /// AI mode: 'real' to use Claude API directly, 'demo' for mock responses.
-  /// Auto-detected: if CLAUDE_API_KEY is set, defaults to 'real'.
+  // ── Claude AI mode ───────────────────────────────────────────────────
+  /// AI mode: 'real' to use Claude via the Supabase proxy, 'demo' for
+  /// mock responses, 'auto' (default) to pick automatically based on
+  /// proxy configuration.
   static const String _aiModeRaw = String.fromEnvironment(
     'AI_MODE',
     defaultValue: 'auto',
   );
 
-  /// Resolved AI mode. When set to 'auto', uses real AI if a Supabase proxy
-  /// (with anon key) or direct Claude API key is available, otherwise falls
-  /// back to demo mode.
+  /// Resolved AI mode. In 'auto' mode, returns true iff the Supabase proxy
+  /// is configured (URL + anon key). The proxy is the only Claude path —
+  /// the legacy direct-Anthropic client path has been removed.
   static bool get useRealAI {
     if (_aiModeRaw == 'real') return true;
     if (_aiModeRaw == 'demo') return false;
-    // 'auto': use real AI if Supabase proxy with anon key, or direct API key
-    return useSupabaseProxy || claudeApiKey.isNotEmpty;
+    // 'auto': real AI only when the Supabase proxy is fully configured.
+    return useSupabaseProxy;
   }
 
   /// Whether the Supabase proxy is fully configured (URL + anon key).

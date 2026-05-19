@@ -3599,4 +3599,28 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get acceptTermsRequired =>
       'Veuillez accepter les Conditions d\'utilisation';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Conseil juridique (4 experts)';
+
+  @override
+  String get attachFileTooltip => 'Joindre un fichier';
+
+  @override
+  String get sendMessage => 'Envoyer le message';
+
+  @override
+  String get stopGenerating => 'Arrêter la génération';
+
+  @override
+  String get showPassword => 'Afficher le mot de passe';
+
+  @override
+  String get hidePassword => 'Masquer le mot de passe';
+
+  @override
+  String get decreaseDependents => 'Diminuer';
+
+  @override
+  String get increaseDependents => 'Augmenter';
 }

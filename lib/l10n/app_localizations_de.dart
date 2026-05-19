@@ -3597,4 +3597,28 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get acceptTermsRequired =>
       'Bitte stimmen Sie den Nutzungsbedingungen zu';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Rechtsrat (4 Experten)';
+
+  @override
+  String get attachFileTooltip => 'Datei anhängen';
+
+  @override
+  String get sendMessage => 'Nachricht senden';
+
+  @override
+  String get stopGenerating => 'Generierung stoppen';
+
+  @override
+  String get showPassword => 'Passwort anzeigen';
+
+  @override
+  String get hidePassword => 'Passwort ausblenden';
+
+  @override
+  String get decreaseDependents => 'Verringern';
+
+  @override
+  String get increaseDependents => 'Erhöhen';
 }

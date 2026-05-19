@@ -1709,5 +1709,13 @@
     "severityMedium": "VIDĒJS",
     "severityLow": "ZEMS",
     "deadlineRequiredFields": "Nosaukums un termiņa datums ir obligāti",
-    "acceptTermsRequired": "Lūdzu, piekrītiet Pakalpojuma noteikumiem"
+    "acceptTermsRequired": "Lūdzu, piekrītiet Pakalpojuma noteikumiem",
+    "chatLegalCouncilTooltip": "Juridiskā konsultācija (4 eksperti)",
+    "attachFileTooltip": "Pievienot failu",
+    "sendMessage": "Sūtīt ziņojumu",
+    "stopGenerating": "Apturēt ģenerēšanu",
+    "showPassword": "Rādīt paroli",
+    "hidePassword": "Slēpt paroli",
+    "decreaseDependents": "Samazināt",
+    "increaseDependents": "Palielināt"
 }

@@ -1108,5 +1108,13 @@
     "severityMedium": "MEDIUM",
     "severityLow": "LOW",
     "deadlineRequiredFields": "Title and deadline date are required",
-    "acceptTermsRequired": "Please agree to the Terms of Service"
+    "acceptTermsRequired": "Please agree to the Terms of Service",
+    "chatLegalCouncilTooltip": "Legal council (4 experts)",
+    "attachFileTooltip": "Attach file",
+    "sendMessage": "Send message",
+    "stopGenerating": "Stop generating",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "decreaseDependents": "Decrease",
+    "increaseDependents": "Increase"
 }

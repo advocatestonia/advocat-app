@@ -3571,4 +3571,28 @@ class AppLocalizationsLv extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Lūdzu, piekrītiet Pakalpojuma noteikumiem';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Juridiskā konsultācija (4 eksperti)';
+
+  @override
+  String get attachFileTooltip => 'Pievienot failu';
+
+  @override
+  String get sendMessage => 'Sūtīt ziņojumu';
+
+  @override
+  String get stopGenerating => 'Apturēt ģenerēšanu';
+
+  @override
+  String get showPassword => 'Rādīt paroli';
+
+  @override
+  String get hidePassword => 'Slēpt paroli';
+
+  @override
+  String get decreaseDependents => 'Samazināt';
+
+  @override
+  String get increaseDependents => 'Palielināt';
 }

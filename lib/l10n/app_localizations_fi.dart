@@ -3568,4 +3568,29 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Hyväksy käyttöehdot';
+
+  @override
+  String get chatLegalCouncilTooltip =>
+      'Oikeudellinen konsilium (4 asiantuntijaa)';
+
+  @override
+  String get attachFileTooltip => 'Liitä tiedosto';
+
+  @override
+  String get sendMessage => 'Lähetä viesti';
+
+  @override
+  String get stopGenerating => 'Pysäytä luonti';
+
+  @override
+  String get showPassword => 'Näytä salasana';
+
+  @override
+  String get hidePassword => 'Piilota salasana';
+
+  @override
+  String get decreaseDependents => 'Vähennä';
+
+  @override
+  String get increaseDependents => 'Lisää';
 }

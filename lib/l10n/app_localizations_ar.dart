@@ -3542,4 +3542,28 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Please agree to the Terms of Service';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Legal council (4 experts)';
+
+  @override
+  String get attachFileTooltip => 'Attach file';
+
+  @override
+  String get sendMessage => 'Send message';
+
+  @override
+  String get stopGenerating => 'Stop generating';
+
+  @override
+  String get showPassword => 'Show password';
+
+  @override
+  String get hidePassword => 'Hide password';
+
+  @override
+  String get decreaseDependents => 'Decrease';
+
+  @override
+  String get increaseDependents => 'Increase';
 }

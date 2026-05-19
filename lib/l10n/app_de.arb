@@ -1715,5 +1715,13 @@
     "severityMedium": "MITTEL",
     "severityLow": "NIEDRIG",
     "deadlineRequiredFields": "Titel und Stichtag sind erforderlich",
-    "acceptTermsRequired": "Bitte stimmen Sie den Nutzungsbedingungen zu"
+    "acceptTermsRequired": "Bitte stimmen Sie den Nutzungsbedingungen zu",
+    "chatLegalCouncilTooltip": "Rechtsrat (4 Experten)",
+    "attachFileTooltip": "Datei anhängen",
+    "sendMessage": "Nachricht senden",
+    "stopGenerating": "Generierung stoppen",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort ausblenden",
+    "decreaseDependents": "Verringern",
+    "increaseDependents": "Erhöhen"
 }

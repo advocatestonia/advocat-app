@@ -1511,5 +1511,13 @@
     "severityMedium": "СРЕДНИЙ",
     "severityLow": "НИЗКИЙ",
     "deadlineRequiredFields": "Заголовок и дата дедлайна обязательны",
-    "acceptTermsRequired": "Пожалуйста, примите Условия использования"
+    "acceptTermsRequired": "Пожалуйста, примите Условия использования",
+    "chatLegalCouncilTooltip": "Юридический консилиум (4 эксперта)",
+    "attachFileTooltip": "Прикрепить файл",
+    "sendMessage": "Отправить сообщение",
+    "stopGenerating": "Остановить генерацию",
+    "showPassword": "Показать пароль",
+    "hidePassword": "Скрыть пароль",
+    "decreaseDependents": "Уменьшить",
+    "increaseDependents": "Увеличить"
 }

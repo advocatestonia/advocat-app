@@ -3560,4 +3560,28 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Godkänn användarvillkoren';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Juridiskt råd (4 experter)';
+
+  @override
+  String get attachFileTooltip => 'Bifoga fil';
+
+  @override
+  String get sendMessage => 'Skicka meddelande';
+
+  @override
+  String get stopGenerating => 'Stoppa generering';
+
+  @override
+  String get showPassword => 'Visa lösenord';
+
+  @override
+  String get hidePassword => 'Dölj lösenord';
+
+  @override
+  String get decreaseDependents => 'Minska';
+
+  @override
+  String get increaseDependents => 'Öka';
 }

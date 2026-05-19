@@ -1115,5 +1115,13 @@
     "severityMedium": "СЕРЕДНІЙ",
     "severityLow": "НИЗЬКИЙ",
     "deadlineRequiredFields": "Заголовок і дата дедлайну є обов'язковими",
-    "acceptTermsRequired": "Будь ласка, прийміть Умови надання послуг"
+    "acceptTermsRequired": "Будь ласка, прийміть Умови надання послуг",
+    "chatLegalCouncilTooltip": "Юридичний консиліум (4 експерти)",
+    "attachFileTooltip": "Прикріпити файл",
+    "sendMessage": "Надіслати повідомлення",
+    "stopGenerating": "Зупинити генерацію",
+    "showPassword": "Показати пароль",
+    "hidePassword": "Сховати пароль",
+    "decreaseDependents": "Зменшити",
+    "increaseDependents": "Збільшити"
 }

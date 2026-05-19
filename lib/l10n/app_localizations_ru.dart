@@ -3574,4 +3574,28 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Пожалуйста, примите Условия использования';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Юридический консилиум (4 эксперта)';
+
+  @override
+  String get attachFileTooltip => 'Прикрепить файл';
+
+  @override
+  String get sendMessage => 'Отправить сообщение';
+
+  @override
+  String get stopGenerating => 'Остановить генерацию';
+
+  @override
+  String get showPassword => 'Показать пароль';
+
+  @override
+  String get hidePassword => 'Скрыть пароль';
+
+  @override
+  String get decreaseDependents => 'Уменьшить';
+
+  @override
+  String get increaseDependents => 'Увеличить';
 }

@@ -1108,5 +1108,13 @@
     "severityMedium": "MEDIU",
     "severityLow": "SCĂZUT",
     "deadlineRequiredFields": "Titlul și data limită sunt obligatorii",
-    "acceptTermsRequired": "Vă rugăm să acceptați Termenii și condițiile"
+    "acceptTermsRequired": "Vă rugăm să acceptați Termenii și condițiile",
+    "chatLegalCouncilTooltip": "Consiliu juridic (4 experți)",
+    "attachFileTooltip": "Atașează fișier",
+    "sendMessage": "Trimite mesajul",
+    "stopGenerating": "Oprește generarea",
+    "showPassword": "Afișează parola",
+    "hidePassword": "Ascunde parola",
+    "decreaseDependents": "Micșorează",
+    "increaseDependents": "Mărește"
 }

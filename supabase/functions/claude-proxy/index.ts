@@ -176,11 +176,12 @@ const ANON_RATE_LIMIT_PER_MINUTE = 1;
 const USER_HARD_CAP_PER_MINUTE = 30;
 const DEMO_IP_HARD_CAP_PER_MINUTE = 60;
 
+// 2026-05-19: dropped legacy claude-3-5-sonnet-20241022 and
+// claude-3-haiku-20240307. Allowlist now only carries current
+// Sonnet 4.6 / Haiku 4.5 IDs to prevent regression via body override.
 const ALLOWED_MODELS = new Set([
   "claude-sonnet-4-20250514",
   "claude-haiku-4-5-20251001",
-  "claude-3-5-sonnet-20241022",
-  "claude-3-haiku-20240307",
 ]);
 
 // 2026-05-08: raised 16384 → 32000 (Anthropic API max for Sonnet 4.6).
@@ -491,8 +492,7 @@ serve(async (req) => {
 
     // Detect explicit Sonnet request — Pro users clicking "use Sonnet for
     // this turn" pass body.model === SONNET_MODEL. We keep their choice.
-    const clientRequestedSonnet = body.model === SONNET_MODEL ||
-      body.model === "claude-3-5-sonnet-20241022";
+    const clientRequestedSonnet = body.model === SONNET_MODEL;
 
     if (!routerSkip && !isAnon && !clientRequestedSonnet && CLAUDE_API_KEY) {
       const cls = await classifyQuery(body.messages ?? [], isAnon, {

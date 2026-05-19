@@ -1108,5 +1108,13 @@
     "severityMedium": "MEDIO",
     "severityLow": "BAJO",
     "deadlineRequiredFields": "El título y la fecha límite son obligatorios",
-    "acceptTermsRequired": "Acepte los Términos del Servicio"
+    "acceptTermsRequired": "Acepte los Términos del Servicio",
+    "chatLegalCouncilTooltip": "Consejo jurídico (4 expertos)",
+    "attachFileTooltip": "Adjuntar archivo",
+    "sendMessage": "Enviar mensaje",
+    "stopGenerating": "Detener generación",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "decreaseDependents": "Disminuir",
+    "increaseDependents": "Aumentar"
 }

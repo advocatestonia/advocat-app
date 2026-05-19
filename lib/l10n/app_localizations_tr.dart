@@ -3562,4 +3562,28 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Lütfen Hizmet Şartlarını kabul edin';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Hukuki konsey (4 uzman)';
+
+  @override
+  String get attachFileTooltip => 'Dosya ekle';
+
+  @override
+  String get sendMessage => 'Mesaj gönder';
+
+  @override
+  String get stopGenerating => 'Oluşturmayı durdur';
+
+  @override
+  String get showPassword => 'Şifreyi göster';
+
+  @override
+  String get hidePassword => 'Şifreyi gizle';
+
+  @override
+  String get decreaseDependents => 'Azalt';
+
+  @override
+  String get increaseDependents => 'Artır';
 }

@@ -71,23 +71,22 @@ class ClaudeAnalysisResult {
 }
 
 // ---------------------------------------------------------------------------
-// Claude API Service — Supabase Edge Function proxy (secure, key on server)
-// Falls back to direct Anthropic API if Supabase is not configured (local dev).
+// Claude API Service — Supabase Edge Function proxy ONLY.
+// The Anthropic API key lives server-side in the `claude-proxy` Edge
+// Function. There is no client-side direct-Anthropic path; the previous
+// fallback was removed (2026-05-19) to prevent shipping API keys in the
+// compiled binary.
 // ---------------------------------------------------------------------------
 
 class ClaudeService {
   ClaudeService()
-      : _useProxy = AppConfig.useSupabaseProxy,
-        _dio = Dio(
+      : _dio = Dio(
           BaseOptions(
-            baseUrl: AppConfig.useSupabaseProxy
-                ? '${AppConfig.supabaseUrl}/functions/v1'
-                : 'https://api.anthropic.com',
+            baseUrl: '${AppConfig.supabaseUrl}/functions/v1',
             connectTimeout: const Duration(seconds: 10),
             receiveTimeout: const Duration(seconds: 30),
             headers: {
               'Content-Type': 'application/json',
-              if (!AppConfig.useSupabaseProxy) 'anthropic-version': '2023-06-01',
             },
           ),
         ),
@@ -98,7 +97,6 @@ class ClaudeService {
 
   final Dio _dio;
   final Logger _log;
-  final bool _useProxy;
 
   /// Running total of tokens used in this session.
   int _sessionInputTokens = 0;
@@ -111,10 +109,10 @@ class ClaudeService {
   /// Timestamp of the last API request, used for throttling.
   DateTime? _lastRequestTime;
 
-  /// Whether the service is available (Supabase proxy with anon key, or direct API key).
+  /// Whether the service is available — true iff the Supabase proxy is
+  /// fully configured (URL + anon key). All Claude calls go through it.
   static bool get isAvailable =>
-      (AppConfig.supabaseUrl.isNotEmpty && AppConfig.supabaseAnonKey.isNotEmpty) ||
-      AppConfig.claudeApiKey.isNotEmpty;
+      AppConfig.supabaseUrl.isNotEmpty && AppConfig.supabaseAnonKey.isNotEmpty;
 
   /// Expensive model for complex legal analysis.
   static const String modelSonnet = 'claude-sonnet-4-20250514';
@@ -572,8 +570,8 @@ class ClaudeService {
   static const Duration _retryDelay = Duration(seconds: 1);
 
   // ── Core API call with retries ──────────────────────────────────────────
-  // When _useProxy is true, requests go to Supabase Edge Function which
-  // holds the Claude API key server-side. The client authenticates with
+  // All requests go to the `claude-proxy` Supabase Edge Function which
+  // holds the Anthropic API key server-side. The client authenticates with
   // the Supabase anon key (safe for client-side use).
 
   Future<Map<String, dynamic>> _callApi({
@@ -588,7 +586,7 @@ class ClaudeService {
   }) async {
     if (!isAvailable) {
       throw const ClaudeServiceException(
-        'Claude API is not configured. Set SUPABASE_URL or CLAUDE_API_KEY.',
+        'Claude API is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY.',
       );
     }
 
@@ -640,16 +638,12 @@ class ClaudeService {
         }
 
         final response = await _dio.post(
-          _useProxy ? '/claude-proxy' : '/v1/messages',
+          '/claude-proxy',
           data: body,
           options: Options(
-            headers: _useProxy
-                ? {
-                    'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
-                  }
-                : {
-                    'x-api-key': AppConfig.claudeApiKey,
-                  },
+            headers: {
+              'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
+            },
           ),
         );
 
@@ -818,7 +812,7 @@ class ClaudeService {
   }) async {
     if (!isAvailable) {
       throw const ClaudeServiceException(
-        'Claude API is not configured. Set SUPABASE_URL or CLAUDE_API_KEY.',
+        'Claude API is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY.',
       );
     }
 
@@ -836,16 +830,12 @@ class ClaudeService {
     };
 
     final response = await _dio.post(
-      _useProxy ? '/claude-proxy' : '/v1/messages',
+      '/claude-proxy',
       data: body,
       options: Options(
-        headers: _useProxy
-            ? {
-                'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
-              }
-            : {
-                'x-api-key': AppConfig.claudeApiKey,
-              },
+        headers: {
+          'Authorization': 'Bearer ${AppConfig.supabaseAnonKey}',
+        },
       ),
     );
 
@@ -1037,33 +1027,30 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
   }) async* {
     if (!isAvailable) {
       throw const ClaudeServiceException(
-        'Claude API is not configured. Set SUPABASE_URL or CLAUDE_API_KEY.',
+        'Claude API is not configured. Set SUPABASE_URL and SUPABASE_ANON_KEY.',
       );
     }
 
     // BUG#3 fix (2026-04-29): refresh the Supabase JWT BEFORE opening
-    // the SSE pipe when we're about to authenticate via the proxy.
-    // Sonnet streams can run 30-90s; if the access token expires
-    // mid-stream the proxy returns 401 and the user sees a truncated
-    // reply with no error surface. The policy is a no-op when the
-    // token has plenty of life left, so the happy path is free.
-    if (_useProxy) {
-      try {
-        await JwtRefreshPolicy.ensureFreshSession(
-          auth: SupabaseAuthShim(),
-        );
-      } on JwtRefreshException catch (e) {
-        // Genuine auth refresh failure — surface to login flow.
-        throw ClaudeServiceException(
-          'Session expired and refresh failed — please log in again',
-          e,
-        );
-      } catch (e) {
-        // Supabase not initialized / shim construction fail / unexpected —
-        // skip JWT refresh; proxy handles auth via anon JWT.
-        // Without this catch, any non-JwtRefreshException bubbles up to the
-        // chat handler and shows "напишите в поддержку" fallback.
-      }
+    // the SSE pipe. Sonnet streams can run 30-90s; if the access token
+    // expires mid-stream the proxy returns 401 and the user sees a
+    // truncated reply with no error surface. The policy is a no-op when
+    // the token has plenty of life left, so the happy path is free.
+    try {
+      await JwtRefreshPolicy.ensureFreshSession(
+        auth: SupabaseAuthShim(),
+      );
+    } on JwtRefreshException catch (e) {
+      // Genuine auth refresh failure — surface to login flow.
+      throw ClaudeServiceException(
+        'Session expired and refresh failed — please log in again',
+        e,
+      );
+    } catch (e) {
+      // Supabase not initialized / shim construction fail / unexpected —
+      // skip JWT refresh; proxy handles auth via anon JWT.
+      // Without this catch, any non-JwtRefreshException bubbles up to the
+      // chat handler and shows "напишите в поддержку" fallback.
     }
 
     // Rate limiting
@@ -1098,17 +1085,11 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
 
     // ── Web: use browser fetch() for real streaming ──────────────────────
     if (kIsWeb) {
-      final path = _useProxy ? '/claude-proxy' : '/v1/messages';
-      final baseUrl = _useProxy
-          ? '${AppConfig.supabaseUrl}/functions/v1'
-          : 'https://api.anthropic.com';
-      final fullUrl = '$baseUrl$path';
+      const fullUrl = '${AppConfig.supabaseUrl}/functions/v1/claude-proxy';
       final bodyJson = jsonEncode(body);
-      final authToken = _useProxy
-          ? (Supabase.instance.client.auth.currentSession?.accessToken ??
-              AppConfig.supabaseAnonKey)
-          : '';
-      final apiKey = _useProxy ? '' : AppConfig.claudeApiKey;
+      final authToken =
+          Supabase.instance.client.auth.currentSession?.accessToken ??
+              AppConfig.supabaseAnonKey;
 
       // Web bridge today returns assembled text only (see web_streaming_impl.dart).
       // Wrap each chunk into a TextDelta. Thinking + tool stages will surface
@@ -1119,7 +1100,7 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
         url: fullUrl,
         bodyJson: bodyJson,
         authToken: authToken,
-        apiKey: apiKey,
+        apiKey: '',
       )) {
         if (chunk.isNotEmpty) yield TextDelta(chunk);
       }
@@ -1128,29 +1109,21 @@ ${caseContext != null ? '\nCase context: $caseContext' : ''}''';
     }
 
     // ── Native (mobile/desktop): use Dio streaming ──────────────────────
-    final path = _useProxy ? '/claude-proxy' : '/v1/messages';
-
     // Use the signed-in user's JWT so the proxy recognises the caller as
     // authenticated and injects tools (send_email, generate_pdf, etc.).
     // Fall back to the anon key only when no session exists (demo mode).
-    final String proxyAuthToken = _useProxy
-        ? (Supabase.instance.client.auth.currentSession?.accessToken ??
-            AppConfig.supabaseAnonKey)
-        : '';
+    final String proxyAuthToken =
+        Supabase.instance.client.auth.currentSession?.accessToken ??
+            AppConfig.supabaseAnonKey;
 
     final response = await _dio.post<ResponseBody>(
-      path,
+      '/claude-proxy',
       data: body,
       options: Options(
         responseType: ResponseType.stream,
-        headers: _useProxy
-            ? {
-                'Authorization': 'Bearer $proxyAuthToken',
-              }
-            : {
-                'x-api-key': AppConfig.claudeApiKey,
-                'anthropic-version': '2023-06-01',
-              },
+        headers: {
+          'Authorization': 'Bearer $proxyAuthToken',
+        },
       ),
     );
 

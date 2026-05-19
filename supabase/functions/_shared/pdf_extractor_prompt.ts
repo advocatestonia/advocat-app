@@ -27,7 +27,7 @@ export const PDF_EXTRACTOR_IDENTITY_MARKER =
 
 /** Sonnet model id — the same release channel claude-proxy uses for
  * heavy legal reasoning. Spec asks for "Sonnet 4.6 (smart enough)". */
-export const PDF_EXTRACTOR_MODEL = "claude-sonnet-4-5-20250929";
+export const PDF_EXTRACTOR_MODEL = "claude-sonnet-4-6";
 
 /** Anthropic max_tokens — JSON metadata for a 50-page legal doc rarely
  * exceeds 1500 tokens; 2000 leaves headroom for long key_facts arrays. */

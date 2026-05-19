@@ -4366,6 +4366,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           child: IconButton(
             icon: const Icon(Icons.add_circle_outline_rounded, size: 22),
             color: AppColors.textTertiary,
+            tooltip: AppLocalizations.of(context)?.attachFileTooltip ?? 'Attach file',
             onPressed: () => _showAttachOptions(),
             padding: EdgeInsets.zero,
           ),
@@ -4391,7 +4392,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             // Consilium button — Pro-only, 44x44, circular
             if (ref.read(aiServiceProvider).isProUser)
               Tooltip(
-                message: 'Юридический совет (4 эксперта)',
+                message: AppLocalizations.of(context)?.chatLegalCouncilTooltip ?? 'Legal council (4 experts)',
                 child: Container(
                   width: 40,
                   height: 40,
@@ -4525,6 +4526,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                           }
                         : null)
                     : () => _sendMessage(),
+                tooltip: _isSending
+                    ? (AppLocalizations.of(context)?.stopGenerating ?? 'Stop generating')
+                    : (AppLocalizations.of(context)?.sendMessage ?? 'Send message'),
                 icon: _isSending
                     ? (_aiSub != null
                         ? const Icon(Icons.stop_rounded, size: 22)

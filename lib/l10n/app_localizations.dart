@@ -6487,6 +6487,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please agree to the Terms of Service'**
   String get acceptTermsRequired;
+
+  /// No description provided for @chatLegalCouncilTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal council (4 experts)'**
+  String get chatLegalCouncilTooltip;
+
+  /// No description provided for @attachFileTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach file'**
+  String get attachFileTooltip;
+
+  /// No description provided for @sendMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Send message'**
+  String get sendMessage;
+
+  /// No description provided for @stopGenerating.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop generating'**
+  String get stopGenerating;
+
+  /// No description provided for @showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get showPassword;
+
+  /// No description provided for @hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get hidePassword;
+
+  /// No description provided for @decreaseDependents.
+  ///
+  /// In en, this message translates to:
+  /// **'Decrease'**
+  String get decreaseDependents;
+
+  /// No description provided for @increaseDependents.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase'**
+  String get increaseDependents;
 }
 
 class _AppLocalizationsDelegate

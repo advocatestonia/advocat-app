@@ -10,7 +10,7 @@
 //   POST /functions/v1/hallucination-eval-runner
 //   X-Corpus-Secret: <CORPUS_EMBEDDER_SECRET>
 //   { "queries": SampleQuery[],
-//     "model":   string  (optional, default claude-sonnet-4-5-20250929),
+//     "model":   string  (optional, default claude-sonnet-4-6),
 //     "max_tool_hops": number (optional, default 4),
 //     "max_tokens":    number (optional, default 1024) }
 //
@@ -45,7 +45,7 @@ const CORPUS_SECRET = Deno.env.get("CORPUS_EMBEDDER_SECRET") ?? "";
 // Service role used to authenticate the internal qa-corpus-search call.
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
-const DEFAULT_MODEL = "claude-sonnet-4-5-20250929";
+const DEFAULT_MODEL = "claude-sonnet-4-6";
 const DEFAULT_MAX_HOPS = 4;
 const DEFAULT_MAX_TOKENS = 1024;
 const HARD_QUERY_CAP = 10;

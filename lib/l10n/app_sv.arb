@@ -1709,5 +1709,13 @@
     "severityMedium": "MEDEL",
     "severityLow": "LÅG",
     "deadlineRequiredFields": "Titel och slutdatum krävs",
-    "acceptTermsRequired": "Godkänn användarvillkoren"
+    "acceptTermsRequired": "Godkänn användarvillkoren",
+    "chatLegalCouncilTooltip": "Juridiskt råd (4 experter)",
+    "attachFileTooltip": "Bifoga fil",
+    "sendMessage": "Skicka meddelande",
+    "stopGenerating": "Stoppa generering",
+    "showPassword": "Visa lösenord",
+    "hidePassword": "Dölj lösenord",
+    "decreaseDependents": "Minska",
+    "increaseDependents": "Öka"
 }

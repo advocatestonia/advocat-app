@@ -3574,4 +3574,28 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Zaakceptuj Warunki korzystania z usługi';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Konsylium prawne (4 ekspertów)';
+
+  @override
+  String get attachFileTooltip => 'Załącz plik';
+
+  @override
+  String get sendMessage => 'Wyślij wiadomość';
+
+  @override
+  String get stopGenerating => 'Zatrzymaj generowanie';
+
+  @override
+  String get showPassword => 'Pokaż hasło';
+
+  @override
+  String get hidePassword => 'Ukryj hasło';
+
+  @override
+  String get decreaseDependents => 'Zmniejsz';
+
+  @override
+  String get increaseDependents => 'Zwiększ';
 }

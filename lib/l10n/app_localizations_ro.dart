@@ -3581,4 +3581,28 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get acceptTermsRequired =>
       'Vă rugăm să acceptați Termenii și condițiile';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Consiliu juridic (4 experți)';
+
+  @override
+  String get attachFileTooltip => 'Atașează fișier';
+
+  @override
+  String get sendMessage => 'Trimite mesajul';
+
+  @override
+  String get stopGenerating => 'Oprește generarea';
+
+  @override
+  String get showPassword => 'Afișează parola';
+
+  @override
+  String get hidePassword => 'Ascunde parola';
+
+  @override
+  String get decreaseDependents => 'Micșorează';
+
+  @override
+  String get increaseDependents => 'Mărește';
 }

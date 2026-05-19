@@ -1492,5 +1492,13 @@
     "severityMedium": "KESKMINE",
     "severityLow": "MADAL",
     "deadlineRequiredFields": "Pealkiri ja tähtaja kuupäev on kohustuslikud",
-    "acceptTermsRequired": "Palun nõustuge teenuse kasutustingimustega"
+    "acceptTermsRequired": "Palun nõustuge teenuse kasutustingimustega",
+    "chatLegalCouncilTooltip": "Õiguskonsiilium (4 eksperti)",
+    "attachFileTooltip": "Lisa fail",
+    "sendMessage": "Saada sõnum",
+    "stopGenerating": "Peata genereerimine",
+    "showPassword": "Näita parooli",
+    "hidePassword": "Peida parool",
+    "decreaseDependents": "Vähenda",
+    "increaseDependents": "Suurenda"
 }

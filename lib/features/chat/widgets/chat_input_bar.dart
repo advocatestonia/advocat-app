@@ -77,6 +77,7 @@ class ChatInputBar extends StatelessWidget {
               child: IconButton(
                 icon: const Icon(Icons.attach_file_rounded, size: 22),
                 color: AppColors.textTertiary,
+                tooltip: AppLocalizations.of(context)?.attachFileTooltip ?? 'Attach file',
                 onPressed: isSending ? null : onAttach,
                 padding: EdgeInsets.zero,
               ),

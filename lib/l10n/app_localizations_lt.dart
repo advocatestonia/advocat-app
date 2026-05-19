@@ -3576,4 +3576,28 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get acceptTermsRequired => 'Sutikite su Paslaugos teikimo sąlygomis';
+
+  @override
+  String get chatLegalCouncilTooltip => 'Teisinė konsultacija (4 ekspertai)';
+
+  @override
+  String get attachFileTooltip => 'Pridėti failą';
+
+  @override
+  String get sendMessage => 'Siųsti pranešimą';
+
+  @override
+  String get stopGenerating => 'Sustabdyti generavimą';
+
+  @override
+  String get showPassword => 'Rodyti slaptažodį';
+
+  @override
+  String get hidePassword => 'Slėpti slaptažodį';
+
+  @override
+  String get decreaseDependents => 'Sumažinti';
+
+  @override
+  String get increaseDependents => 'Padidinti';
 }
