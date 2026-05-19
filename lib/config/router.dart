@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'feature_flags.dart';
 import '../features/auth/providers/auth_provider.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/register_screen.dart';
@@ -165,6 +166,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       // top-level path segment so the path-param doesn't break the check.
       final isReferralLanding =
           state.matchedLocation.startsWith('/r/');
+      // Referral feature is gated by kReferralEnabled. When OFF, redirect
+      // any referral URL away — otherwise users hit promo copy ("first
+      // month 50% off") that doesn't reflect current pricing.
+      final isReferralRoute = state.matchedLocation == AppRoutes.referral ||
+          isReferralLanding;
+      if (!kReferralEnabled && isReferralRoute) {
+        return isAuth ? AppRoutes.home : AppRoutes.login;
+      }
       // Not logged in → go to login (unless already there or on a public
       // referral landing).
       if (!isAuth && !isAuthRoute && !isReferralLanding) {

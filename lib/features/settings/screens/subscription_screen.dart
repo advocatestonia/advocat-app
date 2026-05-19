@@ -480,6 +480,7 @@ class _BillingToggle extends StatelessWidget {
           // Monthly
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () => onChanged(false),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
@@ -519,6 +520,7 @@ class _BillingToggle extends StatelessWidget {
           // Annual + badge
           Expanded(
             child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () => onChanged(true),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 250),
