@@ -251,6 +251,7 @@
     "dpaCheckboxLabel": "Olen lugenud ja nõustun andmetöötluslepinguga (v1.0).",
     "dpaCancel": "Tühista",
     "dpaAcceptAndContinue": "Nõustun ja jätkan",
+    "dpaOpenHint": "Avage andmetöötlusleping vähemalt korra, et nupp 'Nõustun' aktiveeruks.",
     "pro": "Pro",
     "pushNotifications": "Tõuketeavitused",
     "rateUs": "Hinda rakendust",

@@ -1238,6 +1238,12 @@ abstract class AppLocalizations {
   /// **'Accept and continue'**
   String get dpaAcceptAndContinue;
 
+  /// No description provided for @dpaOpenHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the DPA at least once to enable the Accept button.'**
+  String get dpaOpenHint;
+
   /// No description provided for @pro.
   ///
   /// In en, this message translates to:

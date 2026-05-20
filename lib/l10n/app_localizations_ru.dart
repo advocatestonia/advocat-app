@@ -600,6 +600,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dpaAcceptAndContinue => 'Принять и продолжить';
 
   @override
+  String get dpaOpenHint =>
+      'Откройте соглашение хотя бы раз, чтобы активировать кнопку «Принять».';
+
+  @override
   String get pro => 'Профессиональный';
 
   @override

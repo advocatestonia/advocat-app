@@ -236,6 +236,7 @@
     "dpaCheckboxLabel": "Olen lukenut ja hyväksyn tietojenkäsittelysopimuksen (v1.0).",
     "dpaCancel": "Peruuta",
     "dpaAcceptAndContinue": "Hyväksy ja jatka",
+    "dpaOpenHint": "Avaa DPA vähintään kerran, jotta 'Hyväksy'-painike aktivoituu.",
     "pro": "Pro",
     "pushNotifications": "Push-ilmoitukset",
     "rateUs": "Arvostele sovellus",

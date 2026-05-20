@@ -601,6 +601,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get dpaAcceptAndContinue => 'Hyväksy ja jatka';
 
   @override
+  String get dpaOpenHint =>
+      'Avaa DPA vähintään kerran, jotta \'Hyväksy\'-painike aktivoituu.';
+
+  @override
   String get pro => 'Pro';
 
   @override

@@ -601,6 +601,10 @@ class AppLocalizationsLt extends AppLocalizations {
   String get dpaAcceptAndContinue => 'Accept and continue';
 
   @override
+  String get dpaOpenHint =>
+      'Open the DPA at least once to enable the Accept button.';
+
+  @override
   String get pro => 'Pro';
 
   @override

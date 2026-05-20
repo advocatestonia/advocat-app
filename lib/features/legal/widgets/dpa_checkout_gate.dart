@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../data/dpa_text.dart';
 
 /// GDPR Art. 28 — checkout DPA clickwrap gate.
@@ -116,14 +117,15 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return AlertDialog(
       backgroundColor: AppColors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadius.md),
       ),
-      title: const Text(
-        'Before you upgrade',
-        style: TextStyle(
+      title: Text(
+        l?.dpaCheckoutGateTitle ?? 'Before you upgrade',
+        style: const TextStyle(
           fontFamily: 'Inter',
           fontSize: 18,
           fontWeight: FontWeight.w700,
@@ -136,11 +138,12 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'EU law (GDPR Art. 28) requires us to sign a Data Processing '
-              'Agreement with every paying customer. Please review and '
-              'accept before proceeding to payment.',
-              style: TextStyle(
+            Text(
+              l?.dpaCheckoutGateBody ??
+                  'EU law (GDPR Art. 28) requires us to sign a Data '
+                      'Processing Agreement with every paying customer. '
+                      'Please review and accept before proceeding to payment.',
+              style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 14,
                 height: 1.5,
@@ -176,10 +179,10 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
                       color: AppColors.accent,
                     ),
                     const SizedBox(width: AppSpacing.sm),
-                    const Expanded(
+                    Expanded(
                       child: Text(
-                        'View Data Processing Agreement',
-                        style: TextStyle(
+                        l?.dpaViewLink ?? 'View Data Processing Agreement',
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -206,7 +209,7 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Checkbox(
                       value: _checked,
@@ -215,13 +218,14 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
                       activeColor: AppColors.accent,
                       visualDensity: VisualDensity.compact,
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(top: 12, left: 4),
+                        padding: const EdgeInsets.only(left: 4),
                         child: Text(
-                          'I have read and accept the Data Processing '
-                          'Agreement (v1.0).',
-                          style: TextStyle(
+                          l?.dpaCheckboxLabel ??
+                              'I have read and accept the Data Processing '
+                                  'Agreement (v1.0).',
+                          style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 13,
                             height: 1.4,
@@ -236,11 +240,12 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
             ),
 
             if (!_viewed)
-              const Padding(
-                padding: EdgeInsets.only(top: 4),
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
                 child: Text(
-                  'Open the DPA at least once to enable the Accept button.',
-                  style: TextStyle(
+                  l?.dpaOpenHint ??
+                      'Open the DPA at least once to enable the Accept button.',
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 11,
                     color: AppColors.textTertiary,
@@ -254,9 +259,9 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text(
-            'Cancel',
-            style: TextStyle(
+          child: Text(
+            l?.dpaCancel ?? 'Cancel',
+            style: const TextStyle(
               fontFamily: 'Inter',
               fontWeight: FontWeight.w500,
               color: AppColors.textSecondary,
@@ -276,9 +281,9 @@ class _DpaGateDialogState extends State<_DpaGateDialog> {
               borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
           ),
-          child: const Text(
-            'Accept and continue',
-            style: TextStyle(
+          child: Text(
+            l?.dpaAcceptAndContinue ?? 'Accept and continue',
+            style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 14,
               fontWeight: FontWeight.w700,

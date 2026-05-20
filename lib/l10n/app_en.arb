@@ -248,6 +248,7 @@
     "dpaCheckboxLabel": "I have read and accept the Data Processing Agreement (v1.0).",
     "dpaCancel": "Cancel",
     "dpaAcceptAndContinue": "Accept and continue",
+    "dpaOpenHint": "Open the DPA at least once to enable the Accept button.",
     "pro": "Pro",
     "pushNotifications": "Push Notifications",
     "rateUs": "Rate Us",

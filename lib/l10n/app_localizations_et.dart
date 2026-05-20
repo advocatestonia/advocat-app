@@ -599,6 +599,10 @@ class AppLocalizationsEt extends AppLocalizations {
   String get dpaAcceptAndContinue => 'Nõustun ja jätkan';
 
   @override
+  String get dpaOpenHint =>
+      'Avage andmetöötlusleping vähemalt korra, et nupp \'Nõustun\' aktiveeruks.';
+
+  @override
   String get pro => 'Pro';
 
   @override
