@@ -30,6 +30,7 @@ class OAuthCallbackRequest {
     this.refreshToken,
     this.email,
     this.expiresIn,
+    this.scope,
   });
 
   /// Currently only 'gmail' is accepted by the Edge Function.
@@ -40,6 +41,14 @@ class OAuthCallbackRequest {
 
   /// Lifetime of the access token in seconds (Google returns 3600).
   final int? expiresIn;
+
+  /// Space-separated OAuth scopes the provider granted (or that we requested,
+  /// as a fallback hint when the SDK doesn't expose the granted set).
+  ///
+  /// Persisted server-side in `user_oauth_tokens.scope` so other edge
+  /// functions can verify capability (`gmail.readonly` vs `gmail.send`) at
+  /// runtime without probing the Google API.
+  final String? scope;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{
@@ -55,6 +64,9 @@ class OAuthCallbackRequest {
     if (expiresIn != null) {
       map['expires_in'] = expiresIn;
     }
+    if (scope != null && scope!.isNotEmpty) {
+      map['scope'] = scope;
+    }
     return map;
   }
 }
@@ -65,11 +77,18 @@ class OAuthCallbackResult {
     required this.ok,
     this.email,
     this.expiresAt,
+    this.hasRefreshToken,
   });
 
   final bool ok;
   final String? email;
   final DateTime? expiresAt;
+
+  /// `true` when the server persisted a refresh_token alongside the access
+  /// token. Powers the "you'll need to sign in again at expiry" warning UI
+  /// when this is `false` (no offline access). `null` when the field is
+  /// absent in the response (older Edge Function build — treat as unknown).
+  final bool? hasRefreshToken;
 
   factory OAuthCallbackResult.fromJson(Map<String, dynamic> json) {
     DateTime? expiresAt;
@@ -77,10 +96,16 @@ class OAuthCallbackResult {
     if (raw is String) {
       expiresAt = DateTime.tryParse(raw);
     }
+    bool? hasRefreshToken;
+    final rawRefresh = json['has_refresh_token'];
+    if (rawRefresh is bool) {
+      hasRefreshToken = rawRefresh;
+    }
     return OAuthCallbackResult(
       ok: json['ok'] == true,
       email: json['email'] as String?,
       expiresAt: expiresAt,
+      hasRefreshToken: hasRefreshToken,
     );
   }
 }
@@ -114,11 +139,17 @@ class OAuthStorageService {
 
   /// Persist Gmail OAuth tokens server-side. Called immediately after
   /// signInWithOAuth completes and the session contains a `providerToken`.
+  ///
+  /// `scope` is the space-separated OAuth scope string. Pass the actually-
+  /// granted scopes if the SDK surfaces them; otherwise pass the requested
+  /// scope set (`kGmailScopesActive`) as a best-effort hint — the server
+  /// stores whatever it receives and the audit layer flags mismatches.
   Future<OAuthCallbackResult> persistGmailToken({
     required String accessToken,
     String? refreshToken,
     String? email,
     int? expiresInSeconds,
+    String? scope,
   }) async {
     if (accessToken.isEmpty) {
       throw const OAuthStorageException('access_token must not be empty');
@@ -129,6 +160,7 @@ class OAuthStorageService {
       refreshToken: refreshToken,
       email: email,
       expiresIn: expiresInSeconds,
+      scope: scope,
     );
 
     try {

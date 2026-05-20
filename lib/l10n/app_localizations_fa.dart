@@ -3274,10 +3274,43 @@ class AppLocalizationsFa extends AppLocalizations {
   String get plannerTrailEmpty => 'no items';
 
   @override
-  String get supportTitle => 'Need help?';
+  String get supportTitle => 'Help';
 
   @override
   String get supportSubtitle => 'We usually reply within 1-2 hours.';
+
+  @override
+  String get supportSearchPlaceholder => 'Search help…';
+
+  @override
+  String get supportStatusAllOk => 'All systems normal';
+
+  @override
+  String get supportFaqWhatIs => 'What is Advocat?';
+
+  @override
+  String get supportFaqHowSubscribe => 'How do I subscribe to Pro?';
+
+  @override
+  String get supportFaqExportData => 'Can I export my data?';
+
+  @override
+  String get supportFaqCancelAccount => 'Cancel or delete account';
+
+  @override
+  String get supportFaqTalkHuman => 'Talk to a human';
+
+  @override
+  String get supportContactEmail => 'Email';
+
+  @override
+  String get supportContactTelegram => 'Telegram';
+
+  @override
+  String get supportContactWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportFooterSla => 'We respond within 24h';
 
   @override
   String get supportWhatsapp => 'WhatsApp';

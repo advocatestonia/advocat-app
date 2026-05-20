@@ -3282,10 +3282,43 @@ class AppLocalizationsRu extends AppLocalizations {
   String get plannerTrailEmpty => 'пусто';
 
   @override
-  String get supportTitle => 'Поддержка';
+  String get supportTitle => 'Помощь';
 
   @override
   String get supportSubtitle => 'Чем мы можем помочь?';
+
+  @override
+  String get supportSearchPlaceholder => 'Поиск по справке…';
+
+  @override
+  String get supportStatusAllOk => 'Всё работает';
+
+  @override
+  String get supportFaqWhatIs => 'Что такое Advocat?';
+
+  @override
+  String get supportFaqHowSubscribe => 'Как оформить Pro?';
+
+  @override
+  String get supportFaqExportData => 'Можно ли выгрузить данные?';
+
+  @override
+  String get supportFaqCancelAccount => 'Отменить или удалить аккаунт';
+
+  @override
+  String get supportFaqTalkHuman => 'Поговорить с человеком';
+
+  @override
+  String get supportContactEmail => 'Email';
+
+  @override
+  String get supportContactTelegram => 'Telegram';
+
+  @override
+  String get supportContactWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportFooterSla => 'Ответим в течение 24 часов';
 
   @override
   String get supportWhatsapp => 'WhatsApp';

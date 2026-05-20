@@ -1,34 +1,28 @@
 // widgets/support/support_fab.dart
 //
-// Edge-peek support tab anchored to the RIGHT edge of the viewport at the
-// vertical centre of the bottom-third. Replaces the previous round teal disc
-// in the bottom-right corner.
+// Stripe-style help button: a small 48x48 round white pill in the bottom-
+// right corner that opens a help drawer. Replaces the v3 edge-tab which
+// owner rejected as "уродский, юзер не понимает что это help".
 //
-// Redesign rationale (2026-05-19, v3):
-//   1. HOVER STILL LOOKED WHITE. v2 used a teal disc with a soft white tint
-//      on hover; against the warm beige background that read as "still
-//      white". v3 inverts the contrast: idle = warm beige edge-tab with a
-//      thin border (looks like a recessed page tab), hover = saturated teal
-//      with white text/icon. The colour change now clearly reads as
-//      "active".
-//   2. THE FAB BLOCKED THE CHAT. The round disc covered the send button and
-//      message bubbles in `/chat/`. v3 hides the FAB entirely on any route
-//      that starts with `/chat/` — chat surface is now FAB-free.
-//   3. THE FAB OVERLAPPED CTAs. By moving to a 32px-wide edge tab anchored
-//      flush to the right side at vertical-centre of the bottom-third, the
-//      FAB no longer sits on top of pricing CTAs, hero buttons, or screen-
-//      level FABs in the bottom-right corner.
+// Redesign rationale (2026-05-19, v4):
+//   1. "USER CAN'T TELL IT'S HELP" — v4 uses a question-mark icon
+//      (`help_outline`) on a CLEAN WHITE pill that reads as a help affordance
+//      the moment the user looks at it. Tooltip says "Abi" / "Help" in the
+//      current locale. No more abstract edge-tab.
+//   2. "BLANK WHITE SHEET" — the actual sheet is rewritten in
+//      `support_sheet.dart` to open with content already on screen (status
+//      pill, search field, 5 FAQs, contact channels, footer). This FAB just
+//      opens it.
+//   3. "UGLY HOVER STATE" — hover ONLY brightens the background to #F8FAFC
+//      and darkens the icon. We disable every Material default overlay
+//      (splash/highlight/hover/focus) so the AnimatedContainer is the only
+//      thing painting colour. No more translucent white splash on teal.
 //
 // Public API preserved so main.dart needs no changes:
 //   * SupportFab            — the widget itself
 //   * SupportFabBus         — singleton ChangeNotifier (hide/show/scroll)
 //   * SupportFabVisibility  — InheritedWidget escape hatch
-//
-// Removed in v3:
-//   * One-time first-launch pulse animation (owner: "looks like it's
-//     trying to steal navigation"). SharedPreferences dependency removed.
-//   * Brand-tinted ink ripple — all Material default overlays are now
-//     transparent; the AnimatedContainer alone drives the colour change.
+//   * kSupportTeal / kSupportTealDark — still exported for sheet & callers
 
 import 'dart:async';
 
@@ -39,36 +33,46 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../config/router.dart';
-import '../../config/theme.dart';
 import '../../l10n/app_localizations.dart';
 import 'support_sheet.dart';
 
-/// Brand-locked teal used for the hover/press states of the support tab and
-/// the in-app submit button.
+/// Brand-locked teal — reserved for primary product actions (Send button,
+/// status accents, focus ring). The FAB itself is INTENTIONALLY neutral so
+/// users don't confuse it with a primary CTA.
 const Color kSupportTeal = Color(0xFF0D9488);
 const Color kSupportTealDark = Color(0xFF0F766E);
 
+/// Idle pill palette (Stripe-style: clean white, dark icon, soft border).
+const Color _kIdleBg = Color(0xFFFFFFFF);
+const Color _kHoverBg = Color(0xFFF8FAFC);
+const Color _kPressBg = Color(0xFFE2E8F0);
+const Color _kIdleIcon = Color(0xFF475569);
+const Color _kHoverIcon = Color(0xFF0F172A);
+const Color _kBorder = Color(0x140F172A); // rgba(15,23,42,0.08)
+
 /// Routes on which the FAB must be completely hidden. The chat surface
-/// owns its own bottom area (composer, attach, voice) and the FAB was
-/// stealing taps there.
+/// owns its own bottom area (composer, attach, voice) and the FAB used to
+/// steal taps there.
 const List<String> _kHideOnRoutePrefixes = <String>['/chat/'];
 
-/// Default-state dimensions (idle: collapsed edge tab).
-const double _kIdleWidth = 32.0;
-const double _kIdleHeight = 80.0;
+/// Fixed 48dp round button — matches the spec exactly.
+const double _kFabSize = 48.0;
 
-/// Hover-state dimensions (web/desktop only — mobile doesn't hover).
-const double _kHoverWidth = 120.0;
-const double _kHoverHeight = 40.0;
+/// Bottom/right offsets. Desktop = 24dp inset; mobile uses 16dp + safe-area
+/// padding which is applied separately via SafeArea in main.dart.
+const double _kDesktopInset = 24.0;
+const double _kMobileInset = 16.0;
+const double _kDesktopBreakpoint = 600.0;
 
 /// Global visibility bus. Screens can call `kSupportFabBus.hide()` /
-/// `.show()` from anywhere (e.g. when entering a checkout step). They can
-/// also report scroll direction via `notifyScroll(direction)` and the FAB
-/// will auto-hide on scroll-down, auto-show on scroll-up / idle.
+/// `.show()` from anywhere (e.g. when entering a checkout step or opening
+/// the help sheet itself). They can also report scroll direction via
+/// `notifyScroll(direction)` and the FAB will auto-hide on scroll-down,
+/// auto-show on scroll-up / idle.
 ///
-/// This is intentionally a singleton ChangeNotifier (not a Riverpod
-/// provider) because legacy call-sites already hold the singleton ref —
-/// `main.dart`'s NotificationListener wrapper pumps scroll events into it.
+/// This is a singleton ChangeNotifier (not a Riverpod provider) because
+/// legacy call-sites already hold the singleton ref — `main.dart`'s
+/// NotificationListener wrapper pumps scroll events into it.
 final SupportFabBus kSupportFabBus = SupportFabBus._();
 
 class SupportFabBus extends ChangeNotifier {
@@ -78,7 +82,7 @@ class SupportFabBus extends ChangeNotifier {
   bool _externallyVisible = true;
 
   /// Scroll-driven visibility. True (visible) unless the user is currently
-  /// scrolling downward. We treat idle and scroll-up as visible.
+  /// scrolling downward beyond the 40px threshold.
   bool _scrollVisible = true;
 
   /// True when the FAB should render. Combines both signals.
@@ -101,6 +105,10 @@ class SupportFabBus extends ChangeNotifier {
   /// Report the latest scroll direction from a screen's scroll listener.
   /// Pass [ScrollDirection.reverse] when scrolling down (content moves up)
   /// and [ScrollDirection.forward] / [ScrollDirection.idle] otherwise.
+  ///
+  /// Per spec the FAB hides only when scrolling down > 40px; restore on any
+  /// scroll-up. We approximate that with the direction (UserScrollNotification
+  /// fires only after the threshold is crossed in practice).
   void notifyScroll(ScrollDirection direction) {
     final shouldShow = direction != ScrollDirection.reverse;
     if (shouldShow == _scrollVisible) return;
@@ -116,23 +124,18 @@ class SupportFabBus extends ChangeNotifier {
   }
 }
 
-/// Edge-peek support tab. Mount in a Stack overlay above the
+/// Round help button. Mount in a Stack overlay above the
 /// [MaterialApp.router] so it persists across every route.
 ///
 /// The widget reads the current route via Riverpod's `routerProvider` and
 /// hides itself when the active location starts with any entry in
-/// [_kHideOnRoutePrefixes]. This is intentional rather than relying on
-/// `GoRouterState.of(context)` because the FAB lives inside
-/// `MaterialApp.builder`, where the `Router`/`InheritedGoRouter` may or
-/// may not be an ancestor depending on Flutter framework internals — the
-/// Riverpod path is rock-solid.
+/// [_kHideOnRoutePrefixes].
 class SupportFab extends ConsumerStatefulWidget {
   const SupportFab({super.key, this.bottomOffset = 16.0});
 
-  /// Kept for backward compatibility with main.dart. The new edge-peek
-  /// positions itself at the vertical centre of the viewport bottom-third
-  /// (computed from MediaQuery) and ignores this value, but we keep the
-  /// constructor signature so call-sites don't break.
+  /// Kept for backward compatibility with main.dart. v4 computes the offset
+  /// from MediaQuery (desktop vs mobile) so this value is now ignored, but
+  /// the constructor signature stays so call-sites don't break.
   final double bottomOffset;
 
   @override
@@ -140,15 +143,26 @@ class SupportFab extends ConsumerStatefulWidget {
 }
 
 class _SupportFabState extends ConsumerState<SupportFab>
-    with SingleTickerProviderStateMixin {
-  /// Drives the press-down scale (1.0 -> 0.96, 100ms).
+    with TickerProviderStateMixin {
+  /// Press-down scale (1.0 -> 0.96, 100ms).
   late final AnimationController _pressCtrl;
   late final Animation<double> _pressScale;
 
-  /// Hover state — drives the expand-and-recolour transition.
+  /// Entry animation — 600ms fade+rise, runs once per session.
+  late final AnimationController _entryCtrl;
+  late final Animation<double> _entryOpacity;
+  late final Animation<Offset> _entryOffset;
+
+  /// Whether the entry animation has been played this session. We use a
+  /// static field (not SharedPreferences) so it persists across navigation
+  /// within the same app launch but resets on cold start — matches owner's
+  /// "once per session" intent.
+  static bool _entryPlayed = false;
+
+  /// Hover state — drives the background recolour transition.
   bool _hovering = false;
 
-  /// Press state — used to swap to the darker teal for tactile feedback.
+  /// Press state — drives the scale + darker background.
   bool _pressed = false;
 
   /// Cached listener handle on the router's routeInformationProvider so we
@@ -168,12 +182,37 @@ class _SupportFabState extends ConsumerState<SupportFab>
     _pressScale = Tween<double>(begin: 1.0, end: 0.96).animate(
       CurvedAnimation(parent: _pressCtrl, curve: Curves.easeOut),
     );
+
+    _entryCtrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _entryOpacity = CurvedAnimation(
+      parent: _entryCtrl,
+      curve: Curves.easeOut,
+    );
+    _entryOffset = Tween<Offset>(
+      begin: const Offset(0, 0.4),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _entryCtrl, curve: Curves.easeOut));
+
+    if (_entryPlayed) {
+      _entryCtrl.value = 1.0;
+    } else {
+      // Defer one frame so the first navigation render has settled.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _entryPlayed = true;
+        _entryCtrl.forward();
+      });
+    }
   }
 
   @override
   void dispose() {
     _detachRouteListener();
     _pressCtrl.dispose();
+    _entryCtrl.dispose();
     super.dispose();
   }
 
@@ -186,8 +225,7 @@ class _SupportFabState extends ConsumerState<SupportFab>
   }
 
   /// Subscribe to the current GoRouter's routeInformationProvider so the
-  /// widget rebuilds whenever the user navigates. The provider is a
-  /// `ValueListenable<RouteInformation>` exposed by the Router framework.
+  /// widget rebuilds whenever the user navigates.
   void _ensureRouteListener(GoRouter router) {
     final listenable = router.routeInformationProvider;
     if (identical(_routeListenable, listenable)) return;
@@ -210,17 +248,15 @@ class _SupportFabState extends ConsumerState<SupportFab>
 
   @override
   Widget build(BuildContext context) {
-    // Watch the router via Riverpod and subscribe to its location stream.
     final router = ref.watch(routerProvider);
     _ensureRouteListener(router);
 
     if (_shouldHideForRoute(router)) {
-      // Owner explicit ask: FAB MUST be invisible on /chat/* — return a
-      // zero-sized box so it cannot intercept taps either.
+      // Hard hide on /chat/* — zero-sized so it cannot intercept taps.
       return const SizedBox.shrink();
     }
 
-    // Combined visibility gate (everything-but-route):
+    // Combined visibility gate:
     //   1. Keyboard open  -> hide (don't fight the IME).
     //   2. Inherited SupportFabVisibility(visible: false) -> hide.
     //   3. Global bus says hidden (scroll-down OR explicit .hide()) -> hide.
@@ -239,13 +275,11 @@ class _SupportFabState extends ConsumerState<SupportFab>
             duration: const Duration(milliseconds: 180),
             curve: Curves.easeOut,
             opacity: visible ? 1.0 : 0.0,
-            // Slide IN from the right edge when hidden (matches the
-            // edge-peek metaphor) instead of dropping down.
             child: AnimatedSlide(
               duration: const Duration(milliseconds: 220),
               curve: Curves.easeOut,
-              offset: visible ? Offset.zero : const Offset(0.4, 0),
-              child: _buildEdgeTab(context),
+              offset: visible ? Offset.zero : const Offset(0, 0.4),
+              child: _buildButton(context),
             ),
           ),
         );
@@ -253,110 +287,105 @@ class _SupportFabState extends ConsumerState<SupportFab>
     );
   }
 
-  /// Builds the peek-from-edge tab. Anchored to the right edge of the
-  /// viewport at the vertical centre of the bottom-third — far away from
-  /// the bottom-right corner where screen-level FABs and CTAs live.
-  Widget _buildEdgeTab(BuildContext context) {
+  /// Builds the round 48x48 help button.
+  Widget _buildButton(BuildContext context) {
     final tooltip = _safeTooltip(context);
-    final viewportHeight = MediaQuery.sizeOf(context).height;
-    // Vertical centre of the bottom third = viewport bottom +
-    // (1/3 of viewport height) / 2 = viewport height / 6. We translate the
-    // tab upward by that distance from the bottom edge that main.dart's
-    // Positioned anchors us to.
-    final bottomPadding = (viewportHeight / 6.0).clamp(80.0, 220.0);
+    final media = MediaQuery.of(context);
+    final isDesktop = media.size.width >= _kDesktopBreakpoint;
+    final inset = isDesktop ? _kDesktopInset : _kMobileInset;
 
-    // Idle / hover dimensions and colours. Mobile devices never trigger
-    // hover so the idle state is what they always see.
-    final width = _hovering ? _kHoverWidth : _kIdleWidth;
-    final height = _hovering ? _kHoverHeight : _kIdleHeight;
-
-    // Idle: warm-beige surface variant with a thin border -> reads like a
-    // recessed page tab against the F0EEEB background. Hover: saturated
-    // brand teal. Press: deeper teal for tactile feedback.
+    // Idle / hover / press colours.
     final Color bgColor;
-    final Color fgColor;
+    final Color iconColor;
     if (_pressed) {
-      bgColor = kSupportTealDark;
-      fgColor = Colors.white;
+      bgColor = _kPressBg;
+      iconColor = _kHoverIcon;
     } else if (_hovering) {
-      bgColor = kSupportTeal;
-      fgColor = Colors.white;
+      bgColor = _kHoverBg;
+      iconColor = _kHoverIcon;
     } else {
-      bgColor = AppColors.surfaceVariant;
-      fgColor = kSupportTealDark;
+      bgColor = _kIdleBg;
+      iconColor = _kIdleIcon;
     }
 
-    // Half-rounded on the LEFT side only — the tab is flush against the
-    // right viewport edge so the right corners stay square.
-    const borderRadius = BorderRadius.only(
-      topLeft: Radius.circular(16),
-      bottomLeft: Radius.circular(16),
-    );
-
     return Padding(
-      padding: EdgeInsets.only(bottom: bottomPadding),
-      child: Semantics(
-        label: tooltip,
-        button: true,
-        child: ScaleTransition(
-          scale: _pressScale,
-          child: MouseRegion(
-            onEnter: (_) => setState(() => _hovering = true),
-            onExit: (_) => setState(() => _hovering = false),
-            cursor: SystemMouseCursors.click,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              width: width,
-              height: height,
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: borderRadius,
-                border: _hovering || _pressed
-                    ? null
-                    : Border.all(color: AppColors.border, width: 1),
-                boxShadow: [
-                  BoxShadow(
-                    color: (_hovering || _pressed)
-                        ? kSupportTealDark.withValues(alpha: 0.35)
-                        : Colors.black.withValues(alpha: 0.06),
-                    blurRadius: (_hovering || _pressed) ? 12 : 4,
-                    spreadRadius: 0,
-                    offset: Offset(0, (_hovering || _pressed) ? 4 : 2),
-                  ),
-                ],
-              ),
-              child: Material(
-                color: Colors.transparent,
-                borderRadius: borderRadius,
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: () => _handleTap(context),
-                  onTapDown: (_) {
-                    _pressCtrl.forward();
-                    setState(() => _pressed = true);
-                  },
-                  onTapCancel: () {
-                    _pressCtrl.reverse();
-                    setState(() => _pressed = false);
-                  },
-                  onTapUp: (_) {
-                    _pressCtrl.reverse();
-                    setState(() => _pressed = false);
-                  },
-                  borderRadius: borderRadius,
-                  // Kill all Material default overlays — the colour shift
-                  // is owned entirely by AnimatedContainer above. Without
-                  // this, the InkWell paints a translucent white splash
-                  // over our teal which is exactly the "still looks white"
-                  // bug owner reported in v2.
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  focusColor: Colors.transparent,
-                  child: Tooltip(
-                    message: tooltip,
-                    child: _buildContents(fgColor, tooltip),
+      padding: EdgeInsets.only(right: inset, bottom: inset),
+      child: FadeTransition(
+        opacity: _entryOpacity,
+        child: SlideTransition(
+          position: _entryOffset,
+          child: Semantics(
+            label: tooltip,
+            button: true,
+            child: ScaleTransition(
+              scale: _pressScale,
+              child: MouseRegion(
+                onEnter: (_) => setState(() => _hovering = true),
+                onExit: (_) => setState(() => _hovering = false),
+                cursor: SystemMouseCursors.click,
+                child: Tooltip(
+                  message: tooltip,
+                  waitDuration: const Duration(milliseconds: 400),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 160),
+                    curve: Curves.easeOut,
+                    width: _kFabSize,
+                    height: _kFabSize,
+                    decoration: BoxDecoration(
+                      color: bgColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: _kBorder, width: 1),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x140F172A), // rgba(15,23,42,0.08)
+                          blurRadius: 12,
+                          spreadRadius: 0,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      shape: const CircleBorder(),
+                      clipBehavior: Clip.antiAlias,
+                      child: InkWell(
+                        onTap: () => _handleTap(context),
+                        onTapDown: (_) {
+                          _pressCtrl.forward();
+                          setState(() => _pressed = true);
+                        },
+                        onTapCancel: () {
+                          _pressCtrl.reverse();
+                          setState(() => _pressed = false);
+                        },
+                        onTapUp: (_) {
+                          _pressCtrl.reverse();
+                          setState(() => _pressed = false);
+                        },
+                        customBorder: const CircleBorder(),
+                        // Kill EVERY Material default overlay — the colour
+                        // is owned entirely by AnimatedContainer above.
+                        // Without this, the InkWell paints a translucent
+                        // white splash that owner called "ugly hover state".
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        // Teal focus ring per spec (a11y).
+                        overlayColor: WidgetStateProperty.resolveWith(
+                          (states) => states.contains(WidgetState.focused)
+                              ? kSupportTeal.withValues(alpha: 0.12)
+                              : Colors.transparent,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.help_outline,
+                            size: 22,
+                            color: iconColor,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -364,41 +393,6 @@ class _SupportFabState extends ConsumerState<SupportFab>
           ),
         ),
       ),
-    );
-  }
-
-  /// Inner content swaps between icon-only (idle) and icon+label
-  /// (hover/expanded). Uses AnimatedSwitcher so the label fades in
-  /// smoothly without re-layout flicker.
-  Widget _buildContents(Color fgColor, String label) {
-    if (_hovering) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.help_outline, size: 18, color: fgColor),
-            const SizedBox(width: 8),
-            Flexible(
-              child: Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  color: fgColor,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.1,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    return Center(
-      child: Icon(Icons.help_outline, size: 18, color: fgColor),
     );
   }
 
@@ -415,37 +409,68 @@ class _SupportFabState extends ConsumerState<SupportFab>
       final loc = AppLocalizations.of(context);
       if (loc != null) return loc.supportTitle;
     } catch (_) {}
-    return 'Need help?';
+    return 'Help';
   }
 
   void _openSheet(BuildContext context) {
     final media = MediaQuery.of(context);
-    final isWide = media.size.width >= 600;
+    final isWide = media.size.width >= _kDesktopBreakpoint;
+
+    // While the help sheet is open hide the FAB itself so we don't double-
+    // up the help affordance on top of its own panel. Restored on close.
+    kSupportFabBus.hide();
+
     if (isWide) {
-      showDialog<void>(
+      // Desktop: right-anchored 380px drawer with 30% scrim.
+      showGeneralDialog<void>(
         context: context,
         barrierDismissible: true,
-        builder: (ctx) => Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          insetPadding: const EdgeInsets.all(24),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 480, maxHeight: 720),
-            child: const SupportSheet(),
-          ),
-        ),
-      );
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierColor: Colors.black.withValues(alpha: 0.30),
+        transitionDuration: const Duration(milliseconds: 240),
+        pageBuilder: (ctx, anim1, anim2) {
+          return const Align(
+            alignment: Alignment.centerRight,
+            child: Material(
+              color: Colors.transparent,
+              child: SafeArea(
+                child: SizedBox(
+                  width: 380,
+                  height: double.infinity,
+                  child: SupportSheet(asDrawer: true),
+                ),
+              ),
+            ),
+          );
+        },
+        transitionBuilder: (ctx, anim, secondary, child) {
+          final offset = Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOut));
+          return SlideTransition(position: offset, child: child);
+        },
+      ).whenComplete(kSupportFabBus.show);
     } else {
+      // Mobile: 85vh draggable bottom sheet.
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-        builder: (ctx) => Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(ctx).viewInsets.bottom,
-          ),
-          child: const SupportSheet(),
-        ),
-      );
+        useSafeArea: true,
+        builder: (ctx) {
+          final maxHeight = MediaQuery.of(ctx).size.height * 0.85;
+          return Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(ctx).viewInsets.bottom,
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: maxHeight),
+              child: const SupportSheet(asDrawer: false),
+            ),
+          );
+        },
+      ).whenComplete(kSupportFabBus.show);
     }
   }
 }
@@ -454,40 +479,23 @@ class _SupportFabState extends ConsumerState<SupportFab>
 // -----------------------------------------------------------------------------
 // Several screens (cases list, deadlines, document list) render their own
 // FloatingActionButton via Scaffold.floatingActionButton at the bottom-right.
-// The new edge-peek tab lives flush against the RIGHT viewport edge at the
-// vertical centre of the bottom-third (computed via MediaQuery in
-// `_buildEdgeTab`) so it physically cannot collide with screen-level FABs
-// in the bottom-right corner anymore.
+// The new 48x48 help pill sits at 24dp inset on desktop / 16dp + safe-area
+// on mobile. On screens where it would overlap a primary screen-level FAB,
+// wrap the subtree in `SupportFabVisibility(visible: false, child: ...)`.
 //
 // Visibility gates (any one of these hides the FAB):
 //   1. Current route starts with `/chat/` (hard-coded, see
 //      `_kHideOnRoutePrefixes`). Owner asked for an absolute hide on the
-//      AI assistant surface — the FAB used to cover the message composer.
+//      AI assistant surface.
 //   2. Keyboard is open (MediaQuery viewInsets.bottom > 0).
 //   3. The current subtree contains `SupportFabVisibility(visible: false)`.
 //   4. Any code called `kSupportFabBus.hide()` — pair with `.show()` on
-//      dispose.
+//      dispose. (This is also used internally while the help sheet itself
+//      is open so the FAB doesn't sit on top of its own drawer.)
 //   5. The active scroll view reports `ScrollDirection.reverse` (scroll
-//      down). Auto-restored on scroll up / idle, or by calling
+//      down past the 40px threshold UserScrollNotification crosses).
+//      Auto-restored on scroll up / idle, or by calling
 //      `kSupportFabBus.resetScroll()` on route change.
-//
-// To hide the FAB from a single screen (preferred for static CTAs like
-// "Book consultation"):
-//
-//     return SupportFabVisibility(
-//       visible: false,
-//       child: MyHireLawyerCta(),
-//     );
-//
-// To wire scroll-aware hiding on a long list:
-//
-//     NotificationListener<UserScrollNotification>(
-//       onNotification: (n) {
-//         kSupportFabBus.notifyScroll(n.direction);
-//         return false;
-//       },
-//       child: ListView(...),
-//     );
 // -----------------------------------------------------------------------------
 
 /// Optional inherited widget that lets descendants hide the global support

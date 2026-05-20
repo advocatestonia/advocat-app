@@ -31,6 +31,13 @@ export interface OAuthCallbackPayload {
   refresh_token?: string;
   email?: string;
   expires_in?: number;
+  /**
+   * Space-separated OAuth scopes the provider actually granted. Optional for
+   * backward compatibility — pre-2026-05-20 clients did not send this. When
+   * omitted, we persist NULL and the UI treats the token as "scope unknown"
+   * (which triggers the proactive re-auth banner if applicable).
+   */
+  scope?: string;
 }
 
 export interface NormalizedToken {
@@ -40,6 +47,8 @@ export interface NormalizedToken {
   email: string | null;
   /** Absolute expiry timestamp in ISO-8601 UTC. */
   expires_at: string;
+  /** Space-separated OAuth scopes actually granted; NULL when unknown. */
+  scope: string | null;
 }
 
 export type ValidationResult =
@@ -117,6 +126,20 @@ export function validatePayload(body: unknown): ValidationResult {
     expiresIn = Math.floor(n);
   }
 
+  let scope: string | undefined;
+  if (b.scope !== undefined && b.scope !== null) {
+    if (typeof b.scope !== "string") {
+      return { ok: false, error: "scope must be a string" };
+    }
+    // OAuth scope strings are URL-ish whitespace-separated tokens. Cap at 2KB
+    // (Google's longest realistic combined scope set is ~600 chars; 2KB is a
+    // comfortable defensive ceiling without rejecting future scope additions).
+    if (b.scope.length > 2048) {
+      return { ok: false, error: "scope is too large" };
+    }
+    scope = b.scope;
+  }
+
   return {
     ok: true,
     value: {
@@ -125,6 +148,7 @@ export function validatePayload(body: unknown): ValidationResult {
       refresh_token: refreshToken,
       email,
       expires_in: expiresIn,
+      scope,
     },
   };
 }
@@ -146,5 +170,6 @@ export function normalizeForUpsert(
     refresh_token: payload.refresh_token ?? null,
     email: payload.email ?? null,
     expires_at: expiresAt,
+    scope: payload.scope ?? null,
   };
 }

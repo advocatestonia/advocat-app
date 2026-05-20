@@ -212,6 +212,13 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
         // Google's standard access-token lifetime is 3600s; Supabase doesn't
         // surface the actual expires_in for the provider token, so we send
         // null and let the Edge Function default kick in.
+        //
+        // Supabase Auth does not currently surface the granted scope set on
+        // the session object (only the providerToken/refreshToken). We send
+        // the *requested* scope set as a best-effort hint: it's better than
+        // NULL when reasoning about feature availability, and the next time
+        // we need ground truth we can probe Google's tokeninfo endpoint.
+        scope: kGmailScopesActive,
       );
       state = state.copyWith(
         isConnected: result.ok,

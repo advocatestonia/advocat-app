@@ -3283,6 +3283,39 @@ class AppLocalizationsFi extends AppLocalizations {
   String get supportSubtitle => 'Miten voimme auttaa?';
 
   @override
+  String get supportSearchPlaceholder => 'Hae ohjeista…';
+
+  @override
+  String get supportStatusAllOk => 'Kaikki toimii';
+
+  @override
+  String get supportFaqWhatIs => 'Mikä on Advocat?';
+
+  @override
+  String get supportFaqHowSubscribe => 'Miten tilaan Pro-version?';
+
+  @override
+  String get supportFaqExportData => 'Voinko viedä tietoni?';
+
+  @override
+  String get supportFaqCancelAccount => 'Peruuta tai poista tili';
+
+  @override
+  String get supportFaqTalkHuman => 'Keskustele ihmisen kanssa';
+
+  @override
+  String get supportContactEmail => 'Sähköposti';
+
+  @override
+  String get supportContactTelegram => 'Telegram';
+
+  @override
+  String get supportContactWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportFooterSla => 'Vastaamme 24 tunnin sisällä';
+
+  @override
   String get supportWhatsapp => 'WhatsApp';
 
   @override

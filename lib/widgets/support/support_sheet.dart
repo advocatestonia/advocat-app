@@ -1,86 +1,444 @@
 // widgets/support/support_sheet.dart
 //
-// Modal sheet opened by [SupportFab]. Offers three contact channels:
+// Stripe-style help drawer. Opens from the SupportFab. Replaces the v3
+// "ask a question" form that owner rejected as "sheet на клике белый
+// пустой" — the new sheet shows real content the moment it opens:
 //
-//   1. WhatsApp — opens https://wa.me/<number>. Hidden when
-//      `SupportConfig.whatsappNumber` is empty so we can launch ads without
-//      the WhatsApp channel and add it later.
+//   * Header with title + green status dot + close button
+//   * Search field (no-op for now; visual anchor so the sheet is never
+//     blank, and a hook for FAQ search later)
+//   * Top 5 FAQ rows, localised, each linking to the right destination
+//   * Three contact channels (Email / Telegram / WhatsApp) shown only when
+//     configured in `SupportConfig`
+//   * Sticky footer with SLA copy + app version
 //
-//   2. Email — opens `mailto:` with a pre-filled subject and body.
+// Layout:
+//   * Desktop (>=600px): 380px right-anchored drawer, full viewport height,
+//     mounted by SupportFab via `showGeneralDialog`. The transitions and
+//     scrim live in SupportFab; this widget owns the column-layout only.
+//   * Mobile: 85vh bottom sheet, dragged from `showModalBottomSheet`.
+//     Drag-handle is drawn here at the top.
 //
-//   3. In-app — expands to an inline form that POSTs to the support-ticket
-//      edge function via [SupportService].
+// Wire format:
+//   * The widget is layout-only — it does NOT post tickets. The previous
+//     in-app form / honeypot / SupportService submission have been removed
+//     because owner's research showed users never filled them in; the
+//     mailto: contact channel handles "talk to a human" with a real reply
+//     address. SupportService and the support-ticket edge fn remain
+//     available for future flows.
 //
-// All three rows are styled as 56-dp tall, rounded buttons so the sheet
-// feels consistent with the rest of the app. The success state is a
-// transient checkmark + dismissed-modal pattern (auto-close after 2 s).
+// l10n keys consumed (added in this commit; all also fall back to English
+// when missing in a locale):
+//   supportTitle, supportSearchPlaceholder, supportStatusAllOk,
+//   supportFaqWhatIs, supportFaqHowSubscribe, supportFaqExportData,
+//   supportFaqCancelAccount, supportFaqTalkHuman, supportContactEmail,
+//   supportContactTelegram, supportContactWhatsapp, supportFooterSla.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../config/app_config.dart';
 import '../../l10n/app_localizations.dart';
-import '../../services/support_service.dart';
-import 'support_fab.dart' show kSupportTeal, kSupportTealDark;
+import 'support_fab.dart' show kSupportTeal;
 
-class SupportSheet extends ConsumerStatefulWidget {
-  const SupportSheet({super.key});
+/// Drawer / bottom-sheet content. `asDrawer=true` renders the full-height
+/// right-side panel used on desktop; `asDrawer=false` renders the mobile
+/// bottom-sheet variant with a drag handle and rounded top corners.
+class SupportSheet extends ConsumerWidget {
+  const SupportSheet({super.key, this.asDrawer = false});
+
+  final bool asDrawer;
 
   @override
-  ConsumerState<SupportSheet> createState() => _SupportSheetState();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loc = AppLocalizations.of(context);
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final body = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (!asDrawer) const _DragHandle(),
+        _Header(loc: loc, asDrawer: asDrawer),
+        const _Divider(),
+        Flexible(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 12),
+                _SearchField(loc: loc),
+                const SizedBox(height: 16),
+                _FaqList(loc: loc),
+                const SizedBox(height: 16),
+                _ContactChannelsRow(loc: loc),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
+        ),
+        const _Divider(),
+        _Footer(loc: loc),
+      ],
+    );
+
+    final shape = asDrawer
+        ? const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16),
+              bottomLeft: Radius.circular(16),
+            ),
+          )
+        : const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          );
+
+    return Material(
+      color: colorScheme.surface,
+      shape: shape,
+      clipBehavior: Clip.antiAlias,
+      child: SafeArea(
+        top: asDrawer,
+        bottom: false,
+        child: body,
+      ),
+    );
+  }
 }
 
-class _SupportSheetState extends ConsumerState<SupportSheet> {
-  final _messageController = TextEditingController();
-  final _emailController = TextEditingController();
-  // Honeypot — a hidden input. Real users never see or touch it; bots that
-  // fill every named input lose the request.
-  final _honeypotController = TextEditingController();
-
-  SupportCategory _category = SupportCategory.bug;
-
-  /// When true the in-app form is expanded below the three channel rows.
-  bool _formOpen = false;
-
-  /// Submission in flight — disables the submit button + keeps the user
-  /// from double-tapping during the round trip.
-  bool _submitting = false;
-
-  /// Set after a successful submit. Triggers the inline success view +
-  /// auto-close after 2 s.
-  bool _success = false;
-
-  /// Last error code from the server, if any (e.g. 'too_short' / 'network').
-  String? _errorReason;
+/// Top 64dp header with title, status pill, and close button.
+class _Header extends StatelessWidget {
+  const _Header({required this.loc, required this.asDrawer});
+  final AppLocalizations? loc;
+  final bool asDrawer;
 
   @override
-  void initState() {
-    super.initState();
-    _prefillEmail();
+  Widget build(BuildContext context) {
+    final title = loc?.supportTitle ?? 'Help';
+    final statusLabel = loc?.supportStatusAllOk ?? 'All systems normal';
+    return SizedBox(
+      height: 64,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF0F172A),
+                      letterSpacing: -0.2,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  _StatusPill(label: statusLabel),
+                ],
+              ),
+            ),
+            IconButton(
+              tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+              icon: const Icon(Icons.close, size: 20),
+              color: const Color(0xFF475569),
+              onPressed: () => Navigator.of(context).maybePop(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
+}
+
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({required this.label});
+  final String label;
 
   @override
-  void dispose() {
-    _messageController.dispose();
-    _emailController.dispose();
-    _honeypotController.dispose();
-    super.dispose();
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: const BoxDecoration(
+            color: Color(0xFF10B981), // emerald-500
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF475569),
+            letterSpacing: 0.1,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _Divider extends StatelessWidget {
+  const _Divider();
+  @override
+  Widget build(BuildContext context) {
+    return const Divider(
+      height: 1,
+      thickness: 1,
+      color: Color(0xFFE2E8F0),
+    );
+  }
+}
+
+class _DragHandle extends StatelessWidget {
+  const _DragHandle();
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Center(
+        child: Container(
+          width: 36,
+          height: 4,
+          decoration: BoxDecoration(
+            color: const Color(0xFFCBD5E1),
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Single-line search field. The query is currently a no-op visual anchor —
+/// the sheet must NEVER look blank, so even an empty search row gives the
+/// user something to look at while we wire up the FAQ index.
+class _SearchField extends StatelessWidget {
+  const _SearchField({required this.loc});
+  final AppLocalizations? loc;
+
+  @override
+  Widget build(BuildContext context) {
+    final hint = loc?.supportSearchPlaceholder ?? 'Search help…';
+    return TextField(
+      key: const ValueKey('support-search'),
+      enabled: true,
+      onSubmitted: (_) {}, // no-op until FAQ search ships
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.search, size: 20, color: Color(0xFF94A3B8)),
+        hintText: hint,
+        hintStyle: const TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
+        isDense: true,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        filled: true,
+        fillColor: const Color(0xFFF8FAFC),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Color(0xFFE2E8F0), width: 1),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Color(0xFFE2E8F0), width: 1),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: kSupportTeal, width: 1.5),
+        ),
+      ),
+    );
+  }
+}
+
+/// Top 5 FAQ rows. Static for MVP — each row dispatches to the right
+/// destination. Wired now so the sheet is never blank.
+class _FaqList extends StatefulWidget {
+  const _FaqList({required this.loc});
+  final AppLocalizations? loc;
+
+  @override
+  State<_FaqList> createState() => _FaqListState();
+}
+
+class _FaqListState extends State<_FaqList> {
+  /// Toggled when the user taps "Talk to a human" — reveals the contact
+  /// row below (a no-op on this widget; ContactChannelsRow is always
+  /// rendered, this flag just scrolls focus to it visually).
+  bool _talkToHumanExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final loc = widget.loc;
+    final items = <_FaqItem>[
+      _FaqItem(
+        icon: Icons.info_outline,
+        label: loc?.supportFaqWhatIs ?? 'What is Advocat?',
+        onTap: () {
+          Navigator.of(context).maybePop();
+          context.go('/chat/general?prompt=What%20is%20Advocat%3F');
+        },
+      ),
+      _FaqItem(
+        icon: Icons.workspace_premium_outlined,
+        label: loc?.supportFaqHowSubscribe ?? 'How do I subscribe to Pro?',
+        onTap: () {
+          Navigator.of(context).maybePop();
+          context.go('/subscription');
+        },
+      ),
+      _FaqItem(
+        icon: Icons.download_outlined,
+        label: loc?.supportFaqExportData ?? 'Can I export my data?',
+        onTap: () {
+          Navigator.of(context).maybePop();
+          context.go('/settings');
+        },
+      ),
+      _FaqItem(
+        icon: Icons.no_accounts_outlined,
+        label: loc?.supportFaqCancelAccount ?? 'Cancel / delete account',
+        onTap: () {
+          Navigator.of(context).maybePop();
+          context.go('/settings');
+        },
+      ),
+      _FaqItem(
+        icon: Icons.support_agent_outlined,
+        label: loc?.supportFaqTalkHuman ?? 'Talk to a human',
+        onTap: () {
+          // Reveal contact row hint — actual channels are below the FAQ
+          // list, this just keeps the sheet open so the user can tap them.
+          setState(() => _talkToHumanExpanded = true);
+        },
+        emphasised: _talkToHumanExpanded,
+      ),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: items.map((it) => _FaqRow(item: it)).toList(),
+    );
+  }
+}
+
+class _FaqItem {
+  const _FaqItem({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+    this.emphasised = false,
+  });
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  final bool emphasised;
+}
+
+class _FaqRow extends StatefulWidget {
+  const _FaqRow({required this.item});
+  final _FaqItem item;
+
+  @override
+  State<_FaqRow> createState() => _FaqRowState();
+}
+
+class _FaqRowState extends State<_FaqRow> {
+  bool _hovering = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final bg = _hovering
+        ? const Color(0xFFF8FAFC)
+        : (widget.item.emphasised
+            ? const Color(0xFFECFDF5)
+            : Colors.transparent);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovering = true),
+      onExit: (_) => setState(() => _hovering = false),
+      cursor: SystemMouseCursors.click,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: widget.item.onTap,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          focusColor: kSupportTeal.withValues(alpha: 0.08),
+          borderRadius: BorderRadius.circular(8),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 140),
+            curve: Curves.easeOut,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  widget.item.icon,
+                  size: 18,
+                  color: const Color(0xFF475569),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    widget.item.label,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF0F172A),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Icon(
+                  Icons.chevron_right,
+                  size: 18,
+                  color: Color(0xFF94A3B8),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Three contact channels in a row. Email is always shown; Telegram and
+/// WhatsApp are pulled from `SupportConfig` and hidden when unconfigured.
+class _ContactChannelsRow extends StatelessWidget {
+  const _ContactChannelsRow({required this.loc});
+  final AppLocalizations? loc;
+
+  Future<void> _openEmail() async {
+    final uri = Uri(
+      scheme: 'mailto',
+      path: SupportConfig.supportEmail,
+      query: 'subject=Advocat%20support&body=Hi%2C%20',
+    );
+    await launchUrl(uri);
   }
 
-  void _prefillEmail() {
-    // Best-effort: read the currently-signed-in Supabase user's email if
-    // available. In demo mode / pre-auth the field is left blank.
-    try {
-      final email = Supabase.instance.client.auth.currentUser?.email;
-      if (email != null && email.isNotEmpty) {
-        _emailController.text = email;
-      }
-    } catch (_) {
-      // Supabase not initialised in demo mode — leave blank.
-    }
+  Future<void> _openTelegram() async {
+    const handle = SupportConfig.telegramHandle;
+    if (handle.isEmpty) return;
+    final uri = Uri.parse('https://t.me/$handle');
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   Future<void> _openWhatsApp() async {
@@ -90,363 +448,156 @@ class _SupportSheetState extends ConsumerState<SupportSheet> {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
-  Future<void> _openEmail() async {
-    const email = SupportConfig.supportEmail;
-    final uri = Uri(
-      scheme: 'mailto',
-      path: email,
-      query: 'subject=Support&body=Hi%2C%20',
-    );
-    await launchUrl(uri);
-  }
-
-  Future<void> _submitInApp() async {
-    if (_submitting) return;
-    setState(() {
-      _submitting = true;
-      _errorReason = null;
-    });
-
-    final service = ref.read(supportServiceProvider);
-    final locale = Localizations.localeOf(context).languageCode;
-    final result = await service.submitTicket(
-      category: _category,
-      message: _messageController.text,
-      email: _emailController.text.trim().isEmpty
-          ? null
-          : _emailController.text.trim(),
-      language: locale,
-      honeypot: _honeypotController.text,
-    );
-
-    if (!mounted) return;
-
-    if (result.success) {
-      setState(() {
-        _submitting = false;
-        _success = true;
-      });
-      // Auto-close after 2 s so the user gets a clear confirmation but
-      // isn't trapped on the success view.
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) Navigator.of(context).maybePop();
-      });
-    } else {
-      setState(() {
-        _submitting = false;
-        _errorReason = result.errorReason;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final loc = AppLocalizations.of(context);
-    return Material(
-      color: Theme.of(context).colorScheme.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    final tiles = <Widget>[
+      _ContactTile(
+        key: const ValueKey('support-contact-email'),
+        icon: Icons.mail_outline,
+        label: loc?.supportContactEmail ?? 'Email',
+        onTap: _openEmail,
       ),
-      child: SafeArea(
-        top: false,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-          child: _success
-              ? _buildSuccess(loc)
-              : Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _buildHeader(context, loc),
-                    const SizedBox(height: 8),
-                    Text(
-                      loc?.supportSubtitle ??
-                          'We usually reply within 1-2 hours.',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.black54,
-                          ),
-                    ),
-                    const SizedBox(height: 16),
-                    if (SupportConfig.whatsappAvailable) ...[
-                      _buildChannelButton(
-                        key: const ValueKey('support-whatsapp'),
-                        label: loc?.supportWhatsapp ?? 'WhatsApp',
-                        icon: Icons.chat_bubble_outline,
-                        color: const Color(0xFF25D366),
-                        onTap: _openWhatsApp,
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                    _buildChannelButton(
-                      key: const ValueKey('support-email'),
-                      label: loc?.supportEmail ?? 'Email',
-                      icon: Icons.mail_outline,
-                      color: const Color(0xFF2563EB),
-                      onTap: _openEmail,
-                    ),
-                    const SizedBox(height: 10),
-                    _buildChannelButton(
-                      key: const ValueKey('support-inapp'),
-                      label: loc?.supportInApp ?? 'Message us here',
-                      icon: Icons.support_agent,
-                      color: kSupportTeal,
-                      onTap: () => setState(() => _formOpen = !_formOpen),
-                      selected: _formOpen,
-                    ),
-                    if (_formOpen) ...[
-                      const SizedBox(height: 16),
-                      _buildInAppForm(context, loc),
-                    ],
-                    const SizedBox(height: 12),
-                    Text(
-                      loc?.supportPrivacyNotice ??
-                          'Your message is stored securely.',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.black45,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
+      if (SupportConfig.telegramAvailable)
+        _ContactTile(
+          key: const ValueKey('support-contact-telegram'),
+          icon: Icons.send_outlined,
+          label: loc?.supportContactTelegram ?? 'Telegram',
+          onTap: _openTelegram,
         ),
-      ),
-    );
-  }
+      if (SupportConfig.whatsappAvailable)
+        _ContactTile(
+          key: const ValueKey('support-contact-whatsapp'),
+          icon: Icons.chat_bubble_outline,
+          label: loc?.supportContactWhatsapp ?? 'WhatsApp',
+          onTap: _openWhatsApp,
+        ),
+    ];
 
-  Widget _buildHeader(BuildContext context, AppLocalizations? loc) {
+    // Distribute evenly. With <3 tiles the row stays naturally centred via
+    // mainAxisAlignment.spaceBetween + an outer SizedBox per item.
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Text(
-            loc?.supportTitle ?? 'Need help?',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-          ),
-        ),
-        IconButton(
-          tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.of(context).maybePop(),
-        ),
+        for (var i = 0; i < tiles.length; i++) ...[
+          Expanded(child: tiles[i]),
+          if (i < tiles.length - 1) const SizedBox(width: 8),
+        ],
       ],
     );
   }
+}
 
-  Widget _buildChannelButton({
-    required Key key,
-    required String label,
-    required IconData icon,
-    required Color color,
-    required VoidCallback onTap,
-    bool selected = false,
-  }) {
-    return Material(
-      key: key,
-      color: selected ? color.withValues(alpha: 0.12) : Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: selected ? color : color.withValues(alpha: 0.45),
-          width: selected ? 1.5 : 1.0,
-        ),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          child: Row(
-            children: [
-              Icon(icon, color: color, size: 22),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: selected ? color : Colors.black87,
+class _ContactTile extends StatefulWidget {
+  const _ContactTile({
+    super.key,
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  State<_ContactTile> createState() => _ContactTileState();
+}
+
+class _ContactTileState extends State<_ContactTile> {
+  bool _hovering = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final bg = _hovering ? const Color(0xFFF8FAFC) : Colors.white;
+    final borderColor =
+        _hovering ? kSupportTeal.withValues(alpha: 0.5) : const Color(0xFFE2E8F0);
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovering = true),
+      onExit: (_) => setState(() => _hovering = false),
+      cursor: SystemMouseCursors.click,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: widget.onTap,
+          borderRadius: BorderRadius.circular(10),
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          focusColor: kSupportTeal.withValues(alpha: 0.08),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 140),
+            curve: Curves.easeOut,
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: borderColor, width: 1),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(widget.icon, size: 20, color: const Color(0xFF475569)),
+                const SizedBox(height: 6),
+                Text(
+                  widget.label,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF0F172A),
                   ),
                 ),
-              ),
-              Icon(
-                selected ? Icons.expand_less : Icons.chevron_right,
-                color: color,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildInAppForm(BuildContext context, AppLocalizations? loc) {
-    final remaining = SupportLimits.messageMax - _messageController.text.length;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        DropdownButtonFormField<SupportCategory>(
-          key: const ValueKey('support-category'),
-          initialValue: _category,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            isDense: true,
-            labelText: loc?.supportCategoryLabel ?? 'Category',
-          ),
-          items: SupportCategory.values
-              .map((c) => DropdownMenuItem<SupportCategory>(
-                    value: c,
-                    child: Text(_categoryLabel(loc, c)),
-                  ))
-              .toList(),
-          onChanged: (v) => setState(() => _category = v ?? _category),
-        ),
-        const SizedBox(height: 12),
-        TextField(
-          key: const ValueKey('support-message'),
-          controller: _messageController,
-          maxLines: 4,
-          maxLength: SupportLimits.messageMax,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(SupportLimits.messageMax),
-          ],
-          onChanged: (_) => setState(() {}), // refresh counter
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            hintText:
-                loc?.supportMessagePlaceholder ?? 'Describe your problem...',
-            counterText: '${_messageController.text.length} / '
-                '${SupportLimits.messageMax}',
-            errorText: _errorReason == 'too_short'
-                ? (loc?.supportErrorTooShort ??
-                    'Please write at least 10 characters.')
-                : _errorReason == 'too_long'
-                    ? (loc?.supportErrorTooLong ?? 'Message too long.')
-                    : null,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          // Live remaining-chars hint, separate from the counterText for a
-          // friendlier tone on screens that crop the counter.
-          remaining < 100 ? '$remaining left' : '',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          key: const ValueKey('support-email-input'),
-          controller: _emailController,
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            isDense: true,
-            labelText: loc?.supportEmailLabel ?? 'Email (optional)',
-            hintText: 'you@example.com',
-          ),
-        ),
-        // Honeypot — VISUALLY hidden but in the tree so test harness +
-        // form-fillers can be detected. Real users never see or focus this.
-        _Honeypot(controller: _honeypotController),
-        const SizedBox(height: 12),
-        if (_errorReason != null &&
-            _errorReason != 'too_short' &&
-            _errorReason != 'too_long')
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text(
-              loc?.supportError ?? 'Something went wrong. Try again.',
-              style: const TextStyle(color: Color(0xFFB91C1C)),
-            ),
-          ),
-        SizedBox(
-          height: 48,
-          child: ElevatedButton(
-            key: const ValueKey('support-submit'),
-            onPressed: _submitting ? null : _submitInApp,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: kSupportTeal,
-              foregroundColor: Colors.white,
-              disabledBackgroundColor: kSupportTealDark.withValues(alpha: 0.5),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: _submitting
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  )
-                : Text(loc?.supportSend ?? 'Send'),
-          ),
-        ),
-      ],
-    );
-  }
+/// Sticky footer pinned at the bottom of the drawer: SLA copy + version.
+class _Footer extends StatelessWidget {
+  const _Footer({required this.loc});
+  final AppLocalizations? loc;
 
-  Widget _buildSuccess(AppLocalizations? loc) {
+  @override
+  Widget build(BuildContext context) {
+    final sla = loc?.supportFooterSla ?? 'We respond within 24h';
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 14),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Icon(Icons.check_circle, color: kSupportTeal, size: 64),
-          const SizedBox(height: 16),
-          Text(
-            loc?.supportSentSuccess ?? 'Message sent! We will reply soon.',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            textAlign: TextAlign.center,
+          Flexible(
+            child: Text(
+              sla,
+              style: const TextStyle(
+                fontSize: 12,
+                color: Color(0xFF475569),
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
+          const SizedBox(width: 12),
+          const _AppVersionLabel(),
         ],
       ),
     );
   }
-
-  String _categoryLabel(AppLocalizations? loc, SupportCategory c) {
-    return switch (c) {
-      SupportCategory.bug => loc?.supportCategoryBug ?? 'Bug',
-      SupportCategory.payment =>
-        loc?.supportCategoryPayment ?? 'Payment issue',
-      SupportCategory.question => loc?.supportCategoryQuestion ?? 'Question',
-      SupportCategory.feature =>
-        loc?.supportCategoryFeature ?? 'Feature request',
-      SupportCategory.other => loc?.supportCategoryOther ?? 'Other',
-    };
-  }
 }
 
-/// Visually-hidden honeypot text field. We keep it INSIDE the form tree
-/// (rather than off-screen with `Offstage`) so any naive form-filling bot
-/// that walks the widget tree fills it in. We give it size 0 so a real
-/// user can never reach it.
-class _Honeypot extends StatelessWidget {
-  const _Honeypot({required this.controller});
-  final TextEditingController controller;
-
+class _AppVersionLabel extends StatelessWidget {
+  const _AppVersionLabel();
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 0,
-      width: 0,
-      child: ExcludeFocus(
-        child: ExcludeSemantics(
-          child: TextField(
-            key: const ValueKey('support-honeypot'),
-            controller: controller,
-            autofocus: false,
-            enabled: true,
-            decoration: const InputDecoration(
-              labelText: 'website', // misleading-but-innocuous label
-              border: InputBorder.none,
-              isDense: true,
-            ),
-          ),
-        ),
+    return const Text(
+      'v${AppConfig.appVersion}',
+      style: TextStyle(
+        fontSize: 11,
+        color: Color(0xFF94A3B8),
+        fontWeight: FontWeight.w500,
       ),
     );
   }

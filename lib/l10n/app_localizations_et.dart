@@ -3273,10 +3273,43 @@ class AppLocalizationsEt extends AppLocalizations {
   String get plannerTrailEmpty => 'kirjeid pole';
 
   @override
-  String get supportTitle => 'Vajad abi?';
+  String get supportTitle => 'Abi';
 
   @override
   String get supportSubtitle => 'Vastame tavaliselt 1-2 tunni jooksul.';
+
+  @override
+  String get supportSearchPlaceholder => 'Otsi abi…';
+
+  @override
+  String get supportStatusAllOk => 'Kõik töötab';
+
+  @override
+  String get supportFaqWhatIs => 'Mis on Advocat?';
+
+  @override
+  String get supportFaqHowSubscribe => 'Kuidas tellida Pro?';
+
+  @override
+  String get supportFaqExportData => 'Kas saan andmeid eksportida?';
+
+  @override
+  String get supportFaqCancelAccount => 'Tühista või kustuta konto';
+
+  @override
+  String get supportFaqTalkHuman => 'Räägi inimesega';
+
+  @override
+  String get supportContactEmail => 'E-post';
+
+  @override
+  String get supportContactTelegram => 'Telegram';
+
+  @override
+  String get supportContactWhatsapp => 'WhatsApp';
+
+  @override
+  String get supportFooterSla => 'Vastame 24h jooksul';
 
   @override
   String get supportWhatsapp => 'WhatsApp';

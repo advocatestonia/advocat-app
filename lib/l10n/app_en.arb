@@ -1361,12 +1361,40 @@
     "@plannerTrailEmpty": {
         "description": "Reasoning Trail placeholder shown when a list section is empty."
     },
-    "supportTitle": "Need help?",
+    "supportTitle": "Help",
     "@supportTitle": {
-        "description": "Title of the in-app support sheet (also FAB tooltip)."
+        "description": "Title of the in-app support drawer (also help FAB tooltip)."
     },
     "supportSubtitle": "We usually reply within 1-2 hours.",
     "@supportSubtitle": {},
+    "supportSearchPlaceholder": "Search help…",
+    "@supportSearchPlaceholder": {
+        "description": "Placeholder for the help search field in the support drawer."
+    },
+    "supportStatusAllOk": "All systems normal",
+    "@supportStatusAllOk": {
+        "description": "Status pill shown in the support drawer header when service is healthy."
+    },
+    "supportFaqWhatIs": "What is Advocat?",
+    "@supportFaqWhatIs": {},
+    "supportFaqHowSubscribe": "How do I subscribe to Pro?",
+    "@supportFaqHowSubscribe": {},
+    "supportFaqExportData": "Can I export my data?",
+    "@supportFaqExportData": {},
+    "supportFaqCancelAccount": "Cancel or delete account",
+    "@supportFaqCancelAccount": {},
+    "supportFaqTalkHuman": "Talk to a human",
+    "@supportFaqTalkHuman": {},
+    "supportContactEmail": "Email",
+    "@supportContactEmail": {},
+    "supportContactTelegram": "Telegram",
+    "@supportContactTelegram": {},
+    "supportContactWhatsapp": "WhatsApp",
+    "@supportContactWhatsapp": {},
+    "supportFooterSla": "We respond within 24h",
+    "@supportFooterSla": {
+        "description": "Footer copy at the bottom of the support drawer."
+    },
     "supportWhatsapp": "WhatsApp",
     "@supportWhatsapp": {},
     "supportEmail": "Email",

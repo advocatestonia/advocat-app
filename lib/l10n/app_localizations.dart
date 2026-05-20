@@ -6020,10 +6020,10 @@ abstract class AppLocalizations {
   /// **'no items'**
   String get plannerTrailEmpty;
 
-  /// Title of the in-app support sheet (also FAB tooltip).
+  /// Title of the in-app support drawer (also help FAB tooltip).
   ///
   /// In en, this message translates to:
-  /// **'Need help?'**
+  /// **'Help'**
   String get supportTitle;
 
   /// No description provided for @supportSubtitle.
@@ -6031,6 +6031,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We usually reply within 1-2 hours.'**
   String get supportSubtitle;
+
+  /// Placeholder for the help search field in the support drawer.
+  ///
+  /// In en, this message translates to:
+  /// **'Search help…'**
+  String get supportSearchPlaceholder;
+
+  /// Status pill shown in the support drawer header when service is healthy.
+  ///
+  /// In en, this message translates to:
+  /// **'All systems normal'**
+  String get supportStatusAllOk;
+
+  /// No description provided for @supportFaqWhatIs.
+  ///
+  /// In en, this message translates to:
+  /// **'What is Advocat?'**
+  String get supportFaqWhatIs;
+
+  /// No description provided for @supportFaqHowSubscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I subscribe to Pro?'**
+  String get supportFaqHowSubscribe;
+
+  /// No description provided for @supportFaqExportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I export my data?'**
+  String get supportFaqExportData;
+
+  /// No description provided for @supportFaqCancelAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel or delete account'**
+  String get supportFaqCancelAccount;
+
+  /// No description provided for @supportFaqTalkHuman.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to a human'**
+  String get supportFaqTalkHuman;
+
+  /// No description provided for @supportContactEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get supportContactEmail;
+
+  /// No description provided for @supportContactTelegram.
+  ///
+  /// In en, this message translates to:
+  /// **'Telegram'**
+  String get supportContactTelegram;
+
+  /// No description provided for @supportContactWhatsapp.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp'**
+  String get supportContactWhatsapp;
+
+  /// Footer copy at the bottom of the support drawer.
+  ///
+  /// In en, this message translates to:
+  /// **'We respond within 24h'**
+  String get supportFooterSla;
 
   /// No description provided for @supportWhatsapp.
   ///

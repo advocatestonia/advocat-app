@@ -37,6 +37,7 @@ Deno.test("validatePayload — happy path with all fields", () => {
     refresh_token: "1//rt",
     email: "user@gmail.com",
     expires_in: 3600,
+    scope: "email https://www.googleapis.com/auth/gmail.send",
   });
   assert(r.ok);
   if (r.ok) {
@@ -45,7 +46,41 @@ Deno.test("validatePayload — happy path with all fields", () => {
     assertEquals(r.value.refresh_token, "1//rt");
     assertEquals(r.value.email, "user@gmail.com");
     assertEquals(r.value.expires_in, 3600);
+    assertEquals(
+      r.value.scope,
+      "email https://www.googleapis.com/auth/gmail.send",
+    );
   }
+});
+
+Deno.test("validatePayload — scope is optional (backward compat)", () => {
+  const r = validatePayload({
+    provider: "gmail",
+    access_token: "ya29.abc",
+  });
+  assert(r.ok);
+  if (r.ok) {
+    assertEquals(r.value.scope, undefined);
+  }
+});
+
+Deno.test("validatePayload — rejects non-string scope", () => {
+  const r = validatePayload({
+    provider: "gmail",
+    access_token: "ya29.abc",
+    scope: 123 as unknown as string,
+  });
+  assertFalse(r.ok);
+  if (!r.ok) assertStringIncludes(r.error, "scope");
+});
+
+Deno.test("validatePayload — rejects scope > 2048 chars", () => {
+  const r = validatePayload({
+    provider: "gmail",
+    access_token: "ya29.abc",
+    scope: "x".repeat(2049),
+  });
+  assertFalse(r.ok);
 });
 
 Deno.test("validatePayload — minimal payload (provider + token only)", () => {
@@ -171,6 +206,22 @@ Deno.test("normalizeForUpsert — null fields when refresh_token/email missing",
   );
   assertEquals(row.refresh_token, null);
   assertEquals(row.email, null);
+  assertEquals(row.scope, null);
+});
+
+Deno.test("normalizeForUpsert — passes scope through verbatim", () => {
+  const row = normalizeForUpsert(
+    {
+      provider: "gmail",
+      access_token: "tok",
+      scope: "email https://www.googleapis.com/auth/gmail.readonly",
+    },
+    Date.now(),
+  );
+  assertEquals(
+    row.scope,
+    "email https://www.googleapis.com/auth/gmail.readonly",
+  );
 });
 
 // ---------------------------------------------------------------------------
@@ -208,4 +259,20 @@ Deno.test("contract — index.ts validates payload before any DB write", async (
   const src = await Deno.readTextFile(new URL("../index.ts", import.meta.url));
   assertStringIncludes(src, "validatePayload");
   assertStringIncludes(src, "normalizeForUpsert");
+});
+
+Deno.test("contract — index.ts persists scope to user_oauth_tokens", async () => {
+  const src = await Deno.readTextFile(new URL("../index.ts", import.meta.url));
+  // The scope column was added 2026-05-20. If this assertion regresses, the
+  // upsert silently drops scope and downstream "is gmail.readonly granted?"
+  // checks become impossible.
+  assertStringIncludes(src, "scope: row.scope");
+});
+
+Deno.test("contract — index.ts returns has_refresh_token to client", async () => {
+  const src = await Deno.readTextFile(new URL("../index.ts", import.meta.url));
+  // Used by Flutter to render honest "you'll need to sign in again" UI when
+  // Google did not return a refresh_token (e.g. user revoked consent and
+  // re-signed without prompt=consent).
+  assertStringIncludes(src, "has_refresh_token");
 });

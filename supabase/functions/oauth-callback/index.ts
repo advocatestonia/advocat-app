@@ -22,8 +22,16 @@
 //       refresh_token?:  string       // optional — for unattended refresh
 //       email?:          string       // user's Gmail address (for From: header)
 //       expires_in?:     number       // seconds; defaults to DEFAULT_EXPIRES_IN_S
+//       scope?:          string       // space-separated OAuth scopes granted
+//                                     // (optional — backward compat; older
+//                                     //  clients don't send this)
 //     }
-//   Response 200: { ok: true, email?: string, expires_at: string }
+//   Response 200: {
+//     ok: true,
+//     email?: string,
+//     expires_at: string,
+//     has_refresh_token: boolean,     // so the client can show honest UI state
+//   }
 //   Response 400: { error: <validation message> }
 //   Response 401: Unauthorized
 //   Response 429: Rate limit exceeded
@@ -102,6 +110,12 @@ serve(async (req) => {
         refresh_token: row.refresh_token,
         email: row.email,
         expires_at: row.expires_at,
+        // `scope` is persisted as NULL when the client did not send it
+        // (backward-compat with pre-2026-05-20 callers). Going forward, the
+        // Flutter client sends the requested scope set so we can detect
+        // missing-permission states (`gmail.readonly` vs send-only) without
+        // a probing API call.
+        scope: row.scope,
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id,provider" },
@@ -118,5 +132,10 @@ serve(async (req) => {
     ok: true,
     email: row.email,
     expires_at: row.expires_at,
+    // Honest UI hint: the client can tell the user "you'll need to sign in
+    // again in an hour" when this is false (no refresh token == every access
+    // expiry forces re-consent). True means we have offline access via the
+    // refresh token Google returned with `access_type=offline + prompt=consent`.
+    has_refresh_token: !!row.refresh_token,
   });
 });

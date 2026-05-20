@@ -120,7 +120,18 @@ class SupportConfig {
     defaultValue: 'support@advocat.ee',
   );
 
+  /// Telegram handle WITHOUT the leading "@" (e.g. `advocat_support`). When
+  /// empty the Telegram channel is hidden in the support sheet.
+  static const String telegramHandle = String.fromEnvironment(
+    'ADVOCAT_TELEGRAM_HANDLE',
+    defaultValue: '',
+  );
+
   /// Whether the WhatsApp channel should be shown. Returns false when the
   /// number is unset so the button silently disappears.
   static bool get whatsappAvailable => whatsappNumber.isNotEmpty;
+
+  /// Whether the Telegram channel should be shown. Returns false when the
+  /// handle is unset so the button silently disappears.
+  static bool get telegramAvailable => telegramHandle.isNotEmpty;
 }
