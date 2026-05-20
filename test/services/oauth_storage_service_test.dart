@@ -38,6 +38,7 @@ void main() {
         refreshToken: '1//rt',
         email: 'user@gmail.com',
         expiresIn: 3600,
+        scope: 'email https://www.googleapis.com/auth/gmail.send',
       );
       final json = req.toJson();
       expect(json['provider'], 'gmail');
@@ -45,6 +46,19 @@ void main() {
       expect(json['refresh_token'], '1//rt');
       expect(json['email'], 'user@gmail.com');
       expect(json['expires_in'], 3600);
+      expect(json['scope'],
+          'email https://www.googleapis.com/auth/gmail.send');
+    });
+
+    test('elides empty-string scope', () {
+      const req = OAuthCallbackRequest(
+        provider: 'gmail',
+        accessToken: 'ya29.abc',
+        scope: '',
+      );
+      final json = req.toJson();
+      expect(json.containsKey('scope'), isFalse,
+          reason: 'empty scope must not be persisted as empty-string NULL');
     });
 
     test('elides empty-string refresh_token', () {
@@ -97,12 +111,14 @@ void main() {
         'ok': true,
         'email': 'user@gmail.com',
         'expires_at': '2026-05-05T13:00:00.000Z',
+        'has_refresh_token': true,
       });
       expect(r.ok, isTrue);
       expect(r.email, 'user@gmail.com');
       expect(r.expiresAt, isNotNull);
       expect(r.expiresAt!.toUtc().year, 2026);
       expect(r.expiresAt!.toUtc().hour, 13);
+      expect(r.hasRefreshToken, isTrue);
     });
 
     test('handles missing optional fields', () {
@@ -110,6 +126,17 @@ void main() {
       expect(r.ok, isTrue);
       expect(r.email, isNull);
       expect(r.expiresAt, isNull);
+      expect(r.hasRefreshToken, isNull,
+          reason: 'absent flag must be null, not false — distinguishes '
+              'older Edge Function build from explicit no-refresh-token');
+    });
+
+    test('parses has_refresh_token=false explicitly', () {
+      final r = OAuthCallbackResult.fromJson({
+        'ok': true,
+        'has_refresh_token': false,
+      });
+      expect(r.hasRefreshToken, isFalse);
     });
 
     test('treats ok!=true as false', () {
