@@ -4238,6 +4238,30 @@ abstract class AppLocalizations {
   /// **'AI assistant provides legal information, not legal advice. Always consult a qualified lawyer.'**
   String get chatDisclaimerBanner;
 
+  /// No description provided for @chatDisclaimerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI assistant · not legal advice'**
+  String get chatDisclaimerSubtitle;
+
+  /// No description provided for @chatDisclaimerBannerFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat is an AI legal-information assistant, not a lawyer. Information here does not establish an attorney-client relationship, is not legal advice, and may be incorrect. For binding legal advice, consult a licensed attorney in your jurisdiction. We do not represent you.'**
+  String get chatDisclaimerBannerFull;
+
+  /// No description provided for @chatDisclaimerFooter.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-generated. Verify with a licensed lawyer.'**
+  String get chatDisclaimerFooter;
+
+  /// No description provided for @chatDisclaimerGotIt.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it'**
+  String get chatDisclaimerGotIt;
+
   /// No description provided for @categoryChildren.
   ///
   /// In en, this message translates to:
@@ -6577,6 +6601,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Increase'**
   String get increaseDependents;
+
+  /// No description provided for @sensitiveConsentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sensitive data consent'**
+  String get sensitiveConsentTitle;
+
+  /// No description provided for @sensitiveConsentBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents you\'re about to upload may contain special-category personal data under GDPR Art. 9 — such as health records, criminal records, biometric data, or information about your racial origin, religion, or sexual orientation.\n\nWe process this data only to provide you with AI legal assistance, store it encrypted in your private account, and never use it to train models. You can withdraw consent and delete the data at any time from Settings.\n\nBy accepting, you give explicit consent under Art. 9(2)(a) GDPR to process special-category data for this purpose.'**
+  String get sensitiveConsentBody;
+
+  /// No description provided for @sensitiveConsentExplicitCheckbox.
+  ///
+  /// In en, this message translates to:
+  /// **'I give explicit consent to process special-category data (Art. 9(2)(a) GDPR).'**
+  String get sensitiveConsentExplicitCheckbox;
+
+  /// No description provided for @sensitiveConsentRightToShareCheckbox.
+  ///
+  /// In en, this message translates to:
+  /// **'I confirm I have the right to share this data (the data is mine, or I have informed/lawful basis to share third-party data).'**
+  String get sensitiveConsentRightToShareCheckbox;
+
+  /// No description provided for @sensitiveConsentViewCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'View what counts as sensitive →'**
+  String get sensitiveConsentViewCategories;
+
+  /// No description provided for @sensitiveConsentWithdrawAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw sensitive data consent'**
+  String get sensitiveConsentWithdrawAction;
+
+  /// No description provided for @privacyAndData.
+  ///
+  /// In en, this message translates to:
+  /// **'PRIVACY & DATA'**
+  String get privacyAndData;
+
+  /// No description provided for @exportMyDataSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Download a copy of all your personal data (GDPR Art. 15).'**
+  String get exportMyDataSubtitle;
+
+  /// No description provided for @withdrawSensitiveConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sensitive data consent'**
+  String get withdrawSensitiveConsent;
+
+  /// No description provided for @withdrawSensitiveConsentSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage or withdraw consent to process special-category data (GDPR Art. 9(2)(a)).'**
+  String get withdrawSensitiveConsentSubtitle;
+
+  /// No description provided for @dataProcessingAgreement.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Processing Agreement'**
+  String get dataProcessingAgreement;
+
+  /// No description provided for @exportingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Exporting your data…'**
+  String get exportingData;
+
+  /// No description provided for @exportComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Data export ready — saved to your device.'**
+  String get exportComplete;
+
+  /// No description provided for @exportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed. Please try again or contact support.'**
+  String get exportFailed;
 }
 
 class _AppLocalizationsDelegate

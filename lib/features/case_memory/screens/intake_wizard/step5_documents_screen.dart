@@ -22,6 +22,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../config/theme.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../legal/utils/sensitive_consent_gate.dart';
 
 /// A staged document — bytes held in memory, ready for upload at
 /// wizard finish-time. Stored in the screen's local state (NOT
@@ -91,6 +92,11 @@ class Step5DocumentsScreen extends ConsumerWidget {
             l10n?.intakeUploadDocsLabel ?? 'Upload documents',
           ),
           onPressed: () async {
+            // GDPR Art. 9(2)(a) — explicit consent before file picker fires.
+            final consented = await ensureSensitiveConsent(context, ref);
+            if (!consented) return;
+            if (!context.mounted) return;
+
             final picked = await picker();
             if (picked == null) return;
             final list = [...staged];

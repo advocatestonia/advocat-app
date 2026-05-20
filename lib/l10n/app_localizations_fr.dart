@@ -2318,6 +2318,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'L\'assistant IA fournit des informations juridiques, pas des conseils juridiques. Consultez toujours un avocat qualifié.';
 
   @override
+  String get chatDisclaimerSubtitle => 'Assistant IA · pas un avis juridique';
+
+  @override
+  String get chatDisclaimerBannerFull =>
+      'Advocat est un assistant d\'information juridique par IA, pas un avocat. Les informations ici ne créent pas de relation avocat-client, ne constituent pas un avis juridique et peuvent être erronées. Pour un avis juridique contraignant, consultez un avocat agréé dans votre juridiction. Nous ne vous représentons pas.';
+
+  @override
+  String get chatDisclaimerFooter =>
+      'Généré par IA. Vérifiez auprès d\'un avocat agréé.';
+
+  @override
+  String get chatDisclaimerGotIt => 'Compris';
+
+  @override
   String get categoryChildren => 'Children';
 
   @override
@@ -3646,4 +3660,54 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get increaseDependents => 'Augmenter';
+
+  @override
+  String get sensitiveConsentTitle => 'Sensitive data consent';
+
+  @override
+  String get sensitiveConsentBody =>
+      'Documents you\'re about to upload may contain special-category personal data under GDPR Art. 9 — such as health records, criminal records, biometric data, or information about your racial origin, religion, or sexual orientation.\n\nWe process this data only to provide you with AI legal assistance, store it encrypted in your private account, and never use it to train models. You can withdraw consent and delete the data at any time from Settings.\n\nBy accepting, you give explicit consent under Art. 9(2)(a) GDPR to process special-category data for this purpose.';
+
+  @override
+  String get sensitiveConsentExplicitCheckbox =>
+      'I give explicit consent to process special-category data (Art. 9(2)(a) GDPR).';
+
+  @override
+  String get sensitiveConsentRightToShareCheckbox =>
+      'I confirm I have the right to share this data (the data is mine, or I have informed/lawful basis to share third-party data).';
+
+  @override
+  String get sensitiveConsentViewCategories =>
+      'View what counts as sensitive →';
+
+  @override
+  String get sensitiveConsentWithdrawAction =>
+      'Withdraw sensitive data consent';
+
+  @override
+  String get privacyAndData => 'PRIVACY & DATA';
+
+  @override
+  String get exportMyDataSubtitle =>
+      'Download a copy of all your personal data (GDPR Art. 15).';
+
+  @override
+  String get withdrawSensitiveConsent => 'Sensitive data consent';
+
+  @override
+  String get withdrawSensitiveConsentSubtitle =>
+      'Manage or withdraw consent to process special-category data (GDPR Art. 9(2)(a)).';
+
+  @override
+  String get dataProcessingAgreement => 'Data Processing Agreement';
+
+  @override
+  String get exportingData => 'Exporting your data…';
+
+  @override
+  String get exportComplete => 'Data export ready — saved to your device.';
+
+  @override
+  String get exportFailed =>
+      'Export failed. Please try again or contact support.';
 }

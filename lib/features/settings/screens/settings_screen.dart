@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
@@ -126,8 +127,12 @@ class SettingsScreen extends ConsumerWidget {
 
           if (kReferralEnabled) const _SectionDivider(),
 
-          // ── Data & Privacy ────────────────────────────────────────────
-          _SectionHeader(title: l.dataAndPrivacy),
+          // ── Privacy & Data (GDPR Arts. 15 / 17 / 21 / 9(2)(a)) ────────
+          // Single self-service hub for all data-subject rights.
+          // Section header migrated 2026-05-19 from "DATA & PRIVACY" →
+          // "PRIVACY & DATA" to align with GDPR phrasing and to mark the
+          // DSAR flow rollout (export-my-data wired to dsar-export edge fn).
+          _SectionHeader(title: l.privacyAndData),
           // ADR-001 Tier 1 — let users review & wipe what the AI has
           // learned about them (GDPR Art. 17). Localized via aiMemory* keys.
           _SettingsTile(
@@ -140,11 +145,44 @@ class SettingsScreen extends ConsumerWidget {
             ),
             onTap: () => context.push(AppRoutes.aiMemory),
           ),
+          // GDPR Art. 15 — self-service data access. Calls dsar-export edge
+          // fn, which assembles a JSON of every personal-data row and writes
+          // a row to dsar_requests (Art. 12(3) audit trail).
           _SettingsTile(
             icon: AppIcons.dataExport,
             title: l.exportMyData,
-            subtitle: l.exportDataDesc,
+            subtitle: l.exportMyDataSubtitle,
             onTap: () => _showExportDataDialog(context, ref),
+          ),
+          // GDPR Art. 9(2)(a) / Art. 7(3) — manage / withdraw special-category
+          // consent. Routes to the dedicated consent screen.
+          _SettingsTile(
+            icon: Icons.health_and_safety_outlined,
+            title: l.withdrawSensitiveConsent,
+            subtitle: l.withdrawSensitiveConsentSubtitle,
+            trailing: const Icon(
+              AppIcons.chevronRight,
+              color: AppColors.textTertiary,
+            ),
+            onTap: () => context.push(AppRoutes.sensitiveConsent),
+          ),
+          _SettingsTile(
+            icon: AppIcons.privacyOutlined,
+            title: l.privacyPolicy,
+            trailing: const Icon(
+              AppIcons.chevronRight,
+              color: AppColors.textTertiary,
+            ),
+            onTap: () => _launchUrl('https://advocat.ee/privacy.html'),
+          ),
+          _SettingsTile(
+            icon: AppIcons.termsOutlined,
+            title: l.dataProcessingAgreement,
+            trailing: const Icon(
+              AppIcons.chevronRight,
+              color: AppColors.textTertiary,
+            ),
+            onTap: () => _launchUrl('https://advocat.ee/dpa.html'),
           ),
           _SettingsTile(
             icon: AppIcons.deleteAccount,
@@ -158,18 +196,15 @@ class SettingsScreen extends ConsumerWidget {
           const _SectionDivider(),
 
           // ── Legal ─────────────────────────────────────────────────────
+          // Privacy Policy + DPA moved to Privacy & Data section above
+          // (DSAR rollout, 2026-05-19). Terms of Service + company
+          // information remain here.
           _SectionHeader(title: l.legalSection),
           _SettingsTile(
             icon: AppIcons.termsOutlined,
             title: l.termsOfService,
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
             onTap: () => _launchUrl('https://advocat.ee/terms.html'),
-          ),
-          _SettingsTile(
-            icon: AppIcons.privacyOutlined,
-            title: l.privacyPolicy,
-            trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
-            onTap: () => _launchUrl('https://advocat.ee/privacy.html'),
           ),
           _SettingsTile(
             icon: Icons.business_outlined,
@@ -693,37 +728,74 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   Future<void> _performDataExport(BuildContext context, WidgetRef ref) async {
+    final l = AppLocalizations.of(context)!;
     final supabase = ref.read(supabaseServiceProvider);
+    final isDemo = ref.read(isDemoModeProvider);
 
-    // Show loading indicator
+    // Show loading indicator (localized).
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 18,
                 height: 18,
                 child: CircularProgressIndicator(
                     strokeWidth: 2, color: Colors.white),
               ),
-              SizedBox(width: 12),
-              Text('Preparing data export...'),
+              const SizedBox(width: 12),
+              Text(l.exportingData),
             ],
           ),
-          duration: Duration(seconds: 30),
+          duration: const Duration(seconds: 60),
         ),
       );
     }
 
     try {
-      final jsonString = await supabase.exportUserData();
+      // Demo mode: fall back to client-side stub (no real account).
+      // Real mode: call the dsar-export edge function which assembles the
+      // full GDPR Art. 15 payload server-side under service-role.
+      String jsonString;
+      bool queued = false;
+      if (isDemo) {
+        jsonString = await supabase.exportUserData();
+      } else {
+        final result = await supabase.callEdgeFunction('dsar-export');
+        if (result == null) {
+          throw Exception('dsar-export returned no body');
+        }
+        if (result['error'] != null) {
+          throw Exception(result['error'].toString());
+        }
+        if (result['queued'] == true) {
+          queued = true;
+          jsonString = '';
+        } else {
+          // Edge fn returns the JSON body inline; SDK has already decoded
+          // it into a Map. Re-encode for download.
+          jsonString = const JsonEncoder.withIndent('  ').convert(result);
+        }
+      }
+
+      if (queued) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l.dataExportRequested),
+              backgroundColor: AppColors.success,
+            ),
+          );
+        }
+        return;
+      }
 
       if (kIsWeb) {
-        // On web, use clipboard as fallback (dart:io not available)
+        // On web, use clipboard as fallback (dart:io not available).
         await Clipboard.setData(ClipboardData(text: jsonString));
         if (context.mounted) {
-          final l = AppLocalizations.of(context)!;
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -733,18 +805,23 @@ class SettingsScreen extends ConsumerWidget {
           );
         }
       } else {
-        // Write to a temporary file
+        // Write to a temporary file and share via system share sheet.
         final tempDir = await getTemporaryDirectory();
         final timestamp = DateTime.now().toIso8601String().replaceAll(':', '-');
         final file =
-            File('${tempDir.path}/advocat_export_$timestamp.json');
+            File('${tempDir.path}/advocat-data-export-$timestamp.json');
         await file.writeAsString(jsonString);
 
         if (context.mounted) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l.exportComplete),
+              backgroundColor: AppColors.success,
+            ),
+          );
         }
 
-        // Share via system share sheet
         await Share.shareXFiles(
           [XFile(file.path, mimeType: 'application/json')],
           subject: 'Advocat Data Export',
@@ -753,13 +830,10 @@ class SettingsScreen extends ConsumerWidget {
     } catch (e) {
       debugPrint('data export failed: $e');
       if (context.mounted) {
-        final l = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              l?.genericError ?? 'Something went wrong. Please try again.',
-            ),
+            content: Text(l.exportFailed),
             backgroundColor: AppColors.error,
           ),
         );

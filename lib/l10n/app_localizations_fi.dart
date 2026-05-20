@@ -2285,6 +2285,21 @@ class AppLocalizationsFi extends AppLocalizations {
       'Tekoälyavustaja tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. Ota aina yhteyttä pätevään lakimieheen.';
 
   @override
+  String get chatDisclaimerSubtitle =>
+      'Tekoälyavustaja · ei oikeudellista neuvontaa';
+
+  @override
+  String get chatDisclaimerBannerFull =>
+      'Advocat on tekoälyavustaja oikeudelliseen tiedonsaantiin, ei asianajaja. Tämä tieto ei synnytä asianajaja–asiakas-suhdetta, ei ole oikeudellista neuvontaa ja voi olla virheellistä. Sitovan oikeudellisen neuvon saamiseksi ota yhteyttä lainkäyttöalueellasi toimivaan pätevään asianajajaan. Emme edusta sinua.';
+
+  @override
+  String get chatDisclaimerFooter =>
+      'Tekoälyn tuottama. Tarkista pätevältä asianajajalta.';
+
+  @override
+  String get chatDisclaimerGotIt => 'Selvä';
+
+  @override
   String get categoryChildren => 'Lapset';
 
   @override
@@ -3616,4 +3631,56 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get increaseDependents => 'Lisää';
+
+  @override
+  String get sensitiveConsentTitle =>
+      'Suostumus arkaluonteisten tietojen käsittelyyn';
+
+  @override
+  String get sensitiveConsentBody =>
+      'Asiakirjat, joita olet lataamassa, voivat sisältää GDPR:n 9 artiklan mukaisia erityisiin henkilötietoryhmiin kuuluvia tietoja — kuten terveystietoja, rikosrekisteritietoja, biometrisiä tietoja tai tietoja rodullisesta alkuperästäsi, uskonnostasi tai seksuaalisesta suuntautumisestasi.\n\nKäsittelemme näitä tietoja vain tarjotaksemme sinulle AI-oikeudellista apua, säilytämme ne salattuna henkilökohtaisella tililläsi emmekä koskaan käytä niitä mallien opettamiseen. Voit peruuttaa suostumuksesi ja poistaa tiedot milloin tahansa Asetuksista.\n\nHyväksymällä annat nimenomaisen suostumuksesi GDPR:n 9 artiklan 2 kohdan a alakohdan mukaisesti erityisiin henkilötietoryhmiin kuuluvien tietojen käsittelyyn tähän tarkoitukseen.';
+
+  @override
+  String get sensitiveConsentExplicitCheckbox =>
+      'Annan nimenomaisen suostumuksen erityisiin henkilötietoryhmiin kuuluvien tietojen käsittelyyn (GDPR 9 art. 2 kohta a).';
+
+  @override
+  String get sensitiveConsentRightToShareCheckbox =>
+      'Vahvistan, että minulla on oikeus jakaa nämä tiedot (tiedot ovat omiani tai minulla on tietoinen/laillinen peruste jakaa kolmansien osapuolten tietoja).';
+
+  @override
+  String get sensitiveConsentViewCategories =>
+      'Mitä lasketaan arkaluonteiseksi? →';
+
+  @override
+  String get sensitiveConsentWithdrawAction =>
+      'Peruuta arkaluonteisten tietojen suostumus';
+
+  @override
+  String get privacyAndData => 'YKSITYISYYS JA TIEDOT';
+
+  @override
+  String get exportMyDataSubtitle =>
+      'Lataa kopio kaikista henkilötiedoistasi (GDPR art. 15).';
+
+  @override
+  String get withdrawSensitiveConsent => 'Arkaluonteisten tietojen suostumus';
+
+  @override
+  String get withdrawSensitiveConsentSubtitle =>
+      'Hallinnoi tai peruuta suostumus erityisiin henkilötietoryhmiin kuuluvien tietojen käsittelyyn (GDPR art. 9(2)(a)).';
+
+  @override
+  String get dataProcessingAgreement => 'Tietojenkäsittelysopimus';
+
+  @override
+  String get exportingData => 'Tietojen vienti käynnissä…';
+
+  @override
+  String get exportComplete =>
+      'Tietojen vienti valmis — tallennettu laitteeseesi.';
+
+  @override
+  String get exportFailed =>
+      'Vienti epäonnistui. Yritä uudelleen tai ota yhteyttä tukeen.';
 }

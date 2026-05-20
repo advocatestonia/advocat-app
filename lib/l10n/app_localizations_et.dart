@@ -2283,6 +2283,20 @@ class AppLocalizationsEt extends AppLocalizations {
       'AI-assistent pakub õigusteavet, mitte õigusnõuannet. Olulistel teemadel pidage nõu kvalifitseeritud juristiga.';
 
   @override
+  String get chatDisclaimerSubtitle => 'AI-assistent · ei ole õigusabi';
+
+  @override
+  String get chatDisclaimerBannerFull =>
+      'Advocat on AI õigusteabe assistent, mitte advokaat. Käesolev teave ei tekita kliendisuhet, ei ole õigusnõuanne ning võib olla ebatäpne. Siduva õigusnõuande saamiseks pöörduge oma jurisdiktsioonis tegutseva litsentseeritud advokaadi poole. Me ei esinda teid.';
+
+  @override
+  String get chatDisclaimerFooter =>
+      'AI-genereeritud. Kontrollige litsentseeritud advokaadiga.';
+
+  @override
+  String get chatDisclaimerGotIt => 'Selge';
+
+  @override
   String get categoryChildren => 'Lapsed';
 
   @override
@@ -3608,4 +3622,55 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get increaseDependents => 'Suurenda';
+
+  @override
+  String get sensitiveConsentTitle =>
+      'Eriliigiliste isikuandmete töötlemise nõusolek';
+
+  @override
+  String get sensitiveConsentBody =>
+      'Dokumendid, mida soovite üles laadida, võivad sisaldada GDPR-i artikli 9 kohaseid eriliigilisi isikuandmeid — näiteks terviseandmeid, karistusregistri andmeid, biomeetrilisi andmeid või teavet teie rassilise päritolu, usu või seksuaalse sättumuse kohta.\n\nMe töötleme neid andmeid ainult selleks, et pakkuda teile AI õigusabi, hoiame need krüpteeritult teie isiklikul kontol ja ei kasuta neid kunagi mudelite treenimiseks. Saate nõusoleku igal ajal Seadetes tagasi võtta ja andmed kustutada.\n\nNõustudes annate sõnaselge nõusoleku GDPR artikli 9 lõike 2 punkti a alusel eriliigiliste isikuandmete töötlemiseks selleks otstarbeks.';
+
+  @override
+  String get sensitiveConsentExplicitCheckbox =>
+      'Annan sõnaselge nõusoleku eriliigiliste isikuandmete töötlemiseks (GDPR art 9(2)(a)).';
+
+  @override
+  String get sensitiveConsentRightToShareCheckbox =>
+      'Kinnitan, et mul on õigus neid andmeid jagada (andmed on minu omad või mul on teadlik/seaduslik alus kolmandate isikute andmete jagamiseks).';
+
+  @override
+  String get sensitiveConsentViewCategories => 'Mis loetakse eriliigiliseks? →';
+
+  @override
+  String get sensitiveConsentWithdrawAction =>
+      'Võta eriliigiliste andmete nõusolek tagasi';
+
+  @override
+  String get privacyAndData => 'PRIVAATSUS JA ANDMED';
+
+  @override
+  String get exportMyDataSubtitle =>
+      'Laadige alla koopia kõikidest oma isikuandmetest (GDPR art 15).';
+
+  @override
+  String get withdrawSensitiveConsent => 'Eriliigiliste andmete nõusolek';
+
+  @override
+  String get withdrawSensitiveConsentSubtitle =>
+      'Halda või võta tagasi nõusolek eriliigiliste isikuandmete töötlemiseks (GDPR art 9(2)(a)).';
+
+  @override
+  String get dataProcessingAgreement => 'Andmetöötlusleping';
+
+  @override
+  String get exportingData => 'Andmete eksport käib…';
+
+  @override
+  String get exportComplete =>
+      'Andmete eksport valmis — salvestatud teie seadmesse.';
+
+  @override
+  String get exportFailed =>
+      'Eksport ebaõnnestus. Proovige uuesti või võtke tugiteenusega ühendust.';
 }

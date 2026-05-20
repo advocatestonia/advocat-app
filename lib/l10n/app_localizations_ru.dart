@@ -2293,6 +2293,21 @@ class AppLocalizationsRu extends AppLocalizations {
       'ИИ-помощник предоставляет правовую информацию, а не юридическую консультацию. Всегда консультируйтесь с квалифицированным юристом.';
 
   @override
+  String get chatDisclaimerSubtitle =>
+      'ИИ-помощник · не юридическая консультация';
+
+  @override
+  String get chatDisclaimerBannerFull =>
+      'Advocat — это ИИ-помощник по правовой информации, а не адвокат. Сведения здесь не создают отношений «адвокат–клиент», не являются юридической консультацией и могут содержать ошибки. За обязывающим юридическим советом обратитесь к лицензированному адвокату вашей юрисдикции. Мы не представляем вас.';
+
+  @override
+  String get chatDisclaimerFooter =>
+      'Сгенерировано ИИ. Проверьте у лицензированного юриста.';
+
+  @override
+  String get chatDisclaimerGotIt => 'Понятно';
+
+  @override
   String get categoryChildren => 'Дети';
 
   @override
@@ -3621,4 +3636,56 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get increaseDependents => 'Увеличить';
+
+  @override
+  String get sensitiveConsentTitle =>
+      'Согласие на обработку чувствительных данных';
+
+  @override
+  String get sensitiveConsentBody =>
+      'Документы, которые вы собираетесь загрузить, могут содержать персональные данные особых категорий по ст. 9 GDPR — такие как медицинские записи, судимости, биометрические данные или сведения о вашем расовом происхождении, религии или сексуальной ориентации.\n\nМы обрабатываем эти данные исключительно для предоставления вам AI-юридической помощи, храним их в зашифрованном виде в вашем личном аккаунте и никогда не используем для обучения моделей. Вы можете отозвать согласие и удалить данные в любое время в Настройках.\n\nПринимая, вы даёте явное согласие по ст. 9(2)(a) GDPR на обработку данных особых категорий для этой цели.';
+
+  @override
+  String get sensitiveConsentExplicitCheckbox =>
+      'Я даю явное согласие на обработку данных особых категорий (ст. 9(2)(a) GDPR).';
+
+  @override
+  String get sensitiveConsentRightToShareCheckbox =>
+      'Подтверждаю, что у меня есть право делиться этими данными (данные принадлежат мне или у меня есть законные/информированные основания делиться данными третьих лиц).';
+
+  @override
+  String get sensitiveConsentViewCategories =>
+      'Что считается чувствительным? →';
+
+  @override
+  String get sensitiveConsentWithdrawAction =>
+      'Отозвать согласие на обработку чувствительных данных';
+
+  @override
+  String get privacyAndData => 'ПРИВАТНОСТЬ И ДАННЫЕ';
+
+  @override
+  String get exportMyDataSubtitle =>
+      'Скачать копию всех ваших персональных данных (ст. 15 GDPR).';
+
+  @override
+  String get withdrawSensitiveConsent => 'Согласие на чувствительные данные';
+
+  @override
+  String get withdrawSensitiveConsentSubtitle =>
+      'Управлять или отозвать согласие на обработку данных особых категорий (ст. 9(2)(a) GDPR).';
+
+  @override
+  String get dataProcessingAgreement => 'Соглашение об обработке данных';
+
+  @override
+  String get exportingData => 'Экспорт данных…';
+
+  @override
+  String get exportComplete =>
+      'Экспорт данных готов — сохранён на ваше устройство.';
+
+  @override
+  String get exportFailed =>
+      'Экспорт не удался. Попробуйте ещё раз или свяжитесь с поддержкой.';
 }

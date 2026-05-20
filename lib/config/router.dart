@@ -78,6 +78,9 @@ import '../features/admin/gold_review_screen.dart';
 // GDPR Art. 28 — Data Processing Agreement review screen, reachable from
 // the checkout-gate dialog and from the Privacy Policy screen.
 import '../features/legal/screens/dpa_screen.dart';
+// GDPR Art. 9 — manage / withdraw sensitive-data consent, reachable from
+// Settings → "Sensitive data consent".
+import '../features/legal/screens/sensitive_consent_manage_screen.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -153,6 +156,10 @@ abstract final class AppRoutes {
   /// GDPR Art. 28 — Data Processing Agreement review screen. Linked from
   /// the checkout-gate dialog and from the Privacy Policy.
   static const String dpa = '/legal/dpa';
+
+  /// GDPR Art. 9(2)(a) — manage / withdraw special-category consent.
+  /// Reached from Settings → Data & Privacy.
+  static const String sensitiveConsent = '/legal/sensitive-consent';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -514,6 +521,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.dpa,
         name: 'dpa',
         builder: (context, state) => const DpaScreen(),
+      ),
+
+      // ── GDPR Art. 9 — manage / withdraw sensitive-data consent ─────
+      GoRoute(
+        path: AppRoutes.sensitiveConsent,
+        name: 'sensitiveConsent',
+        builder: (context, state) => const SensitiveConsentManageScreen(),
       ),
 
       // ── Sofia Gold Corpus review (Phase A) ─────────────────────────

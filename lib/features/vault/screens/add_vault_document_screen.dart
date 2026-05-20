@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
+import '../../legal/utils/sensitive_consent_gate.dart';
 import 'document_vault_screen.dart';
 
 /// Detect MIME type from file extension.
@@ -63,6 +64,11 @@ class _AddVaultDocumentScreenState
 
   /// Pick any file (PDF, DOC, DOCX, TXT, images) using FilePicker.
   Future<void> _pickFileAndUpload() async {
+    // GDPR Art. 9(2)(a) — explicit consent before opening the OS picker.
+    final consented = await ensureSensitiveConsent(context, ref);
+    if (!consented) return;
+    if (!mounted) return;
+
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
@@ -116,6 +122,11 @@ class _AddVaultDocumentScreenState
 
   /// Take a photo with the camera and upload it.
   Future<void> _scanAndUpload() async {
+    // GDPR Art. 9(2)(a) — explicit consent before the camera fires.
+    final consented = await ensureSensitiveConsent(context, ref);
+    if (!consented) return;
+    if (!mounted) return;
+
     final picker = ImagePicker();
     final picked = await picker.pickImage(
       source: ImageSource.camera,

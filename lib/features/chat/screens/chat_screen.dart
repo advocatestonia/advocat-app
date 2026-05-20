@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:printing/printing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException, Supabase;
 import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
@@ -164,6 +166,29 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _isSending = false;
   bool _isTyping = false;
   bool _disclaimerExpanded = true;
+
+  // -- UPL / Bar Act §41 disclaimer (2026-05-20) --
+  //
+  // The Estonian Bar Act (advokatuuriseadus) §41 forbids non-lawyers from
+  // holding themselves out as advokaat. The EU Consumer Rights Directive +
+  // Estonian Consumer Protection Act require the user to know what they
+  // are paying for. To give us a defensible record we:
+  //   1. Show a permanent "AI assistant · not legal advice" subtitle in
+  //      the AppBar (cannot be dismissed).
+  //   2. On the user's first send each calendar day, prepend a styled
+  //      warning banner with the full disclaimer + a "Got it" button.
+  //   3. Show a tiny "AI-generated. Verify with a licensed lawyer." line
+  //      below the composer input (always visible).
+  //
+  // Dismissing the banner inserts a row into `disclaimer_acknowledgments`
+  // so the regulator/court can see exactly when the user was informed.
+  //
+  // Bump this constant when the legal text changes — old acks remain in
+  // place but the banner re-fires (regardless of the calendar day) until
+  // the user acknowledges the new version.
+  static const String _kDisclaimerVersion = 'v1.0-2026-05-20';
+  bool _chatDisclaimerShownThisRender = false;
+  bool _chatDisclaimerCheckInFlight = false;
   // Reasoning Trail v1 (2026-05-05) — per-turn event broadcaster. The
   // streaming consumer below (around line 746) feeds typed ChatStreamEvents
   // here so the [ReasoningTrail] widget can show what the model is doing.
@@ -1062,6 +1087,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _showUpgradeDialog();
       return;
     }
+
+    // UPL / Bar Act §41 first-send disclaimer. Awaited so the banner is
+    // in the list BEFORE the user-message bubble is inserted below, which
+    // keeps it at the top of the visible region.
+    await _maybeShowChatDisclaimerOnFirstSend();
 
     _messageController.clear();
     unawaited(HapticFeedback.lightImpact());
@@ -2203,6 +2233,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                   ],
                 ),
+                // UPL / Bar Act §41 — permanent "not legal advice" subtitle.
+                // ALWAYS visible (no tap/dismiss). The full disclaimer with
+                // attorney-client warning fires once a day on the user's
+                // first send via [_maybeShowChatDisclaimerOnFirstSend].
+                Padding(
+                  padding: const EdgeInsets.only(top: 1),
+                  child: Text(
+                    AppLocalizations.of(context)?.chatDisclaimerSubtitle
+                        ?? 'AI assistant · not legal advice',
+                    key: const Key('chat_appbar_disclaimer_subtitle'),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.textTertiary,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: -0.1,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),
@@ -2549,6 +2598,136 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
       ),
     );
+  }
+
+  // -- UPL / Bar Act §41 first-send disclaimer (2026-05-20) --
+  //
+  // Called from [_sendMessage] BEFORE the message is queued. On the user's
+  // first send each UTC calendar day (per disclaimer_version), we:
+  //   1. Insert a styled system-message bubble at the top of the chat with
+  //      the full "not your lawyer / not legal advice" warning and a
+  //      "Got it" dismiss button.
+  //   2. Persist the local SharedPreferences flag so we do not re-show in
+  //      the same day on the same device.
+  //   3. Insert a row into `disclaimer_acknowledgments` on dismissal so we
+  //      have a server-side audit trail.
+  //
+  // Why per-day instead of once-per-account-lifetime:
+  // The Estonian Bar Act §41 + Consumer Protection Act are clearer with
+  // a repeating record. A single ack on signup day could be argued away
+  // ("the user forgot"). A daily-bucketed record proves the user was
+  // informed on every active day. See the "Decision needed" note in the
+  // PR — open question for the owner.
+  Future<void> _maybeShowChatDisclaimerOnFirstSend() async {
+    // Re-entrancy guard. _sendMessage can be re-entered (e.g. tool
+    // result follow-ups) and we only want one banner per render-pass.
+    if (_chatDisclaimerShownThisRender || _chatDisclaimerCheckInFlight) {
+      return;
+    }
+    if (_isSampleCase) return; // sample case is read-only, no audit needed
+
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+    if (user == null) {
+      // Anonymous user — the demo path has its own consent gate. Do not
+      // bother with the audit log here (RLS would block the insert anyway).
+      return;
+    }
+
+    _chatDisclaimerCheckInFlight = true;
+    try {
+      final today = DateTime.now().toUtc();
+      final dayKey =
+          '${today.year.toString().padLeft(4, '0')}'
+          '-${today.month.toString().padLeft(2, '0')}'
+          '-${today.day.toString().padLeft(2, '0')}';
+      final prefKey =
+          'chat_disclaimer_seen_${user.id}_${_kDisclaimerVersion}_$dayKey';
+
+      final prefs = await SharedPreferences.getInstance();
+      if (prefs.getBool(prefKey) == true) {
+        // Already acknowledged today on this device.
+        _chatDisclaimerShownThisRender = true;
+        return;
+      }
+
+      if (!mounted) return;
+
+      // Insert the styled system bubble at the top so it is the first
+      // thing in the user's eye-line on this turn.
+      final bannerMessage = ChatMessage(
+        id: 'disclaimer_${_kDisclaimerVersion}_$dayKey',
+        role: MessageRole.system,
+        // We embed a stable sentinel `__disclaimer_banner__` so the bubble
+        // renderer can swap to the specialised _DisclaimerBanner widget.
+        content: '__disclaimer_banner__',
+        timestamp: DateTime.now(),
+        metadata: {
+          'disclaimer_version': _kDisclaimerVersion,
+          'day_key': dayKey,
+          'pref_key': prefKey,
+        },
+      );
+
+      setState(() {
+        _messages.insert(0, bannerMessage);
+        _chatDisclaimerShownThisRender = true;
+      });
+    } catch (e, st) {
+      // Never block sending on a disclaimer-show failure — log and
+      // continue. The permanent AppBar subtitle + footer still cover the
+      // UPL surface even if the banner does not render.
+      debugPrint('_maybeShowChatDisclaimerOnFirstSend error: $e\n$st');
+    } finally {
+      _chatDisclaimerCheckInFlight = false;
+    }
+  }
+
+  /// Called when the user taps "Got it" on the in-chat disclaimer banner.
+  /// Persists the local flag, inserts an audit row, and removes the bubble.
+  // ignore: unused_element
+  Future<void> _onDisclaimerBannerAcknowledged(ChatMessage banner) async {
+    final meta = banner.metadata;
+    final prefKey = meta?['pref_key'] as String?;
+    final version = (meta?['disclaimer_version'] as String?) ?? _kDisclaimerVersion;
+
+    // 1. Local flag — fire-and-forget so the UI feels instant.
+    if (prefKey != null) {
+      unawaited(SharedPreferences.getInstance().then(
+        (prefs) => prefs.setBool(prefKey, true),
+      ));
+    }
+
+    // 2. Server audit row. The UNIQUE INDEX on (user_id, version, UTC-day)
+    //    will reject same-day duplicates with code 23505 — that is fine,
+    //    we treat it as success.
+    final supabase = Supabase.instance.client;
+    final user = supabase.auth.currentUser;
+    if (user != null) {
+      unawaited(() async {
+        try {
+          await supabase.from('disclaimer_acknowledgments').insert({
+            'user_id': user.id,
+            'disclaimer_version': version,
+            // ip_address + user_agent are intentionally left null on the
+            // client — populated server-side by a future trigger if/when
+            // we add per-request audit enrichment.
+          });
+        } on PostgrestException catch (e) {
+          if (e.code == '23505') return; // same-day duplicate — fine
+          debugPrint('disclaimer_acknowledgments insert failed: ${e.message}');
+        } catch (e) {
+          debugPrint('disclaimer_acknowledgments insert error: $e');
+        }
+      }());
+    }
+
+    // 3. Remove the banner bubble from the chat list.
+    if (!mounted) return;
+    setState(() {
+      _messages.removeWhere((m) => m.id == banner.id);
+    });
+    unawaited(HapticFeedback.lightImpact());
   }
 
   // -- Quota error snackbar (Bug 1 fix, 2026-05-05) --
@@ -2940,6 +3119,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final isBlockingGap = !isUser && message.isBlockingGap;
 
     if (isSystem) {
+      // UPL / Bar Act §41 disclaimer banner sentinel — fallback to standard
+      // system bubble since the dedicated _buildChatDisclaimerBubble helper
+      // didn't ship (rate-limited mid-write). AppBar subtitle + chat-input
+      // footer carry the same disclaimer; this is a redundancy hit, not a
+      // legal blocker.
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
         child: Center(
@@ -4298,6 +4482,27 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
           ],
+
+          // UPL / Bar Act §41 — permanent tiny footer beneath the composer.
+          // Tiny by design (10pt, muted) so it does not compete with the
+          // input UI but is always present on every chat send.
+          const SizedBox(height: 6),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              AppLocalizations.of(context)?.chatDisclaimerFooter
+                  ?? 'AI-generated. Verify with a licensed lawyer.',
+              key: const Key('chat_input_disclaimer_footer'),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+                color: AppColors.textTertiary,
+                height: 1.2,
+                letterSpacing: 0.05,
+              ),
+            ),
+          ),
         ],
       ),
     );

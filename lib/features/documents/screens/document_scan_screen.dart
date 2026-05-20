@@ -16,6 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
+import '../../legal/utils/sensitive_consent_gate.dart';
 
 // ---------------------------------------------------------------------------
 // Scan state machine
@@ -169,6 +170,13 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
   // ── Actions ──────────────────────────────────────────────────────────────
 
   Future<void> _takePhoto() async {
+    // GDPR Art. 9(2)(a) — explicit consent before camera fires. Fast-path
+    // returns immediately if the user has an active consent row; otherwise
+    // a modal is shown. We bail out if the user declines.
+    final consented = await ensureSensitiveConsent(context, ref);
+    if (!consented) return;
+    if (!mounted) return;
+
     if (kIsWeb) {
       // On web, use image_picker which triggers the browser's native camera.
       try {
@@ -231,6 +239,15 @@ class _DocumentScanScreenState extends ConsumerState<DocumentScanScreen>
 
   /// Pick any supported file (PDF, DOC, DOCX, TXT, images) and upload directly.
   Future<void> _pickFileAndUpload() async {
+    // GDPR Art. 9(2)(a) — gate before opening the OS file picker. We do
+    // this BEFORE the picker because once the user has selected a file
+    // they expect it to upload — re-asking for consent at that point is
+    // a worse UX and a worse legal posture (we've already touched the
+    // metadata of a sensitive file before the lawful basis was recorded).
+    final consented = await ensureSensitiveConsent(context, ref);
+    if (!consented) return;
+    if (!mounted) return;
+
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: [
