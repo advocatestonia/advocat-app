@@ -170,7 +170,21 @@ serve(async (req: Request) => {
       return jsonError("DPA verification failed", 500);
     }
 
-    // Build Stripe Checkout Session parameters
+    // Build Stripe Checkout Session parameters.
+    //
+    // VAT model (2026-05-20): landing pricing shows NET prices (e.g. €19.99
+    // / month) with a "+ 22% VAT" line below. Stripe Tax adds the tax on top
+    // at checkout based on the customer's billing country:
+    //   - Estonian retail (B2C): + 22% käibemaks
+    //   - EU B2B with valid VAT ID: reverse-charge, +0%
+    //   - Non-EU: per Stripe Tax rules per country
+    //
+    // For this to work we need ALL of:
+    //   - tax_behavior: 'exclusive' on the price_data (net price stays net)
+    //   - automatic_tax: { enabled: true } (Stripe Tax computes the rate)
+    //   - billing_address_collection: 'required' (Stripe needs a country)
+    //   - tax_id_collection: { enabled: true } (B2B can claim reverse-charge)
+    //   - customer_update: { address, name } (persist billing data for renewals)
     const sessionParams: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ["card", "link"],
       mode: "subscription",
@@ -182,10 +196,17 @@ serve(async (req: Request) => {
             unit_amount: priceEntry.amount,
             recurring: { interval: priceEntry.interval },
             product_data: { name: priceEntry.name },
+            tax_behavior: "exclusive",
           },
           quantity: 1,
         },
       ],
+      // Stripe Tax computes VAT per customer country at checkout.
+      automatic_tax: { enabled: true },
+      // Required for VAT calculation — Stripe needs a country.
+      billing_address_collection: "required",
+      // Lets EU B2B customers enter their VAT ID for reverse-charge (+0% VAT).
+      tax_id_collection: { enabled: true },
       success_url: success_url || "https://advocat.ee/payment-success.html",
       cancel_url: cancel_url || "https://advocat.ee/payment-cancel.html",
       metadata: {
