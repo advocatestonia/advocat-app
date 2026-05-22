@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../config/router.dart';
@@ -14,7 +15,13 @@ import '../providers/auth_provider.dart';
 
 /// Clean, minimal login screen for Advocat.
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, this.initialEmail});
+
+  /// Email to pre-fill in the email field on mount. Used by the
+  /// register screen's "already registered → sign in" SnackBar
+  /// (FIX-WAVE 6, 2026-05-20) to drop the user one tap away from a
+  /// successful login.
+  final String? initialEmail;
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -35,9 +42,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   @override
   void initState() {
     super.initState();
+    // Pre-fill email if the route passed one (e.g. from the register
+    // screen's "email already registered" SnackBar action).
+    final seed = widget.initialEmail?.trim();
+    if (seed != null && seed.isNotEmpty) {
+      _emailController.text = seed;
+    }
     // Trigger fade-in after first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) setState(() => _opacity = 1.0);
+      // Move focus to the password field so the user just types their
+      // password and submits — the email is already known.
+      if (mounted && seed != null && seed.isNotEmpty) {
+        _passwordFocusNode.requestFocus();
+      }
     });
     // Listen to focus changes for field animations
     _emailFocusNode.addListener(() => setState(() {}));
@@ -480,8 +498,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Google "G" logo — inline, no network dependency
-                    const _GoogleGLogo(size: 20),
+                    // Google "G" logo — official 4-colour SVG
+                    SvgPicture.asset(
+                      'assets/icons/google_g.svg',
+                      width: 20,
+                      height: 20,
+                    ),
                     const SizedBox(width: 12),
                     Text(
                       l.continueWithGoogle,
@@ -677,54 +699,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           ),
           const SizedBox(height: 4),
         ],
-      ),
-    );
-  }
-}
-
-/// Google "G" logo as 4 colored circles arranged in the classic pattern.
-class _GoogleGLogo extends StatelessWidget {
-  const _GoogleGLogo({this.size = 20});
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    // Use the official Google colors in a simple 2x2 grid pattern
-    return SizedBox(
-      width: size,
-      height: size,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _dot(const Color(0xFFEA4335), size * 0.42), // red top-left
-              SizedBox(width: size * 0.08),
-              _dot(const Color(0xFF4285F4), size * 0.42), // blue top-right
-            ],
-          ),
-          SizedBox(height: size * 0.08),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _dot(const Color(0xFFFBBC05), size * 0.42), // yellow bottom-left
-              SizedBox(width: size * 0.08),
-              _dot(const Color(0xFF34A853), size * 0.42), // green bottom-right
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _dot(Color color, double dotSize) {
-    return Container(
-      width: dotSize,
-      height: dotSize,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
       ),
     );
   }

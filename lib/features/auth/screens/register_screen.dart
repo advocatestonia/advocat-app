@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -213,6 +214,52 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
       );
   }
 
+  /// True if the Supabase auth error string indicates the email is
+  /// already on file. Supabase has shipped a few different shapes over
+  /// time (the legacy gotrue prose, the new error-code style, and a
+  /// localized variant); match defensively on substrings.
+  bool _isEmailAlreadyRegistered(String message) {
+    final m = message.toLowerCase();
+    return m.contains('user already registered') ||
+        m.contains('user_already_exists') ||
+        m.contains('already registered') ||
+        m.contains('already been registered') ||
+        m.contains('email already in use') ||
+        m.contains('email address is already in use');
+  }
+
+  /// Shows the "this email is already registered — sign in?" SnackBar
+  /// with a one-tap action to LoginScreen, email pre-filled via the
+  /// `?email=` query param (LoginScreen reads it on init).
+  void _showEmailAlreadyRegisteredSnackBar(String email) {
+    final l10n = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          key: const Key('email-already-registered-snackbar'),
+          content: Text(
+            l10n?.emailAlreadyRegistered ??
+                'This email is already registered. Want to sign in?',
+          ),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 6),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppRadius.sm),
+          ),
+          action: SnackBarAction(
+            label: l10n?.actionSignIn ?? 'Sign in',
+            onPressed: () {
+              final query = email.isEmpty
+                  ? ''
+                  : '?email=${Uri.encodeQueryComponent(email)}';
+              context.go('${AppRoutes.login}$query');
+            },
+          ),
+        ),
+      );
+  }
+
   /// Checks GDPR consent before navigating to home.
   Future<void> _ensureGdprConsentThenNavigate() async {
     if (_navigating) return;
@@ -275,7 +322,17 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
       if (next.isAuthenticated) {
         _ensureGdprConsentThenNavigate();
       } else if (next.hasError && next.errorMessage != null) {
-        _showSnackBar(next.errorMessage!);
+        // FIX-WAVE 6 (2026-05-20 — onboarding speedup E): if Supabase
+        // says the email is already on file, surface a one-tap path to
+        // the login screen with the email pre-filled, instead of a
+        // dead-end "user already registered" toast.
+        if (_isEmailAlreadyRegistered(next.errorMessage!)) {
+          _showEmailAlreadyRegisteredSnackBar(
+            _emailController.text.trim(),
+          );
+        } else {
+          _showSnackBar(next.errorMessage!);
+        }
         ref.read(authControllerProvider.notifier).clearError();
       }
     });
@@ -703,7 +760,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen>
                           onPressed: authState.isLoading
                               ? null
                               : _handleGoogleRegister,
-                          icon: const _GoogleGLogo(size: 20),
+                          icon: SvgPicture.asset(
+                            'assets/icons/google_g.svg',
+                            width: 20,
+                            height: 20,
+                          ),
                           label: Text(
                               AppLocalizations.of(context)
                                       ?.continueWithGoogle ??
@@ -833,49 +894,3 @@ class _AnimatedPasswordStrengthIndicator extends StatelessWidget {
   }
 }
 
-/// Google "G" logo as 4 colored circles arranged in the classic pattern.
-class _GoogleGLogo extends StatelessWidget {
-  const _GoogleGLogo({this.size = 20});
-  final double size;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: size,
-      height: size,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _dot(const Color(0xFFEA4335), size * 0.42),
-              SizedBox(width: size * 0.08),
-              _dot(const Color(0xFF4285F4), size * 0.42),
-            ],
-          ),
-          SizedBox(height: size * 0.08),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _dot(const Color(0xFFFBBC05), size * 0.42),
-              SizedBox(width: size * 0.08),
-              _dot(const Color(0xFF34A853), size * 0.42),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _dot(Color color, double dotSize) {
-    return Container(
-      width: dotSize,
-      height: dotSize,
-      decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ),
-    );
-  }
-}
