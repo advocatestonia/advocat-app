@@ -28,6 +28,7 @@ import {
   jsonOk,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { checkAndRecordRateLimit } from "../_shared/rate_limit.ts";
 import {
   buildTelegramMessage,
   sanitiseMessage,
@@ -95,6 +96,30 @@ serve(async (req) => {
   // Anonymous principals get IDs like `anon:<ip>`. We never write that
   // string into a uuid column — we leave user_id NULL instead.
   const isAuthenticated = !principalId.startsWith("anon:");
+  const anonIp = principalId.startsWith("anon:")
+    ? principalId.slice("anon:".length)
+    : null;
+
+  // Anon abuse burst gate (DB-backed sliding 60s window via shared util).
+  // The per-minute soft gate in requireUserWithRateLimit is in-process and
+  // can be bypassed by an attacker who burns cold starts.  The shared
+  // hit_rate_limit RPC is authoritative across replicas.  Bucketed by IP
+  // so each abuser only hurts themselves.  The 5/day enforcement happens
+  // against the support_tickets row count below — this is just the burst
+  // guard.
+  if (!isAuthenticated && anonIp) {
+    const anonBurst = await checkAndRecordRateLimit({
+      bucket: "support_anon",
+      principal: `support_anon:${anonIp}`,
+      maxPerMinute: 5,
+    });
+    if (!anonBurst.allowed) {
+      return jsonError("Too many submissions", 429, {
+        reason: "rate_limited",
+        retry_after_sec: 60,
+      });
+    }
+  }
 
   // Parse body.
   let raw: RawBody;
@@ -173,7 +198,7 @@ serve(async (req) => {
   });
 
   // Per-user daily cap (10 tickets / 24h) for authenticated users.
-  // The per-minute gate above already limits anonymous bursts.
+  // Anon callers get a stricter 5 tickets / 24h / IP cap below.
   if (isAuthenticated) {
     const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
     const { count } = await supabase
@@ -182,6 +207,23 @@ serve(async (req) => {
       .eq("user_id", principalId)
       .gte("created_at", since);
     if ((count ?? 0) >= 10) {
+      return jsonError("Daily ticket limit reached", 429, {
+        reason: "rate_limited",
+        retry_after_sec: 86400,
+      });
+    }
+  } else if (anonIp) {
+    // Anon daily cap: 5 tickets / 24h / IP.  Counted against the
+    // ip_address column, NULL-safe — anon rows always have user_id=NULL
+    // and ip_address set from x-forwarded-for.
+    const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+    const { count } = await supabase
+      .from("support_tickets")
+      .select("id", { count: "exact", head: true })
+      .is("user_id", null)
+      .eq("ip_address", anonIp)
+      .gte("created_at", since);
+    if ((count ?? 0) >= 5) {
       return jsonError("Daily ticket limit reached", 429, {
         reason: "rate_limited",
         retry_after_sec: 86400,

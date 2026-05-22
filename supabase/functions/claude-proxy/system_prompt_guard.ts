@@ -122,7 +122,7 @@ export function validateSystemPrompt(system: unknown): GuardResult {
     if (system.length > MAX_SYSTEM_BYTES) {
       return {
         kind: "reject",
-        reason: "system prompt too large (max 50 KB)",
+        reason: "system prompt too large (max 200 KB)",
       };
     }
     if (startsWithMarker(system)) return { kind: "allow" };
@@ -150,7 +150,7 @@ export function validateSystemPrompt(system: unknown): GuardResult {
     if (totalBytes > MAX_SYSTEM_BYTES) {
       return {
         kind: "reject",
-        reason: "system prompt too large (max 50 KB across all blocks)",
+        reason: "system prompt too large (max 200 KB across all blocks)",
       };
     }
     if (!firstText) {

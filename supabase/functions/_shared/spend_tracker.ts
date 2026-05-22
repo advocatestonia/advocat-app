@@ -37,6 +37,7 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 
 const DEFAULT_DAILY_CAP_CENTS = 50_000; // $500
+const DEFAULT_ANON_DAILY_CAP_CENTS = 5_000; // $50 — anon-traffic-only sub-cap
 const DEFAULT_WARN_RATIO = 0.85;
 
 export const DAILY_CAP_CENTS = (() => {
@@ -44,6 +45,20 @@ export const DAILY_CAP_CENTS = (() => {
   if (!raw) return DEFAULT_DAILY_CAP_CENTS;
   const n = Number.parseInt(raw, 10);
   return Number.isFinite(n) && n > 0 ? n : DEFAULT_DAILY_CAP_CENTS;
+})();
+
+/**
+ * Hard sub-cap on anonymous (demo) traffic spend. Defence in depth: even
+ * though anon requests are clamped to ANON_MAX_TOKENS and the 3/min demo
+ * limit, a sustained botnet still costs real money. This cap stops new
+ * anon calls once the day's anon-attributed spend exceeds the threshold,
+ * while authenticated users continue under the main $500/day cap.
+ */
+export const ANON_DAILY_CAP_CENTS = (() => {
+  const raw = Deno.env.get("ANTHROPIC_ANON_DAILY_CAP_CENTS");
+  if (!raw) return DEFAULT_ANON_DAILY_CAP_CENTS;
+  const n = Number.parseInt(raw, 10);
+  return Number.isFinite(n) && n > 0 ? n : DEFAULT_ANON_DAILY_CAP_CENTS;
 })();
 
 export const WARN_RATIO = (() => {

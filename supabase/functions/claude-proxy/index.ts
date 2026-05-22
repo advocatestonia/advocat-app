@@ -101,6 +101,7 @@ import {
 //   • rate_limit     — DB-backed sliding-window per-user / per-IP limiter
 // Both are best-effort: fail OPEN on DB errors so the proxy stays up.
 import {
+  ANON_DAILY_CAP_CENTS,
   capExceededBody,
   checkDailyCap,
   DAILY_CAP_CENTS,
@@ -369,38 +370,54 @@ serve(async (req) => {
     // new requests with 503 once the cap is hit. The Anthropic CONSOLE limit
     // is the hard cap — this is defence-in-depth that gives us better UX
     // (503 "try later" vs broken chat) and a chance to pause before hitting
-    // the console cap. Skip for anon callers — their volume is bounded by
-    // ANON_MAX_TOKENS and the 1/min demo limit; the cap is for paid abuse.
-    if (!isAnon) {
+    // the console cap.
+    //
+    // Two-tier check:
+    //   • Authenticated callers ⇒ main $500/day cap.
+    //   • Anonymous demo callers ⇒ stricter $50/day sub-cap (override via
+    //     ANTHROPIC_ANON_DAILY_CAP_CENTS). Even though anon traffic is
+    //     already bounded by ANON_MAX_TOKENS + 3/min demo limit, a sustained
+    //     botnet can still drain real money. The lower anon cap stops the
+    //     bleed long before the global $500 cap fires.
+    {
       const spendCheck = await checkDailyCap();
-      if (!spendCheck.allowed) {
+      const effectiveCap = isAnon ? ANON_DAILY_CAP_CENTS : DAILY_CAP_CENTS;
+      const capBreached = isAnon
+        ? spendCheck.spentCents >= ANON_DAILY_CAP_CENTS
+        : !spendCheck.allowed;
+      if (capBreached) {
         // Cap breached — refuse and log.
         logIncident({
-          kind: "cap_breach",
+          kind: isAnon ? "anon_cap_breach" : "cap_breach",
           severity: "critical",
           source: "claude-proxy",
-          message: `Anthropic daily cap ${DAILY_CAP_CENTS}c reached`,
+          message: isAnon
+            ? `Anthropic anon daily cap ${ANON_DAILY_CAP_CENTS}c reached`
+            : `Anthropic daily cap ${DAILY_CAP_CENTS}c reached`,
           details: {
             spent_cents: spendCheck.spentCents,
-            cap_cents: spendCheck.capCents,
+            cap_cents: effectiveCap,
+            anon: isAnon,
           },
           principal: principalForHardCap,
         }).catch(() => {});
-        return new Response(
-          JSON.stringify(capExceededBody(spendCheck.spentCents)),
-          {
-            status: 503,
-            headers: {
-              ...corsHeaders,
-              "Content-Type": "application/json",
-              "Retry-After": "3600",
-            },
+        // Body shape matches the main cap path (capExceededBody) so clients
+        // see one consistent "service-unavailable" surface either way.
+        const body = capExceededBody(spendCheck.spentCents);
+        body.cap_cents = effectiveCap;
+        if (isAnon) body.anon_cap = true;
+        return new Response(JSON.stringify(body), {
+          status: 503,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+            "Retry-After": "3600",
           },
-        );
+        });
       }
-      if (spendCheck.warning) {
-        // Approaching cap — log so the owner can top up Anthropic or raise
-        // the limit before traffic gets refused.
+      if (!isAnon && spendCheck.warning) {
+        // Approaching main cap — log so the owner can top up Anthropic or
+        // raise the limit before traffic gets refused.
         console.warn(
           `claude-proxy: anthropic daily spend at ${spendCheck.spentCents}c / ${spendCheck.capCents}c`,
         );
