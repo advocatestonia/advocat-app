@@ -182,7 +182,7 @@ class SettingsScreen extends ConsumerWidget {
               AppIcons.chevronRight,
               color: AppColors.textTertiary,
             ),
-            onTap: () => _launchUrl('https://advocat.ee/dpa.html'),
+            onTap: () => context.push(AppRoutes.dpa),
           ),
           _SettingsTile(
             icon: AppIcons.deleteAccount,

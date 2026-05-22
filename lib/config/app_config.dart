@@ -76,7 +76,7 @@ class AppConfig {
 
   // ── General ───────────────────────────────────────────────────────────
   static const String appName = 'AI Legal Defense';
-  static const String appVersion = '1.0.0';
+  static const String appVersion = '2.2.0';
 
   static const bool isProduction = bool.fromEnvironment(
     'PRODUCTION',
