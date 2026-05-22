@@ -24,7 +24,12 @@ import {
   estimateCostCents,
   formatTelemetry,
   HAIKU_MODEL,
+  HAIKU_MODEL_ID,
+  modelIdFor,
+  type RoutingSignals,
+  selectModel,
   SONNET_MODEL,
+  SONNET_MODEL_ID,
 } from "./model_router.ts";
 import {
   applyActiveCaseToBody,
@@ -1274,6 +1279,87 @@ serve(async (req) => {
       }
     }
 
+    // ── Signal-based model router (FIX-WAVE 13, 2026-05-20) ─────────────
+    // Runs AFTER the LLM-classifier above and AFTER halt-rail / corrections
+    // retrieval have populated their signals, so it has the full picture
+    // before the Anthropic call. The classifier-picked body.model is the
+    // baseline; the signal-based selector may override it when any of the
+    // hard rules fire (advice-correction, halt-rail, planner, long contract,
+    // citation chunks for paid users, adversarial). Force-* env vars are
+    // honoured first as emergency switches.
+    //
+    // Conservative tier inference: anon → free; everyone else → free unless
+    // body.user_tier / body.tier explicitly says otherwise. Most paid users
+    // hit a Sonnet rule on signals alone (citations, halt, planner, contract),
+    // so this conservative default rarely under-routes them.
+    const bodyTierRaw = String(
+      (body as { user_tier?: unknown }).user_tier ??
+        (body as { tier?: unknown }).tier ?? "",
+    ).toLowerCase();
+    const userTier: "free" | "counsel" | "pro" =
+      bodyTierRaw === "pro"
+        ? "pro"
+        : bodyTierRaw === "counsel"
+        ? "counsel"
+        : "free";
+    // Cheap input-token estimate: ~4 chars/token across messages + system.
+    const estimatedInputTokens = (() => {
+      let chars = 0;
+      if (Array.isArray(body.messages)) {
+        for (const m of body.messages) {
+          const c = (m as { content?: unknown }).content;
+          if (typeof c === "string") chars += c.length;
+          else if (Array.isArray(c)) {
+            for (const blk of c) {
+              const t = (blk as { text?: unknown }).text;
+              if (typeof t === "string") chars += t.length;
+            }
+          }
+        }
+      }
+      if (typeof body.system === "string") chars += body.system.length;
+      return Math.ceil(chars / 4);
+    })();
+    const bodyMode = typeof (body as { mode?: unknown }).mode === "string"
+      ? ((body as { mode: string }).mode)
+      : undefined;
+    const signals: RoutingSignals = {
+      isAnon,
+      userTier,
+      inputTokens: estimatedInputTokens,
+      isLegalPlanner: plannerMode,
+      isContractReview: bodyMode === "contract_review",
+      haltRailTriggered: haltDetection.isSerious,
+      adviceCorrectionFired: globalCorrectionsRows.length > 0,
+      // Adversarial v3 is gated by env + runtime decision deep in the stream
+      // branch; surface the env flag here so the router can pre-upgrade.
+      adversarialFlag:
+        ((Deno.env.get("CONSILIUM_V3_ENABLED") ?? "").toLowerCase().trim() ===
+            "true" ||
+          Deno.env.get("CONSILIUM_V3_ENABLED") === "1"),
+      hasCitationChunks: Array.isArray(ragChunks) && ragChunks.length > 0,
+      mode: bodyMode,
+    };
+    const routingDecision = selectModel(signals);
+    const routedModelId = modelIdFor(routingDecision.model);
+    const modelBeforeSignalRouter = body.model;
+    body.model = routedModelId;
+    // Per-request structured log so we can audit routing in production.
+    console.log(
+      "[router]",
+      JSON.stringify({
+        tier: userTier,
+        tokens: estimatedInputTokens,
+        model: routingDecision.model,
+        reason: routingDecision.reason,
+        previous_model: modelBeforeSignalRouter,
+        halt: signals.haltRailTriggered,
+        planner: signals.isLegalPlanner,
+        chunks: signals.hasCitationChunks,
+        correction: signals.adviceCorrectionFired,
+      }),
+    );
+
     // ── Tool-use injection ────────────────────────────────────────────────
     // Must be BEFORE the streaming branch so tools are available in BOTH
     // streaming and non-streaming modes. Without this, Claude sees no tools
@@ -1826,20 +1912,31 @@ serve(async (req) => {
       // X-Advocat-Model-Used response header so ops can grep for fallback
       // activations and clients can route quality signals.
       const claudeModelUsed = (body.model as string) ?? "claude-haiku-4-5-20251001";
+      // FIX-WAVE 13: surface the signal-router decision so we can audit which
+      // rule caused this turn to pick haiku vs sonnet (both in JSON body and
+      // response header for grep-friendly access from edge logs).
+      const routingReason = routingDecision.reason;
       const augmented = persistMessageId !== null
         ? {
           ...result,
           citations,
           message_id: persistMessageId,
           model_used: claudeModelUsed,
+          routing_reason: routingReason,
         }
-        : { ...result, citations, model_used: claudeModelUsed };
+        : {
+          ...result,
+          citations,
+          model_used: claudeModelUsed,
+          routing_reason: routingReason,
+        };
       return new Response(JSON.stringify(augmented), {
         status: claudeResponse.status,
         headers: {
           ...corsHeaders,
           "Content-Type": "application/json",
           "X-Advocat-Model-Used": claudeModelUsed,
+          "X-Advocat-Routing-Reason": routingReason,
         },
       });
     }
