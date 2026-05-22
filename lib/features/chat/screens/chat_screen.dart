@@ -56,7 +56,6 @@ import '../quick_profile/quick_profile_intake.dart';
 import '../../../services/user_memory_service.dart';
 import '../../case_memory/widgets/active_case_chip.dart';
 import '../../case_memory/widgets/deadline_banner.dart';
-import '../../../widgets/support/panic_sheet.dart' show PanicSession, PanicJurisdiction;
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -294,28 +293,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   String? _detectedContractTypeHint;
   String? _detectedContractFilename;
 
-  // -- SOS / Panic Mode prompt prefix (2026-05-20) --
-  //
-  // If the user reached this screen via the panic sheet's "Talk to Advocat
-  // now" card, `PanicSession.active` is true. We consume the flag in
-  // initState (one-shot) and stash a short, action-only system-prompt
-  // prefix in [_panicPromptPrefix]. The prefix is prepended to the dynamic
-  // `ctx` (client knowledge + case file) on every outgoing turn for the
-  // lifetime of THIS chat instance — i.e. until the user navigates away
-  // and reopens the chat normally. This matches the DEPT 2 SOS decision:
-  // single jurisdiction, action steps only, no preamble.
-  String? _panicPromptPrefix;
-
   @override
   void initState() {
     super.initState();
-
-    // Consume the panic-session flag BEFORE any async work so we don't lose
-    // the state across rebuilds. Returns active=false on a normal nav.
-    final panic = PanicSession.consume();
-    if (panic.active) {
-      _panicPromptPrefix = _buildPanicPrefix(panic.jurisdiction);
-    }
 
     _loadMessages();
     // Sample-case mode (backlog #36) skips every network side-effect:
@@ -329,23 +309,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
   }
 
-  /// Builds the panic-mode system-prompt prefix. Kept short and jurisdiction-
-  /// scoped per DEPT 2 SOS spec: <60 words, action steps only, no preamble.
-  String _buildPanicPrefix(PanicJurisdiction jurisdiction) {
-    final jurName = switch (jurisdiction) {
-      PanicJurisdiction.ee => 'Estonia (KrMS, KarS, väärteomenetluse seadustik)',
-      PanicJurisdiction.fi =>
-        'Finland (esitutkintalaki, pakkokeinolaki, poliisilaki)',
-      PanicJurisdiction.other => 'the user\'s current jurisdiction',
-    };
-    return 'URGENT: the user is currently being detained, questioned, or '
-        'served a paper RIGHT NOW. Respond in under 60 words. Single '
-        'jurisdiction only: $jurName. Action steps only — numbered. No '
-        'preamble, no caveats, no "I am an AI". Match the user\'s language. '
-        'If the user has not said what is happening, ask ONE clarifying '
-        'question only: "Are you (a) being stopped on the street, (b) at the '
-        'police station, or (c) just served a paper?"';
-  }
 
   Future<void> _loadFreeMessageCount() async {
     try {
@@ -1206,13 +1169,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
           } else {
             ctx = await _knowledgeService.buildClientContext(caseId: widget.caseId);
-          }
-
-          // SOS / Panic Mode: prepend the action-only directive so the model
-          // sees it BEFORE the (long) client-knowledge context. Live for the
-          // entire lifetime of this chat instance — see [_panicPromptPrefix].
-          if (_panicPromptPrefix != null) {
-            ctx = '${_panicPromptPrefix!}\n\n$ctx';
           }
 
           // ── Phase 2 Pkg 6: legal planner routing ─────────────────
