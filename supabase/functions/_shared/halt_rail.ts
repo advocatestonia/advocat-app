@@ -27,6 +27,28 @@
 // just informational). Therefore detection errs slightly on the side of
 // firing — better one false banner than one missed litigation case.
 
+// ── Scope coverage (2026-05-20, dept5 FIX-WAVE 11) ───────────────────────────
+// CURRENTLY COVERED categories:
+//   • deportation       (FI käännyttäm/karkott, EE väljasaatm, RU депорт)
+//   • custody           (lapsen huolto, lapse hooldusõigus, опека)
+//   • criminal          (syyttäjä, prokurör, обвинение, charges)
+//   • big_claim         (any € amount ≥ 20 000, "€20K+" threshold)
+//   • echr              (EIT/EIS valitus, Strasbourg, ECtHR)
+//
+// KNOWN MISSING categories (will fall through to default lawyer-tone reply,
+// no crisis-line/out-of-scope rail surfaced):
+//   • medical / suicide / self-harm   — no "contact crisis line" hand-off
+//   • US immigration / USCIS / I-589  — no "contact US-licensed attorney"
+//   • mental-health crisis            — no triage to MIELI / 988 / Peaasi
+//   • employment-discrimination outside EE/FI (e.g. US Title VII, UK)
+//
+// TODO(dept5): Add KEYWORDS entries + HaltCategory union members for the
+// four missing categories. Each needs (a) keyword stems in FI/EE/RU/EN,
+// (b) a routing message (crisis lines for medical/suicide, US-attorney
+// referral for USCIS, etc.), (c) a smoke test in halt_rail.test.ts.
+// Acceptable risk for tonight given FI/EE-only product scope — but log
+// as P2 for next iteration.
+
 export type HaltCategory =
   | "deportation"
   | "custody"

@@ -1071,44 +1071,30 @@ serve(async (req) => {
         }
         let enforcedReplyText = enforced.cleanedText;
 
-        // ── Citation verifier (P0, 2026-05-19) ───────────────────────────
-        // The planner loop runs its own tool_use loop (legal_lookup is
-        // included by default in ASSISTANT_TOOLS for non-anon turns). Drain
-        // any legal_lookup chunks the planner accumulated and verify the
-        // final reply's prose §-citations against them. This is the
-        // strongest closure of the 2026-05-19 hallucination eval gap on
-        // the planner path.
-        if (CITATION_VERIFIER_ENABLED) {
-          try {
-            const verifierLog = buildVerifierToolLog([]); // drain everything
-            const v = verifyResponseCitations(enforcedReplyText, verifierLog, {
-              mode: "mark",
-            });
-            if (v.unverified_citations.length > 0) {
-              console.warn(
-                `claude-proxy: citation verifier (planner) flagged ` +
-                  `${v.unverified_citations.length} unverified cite(s) ` +
-                  `[score=${v.hallucination_score.toFixed(3)}]: ` +
-                  JSON.stringify(summariseVerifierResult(v)),
-              );
-              enforcedReplyText = v.marked_text;
-              logHallucinationWarning({
-                user_id: persistUserId,
-                message_id: persistMessageId,
-                unverified_count: v.unverified_citations.length,
-                verified_count: v.verified_citations.length,
-                score: v.hallucination_score,
-                samples: summariseVerifierResult(v).samples,
-                surface: "planner",
-              });
-            }
-          } catch (e) {
-            console.warn(
-              `claude-proxy: citation verifier (planner) errored: ${
-                String(e).slice(0, 200)
-              }`,
-            );
-          }
+        // ── Citation verifier (P0, 2026-05-19) — DISABLED on planner branch
+        // 2026-05-20 (dept5 FIX-WAVE 11): The planner branch was passing an
+        // EMPTY tool-call array to buildVerifierToolLog([]) because
+        // legal_planner.ts:198 defaultAnthropicCaller does NOT include
+        // `tools` in the Anthropic request body — the planner physically
+        // cannot invoke legal_lookup. Result: verifier saw zero tool calls,
+        // marked EVERY § citation as unverified, and spliced `[?]` markers
+        // throughout planner replies → user-facing -3.9% statute eval
+        // regression (see reference_v4_eval_baseline.md, dept5_ai_quality).
+        //
+        // The verifier was designed for tool-calling chat. Planner doesn't
+        // tool-call, so verifying its output via empty tool-log is
+        // incoherent. We rely on the existing citation-extractor +
+        // enforceCitations() above (line 1112) for unverified marking on
+        // this branch.
+        //
+        // TODO(dept5): True fix — plumb `tools: req.tools` + `tool_choice`
+        // into legal_planner.ts defaultAnthropicCaller (line 198-212) and
+        // pass ASSISTANT_TOOLS through RunLegalPlannerOptions so the
+        // planner can actually invoke legal_lookup. Then re-enable the
+        // verifier here with real tool calls (drain _legalLookupLog
+        // properly, not []).
+        if (false /* TODO(dept5): re-enable when legal_planner.ts plumbs tools */) {
+          // intentionally disabled — see comment above
         }
 
         if (
