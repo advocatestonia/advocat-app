@@ -149,7 +149,17 @@ export async function requireUserWithRateLimit(
   }
 
   // Rate limit
-  const clientIp = req.headers.get("x-forwarded-for") || "unknown";
+  // x-forwarded-for is a comma-separated chain (`client, proxy1, proxy2`)
+  // where the LAST hop rotates per request (Supabase LB IPs like
+  // 13.248.100.49/.51/.53/.72/.77).  If we key the bucket on the whole
+  // chain, every request gets a fresh bucket and the limiter never trips.
+  // Take ONLY the leftmost entry — that's the real client IP.
+  // (cf-connecting-ip is preferred when present; some deploys carry it.)
+  const xff = req.headers.get("x-forwarded-for") ?? "";
+  const cfip = req.headers.get("cf-connecting-ip");
+  const clientIp = (cfip && cfip.trim()) ||
+    xff.split(",")[0]?.trim() ||
+    "unknown";
   const principal = userId ?? `ip:${clientIp}`;
   const limit = userId ? opts.maxPerMinute : (opts.anonymousPerMinute ?? 0);
   const key = `${opts.bucket}:${principal}`;
