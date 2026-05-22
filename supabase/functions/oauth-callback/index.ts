@@ -61,6 +61,7 @@ import {
   jsonOk,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { killOn, signupPausedResponse } from "../_shared/kill_switches.ts";
 import { normalizeForUpsert, validatePayload } from "./payload.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -72,6 +73,14 @@ serve(async (req) => {
   }
   if (req.method !== "POST") {
     return jsonError("Method not allowed", 405);
+  }
+
+  // ── Kill switch: KILL_SIGNUP=1 (DEPT 7 runbook) ────────────────────────
+  // Set via `supabase secrets set KILL_SIGNUP=1` when we need to halt new
+  // sign-ups (abuse spike, capacity overrun). Checked BEFORE the auth gate
+  // so the response is consistent regardless of token state.
+  if (killOn("KILL_SIGNUP")) {
+    return signupPausedResponse();
   }
 
   const gate = await requireUserWithRateLimit(req, {

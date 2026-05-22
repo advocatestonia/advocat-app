@@ -38,6 +38,43 @@ export function flagOn(name: string): boolean {
   return Deno.env.get(name) === "true";
 }
 
+/** Numeric env-flag — accepts "1" (per DEPT 7 runbook for KILL_SIGNUP /
+ *  KILL_PAYMENTS) OR "true" (older syntax). Anything else is OFF.
+ *  Permissive on purpose so an owner who pastes `=true` from the
+ *  Supabase Dashboard still triggers the switch. */
+export function killOn(name: string): boolean {
+  const v = Deno.env.get(name);
+  return v === "1" || v === "true";
+}
+
+/** 503 — sign-ups paused (DEPT 7, blocks oauth-callback + any signup edge fn). */
+export function signupPausedResponse(): Response {
+  return new Response(
+    JSON.stringify({
+      error: "signup_paused",
+      message: "Sign-ups temporarily paused. Try again soon.",
+    }),
+    {
+      status: 503,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    },
+  );
+}
+
+/** 503 — payments paused (DEPT 7, blocks create-checkout + customer-portal). */
+export function paymentsPausedResponse(): Response {
+  return new Response(
+    JSON.stringify({
+      error: "payments_paused",
+      message: "Payments temporarily disabled.",
+    }),
+    {
+      status: 503,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    },
+  );
+}
+
 /** 503 — maintenance window for claude-proxy. */
 export function maintenanceResponse(): Response {
   return new Response(

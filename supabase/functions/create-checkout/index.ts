@@ -20,6 +20,7 @@ import {
   jsonError,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { killOn, paymentsPausedResponse } from "../_shared/kill_switches.ts";
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2023-10-16",
@@ -85,6 +86,14 @@ serve(async (req: Request) => {
   }
   if (req.method !== "POST") {
     return jsonError("Method not allowed", 405);
+  }
+
+  // ── Kill switch: KILL_PAYMENTS=1 (DEPT 7 runbook) ──────────────────────
+  // Flip via `supabase secrets set KILL_PAYMENTS=1` when Stripe or our
+  // billing pipeline is in incident. Returns 503 with `error: "payments_paused"`;
+  // the Flutter pricing page renders "Payments temporarily disabled."
+  if (killOn("KILL_PAYMENTS")) {
+    return paymentsPausedResponse();
   }
 
   // FIX-7: JWT required + 5 req/min/user cap.
