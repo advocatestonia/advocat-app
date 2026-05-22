@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'session_storage.dart';
 
 /// Pricing plan deep-link captured from the URL on app boot.
 ///
@@ -39,6 +43,30 @@ class PendingCheckout {
     return PendingCheckout(planId: plan, billingPeriod: billing);
   }
 
+  /// Build from the JSON we wrote to sessionStorage. Validates via the
+  /// same allow-list as [fromQuery] so a tampered storage value can't
+  /// inject an arbitrary `plan_id` into the Edge function.
+  static PendingCheckout? fromJsonString(String raw) {
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map<String, dynamic>) return null;
+      final plan = decoded['planId'];
+      final billing = decoded['billingPeriod'];
+      if (plan is! String || billing is! String) return null;
+      if (!_validPlanIds.contains(plan)) return null;
+      if (!_validBillingPeriods.contains(billing)) return null;
+      return PendingCheckout(planId: plan, billingPeriod: billing);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Serialise to the JSON shape persisted in sessionStorage.
+  Map<String, dynamic> toJson() => {
+        'planId': planId,
+        'billingPeriod': billingPeriod,
+      };
+
   @override
   bool operator ==(Object other) =>
       other is PendingCheckout &&
@@ -53,30 +81,80 @@ class PendingCheckout {
       'PendingCheckout(plan=$planId, billing=$billingPeriod)';
 }
 
-/// Riverpod state for [PendingCheckout]. Initialised from `Uri.base` on web.
+/// Riverpod state for [PendingCheckout]. Initialised from `Uri.base` on web,
+/// then from `window.sessionStorage` as a fallback so the Stripe redirect
+/// → return bounce (or a hard refresh on the success page) doesn't lose
+/// the user's intent.
 class PendingCheckoutNotifier extends StateNotifier<PendingCheckout?> {
-  PendingCheckoutNotifier() : super(_loadFromUrl());
+  PendingCheckoutNotifier() : super(_load()) {
+    // If we restored from URL on construction, mirror it to sessionStorage
+    // so a refresh during the auth bounce can recover it.
+    final v = state;
+    if (v != null) _persist(v);
+  }
 
-  static PendingCheckout? _loadFromUrl() {
+  /// sessionStorage key. Versioned so a future schema change can ignore
+  /// stale entries from older builds.
+  static const String _storageKey = 'pending_checkout';
+
+  /// Load order: URL query (?plan=...&billing=...) → sessionStorage.
+  /// URL wins because it represents the user's *current* intent — if
+  /// they're on a fresh ?plan= URL we should trust that over any older
+  /// stored value.
+  static PendingCheckout? _load() {
     if (!kIsWeb) return null;
     try {
-      return PendingCheckout.fromQuery(Uri.base.queryParameters);
-    } catch (_) {
-      return null;
-    }
+      final fromUrl = PendingCheckout.fromQuery(Uri.base.queryParameters);
+      if (fromUrl != null) return fromUrl;
+    } catch (_) {}
+    try {
+      final raw = SessionStorage.read(_storageKey);
+      if (raw != null) {
+        return PendingCheckout.fromJsonString(raw);
+      }
+    } catch (_) {}
+    return null;
+  }
+
+  /// Mirror the active checkout to sessionStorage. Web-only; a no-op on
+  /// native via the stub.
+  static void _persist(PendingCheckout value) {
+    if (!kIsWeb) return;
+    SessionStorage.write(_storageKey, jsonEncode(value.toJson()));
+  }
+
+  static void _clearPersisted() {
+    if (!kIsWeb) return;
+    SessionStorage.remove(_storageKey);
+  }
+
+  /// Replace the current pending checkout. Mirrors the new value to
+  /// sessionStorage so it survives the Stripe redirect bounce.
+  // ignore: use_setters_to_change_properties
+  void set(PendingCheckout value) {
+    state = value;
+    _persist(value);
   }
 
   /// Read the pending checkout and clear it. Returns `null` if there is
-  /// no pending checkout (or it was already consumed).
+  /// no pending checkout (or it was already consumed). Clears the
+  /// sessionStorage entry so a subsequent reload does not re-trigger
+  /// Stripe Checkout — the caller is committing to redirect right now.
   PendingCheckout? consume() {
     final value = state;
-    if (value != null) state = null;
+    if (value != null) {
+      state = null;
+      _clearPersisted();
+    }
     return value;
   }
 
-  /// Manually clear without consuming (e.g. if the user is already Pro).
+  /// Manually clear without consuming (e.g. if the user is already Pro,
+  /// or dismissed the upgrade dialog). Drops the sessionStorage entry so
+  /// they aren't bounced back into Checkout on the next page load.
   void clear() {
     state = null;
+    _clearPersisted();
   }
 }
 

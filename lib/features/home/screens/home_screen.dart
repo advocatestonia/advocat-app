@@ -215,31 +215,128 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (!kIsWeb) return;
       final fragment = Uri.base.fragment;
       if (fragment.contains('payment-success')) {
-        // Refresh user profile to get updated subscription
-        ref.invalidate(currentUserProvider);
+        // FIX-WAVE 8 (DEPT 4): the Stripe webhook can lag the customer
+        // return by 1-3s (sometimes more under load). The old one-shot
+        // ref.invalidate() ran exactly once, so users whose webhook hadn't
+        // landed yet saw "Payment successful" but isProActive was still
+        // false. We now poll until either Pro flips on or we time out.
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            // v24.2.3 UX-Tier-A: localise payment-success dialog (was EN).
-            final l = AppLocalizations.of(context);
-            showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: Text(l?.paymentSuccessTitle ?? 'Payment successful'),
-                content: Text(
-                  l?.paymentSuccessBody ?? 'Your subscription is now active.',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(ctx),
-                    child: Text(l?.commonOk ?? 'OK'),
-                  ),
-                ],
-              ),
-            );
+            unawaited(_pollForProActivation());
           }
         });
       }
     } catch (_) {}
+  }
+
+  /// Polls currentUserProvider every 2s for up to 5 attempts (10s total),
+  /// waiting for the Stripe webhook to flip is_pro=true. While polling we
+  /// show a non-dismissible spinner dialog; on success we close it,
+  /// navigate to the chat hub, and surface a "Welcome to Pro!" snackbar;
+  /// on timeout we show a fallback dialog explaining the email-when-ready
+  /// path so the user is never left staring at a spinner.
+  Future<void> _pollForProActivation() async {
+    final l = AppLocalizations.of(context);
+    // Spinner dialog — barrierDismissible=false so the user can't dismiss
+    // and start a parallel checkout. We close it ourselves below.
+    if (!mounted) return;
+    unawaited(
+      showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (ctx) => AlertDialog(
+          content: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 2.5),
+              ),
+              const SizedBox(width: 16),
+              Flexible(
+                child: Text(
+                  // No dedicated l10n key — fall back to a localised
+                  // "activating" message built from the existing keys.
+                  '${l?.paymentSuccessTitle ?? 'Payment successful'}\n'
+                  '${l?.paymentSuccessBody ?? 'Activating your Pro plan...'}',
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    const maxAttempts = 5;
+    const pollInterval = Duration(seconds: 2);
+    var pro = false;
+    for (var attempt = 0; attempt < maxAttempts; attempt++) {
+      if (!mounted) return;
+      ref.invalidate(currentUserProvider);
+      // Wait for the provider to re-emit before checking. ref.read on an
+      // AsyncValue right after invalidate returns AsyncLoading; awaiting
+      // the .future gives us the next concrete value.
+      try {
+        final user = await ref.read(currentUserProvider.future);
+        if (user?.isProActive == true) {
+          pro = true;
+          break;
+        }
+      } catch (_) {
+        // Transient network failure — keep polling.
+      }
+      if (attempt < maxAttempts - 1) {
+        await Future<void>.delayed(pollInterval);
+      }
+    }
+
+    if (!mounted) return;
+
+    // Close the spinner dialog (always — both success and timeout).
+    final navigator = Navigator.of(context, rootNavigator: true);
+    if (navigator.canPop()) navigator.pop();
+
+    if (pro) {
+      // Navigate to general chat ("Pro feature unlocked, start a
+      // conversation") and surface the welcome snackbar.
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: AppColors.primary,
+            content: Text(
+              '${l?.paymentSuccessTitle ?? 'Welcome to Pro!'} '
+              '${l?.paymentSuccessBody ?? 'Your subscription is now active.'}',
+              style: const TextStyle(color: Colors.white),
+            ),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+        unawaited(context.push('/chat/general'));
+      }
+    } else {
+      // Timed out — webhook may still be in flight. Tell the user we'll
+      // email them once it lands, and offer a back-to-app button.
+      if (mounted) {
+        await showDialog<void>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text(l?.paymentSuccessTitle ?? 'Payment received'),
+            content: const Text(
+              // Composed from existing keys to avoid a new arb round-trip.
+              "We're processing your payment. "
+              "You'll get an email when it's ready.",
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(ctx),
+                child: Text(l?.commonOk ?? 'Back to app'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
   }
 
   /// SharedPreferences key for the v1 welcome modal seen flag (backlog #36).

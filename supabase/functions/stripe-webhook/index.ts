@@ -617,6 +617,163 @@ serve(async (req) => {
         break;
       }
 
+      case "charge.refunded": {
+        // FIX-WAVE 8 (DEPT 4): full or partial refund → downgrade Pro.
+        // Path: charge.payment_intent → invoice.payment_intent → invoice.subscription
+        //   → subscriptions.stripe_subscription_id → profiles.id
+        //
+        // We follow exactly the same write+verify pattern as
+        // customer.subscription.deleted so the read-after-write guarantee
+        // is consistent across cancel paths. Idempotency is already
+        // enforced by webhook_events (event_id PK + checkAndMarkProcessing).
+        const charge = event.data.object;
+        const paymentIntentId = charge.payment_intent as string | null;
+        const stripeCustomerId = charge.customer as string | null;
+
+        if (!paymentIntentId) {
+          console.warn(
+            `[stripe-webhook] charge.refunded: no payment_intent on charge=${charge.id}`,
+          );
+          break;
+        }
+
+        // Resolve invoice → subscription via Stripe REST. We don't import
+        // the Stripe SDK here (the rest of this file uses raw fetch for
+        // signature verification only) — mirror customer-portal's pattern.
+        let subscriptionId: string | null = null;
+        try {
+          const piRes = await fetch(
+            `https://api.stripe.com/v1/payment_intents/${paymentIntentId}`,
+            {
+              headers: {
+                "Authorization": `Bearer ${STRIPE_SECRET_KEY}`,
+                "Stripe-Version": "2024-06-20",
+              },
+            },
+          );
+          if (!piRes.ok) {
+            throw new Error(`stripe payment_intents ${piRes.status}`);
+          }
+          const pi = await piRes.json();
+          const invoiceId = pi.invoice as string | null;
+          if (!invoiceId) {
+            // Refund on a one-shot charge (no invoice/subscription).
+            // Nothing to downgrade.
+            console.log(
+              `charge.refunded: payment_intent=${paymentIntentId} has no invoice ` +
+                `(non-subscription charge); skipping downgrade`,
+            );
+            break;
+          }
+          const invRes = await fetch(
+            `https://api.stripe.com/v1/invoices/${invoiceId}`,
+            {
+              headers: {
+                "Authorization": `Bearer ${STRIPE_SECRET_KEY}`,
+                "Stripe-Version": "2024-06-20",
+              },
+            },
+          );
+          if (!invRes.ok) {
+            throw new Error(`stripe invoices ${invRes.status}`);
+          }
+          const inv = await invRes.json();
+          subscriptionId = (inv.subscription as string | null) ?? null;
+        } catch (e) {
+          const msg = e instanceof Error ? e.message : String(e);
+          // Throw so the outer catch marks status='error' and Stripe retries.
+          throw new Error(
+            `charge.refunded: stripe lookup failed: ${msg.slice(0, 200)}`,
+          );
+        }
+
+        if (!subscriptionId) {
+          console.log(
+            `charge.refunded: invoice has no subscription_id ` +
+              `(payment_intent=${paymentIntentId}); skipping downgrade`,
+          );
+          break;
+        }
+
+        // Find the user via subscriptions.stripe_subscription_id. Fall back
+        // to profiles.stripe_customer_id if the subscriptions row is gone
+        // (defensive — shouldn't happen but refunds can lag deletes).
+        let userId: string | null = null;
+        const { data: subRow } = await supabase
+          .from("subscriptions")
+          .select("user_id")
+          .eq("stripe_subscription_id", subscriptionId)
+          .limit(1);
+        if (subRow && subRow.length > 0) {
+          userId = subRow[0].user_id as string;
+        } else if (stripeCustomerId) {
+          const { data: profRow } = await supabase
+            .from("profiles")
+            .select("id")
+            .eq("stripe_customer_id", stripeCustomerId)
+            .limit(1);
+          if (profRow && profRow.length > 0) {
+            userId = profRow[0].id as string;
+          }
+        }
+
+        if (!userId) {
+          console.warn(
+            `charge.refunded: no user for subscription=${subscriptionId} ` +
+              `customer=${stripeCustomerId ?? "unknown"}`,
+          );
+          break;
+        }
+
+        resolvedUserId = userId;
+
+        // Read prior tier so we can decide quota reset (refund of a paid
+        // user → free counts as a real tier change).
+        const priorTierRefunded = await readPriorTier(supabase, userId);
+
+        // Only act if the linked profile is currently Pro. If they're
+        // already free (e.g. previous webhook downgraded them), this is a
+        // no-op for is_pro but we still flip subscriptions.status so the
+        // refund is recorded.
+        const { error: pErr } = await supabase.from("profiles").update({
+          subscription_tier: "free",
+          subscription_expires_at: null,
+          is_pro: false,
+        }).eq("id", userId);
+        if (pErr) {
+          throw new Error(`profiles update (refunded) failed: ${pErr.message}`);
+        }
+        await verifyProfileWrite(supabase, userId, { is_pro: false });
+
+        // subscriptions.status is plain TEXT (no enum/CHECK constraint —
+        // see migration 20260422005000_schema_drift_fix.sql line 97), so
+        // 'refunded' is accepted. We use 'refunded' (not 'canceled') so
+        // billing analytics can distinguish refund-driven churn from
+        // user-initiated cancels.
+        const { error: sErr } = await supabase.from("subscriptions").update({
+          status: "refunded",
+          updated_at: new Date().toISOString(),
+        }).eq("user_id", userId);
+        if (sErr) {
+          throw new Error(`subscriptions update (refunded) failed: ${sErr.message}`);
+        }
+        await verifySubscriptionWrite(supabase, userId, { status: "refunded" });
+
+        await maybeResetContractReviewQuota(
+          supabase,
+          userId,
+          priorTierRefunded,
+          "free",
+        );
+
+        console.log(
+          `charge.refunded: downgraded customer=${stripeCustomerId ?? "unknown"} ` +
+            `subscription=${subscriptionId} user=${userId} ` +
+            `amount_refunded=${charge.amount_refunded ?? 0}`,
+        );
+        break;
+      }
+
       default:
         // Launch-week observability: warn so unhandled events are visible in
         // Supabase Dashboard logs (filtered above info level). We still
