@@ -139,17 +139,36 @@ export async function checkDailyCap(): Promise<SpendCheckResult> {
 }
 
 /**
- * Post-call accounting: record the estimated cost of one Anthropic response.
+ * Identifier for which LLM provider drove a given call.  Used by the
+ * multi-provider fallback chain (FIX-WAVE 14) so that spend can be
+ * attributed correctly:
+ *   • anthropic_sonnet     — $3/M in,    $15/M out
+ *   • anthropic_haiku      — $1/M in,    $5/M out
+ *   • openai_gpt4o_mini    — $0.15/M in, $0.60/M out
+ */
+export type SpendProvider =
+  | "anthropic_sonnet"
+  | "anthropic_haiku"
+  | "openai_gpt4o_mini";
+
+/**
+ * Post-call accounting: record the estimated cost of one model response.
  * Returns the new daily total in cents (0 if the DB call failed).
  *
  * `model` is matched against /sonnet/i for tier pricing; anything else is
- * treated as Haiku-tier.  Token counts come from Anthropic's `usage` block
- * (input_tokens + output_tokens).
+ * treated as Haiku-tier.  Token counts come from the provider's usage block.
+ *
+ * `provider` is the FIX-WAVE 14 attribution tag.  Default 'anthropic_sonnet'
+ * preserves backwards compatibility — all historical callers (claude-proxy
+ * Anthropic path) recorded Sonnet calls.  The DB RPC pricing is now provider-
+ * driven, so passing 'openai_gpt4o_mini' applies the ~20× cheaper OpenAI
+ * pricing instead of accidentally billing at Sonnet rates.
  */
 export async function recordSpend(
   inputTokens: number,
   outputTokens: number,
   model: string,
+  provider: SpendProvider = "anthropic_sonnet",
 ): Promise<number> {
   if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) return 0;
   try {
@@ -157,6 +176,7 @@ export async function recordSpend(
       p_input_tokens: Math.max(0, Math.floor(inputTokens)),
       p_output_tokens: Math.max(0, Math.floor(outputTokens)),
       p_model: model ?? "haiku",
+      p_provider: provider,
     });
     if (error) {
       console.warn(`spend_tracker: record RPC failed: ${error.message}`);
