@@ -435,3 +435,379 @@ Deno.test("constants: router uses Haiku 4.5 (cheap)", () => {
 Deno.test("constants: router output is tiny (≤100 tokens)", () => {
   assert(ROUTER_MAX_TOKENS <= 100, "router output should be tiny");
 });
+
+// ═════════════════════════════════════════════════════════════════════════
+// FIX-WAVE 13 (2026-05-20) — signal-based selectModel() tests
+// ═════════════════════════════════════════════════════════════════════════
+//
+// Covers the deterministic rule chain in `selectModel(signals)`:
+//   FORCE_SONNET / FORCE_HAIKU env → advice_correction → halt_rail →
+//   planner → long_contract → pro_with_chunks → adversarial → anon_default →
+//   free_simple → pro_simple → default
+//
+// Tests use `Deno.env.set/delete` to flip the FORCE_* overrides. All other
+// tests build a `RoutingSignals` baseline and toggle one bit at a time.
+// ═════════════════════════════════════════════════════════════════════════
+
+import {
+  HAIKU_MODEL_ID,
+  logRoutingDecision,
+  modelIdFor,
+  type RoutingLogContext,
+  type RoutingSignals,
+  selectModel,
+  SONNET_MODEL_ID,
+} from "../model_router.ts";
+
+/** Baseline signals — everything off, anon=false, free tier, short input.
+ *  Used as the starting point for each rule test so each test only toggles
+ *  the one bit it cares about. */
+function baseline(): RoutingSignals {
+  return {
+    isAnon: false,
+    userTier: "free",
+    inputTokens: 100,
+    isLegalPlanner: false,
+    isContractReview: false,
+    haltRailTriggered: false,
+    adviceCorrectionFired: false,
+    adversarialFlag: false,
+    hasCitationChunks: false,
+  };
+}
+
+/** Guarantee the FORCE_* env vars are unset around a test body so we don't
+ *  pollute siblings. Some test runners reuse the same OS env between
+ *  Deno.test() bodies in the same process. */
+function withCleanEnv<T>(fn: () => T): T {
+  const sonnet = Deno.env.get("FORCE_SONNET_ALL");
+  const haiku = Deno.env.get("FORCE_HAIKU_ALL");
+  Deno.env.delete("FORCE_SONNET_ALL");
+  Deno.env.delete("FORCE_HAIKU_ALL");
+  try {
+    return fn();
+  } finally {
+    if (sonnet !== undefined) Deno.env.set("FORCE_SONNET_ALL", sonnet);
+    else Deno.env.delete("FORCE_SONNET_ALL");
+    if (haiku !== undefined) Deno.env.set("FORCE_HAIKU_ALL", haiku);
+    else Deno.env.delete("FORCE_HAIKU_ALL");
+  }
+}
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 1+2: FORCE_* env overrides (highest precedence)
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: FORCE_SONNET_ALL forces sonnet over every rule", () => {
+  withCleanEnv(() => {
+    Deno.env.set("FORCE_SONNET_ALL", "1");
+    // Even with anon + free tier + tiny query → still Sonnet.
+    const r = selectModel({ ...baseline(), isAnon: true });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "force_sonnet_env");
+  });
+});
+
+Deno.test("selectModel: FORCE_HAIKU_ALL forces haiku even on halt-rail", () => {
+  withCleanEnv(() => {
+    Deno.env.set("FORCE_HAIKU_ALL", "true");
+    // Halt-rail would normally upgrade to Sonnet; FORCE_HAIKU overrides.
+    const r = selectModel({ ...baseline(), haltRailTriggered: true });
+    assertEquals(r.model, "haiku");
+    assertEquals(r.reason, "force_haiku_env");
+  });
+});
+
+Deno.test("selectModel: FORCE_SONNET wins when both env flags are set", () => {
+  withCleanEnv(() => {
+    Deno.env.set("FORCE_SONNET_ALL", "1");
+    Deno.env.set("FORCE_HAIKU_ALL", "1");
+    const r = selectModel(baseline());
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "force_sonnet_env");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 3: advice-correction fired → Sonnet
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: advice_correction fired → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({ ...baseline(), adviceCorrectionFired: true });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "advice_correction");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 4: halt-rail triggered → Sonnet
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: halt-rail triggered → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({ ...baseline(), haltRailTriggered: true });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "halt_rail");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 5: planner branch active → Sonnet
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: legal_planner active → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({ ...baseline(), isLegalPlanner: true });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "planner");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 6: contract review / long context → Sonnet
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: contract_review mode → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({
+      ...baseline(),
+      isContractReview: true,
+      mode: "contract_review",
+    });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "long_contract");
+  });
+});
+
+Deno.test("selectModel: long context (>5K tokens) → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({ ...baseline(), inputTokens: 8000 });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "long_contract");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 7: citation chunks for paid users → Sonnet
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: pro user + citation chunks → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({
+      ...baseline(),
+      userTier: "pro",
+      hasCitationChunks: true,
+    });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "pro_with_chunks");
+  });
+});
+
+Deno.test("selectModel: counsel user + citation chunks → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({
+      ...baseline(),
+      userTier: "counsel",
+      hasCitationChunks: true,
+    });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "pro_with_chunks");
+  });
+});
+
+Deno.test("selectModel: free user + citation chunks → NOT pro_with_chunks", () => {
+  withCleanEnv(() => {
+    const r = selectModel({
+      ...baseline(),
+      userTier: "free",
+      hasCitationChunks: true,
+    });
+    // Free + chunks falls through to default (haiku) — they don't pay
+    // for grounded Sonnet quality.
+    assertEquals(r.model, "haiku");
+    assertNotEquals(r.reason, "pro_with_chunks");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 8: adversarial pipeline → Sonnet
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: adversarialFlag → sonnet", () => {
+  withCleanEnv(() => {
+    const r = selectModel({ ...baseline(), adversarialFlag: true });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "adversarial");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 9: anon caller → Haiku
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: anon caller → haiku (anon_default)", () => {
+  withCleanEnv(() => {
+    const r = selectModel({ ...baseline(), isAnon: true });
+    assertEquals(r.model, "haiku");
+    assertEquals(r.reason, "anon_default");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 10: free + simple query → Haiku
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: free tier + short query → haiku (free_simple)", () => {
+  withCleanEnv(() => {
+    const r = selectModel({
+      ...baseline(),
+      userTier: "free",
+      inputTokens: 200,
+    });
+    assertEquals(r.model, "haiku");
+    assertEquals(r.reason, "free_simple");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 11: pro + simple, no citations → Haiku
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: pro user + simple query (no chunks) → haiku (pro_simple)", () => {
+  withCleanEnv(() => {
+    const r = selectModel({
+      ...baseline(),
+      userTier: "pro",
+      inputTokens: 200,
+      hasCitationChunks: false,
+    });
+    assertEquals(r.model, "haiku");
+    assertEquals(r.reason, "pro_simple");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Rule 12: default fallthrough → Haiku
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: default fallthrough → haiku", () => {
+  withCleanEnv(() => {
+    // Pro user, mid-length (≥500-token) query, no chunks, no special flags:
+    // doesn't match free_simple or pro_simple (input too long), no other
+    // rule applies → fall through to default.
+    const r = selectModel({
+      ...baseline(),
+      userTier: "pro",
+      inputTokens: 1500,
+    });
+    assertEquals(r.model, "haiku");
+    assertEquals(r.reason, "default");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Precedence: stacked signals — first matching rule wins
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("selectModel: advice_correction beats halt_rail beats planner", () => {
+  withCleanEnv(() => {
+    const r = selectModel({
+      ...baseline(),
+      adviceCorrectionFired: true,
+      haltRailTriggered: true,
+      isLegalPlanner: true,
+    });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "advice_correction");
+  });
+});
+
+Deno.test("selectModel: anon + halt_rail → halt_rail wins (safety)", () => {
+  withCleanEnv(() => {
+    // Anon should NOT bypass halt-rail upgrade. Rule order puts halt above
+    // anon_default for a reason: safety > cost.
+    const r = selectModel({
+      ...baseline(),
+      isAnon: true,
+      haltRailTriggered: true,
+    });
+    assertEquals(r.model, "sonnet");
+    assertEquals(r.reason, "halt_rail");
+  });
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// Constants & model-id mapping
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("constants: HAIKU_MODEL_ID matches Haiku 4.5", () => {
+  assertEquals(HAIKU_MODEL_ID, "claude-haiku-4-5-20251001");
+});
+
+Deno.test("constants: SONNET_MODEL_ID matches Sonnet 4 (current prod ID)", () => {
+  // Must stay in lockstep with ALLOWED_MODELS in claude-proxy/index.ts.
+  // Drift here = body.model rejected → request 400s.
+  assertEquals(SONNET_MODEL_ID, "claude-sonnet-4-20250514");
+});
+
+Deno.test("modelIdFor: haiku → HAIKU_MODEL_ID, sonnet → SONNET_MODEL_ID", () => {
+  assertEquals(modelIdFor("haiku"), HAIKU_MODEL_ID);
+  assertEquals(modelIdFor("sonnet"), SONNET_MODEL_ID);
+});
+
+// ───────────────────────────────────────────────────────────────────────
+// logRoutingDecision — structured JSON shape
+// ───────────────────────────────────────────────────────────────────────
+
+Deno.test("logRoutingDecision: emits stable JSON shape with model_id + reason", () => {
+  // Silence console.log for the duration of the test so it doesn't pollute
+  // test output. We re-read the returned line instead.
+  const originalLog = console.log;
+  console.log = () => {};
+  try {
+    const ctx: RoutingLogContext = {
+      requestId: "req_123",
+      userIdHash: "abc",
+      userTier: "pro",
+      inputTokens: 250,
+      mode: "chat",
+      route: "claude-proxy",
+    };
+    const line = logRoutingDecision(
+      { model: "sonnet", reason: "halt_rail" },
+      ctx,
+    );
+    const parsed = JSON.parse(line);
+    assertEquals(parsed.event, "selectModel");
+    assertEquals(parsed.model, "sonnet");
+    assertEquals(parsed.model_id, SONNET_MODEL_ID);
+    assertEquals(parsed.reason, "halt_rail");
+    assertEquals(parsed.request_id, "req_123");
+    assertEquals(parsed.user_id_hash, "abc");
+    assertEquals(parsed.user_tier, "pro");
+    assertEquals(parsed.input_tokens, 250);
+    assertEquals(parsed.mode, "chat");
+    assertEquals(parsed.route, "claude-proxy");
+    assert(typeof parsed.ts === "string" && parsed.ts.includes("T"));
+  } finally {
+    console.log = originalLog;
+  }
+});
+
+Deno.test("logRoutingDecision: omits undefined ctx fields cleanly", () => {
+  const originalLog = console.log;
+  console.log = () => {};
+  try {
+    const line = logRoutingDecision({ model: "haiku", reason: "default" });
+    const parsed = JSON.parse(line);
+    assertEquals(parsed.event, "selectModel");
+    assertEquals(parsed.model, "haiku");
+    assertEquals(parsed.model_id, HAIKU_MODEL_ID);
+    assertEquals(parsed.reason, "default");
+    assertEquals(parsed.request_id, undefined);
+    assertEquals(parsed.user_tier, undefined);
+  } finally {
+    console.log = originalLog;
+  }
+});

@@ -484,3 +484,254 @@ export function estimateCostCents(
   const usd = (inputTokens * inRate + outputTokens * outRate) / 1_000_000;
   return Math.round(usd * 100 * 100) / 100; // cents, 2 decimals
 }
+
+// =============================================================================
+// FIX-WAVE 13 (2026-05-20) — signal-based selector
+// =============================================================================
+//
+// Complementary to the LLM-classifier above. The classifier (`classifyQuery`)
+// reads the user's last message and asks Haiku "is this complex?". This
+// selector reads server-side SIGNALS that the proxy has already computed by
+// the time it reaches the Anthropic call — halt-rail verdict, planner branch,
+// citation tool results, user tier, etc. — and picks the model in a way that
+// is fast (zero API calls), deterministic, and easy to audit in production
+// logs.
+//
+// Routing rules (first match wins):
+//   1. FORCE_SONNET_ALL env  → Sonnet (emergency switch)
+//   2. FORCE_HAIKU_ALL env   → Haiku  (cost crunch)
+//   3. advice_correction fired (HOL §114 / similar)  → Sonnet
+//   4. halt-rail triggered (deportation/custody/...) → Sonnet
+//   5. planner branch active                         → Sonnet
+//   6. contract review or long context (>5K tokens)  → Sonnet
+//   7. citation tool returned chunks + tier ∈ {pro,counsel} → Sonnet
+//   8. adversarial-flag                              → Sonnet
+//   9. anon caller                                   → Haiku
+//  10. free tier + short input (<500 tok)            → Haiku
+//  11. pro tier + simple query (no citations)        → Haiku
+//  12. default                                       → Haiku
+// =============================================================================
+
+export type ModelChoice = "haiku" | "sonnet";
+
+/** Routing signals fed to `selectModel`. All fields are required so the
+ *  caller is forced to compute (or explicitly default) every signal — no
+ *  silent undefineds. */
+export interface RoutingSignals {
+  /** Anon (demo) caller. Their max_tokens is clamped to 200 elsewhere. */
+  isAnon: boolean;
+  /** Plan tier of the authenticated user. Anon → use `'free'`. */
+  userTier: "free" | "counsel" | "pro";
+  /** Estimated input tokens for the turn. Used to decide "long context". */
+  inputTokens: number;
+  /** Legal-planner branch is active (body.mode === 'legal_planner'). */
+  isLegalPlanner: boolean;
+  /** Contract review feature is active for this turn. */
+  isContractReview: boolean;
+  /** Halt-rail detector fired (deportation/custody/criminal/ECHR/...). */
+  haltRailTriggered: boolean;
+  /** Memory-of-Wrong-Answers retrieval surfaced a HOL §114 / similar match
+   *  (`globalCorrectionsRows.length > 0` in index.ts). */
+  adviceCorrectionFired: boolean;
+  /** Adversarial v3 pipeline branch is active. */
+  adversarialFlag: boolean;
+  /** legal_lookup or citation tool returned at least one chunk this turn. */
+  hasCitationChunks: boolean;
+  /** Optional free-form mode hint from body.mode (informational). */
+  mode?: string;
+}
+
+/** Canonical model IDs used by `selectModel`. Kept in sync with
+ *  ALLOWED_MODELS in index.ts and the long-standing HAIKU_MODEL/SONNET_MODEL
+ *  constants above (which the classifier path already uses). */
+export const HAIKU_MODEL_ID = "claude-haiku-4-5-20251001";
+export const SONNET_MODEL_ID = "claude-sonnet-4-20250514";
+
+/** Long-context threshold (input tokens). Above this we always prefer Sonnet
+ *  for fidelity on document-heavy turns. */
+export const LONG_CONTEXT_TOKEN_THRESHOLD = 5000;
+
+/** Simple-query input ceiling (tokens). Below this AND with no citations a
+ *  Haiku response is fine even for paid users. */
+export const SIMPLE_QUERY_TOKEN_CEILING = 500;
+
+export interface SelectModelResult {
+  /** Chosen tier — caller maps to a model ID via {HAIKU,SONNET}_MODEL_ID. */
+  model: ModelChoice;
+  /** Stable machine-readable reason string for telemetry / audit logs. */
+  reason: SelectionReason;
+}
+
+export type SelectionReason =
+  | "force_sonnet_env"
+  | "force_haiku_env"
+  | "advice_correction"
+  | "halt_rail"
+  | "planner"
+  | "long_contract"
+  | "pro_with_chunks"
+  | "adversarial"
+  | "anon_default"
+  | "free_simple"
+  | "pro_simple"
+  | "default";
+
+/** Read a boolean from Deno env. Treats "1" / "true" (any case) as truthy.
+ *  Defaults to false if unset or unparseable. Used by the FORCE_* overrides. */
+function envFlag(name: string): boolean {
+  try {
+    const v = Deno.env.get(name);
+    if (!v) return false;
+    const s = v.trim().toLowerCase();
+    return s === "1" || s === "true" || s === "yes" || s === "on";
+  } catch {
+    // In a non-Deno test context (e.g. plain Node), envs are unreadable —
+    // fall through to "no override".
+    return false;
+  }
+}
+
+/** Signal-based model selector. Pure function (apart from env reads). Never
+ *  throws; first matching rule wins.
+ *
+ *  Emergency switches:
+ *    FORCE_SONNET_ALL=1  → always Sonnet (overrides everything)
+ *    FORCE_HAIKU_ALL=1   → always Haiku (cost crunch)
+ *    If both are set, FORCE_SONNET wins (safety bias). */
+export function selectModel(s: RoutingSignals): SelectModelResult {
+  // 1+2. Emergency overrides — checked first so they short-circuit everything.
+  const forceSonnet = envFlag("FORCE_SONNET_ALL");
+  const forceHaiku = envFlag("FORCE_HAIKU_ALL");
+  if (forceSonnet) {
+    return { model: "sonnet", reason: "force_sonnet_env" };
+  }
+  if (forceHaiku) {
+    return { model: "haiku", reason: "force_haiku_env" };
+  }
+
+  // 3. Advice-correction retrieval fired — we already retrieved hard guidance
+  //    (HOL §114 / KHO restoration / similar); don't cheap out on the response.
+  if (s.adviceCorrectionFired) {
+    return { model: "sonnet", reason: "advice_correction" };
+  }
+
+  // 4. Halt-rail (deportation / custody / criminal / ECHR / >€20K) — sensitive
+  //    territory; we owe the user a senior-quality answer + advisory footer.
+  if (s.haltRailTriggered) {
+    return { model: "sonnet", reason: "halt_rail" };
+  }
+
+  // 5. Legal-planner branch — multi-step plan-and-execute reasoning.
+  if (s.isLegalPlanner) {
+    return { model: "sonnet", reason: "planner" };
+  }
+
+  // 6. Contract review OR long context — document fidelity matters.
+  if (s.isContractReview || s.inputTokens > LONG_CONTEXT_TOKEN_THRESHOLD) {
+    return { model: "sonnet", reason: "long_contract" };
+  }
+
+  // 7. Citation chunks returned AND user is paid — they pay for grounded
+  //    senior-quality output; Haiku is too lossy on multi-chunk reasoning.
+  if (
+    s.hasCitationChunks &&
+    (s.userTier === "pro" || s.userTier === "counsel")
+  ) {
+    return { model: "sonnet", reason: "pro_with_chunks" };
+  }
+
+  // 8. Adversarial v3 — devil's-advocate pipeline; needs Sonnet's reasoning.
+  if (s.adversarialFlag) {
+    return { model: "sonnet", reason: "adversarial" };
+  }
+
+  // 9. Anon (demo) — never subsidize free traffic with Sonnet.
+  if (s.isAnon) {
+    return { model: "haiku", reason: "anon_default" };
+  }
+
+  // 10. Free tier with short, citation-less input — Haiku is plenty.
+  if (
+    s.userTier === "free" &&
+    !s.hasCitationChunks &&
+    s.inputTokens < SIMPLE_QUERY_TOKEN_CEILING
+  ) {
+    return { model: "haiku", reason: "free_simple" };
+  }
+
+  // 11. Pro / counsel with a simple query (no citations) — they pay us, but
+  //     Haiku is fine for simple. Saves their quota for hard cases.
+  if (
+    (s.userTier === "pro" || s.userTier === "counsel") &&
+    !s.hasCitationChunks &&
+    s.inputTokens < SIMPLE_QUERY_TOKEN_CEILING
+  ) {
+    return { model: "haiku", reason: "pro_simple" };
+  }
+
+  // 12. Default — Haiku. Sonnet is only chosen by an explicit rule above.
+  return { model: "haiku", reason: "default" };
+}
+
+/** Map a {@link ModelChoice} to the canonical Anthropic model ID. */
+export function modelIdFor(choice: ModelChoice): string {
+  return choice === "sonnet" ? SONNET_MODEL_ID : HAIKU_MODEL_ID;
+}
+
+/** Optional request-scoped context attached to a routing decision log line.
+ *  All fields optional so callers can attach whatever they have at the call
+ *  site (request_id, user_id_hash, route, etc.) without ceremony. */
+export interface RoutingLogContext {
+  /** Edge-fn request id (e.g. cf-ray header or self-generated uuid). */
+  requestId?: string;
+  /** Hashed user id — NEVER log the raw UUID. */
+  userIdHash?: string;
+  /** Tier of the authenticated caller, for cost attribution. */
+  userTier?: "free" | "counsel" | "pro" | "anon";
+  /** Input-token estimate that fed the decision. */
+  inputTokens?: number;
+  /** Body.mode (legal_planner / contract_review / chat / etc.). */
+  mode?: string;
+  /** Route or edge-fn name emitting the log ('claude-proxy', etc.). */
+  route?: string;
+}
+
+/** Structured single-line JSON log for a routing decision. Emits to
+ *  `console.log` so Supabase Edge captures it in the function logs. Pure side
+ *  effect — returns the line so tests / callers can introspect.
+ *
+ *  Schema (stable — downstream dashboards parse this):
+ *    {
+ *      "event": "selectModel",
+ *      "model": "haiku" | "sonnet",
+ *      "model_id": "claude-haiku-...|claude-sonnet-...",
+ *      "reason": "<SelectionReason>",
+ *      "ts": "<ISO-8601>",
+ *      "request_id"?: "...",
+ *      "user_id_hash"?: "...",
+ *      "user_tier"?: "free|counsel|pro|anon",
+ *      "input_tokens"?: 123,
+ *      "mode"?: "...",
+ *      "route"?: "claude-proxy"
+ *    } */
+export function logRoutingDecision(
+  decision: SelectModelResult,
+  ctx: RoutingLogContext = {},
+): string {
+  const payload: Record<string, unknown> = {
+    event: "selectModel",
+    model: decision.model,
+    model_id: modelIdFor(decision.model),
+    reason: decision.reason,
+    ts: new Date().toISOString(),
+  };
+  if (ctx.requestId) payload.request_id = ctx.requestId;
+  if (ctx.userIdHash) payload.user_id_hash = ctx.userIdHash;
+  if (ctx.userTier) payload.user_tier = ctx.userTier;
+  if (typeof ctx.inputTokens === "number") payload.input_tokens = ctx.inputTokens;
+  if (ctx.mode) payload.mode = ctx.mode;
+  if (ctx.route) payload.route = ctx.route;
+  const line = JSON.stringify(payload);
+  console.log(line);
+  return line;
+}
