@@ -668,6 +668,38 @@ serve(async (req) => {
     const globalUserMessage = Array.isArray(body.messages) && body.messages.length > 0
       ? String((body.messages[body.messages.length - 1] as { content?: unknown }).content ?? "")
       : "";
+
+    // ── DEPT 7 alert E: RAG empty-result observability ─────────────────────
+    // Fire-and-forget warn row when law-search returned ZERO chunks for a
+    // FI/EE query >10 chars (signals corpus offline / regression). alert-tick
+    // reads `error_log WHERE fn_name='claude-proxy' AND message='rag_empty'`.
+    // Never touches the reply path — pure observability.
+    if (
+      ragChunks.length === 0 &&
+      globalUserMessage.length > 10 &&
+      (() => {
+        const j = extractJurisdictionHint(body);
+        return j === null || /^(fi|ee)$/i.test(j);
+      })() &&
+      SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+    ) {
+      fetch(`${SUPABASE_URL}/rest/v1/error_log`, {
+        method: "POST",
+        headers: {
+          "apikey": SUPABASE_SERVICE_ROLE_KEY,
+          "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+          "Content-Type": "application/json",
+          "Prefer": "return=minimal",
+        },
+        body: JSON.stringify({
+          fn_name: "claude-proxy",
+          severity: "warn",
+          message: "rag_empty",
+          user_id: isAnon ? null : gate.user.id,
+        }),
+      }).catch(() => {/* never break response */});
+    }
+
     const willEnterPlannerBranch =
       (body as { mode?: unknown }).mode === "legal_planner" &&
       !body.stream &&
