@@ -200,15 +200,71 @@ check "deadline-reminder rejects POST without cron secret" \
   "curl -s --max-time $TIMEOUT -X POST '$FUNCTIONS_URL/deadline-reminder' -H 'Content-Type: application/json' -d '{}' -o /dev/null -w '%{http_code}'" \
   "^(401|403)$"
 
-# claude-proxy: 2026-05-05 demo restore allows anon via anonymousPerMinute=3
-# (IP rate-limited). With empty messages payload, request flows through anon
-# pass-through, hits Anthropic, gets 400 invalid_request_error (messages
-# field required). Without auth header at all → also flows through (anon),
-# same 400. So 400 is the expected anon-mode response, 401/403 only happens
-# if anon mode is removed. Accept all three to track either policy.
-check "claude-proxy responds to POST without auth (anon allowed via demo)" \
-  "curl -s --max-time $TIMEOUT -X POST '$FUNCTIONS_URL/claude-proxy' -H 'Content-Type: application/json' -d '{\"messages\":[]}' -o /dev/null -w '%{http_code}'" \
-  "^(400|401|403)$"
+# claude-proxy: anon POST must produce one of three acceptable outcomes:
+#   (a) HTTP 4xx — auth blocked (anon-bypass disabled). OK.
+#   (b) HTTP 200 with body containing "model_used":"rag-only-fallback" AND
+#       "fallback_reason" (Anthropic credit exhausted, graceful fallback
+#       per commit f0394f5 / lesson_anthropic_zero_balance_fallback). OK.
+#   (c) HTTP 200 with a real "model_used" value (anthropic_sonnet etc.) and
+#       a non-empty "text" — happy path when both Anthropic + OpenAI funded. OK.
+# Reject:
+#   - HTTP 200 with no "model_used" field at all (bypass without marker)
+#   - HTTP 5xx (server error)
+#   - HTTP 200 with model_used=anthropic_sonnet and empty/missing "text"
+#     (silent failure — the Apr 18/20 regression class)
+# Use a real (non-empty) messages payload so the happy path is reachable when
+# credits exist; the fallback / 4xx paths still trigger when they should.
+CP_TMP=$(mktemp)
+CP_CODE=$(curl -s --max-time "$TIMEOUT" -X POST "$FUNCTIONS_URL/claude-proxy" \
+  -H 'Content-Type: application/json' \
+  -d '{"messages":[{"role":"user","content":"ping"}]}' \
+  -o "$CP_TMP" -w '%{http_code}' || echo "000")
+CP_BODY=$(cat "$CP_TMP" 2>/dev/null || echo "")
+rm -f "$CP_TMP"
+CP_NAME="claude-proxy anon POST (4xx OR 200+fallback OR 200+real model)"
+if [[ "$CP_CODE" =~ ^4[0-9][0-9]$ ]]; then
+  # Path (a): auth blocked — acceptable.
+  printf "\033[1;32m  ✓\033[0m %-55s [%s auth-blocked]\n" "$CP_NAME" "$CP_CODE"
+  PASS=$((PASS+1))
+elif [[ "$CP_CODE" =~ ^5[0-9][0-9]$ ]] || [[ "$CP_CODE" == "000" ]]; then
+  printf "\033[1;31m  ✗\033[0m %-55s got=[%s 5xx/timeout] sample=[%s]\n" \
+    "$CP_NAME" "$CP_CODE" "${CP_BODY:0:120}"
+  FAIL=$((FAIL+1))
+  FAILURES+=("$CP_NAME (5xx/timeout)")
+elif [[ "$CP_CODE" == "200" ]]; then
+  # Path (b): rag-only-fallback WITH fallback_reason — acceptable.
+  if echo "$CP_BODY" | grep -q '"model_used"[[:space:]]*:[[:space:]]*"rag-only-fallback"' \
+     && echo "$CP_BODY" | grep -q '"fallback_reason"[[:space:]]*:'; then
+    printf "\033[1;32m  ✓\033[0m %-55s [200 rag-only-fallback]\n" "$CP_NAME"
+    PASS=$((PASS+1))
+  # Path (c): real model_used (anything other than rag-only-fallback) — acceptable
+  # only if "text" field is present and non-empty (catches silent-failure regression).
+  elif echo "$CP_BODY" | grep -qE '"model_used"[[:space:]]*:[[:space:]]*"[^"]+"' \
+       && ! echo "$CP_BODY" | grep -q '"model_used"[[:space:]]*:[[:space:]]*"rag-only-fallback"'; then
+    if echo "$CP_BODY" | grep -qE '"text"[[:space:]]*:[[:space:]]*"[^"]+"'; then
+      MODEL=$(echo "$CP_BODY" | grep -oE '"model_used"[[:space:]]*:[[:space:]]*"[^"]+"' | head -1 | sed 's/.*"\([^"]*\)"$/\1/')
+      printf "\033[1;32m  ✓\033[0m %-55s [200 model=%s]\n" "$CP_NAME" "$MODEL"
+      PASS=$((PASS+1))
+    else
+      printf "\033[1;31m  ✗\033[0m %-55s [200 model_used set but text empty — silent failure] sample=[%s]\n" \
+        "$CP_NAME" "${CP_BODY:0:120}"
+      FAIL=$((FAIL+1))
+      FAILURES+=("$CP_NAME (200 + empty text)")
+    fi
+  else
+    # 200 with neither marker → reject (bypass without fallback).
+    printf "\033[1;31m  ✗\033[0m %-55s [200 but no model_used / no fallback_reason] sample=[%s]\n" \
+      "$CP_NAME" "${CP_BODY:0:120}"
+    FAIL=$((FAIL+1))
+    FAILURES+=("$CP_NAME (200 without model_used marker)")
+  fi
+else
+  printf "\033[1;31m  ✗\033[0m %-55s got=[unexpected %s] sample=[%s]\n" \
+    "$CP_NAME" "$CP_CODE" "${CP_BODY:0:120}"
+  FAIL=$((FAIL+1))
+  FAILURES+=("$CP_NAME (unexpected $CP_CODE)")
+fi
+unset CP_TMP CP_CODE CP_BODY CP_NAME MODEL
 
 # check-company should work for anon (read-only business registry proxy)
 check "check-company allows anon POST (rate-limited)" \
