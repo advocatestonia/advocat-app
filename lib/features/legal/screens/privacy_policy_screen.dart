@@ -121,7 +121,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.xs),
           Text(
-            'Effective Date: 1 March 2026',
+            'Effective Date: 20 May 2026',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 14,
@@ -130,7 +130,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.xs),
           Text(
-            'Last Updated: 1 March 2026',
+            'Last Updated: 20 May 2026',
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 14,
@@ -211,24 +211,36 @@ class PrivacyPolicyScreen extends StatelessWidget {
       _section(
         '4. Third-Party Data Processors',
         'We engage the following third-party processors to provide the Service:\n\n'
-            '4.1. Anthropic (Claude AI)\n'
+            '4.1. Anthropic (Claude AI) — primary AI provider\n'
             '  - Purpose: AI-powered legal information generation;\n'
             '  - Data processed: Chat messages, case descriptions, document content;\n'
             '  - Location: United States;\n'
             '  - Safeguards: EU-US Data Privacy Framework; Standard Contractual Clauses;\n'
             '  - Privacy policy: https://www.anthropic.com/privacy\n\n'
-            '4.2. Supabase\n'
+            '4.2. OpenAI (Whisper STT, embeddings, gpt-4o-mini AI failover)\n'
+            '  - Purpose: (i) speech-to-text via Whisper for voice input; '
+            '(ii) text embeddings (text-embedding-3-small) for retrieval; '
+            '(iii) large-language-model inference via gpt-4o-mini engaged '
+            'solely as a failover when the primary Anthropic service is '
+            'temporarily unavailable;\n'
+            '  - Data processed: Voice clips, prompt/chat content (failover only), '
+            'document text;\n'
+            '  - Location: United States;\n'
+            '  - Safeguards: EU-US Data Privacy Framework; Standard Contractual Clauses; '
+            'OpenAI API default no-training on submitted business data;\n'
+            '  - Privacy policy: https://openai.com/policies/privacy-policy\n\n'
+            '4.3. Supabase\n'
             '  - Purpose: Database hosting, authentication, and file storage;\n'
             '  - Data processed: Account data, case data, documents;\n'
             '  - Location: European Union servers;\n'
             '  - Safeguards: GDPR-compliant data processing agreement;\n'
             '  - Privacy policy: https://supabase.com/privacy\n\n'
-            '4.3. Stripe\n'
+            '4.4. Stripe\n'
             '  - Purpose: Payment processing;\n'
             '  - Data processed: Payment and billing information;\n'
             '  - Safeguards: PCI DSS Level 1 certified; GDPR-compliant;\n'
             '  - Privacy policy: https://stripe.com/privacy\n\n'
-            '4.4. Google (Firebase)\n'
+            '4.5. Google (Firebase)\n'
             '  - Purpose: Analytics, crash reporting, and push notifications;\n'
             '  - Data processed: Anonymised usage data, device identifiers;\n'
             '  - Safeguards: EU-US Data Privacy Framework; Standard Contractual Clauses;\n'
@@ -318,8 +330,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
         '9.1. Your personal data is primarily stored on servers located within '
             'the European Union (via Supabase EU infrastructure).\n\n'
             '9.2. Certain data is transferred to the United States for processing by '
-            'Anthropic (AI chat processing) and Google (analytics). These transfers '
-            'are protected by:\n'
+            'Anthropic (primary AI chat), OpenAI (Whisper speech-to-text, '
+            'embeddings, and gpt-4o-mini AI chat failover) and Google '
+            '(analytics). These transfers are protected by:\n'
             '  - The EU-US Data Privacy Framework;\n'
             '  - Standard Contractual Clauses (SCCs) approved by the European Commission;\n'
             '  - Supplementary technical and organisational measures as needed.\n\n'

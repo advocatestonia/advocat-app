@@ -17,7 +17,7 @@
 
 /// Current DPA version string. Update on every material change to the body.
 /// Format: `vMAJOR.MINOR-YYYY-MM-DD`.
-const String kCurrentDpaVersion = 'v1.0-2026-05-20';
+const String kCurrentDpaVersion = 'v1.1-2026-05-20';
 
 /// The full DPA body in English. Rendered verbatim in the review screen and
 /// archived in `dpa_acceptances.dpa_version` so we can prove exactly which
@@ -25,7 +25,7 @@ const String kCurrentDpaVersion = 'v1.0-2026-05-20';
 const String kDpaTextEnV1 = r'''
 DATA PROCESSING AGREEMENT
 
-Version v1.0 — Effective 20 May 2026
+Version v1.1 — Effective 20 May 2026
 
 This Data Processing Agreement ("DPA") forms part of, and is incorporated by reference into, the Advocat Terms of Service (the "Agreement") between the Customer (acting as Controller, the "Controller") and Vorantis OÜ, registry code 17098992, Tornimäe tn 5, 10145 Tallinn, Republic of Estonia (acting as Processor, the "Processor", "Advocat", "we", "us"). It reflects the parties' agreement with respect to the processing of Personal Data by the Processor on behalf of the Controller in connection with the Advocat platform (the "Service") and is intended to satisfy Article 28 of Regulation (EU) 2016/679 (the "GDPR").
 
@@ -90,13 +90,14 @@ The Processor undertakes to:
 
 5.2 Current Sub-processors. As at the version date of this DPA, the Processor engages the following Sub-processors:
 
-  (a) Anthropic, PBC (United States) — large-language-model inference. Receives prompts (which may include Controller-uploaded content) and returns generated text. Anthropic is certified under the EU-US Data Privacy Framework and contractually does not train its models on Customer Data submitted via its commercial API.
-  (b) Supabase, Inc. (United States, with EU-region database hosting in West Europe / London) — database, authentication and serverless functions. EU-US Data Privacy Framework and Standard Contractual Clauses.
-  (c) Google LLC (United States) — Gmail API access when the Controller's user voluntarily connects a Google account, so that the Service can send and receive emails from the user's own mailbox. EU-US Data Privacy Framework.
-  (d) Resend, Inc. (United States) — transactional email dispatch as a fallback where no user mailbox is connected. Standard Contractual Clauses.
-  (e) Stripe, Inc. (United States) — payment processing for paid subscriptions. EU-US Data Privacy Framework.
-  (f) ElevenLabs Inc. (United States / United Kingdom) — voice synthesis, engaged only when the user actively uses voice features. Standard Contractual Clauses.
-  (g) GitHub, Inc. (United States) — static asset and landing-page hosting (GitHub Pages). EU-US Data Privacy Framework.
+  (a) Anthropic, PBC (United States) — primary large-language-model inference (Claude family). Receives prompts (which may include Controller-uploaded content) and returns generated text. Anthropic is certified under the EU-US Data Privacy Framework and contractually does not train its models on Customer Data submitted via its commercial API.
+  (b) OpenAI, L.L.C. (United States) — (i) speech-to-text via the Whisper API and text embeddings (text-embedding-3-small) for retrieval augmentation, and (ii) large-language-model inference (gpt-4o-mini) engaged solely as a failover when the primary Anthropic service is temporarily unavailable. In the failover case, the Processor transmits to OpenAI the same prompt content that would otherwise have been sent to Anthropic. OpenAI is certified under the EU-US Data Privacy Framework, the OpenAI API default is no-training on submitted business data, and transmission occurs over TLS. Standard Contractual Clauses apply.
+  (c) Supabase, Inc. (United States, with EU-region database hosting in West Europe / London) — database, authentication and serverless functions. EU-US Data Privacy Framework and Standard Contractual Clauses.
+  (d) Google LLC (United States) — Gmail API access when the Controller's user voluntarily connects a Google account, so that the Service can send and receive emails from the user's own mailbox. EU-US Data Privacy Framework.
+  (e) Resend, Inc. (United States) — transactional email dispatch as a fallback where no user mailbox is connected. Standard Contractual Clauses.
+  (f) Stripe, Inc. (United States) — payment processing for paid subscriptions. EU-US Data Privacy Framework.
+  (g) ElevenLabs Inc. (United States / United Kingdom) — voice synthesis, engaged only when the user actively uses voice features. Standard Contractual Clauses.
+  (h) GitHub, Inc. (United States) — static asset and landing-page hosting (GitHub Pages). EU-US Data Privacy Framework.
 
 5.3 Changes. The Processor will give the Controller at least thirty (30) days' advance notice of any addition or replacement of a Sub-processor by updating the in-product list and, where the Controller has provided a notification email, by email. The Controller may object to such change on reasonable data-protection grounds within that notice period. If the parties cannot agree on a resolution, the Controller may terminate the affected portion of the Service for convenience.
 
@@ -161,5 +162,5 @@ The Processor undertakes to:
 
 13.2 The Processor may update this DPA from time to time to reflect changes in applicable law, new Sub-processors or evolution of the Service. Material changes will be communicated as described in Section 5.3 and will require a new acceptance from the Controller before the Controller upgrades or renews a paid subscription on the new version.
 
--- End of DPA v1.0 --
+-- End of DPA v1.1 --
 ''';

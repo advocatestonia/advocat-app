@@ -32,7 +32,7 @@ const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
 // mint a Stripe session unless a row exists in `public.dpa_acceptances`
 // for (user_id, this version). Defence-in-depth: even if the client UI
 // is bypassed, no charge can happen without a recorded acceptance.
-const CURRENT_DPA_VERSION = "v1.0-2026-05-20";
+const CURRENT_DPA_VERSION = "v1.1-2026-05-20";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
