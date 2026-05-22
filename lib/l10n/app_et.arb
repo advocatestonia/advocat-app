@@ -1537,5 +1537,58 @@
     "dataProcessingAgreement": "Andmetöötlusleping",
     "exportingData": "Andmete eksport käib…",
     "exportComplete": "Andmete eksport valmis — salvestatud teie seadmesse.",
-    "exportFailed": "Eksport ebaõnnestus. Proovige uuesti või võtke tugiteenusega ühendust."
+    "exportFailed": "Eksport ebaõnnestus. Proovige uuesti või võtke tugiteenusega ühendust.",
+    "quotaExhaustedTitle": "Tasuta sõnumite limiit täis",
+    "quotaExhaustedBody": "Olete kasutanud kõik {count} tasuta sõnumit. Liituge Advocat Pro paketiga 19,99 €/kuus ja saage piiramatu juurdepääs AI-õigusnõustamisele.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Hiljem",
+    "quotaExhaustedUpgrade": "Advocat Pro — 19,99 €/kuus",
+    "quotaCtaMessage": "Olete kasutanud kõik {count} tasuta sõnumit. Liituge Advocat Pro paketiga 19,99 €/kuus.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Telli Advocat Pro — 19,99 €/kuus",
+    "aiErrorQuota": "Tasuta sõnumite limiit on täis. Tellige pakett, et AI-d edasi kasutada.",
+    "aiErrorAuth": "AI kasutamiseks on vaja sisse logida. Registreeruge või logige sisse.",
+    "aiErrorGeneric": "Ajutine AI tõrge. Proovige minuti pärast uuesti. Kui probleem püsib — kirjutage tugiteenusele.",
+    "tooltipShareCase": "Jaga juhtumi kokkuvõtet",
+    "tooltipMuteVoice": "Vaigista hääl",
+    "tooltipUnmuteVoice": "Lülita hääl sisse",
+    "tooltipAttachDoc": "Lisa dokument",
+    "aiTypingHint": "AI…",
+    "error404Title": "Lehte ei leitud",
+    "error404Body": "Ei õnnestunud leida: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "Avalehele",
+    "emailAlreadyRegistered": "See e-post on juba registreeritud. Kas soovid sisse logida?",
+    "actionSignIn": "Logi sisse",
+    "actionUndo": "Võta tagasi",
+    "intakeUrgentOpened": "Vestlus avatud — sinu mustand on salvestatud.",
+    "panicCoachmark": "Hoia all, kui vajad kohe abi.",
+    "panicTitle": "Mida sa praegu vajad?",
+    "panicCardReadAloud": "Loe ette ametnikule",
+    "panicCardRecord": "Salvesta vestlus",
+    "panicCardCall": "Helista advokaadile",
+    "panicCardAi": "Räägi Advocatiga kohe",
+    "panicClose": "Sulge",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "Tuleb varsti",
+    "panicRecordV1Body": "Salvestusfunktsioon on Eesti õiguse seisukohast üle vaatamisel ja saadaval V2-s. Praegu saate kasutada telefoni süsteemset diktofoni.",
+    "panicCallFallbackBody": "Saatke kirjeldus aadressile kiire@advocat.ee ja võtame teiega ühendust."
 }

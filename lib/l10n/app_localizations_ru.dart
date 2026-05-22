@@ -3725,4 +3725,76 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get exportFailed =>
       'Экспорт не удался. Попробуйте ещё раз или свяжитесь с поддержкой.';
+
+  @override
+  String get quotaExhaustedTitle => 'Лимит бесплатных сообщений';
+
+  @override
+  String quotaExhaustedBody(int count) {
+    return 'Вы использовали все $count бесплатных сообщений. Оформите Advocat Pro за 19,99 €/мес для неограниченного доступа к AI-консультациям.';
+  }
+
+  @override
+  String get quotaExhaustedLater => 'Позже';
+
+  @override
+  String get quotaExhaustedUpgrade => 'Advocat Pro — 19,99 €/мес';
+
+  @override
+  String quotaCtaMessage(int count) {
+    return 'Вы использовали все $count бесплатных сообщений. Оформите Advocat Pro за 19,99 €/мес.';
+  }
+
+  @override
+  String get quotaCtaButton => 'Оформить Advocat Pro — 19,99 €/мес';
+
+  @override
+  String get aiErrorQuota =>
+      'Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.';
+
+  @override
+  String get aiErrorAuth =>
+      'Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.';
+
+  @override
+  String get aiErrorGeneric =>
+      'Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.';
+
+  @override
+  String get tooltipShareCase => 'Поделиться сводкой по делу';
+
+  @override
+  String get tooltipMuteVoice => 'Отключить голос';
+
+  @override
+  String get tooltipUnmuteVoice => 'Включить голос';
+
+  @override
+  String get tooltipAttachDoc => 'Прикрепить документ';
+
+  @override
+  String get aiTypingHint => 'AI…';
+
+  @override
+  String get error404Title => 'Страница не найдена';
+
+  @override
+  String error404Body(String path) {
+    return 'Не удалось найти: $path';
+  }
+
+  @override
+  String get goToHome => 'На главную';
+
+  @override
+  String get emailAlreadyRegistered => 'Эта почта уже зарегистрирована. Войти?';
+
+  @override
+  String get actionSignIn => 'Войти';
+
+  @override
+  String get actionUndo => 'Отменить';
+
+  @override
+  String get intakeUrgentOpened => 'Чат открыт — черновик сохранён.';
 }

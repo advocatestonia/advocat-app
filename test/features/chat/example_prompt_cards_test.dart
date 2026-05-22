@@ -20,7 +20,7 @@ void main() {
           home: Scaffold(
             body: ExamplePromptCards(
               locale: 'en',
-              onPromptSelected: (_) {},
+              onPromptSelected: (_, {required bool autoSend}) {},
             ),
           ),
         ),
@@ -41,7 +41,7 @@ void main() {
           home: Scaffold(
             body: ExamplePromptCards(
               locale: 'en',
-              onPromptSelected: (_) {},
+              onPromptSelected: (_, {required bool autoSend}) {},
             ),
           ),
         ),
@@ -67,7 +67,7 @@ void main() {
           home: Scaffold(
             body: ExamplePromptCards(
               locale: 'et',
-              onPromptSelected: (_) {},
+              onPromptSelected: (_, {required bool autoSend}) {},
             ),
           ),
         ),
@@ -83,7 +83,7 @@ void main() {
           home: Scaffold(
             body: ExamplePromptCards(
               locale: 'ru',
-              onPromptSelected: (_) {},
+              onPromptSelected: (_, {required bool autoSend}) {},
             ),
           ),
         ),
@@ -95,15 +95,20 @@ void main() {
   });
 
   group('ExamplePromptCards — interaction', () {
-    testWidgets('tapping a card fires onPromptSelected with prompt text',
+    testWidgets(
+        'tapping a card fires onPromptSelected with prompt text and autoSend=true',
         (tester) async {
       String? got;
+      bool? gotAutoSend;
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
             body: ExamplePromptCards(
               locale: 'en',
-              onPromptSelected: (s) => got = s,
+              onPromptSelected: (s, {required bool autoSend}) {
+                got = s;
+                gotAutoSend = autoSend;
+              },
             ),
           ),
         ),
@@ -115,6 +120,38 @@ void main() {
 
       expect(got, isNotNull);
       expect(got, contains('non-disclosure'));
+      // FIX-WAVE 6 (2026-05-20 — onboarding speedup B): tap = auto-send.
+      expect(gotAutoSend, isTrue);
+    });
+
+    testWidgets(
+        'long-pressing a card fires onPromptSelected with autoSend=false (edit mode)',
+        (tester) async {
+      String? got;
+      bool? gotAutoSend;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: ExamplePromptCards(
+              locale: 'en',
+              onPromptSelected: (s, {required bool autoSend}) {
+                got = s;
+                gotAutoSend = autoSend;
+              },
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.longPress(find.byKey(const Key('example_prompt_landlord')));
+      await tester.pumpAndSettle();
+
+      expect(got, isNotNull);
+      expect(got, contains('landlord'));
+      // Long-press preserves the pre-fill-only behavior so the user
+      // can edit the example before sending.
+      expect(gotAutoSend, isFalse);
     });
 
     testWidgets('FI tap returns Finnish text', (tester) async {
@@ -124,7 +161,7 @@ void main() {
           home: Scaffold(
             body: ExamplePromptCards(
               locale: 'fi',
-              onPromptSelected: (s) => got = s,
+              onPromptSelected: (s, {required bool autoSend}) => got = s,
             ),
           ),
         ),

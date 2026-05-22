@@ -3710,4 +3710,78 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get exportFailed =>
       'Eksport ebaõnnestus. Proovige uuesti või võtke tugiteenusega ühendust.';
+
+  @override
+  String get quotaExhaustedTitle => 'Tasuta sõnumite limiit täis';
+
+  @override
+  String quotaExhaustedBody(int count) {
+    return 'Olete kasutanud kõik $count tasuta sõnumit. Liituge Advocat Pro paketiga 19,99 €/kuus ja saage piiramatu juurdepääs AI-õigusnõustamisele.';
+  }
+
+  @override
+  String get quotaExhaustedLater => 'Hiljem';
+
+  @override
+  String get quotaExhaustedUpgrade => 'Advocat Pro — 19,99 €/kuus';
+
+  @override
+  String quotaCtaMessage(int count) {
+    return 'Olete kasutanud kõik $count tasuta sõnumit. Liituge Advocat Pro paketiga 19,99 €/kuus.';
+  }
+
+  @override
+  String get quotaCtaButton => 'Telli Advocat Pro — 19,99 €/kuus';
+
+  @override
+  String get aiErrorQuota =>
+      'Tasuta sõnumite limiit on täis. Tellige pakett, et AI-d edasi kasutada.';
+
+  @override
+  String get aiErrorAuth =>
+      'AI kasutamiseks on vaja sisse logida. Registreeruge või logige sisse.';
+
+  @override
+  String get aiErrorGeneric =>
+      'Ajutine AI tõrge. Proovige minuti pärast uuesti. Kui probleem püsib — kirjutage tugiteenusele.';
+
+  @override
+  String get tooltipShareCase => 'Jaga juhtumi kokkuvõtet';
+
+  @override
+  String get tooltipMuteVoice => 'Vaigista hääl';
+
+  @override
+  String get tooltipUnmuteVoice => 'Lülita hääl sisse';
+
+  @override
+  String get tooltipAttachDoc => 'Lisa dokument';
+
+  @override
+  String get aiTypingHint => 'AI…';
+
+  @override
+  String get error404Title => 'Lehte ei leitud';
+
+  @override
+  String error404Body(String path) {
+    return 'Ei õnnestunud leida: $path';
+  }
+
+  @override
+  String get goToHome => 'Avalehele';
+
+  @override
+  String get emailAlreadyRegistered =>
+      'See e-post on juba registreeritud. Kas soovid sisse logida?';
+
+  @override
+  String get actionSignIn => 'Logi sisse';
+
+  @override
+  String get actionUndo => 'Võta tagasi';
+
+  @override
+  String get intakeUrgentOpened =>
+      'Vestlus avatud — sinu mustand on salvestatud.';
 }

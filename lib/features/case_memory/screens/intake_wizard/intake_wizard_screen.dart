@@ -35,8 +35,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../config/router.dart';
 import '../../../../config/theme.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../main.dart' show rootScaffoldMessengerKey;
 import '../../data/case_repository.dart';
 import '../../models/user_case.dart';
 import '../../services/intake_greeting_service.dart';
@@ -133,35 +135,77 @@ class _IntakeWizardScreenState extends ConsumerState<IntakeWizardScreen> {
     return supported.contains(code) ? code : 'ru';
   }
 
+  /// Urgent shortcut — "У меня горит / Kiireloomuline".
+  ///
+  /// FIX-WAVE 6 (2026-05-20 — onboarding speedup D): we used to show a
+  /// confirm AlertDialog before materializing. Two taps to escape the
+  /// wizard was killing the whole point of the "urgent" affordance, so
+  /// we now materialize the case immediately and offer a 3-second Undo
+  /// SnackBar on the chat screen. Undo restores the draft + step the
+  /// user was on.
+  ///
+  /// Note: Undo does NOT delete the freshly-created case row from
+  /// Supabase — it only restores the in-app wizard state so the user
+  /// can keep filling. The orphaned draft case is recoverable from
+  /// /cases-v2 like any other case the user abandons.
+  /// Urgent shortcut — "У меня горит / Kiireloomuline".
+  ///
+  /// FIX-WAVE 6 (2026-05-20 — onboarding speedup D): we used to show a
+  /// confirm AlertDialog before materializing. Two taps to escape the
+  /// wizard was killing the whole point of the "urgent" affordance, so
+  /// we now materialize the case immediately and offer a 3-second Undo
+  /// SnackBar via the root messenger. The SnackBar therefore survives
+  /// the navigation into /chat/:id and lands on the chat screen, where
+  /// it belongs. Undo restores the draft so the user can keep filling
+  /// the wizard.
+  ///
+  /// Note: Undo does NOT delete the freshly-created case row from
+  /// Supabase — it only restores the in-app wizard state. The orphaned
+  /// draft case is recoverable from /cases-v2 like any other case the
+  /// user abandons.
   Future<void> _onUrgent() async {
+    // Snapshot wizard state BEFORE materialize so Undo can restore it
+    // after _materializeCaseAndGo calls clearDraft().
+    final draftSnapshot = ref.read(intakeWizardProvider);
     final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n?.intakeUrgentDialogTitle ?? 'Open chat now?'),
-        content: Text(l10n?.intakeUrgentDialogBody ?? ''),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n?.intakeUrgentCancel ?? 'Cancel'),
-          ),
-          ElevatedButton(
-            key: const Key('intake-urgent-confirm'),
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n?.intakeUrgentConfirm ?? 'Open chat'),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true) return;
+    final notifier = ref.read(intakeWizardProvider.notifier);
+    final goRouter = GoRouter.of(context);
 
     // Mark the draft urgent so the greeting service uses the urgent
     // fallback template.
-    ref
-        .read(intakeWizardProvider.notifier)
-        .update((d) => d.copyWith(urgentShortcutTaken: true));
+    notifier.update((d) => d.copyWith(urgentShortcutTaken: true));
 
     await _materializeCaseAndGo();
+    // `mounted` will be false here because _materializeCaseAndGo has
+    // already context.go'd away; that's fine — we use the root
+    // messenger, which is rooted in MaterialApp.router and outlives
+    // route transitions.
+
+    rootScaffoldMessengerKey.currentState
+      ?..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          key: const Key('intake-urgent-undo-snackbar'),
+          content: Text(
+            l10n?.intakeUrgentOpened ?? 'Chat opened — your draft is saved.',
+          ),
+          duration: const Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          action: SnackBarAction(
+            label: l10n?.actionUndo ?? 'Undo',
+            onPressed: () {
+              // Re-seed the wizard with the pre-urgent draft so the user
+              // doesn't lose what they typed, then navigate back. The
+              // wizard re-mounts at step 1; SharedPreferences-backed
+              // draft persistence brings their answers back.
+              notifier.update(
+                (_) => draftSnapshot.copyWith(urgentShortcutTaken: false),
+              );
+              goRouter.go(AppRoutes.caseV2New);
+            },
+          ),
+        ),
+      );
   }
 
   Future<void> _finish() async => _materializeCaseAndGo();

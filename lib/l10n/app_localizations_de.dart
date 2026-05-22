@@ -3745,4 +3745,79 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get exportFailed =>
       'Export failed. Please try again or contact support.';
+
+  @override
+  String get quotaExhaustedTitle =>
+      'Limit der kostenlosen Nachrichten erreicht';
+
+  @override
+  String quotaExhaustedBody(int count) {
+    return 'Sie haben alle $count kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat und erhalten Sie unbegrenzten Zugang zur KI-Rechtsberatung.';
+  }
+
+  @override
+  String get quotaExhaustedLater => 'Später';
+
+  @override
+  String get quotaExhaustedUpgrade => 'Advocat Pro — 19,99 €/Monat';
+
+  @override
+  String quotaCtaMessage(int count) {
+    return 'Sie haben alle $count kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat.';
+  }
+
+  @override
+  String get quotaCtaButton => 'Advocat Pro buchen — 19,99 €/Monat';
+
+  @override
+  String get aiErrorQuota =>
+      'Limit der kostenlosen Nachrichten erreicht. Abonnieren Sie, um die KI weiter zu nutzen.';
+
+  @override
+  String get aiErrorAuth =>
+      'Für die KI-Nutzung ist eine Anmeldung erforderlich. Bitte registrieren oder anmelden.';
+
+  @override
+  String get aiErrorGeneric =>
+      'Vorübergehender KI-Fehler. Bitte in einer Minute erneut versuchen. Falls es weiterhin nicht funktioniert — wenden Sie sich an den Support.';
+
+  @override
+  String get tooltipShareCase => 'Fallzusammenfassung teilen';
+
+  @override
+  String get tooltipMuteVoice => 'Stimme stummschalten';
+
+  @override
+  String get tooltipUnmuteVoice => 'Stimme einschalten';
+
+  @override
+  String get tooltipAttachDoc => 'Dokument anhängen';
+
+  @override
+  String get aiTypingHint => 'KI…';
+
+  @override
+  String get error404Title => 'Seite nicht gefunden';
+
+  @override
+  String error404Body(String path) {
+    return 'Nicht gefunden: $path';
+  }
+
+  @override
+  String get goToHome => 'Zur Startseite';
+
+  @override
+  String get emailAlreadyRegistered =>
+      'Diese E-Mail ist bereits registriert. Anmelden?';
+
+  @override
+  String get actionSignIn => 'Anmelden';
+
+  @override
+  String get actionUndo => 'Rückgängig';
+
+  @override
+  String get intakeUrgentOpened =>
+      'Chat geöffnet — dein Entwurf ist gespeichert.';
 }

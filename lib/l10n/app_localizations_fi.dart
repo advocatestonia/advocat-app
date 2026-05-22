@@ -3720,4 +3720,77 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get exportFailed =>
       'Vienti epäonnistui. Yritä uudelleen tai ota yhteyttä tukeen.';
+
+  @override
+  String get quotaExhaustedTitle => 'Ilmaisten viestien raja täynnä';
+
+  @override
+  String quotaExhaustedBody(int count) {
+    return 'Olet käyttänyt kaikki $count ilmaista viestiä. Tilaa Advocat Pro hintaan 19,99 €/kk ja saat rajattoman pääsyn tekoälyn oikeusneuvontaan.';
+  }
+
+  @override
+  String get quotaExhaustedLater => 'Myöhemmin';
+
+  @override
+  String get quotaExhaustedUpgrade => 'Advocat Pro — 19,99 €/kk';
+
+  @override
+  String quotaCtaMessage(int count) {
+    return 'Olet käyttänyt kaikki $count ilmaista viestiä. Tilaa Advocat Pro hintaan 19,99 €/kk.';
+  }
+
+  @override
+  String get quotaCtaButton => 'Tilaa Advocat Pro — 19,99 €/kk';
+
+  @override
+  String get aiErrorQuota =>
+      'Ilmaisten viestien raja on täynnä. Tilaa jatkaaksesi tekoälyn käyttöä.';
+
+  @override
+  String get aiErrorAuth =>
+      'Tekoälyn käyttö edellyttää kirjautumista. Rekisteröidy tai kirjaudu sisään.';
+
+  @override
+  String get aiErrorGeneric =>
+      'Tilapäinen tekoälyn virhe. Yritä minuutin kuluttua uudelleen. Jos ongelma jatkuu — ota yhteyttä tukeen.';
+
+  @override
+  String get tooltipShareCase => 'Jaa asian yhteenveto';
+
+  @override
+  String get tooltipMuteVoice => 'Mykistä ääni';
+
+  @override
+  String get tooltipUnmuteVoice => 'Poista mykistys';
+
+  @override
+  String get tooltipAttachDoc => 'Liitä asiakirja';
+
+  @override
+  String get aiTypingHint => 'AI…';
+
+  @override
+  String get error404Title => 'Sivua ei löytynyt';
+
+  @override
+  String error404Body(String path) {
+    return 'Ei löytynyt: $path';
+  }
+
+  @override
+  String get goToHome => 'Etusivulle';
+
+  @override
+  String get emailAlreadyRegistered =>
+      'Tämä sähköposti on jo rekisteröity. Kirjautua sisään?';
+
+  @override
+  String get actionSignIn => 'Kirjaudu sisään';
+
+  @override
+  String get actionUndo => 'Kumoa';
+
+  @override
+  String get intakeUrgentOpened => 'Chat avattu — luonnoksesi on tallennettu.';
 }

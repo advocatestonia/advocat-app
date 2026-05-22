@@ -56,6 +56,7 @@ import '../quick_profile/quick_profile_intake.dart';
 import '../../../services/user_memory_service.dart';
 import '../../case_memory/widgets/active_case_chip.dart';
 import '../../case_memory/widgets/deadline_banner.dart';
+import '../../../widgets/support/panic_sheet.dart' show PanicSession, PanicJurisdiction;
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -293,9 +294,29 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   String? _detectedContractTypeHint;
   String? _detectedContractFilename;
 
+  // -- SOS / Panic Mode prompt prefix (2026-05-20) --
+  //
+  // If the user reached this screen via the panic sheet's "Talk to Advocat
+  // now" card, `PanicSession.active` is true. We consume the flag in
+  // initState (one-shot) and stash a short, action-only system-prompt
+  // prefix in [_panicPromptPrefix]. The prefix is prepended to the dynamic
+  // `ctx` (client knowledge + case file) on every outgoing turn for the
+  // lifetime of THIS chat instance — i.e. until the user navigates away
+  // and reopens the chat normally. This matches the DEPT 2 SOS decision:
+  // single jurisdiction, action steps only, no preamble.
+  String? _panicPromptPrefix;
+
   @override
   void initState() {
     super.initState();
+
+    // Consume the panic-session flag BEFORE any async work so we don't lose
+    // the state across rebuilds. Returns active=false on a normal nav.
+    final panic = PanicSession.consume();
+    if (panic.active) {
+      _panicPromptPrefix = _buildPanicPrefix(panic.jurisdiction);
+    }
+
     _loadMessages();
     // Sample-case mode (backlog #36) skips every network side-effect:
     // no voice priming, no quota lookup, no case fetch, no context build.
@@ -306,6 +327,24 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       _loadCase();
       _knowledgeService.buildClientContext(caseId: widget.caseId);
     }
+  }
+
+  /// Builds the panic-mode system-prompt prefix. Kept short and jurisdiction-
+  /// scoped per DEPT 2 SOS spec: <60 words, action steps only, no preamble.
+  String _buildPanicPrefix(PanicJurisdiction jurisdiction) {
+    final jurName = switch (jurisdiction) {
+      PanicJurisdiction.ee => 'Estonia (KrMS, KarS, väärteomenetluse seadustik)',
+      PanicJurisdiction.fi =>
+        'Finland (esitutkintalaki, pakkokeinolaki, poliisilaki)',
+      PanicJurisdiction.other => 'the user\'s current jurisdiction',
+    };
+    return 'URGENT: the user is currently being detained, questioned, or '
+        'served a paper RIGHT NOW. Respond in under 60 words. Single '
+        'jurisdiction only: $jurName. Action steps only — numbered. No '
+        'preamble, no caveats, no "I am an AI". Match the user\'s language. '
+        'If the user has not said what is happening, ask ONE clarifying '
+        'question only: "Are you (a) being stopped on the street, (b) at the '
+        'police station, or (c) just served a paper?"';
   }
 
   Future<void> _loadFreeMessageCount() async {
@@ -791,13 +830,25 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     });
   }
 
-  /// Backlog #36 Layer 4: user tapped one of the example prompt cards.
-  /// Inserts the prompt into the input and focuses — unlike the category
-  /// chips above, we deliberately do NOT auto-send: the user is supposed
-  /// to be able to edit the prompt first. Cards stay visible until the
-  /// user actually hits send (_showWelcomeChips flips to false in
-  /// _sendMessage), so accidental taps don't lose the example.
-  void _onExamplePromptSelected(String prompt) {
+  /// Backlog #36 Layer 4: user picked one of the example prompt cards.
+  ///
+  /// FIX-WAVE 6 (2026-05-20 — onboarding speedup B): tap auto-sends so the
+  /// user sees the AI in action without a second gesture. Long-press still
+  /// pre-fills only, so users who want to edit the example can.
+  ///
+  ///   * [autoSend] = true  → tap. Clear the composer (we're firing the
+  ///                          message directly) and call _sendMessage. The
+  ///                          welcome chips disappear naturally because
+  ///                          _sendMessage flips _showWelcomeChips=false.
+  ///   * [autoSend] = false → long-press. Pre-fill + focus the composer;
+  ///                          the cards stay visible until the user
+  ///                          actually hits send.
+  void _onExamplePromptSelected(String prompt, {required bool autoSend}) {
+    if (autoSend) {
+      _messageController.clear();
+      _sendMessage(prompt);
+      return;
+    }
     _messageController.text = prompt;
     _messageController.selection = TextSelection.fromPosition(
       TextPosition(offset: prompt.length),
@@ -1148,13 +1199,20 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           // Use cached context immediately to eliminate 1-2s dead silence.
           // On first message the cache may be empty (preloaded in _loadMessages),
           // so fall back to awaiting the full build only when necessary.
-          final String ctx;
+          String ctx;
           if (_knowledgeService.getCachedContext() != null) {
             ctx = _knowledgeService.getCachedContext()!;
             // Refresh in background for the next message
             unawaited(_knowledgeService.buildClientContext(caseId: widget.caseId));
           } else {
             ctx = await _knowledgeService.buildClientContext(caseId: widget.caseId);
+          }
+
+          // SOS / Panic Mode: prepend the action-only directive so the model
+          // sees it BEFORE the (long) client-knowledge context. Live for the
+          // entire lifetime of this chat instance — see [_panicPromptPrefix].
+          if (_panicPromptPrefix != null) {
+            ctx = '${_panicPromptPrefix!}\n\n$ctx';
           }
 
           // ── Phase 2 Pkg 6: legal planner routing ─────────────────
@@ -1672,11 +1730,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             userFacingMessage = l10n?.aiErrorOverload ??
                 'AI сейчас занят, попробуйте через минуту.';
           } else if (errorMsg.contains('unauthorized') || errorMsg.contains('401')) {
-            userFacingMessage = 'Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.';
+            userFacingMessage = l10n?.aiErrorAuth ??
+                'Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.';
           } else if (errorMsg.contains('quota') || errorMsg.contains('free limit')) {
-            userFacingMessage = 'Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.';
+            userFacingMessage = l10n?.aiErrorQuota ??
+                'Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.';
           } else {
-            userFacingMessage = 'Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.';
+            userFacingMessage = l10n?.aiErrorGeneric ??
+                'Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.';
           }
         }
         setState(() {
@@ -2272,7 +2333,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         // Share case summary
         IconButton(
           icon: const Icon(Icons.summarize_outlined, size: 22),
-          tooltip: 'Share case summary',
+          tooltip: AppLocalizations.of(context)?.tooltipShareCase ??
+              'Share case summary',
           onPressed: _shareCaseSummary,
         ),
         // TTS toggle
@@ -2281,7 +2343,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             _ttsEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
             color: _ttsEnabled ? AppColors.accent : AppColors.textTertiary,
           ),
-          tooltip: _ttsEnabled ? 'Mute voice' : 'Unmute voice',
+          tooltip: _ttsEnabled
+              ? (AppLocalizations.of(context)?.tooltipMuteVoice ?? 'Mute voice')
+              : (AppLocalizations.of(context)?.tooltipUnmuteVoice ??
+                  'Unmute voice'),
           onPressed: () {
             setState(() => _ttsEnabled = !_ttsEnabled);
             if (!_ttsEnabled) {
@@ -2318,7 +2383,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
         IconButton(
           icon: const Icon(Icons.attach_file_rounded),
-          tooltip: 'Attach document',
+          tooltip: AppLocalizations.of(context)?.tooltipAttachDoc ??
+              'Attach document',
           onPressed: _showAttachOptions,
         ),
         // User profile avatar
@@ -2531,9 +2597,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     ),
                   ),
                   const SizedBox(width: 4),
-                  const Text(
-                    'AI...',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)?.aiTypingHint ?? 'AI…',
+                    style: const TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: AppColors.accent,
@@ -2779,20 +2845,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   /// `allowed == false` (i.e. the server quota is exhausted). Gives them
   /// a single primary action: go to the subscription page.
   void _showUpgradeDialog() {
+    final l10n = AppLocalizations.of(context)!;
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
         key: const Key('quota_exhausted_dialog'),
-        title: const Text('Лимит бесплатных сообщений'),
-        content: Text(
-          'Вы использовали все ${AIService.freeTotalLimit} бесплатных '
-          'сообщений. Оформите Advocat Pro за €19.99/мес для неограниченного '
-          'доступа к AI-консультациям.',
-        ),
+        title: Text(l10n.quotaExhaustedTitle),
+        content: Text(l10n.quotaExhaustedBody(AIService.freeTotalLimit)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Позже'),
+            child: Text(l10n.quotaExhaustedLater),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -2803,7 +2866,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               Navigator.of(ctx).pop();
               context.push(AppRoutes.subscription);
             },
-            child: const Text('Advocat Pro — €19.99/мес'),
+            child: Text(l10n.quotaExhaustedUpgrade),
           ),
         ],
       ),
@@ -4520,8 +4583,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Text(
-              'Вы использовали все ${AIService.freeTotalLimit} бесплатных '
-              'сообщений. Оформите Advocat Pro за €19.99/мес.',
+              AppLocalizations.of(context)!
+                  .quotaCtaMessage(AIService.freeTotalLimit),
               key: const Key('quota_exhausted_message'),
               style: const TextStyle(
                 fontSize: 13,
@@ -4537,9 +4600,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               key: const Key('upgrade_to_pro_cta'),
               onPressed: () => context.push(AppRoutes.subscription),
               icon: const Icon(Icons.workspace_premium_rounded, size: 18),
-              label: const Text(
-                'Оформить Advocat Pro — €19.99/мес',
-                style: TextStyle(
+              label: Text(
+                AppLocalizations.of(context)!.quotaCtaButton,
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                 ),

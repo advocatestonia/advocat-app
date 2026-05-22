@@ -10,9 +10,16 @@ import '../../../config/theme.dart';
 // Renders inside the chat screen when the conversation has no user messages
 // yet. Complements [ChatWelcomeChips]: those are 5 broad legal *categories*,
 // these are 3 *concrete prompt examples* showing what a good question to
-// Advocat looks like. Tapping inserts the prompt verbatim into the chat
-// input and focuses it — the user can edit before sending. The cards
-// disappear as soon as the first user message lands.
+// Advocat looks like.
+//
+// Interaction (FIX-WAVE 6, 2026-05-20 — onboarding speedup B):
+//   - tap        = pre-fill the composer AND auto-send immediately.
+//                  The user just wants to see what the AI does with the
+//                  example; making them tap twice (card → send) was
+//                  costing first-message conversions.
+//   - long-press = pre-fill only, so the user can edit before sending.
+//
+// The cards disappear as soon as the first user message lands.
 //
 // Localized inline (EN/ET/FI/RU + EN fallback) to keep this surgical and
 // avoid touching the auto-generated AppLocalizations.
@@ -28,10 +35,14 @@ class ExamplePromptCards extends StatelessWidget {
 
   final String locale;
 
-  /// Fired with the full prompt text in [locale] when the user taps a card.
-  /// Parent inserts it into the message controller and focuses the input —
-  /// the user types or hits send.
-  final void Function(String prompt) onPromptSelected;
+  /// Fired with the full prompt text in [locale] when the user picks a card.
+  ///
+  /// The [autoSend] flag distinguishes between the two interactions:
+  ///   - `true`  → tap: parent should pre-fill AND send immediately.
+  ///   - `false` → long-press: parent should pre-fill only (edit mode),
+  ///     leaving the cursor in the composer so the user can tweak.
+  final void Function(String prompt, {required bool autoSend})
+      onPromptSelected;
 
   static String _header(String code) {
     switch (code.toLowerCase()) {
@@ -125,7 +136,10 @@ class ExamplePromptCards extends StatelessWidget {
               key: Key('example_prompt_${p.name}'),
               icon: _icon(p),
               text: _promptText(p, code),
-              onTap: () => onPromptSelected(_promptText(p, code)),
+              onTap: () =>
+                  onPromptSelected(_promptText(p, code), autoSend: true),
+              onLongPress: () =>
+                  onPromptSelected(_promptText(p, code), autoSend: false),
             ),
             const SizedBox(height: 8),
           ],
@@ -141,11 +155,13 @@ class _ExamplePromptCard extends StatelessWidget {
     required this.icon,
     required this.text,
     required this.onTap,
+    required this.onLongPress,
   });
 
   final IconData icon;
   final String text;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +171,12 @@ class _ExamplePromptCard extends StatelessWidget {
         onTap: () {
           HapticFeedback.selectionClick();
           onTap();
+        },
+        onLongPress: () {
+          // Stronger haptic so the user feels the difference between the
+          // two gestures (tap = auto-send vs long-press = edit).
+          HapticFeedback.mediumImpact();
+          onLongPress();
         },
         borderRadius: BorderRadius.circular(AppRadius.md),
         child: Container(

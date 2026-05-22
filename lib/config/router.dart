@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'feature_flags.dart';
 import '../features/auth/providers/auth_provider.dart';
+import '../l10n/app_localizations.dart';
 import '../features/auth/screens/login_screen.dart';
 import '../features/auth/screens/register_screen.dart';
 import '../features/onboarding/screens/onboarding_screen.dart';
@@ -209,7 +210,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.login,
         name: 'login',
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) {
+          // FIX-WAVE 6 (2026-05-20): /login?email=... lets the register
+          // screen's "already registered" SnackBar deep-link the user
+          // here with their email pre-filled.
+          final initialEmail = state.uri.queryParameters['email'];
+          return LoginScreen(initialEmail: initialEmail);
+        },
       ),
       GoRoute(
         path: AppRoutes.register,
@@ -573,11 +580,33 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
     ],
-    errorBuilder: (context, state) => Scaffold(
-      body: Center(
-        child: Text('Page not found: ${state.matchedLocation}'),
-      ),
-    ),
+    errorBuilder: (context, state) {
+      final l10n = AppLocalizations.of(context);
+      final path = state.matchedLocation;
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(l10n?.error404Title ?? 'Page not found'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error_outline, size: 64),
+              const SizedBox(height: 16),
+              Text(
+                l10n?.error404Body(path) ?? "We couldn't find: $path",
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: () => context.go(AppRoutes.home),
+                child: Text(l10n?.goToHome ?? 'Go to home'),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
   );
 });
 

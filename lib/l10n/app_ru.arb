@@ -1567,5 +1567,58 @@
     "dataProcessingAgreement": "Соглашение об обработке данных",
     "exportingData": "Экспорт данных…",
     "exportComplete": "Экспорт данных готов — сохранён на ваше устройство.",
-    "exportFailed": "Экспорт не удался. Попробуйте ещё раз или свяжитесь с поддержкой."
+    "exportFailed": "Экспорт не удался. Попробуйте ещё раз или свяжитесь с поддержкой.",
+    "quotaExhaustedTitle": "Лимит бесплатных сообщений",
+    "quotaExhaustedBody": "Вы использовали все {count} бесплатных сообщений. Оформите Advocat Pro за 19,99 €/мес для неограниченного доступа к AI-консультациям.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Позже",
+    "quotaExhaustedUpgrade": "Advocat Pro — 19,99 €/мес",
+    "quotaCtaMessage": "Вы использовали все {count} бесплатных сообщений. Оформите Advocat Pro за 19,99 €/мес.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Оформить Advocat Pro — 19,99 €/мес",
+    "aiErrorQuota": "Достигнут лимит бесплатных сообщений. Оформите подписку для продолжения.",
+    "aiErrorAuth": "Требуется вход в аккаунт для использования AI. Зарегистрируйтесь или войдите.",
+    "aiErrorGeneric": "Временная ошибка AI. Попробуйте ещё раз через минуту. Если не работает — напишите в поддержку.",
+    "tooltipShareCase": "Поделиться сводкой по делу",
+    "tooltipMuteVoice": "Отключить голос",
+    "tooltipUnmuteVoice": "Включить голос",
+    "tooltipAttachDoc": "Прикрепить документ",
+    "aiTypingHint": "AI…",
+    "error404Title": "Страница не найдена",
+    "error404Body": "Не удалось найти: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "На главную",
+    "emailAlreadyRegistered": "Эта почта уже зарегистрирована. Войти?",
+    "actionSignIn": "Войти",
+    "actionUndo": "Отменить",
+    "intakeUrgentOpened": "Чат открыт — черновик сохранён.",
+    "panicCoachmark": "Зажми, если сейчас нужна срочная помощь.",
+    "panicTitle": "Что тебе сейчас нужно?",
+    "panicCardReadAloud": "Зачитай это полицейскому",
+    "panicCardRecord": "Записать разговор",
+    "panicCardCall": "Позвонить адвокату",
+    "panicCardAi": "Поговорить с Адвокатом сейчас",
+    "panicClose": "Закрыть",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "Скоро",
+    "panicRecordV1Body": "Функция записи проходит юридическую проверку для Эстонии и появится в версии V2. Пока используйте системный диктофон телефона.",
+    "panicCallFallbackBody": "Напишите коротко на kiire@advocat.ee — мы свяжемся с вами."
 }

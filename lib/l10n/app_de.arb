@@ -1727,5 +1727,47 @@
     "showPassword": "Passwort anzeigen",
     "hidePassword": "Passwort ausblenden",
     "decreaseDependents": "Verringern",
-    "increaseDependents": "Erhöhen"
+    "increaseDependents": "Erhöhen",
+    "quotaExhaustedTitle": "Limit der kostenlosen Nachrichten erreicht",
+    "quotaExhaustedBody": "Sie haben alle {count} kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat und erhalten Sie unbegrenzten Zugang zur KI-Rechtsberatung.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Später",
+    "quotaExhaustedUpgrade": "Advocat Pro — 19,99 €/Monat",
+    "quotaCtaMessage": "Sie haben alle {count} kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Advocat Pro buchen — 19,99 €/Monat",
+    "aiErrorQuota": "Limit der kostenlosen Nachrichten erreicht. Abonnieren Sie, um die KI weiter zu nutzen.",
+    "aiErrorAuth": "Für die KI-Nutzung ist eine Anmeldung erforderlich. Bitte registrieren oder anmelden.",
+    "aiErrorGeneric": "Vorübergehender KI-Fehler. Bitte in einer Minute erneut versuchen. Falls es weiterhin nicht funktioniert — wenden Sie sich an den Support.",
+    "tooltipShareCase": "Fallzusammenfassung teilen",
+    "tooltipMuteVoice": "Stimme stummschalten",
+    "tooltipUnmuteVoice": "Stimme einschalten",
+    "tooltipAttachDoc": "Dokument anhängen",
+    "aiTypingHint": "KI…",
+    "error404Title": "Seite nicht gefunden",
+    "error404Body": "Nicht gefunden: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "Zur Startseite",
+    "emailAlreadyRegistered": "Diese E-Mail ist bereits registriert. Anmelden?",
+    "actionSignIn": "Anmelden",
+    "actionUndo": "Rückgängig",
+    "intakeUrgentOpened": "Chat geöffnet — dein Entwurf ist gespeichert."
 }

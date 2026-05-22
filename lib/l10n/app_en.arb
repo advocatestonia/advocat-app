@@ -1638,5 +1638,58 @@
     "dataProcessingAgreement": "Data Processing Agreement",
     "exportingData": "Exporting your data…",
     "exportComplete": "Data export ready — saved to your device.",
-    "exportFailed": "Export failed. Please try again or contact support."
+    "exportFailed": "Export failed. Please try again or contact support.",
+    "quotaExhaustedTitle": "Free message limit reached",
+    "quotaExhaustedBody": "You've used all {count} free messages. Upgrade to Advocat Pro for €19.99/month and get unlimited AI legal consultations.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Later",
+    "quotaExhaustedUpgrade": "Advocat Pro — €19.99/mo",
+    "quotaCtaMessage": "You've used all {count} free messages. Upgrade to Advocat Pro for €19.99/month.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Get Advocat Pro — €19.99/mo",
+    "aiErrorQuota": "Free message limit reached. Subscribe to continue using AI.",
+    "aiErrorAuth": "Sign-in required to use the AI. Please register or log in.",
+    "aiErrorGeneric": "Temporary AI error. Please try again in a minute. If it persists, contact support.",
+    "tooltipShareCase": "Share case summary",
+    "tooltipMuteVoice": "Mute voice",
+    "tooltipUnmuteVoice": "Unmute voice",
+    "tooltipAttachDoc": "Attach document",
+    "aiTypingHint": "AI…",
+    "error404Title": "Page not found",
+    "error404Body": "We couldn't find: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "Go to home",
+    "emailAlreadyRegistered": "This email is already registered. Want to sign in?",
+    "actionSignIn": "Sign in",
+    "actionUndo": "Undo",
+    "intakeUrgentOpened": "Chat opened — your draft is saved.",
+    "panicCoachmark": "Hold for emergency help.",
+    "panicTitle": "What do you need right now?",
+    "panicCardReadAloud": "Read aloud to the officer",
+    "panicCardRecord": "Record this conversation",
+    "panicCardCall": "Call a lawyer",
+    "panicCardAi": "Talk to Advocat now",
+    "panicClose": "Close",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "Coming in V2",
+    "panicRecordV1Body": "The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone's built-in voice recorder.",
+    "panicCallFallbackBody": "Email kiire@advocat.ee with a short description and we will call you back."
 }

@@ -6757,6 +6757,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Export failed. Please try again or contact support.'**
   String get exportFailed;
+
+  /// No description provided for @quotaExhaustedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Free message limit reached'**
+  String get quotaExhaustedTitle;
+
+  /// No description provided for @quotaExhaustedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used all {count} free messages. Upgrade to Advocat Pro for €19.99/month and get unlimited AI legal consultations.'**
+  String quotaExhaustedBody(int count);
+
+  /// No description provided for @quotaExhaustedLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get quotaExhaustedLater;
+
+  /// No description provided for @quotaExhaustedUpgrade.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat Pro — €19.99/mo'**
+  String get quotaExhaustedUpgrade;
+
+  /// No description provided for @quotaCtaMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve used all {count} free messages. Upgrade to Advocat Pro for €19.99/month.'**
+  String quotaCtaMessage(int count);
+
+  /// No description provided for @quotaCtaButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Advocat Pro — €19.99/mo'**
+  String get quotaCtaButton;
+
+  /// No description provided for @aiErrorQuota.
+  ///
+  /// In en, this message translates to:
+  /// **'Free message limit reached. Subscribe to continue using AI.'**
+  String get aiErrorQuota;
+
+  /// No description provided for @aiErrorAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in required to use the AI. Please register or log in.'**
+  String get aiErrorAuth;
+
+  /// No description provided for @aiErrorGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporary AI error. Please try again in a minute. If it persists, contact support.'**
+  String get aiErrorGeneric;
+
+  /// No description provided for @tooltipShareCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Share case summary'**
+  String get tooltipShareCase;
+
+  /// No description provided for @tooltipMuteVoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Mute voice'**
+  String get tooltipMuteVoice;
+
+  /// No description provided for @tooltipUnmuteVoice.
+  ///
+  /// In en, this message translates to:
+  /// **'Unmute voice'**
+  String get tooltipUnmuteVoice;
+
+  /// No description provided for @tooltipAttachDoc.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach document'**
+  String get tooltipAttachDoc;
+
+  /// No description provided for @aiTypingHint.
+  ///
+  /// In en, this message translates to:
+  /// **'AI…'**
+  String get aiTypingHint;
+
+  /// No description provided for @error404Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Page not found'**
+  String get error404Title;
+
+  /// No description provided for @error404Body.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find: {path}'**
+  String error404Body(String path);
+
+  /// No description provided for @goToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to home'**
+  String get goToHome;
+
+  /// No description provided for @emailAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered. Want to sign in?'**
+  String get emailAlreadyRegistered;
+
+  /// No description provided for @actionSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get actionSignIn;
+
+  /// No description provided for @actionUndo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get actionUndo;
+
+  /// No description provided for @intakeUrgentOpened.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat opened — your draft is saved.'**
+  String get intakeUrgentOpened;
 }
 
 class _AppLocalizationsDelegate

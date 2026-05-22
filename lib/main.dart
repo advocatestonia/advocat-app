@@ -7,6 +7,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// Conditional import: real dart:html on web, no-op stub elsewhere.
+// Lets non-web platforms compile without dart:html.
+import 'shared/web_locale_stub.dart'
+    if (dart.library.html) 'shared/web_locale_web.dart' as web_locale;
+
 import 'config/app_config.dart';
 import 'config/theme.dart';
 import 'config/router.dart';
@@ -100,6 +105,16 @@ Future<void> main() async {
   });
 }
 
+/// Root [ScaffoldMessenger] key for cross-route SnackBars.
+///
+/// Per-Scaffold messengers die with their route, so any "show a SnackBar
+/// on the *next* screen after navigation" flow (e.g. the intake wizard
+/// urgent-shortcut Undo, FIX-WAVE 6 / 2026-05-20) needs a messenger that
+/// outlives go_router transitions. Use sparingly — prefer per-screen
+/// messengers when the toast belongs to the current screen.
+final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>(debugLabel: 'root');
+
 class AdvocatApp extends ConsumerWidget {
   const AdvocatApp({super.key});
 
@@ -111,6 +126,7 @@ class AdvocatApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Advocat \u2014 AI Legal Defense',
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: rootScaffoldMessengerKey,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.light,
@@ -157,7 +173,15 @@ class LocaleNotifier extends StateNotifier<Locale> {
   static final Set<String> _supportedCodes =
       supportedLanguages.map((l) => l.code).toSet();
 
-  /// Priority: URL ?lang= param > SharedPreferences > Estonian (default).
+  /// Priority on first boot:
+  ///   1. URL ?lang= param (explicit user intent).
+  ///   2. SharedPreferences (user previously set inside the app).
+  ///   3. localStorage 'advocat-landing-lang' (bridge from web landing).
+  ///   4. navigator.language (browser preference, first 2 chars).
+  ///   5. Estonian (default).
+  /// Once the user changes language via the in-app picker, [setLocale] writes
+  /// SharedPreferences and step 2 wins forever after — so the manual choice is
+  /// preserved across sessions even if the landing/browser disagrees.
   static Locale _loadSavedLocale() {
     // 1. Check URL query parameter (works on web; empty map on other platforms).
     if (kIsWeb) {
@@ -169,13 +193,30 @@ class LocaleNotifier extends StateNotifier<Locale> {
       }
     }
 
-    // 2. Check SharedPreferences (covers returning users & localStorage bridge).
+    // 2. SharedPreferences (covers returning users & in-app picker choice).
     final saved = _prefs.getString(_localeKey);
     if (saved != null && _supportedCodes.contains(saved)) {
       return Locale(saved);
     }
 
-    // 3. Default — ALWAYS Estonian. No browser language auto-detect.
+    // 3. Bridge from web landing: window.localStorage['advocat-landing-lang'].
+    //    Non-web platforms return null from the stub — no-op.
+    if (kIsWeb) {
+      final landingLang = web_locale.readLandingLang();
+      if (landingLang != null && _supportedCodes.contains(landingLang)) {
+        _prefs.setString(_localeKey, landingLang);
+        return Locale(landingLang);
+      }
+
+      // 4. Browser preference (navigator.language first 2 chars).
+      final navLang = web_locale.readNavigatorLang();
+      if (navLang != null && _supportedCodes.contains(navLang)) {
+        _prefs.setString(_localeKey, navLang);
+        return Locale(navLang);
+      }
+    }
+
+    // 5. Default — Estonian.
     return const Locale('et');
   }
 

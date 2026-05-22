@@ -1127,5 +1127,47 @@
     "showPassword": "Показати пароль",
     "hidePassword": "Сховати пароль",
     "decreaseDependents": "Зменшити",
-    "increaseDependents": "Збільшити"
+    "increaseDependents": "Збільшити",
+    "quotaExhaustedTitle": "Ліміт безкоштовних повідомлень",
+    "quotaExhaustedBody": "Ви використали всі {count} безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс для необмеженого доступу до AI-консультацій.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Пізніше",
+    "quotaExhaustedUpgrade": "Advocat Pro — 19,99 €/міс",
+    "quotaCtaMessage": "Ви використали всі {count} безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Оформити Advocat Pro — 19,99 €/міс",
+    "aiErrorQuota": "Досягнуто ліміт безкоштовних повідомлень. Оформіть підписку, щоб продовжити.",
+    "aiErrorAuth": "Для використання AI потрібен вхід в акаунт. Зареєструйтеся або увійдіть.",
+    "aiErrorGeneric": "Тимчасова помилка AI. Спробуйте ще раз за хвилину. Якщо не працює — напишіть у підтримку.",
+    "tooltipShareCase": "Поділитися підсумком справи",
+    "tooltipMuteVoice": "Вимкнути голос",
+    "tooltipUnmuteVoice": "Увімкнути голос",
+    "tooltipAttachDoc": "Прикріпити документ",
+    "aiTypingHint": "AI…",
+    "error404Title": "Сторінку не знайдено",
+    "error404Body": "Не вдалося знайти: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "На головну",
+    "emailAlreadyRegistered": "Ця електронна пошта вже зареєстрована. Увійти?",
+    "actionSignIn": "Увійти",
+    "actionUndo": "Скасувати",
+    "intakeUrgentOpened": "Чат відкрито — ваш чернетку збережено."
 }

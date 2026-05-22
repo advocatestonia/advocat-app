@@ -3711,4 +3711,77 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get exportFailed =>
       'Export failed. Please try again or contact support.';
+
+  @override
+  String get quotaExhaustedTitle => 'Ліміт безкоштовних повідомлень';
+
+  @override
+  String quotaExhaustedBody(int count) {
+    return 'Ви використали всі $count безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс для необмеженого доступу до AI-консультацій.';
+  }
+
+  @override
+  String get quotaExhaustedLater => 'Пізніше';
+
+  @override
+  String get quotaExhaustedUpgrade => 'Advocat Pro — 19,99 €/міс';
+
+  @override
+  String quotaCtaMessage(int count) {
+    return 'Ви використали всі $count безкоштовних повідомлень. Оформіть Advocat Pro за 19,99 €/міс.';
+  }
+
+  @override
+  String get quotaCtaButton => 'Оформити Advocat Pro — 19,99 €/міс';
+
+  @override
+  String get aiErrorQuota =>
+      'Досягнуто ліміт безкоштовних повідомлень. Оформіть підписку, щоб продовжити.';
+
+  @override
+  String get aiErrorAuth =>
+      'Для використання AI потрібен вхід в акаунт. Зареєструйтеся або увійдіть.';
+
+  @override
+  String get aiErrorGeneric =>
+      'Тимчасова помилка AI. Спробуйте ще раз за хвилину. Якщо не працює — напишіть у підтримку.';
+
+  @override
+  String get tooltipShareCase => 'Поділитися підсумком справи';
+
+  @override
+  String get tooltipMuteVoice => 'Вимкнути голос';
+
+  @override
+  String get tooltipUnmuteVoice => 'Увімкнути голос';
+
+  @override
+  String get tooltipAttachDoc => 'Прикріпити документ';
+
+  @override
+  String get aiTypingHint => 'AI…';
+
+  @override
+  String get error404Title => 'Сторінку не знайдено';
+
+  @override
+  String error404Body(String path) {
+    return 'Не вдалося знайти: $path';
+  }
+
+  @override
+  String get goToHome => 'На головну';
+
+  @override
+  String get emailAlreadyRegistered =>
+      'Ця електронна пошта вже зареєстрована. Увійти?';
+
+  @override
+  String get actionSignIn => 'Увійти';
+
+  @override
+  String get actionUndo => 'Скасувати';
+
+  @override
+  String get intakeUrgentOpened => 'Чат відкрито — ваш чернетку збережено.';
 }

@@ -3706,4 +3706,77 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get exportFailed =>
       'Export failed. Please try again or contact support.';
+
+  @override
+  String get quotaExhaustedTitle => 'Free message limit reached';
+
+  @override
+  String quotaExhaustedBody(int count) {
+    return 'You\'ve used all $count free messages. Upgrade to Advocat Pro for €19.99/month and get unlimited AI legal consultations.';
+  }
+
+  @override
+  String get quotaExhaustedLater => 'Later';
+
+  @override
+  String get quotaExhaustedUpgrade => 'Advocat Pro — €19.99/mo';
+
+  @override
+  String quotaCtaMessage(int count) {
+    return 'You\'ve used all $count free messages. Upgrade to Advocat Pro for €19.99/month.';
+  }
+
+  @override
+  String get quotaCtaButton => 'Get Advocat Pro — €19.99/mo';
+
+  @override
+  String get aiErrorQuota =>
+      'Free message limit reached. Subscribe to continue using AI.';
+
+  @override
+  String get aiErrorAuth =>
+      'Sign-in required to use the AI. Please register or log in.';
+
+  @override
+  String get aiErrorGeneric =>
+      'Temporary AI error. Please try again in a minute. If it persists, contact support.';
+
+  @override
+  String get tooltipShareCase => 'Share case summary';
+
+  @override
+  String get tooltipMuteVoice => 'Mute voice';
+
+  @override
+  String get tooltipUnmuteVoice => 'Unmute voice';
+
+  @override
+  String get tooltipAttachDoc => 'Attach document';
+
+  @override
+  String get aiTypingHint => 'AI…';
+
+  @override
+  String get error404Title => 'Page not found';
+
+  @override
+  String error404Body(String path) {
+    return 'We couldn\'t find: $path';
+  }
+
+  @override
+  String get goToHome => 'Go to home';
+
+  @override
+  String get emailAlreadyRegistered =>
+      'This email is already registered. Want to sign in?';
+
+  @override
+  String get actionSignIn => 'Sign in';
+
+  @override
+  String get actionUndo => 'Undo';
+
+  @override
+  String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
 }

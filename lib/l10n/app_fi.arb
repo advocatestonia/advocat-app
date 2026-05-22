@@ -1567,5 +1567,58 @@
     "dataProcessingAgreement": "Tietojenkäsittelysopimus",
     "exportingData": "Tietojen vienti käynnissä…",
     "exportComplete": "Tietojen vienti valmis — tallennettu laitteeseesi.",
-    "exportFailed": "Vienti epäonnistui. Yritä uudelleen tai ota yhteyttä tukeen."
+    "exportFailed": "Vienti epäonnistui. Yritä uudelleen tai ota yhteyttä tukeen.",
+    "quotaExhaustedTitle": "Ilmaisten viestien raja täynnä",
+    "quotaExhaustedBody": "Olet käyttänyt kaikki {count} ilmaista viestiä. Tilaa Advocat Pro hintaan 19,99 €/kk ja saat rajattoman pääsyn tekoälyn oikeusneuvontaan.",
+    "@quotaExhaustedBody": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaExhaustedLater": "Myöhemmin",
+    "quotaExhaustedUpgrade": "Advocat Pro — 19,99 €/kk",
+    "quotaCtaMessage": "Olet käyttänyt kaikki {count} ilmaista viestiä. Tilaa Advocat Pro hintaan 19,99 €/kk.",
+    "@quotaCtaMessage": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "quotaCtaButton": "Tilaa Advocat Pro — 19,99 €/kk",
+    "aiErrorQuota": "Ilmaisten viestien raja on täynnä. Tilaa jatkaaksesi tekoälyn käyttöä.",
+    "aiErrorAuth": "Tekoälyn käyttö edellyttää kirjautumista. Rekisteröidy tai kirjaudu sisään.",
+    "aiErrorGeneric": "Tilapäinen tekoälyn virhe. Yritä minuutin kuluttua uudelleen. Jos ongelma jatkuu — ota yhteyttä tukeen.",
+    "tooltipShareCase": "Jaa asian yhteenveto",
+    "tooltipMuteVoice": "Mykistä ääni",
+    "tooltipUnmuteVoice": "Poista mykistys",
+    "tooltipAttachDoc": "Liitä asiakirja",
+    "aiTypingHint": "AI…",
+    "error404Title": "Sivua ei löytynyt",
+    "error404Body": "Ei löytynyt: {path}",
+    "@error404Body": {
+        "placeholders": {
+            "path": {
+                "type": "String"
+            }
+        }
+    },
+    "goToHome": "Etusivulle",
+    "emailAlreadyRegistered": "Tämä sähköposti on jo rekisteröity. Kirjautua sisään?",
+    "actionSignIn": "Kirjaudu sisään",
+    "actionUndo": "Kumoa",
+    "intakeUrgentOpened": "Chat avattu — luonnoksesi on tallennettu.",
+    "panicCoachmark": "Pidä pohjassa hätätilanteessa.",
+    "panicTitle": "Mitä tarvitset juuri nyt?",
+    "panicCardReadAloud": "Lue ääneen viranomaiselle",
+    "panicCardRecord": "Tallenna keskustelu",
+    "panicCardCall": "Soita asianajajalle",
+    "panicCardAi": "Puhu Advocatille heti",
+    "panicClose": "Sulje",
+    "panicBadgeV2": "V2",
+    "panicRecordV1Title": "Tulossa pian",
+    "panicRecordV1Body": "Tallennustoiminto on oikeudellisessa tarkistuksessa Viroa varten ja tulee saataville V2:ssa. Käytä toistaiseksi puhelimen omaa sanelinta.",
+    "panicCallFallbackBody": "Lähetä lyhyt viesti osoitteeseen kiire@advocat.ee — otamme yhteyttä."
 }
