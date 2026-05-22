@@ -59,6 +59,16 @@ import {
   ProviderTimeoutError,
 } from "../_shared/providers/types.ts";
 
+// FIX-WAVE 19 — record per-provider spend on every chain success.
+// C5 burst probe found OpenAI fallback was completely unmetered, so the
+// daily-cap defence (checkDailyCap) could not stop runaway OpenAI bills.
+// recordSpend writes one row per call into anthropic_daily_spend with the
+// correct provider tag, and the DB RPC applies tier-specific pricing.
+import {
+  recordSpend,
+  type SpendProvider,
+} from "../_shared/spend_tracker.ts";
+
 // -----------------------------------------------------------------------------
 // Public types
 // -----------------------------------------------------------------------------
@@ -204,6 +214,20 @@ function tierToChainProvider(t: Tier): ChainProvider {
       return "anthropic_haiku";
     case "openai":
       return "openai_gpt4o_mini";
+  }
+}
+
+/** Model id passed to recordSpend so the DB RPC's pricing branch picks the
+ *  correct $/M-token rate. The provider key carries the canonical pricing
+ *  tier, but the model id is preserved for postmortem clarity. */
+function tierToModelId(t: Tier): string {
+  switch (t) {
+    case "sonnet":
+      return SONNET_MODEL_ID;
+    case "haiku":
+      return HAIKU_MODEL_ID;
+    case "openai":
+      return OPENAI_FALLBACK_MODEL;
   }
 }
 
@@ -381,6 +405,21 @@ export async function callWithFallback(
           latency_ms: latency,
           fallback_chain: fallbackChain,
         });
+
+        // FIX-WAVE 19 — record spend BEFORE returning. Without this the
+        // OpenAI / Haiku fallback paths were completely unmetered, so the
+        // daily soft cap (checkDailyCap) could not throttle them. Awaited
+        // (not fire-and-forget) so accounting is reliable across edge-fn
+        // suspensions. spend_tracker is failsafe (never throws), so this
+        // costs at most one DB round-trip (~30-80 ms) per chain success,
+        // which is noise next to the multi-second LLM call we just made.
+        await recordSpend(
+          result.inputTokens,
+          result.outputTokens,
+          tierToModelId(tier),
+          tierToChainProvider(tier) as SpendProvider,
+        );
+
         return {
           text: result.text,
           inputTokens: result.inputTokens,
