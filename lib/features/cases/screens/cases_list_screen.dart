@@ -515,14 +515,19 @@ class _SegmentEmptyState extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
             ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              subtitle,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-              textAlign: TextAlign.center,
-            ),
+            // P1-7: Active/Closed segments pass `subtitle: ''` — branch out the
+            // SizedBox + Text so empty subtitle doesn't leave dead vertical
+            // whitespace + a phantom divider above nothing.
+            if (subtitle.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                subtitle,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                textAlign: TextAlign.center,
+              ),
+            ],
             if (segment == _CaseSegment.all) ...[
               const SizedBox(height: AppSpacing.xl),
               Container(

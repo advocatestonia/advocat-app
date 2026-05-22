@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../config/theme.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../../models/user_memory.dart';
 import '../../../services/user_memory_service.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
@@ -123,25 +124,31 @@ class AiMemoryScreen extends ConsumerWidget {
     WidgetRef ref,
     UserMemory mem,
   ) async {
+    // P1-3 partial: Reuse existing `cancel` / `delete` ARB keys for buttons.
+    // Dialog title + body still pending dedicated `aiMemoryForget*` keys —
+    // those need new ARB entries (currently colliding with FIX 2/6/10 sweep).
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Forget this?'),
-        content: Text(
-          'The assistant will stop using this fact:\n\n"${mem.text}"',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+      builder: (ctx) {
+        final l = AppLocalizations.of(ctx);
+        return AlertDialog(
+          title: const Text('Forget this?'),
+          content: Text(
+            'The assistant will stop using this fact:\n\n"${mem.text}"',
           ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Forget'),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(l?.cancel ?? 'Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              style: TextButton.styleFrom(foregroundColor: AppColors.error),
+              child: Text(l?.delete ?? 'Forget'),
+            ),
+          ],
+        );
+      },
     );
     if (confirmed != true) return;
     await ref.read(userMemoryServiceProvider).forget(mem.id);
@@ -149,27 +156,31 @@ class AiMemoryScreen extends ConsumerWidget {
   }
 
   Future<void> _confirmForgetAll(BuildContext context, WidgetRef ref) async {
+    // P1-3 partial: Reuse existing `cancel` / `delete` ARB keys for buttons.
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Forget everything?'),
-        content: const Text(
-          'The assistant will lose every personal fact it has learned about '
-          'you. Case and document data stays. You can rebuild the memory by '
-          'chatting again — this cannot be undone for past extractions.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+      builder: (ctx) {
+        final l = AppLocalizations.of(ctx);
+        return AlertDialog(
+          title: const Text('Forget everything?'),
+          content: const Text(
+            'The assistant will lose every personal fact it has learned about '
+            'you. Case and document data stays. You can rebuild the memory by '
+            'chatting again — this cannot be undone for past extractions.',
           ),
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            style: TextButton.styleFrom(foregroundColor: AppColors.error),
-            child: const Text('Forget everything'),
-          ),
-        ],
-      ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(l?.cancel ?? 'Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(true),
+              style: TextButton.styleFrom(foregroundColor: AppColors.error),
+              child: Text(l?.delete ?? 'Forget everything'),
+            ),
+          ],
+        );
+      },
     );
     if (confirmed != true) return;
     await ref.read(userMemoryServiceProvider).forgetAll();

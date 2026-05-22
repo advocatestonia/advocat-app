@@ -125,6 +125,125 @@ class _ContractUpsellCardState extends State<ContractUpsellCard> {
           'free_pill': 'Первый — бесплатно',
           'dismiss_a11y': 'Закрыть',
         },
+        // P1-2: 13 additional locales so users outside EN/ET/FI/RU don't see
+        // English fallback. Translations covered by sr-team review queue.
+        'de': {
+          'title': 'Möchten Sie einen Vertrag prüfen lassen?',
+          'body':
+              'Laden Sie ihn jetzt hoch — Advocat markiert riskante Klauseln '
+                  'in einfacher Sprache. Die erste Prüfung ist kostenlos.',
+          'cta': 'Vertrag hochladen',
+          'free_pill': 'Erste ist gratis',
+          'dismiss_a11y': 'Schließen',
+        },
+        'fr': {
+          'title': 'Vous avez un contrat à faire vérifier ?',
+          'body':
+              'Téléchargez-le maintenant — Advocat signalera les clauses '
+                  'risquées en langage clair. La première vérification est gratuite.',
+          'cta': 'Téléverser le contrat',
+          'free_pill': 'La première est gratuite',
+          'dismiss_a11y': 'Fermer',
+        },
+        'es': {
+          'title': '¿Quieres que revisemos tu contrato?',
+          'body':
+              'Súbelo ahora — Advocat marcará las cláusulas arriesgadas en '
+                  'lenguaje sencillo. La primera revisión es gratis.',
+          'cta': 'Subir contrato',
+          'free_pill': 'La primera es gratis',
+          'dismiss_a11y': 'Cerrar',
+        },
+        'it': {
+          'title': 'Hai un contratto da far revisionare?',
+          'body':
+              'Caricalo ora — Advocat segnalerà le clausole rischiose in '
+                  'linguaggio semplice. La prima revisione è gratuita.',
+          'cta': 'Carica contratto',
+          'free_pill': 'La prima è gratis',
+          'dismiss_a11y': 'Chiudi',
+        },
+        'pl': {
+          'title': 'Masz umowę do sprawdzenia?',
+          'body':
+              'Prześlij ją teraz — Advocat oznaczy ryzykowne klauzule '
+                  'prostym językiem. Pierwsza analiza jest bezpłatna.',
+          'cta': 'Prześlij umowę',
+          'free_pill': 'Pierwsza za darmo',
+          'dismiss_a11y': 'Zamknij',
+        },
+        'sv': {
+          'title': 'Har du ett avtal som behöver granskas?',
+          'body':
+              'Ladda upp det nu — Advocat flaggar riskabla klausuler på '
+                  'enkel svenska. Första granskningen är gratis.',
+          'cta': 'Ladda upp avtal',
+          'free_pill': 'Första är gratis',
+          'dismiss_a11y': 'Stäng',
+        },
+        'lv': {
+          'title': 'Vai jums ir līgums, ko pārbaudīt?',
+          'body':
+              'Augšupielādējiet to tagad — Advocat atzīmēs riskantos '
+                  'punktus vienkāršā valodā. Pirmā pārbaude ir bez maksas.',
+          'cta': 'Augšupielādēt līgumu',
+          'free_pill': 'Pirmā — bez maksas',
+          'dismiss_a11y': 'Aizvērt',
+        },
+        'lt': {
+          'title': 'Ar turite sutartį, kurią norėtumėte peržiūrėti?',
+          'body':
+              'Įkelkite ją dabar — Advocat pažymės rizikingus punktus '
+                  'paprasta kalba. Pirmoji peržiūra nemokama.',
+          'cta': 'Įkelti sutartį',
+          'free_pill': 'Pirmoji — nemokamai',
+          'dismiss_a11y': 'Uždaryti',
+        },
+        'ro': {
+          'title': 'Aveți un contract de verificat?',
+          'body':
+              'Încărcați-l acum — Advocat va semnala clauzele riscante în '
+                  'limbaj simplu. Prima verificare este gratuită.',
+          'cta': 'Încărcați contractul',
+          'free_pill': 'Prima — gratuită',
+          'dismiss_a11y': 'Închide',
+        },
+        'tr': {
+          'title': 'İncelenmesini istediğiniz bir sözleşmeniz mi var?',
+          'body':
+              'Şimdi yükleyin — Advocat riskli maddeleri sade bir dille '
+                  'işaretleyecek. İlk inceleme ücretsizdir.',
+          'cta': 'Sözleşmeyi yükle',
+          'free_pill': 'İlk inceleme ücretsiz',
+          'dismiss_a11y': 'Kapat',
+        },
+        'uk': {
+          'title': 'Маєте договір, який варто перевірити?',
+          'body':
+              'Завантажте його зараз — Advocat позначить ризиковані пункти '
+                  'простою мовою. Перша перевірка — безкоштовна.',
+          'cta': 'Завантажити договір',
+          'free_pill': 'Перша — безкоштовно',
+          'dismiss_a11y': 'Закрити',
+        },
+        'ar': {
+          'title': 'هل لديك عقد ترغب في مراجعته؟',
+          'body':
+              'حمّله الآن — سيقوم Advocat بتمييز البنود الخطرة بلغة بسيطة. '
+                  'المراجعة الأولى مجانية.',
+          'cta': 'تحميل العقد',
+          'free_pill': 'الأولى مجانية',
+          'dismiss_a11y': 'إغلاق',
+        },
+        'fa': {
+          'title': 'آیا قراردادی برای بررسی دارید؟',
+          'body':
+              'همین حالا بارگذاری کنید — Advocat بندهای پرخطر را به زبان ساده '
+                  'علامت‌گذاری خواهد کرد. اولین بررسی رایگان است.',
+          'cta': 'بارگذاری قرارداد',
+          'free_pill': 'اولین بررسی رایگان',
+          'dismiss_a11y': 'بستن',
+        },
       };
 
   static Map<String, String> _strings(String code) {

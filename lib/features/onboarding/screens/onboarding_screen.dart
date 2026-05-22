@@ -157,6 +157,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // -- Skip button (top-right, hidden on language and last page) --
+                  // P1-8: Use Visibility(maintainSize:false) so the widget is
+                  // fully removed from the tree on lang/last pages — prevents
+                  // an invisible-but-hit-testable TextButton from intercepting
+                  // taps at the top-right corner.
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
@@ -164,13 +168,13 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                         top: AppSpacing.sm,
                         right: AppSpacing.md,
                       ),
-                      child: AnimatedOpacity(
-                        opacity: (isLastPage || isLanguagePage) ? 0.0 : 1.0,
-                        duration: const Duration(milliseconds: 200),
+                      child: Visibility(
+                        visible: !(isLastPage || isLanguagePage),
+                        maintainSize: false,
+                        maintainAnimation: false,
+                        maintainState: false,
                         child: TextButton(
-                          onPressed: (isLastPage || isLanguagePage)
-                              ? null
-                              : _navigateToLogin,
+                          onPressed: _navigateToLogin,
                           child: Text(
                             l.onboardingSkip,
                             style: const TextStyle(
@@ -455,15 +459,28 @@ class _LanguageSelectionPage extends StatelessWidget {
 
   final ValueChanged<String> onLanguageSelected;
 
-  // Title shown in all 7 languages so every user can read it
+  // P1-1: Title shown in all 17 supported languages so every user — regardless
+  // of device locale — can read at least one variant on the language picker.
+  // Covers EN/RU/FI/ET/SV/DE/AR (originals) plus FR/ES/IT/PL/LV/LT/RO/TR/UK/FA
+  // listed in the language grid (register_screen.dart:493-510).
   static const _multilingualTitles = [
     'Choose your language',
-    '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u044F\u0437\u044B\u043A', // Выберите язык
-    'Valitse kieli',
-    'Valige keel',
-    'V\u00E4lj spr\u00E5k',
-    'Sprache w\u00E4hlen',
-    '\u0627\u062E\u062A\u0631 \u0644\u063A\u062A\u0643', // اختر لغتك
+    '\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u044F\u0437\u044B\u043A', // Выберите язык (ru)
+    'Valitse kieli', // fi
+    'Valige keel', // et
+    'V\u00E4lj spr\u00E5k', // sv
+    'Sprache w\u00E4hlen', // de
+    '\u0627\u062E\u062A\u0631 \u0644\u063A\u062A\u0643', // اختر لغتك (ar)
+    'Choisissez votre langue', // fr
+    'Elige tu idioma', // es
+    'Scegli la tua lingua', // it
+    'Wybierz swój język', // pl
+    'Izvēlieties valodu', // lv
+    'Pasirinkite kalbą', // lt
+    'Alegeți limba', // ro
+    'Dilinizi seçin', // tr
+    '\u041E\u0431\u0435\u0440\u0456\u0442\u044C \u043C\u043E\u0432\u0443', // Оберіть мову (uk)
+    '\u0632\u0628\u0627\u0646 \u062E\u0648\u062F \u0631\u0627 \u0627\u0646\u062A\u062E\u0627\u0628 \u06A9\u0646\u06CC\u062F', // زبان خود را انتخاب کنید (fa)
   ];
 
   @override

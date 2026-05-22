@@ -276,10 +276,15 @@ class _CaseCreateScreenState extends ConsumerState<CaseCreateScreen>
       }
 
       // 4. Navigate to the new case detail screen
+      // P1-16: Use existing `caseCreated` l10n key instead of hardcoded EN so
+      // ET/RU/FI users see the confirmation in their own language.
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Case created successfully!'),
+            content: Text(
+              AppLocalizations.of(context)?.caseCreated ??
+                  'Case created successfully!',
+            ),
             behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.green.shade700,
             duration: const Duration(seconds: 2),

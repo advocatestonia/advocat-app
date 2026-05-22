@@ -221,62 +221,88 @@ class _EntranceAnimationState extends State<_EntranceAnimation>
 class _GlowingAppBarBackground extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [AppColors.primary, AppColors.primaryDark],
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.4),
-            blurRadius: 20,
-            spreadRadius: 2,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Stack(
-        children: [
-          // Subtle radial glow in top-left
-          Positioned(
-            top: -20,
-            left: -20,
-            child: Container(
-              width: 140,
-              height: 140,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.accent.withValues(alpha: 0.15),
-                    AppColors.accent.withValues(alpha: 0.0),
-                  ],
-                ),
-              ),
+    // P1-5: Read the sliver's current extent via LayoutBuilder so the two
+    // RadialGradients fade out as the sliver collapses. At full expand
+    // (120 px) glows are at alpha 1.0; once the strip is ≤ 80 px (i.e. the
+    // pinned/collapsed state at ~56 dp) the radials are fully transparent.
+    // Prevents the "two random teal smudges in the corners" pinned look.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const expandedHeight = 120.0;
+        const collapseThreshold = 80.0;
+        final h = constraints.maxHeight;
+        // 0.0 fully collapsed → 1.0 fully expanded.
+        final progress = ((h - collapseThreshold) /
+                (expandedHeight - collapseThreshold))
+            .clamp(0.0, 1.0);
+
+        return Container(
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppColors.primary, AppColors.primaryDark],
             ),
-          ),
-          // Subtle radial glow in bottom-right
-          Positioned(
-            bottom: -30,
-            right: -10,
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.accentLight.withValues(alpha: 0.1),
-                    AppColors.accentLight.withValues(alpha: 0.0),
-                  ],
-                ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.4),
+                blurRadius: 20,
+                spreadRadius: 2,
+                offset: const Offset(0, 4),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+          child: Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              // Subtle radial glow in top-left (fades on collapse).
+              if (progress > 0.0)
+                Positioned(
+                  top: -20,
+                  left: -20,
+                  child: Opacity(
+                    opacity: progress,
+                    child: Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            AppColors.accent.withValues(alpha: 0.15),
+                            AppColors.accent.withValues(alpha: 0.0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              // Subtle radial glow in bottom-right (fades on collapse).
+              if (progress > 0.0)
+                Positioned(
+                  bottom: -30,
+                  right: -10,
+                  child: Opacity(
+                    opacity: progress,
+                    child: Container(
+                      width: 120,
+                      height: 120,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(
+                          colors: [
+                            AppColors.accentLight.withValues(alpha: 0.1),
+                            AppColors.accentLight.withValues(alpha: 0.0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
