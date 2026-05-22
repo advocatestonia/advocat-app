@@ -18,6 +18,11 @@ import {
   buildRagOnlySseResponse,
   isCreditBalanceError,
 } from "./credit_fallback.ts";
+import {
+  callWithFallback,
+  type ChainProvider,
+  type ChainResult,
+} from "./provider_chain.ts";
 import { classifyComplexity } from "./classify_complexity.ts";
 import {
   classifyQuery,
@@ -1456,6 +1461,7 @@ serve(async (req) => {
             body,
             true,
             persistMessageId,
+            signals,
           );
           if (fallback) return fallback;
           // No OpenAI key configured — fall through to legacy 400 shape.
@@ -1973,6 +1979,7 @@ serve(async (req) => {
         body,
         false,
         persistMessageId,
+        signals,
       );
       if (fallback) return fallback;
     }
@@ -2091,11 +2098,23 @@ function ragParagraphFromLabel(label: string): string {
 
 /** Run the RAG-only fallback. Returns null if the OpenAI client / law_search_v2
  *  RPC are not configured (the caller then falls through to the legacy 400
- *  passthrough so we never silently swallow a real bug). */
+ *  passthrough so we never silently swallow a real bug).
+ *
+ *  FIX-WAVE 17 (2026-05-20): The fallback no longer goes straight to
+ *  rag-only-fallback when Anthropic is empty. We first build the RAG-only
+ *  text (as the safety net), then hand that text + signals + params to
+ *  `callWithFallback`, which walks Sonnet → Haiku → OpenAI GPT-4o-mini
+ *  → RAG-only internally. On the chain's success the response is shaped
+ *  with the chain's provider as `model_used` (so ops can see which tier
+ *  served the turn) instead of the legacy hardcoded "rag-only-fallback".
+ *  Falling all the way through to RAG-only still works — that case ships
+ *  the same RAG-only response shape as before for back-compat.
+ */
 async function runCreditExhaustedFallback(
   body: unknown,
   isStreamRequest: boolean,
   persistMessageId: string | null,
+  signals: RoutingSignals,
 ): Promise<Response | null> {
   if (!OPENAI_API_KEY) {
     console.warn(
@@ -2113,7 +2132,7 @@ async function runCreditExhaustedFallback(
   });
 
   console.warn(
-    `claude-proxy: anthropic_credit_exhausted — running RAG-only fallback ` +
+    `claude-proxy: anthropic_credit_exhausted — running provider chain ` +
       `(query_len=${userQuery.length}, jur=${jurisdiction ?? "FI"})`,
   );
 
@@ -2182,9 +2201,176 @@ async function runCreditExhaustedFallback(
     { jurisdiction },
   );
 
+  // Build ChainParams from the request body. Defaults are defensive so the
+  // chain never trips on a malformed body — worst case it falls all the way
+  // through to rag_only with the text we just computed above.
+  // deno-lint-ignore no-explicit-any
+  const b = (body as any) ?? {};
+  const chainParams = {
+    systemPrompt: typeof b.system === "string" ? b.system : "",
+    messages: Array.isArray(b.messages)
+      ? b.messages.map((m: { role?: string; content?: unknown }) => ({
+        role: typeof m.role === "string" ? m.role : "user",
+        content: typeof m.content === "string"
+          ? m.content
+          : Array.isArray(m.content)
+          ? m.content
+            .map((blk: { type?: string; text?: string }) =>
+              blk && blk.type === "text" && typeof blk.text === "string"
+                ? blk.text
+                : ""
+            )
+            .join("\n")
+          : "",
+      }))
+      : [],
+    maxTokens: typeof b.max_tokens === "number" && b.max_tokens > 0
+      ? b.max_tokens
+      : 4096,
+  };
+
+  let chain: ChainResult;
+  try {
+    chain = await callWithFallback(signals, chainParams, result.text);
+  } catch (err) {
+    // Chain itself should never throw (rag_only is the floor), but guard
+    // anyway so a regression there doesn't take down the whole request.
+    console.warn(
+      `claude-proxy: callWithFallback threw — using RAG-only floor: ${
+        String(err).slice(0, 200)
+      }`,
+    );
+    return isStreamRequest
+      ? buildRagOnlySseResponse(result, { messageId: persistMessageId })
+      : buildRagOnlyJsonResponse(result, { messageId: persistMessageId });
+  }
+
+  // If the chain bottomed out at rag_only, return the canonical RAG-only
+  // shape (same headers/body the legacy path emitted) so back-compat with
+  // ops dashboards + Flutter parsers is preserved.
+  if (chain.provider === "rag_only") {
+    return isStreamRequest
+      ? buildRagOnlySseResponse(result, { messageId: persistMessageId })
+      : buildRagOnlyJsonResponse(result, { messageId: persistMessageId });
+  }
+
+  // Chain succeeded at a real LLM tier (sonnet / haiku / openai). Wrap the
+  // text in an Anthropic-shaped response with the chain's provider as
+  // model_used. We mirror the JSON / SSE branches from buildRagOnly* so the
+  // Flutter client parses both modes identically.
   return isStreamRequest
-    ? buildRagOnlySseResponse(result, { messageId: persistMessageId })
-    : buildRagOnlyJsonResponse(result, { messageId: persistMessageId });
+    ? buildChainSseResponse(chain, {
+      messageId: persistMessageId,
+      ragChunkCount: result.chunkCount,
+    })
+    : buildChainJsonResponse(chain, {
+      messageId: persistMessageId,
+      ragChunkCount: result.chunkCount,
+    });
+}
+
+/** Anthropic-shaped JSON response wrapper around a successful chain result.
+ *  Mirrors `buildRagOnlyJsonResponse` but with the chain's provider as the
+ *  `model_used` value so ops can grep which tier served the turn. */
+function buildChainJsonResponse(
+  chain: ChainResult,
+  options: { messageId: string | null; ragChunkCount: number },
+): Response {
+  const provider = chain.provider;
+  const body: Record<string, unknown> = {
+    id: `msg_chain_${Date.now()}`,
+    type: "message",
+    role: "assistant",
+    model: provider,
+    content: [{ type: "text", text: chain.text }],
+    stop_reason: "end_turn",
+    stop_sequence: null,
+    usage: {
+      input_tokens: chain.inputTokens,
+      output_tokens: chain.outputTokens,
+    },
+    citations: [],
+    model_used: provider,
+    routing_reason: chain.routing_reason,
+    fallback_chain: chain.fallback_chain,
+    fallback_reason: "anthropic_credit_exhausted",
+    rag_chunk_count: options.ragChunkCount,
+  };
+  if (options.messageId) body.message_id = options.messageId;
+
+  return new Response(JSON.stringify(body), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "X-Advocat-Model-Used": provider,
+      "X-Advocat-Routing-Reason": chain.routing_reason,
+    },
+  });
+}
+
+/** Synthetic SSE wrap so callers that sent stream:true get the same
+ *  Anthropic-shaped event sequence the Flutter SSE parser expects, with
+ *  the chain's provider as the model id. */
+function buildChainSseResponse(
+  chain: ChainResult,
+  options: { messageId: string | null; ragChunkCount: number },
+): Response {
+  const messageId = options.messageId ?? `msg_chain_${Date.now()}`;
+  const provider = chain.provider;
+  const text = chain.text;
+  const encoder = new TextEncoder();
+
+  const events: string[] = [];
+  const emit = (event: string, data: Record<string, unknown>) => {
+    events.push(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`);
+  };
+
+  emit("message_start", {
+    type: "message_start",
+    message: {
+      id: messageId,
+      type: "message",
+      role: "assistant",
+      content: [],
+      model: provider,
+      stop_reason: null,
+      stop_sequence: null,
+      usage: {
+        input_tokens: chain.inputTokens,
+        output_tokens: 0,
+      },
+    },
+  });
+  emit("content_block_start", {
+    type: "content_block_start",
+    index: 0,
+    content_block: { type: "text", text: "" },
+  });
+  emit("content_block_delta", {
+    type: "content_block_delta",
+    index: 0,
+    delta: { type: "text_delta", text },
+  });
+  emit("content_block_stop", { type: "content_block_stop", index: 0 });
+  emit("message_delta", {
+    type: "message_delta",
+    delta: { stop_reason: "end_turn", stop_sequence: null },
+    usage: { output_tokens: chain.outputTokens },
+  });
+  emit("message_stop", { type: "message_stop" });
+  emit("citations", { citations: [], message_id: messageId });
+
+  return new Response(encoder.encode(events.join("")), {
+    status: 200,
+    headers: {
+      "Content-Type": "text/event-stream",
+      "Cache-Control": "no-cache",
+      "Connection": "keep-alive",
+      "X-Accel-Buffering": "no",
+      "X-Advocat-Model-Used": provider,
+      "X-Advocat-Routing-Reason": chain.routing_reason,
+    },
+  });
 }
 
 /** Pull the most recent user-role message text from the Anthropic body. */
