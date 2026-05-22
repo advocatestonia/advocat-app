@@ -88,6 +88,13 @@ const KEYWORDS: Record<HaltCategory, readonly string[]> = {
     // Estonian stems
     "väljasaatm",     // väljasaatmine / väljasaatmise / väljasaatmisel
     "väljasaadet",    // väljasaadetakse
+    // FIX-WAVE 12 (2026-05-20): live ET probe "Mind saadetakse Eestist välja"
+    // missed because particle-separated "saadetakse … välja" doesn't match
+    // the compound stems above. Add the bare root "saadeta" (matches
+    // saadetakse / saadetama / saadetav / saadetama) AND the multi-word
+    // "välja saade" variant (matches "välja saadetakse" / "välja saadeta").
+    "saadeta",        // saadetakse / saadetama / saadetav (passive present root)
+    "välja saade",    // "välja saadetakse" / "välja saadeta..." (particle variant)
     "lahkumisettekir", // lahkumisettekirjutus
     "sissesõidukeel", // sissesõidukeeld
     // Russian stems
@@ -189,10 +196,23 @@ const KEYWORDS: Record<HaltCategory, readonly string[]> = {
     "euroopan ihmisoikeustuomioistuin",
     "eit",
     "valitus eit",
+    // FIX-WAVE 12 (2026-05-20): live FI probe
+    // "valitus Euroopan ihmisoikeustuomioistuimeen" (illative case) didn't
+    // match "ihmisoikeustuomioistuin" because the inflected form ends in
+    // …-tuimeen, not …-tuin. Use a shorter PREFIX stem so all illative /
+    // partitive / inessive / elative declensions match.
+    "ihmisoikeustuomioistui", // ...tuimeen / ...tuinta / ...tuimessa
     // Estonian
     "euroopa inimõiguste kohus",
     "eik",
     "kaebus eik",
+    // FIX-WAVE 12 (2026-05-20): live ET probe
+    // "kaebuse Euroopa Inimõiguste Kohtule" (allative) didn't match
+    // "euroopa inimõiguste kohus" because the inflected form is "kohtule"
+    // not "kohus". Use a multi-word substring that catches allative /
+    // genitive / partitive ("...õiguste kohtule" / "...õiguste kohut" /
+    // "...õiguste kohust" all start with "inimõiguste koht").
+    "inimõiguste koht",       // ...kohtule / ...kohut / ...kohust
     // Russian
     "еспч",
     "европейский суд по правам человека",

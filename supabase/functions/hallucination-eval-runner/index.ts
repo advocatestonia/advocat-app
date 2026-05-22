@@ -42,8 +42,37 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const CORPUS_SECRET = Deno.env.get("CORPUS_EMBEDDER_SECRET") ?? "";
-// Service role used to authenticate the internal qa-corpus-search call.
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+// ─── Internal Bearer JWT for the qa-corpus-search hop ─────────────────────────
+//
+// The runner-internal call to qa-corpus-search must carry a valid project JWT
+// in the `Authorization` header — otherwise the Supabase Edge gateway rejects
+// the request with `401 UNAUTHORIZED_INVALID_JWT_FORMAT` BEFORE the function
+// code runs (qa-corpus-search itself authenticates via the X-QA-Secret header,
+// so any valid project JWT — service-role OR anon — is fine for the gateway).
+//
+// FIX-WAVE 12 (2026-05-20): the 2026-05-19 eval reported 37.7% false-cite rate,
+// but every one of the 93 tool calls in the JSONL showed
+//   "error": "qa-corpus-search HTTP 401: Invalid JWT"
+// Root cause: `SUPABASE_SERVICE_ROLE_KEY` was not set in this edge fn's
+// secrets, so the previous code sent the literal header `Authorization: Bearer`
+// (empty token) to the gateway → 401. The model received zero corpus chunks
+// for every query and fell back to memorised statute knowledge — invalidating
+// the 37.7% number entirely.
+//
+// Fix: prefer SUPABASE_SERVICE_ROLE_KEY, fall back to SUPABASE_ANON_KEY (set
+// by Supabase platform automatically in every Edge fn deployment), and refuse
+// to start if BOTH are missing so future evals fail loud instead of silently
+// returning fabricated numbers.
+//
+// To re-deploy reproducibly:
+//   supabase secrets set SUPABASE_SERVICE_ROLE_KEY=<service_role_jwt>
+//   supabase functions deploy hallucination-eval-runner
+// (SUPABASE_URL and SUPABASE_ANON_KEY are auto-injected by the platform and
+//  do not need to be set manually.)
+const INTERNAL_BEARER_JWT =
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ??
+  Deno.env.get("SUPABASE_ANON_KEY") ??
+  "";
 
 const DEFAULT_MODEL = "claude-sonnet-4-6";
 const DEFAULT_MAX_HOPS = 4;
@@ -230,7 +259,11 @@ async function execLegalLookup(
   const resp = await fetch(`${SUPABASE_URL}/functions/v1/qa-corpus-search`, {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      // FIX-WAVE 12: must be a non-empty, project-valid JWT. The Edge gateway
+      // rejects an empty Bearer with "Invalid JWT" BEFORE the target function
+      // runs — that's the bug that invalidated the 2026-05-19 eval. See the
+      // INTERNAL_BEARER_JWT block at the top of this file for details.
+      "Authorization": `Bearer ${INTERNAL_BEARER_JWT}`,
       "X-QA-Secret": CORPUS_SECRET,
       "Content-Type": "application/json",
     },
@@ -444,8 +477,14 @@ serve(async (req) => {
     return err("Unauthorized", 401);
   }
   if (!CLAUDE_API_KEY) return err("CLAUDE_API_KEY not configured", 500);
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-    return err("Supabase env not configured", 500);
+  // FIX-WAVE 12: fail loud if neither service-role nor anon JWT is available
+  // — silently sending Bearer "" was the root cause of the 2026-05-19 eval
+  // measuring "memorised § knowledge" instead of "RAG-grounded § accuracy".
+  if (!SUPABASE_URL || !INTERNAL_BEARER_JWT) {
+    return err(
+      "Supabase env not configured (need SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY or SUPABASE_ANON_KEY)",
+      500,
+    );
   }
 
   let body: {

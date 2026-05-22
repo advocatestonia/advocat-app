@@ -104,6 +104,40 @@ Deno.test("detect: Estonian 'kuriteo tunnustega' fires", () => {
   assertEquals(d.category, "criminal");
 });
 
+// ─── FIX-WAVE 12 regression tests: multilingual inflection gaps (2026-05-20) ──
+//
+// Dept5 live probes (8 multilingual variants of ECHR + deportation prompts)
+// found 3 FAILs where Finnish illative / Estonian allative inflections
+// bypassed the stem table. Pin those exact prompts so they never regress.
+
+Deno.test("detect: Finnish ECHR illative 'ihmisoikeustuomioistuimeen' fires", () => {
+  // Live FI probe FAIL → now PASS. Illative case (…-tuimeen) didn't match
+  // the unflected stem "ihmisoikeustuomioistuin"; new prefix stem
+  // "ihmisoikeustuomioistui" catches it.
+  const d = detectSeriousCase("valitus Euroopan ihmisoikeustuomioistuimeen");
+  assert(d.isSerious);
+  assertEquals(d.category, "echr");
+});
+
+Deno.test("detect: Estonian ECHR allative 'Inimõiguste Kohtule' fires", () => {
+  // Live ET probe FAIL → now PASS. Allative case ("Kohtule") didn't match
+  // nominative "kohus"; new multi-word stem "inimõiguste koht" catches all
+  // declensions (kohtule / kohut / kohust / kohtus).
+  const d = detectSeriousCase("kaebuse Euroopa Inimõiguste Kohtule esitamine");
+  assert(d.isSerious);
+  assertEquals(d.category, "echr");
+});
+
+Deno.test("detect: Estonian deportation particle-split 'saadetakse … välja' fires", () => {
+  // Live ET probe FAIL → now PASS. "Mind saadetakse Eestist välja" splits
+  // the particle "välja" from the verb stem "saadeta-"; old keyword
+  // "väljasaatm" (compound form) missed it. New stems "saadeta" + multi-word
+  // "välja saade" both catch this construction.
+  const d = detectSeriousCase("Mind saadetakse Eestist välja järgmisel kuul");
+  assert(d.isSerious);
+  assertEquals(d.category, "deportation");
+});
+
 Deno.test("detect: small claim does not fire", () => {
   const d = detectSeriousCase("хозяин не возвращает €500 депозита");
   assertEquals(d.isSerious, false);

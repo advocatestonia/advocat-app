@@ -91,6 +91,34 @@ export const corporate_lawyer: LawyerAgent = {
     "share",
     "капитал",
     "osakekapital",
+    // FIX-WAVE 12 (2026-05-20): citation extractor v29 covers DE/FR/ES/IT/PL,
+    // but lawyer-router keyword tables were still FI/EE/RU only. Live probe
+    // "DSGVO Art.17 DE → corporate-lawyer NOT picked" → fixed by adding the
+    // canonical German GDPR + corporate-law terms below. Keep lowercase; the
+    // router matches case-insensitively.
+    "dsgvo",                     // DE — Datenschutz-Grundverordnung (= GDPR)
+    "löschung",                  // DE — right to erasure (DSGVO Art. 17)
+    "datenschutz",               // DE — data protection (general)
+    "verarbeitungsverzeichnis",  // DE — Art. 30 records of processing (RoPA)
+    "auftragsverarbeitung",      // DE — Art. 28 processor agreement (DPA)
+    "auftragsverarbeiter",       // DE — processor (variant)
+    "datenschutzerklärung",      // DE — privacy notice
+    "datenschutzbeauftragt",     // DE — DPO (stem catches -er/-en/-e)
+    "betroffenenrechte",         // DE — data-subject rights (Art. 12-22)
+    "bgb",                       // DE — Bürgerliches Gesetzbuch (civil code)
+    "agb",                       // DE — Allgemeine Geschäftsbedingungen (T&Cs)
+    "gmbh",                      // DE — limited-liability company form
+    "ug",                        // DE — Unternehmergesellschaft (mini-GmbH)
+    "handelsregister",           // DE — commercial register
+    "gesellschaftsvertrag",      // DE — articles of association
+    "geschäftsführer",           // DE — managing director
+    // FR / ES / IT / PL parity (citation extractor v29 also covers these).
+    // Single-word, unambiguous corporate / GDPR terms only — to avoid false
+    // positives we don't add the equivalents of "company" in those languages.
+    "rgpd",                      // FR / ES — Règlement général / Reglamento general
+    "lopdgdd",                   // ES — LOPDGDD (Ley Orgánica 3/2018)
+    "garante privacy",           // IT — Italian DPA name
+    "rodo",                      // PL — RODO (Polish GDPR acronym)
   ],
   model: "sonnet",
   maxTokens: 850,

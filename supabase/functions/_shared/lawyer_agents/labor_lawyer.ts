@@ -86,6 +86,15 @@ export const labor_lawyer: LawyerAgent = {
     "tsl",
     "töövaidlus",
     "tylinrikkomus",
+    // FIX-WAVE 12 (2026-05-20): citation extractor v29 covers DE labor-law
+    // citations (BGB / KSchG / ArbZG / BetrVG). Adding the most-common DE
+    // labor-law terms so chat routing sees DE prompts before the catch-all.
+    "kündigung",                 // DE — termination / notice of dismissal
+    "arbeitsrecht",              // DE — labor law (general)
+    "arbeitsvertrag",            // DE — employment contract
+    "kschg",                     // DE — Kündigungsschutzgesetz
+    "betriebsrat",               // DE — works council
+    "abfindung",                 // DE — severance pay
   ],
   model: "sonnet",
   maxTokens: 800,
