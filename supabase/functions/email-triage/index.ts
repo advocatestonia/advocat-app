@@ -24,6 +24,8 @@ import { buildAnthropicHeaders } from "../claude-proxy/prompt_caching.ts";
 import {
   type AnthropicCallArgs,
   type AnthropicResponse,
+  type ConsiliumCallArgs,
+  type LawyerOpinion,
   type MemoryBlock,
   type MinimalTriageDeps,
   type QuotaResult,
@@ -32,6 +34,10 @@ import {
   type TriageInsertRow,
   type UserPrefs,
 } from "./triage_logic.ts";
+import {
+  type ConsiliumSSEEvent,
+  runConsilium,
+} from "../_shared/consilium.ts";
 import {
   appendCaseEventReal,
   applyMemoryUpdatesReal,
@@ -323,6 +329,116 @@ function makeProdDeps(
         cache_creation_input_tokens: Number(
           usage.cache_creation_input_tokens ?? 0,
         ),
+      };
+    },
+
+    async callConsilium(args: ConsiliumCallArgs): Promise<AnthropicResponse> {
+      if (!ANTHROPIC_API_KEY) {
+        throw new Error("ANTHROPIC_API_KEY not configured");
+      }
+      // ── 1. Run the 15-lawyer consilium ───────────────────────────────────
+      // The runner streams role_opinion + delta events via the onEvent
+      // callback; we capture them into in-memory buffers so the structured
+      // formatting call below can be informed by the chairman synthesis and
+      // the audit row can persist the per-role payloads.
+      const lawyerOpinions: LawyerOpinion[] = [];
+      let synthesisText = "";
+      try {
+        synthesisText = await runConsilium({
+          userMessage: args.consiliumQuery,
+          systemPrompt: args.baseLawyerSystemPrompt,
+          ragContext: args.ragContext,
+          caseContext: args.caseContext,
+          anthropicApiKey: ANTHROPIC_API_KEY,
+          onEvent: (event: ConsiliumSSEEvent) => {
+            if (event.type === "role_opinion") {
+              lawyerOpinions.push({
+                role_id: event.role_id,
+                role_name: event.role_name,
+                opinion: event.opinion,
+                position: event.position,
+                confidence: event.confidence,
+                key_citation: event.key_citation,
+              });
+            }
+          },
+          // Don't pass caseClassification — let the lawyer-department
+          // router (when CONSILIUM_LAWYER_ROUTER_ENABLED) fire its own
+          // routing. The bridge already wires into the consilium when the
+          // flag is set in the runtime env.
+        });
+      } catch (e) {
+        // runConsilium is documented as never-throws, but belt-and-braces.
+        console.warn(
+          `email-triage callConsilium: runConsilium threw: ${
+            String(e).slice(0, 200)
+          }`,
+        );
+      }
+
+      // ── 2. Final structured formatting call ──────────────────────────────
+      // Inject the consilium synthesis into the v1.1-final system blocks as
+      // a new <consilium> section. The parser + reviewer + policy gate
+      // remain unchanged — they parse Sonnet's structured 6-block output
+      // exactly as on the legacy path.
+      const consiliumBlock = synthesisText
+        ? `\n<consilium_synthesis>\n${synthesisText.slice(0, 12_000)}\n</consilium_synthesis>\n`
+        : "";
+      const lawyerOpinionsBlock = lawyerOpinions.length > 0
+        ? `\n<lawyer_opinions>\n${
+          lawyerOpinions
+            .map((o) =>
+              `- ${o.role_name} (${o.position}): ${o.opinion.slice(0, 300)}`
+            )
+            .join("\n")
+        }\n</lawyer_opinions>\n`
+        : "";
+      const augmentedSystemBlocks = consiliumBlock || lawyerOpinionsBlock
+        ? [
+          ...args.systemBlocks,
+          {
+            type: "text" as const,
+            // No cache_control — this block is per-thread and must not
+            // pollute the cached prefix.
+            text: `${lawyerOpinionsBlock}${consiliumBlock}`,
+          },
+        ]
+        : args.systemBlocks;
+
+      const headers = buildAnthropicHeaders(ANTHROPIC_API_KEY);
+      const resp = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          model: "claude-sonnet-4-6",
+          max_tokens: args.maxTokens,
+          temperature: args.temperature,
+          system: augmentedSystemBlocks,
+          messages: [
+            { role: "user", content: args.userMessage },
+          ],
+        }),
+      });
+      if (!resp.ok) {
+        const errBody = await resp.text();
+        throw new Error(`Anthropic ${resp.status}: ${errBody.slice(0, 200)}`);
+      }
+      const json = await resp.json();
+      const content = (json?.content ?? [])
+        .filter((b: { type?: string }) => b?.type === "text")
+        .map((b: { text?: string }) => b?.text ?? "")
+        .join("\n");
+      const usage = json?.usage ?? {};
+      return {
+        content,
+        input_tokens: Number(usage.input_tokens ?? 0),
+        output_tokens: Number(usage.output_tokens ?? 0),
+        cache_read_input_tokens: Number(usage.cache_read_input_tokens ?? 0),
+        cache_creation_input_tokens: Number(
+          usage.cache_creation_input_tokens ?? 0,
+        ),
+        lawyer_opinions: lawyerOpinions,
+        consilium_synthesis: synthesisText || undefined,
       };
     },
 

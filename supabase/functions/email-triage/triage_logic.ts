@@ -105,6 +105,70 @@ export interface AnthropicResponse {
   output_tokens: number;
   cache_read_input_tokens?: number;
   cache_creation_input_tokens?: number;
+  /**
+   * NEW (2026-05-25): when the triage run was routed through the 15-lawyer
+   * consilium (EMAIL_TRIAGE_USE_CONSILIUM=true), this carries the per-role
+   * opinion payloads so the orchestrator can persist them to
+   * `email_triage_results.lawyer_opinions` for audit. `undefined` on the
+   * legacy single-Sonnet path.
+   *
+   * Shape mirrors the consilium SSE `role_opinion` event payload
+   * (`ConsiliumRoleOpinionPayload` in _shared/consilium.ts) so the audit row
+   * is a faithful capture of what the UI would have rendered if the
+   * consilium had been streamed live. Empty array on consilium runs where
+   * no role produced an opinion (e.g. all roles failed → sentinel only).
+   */
+  lawyer_opinions?: LawyerOpinion[];
+  /**
+   * NEW (2026-05-25): the consilium chairman's synthesis text. Stored
+   * verbatim on the audit row alongside the structured blocks so reviewers
+   * can compare the synthesis the consilium produced against the v1.1-final
+   * blocks the orchestrator parses. `undefined` on the legacy path.
+   */
+  consilium_synthesis?: string;
+}
+
+/**
+ * Per-lawyer audit record. One entry per role that produced an opinion.
+ * Persisted to `email_triage_results.lawyer_opinions` as a JSONB array.
+ * Field names match `ConsiliumRoleOpinionPayload` from
+ * supabase/functions/_shared/consilium.ts so the audit row is a faithful
+ * capture of the SSE wire shape (FLAT, 2026-05-25).
+ */
+export interface LawyerOpinion {
+  role_id: string;
+  role_name: string;
+  opinion: string;
+  position: string;
+  confidence: number | null;
+  key_citation: string | null;
+}
+
+export interface ConsiliumCallArgs {
+  /** Original v1.1-final system blocks (cached prefix + dynamic context). */
+  systemBlocks: AnthropicCallArgs["systemBlocks"];
+  /** Triage instruction the orchestrator gives Sonnet. */
+  userMessage: string;
+  /** Token cap for the FINAL formatting call (after consilium synthesis). */
+  maxTokens: number;
+  /** Temperature for the FINAL formatting call. */
+  temperature: number;
+  /**
+   * Plain-text user query the consilium routes on. The legacy path passes
+   * structured `<context>` to Sonnet; the consilium needs a short natural-
+   * language description of the inbound to pick the right lawyer roster.
+   * The orchestrator builds this from the latest inbound subject + body
+   * snippet so the 11-persona router has keywords to score against.
+   */
+  consiliumQuery: string;
+  /** Forwarded to runConsilium.systemPrompt (base lawyer persona). */
+  baseLawyerSystemPrompt: string;
+  /** Forwarded to runConsilium.ragContext (law-search chunks). */
+  ragContext: string;
+  /** Forwarded to runConsilium.caseContext (Pkg 1 case memory). */
+  caseContext: string;
+  /** Forwarded to runConsilium.caseClassification (typed case context). */
+  caseClassification?: unknown;
 }
 
 export interface MinimalTriageDeps {
@@ -117,6 +181,29 @@ export interface MinimalTriageDeps {
   checkQuota(userId: string): Promise<QuotaResult>;
   /** Calls Anthropic. Cache headers handled inside the impl. */
   callSonnet(args: AnthropicCallArgs): Promise<AnthropicResponse>;
+  /**
+   * Optional — when wired by the caller AND the `EMAIL_TRIAGE_USE_CONSILIUM`
+   * env flag is true at runTriage time, the orchestrator routes the
+   * Anthropic call through the 15-lawyer consilium (see
+   * `supabase/functions/_shared/consilium.ts`).
+   *
+   * The dep MUST:
+   *   1. Run the consilium (Promise.all of N parallel lawyer roles + chairman
+   *      synthesis) and collect each role_opinion payload.
+   *   2. Then call Sonnet once more with the v1.1-final systemBlocks +
+   *      consilium synthesis injected so the final output still matches the
+   *      6-mandatory-block schema the parser + reviewer + policy gate
+   *      expect.
+   *   3. Return an AnthropicResponse whose `content` is the structured
+   *      Sonnet output AND populate `lawyer_opinions` + `consilium_synthesis`
+   *      for audit.
+   *
+   * Default-off: when the flag is false (default), the orchestrator never
+   * invokes this and the legacy `callSonnet` path runs unchanged. Tests can
+   * leave this undefined so the consilium branch is skipped even when the
+   * flag is set.
+   */
+  callConsilium?(args: ConsiliumCallArgs): Promise<AnthropicResponse>;
   /** Persist the row. Returns the new id. */
   persistTriageRow(row: TriageInsertRow): Promise<{ id: string }>;
   /** Mark the thread row triage_status; used after a successful run. */
@@ -181,6 +268,14 @@ export interface TriageInsertRow {
   raw_model_output: string | null;
   reviewer_status: string | null;
   reviewer_failures: unknown;
+  /**
+   * NEW (2026-05-25): when EMAIL_TRIAGE_USE_CONSILIUM=true, this holds the
+   * per-lawyer opinion payloads captured from the consilium SSE
+   * `role_opinion` events. NULL on the legacy single-Sonnet path. JSONB on
+   * the database side. See migration
+   * 20260525200000_email_triage_lawyer_opinions.sql.
+   */
+  lawyer_opinions: LawyerOpinion[] | null;
 }
 
 export type TriageOutcome =
@@ -398,21 +493,61 @@ export async function runTriage(
   const systemBlocks = buildSystemBlocks(contextSuffix);
   const userMessage = "Triage the email thread inside <context>.";
 
+  // 2026-05-25: consilium routing. When EMAIL_TRIAGE_USE_CONSILIUM=true AND
+  // the caller wired `deps.callConsilium`, route the model call through the
+  // 15-lawyer consilium pipeline. Default-off — legacy single-Sonnet path
+  // stays untouched.
+  //
+  // Why two flags (env + dep-wiring)? The env flag is the runtime toggle.
+  // The dep-wiring is the "did the caller plug in the impl" check — keeps
+  // tests purely opt-in without env juggling.
+  const useConsilium = isConsiliumEnabled() && typeof deps.callConsilium === "function";
+  const consiliumQuery = buildConsiliumQuery(thread, inbound);
+
   let parseAttempts = 0;
   let raw = "";
   let parseResult: ParseResult | null = null;
   let reviewer: ReviewerResult | null = null;
   let parsed: ParsedTriage | null = null;
+  let capturedLawyerOpinions: LawyerOpinion[] | null = null;
+  let capturedConsiliumSynthesis: string | null = null;
 
   for (const attempt of [1, 2]) {
     parseAttempts = attempt;
-    const resp = await deps.callSonnet({
-      systemBlocks,
-      userMessage,
-      maxTokens: 4096,
-      temperature: 0.0,
-    });
+    const resp = useConsilium
+      ? await deps.callConsilium!({
+          systemBlocks,
+          userMessage,
+          maxTokens: 4096,
+          temperature: 0.0,
+          consiliumQuery,
+          baseLawyerSystemPrompt: systemBlocks.map((b) => b.text).join("\n"),
+          ragContext: typeof lawCtx === "string" ? lawCtx : safeJson(lawCtx),
+          caseContext: typeof activeCase === "string" ? activeCase : safeJson(activeCase),
+          caseClassification: undefined,
+        })
+      : await deps.callSonnet({
+          systemBlocks,
+          userMessage,
+          maxTokens: 4096,
+          temperature: 0.0,
+        });
     raw = resp.content;
+    // Capture consilium audit fields on the FIRST successful attempt — the
+    // regeneration path keeps the original opinions (re-running the
+    // consilium for a formatting retry would be wasteful).
+    if (
+      useConsilium && capturedLawyerOpinions === null &&
+      Array.isArray(resp.lawyer_opinions)
+    ) {
+      capturedLawyerOpinions = resp.lawyer_opinions;
+    }
+    if (
+      useConsilium && capturedConsiliumSynthesis === null &&
+      typeof resp.consilium_synthesis === "string"
+    ) {
+      capturedConsiliumSynthesis = resp.consilium_synthesis;
+    }
     parseResult = parseAgentBlocks(raw);
     if (!parseResult.ok) {
       if (attempt === 1) continue; // regenerate once
@@ -530,7 +665,19 @@ export async function runTriage(
         ? (parseAttempts === 1 ? "passed" : "regenerated")
         : "flagged",
     reviewer_failures: reviewer?.failures ?? [],
+    lawyer_opinions: capturedLawyerOpinions,
   };
+  // When the consilium synthesis is available, append it to the
+  // raw_model_output audit field so reviewers can diff the synthesis
+  // against the v1.1-final structured blocks the parser consumed. We keep
+  // the structured blocks first (the parser-relevant payload) and the
+  // synthesis appended under a clear sentinel so future tooling can split
+  // them deterministically.
+  if (capturedConsiliumSynthesis) {
+    const sentinel = "\n\n<!-- consilium_synthesis (audit) -->\n";
+    const combined = `${raw}${sentinel}${capturedConsiliumSynthesis}`;
+    row.raw_model_output = combined.slice(0, 30_000);
+  }
   const insert = await deps.persistTriageRow(row);
 
   // Carry-over Task 5: write-back loop. The model can promote facts it
@@ -627,6 +774,53 @@ export function extractLegalKeywords(thread: ThreadRecord): string {
   const lastBody = thread.messages[thread.messages.length - 1]?.body_plaintext
     ?? "";
   return `${subject}\n${lastBody.slice(0, 1000)}`;
+}
+
+// =============================================================================
+// Consilium feature flag + query builder
+// =============================================================================
+
+/** Env flag name. Default OFF — the consilium routing is opt-in per-deploy. */
+export const CONSILIUM_FLAG_ENV = "EMAIL_TRIAGE_USE_CONSILIUM";
+
+/** Read the consilium feature flag from Deno env. Defaults to false on any
+ *  error (e.g. tests with no Deno global). Mirrors the truthy parsing used
+ *  by `isLawyerRouterEnabled` in consilium_lawyer_bridge.ts. */
+export function isConsiliumEnabled(): boolean {
+  try {
+    // deno-lint-ignore no-explicit-any
+    const env = (globalThis as any).Deno?.env;
+    if (!env || typeof env.get !== "function") return false;
+    const raw = env.get(CONSILIUM_FLAG_ENV);
+    if (!raw) return false;
+    const normalised = String(raw).toLowerCase().trim();
+    return normalised === "true" || normalised === "1" || normalised === "yes";
+  } catch {
+    return false;
+  }
+}
+
+/** Build the plain-text user query the 15-lawyer consilium routes on. The
+ *  legacy path passes a full v1.1-final `<context>` block to Sonnet, but the
+ *  lawyer router (and the v2.2 DomainExpert selection) operate on natural-
+ *  language keywords. We surface the subject + first ~1.5 KB of the latest
+ *  inbound body so the router has enough signal to score domain experts.
+ *  Pure function — no I/O. */
+export function buildConsiliumQuery(
+  thread: ThreadRecord,
+  inbound: ThreadMessage,
+): string {
+  const lines: string[] = [];
+  lines.push(`Subject: ${thread.subject ?? inbound.subject ?? "(none)"}`);
+  if (inbound.sender_email) {
+    lines.push(`From: ${inbound.sender_email}`);
+  }
+  const body = (inbound.body_plaintext ?? "").trim();
+  if (body) {
+    lines.push("");
+    lines.push(body.slice(0, 1500));
+  }
+  return lines.join("\n");
 }
 
 /** Heuristic — map model output to a draft category. */
