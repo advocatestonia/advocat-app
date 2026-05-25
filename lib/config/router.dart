@@ -82,6 +82,10 @@ import '../features/legal/screens/dpa_screen.dart';
 // GDPR Art. 9 — manage / withdraw sensitive-data consent, reachable from
 // Settings → "Sensitive data consent".
 import '../features/legal/screens/sensitive_consent_manage_screen.dart';
+// B2B silent-signal lead capture — reached from the b2b_lead_modal's
+// "Learn more" CTA and a single ghost-text link at the bottom of the
+// Subscription screen. NOT linked from the main pricing carousel.
+import '../features/b2b/screens/for_firms_screen.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -161,6 +165,11 @@ abstract final class AppRoutes {
   /// GDPR Art. 9(2)(a) — manage / withdraw special-category consent.
   /// Reached from Settings → Data & Privacy.
   static const String sensitiveConsent = '/legal/sensitive-consent';
+
+  /// B2B silent-signal lead capture page. Reached from the b2b_lead_modal
+  /// "Learn more" CTA and the bottom of the Subscription screen — NOT from
+  /// the main pricing carousel (that's the point of "silent signals").
+  static const String forFirms = '/for-firms';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -535,6 +544,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.sensitiveConsent,
         name: 'sensitiveConsent',
         builder: (context, state) => const SensitiveConsentManageScreen(),
+      ),
+
+      // ── B2B silent-signal contact form ─────────────────────────────
+      GoRoute(
+        path: AppRoutes.forFirms,
+        name: 'forFirms',
+        builder: (context, state) => const ForFirmsScreen(),
       ),
 
       // ── Sofia Gold Corpus review (Phase A) ─────────────────────────

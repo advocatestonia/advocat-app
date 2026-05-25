@@ -2,9 +2,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/user.dart';
@@ -277,6 +279,27 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
                 ),
               ),
             ),
+
+            // ── For Law Firms (B2B silent-signal entry) ─────────────
+            // Single ghost-text link, intentionally low-contrast and at
+            // the very bottom of the screen. NOT a pricing CTA — the
+            // /for-firms page itself shows no prices. Per spec
+            // (2026-05-25): one-line, bottom, ghost text style.
+            TextButton(
+              key: const Key('subscription_for_firms_link'),
+              onPressed: () => context.push(AppRoutes.forFirms),
+              child: Text(
+                _forFirmsLinkLabel(
+                  Localizations.localeOf(context).languageCode,
+                ),
+                style: const TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.textTertiary,
+                ),
+              ),
+            ),
             ],
           ),
         ),
@@ -284,6 +307,32 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       ),
       ),
     );
+  }
+
+  /// Localised label for the ghost-text /for-firms link. We inline this
+  /// instead of routing through AppLocalizations so the link can ship
+  /// without an arb regen — same approach welcome_modal uses.
+  String _forFirmsLinkLabel(String code) {
+    switch (code.toLowerCase()) {
+      case 'et':
+        return 'Advocat advokaadibüroodele \u2192';
+      case 'ru':
+        return 'Advocat для юр.фирм \u2192';
+      case 'fi':
+        return 'Advocat asianajotoimistoille \u2192';
+      case 'de':
+        return 'Advocat für Kanzleien \u2192';
+      case 'fr':
+        return "Advocat pour les cabinets d'avocats \u2192";
+      case 'es':
+        return 'Advocat para despachos \u2192';
+      case 'it':
+        return 'Advocat per studi legali \u2192';
+      case 'pl':
+        return 'Advocat dla kancelarii \u2192';
+      default:
+        return 'Advocat for law firms \u2192';
+    }
   }
 
   List<Widget> _buildPlans(

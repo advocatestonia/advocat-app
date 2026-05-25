@@ -26,6 +26,7 @@ import '../../case_memory/widgets/deadline_radar_widget.dart';
 import '../../deadlines/providers/deadlines_provider.dart';
 import '../../onboarding/data/sample_case_messages.dart';
 import '../../onboarding/widgets/welcome_modal.dart';
+import '../../b2b/providers/b2b_detection_provider.dart';
 
 // ---------------------------------------------------------------------------
 // Home Dashboard
@@ -47,6 +48,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     _checkGdprConsent();
     _checkPendingCheckout();
     _maybeShowReferralNudge();
+    _maybeShowB2BLeadModal();
+  }
+
+  /// B2B silent-signal detection. After login the backend may have flagged
+  /// the user (heavy use, professional patterns) via
+  /// `profiles.b2b_modal_pending = true`. Fire-and-forget; the controller
+  /// silently no-ops on demo mode, network failure, or pending=false.
+  ///
+  /// Runs AFTER the welcome modal would have rendered so a brand-new user
+  /// gets the standard onboarding first — the B2B signal is a second-
+  /// session-or-later trigger by design.
+  Future<void> _maybeShowB2BLeadModal() async {
+    try {
+      // Skip in demo mode — the demo user has no Supabase profile row to
+      // read, and the modal would just immediately no-op.
+      final isDemo = ref.read(isDemoModeProvider);
+      if (isDemo) return;
+
+      // Settle 1.2s so the welcome modal (if any) has time to either show
+      // or skip itself first. This keeps the two surfaces from racing on
+      // a brand-new account's first login.
+      await Future.delayed(const Duration(milliseconds: 1200));
+      if (!mounted) return;
+
+      final locale = Localizations.localeOf(context).languageCode;
+      await ref
+          .read(b2bDetectionControllerProvider.notifier)
+          .maybeTrigger(context, locale: locale);
+    } catch (_) {
+      // Swallow — never block the home-screen render path on B2B detection.
+    }
   }
 
   /// One-time growth nudge: after the user's first AI conversation and
