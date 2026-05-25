@@ -1120,5 +1120,49 @@
     "showPassword": "Show password",
     "hidePassword": "Hide password",
     "decreaseDependents": "Decrease",
-    "increaseDependents": "Increase"
+    "increaseDependents": "Increase",
+    "consiliumHeader": "مجلس المحامين",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} من {total} جاهز",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "يقوم المحامون بمراجعة قضيتك…",
+    "consiliumDisagreement": "الخبراء غير متفقين",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "جارٍ صياغة التوصية…",
+    "consiliumDone": "اكتمل المجلس · {totalRoles} خبراء",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "اعترض",
+    "consiliumPositionSettle": "تسوية",
+    "consiliumPositionInvestigate": "تحقق",
+    "consiliumPositionOutOfScope": "خارج نطاق الاختصاص",
+    "consiliumConfidence": "الثقة",
+    "consiliumKeyCitation": "المرجع الأساسي",
+    "consiliumAdversarialRound": "جولة جدلية",
+    "consiliumViewFullOpinion": "عرض الرأي كاملاً",
+    "consiliumExpertsAgreed": "{count} خبراء متفقون",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} خبراء غير متفقين",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

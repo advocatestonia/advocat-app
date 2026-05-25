@@ -6883,6 +6883,168 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chat opened — your draft is saved.'**
   String get intakeUrgentOpened;
+
+  /// No description provided for @panicCoachmark.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold for emergency help.'**
+  String get panicCoachmark;
+
+  /// No description provided for @panicTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you need right now?'**
+  String get panicTitle;
+
+  /// No description provided for @panicCardReadAloud.
+  ///
+  /// In en, this message translates to:
+  /// **'Read aloud to the officer'**
+  String get panicCardReadAloud;
+
+  /// No description provided for @panicCardRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'Record this conversation'**
+  String get panicCardRecord;
+
+  /// No description provided for @panicCardCall.
+  ///
+  /// In en, this message translates to:
+  /// **'Call a lawyer'**
+  String get panicCardCall;
+
+  /// No description provided for @panicCardAi.
+  ///
+  /// In en, this message translates to:
+  /// **'Talk to Advocat now'**
+  String get panicCardAi;
+
+  /// No description provided for @panicClose.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get panicClose;
+
+  /// No description provided for @panicBadgeV2.
+  ///
+  /// In en, this message translates to:
+  /// **'V2'**
+  String get panicBadgeV2;
+
+  /// No description provided for @panicRecordV1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming in V2'**
+  String get panicRecordV1Title;
+
+  /// No description provided for @panicRecordV1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.'**
+  String get panicRecordV1Body;
+
+  /// No description provided for @panicCallFallbackBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Email kiire@advocat.ee with a short description and we will call you back.'**
+  String get panicCallFallbackBody;
+
+  /// Header text for the multi-agent legal consilium panel
+  ///
+  /// In en, this message translates to:
+  /// **'Lawyer Consilium'**
+  String get consiliumHeader;
+
+  /// Progress indicator while consilium experts produce opinions
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} ready'**
+  String consiliumProgress(int count, int total);
+
+  /// No description provided for @consiliumStarting.
+  ///
+  /// In en, this message translates to:
+  /// **'Lawyers reviewing your case…'**
+  String get consiliumStarting;
+
+  /// Banner shown when experts have conflicting positions
+  ///
+  /// In en, this message translates to:
+  /// **'Experts disagree'**
+  String get consiliumDisagreement;
+
+  /// No description provided for @consiliumSynthesizing.
+  ///
+  /// In en, this message translates to:
+  /// **'Synthesizing recommendation…'**
+  String get consiliumSynthesizing;
+
+  /// No description provided for @consiliumDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Consilium complete · {totalRoles} experts'**
+  String consiliumDone(int totalRoles);
+
+  /// No description provided for @consiliumPositionPush.
+  ///
+  /// In en, this message translates to:
+  /// **'Push'**
+  String get consiliumPositionPush;
+
+  /// No description provided for @consiliumPositionSettle.
+  ///
+  /// In en, this message translates to:
+  /// **'Settle'**
+  String get consiliumPositionSettle;
+
+  /// No description provided for @consiliumPositionInvestigate.
+  ///
+  /// In en, this message translates to:
+  /// **'Investigate'**
+  String get consiliumPositionInvestigate;
+
+  /// No description provided for @consiliumPositionOutOfScope.
+  ///
+  /// In en, this message translates to:
+  /// **'Out of scope'**
+  String get consiliumPositionOutOfScope;
+
+  /// No description provided for @consiliumConfidence.
+  ///
+  /// In en, this message translates to:
+  /// **'Confidence'**
+  String get consiliumConfidence;
+
+  /// No description provided for @consiliumKeyCitation.
+  ///
+  /// In en, this message translates to:
+  /// **'Key citation'**
+  String get consiliumKeyCitation;
+
+  /// No description provided for @consiliumAdversarialRound.
+  ///
+  /// In en, this message translates to:
+  /// **'Adversarial round'**
+  String get consiliumAdversarialRound;
+
+  /// No description provided for @consiliumViewFullOpinion.
+  ///
+  /// In en, this message translates to:
+  /// **'View full opinion'**
+  String get consiliumViewFullOpinion;
+
+  /// No description provided for @consiliumExpertsAgreed.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} experts agreed'**
+  String consiliumExpertsAgreed(int count);
+
+  /// No description provided for @consiliumExpertsDisagree.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} experts disagree'**
+  String consiliumExpertsDisagree(int count);
 }
 
 class _AppLocalizationsDelegate

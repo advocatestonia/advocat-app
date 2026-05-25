@@ -1620,5 +1620,49 @@
     "panicBadgeV2": "V2",
     "panicRecordV1Title": "Tulossa pian",
     "panicRecordV1Body": "Tallennustoiminto on oikeudellisessa tarkistuksessa Viroa varten ja tulee saataville V2:ssa. Käytä toistaiseksi puhelimen omaa sanelinta.",
-    "panicCallFallbackBody": "Lähetä lyhyt viesti osoitteeseen kiire@advocat.ee — otamme yhteyttä."
+    "panicCallFallbackBody": "Lähetä lyhyt viesti osoitteeseen kiire@advocat.ee — otamme yhteyttä.",
+    "consiliumHeader": "Asianajajaneuvosto",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} / {total} valmiina",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Juristit perehtyvät asiaasi…",
+    "consiliumDisagreement": "Asiantuntijat ovat eri mieltä",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Kootaan suositusta…",
+    "consiliumDone": "Konsultaatio valmis · {totalRoles} asiantuntijaa",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Riitauta",
+    "consiliumPositionSettle": "Sovi",
+    "consiliumPositionInvestigate": "Selvitä lisää",
+    "consiliumPositionOutOfScope": "Toimivallan ulkopuolella",
+    "consiliumConfidence": "Varmuus",
+    "consiliumKeyCitation": "Keskeinen lähde",
+    "consiliumAdversarialRound": "Vastakkainasettelukierros",
+    "consiliumViewFullOpinion": "Näytä koko lausunto",
+    "consiliumExpertsAgreed": "{count} asiantuntijaa samaa mieltä",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} asiantuntijaa eri mieltä",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

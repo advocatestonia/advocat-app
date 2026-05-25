@@ -1721,5 +1721,49 @@
     "showPassword": "Visa lösenord",
     "hidePassword": "Dölj lösenord",
     "decreaseDependents": "Minska",
-    "increaseDependents": "Öka"
+    "increaseDependents": "Öka",
+    "consiliumHeader": "Juridiskt konsilium",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} av {total} klara",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Juristerna granskar ditt ärende…",
+    "consiliumDisagreement": "Experterna är oeniga",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Sammanställer rekommendation…",
+    "consiliumDone": "Konsilium klart · {totalRoles} experter",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Bestrid",
+    "consiliumPositionSettle": "Förlik",
+    "consiliumPositionInvestigate": "Utred",
+    "consiliumPositionOutOfScope": "Utanför behörigheten",
+    "consiliumConfidence": "Säkerhet",
+    "consiliumKeyCitation": "Central källa",
+    "consiliumAdversarialRound": "Kontradiktorisk runda",
+    "consiliumViewFullOpinion": "Visa fullständigt yttrande",
+    "consiliumExpertsAgreed": "{count} experter eniga",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} experter oeniga",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

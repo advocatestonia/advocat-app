@@ -1120,5 +1120,49 @@
     "showPassword": "Mostra password",
     "hidePassword": "Nascondi password",
     "decreaseDependents": "Diminuisci",
-    "increaseDependents": "Aumenta"
+    "increaseDependents": "Aumenta",
+    "consiliumHeader": "Consilio di avvocati",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} su {total} pronti",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Gli avvocati stanno esaminando il tuo caso…",
+    "consiliumDisagreement": "Gli esperti sono in disaccordo",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Sintesi della raccomandazione…",
+    "consiliumDone": "Consilio concluso · {totalRoles} esperti",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Impugna",
+    "consiliumPositionSettle": "Concilia",
+    "consiliumPositionInvestigate": "Indaga",
+    "consiliumPositionOutOfScope": "Fuori competenza",
+    "consiliumConfidence": "Affidabilità",
+    "consiliumKeyCitation": "Riferimento chiave",
+    "consiliumAdversarialRound": "Turno contraddittorio",
+    "consiliumViewFullOpinion": "Visualizza parere completo",
+    "consiliumExpertsAgreed": "{count} esperti concordi",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} esperti in disaccordo",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

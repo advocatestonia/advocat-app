@@ -1691,5 +1691,49 @@
     "panicBadgeV2": "V2",
     "panicRecordV1Title": "Coming in V2",
     "panicRecordV1Body": "The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone's built-in voice recorder.",
-    "panicCallFallbackBody": "Email kiire@advocat.ee with a short description and we will call you back."
+    "panicCallFallbackBody": "Email kiire@advocat.ee with a short description and we will call you back.",
+    "consiliumHeader": "Lawyer Consilium",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} of {total} ready",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Lawyers reviewing your case…",
+    "consiliumDisagreement": "Experts disagree",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Synthesizing recommendation…",
+    "consiliumDone": "Consilium complete · {totalRoles} experts",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Push",
+    "consiliumPositionSettle": "Settle",
+    "consiliumPositionInvestigate": "Investigate",
+    "consiliumPositionOutOfScope": "Out of scope",
+    "consiliumConfidence": "Confidence",
+    "consiliumKeyCitation": "Key citation",
+    "consiliumAdversarialRound": "Adversarial round",
+    "consiliumViewFullOpinion": "View full opinion",
+    "consiliumExpertsAgreed": "{count} experts agreed",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} experts disagree",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

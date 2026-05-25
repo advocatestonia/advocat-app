@@ -3793,4 +3793,95 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get intakeUrgentOpened => 'Chat avattu — luonnoksesi on tallennettu.';
+
+  @override
+  String get panicCoachmark => 'Pidä pohjassa hätätilanteessa.';
+
+  @override
+  String get panicTitle => 'Mitä tarvitset juuri nyt?';
+
+  @override
+  String get panicCardReadAloud => 'Lue ääneen viranomaiselle';
+
+  @override
+  String get panicCardRecord => 'Tallenna keskustelu';
+
+  @override
+  String get panicCardCall => 'Soita asianajajalle';
+
+  @override
+  String get panicCardAi => 'Puhu Advocatille heti';
+
+  @override
+  String get panicClose => 'Sulje';
+
+  @override
+  String get panicBadgeV2 => 'V2';
+
+  @override
+  String get panicRecordV1Title => 'Tulossa pian';
+
+  @override
+  String get panicRecordV1Body =>
+      'Tallennustoiminto on oikeudellisessa tarkistuksessa Viroa varten ja tulee saataville V2:ssa. Käytä toistaiseksi puhelimen omaa sanelinta.';
+
+  @override
+  String get panicCallFallbackBody =>
+      'Lähetä lyhyt viesti osoitteeseen kiire@advocat.ee — otamme yhteyttä.';
+
+  @override
+  String get consiliumHeader => 'Asianajajaneuvosto';
+
+  @override
+  String consiliumProgress(int count, int total) {
+    return '$count / $total valmiina';
+  }
+
+  @override
+  String get consiliumStarting => 'Juristit perehtyvät asiaasi…';
+
+  @override
+  String get consiliumDisagreement => 'Asiantuntijat ovat eri mieltä';
+
+  @override
+  String get consiliumSynthesizing => 'Kootaan suositusta…';
+
+  @override
+  String consiliumDone(int totalRoles) {
+    return 'Konsultaatio valmis · $totalRoles asiantuntijaa';
+  }
+
+  @override
+  String get consiliumPositionPush => 'Riitauta';
+
+  @override
+  String get consiliumPositionSettle => 'Sovi';
+
+  @override
+  String get consiliumPositionInvestigate => 'Selvitä lisää';
+
+  @override
+  String get consiliumPositionOutOfScope => 'Toimivallan ulkopuolella';
+
+  @override
+  String get consiliumConfidence => 'Varmuus';
+
+  @override
+  String get consiliumKeyCitation => 'Keskeinen lähde';
+
+  @override
+  String get consiliumAdversarialRound => 'Vastakkainasettelukierros';
+
+  @override
+  String get consiliumViewFullOpinion => 'Näytä koko lausunto';
+
+  @override
+  String consiliumExpertsAgreed(int count) {
+    return '$count asiantuntijaa samaa mieltä';
+  }
+
+  @override
+  String consiliumExpertsDisagree(int count) {
+    return '$count asiantuntijaa eri mieltä';
+  }
 }

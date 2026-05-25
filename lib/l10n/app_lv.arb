@@ -1721,5 +1721,49 @@
     "showPassword": "Rādīt paroli",
     "hidePassword": "Slēpt paroli",
     "decreaseDependents": "Samazināt",
-    "increaseDependents": "Palielināt"
+    "increaseDependents": "Palielināt",
+    "consiliumHeader": "Juristu konsīlijs",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} no {total} gatavi",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Juristi izvērtē jūsu lietu…",
+    "consiliumDisagreement": "Eksperti nav vienisprātis",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Veido ieteikumu…",
+    "consiliumDone": "Konsīlijs pabeigts · {totalRoles} eksperti",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Apstrīdēt",
+    "consiliumPositionSettle": "Vienoties",
+    "consiliumPositionInvestigate": "Izmeklēt",
+    "consiliumPositionOutOfScope": "Ārpus kompetences",
+    "consiliumConfidence": "Pārliecība",
+    "consiliumKeyCitation": "Galvenā atsauce",
+    "consiliumAdversarialRound": "Sacīkstes kārta",
+    "consiliumViewFullOpinion": "Skatīt pilnu atzinumu",
+    "consiliumExpertsAgreed": "{count} eksperti piekrīt",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} eksperti nepiekrīt",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

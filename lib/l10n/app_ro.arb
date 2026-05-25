@@ -1120,5 +1120,49 @@
     "showPassword": "Afișează parola",
     "hidePassword": "Ascunde parola",
     "decreaseDependents": "Micșorează",
-    "increaseDependents": "Mărește"
+    "increaseDependents": "Mărește",
+    "consiliumHeader": "Consiliu de avocați",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} din {total} gata",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Avocații examinează cazul dvs.…",
+    "consiliumDisagreement": "Experții nu sunt de acord",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Se sintetizează recomandarea…",
+    "consiliumDone": "Consiliu finalizat · {totalRoles} experți",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Contestă",
+    "consiliumPositionSettle": "Conciliază",
+    "consiliumPositionInvestigate": "Investighează",
+    "consiliumPositionOutOfScope": "În afara competenței",
+    "consiliumConfidence": "Încredere",
+    "consiliumKeyCitation": "Referință-cheie",
+    "consiliumAdversarialRound": "Rundă contradictorie",
+    "consiliumViewFullOpinion": "Vezi avizul complet",
+    "consiliumExpertsAgreed": "{count} experți de acord",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} experți în dezacord",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

@@ -1120,5 +1120,49 @@
     "showPassword": "Afficher le mot de passe",
     "hidePassword": "Masquer le mot de passe",
     "decreaseDependents": "Diminuer",
-    "increaseDependents": "Augmenter"
+    "increaseDependents": "Augmenter",
+    "consiliumHeader": "Consilium d'avocats",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} sur {total} prêts",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Les avocats examinent votre dossier…",
+    "consiliumDisagreement": "Les experts sont en désaccord",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Synthèse de la recommandation…",
+    "consiliumDone": "Consilium terminé · {totalRoles} experts",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Contester",
+    "consiliumPositionSettle": "Transiger",
+    "consiliumPositionInvestigate": "Approfondir",
+    "consiliumPositionOutOfScope": "Hors compétence",
+    "consiliumConfidence": "Confiance",
+    "consiliumKeyCitation": "Référence clé",
+    "consiliumAdversarialRound": "Tour contradictoire",
+    "consiliumViewFullOpinion": "Voir l'avis complet",
+    "consiliumExpertsAgreed": "{count} experts d'accord",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} experts en désaccord",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

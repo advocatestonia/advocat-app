@@ -3784,4 +3784,95 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+
+  @override
+  String get panicCoachmark => 'Hold for emergency help.';
+
+  @override
+  String get panicTitle => 'What do you need right now?';
+
+  @override
+  String get panicCardReadAloud => 'Read aloud to the officer';
+
+  @override
+  String get panicCardRecord => 'Record this conversation';
+
+  @override
+  String get panicCardCall => 'Call a lawyer';
+
+  @override
+  String get panicCardAi => 'Talk to Advocat now';
+
+  @override
+  String get panicClose => 'Close';
+
+  @override
+  String get panicBadgeV2 => 'V2';
+
+  @override
+  String get panicRecordV1Title => 'Coming in V2';
+
+  @override
+  String get panicRecordV1Body =>
+      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+
+  @override
+  String get panicCallFallbackBody =>
+      'Email kiire@advocat.ee with a short description and we will call you back.';
+
+  @override
+  String get consiliumHeader => 'Avukat konsültasyonu';
+
+  @override
+  String consiliumProgress(int count, int total) {
+    return '$count / $total hazır';
+  }
+
+  @override
+  String get consiliumStarting => 'Avukatlar davanızı inceliyor…';
+
+  @override
+  String get consiliumDisagreement => 'Uzmanlar aynı fikirde değil';
+
+  @override
+  String get consiliumSynthesizing => 'Tavsiye derleniyor…';
+
+  @override
+  String consiliumDone(int totalRoles) {
+    return 'Konsültasyon tamamlandı · $totalRoles uzman';
+  }
+
+  @override
+  String get consiliumPositionPush => 'İtiraz et';
+
+  @override
+  String get consiliumPositionSettle => 'Uzlaş';
+
+  @override
+  String get consiliumPositionInvestigate => 'Araştır';
+
+  @override
+  String get consiliumPositionOutOfScope => 'Yetki dışı';
+
+  @override
+  String get consiliumConfidence => 'Güven';
+
+  @override
+  String get consiliumKeyCitation => 'Temel kaynak';
+
+  @override
+  String get consiliumAdversarialRound => 'Çekişmeli tur';
+
+  @override
+  String get consiliumViewFullOpinion => 'Tam görüşü gör';
+
+  @override
+  String consiliumExpertsAgreed(int count) {
+    return '$count uzman aynı fikirde';
+  }
+
+  @override
+  String consiliumExpertsDisagree(int count) {
+    return '$count uzman karşı çıkıyor';
+  }
 }

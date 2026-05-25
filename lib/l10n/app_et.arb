@@ -1590,5 +1590,49 @@
     "panicBadgeV2": "V2",
     "panicRecordV1Title": "Tuleb varsti",
     "panicRecordV1Body": "Salvestusfunktsioon on Eesti õiguse seisukohast üle vaatamisel ja saadaval V2-s. Praegu saate kasutada telefoni süsteemset diktofoni.",
-    "panicCallFallbackBody": "Saatke kirjeldus aadressile kiire@advocat.ee ja võtame teiega ühendust."
+    "panicCallFallbackBody": "Saatke kirjeldus aadressile kiire@advocat.ee ja võtame teiega ühendust.",
+    "consiliumHeader": "Juristide konsiilium",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} / {total} valmis",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Juristid vaatavad teie juhtumi üle…",
+    "consiliumDisagreement": "Eksperdid on eriarvamusel",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Soovituse koostamine…",
+    "consiliumDone": "Konsiilium lõpetatud · {totalRoles} eksperti",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Vaidle vastu",
+    "consiliumPositionSettle": "Lepi kokku",
+    "consiliumPositionInvestigate": "Uuri täiendavalt",
+    "consiliumPositionOutOfScope": "Väljaspool pädevust",
+    "consiliumConfidence": "Kindlus",
+    "consiliumKeyCitation": "Peamine viide",
+    "consiliumAdversarialRound": "Vastandlik voor",
+    "consiliumViewFullOpinion": "Vaata täielikku arvamust",
+    "consiliumExpertsAgreed": "{count} eksperti nõustusid",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} eksperti on eriarvamusel",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

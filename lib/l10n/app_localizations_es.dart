@@ -3811,4 +3811,95 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+
+  @override
+  String get panicCoachmark => 'Hold for emergency help.';
+
+  @override
+  String get panicTitle => 'What do you need right now?';
+
+  @override
+  String get panicCardReadAloud => 'Read aloud to the officer';
+
+  @override
+  String get panicCardRecord => 'Record this conversation';
+
+  @override
+  String get panicCardCall => 'Call a lawyer';
+
+  @override
+  String get panicCardAi => 'Talk to Advocat now';
+
+  @override
+  String get panicClose => 'Close';
+
+  @override
+  String get panicBadgeV2 => 'V2';
+
+  @override
+  String get panicRecordV1Title => 'Coming in V2';
+
+  @override
+  String get panicRecordV1Body =>
+      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+
+  @override
+  String get panicCallFallbackBody =>
+      'Email kiire@advocat.ee with a short description and we will call you back.';
+
+  @override
+  String get consiliumHeader => 'Consilio de abogados';
+
+  @override
+  String consiliumProgress(int count, int total) {
+    return '$count de $total listos';
+  }
+
+  @override
+  String get consiliumStarting => 'Los abogados están revisando su caso…';
+
+  @override
+  String get consiliumDisagreement => 'Los expertos no están de acuerdo';
+
+  @override
+  String get consiliumSynthesizing => 'Sintetizando recomendación…';
+
+  @override
+  String consiliumDone(int totalRoles) {
+    return 'Consilio finalizado · $totalRoles expertos';
+  }
+
+  @override
+  String get consiliumPositionPush => 'Impugnar';
+
+  @override
+  String get consiliumPositionSettle => 'Negociar';
+
+  @override
+  String get consiliumPositionInvestigate => 'Investigar';
+
+  @override
+  String get consiliumPositionOutOfScope => 'Fuera de competencia';
+
+  @override
+  String get consiliumConfidence => 'Confianza';
+
+  @override
+  String get consiliumKeyCitation => 'Referencia clave';
+
+  @override
+  String get consiliumAdversarialRound => 'Ronda contradictoria';
+
+  @override
+  String get consiliumViewFullOpinion => 'Ver dictamen completo';
+
+  @override
+  String consiliumExpertsAgreed(int count) {
+    return '$count expertos de acuerdo';
+  }
+
+  @override
+  String consiliumExpertsDisagree(int count) {
+    return '$count expertos en desacuerdo';
+  }
 }

@@ -3784,4 +3784,95 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get intakeUrgentOpened =>
       'Vestlus avatud — sinu mustand on salvestatud.';
+
+  @override
+  String get panicCoachmark => 'Hoia all, kui vajad kohe abi.';
+
+  @override
+  String get panicTitle => 'Mida sa praegu vajad?';
+
+  @override
+  String get panicCardReadAloud => 'Loe ette ametnikule';
+
+  @override
+  String get panicCardRecord => 'Salvesta vestlus';
+
+  @override
+  String get panicCardCall => 'Helista advokaadile';
+
+  @override
+  String get panicCardAi => 'Räägi Advocatiga kohe';
+
+  @override
+  String get panicClose => 'Sulge';
+
+  @override
+  String get panicBadgeV2 => 'V2';
+
+  @override
+  String get panicRecordV1Title => 'Tuleb varsti';
+
+  @override
+  String get panicRecordV1Body =>
+      'Salvestusfunktsioon on Eesti õiguse seisukohast üle vaatamisel ja saadaval V2-s. Praegu saate kasutada telefoni süsteemset diktofoni.';
+
+  @override
+  String get panicCallFallbackBody =>
+      'Saatke kirjeldus aadressile kiire@advocat.ee ja võtame teiega ühendust.';
+
+  @override
+  String get consiliumHeader => 'Juristide konsiilium';
+
+  @override
+  String consiliumProgress(int count, int total) {
+    return '$count / $total valmis';
+  }
+
+  @override
+  String get consiliumStarting => 'Juristid vaatavad teie juhtumi üle…';
+
+  @override
+  String get consiliumDisagreement => 'Eksperdid on eriarvamusel';
+
+  @override
+  String get consiliumSynthesizing => 'Soovituse koostamine…';
+
+  @override
+  String consiliumDone(int totalRoles) {
+    return 'Konsiilium lõpetatud · $totalRoles eksperti';
+  }
+
+  @override
+  String get consiliumPositionPush => 'Vaidle vastu';
+
+  @override
+  String get consiliumPositionSettle => 'Lepi kokku';
+
+  @override
+  String get consiliumPositionInvestigate => 'Uuri täiendavalt';
+
+  @override
+  String get consiliumPositionOutOfScope => 'Väljaspool pädevust';
+
+  @override
+  String get consiliumConfidence => 'Kindlus';
+
+  @override
+  String get consiliumKeyCitation => 'Peamine viide';
+
+  @override
+  String get consiliumAdversarialRound => 'Vastandlik voor';
+
+  @override
+  String get consiliumViewFullOpinion => 'Vaata täielikku arvamust';
+
+  @override
+  String consiliumExpertsAgreed(int count) {
+    return '$count eksperti nõustusid';
+  }
+
+  @override
+  String consiliumExpertsDisagree(int count) {
+    return '$count eksperti on eriarvamusel';
+  }
 }

@@ -1620,5 +1620,49 @@
     "panicBadgeV2": "V2",
     "panicRecordV1Title": "Скоро",
     "panicRecordV1Body": "Функция записи проходит юридическую проверку для Эстонии и появится в версии V2. Пока используйте системный диктофон телефона.",
-    "panicCallFallbackBody": "Напишите коротко на kiire@advocat.ee — мы свяжемся с вами."
+    "panicCallFallbackBody": "Напишите коротко на kiire@advocat.ee — мы свяжемся с вами.",
+    "consiliumHeader": "Консилиум юристов",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} из {total} готовы",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Юристы изучают ваше дело…",
+    "consiliumDisagreement": "Эксперты расходятся во мнениях",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Формируется рекомендация…",
+    "consiliumDone": "Консилиум завершён · {totalRoles} экспертов",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Оспаривать",
+    "consiliumPositionSettle": "Договориться",
+    "consiliumPositionInvestigate": "Расследовать",
+    "consiliumPositionOutOfScope": "Вне компетенции",
+    "consiliumConfidence": "Уверенность",
+    "consiliumKeyCitation": "Ключевая ссылка",
+    "consiliumAdversarialRound": "Спорный раунд",
+    "consiliumViewFullOpinion": "Полное заключение",
+    "consiliumExpertsAgreed": "{count} экспертов согласны",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} экспертов не согласны",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

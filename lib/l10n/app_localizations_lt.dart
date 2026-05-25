@@ -3798,4 +3798,95 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get intakeUrgentOpened => 'Chat opened — your draft is saved.';
+
+  @override
+  String get panicCoachmark => 'Hold for emergency help.';
+
+  @override
+  String get panicTitle => 'What do you need right now?';
+
+  @override
+  String get panicCardReadAloud => 'Read aloud to the officer';
+
+  @override
+  String get panicCardRecord => 'Record this conversation';
+
+  @override
+  String get panicCardCall => 'Call a lawyer';
+
+  @override
+  String get panicCardAi => 'Talk to Advocat now';
+
+  @override
+  String get panicClose => 'Close';
+
+  @override
+  String get panicBadgeV2 => 'V2';
+
+  @override
+  String get panicRecordV1Title => 'Coming in V2';
+
+  @override
+  String get panicRecordV1Body =>
+      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+
+  @override
+  String get panicCallFallbackBody =>
+      'Email kiire@advocat.ee with a short description and we will call you back.';
+
+  @override
+  String get consiliumHeader => 'Teisininkų konsiliumas';
+
+  @override
+  String consiliumProgress(int count, int total) {
+    return '$count iš $total parengta';
+  }
+
+  @override
+  String get consiliumStarting => 'Teisininkai analizuoja jūsų bylą…';
+
+  @override
+  String get consiliumDisagreement => 'Ekspertai nesutaria';
+
+  @override
+  String get consiliumSynthesizing => 'Rengiama rekomendacija…';
+
+  @override
+  String consiliumDone(int totalRoles) {
+    return 'Konsiliumas baigtas · $totalRoles ekspertai';
+  }
+
+  @override
+  String get consiliumPositionPush => 'Ginčyti';
+
+  @override
+  String get consiliumPositionSettle => 'Susitarti';
+
+  @override
+  String get consiliumPositionInvestigate => 'Tirti';
+
+  @override
+  String get consiliumPositionOutOfScope => 'Ne kompetencijoje';
+
+  @override
+  String get consiliumConfidence => 'Patikimumas';
+
+  @override
+  String get consiliumKeyCitation => 'Pagrindinė nuoroda';
+
+  @override
+  String get consiliumAdversarialRound => 'Prieštaringas turas';
+
+  @override
+  String get consiliumViewFullOpinion => 'Žiūrėti visą išvadą';
+
+  @override
+  String consiliumExpertsAgreed(int count) {
+    return '$count ekspertai sutinka';
+  }
+
+  @override
+  String consiliumExpertsDisagree(int count) {
+    return '$count ekspertai nesutinka';
+  }
 }

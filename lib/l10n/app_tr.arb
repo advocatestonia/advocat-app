@@ -1120,5 +1120,49 @@
     "showPassword": "Şifreyi göster",
     "hidePassword": "Şifreyi gizle",
     "decreaseDependents": "Azalt",
-    "increaseDependents": "Artır"
+    "increaseDependents": "Artır",
+    "consiliumHeader": "Avukat konsültasyonu",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} / {total} hazır",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Avukatlar davanızı inceliyor…",
+    "consiliumDisagreement": "Uzmanlar aynı fikirde değil",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Tavsiye derleniyor…",
+    "consiliumDone": "Konsültasyon tamamlandı · {totalRoles} uzman",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "İtiraz et",
+    "consiliumPositionSettle": "Uzlaş",
+    "consiliumPositionInvestigate": "Araştır",
+    "consiliumPositionOutOfScope": "Yetki dışı",
+    "consiliumConfidence": "Güven",
+    "consiliumKeyCitation": "Temel kaynak",
+    "consiliumAdversarialRound": "Çekişmeli tur",
+    "consiliumViewFullOpinion": "Tam görüşü gör",
+    "consiliumExpertsAgreed": "{count} uzman aynı fikirde",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} uzman karşı çıkıyor",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }

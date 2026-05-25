@@ -3784,4 +3784,95 @@ class AppLocalizationsUk extends AppLocalizations {
 
   @override
   String get intakeUrgentOpened => 'Чат відкрито — ваш чернетку збережено.';
+
+  @override
+  String get panicCoachmark => 'Hold for emergency help.';
+
+  @override
+  String get panicTitle => 'What do you need right now?';
+
+  @override
+  String get panicCardReadAloud => 'Read aloud to the officer';
+
+  @override
+  String get panicCardRecord => 'Record this conversation';
+
+  @override
+  String get panicCardCall => 'Call a lawyer';
+
+  @override
+  String get panicCardAi => 'Talk to Advocat now';
+
+  @override
+  String get panicClose => 'Close';
+
+  @override
+  String get panicBadgeV2 => 'V2';
+
+  @override
+  String get panicRecordV1Title => 'Coming in V2';
+
+  @override
+  String get panicRecordV1Body =>
+      'The recording feature is being legally validated for Estonia and will ship in V2. For now, use your phone\'s built-in voice recorder.';
+
+  @override
+  String get panicCallFallbackBody =>
+      'Email kiire@advocat.ee with a short description and we will call you back.';
+
+  @override
+  String get consiliumHeader => 'Консиліум юристів';
+
+  @override
+  String consiliumProgress(int count, int total) {
+    return '$count з $total готові';
+  }
+
+  @override
+  String get consiliumStarting => 'Юристи вивчають вашу справу…';
+
+  @override
+  String get consiliumDisagreement => 'Експерти не згодні';
+
+  @override
+  String get consiliumSynthesizing => 'Формується рекомендація…';
+
+  @override
+  String consiliumDone(int totalRoles) {
+    return 'Консиліум завершено · $totalRoles експертів';
+  }
+
+  @override
+  String get consiliumPositionPush => 'Оскаржити';
+
+  @override
+  String get consiliumPositionSettle => 'Домовитися';
+
+  @override
+  String get consiliumPositionInvestigate => 'Дослідити';
+
+  @override
+  String get consiliumPositionOutOfScope => 'Поза компетенцією';
+
+  @override
+  String get consiliumConfidence => 'Впевненість';
+
+  @override
+  String get consiliumKeyCitation => 'Ключове посилання';
+
+  @override
+  String get consiliumAdversarialRound => 'Змагальний раунд';
+
+  @override
+  String get consiliumViewFullOpinion => 'Повний висновок';
+
+  @override
+  String consiliumExpertsAgreed(int count) {
+    return '$count експертів згодні';
+  }
+
+  @override
+  String consiliumExpertsDisagree(int count) {
+    return '$count експертів не згодні';
+  }
 }

@@ -1769,5 +1769,49 @@
     "emailAlreadyRegistered": "Diese E-Mail ist bereits registriert. Anmelden?",
     "actionSignIn": "Anmelden",
     "actionUndo": "Rückgängig",
-    "intakeUrgentOpened": "Chat geöffnet — dein Entwurf ist gespeichert."
+    "intakeUrgentOpened": "Chat geöffnet — dein Entwurf ist gespeichert.",
+    "consiliumHeader": "Anwaltskonsilium",
+    "@consiliumHeader": {
+        "description": "Header text for the multi-agent legal consilium panel"
+    },
+    "consiliumProgress": "{count} von {total} bereit",
+    "@consiliumProgress": {
+        "description": "Progress indicator while consilium experts produce opinions",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "consiliumStarting": "Anwälte prüfen Ihren Fall…",
+    "consiliumDisagreement": "Experten sind uneinig",
+    "@consiliumDisagreement": {
+        "description": "Banner shown when experts have conflicting positions"
+    },
+    "consiliumSynthesizing": "Empfehlung wird zusammengestellt…",
+    "consiliumDone": "Konsilium abgeschlossen · {totalRoles} Experten",
+    "@consiliumDone": {
+        "placeholders": {
+            "totalRoles": { "type": "int" }
+        }
+    },
+    "consiliumPositionPush": "Anfechten",
+    "consiliumPositionSettle": "Einigen",
+    "consiliumPositionInvestigate": "Weiter prüfen",
+    "consiliumPositionOutOfScope": "Außerhalb des Zuständigkeitsbereichs",
+    "consiliumConfidence": "Sicherheit",
+    "consiliumKeyCitation": "Zentrale Quelle",
+    "consiliumAdversarialRound": "Streitrunde",
+    "consiliumViewFullOpinion": "Vollständiges Gutachten ansehen",
+    "consiliumExpertsAgreed": "{count} Experten stimmen zu",
+    "@consiliumExpertsAgreed": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "consiliumExpertsDisagree": "{count} Experten widersprechen",
+    "@consiliumExpertsDisagree": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    }
 }
