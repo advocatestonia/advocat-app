@@ -85,6 +85,15 @@ import {
   isLawyerRouterEnabled,
   selectRolesFromLawyerDept,
 } from "../_shared/consilium_lawyer_bridge.ts";
+// 2026-05-25 P0 fix: enrich the routing query with active-case OCR text +
+// dominant document language BEFORE the lawyer router decides the roster.
+// Without this, three-word user turns ("что это?") on top of an uploaded
+// Estonian fine got routed to senior-asianajaja (FI counsel) because the
+// router scans only the raw user text. Pure module — never throws.
+import {
+  buildEnrichedRoutingQuery,
+  type EnrichableDocument,
+} from "../_shared/routing_enrichment.ts";
 import { extractAndPatchFacts } from "../_shared/fact_extractor.ts";
 import { appendAdviceDigest } from "../_shared/advice_digest.ts";
 import { LEGAL_LOOKUP_TOOL_USE_INSTRUCTION } from "../_shared/legal_lookup.ts";
@@ -618,6 +627,12 @@ serve(async (req) => {
     // - RPC returns null (case missing or RLS-blocked) → silent no-op.
     // - Total system-prompt size guard runs AFTER injection so the 200 KB
     //   cap covers base + RAG + memory + active_case combined.
+    // 2026-05-25 P0 fix: keep the loaded active-case payload in scope so the
+    // lawyer router (further down) can pre-extract jurisdiction signal from
+    // OCR'd document text BEFORE making its roster decision. Without this,
+    // the router sees only the bare user message — e.g. three Russian words
+    // — and defaults to FI counsel even when the case is an Estonian fine.
+    let activeCaseDocs: EnrichableDocument[] | null = null;
     if (body.case_id !== undefined && body.case_id !== null) {
       if (typeof body.case_id !== "string" || !isValidCaseId(body.case_id)) {
         return new Response(
@@ -632,6 +647,13 @@ serve(async (req) => {
       if (!isAnon) {
         const payload = await loadActiveCase(body.case_id, authHeader);
         applyActiveCaseToBody(body, payload);
+        // Capture recent_documents for downstream routing enrichment. We
+        // cast through `unknown` because the storage shape (jsonb) includes
+        // `key_extractions` which the active_case_injection types omit.
+        if (payload && Array.isArray(payload.recent_documents)) {
+          activeCaseDocs =
+            payload.recent_documents as unknown as EnrichableDocument[];
+        }
       }
       // Strip the field before forwarding — Anthropic does not know it.
       delete body.case_id;
@@ -940,15 +962,46 @@ serve(async (req) => {
           // and we fall through to the runner's existing internal routing.
           // Default OFF so anon traffic / production stays on the legacy
           // path until owner explicitly flips ON via secret.
+          //
+          // 2026-05-25 P0 fix: enrich the routing query with active-case
+          // OCR text + dominant document language so the keyword scan
+          // inside lawyer_router can see "MKS § 56" / "Tallinna halduskohus"
+          // / "Migri" — the load-bearing routing signal — even when the
+          // user message itself is a 5-word "что это?". Without enrichment
+          // the router sees only "что это?" and routes to FI counsel.
           let overrideRoles: ConsiliumRole[] | undefined = undefined;
           let overrideRoleIds: string[] | undefined = undefined;
           if (isLawyerRouterEnabled()) {
-            const bridge = selectRolesFromLawyerDept(userMessage, undefined);
+            const { enrichedQuery, docLang } = buildEnrichedRoutingQuery(
+              userMessage,
+              activeCaseDocs,
+            );
+            // Only promote docLang into CaseContext.language when it's one
+            // of the 5 enum values the bridge accepts. Any other tag (e.g.
+            // a regional code) is silently dropped — task #25 owns the
+            // enum-expansion work; we coordinate via git log per task #7.
+            const acceptedLangs = new Set([
+              "ru",
+              "et",
+              "fi",
+              "en",
+              "de",
+            ] as const);
+            const classification = docLang &&
+                (acceptedLangs as ReadonlySet<string>).has(docLang)
+              ? {
+                language: docLang as "ru" | "et" | "fi" | "en" | "de",
+              }
+              : undefined;
+            const bridge = selectRolesFromLawyerDept(
+              enrichedQuery,
+              classification,
+            );
             if (bridge && bridge.roles.length > 0) {
               overrideRoles = bridge.roles;
               overrideRoleIds = bridge.agents.map((a) => a.id);
               console.log(
-                `consilium: lawyer-router selected ${bridge.agents.length} agents: ` +
+                `consilium: lawyer-router selected ${bridge.agents.length} agents (doc_lang=${docLang ?? "—"}): ` +
                   bridge.agents.map((a) => a.id).join(","),
               );
             }
