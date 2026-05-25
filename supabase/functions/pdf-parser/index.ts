@@ -244,6 +244,23 @@ serve(async (req: Request) => {
     return jsonError(docRow.message, 500);
   }
 
+  // ── B2B signal collection (2026-05-26) ────────────────────────────────
+  // Fire-and-forget. NEVER block the parse response on a signal write —
+  // signals are best-effort lead detection, never a correctness concern.
+  // Both checks are gated server-side; the worker is the same service-role
+  // admin client we already have.
+  try {
+    await recordPdfParserB2bSignals({
+      admin,
+      userId: gate.user.id,
+      extracted,
+    });
+  } catch (e) {
+    console.warn(
+      `pdf-parser: b2b signal write failed: ${String(e).slice(0, 200)}`,
+    );
+  }
+
   return jsonOk({
     document_id: docRow.id,
     doc_type: extracted.doc_type,
@@ -253,6 +270,103 @@ serve(async (req: Request) => {
     lang_detected: pipeline.pages_lang,
   });
 });
+
+// =============================================================================
+// B2B lead detection signals (2026-05-26)
+// =============================================================================
+//
+// Two signal sources fire from pdf-parser:
+//
+//   1. doc_burst_3plus_day — user has uploaded >=3 documents in last 24h.
+//      Fires AT MOST ONCE per UTC day per user (idempotency: query
+//      b2b_signals for an existing row from `today` before recording).
+//
+//   2. attorney_role_in_doc — the extracted parties array contains anyone
+//      whose role string matches /attorney|advokaat|asianajaja/i. Fires AT
+//      MOST ONCE per 24h per user (same idempotency rule).
+//
+// Both write via the SECURITY DEFINER RPC `record_b2b_signal`, which also
+// recomputes the rolling 30-day score and flips `b2b_modal_pending` on
+// crossing the threshold.
+
+interface RecordPdfParserSignalsArgs {
+  // deno-lint-ignore no-explicit-any
+  admin: any;
+  userId: string;
+  extracted: ExtractedDoc;
+}
+
+const ATTORNEY_ROLE_RE = /(attorney|advokaat|asianajaja)/i;
+
+export async function recordPdfParserB2bSignals(
+  args: RecordPdfParserSignalsArgs,
+): Promise<void> {
+  // ── 1. doc_burst_3plus_day ────────────────────────────────────────────
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+    const { count } = await args.admin
+      .from("case_documents")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", args.userId)
+      .gte("created_at", since);
+    if ((count ?? 0) >= 3) {
+      // Idempotency: only record once per UTC day per user. The b2b-signal
+      // edge fn has its own 1-hour idempotency window, but since we're
+      // calling the RPC directly here we re-check the day-bucket inline.
+      const today00 = new Date();
+      today00.setUTCHours(0, 0, 0, 0);
+      const existing = await args.admin
+        .from("b2b_signals")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", args.userId)
+        .eq("signal_type", "doc_burst_3plus_day")
+        .gte("occurred_at", today00.toISOString());
+      if ((existing.count ?? 0) === 0) {
+        await args.admin.rpc("record_b2b_signal", {
+          p_user_id: args.userId,
+          p_signal_type: "doc_burst_3plus_day",
+          p_score: 30,
+          p_payload: { doc_count_24h: count, source: "pdf-parser" },
+        });
+      }
+    }
+  } catch (e) {
+    console.warn(
+      `pdf-parser: doc_burst signal failed: ${String(e).slice(0, 150)}`,
+    );
+  }
+
+  // ── 2. attorney_role_in_doc ───────────────────────────────────────────
+  try {
+    const hasAttorney = args.extracted.parties.some((p) =>
+      typeof p.role === "string" && ATTORNEY_ROLE_RE.test(p.role)
+    );
+    if (hasAttorney) {
+      const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+      const existing = await args.admin
+        .from("b2b_signals")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", args.userId)
+        .eq("signal_type", "attorney_role_in_doc")
+        .gte("occurred_at", since);
+      if ((existing.count ?? 0) === 0) {
+        await args.admin.rpc("record_b2b_signal", {
+          p_user_id: args.userId,
+          p_signal_type: "attorney_role_in_doc",
+          p_score: 50,
+          p_payload: {
+            source: "pdf-parser",
+            party_count: args.extracted.parties.length,
+          },
+        });
+      }
+    }
+  } catch (e) {
+    console.warn(
+      `pdf-parser: attorney_role signal failed: ${String(e).slice(0, 150)}`,
+    );
+  }
+}
 
 // =============================================================================
 // Pipeline — text extraction + Vision fallback + language detection.

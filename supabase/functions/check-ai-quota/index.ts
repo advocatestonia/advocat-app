@@ -119,6 +119,15 @@ serve(async (req) => {
 
     if (action === "consume") {
       if (plan === "pro") {
+        // ── B2B signal: pro_quota_pressure (2026-05-26) ────────────────
+        // Pro users have no enforced ceiling, but a Pro user grinding
+        // >=90 messages in the last 24h is a strong "needs team plan"
+        // signal. Fire-and-forget — never block the consume response.
+        maybeRecordProQuotaPressure(supabaseUrl, uid).catch((e) => {
+          console.warn(
+            `check-ai-quota: b2b signal failed: ${String(e).slice(0, 150)}`,
+          );
+        });
         return json(buildPayload({
           plan,
           used: 0,
@@ -228,4 +237,87 @@ function json(obj: unknown, status = 200) {
     status,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
+}
+
+// =============================================================================
+// B2B lead detection — pro_quota_pressure (2026-05-26)
+// =============================================================================
+//
+// Triggers when a Pro user has accumulated >=90 messages in the last 24h —
+// a strong indicator they're a power user candidate for the team plan.
+// Idempotent on the 24h window via the b2b_signals row history.
+//
+// This uses the service-role key for the RPC and a count-only GET against
+// PostgREST for the ai_usage rollup. We pass through best-effort: any failure
+// is swallowed (the consume response has already shipped to the caller).
+async function maybeRecordProQuotaPressure(
+  supabaseUrl: string,
+  userId: string,
+): Promise<void> {
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  if (!supabaseUrl || !serviceRoleKey || !userId) return;
+
+  const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
+  const baseHeaders = {
+    "apikey": serviceRoleKey,
+    "Authorization": `Bearer ${serviceRoleKey}`,
+    "Content-Type": "application/json",
+  };
+
+  // Idempotency: have we already recorded the signal in the last 24h?
+  try {
+    const existing = await fetch(
+      `${supabaseUrl}/rest/v1/b2b_signals?select=id&user_id=eq.${userId}` +
+        `&signal_type=eq.pro_quota_pressure&occurred_at=gte.${
+          encodeURIComponent(since)
+        }&limit=1`,
+      { headers: baseHeaders },
+    );
+    if (existing.ok) {
+      const rows = await existing.json() as Array<unknown>;
+      if (Array.isArray(rows) && rows.length > 0) return;
+    }
+  } catch (_e) {
+    // best effort
+  }
+
+  // Count messages in last 24h via ai_usage.
+  let count = 0;
+  try {
+    const countRes = await fetch(
+      `${supabaseUrl}/rest/v1/ai_usage?select=id&user_id=eq.${userId}` +
+        `&created_at=gte.${encodeURIComponent(since)}`,
+      {
+        headers: {
+          ...baseHeaders,
+          "Prefer": "count=exact",
+          "Range-Unit": "items",
+          "Range": "0-0",
+        },
+      },
+    );
+    if (countRes.ok || countRes.status === 206) {
+      const cr = countRes.headers.get("content-range") ?? "";
+      const m = cr.match(/\/(\d+)$/);
+      if (m) count = Number(m[1]);
+    }
+  } catch (_e) {
+    return;
+  }
+  if (count < 90) return;
+
+  try {
+    await fetch(`${supabaseUrl}/rest/v1/rpc/record_b2b_signal`, {
+      method: "POST",
+      headers: baseHeaders,
+      body: JSON.stringify({
+        p_user_id: userId,
+        p_signal_type: "pro_quota_pressure",
+        p_score: 20,
+        p_payload: { source: "check-ai-quota", messages_24h: count },
+      }),
+    });
+  } catch (_e) {
+    // best effort
+  }
 }

@@ -232,6 +232,96 @@ Deno.test("BUILD-T07 — message body cannot break out of quote block via newlin
 // The pure tests above cover the message-composition / escaping halves of
 // each rule. If either side regresses, fix the test first.
 
+// ─── B2B inquiry (2026-05-26) ────────────────────────────────────────────
+
+Deno.test("B2B-T01 — b2bLead title prefix renders as `[B2B LEAD]`", () => {
+  const text = buildTelegramMessage({
+    ticketId: "bbbbbbbb-0000-0000-0000-000000000001",
+    category: "b2b_inquiry",
+    contactChannel: "in_app",
+    email: "partner@law.ee",
+    userId: "uid-b2b",
+    pageUrl: "https://advocat.ee/app.html",
+    language: "et",
+    appVersion: "1.2.0",
+    message: "We have 8 lawyers, want a pilot",
+    b2bLead: true,
+    firmName: "Sirel & Partners",
+    teamSize: "5-20",
+    practices: "dispute, IP",
+  });
+  // Title prefix uses MarkdownV2-escaped brackets.
+  assertStringIncludes(text, "\\[B2B LEAD\\] New Support Ticket");
+  assertStringIncludes(text, "*Category:* b2b\\_inquiry");
+  assertStringIncludes(text, "*Firm:* Sirel & Partners");
+  assertStringIncludes(text, "*Team size:* 5\\-20");
+  assertStringIncludes(text, "*Practices:* dispute, IP");
+});
+
+Deno.test("B2B-T02 — non-b2b ticket keeps original 🆘 title", () => {
+  const text = buildTelegramMessage({
+    ticketId: "aaaaaaaa-0000-0000-0000-000000000001",
+    category: "bug",
+    contactChannel: "in_app",
+    email: null,
+    userId: "u1",
+    pageUrl: "https://advocat.ee/",
+    language: "en",
+    appVersion: "1.0.0",
+    message: "something broken in chat please help",
+  });
+  assertStringIncludes(text, "🆘 *New Support Ticket*");
+  // The B2B prefix MUST NOT appear when b2bLead is unset.
+  assert(!text.includes("[B2B LEAD]"));
+  assert(!text.includes("*Firm:*"));
+});
+
+Deno.test("B2B-T03 — empty firm/team/practices fields are silently skipped", () => {
+  const text = buildTelegramMessage({
+    ticketId: "bbbbbbbb-0000-0000-0000-000000000002",
+    category: "b2b_inquiry",
+    contactChannel: "email",
+    email: "anon@law.ee",
+    userId: null,
+    pageUrl: "https://advocat.ee/",
+    language: "en",
+    appVersion: "1.0.0",
+    message: "Curious about pricing for a 12-lawyer firm.",
+    b2bLead: true,
+    firmName: "",
+    teamSize: undefined,
+    practices: "",
+  });
+  // Prefix still wins.
+  assertStringIncludes(text, "\\[B2B LEAD\\]");
+  // No empty Firm:/Team size: lines.
+  assert(!text.includes("*Firm:*"));
+  assert(!text.includes("*Team size:*"));
+  assert(!text.includes("*Practices:*"));
+});
+
+Deno.test("B2B-T04 — injection attempt in firm_name is escaped", () => {
+  const text = buildTelegramMessage({
+    ticketId: "bbbbbbbb-0000-0000-0000-000000000003",
+    category: "b2b_inquiry",
+    contactChannel: "in_app",
+    email: "x@law.fi",
+    userId: "u-b",
+    pageUrl: "https://advocat.ee/",
+    language: "fi",
+    appVersion: "1.0.0",
+    message: "We want a custom plan with SSO.",
+    b2bLead: true,
+    firmName: "*PWN* [link](https://evil)",
+    teamSize: "20+",
+    practices: "* / _ / `",
+  });
+  // Specials in firm name must render literally.
+  assertStringIncludes(text, "*Firm:* \\*PWN\\* \\[link\\]\\(https://evil\\)");
+  assertStringIncludes(text, "*Team size:* 20\\+");
+  assertStringIncludes(text, "*Practices:* \\* / \\_ / \\`");
+});
+
 Deno.test("CONTRACT-T01 — sanitiseMessage feeds buildTelegramMessage cleanly", () => {
   // The handler calls sanitiseMessage(raw) then passes the result into
   // buildTelegramMessage. We re-execute that pipeline here to lock in the

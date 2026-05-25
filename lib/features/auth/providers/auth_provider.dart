@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
@@ -251,6 +253,38 @@ class AuthController extends StateNotifier<AuthState> {
         } catch (e) {
           if (kDebugMode) debugPrint('Failed to save profile after register: $e');
         }
+
+        // B2B silent lead detection — if the signup email comes from a law-
+        // firm domain, fire a `law_firm_email_domain` signal. The score it
+        // contributes (100) instantly crosses the threshold and the next
+        // session-check flips the B2B modal pending flag server-side.
+        //
+        // Fire-and-forget: NEVER block the signup flow. The edge fn is rate-
+        // limited and idempotent within the hour, so a stalled request, a
+        // 5xx, or a missing edge deployment all degrade silently — the user
+        // is already authenticated and the worst case is a missed lead, not
+        // a broken registration.
+        if (_isLawFirmEmailDomain(email)) {
+          unawaited(
+            _supabase.callEdgeFunction(
+              'b2b-signal',
+              body: {
+                'signal_type': 'law_firm_email_domain',
+                'payload': {
+                  'source': 'signup',
+                  'email_domain': email
+                      .substring(email.lastIndexOf('@') + 1)
+                      .toLowerCase(),
+                },
+              },
+            ).catchError((Object e) {
+              if (kDebugMode) {
+                debugPrint('b2b-signal (signup) failed: $e');
+              }
+              return <String, dynamic>{'error': e.toString()};
+            }),
+          );
+        }
       } else {
         state = const AuthState(
           status: AuthStatus.error,
@@ -360,5 +394,60 @@ class AuthController extends StateNotifier<AuthState> {
     if (state.hasError) {
       state = const AuthState(status: AuthStatus.unauthenticated);
     }
+  }
+
+  // ──────────────────────────────────────────────────────────────────────
+  // B2B lead detection — law-firm email domain heuristic
+  // ──────────────────────────────────────────────────────────────────────
+  //
+  // Mirrors the server-side check in supabase/functions/b2b-signal/signals.ts.
+  // Kept in sync MANUALLY — if you add/remove a domain or prefix on one
+  // side, change the other in the same commit. The two layers are
+  // intentionally redundant (defence in depth + zero round-trip for the
+  // happy "civilian email" path) and a divergence is harmless: server-side
+  // is authoritative (it owns the scoring).
+  //
+  // Returns true when the email's @-suffix looks like a law-firm domain.
+
+  static const _exactLawFirmDomains = <String>{
+    // Estonia
+    'advokaadibüroo.ee', 'advokaadiburoo.ee',
+    'advokatuur.ee', 'law.ee', 'advokaat.ee',
+    // Finland
+    'asianajotoimisto.fi', 'law.fi', 'asianajaja.fi', 'lakitoimisto.fi',
+    // Germany / DACH
+    'kanzlei.de', 'rechtsanwalt.de', 'rechtsanwaelte.de', 'anwalt.de',
+    'kanzlei.at', 'anwalt.at',
+    // Nordics
+    'advokatbyra.se', 'advokatfirma.no', 'advokatfirma.dk',
+    // UK / Ireland
+    'solicitors.co.uk', 'barristers.co.uk',
+    // EU-wide
+    'law-firm.eu', 'lawfirm.eu',
+  };
+
+  static final _lawFirmPrefixPatterns = <RegExp>[
+    RegExp(r'^advokaadi[- ].+\..+'),
+    RegExp(r'^advokaat-.+\..+'),
+    RegExp(r'^advokatuuri.+\..+'),
+    RegExp(r'^asianajo-.+\..+'),
+    RegExp(r'^asianajotoimisto-.+\..+'),
+    RegExp(r'^kanzlei-.+\..+'),
+    RegExp(r'^anwalt-.+\..+'),
+    RegExp(r'^advokat-.+\..+'),
+    RegExp(r'^lawfirm-.+\..+'),
+  ];
+
+  bool _isLawFirmEmailDomain(String email) {
+    final at = email.lastIndexOf('@');
+    if (at < 0 || at == email.length - 1) return false;
+    final domain = email.substring(at + 1).trim().toLowerCase();
+    if (domain.isEmpty) return false;
+    if (_exactLawFirmDomains.contains(domain)) return true;
+    if (domain.endsWith('.law')) return true;
+    for (final re in _lawFirmPrefixPatterns) {
+      if (re.hasMatch(domain)) return true;
+    }
+    return false;
   }
 }

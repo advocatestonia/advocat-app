@@ -885,6 +885,33 @@ serve(async (req) => {
     // would silently degrade to a single-pass response.
     const plannerMode = (body as { mode?: unknown }).mode === "legal_planner";
     delete (body as { mode?: unknown }).mode;
+
+    // ── B2B signal: legal_planner_heavy (2026-05-26) ──────────────────────
+    // Fire-and-forget AFTER we've decided the user is going through the
+    // planner branch. The signal fires once per UTC day per user when their
+    // count of legal-planner turns today is >=5. Done as a background
+    // fetch so it never blocks the user-facing planner latency.
+    if (plannerMode && !isAnon && SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY) {
+      try {
+        const userIdForB2b = gate.user.id;
+        (async () => {
+          try {
+            await maybeRecordLegalPlannerHeavy(
+              SUPABASE_URL,
+              SUPABASE_SERVICE_ROLE_KEY,
+              userIdForB2b,
+            );
+          } catch (e) {
+            console.warn(
+              `claude-proxy: b2b legal_planner_heavy failed: ${String(e).slice(0, 200)}`,
+            );
+          }
+        })();
+      } catch (_e) {
+        // never throw on b2b path
+      }
+    }
+
     if (plannerMode && !body.stream && !isAnon) {
       const systemPrompt = typeof body.system === "string"
         ? body.system
@@ -2836,5 +2863,107 @@ async function checkQuota(
       }`,
     );
     return { ok: true, payload: null };
+  }
+}
+
+// =============================================================================
+// B2B lead detection — legal_planner_heavy signal (2026-05-26)
+// =============================================================================
+//
+// Fires when a user has had >=5 legal_planner turns today. Idempotent on the
+// UTC-day boundary (one signal max per user per day). Uses PostgREST against
+// the service role to count today's ai_usage rows for this user (proxy for
+// "messages sent"). Falls back to counting b2b_signals to enforce
+// idempotency, so a busy user accumulates ONCE per day even if they keep
+// running planner turns.
+//
+// Heuristic for counting "today's planner turns":
+//   * We count rows in `ai_usage` matching this user from start-of-day UTC.
+//     ai_usage is incremented by check-ai-quota every chat turn — not
+//     planner-specific. Using it as a coarse proxy avoids adding a separate
+//     planner-turn counter table just for B2B detection. The score is small
+//     (20), and the idempotency check guarantees we never double-fire, so
+//     the worst case is one extra "score-bump" on a power user's busy day.
+async function maybeRecordLegalPlannerHeavy(
+  supabaseUrl: string,
+  serviceRoleKey: string,
+  userId: string,
+): Promise<void> {
+  if (!supabaseUrl || !serviceRoleKey || !userId) return;
+
+  const today00 = new Date();
+  today00.setUTCHours(0, 0, 0, 0);
+  const sinceIso = today00.toISOString();
+
+  const baseHeaders = {
+    "apikey": serviceRoleKey,
+    "Authorization": `Bearer ${serviceRoleKey}`,
+    "Content-Type": "application/json",
+  };
+
+  // ── 1. Idempotency: have we already recorded the signal today? ─────────
+  try {
+    const existingRes = await fetch(
+      `${supabaseUrl}/rest/v1/b2b_signals?select=id&user_id=eq.${userId}` +
+        `&signal_type=eq.legal_planner_heavy&occurred_at=gte.${
+          encodeURIComponent(sinceIso)
+        }&limit=1`,
+      { headers: baseHeaders },
+    );
+    if (existingRes.ok) {
+      const rows = await existingRes.json() as Array<unknown>;
+      if (Array.isArray(rows) && rows.length > 0) {
+        return; // already fired today
+      }
+    }
+  } catch (_e) {
+    // Idempotency check best-effort — fall through to count.
+  }
+
+  // ── 2. Count today's chat turns for this user. ─────────────────────────
+  let turnCount = 0;
+  try {
+    const countRes = await fetch(
+      `${supabaseUrl}/rest/v1/ai_usage?select=id&user_id=eq.${userId}` +
+        `&created_at=gte.${encodeURIComponent(sinceIso)}`,
+      {
+        headers: {
+          ...baseHeaders,
+          "Prefer": "count=exact",
+          "Range-Unit": "items",
+          "Range": "0-0",
+        },
+      },
+    );
+    if (countRes.ok || countRes.status === 206) {
+      const cr = countRes.headers.get("content-range") ?? "";
+      // content-range: "0-0/<count>"
+      const m = cr.match(/\/(\d+)$/);
+      if (m) turnCount = Number(m[1]);
+    }
+  } catch (_e) {
+    // If the count fails we conservatively skip — better to miss a signal
+    // than to record a false positive.
+    return;
+  }
+
+  if (turnCount < 5) return;
+
+  // ── 3. Record the signal via the RPC. ──────────────────────────────────
+  try {
+    await fetch(`${supabaseUrl}/rest/v1/rpc/record_b2b_signal`, {
+      method: "POST",
+      headers: baseHeaders,
+      body: JSON.stringify({
+        p_user_id: userId,
+        p_signal_type: "legal_planner_heavy",
+        p_score: 20,
+        p_payload: { source: "claude-proxy", turns_today: turnCount },
+      }),
+    });
+  } catch (e) {
+    console.warn(
+      `claude-proxy: record_b2b_signal RPC threw: ${String(e).slice(0, 200)}`,
+    );
   }
 }

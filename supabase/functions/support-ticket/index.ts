@@ -49,6 +49,12 @@ const VALID_CATEGORIES = new Set([
   "question",
   "feature",
   "other",
+  // 2026-05-26 (B2B lead detection): the inbound modal in the Flutter app
+  // dedicates a path for "Talk to Sales" from law-firm prospects. The
+  // ticket payload re-uses the support-ticket pipeline (auth, validation,
+  // Telegram dispatch) and is distinguished server-side by the `[B2B LEAD]`
+  // Telegram prefix and the firm_name / team_size / practices fields.
+  "b2b_inquiry",
 ]);
 const VALID_CHANNELS = new Set(["in_app", "whatsapp", "email"]);
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -71,6 +77,10 @@ interface RawBody {
   language?: unknown;
   // Honeypot — must be empty. Named `_hp` per design doc.
   _hp?: unknown;
+  // ── B2B inquiry extras (only when category === 'b2b_inquiry') ─────────
+  firm_name?: unknown;
+  team_size?: unknown;
+  practices?: unknown;
 }
 
 serve(async (req) => {
@@ -176,6 +186,34 @@ serve(async (req) => {
     email = emailRaw;
   }
 
+  // B2B inquiry metadata — only populated when category === 'b2b_inquiry'.
+  // Length-capped to keep the Telegram header line readable. NULL-safe so
+  // the Telegram builder can skip empty lines.
+  const isB2bInquiry = category === "b2b_inquiry";
+  const firmName = isB2bInquiry
+    ? scrubLineBreaks(typeof raw.firm_name === "string" ? raw.firm_name : "")
+        .slice(0, 120)
+    : "";
+  const teamSize = isB2bInquiry
+    ? scrubLineBreaks(typeof raw.team_size === "string" ? raw.team_size : "")
+        .slice(0, 40)
+    : "";
+  // `practices` may arrive as a string ("dispute, IP") or an array; normalise.
+  let practices = "";
+  if (isB2bInquiry) {
+    if (typeof raw.practices === "string") {
+      practices = scrubLineBreaks(raw.practices).slice(0, 240);
+    } else if (Array.isArray(raw.practices)) {
+      practices = scrubLineBreaks(
+        raw.practices
+          .filter((p): p is string => typeof p === "string")
+          .map((p) => p.trim())
+          .filter((p) => p.length > 0)
+          .join(", "),
+      ).slice(0, 240);
+    }
+  }
+
   // Capture metadata (length-capped, line-break-scrubbed).
   const pageUrl = scrubLineBreaks(
     typeof raw.page_url === "string" ? raw.page_url : "",
@@ -277,6 +315,13 @@ serve(async (req) => {
         appVersion,
         message,
         adminUrl: `${ADMIN_URL_BASE}/${ticketId}`,
+        // B2B-inquiry specifics — `buildTelegramMessage` will render the
+        // `[B2B LEAD]` prefix and surface firm/team/practices lines when
+        // any of these are non-empty.
+        b2bLead: isB2bInquiry,
+        firmName: isB2bInquiry ? firmName : undefined,
+        teamSize: isB2bInquiry ? teamSize : undefined,
+        practices: isB2bInquiry ? practices : undefined,
       });
       await sendTelegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, text);
       telegramSent = true;

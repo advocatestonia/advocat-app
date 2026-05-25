@@ -41,6 +41,15 @@ export interface BuildMessageInput {
   message: string;
   /** Optional admin/ticket URL — appended as a MarkdownV2 inline link. */
   adminUrl?: string | null;
+  // ── B2B inquiry extras ────────────────────────────────────────────────
+  /** True when category === 'b2b_inquiry'; prepends `[B2B LEAD]` to title. */
+  b2bLead?: boolean;
+  /** Optional firm name from the modal (e.g. "Sirel & Partners"). */
+  firmName?: string;
+  /** Optional team size bucket from the modal (e.g. "5-20"). */
+  teamSize?: string;
+  /** Optional practices the firm focuses on (free-text or comma-joined list). */
+  practices?: string;
 }
 
 /**
@@ -64,8 +73,14 @@ export function buildTelegramMessage(input: BuildMessageInput): string {
     .map((l) => `>${l}`)
     .join("\n");
 
+  // Title — B2B inquiries get a high-signal `[B2B LEAD]` prefix so the
+  // Telegram group can triage them differently from regular support.
+  const title = input.b2bLead
+    ? `🟢 *\\[B2B LEAD\\] New Support Ticket*`
+    : `🆘 *New Support Ticket*`;
+
   const lines: string[] = [
-    `🆘 *New Support Ticket*`,
+    title,
     ``,
     `*Category:* ${escapeMarkdownV2(input.category)}`,
     `*Channel:* ${escapeMarkdownV2(input.contactChannel)}`,
@@ -73,10 +88,23 @@ export function buildTelegramMessage(input: BuildMessageInput): string {
     `*Page:* ${escapeMarkdownV2(input.pageUrl)}`,
     `*Language:* ${escapeMarkdownV2(input.language)}`,
     `*App version:* ${escapeMarkdownV2(input.appVersion)}`,
-    ``,
-    `*Message:*`,
-    quoted,
   ];
+
+  // B2B-only firm details. Render compactly, only when populated, before
+  // the message body so the Telegram preview shows them above the fold.
+  if (input.b2bLead) {
+    if (input.firmName && input.firmName.length > 0) {
+      lines.push(`*Firm:* ${escapeMarkdownV2(input.firmName)}`);
+    }
+    if (input.teamSize && input.teamSize.length > 0) {
+      lines.push(`*Team size:* ${escapeMarkdownV2(input.teamSize)}`);
+    }
+    if (input.practices && input.practices.length > 0) {
+      lines.push(`*Practices:* ${escapeMarkdownV2(input.practices)}`);
+    }
+  }
+
+  lines.push(``, `*Message:*`, quoted);
 
   if (input.adminUrl && input.adminUrl.length > 0) {
     // The label text inside `[...]` also needs MarkdownV2 escaping.
