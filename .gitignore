@@ -48,3 +48,6 @@ app.*.map.json
 .env.local
 .env.prod
 .env.prod.local
+
+# Claude Code agent worktrees (transient)
+.claude/worktrees/
