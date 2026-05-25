@@ -31,10 +31,13 @@
 import {
   ANTHROPIC_URL,
   buildAnthropicHeaders,
+  buildRoleOpinionPayload,
   CALIBRATION_BLOCK,
   callAnthropicBlocking,
   compiledToConsiliumRole,
   type ConsiliumRole,
+  type ConsiliumRoleOpinionPayload,
+  type ConsiliumRolePosition,
   hasDeadEnd,
   MODEL_HAIKU,
   MODEL_SONNET,
@@ -86,10 +89,17 @@ export interface RevisedOpinion {
   new_opinion: string;
 }
 
+// FLAT wire format (2026-05-25, Phase 1.1 bug fix):
+//   role_opinion / round_2_attack / round_3_defense all carry their fields
+//   top-level (not nested under `payload`/`attack`/`defense`). This matches
+//   the Flutter parser at lib/services/claude_service.dart which reads
+//   parsed['role_id'], parsed['attacker'], parsed['defender'], etc. directly.
+//   The older nested shape was a contract mismatch that produced empty cards.
 export interface ConsiliumV3SSEEvent {
   type:
     | "consilium_start"
     | "role_done"
+    | "role_opinion" // NEW — Round-1 per-role detail (id/name/summary/position).
     | "round_1_done"
     | "round_2_attack"
     | "round_2_done"
@@ -102,9 +112,29 @@ export interface ConsiliumV3SSEEvent {
     | "verifier_retry"
     | "done";
   roles?: string[];
+  /** Optional id/name roster — populated when the lawyer department fires,
+   *  also populated as {id=name,name} for legacy rosters so UI is uniform. */
+  roster?: Array<{ id: string; name: string }>;
+  total?: number;
   role?: string;
-  attack?: Attack;
-  defense?: RevisedOpinion;
+  // ─── role_opinion flat fields ─────────────────────────────────────────────
+  role_id?: string;
+  role_name?: string;
+  opinion?: string;
+  position?: ConsiliumRolePosition | string;
+  confidence?: number | null;
+  key_citation?: string | null;
+  // ─── round_2_attack flat fields ───────────────────────────────────────────
+  attacker?: string;
+  target_role?: string;
+  weak_point?: string;
+  counter_evidence?: string;
+  // ─── round_3_defense flat fields ──────────────────────────────────────────
+  defender?: string;
+  original_attacker?: string;
+  defense_against?: string;
+  defense?: string;
+  stance?: "revise" | "defend" | "concede";
   text?: string;
   reason?: string;
 }
@@ -937,6 +967,13 @@ export interface RunConsiliumV3Params {
    *  department to fire even on low-complexity queries. Used by tests and
    *  callers who already know this is a high-value request. */
   forceLawyerDepartment?: boolean;
+  /** Phase 1 (2026-05-25): if the caller has already selected a roster (e.g.
+   *  via the lawyer-department bridge in consilium_lawyer_bridge.ts), pass
+   *  it here and ALL internal routing is skipped. Empty/undefined → normal
+   *  routing applies. */
+  overrideRoles?: ReadonlyArray<ConsiliumRole>;
+  /** Stable ids matching overrideRoles for the consilium_start roster. */
+  overrideRoleIds?: ReadonlyArray<string>;
 }
 
 /** Run the v3 adversarial consilium and stream synthesis via onEvent.
@@ -949,6 +986,8 @@ export async function runConsiliumV3(
 
   // ── 1. Pick role roster ─────────────────────────────────────────────────
   // Priority order:
+  //   (a0) Phase 1 override — caller-supplied roster (lawyer-department
+  //        bridge in claude-proxy). Skips all internal routing.
   //   (a) Lawyer department (if feature-flagged on AND complexity ≥ 7
   //       OR jurisdiction = "mixed" OR hasHardDeadline). Real specialised
   //       lawyers — 3 to 5 selected by lawyer_router.
@@ -957,9 +996,15 @@ export async function runConsiliumV3(
   //   (c) Legacy 6 generic roles — fallback when nothing else matches.
   let activeRoles: ConsiliumRole[] = [...ROLES];
   let lawyerDecision: LawyerRouterDecision | null = null;
+  let usedOverride = false;
+
+  if (params.overrideRoles && params.overrideRoles.length > 0) {
+    activeRoles = [...params.overrideRoles];
+    usedOverride = true;
+  }
 
   const flagOn = params.lawyerDepartmentEnabled ?? isLawyerDepartmentEnabled();
-  if (flagOn && params.caseClassification) {
+  if (!usedOverride && flagOn && params.caseClassification) {
     try {
       const ctx = params.caseClassification;
       const lang = (ctx.language ?? "ru") as NonNullable<CaseContext["language"]>;
@@ -982,8 +1027,9 @@ export async function runConsiliumV3(
     }
   }
 
-  // Fallback to v2.2 router only if the lawyer department did NOT take over.
-  if (!lawyerDecision && params.caseClassification) {
+  // Fallback to v2.2 router only if neither override nor lawyer-department
+  // path was taken.
+  if (!usedOverride && !lawyerDecision && params.caseClassification) {
     try {
       const selection = selectConsiliumRoles(params.caseClassification);
       if (selection.hasDomainMatch) {
@@ -1005,14 +1051,39 @@ export async function runConsiliumV3(
     }
   }
 
+  // Build the roster {id,name} list. Source of ids, in order:
+  //   1. overrideRoleIds (caller-supplied — lawyer-department bridge)
+  //   2. lawyerDecision.agents[].id (internal lawyer department path)
+  //   3. fallback to display name as id (legacy / v2.2 routers)
+  const rosterIds: string[] = (usedOverride && params.overrideRoleIds &&
+      params.overrideRoleIds.length === activeRoles.length)
+    ? [...params.overrideRoleIds]
+    : lawyerDecision
+      ? lawyerDecision.agents.map((a) => a.id)
+      : activeRoles.map((r) => r.name);
+  const roster = activeRoles.map((r, i) => ({
+    id: rosterIds[i] ?? r.name,
+    name: r.name,
+  }));
+
   params.onEvent({
     type: "consilium_start",
     roles: activeRoles.map((r) => r.name),
+    roster,
+    total: activeRoles.length,
   });
 
   // ── 2. Round 1 — parallel opinions ───────────────────────────────────────
   // Use the existing runRole exported from consilium.ts so v2 ↔ v3 stay
   // consistent. runRole catches its own errors.
+  //
+  // After each role completes we emit BOTH role_done (legacy) and
+  // role_opinion (new structured payload). The Flutter timeline UI subscribes
+  // to role_opinion to render a chip per lawyer with their summary +
+  // position + confidence. Older clients ignore the unknown event type.
+  const roleIdByName = new Map<string, string>();
+  roster.forEach((r) => roleIdByName.set(r.name, r.id));
+
   const round1Promises = activeRoles.map((role) =>
     runRole(
       role,
@@ -1023,6 +1094,20 @@ export async function runConsiliumV3(
       params.anthropicApiKey,
     ).then((opinion) => {
       params.onEvent({ type: "role_done", role: opinion.name });
+      // FLAT wire shape — see ConsiliumV3SSEEvent doc above.
+      const built = buildRoleOpinionPayload(
+        { id: roleIdByName.get(opinion.name) ?? opinion.name, name: opinion.name },
+        opinion.opinion,
+      );
+      params.onEvent({
+        type: "role_opinion",
+        role_id: built.role_id,
+        role_name: built.role,
+        opinion: built.opinion,
+        position: built.position,
+        confidence: built.confidence,
+        key_citation: built.key_citation,
+      });
       return opinion;
     })
   );
@@ -1042,22 +1127,47 @@ export async function runConsiliumV3(
   params.onEvent({ type: "round_1_done" });
 
   // ── 3. Round 2 — adversarial critique ────────────────────────────────────
+  // FLAT wire shape — Attack fields top-level. Matches Flutter parser
+  // (claude_service.dart case 'round_2_attack') reading parsed['attacker'],
+  // parsed['target_role'], parsed['weak_point'], parsed['counter_evidence'].
   const attacks = await runRound2Adversarial({
     originalQuestion: params.userMessage,
     round1,
     attackers: params.attackers,
     caller,
-    onAttack: (a) => params.onEvent({ type: "round_2_attack", attack: a }),
+    onAttack: (a) => params.onEvent({
+      type: "round_2_attack",
+      attacker: a.attacker,
+      target_role: a.target_role,
+      weak_point: a.weak_point,
+      counter_evidence: a.counter_evidence,
+    }),
   });
   params.onEvent({ type: "round_2_done" });
 
   // ── 4. Round 3 — defense / revise ────────────────────────────────────────
+  // FLAT wire shape — the Flutter parser (case 'round_3_defense') reads
+  // parsed['defender'], parsed['original_attacker'], parsed['defense_against'],
+  // parsed['defense'] (or parsed['counter_evidence']) directly. We surface
+  // each Round-1 target so the defender/original_attacker swap works in UI.
   const round3 = await runRound3Defense({
     originalQuestion: params.userMessage,
     round1,
     attacks,
     caller,
-    onDefense: (d) => params.onEvent({ type: "round_3_defense", defense: d }),
+    onDefense: (d) => {
+      // The defense corresponds to a specific Round-2 attack against this
+      // role; pick the first matching attack to reconstruct the swap pair.
+      const matchingAttack = attacks.find((a) => a.target_role === d.name);
+      params.onEvent({
+        type: "round_3_defense",
+        defender: d.name,
+        original_attacker: matchingAttack?.attacker ?? "",
+        defense_against: matchingAttack?.weak_point ?? "",
+        defense: d.new_opinion,
+        stance: d.stance,
+      });
+    },
   });
   params.onEvent({ type: "round_3_done" });
 

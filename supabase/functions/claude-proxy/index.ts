@@ -72,8 +72,19 @@ import {
   selfCorrectionScan,
 } from "../_shared/corrections_retriever.ts";
 import { enqueueGoldCandidate } from "../_shared/gold_enqueue.ts";
-import { runConsilium, shouldRunConsilium } from "../_shared/consilium.ts";
+import {
+  type ConsiliumRole,
+  runConsilium,
+  shouldRunConsilium,
+} from "../_shared/consilium.ts";
 import { runConsiliumV3 } from "../_shared/consilium_v3.ts";
+// Phase 1 (2026-05-25): lawyer-department bridge. Wraps the 11-persona
+// router → ConsiliumRole[]. Gated behind CONSILIUM_LAWYER_ROUTER_ENABLED
+// env flag (default OFF). Never throws — failure returns null.
+import {
+  isLawyerRouterEnabled,
+  selectRolesFromLawyerDept,
+} from "../_shared/consilium_lawyer_bridge.ts";
 import { extractAndPatchFacts } from "../_shared/fact_extractor.ts";
 import { appendAdviceDigest } from "../_shared/advice_digest.ts";
 import { LEGAL_LOOKUP_TOOL_USE_INSTRUCTION } from "../_shared/legal_lookup.ts";
@@ -921,12 +932,36 @@ serve(async (req) => {
           const consiliumRunner = consiliumV3Enabled
             ? runConsiliumV3
             : runConsilium;
+
+          // Phase 1 (2026-05-25): consilium-lawyer bridge.
+          // When CONSILIUM_LAWYER_ROUTER_ENABLED is on, swap the internal
+          // role router for the 11-persona lawyer department selection.
+          // The bridge is a pure function — on any failure it returns null
+          // and we fall through to the runner's existing internal routing.
+          // Default OFF so anon traffic / production stays on the legacy
+          // path until owner explicitly flips ON via secret.
+          let overrideRoles: ConsiliumRole[] | undefined = undefined;
+          let overrideRoleIds: string[] | undefined = undefined;
+          if (isLawyerRouterEnabled()) {
+            const bridge = selectRolesFromLawyerDept(userMessage, undefined);
+            if (bridge && bridge.roles.length > 0) {
+              overrideRoles = bridge.roles;
+              overrideRoleIds = bridge.agents.map((a) => a.id);
+              console.log(
+                `consilium: lawyer-router selected ${bridge.agents.length} agents: ` +
+                  bridge.agents.map((a) => a.id).join(","),
+              );
+            }
+          }
+
           consiliumRunner({
             userMessage,
             systemPrompt: consiliumSystemPrompt,
             ragContext,
             caseContext: "",
             anthropicApiKey: CLAUDE_API_KEY,
+            overrideRoles,
+            overrideRoleIds,
             onEvent: (event) => {
               // Track synthesis text so the halt-rail idempotency check has
               // accurate "did the model already include the banner" info.

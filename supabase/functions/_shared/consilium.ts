@@ -49,13 +49,183 @@ export const MODEL_SONNET = "claude-sonnet-4-6";
 export const MODEL_HAIKU = "claude-haiku-4-5-20251001";
 
 // ─── SSE event types ─────────────────────────────────────────────────────────
+//
+// Event timeline (v2 non-adversarial):
+//   consilium_start    — emitted once at run start with the full role roster.
+//                        `roles` is the legacy string[] of display names;
+//                        `roster` (optional) carries {id,name} pairs the new
+//                        Flutter UI can render as chips. Both are populated
+//                        when the lawyer-department bridge fires; with the
+//                        legacy ROLES, `roster` falls back to {id=name,name}.
+//   role_done          — emitted as each role finishes (any order). Carries
+//                        only the role name (backward-compat — existing
+//                        Flutter consumers parse this).
+//   role_opinion       — NEW. Emitted immediately after role_done with the
+//                        per-role detail the timeline UI needs (opinion text
+//                        snippet, position label, confidence hint, optional
+//                        key citation). Backward-compat: callers that don't
+//                        care can ignore unknown event types.
+//   synthesis_start    — Sonnet synthesis begins streaming.
+//   delta              — Sonnet text chunks.
+//   done               — terminal sentinel.
+// -----------------------------------------------------------------------------
 
+/** Position label produced per role. The actual classification heuristic is
+ *  intentionally lightweight (keyword scan); the field is informational. */
+export type ConsiliumRolePosition =
+  | "push" // role advocates pushing the case forward
+  | "settle" // role recommends settlement / concession
+  | "investigate" // role asks for more evidence first
+  | "out_of_scope" // role declined to weigh in
+  | "unknown"; // heuristic could not classify
+
+export interface ConsiliumRoleOpinionPayload {
+  /** Stable role id (kebab-case when available; falls back to display name). */
+  role_id: string;
+  /** Display name shown in UI. NOTE: wire-format key is `role_name` (see
+   *  ConsiliumSSEEvent.role_opinion). This field name is retained on the
+   *  internal payload type for backwards-compat with callers that built it
+   *  directly; the SSE event emits `role_name` so the Flutter parser at
+   *  lib/services/claude_service.dart finds it top-level. */
+  role: string;
+  /** 1-2 sentence summary of what the role argued. Trimmed to ~400 chars. */
+  opinion: string;
+  /** Classification of the role's stance — best-effort heuristic. */
+  position: ConsiliumRolePosition;
+  /** Heuristic 0-1 confidence the role expressed. `null` when not detectable. */
+  confidence: number | null;
+  /** First [[ref:slug:para]] marker found in the opinion, if any. */
+  key_citation: string | null;
+}
+
+// Wire format for the role_opinion SSE event.
+// FLAT shape (2026-05-25, Phase 1.1 bug fix): all fields are top-level on the
+// SSE frame so the Flutter parser at lib/services/claude_service.dart can
+// read parsed['role_id'], parsed['role_name'], parsed['opinion'], etc. The
+// older nested `{type:"role_opinion", payload:{...}}` shape was incompatible
+// with the Flutter parser and caused empty role cards.
 export type ConsiliumSSEEvent =
-  | { type: "consilium_start"; roles: string[] }
+  | {
+      type: "consilium_start";
+      /** Legacy field — display names. */
+      roles: string[];
+      /** New optional field — id/name pairs. Older clients ignore. */
+      roster?: Array<{ id: string; name: string }>;
+      /** Convenience count for the UI. */
+      total?: number;
+    }
   | { type: "role_done"; role: string }
+  | ({ type: "role_opinion" } & {
+      role_id: string;
+      role_name: string;
+      opinion: string;
+      position: ConsiliumRolePosition;
+      confidence: number | null;
+      key_citation: string | null;
+    })
   | { type: "synthesis_start" }
   | { type: "delta"; text: string }
   | { type: "done" };
+
+// ─── Role-opinion heuristics (pure, deterministic) ───────────────────────────
+
+/** First [[ref:slug:para]] marker in `text`, or null. */
+export function findKeyCitation(text: string): string | null {
+  const m = text.match(/\[\[ref:[^\]]+\]\]/);
+  return m ? m[0] : null;
+}
+
+/** Best-effort 1-2 sentence summary cut from the start of the opinion.
+ *  Falls back to first 300 chars if no sentence boundary is found. */
+export function summariseOpinion(text: string, maxLen = 400): string {
+  const cleaned = text.trim();
+  if (cleaned.length === 0) return "";
+  // Look for first 1-2 sentence boundaries. Russian uses ./!/?; account for
+  // Estonian/Finnish similarly.
+  const re = /([.!?])\s+/g;
+  let cutAt = -1;
+  let sentences = 0;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(cleaned)) !== null) {
+    sentences++;
+    if (sentences >= 2 || (sentences >= 1 && match.index > 220)) {
+      cutAt = match.index + 1;
+      break;
+    }
+  }
+  const summary = cutAt > 0 ? cleaned.slice(0, cutAt) : cleaned;
+  if (summary.length <= maxLen) return summary.trim();
+  // Hard truncate with ellipsis on word boundary.
+  const truncated = summary.slice(0, maxLen).replace(/\s+\S*$/, "");
+  return `${truncated}…`;
+}
+
+/** Heuristic position label from raw opinion text. Pure / deterministic. */
+export function classifyRolePosition(text: string): ConsiliumRolePosition {
+  const t = text.toLowerCase();
+  if (
+    t.includes("[роль недоступна]") ||
+    t.includes("out of scope") ||
+    t.includes("вне моей специализации")
+  ) {
+    return "out_of_scope";
+  }
+  // Settle / concede signals.
+  const settle = [
+    "settle", "сдат", "мирово", "согласи", "переговор",
+    "concede", "признать", "не оспаривать", "asovita", "kokkulep",
+  ];
+  if (settle.some((kw) => t.includes(kw))) return "settle";
+  // Investigate / gather-more signals.
+  const investigate = [
+    "недостаточно фактов", "запросить", "выяснить", "нужно больше",
+    "missing fact", "investigate", "selvit", "uurida", "selvittä",
+  ];
+  if (investigate.some((kw) => t.includes(kw))) return "investigate";
+  // Push signals — affirmative action verbs.
+  const push = [
+    "подать", "обжалов", "valita", "kaeba", "file ", "appeal", "submit",
+    "argue", "наступа", "идти в суд", "kohtuss", "tuomioistuim",
+  ];
+  if (push.some((kw) => t.includes(kw))) return "push";
+  return "unknown";
+}
+
+/** Heuristic 0-1 confidence pulled from any probability range in the text.
+ *  Returns the midpoint of the first `\d+\s*[–—-]\s*\d+\s*%` range or the
+ *  first `\d+\s*%` value, normalised to 0-1. Returns null when no number. */
+export function extractConfidenceHint(text: string): number | null {
+  const range = text.match(/(\d{1,3})\s*[–—-]\s*(\d{1,3})\s*%/);
+  if (range) {
+    const lo = parseInt(range[1], 10);
+    const hi = parseInt(range[2], 10);
+    if (Number.isFinite(lo) && Number.isFinite(hi)) {
+      const mid = (lo + hi) / 2;
+      if (mid >= 0 && mid <= 100) return mid / 100;
+    }
+  }
+  const single = text.match(/(\d{1,3})\s*%/);
+  if (single) {
+    const n = parseInt(single[1], 10);
+    if (Number.isFinite(n) && n >= 0 && n <= 100) return n / 100;
+  }
+  return null;
+}
+
+/** Build the role_opinion payload from a role name + raw opinion text. */
+export function buildRoleOpinionPayload(
+  role: { id?: string; name: string },
+  opinion: string,
+): ConsiliumRoleOpinionPayload {
+  return {
+    role_id: role.id ?? role.name,
+    role: role.name,
+    opinion: summariseOpinion(opinion),
+    position: classifyRolePosition(opinion),
+    confidence: extractConfidenceHint(opinion),
+    key_citation: findKeyCitation(opinion),
+  };
+}
 
 // ─── Role definitions ────────────────────────────────────────────────────────
 
@@ -447,6 +617,13 @@ export async function runConsilium(params: {
   onEvent: (event: ConsiliumSSEEvent) => void;
   caseClassification?: CaseContext;
   memoryReader?: MemoryReader;
+  /** Phase 1 (2026-05-25): if the caller has already selected a roster (e.g.
+   *  via the lawyer-department bridge), pass it here and the internal v2.2
+   *  router is skipped. Empty array falls back to legacy ROLES. */
+  overrideRoles?: ReadonlyArray<ConsiliumRole>;
+  /** Phase 1: matching roster ids for the consilium_start event, when
+   *  overrideRoles was sourced from a router that has stable ids. */
+  overrideRoleIds?: ReadonlyArray<string>;
 }): Promise<string> {
   const {
     userMessage,
@@ -457,14 +634,25 @@ export async function runConsilium(params: {
     onEvent,
     caseClassification,
     memoryReader,
+    overrideRoles,
+    overrideRoleIds,
   } = params;
 
   // ── 1. Decide which role roster to run ──────────────────────────────────
-  // Try the v2.2 router first; on any failure fall back to legacy roster.
+  // Priority order:
+  //   (0) overrideRoles (caller-supplied, e.g. lawyer-department bridge)
+  //   (1) v2.2 router (caseClassification → DOMAIN/STRATEGIC)
+  //   (2) legacy ROLES (6 generic roles)
   let activeRoles: ConsiliumRole[] = [...ROLES];
   let usedV22Router = false;
+  let usedOverride = false;
 
-  if (caseClassification) {
+  if (overrideRoles && overrideRoles.length > 0) {
+    activeRoles = [...overrideRoles];
+    usedOverride = true;
+  }
+
+  if (!usedOverride && caseClassification) {
     try {
       const selection = selectConsiliumRoles(caseClassification);
       if (selection.hasDomainMatch) {
@@ -486,9 +674,26 @@ export async function runConsilium(params: {
   }
 
   // ── 2. Announce start ───────────────────────────────────────────────────
+  // Emit BOTH the legacy `roles: string[]` field (older Flutter clients) AND
+  // the new `roster` array of {id,name} pairs (timeline UI). When the caller
+  // provided overrideRoleIds (lawyer-department bridge) we use those real
+  // ids; otherwise fall back to display name as id.
+  const rosterIds: string[] = (usedOverride && overrideRoleIds &&
+      overrideRoleIds.length === activeRoles.length)
+    ? [...overrideRoleIds]
+    : activeRoles.map((r) => r.name);
+  const roster = activeRoles.map((r, i) => ({
+    id: rosterIds[i] ?? r.name,
+    name: r.name,
+  }));
+  const roleIdByName = new Map<string, string>();
+  roster.forEach((r) => roleIdByName.set(r.name, r.id));
+
   onEvent({
     type: "consilium_start",
     roles: activeRoles.map((r) => r.name),
+    roster,
+    total: activeRoles.length,
   });
 
   // ── 3. Run all roles in parallel ────────────────────────────────────────
@@ -496,7 +701,10 @@ export async function runConsilium(params: {
   // synthesis. Failures are caught INSIDE runRole — they return the sentinel.
   //
   // We want to emit role_done as each role completes, not in fixed order,
-  // so we wrap each promise to call onEvent immediately on settle.
+  // so we wrap each promise to call onEvent immediately on settle. Right
+  // after role_done we also emit role_opinion carrying the structured
+  // payload the timeline UI consumes (forward-compatible — older clients
+  // ignore unknown event types).
   const rolePromises = activeRoles.map((role) => {
     const p = runRole(
       role,
@@ -506,9 +714,24 @@ export async function runConsilium(params: {
       caseContext,
       anthropicApiKey,
     );
-    // Fire role_done as soon as this role finishes, regardless of others.
     return p.then((result) => {
       onEvent({ type: "role_done", role: result.name });
+      // FLAT wire shape — fields top-level on the SSE frame (not nested under
+      // `payload`). Matches the Flutter parser at claude_service.dart which
+      // reads parsed['role_id'], parsed['role_name'], parsed['opinion'], etc.
+      const built = buildRoleOpinionPayload(
+        { id: roleIdByName.get(result.name) ?? result.name, name: result.name },
+        result.opinion,
+      );
+      onEvent({
+        type: "role_opinion",
+        role_id: built.role_id,
+        role_name: built.role,
+        opinion: built.opinion,
+        position: built.position,
+        confidence: built.confidence,
+        key_citation: built.key_citation,
+      });
       return result;
     });
   });
