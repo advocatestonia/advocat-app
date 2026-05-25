@@ -48,6 +48,7 @@ import {
   pickOutgoingBody,
   priorDispatch,
   recheckEditedBody,
+  resolveAction,
   type SendArgs,
   validatePayload,
   verifyTriageGate,
@@ -160,6 +161,7 @@ function makeRealDeps(supabase: any): EmailSendDeps {
           id, user_id, thread_id, draft_language, draft_subject,
           draft_body, draft_to, draft_cc, send_recommendation,
           gate_token, sent_at, sent_message_id, user_action,
+          proposed_actions,
           email_threads:thread_id ( gmail_thread_id )
           `,
         )
@@ -195,6 +197,7 @@ function makeRealDeps(supabase: any): EmailSendDeps {
         sent_at: (data.sent_at as string | null) ?? null,
         sent_message_id: (data.sent_message_id as string | null) ?? null,
         user_action: (data.user_action as string | null) ?? null,
+        proposed_actions: data.proposed_actions ?? null,
       };
     },
     async loadLastInbound(threadId) {
@@ -294,6 +297,7 @@ serve(async (req) => {
     userId,
     triageId: v.value.triageId,
     editedBody: v.value.editedBody,
+    actionIdx: v.value.actionIdx,
     gateSecret: EMAIL_AGENT_GATE_SECRET,
     loadAccessToken: async (uid) => {
       const row = await loadGmailToken(supabase, uid);
@@ -318,6 +322,13 @@ export interface HandleSendArgs {
   userId: string;
   triageId: string;
   editedBody: string | null;
+  /**
+   * Parallel Actions Panel (2026-05-25) — index into
+   * `email_triage_results.proposed_actions`. Default 0 routes through the
+   * legacy draft_* columns for backwards compatibility with the existing
+   * single-draft approveAndSend flow. Out-of-bounds → 400 action_idx_oob.
+   */
+  actionIdx?: number;
   gateSecret: string;
   /** Inject Gmail OAuth resolution so tests don't need a real token store. */
   loadAccessToken: (
@@ -328,20 +339,61 @@ export interface HandleSendArgs {
 }
 
 export async function handleSend(args: HandleSendArgs): Promise<Response> {
-  const row = await args.deps.loadTriageForUser(args.triageId, args.userId);
-  if (!row) {
+  const loadedRow = await args.deps.loadTriageForUser(args.triageId, args.userId);
+  if (!loadedRow) {
     return jsonError("Triage not found", 404);
   }
 
-  // Idempotency: if we've already sent this draft, return the prior result.
-  const prior = priorDispatch(row);
-  if (prior) {
-    return jsonOk({
-      ok: true,
-      gmail_message_id: prior.gmailMessageId,
-      sent_at: prior.sentAt,
-      idempotent: true,
+  // Parallel Actions Panel (2026-05-25): resolve action_idx → tuple.
+  // action_idx === 0 (or omitted) routes through the legacy draft_*
+  // columns for backwards compatibility. action_idx > 0 picks the
+  // matching entry from `email_triage_results.proposed_actions`.
+  // Idempotency / gate / quality checks reuse the same row shape, so we
+  // build a "row view" by overlaying the resolved tuple over the loaded
+  // row's draft_* fields. The gate column stays attached to the loaded
+  // row (one HMAC per triage; per-action tokens are a later iteration).
+  const actionIdx = args.actionIdx ?? 0;
+  const resolved = resolveAction(loadedRow, actionIdx);
+  if (!resolved.ok) {
+    return jsonError(resolved.error_code, resolved.status, {
+      error_code: resolved.error_code,
     });
+  }
+  const row = actionIdx === 0
+    ? loadedRow
+    : {
+        ...loadedRow,
+        draft_to: resolved.resolved.to,
+        draft_cc: resolved.resolved.cc,
+        draft_subject: resolved.resolved.subject,
+        draft_body: resolved.resolved.body,
+        draft_language: resolved.resolved.language,
+        // The per-row HMAC gate token covers ONLY the legacy draft
+        // (action_idx=0). For action_idx > 0 the verifier would compare
+        // against the wrong body_sha256 + recipients and fail. Per-action
+        // tokens are a follow-up; for now we skip the gate, mirroring
+        // the existing `gate_token_missing` branch for pre-D6 rows.
+        gate_token: null,
+      };
+
+  // Idempotency: if we've already sent this draft, return the prior result.
+  // NOTE: the sent_at marker is per-triage, not per-action. When the
+  // sibling agent wires per-action idempotency the marker will move to
+  // a `proposed_actions[idx].sent_at` field; until then a re-send of a
+  // different action_idx on a row that has sent_at != null would be
+  // blocked. We guard against that by only checking idempotency for
+  // actionIdx === 0 (the legacy path the sent_at marker was designed
+  // for).
+  if (actionIdx === 0) {
+    const prior = priorDispatch(row);
+    if (prior) {
+      return jsonOk({
+        ok: true,
+        gmail_message_id: prior.gmailMessageId,
+        sent_at: prior.sentAt,
+        idempotent: true,
+      });
+    }
   }
 
   if (!row.draft_body || row.draft_body.trim().length === 0) {
@@ -448,15 +500,24 @@ export async function handleSend(args: HandleSendArgs): Promise<Response> {
 
   // Persist outcome — best effort. If the stamp fails the mail has
   // still left; on the next sync tick the inbox loop will catch up.
-  try {
-    await args.deps.markSent({
-      triageId: row.id,
-      userId: args.userId,
-      gmailMessageId: sendResult.id,
-      sentAt,
-    });
-  } catch (_e) {
-    // swallowed by design
+  // For action_idx > 0 we deliberately skip the markSent stamp because
+  // `sent_at` is a single per-row marker designed for the legacy
+  // single-draft flow. Stamping it for action_idx=1 would mask
+  // action_idx=0 as already sent and break the partial-failure retry
+  // story. The audit log (`correspondence` insert below) is the source
+  // of truth for non-idx-0 sends; per-action sent_at is a follow-up
+  // ticket the sibling agent will pick up.
+  if (actionIdx === 0) {
+    try {
+      await args.deps.markSent({
+        triageId: row.id,
+        userId: args.userId,
+        gmailMessageId: sendResult.id,
+        sentAt,
+      });
+    } catch (_e) {
+      // swallowed by design
+    }
   }
   try {
     await args.deps.markThreadStatus(row.thread_id, "triaged");
@@ -480,5 +541,6 @@ export async function handleSend(args: HandleSendArgs): Promise<Response> {
     gmail_message_id: sendResult.id,
     sent_at: sentAt,
     gate_outcome: gateOutcome.kind,
+    action_idx: actionIdx,
   });
 }

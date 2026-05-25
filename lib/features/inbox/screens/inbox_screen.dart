@@ -21,6 +21,7 @@ import '../../../l10n/app_localizations.dart';
 import '../models/inbox_severity.dart';
 import '../providers/inbox_provider.dart';
 import '../widgets/inbox_empty_state.dart';
+import '../widgets/parallel_actions_card.dart';
 import '../widgets/triage_card.dart';
 
 class InboxScreen extends ConsumerStatefulWidget {
@@ -148,9 +149,16 @@ class _InboxScreenState extends ConsumerState<InboxScreen> {
           thread.threadId,
           () => GlobalKey(debugLabel: 'inbox-${thread.threadId}'),
         );
+        // Parallel Actions Panel (2026-05-25) — when the consilium proposed
+        // 2+ related actions for this thread, render the grouped card with
+        // batch-approve. Single-action and no-action rows keep using the
+        // legacy TriageCard so the existing UX stays unchanged.
+        final card = thread.hasParallelActions
+            ? ParallelActionsCard(thread: thread)
+            : TriageCard(thread: thread);
         return KeyedSubtree(
           key: key,
-          child: TriageCard(thread: thread),
+          child: card,
         );
       },
     );

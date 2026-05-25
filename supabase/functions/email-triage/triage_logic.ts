@@ -39,6 +39,15 @@ import {
   pickPromptVersion,
   PRIVILEGED_DOMAINS_DEFAULT,
 } from "../_shared/email_agent_prompt.ts";
+// Parallel Actions Panel (2026-05-25) — when the consilium synthesis emits a
+// `<proposed_actions>` block with N>=2 child `<action>` entries, the inbox UI
+// renders a grouped card with batch-approve. The extractor is additive and
+// degrades to a single-action fallback built from the legacy draft_* fields,
+// so the existing single-draft path keeps working unchanged.
+import {
+  extractProposedActions,
+  serialiseProposedActions,
+} from "../_shared/parallel_actions.ts";
 
 // =============================================================================
 // Inputs / outputs
@@ -276,6 +285,20 @@ export interface TriageInsertRow {
    * 20260525200000_email_triage_lawyer_opinions.sql.
    */
   lawyer_opinions: LawyerOpinion[] | null;
+  /**
+   * NEW (2026-05-25, Parallel Actions Panel): N>=1 structured actions the
+   * consilium proposes. When NULL/omitted, the inbox UI falls back to the
+   * legacy single-draft TriageCard. When length>=2, the new
+   * ParallelActionsCard renders a grouped card with batch-approve. idx=0
+   * always mirrors the legacy draft_* columns so existing API consumers
+   * (chat assistant tools, approve_send_draft) keep working. JSONB on the
+   * database side. See migration 20260525210000_triage_proposed_actions.sql.
+   *
+   * Field is optional (`?:`) so callers / tests that haven't been updated
+   * yet keep compiling — the persistence layer treats `undefined` and
+   * `null` identically (column stays NULL).
+   */
+  proposed_actions?: Array<Record<string, unknown>> | null;
 }
 
 export type TriageOutcome =
@@ -678,6 +701,36 @@ export async function runTriage(
     const combined = `${raw}${sentinel}${capturedConsiliumSynthesis}`;
     row.raw_model_output = combined.slice(0, 30_000);
   }
+
+  // Parallel Actions Panel — derive structured action list from the
+  // consilium synthesis when available, else from the legacy single draft.
+  // Persist only when there are >=2 actions (single-action rows can be
+  // served entirely from the legacy draft_* columns; the JSONB column
+  // stays NULL so older inbox consumers and the partial index stay tiny).
+  // Never block persistence on failure — the extractor catches nothing,
+  // but defensive try/catch matches the rest of the orchestrator's
+  // best-effort sidecar style.
+  try {
+    const proposed = extractProposedActions({
+      synthesis: capturedConsiliumSynthesis ?? "",
+      legacyDraft: parsed.draft
+        ? {
+          to_addr: parsed.draft.to[0] ?? "",
+          cc: parsed.draft.cc,
+          subject: parsed.draft.subject,
+          body: parsed.draft.body,
+          language: parsed.draft.language,
+          rationale: parsed.user_brief,
+          citations: [],
+          gate_token: gateToken,
+        }
+        : undefined,
+    });
+    if (proposed.length >= 2) {
+      row.proposed_actions = serialiseProposedActions(proposed);
+    }
+  } catch (_e) { /* ignore */ }
+
   const insert = await deps.persistTriageRow(row);
 
   // Carry-over Task 5: write-back loop. The model can promote facts it

@@ -83,6 +83,10 @@ function makeTriageRow(overrides: Partial<TriageRow> = {}): TriageRow {
     sent_at: null,
     sent_message_id: null,
     user_action: null,
+    // Parallel Actions Panel — NULL on legacy single-draft rows. Tests
+    // exercising the multi-action path override this with an explicit
+    // jsonb array.
+    proposed_actions: null,
     ...overrides,
   };
 }
@@ -572,5 +576,189 @@ Deno.test(
     assertEquals(resp.status, 502);
     const body = await readJson(resp);
     assertStringIncludes(String(body.details ?? ""), "backend hiccup");
+  },
+);
+
+// =============================================================================
+// Parallel Actions Panel (2026-05-25)
+//
+// When the consilium proposes N parallel actions, the Flutter card fans
+// out N invocations of email-send, each with a unique `action_idx`. The
+// edge fn looks up that action in `email_triage_results.proposed_actions`
+// and dispatches it. action_idx=0 stays on the legacy draft_* path for
+// backwards compat.
+// =============================================================================
+
+const SULGA_BODY_REPLY =
+  "Hyvä Jokela,\n\n" +
+  "vastauksena viestiinne 12.5.2026 totean seuraavaa. Hallintolain " +
+  "§122 nojalla en hyväksy käännytyspäätöstä, koska tunnistustiedot " +
+  "ovat virheelliset.\n\n" +
+  "1. Pyydän, että viranomainen korjaa nimen kirjoitusasun.\n" +
+  "2. Pyydän, että käännytyspäätös perutaan.\n\n" +
+  "Yhteistyöterveisin,\nDmitri Sulga";
+
+const SULGA_BODY_NEW =
+  "Pyydän julkisuuslain 14§:n nojalla seuraavat asiakirjat:\n\n" +
+  "1. Eckerö Linen matkalipputiedot 5.12.2025.\n" +
+  "2. Poliisin laatima käännytysasiakirja 5.12.2025.\n" +
+  "3. Saateasiakirjat, jotka osoittavat lähettäjän.\n\n" +
+  "Pyyntö perustuu siihen, että nämä todistavat tapahtuman.";
+
+function makeRowWithTwoActions(): TriageRow {
+  return makeTriageRow({
+    // Legacy columns mirror action idx=0 for back-compat.
+    draft_to: ["jokela@migri.fi"],
+    draft_subject: "Vastaus 12.5.2026 viestiin",
+    draft_body: SULGA_BODY_REPLY,
+    draft_language: "fi",
+    proposed_actions: [
+      {
+        idx: 0,
+        kind: "email_reply",
+        to_addr: "jokela@migri.fi",
+        cc: [],
+        subject: "Vastaus 12.5.2026 viestiin",
+        body: SULGA_BODY_REPLY,
+        language: "fi",
+        citations: ["[[ref:fi-hol:122]]"],
+        rationale: "Soft-return per HOL §122.",
+        gate_token: null,
+      },
+      {
+        idx: 1,
+        kind: "email_new",
+        to_addr: "kirjaamo.helsinki@poliisi.fi",
+        cc: [],
+        subject: "Asiakirjapyyntö (JulkL 14§)",
+        body: SULGA_BODY_NEW,
+        language: "fi",
+        citations: ["[[ref:fi-julkl:14]]"],
+        rationale: "2vk deadline.",
+        gate_token: null,
+      },
+    ],
+  });
+}
+
+Deno.test(
+  "email-send: action_idx omitted → legacy draft_* (back-compat)",
+  async () => {
+    const row = makeRowWithTwoActions();
+    const harness = makeRecordingDeps(row);
+    const resp = await handleSend({
+      deps: harness.deps,
+      userId: USER_ID,
+      triageId: TRIAGE_ID,
+      editedBody: null,
+      gateSecret: TEST_SECRET,
+      loadAccessToken: fakeTokenLoader(),
+      // actionIdx intentionally omitted — must default to 0.
+    });
+    assertEquals(resp.status, 200);
+    const body = await readJson(resp);
+    assertEquals(body.ok, true);
+    assertEquals(body.action_idx, 0);
+    // Gmail was called with the legacy/idx-0 recipient + body.
+    assertEquals(harness.calls.sendArgs.length, 1);
+    assertEquals(harness.calls.sendArgs[0].to, "jokela@migri.fi");
+    assertStringIncludes(harness.calls.sendArgs[0].body, "HOL §122");
+  },
+);
+
+Deno.test(
+  "email-send: action_idx=1 → dispatches the asiakirjapyyntö to poliisi",
+  async () => {
+    const row = makeRowWithTwoActions();
+    const harness = makeRecordingDeps(row);
+    const resp = await handleSend({
+      deps: harness.deps,
+      userId: USER_ID,
+      triageId: TRIAGE_ID,
+      editedBody: null,
+      actionIdx: 1,
+      gateSecret: TEST_SECRET,
+      loadAccessToken: fakeTokenLoader(),
+    });
+    assertEquals(resp.status, 200);
+    const body = await readJson(resp);
+    assertEquals(body.ok, true);
+    assertEquals(body.action_idx, 1);
+    // Gmail was called with the idx=1 recipient + body.
+    assertEquals(harness.calls.sendArgs.length, 1);
+    assertEquals(
+      harness.calls.sendArgs[0].to,
+      "kirjaamo.helsinki@poliisi.fi",
+    );
+    assertStringIncludes(harness.calls.sendArgs[0].body, "JulkL 14§");
+    // markSent must NOT fire for action_idx > 0 — the per-row sent_at
+    // marker is reserved for the legacy single-draft path.
+    assertEquals(harness.calls.markSent.length, 0);
+  },
+);
+
+Deno.test(
+  "email-send: action_idx out-of-bounds → 400 action_idx_oob",
+  async () => {
+    const row = makeRowWithTwoActions();
+    const harness = makeRecordingDeps(row);
+    const resp = await handleSend({
+      deps: harness.deps,
+      userId: USER_ID,
+      triageId: TRIAGE_ID,
+      editedBody: null,
+      actionIdx: 99,
+      gateSecret: TEST_SECRET,
+      loadAccessToken: fakeTokenLoader(),
+    });
+    assertEquals(resp.status, 400);
+    const body = await readJson(resp);
+    assertEquals(body.error_code, "action_idx_oob");
+    // No Gmail call.
+    assertEquals(harness.calls.sendArgs.length, 0);
+  },
+);
+
+Deno.test(
+  "email-send: parallel idx=0 + idx=1 fan-out both succeed independently",
+  async () => {
+    // Pattern source: Sulga case. The Flutter ParallelActionsCard
+    // dispatches BOTH actions in a single user click. The handler must
+    // tolerate being called twice for the same triage row with
+    // different action_idx values; idx=0 stamps sent_at and idx>0 does
+    // not, so the partial-failure retry story stays clean.
+    const row = makeRowWithTwoActions();
+    const harness = makeRecordingDeps(row);
+    const [r0, r1] = await Promise.all([
+      handleSend({
+        deps: harness.deps,
+        userId: USER_ID,
+        triageId: TRIAGE_ID,
+        editedBody: null,
+        actionIdx: 0,
+        gateSecret: TEST_SECRET,
+        loadAccessToken: fakeTokenLoader(),
+      }),
+      handleSend({
+        deps: harness.deps,
+        userId: USER_ID,
+        triageId: TRIAGE_ID,
+        editedBody: null,
+        actionIdx: 1,
+        gateSecret: TEST_SECRET,
+        loadAccessToken: fakeTokenLoader(),
+      }),
+    ]);
+    assertEquals(r0.status, 200);
+    assertEquals(r1.status, 200);
+    assertEquals(harness.calls.sendArgs.length, 2);
+    // Each action hit its own recipient.
+    const recipients = harness.calls.sendArgs.map((a) => a.to).sort();
+    assertEquals(recipients, [
+      "jokela@migri.fi",
+      "kirjaamo.helsinki@poliisi.fi",
+    ]);
+    // Exactly one markSent (the legacy idx=0 path).
+    assertEquals(harness.calls.markSent.length, 1);
   },
 );

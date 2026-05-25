@@ -56,6 +56,12 @@ export interface TriageRow {
   sent_at: string | null;
   sent_message_id: string | null;
   user_action: string | null;
+  /** Parallel Actions Panel (2026-05-25) — N>=0 structured actions the
+   *  consilium proposed. NULL on legacy single-draft rows. When
+   *  `action_idx > 0` is passed in the payload, the matching entry is
+   *  used in place of draft_* columns. See migration
+   *  20260525210000_triage_proposed_actions.sql. */
+  proposed_actions: unknown;
 }
 
 /** RFC-822 Message-Id of the most-recent message in the thread — the
@@ -129,6 +135,14 @@ export interface SendArgs {
 export interface ValidatedPayload {
   triageId: string;
   editedBody: string | null;
+  /**
+   * Parallel Actions Panel (2026-05-25) — when omitted OR 0, the legacy
+   * single-draft columns drive the send (backwards compat with the
+   * existing single-action approveAndSend flow). When > 0, the matching
+   * entry from `email_triage_results.proposed_actions` is dispatched
+   * instead. Out-of-bounds idx => 400 `action_idx_oob`.
+   */
+  actionIdx: number;
 }
 
 export interface PayloadError {
@@ -181,7 +195,97 @@ export function validatePayload(
       };
     }
   }
-  return { ok: true, value: { triageId, editedBody } };
+  // action_idx is optional. Default 0 = legacy draft_* columns.
+  let actionIdx = 0;
+  const idxRaw = obj.action_idx;
+  if (idxRaw != null) {
+    if (typeof idxRaw === "number" && Number.isFinite(idxRaw)) {
+      actionIdx = Math.trunc(idxRaw);
+    } else if (typeof idxRaw === "string") {
+      const parsed = parseInt(idxRaw, 10);
+      if (!Number.isFinite(parsed)) {
+        return {
+          ok: false,
+          err: { error: "action_idx must be a number", status: 400 },
+        };
+      }
+      actionIdx = parsed;
+    } else {
+      return {
+        ok: false,
+        err: { error: "action_idx must be a number", status: 400 },
+      };
+    }
+    if (actionIdx < 0 || actionIdx > 7) {
+      // Match parallel_actions.ts MAX_ACTIONS cap.
+      return {
+        ok: false,
+        err: { error: "action_idx out of range", status: 400 },
+      };
+    }
+  }
+  return { ok: true, value: { triageId, editedBody, actionIdx } };
+}
+
+// =============================================================================
+// Parallel Actions Panel — pick the (to, cc, subject, body, language) tuple
+// for a given action_idx. action_idx === 0 always falls back to the legacy
+// draft_* columns so the existing single-draft flow never regresses.
+// =============================================================================
+
+export interface ResolvedAction {
+  to: string[];
+  cc: string[];
+  subject: string;
+  body: string;
+  language: string;
+}
+
+export function resolveAction(
+  row: TriageRow,
+  actionIdx: number,
+):
+  | { ok: true; resolved: ResolvedAction }
+  | { ok: false; error_code: string; status: number } {
+  if (!Number.isFinite(actionIdx) || actionIdx === 0) {
+    return {
+      ok: true,
+      resolved: {
+        to: row.draft_to ?? [],
+        cc: row.draft_cc ?? [],
+        subject: row.draft_subject ?? "",
+        body: row.draft_body ?? "",
+        language: row.draft_language ?? "en",
+      },
+    };
+  }
+  if (!Array.isArray(row.proposed_actions)) {
+    return { ok: false, error_code: "action_idx_oob", status: 400 };
+  }
+  const raw = row.proposed_actions as unknown[];
+  const match = raw.find((a): a is Record<string, unknown> =>
+    a != null &&
+    typeof a === "object" &&
+    typeof (a as Record<string, unknown>).idx === "number" &&
+    (a as Record<string, unknown>).idx === actionIdx
+  );
+  if (!match) {
+    return { ok: false, error_code: "action_idx_oob", status: 400 };
+  }
+  const toAddr = typeof match.to_addr === "string" ? match.to_addr : "";
+  const cc = Array.isArray(match.cc)
+    ? (match.cc as unknown[]).filter((x): x is string => typeof x === "string")
+    : [];
+  return {
+    ok: true,
+    resolved: {
+      to: toAddr ? [toAddr] : [],
+      cc,
+      subject: typeof match.subject === "string" ? match.subject : "",
+      body: typeof match.body === "string" ? match.body : "",
+      language: typeof match.language === "string" ? match.language : "en",
+    },
+  };
 }
 
 // =============================================================================

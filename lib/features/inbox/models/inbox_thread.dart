@@ -60,6 +60,87 @@ class InboxDeadline {
   }
 }
 
+/// Parallel Actions Panel (2026-05-25) — one structured action proposed by
+/// the consilium synthesis. Mirrors `_shared/parallel_actions.ts::ProposedAction`
+/// and the JSONB shape persisted to `email_triage_results.proposed_actions`.
+///
+/// When the consilium recommends 2+ related actions (e.g. one Jokela reply +
+/// one asiakirjapyyntö to poliisi kirjaamo), the inbox surfaces them as a
+/// grouped ParallelActionsCard with batch-approve. idx=0 always mirrors the
+/// legacy `draft_*` columns so single-draft consumers keep working.
+class ProposedAction {
+  const ProposedAction({
+    required this.idx,
+    required this.kind,
+    required this.toAddr,
+    required this.cc,
+    required this.subject,
+    required this.body,
+    required this.language,
+    required this.citations,
+    required this.rationale,
+  });
+
+  /// 0..N-1, stable ordering. Persistence + UI selection both rely on it.
+  final int idx;
+
+  /// "email_reply" | "email_new" — drives the icon + chip in the card.
+  final String kind;
+
+  /// Primary recipient address shown in the mini-preview.
+  final String toAddr;
+
+  /// Optional Cc list. Often empty.
+  final List<String> cc;
+
+  /// Subject line — for replies the consilium may emit "Re: …".
+  final String subject;
+
+  /// Plaintext body — the only format `send-email` accepts today.
+  final String body;
+
+  /// ISO language code, e.g. "fi", "et", "ru", "en".
+  final String language;
+
+  /// `[[ref:slug:para]]` markers preserved verbatim.
+  final List<String> citations;
+
+  /// 1-2 sentence "why this action" shown above the body preview.
+  final String rationale;
+
+  factory ProposedAction.fromJson(Map<String, dynamic> json) {
+    int parseIdx(Object? raw) {
+      if (raw is int) return raw;
+      if (raw is num) return raw.toInt();
+      if (raw is String) return int.tryParse(raw) ?? 0;
+      return 0;
+    }
+
+    List<String> parseStringList(Object? raw) {
+      if (raw is List) {
+        return raw
+            .whereType<String>()
+            .map((s) => s.trim())
+            .where((s) => s.isNotEmpty)
+            .toList(growable: false);
+      }
+      return const <String>[];
+    }
+
+    return ProposedAction(
+      idx: parseIdx(json['idx']),
+      kind: (json['kind'] as String?) ?? 'email_reply',
+      toAddr: (json['to_addr'] as String?) ?? '',
+      cc: parseStringList(json['cc']),
+      subject: (json['subject'] as String?) ?? '',
+      body: (json['body'] as String?) ?? '',
+      language: (json['language'] as String?) ?? 'en',
+      citations: parseStringList(json['citations']),
+      rationale: (json['rationale'] as String?) ?? '',
+    );
+  }
+}
+
 class InboxThread {
   const InboxThread({
     required this.threadId,
@@ -75,6 +156,7 @@ class InboxThread {
     required this.seenByUserAt,
     this.deadlines = const <InboxDeadline>[],
     this.caseId,
+    this.proposedActions = const <ProposedAction>[],
   });
 
   /// `email_threads.id` (uuid).
@@ -162,6 +244,18 @@ class InboxThread {
     return at.isAfter(cutoff);
   }
 
+  /// Parallel Actions Panel (2026-05-25) — N>=0 structured actions the
+  /// consilium proposed. When `length >= 2` the inbox renders a grouped
+  /// ParallelActionsCard; otherwise the legacy single-draft TriageCard
+  /// fallback fires. Empty for threads that never went through consilium
+  /// (`email_triage_results.proposed_actions IS NULL`) or for single-draft
+  /// rows where the column was deliberately left NULL.
+  final List<ProposedAction> proposedActions;
+
+  /// True iff the inbox should switch to the ParallelActionsCard. Single
+  /// source of truth so the inbox screen + tests agree.
+  bool get hasParallelActions => proposedActions.length >= 2;
+
   factory InboxThread.fromAssistantTool(Map<String, dynamic> row) {
     final lastIso = row['last_message_at'] as String?;
     final seenIso = row['seen_by_user_at'] as String?;
@@ -176,6 +270,21 @@ class InboxThread {
               .add(InboxDeadline.fromJson(Map<String, dynamic>.from(d)));
         }
       }
+    }
+    final rawActions = row['proposed_actions'];
+    final parsedActions = <ProposedAction>[];
+    if (rawActions is List) {
+      for (final a in rawActions) {
+        if (a is Map<String, dynamic>) {
+          parsedActions.add(ProposedAction.fromJson(a));
+        } else if (a is Map) {
+          parsedActions
+              .add(ProposedAction.fromJson(Map<String, dynamic>.from(a)));
+        }
+      }
+      // Stable ordering — persistence guarantees idx 0..N-1 but defend
+      // against any consumer that re-orders the JSONB array.
+      parsedActions.sort((a, b) => a.idx.compareTo(b.idx));
     }
     return InboxThread(
       threadId: (row['thread_id'] as String?) ?? '',
@@ -194,6 +303,7 @@ class InboxThread {
       seenByUserAt: seenIso != null ? DateTime.tryParse(seenIso) : null,
       deadlines: parsedDeadlines,
       caseId: row['case_id'] as String?,
+      proposedActions: parsedActions,
     );
   }
 }
