@@ -61,6 +61,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
+import '../models/inbox_severity.dart';
 import '../models/inbox_thread.dart';
 import '../providers/inbox_provider.dart';
 
