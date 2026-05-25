@@ -4021,4 +4021,11 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'Agenci SI, nie ludzie-prawnicy. Istotne decyzje skonsultuj z wpisanym na listę adwokatem lub radcą prawnym.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

@@ -4010,4 +4010,11 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'YZ ajanları, insan avukatlar değil. Önemli kararları baroya kayıtlı bir avukatla doğrulayın.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

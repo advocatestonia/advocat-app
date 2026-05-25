@@ -4005,4 +4005,11 @@ class AppLocalizationsFa extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'عامل‌های هوش مصنوعی، نه وکلای انسانی. تصمیمات مهم را با وکیل دارای پروانه بررسی کنید.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

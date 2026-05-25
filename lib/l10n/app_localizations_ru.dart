@@ -4030,4 +4030,11 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'ИИ-агенты, не люди-юристы. Проверьте важные решения с лицензированным адвокатом.';
+
+  @override
+  String get softCaseShellBanner =>
+      'Мы создали «Без названия», чтобы отслеживать это дело. Нажмите, чтобы переименовать.';
+
+  @override
+  String get softCaseShellBannerCta => 'Переименовать';
 }

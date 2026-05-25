@@ -4048,4 +4048,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'KI-Agenten, keine menschlichen Anwälte. Wesentliche Entscheidungen sind durch einen zugelassenen Rechtsanwalt zu überprüfen.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

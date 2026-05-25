@@ -4010,4 +4010,11 @@ class AppLocalizationsUk extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'ШІ-агенти, а не люди-юристи. Важливі рішення перевіряйте з ліцензованим адвокатом.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

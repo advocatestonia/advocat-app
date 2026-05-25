@@ -4029,4 +4029,11 @@ class AppLocalizationsRo extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'Agenți IA, nu avocați umani. Verificați deciziile importante cu un avocat înscris în barou.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

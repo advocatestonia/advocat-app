@@ -3989,4 +3989,11 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'وكلاء ذكاء اصطناعي، وليسوا محامين بشريين. تحقق من القرارات الجوهرية مع محامٍ مرخَّص.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

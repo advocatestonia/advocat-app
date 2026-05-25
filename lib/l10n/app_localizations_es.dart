@@ -4037,4 +4037,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'Agentes de IA, no abogados humanos. Verifique las decisiones importantes con un abogado colegiado.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

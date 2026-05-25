@@ -4020,4 +4020,11 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'Tekoälyagentteja, ei ihmislakimiehiä. Tarkista olennaiset päätökset lisensoidulla asianajajalla.';
+
+  @override
+  String get softCaseShellBanner =>
+      'Loimme \"Nimetön asia\" -kohteen tämän seuraamiseksi. Napauta nimetäksesi uudelleen.';
+
+  @override
+  String get softCaseShellBannerCta => 'Nimeä uudelleen';
 }

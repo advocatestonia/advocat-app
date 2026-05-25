@@ -4007,4 +4007,11 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'AI-agenter, inte mänskliga jurister. Verifiera väsentliga beslut med en auktoriserad advokat.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

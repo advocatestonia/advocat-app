@@ -7237,6 +7237,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'AI agents, not human lawyers. Verify material decisions with a licensed attorney.'**
   String get consiliumDisclaimer;
+
+  /// One-line banner shown after a first-touch upload auto-materialised a soft-case shell (P0 deadline-extraction fix). Tapping deep-links to the case rename screen.
+  ///
+  /// In en, this message translates to:
+  /// **'We created \"Untitled case\" to track this. Tap to rename.'**
+  String get softCaseShellBanner;
+
+  /// No description provided for @softCaseShellBannerCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get softCaseShellBannerCta;
 }
 
 class _AppLocalizationsDelegate

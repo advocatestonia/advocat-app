@@ -4019,4 +4019,11 @@ class AppLocalizationsLv extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'MI aģenti, nevis cilvēki juristi. Būtiskus lēmumus pārbaudiet pie licencēta zvērināta advokāta.';
+
+  @override
+  String get softCaseShellBanner =>
+      'We created \"Untitled case\" to track this. Tap to rename.';
+
+  @override
+  String get softCaseShellBannerCta => 'Rename';
 }

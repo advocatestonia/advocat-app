@@ -4011,4 +4011,11 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String get consiliumDisclaimer =>
       'AI-agendid, mitte inimjuristid. Olulised otsused kontrolli litsentseeritud advokaadiga.';
+
+  @override
+  String get softCaseShellBanner =>
+      'Lõime „Nimetu toimik\" selle jälgimiseks. Vajuta ümbernimetamiseks.';
+
+  @override
+  String get softCaseShellBannerCta => 'Nimeta ümber';
 }
