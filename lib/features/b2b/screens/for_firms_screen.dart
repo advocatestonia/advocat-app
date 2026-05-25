@@ -37,6 +37,12 @@ class ForFirmsScreenKeys {
   static const Key teamSizeField = Key('for_firms_team_size');
   static const Key practicesField = Key('for_firms_practices');
   static const Key painField = Key('for_firms_pain');
+  // v2 (2026-05-25) — explicit consent checkbox per regulatory analyst
+  // (GDPR Art. 6(1)(a) + Art. 7, plus ePrivacy direct-marketing carve-out
+  // for direct outreach about a related professional product). Required
+  // to submit; absence shows an inline error.
+  static const Key consentCheckbox = Key('for_firms_consent');
+  static const Key consentError = Key('for_firms_consent_error');
   static const Key submit = Key('for_firms_submit');
   static const Key confirmation = Key('for_firms_confirmation');
 }
@@ -77,6 +83,15 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
   bool _submitting = false;
   bool _submitted = false;
 
+  /// v2 (2026-05-25) — explicit consent state. The form will not submit
+  /// until this is true; required by GDPR Art. 6(1)(a) for the
+  /// direct-outreach use case (we phone/email the firm about a B2B
+  /// product). `_consentTouched` tracks whether the user has interacted
+  /// with the checkbox at least once, so we only show the inline error
+  /// after they've tried to submit (avoids screaming red on first paint).
+  bool _consent = false;
+  bool _consentTouched = false;
+
   /// Cached locale code (en/et/ru/fi/de + fallback). Read once in
   /// didChangeDependencies so build() can stay sync.
   String _locale = 'en';
@@ -110,6 +125,17 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
 
   Future<void> _onSubmit() async {
     if (_submitting) return;
+    // v2: surface the consent requirement BEFORE the regular validators
+    // so the user sees the inline error rather than scrolling up looking
+    // for a missing field. Mark the checkbox as "touched" so the helper
+    // text renders red.
+    if (!_consent) {
+      setState(() => _consentTouched = true);
+      // Still run the form validator so other required fields highlight
+      // alongside the consent error.
+      _formKey.currentState?.validate();
+      return;
+    }
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     setState(() => _submitting = true);
@@ -346,6 +372,54 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
                 minLines: 3,
                 validator: _requiredValidator,
               ),
+              const SizedBox(height: AppSpacing.md),
+
+              // ── v2 consent checkbox (required) ──────────────────────
+              // CheckboxListTile keeps the tap target large + native a11y
+              // semantics intact. Visual register matches the rest of
+              // the form (text-secondary copy, accent fill).
+              CheckboxListTile(
+                key: ForFirmsScreenKeys.consentCheckbox,
+                value: _consent,
+                onChanged: (v) {
+                  setState(() {
+                    _consent = v ?? false;
+                    _consentTouched = true;
+                  });
+                },
+                title: Text(
+                  _t('consent_label'),
+                  style: const TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13,
+                    color: AppColors.textSecondary,
+                    height: 1.45,
+                  ),
+                ),
+                activeColor: AppColors.accent,
+                controlAffinity: ListTileControlAffinity.leading,
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+              ),
+              if (_consentTouched && !_consent)
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 48,
+                    top: 2,
+                    bottom: AppSpacing.xs,
+                  ),
+                  child: Text(
+                    _t('consent_required'),
+                    key: ForFirmsScreenKeys.consentError,
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      fontSize: 12,
+                      color: AppColors.error,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+
               const SizedBox(height: AppSpacing.lg),
 
               SizedBox(
@@ -461,6 +535,11 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
           'practice_criminal': 'Criminal',
           'practice_labor': 'Labor',
           'practice_tax': 'Tax',
+          'consent_label':
+              'I agree Advocat OÜ may contact me about law-firm '
+                  'offerings. I can withdraw consent at any time.',
+          'consent_required':
+              'Please confirm you agree to be contacted before submitting.',
         },
         'et': {
           'heading': 'Advocat advokaadibüroodele',
@@ -496,6 +575,13 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
           'practice_criminal': 'Kriminaalõigus',
           'practice_labor': 'Tööõigus',
           'practice_tax': 'Maksuõigus',
+          'consent_label':
+              'Nõustun, et Advocat OÜ võib minuga ühendust võtta '
+                  'büroodele suunatud pakkumiste osas. Saan nõusoleku '
+                  'igal ajal tagasi võtta.',
+          'consent_required':
+              'Palun kinnitage enne saatmist, et nõustute meiega '
+                  'ühendust võtmisega.',
         },
         'ru': {
           'heading': 'Advocat для юридических фирм',
@@ -531,6 +617,13 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
           'practice_criminal': 'Уголовное',
           'practice_labor': 'Трудовое',
           'practice_tax': 'Налоговое',
+          'consent_label':
+              'Я согласен(на), что Advocat OÜ может связаться со мной '
+                  'по поводу предложений для юр.фирм. Согласие можно '
+                  'отозвать в любое время.',
+          'consent_required':
+              'Пожалуйста, подтвердите согласие на связь перед '
+                  'отправкой.',
         },
         'fi': {
           'heading': 'Advocat asianajotoimistoille',
@@ -567,6 +660,12 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
           'practice_criminal': 'Rikosoikeus',
           'practice_labor': 'Työoikeus',
           'practice_tax': 'Vero-oikeus',
+          'consent_label':
+              'Hyväksyn, että Advocat OÜ voi ottaa minuun yhteyttä '
+                  'lakitoimistoille suunnatuista tarjouksista. Voin '
+                  'peruuttaa suostumuksen milloin tahansa.',
+          'consent_required':
+              'Vahvista ennen lähettämistä, että hyväksyt yhteydenoton.',
         },
         'de': {
           'heading': 'Advocat für Kanzleien',
@@ -605,6 +704,12 @@ class _ForFirmsScreenState extends ConsumerState<ForFirmsScreen> {
           'practice_criminal': 'Strafrecht',
           'practice_labor': 'Arbeitsrecht',
           'practice_tax': 'Steuerrecht',
+          'consent_label':
+              'Ich willige ein, dass Advocat OÜ mich zu Kanzleiangeboten '
+                  'kontaktieren darf. Ich kann meine Einwilligung '
+                  'jederzeit widerrufen.',
+          'consent_required':
+              'Bitte bestätigen Sie die Kontaktaufnahme vor dem Absenden.',
         },
       };
 

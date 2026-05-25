@@ -67,89 +67,93 @@ class B2BLeadModal extends StatelessWidget {
   /// Mandatory locales per brief: en/et/ru/fi/de. The 4 carry-over slots
   /// (fr/es/it/pl) mirror welcome_modal coverage so DACH / LATAM / Adriatic
   /// users don't drop to EN on a paid-touch surface.
+  ///
+  /// v2 (2026-05-25) — copy refinement per analyst consilium.
+  /// The v1 wording ("looks like you're using Advocat professionally") was
+  /// flagged for two issues: (a) it sounds surveilling — "we noticed", and
+  /// (b) it pre-supposes a value claim before showing what's on offer. The
+  /// new framing positions Advocat-for-Firms as a closed-launch product
+  /// the user is being invited to peek at: scarcity (limited to 15 firms),
+  /// agency (you decide to look), and curiosity (we're BUILDING — not yet
+  /// "buy this"). All locales mirror the FI/EE-specific register without
+  /// literal-translating "büroo / toimisto" into languages that don't use
+  /// those words for law firms.
   static Map<String, Map<String, String>> get _table => {
         'en': {
-          'title': "Looks like you're using Advocat professionally",
+          'title': 'Building Advocat Firm — the law-firm edition',
           'body':
-              "We're building a separate version for law firms — multi-seat, "
-                  "shared cases, audit log. Want 50% off a 3-month pilot?",
+              "Closed launch, limited to 15 firms. Want to see what we're "
+                  'building?',
           'dismiss': 'Not now',
-          'learn_more': 'Learn more',
+          'learn_more': 'Tell me more',
         },
         'et': {
-          'title': 'Tundub, et kasutate Advocati professionaalselt',
+          'title': 'Ehitame Advocat Firm-i — versiooni büroodele',
           'body':
-              'Ehitame eraldi versiooni juriidilistele büroodele — mitu konto'
-                  'kasutajat, jagatud juhtumid, auditi logi. Kas soovite '
-                  '50% soodustust 3-kuulisele pilootkasutusele?',
+              'Suletud käivitamine, piiratud 15 bürooga. Soovite näha, mida '
+                  'ehitame?',
           'dismiss': 'Mitte praegu',
-          'learn_more': 'Lugege rohkem',
+          'learn_more': 'Räägi lähemalt',
         },
         'ru': {
-          'title': 'Похоже, вы используете Advocat профессионально',
+          'title': 'Строим Advocat Firm — версию для бюро',
           'body':
-              'Мы строим отдельную версию для юр.фирм — multi-seat, общие '
-                  'дела, журнал аудита. Хотите 50% off на 3-месячный пилот?',
+              'Закрытый запуск, ограничено 15 фирмами. Посмотрите, что '
+                  'готовим?',
           'dismiss': 'Не сейчас',
-          'learn_more': 'Узнать больше',
+          'learn_more': 'Расскажите подробнее',
         },
         'fi': {
-          'title': 'Näyttää siltä, että käytät Advocatia ammatillisesti',
+          'title':
+              'Rakennamme Advocat Firm -versiota — lakitoimistoille',
           'body':
-              'Rakennamme erillistä versiota lakitoimistoille — useita '
-                  'käyttäjiä, jaetut tapaukset, auditointiloki. Haluatko '
-                  '50% alennuksen 3 kuukauden pilotista?',
+              'Suljettu lanseeraus, rajoitettu 15 toimistoon. Haluatko '
+                  'nähdä, mitä rakennamme?',
           'dismiss': 'Ei nyt',
-          'learn_more': 'Lue lisää',
+          'learn_more': 'Kerro lisää',
         },
         'de': {
-          'title': 'Sieht so aus, als nutzen Sie Advocat beruflich',
+          'title': 'Wir bauen Advocat Firm — die Edition für Kanzleien',
           'body':
-              'Wir bauen eine separate Version für Kanzleien — Multi-Seat, '
-                  'geteilte Fälle, Audit-Log. Möchten Sie 50% Rabatt auf '
-                  'eine 3-monatige Pilotphase?',
+              'Geschlossener Start, auf 15 Kanzleien begrenzt. Möchten Sie '
+                  'sehen, was wir bauen?',
           'dismiss': 'Nicht jetzt',
-          'learn_more': 'Mehr erfahren',
+          'learn_more': 'Mehr erzählen',
         },
         // Carry-over locales (parity with welcome_modal). Not strictly
         // required by the brief but cheap to include — keeps the user out
         // of a hard EN fallback on a sensitive paid-touch surface.
         'fr': {
-          'title':
-              'On dirait que vous utilisez Advocat à titre professionnel',
+          'title': "Nous construisons Advocat Firm — l'édition pour cabinets",
           'body':
-              "Nous construisons une version dédiée aux cabinets d'avocats "
-                  "— multi-sièges, dossiers partagés, journal d'audit. "
-                  "Profitez de 50 % de réduction sur un pilote de 3 mois ?",
+              'Lancement fermé, limité à 15 cabinets. Vous voulez voir ce '
+                  'que nous construisons ?',
           'dismiss': 'Pas maintenant',
-          'learn_more': 'En savoir plus',
+          'learn_more': 'En dire plus',
         },
         'es': {
-          'title': 'Parece que usas Advocat profesionalmente',
+          'title': 'Estamos creando Advocat Firm — la edición para despachos',
           'body':
-              'Estamos creando una versión específica para despachos — '
-                  'multi-asiento, casos compartidos, registro de auditoría. '
-                  '¿Quieres un 50 % de descuento en un piloto de 3 meses?',
+              'Lanzamiento cerrado, limitado a 15 despachos. ¿Quieres ver '
+                  'qué estamos construyendo?',
           'dismiss': 'Ahora no',
-          'learn_more': 'Saber más',
+          'learn_more': 'Cuéntame más',
         },
         'it': {
-          'title': 'Sembra che usi Advocat professionalmente',
+          'title': 'Stiamo costruendo Advocat Firm — la versione per studi',
           'body':
-              'Stiamo creando una versione separata per studi legali — '
-                  "multi-sede, casi condivisi, log d'audit. Vuoi il 50% di "
-                  'sconto su un pilota di 3 mesi?',
+              'Lancio chiuso, limitato a 15 studi. Vuoi vedere cosa stiamo '
+                  'costruendo?',
           'dismiss': 'Non ora',
-          'learn_more': 'Scopri di più',
+          'learn_more': 'Raccontami di più',
         },
         'pl': {
-          'title': 'Wygląda na to, że używasz Advocat zawodowo',
+          'title': 'Budujemy Advocat Firm — wersję dla kancelarii',
           'body':
-              'Tworzymy osobną wersję dla kancelarii — multi-seat, wspólne '
-                  'sprawy, dziennik audytu. Chcesz 50% zniżki na pilotaż '
-                  '3-miesięczny?',
+              'Zamknięty start, ograniczony do 15 kancelarii. Chcesz '
+                  'zobaczyć, co budujemy?',
           'dismiss': 'Nie teraz',
-          'learn_more': 'Dowiedz się więcej',
+          'learn_more': 'Opowiedz mi więcej',
         },
       };
 

@@ -286,6 +286,29 @@ img, svg { display: block; max-width: 100%; }
 }
 .ff-form .hint { font-size: 12px; color: var(--faint); margin-top: 6px; }
 
+/* v2 — Consent checkbox row */
+.ff-consent-row { margin-top: 4px; margin-bottom: 8px; }
+.ff-consent {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13px; color: var(--muted); line-height: 1.5;
+  cursor: pointer;
+}
+.ff-consent input[type=checkbox] {
+  margin-top: 3px;
+  width: 16px; height: 16px;
+  accent-color: var(--teal);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.ff-consent-error {
+  display: none;
+  margin: 6px 0 0 26px;
+  font-size: 12px;
+  color: var(--error);
+}
+.ff-consent-row.error .ff-consent-error { display: block; }
+.ff-consent-row.error .ff-consent { color: var(--error); }
+
 /* Honeypot — hidden from humans, present for bots */
 .ff-hp {
   position: absolute !important;
@@ -507,6 +530,15 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
           <p class="hint" data-i18n="ff.form.pain.hint">One or two sentences are plenty.</p>
         </div>
 
+        <!-- v2 (2026-05-25): explicit GDPR Art. 6(1)(a) consent. Required to submit. -->
+        <div class="row ff-consent-row">
+          <label class="ff-consent">
+            <input id="ff-consent" type="checkbox" name="consent">
+            <span data-i18n="ff.form.consent">I agree Advocat OÜ may contact me about law-firm offerings. I can withdraw consent at any time.</span>
+          </label>
+          <p id="ff-consent-error" class="ff-consent-error" data-i18n="ff.form.consent.required">Please confirm you agree to be contacted before submitting.</p>
+        </div>
+
         <div class="ff-submit-row">
           <button type="submit" class="ff-submit" id="ff-submit">
             <span data-i18n="ff.form.submit">Request a conversation</span>
@@ -597,6 +629,8 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
       'ff.form.pain.ph': 'e.g. associates spend hours summarising case files; deadline tracking is manual; junior immigration intake is repetitive.',
       'ff.form.pain.hint': 'One or two sentences are plenty.',
       'ff.form.submit': 'Request a conversation',
+      'ff.form.consent': 'I agree Advocat OÜ may contact me about law-firm offerings. I can withdraw consent at any time.',
+      'ff.form.consent.required': 'Please confirm you agree to be contacted before submitting.',
       'ff.form.privacy': 'We use your details only to reply. See our <a href="/privacy.html" target="_blank" rel="noopener">privacy policy</a>.',
       'ff.status.ok': "Thanks — we'll reach out within 24 hours.",
       'ff.status.err': 'Something went wrong. Please try again, or email <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
@@ -633,6 +667,8 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
       'ff.form.pain.ph': 'nt assistendid kulutavad tunde toimikute kokkuvõtetele; tähtaegade jälgimine on käsitsi; algtaseme migratsiooniintervjuud on korduvad.',
       'ff.form.pain.hint': 'Üks-kaks lauset on piisav.',
       'ff.form.submit': 'Küsi vestlust',
+      'ff.form.consent': 'Nõustun, et Advocat OÜ võib minuga ühendust võtta büroodele suunatud pakkumiste osas. Saan nõusoleku igal ajal tagasi võtta.',
+      'ff.form.consent.required': 'Palun kinnitage enne saatmist, et nõustute meiega ühendust võtmisega.',
       'ff.form.privacy': 'Kasutame andmeid ainult sulle vastamiseks. Vaata <a href="/privacy.html" target="_blank" rel="noopener">privaatsuspoliitikat</a>.',
       'ff.status.ok': 'Aitäh — võtame 24 tunni jooksul ühendust.',
       'ff.status.err': 'Midagi läks valesti. Palun proovi uuesti või kirjuta <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
@@ -669,6 +705,8 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
       'ff.form.pain.ph': 'например: ассистенты тратят часы на резюме дел; дедлайны отслеживаются вручную; первичные интервью по миграции повторяются.',
       'ff.form.pain.hint': 'Одного-двух предложений достаточно.',
       'ff.form.submit': 'Запросить разговор',
+      'ff.form.consent': 'Я согласен(на), что Advocat OÜ может связаться со мной по поводу предложений для юр.фирм. Согласие можно отозвать в любое время.',
+      'ff.form.consent.required': 'Пожалуйста, подтвердите согласие на связь перед отправкой.',
       'ff.form.privacy': 'Используем данные только чтобы ответить. См. <a href="/privacy.html" target="_blank" rel="noopener">политику приватности</a>.',
       'ff.status.ok': 'Спасибо — свяжемся в течение 24 часов.',
       'ff.status.err': 'Что-то пошло не так. Попробуйте ещё раз или напишите на <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
@@ -705,6 +743,8 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
       'ff.form.pain.ph': 'esim. avustajat käyttävät tunteja asiakirjojen tiivistämiseen; määräaikojen seuranta on manuaalista; maahanmuutto-intake on toistuvaa.',
       'ff.form.pain.hint': 'Yksi tai kaksi lausetta riittää.',
       'ff.form.submit': 'Pyydä keskustelu',
+      'ff.form.consent': 'Hyväksyn, että Advocat OÜ voi ottaa minuun yhteyttä lakitoimistoille suunnatuista tarjouksista. Voin peruuttaa suostumuksen milloin tahansa.',
+      'ff.form.consent.required': 'Vahvista ennen lähettämistä, että hyväksyt yhteydenoton.',
       'ff.form.privacy': 'Käytämme tietoja vain vastauksen lähettämiseen. Lue <a href="/privacy.html" target="_blank" rel="noopener">tietosuojaseloste</a>.',
       'ff.status.ok': 'Kiitos — otamme yhteyttä 24 tunnin sisällä.',
       'ff.status.err': 'Jotain meni pieleen. Yritä uudelleen tai lähetä viesti osoitteeseen <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
@@ -741,6 +781,8 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
       'ff.form.pain.ph': 'z. B. Associates verbringen Stunden mit Aktenzusammenfassungen; Fristenverwaltung ist manuell; Erstgespräche im Migrationsrecht wiederholen sich.',
       'ff.form.pain.hint': 'Ein, zwei Sätze genügen.',
       'ff.form.submit': 'Gespräch anfragen',
+      'ff.form.consent': 'Ich willige ein, dass Advocat OÜ mich zu Kanzleiangeboten kontaktieren darf. Ich kann meine Einwilligung jederzeit widerrufen.',
+      'ff.form.consent.required': 'Bitte bestätigen Sie die Kontaktaufnahme vor dem Absenden.',
       'ff.form.privacy': 'Wir verwenden Ihre Angaben nur zur Antwort. Siehe <a href="/privacy.html" target="_blank" rel="noopener">Datenschutzerklärung</a>.',
       'ff.status.ok': 'Danke — wir melden uns innerhalb von 24 Stunden.',
       'ff.status.err': 'Etwas ist schiefgelaufen. Bitte erneut versuchen oder E-Mail an <a href="mailto:support@advocat.ee">support@advocat.ee</a>.'
@@ -845,6 +887,16 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
   wireChips('ff-team-group');
   wireChips('ff-practices-group');
 
+  // v2: clear the consent error inline as soon as the user ticks the box.
+  (function wireConsent () {
+    var box = document.getElementById('ff-consent');
+    var row = document.querySelector('.ff-consent-row');
+    if (!box || !row) return;
+    box.addEventListener('change', function () {
+      if (box.checked) row.classList.remove('error');
+    });
+  })();
+
   // ── Form submit ──────────────────────────────────────────────────────
   var SUPABASE_FN_BASE =
     (window.ADVOCAT_FUNCTIONS_BASE) ||
@@ -880,6 +932,17 @@ html[dir=rtl] .ff-lang-menu { right: auto; left: 0; }
 
     if (!name || !firm) { setStatus('err'); return; }
     if (!EMAIL_RE.test(email)) { setStatus('err'); return; }
+
+    // v2 (2026-05-25) — explicit GDPR Art. 6(1)(a) consent enforcement.
+    // Inline error stays in the consent row so the user can fix it
+    // without losing the rest of the form.
+    var consentRow = document.querySelector('.ff-consent-row');
+    var consentBox = document.getElementById('ff-consent');
+    if (!consentBox || !consentBox.checked) {
+      if (consentRow) consentRow.classList.add('error');
+      return;
+    }
+    if (consentRow) consentRow.classList.remove('error');
 
     // The support-ticket edge fn natively accepts category=b2b_inquiry and
     // structured firm_name / team_size / practices fields (added 2026-05-26

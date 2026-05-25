@@ -30,9 +30,12 @@ import {
 } from "../_shared/auth.ts";
 import { checkAndRecordRateLimit } from "../_shared/rate_limit.ts";
 import {
+  buildB2bLeadEmailBody,
+  buildB2bLeadEmailSubject,
   buildTelegramMessage,
   sanitiseMessage,
   scrubLineBreaks,
+  sendB2bLeadEmail,
   sendTelegram,
 } from "./telegram.ts";
 
@@ -42,6 +45,14 @@ const TELEGRAM_BOT_TOKEN = Deno.env.get("TELEGRAM_BOT_TOKEN") ?? "";
 const TELEGRAM_CHAT_ID = Deno.env.get("TELEGRAM_CHAT_ID") ?? "";
 const ADMIN_URL_BASE = Deno.env.get("ADVOCAT_ADMIN_TICKETS_URL") ??
   "https://advocat.ee/admin/tickets";
+// v2 (2026-05-25): B2B leads are delivered to the founder inbox via
+// Resend rather than (or in addition to) Telegram, per the regulatory
+// analyst's RED finding on routing PII through US-hosted messengers.
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") ?? "";
+const B2B_LEAD_EMAIL_FROM =
+  Deno.env.get("B2B_LEAD_EMAIL_FROM") ?? "no-reply@advocat.ee";
+const B2B_LEAD_EMAIL_TO =
+  Deno.env.get("B2B_LEAD_EMAIL_TO") ?? "aiplacest@gmail.com";
 
 const VALID_CATEGORIES = new Set([
   "bug",
@@ -299,6 +310,11 @@ serve(async (req) => {
 
   // Best-effort Telegram notify. If secrets are missing, we just log and
   // skip — the ticket is already safe in the DB.
+  //
+  // v2 (2026-05-25) — for B2B leads we still ping Telegram so the founders
+  // know to triage, but the payload is PII-stripped (see telegram.ts).
+  // The full PII payload is delivered separately by `sendB2bLeadEmail`
+  // below to the founder inbox via Resend.
   let telegramSent = false;
   let telegramError: string | null = null;
 
@@ -315,13 +331,10 @@ serve(async (req) => {
         appVersion,
         message,
         adminUrl: `${ADMIN_URL_BASE}/${ticketId}`,
-        // B2B-inquiry specifics — `buildTelegramMessage` will render the
-        // `[B2B LEAD]` prefix and surface firm/team/practices lines when
-        // any of these are non-empty.
+        // v2: B2B-lead flag triggers the PII-stripped notification body.
+        // firmName/teamSize/practices are NO LONGER passed — they ride
+        // exclusively in the Resend email below.
         b2bLead: isB2bInquiry,
-        firmName: isB2bInquiry ? firmName : undefined,
-        teamSize: isB2bInquiry ? teamSize : undefined,
-        practices: isB2bInquiry ? practices : undefined,
       });
       await sendTelegram(TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, text);
       telegramSent = true;
@@ -347,6 +360,49 @@ serve(async (req) => {
     console.log(
       `[support-ticket] telegram secrets not configured — ticket ${ticketId} saved without notify`,
     );
+  }
+
+  // ── B2B-lead full-fidelity email (v2 2026-05-25) ─────────────────────
+  // Replaces Telegram as the carrier for PII. Fires only for
+  // category=b2b_inquiry. Best-effort: a failed send does not affect the
+  // client response (the ticket row already has the full payload).
+  if (isB2bInquiry) {
+    if (RESEND_API_KEY) {
+      try {
+        const leadEmailInput = {
+          ticketId,
+          email,
+          firmName,
+          teamSize,
+          practices,
+          message,
+          pageUrl,
+          language,
+          ipAddress,
+        };
+        const ok = await sendB2bLeadEmail({
+          apiKey: RESEND_API_KEY,
+          from: B2B_LEAD_EMAIL_FROM,
+          to: B2B_LEAD_EMAIL_TO,
+          subject: buildB2bLeadEmailSubject(leadEmailInput),
+          body: buildB2bLeadEmailBody(leadEmailInput),
+        });
+        if (!ok) {
+          console.warn(
+            `[support-ticket] B2B lead email send failed for ticket ${ticketId}`,
+          );
+        }
+      } catch (e) {
+        console.warn(
+          `[support-ticket] B2B lead email threw: ${String(e).slice(0, 300)}`,
+        );
+      }
+    } else {
+      console.warn(
+        `[support-ticket] RESEND_API_KEY not configured — B2B lead ${ticketId} ` +
+          "saved without email (founders should triage via DB).",
+      );
+    }
   }
 
   return jsonOk({ ok: true, ticket_id: ticketId });

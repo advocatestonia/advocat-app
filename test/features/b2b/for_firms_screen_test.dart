@@ -163,6 +163,11 @@ void main() {
         'Multiple lawyers want to share AI history on the same matter.',
       );
 
+      // v2: tick the consent checkbox before submitting — it's required.
+      await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.consentCheckbox));
+      await tester.tap(find.byKey(ForFirmsScreenKeys.consentCheckbox));
+      await tester.pumpAndSettle();
+
       await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.submit));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(ForFirmsScreenKeys.submit));
@@ -203,6 +208,11 @@ void main() {
         'Lots of pain.',
       );
 
+      // v2 — tick consent so submission reaches the service.
+      await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.consentCheckbox));
+      await tester.tap(find.byKey(ForFirmsScreenKeys.consentCheckbox));
+      await tester.pumpAndSettle();
+
       await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.submit));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(ForFirmsScreenKeys.submit));
@@ -237,6 +247,12 @@ void main() {
         'A long enough pain description for validation purposes.',
       );
 
+      // v2 — even though email is bad, we tick consent so we know the
+      // failure stems from the email validator and not the consent gate.
+      await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.consentCheckbox));
+      await tester.tap(find.byKey(ForFirmsScreenKeys.consentCheckbox));
+      await tester.pumpAndSettle();
+
       await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.submit));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(ForFirmsScreenKeys.submit));
@@ -244,6 +260,119 @@ void main() {
 
       expect(find.text('Enter a valid email'), findsOneWidget);
       expect(svc.callCount, 0);
+    });
+  });
+
+  // ── v2 (2026-05-25) — explicit consent checkbox tests ──────────────
+  group('ForFirmsScreen — v2 consent checkbox', () {
+    testWidgets('renders consent checkbox unchecked by default',
+        (tester) async {
+      await tester.pumpWidget(_wrap(_FakeB2BService()));
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(ForFirmsScreenKeys.consentCheckbox),
+        findsOneWidget,
+      );
+      // EN copy includes the literal "withdraw consent" phrasing.
+      expect(
+        find.textContaining('withdraw consent'),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets(
+        'submit without consent fails — service NOT called, inline error shown',
+        (tester) async {
+      final svc = _FakeB2BService();
+      await tester.pumpWidget(_wrap(svc));
+      await tester.pumpAndSettle();
+
+      // Fill ALL required fields except the consent checkbox.
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.nameField),
+        'Anna Lawyer',
+      );
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.emailField),
+        'anna@example-firm.ee',
+      );
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.firmField),
+        'Example Legal OÜ',
+      );
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.painField),
+        'We need shared case files for our small immigration practice.',
+      );
+
+      await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.submit));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ForFirmsScreenKeys.submit));
+      await tester.pumpAndSettle();
+
+      // The service must NOT have been called.
+      expect(svc.callCount, 0,
+          reason: 'consent gate must block the submit pipeline');
+
+      // Inline consent error widget is now visible.
+      expect(find.byKey(ForFirmsScreenKeys.consentError), findsOneWidget);
+
+      // Confirmation panel must NOT render.
+      expect(find.byKey(ForFirmsScreenKeys.confirmation), findsNothing);
+    });
+
+    testWidgets('consent error clears once the user ticks the box',
+        (tester) async {
+      final svc = _FakeB2BService();
+      await tester.pumpWidget(_wrap(svc));
+      await tester.pumpAndSettle();
+
+      // Fill the form and try to submit without consent → error shows.
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.nameField),
+        'Anna',
+      );
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.emailField),
+        'anna@firm.ee',
+      );
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.firmField),
+        'Firm',
+      );
+      await tester.enterText(
+        find.byKey(ForFirmsScreenKeys.painField),
+        'Lots of pain points across the team.',
+      );
+
+      await tester.ensureVisible(find.byKey(ForFirmsScreenKeys.submit));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ForFirmsScreenKeys.submit));
+      await tester.pumpAndSettle();
+      expect(find.byKey(ForFirmsScreenKeys.consentError), findsOneWidget);
+
+      // Now tick the consent checkbox and re-submit.
+      await tester.tap(find.byKey(ForFirmsScreenKeys.consentCheckbox));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(ForFirmsScreenKeys.submit));
+      await tester.pumpAndSettle();
+
+      // Service got called exactly once, confirmation rendered, error gone.
+      expect(svc.callCount, 1);
+      expect(find.byKey(ForFirmsScreenKeys.confirmation), findsOneWidget);
+    });
+
+    testWidgets('Estonian locale renders Estonian consent copy',
+        (tester) async {
+      await tester.pumpWidget(_wrap(
+        _FakeB2BService(),
+        locale: const Locale('et'),
+      ));
+      await tester.pumpAndSettle();
+      // The Estonian translation uses "nõusoleku" (consent) — pin a
+      // load-bearing substring per locale so a missing translation is
+      // caught immediately.
+      expect(find.textContaining('nõusoleku'), findsOneWidget);
     });
   });
 }

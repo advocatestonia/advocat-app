@@ -570,3 +570,131 @@ Deno.test("PDFP-T86 — index.ts ships the embedding column when persisting", as
   assertStringIncludes(src, "EMBEDDING_DIM");
   assertStringIncludes(src, "1536");
 });
+
+// =============================================================================
+// 10. v2 — partyIsUserAttorney (analyst consilium false-positive fix)
+// =============================================================================
+//
+// v1 fired the attorney_role_in_doc signal on ANY party row whose `role`
+// matched /attorney|advokaat|asianajaja/i. This produced false positives
+// when a court filing or police report names the COUNTERPARTY's lawyer.
+// v2 tightens the detector — see partyIsUserAttorney in pdf-parser/index.ts.
+//
+// We import directly from index.ts. The function is pure (no I/O) so we
+// don't trigger the Deno.serve listener.
+
+// Imported from helpers.ts (NOT index.ts) so we don't boot the serve()
+// listener at test-load time and don't need --allow-net.
+import {
+  DOC_BURST_DAILY_THRESHOLD,
+  partyIsUserAttorney,
+} from "../helpers.ts";
+
+Deno.test("PDFP-T90 — partyIsUserAttorney: explicit is_user_party=true fires", () => {
+  assert(
+    partyIsUserAttorney(
+      { name: "Anna Tamm", role: "attorney", is_user_party: true },
+      null, // email irrelevant when explicit flag is set
+    ),
+  );
+});
+
+Deno.test("PDFP-T91 — partyIsUserAttorney: counterparty attorney does NOT fire (v1 regression)", () => {
+  // v1 bug: this fired the signal. The user uploaded a court filing
+  // naming the OTHER side's attorney; not a B2B intent indicator.
+  assertFalse(
+    partyIsUserAttorney(
+      { name: "Maria Kovacic", role: "attorney" },
+      "client@gmail.com",
+    ),
+  );
+});
+
+Deno.test("PDFP-T92 — partyIsUserAttorney: email-domain match in name fires", () => {
+  // Signing block: "John Doe (john@law-firm.ee), attorney" — domain
+  // match in the party name surfaces the caller.
+  assert(
+    partyIsUserAttorney(
+      { name: "John Doe (john@law-firm.ee)", role: "attorney" },
+      "john@law-firm.ee",
+    ),
+  );
+});
+
+Deno.test("PDFP-T93 — partyIsUserAttorney: non-attorney role never fires", () => {
+  // Even with is_user_party=true, a non-attorney role must not fire.
+  assertFalse(
+    partyIsUserAttorney(
+      { name: "Anna", role: "victim", is_user_party: true },
+      null,
+    ),
+  );
+  assertFalse(
+    partyIsUserAttorney(
+      { name: "Anna", role: "plaintiff", is_user_party: true },
+      null,
+    ),
+  );
+});
+
+Deno.test("PDFP-T94 — partyIsUserAttorney: Finnish + Estonian role keywords accepted", () => {
+  assert(
+    partyIsUserAttorney(
+      { name: "X", role: "asianajaja", is_user_party: true },
+      null,
+    ),
+  );
+  assert(
+    partyIsUserAttorney(
+      { name: "X", role: "advokaat", is_user_party: true },
+      null,
+    ),
+  );
+});
+
+Deno.test("PDFP-T95 — partyIsUserAttorney: missing email + missing flag → false", () => {
+  // The only way to fire without is_user_party is via email-domain
+  // match. With no email, we must return false to avoid v1 false-pos.
+  assertFalse(
+    partyIsUserAttorney(
+      { name: "Someone", role: "attorney" },
+      null,
+    ),
+  );
+  assertFalse(
+    partyIsUserAttorney(
+      { name: "Someone", role: "attorney" },
+      undefined,
+    ),
+  );
+});
+
+Deno.test("PDFP-T96 — partyIsUserAttorney: malformed email is rejected safely", () => {
+  // No @ → no domain → strict-flag-only mode applies.
+  assertFalse(
+    partyIsUserAttorney(
+      { name: "Someone (someone@law.ee)", role: "attorney" },
+      "no-at-sign-here",
+    ),
+  );
+});
+
+Deno.test("PDFP-T97 — v2: DOC_BURST_DAILY_THRESHOLD bumped from 3 to 5", () => {
+  // The analyst consilium asked for 5+ docs/day (instead of 3+) to drop
+  // false positives from curious browsers. Lock the threshold in.
+  assertEquals(DOC_BURST_DAILY_THRESHOLD, 5);
+});
+
+Deno.test("PDFP-T98 — index.ts records doc_burst with v2 score 25", async () => {
+  const src = await Deno.readTextFile(INDEX_PATH);
+  // We pass score: 25 (down from 30 in v1) explicitly so the row in
+  // b2b_signals matches DEFAULT_SCORES.doc_burst_3plus_day.
+  assertStringIncludes(src, 'p_signal_type: "doc_burst_3plus_day"');
+  assertStringIncludes(src, "p_score: 25");
+});
+
+Deno.test("PDFP-T99 — index.ts records attorney_role with v2 score 40", async () => {
+  const src = await Deno.readTextFile(INDEX_PATH);
+  assertStringIncludes(src, 'p_signal_type: "attorney_role_in_doc"');
+  assertStringIncludes(src, "p_score: 40");
+});

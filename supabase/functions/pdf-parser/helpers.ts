@@ -161,6 +161,59 @@ export function extractedToKeyExtractions(
   };
 }
 
+// =============================================================================
+// v2 (2026-05-25) — B2B signal detection helpers, exported for unit testing
+// without booting the serve() listener in index.ts.
+// =============================================================================
+
+/**
+ * Threshold (v2) for the doc_burst signal: how many documents must arrive
+ * in the last 24h before we record. v1 was 3 — too noisy. 5 corresponds
+ * to "real case workload" per the analyst consilium.
+ */
+export const DOC_BURST_DAILY_THRESHOLD = 5;
+
+const ATTORNEY_ROLE_RE = /(attorney|advokaat|asianajaja)/i;
+
+/**
+ * Returns true iff the given party row is BOTH:
+ *   (a) tagged with an attorney-like role, AND
+ *   (b) actually represents the calling user — either via an explicit
+ *       `is_user_party: true` field on the party object (preferred, set
+ *       by future extractor versions), OR via the caller's email domain
+ *       appearing literally in the party's `name` field.
+ *
+ * v1 fired the attorney_role_in_doc signal on ANY party row matching the
+ * role regex — including counterparty attorneys named in a court filing.
+ * v2 tightens to "the user is the attorney".
+ */
+export function partyIsUserAttorney(
+  // deno-lint-ignore no-explicit-any
+  party: Record<string, any>,
+  userEmail: string | null | undefined,
+): boolean {
+  if (!party || typeof party !== "object") return false;
+  const role = typeof party.role === "string" ? party.role : "";
+  if (!ATTORNEY_ROLE_RE.test(role)) return false;
+
+  // (a) explicit user-party flag.
+  if (party.is_user_party === true) return true;
+
+  // (b) email-domain heuristic. Only run when we have a usable email AND
+  //     a non-empty party name. We compare the caller's domain (after the
+  //     @) to substrings of party.name (typed lower-case) so signing
+  //     blocks like "John Doe, attorney (john@law-firm.ee)" match.
+  if (!userEmail) return false;
+  const at = userEmail.lastIndexOf("@");
+  if (at < 0 || at === userEmail.length - 1) return false;
+  const domain = userEmail.slice(at + 1).trim().toLowerCase();
+  if (domain.length === 0) return false;
+
+  const name = typeof party.name === "string" ? party.name.toLowerCase() : "";
+  if (name.length === 0) return false;
+  return name.includes(domain);
+}
+
 /**
  * Base64 encoder — Deno provides btoa, but it can't handle arbitrary bytes
  * without a Latin-1 round-trip. Use a chunked Uint8Array → string → btoa

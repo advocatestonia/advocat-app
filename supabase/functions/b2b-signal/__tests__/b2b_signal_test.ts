@@ -29,11 +29,13 @@ import {
 
 import {
   B2B_MODAL_THRESHOLD,
+  DECAY_HALF_LIFE_DAYS,
   DEFAULT_SCORES,
   extractEmailDomain,
   isAllowedSignalType,
   isLawFirmEmail,
   isLawFirmEmailDomain,
+  RETRIGGER_HIGH_INTENT_SIGNALS,
   SIGNAL_TYPES,
   type SignalType,
 } from "../signals.ts";
@@ -67,6 +69,13 @@ Deno.test("ALLOW-T02 — unknown signal_type is rejected", () => {
   }
 });
 
+Deno.test("ALLOW-T03 — v2 signal types are accepted", () => {
+  // The v2 additions (session_long_business_hours, multi_case_30d) must
+  // be present so the wire-up sites can record them without 400ing.
+  assert(isAllowedSignalType("session_long_business_hours"));
+  assert(isAllowedSignalType("multi_case_30d"));
+});
+
 Deno.test("SCORE-T01 — DEFAULT_SCORES covers every signal type with positive int", () => {
   // DEFAULT_SCORES must be exhaustive — every member of SIGNAL_TYPES needs
   // a default. The TS type system already enforces this at compile time
@@ -81,24 +90,83 @@ Deno.test("SCORE-T01 — DEFAULT_SCORES covers every signal type with positive i
   }
 });
 
-Deno.test("SCORE-T02 — domain signal alone clears the threshold", () => {
-  // The whole design rests on "law-firm domain at signup → modal".
-  // If anyone tunes the score below the threshold this test fires.
+Deno.test("SCORE-T02 — v2: NO single signal (incl. domain) clears the threshold alone", () => {
+  // v2 (2026-05-25) reverses the v1 invariant. The whole point of the
+  // compound trigger is that domain alone cannot trip the modal — the
+  // user must accrue at least one additional in-app signal. The SQL
+  // function enforces this via a `has_other_signal` check; the unit
+  // contract here is that NO single signal default reaches the
+  // threshold by itself.
+  for (const s of SIGNAL_TYPES) {
+    assert(
+      DEFAULT_SCORES[s] < B2B_MODAL_THRESHOLD,
+      `${s} default ${DEFAULT_SCORES[s]} must be < threshold ${B2B_MODAL_THRESHOLD} (v2 compound-trigger rule)`,
+    );
+  }
+});
+
+Deno.test("SCORE-T03 — v2: realistic compound (domain+docx+planner) crosses threshold", () => {
+  // A user who shows up with a law-firm email AND exports DOCX AND uses
+  // legal_planner repeatedly should clearly trip the modal. This locks
+  // the calibration in.
+  const compound = DEFAULT_SCORES.law_firm_email_domain
+    + DEFAULT_SCORES.docx_export
+    + DEFAULT_SCORES.legal_planner_heavy;
   assert(
-    DEFAULT_SCORES.law_firm_email_domain >= B2B_MODAL_THRESHOLD,
-    "law_firm_email_domain default must >= B2B_MODAL_THRESHOLD",
+    compound >= B2B_MODAL_THRESHOLD,
+    `compound score ${compound} must clear threshold ${B2B_MODAL_THRESHOLD}`,
   );
 });
 
-Deno.test("SCORE-T03 — no single non-domain signal clears the threshold alone", () => {
-  // Otherwise a single accidental burst would trip the modal.
-  for (const s of SIGNAL_TYPES) {
-    if (s === "law_firm_email_domain") continue;
-    assert(
-      DEFAULT_SCORES[s] < B2B_MODAL_THRESHOLD,
-      `${s} default ${DEFAULT_SCORES[s]} must be < threshold ${B2B_MODAL_THRESHOLD}`,
-    );
-  }
+Deno.test("SCORE-T04 — v2: pure-domain hit alone does NOT clear threshold", () => {
+  // Specific regression guard for the v1 over-fire bug.
+  assert(
+    DEFAULT_SCORES.law_firm_email_domain < B2B_MODAL_THRESHOLD,
+    "domain alone must NOT trip threshold in v2",
+  );
+});
+
+Deno.test("DECAY-T01 — half-life constant is 14 days", () => {
+  // The SQL migration hard-codes 14.0 in compute_b2b_score. The TS-side
+  // constant must match so off-line score predictions agree with the DB.
+  assertEquals(DECAY_HALF_LIFE_DAYS, 14);
+});
+
+Deno.test("DECAY-T02 — exponential model: a 28-day-old signal weighs ~1/4", () => {
+  // Half-life 14 → 28d is 2 half-lives → 0.25.
+  const daysOld = 28;
+  const effective = Math.pow(0.5, daysOld / DECAY_HALF_LIFE_DAYS);
+  assert(
+    Math.abs(effective - 0.25) < 1e-9,
+    `expected 0.25 weight at 28d, got ${effective}`,
+  );
+});
+
+Deno.test("DECAY-T03 — fresh signal (0 days old) weighs 1.0", () => {
+  const effective = Math.pow(0.5, 0 / DECAY_HALF_LIFE_DAYS);
+  assertEquals(effective, 1.0);
+});
+
+Deno.test("DECAY-T04 — 14-day-old signal weighs exactly 0.5", () => {
+  const effective = Math.pow(0.5, 14 / DECAY_HALF_LIFE_DAYS);
+  assert(Math.abs(effective - 0.5) < 1e-9);
+});
+
+Deno.test("RETRIGGER-T01 — RETRIGGER_HIGH_INTENT_SIGNALS matches SQL migration set", () => {
+  // The v2 migration whitelists exactly these three for the >30d re-arm
+  // branch (docx_export, pro_quota_pressure, multi_case_30d). The TS
+  // constant must mirror it so any short-circuit in the edge fn knows
+  // when a re-arm could fire.
+  assertEquals(RETRIGGER_HIGH_INTENT_SIGNALS.size, 3);
+  assert(RETRIGGER_HIGH_INTENT_SIGNALS.has("docx_export"));
+  assert(RETRIGGER_HIGH_INTENT_SIGNALS.has("pro_quota_pressure"));
+  assert(RETRIGGER_HIGH_INTENT_SIGNALS.has("multi_case_30d"));
+});
+
+Deno.test("RETRIGGER-T02 — domain hit is NOT in the re-arm set", () => {
+  // Domain doesn't change after signup, so the migration explicitly
+  // refuses to re-arm on it. Lock that contract in.
+  assertFalse(RETRIGGER_HIGH_INTENT_SIGNALS.has("law_firm_email_domain"));
 });
 
 // ─── Email domain heuristic ─────────────────────────────────────────────
@@ -240,4 +308,93 @@ Deno.test("CONTRACT-T01 — SIGNAL_TYPES, DEFAULT_SCORES and the migration ENUM 
   const keys = Object.keys(DEFAULT_SCORES).sort();
   const names = [...SIGNAL_TYPES].sort();
   assertEquals(keys, names, "DEFAULT_SCORES keys must equal SIGNAL_TYPES");
+});
+
+// ─── v2 migration source-contract checks ─────────────────────────────────
+//
+// The compound-trigger / decay / re-arm logic lives in SQL (Postgres
+// PL/pgSQL inside record_b2b_signal). We verify the migration FILE
+// contains the load-bearing pieces so a refactor cannot accidentally
+// downgrade the contract. Source-text checks beat nothing for catching
+// "the function still exists but the threshold is back to 100" bugs.
+
+const V2_MIGRATION_PATH = new URL(
+  "../../../migrations/20260525234500_b2b_v2_compound_trigger.sql",
+  import.meta.url,
+);
+
+Deno.test("V2MIG-T01 — threshold is 110 in the v2 migration", async () => {
+  const sql = await Deno.readTextFile(V2_MIGRATION_PATH);
+  assert(
+    sql.includes("v_threshold        constant integer := 110"),
+    "expected `v_threshold ... := 110` in record_b2b_signal v2",
+  );
+});
+
+Deno.test("V2MIG-T02 — compound trigger requires non-domain signal in last 14d", async () => {
+  const sql = await Deno.readTextFile(V2_MIGRATION_PATH);
+  assert(
+    sql.includes(
+      "signal_type <> 'law_firm_email_domain'",
+    ),
+    "compound trigger must exclude domain-only signals",
+  );
+  assert(
+    sql.includes("interval '14 days'"),
+    "compound trigger must use a 14-day lookback window",
+  );
+});
+
+Deno.test("V2MIG-T03 — re-arm path uses 30-day gap + lifetime cap", async () => {
+  const sql = await Deno.readTextFile(V2_MIGRATION_PATH);
+  assert(
+    sql.includes("interval '30 days'"),
+    "re-arm must require a 30-day gap since last shown",
+  );
+  assert(
+    sql.includes("v_retrigger_count < v_lifetime_cap"),
+    "re-arm must respect the lifetime-cap counter",
+  );
+});
+
+Deno.test("V2MIG-T04 — re-arm whitelist exactly matches RETRIGGER_HIGH_INTENT_SIGNALS", async () => {
+  const sql = await Deno.readTextFile(V2_MIGRATION_PATH);
+  // The SQL whitelist must contain ALL three high-intent signals.
+  for (const s of RETRIGGER_HIGH_INTENT_SIGNALS) {
+    assert(sql.includes(`'${s}'`), `re-arm whitelist missing ${s}`);
+  }
+  // Extract the v_high_intent array literal and verify domain is not in it.
+  // (The string 'law_firm_email_domain' DOES appear elsewhere in the file —
+  // inside the compound-trigger exclusion — so we narrow the assertion to
+  // the re-arm whitelist array.)
+  const arrayMatch = sql.match(
+    /v_high_intent\s+constant\s+text\[\]\s*:=\s*array\[([\s\S]*?)\];/,
+  );
+  assert(arrayMatch, "v_high_intent array literal not found in SQL");
+  const arrayBody = arrayMatch![1];
+  assertFalse(
+    arrayBody.includes("law_firm_email_domain"),
+    "re-arm whitelist must NOT include law_firm_email_domain",
+  );
+});
+
+Deno.test("V2MIG-T05 — decay uses 14-day half-life inside compute_b2b_score", async () => {
+  const sql = await Deno.readTextFile(V2_MIGRATION_PATH);
+  // Half-life appears as the divisor inside power(0.5, days/14.0).
+  assert(
+    sql.includes("14.0"),
+    "decay calculation must use 14.0 as the half-life divisor",
+  );
+  assert(
+    sql.includes("power(") && sql.includes("0.5"),
+    "compute_b2b_score must apply an exponential 0.5^x decay",
+  );
+});
+
+Deno.test("V2MIG-T06 — retrigger_count column is added by the migration", async () => {
+  const sql = await Deno.readTextFile(V2_MIGRATION_PATH);
+  assert(
+    sql.includes("b2b_modal_retrigger_count"),
+    "v2 migration must add the lifetime-cap counter column",
+  );
 });

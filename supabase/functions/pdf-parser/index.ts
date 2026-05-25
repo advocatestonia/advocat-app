@@ -54,15 +54,23 @@ import {
   parseExtractedDoc,
 } from "../_shared/pdf_extractor_prompt.ts";
 import {
+  DOC_BURST_DAILY_THRESHOLD,
   encodeBase64,
   extractedToKeyExtractions,
   isImageMime,
   normalizeImageMediaType,
   parseAndValidateBody,
   type PageText,
+  partyIsUserAttorney,
   type RequestBody,
   stitchPages,
 } from "./helpers.ts";
+
+// Re-export the v2 helpers so existing imports of `partyIsUserAttorney`
+// and `DOC_BURST_DAILY_THRESHOLD` from `../index.ts` continue to work
+// after the refactor; tests now import them via `../helpers.ts` directly
+// (which avoids booting the serve() listener at module load time).
+export { DOC_BURST_DAILY_THRESHOLD, partyIsUserAttorney };
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -244,15 +252,33 @@ serve(async (req: Request) => {
     return jsonError(docRow.message, 500);
   }
 
-  // ── B2B signal collection (2026-05-26) ────────────────────────────────
+  // ── B2B signal collection (v2 2026-05-25) ────────────────────────────
   // Fire-and-forget. NEVER block the parse response on a signal write —
   // signals are best-effort lead detection, never a correctness concern.
   // Both checks are gated server-side; the worker is the same service-role
   // admin client we already have.
+  //
+  // v2 passes the caller's email so the `attorney_role_in_doc` detector
+  // can compare the signing-block domain against the user — see
+  // `partyIsUserAttorney`. The lookup is best-effort; a missing email
+  // simply falls back to the strict `is_user_party=true` check.
   try {
+    let userEmail: string | null = null;
+    try {
+      const prof = await admin
+        .from("profiles")
+        .select("email")
+        .eq("id", gate.user.id)
+        .maybeSingle();
+      const e = (prof.data as { email?: string } | null)?.email;
+      if (typeof e === "string" && e.length > 0) userEmail = e;
+    } catch (_) {
+      // Profile lookup failure is benign — fall back to strict-only mode.
+    }
     await recordPdfParserB2bSignals({
       admin,
       userId: gate.user.id,
+      userEmail,
       extracted,
     });
   } catch (e) {
@@ -272,36 +298,46 @@ serve(async (req: Request) => {
 });
 
 // =============================================================================
-// B2B lead detection signals (2026-05-26)
+// B2B lead detection signals (v2 2026-05-25 — analyst consilium refinements)
 // =============================================================================
 //
 // Two signal sources fire from pdf-parser:
 //
-//   1. doc_burst_3plus_day — user has uploaded >=3 documents in last 24h.
+//   1. doc_burst_3plus_day — user has uploaded >= DOC_BURST_DAILY_THRESHOLD
+//      documents in the last 24h. v2 bumped from 3 → 5 to drop false-
+//      positives from curious browsers who upload a few sample files.
 //      Fires AT MOST ONCE per UTC day per user (idempotency: query
 //      b2b_signals for an existing row from `today` before recording).
 //
-//   2. attorney_role_in_doc — the extracted parties array contains anyone
-//      whose role string matches /attorney|advokaat|asianajaja/i. Fires AT
-//      MOST ONCE per 24h per user (same idempotency rule).
+//   2. attorney_role_in_doc — the extracted parties array contains a row
+//      where the CALLER is the attorney/advokaat/asianajaja. v1 fired on
+//      ANY party with that role — which produced false positives when the
+//      uploaded document was a court filing naming the COUNTERPARTY's
+//      attorney. v2 requires either:
+//        (a) the party row carries an explicit `is_user_party=true`
+//            (future signal once the extractor surfaces it), OR
+//        (b) the caller's email domain matches the party `name` field
+//            (defensive heuristic — "John Doe (john@law-firm.ee)" or a
+//            signing block that includes the user's email domain).
+//      Fires AT MOST ONCE per 24h per user (same idempotency rule).
 //
 // Both write via the SECURITY DEFINER RPC `record_b2b_signal`, which also
-// recomputes the rolling 30-day score and flips `b2b_modal_pending` on
-// crossing the threshold.
+// applies decay + compound trigger and toggles `b2b_modal_pending`.
 
 interface RecordPdfParserSignalsArgs {
   // deno-lint-ignore no-explicit-any
   admin: any;
   userId: string;
+  /** Caller's email at signup (or current profile email). Optional — when
+   * absent we fall back to the strict `is_user_party=true` check only. */
+  userEmail?: string | null;
   extracted: ExtractedDoc;
 }
-
-const ATTORNEY_ROLE_RE = /(attorney|advokaat|asianajaja)/i;
 
 export async function recordPdfParserB2bSignals(
   args: RecordPdfParserSignalsArgs,
 ): Promise<void> {
-  // ── 1. doc_burst_3plus_day ────────────────────────────────────────────
+  // ── 1. doc_burst_3plus_day (v2: 5+/day instead of 3+) ─────────────────
   try {
     const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
     const { count } = await args.admin
@@ -309,7 +345,7 @@ export async function recordPdfParserB2bSignals(
       .select("id", { count: "exact", head: true })
       .eq("user_id", args.userId)
       .gte("created_at", since);
-    if ((count ?? 0) >= 3) {
+    if ((count ?? 0) >= DOC_BURST_DAILY_THRESHOLD) {
       // Idempotency: only record once per UTC day per user. The b2b-signal
       // edge fn has its own 1-hour idempotency window, but since we're
       // calling the RPC directly here we re-check the day-bucket inline.
@@ -322,11 +358,19 @@ export async function recordPdfParserB2bSignals(
         .eq("signal_type", "doc_burst_3plus_day")
         .gte("occurred_at", today00.toISOString());
       if ((existing.count ?? 0) === 0) {
+        // v2: pass score=25 (down from 30) so the table stays in sync
+        // with DEFAULT_SCORES.doc_burst_3plus_day. The RPC clamps either
+        // way, but matching the canonical table avoids surprises when
+        // someone reads b2b_signals.score directly.
         await args.admin.rpc("record_b2b_signal", {
           p_user_id: args.userId,
           p_signal_type: "doc_burst_3plus_day",
-          p_score: 30,
-          p_payload: { doc_count_24h: count, source: "pdf-parser" },
+          p_score: 25,
+          p_payload: {
+            doc_count_24h: count,
+            threshold: DOC_BURST_DAILY_THRESHOLD,
+            source: "pdf-parser",
+          },
         });
       }
     }
@@ -336,12 +380,15 @@ export async function recordPdfParserB2bSignals(
     );
   }
 
-  // ── 2. attorney_role_in_doc ───────────────────────────────────────────
+  // ── 2. attorney_role_in_doc (v2: user-party only) ─────────────────────
   try {
-    const hasAttorney = args.extracted.parties.some((p) =>
-      typeof p.role === "string" && ATTORNEY_ROLE_RE.test(p.role)
+    const hasUserAttorney = args.extracted.parties.some((p) =>
+      partyIsUserAttorney(
+        p as unknown as Record<string, unknown>,
+        args.userEmail ?? null,
+      )
     );
-    if (hasAttorney) {
+    if (hasUserAttorney) {
       const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
       const existing = await args.admin
         .from("b2b_signals")
@@ -350,13 +397,18 @@ export async function recordPdfParserB2bSignals(
         .eq("signal_type", "attorney_role_in_doc")
         .gte("occurred_at", since);
       if ((existing.count ?? 0) === 0) {
+        // v2: score 40 (down from 50) — the v2 detector is tighter so
+        // false positives drop naturally. See signals.ts for rationale.
         await args.admin.rpc("record_b2b_signal", {
           p_user_id: args.userId,
           p_signal_type: "attorney_role_in_doc",
-          p_score: 50,
+          p_score: 40,
           p_payload: {
             source: "pdf-parser",
             party_count: args.extracted.parties.length,
+            detection: args.userEmail
+              ? "user_party_or_domain_match"
+              : "user_party_flag_only",
           },
         });
       }

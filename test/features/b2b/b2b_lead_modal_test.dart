@@ -22,7 +22,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:advocat/features/b2b/widgets/b2b_lead_modal.dart';
 
 void main() {
-  group('B2BLeadModal — rendering', () {
+  group('B2BLeadModal — rendering (v2 closed-launch framing)', () {
     testWidgets('renders title + body + both buttons in EN', (tester) async {
       await tester.pumpWidget(
         const MaterialApp(
@@ -41,11 +41,11 @@ void main() {
         find.byKey(const Key('b2b_lead_modal_dismiss')),
         findsOneWidget,
       );
-      // EN title contains the literal "professionally" hook word.
-      expect(
-        find.textContaining('professionally'),
-        findsOneWidget,
-      );
+      // v2 EN copy: closed launch + scarcity framing.
+      expect(find.textContaining('Building Advocat Firm'), findsOneWidget);
+      expect(find.textContaining('limited to 15 firms'), findsOneWidget);
+      // Primary CTA wording — "Tell me more", not "Learn more".
+      expect(find.textContaining('Tell me more'), findsOneWidget);
     });
 
     testWidgets('renders Estonian copy', (tester) async {
@@ -55,7 +55,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.textContaining('professionaalselt'), findsOneWidget);
+      // ET title uses the closed-launch framing.
+      expect(find.textContaining('Ehitame Advocat Firm'), findsOneWidget);
+      expect(find.textContaining('15 bürooga'), findsOneWidget);
     });
 
     testWidgets('renders Russian copy', (tester) async {
@@ -65,7 +67,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.textContaining('профессионально'), findsOneWidget);
+      expect(find.textContaining('Строим Advocat Firm'), findsOneWidget);
+      expect(find.textContaining('Расскажите подробнее'), findsOneWidget);
       expect(find.textContaining('Не сейчас'), findsOneWidget);
     });
 
@@ -76,7 +79,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.textContaining('ammatillisesti'), findsOneWidget);
+      expect(find.textContaining('Rakennamme Advocat Firm'), findsOneWidget);
+      expect(find.textContaining('15 toimistoon'), findsOneWidget);
     });
 
     testWidgets('renders German copy', (tester) async {
@@ -86,7 +90,8 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.textContaining('beruflich'), findsOneWidget);
+      expect(find.textContaining('Wir bauen Advocat Firm'), findsOneWidget);
+      expect(find.textContaining('15 Kanzleien'), findsOneWidget);
     });
 
     testWidgets('unknown locale falls back to EN', (tester) async {
@@ -96,10 +101,11 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.textContaining('professionally'), findsOneWidget);
+      // Falls back to the new EN copy, not the v1 string.
+      expect(find.textContaining('Building Advocat Firm'), findsOneWidget);
     });
 
-    testWidgets('does NOT show prices (no €/€129/per seat in copy)',
+    testWidgets('does NOT show prices (no €/per seat in copy)',
         (tester) async {
       // Spec is explicit: "Do NOT show prices in the modal — just
       // 'let's talk'". Lock that in.
@@ -114,6 +120,34 @@ void main() {
             reason: 'per-seat phrasing leaked into locale=$code');
         expect(find.textContaining('/mo'), findsNothing,
             reason: '/mo phrasing leaked into locale=$code');
+      }
+    });
+
+    testWidgets(
+        'v2: copy avoids the v1 "we noticed you" framing across locales',
+        (tester) async {
+      // v1 used surveilling-sounding phrases ("looks like you're using
+      // Advocat professionally"). v2 reframes around closed launch +
+      // scarcity. Regression guard against re-introducing the old copy.
+      const oldPhrases = <String, List<String>>{
+        'en': ['professionally', 'Looks like'],
+        'et': ['professionaalselt'],
+        'ru': ['профессионально'],
+        'fi': ['ammatillisesti'],
+        'de': ['beruflich'],
+      };
+      for (final entry in oldPhrases.entries) {
+        await tester.pumpWidget(
+          MaterialApp(home: Scaffold(body: B2BLeadModal(locale: entry.key))),
+        );
+        await tester.pumpAndSettle();
+        for (final phrase in entry.value) {
+          expect(
+            find.textContaining(phrase),
+            findsNothing,
+            reason: 'v1 phrase "$phrase" leaked back into ${entry.key}',
+          );
+        }
       }
     });
   });

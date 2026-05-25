@@ -118,6 +118,13 @@ interface ExportPayload {
     subscriptions: unknown[];
   };
   feedback: unknown[];
+  /**
+   * v2 (2026-05-25): B2B silent-signal log. Every behavioural signal we
+   * recorded about the user under the B2B-lead detection program is
+   * personal data under GDPR Art. 4(1) and must be disclosed under Art.
+   * 15(1). Includes `signal_type`, `score`, `payload`, `occurred_at`.
+   */
+  b2b_signals: unknown[];
   audit_log: {
     dsar_requests: unknown[];
   };
@@ -203,6 +210,7 @@ serve(async (req) => {
       subscriptions,
       messageFeedback,
       dsarHistory,
+      b2bSignals,
     ] = await Promise.all([
       sb.from("profiles").select("*").eq("id", userId).maybeSingle()
         .then((r: { data: unknown }) => r.data ?? null),
@@ -241,6 +249,11 @@ serve(async (req) => {
       safeSelect(sb, "subscriptions", "user_id", userId),
       safeSelect(sb, "feedback_buttons", "user_id", userId),
       safeSelect(sb, "dsar_requests", "user_id", userId),
+      // v2 (2026-05-25): include B2B silent-signal log. Read-own via RLS;
+      // service-role read here is identical to what the user could see in
+      // theory (Art. 15(1)) but the table itself is not exposed to the
+      // Flutter client today.
+      safeSelect(sb, "b2b_signals", "user_id", userId),
     ]);
 
     payload = {
@@ -282,6 +295,7 @@ serve(async (req) => {
         subscriptions,
       },
       feedback: messageFeedback,
+      b2b_signals: b2bSignals,
       audit_log: {
         // Include the in-flight row too (Art. 15(1)(c): inform of recipients
         // and storage period — the request itself is also personal data).

@@ -24,11 +24,14 @@
 import {
   assert,
   assertEquals,
+  assertFalse,
   assertMatch,
   assertStringIncludes,
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
 import {
+  buildB2bLeadEmailBody,
+  buildB2bLeadEmailSubject,
   buildTelegramMessage,
   escapeMarkdownV2,
   sanitiseMessage,
@@ -232,9 +235,21 @@ Deno.test("BUILD-T07 — message body cannot break out of quote block via newlin
 // The pure tests above cover the message-composition / escaping halves of
 // each rule. If either side regresses, fix the test first.
 
-// ─── B2B inquiry (2026-05-26) ────────────────────────────────────────────
+// ─── B2B inquiry (v2 2026-05-25 — PII-stripped Telegram) ─────────────────
+//
+// The 6-expert analyst consilium flagged routing PII (email, firm name,
+// team size) through Telegram as a RED regulatory finding. v2 carries
+// the full payload to the founder inbox via Resend instead and uses
+// Telegram only as a notification ping. The contract these tests lock:
+//
+//   * The Telegram payload still includes the `[B2B LEAD]` marker so
+//     founders see something arrived.
+//   * The Telegram payload contains ZERO PII: no email, no firm name,
+//     no team size, no practices, no quoted message body.
+//   * The category line, page URL, language, app version, etc. are
+//     also stripped so the message is purely a "check email" ping.
 
-Deno.test("B2B-T01 — b2bLead title prefix renders as `[B2B LEAD]`", () => {
+Deno.test("B2B-T01 — v2: b2bLead title prefix renders as `[B2B LEAD]`", () => {
   const text = buildTelegramMessage({
     ticketId: "bbbbbbbb-0000-0000-0000-000000000001",
     category: "b2b_inquiry",
@@ -251,14 +266,66 @@ Deno.test("B2B-T01 — b2bLead title prefix renders as `[B2B LEAD]`", () => {
     practices: "dispute, IP",
   });
   // Title prefix uses MarkdownV2-escaped brackets.
-  assertStringIncludes(text, "\\[B2B LEAD\\] New Support Ticket");
-  assertStringIncludes(text, "*Category:* b2b\\_inquiry");
-  assertStringIncludes(text, "*Firm:* Sirel & Partners");
-  assertStringIncludes(text, "*Team size:* 5\\-20");
-  assertStringIncludes(text, "*Practices:* dispute, IP");
+  assertStringIncludes(text, "\\[B2B LEAD\\] New inquiry");
 });
 
-Deno.test("B2B-T02 — non-b2b ticket keeps original 🆘 title", () => {
+Deno.test("B2B-T02 — v2: NO PII leaks into the Telegram payload for B2B leads", () => {
+  // This is the headline regulatory contract: Telegram receives a
+  // PII-FREE ping. If anyone re-introduces firm_name / email / message
+  // body / team_size into the Telegram path this test fires immediately.
+  const text = buildTelegramMessage({
+    ticketId: "bbbbbbbb-0000-0000-0000-000000000099",
+    category: "b2b_inquiry",
+    contactChannel: "in_app",
+    email: "partner@sirel-partners.ee",
+    userId: "uid-b2b",
+    pageUrl: "https://advocat.ee/for-firms.html",
+    language: "et",
+    appVersion: "1.2.0",
+    message: "Confidential intro — we have 8 lawyers and a custom RFP draft.",
+    b2bLead: true,
+    firmName: "Sirel & Partners",
+    teamSize: "5-20",
+    practices: "dispute, IP",
+  });
+  // Each of these would have rendered in v1; v2 forbids them.
+  assertFalse(text.includes("sirel-partners.ee"));
+  assertFalse(text.includes("Sirel & Partners"));
+  assertFalse(text.includes("5-20"));
+  assertFalse(text.includes("dispute, IP"));
+  assertFalse(text.includes("Confidential intro"));
+  assertFalse(text.includes("*Firm:*"));
+  assertFalse(text.includes("*Team size:*"));
+  assertFalse(text.includes("*Practices:*"));
+  assertFalse(text.includes("*User:*"));
+  assertFalse(text.includes("*Message:*"));
+});
+
+Deno.test("B2B-T03 — v2: B2B Telegram ping references the founder email channel", () => {
+  // The ping should tell the founder where to find the details so they
+  // don't sit around wondering. Locks the "aiplacest@gmail.com" hint.
+  const text = buildTelegramMessage({
+    ticketId: "bbbbbbbb-0000-0000-0000-000000000002",
+    category: "b2b_inquiry",
+    contactChannel: "email",
+    email: "anon@law.ee",
+    userId: null,
+    pageUrl: "https://advocat.ee/",
+    language: "en",
+    appVersion: "1.0.0",
+    message: "Curious about pricing for a 12-lawyer firm.",
+    b2bLead: true,
+    firmName: "Acme Legal",
+    teamSize: "10-15",
+    practices: "labor",
+  });
+  // Telegram body must point the reader at the email channel.
+  assertStringIncludes(text, "aiplacest");
+});
+
+Deno.test("B2B-T04 — v2: non-b2b ticket keeps original 🆘 title", () => {
+  // Regression guard: removing the B2B-specific firm/team lines must
+  // not have broken the regular support-ticket path.
   const text = buildTelegramMessage({
     ticketId: "aaaaaaaa-0000-0000-0000-000000000001",
     category: "bug",
@@ -272,54 +339,87 @@ Deno.test("B2B-T02 — non-b2b ticket keeps original 🆘 title", () => {
   });
   assertStringIncludes(text, "🆘 *New Support Ticket*");
   // The B2B prefix MUST NOT appear when b2bLead is unset.
-  assert(!text.includes("[B2B LEAD]"));
-  assert(!text.includes("*Firm:*"));
+  assertFalse(text.includes("[B2B LEAD]"));
+  assertFalse(text.includes("*Firm:*"));
+  // Regular tickets STILL include the message + headers, only B2B is stripped.
+  assertStringIncludes(text, "*Category:* bug");
+  assertStringIncludes(text, ">something broken");
 });
 
-Deno.test("B2B-T03 — empty firm/team/practices fields are silently skipped", () => {
-  const text = buildTelegramMessage({
-    ticketId: "bbbbbbbb-0000-0000-0000-000000000002",
-    category: "b2b_inquiry",
-    contactChannel: "email",
-    email: "anon@law.ee",
-    userId: null,
-    pageUrl: "https://advocat.ee/",
-    language: "en",
-    appVersion: "1.0.0",
-    message: "Curious about pricing for a 12-lawyer firm.",
-    b2bLead: true,
+// ─── v2: B2B-lead email helpers (Resend pipeline) ────────────────────────
+
+const B2B_EMAIL_INPUT = {
+  ticketId: "ccccccc1-0000-0000-0000-000000000001",
+  email: "partner@sirel-partners.ee",
+  firmName: "Sirel & Partners",
+  teamSize: "5-20",
+  practices: "dispute, IP",
+  message: "We have 8 lawyers, want a 3-month pilot. Estonia + Finland.",
+  pageUrl: "https://advocat.ee/for-firms.html",
+  language: "et",
+  ipAddress: "203.0.113.7",
+};
+
+Deno.test("B2BMAIL-T01 — subject follows `[B2B LEAD] <firm> — <team_size> lawyers`", () => {
+  const subj = buildB2bLeadEmailSubject(B2B_EMAIL_INPUT);
+  assertEquals(
+    subj,
+    "[B2B LEAD] Sirel & Partners — 5-20 lawyers",
+  );
+});
+
+Deno.test("B2BMAIL-T02 — subject degrades gracefully when firm is blank", () => {
+  const subj = buildB2bLeadEmailSubject({
+    ...B2B_EMAIL_INPUT,
     firmName: "",
-    teamSize: undefined,
-    practices: "",
+    teamSize: "",
   });
-  // Prefix still wins.
-  assertStringIncludes(text, "\\[B2B LEAD\\]");
-  // No empty Firm:/Team size: lines.
-  assert(!text.includes("*Firm:*"));
-  assert(!text.includes("*Team size:*"));
-  assert(!text.includes("*Practices:*"));
+  // Both halves degrade to a labelled "unknown" so the subject is never
+  // empty — important for inbox triage filters.
+  assertStringIncludes(subj, "[B2B LEAD]");
+  assertStringIncludes(subj, "unknown firm");
+  assertStringIncludes(subj, "team size unknown");
 });
 
-Deno.test("B2B-T04 — injection attempt in firm_name is escaped", () => {
-  const text = buildTelegramMessage({
-    ticketId: "bbbbbbbb-0000-0000-0000-000000000003",
-    category: "b2b_inquiry",
-    contactChannel: "in_app",
-    email: "x@law.fi",
-    userId: "u-b",
-    pageUrl: "https://advocat.ee/",
-    language: "fi",
-    appVersion: "1.0.0",
-    message: "We want a custom plan with SSO.",
-    b2bLead: true,
-    firmName: "*PWN* [link](https://evil)",
-    teamSize: "20+",
-    practices: "* / _ / `",
+Deno.test("B2BMAIL-T03 — body contains every PII field for founder triage", () => {
+  const body = buildB2bLeadEmailBody(B2B_EMAIL_INPUT);
+  // Unlike the Telegram path, the EMAIL path carries the full PII so
+  // the founders can triage without opening a DB console. These are
+  // the fields the regulatory analyst signed off on under DPA with
+  // Resend (EU processor).
+  assertStringIncludes(body, "Ticket ID:");
+  assertStringIncludes(body, B2B_EMAIL_INPUT.ticketId);
+  assertStringIncludes(body, "Sirel & Partners");
+  assertStringIncludes(body, "5-20");
+  assertStringIncludes(body, "dispute, IP");
+  assertStringIncludes(body, "partner@sirel-partners.ee");
+  assertStringIncludes(body, "203.0.113.7");
+  assertStringIncludes(body, "for-firms.html");
+  assertStringIncludes(body, "We have 8 lawyers");
+});
+
+Deno.test("B2BMAIL-T04 — body fills `(not provided)` for missing optional fields", () => {
+  const body = buildB2bLeadEmailBody({
+    ...B2B_EMAIL_INPUT,
+    email: null,
+    teamSize: "",
+    practices: "",
+    ipAddress: null,
   });
-  // Specials in firm name must render literally.
-  assertStringIncludes(text, "*Firm:* \\*PWN\\* \\[link\\]\\(https://evil\\)");
-  assertStringIncludes(text, "*Team size:* 20\\+");
-  assertStringIncludes(text, "*Practices:* \\* / \\_ / \\`");
+  assertStringIncludes(body, "Email:       (not provided)");
+  assertStringIncludes(body, "Team size:   (not provided)");
+  assertStringIncludes(body, "Practices:   (not provided)");
+  assertStringIncludes(body, "IP address:  (not provided)");
+  // Firm name was still passed, so it should NOT collapse.
+  assertStringIncludes(body, "Firm:        Sirel & Partners");
+});
+
+Deno.test("B2BMAIL-T05 — body sanity: ISO timestamp + footer present", () => {
+  const body = buildB2bLeadEmailBody(B2B_EMAIL_INPUT);
+  // ISO date prefix like 2026-05-25 — exact second varies so just check
+  // the YYYY-MM-DD shape lives in the Received line.
+  assertMatch(body, /Received:    \d{4}-\d{2}-\d{2}T/);
+  assertStringIncludes(body, "— Advocat support-ticket pipeline");
 });
 
 Deno.test("CONTRACT-T01 — sanitiseMessage feeds buildTelegramMessage cleanly", () => {
