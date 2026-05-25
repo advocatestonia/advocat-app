@@ -56,6 +56,8 @@ import {
 import {
   encodeBase64,
   extractedToKeyExtractions,
+  isImageMime,
+  normalizeImageMediaType,
   parseAndValidateBody,
   type PageText,
   type RequestBody,
@@ -79,6 +81,11 @@ const STORAGE_BUCKET = "case-documents";
 /** Hard cap on a single PDF body. 50 MB blocks adversarial uploads while
  * letting realistic 100-page legal scans (≈20-30 MB) through. */
 const MAX_PDF_BYTES = 50 * 1024 * 1024;
+
+/** Hard cap on a single image body. Anthropic Vision accepts up to ~5 MB
+ * decoded per image; phone snaps are 2-6 MB. 10 MB leaves headroom for
+ * HEIC originals while still rejecting adversarial gigabyte uploads. */
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
 /** Vision per-page prompt — the same wording the spec dictates. */
 const VISION_OCR_PROMPT =
@@ -138,6 +145,9 @@ serve(async (req: Request) => {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
+  const isImagePath = isImageMime(body.mime_type);
+  const maxBytes = isImagePath ? MAX_IMAGE_BYTES : MAX_PDF_BYTES;
+
   let pdfBytes: Uint8Array;
   try {
     const { data, error } = await admin.storage
@@ -147,8 +157,13 @@ serve(async (req: Request) => {
       return jsonError(`Storage download failed: ${error?.message ?? "no data"}`, 404);
     }
     const buf = await data.arrayBuffer();
-    if (buf.byteLength > MAX_PDF_BYTES) {
-      return jsonError("PDF too large (max 50 MB)", 413);
+    if (buf.byteLength > maxBytes) {
+      return jsonError(
+        isImagePath
+          ? "Image too large (max 10 MB)"
+          : "PDF too large (max 50 MB)",
+        413,
+      );
     }
     pdfBytes = new Uint8Array(buf);
   } catch (e) {
@@ -156,9 +171,18 @@ serve(async (req: Request) => {
   }
 
   // ── 4-5. Extract text + Vision fallback + per-page lang. ─────────────────
+  // Images skip pdfjs entirely and go straight to Vision OCR as a single
+  // synthetic "page". The rest of the pipeline (Sonnet structured
+  // extraction + embedding + upsert) is identical to the PDF path.
   let pipeline: ParsePipelineResult;
   try {
-    pipeline = await runParsePipeline(pdfBytes, CLAUDE_API_KEY);
+    pipeline = isImagePath
+      ? await runImageOcrPipeline(
+          pdfBytes,
+          CLAUDE_API_KEY,
+          normalizeImageMediaType(body.mime_type),
+        )
+      : await runParsePipeline(pdfBytes, CLAUDE_API_KEY);
   } catch (e) {
     const msg = String(e instanceof Error ? e.message : e);
     if (msg.startsWith("too_long:")) {
@@ -174,7 +198,10 @@ serve(async (req: Request) => {
       });
     }
     console.error(`pdf-parser: pipeline failed: ${msg.slice(0, 300)}`);
-    return jsonError("PDF could not be parsed", 502);
+    return jsonError(
+      isImagePath ? "Image could not be parsed" : "PDF could not be parsed",
+      502,
+    );
   }
 
   if (!pipeline.readable) {
@@ -319,6 +346,54 @@ export async function runParsePipeline(
 }
 
 /**
+ * Image-path pipeline: a JPEG/PNG/HEIC/WebP upload is treated as a single
+ * page. We send the bytes straight to Claude Vision with the appropriate
+ * media_type and wrap the OCR output in the same [ParsePipelineResult]
+ * shape the PDF path returns so the downstream steps (Sonnet structured
+ * extraction, embedding, upsert) are agnostic to the source format.
+ *
+ * Throws (caller maps to HTTP):
+ *   * `scan_too_long` is impossible for images (always 1 page).
+ *   * On Vision failure: caller logs and returns a 502.
+ * Empty OCR → `readable: false`, mirroring the PDF "unreadable" branch.
+ */
+export async function runImageOcrPipeline(
+  imageBytes: Uint8Array,
+  claudeKey: string,
+  mediaType: string,
+): Promise<ParsePipelineResult> {
+  let ocrText = "";
+  try {
+    const out = await runVisionOcrOnPage(imageBytes, claudeKey, mediaType);
+    ocrText = out.trim();
+  } catch (e) {
+    console.warn(
+      `pdf-parser: vision OCR (image) failed: ${String(e).slice(0, 200)}`,
+    );
+  }
+
+  const page: PageText = {
+    page: 1,
+    text: ocrText,
+    source: ocrText.length > 0 ? "vision" : "empty",
+  };
+  const finalPages: PageText[] = [page];
+  const parsedText = stitchPages(finalPages);
+  const pagesLang: LangCode[] = [
+    ocrText.length > 0 ? detectPageLang(ocrText) : "other",
+  ];
+  const readable = ocrText.length >= PDF_VISION_MIN_USABLE_CHARS;
+
+  return {
+    pages: finalPages,
+    parsed_text: parsedText,
+    pages_lang: pagesLang,
+    readable,
+    used_vision: ocrText.length > 0,
+  };
+}
+
+/**
  * Dynamic loader for pdfjs-dist. Indirected through `Function('return import(...)')`
  * so the static dependency graph contains no `npm:` specifier — local
  * `deno check` can type-check the file without installing pdfjs, while the
@@ -428,11 +503,12 @@ async function renderPageToPng(
 // =============================================================================
 
 async function runVisionOcrOnPage(
-  pngBytes: Uint8Array,
+  imageBytes: Uint8Array,
   apiKey: string,
+  mediaType: string = "image/png",
 ): Promise<string> {
   // Encode bytes to base64 for the Anthropic media block.
-  const base64 = encodeBase64(pngBytes);
+  const base64 = encodeBase64(imageBytes);
   const reqBody = {
     model: VISION_MODEL,
     max_tokens: 4_000,
@@ -443,7 +519,7 @@ async function runVisionOcrOnPage(
         content: [
           {
             type: "image",
-            source: { type: "base64", media_type: "image/png", data: base64 },
+            source: { type: "base64", media_type: mediaType, data: base64 },
           },
           { type: "text", text: VISION_OCR_PROMPT },
         ],

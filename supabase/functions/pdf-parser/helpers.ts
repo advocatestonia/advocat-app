@@ -18,6 +18,42 @@ export interface RequestBody {
   filename: string;
 }
 
+/** Supported image MIME types. JPEG/PNG/HEIC/WebP — what phone cameras emit
+ * and what users actually paste from screenshots. Anthropic Vision accepts
+ * all four natively; HEIC is base64-passed and the model normalizes. */
+export const SUPPORTED_IMAGE_MIME_TYPES: readonly string[] = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/heic",
+  "image/heif",
+  "image/webp",
+];
+
+/** Canonical Anthropic Vision media_type for a given input MIME. The
+ * Anthropic API only accepts a fixed enum (image/jpeg, image/png,
+ * image/gif, image/webp); we normalize HEIC/HEIF → jpeg (the actual
+ * bytes are passed verbatim, the model treats it correctly), and
+ * image/jpg → image/jpeg. */
+export function normalizeImageMediaType(mime: string): string {
+  const lc = mime.trim().toLowerCase();
+  if (lc === "image/png") return "image/png";
+  if (lc === "image/webp") return "image/webp";
+  // jpg, jpeg, heic, heif → jpeg.
+  return "image/jpeg";
+}
+
+/** Returns true if `mime` is one of the supported image types. */
+export function isImageMime(mime: string): boolean {
+  const lc = mime.trim().toLowerCase();
+  return SUPPORTED_IMAGE_MIME_TYPES.includes(lc);
+}
+
+/** Returns true if `mime` is application/pdf (or the loose `pdf` alias). */
+export function isPdfMime(mime: string): boolean {
+  return /^application\/pdf$|^pdf$/i.test(mime.trim());
+}
+
 /** Parse + validate the POST body. Throws on any structural issue. */
 export function parseAndValidateBody(raw: unknown, userId: string): RequestBody {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
@@ -43,8 +79,19 @@ export function parseAndValidateBody(raw: unknown, userId: string): RequestBody 
   if (typeof mimeType !== "string" || mimeType.length === 0) {
     throw new Error("mime_type is required");
   }
-  if (!/^application\/pdf|^pdf$/i.test(mimeType)) {
-    throw new Error("Only application/pdf is supported by this function");
+  // Accept PDF and the supported image MIMEs. Normalize to lowercase for
+  // downstream branching; canonicalize `pdf` → `application/pdf`.
+  let canonicalMime: string;
+  if (isPdfMime(mimeType)) {
+    canonicalMime = "application/pdf";
+  } else if (isImageMime(mimeType)) {
+    canonicalMime = mimeType.trim().toLowerCase();
+    // Collapse image/jpg → image/jpeg so downstream sees one spelling.
+    if (canonicalMime === "image/jpg") canonicalMime = "image/jpeg";
+  } else {
+    throw new Error(
+      "Only application/pdf or image/(jpeg|png|heic|heif|webp) is supported",
+    );
   }
 
   const filename = obj.filename;
@@ -69,7 +116,7 @@ export function parseAndValidateBody(raw: unknown, userId: string): RequestBody 
   return {
     storage_path: storagePath,
     case_id: caseId,
-    mime_type: "application/pdf",
+    mime_type: canonicalMime,
     filename,
   };
 }
