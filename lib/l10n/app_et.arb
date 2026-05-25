@@ -386,6 +386,38 @@
     },
     "caseCreationComingSoon": "Eeltäidetud andmetega juhtumi loomine peagi",
     "caseInfoUpdated": "Juhtumi teave viimati uuendatud.",
+    "noEventsForFilter": "Selle filtriga ei leitud sündmusi",
+    "timelineFilterAll": "Kõik",
+    "timelineFilterEmails": "E-kirjad",
+    "timelineFilterConsilium": "AI otsused",
+    "timelineFilterDeadlines": "Tähtajad",
+    "timelineFilterNotes": "Märkmed",
+    "timelineEventEmailIn": "Saabunud e-kiri",
+    "timelineEventEmailOut": "Saadetud e-kiri",
+    "timelineEventConsiliumDecision": "AI otsus",
+    "timelineEventDeadlineSet": "Tähtaeg",
+    "timelineEventDocUploaded": "Dokument",
+    "timelineEventPhaseChange": "Faasimuutus",
+    "timelineEventManualNote": "Märkus",
+    "timelineJustNow": "Just nüüd",
+    "timelineMinutesAgo": "{count, plural, =1{1 minut tagasi} other{{count} minutit tagasi}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, =1{1 tund tagasi} other{{count} tundi tagasi}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, =1{1 päev tagasi} other{{count} päeva tagasi}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
     "caseSummaryCopied": "Juhtumi kokkuvõte kopeeritud",
     "caseTimeline": "Juhtumi ajajoon",
     "changesSaved": "Muudatused salvestatud",
@@ -1263,6 +1295,8 @@
     "inboxConfirmSendBody": "Advocat saadab AI ettevalmistatud vastuse sinu ühendatud Gmaili kaudu. Saad sisu vaadata järgmisel ekraanil.",
     "inboxSendButton": "Saada",
     "inboxSentToast": "Saadetud.",
+    "inboxAlreadySentToast": "Juba saadetud.",
+    "inboxSendErrorToast": "Vastust ei õnnestunud saata. Vajutage uuesti.",
     "inboxSnoozedToast": "Edasi lükatud 24 tunniks.",
     "inboxArchivedToast": "Arhiveeritud.",
     "inboxDraftLoadError": "Mustandit ei õnnestunud laadida.",
@@ -1283,6 +1317,47 @@
                 "type": "int"
             }
         }
+    },
+    "parallelActionsHeadline": "Konsiilium soovitab {count} paralleelset tegevust",
+    "@parallelActionsHeadline": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "parallelActionsApproveAll": "Kinnita kõik ja saada",
+    "parallelActionsApproveSelected": "Kinnita {count} / {total}",
+    "@parallelActionsApproveSelected": {
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "parallelActionsConfirmTitle": "Saada {count} e-kirja?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsConfirmBody": "Advocat saadab {count} valmis vastust teie ühendatud Gmaili kaudu. Iga kiri saadetakse iseseisvalt — kui üks ebaõnnestub, teised lähevad ikka teele.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsSentToast": "Saadetud: {count}.",
+    "@parallelActionsSentToast": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsPartialFailureToast": "Saadetud: {sent}, ebaõnnestus: {failed}.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": { "type": "int" },
+            "failed": { "type": "int" }
+        }
+    },
+    "parallelActionsKindReply": "vastus",
+    "parallelActionsKindNew": "uus",
+    "parallelActionsCheckboxSelected": "Tegevus valitud",
+    "parallelActionsCheckboxUnselected": "Tegevus pole valitud",
+    "parallelActionsCitationCount": "{count} viidet",
+    "@parallelActionsCitationCount": {
+        "placeholders": { "count": { "type": "int" } }
     },
     "workspaceTabOverview": "Ülevaade",
     "workspaceTabChat": "Vestlus",

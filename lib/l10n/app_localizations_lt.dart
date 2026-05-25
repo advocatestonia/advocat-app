@@ -1223,6 +1223,81 @@ class AppLocalizationsLt extends AppLocalizations {
   String get caseInfoUpdated => 'Bylos informacija paskutinį kartą atnaujinta.';
 
   @override
+  String get noEventsForFilter => 'No events match this filter';
+
+  @override
+  String get timelineFilterAll => 'All';
+
+  @override
+  String get timelineFilterEmails => 'Emails';
+
+  @override
+  String get timelineFilterConsilium => 'AI decisions';
+
+  @override
+  String get timelineFilterDeadlines => 'Deadlines';
+
+  @override
+  String get timelineFilterNotes => 'Notes';
+
+  @override
+  String get timelineEventEmailIn => 'Email received';
+
+  @override
+  String get timelineEventEmailOut => 'Email sent';
+
+  @override
+  String get timelineEventConsiliumDecision => 'AI decision';
+
+  @override
+  String get timelineEventDeadlineSet => 'Deadline';
+
+  @override
+  String get timelineEventDocUploaded => 'Document';
+
+  @override
+  String get timelineEventPhaseChange => 'Phase change';
+
+  @override
+  String get timelineEventManualNote => 'Note';
+
+  @override
+  String get timelineJustNow => 'Just now';
+
+  @override
+  String timelineMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutes ago',
+      one: '1 minute ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count hours ago',
+      one: '1 hour ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days ago',
+      one: '1 day ago',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get documentAnalysis => 'Dokumento analizė';
 
   @override
@@ -3202,6 +3277,12 @@ class AppLocalizationsLt extends AppLocalizations {
   String get inboxSentToast => 'Sent.';
 
   @override
+  String get inboxAlreadySentToast => 'Already sent.';
+
+  @override
+  String get inboxSendErrorToast => 'Could not send the reply. Tap retry.';
+
+  @override
   String get inboxSnoozedToast => 'Snoozed for 24h.';
 
   @override
@@ -3224,6 +3305,56 @@ class AppLocalizationsLt extends AppLocalizations {
   @override
   String inboxDeadlineOverdue(int days) {
     return 'overdue ${days}d';
+  }
+
+  @override
+  String parallelActionsHeadline(int count) {
+    return 'Consilium recommends $count parallel actions';
+  }
+
+  @override
+  String get parallelActionsApproveAll => 'Approve All & Send';
+
+  @override
+  String parallelActionsApproveSelected(int count, int total) {
+    return 'Approve $count of $total';
+  }
+
+  @override
+  String parallelActionsConfirmTitle(int count) {
+    return 'Send $count emails?';
+  }
+
+  @override
+  String parallelActionsConfirmBody(int count) {
+    return 'Advocat will dispatch $count prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.';
+  }
+
+  @override
+  String parallelActionsSentToast(int count) {
+    return '$count sent.';
+  }
+
+  @override
+  String parallelActionsPartialFailureToast(int sent, int failed) {
+    return '$sent sent, $failed failed.';
+  }
+
+  @override
+  String get parallelActionsKindReply => 'reply';
+
+  @override
+  String get parallelActionsKindNew => 'new';
+
+  @override
+  String get parallelActionsCheckboxSelected => 'Action selected';
+
+  @override
+  String get parallelActionsCheckboxUnselected => 'Action not selected';
+
+  @override
+  String parallelActionsCitationCount(int count) {
+    return '$count cit';
   }
 
   @override
@@ -3889,4 +4020,8 @@ class AppLocalizationsLt extends AppLocalizations {
   String consiliumExpertsDisagree(int count) {
     return '$count ekspertai nesutinka';
   }
+
+  @override
+  String get consiliumDisclaimer =>
+      'DI agentai, ne žmonės teisininkai. Svarbius sprendimus patikrinkite su licencijuotu advokatu.';
 }

@@ -493,6 +493,38 @@
         }
     },
     "caseInfoUpdated": "Case information was last updated.",
+    "noEventsForFilter": "No events match this filter",
+    "timelineFilterAll": "All",
+    "timelineFilterEmails": "Emails",
+    "timelineFilterConsilium": "AI decisions",
+    "timelineFilterDeadlines": "Deadlines",
+    "timelineFilterNotes": "Notes",
+    "timelineEventEmailIn": "Email received",
+    "timelineEventEmailOut": "Email sent",
+    "timelineEventConsiliumDecision": "AI decision",
+    "timelineEventDeadlineSet": "Deadline",
+    "timelineEventDocUploaded": "Document",
+    "timelineEventPhaseChange": "Phase change",
+    "timelineEventManualNote": "Note",
+    "timelineJustNow": "Just now",
+    "timelineMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
     "documentAnalysis": "Document Analysis",
     "exportAsPdf": "Export as PDF",
     "pdfExportComingSoon": "Export as PDF",
@@ -1284,6 +1316,8 @@
     "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
     "inboxSendButton": "Send",
     "inboxSentToast": "Sent.",
+    "inboxAlreadySentToast": "Already sent.",
+    "inboxSendErrorToast": "Could not send the reply. Tap retry.",
     "inboxSnoozedToast": "Snoozed for 24h.",
     "inboxArchivedToast": "Archived.",
     "inboxDraftLoadError": "Could not load draft.",
@@ -1304,6 +1338,55 @@
                 "type": "int"
             }
         }
+    },
+    "parallelActionsHeadline": "Consilium recommends {count} parallel actions",
+    "@parallelActionsHeadline": {
+        "description": "Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.",
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "parallelActionsApproveAll": "Approve All & Send",
+    "@parallelActionsApproveAll": {
+        "description": "Primary button when every action is checked."
+    },
+    "parallelActionsApproveSelected": "Approve {count} of {total}",
+    "@parallelActionsApproveSelected": {
+        "description": "Primary button when only a subset of actions is checked.",
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "parallelActionsConfirmTitle": "Send {count} emails?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsConfirmBody": "Advocat will dispatch {count} prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsSentToast": "{count} sent.",
+    "@parallelActionsSentToast": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsPartialFailureToast": "{sent} sent, {failed} failed.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": { "type": "int" },
+            "failed": { "type": "int" }
+        }
+    },
+    "parallelActionsKindReply": "reply",
+    "parallelActionsKindNew": "new",
+    "parallelActionsCheckboxSelected": "Action selected",
+    "parallelActionsCheckboxUnselected": "Action not selected",
+    "parallelActionsCitationCount": "{count} cit",
+    "@parallelActionsCitationCount": {
+        "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
+        "placeholders": { "count": { "type": "int" } }
     },
     "workspaceTabOverview": "Overview",
     "workspaceTabChat": "Chat",

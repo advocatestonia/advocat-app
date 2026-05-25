@@ -1217,6 +1217,87 @@ class AppLocalizationsRu extends AppLocalizations {
   String get caseInfoUpdated => 'Информация по делу обновлена.';
 
   @override
+  String get noEventsForFilter => 'Нет событий по этому фильтру';
+
+  @override
+  String get timelineFilterAll => 'Все';
+
+  @override
+  String get timelineFilterEmails => 'Письма';
+
+  @override
+  String get timelineFilterConsilium => 'Решения AI';
+
+  @override
+  String get timelineFilterDeadlines => 'Сроки';
+
+  @override
+  String get timelineFilterNotes => 'Заметки';
+
+  @override
+  String get timelineEventEmailIn => 'Входящее письмо';
+
+  @override
+  String get timelineEventEmailOut => 'Отправленное письмо';
+
+  @override
+  String get timelineEventConsiliumDecision => 'Решение AI';
+
+  @override
+  String get timelineEventDeadlineSet => 'Срок';
+
+  @override
+  String get timelineEventDocUploaded => 'Документ';
+
+  @override
+  String get timelineEventPhaseChange => 'Смена фазы';
+
+  @override
+  String get timelineEventManualNote => 'Заметка';
+
+  @override
+  String get timelineJustNow => 'только что';
+
+  @override
+  String timelineMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count минут назад',
+      many: '$count минут назад',
+      few: '$count минуты назад',
+      one: '1 минуту назад',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count часов назад',
+      many: '$count часов назад',
+      few: '$count часа назад',
+      one: '1 час назад',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дней назад',
+      many: '$count дней назад',
+      few: '$count дня назад',
+      one: '1 день назад',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get documentAnalysis => 'Анализ документа';
 
   @override
@@ -3194,6 +3275,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get inboxSentToast => 'Отправлено.';
 
   @override
+  String get inboxAlreadySentToast => 'Уже отправлено.';
+
+  @override
+  String get inboxSendErrorToast =>
+      'Не удалось отправить ответ. Нажмите «повторить».';
+
+  @override
   String get inboxSnoozedToast => 'Отложено на 24 часа.';
 
   @override
@@ -3216,6 +3304,56 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String inboxDeadlineOverdue(int days) {
     return 'просрочено на $days дн.';
+  }
+
+  @override
+  String parallelActionsHeadline(int count) {
+    return 'Консилиум рекомендует $count параллельных действия';
+  }
+
+  @override
+  String get parallelActionsApproveAll => 'Подтвердить все и отправить';
+
+  @override
+  String parallelActionsApproveSelected(int count, int total) {
+    return 'Подтвердить $count из $total';
+  }
+
+  @override
+  String parallelActionsConfirmTitle(int count) {
+    return 'Отправить $count писем?';
+  }
+
+  @override
+  String parallelActionsConfirmBody(int count) {
+    return 'Advocat отправит $count подготовленных ответов через ваш подключённый Gmail. Каждое письмо отправляется независимо — если одно не пройдёт, остальные всё равно уйдут.';
+  }
+
+  @override
+  String parallelActionsSentToast(int count) {
+    return 'Отправлено: $count.';
+  }
+
+  @override
+  String parallelActionsPartialFailureToast(int sent, int failed) {
+    return 'Отправлено: $sent, не удалось: $failed.';
+  }
+
+  @override
+  String get parallelActionsKindReply => 'ответ';
+
+  @override
+  String get parallelActionsKindNew => 'новое';
+
+  @override
+  String get parallelActionsCheckboxSelected => 'Действие выбрано';
+
+  @override
+  String get parallelActionsCheckboxUnselected => 'Действие не выбрано';
+
+  @override
+  String parallelActionsCitationCount(int count) {
+    return '$count цит.';
   }
 
   @override
@@ -3888,4 +4026,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String consiliumExpertsDisagree(int count) {
     return '$count экспертов не согласны';
   }
+
+  @override
+  String get consiliumDisclaimer =>
+      'ИИ-агенты, не люди-юристы. Проверьте важные решения с лицензированным адвокатом.';
 }

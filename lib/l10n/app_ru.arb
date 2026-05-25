@@ -486,6 +486,38 @@
         }
     },
     "caseInfoUpdated": "Информация по делу обновлена.",
+    "noEventsForFilter": "Нет событий по этому фильтру",
+    "timelineFilterAll": "Все",
+    "timelineFilterEmails": "Письма",
+    "timelineFilterConsilium": "Решения AI",
+    "timelineFilterDeadlines": "Сроки",
+    "timelineFilterNotes": "Заметки",
+    "timelineEventEmailIn": "Входящее письмо",
+    "timelineEventEmailOut": "Отправленное письмо",
+    "timelineEventConsiliumDecision": "Решение AI",
+    "timelineEventDeadlineSet": "Срок",
+    "timelineEventDocUploaded": "Документ",
+    "timelineEventPhaseChange": "Смена фазы",
+    "timelineEventManualNote": "Заметка",
+    "timelineJustNow": "только что",
+    "timelineMinutesAgo": "{count, plural, =1{1 минуту назад} few{{count} минуты назад} many{{count} минут назад} other{{count} минут назад}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, =1{1 час назад} few{{count} часа назад} many{{count} часов назад} other{{count} часов назад}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, =1{1 день назад} few{{count} дня назад} many{{count} дней назад} other{{count} дней назад}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
     "documentAnalysis": "Анализ документа",
     "exportAsPdf": "Экспорт в PDF",
     "pdfExportComingSoon": "Экспорт в PDF скоро будет доступен",
@@ -1263,6 +1295,8 @@
     "inboxConfirmSendBody": "Advocat отправит подготовленный AI ответ через подключённый Gmail. Вы ещё сможете просмотреть текст на следующем экране.",
     "inboxSendButton": "Отправить",
     "inboxSentToast": "Отправлено.",
+    "inboxAlreadySentToast": "Уже отправлено.",
+    "inboxSendErrorToast": "Не удалось отправить ответ. Нажмите «повторить».",
     "inboxSnoozedToast": "Отложено на 24 часа.",
     "inboxArchivedToast": "В архиве.",
     "inboxDraftLoadError": "Не удалось загрузить черновик.",
@@ -1283,6 +1317,47 @@
                 "type": "int"
             }
         }
+    },
+    "parallelActionsHeadline": "Консилиум рекомендует {count} параллельных действия",
+    "@parallelActionsHeadline": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "parallelActionsApproveAll": "Подтвердить все и отправить",
+    "parallelActionsApproveSelected": "Подтвердить {count} из {total}",
+    "@parallelActionsApproveSelected": {
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "parallelActionsConfirmTitle": "Отправить {count} писем?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsConfirmBody": "Advocat отправит {count} подготовленных ответов через ваш подключённый Gmail. Каждое письмо отправляется независимо — если одно не пройдёт, остальные всё равно уйдут.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsSentToast": "Отправлено: {count}.",
+    "@parallelActionsSentToast": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsPartialFailureToast": "Отправлено: {sent}, не удалось: {failed}.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": { "type": "int" },
+            "failed": { "type": "int" }
+        }
+    },
+    "parallelActionsKindReply": "ответ",
+    "parallelActionsKindNew": "новое",
+    "parallelActionsCheckboxSelected": "Действие выбрано",
+    "parallelActionsCheckboxUnselected": "Действие не выбрано",
+    "parallelActionsCitationCount": "{count} цит.",
+    "@parallelActionsCitationCount": {
+        "placeholders": { "count": { "type": "int" } }
     },
     "workspaceTabOverview": "Обзор",
     "workspaceTabChat": "Чат",

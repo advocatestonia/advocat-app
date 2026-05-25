@@ -474,6 +474,38 @@
         }
     },
     "caseInfoUpdated": "Asian tiedot päivitettiin viimeksi.",
+    "noEventsForFilter": "Tällä suodattimella ei ole tapahtumia",
+    "timelineFilterAll": "Kaikki",
+    "timelineFilterEmails": "Sähköpostit",
+    "timelineFilterConsilium": "AI-päätökset",
+    "timelineFilterDeadlines": "Määräajat",
+    "timelineFilterNotes": "Muistiinpanot",
+    "timelineEventEmailIn": "Saapunut sähköposti",
+    "timelineEventEmailOut": "Lähetetty sähköposti",
+    "timelineEventConsiliumDecision": "AI-päätös",
+    "timelineEventDeadlineSet": "Määräaika",
+    "timelineEventDocUploaded": "Asiakirja",
+    "timelineEventPhaseChange": "Vaiheen muutos",
+    "timelineEventManualNote": "Muistiinpano",
+    "timelineJustNow": "juuri nyt",
+    "timelineMinutesAgo": "{count, plural, =1{1 minuutti sitten} other{{count} minuuttia sitten}}",
+    "@timelineMinutesAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineHoursAgo": "{count, plural, =1{1 tunti sitten} other{{count} tuntia sitten}}",
+    "@timelineHoursAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "timelineDaysAgo": "{count, plural, =1{1 päivä sitten} other{{count} päivää sitten}}",
+    "@timelineDaysAgo": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
     "documentAnalysis": "Asiakirja-analyysi",
     "exportAsPdf": "Vie PDF-tiedostona",
     "pdfExportComingSoon": "PDF-vienti tulossa pian",
@@ -1263,6 +1295,8 @@
     "inboxConfirmSendBody": "Advocat lähettää AI:n valmisteleman vastauksen yhdistetyn Gmail-tilisi kautta. Voit vielä tarkistaa sisällön seuraavassa näkymässä.",
     "inboxSendButton": "Lähetä",
     "inboxSentToast": "Lähetetty.",
+    "inboxAlreadySentToast": "Jo lähetetty.",
+    "inboxSendErrorToast": "Vastauksen lähetys epäonnistui. Yritä uudelleen.",
     "inboxSnoozedToast": "Torkku 24 tuntia.",
     "inboxArchivedToast": "Arkistoitu.",
     "inboxDraftLoadError": "Luonnoksen lataaminen epäonnistui.",
@@ -1283,6 +1317,47 @@
                 "type": "int"
             }
         }
+    },
+    "parallelActionsHeadline": "Konsiilio suosittelee {count} rinnakkaista toimenpidettä",
+    "@parallelActionsHeadline": {
+        "placeholders": {
+            "count": { "type": "int" }
+        }
+    },
+    "parallelActionsApproveAll": "Hyväksy kaikki ja lähetä",
+    "parallelActionsApproveSelected": "Hyväksy {count} / {total}",
+    "@parallelActionsApproveSelected": {
+        "placeholders": {
+            "count": { "type": "int" },
+            "total": { "type": "int" }
+        }
+    },
+    "parallelActionsConfirmTitle": "Lähetetäänkö {count} sähköpostia?",
+    "@parallelActionsConfirmTitle": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsConfirmBody": "Advocat lähettää {count} valmista vastausta yhdistetyn Gmailisi kautta. Jokainen lähetetään itsenäisesti — jos yksi epäonnistuu, muut menevät silti.",
+    "@parallelActionsConfirmBody": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsSentToast": "Lähetetty: {count}.",
+    "@parallelActionsSentToast": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "parallelActionsPartialFailureToast": "Lähetetty: {sent}, epäonnistui: {failed}.",
+    "@parallelActionsPartialFailureToast": {
+        "placeholders": {
+            "sent": { "type": "int" },
+            "failed": { "type": "int" }
+        }
+    },
+    "parallelActionsKindReply": "vastaus",
+    "parallelActionsKindNew": "uusi",
+    "parallelActionsCheckboxSelected": "Toiminto valittu",
+    "parallelActionsCheckboxUnselected": "Toimintoa ei ole valittu",
+    "parallelActionsCitationCount": "{count} viitettä",
+    "@parallelActionsCitationCount": {
+        "placeholders": { "count": { "type": "int" } }
     },
     "workspaceTabOverview": "Yleiskatsaus",
     "workspaceTabChat": "Keskustelu",

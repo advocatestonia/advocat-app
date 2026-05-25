@@ -42,7 +42,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../services/assistant_tools.dart';
 import '../../../services/supabase_service.dart';
 import '../models/inbox_severity.dart';
 import '../models/inbox_thread.dart' show InboxDeadline, InboxThread;
@@ -87,7 +86,6 @@ class _TriageCardState extends ConsumerState<TriageCard>
   Future<void> _onApproveSend() async {
     final l = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
-    final tools = ref.read(assistantToolsProvider);
     final notifier = ref.read(inboxProvider.notifier);
 
     // Confirm modal — same pattern as other approval flows in the app.
@@ -116,27 +114,45 @@ class _TriageCardState extends ConsumerState<TriageCard>
         false;
     if (!confirmed) return;
 
-    final res = await tools.execute('approve_send_draft', {
-      'triage_id': widget.thread.triageId,
-    });
+    // D6 — call email-send via the inbox provider. Provider returns a
+    // structured result so we can surface a retry banner on failure
+    // without re-implementing the edge-function plumbing here.
+    final res = await notifier.approveAndSend(widget.thread.triageId);
     if (!mounted) return;
 
     if (res.success) {
-      await HapticFeedback.lightImpact();
+      // Fire-and-forget haptic — awaiting the platform channel hangs in
+      // widget tests where no handler is registered (mirrors archive).
+      unawaited(HapticFeedback.lightImpact().catchError((_) {}));
       messenger.showSnackBar(
         SnackBar(
-          content: Text(l?.inboxSentToast ?? 'Sent.'),
+          content: Text(
+            res.idempotent
+                ? (l?.inboxAlreadySentToast ?? 'Already sent.')
+                : (l?.inboxSentToast ?? 'Sent.'),
+          ),
           backgroundColor: AppColors.success,
           duration: const Duration(seconds: 2),
         ),
       );
       notifier.hideAfterAction(widget.thread.threadId);
     } else {
+      // Error path — show a snackbar with a Retry action so the user
+      // doesn't have to scroll back to the card on a transient failure
+      // (e.g. Gmail OAuth re-auth, network flap).
       messenger.showSnackBar(
         SnackBar(
-          content: Text(res.displayText),
+          content: Text(
+            res.errorMessage ??
+                (l?.inboxSendErrorToast ?? 'Could not send the reply.'),
+          ),
           backgroundColor: AppColors.error,
-          duration: const Duration(seconds: 3),
+          duration: const Duration(seconds: 5),
+          action: SnackBarAction(
+            label: l?.retry ?? 'Retry',
+            textColor: AppColors.textOnPrimary,
+            onPressed: _onApproveSend,
+          ),
         ),
       );
     }

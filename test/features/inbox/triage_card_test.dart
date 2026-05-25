@@ -76,7 +76,11 @@ InboxThread _thread({
     );
 
 class _SeededInboxNotifier extends InboxNotifier {
-  _SeededInboxNotifier(super.tools, List<InboxThread> seed) {
+  _SeededInboxNotifier(
+    super.tools,
+    List<InboxThread> seed, {
+    super.supabase,
+  }) {
     state = InboxState(
       threads: seed,
       severityFilter: null,
@@ -126,6 +130,7 @@ Widget _wrapWithSupabase(
         (ref) => _SeededInboxNotifier(
           ref.read(assistantToolsProvider),
           seed,
+          supabase: supabase,
         ),
       ),
       assistantToolsProvider.overrideWithValue(
@@ -433,6 +438,131 @@ void main() {
 
         expect(supabase.calls.length, equals(1));
         expect(supabase.calls.single.name, equals('gmail-label'));
+      },
+    );
+  });
+
+  // ── D6 Approve & Send ─────────────────────────────────────────────────
+
+  group('TriageCard — D6 Approve & Send', () {
+    testWidgets(
+      'Approve & send → confirm → calls email-send → success snackbar',
+      (tester) async {
+        final supabase = _RecordingSupabaseService()
+          ..nextResponse = {
+            'ok': true,
+            'gmail_message_id': 'gmail-abc-123',
+            'sent_at': '2026-05-25T19:00:00.000Z',
+          };
+        final t = _thread(id: 'send-ok', hasDraft: true);
+        await tester.pumpWidget(
+          _wrapWithSupabase(
+            TriageCard(thread: t),
+            seed: [t],
+            supabase: supabase,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Approve & send'));
+        await tester.pumpAndSettle();
+        // Confirm dialog visible — tap Send.
+        expect(find.text('Send the prepared reply?'), findsOneWidget);
+        await tester.tap(find.text('Send'));
+        // Pump enough frames for the SnackBar to enter the tree without
+        // letting its 2s display window elapse.
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.pump(const Duration(milliseconds: 100));
+
+        // email-send was invoked with triage_id (NOT thread_id).
+        final invoked =
+            supabase.calls.where((c) => c.name == 'email-send').toList();
+        expect(invoked.length, equals(1));
+        expect(invoked.single.body!['triage_id'], equals('triage-send-ok'));
+        // No edited_body field when the user did not edit the draft.
+        expect(invoked.single.body!.containsKey('edited_body'), isFalse);
+
+        // Success snackbar surfaced.
+        expect(find.text('Sent.'), findsOneWidget);
+
+        // Thread row is hidden from the inbox state.
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(MaterialApp)),
+        );
+        final remaining = container.read(inboxProvider).threads;
+        expect(remaining, isEmpty);
+      },
+    );
+
+    testWidgets(
+      'Approve & send → email-send fails → error snackbar with Retry action',
+      (tester) async {
+        final supabase = _RecordingSupabaseService()
+          ..nextResponse = {
+            'error': 'Gmail send failed',
+            'error_code': 'gmail_reauth_required',
+          };
+        final t = _thread(id: 'send-err', hasDraft: true);
+        await tester.pumpWidget(
+          _wrapWithSupabase(
+            TriageCard(thread: t),
+            seed: [t],
+            supabase: supabase,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Approve & send'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Send'));
+        // Error snackbar duration is 5s — pump just past the show animation.
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 600));
+
+        // Error snackbar — surfaces the server error message.
+        expect(find.text('Gmail send failed'), findsOneWidget);
+        // Retry action is visible (SnackBarAction).
+        expect(find.text('Retry'), findsOneWidget);
+
+        // Thread row NOT hidden on failure — the user keeps the card so
+        // they can re-attempt without re-loading the inbox.
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(MaterialApp)),
+        );
+        final remaining = container.read(inboxProvider).threads;
+        expect(remaining.length, equals(1));
+      },
+    );
+
+    testWidgets(
+      'Approve & send → idempotent re-send → "Already sent" snackbar',
+      (tester) async {
+        final supabase = _RecordingSupabaseService()
+          ..nextResponse = {
+            'ok': true,
+            'gmail_message_id': 'gmail-prior-msg-42',
+            'sent_at': '2026-05-25T18:55:00.000Z',
+            'idempotent': true,
+          };
+        final t = _thread(id: 'send-idem', hasDraft: true);
+        await tester.pumpWidget(
+          _wrapWithSupabase(
+            TriageCard(thread: t),
+            seed: [t],
+            supabase: supabase,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.text('Approve & send'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Send'));
+        // Snackbar duration is 2s — pump just past the show animation so
+        // the SnackBar is mounted but not yet dismissed.
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 600));
+        expect(find.text('Already sent.'), findsOneWidget);
       },
     );
   });

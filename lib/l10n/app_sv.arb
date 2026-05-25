@@ -1575,6 +1575,8 @@
     "inboxConfirmSendBody": "Advocat will dispatch the AI-prepared reply via your connected Gmail. You can still review the body in the next screen.",
     "inboxSendButton": "Send",
     "inboxSentToast": "Sent.",
+    "inboxAlreadySentToast": "Already sent.",
+    "inboxSendErrorToast": "Could not send the reply. Tap retry.",
     "inboxSnoozedToast": "Snoozed for 24h.",
     "inboxArchivedToast": "Archived.",
     "inboxDraftLoadError": "Could not load draft.",

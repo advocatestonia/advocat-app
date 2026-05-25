@@ -2396,6 +2396,108 @@ abstract class AppLocalizations {
   /// **'Case information was last updated.'**
   String get caseInfoUpdated;
 
+  /// No description provided for @noEventsForFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'No events match this filter'**
+  String get noEventsForFilter;
+
+  /// No description provided for @timelineFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get timelineFilterAll;
+
+  /// No description provided for @timelineFilterEmails.
+  ///
+  /// In en, this message translates to:
+  /// **'Emails'**
+  String get timelineFilterEmails;
+
+  /// No description provided for @timelineFilterConsilium.
+  ///
+  /// In en, this message translates to:
+  /// **'AI decisions'**
+  String get timelineFilterConsilium;
+
+  /// No description provided for @timelineFilterDeadlines.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadlines'**
+  String get timelineFilterDeadlines;
+
+  /// No description provided for @timelineFilterNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get timelineFilterNotes;
+
+  /// No description provided for @timelineEventEmailIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Email received'**
+  String get timelineEventEmailIn;
+
+  /// No description provided for @timelineEventEmailOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Email sent'**
+  String get timelineEventEmailOut;
+
+  /// No description provided for @timelineEventConsiliumDecision.
+  ///
+  /// In en, this message translates to:
+  /// **'AI decision'**
+  String get timelineEventConsiliumDecision;
+
+  /// No description provided for @timelineEventDeadlineSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline'**
+  String get timelineEventDeadlineSet;
+
+  /// No description provided for @timelineEventDocUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Document'**
+  String get timelineEventDocUploaded;
+
+  /// No description provided for @timelineEventPhaseChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase change'**
+  String get timelineEventPhaseChange;
+
+  /// No description provided for @timelineEventManualNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get timelineEventManualNote;
+
+  /// No description provided for @timelineJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get timelineJustNow;
+
+  /// No description provided for @timelineMinutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 minute ago} other{{count} minutes ago}}'**
+  String timelineMinutesAgo(int count);
+
+  /// No description provided for @timelineHoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 hour ago} other{{count} hours ago}}'**
+  String timelineHoursAgo(int count);
+
+  /// No description provided for @timelineDaysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day ago} other{{count} days ago}}'**
+  String timelineDaysAgo(int count);
+
   /// No description provided for @documentAnalysis.
   ///
   /// In en, this message translates to:
@@ -5858,6 +5960,18 @@ abstract class AppLocalizations {
   /// **'Sent.'**
   String get inboxSentToast;
 
+  /// No description provided for @inboxAlreadySentToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Already sent.'**
+  String get inboxAlreadySentToast;
+
+  /// No description provided for @inboxSendErrorToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not send the reply. Tap retry.'**
+  String get inboxSendErrorToast;
+
   /// No description provided for @inboxSnoozedToast.
   ///
   /// In en, this message translates to:
@@ -5899,6 +6013,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'overdue {days}d'**
   String inboxDeadlineOverdue(int days);
+
+  /// Headline at the top of the Parallel Actions card — N>=2 emails the consilium recommends sending in parallel.
+  ///
+  /// In en, this message translates to:
+  /// **'Consilium recommends {count} parallel actions'**
+  String parallelActionsHeadline(int count);
+
+  /// Primary button when every action is checked.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve All & Send'**
+  String get parallelActionsApproveAll;
+
+  /// Primary button when only a subset of actions is checked.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve {count} of {total}'**
+  String parallelActionsApproveSelected(int count, int total);
+
+  /// No description provided for @parallelActionsConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Send {count} emails?'**
+  String parallelActionsConfirmTitle(int count);
+
+  /// No description provided for @parallelActionsConfirmBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat will dispatch {count} prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.'**
+  String parallelActionsConfirmBody(int count);
+
+  /// No description provided for @parallelActionsSentToast.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sent.'**
+  String parallelActionsSentToast(int count);
+
+  /// No description provided for @parallelActionsPartialFailureToast.
+  ///
+  /// In en, this message translates to:
+  /// **'{sent} sent, {failed} failed.'**
+  String parallelActionsPartialFailureToast(int sent, int failed);
+
+  /// No description provided for @parallelActionsKindReply.
+  ///
+  /// In en, this message translates to:
+  /// **'reply'**
+  String get parallelActionsKindReply;
+
+  /// No description provided for @parallelActionsKindNew.
+  ///
+  /// In en, this message translates to:
+  /// **'new'**
+  String get parallelActionsKindNew;
+
+  /// No description provided for @parallelActionsCheckboxSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Action selected'**
+  String get parallelActionsCheckboxSelected;
+
+  /// No description provided for @parallelActionsCheckboxUnselected.
+  ///
+  /// In en, this message translates to:
+  /// **'Action not selected'**
+  String get parallelActionsCheckboxUnselected;
+
+  /// Short chip showing the number of [[ref:slug:para]] citations attached to an action.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} cit'**
+  String parallelActionsCitationCount(int count);
 
   /// No description provided for @workspaceTabOverview.
   ///
@@ -7045,6 +7231,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} experts disagree'**
   String consiliumExpertsDisagree(int count);
+
+  /// UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)
+  ///
+  /// In en, this message translates to:
+  /// **'AI agents, not human lawyers. Verify material decisions with a licensed attorney.'**
+  String get consiliumDisclaimer;
 }
 
 class _AppLocalizationsDelegate

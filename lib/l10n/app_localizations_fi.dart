@@ -1219,6 +1219,81 @@ class AppLocalizationsFi extends AppLocalizations {
   String get caseInfoUpdated => 'Asian tiedot päivitettiin viimeksi.';
 
   @override
+  String get noEventsForFilter => 'Tällä suodattimella ei ole tapahtumia';
+
+  @override
+  String get timelineFilterAll => 'Kaikki';
+
+  @override
+  String get timelineFilterEmails => 'Sähköpostit';
+
+  @override
+  String get timelineFilterConsilium => 'AI-päätökset';
+
+  @override
+  String get timelineFilterDeadlines => 'Määräajat';
+
+  @override
+  String get timelineFilterNotes => 'Muistiinpanot';
+
+  @override
+  String get timelineEventEmailIn => 'Saapunut sähköposti';
+
+  @override
+  String get timelineEventEmailOut => 'Lähetetty sähköposti';
+
+  @override
+  String get timelineEventConsiliumDecision => 'AI-päätös';
+
+  @override
+  String get timelineEventDeadlineSet => 'Määräaika';
+
+  @override
+  String get timelineEventDocUploaded => 'Asiakirja';
+
+  @override
+  String get timelineEventPhaseChange => 'Vaiheen muutos';
+
+  @override
+  String get timelineEventManualNote => 'Muistiinpano';
+
+  @override
+  String get timelineJustNow => 'juuri nyt';
+
+  @override
+  String timelineMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minuuttia sitten',
+      one: '1 minuutti sitten',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tuntia sitten',
+      one: '1 tunti sitten',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päivää sitten',
+      one: '1 päivä sitten',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get documentAnalysis => 'Asiakirja-analyysi';
 
   @override
@@ -3189,6 +3264,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get inboxSentToast => 'Lähetetty.';
 
   @override
+  String get inboxAlreadySentToast => 'Jo lähetetty.';
+
+  @override
+  String get inboxSendErrorToast =>
+      'Vastauksen lähetys epäonnistui. Yritä uudelleen.';
+
+  @override
   String get inboxSnoozedToast => 'Torkku 24 tuntia.';
 
   @override
@@ -3211,6 +3293,56 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String inboxDeadlineOverdue(int days) {
     return 'myöhässä $days pv';
+  }
+
+  @override
+  String parallelActionsHeadline(int count) {
+    return 'Konsiilio suosittelee $count rinnakkaista toimenpidettä';
+  }
+
+  @override
+  String get parallelActionsApproveAll => 'Hyväksy kaikki ja lähetä';
+
+  @override
+  String parallelActionsApproveSelected(int count, int total) {
+    return 'Hyväksy $count / $total';
+  }
+
+  @override
+  String parallelActionsConfirmTitle(int count) {
+    return 'Lähetetäänkö $count sähköpostia?';
+  }
+
+  @override
+  String parallelActionsConfirmBody(int count) {
+    return 'Advocat lähettää $count valmista vastausta yhdistetyn Gmailisi kautta. Jokainen lähetetään itsenäisesti — jos yksi epäonnistuu, muut menevät silti.';
+  }
+
+  @override
+  String parallelActionsSentToast(int count) {
+    return 'Lähetetty: $count.';
+  }
+
+  @override
+  String parallelActionsPartialFailureToast(int sent, int failed) {
+    return 'Lähetetty: $sent, epäonnistui: $failed.';
+  }
+
+  @override
+  String get parallelActionsKindReply => 'vastaus';
+
+  @override
+  String get parallelActionsKindNew => 'uusi';
+
+  @override
+  String get parallelActionsCheckboxSelected => 'Toiminto valittu';
+
+  @override
+  String get parallelActionsCheckboxUnselected => 'Toimintoa ei ole valittu';
+
+  @override
+  String parallelActionsCitationCount(int count) {
+    return '$count viitettä';
   }
 
   @override
@@ -3884,4 +4016,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String consiliumExpertsDisagree(int count) {
     return '$count asiantuntijaa eri mieltä';
   }
+
+  @override
+  String get consiliumDisclaimer =>
+      'Tekoälyagentteja, ei ihmislakimiehiä. Tarkista olennaiset päätökset lisensoidulla asianajajalla.';
 }

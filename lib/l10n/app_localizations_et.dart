@@ -1217,6 +1217,81 @@ class AppLocalizationsEt extends AppLocalizations {
   String get caseInfoUpdated => 'Juhtumi teave viimati uuendatud.';
 
   @override
+  String get noEventsForFilter => 'Selle filtriga ei leitud sündmusi';
+
+  @override
+  String get timelineFilterAll => 'Kõik';
+
+  @override
+  String get timelineFilterEmails => 'E-kirjad';
+
+  @override
+  String get timelineFilterConsilium => 'AI otsused';
+
+  @override
+  String get timelineFilterDeadlines => 'Tähtajad';
+
+  @override
+  String get timelineFilterNotes => 'Märkmed';
+
+  @override
+  String get timelineEventEmailIn => 'Saabunud e-kiri';
+
+  @override
+  String get timelineEventEmailOut => 'Saadetud e-kiri';
+
+  @override
+  String get timelineEventConsiliumDecision => 'AI otsus';
+
+  @override
+  String get timelineEventDeadlineSet => 'Tähtaeg';
+
+  @override
+  String get timelineEventDocUploaded => 'Dokument';
+
+  @override
+  String get timelineEventPhaseChange => 'Faasimuutus';
+
+  @override
+  String get timelineEventManualNote => 'Märkus';
+
+  @override
+  String get timelineJustNow => 'Just nüüd';
+
+  @override
+  String timelineMinutesAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutit tagasi',
+      one: '1 minut tagasi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineHoursAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tundi tagasi',
+      one: '1 tund tagasi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String timelineDaysAgo(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päeva tagasi',
+      one: '1 päev tagasi',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get documentAnalysis => 'Dokumendianalüüs';
 
   @override
@@ -3185,6 +3260,13 @@ class AppLocalizationsEt extends AppLocalizations {
   String get inboxSentToast => 'Saadetud.';
 
   @override
+  String get inboxAlreadySentToast => 'Juba saadetud.';
+
+  @override
+  String get inboxSendErrorToast =>
+      'Vastust ei õnnestunud saata. Vajutage uuesti.';
+
+  @override
   String get inboxSnoozedToast => 'Edasi lükatud 24 tunniks.';
 
   @override
@@ -3207,6 +3289,56 @@ class AppLocalizationsEt extends AppLocalizations {
   @override
   String inboxDeadlineOverdue(int days) {
     return 'tähtaeg ületatud $days p';
+  }
+
+  @override
+  String parallelActionsHeadline(int count) {
+    return 'Konsiilium soovitab $count paralleelset tegevust';
+  }
+
+  @override
+  String get parallelActionsApproveAll => 'Kinnita kõik ja saada';
+
+  @override
+  String parallelActionsApproveSelected(int count, int total) {
+    return 'Kinnita $count / $total';
+  }
+
+  @override
+  String parallelActionsConfirmTitle(int count) {
+    return 'Saada $count e-kirja?';
+  }
+
+  @override
+  String parallelActionsConfirmBody(int count) {
+    return 'Advocat saadab $count valmis vastust teie ühendatud Gmaili kaudu. Iga kiri saadetakse iseseisvalt — kui üks ebaõnnestub, teised lähevad ikka teele.';
+  }
+
+  @override
+  String parallelActionsSentToast(int count) {
+    return 'Saadetud: $count.';
+  }
+
+  @override
+  String parallelActionsPartialFailureToast(int sent, int failed) {
+    return 'Saadetud: $sent, ebaõnnestus: $failed.';
+  }
+
+  @override
+  String get parallelActionsKindReply => 'vastus';
+
+  @override
+  String get parallelActionsKindNew => 'uus';
+
+  @override
+  String get parallelActionsCheckboxSelected => 'Tegevus valitud';
+
+  @override
+  String get parallelActionsCheckboxUnselected => 'Tegevus pole valitud';
+
+  @override
+  String parallelActionsCitationCount(int count) {
+    return '$count viidet';
   }
 
   @override
@@ -3875,4 +4007,8 @@ class AppLocalizationsEt extends AppLocalizations {
   String consiliumExpertsDisagree(int count) {
     return '$count eksperti on eriarvamusel';
   }
+
+  @override
+  String get consiliumDisclaimer =>
+      'AI-agendid, mitte inimjuristid. Olulised otsused kontrolli litsentseeritud advokaadiga.';
 }
