@@ -49,9 +49,15 @@ sealed class ParsedDocumentResult {
   String get kind;
 }
 
-/// Happy path. [documentId] is empty when [caseId] was null at upload —
-/// the server intentionally did NOT write a row, the chat client must
-/// re-call [PdfParserService.attachToCase] once the user picks a case.
+/// Happy path. [documentId] is empty when [caseId] was null at upload AND
+/// no soft-case shell could be created (e.g. anonymous visitor) — the
+/// server intentionally did NOT write a row, the chat client must re-call
+/// [PdfParserService.attachToCase] once the user picks a case.
+///
+/// [softCaseId] is non-null when the service auto-materialised a soft
+/// shell case for a first-touch authenticated user. The UI should show a
+/// one-line "We created 'Untitled case' to track this. Tap to rename."
+/// banner that deep-links to the case-rename screen for [softCaseId].
 final class ParsedOk extends ParsedDocumentResult {
   const ParsedOk({
     required this.documentId,
@@ -60,6 +66,7 @@ final class ParsedOk extends ParsedDocumentResult {
     required this.keyExtractions,
     required this.pageCount,
     required this.langDetected,
+    this.softCaseId,
   });
 
   final String documentId;
@@ -68,6 +75,14 @@ final class ParsedOk extends ParsedDocumentResult {
   final Map<String, dynamic> keyExtractions;
   final int pageCount;
   final List<String> langDetected;
+
+  /// Non-null when a soft-case shell was auto-created for a first-touch
+  /// upload (caller passed activeCaseId=null but was authenticated).
+  /// The UI shows a rename-banner for this id; if the user dismisses the
+  /// banner the case stays as "Untitled case YYYY-MM-DD" — still
+  /// idempotent: a future first-touch upload by the same user reuses
+  /// the same shell instead of stacking duplicates.
+  final String? softCaseId;
 
   @override
   String get kind => 'parsed';
@@ -198,6 +213,33 @@ class PdfParserService {
   /// 50 MB hard cap — mirrors the server-side cap in `pdf-parser/index.ts`.
   static const int maxBytes = 50 * 1024 * 1024;
 
+  /// 10 MB hard cap for image uploads — mirrors `MAX_IMAGE_BYTES` in
+  /// `pdf-parser/index.ts`. Phone-camera snaps are 2-6 MB; HEIC originals
+  /// can run a little larger. Anything above is almost certainly not a
+  /// document scan.
+  static const int maxImageBytes = 10 * 1024 * 1024;
+
+  /// Supported image MIME types. Mirrors `SUPPORTED_IMAGE_MIME_TYPES` in
+  /// `supabase/functions/pdf-parser/helpers.ts`. Phone-snap UX path:
+  /// JPEG/HEIC/HEIF from iOS, PNG from screenshots, WebP from share
+  /// sheets. We accept all four and let the edge function normalize.
+  static const Set<String> supportedImageMimeTypes = {
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/heic',
+    'image/heif',
+    'image/webp',
+  };
+
+  /// Returns true if [mime] is one of [supportedImageMimeTypes].
+  static bool isImageMime(String mime) =>
+      supportedImageMimeTypes.contains(mime.trim().toLowerCase());
+
+  /// Returns true if [mime] is application/pdf.
+  static bool isPdfMime(String mime) =>
+      mime.trim().toLowerCase() == 'application/pdf';
+
   /// UUID v4 (mixed case). Strict — matches server validator.
   static final RegExp _uuidRe = RegExp(
     r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$',
@@ -222,17 +264,37 @@ class PdfParserService {
     if (bytes.isEmpty) {
       return const ParsedInvalidInput(message: 'empty bytes');
     }
-    if (bytes.length > maxBytes) {
-      return ParsedInvalidInput(
-        message: 'PDF too large (max 50 MB, got ${bytes.length} bytes)',
-      );
-    }
     if (filename.trim().isEmpty) {
       return const ParsedInvalidInput(message: 'empty filename');
     }
-    if (mimeType.trim().toLowerCase() != 'application/pdf') {
-      return ParsedInvalidInput(message: 'mime $mimeType is not application/pdf');
+
+    // Normalize mime — accept PDF or any supported image MIME.
+    // Phone-snap UX: user takes a JPEG of a paper letter, app uploads
+    // it to the same pdf-parser pipeline (Vision OCR + Sonnet structured
+    // extraction). We canonicalize image/jpg → image/jpeg so the edge
+    // function sees one spelling.
+    final mimeLc = mimeType.trim().toLowerCase();
+    final bool isImage = isImageMime(mimeLc);
+    final bool isPdf = isPdfMime(mimeLc);
+    if (!isImage && !isPdf) {
+      return ParsedInvalidInput(
+        message: 'mime $mimeType is not application/pdf or a supported image',
+      );
     }
+    final String canonicalMime = isImage
+        ? (mimeLc == 'image/jpg' ? 'image/jpeg' : mimeLc)
+        : 'application/pdf';
+
+    // Per-format size cap. Images are 10 MB (phone snaps); PDFs are 50 MB.
+    final int sizeCap = isImage ? maxImageBytes : maxBytes;
+    if (bytes.length > sizeCap) {
+      return ParsedInvalidInput(
+        message: isImage
+            ? 'Image too large (max 10 MB, got ${bytes.length} bytes)'
+            : 'PDF too large (max 50 MB, got ${bytes.length} bytes)',
+      );
+    }
+
     if (activeCaseId != null && !_uuidRe.hasMatch(activeCaseId)) {
       return ParsedInvalidInput(message: 'case_id is not a UUID: $activeCaseId');
     }
@@ -244,8 +306,44 @@ class PdfParserService {
       return const ParsedForbidden(message: 'not authenticated');
     }
 
+    // ── 0. Soft-case shell — first-touch upload protection ────────────
+    //
+    // Bug context (P0): when activeCaseId was null we used to forward
+    // case_id=null to pdf-parser, which intentionally skipped the
+    // case_documents insert. Without a case_documents row, the post-parse
+    // handoff to deadline-extractor never fired and the appeal deadline
+    // (e.g. 10 days on a käännytyspäätös) vanished.
+    //
+    // Fix: ask the DB for the user's soft-shell case via an idempotent
+    // RPC, then forward that id as case_id so the full deadline pipeline
+    // runs as it would for any other case. If the RPC fails (legacy DB,
+    // RLS, network), fall back to the old null path so we never block
+    // the upload.
+    String? effectiveCaseId = activeCaseId;
+    String? softCaseId;
+    if (activeCaseId == null) {
+      // Defence-in-depth: production SupabaseService.ensureSoftCaseForUser
+      // already catches RPC errors and returns null, but we wrap a second
+      // try here so a buggy fake or future implementation can't crash
+      // the upload pipeline. uploadAndParse is contractually non-throwing.
+      String? shellId;
+      try {
+        shellId = await _supabase.ensureSoftCaseForUser();
+      } catch (_) {
+        shellId = null;
+      }
+      if (shellId != null && _uuidRe.hasMatch(shellId)) {
+        effectiveCaseId = shellId;
+        softCaseId = shellId;
+      }
+    }
+
     // ── 1. Upload to Storage ──────────────────────────────────────────
-    final caseSegment = activeCaseId ?? 'general';
+    // Use the effective case_id in the storage path so the file lands
+    // under the shell case folder (matching the regular case path
+    // shape <userId>/<caseId>/<filename>). When even the shell could
+    // not be created we keep the legacy "general" segment.
+    final caseSegment = effectiveCaseId ?? 'general';
     final safeName = _sanitizeFilename(filename);
     final storagePath = '$userId/$caseSegment/$safeName';
 
@@ -254,7 +352,7 @@ class PdfParserService {
         bucket: storageBucket,
         path: storagePath,
         bytes: bytes,
-        contentType: 'application/pdf',
+        contentType: canonicalMime,
       );
     } catch (e) {
       return ParsedNetworkError(message: 'upload failed: $e');
@@ -264,8 +362,8 @@ class PdfParserService {
     // ── 2. Call Edge Function ─────────────────────────────────────────
     final body = <String, dynamic>{
       'storage_path': storagePath,
-      'case_id': activeCaseId,
-      'mime_type': 'application/pdf',
+      'case_id': effectiveCaseId,
+      'mime_type': canonicalMime,
       'filename': safeName,
     };
 
@@ -328,10 +426,16 @@ class PdfParserService {
       keyExtractions: keyExtractions,
       pageCount: pageCount,
       langDetected: langDetected,
+      softCaseId: softCaseId,
     );
 
-    if (activeCaseId != null && docId.isNotEmpty) {
-      _invalidateProviders(activeCaseId);
+    // Invalidate providers for whichever case actually owns the row —
+    // user-picked case OR auto-created soft shell. Without this, the
+    // case-list screen would not pick up the brand-new shell row until
+    // the next manual refresh.
+    final invalidateId = effectiveCaseId;
+    if (invalidateId != null && docId.isNotEmpty) {
+      _invalidateProviders(invalidateId);
     }
     return result;
   }

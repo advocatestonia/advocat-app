@@ -372,6 +372,35 @@ class SupabaseService {
         .eq('id', eventId);
   }
 
+  // ── Soft-case shell ───────────────────────────────────────────────────
+  //
+  // First-touch upload flow: an authenticated user may upload a document
+  // before they have any case. We auto-materialise a "soft shell" case so
+  // the document + deadline-extractor pipeline has a real case_id to
+  // attach to. The shell is idempotent — repeated calls return the same
+  // case_id for the same user (see migration 20260525220000).
+
+  /// Returns the case_id of the user's existing soft shell, creating one
+  /// if necessary. Idempotent — calling N times returns the same id.
+  /// Returns null in demo mode or when no user is signed in.
+  Future<String?> ensureSoftCaseForUser() async {
+    if (isDemo) return null;
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return null;
+    try {
+      final response = await _client.rpc(
+        'ensure_soft_case_for_user',
+        params: {'p_user_id': uid},
+      );
+      if (response is String) return response;
+      return null;
+    } catch (_) {
+      // RPC missing (pre-migration) / RLS denial / network — never
+      // crash the upload flow; caller falls back to the anon path.
+      return null;
+    }
+  }
+
   // ── Deadlines ─────────────────────────────────────────────────────────
 
   Future<List<Deadline>> getDeadlines({String? caseId}) async {

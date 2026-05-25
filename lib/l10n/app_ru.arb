@@ -1743,5 +1743,10 @@
     "consiliumDisclaimer": "ИИ-агенты, не люди-юристы. Проверьте важные решения с лицензированным адвокатом.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
+    },
+    "softCaseShellBanner": "Мы создали «Без названия», чтобы отслеживать это дело. Нажмите, чтобы переименовать.",
+    "@softCaseShellBanner": {
+        "description": "One-line banner shown after a first-touch upload auto-materialised a soft-case shell (P0 deadline-extraction fix)."
+    },
+    "softCaseShellBannerCta": "Переименовать"
 }

@@ -34,23 +34,32 @@ class _FakeSupabaseService implements SupabaseService {
     this.userId = _userId,
     this.response,
     this.throwsOnCall = false,
+    this.softCaseId,
   });
 
   bool demo;
   String? userId;
   Map<String, dynamic>? response;
   bool throwsOnCall;
+  String? softCaseId;
 
   // Spy
   String? lastFunctionName;
   Map<String, dynamic>? lastBody;
   int callCount = 0;
+  int ensureSoftCaseCallCount = 0;
 
   @override
   bool get isDemo => demo;
 
   @override
   String? get currentUserId => userId;
+
+  @override
+  Future<String?> ensureSoftCaseForUser() async {
+    ensureSoftCaseCallCount++;
+    return softCaseId;
+  }
 
   @override
   Future<Map<String, dynamic>?> callEdgeFunction(
