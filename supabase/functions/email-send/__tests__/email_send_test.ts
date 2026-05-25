@@ -592,18 +592,20 @@ Deno.test(
 const SULGA_BODY_REPLY =
   "Hyvä Jokela,\n\n" +
   "vastauksena viestiinne 12.5.2026 totean seuraavaa. Hallintolain " +
-  "§122 nojalla en hyväksy käännytyspäätöstä, koska tunnistustiedot " +
-  "ovat virheelliset.\n\n" +
+  "(HOL) §122 nojalla en hyväksy käännytyspäätöstä, koska " +
+  "tunnistustiedot ovat virheelliset. Soft-return per HOL §122 " +
+  "tarkoittaa tässä yhteydessä päätöksen oikaisua.\n\n" +
   "1. Pyydän, että viranomainen korjaa nimen kirjoitusasun.\n" +
   "2. Pyydän, että käännytyspäätös perutaan.\n\n" +
   "Yhteistyöterveisin,\nDmitri Sulga";
 
 const SULGA_BODY_NEW =
-  "Pyydän julkisuuslain 14§:n nojalla seuraavat asiakirjat:\n\n" +
+  "Pyydän julkisuuslain (JulkL 14§) nojalla seuraavat asiakirjat:\n\n" +
   "1. Eckerö Linen matkalipputiedot 5.12.2025.\n" +
   "2. Poliisin laatima käännytysasiakirja 5.12.2025.\n" +
   "3. Saateasiakirjat, jotka osoittavat lähettäjän.\n\n" +
-  "Pyyntö perustuu siihen, että nämä todistavat tapahtuman.";
+  "Pyyntö perustuu siihen, että nämä todistavat tapahtuman. " +
+  "(JulkL 14§ 2vk deadline.)";
 
 function makeRowWithTwoActions(): TriageRow {
   return makeTriageRow({
