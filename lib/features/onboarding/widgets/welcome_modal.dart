@@ -115,6 +115,219 @@ class WelcomeModal extends StatelessWidget {
               'Посмотрите, как Advocat разбирает договор оказания услуг за 15 секунд.',
           'skip': 'Пропустить — я знаю, что делаю',
         },
+        // P1-2 (2026-05-25): 13 additional locales so paid users in
+        // DE/FR/ES/IT/PL/SV/UK/RO/AR/FA/TR/LT/LV don't land on an EN-fallback
+        // first paid screen. Mirrors contract_upsell_card.dart:130+ pattern.
+        // Native legal-register translations; ar/fa rely on the parent
+        // Directionality widget for RTL.
+        'de': {
+          'headline': 'Willkommen bei Advocat',
+          'subhead':
+              'Wählen Sie eine Option zum Start. Sie können Ihre Wahl jederzeit ändern.',
+          'upload_title': 'Vertragsprüfung testen — kostenlos',
+          'upload_body':
+              'Laden Sie ein PDF hoch und erhalten Sie in 60 Sekunden einen '
+                  'Risikobericht in einfacher Sprache. Die erste Prüfung geht auf uns.',
+          'upload_featured_badge': 'Am beliebtesten',
+          'ask_title': 'Rechtsfrage stellen',
+          'ask_body': 'Stellen Sie eine Frage. Wir antworten in Ihrer Sprache.',
+          'sample_title': 'Beispielfall ansehen',
+          'sample_body':
+              'Sehen Sie, wie Advocat einen Dienstleistungsvertrag in 15 Sekunden analysiert.',
+          'skip': 'Überspringen — ich weiß, was ich tue',
+        },
+        'fr': {
+          'headline': 'Bienvenue sur Advocat',
+          'subhead':
+              'Choisissez une option pour commencer. Vous pouvez changer d\u2019avis à tout moment.',
+          'upload_title': 'Essayer la vérification de contrat — gratuit',
+          'upload_body':
+              'Téléversez un PDF et recevez un rapport de risques en langage clair '
+                  'en 60 secondes. La première vérification est offerte.',
+          'upload_featured_badge': 'Le plus populaire',
+          'ask_title': 'Poser une question juridique',
+          'ask_body': 'Tapez votre question. Nous répondons dans votre langue.',
+          'sample_title': 'Voir un exemple',
+          'sample_body':
+              'Découvrez comment Advocat analyse un contrat de prestation en 15 secondes.',
+          'skip': 'Passer — je sais ce que je fais',
+        },
+        'es': {
+          'headline': 'Bienvenido a Advocat',
+          'subhead':
+              'Elige una opción para empezar. Puedes cambiar de idea en cualquier momento.',
+          'upload_title': 'Probar la revisión de contrato — gratis',
+          'upload_body':
+              'Sube un PDF y recibe un informe de riesgos en lenguaje sencillo '
+                  'en 60 segundos. La primera revisión corre por nuestra cuenta.',
+          'upload_featured_badge': 'Más popular',
+          'ask_title': 'Hacer una consulta jurídica',
+          'ask_body': 'Escribe tu pregunta. Respondemos en tu idioma.',
+          'sample_title': 'Ver un caso de ejemplo',
+          'sample_body':
+              'Mira cómo Advocat analiza un contrato de servicios en 15 segundos.',
+          'skip': 'Omitir — sé lo que hago',
+        },
+        'it': {
+          'headline': 'Benvenuto in Advocat',
+          'subhead':
+              'Scegli un\u2019opzione per iniziare. Puoi cambiare idea in qualsiasi momento.',
+          'upload_title': 'Prova la revisione del contratto — gratis',
+          'upload_body':
+              'Carica un PDF e ricevi un\u2019analisi dei rischi in linguaggio semplice '
+                  'in 60 secondi. La prima revisione è offerta da noi.',
+          'upload_featured_badge': 'Più scelta',
+          'ask_title': 'Fai una domanda legale',
+          'ask_body': 'Scrivi la tua domanda. Rispondiamo nella tua lingua.',
+          'sample_title': 'Guarda un caso di esempio',
+          'sample_body':
+              'Scopri come Advocat analizza un contratto di servizi in 15 secondi.',
+          'skip': 'Salta — so cosa sto facendo',
+        },
+        'pl': {
+          'headline': 'Witamy w Advocat',
+          'subhead':
+              'Wybierz jedną opcję, aby zacząć. W każdej chwili możesz zmienić zdanie.',
+          'upload_title': 'Wypróbuj analizę umowy — bezpłatnie',
+          'upload_body':
+              'Prześlij PDF i otrzymaj raport o ryzyku prostym językiem w 60 sekund. '
+                  'Pierwsza analiza na nasz koszt.',
+          'upload_featured_badge': 'Najpopularniejsze',
+          'ask_title': 'Zadaj pytanie prawne',
+          'ask_body': 'Napisz pytanie. Odpowiadamy w Twoim języku.',
+          'sample_title': 'Zobacz przykładową sprawę',
+          'sample_body':
+              'Zobacz, jak Advocat analizuje umowę o świadczenie usług w 15 sekund.',
+          'skip': 'Pomiń — wiem, co robię',
+        },
+        'sv': {
+          'headline': 'Välkommen till Advocat',
+          'subhead':
+              'Välj en för att börja. Du kan ändra dig när som helst.',
+          'upload_title': 'Prova avtalsgranskning — gratis',
+          'upload_body':
+              'Ladda upp en PDF och få en riskrapport på enkel svenska inom 60 sekunder. '
+                  'Första granskningen bjuder vi på.',
+          'upload_featured_badge': 'Populärast',
+          'ask_title': 'Ställ en juridisk fråga',
+          'ask_body': 'Skriv din fråga. Vi svarar på ditt språk.',
+          'sample_title': 'Se ett exempel',
+          'sample_body':
+              'Se hur Advocat granskar ett tjänsteavtal på 15 sekunder.',
+          'skip': 'Hoppa över — jag vet vad jag gör',
+        },
+        'lt': {
+          'headline': 'Sveiki atvykę į Advocat',
+          'subhead':
+              'Pasirinkite vieną, kad pradėtumėte. Galite persigalvoti bet kuriuo metu.',
+          'upload_title': 'Išbandykite sutarties peržiūrą — nemokamai',
+          'upload_body':
+              'Įkelkite PDF ir per 60 sekundžių gaukite rizikos ataskaitą paprasta kalba. '
+                  'Pirmoji peržiūra mūsų sąskaita.',
+          'upload_featured_badge': 'Populiariausia',
+          'ask_title': 'Užduokite teisinį klausimą',
+          'ask_body': 'Parašykite klausimą. Atsakome jūsų kalba.',
+          'sample_title': 'Pažiūrėkite pavyzdį',
+          'sample_body':
+              'Pamatykite, kaip Advocat analizuoja paslaugų sutartį per 15 sekundžių.',
+          'skip': 'Praleisti — žinau, ką darau',
+        },
+        'lv': {
+          'headline': 'Laipni lūdzam Advocat',
+          'subhead':
+              'Izvēlieties vienu, lai sāktu. Varat pārdomāt jebkurā brīdī.',
+          'upload_title': 'Izmēģiniet līguma pārbaudi — bez maksas',
+          'upload_body':
+              'Augšupielādējiet PDF un saņemiet risku pārskatu vienkāršā valodā 60 sekundēs. '
+                  'Pirmā pārbaude uz mūsu rēķina.',
+          'upload_featured_badge': 'Vispopulārākais',
+          'ask_title': 'Uzdodiet juridisku jautājumu',
+          'ask_body': 'Ierakstiet jautājumu. Atbildam jūsu valodā.',
+          'sample_title': 'Skatīt paraugu',
+          'sample_body':
+              'Skatieties, kā Advocat analizē pakalpojumu līgumu 15 sekundēs.',
+          'skip': 'Izlaist — zinu, ko daru',
+        },
+        'uk': {
+          'headline': 'Ласкаво просимо до Advocat',
+          'subhead':
+              'Оберіть одне, щоб почати. Рішення можна змінити будь-якої миті.',
+          'upload_title': 'Перевірити договір — безкоштовно',
+          'upload_body':
+              'Завантажте PDF і отримайте звіт про ризики простою мовою за 60 секунд. '
+                  'Перша перевірка — за наш кошт.',
+          'upload_featured_badge': 'Найпопулярніше',
+          'ask_title': 'Поставити юридичне питання',
+          'ask_body': 'Напишіть питання. Відповідаємо вашою мовою.',
+          'sample_title': 'Подивитися приклад справи',
+          'sample_body':
+              'Подивіться, як Advocat розбирає договір про надання послуг за 15 секунд.',
+          'skip': 'Пропустити — я знаю, що роблю',
+        },
+        'ro': {
+          'headline': 'Bun venit la Advocat',
+          'subhead':
+              'Alegeți una pentru a începe. Vă puteți răzgândi oricând.',
+          'upload_title': 'Încercați verificarea contractului — gratuit',
+          'upload_body':
+              'Încărcați un PDF și primiți un raport de riscuri în limbaj simplu '
+                  'în 60 de secunde. Prima verificare este din partea noastră.',
+          'upload_featured_badge': 'Cel mai popular',
+          'ask_title': 'Puneți o întrebare juridică',
+          'ask_body': 'Scrieți întrebarea. Răspundem în limba dumneavoastră.',
+          'sample_title': 'Vedeți un caz exemplu',
+          'sample_body':
+              'Vedeți cum Advocat analizează un contract de servicii în 15 secunde.',
+          'skip': 'Omiteți — știu ce fac',
+        },
+        'ar': {
+          'headline': 'مرحبًا بك في Advocat',
+          'subhead':
+              'اختر خيارًا واحدًا للبدء. يمكنك تغيير رأيك في أي وقت.',
+          'upload_title': 'جرّب مراجعة العقد — مجانًا',
+          'upload_body':
+              'حمّل ملف PDF واحصل على تقرير المخاطر بلغة بسيطة خلال 60 ثانية. '
+                  'المراجعة الأولى على حسابنا.',
+          'upload_featured_badge': 'الأكثر شيوعًا',
+          'ask_title': 'اطرح سؤالًا قانونيًا',
+          'ask_body': 'اكتب سؤالك. نُجيب بلغتك.',
+          'sample_title': 'شاهد قضية نموذجية',
+          'sample_body':
+              'شاهد كيف يحلّل Advocat عقد خدمات في 15 ثانية.',
+          'skip': 'تخطّي — أعرف ما أفعل',
+        },
+        'fa': {
+          'headline': 'به Advocat خوش آمدید',
+          'subhead':
+              'برای شروع یکی را انتخاب کنید. هر زمان می‌توانید تغییر دهید.',
+          'upload_title': 'بررسی قرارداد را امتحان کنید — رایگان',
+          'upload_body':
+              'یک PDF بارگذاری کنید و در ۶۰ ثانیه گزارش ریسک به زبان ساده دریافت کنید. '
+                  'اولین بررسی به حساب ماست.',
+          'upload_featured_badge': 'پرطرفدارترین',
+          'ask_title': 'یک پرسش حقوقی بپرسید',
+          'ask_body': 'پرسش خود را بنویسید. به زبان شما پاسخ می‌دهیم.',
+          'sample_title': 'یک پرونده نمونه ببینید',
+          'sample_body':
+              'ببینید چگونه Advocat یک قرارداد خدمات را در ۱۵ ثانیه تحلیل می‌کند.',
+          'skip': 'رد کردن — می‌دانم چه می‌کنم',
+        },
+        'tr': {
+          'headline': 'Advocat\u2019a hoş geldiniz',
+          'subhead':
+              'Başlamak için birini seçin. İstediğiniz zaman fikrinizi değiştirebilirsiniz.',
+          'upload_title': 'Sözleşme incelemesini deneyin — ücretsiz',
+          'upload_body':
+              'Bir PDF yükleyin ve 60 saniyede sade dilde risk raporu alın. '
+                  'İlk inceleme bizden.',
+          'upload_featured_badge': 'En popüler',
+          'ask_title': 'Hukuki bir soru sorun',
+          'ask_body': 'Sorunuzu yazın. Sizin dilinizde yanıtlıyoruz.',
+          'sample_title': 'Örnek bir dava görün',
+          'sample_body':
+              'Advocat\u2019ın bir hizmet sözleşmesini 15 saniyede nasıl analiz ettiğini görün.',
+          'skip': 'Atla — ne yaptığımı biliyorum',
+        },
       };
 
   static Map<String, String> _strings(String code) {
