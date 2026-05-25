@@ -34,10 +34,21 @@ import {
 
 // ─── ALL_LAWYERS sanity ──────────────────────────────────────────────────────
 
-Deno.test("ALL_LAWYERS contains exactly 11 distinct agents", () => {
-  assertEquals(ALL_LAWYERS.length, 11);
+Deno.test("ALL_LAWYERS contains exactly 15 distinct agents (Wave F)", () => {
+  assertEquals(ALL_LAWYERS.length, 15);
   const ids = new Set(ALL_LAWYERS.map((a) => a.id));
-  assertEquals(ids.size, 11, "all agent ids must be unique");
+  assertEquals(ids.size, 15, "all agent ids must be unique");
+  // Wave F specialists must be present.
+  for (
+    const id of [
+      "ecthr-specialist",
+      "client-psychology",
+      "forensic-evidence",
+      "native-writer",
+    ]
+  ) {
+    assert(ids.has(id), `missing Wave F specialist: ${id}`);
+  }
 });
 
 Deno.test("every agent prompt is non-empty and >= 400 chars", () => {
@@ -183,6 +194,41 @@ const CASES: RouterCase[] = [
     lang: "ru",
     ctx: { jurisdiction: "EE" },
     mustIncludeId: ["senior-vandeadvokaat", "strategist"],
+  },
+  // ─── Wave F (2026-05-25) specialist routing cases ───────────────────────
+  {
+    name: "Wave F: ECtHR application after KHO refusal",
+    query:
+      "KHO отказал в valituslupa. Хочу подать в ECHR — какой срок? Art 8 ECHR + Art 13?",
+    lang: "ru",
+    ctx: { jurisdiction: "FI", complexity: 9, hasHardDeadline: true },
+    mustIncludeId: ["ecthr-specialist", "strategist"],
+    expectHighStakes: true,
+  },
+  {
+    name: "Wave F: Client psychology — exhausted, considering settlement",
+    query:
+      "Я устал воевать три года. Стоит ли всё это? Не могу больше — может сдаться?",
+    lang: "ru",
+    ctx: { jurisdiction: "FI", complexity: 7 },
+    mustIncludeId: ["client-psychology", "strategist"],
+  },
+  {
+    name: "Wave F: Forensic evidence — F43.1 epikriis + signature anomaly",
+    query:
+      "У меня epikriis с F43.1 PTSD, но подпись врача на одном документе странная. Какое доказательство?",
+    lang: "ru",
+    ctx: { jurisdiction: "EE", complexity: 6 },
+    mustIncludeId: ["forensic-evidence", "strategist"],
+  },
+  {
+    name: "Wave F: Native writer — draft KHO valituslupahakemus",
+    query:
+      "Pitää laatia valituslupahakemus KHO:lle suomeksi, vaatimukset ja perustelut on jo päätetty.",
+    lang: "fi",
+    ctx: { jurisdiction: "FI", complexity: 8, hasHardDeadline: true },
+    mustIncludeId: ["native-writer", "senior-asianajaja", "strategist"],
+    expectHighStakes: true,
   },
 ];
 

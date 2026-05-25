@@ -34,7 +34,11 @@ import {
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const MIN_LAWYERS = 3;
-const MAX_LAWYERS = 5;
+// Wave F (2026-05-25): bumped from 5 → 7 to accommodate up to 4 specialists
+// (ecthr / forensic / writer / psychology) alongside general counsel + domain
+// experts + strategist + (high-stakes) researcher/litigator. The cap-trim
+// logic below guarantees strategist + general counsel always survive.
+const MAX_LAWYERS = 7;
 const COMPLEXITY_THRESHOLD = 7;
 
 // ─── Heuristic helpers ───────────────────────────────────────────────────────
@@ -131,6 +135,58 @@ function pickDomainExperts(
   return scored.slice(0, maxN).map((x) => x.a);
 }
 
+// ─── Wave F (2026-05-25) specialist triggers ────────────────────────────────
+// Four specialised experts surface ON TOP of the domain expert pass when the
+// query/context matches their trigger patterns. These do not replace the
+// general counsel or strategist — they augment the roster.
+
+/** ECtHR Specialist: Convention Arts + Strasbourg procedure markers. */
+const ECTHR_REGEX =
+  /\b(ECtHR|EIT|EIK|ECHR|ЕСПЧ|ЕКПЧ|Strasbourg|Strasburg|Страсбург|HUDOC|Rule\s?39|art\.?\s?(3|6|8|13|14)\s+(ECHR|EIS|EKIK|EIK)|protocol\s?(7|12|15)|четыр[её]хмесячн|four[-\s]?month|neljä\s?kuukau|neli\s?kuu)\b/i;
+
+function shouldAddEcthrSpecialist(query: string, ctx: CaseContext): boolean {
+  if (ECTHR_REGEX.test(query)) return true;
+  // Lexical fallback via keywords (in case ctx.keywords already extracted them)
+  const kws = (ctx.keywords ?? []).join(" ");
+  return ECTHR_REGEX.test(kws);
+}
+
+/** Client Psychology: emotional markers + high complexity. */
+const PSYCH_REGEX =
+  /(бо[юе]сь|устал|стои[тл]\s+ли|сдат[ьc]я|не\s+могу\s+больше|сил\s+нет|worth\s+fighting|exhausted|give\s+up|i\s+can[''']?t|kannattaako|en\s+jaksa|ei\s+jaksa|väsynyt|loobuda|alistua|kas\s+tasub|tunteet|tunded|депресс|тревож|stress|стресс)/i;
+
+function shouldAddClientPsychology(query: string, ctx: CaseContext): boolean {
+  if (PSYCH_REGEX.test(query)) return true;
+  const complexity = ctx.complexity ?? 0;
+  // Complexity >= 6 alone is not enough; we also want a soft emotional signal
+  // OR explicit emotional case posture. Pure procedural complexity goes to
+  // researcher/litigator, not psychology.
+  if (complexity >= 6 && PSYCH_REGEX.test((ctx.keywords ?? []).join(" "))) {
+    return true;
+  }
+  return false;
+}
+
+/** Forensic Evidence: fact / document / medical markers. */
+const FORENSIC_REGEX =
+  /(доказательств|evidence|tõend|todiste|подпис[ьи]|signature|allekirjoit|allkir|F\s?43|PTSD|посттравмат|post[-\s]?traumat|epikriis|epikriisi|epicrisis|discharge\s+summary|ICD[-\s]?(10|11)|лекарск|медицинск|lääkärinlausunto|tervisetõend|chain\s+of\s+custody|цеп[ьи]\s+хранения|подлинност[ьи]|authenticity|forensic|кримина|ekspert\b|expert\s+witness|asiantuntijalausunto)/i;
+
+function shouldAddForensicEvidence(query: string, ctx: CaseContext): boolean {
+  if (FORENSIC_REGEX.test(query)) return true;
+  const kws = (ctx.keywords ?? []).join(" ");
+  return FORENSIC_REGEX.test(kws);
+}
+
+/** Native Writer: drafting verbs + document type names. */
+const DRAFTING_REGEX =
+  /\b(hakemus|kirjelmä|kirjelm|valitusluvan?\s?hakemus|valituslupa|kaebus|kassatsioonkaebus|menetluslub|valitus|vastine|vastus|lausunto|seisukoht|esitys|esitis|taotlus|draft|drafting|luonnos|kavand|черновик|написать|напиши|составить|составь|kirjoita|kirjuta|koosta|laadi|laatia|ходатайство|обращение)\b/i;
+
+function shouldAddNativeWriter(query: string, ctx: CaseContext): boolean {
+  if (DRAFTING_REGEX.test(query)) return true;
+  const kws = (ctx.keywords ?? []).join(" ");
+  return DRAFTING_REGEX.test(kws);
+}
+
 /** True if the query / context warrants pulling in the heavy meta roles. */
 function isHighStakes(query: string, ctx: CaseContext): boolean {
   const complexity = ctx.complexity ?? 0;
@@ -214,10 +270,47 @@ export function routeToLawyers(
     trace.push(`high_stakes=false`);
   }
 
+  // ── 4b. Wave F specialists — surface on trigger match ────────────────────
+  const specialists: LawyerAgent[] = [];
+  if (shouldAddEcthrSpecialist(query, ctx)) {
+    const sp = ALL_LAWYERS.find((a) => a.id === "ecthr-specialist");
+    if (sp) {
+      specialists.push(sp);
+      trace.push(`specialist=ecthr-specialist`);
+    }
+  }
+  if (shouldAddForensicEvidence(query, ctx)) {
+    const sp = ALL_LAWYERS.find((a) => a.id === "forensic-evidence");
+    if (sp) {
+      specialists.push(sp);
+      trace.push(`specialist=forensic-evidence`);
+    }
+  }
+  if (shouldAddNativeWriter(query, ctx)) {
+    const sp = ALL_LAWYERS.find((a) => a.id === "native-writer");
+    if (sp) {
+      specialists.push(sp);
+      trace.push(`specialist=native-writer`);
+    }
+  }
+  if (shouldAddClientPsychology(query, ctx)) {
+    const sp = ALL_LAWYERS.find((a) => a.id === "client-psychology");
+    if (sp) {
+      specialists.push(sp);
+      trace.push(`specialist=client-psychology`);
+    }
+  }
+
   // ── 5. Combine, dedupe, cap ──────────────────────────────────────────────
+  // Order: general counsel → domains → specialists → strategist → high-stakes
+  // meta-roles. Specialists go BEFORE strategist because they feed concrete
+  // material into the strategist's synthesis; strategist must always remain
+  // present even if specialists fill the cap.
   const out: LawyerAgent[] = [];
   const seen = new Set<string>();
-  for (const a of [generalCounsel, ...domains, strategist, ...extras]) {
+  for (
+    const a of [generalCounsel, ...domains, ...specialists, strategist, ...extras]
+  ) {
     if (!seen.has(a.id)) {
       seen.add(a.id);
       out.push(a);
@@ -236,10 +329,29 @@ export function routeToLawyers(
     trace.push(`filler=${filler.id}`);
   }
 
-  // Cap at MAX_LAWYERS.
-  const capped = out.slice(0, MAX_LAWYERS);
-  if (capped.length < out.length) {
-    trace.push(`capped_from=${out.length}_to=${MAX_LAWYERS}`);
+  // Cap at MAX_LAWYERS — but PRESERVE general counsel + strategist as
+  // non-negotiable anchors. If the natural cap would drop strategist, we
+  // promote it back in by dropping the lowest-priority specialist instead.
+  let capped: LawyerAgent[];
+  if (out.length <= MAX_LAWYERS) {
+    capped = out;
+  } else {
+    const anchors = new Set([generalCounsel.id, strategist.id]);
+    const head = out.slice(0, MAX_LAWYERS);
+    const hasAllAnchors = [...anchors].every((id) =>
+      head.some((a) => a.id === id)
+    );
+    if (hasAllAnchors) {
+      capped = head;
+    } else {
+      // Build a guaranteed-anchor slate: anchors first, then remaining in
+      // original priority order up to the cap.
+      const anchorAgents = out.filter((a) => anchors.has(a.id));
+      const rest = out.filter((a) => !anchors.has(a.id));
+      capped = [...anchorAgents, ...rest].slice(0, MAX_LAWYERS);
+      trace.push(`anchor_preserved`);
+    }
+    trace.push(`capped_from=${out.length}_to=${capped.length}`);
   }
 
   return {

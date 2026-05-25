@@ -112,12 +112,12 @@ const SCENARIOS: Scenario[] = [
   },
 ];
 
-Deno.test("selectRolesFromLawyerDept — every scenario returns 3-5 roles", () => {
+Deno.test("selectRolesFromLawyerDept — every scenario returns 3-7 roles (Wave F)", () => {
   for (const s of SCENARIOS) {
     const result = selectRolesFromLawyerDept(s.query, s.classification);
     assertExists(result, `${s.label}: expected a non-null bridge result`);
     assert(
-      result.roles.length >= 3 && result.roles.length <= 5,
+      result.roles.length >= 3 && result.roles.length <= 7,
       `${s.label}: roster size ${result.roles.length} out of bounds`,
     );
     // Spot-check expected ids are present in the agent list (not necessarily

@@ -130,8 +130,8 @@ Deno.test(
     assert(ids.has("strategist"), "strategist must always appear");
     assert(decision.highStakes, "FI deportation must be high-stakes");
     assert(
-      decision.agents.length >= 3 && decision.agents.length <= 5,
-      `roster size ${decision.agents.length} out of 3-5 range`,
+      decision.agents.length >= 3 && decision.agents.length <= 7,
+      `roster size ${decision.agents.length} out of 3-7 range`,
     );
   },
 );
@@ -376,8 +376,8 @@ Deno.test("smoke 5 — claude-proxy gates consilium behind !isAnon", async () =>
 
 // ─── Roster sanity (cross-check with router test) ────────────────────────────
 
-Deno.test("smoke — ALL_LAWYERS has 11 distinct ids exposed via bridge", () => {
-  assertEquals(ALL_LAWYERS.length, 11);
+Deno.test("smoke — ALL_LAWYERS has 15 distinct ids exposed via bridge (Wave F)", () => {
+  assertEquals(ALL_LAWYERS.length, 15);
   const ids = new Set(ALL_LAWYERS.map((a) => a.id));
-  assertEquals(ids.size, 11);
+  assertEquals(ids.size, 15);
 });
