@@ -249,6 +249,190 @@ final class MessageDone extends ChatStreamEvent {
 }
 
 // ---------------------------------------------------------------------------
+// Consilium v1 events (Phase 1, 2026-05-25)
+// ---------------------------------------------------------------------------
+//
+// The lawyer_router multi-role consilium emits a richer SSE flow than a
+// single Anthropic stream: it announces a panel of roles up front, streams
+// each role's opinion, surfaces adversarial cross-examination in round 2,
+// and synthesises a final answer. The events below mirror what
+// consilium_v3.ts / consilium.ts emit on the wire so the chat UI can render
+// per-role cards, attack callouts, and round progress without re-parsing.
+// =============================================================================
+
+/// Lightweight descriptor of one participating role at consilium kickoff.
+final class ConsiliumRoleInfo {
+  const ConsiliumRoleInfo({required this.id, required this.name});
+  final String id;
+  final String name;
+
+  @override
+  String toString() => 'ConsiliumRoleInfo($id, $name)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConsiliumRoleInfo && other.id == id && other.name == name;
+
+  @override
+  int get hashCode => Object.hash(id, name);
+}
+
+/// The consilium has started. Carries the full panel of roles so the UI can
+/// render placeholder cards before opinions stream in.
+final class ConsiliumStart extends ChatStreamEvent {
+  const ConsiliumStart({required this.roles, required this.total});
+  final List<ConsiliumRoleInfo> roles;
+  final int total;
+
+  @override
+  String toString() => 'ConsiliumStart(total=$total, roles=${roles.length})';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ConsiliumStart) return false;
+    if (other.total != total) return false;
+    if (other.roles.length != roles.length) return false;
+    for (var i = 0; i < roles.length; i++) {
+      if (other.roles[i] != roles[i]) return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode => Object.hash(total, Object.hashAll(roles));
+}
+
+/// One role's opinion arrived — round 1 (independent), round 2 (post-attack
+/// revision), or round 3 (final defense). Free-form `opinion` is the role's
+/// answer; the other fields are structured metadata for chips/badges.
+final class RoleOpinion extends ChatStreamEvent {
+  const RoleOpinion({
+    required this.roleId,
+    required this.roleName,
+    required this.opinion,
+    this.position,
+    this.confidence,
+    this.keyCitation,
+  });
+  final String roleId;
+  final String roleName;
+  final String opinion;
+  final String? position;
+  final double? confidence;
+  final String? keyCitation;
+
+  @override
+  String toString() =>
+      'RoleOpinion($roleId/$roleName, pos=$position, conf=$confidence)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is RoleOpinion &&
+          other.roleId == roleId &&
+          other.roleName == roleName &&
+          other.opinion == opinion &&
+          other.position == position &&
+          other.confidence == confidence &&
+          other.keyCitation == keyCitation;
+
+  @override
+  int get hashCode =>
+      Object.hash(roleId, roleName, opinion, position, confidence, keyCitation);
+}
+
+/// Round 2 adversarial cross-examination — one role attacks another's weak
+/// point with counter-evidence. Also re-used for round 3 defenses (in which
+/// case attacker/target are swapped to reflect the rebuttal direction).
+final class AdversarialAttack extends ChatStreamEvent {
+  const AdversarialAttack({
+    required this.attacker,
+    required this.targetRole,
+    required this.weakPoint,
+    required this.counterEvidence,
+  });
+  final String attacker;
+  final String targetRole;
+  final String weakPoint;
+  final String counterEvidence;
+
+  @override
+  String toString() =>
+      'AdversarialAttack($attacker → $targetRole, weakPoint=${_preview(weakPoint)})';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AdversarialAttack &&
+          other.attacker == attacker &&
+          other.targetRole == targetRole &&
+          other.weakPoint == weakPoint &&
+          other.counterEvidence == counterEvidence;
+
+  @override
+  int get hashCode =>
+      Object.hash(attacker, targetRole, weakPoint, counterEvidence);
+}
+
+/// A consilium round (1=independent, 2=attack, 3=defense) finished. UI can
+/// use this to drive round-progress indicators.
+final class RoundDone extends ChatStreamEvent {
+  const RoundDone({required this.round});
+  final int round;
+
+  @override
+  String toString() => 'RoundDone(round=$round)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is RoundDone && other.round == round;
+
+  @override
+  int get hashCode => round.hashCode ^ 0x7e6;
+}
+
+/// Synthesis phase started — the orchestrator is now merging role opinions
+/// into a single final answer. Plain TextDelta events follow until done.
+final class ConsiliumSynthesisStart extends ChatStreamEvent {
+  const ConsiliumSynthesisStart();
+
+  @override
+  String toString() => 'ConsiliumSynthesisStart()';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is ConsiliumSynthesisStart;
+
+  @override
+  int get hashCode => 0x7e7;
+}
+
+/// The consilium has fully concluded — synthesis emitted. The MessageDone
+/// event (from the underlying SSE) still fires for token usage; this one is
+/// a logical-layer terminator the UI uses to seal per-role cards.
+final class ConsiliumDone extends ChatStreamEvent {
+  const ConsiliumDone({this.disagreementDetected = false, this.totalRoles = 0});
+  final bool disagreementDetected;
+  final int totalRoles;
+
+  @override
+  String toString() =>
+      'ConsiliumDone(disagreement=$disagreementDetected, roles=$totalRoles)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ConsiliumDone &&
+          other.disagreementDetected == disagreementDetected &&
+          other.totalRoles == totalRoles;
+
+  @override
+  int get hashCode => Object.hash(disagreementDetected, totalRoles);
+}
+
+// ---------------------------------------------------------------------------
 // Backwards-compat shim
 // ---------------------------------------------------------------------------
 

@@ -1335,6 +1335,146 @@ List<ChatStreamEvent> parseSseEvent(
       ));
       break;
 
+    // -------------------------------------------------------------------
+    // Consilium v1 (Phase 1, 2026-05-25): lawyer_router multi-role SSE.
+    // Backend emits these alongside (not instead of) Anthropic frames, so
+    // the existing message_start/content_block_*/message_stop branches
+    // still fire for the synthesis text. We only translate the consilium
+    // metadata events here.
+    // -------------------------------------------------------------------
+
+    case 'consilium_start':
+      final rolesData = parsed['roles'];
+      final roles = <ConsiliumRoleInfo>[];
+      if (rolesData is List) {
+        for (final r in rolesData) {
+          if (r is Map) {
+            roles.add(ConsiliumRoleInfo(
+              id: (r['id'] as String?) ?? '',
+              name: (r['name'] as String?) ?? '',
+            ));
+          }
+        }
+      }
+      final totalRaw = parsed['total'];
+      final total = totalRaw is int
+          ? totalRaw
+          : (totalRaw is num ? totalRaw.toInt() : roles.length);
+      s.consiliumActive = true;
+      s.consiliumRoleCount = total;
+      s.consiliumDoneEmitted = false;
+      out.add(ConsiliumStart(roles: roles, total: total));
+      break;
+
+    case 'role_opinion':
+      out.add(RoleOpinion(
+        roleId: (parsed['role_id'] as String?) ??
+            (parsed['roleId'] as String?) ??
+            '',
+        roleName: (parsed['role_name'] as String?) ??
+            (parsed['roleName'] as String?) ??
+            '',
+        opinion: (parsed['opinion'] as String?) ?? '',
+        position: parsed['position'] as String?,
+        confidence: (parsed['confidence'] is num)
+            ? (parsed['confidence'] as num).toDouble()
+            : null,
+        keyCitation: (parsed['key_citation'] as String?) ??
+            (parsed['keyCitation'] as String?),
+      ));
+      break;
+
+    case 'role_done':
+      // Subsumed by role_opinion — backend emits both, UI only needs one.
+      break;
+
+    case 'round_1_done':
+      out.add(const RoundDone(round: 1));
+      break;
+
+    case 'round_2_done':
+      out.add(const RoundDone(round: 2));
+      break;
+
+    case 'round_3_done':
+      out.add(const RoundDone(round: 3));
+      break;
+
+    case 'round_2_attack':
+      out.add(AdversarialAttack(
+        attacker: (parsed['attacker'] as String?) ?? '',
+        targetRole: (parsed['target_role'] as String?) ??
+            (parsed['target'] as String?) ??
+            (parsed['targetRole'] as String?) ??
+            '',
+        weakPoint: (parsed['weak_point'] as String?) ??
+            (parsed['weakPoint'] as String?) ??
+            '',
+        counterEvidence: (parsed['counter_evidence'] as String?) ??
+            (parsed['counterEvidence'] as String?) ??
+            '',
+      ));
+      break;
+
+    case 'round_3_defense':
+      // Defense reverses the rhetorical direction: the original target is
+      // now the "attacker" (defending against the round-2 critic).
+      out.add(AdversarialAttack(
+        attacker: (parsed['defender'] as String?) ??
+            (parsed['attacker'] as String?) ??
+            '',
+        targetRole: (parsed['original_attacker'] as String?) ??
+            (parsed['target_role'] as String?) ??
+            (parsed['target'] as String?) ??
+            '',
+        weakPoint: (parsed['weak_point'] as String?) ??
+            (parsed['weakPoint'] as String?) ??
+            (parsed['defense_against'] as String?) ??
+            '',
+        counterEvidence: (parsed['counter_evidence'] as String?) ??
+            (parsed['defense'] as String?) ??
+            (parsed['counterEvidence'] as String?) ??
+            '',
+      ));
+      break;
+
+    case 'synthesis_start':
+      out.add(const ConsiliumSynthesisStart());
+      break;
+
+    case 'synthesis_done':
+    case 'consilium_done':
+      final disagreementRaw =
+          parsed['disagreement_detected'] ?? parsed['disagreementDetected'];
+      final totalRolesRaw =
+          parsed['total_roles'] ?? parsed['totalRoles'];
+      out.add(ConsiliumDone(
+        disagreementDetected: disagreementRaw is bool ? disagreementRaw : false,
+        totalRoles: totalRolesRaw is int
+            ? totalRolesRaw
+            : (totalRolesRaw is num
+                ? totalRolesRaw.toInt()
+                : s.consiliumRoleCount),
+      ));
+      s.consiliumDoneEmitted = true;
+      s.consiliumActive = false;
+      break;
+
+    case 'done':
+      // Generic terminator used by some backend variants. Only promote it
+      // to ConsiliumDone if we saw a consilium_start and have not yet
+      // emitted a done — otherwise it's a no-op so Anthropic's own
+      // message_stop remains authoritative for non-consilium streams.
+      if (s.consiliumActive && !s.consiliumDoneEmitted) {
+        out.add(ConsiliumDone(
+          disagreementDetected: false,
+          totalRoles: s.consiliumRoleCount,
+        ));
+        s.consiliumDoneEmitted = true;
+        s.consiliumActive = false;
+      }
+      break;
+
     default:
       // Pkg 2 closeout (2026-05-06): the proxy's streaming wrap APPENDS
       // a custom `event: citations` SSE frame after Anthropic's own
@@ -1375,11 +1515,22 @@ class SseStreamState {
   String? pendingSignature;
   int toolCount = 0;
   int? thinkingMs; // best-effort wall clock; populated by parser future ext
+
+  // Consilium v1 (2026-05-25): bookkeeping so a plain `done` event after a
+  // `consilium_start` can be promoted to ConsiliumDone. Reset on each
+  // message_start so a non-consilium message never carries the flag forward.
+  bool consiliumActive = false;
+  int consiliumRoleCount = 0;
+  bool consiliumDoneEmitted = false;
+
   void reset() {
     activeBlockType = null;
     pendingSignature = null;
     toolCount = 0;
     thinkingMs = null;
+    consiliumActive = false;
+    consiliumRoleCount = 0;
+    consiliumDoneEmitted = false;
   }
 }
 
