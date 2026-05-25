@@ -266,5 +266,32 @@ function makeProdDeps(
         // Failure is recoverable; cron will re-discover the thread.
       }
     },
+
+    async recordTimelineEvent(args) {
+      // Read the thread's current case_id — when null (most common path)
+      // we no-op. When linked, append an `email_in` event idempotently
+      // keyed by the gmail thread db id.
+      try {
+        const { data: row } = await sb
+          .from("email_threads")
+          .select("case_id")
+          .eq("id", args.threadDbId)
+          .maybeSingle();
+        const caseId = row?.case_id as string | null;
+        if (!caseId) return;
+        await sb.rpc("record_case_event", {
+          p_case_id: caseId,
+          p_event_type: "email_in",
+          p_title: (args.subject ?? "(no subject)").slice(0, 200),
+          p_summary: args.snippet ? args.snippet.slice(0, 500) : null,
+          p_payload: {
+            thread_id: args.threadDbId,
+            subject: args.subject,
+            dedupe_key: `thread:${args.threadDbId}:${args.lastMessageAt}`,
+          },
+          p_occurred_at: args.lastMessageAt,
+        });
+      } catch (_e) { /* swallow — sidecar */ }
+    },
   };
 }

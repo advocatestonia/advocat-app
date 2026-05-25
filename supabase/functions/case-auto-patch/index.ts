@@ -223,6 +223,33 @@ serve(async (req: Request) => {
     return jsonOk({ patched: false, reason: "no_changes" });
   }
 
+  // Sidecar: record `phase_change` on the case timeline so the
+  // client-facing UI surfaces the transition. Service-role client
+  // (we already proved ownership above). Dedupe per (case, transition,
+  // entered-at-second) so a same-tick retry never duplicates.
+  if (phaseChange?.changed) {
+    try {
+      const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
+      const occurredAt = new Date().toISOString();
+      await admin.rpc("record_case_event", {
+        p_case_id: caseId,
+        p_event_type: "phase_change",
+        p_title: `Phase: ${phaseChange.from} → ${phaseChange.to}`,
+        p_summary: null,
+        p_payload: {
+          from: phaseChange.from,
+          to: phaseChange.to,
+          source: "case-auto-patch",
+          dedupe_key:
+            `phase:${phaseChange.from}>${phaseChange.to}:${occurredAt.slice(0, 19)}`,
+        },
+        p_occurred_at: occurredAt,
+      });
+    } catch (_e) { /* swallow — sidecar */ }
+  }
+
   return jsonOk({
     patched: true,
     fields_changed: fieldsChanged,

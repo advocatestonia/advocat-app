@@ -197,6 +197,40 @@ serve(async (req: Request) => {
     ? ((data as Record<string, unknown>).created_or_updated as string[])
     : [];
 
+  // Sidecar: emit one `deadline_set` event per newly created/updated
+  // deadline so the case timeline reflects the new entry. We re-read
+  // the rows by id (we need the title + deadline_at to render a useful
+  // event), then call `record_case_event` per row. Best-effort — any
+  // failure here must not collapse the deadline extraction response.
+  if (insertedOrUpdated.length > 0) {
+    try {
+      const { data: rows } = await supabase
+        .from("case_deadlines")
+        .select(
+          "id, title, description, deadline_at, priority, statute_basis, created_at",
+        )
+        .in("id", insertedOrUpdated);
+      for (const r of (rows ?? []) as Array<Record<string, unknown>>) {
+        try {
+          await supabase.rpc("record_case_event", {
+            p_case_id: caseId,
+            p_event_type: "deadline_set",
+            p_title: String(r.title ?? "Deadline"),
+            p_summary: r.description ? String(r.description).slice(0, 500) : null,
+            p_payload: {
+              deadline_id: r.id,
+              deadline_at: r.deadline_at,
+              priority: r.priority,
+              statute_basis: r.statute_basis,
+              dedupe_key: `deadline:${r.id}`,
+            },
+            p_occurred_at: r.created_at ?? null,
+          });
+        } catch (_e) { /* swallow — sidecar */ }
+      }
+    } catch (_e) { /* swallow — sidecar */ }
+  }
+
   // PII discipline (lessons from FIX-5): no titles/dates in response —
   // counts only.
   return jsonOk({

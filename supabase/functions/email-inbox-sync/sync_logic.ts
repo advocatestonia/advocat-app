@@ -119,6 +119,19 @@ export interface MinimalSyncDeps {
    * task row). Failures are swallowed — the next tick will retry.
    */
   enqueueTriage(args: { userId: string; threadId: string }): Promise<void>;
+  /**
+   * Optional sidecar: record an `email_in` event on the case timeline.
+   * Called only when a thread is new or has advanced. The prod impl
+   * reads the thread row's `case_id` and writes via the
+   * `record_case_event` RPC; if the thread is not linked to a case it
+   * no-ops. Test fakes can leave this undefined.
+   */
+  recordTimelineEvent?(args: {
+    threadDbId: string;
+    subject: string | null;
+    snippet: string | null;
+    lastMessageAt: string;
+  }): Promise<void>;
 }
 
 // =============================================================================
@@ -390,6 +403,24 @@ export async function runSyncTick(
       const inserted = await deps.upsertMessages(msgRows);
       result.messages_upserted += inserted;
       result.threads_synced++;
+
+      // Sidecar: timeline event when the thread is linked to a case.
+      // toThreadRow above always sets case_id=null in D3 (we do not
+      // infer case linkage here); a thread becomes case-linked when the
+      // user attaches it or when email-triage assigns one. The prod
+      // impl reads case_id from the row at write time and no-ops if
+      // still null. Test fakes can leave this dep undefined.
+      if (deps.recordTimelineEvent) {
+        try {
+          await deps.recordTimelineEvent({
+            threadDbId: upsert.id,
+            subject: full.subject ?? null,
+            snippet: full.snippet ?? null,
+            lastMessageAt: full.lastMessageAt,
+          });
+        } catch (_e) { /* swallow — sidecar */ }
+      }
+
       // Best-effort triage enqueue.
       try {
         await deps.enqueueTriage({

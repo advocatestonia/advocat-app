@@ -274,6 +274,49 @@ export async function appendCaseEventReal(
       .eq("id", args.case_id)
       .eq("user_id", args.user_id);
   } catch (_e) { /* swallow */ }
+
+  // Sidecar: also write the typed event to `case_timeline_events`. This
+  // is the table the client-facing Case Timeline UI reads from. Best-
+  // effort — RPC failure must not collapse triage (the user_cases.timeline
+  // jsonb write above is the canonical record; this is for fast filtered
+  // reads + idempotency dedupe).
+  try {
+    const refEmailIdLocal = String(args.payload?.thread_id ?? "");
+    const triageId = typeof args.payload.triage_id === "string"
+      ? args.payload.triage_id
+      : null;
+    const dedupeKey = triageId
+      ? `triage:${triageId}`
+      : (refEmailIdLocal
+        ? `thread:${refEmailIdLocal}:${args.type}`
+        : null);
+    const severity = typeof args.payload.severity === "string"
+      ? args.payload.severity
+      : "review";
+    const title = `AI triage: ${severity}`;
+    const summary = typeof args.payload.summary === "string"
+      ? args.payload.summary
+      : (typeof args.payload.inbound === "string"
+        ? `Inbound classified as ${args.payload.inbound}`
+        : null);
+    await sb.rpc("record_case_event", {
+      p_case_id: args.case_id,
+      p_event_type: "consilium_decision",
+      p_title: title,
+      p_summary: summary,
+      p_payload: {
+        thread_id: refEmailIdLocal || null,
+        triage_id: triageId,
+        severity: args.payload.severity ?? null,
+        posture: args.payload.posture ?? null,
+        send_recommendation: args.payload.send_recommendation ?? null,
+        inbound: args.payload.inbound ?? null,
+        tracks: args.payload.tracks ?? null,
+        deadlines: args.payload.deadlines ?? null,
+        dedupe_key: dedupeKey,
+      },
+    });
+  } catch (_e) { /* swallow — sidecar */ }
 }
 
 /**

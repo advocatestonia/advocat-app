@@ -463,6 +463,33 @@ serve(async (req) => {
     console.warn("send-email: correspondence insert failed:", e);
   }
 
+  // Sidecar: append an `email_out` event to the case timeline so the
+  // client-facing Case Timeline UI reflects the sent message. Only fires
+  // when the request includes a case_id; chat-driven sends without a
+  // bound case are skipped. Best-effort — failure must not break the
+  // user-visible send-success response.
+  if (payload.case_id) {
+    try {
+      await supabase.rpc("record_case_event", {
+        p_case_id: payload.case_id,
+        p_event_type: "email_out",
+        p_title: subject.slice(0, 200),
+        p_summary: `To: ${to}${cc ? ` · Cc: ${cc}` : ""}`,
+        p_payload: {
+          to,
+          cc: cc ?? null,
+          provider,
+          provider_message_id: providerId,
+          dedupe_key: providerId
+            ? `email_out:${providerId}`
+            : null,
+        },
+      });
+    } catch (e) {
+      console.warn("send-email: timeline event insert failed:", e);
+    }
+  }
+
   return jsonResponse({
     ok: true,
     provider,
