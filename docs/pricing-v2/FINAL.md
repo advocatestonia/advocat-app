@@ -179,3 +179,28 @@ gh pr create \
   `supabase/functions/google-tts` are FROZEN — do NOT touch.
 - `test/e2e/prod_smoke.sh` is currently modified by another session — do
   NOT commit that file from this branch.
+
+---
+
+## 2026-05-25 update — consilium + Email Agent positioning
+
+Landing copy (`web/index.html`) updated to position the post-c9ccab4
+features against the existing €19.99 Pro / €29.99 Premium tiers. **No
+backend gating changed** — `claude-proxy/index.ts`, `consilium_lawyer_bridge.ts`,
+`check-ai-quota`, and `subscription_router.ts` are untouched. Owner
+still controls activation via `EMAIL_TRIAGE_USE_CONSILIUM=true`.
+
+Pro (€19.99) gained one new feature line:
+- `plan2.f7` — "15-lawyer AI consilium debate per query"
+
+Premium (€29.99) had `plan3.f6` rewritten and a new `plan3.f7` added:
+- `plan3.f6` — was "Email & document export" → now "Email Agent — AI drafts replies in your Gmail inbox"
+- `plan3.f7` — new "Case timeline — auto-tracked from every email + deadline"
+
+Both v1 (control) and v2 (treatment with annual default) pricing
+sections were updated. All 17 inline-locale tables in `index.html`
+received native translations for the new keys. Flutter
+`subscription_screen.dart` was NOT touched in this pass — it lives in
+`lib/features/settings/`, outside the `paywall*/payment*` scope of the
+task. If owner wants the in-app upgrade screen to mirror the landing,
+that is a follow-up: add 2 keys to 17 `.arb` files + 2 `_Feature` lines.
