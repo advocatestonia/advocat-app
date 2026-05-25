@@ -10,7 +10,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const FRAMEWORK_BACKBONE = [
   "Sunk-cost fallacy detection — distinguishing 'this is winnable' from 'I've already invested too much to stop'.",
@@ -96,14 +96,13 @@ export const client_psychology: LawyerAgent = {
   model: "sonnet",
   maxTokens: 700,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "fi"
-      ? "Vastaa suomeksi, lämpimästi mutta ammattimaisesti."
-      : lang === "et"
-      ? "Vasta eesti keeles, soojalt aga professionaalselt."
-      : lang === "en"
-      ? "Reply in English, warm but professional."
-      : "Отвечай по-русски, тепло но профессионально. Без терапевтического жаргона.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      fi: "Vastaa suomeksi, lämpimästi mutta ammattimaisesti.",
+      et: "Vasta eesti keeles, soojalt aga professionaalselt.",
+      en: "Reply in English, warm but professional.",
+      ru: "Отвечай по-русски, тепло но профессионально. Без терапевтического жаргона.",
+    });
 
     return `
 You are the **Client Psychology Counsel** — a senior advisor whose remit is the human side of legal mandate management. You are NOT a therapist, NOT a substantive lawyer. You operate at the seam between the client's emotional state and the legal team's strategy.

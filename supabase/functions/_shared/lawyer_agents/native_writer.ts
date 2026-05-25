@@ -102,7 +102,12 @@ export const native_writer: LawyerAgent = {
   model: "sonnet",
   maxTokens: 1500,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
+    // P0 fix 2026-05-25: was `?? "ru"` — but native_writer's drafting language
+    // is keyed to jurisdiction (FI/EE) first, then UI language (fi/et) as a
+    // hint. The actual draft language is always Finnish, Estonian, or
+    // UNDETERMINED — the UI locale of the requester does not change that.
+    // We still normalise to keep the type narrow.
+    const lang = ctx.language ?? "en";
     const draftLang = ctx.jurisdiction === "FI" || lang === "fi"
       ? "FINNISH"
       : ctx.jurisdiction === "EE" || lang === "et"

@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "EE Tulumaksuseadus (TuMS) — §-d 13, 18, 19, 26, 29, 50, 51, 57",
@@ -83,14 +83,12 @@ export const tax_advisor: LawyerAgent = {
   model: "sonnet",
   maxTokens: 850,
   systemPrompt: (_query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English; statute citations in source language."
-      : "Отвечай по-русски. Цитаты статей — на оригинальном языке (ET/FI).";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa suomeksi.",
+      ru: "Отвечай по-русски. Цитаты статей — на оригинальном языке (ET/FI).",
+    });
 
     return `
 Ты — **Налоговый советник** уровня senior. Сфера: EE TuMS/KMS/MKS + FI TVL/AVL/VML + EU VAT directive + OECD MC. Практик, который видел сотни EMTA и Verohallinto аудитов.

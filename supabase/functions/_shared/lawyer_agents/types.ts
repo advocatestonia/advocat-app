@@ -21,10 +21,71 @@
 //   strategist, empath, brawler, archivist). Same statute, different framings.
 // -----------------------------------------------------------------------------
 
-import type { CaseContext } from "../consilium_roles/types.ts";
+import type { CaseContext, SupportedLanguage } from "../consilium_roles/types.ts";
+import { normalizeLanguage } from "../consilium_roles/types.ts";
 
 /** Anthropic model id this agent should run on. */
 export type LawyerModel = "sonnet" | "opus" | "haiku";
+
+// ─── Reply-language directive helper ─────────────────────────────────────────
+//
+// Each lawyer agent prepends a one-line "respond in <language>" directive to
+// its system prompt so the model output language matches the user's UI locale.
+//
+// P0 bug fix 2026-05-25: previously each agent ended its replyLang ternary
+// with a Russian default. Any user whose ctx.language was not in
+// {fi, et, en} (or {fi, et, ru} for FI-native lawyers) got Russian output —
+// Polish user → Russian, Arabic → Russian, Ukrainian → Russian. Now every
+// one of the 17 SUPPORTED_LANGUAGES has an explicit directive. Languages
+// without a native legal-register polish fall back to an English directive
+// that names the target language — the model can still produce the correct
+// output language even when our prompt isn't in that language yet.
+//
+// `flavour` lets a lawyer agent override the directive for languages where
+// the agent has native-quality polish (e.g. senior_asianajaja uses Finnish
+// for fi, but Russian-with-Finnish-terms for ru). The base table covers the
+// "general" case; flavour entries take precedence.
+// -----------------------------------------------------------------------------
+
+const BASE_REPLY_DIRECTIVES: Readonly<Record<SupportedLanguage, string>> = {
+  en: "Reply in English; statute citations in source language.",
+  ru: "Отвечай по-русски. Цитаты норм — на родном языке (FI / ET / EN).",
+  et: "Vasta eesti keeles.",
+  fi: "Vastaa suomeksi.",
+  de: "Antworte auf Deutsch; Gesetzeszitate in Originalsprache.",
+  fr: "Réponds en français ; cite les textes de loi dans leur langue d'origine.",
+  es: "Responde en español; cita las leyes en su idioma original.",
+  it: "Rispondi in italiano; cita le leggi nella lingua originale.",
+  pl: "Odpowiadaj po polsku; cytaty ustaw w języku oryginału.",
+  sv: "Svara på svenska; lagcitat i originalspråk.",
+  lt: "Atsakyk lietuviškai; teisės aktų citatos – originalo kalba.",
+  lv: "Atbildi latviešu valodā; likumu citāti – oriģinālvalodā.",
+  uk: "Відповідай українською; цитати норм — мовою оригіналу (FI / ET / EN).",
+  ro: "Răspunde în română; citează legile în limba originală.",
+  ar: "أجب بالعربية؛ اقتبس النصوص القانونية بلغتها الأصلية.",
+  fa: "به فارسی پاسخ دهید؛ متون قانونی را به زبان اصلی نقل قول کنید.",
+  tr: "Türkçe cevap ver; kanun alıntılarını orijinal dilinde tut.",
+};
+
+/** Build the per-language reply directive for a lawyer agent.
+ *
+ *  @param lang    The case context language (will be normalised — region
+ *                 tags stripped, unknowns mapped to "en").
+ *  @param flavour Optional overrides for specific languages where this
+ *                 lawyer has native-quality polish (e.g. senior_asianajaja
+ *                 overrides "fi" with a longer Finnish directive). Languages
+ *                 not in the flavour map use the BASE_REPLY_DIRECTIVES entry.
+ *  @returns       The directive string (always non-empty). NEVER returns
+ *                 Russian unless the user explicitly requested ru.
+ */
+export function buildReplyDirective(
+  lang: CaseContext["language"] | string | undefined,
+  flavour?: Partial<Record<SupportedLanguage, string>>,
+): string {
+  const normalised = normalizeLanguage(lang);
+  if (flavour && flavour[normalised]) return flavour[normalised]!;
+  return BASE_REPLY_DIRECTIVES[normalised];
+}
 
 /** Display name + style flag — used by the consilium runner for the "Round 1"
  *  banner and for the synthesis header. */
@@ -64,14 +125,22 @@ export function resolveModelId(m: LawyerModel): string {
 }
 
 /** Minimal context shim the router can build from raw query + lang when no
- *  case is loaded yet. Lets the lawyer agents always receive a real CaseContext. */
+ *  case is loaded yet. Lets the lawyer agents always receive a real CaseContext.
+ *
+ *  P0 fix 2026-05-25: the `lang` parameter is now normalised so callers can
+ *  pass raw BCP47 tags ("fi-FI", " RU ", "pl_PL", "xx") and downstream agents
+ *  still see a SupportedLanguage. */
 export function buildLawyerCtx(
   query: string,
-  lang: NonNullable<CaseContext["language"]>,
+  lang: NonNullable<CaseContext["language"]> | string,
   base?: CaseContext,
 ): CaseContext {
   const ctx: CaseContext = base ? { ...base } : {};
-  ctx.language = ctx.language ?? lang;
+  // Normalise the incoming lang; preserve base.language if it was already set
+  // (so an explicit ctx.language survives even if the caller passed something
+  // unusable in `lang`).
+  const normalised = normalizeLanguage(ctx.language ?? lang);
+  ctx.language = normalised;
   if (!ctx.keywords || ctx.keywords.length === 0) {
     ctx.keywords = extractKeywords(query);
   }

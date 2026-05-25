@@ -18,8 +18,9 @@ import type {
   DomainExpert,
   RoleDef,
   StrategicPosition,
+  SupportedLanguage,
 } from "./types.ts";
-import { pickName } from "./types.ts";
+import { normalizeLanguage, pickName } from "./types.ts";
 import { DOMAIN_EXPERTS } from "./domain.ts";
 import { STRATEGIC_POSITIONS } from "./strategic.ts";
 import { loadMemoryHooks, type MemoryReader } from "./memory.ts";
@@ -119,7 +120,10 @@ export async function compileRoles(params: {
   memoryReader: MemoryReader;
 }): Promise<ReadonlyArray<CompiledRole>> {
   const { selection, ctx, memoryReader } = params;
-  const lang = ctx.language ?? "ru";
+  // P0 fix 2026-05-25: was `?? "ru"` — forced Russian display names for every
+  // unknown-locale user. Now defaults to "en" via normalizeLanguage(); region
+  // tags are stripped ("fi-FI" → "fi") and unsupported tags fall to "en".
+  const lang = normalizeLanguage(ctx.language);
 
   const compiledDomain = await Promise.all(
     selection.domainRoles.map(async (d) => compileSingleRole(d, ctx, lang, memoryReader)),
@@ -134,7 +138,7 @@ export async function compileRoles(params: {
 async function compileSingleRole(
   role: RoleDef,
   ctx: CaseContext,
-  lang: CaseContext["language"],
+  lang: SupportedLanguage,
   reader: MemoryReader,
 ): Promise<CompiledRole> {
   const memoryBlobs = await loadMemoryHooks(role.memoryHooks, reader);

@@ -7,6 +7,76 @@
 // Each role compiles to a single ConsiliumRole object consumed by the runner.
 // -----------------------------------------------------------------------------
 
+// ─── Supported UI locales ─────────────────────────────────────────────────────
+//
+// MUST stay in sync with lib/l10n/app_*.arb (17 locales as of 2026-05-25):
+//   ar, de, en, es, et, fa, fi, fr, it, lt, lv, pl, ro, ru, sv, tr, uk
+//
+// P0 bug fix 2026-05-25: previously the enum supported only ru|et|fi|en|de and
+// every fallback site hardcoded `?? "ru"`. A Finnish user landing without an
+// explicit ctx.language got Russian consilium synthesis; Polish got Russian;
+// Arabic got Russian. The default fallback is now ALWAYS "en" — the lawyer
+// agents already include English reply branches for unknown languages.
+// -----------------------------------------------------------------------------
+
+/** The 17 UI locales we support across the app. Keep in alphabetical order
+ *  for stable diffs. NEVER add a locale here without adding the matching
+ *  lib/l10n/app_<code>.arb file. */
+export const SUPPORTED_LANGUAGES = [
+  "ar",
+  "de",
+  "en",
+  "es",
+  "et",
+  "fa",
+  "fi",
+  "fr",
+  "it",
+  "lt",
+  "lv",
+  "pl",
+  "ro",
+  "ru",
+  "sv",
+  "tr",
+  "uk",
+] as const;
+
+export type SupportedLanguage = typeof SUPPORTED_LANGUAGES[number];
+
+/** Default fallback locale. ENGLISH — NEVER Russian. This was the P0 bug:
+ *  hardcoded "ru" defaults coerced every unknown-locale user to Russian
+ *  output regardless of their UI language. */
+export const DEFAULT_LANGUAGE: SupportedLanguage = "en";
+
+const SUPPORTED_LANGUAGE_SET: ReadonlySet<string> =
+  new Set<string>(SUPPORTED_LANGUAGES);
+
+/** Normalise any candidate language tag to a SupportedLanguage.
+ *
+ *  Rules:
+ *    1. null / undefined / empty / non-string → DEFAULT_LANGUAGE ("en")
+ *    2. Trim whitespace, lowercase
+ *    3. Strip region/script subtag: "fi-FI" → "fi", "zh_Hant" → "zh"
+ *    4. If the resulting primary tag is in SUPPORTED_LANGUAGES → return it
+ *    5. Otherwise → DEFAULT_LANGUAGE ("en")
+ *
+ *  NEVER falls back to "ru". Callers wanting Russian must pass "ru" explicitly.
+ */
+export function normalizeLanguage(
+  input: string | null | undefined,
+): SupportedLanguage {
+  if (typeof input !== "string") return DEFAULT_LANGUAGE;
+  const trimmed = input.trim();
+  if (trimmed.length === 0) return DEFAULT_LANGUAGE;
+  // Lowercase first, then take the part before -/_ (BCP 47 region/script).
+  const primary = trimmed.toLowerCase().split(/[-_]/)[0];
+  if (SUPPORTED_LANGUAGE_SET.has(primary)) {
+    return primary as SupportedLanguage;
+  }
+  return DEFAULT_LANGUAGE;
+}
+
 /** Case-context shape consumed by the router. All fields optional so the
  *  caller can pass whatever the chat layer has already extracted. */
 export interface CaseContext {
@@ -28,8 +98,11 @@ export interface CaseContext {
   secondaryTypes?: ReadonlyArray<NonNullable<CaseContext["caseType"]>>;
   /** ISO-3166 (FI, EE, DE, EU). Drives jurisdiction-specific experts. */
   jurisdiction?: "FI" | "EE" | "DE" | "EU" | "mixed" | "unknown";
-  /** UI language — used for role display names only. */
-  language?: "ru" | "et" | "fi" | "en" | "de";
+  /** UI language — used for role display names AND for steering each lawyer
+   *  agent's reply language. One of the 17 SUPPORTED_LANGUAGES. Callers
+   *  should always pass through `normalizeLanguage()` first; the bridge and
+   *  router both do this defensively. Default fallback is "en", never "ru". */
+  language?: SupportedLanguage;
   /** Loose complexity score 1-10. > 6 unlocks the long-game / 23-test pair. */
   complexity?: number;
   /** Free-form keywords (lowercased) for routing nudges — e.g. "valituslupa". */
@@ -40,13 +113,29 @@ export interface CaseContext {
   hasOpposingCorrespondence?: boolean;
 }
 
-/** Localised display name table. Falls back to the `ru` entry when missing. */
+/** Localised display name table. Falls back to the `en` entry first, then
+ *  `ru` (legacy entries) when missing. */
 export type LocalisedName = {
+  /** Primary fallback — every role MUST define an English name. */
+  en?: string;
+  /** Legacy / Russian display name. Many roles only have ru today. Kept
+   *  required for backward-compat with existing role definitions. */
   ru: string;
   et?: string;
   fi?: string;
-  en?: string;
   de?: string;
+  fr?: string;
+  es?: string;
+  it?: string;
+  pl?: string;
+  sv?: string;
+  lt?: string;
+  lv?: string;
+  uk?: string;
+  ro?: string;
+  ar?: string;
+  fa?: string;
+  tr?: string;
 };
 
 /** Common fields shared by both domain and strategic roles. */
@@ -100,11 +189,25 @@ export interface CompiledRole {
   systemBody: string;
 }
 
-/** Pick the best localised name. */
+/** Pick the best localised name.
+ *
+ *  Resolution order:
+ *    1. Exact match for the requested language (after normalisation)
+ *    2. English (`en`) — primary fallback
+ *    3. Russian (`ru`) — last-resort legacy fallback
+ *
+ *  Previously this fell back directly to `ru` which forced Russian display
+ *  names for every Finnish / Polish / Arabic / etc. user. The new order
+ *  prefers English which every role is expected to populate over time;
+ *  `ru` remains only because a handful of legacy roles still ship Russian-
+ *  only display names. */
 export function pickName(
   name: LocalisedName,
-  lang: CaseContext["language"] | undefined,
+  lang: CaseContext["language"] | string | undefined,
 ): string {
-  if (lang && name[lang]) return name[lang]!;
+  const normalised = normalizeLanguage(lang);
+  const exact = name[normalised];
+  if (typeof exact === "string" && exact.length > 0) return exact;
+  if (typeof name.en === "string" && name.en.length > 0) return name.en;
   return name.ru;
 }

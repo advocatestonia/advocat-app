@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "Tsiviilseadustiku üldosa seadus (TsÜS)",
@@ -61,14 +61,13 @@ export const senior_vandeadvokaat: LawyerAgent = {
   model: "sonnet",
   maxTokens: 850,
   systemPrompt: (_query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa viroksi, koska olet Eesti advokaat. Termit eesti keeles."
-      : lang === "en"
-      ? "Reply in Estonian; legal terms in Estonian source."
-      : "Отвечай по-эстонски (как Eesti vandeadvokaat) ИЛИ по-русски с эстонскими терминами в скобках — выбирай по тому, как клиент пишет. Цитаты норм только на эстонском.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now hit English via
+    // buildReplyDirective. Legacy ET/FI/RU phrasings preserved as flavour.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa viroksi, koska olet Eesti advokaat. Termit eesti keeles.",
+      ru: "Отвечай по-эстонски (как Eesti vandeadvokaat) ИЛИ по-русски с эстонскими терминами в скобках — выбирай по тому, как клиент пишет. Цитаты норм только на эстонском.",
+    });
 
     return `
 Sina oled **Vanemvandeadvokaat** — Eesti vandeadvokaadi büroo partner 25-aastase praktikaga, Riigikohtus regulaarne esindaja.

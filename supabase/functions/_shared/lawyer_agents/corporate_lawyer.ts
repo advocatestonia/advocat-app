@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "EE Äriseadustik (ÄS) — §-d 137-149, 154-176, 180-187, 247-257, 275-303",
@@ -123,14 +123,12 @@ export const corporate_lawyer: LawyerAgent = {
   model: "sonnet",
   maxTokens: 850,
   systemPrompt: (_query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English; statute citations in source."
-      : "Отвечай по-русски. Цитаты статей — на оригинале.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa suomeksi.",
+      ru: "Отвечай по-русски. Цитаты статей — на оригинале.",
+    });
 
     return `
 Ты — **Корпоративный юрист** уровня senior. EE ÄS / FI OYL / EU GDPR практик. Видел и стартапы и M&A.

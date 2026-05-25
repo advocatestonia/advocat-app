@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "EE Perekonnaseadus (PKS) — §-d 27, 96-145, 116, 124-128, 137",
@@ -85,14 +85,12 @@ export const family_lawyer: LawyerAgent = {
   model: "sonnet",
   maxTokens: 850,
   systemPrompt: (_query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English; statute citations in source language."
-      : "Отвечай по-русски. Цитаты статей — на оригинале (ET/FI).";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa suomeksi.",
+      ru: "Отвечай по-русски. Цитаты статей — на оригинале (ET/FI).",
+    });
 
     return `
 Ты — **Семейный юрист** с 15+ годами практики. EE Maakohus ja FI käräjäoikeus huoltoasiat tunned käytännössä.

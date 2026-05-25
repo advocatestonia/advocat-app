@@ -49,6 +49,7 @@ import {
   compileRoles,
   DenoMemoryReader,
   type MemoryReader,
+  normalizeLanguage,
   resolveDefaultMemoryDir,
   selectConsiliumRoles,
 } from "./consilium_roles/index.ts";
@@ -1007,7 +1008,12 @@ export async function runConsiliumV3(
   if (!usedOverride && flagOn && params.caseClassification) {
     try {
       const ctx = params.caseClassification;
-      const lang = (ctx.language ?? "ru") as NonNullable<CaseContext["language"]>;
+      // P0 fix 2026-05-25: was `?? "ru"` — forced Russian routing for every
+      // unknown-locale user. normalizeLanguage() defaults to "en", strips
+      // region tags ("fi-FI" → "fi"), and validates against the 17 supported
+      // locales. The lawyer agents include English reply branches for every
+      // unknown language.
+      const lang = normalizeLanguage(ctx.language);
       const decision = routeToLawyers(params.userMessage, lang, ctx);
       // Only fire when complexity / jurisdiction / deadline justifies it.
       // The router exposes highStakes; we additionally allow it when caller

@@ -33,7 +33,8 @@
 // -----------------------------------------------------------------------------
 
 import type { ConsiliumRole } from "./consilium.ts";
-import type { CaseContext } from "./consilium_roles/types.ts";
+import type { CaseContext, SupportedLanguage } from "./consilium_roles/types.ts";
+import { normalizeLanguage } from "./consilium_roles/types.ts";
 import {
   ALL_LAWYERS,
   type LawyerAgent,
@@ -69,11 +70,21 @@ function agentToConsiliumRole(
   };
 }
 
-/** Resolve a usable language tag for the lawyer router. Defaults to "ru"
- *  because the consilium synthesis prompts and base lawyer persona are
- *  Russian — see SYNTHESIS_SYSTEM_PROMPT in consilium.ts. */
-function resolveLang(ctx: CaseContext | undefined): NonNullable<CaseContext["language"]> {
-  return (ctx?.language ?? "ru") as NonNullable<CaseContext["language"]>;
+/** Resolve a usable language tag for the lawyer router.
+ *
+ *  P0 bug fix 2026-05-25: previously defaulted to "ru" which forced Russian
+ *  consilium output for every user landing without an explicit ctx.language —
+ *  Finnish user → Russian reply, Polish → Russian, Arabic → Russian, etc.
+ *  Now defaults to "en" via normalizeLanguage(); region/script subtags are
+ *  stripped ("fi-FI" → "fi"); unsupported tags fall through to "en".
+ *
+ *  The consilium SYNTHESIS_SYSTEM_PROMPT is still authored in Russian, but
+ *  each lawyer agent's systemPrompt contains a per-language reply clause
+ *  (see immigration_lawyer.ts, senior_asianajaja.ts, etc.) so the model
+ *  responds in the user's locale. Polish quality varies (no native Polish
+ *  prompt yet) but the language is correct. */
+function resolveLang(ctx: CaseContext | undefined): SupportedLanguage {
+  return normalizeLanguage(ctx?.language);
 }
 
 // ─── Public API ──────────────────────────────────────────────────────────────
@@ -116,7 +127,12 @@ export function selectRolesFromLawyerDept(
     // one if the caller passed nothing. routeToLawyers already does this
     // internally via buildLawyerCtx, but agent.systemPrompt is invoked again
     // here with whatever the caller passed, so we mirror the same defaults.
-    const ctx: CaseContext = classification ?? { language: lang };
+    // Always normalise the language on the ctx so downstream lawyer prompts
+    // see a SupportedLanguage value even if the caller passed "fi-FI" /
+    // uppercase / unknown locale.
+    const ctx: CaseContext = classification
+      ? { ...classification, language: lang }
+      : { language: lang };
 
     const roles = decision.agents.map((a) => agentToConsiliumRole(a, query, ctx));
 

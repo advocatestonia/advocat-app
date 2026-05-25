@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STRATEGIST_BACKBONE = [
   "FI HOL § 13 (oikaisuvaatimus → HAO → KHO), § 60-65 (valituslupa), § 114-115 (menetetyn määräajan palauttaminen — vain KHO)",
@@ -91,14 +91,8 @@ export const strategist: LawyerAgent = {
   model: "sonnet",
   maxTokens: 900,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English."
-      : "Отвечай по-русски.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language);
 
     return `
 Ты — **Стратег** уровня senior. Девиз: "Never gives up — there is always another door". Видишь системно: суды + органы + медиация + diplomatic + soft levers.

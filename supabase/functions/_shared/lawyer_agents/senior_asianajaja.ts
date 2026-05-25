@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "Oikeudenkäymiskaari (OK) — luvut 1, 7, 15, 17, 26, 30",
@@ -65,14 +65,14 @@ export const senior_asianajaja: LawyerAgent = {
   model: "sonnet",
   maxTokens: 850,
   systemPrompt: (_query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "et"
-      ? "Vastaa soome keeles (juriidilised tsitaadid); Eesti termini sulgudes."
-      : lang === "en"
-      ? "Reply in Finnish; statutory text in Finnish source."
-      : "Отвечай по-фински (как FI asianajaja) ИЛИ по-русски с финскими терминами в скобках — выбирай по тому, как клиент пишет. Цитаты норм только на финском.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now hit English via
+    // buildReplyDirective. Legacy FI/ET/EN/RU phrasings preserved as flavour.
+    const replyLang = buildReplyDirective(ctx.language, {
+      fi: "Vastaa suomeksi.",
+      et: "Vastaa soome keeles (juriidilised tsitaadid); Eesti termini sulgudes.",
+      en: "Reply in Finnish; statutory text in Finnish source.",
+      ru: "Отвечай по-фински (как FI asianajaja) ИЛИ по-русски с финскими терминами в скобках — выбирай по тому, как клиент пишет. Цитаты норм только на финском.",
+    });
 
     return `
 Sinä olet **Senior Asianajaja** — Suomen Asianajajaliiton jäsen, 20+ vuotta käytäntöä, säännöllinen edustaja KKO:ssa ja KHO:ssa.

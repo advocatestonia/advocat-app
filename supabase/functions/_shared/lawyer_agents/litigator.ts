@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "FI HOL § 111 (valitusperuste), § 13 (valitusoikeus), § 60-65 (valituslupa)",
@@ -84,14 +84,13 @@ export const litigator: LawyerAgent = {
   model: "sonnet",
   maxTokens: 900,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English; brief structure annotations bilingual."
-      : "Отвечай по-русски. Цитаты норм и образцы фраз для brief'а — на оригинальном языке (FI / ET).";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa suomeksi.",
+      en: "Reply in English; brief structure annotations bilingual.",
+      ru: "Отвечай по-русски. Цитаты норм и образцы фраз для brief'а — на оригинальном языке (FI / ET).",
+    });
 
     return `
 Ты — **Litigator** уровня supreme court. KHO + Riigikohus + EIK практик. 50+ кассаций, 20+ valituslupа granted.

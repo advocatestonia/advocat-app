@@ -9,7 +9,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "ECHR Art 3 — prohibition of torture, inhuman or degrading treatment (absolute, non-derogable).",
@@ -106,14 +106,13 @@ export const ecthr_specialist: LawyerAgent = {
   model: "sonnet",
   maxTokens: 900,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "fi"
-      ? "Vastaa suomeksi; sopimusartiklat englanniksi (esim. 'Art 8 ECHR')."
-      : lang === "et"
-      ? "Vasta eesti keeles; artiklid inglise keeles."
-      : lang === "en"
-      ? "Reply in English. Convention articles in canonical short form."
-      : "Отвечай по-русски. Артикулы Конвенции — в каноничной английской форме ('Art 8 ECHR').";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      fi: "Vastaa suomeksi; sopimusartiklat englanniksi (esim. 'Art 8 ECHR').",
+      et: "Vasta eesti keeles; artiklid inglise keeles.",
+      en: "Reply in English. Convention articles in canonical short form.",
+      ru: "Отвечай по-русски. Артикулы Конвенции — в каноничной английской форме ('Art 8 ECHR').",
+    });
 
     const jurNote = ctx.jurisdiction === "FI"
       ? "FI domestic exhaustion: HAO → KHO. KHO valituslupa REFUSED = exhaustion confirmed."

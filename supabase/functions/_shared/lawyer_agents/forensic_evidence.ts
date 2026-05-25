@@ -8,7 +8,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "FI Oikeudenkäymiskaari (OK) Luku 17 — todistelu yleensä; § 1 vapaa todistelu, § 5 todistustaakka, § 24 asiantuntija.",
@@ -105,14 +105,13 @@ export const forensic_evidence: LawyerAgent = {
   model: "sonnet",
   maxTokens: 900,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "fi"
-      ? "Vastaa suomeksi. ICD-koodit ja oikeudelliset pykälät alkukielellä."
-      : lang === "et"
-      ? "Vasta eesti keeles. ICD-koodid ja paragrahvid algkeeles."
-      : lang === "en"
-      ? "Reply in English. ICD codes and statute paragraphs in source form."
-      : "Отвечай по-русски. ICD коды и параграфы — на исходном языке.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      fi: "Vastaa suomeksi. ICD-koodit ja oikeudelliset pykälät alkukielellä.",
+      et: "Vasta eesti keeles. ICD-koodid ja paragrahvid algkeeles.",
+      en: "Reply in English. ICD codes and statute paragraphs in source form.",
+      ru: "Отвечай по-русски. ICD коды и параграфы — на исходном языке.",
+    });
 
     return `
 You are the **Forensic Evidence Counsel** — senior expert in evidence quality, chain-of-custody, document authenticity, and medical-record interpretation. You operate strictly on facts and document quality. You DO NOT advocate; you score and recommend.

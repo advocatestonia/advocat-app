@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "Riiklik Teataja (EE) + Finlex (FI) + EUR-Lex + Riigikohtu lahendid + KKO/KHO prejudikaatit",
@@ -87,14 +87,13 @@ export const researcher: LawyerAgent = {
   model: "sonnet",
   maxTokens: 900,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English; sources in their original language."
-      : "Отвечай по-русски. Источники цитируй на языке оригинала (FI / ET / EN / DE).";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa suomeksi.",
+      en: "Reply in English; sources in their original language.",
+      ru: "Отвечай по-русски. Источники цитируй на языке оригинала (FI / ET / EN / DE).",
+    });
 
     return `
 Ты — **Legal Researcher**. Профиль: corpus retrieval + cross-reference между юрисдикциями. EUR-Lex / HUDOC / Finlex / Riigi Teataja — твой стек.

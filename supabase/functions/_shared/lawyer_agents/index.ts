@@ -4,6 +4,7 @@
 export type { LawyerAgent, LawyerModel } from "./types.ts";
 export {
   buildLawyerCtx,
+  buildReplyDirective,
   extractKeywords,
   resolveModelId,
 } from "./types.ts";

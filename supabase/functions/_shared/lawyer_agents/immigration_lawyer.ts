@@ -7,7 +7,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "FI Ulkomaalaislaki (UlkL) — 5, 11, 36, 49, 51, 73, 87-90, 142, 147-149, 168, 196 §",
@@ -99,14 +99,14 @@ export const immigration_lawyer: LawyerAgent = {
   model: "sonnet",
   maxTokens: 900,
   systemPrompt: (query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "en"
-      ? "Reply in English; statute citations in source language."
-      : "Отвечай по-русски. Цитаты норм — на родном языке (FI / ET / EN).";
+    // P0 fix 2026-05-25: unknown locales now default to English, not Russian.
+    // The 17 SUPPORTED_LANGUAGES each have a directive; this lawyer keeps the
+    // legacy FI / ET / RU phrasings as flavour overrides for native quality.
+    const replyLang = buildReplyDirective(ctx.language, {
+      fi: "Vastaa suomeksi.",
+      et: "Vasta eesti keeles.",
+      ru: "Отвечай по-русски. Цитаты норм — на родном языке (FI / ET / EN).",
+    });
 
     const jurNote = ctx.jurisdiction === "FI"
       ? "Юрисдикция FI — фокус UlkomaalaisL + KHO-практика."

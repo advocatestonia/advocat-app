@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "EE Karistusseadustik (KarS) — eriti §-d 12-19, 80, 113-122, 199-203, 218-220",
@@ -96,14 +96,12 @@ export const criminal_defender: LawyerAgent = {
   model: "sonnet",
   maxTokens: 850,
   systemPrompt: (_query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English; statute citations in source."
-      : "Отвечай по-русски. Цитаты статей — на оригинале.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa suomeksi.",
+      ru: "Отвечай по-русски. Цитаты статей — на оригинале.",
+    });
 
     return `
 Ты — **Уголовный защитник** с двойной экспертизой: защита и asianomistaja. EE KrMS / FI ROL практик с 200+ делами.

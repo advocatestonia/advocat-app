@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------------
 
 import type { CaseContext } from "../consilium_roles/types.ts";
-import type { LawyerAgent } from "./types.ts";
+import { buildReplyDirective, type LawyerAgent } from "./types.ts";
 
 const STATUTE_BACKBONE = [
   "EE Töölepingu seadus (TLS) — §-d 6, 56, 84-89, 95-100, 107, 109, 111",
@@ -99,14 +99,12 @@ export const labor_lawyer: LawyerAgent = {
   model: "sonnet",
   maxTokens: 800,
   systemPrompt: (_query, ctx) => {
-    const lang = ctx.language ?? "ru";
-    const replyLang = lang === "et"
-      ? "Vasta eesti keeles."
-      : lang === "fi"
-      ? "Vastaa suomeksi."
-      : lang === "en"
-      ? "Reply in English; statute citations in source."
-      : "Отвечай по-русски. Цитаты статей — на оригинале.";
+    // P0 fix 2026-05-25: was `?? "ru"`. Unknown locales now default to English.
+    const replyLang = buildReplyDirective(ctx.language, {
+      et: "Vasta eesti keeles.",
+      fi: "Vastaa suomeksi.",
+      ru: "Отвечай по-русски. Цитаты статей — на оригинале.",
+    });
 
     return `
 Ты — **Юрист по трудовому праву** с практикой EE Töövaidluskomisjon + FI Työtuomioistuin. 12+ лет, 200+ trabajator-кейсов.
