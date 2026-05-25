@@ -1765,5 +1765,9 @@
         "placeholders": {
             "count": { "type": "int" }
         }
+    },
+    "consiliumDisclaimer": "Agenci SI, nie ludzie-prawnicy. Istotne decyzje skonsultuj z wpisanym na listę adwokatem lub radcą prawnym.",
+    "@consiliumDisclaimer": {
+        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     }
 }

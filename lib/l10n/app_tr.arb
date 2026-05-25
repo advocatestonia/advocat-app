@@ -1164,5 +1164,9 @@
         "placeholders": {
             "count": { "type": "int" }
         }
+    },
+    "consiliumDisclaimer": "YZ ajanları, insan avukatlar değil. Önemli kararları baroya kayıtlı bir avukatla doğrulayın.",
+    "@consiliumDisclaimer": {
+        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     }
 }

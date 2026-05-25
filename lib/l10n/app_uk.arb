@@ -1213,5 +1213,9 @@
         "placeholders": {
             "count": { "type": "int" }
         }
+    },
+    "consiliumDisclaimer": "ШІ-агенти, а не люди-юристи. Важливі рішення перевіряйте з ліцензованим адвокатом.",
+    "@consiliumDisclaimer": {
+        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     }
 }

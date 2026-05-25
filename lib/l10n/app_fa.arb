@@ -1164,5 +1164,9 @@
         "placeholders": {
             "count": { "type": "int" }
         }
+    },
+    "consiliumDisclaimer": "عامل‌های هوش مصنوعی، نه وکلای انسانی. تصمیمات مهم را با وکیل دارای پروانه بررسی کنید.",
+    "@consiliumDisclaimer": {
+        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     }
 }

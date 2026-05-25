@@ -1664,5 +1664,9 @@
         "placeholders": {
             "count": { "type": "int" }
         }
+    },
+    "consiliumDisclaimer": "Tekoälyagentteja, ei ihmislakimiehiä. Tarkista olennaiset päätökset lisensoidulla asianajajalla.",
+    "@consiliumDisclaimer": {
+        "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
     }
 }
