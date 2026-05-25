@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../features/cases/models/case_timeline_event.dart';
 import '../models/case_model.dart';
 import '../models/document.dart';
 import '../models/correspondence.dart';
@@ -294,6 +295,81 @@ class SupabaseService {
         .eq('case_id', caseId)
         .order('sent_at', ascending: false);
     return (response as List).map((e) => Correspondence.fromJson(e)).toList();
+  }
+
+  // ── Case Timeline Events ──────────────────────────────────────────────
+  //
+  // Reads the `case_timeline_events` table populated by:
+  //   - email-inbox-sync   → 'email_in'
+  //   - send-email         → 'email_out'
+  //   - email-triage       → 'consilium_decision'
+  //   - deadline-extractor → 'deadline_set'
+  //   - case-auto-patch    → 'phase_change'
+  //   - this service       → 'manual_note' (user-authored)
+  //
+  // RLS owner-only; demo mode returns an empty list. Synthetic 'general'
+  // case ids short-circuit.
+
+  /// Fetch a single page of timeline events for the given case, newest
+  /// first. [pageSize] defaults to 50; [beforeOccurredAt] (exclusive)
+  /// drives cursor-based pagination.
+  Future<List<CaseTimelineEvent>> getCaseTimelineEvents({
+    required String caseId,
+    int pageSize = 50,
+    DateTime? beforeOccurredAt,
+  }) async {
+    if (isDemo) return const [];
+    if (!_isRealUuid(caseId)) return const [];
+    var query = _client
+        .from('case_timeline_events')
+        .select()
+        .eq('case_id', caseId);
+    if (beforeOccurredAt != null) {
+      query = query.lt('occurred_at', beforeOccurredAt.toIso8601String());
+    }
+    final response = await query
+        .order('occurred_at', ascending: false)
+        .limit(pageSize);
+    return (response as List)
+        .map((e) =>
+            CaseTimelineEvent.fromJson(Map<String, dynamic>.from(e as Map)))
+        .toList();
+  }
+
+  /// Append a `manual_note` event to the timeline. Returns the new
+  /// event_id, or null in demo mode. Other event_types are pipeline-only
+  /// — the RLS policy blocks direct inserts of system events.
+  Future<String?> appendManualNote({
+    required String caseId,
+    required String title,
+    String? summary,
+  }) async {
+    if (isDemo) return null;
+    requireUuid(caseId, 'appendManualNote');
+    final response = await _client.rpc(
+      'record_case_event',
+      params: {
+        'p_case_id': caseId,
+        'p_event_type': 'manual_note',
+        'p_title': title,
+        'p_summary': summary,
+        'p_payload': <String, dynamic>{},
+      },
+    );
+    if (response is Map && response['ok'] == true) {
+      return response['event_id'] as String?;
+    }
+    return null;
+  }
+
+  /// Delete a `manual_note` event the user owns. Pipeline-emitted events
+  /// are immutable to the client (blocked by RLS).
+  Future<void> deleteManualNote(String eventId) async {
+    if (isDemo) return;
+    await _client
+        .from('case_timeline_events')
+        .delete()
+        .eq('id', eventId);
   }
 
   // ── Deadlines ─────────────────────────────────────────────────────────
