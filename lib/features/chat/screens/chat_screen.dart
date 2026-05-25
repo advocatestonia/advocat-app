@@ -23,6 +23,7 @@ import '../../../services/chat_stream_event.dart';
 import '../../../services/claude_service.dart'
     show ClaudeService, ClaudeServiceException;
 import '../../../services/legal_planner.dart';
+import '../widgets/consilium_panel.dart';
 import '../widgets/contract_detected_chip.dart';
 import '../widgets/contract_upsell_card.dart';
 import '../widgets/planner_trail.dart';
@@ -96,6 +97,13 @@ class ChatMessage {
   /// clarifying question, not an answer.
   final bool isBlockingGap;
 
+  /// Phase 1 Consilium (2026-05-25) — buffered consilium SSE events
+  /// (ConsiliumStart / RoleOpinion / AdversarialAttack / RoundDone /
+  /// ConsiliumSynthesisStart / ConsiliumDone) accumulated while this
+  /// assistant message was streaming. Rendered by [ConsiliumPanel] above
+  /// the message text. Empty for non-consilium turns and all user messages.
+  final List<ChatStreamEvent> consiliumEvents;
+
   const ChatMessage({
     required this.id,
     required this.role,
@@ -109,6 +117,7 @@ class ChatMessage {
     this.citations = const [],
     this.plannerTraceData,
     this.isBlockingGap = false,
+    this.consiliumEvents = const [],
   });
 
   factory ChatMessage.fromJson(Map<String, dynamic> json) {
@@ -3185,6 +3194,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             if (isToolResult) ...[
               _buildMessageContent(message, false),
             ] else ...[
+            // Phase 1 Consilium (2026-05-25): multi-role panel rendered ABOVE
+            // the assistant text bubble. No-ops (returns SizedBox.shrink) for
+            // any message that didn't carry consilium events.
+            if (!isUser && message.consiliumEvents.isNotEmpty)
+              ConsiliumPanel(
+                key: ValueKey('consilium_panel_${message.id}'),
+                events: message.consiliumEvents,
+              ),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.md,
