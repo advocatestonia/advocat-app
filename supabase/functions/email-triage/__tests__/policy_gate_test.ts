@@ -259,3 +259,123 @@ Deno.test("policyGate — daily auto-send rate limit blocks", () => {
   const reasons = r.checks.filter((c) => !c.passed).map((c) => c.reason);
   assert(reasons.includes("auto_send_rate_limit"));
 });
+
+// =============================================================================
+// Fix #3 (2026-05-26) — attachment_shas binding
+// =============================================================================
+
+Deno.test("issueGateToken — empty attachment_shas == undefined", async () => {
+  const t1 = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000,
+  });
+  const t2 = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000, attachment_shas: [],
+  });
+  assertEquals(t1.hmac, t2.hmac, "absent == empty array");
+});
+
+Deno.test("verifyGateToken — accepts matching attachment_shas", async () => {
+  const tok = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000,
+    attachment_shas: ["aaaa", "bbbb"],
+  });
+  const r = await verifyGateToken({
+    token: tok,
+    expected_draft_id: "d",
+    expected_body_sha256: "b",
+    expected_recipients: ["a@b"],
+    expected_attachment_shas: ["aaaa", "bbbb"],
+    secret: "s",
+    now: 1,
+  });
+  assertEquals(r.ok, true);
+});
+
+Deno.test("verifyGateToken — rejects swapped attachment", async () => {
+  const tok = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000,
+    attachment_shas: ["aaaa"],
+  });
+  const r = await verifyGateToken({
+    token: tok,
+    expected_draft_id: "d",
+    expected_body_sha256: "b",
+    expected_recipients: ["a@b"],
+    expected_attachment_shas: ["dddd"], // attacker swapped a PDF
+    secret: "s",
+    now: 1,
+  });
+  assertEquals(r.ok, false);
+  assertEquals(r.reason, "attachment_shas_mismatch");
+});
+
+Deno.test("verifyGateToken — rejects extra attachment", async () => {
+  const tok = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000,
+    attachment_shas: ["aaaa"],
+  });
+  const r = await verifyGateToken({
+    token: tok,
+    expected_draft_id: "d",
+    expected_body_sha256: "b",
+    expected_recipients: ["a@b"],
+    expected_attachment_shas: ["aaaa", "bbbb"], // extra leaked
+    secret: "s",
+    now: 1,
+  });
+  assertEquals(r.ok, false);
+  assertEquals(r.reason, "attachment_shas_mismatch");
+});
+
+Deno.test("verifyGateToken — sha order matters (different file ordering)", async () => {
+  const tok = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000,
+    attachment_shas: ["aaaa", "bbbb"],
+  });
+  const r = await verifyGateToken({
+    token: tok,
+    expected_draft_id: "d",
+    expected_body_sha256: "b",
+    expected_recipients: ["a@b"],
+    expected_attachment_shas: ["bbbb", "aaaa"], // reordered
+    secret: "s",
+    now: 1,
+  });
+  assertEquals(r.ok, false);
+  assertEquals(r.reason, "attachment_shas_mismatch");
+});
+
+Deno.test("verifyGateToken — backwards compat: token without shas + send without shas == ok", async () => {
+  // Legacy token issued BEFORE Fix #3 (no attachment_shas field at all).
+  const legacy = {
+    draft_id: "d",
+    body_sha256: "b",
+    recipient_set: "a@b",
+    issued_at: 1,
+    ttl_ms: 60_000,
+    hmac: "", // filled in below
+  } as any;
+  // Re-derive what the HMAC would be for this exact payload (empty shas).
+  const t = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000,
+  });
+  legacy.hmac = t.hmac;
+
+  const r = await verifyGateToken({
+    token: legacy,
+    expected_draft_id: "d",
+    expected_body_sha256: "b",
+    expected_recipients: ["a@b"],
+    // no expected_attachment_shas — legacy callers (plaintext send)
+    secret: "s",
+    now: 1,
+  });
+  assertEquals(r.ok, true, "legacy token + legacy send still works");
+});

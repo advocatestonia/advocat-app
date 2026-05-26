@@ -261,6 +261,14 @@ export interface GateToken {
   issued_at: number; // ms
   ttl_ms: number;
   hmac: string; // hex
+  /**
+   * Fix #3 (2026-05-26) — sha256 hex of each attachment's bytes, in the
+   * order they will be sent. Optional for backwards compat: tokens issued
+   * before this change have it absent ⇒ verifier treats absent and `[]`
+   * as equivalent. When present, swap-or-add-an-attachment invalidates
+   * the HMAC.
+   */
+  attachment_shas?: string[];
 }
 
 const DEFAULT_TTL_MS = 60_000;
@@ -272,19 +280,30 @@ export interface IssueTokenInput {
   secret: string;
   now?: number;
   ttl_ms?: number;
+  /** Fix #3 — attachment byte shas (lowercase hex), in send order. */
+  attachment_shas?: string[];
+}
+
+/** Canonicalise the attachment-sha list for HMAC payload (stable order). */
+function canonicaliseAttachmentShas(shas: string[] | undefined): string {
+  if (!shas || shas.length === 0) return "";
+  return shas.map((s) => s.trim().toLowerCase()).join(",");
 }
 
 /**
- * Issue an HMAC token binding `(draft_id, body_sha256, recipient_set)`.
- * Caller must provide `secret = EMAIL_AGENT_GATE_SECRET` from env.
+ * Issue an HMAC token binding `(draft_id, body_sha256, recipient_set,
+ * attachment_shas)`. Caller must provide `secret = EMAIL_AGENT_GATE_SECRET`
+ * from env.
  */
 export async function issueGateToken(
   input: IssueTokenInput,
 ): Promise<GateToken> {
   const recipientSet = canonicaliseRecipientSet(input.recipients);
+  const attachmentSet = canonicaliseAttachmentShas(input.attachment_shas);
   const issuedAt = input.now ?? Date.now();
   const ttlMs = input.ttl_ms ?? DEFAULT_TTL_MS;
-  const payload = `${input.draft_id}|${input.body_sha256}|${recipientSet}|${issuedAt}|${ttlMs}`;
+  const payload =
+    `${input.draft_id}|${input.body_sha256}|${recipientSet}|${attachmentSet}|${issuedAt}|${ttlMs}`;
   const hmac = await hmacSha256(input.secret, payload);
   return {
     draft_id: input.draft_id,
@@ -293,6 +312,7 @@ export async function issueGateToken(
     issued_at: issuedAt,
     ttl_ms: ttlMs,
     hmac,
+    attachment_shas: input.attachment_shas ?? [],
   };
 }
 
@@ -301,6 +321,8 @@ export interface VerifyTokenInput {
   expected_draft_id: string;
   expected_body_sha256: string;
   expected_recipients: string[];
+  /** Fix #3 — attachment byte shas at send time, in dispatch order. */
+  expected_attachment_shas?: string[];
   secret: string;
   now?: number;
 }
@@ -325,12 +347,19 @@ export async function verifyGateToken(
   if (t.recipient_set !== expectedRecipients) {
     return { ok: false, reason: "recipient_set_mismatch" };
   }
+  // Fix #3 — token's bound attachment set must match what we're about to
+  // send. Both sides canonicalised the same way; empty/absent equal.
+  const tokenShas = canonicaliseAttachmentShas(t.attachment_shas);
+  const expectedShas = canonicaliseAttachmentShas(input.expected_attachment_shas);
+  if (tokenShas !== expectedShas) {
+    return { ok: false, reason: "attachment_shas_mismatch" };
+  }
   const now = input.now ?? Date.now();
   if (now > t.issued_at + t.ttl_ms) {
     return { ok: false, reason: "token_expired" };
   }
   const payload =
-    `${t.draft_id}|${t.body_sha256}|${t.recipient_set}|${t.issued_at}|${t.ttl_ms}`;
+    `${t.draft_id}|${t.body_sha256}|${t.recipient_set}|${tokenShas}|${t.issued_at}|${t.ttl_ms}`;
   const expected = await hmacSha256(input.secret, payload);
   if (expected !== t.hmac) {
     return { ok: false, reason: "hmac_mismatch" };

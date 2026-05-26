@@ -45,6 +45,8 @@ import {
   buildReplySubject,
   buildThreadingHeaders,
   type EmailSendDeps,
+  MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL,
+  type OutboundAttachment,
   pickOutgoingBody,
   priorDispatch,
   recheckEditedBody,
@@ -74,7 +76,31 @@ function scrubHeaderText(s: string): string {
   return s.replace(/[\r\n\t]/g, " ").slice(0, 200);
 }
 
-function rfc2822Reply(input: {
+/**
+ * Build an RFC-2822 message body. When `attachments` is empty (or absent),
+ * the output is a simple `text/plain; charset=UTF-8` message — bit-for-bit
+ * identical to the pre-Fix-#3 shape (regression-guarded by
+ * email_send_test.ts).
+ *
+ * When `attachments.length > 0`, the output is `multipart/mixed`:
+ *
+ *   * Outer headers (`From`, `To`, `Cc`, `Subject`, `In-Reply-To`,
+ *     `References`, `MIME-Version`, `Content-Type: multipart/mixed`).
+ *   * Body part 1: `text/plain; charset=UTF-8`, 7bit, the user's body.
+ *   * Body parts 2..N: one per attachment — `Content-Type: <mime>`,
+ *     `Content-Disposition: attachment; filename="<filename>"`,
+ *     `Content-Transfer-Encoding: base64`, base64-encoded data chunked
+ *     at 76 chars/line per RFC-2045 §6.8.
+ *
+ * The boundary is crypto-random (32 hex chars) so it never collides with
+ * content. Filename is RFC 2047 'Q' encoded when it contains non-ASCII —
+ * Gmail accepts both quoted and encoded forms.
+ *
+ * Throws when sum of attachment sizes exceeds
+ * [MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL]. The caller (`makeRealDeps.gmailSend`
+ * wrapper) maps this to a 400 `attachment_size_exceeded` response.
+ */
+export function rfc2822Reply(input: {
   from: string;
   to: string;
   cc?: string;
@@ -82,6 +108,7 @@ function rfc2822Reply(input: {
   body: string;
   inReplyTo: string | null;
   references: string | null;
+  attachments?: ReadonlyArray<OutboundAttachment>;
 }): string {
   const encode = (s: string) =>
     `=?UTF-8?B?${btoa(unescape(encodeURIComponent(s)))}?=`;
@@ -98,11 +125,84 @@ function rfc2822Reply(input: {
     headers.push(`References: ${scrubHeaderText(input.references)}`);
   }
   headers.push("MIME-Version: 1.0");
+
+  const attachments = input.attachments ?? [];
+
+  // Fast path — no attachments, keep the historic plaintext shape.
+  if (attachments.length === 0) {
+    headers.push('Content-Type: text/plain; charset="UTF-8"');
+    headers.push("Content-Transfer-Encoding: 7bit");
+    headers.push("");
+    headers.push(input.body);
+    return headers.join("\r\n");
+  }
+
+  // Sum cap — guard before we spend CPU on base64.
+  let totalBytes = 0;
+  for (const a of attachments) totalBytes += a.data.byteLength;
+  if (totalBytes > MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL) {
+    throw new Error(
+      `attachment_size_exceeded: ${totalBytes} > ${MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL}`,
+    );
+  }
+
+  // Crypto-random boundary so it never collides with the body / attachment bytes.
+  const boundary = `=_advocat_${crypto.randomUUID().replace(/-/g, "")}_=`;
+  headers.push(
+    `Content-Type: multipart/mixed; boundary="${boundary}"`,
+  );
+  headers.push("");
+  headers.push("This is a multi-part message in MIME format.");
+
+  // Body part 1 — text/plain.
+  headers.push(`--${boundary}`);
   headers.push('Content-Type: text/plain; charset="UTF-8"');
   headers.push("Content-Transfer-Encoding: 7bit");
   headers.push("");
   headers.push(input.body);
+
+  // Parts 2..N — attachments.
+  for (const att of attachments) {
+    const encodedName = needsEncoding(att.filename)
+      ? encode(att.filename)
+      : `"${att.filename.replace(/"/g, "")}"`;
+    const safeMime = scrubHeaderText(att.mime || "application/octet-stream");
+    headers.push(`--${boundary}`);
+    headers.push(`Content-Type: ${safeMime}; name=${encodedName}`);
+    headers.push(`Content-Disposition: attachment; filename=${encodedName}`);
+    headers.push("Content-Transfer-Encoding: base64");
+    headers.push("");
+    headers.push(chunkBase64(att.data));
+  }
+
+  // Closing boundary.
+  headers.push(`--${boundary}--`);
   return headers.join("\r\n");
+}
+
+/** True when a header value contains chars not safe in a quoted-string. */
+function needsEncoding(s: string): boolean {
+  return /[^\x20-\x7e]|"|\\/.test(s);
+}
+
+/** Base64-encode bytes, chunked at 76 chars/line per RFC-2045 §6.8. */
+function chunkBase64(bytes: Uint8Array): string {
+  // Build base64 in chunks of 3 raw bytes → 4 b64 chars. Stream so we don't
+  // OOM on a 25 MB attachment.
+  let bin = "";
+  // String.fromCharCode handles up to ~1 MB per chunk reliably.
+  const STEP = 8192;
+  for (let i = 0; i < bytes.length; i += STEP) {
+    const slice = bytes.subarray(i, Math.min(i + STEP, bytes.length));
+    bin += String.fromCharCode(...slice);
+  }
+  const b64 = btoa(bin);
+  // Split at 76-char boundaries with CRLF.
+  const out: string[] = [];
+  for (let i = 0; i < b64.length; i += 76) {
+    out.push(b64.slice(i, i + 76));
+  }
+  return out.join("\r\n");
 }
 
 function base64url(s: string): string {
@@ -113,7 +213,9 @@ function base64url(s: string): string {
 }
 
 async function gmailSend(args: SendArgs): Promise<{ id: string }> {
-  const raw = base64url(rfc2822Reply({
+  // rfc2822Reply is binary-safe via String.fromCharCode chunking — base64url
+  // wraps the whole RFC-2822 wire form (headers + body + attachments).
+  const wire = rfc2822Reply({
     from: args.from,
     to: args.to,
     cc: args.cc,
@@ -121,7 +223,9 @@ async function gmailSend(args: SendArgs): Promise<{ id: string }> {
     body: args.body,
     inReplyTo: args.inReplyTo ?? null,
     references: args.references ?? null,
-  }));
+    attachments: args.attachments,
+  });
+  const raw = base64url(wire);
   const resp = await fetch(
     "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
     {

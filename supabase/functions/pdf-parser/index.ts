@@ -123,11 +123,38 @@ serve(async (req: Request) => {
   }
 
   // ── 1. AuthN + rate-limit. Parsing is expensive — cap at 6/min/user. ────
-  const gate = await requireUserWithRateLimit(req, {
-    bucket: "pdf-parser",
-    maxPerMinute: 6,
-  });
-  if (gate.kind === "deny") return gate.response;
+  //
+  // Fix #2 (2026-05-26) — internal-call bypass: email-triage calls this
+  // function with the service-role bearer + `x-internal-call` header for
+  // the inbound-attachment parse hop. We treat the header as authentication
+  // when the bearer matches SUPABASE_SERVICE_ROLE_KEY exactly, and require
+  // the body to carry an explicit `user_id` (the eventual owner of the
+  // attachment, so the storage path prefix check below still binds).
+  let resolvedUserId: string;
+  const internalCallHeader = req.headers.get("x-internal-call");
+  const authHeader = req.headers.get("authorization") ?? req.headers.get("Authorization") ?? "";
+  const isInternalCall = !!internalCallHeader &&
+    authHeader === `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
+  if (isInternalCall) {
+    // Pre-parse the body once to extract the user_id for path validation.
+    // The full parseAndValidateBody re-runs below; this is just for auth.
+    try {
+      const raw = await req.clone().json() as { user_id?: string };
+      if (!raw.user_id || typeof raw.user_id !== "string") {
+        return jsonError("internal-call requires user_id in body", 400);
+      }
+      resolvedUserId = raw.user_id;
+    } catch (_e) {
+      return jsonError("internal-call body must be JSON with user_id", 400);
+    }
+  } else {
+    const gate = await requireUserWithRateLimit(req, {
+      bucket: "pdf-parser",
+      maxPerMinute: 6,
+    });
+    if (gate.kind === "deny") return gate.response;
+    resolvedUserId = gate.user.id;
+  }
 
   if (!CLAUDE_API_KEY) {
     console.error("pdf-parser: CLAUDE_API_KEY not configured");
@@ -141,7 +168,7 @@ serve(async (req: Request) => {
   // ── 2. Parse + validate body. ────────────────────────────────────────────
   let body: RequestBody;
   try {
-    body = parseAndValidateBody(await req.json(), gate.user.id);
+    body = parseAndValidateBody(await req.json(), resolvedUserId);
   } catch (e) {
     return jsonError(String(e instanceof Error ? e.message : e), 400);
   }

@@ -764,3 +764,146 @@ Deno.test(
     assertEquals(harness.calls.markSent.length, 1);
   },
 );
+
+// =============================================================================
+// Fix #3 (2026-05-26) — multipart/mixed outbound send with attachments
+// =============================================================================
+
+import { rfc2822Reply } from "../index.ts";
+import { MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL } from "../send_logic.ts";
+
+Deno.test("rfc2822Reply — no attachments preserves legacy plaintext shape", () => {
+  const out = rfc2822Reply({
+    from: "support@advocat.ee",
+    to: "jokela@oikeus.fi",
+    subject: "Re: Hei",
+    body: "Hyvä asianajaja",
+    inReplyTo: "<m1@oikeus.fi>",
+    references: "<m1@oikeus.fi>",
+  });
+  assertStringIncludes(out, 'Content-Type: text/plain; charset="UTF-8"');
+  assertStringIncludes(out, "Content-Transfer-Encoding: 7bit");
+  assertStringIncludes(out, "Hyvä asianajaja");
+  // No multipart in legacy path.
+  assertEquals(out.includes("multipart/mixed"), false);
+  assertEquals(out.includes("Content-Disposition"), false);
+});
+
+Deno.test("rfc2822Reply — multipart/mixed with 2 attachments", () => {
+  const pdf = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31]); // %PDF-1
+  const img = new Uint8Array([0xff, 0xd8, 0xff, 0xe0]); // JPEG SOI
+
+  const out = rfc2822Reply({
+    from: "support@advocat.ee",
+    to: "jokela@oikeus.fi",
+    subject: "Re: Hei",
+    body: "Liitteenä asiakirjat.",
+    inReplyTo: "<m1@oikeus.fi>",
+    references: "<m1@oikeus.fi>",
+    attachments: [
+      { filename: "SULGA päätös.pdf", mime: "application/pdf", data: pdf },
+      { filename: "photo.jpg", mime: "image/jpeg", data: img },
+    ],
+  });
+
+  // Outer headers
+  assertStringIncludes(out, "From: support@advocat.ee");
+  assertStringIncludes(out, "To: jokela@oikeus.fi");
+  assertStringIncludes(out, "MIME-Version: 1.0");
+  assertStringIncludes(out, "multipart/mixed; boundary=");
+
+  // Extract boundary
+  const boundaryMatch = /boundary="([^"]+)"/.exec(out);
+  assert(boundaryMatch, "boundary header present");
+  const b = boundaryMatch![1];
+  // 3 occurrences of --boundary (1 preamble + 2 attachments), 1 of --boundary--
+  assert(out.includes(`--${b}--`), "closing boundary present");
+
+  // text/plain part
+  assertStringIncludes(out, 'Content-Type: text/plain; charset="UTF-8"');
+  assertStringIncludes(out, "Liitteenä asiakirjat.");
+
+  // First attachment — PDF, non-ASCII filename triggers RFC 2047 encoding
+  assertStringIncludes(out, "Content-Type: application/pdf;");
+  assertStringIncludes(out, "Content-Disposition: attachment;");
+  assertStringIncludes(out, "Content-Transfer-Encoding: base64");
+
+  // Second attachment — JPEG
+  assertStringIncludes(out, "Content-Type: image/jpeg;");
+  assertStringIncludes(out, 'filename="photo.jpg"');
+
+  // base64 of "%PDF-1" — "JVBERi0x"
+  assertStringIncludes(out, "JVBERi0x");
+  // base64 of JPEG SOI bytes — "/9j/4A=="
+  assertStringIncludes(out, "/9j/4A==");
+});
+
+Deno.test("rfc2822Reply — sum-cap throws attachment_size_exceeded", () => {
+  // 26 MB — over the 25 MB cap.
+  const big = new Uint8Array(26 * 1024 * 1024);
+  let threw = false;
+  try {
+    rfc2822Reply({
+      from: "a@b",
+      to: "c@d",
+      subject: "x",
+      body: "x",
+      inReplyTo: null,
+      references: null,
+      attachments: [{ filename: "huge.pdf", mime: "application/pdf", data: big }],
+    });
+  } catch (e) {
+    threw = true;
+    assertStringIncludes(String(e), "attachment_size_exceeded");
+  }
+  assert(threw, "expected oversized payload to throw");
+});
+
+Deno.test("rfc2822Reply — non-ASCII filename is RFC 2047 'B' encoded", () => {
+  const out = rfc2822Reply({
+    from: "a@b",
+    to: "c@d",
+    subject: "x",
+    body: "x",
+    inReplyTo: null,
+    references: null,
+    attachments: [
+      {
+        filename: "Pöätös.pdf",
+        mime: "application/pdf",
+        data: new Uint8Array([1, 2, 3]),
+      },
+    ],
+  });
+  // Should appear as =?UTF-8?B?...?= somewhere in Content-Type and Content-Disposition.
+  assertStringIncludes(out, "=?UTF-8?B?");
+});
+
+Deno.test("rfc2822Reply — base64 chunks at 76 chars per RFC-2045", () => {
+  // 200 bytes — encoded length ≈ 272 chars → must be split across ≥4 lines.
+  const bytes = new Uint8Array(200);
+  for (let i = 0; i < 200; i++) bytes[i] = i;
+  const out = rfc2822Reply({
+    from: "a@b",
+    to: "c@d",
+    subject: "x",
+    body: "x",
+    inReplyTo: null,
+    references: null,
+    attachments: [{ filename: "p.bin", mime: "application/octet-stream", data: bytes }],
+  });
+  // Find the base64 block (between blank line after the headers of the
+  // attachment part and the closing boundary marker).
+  const lines = out.split("\r\n");
+  // Locate a line in the b64 block — any non-header line should be ≤ 76 chars.
+  // Crude: find first line that looks base64 and is at b64-only chars.
+  const b64Lines = lines.filter((l) => /^[A-Za-z0-9+/=]+$/.test(l) && l.length > 20);
+  assert(b64Lines.length >= 3, "base64 split across multiple lines");
+  for (const l of b64Lines) {
+    assert(l.length <= 76, `line too long: ${l.length}`);
+  }
+});
+
+Deno.test("MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL is 25 MB", () => {
+  assertEquals(MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL, 25 * 1024 * 1024);
+});

@@ -126,7 +126,26 @@ export interface SendArgs {
   inReplyTo?: string | null;
   /** Comma-separated References chain (history). */
   references?: string | null;
+  /**
+   * Fix #3 (2026-05-26) — attachments to re-attach with this send. Each
+   * record carries the raw bytes + filename + mime. The send pipeline
+   * loads bytes from `email_attachments.storage_path` BEFORE calling
+   * gmailSend; this type stays pure (bytes-in, no Supabase coupling).
+   * Total combined size MUST be ≤ MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL.
+   */
+  attachments?: ReadonlyArray<OutboundAttachment>;
 }
+
+/** One attachment ready to be MIME-encoded into the outbound message. */
+export interface OutboundAttachment {
+  filename: string;
+  mime: string;
+  /** Raw bytes. base64 encoding happens in rfc2822Reply. */
+  data: Uint8Array;
+}
+
+/** 25 MB sum cap — Gmail's hard limit for the encoded message. */
+export const MAX_OUTBOUND_ATTACHMENT_BYTES_TOTAL = 25 * 1024 * 1024;
 
 // =============================================================================
 // Validation
@@ -337,6 +356,12 @@ export async function verifyTriageGate(args: {
   outgoingBody: string;
   secret: string;
   now?: number;
+  /**
+   * Fix #3 (2026-05-26) — sha256 hex of each outbound attachment, in send
+   * order. Pass `[]` for the no-attachment path; omit entirely for
+   * legacy callers (verifier treats absent and `[]` as equivalent).
+   */
+  outgoingAttachmentShas?: string[];
 }): Promise<GateVerifyOutcome> {
   const token = args.row.gate_token;
   if (!token) {
@@ -352,6 +377,7 @@ export async function verifyTriageGate(args: {
     expected_draft_id: args.row.id,
     expected_body_sha256: expectedBodySha,
     expected_recipients: recipients,
+    expected_attachment_shas: args.outgoingAttachmentShas,
     secret: args.secret,
     now: args.now,
   });
