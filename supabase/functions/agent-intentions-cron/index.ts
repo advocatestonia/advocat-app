@@ -65,7 +65,10 @@ serve(async (req) => {
           .eq("completed", false)
           .limit(limit);
         if (error) throw error;
-        return (data ?? []) as IntentionRow[];
+        // Cast through unknown: supabase-js v2 widens the row type to
+        // `GenericStringError[]` when the column-spec string isn't statically
+        // analysable. Runtime shape matches IntentionRow.
+        return (data ?? []) as unknown as IntentionRow[];
       },
       async fetchUserEmail(userId) {
         const { data, error } = await client
@@ -112,7 +115,10 @@ serve(async (req) => {
           .order("created_at", { ascending: true })
           .limit(limit);
         if (error) throw error;
-        const rows = (data ?? []) as Array<Record<string, unknown>>;
+        // Cast through unknown — see fetchDueIntentions note above. The
+        // PostgREST embed (`email_threads!inner(...)`) defeats supabase-js's
+        // static row inference, leaving `data` typed as GenericStringError[].
+        const rows = (data ?? []) as unknown as Array<Record<string, unknown>>;
         return rows.map((r) => {
           const thread =
             (r.email_threads as Record<string, unknown> | null) ?? null;

@@ -218,8 +218,11 @@ Deno.test("MIG-T16 — every CREATE POLICY is preceded by a DROP POLICY IF EXIST
 Deno.test("CONST-T01 — signals.ts threshold matches migration's hard-coded 100", () => {
   // The migration uses literal `>= 100` in the modal-flip predicate.
   // signals.ts exports B2B_MODAL_THRESHOLD. If one moves the other MUST.
+  // Widen the literal type so the comparison survives narrowing if the
+  // constant is bumped — this test then reports the drift at runtime
+  // instead of failing the TS compile.
   assert(
-    B2B_MODAL_THRESHOLD === 100,
+    (B2B_MODAL_THRESHOLD as number) === 100,
     "B2B_MODAL_THRESHOLD must equal the migration's hard-coded threshold (100)",
   );
 });

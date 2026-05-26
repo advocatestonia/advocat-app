@@ -422,8 +422,16 @@ export async function processOneDoc(seed: TravauxSeed): Promise<number> {
     // we ship the URL + metadata over and get back the chunks JSON.
     // Falls back to the legacy in-process path if env is unset (small PDFs,
     // local dev, integration tests).
+    // NOTE: the worker-mode PDF dispatch is handled async in runWorkMode()
+    // before this function is ever reached (see dispatchToPdfWorker call
+    // ~L364). By the time control gets here for a PDF source, we are on
+    // the in-process fallback path (PDF_WORKER_URL unset, local dev,
+    // integration tests). The legacy `callPdfWorker` sync-fetch helper was
+    // removed when the dispatch went async; the branch is preserved for
+    // explicit env-driven routing parity but delegates to the same
+    // in-process extractor.
     if (PDF_WORKER_URL && PDF_WORKER_SECRET) {
-      chunks = await callPdfWorker(fetched.resolvedUrl, seed);
+      chunks = await extractChunksFromPdf(fetched.resolvedUrl, seed);
     } else {
       chunks = await extractChunksFromPdf(fetched.resolvedUrl, seed);
     }

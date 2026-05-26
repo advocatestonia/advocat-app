@@ -172,8 +172,14 @@ serve(async (req) => {
   }
 });
 
+// deno-lint-ignore no-explicit-any
 async function detectPlan(
-  sb: ReturnType<typeof createClient>,
+  // Widened from `ReturnType<typeof createClient>` (which generic-resolves to
+  // `SupabaseClient<unknown, never, GenericSchema>`) to the call-site shape
+  // `SupabaseClient<any, "public", any>` after the supabase-js@2.39 typing
+  // upgrade. Body uses only string-keyed `.from()` so the schema generic is
+  // irrelevant here.
+  sb: any,
   uid: string,
 ): Promise<"free" | "pro"> {
   try {

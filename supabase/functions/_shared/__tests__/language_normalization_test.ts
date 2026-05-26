@@ -189,7 +189,9 @@ Deno.test("buildReplyDirective — defaults to English for unknown locales (NOT 
   const en = buildReplyDirective("en");
   // Unknown / undefined → must equal the English directive.
   assertEquals(buildReplyDirective(undefined), en);
-  assertEquals(buildReplyDirective(null), en);
+  // `null` is a runtime fallback some callers pass; cast to bypass the
+  // string|undefined signature without weakening the production API.
+  assertEquals(buildReplyDirective(null as unknown as undefined), en);
   assertEquals(buildReplyDirective(""), en);
   assertEquals(buildReplyDirective("xx"), en);
   assertEquals(buildReplyDirective("zh-CN"), en);

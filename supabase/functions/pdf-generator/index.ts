@@ -226,7 +226,12 @@ async function uploadToStorage(
       "Content-Type": contentType,
       "x-upsert": "true",
     },
-    body: content,
+    // After the Deno typing upgrade, `Uint8Array<ArrayBufferLike>` is no
+    // longer directly assignable to BodyInit (the new lib.dom.d.ts wants
+    // `Uint8Array<ArrayBuffer>` — strict ArrayBuffer, not SharedArrayBuffer).
+    // Wrap in a Blob via a typed BlobPart cast — same wire bytes, satisfies
+    // the BodyInit overload. The runtime is unchanged.
+    body: new Blob([content as BlobPart], { type: contentType }),
   });
   if (!res.ok) {
     const snippet = (await res.text()).slice(0, 300);

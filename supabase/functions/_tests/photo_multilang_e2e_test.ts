@@ -199,7 +199,10 @@ Deno.test("A) Russian user + Estonian traffic fine — full happy path", () => {
   // by the Sonnet structured-JSON pass. We assert the type *would* land
   // in "fine" / "otsus" / "administrative_decision" — without a real
   // classifier we cannot verify this is reliable.
-  const classifiedDocType = "administrative_decision"; // hypothetical
+  // Hypothetical classifier output — widen the literal type so the
+  // disjunction check below survives narrowing (this audit test enumerates
+  // the *acceptable* doc_type vocabulary, not asserts a specific branch).
+  const classifiedDocType: string = "administrative_decision";
   if (classifiedDocType !== "fine" && classifiedDocType !== "administrative_decision") {
     recordGap({
       scenario: "A",
