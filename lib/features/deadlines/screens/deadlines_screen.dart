@@ -6,6 +6,12 @@ import '../../../l10n/app_localizations.dart';
 import '../../../models/deadline.dart';
 import '../../../services/supabase_service.dart';
 import '../../../shared/utils/date_utils.dart';
+// EU corpus phase 2 — pan-EU deadline radar (self-contained mockup
+// widget; no network, no providers, deterministic mock output). Mounted
+// here as a collapsible section above the per-user deadlines list so
+// users can dry-run a hypothetical EU deadline without leaving the
+// screen.
+import '../../../widgets/deadline_radar_eu.dart';
 import '../providers/deadlines_provider.dart';
 
 // ---------------------------------------------------------------------------
@@ -82,6 +88,11 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
           position: _slideAnimation,
           child: Column(
             children: [
+              // -- EU deadline radar (collapsed by default) --
+              // Self-contained mockup widget — degrades cleanly when not
+              // touched (renders only the section header until expanded).
+              const _EuRadarSection(),
+
               // -- Segmented control --
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -728,6 +739,56 @@ class _EmptyDeadlinesState extends State<_EmptyDeadlines>
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// EU Deadline Radar section wrapper
+// ---------------------------------------------------------------------------
+
+/// Collapsible host for [DeadlineRadarEu]. The mockup widget is fully
+/// self-contained (no network calls, deterministic mock output) so this
+/// section degrades to a single ListTile-style header when collapsed and
+/// renders the calculator inline when expanded. No risk of breaking the
+/// existing per-user deadlines list below.
+class _EuRadarSection extends StatelessWidget {
+  const _EuRadarSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.xs,
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(color: AppColors.border),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Theme(
+          // Remove the default ExpansionTile divider lines so it blends
+          // with the surrounding deadlines screen chrome.
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: const ExpansionTile(
+            key: Key('eu-deadline-radar-section'),
+            leading: Icon(Icons.radar, color: AppColors.accent),
+            title: Text(
+              'EU deadline radar (preview)',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
+            subtitle: Text(
+              'Hypothetical EU procedural deadlines — mock data',
+              style: TextStyle(fontSize: 11),
+            ),
+            childrenPadding: EdgeInsets.zero,
+            children: [DeadlineRadarEu()],
           ),
         ),
       ),
