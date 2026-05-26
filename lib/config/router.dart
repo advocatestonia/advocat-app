@@ -20,6 +20,14 @@ import '../features/chat/screens/chat_screen.dart';
 import '../features/settings/screens/settings_screen.dart';
 import '../features/settings/screens/subscription_screen.dart';
 import '../features/email/screens/email_screen.dart';
+import '../features/email/screens/gmail_oauth_return_screen.dart';
+import '../features/organization/screens/firm_dashboard_home_screen.dart';
+import '../features/organization/screens/org_api_keys_screen.dart';
+import '../features/organization/screens/org_billing_screen.dart';
+import '../features/organization/screens/org_branding_screen.dart';
+import '../features/organization/screens/org_members_screen.dart';
+import '../features/organization/screens/org_onboarding_screen.dart';
+import '../features/organization/screens/org_usage_stats_screen.dart';
 // Email Agent D6 — proactive inbox UI (handoff
 // 09_INTEGRATION_INTO_ADVOCAT.md). Sits inside the shell route as a top-
 // level tab between Cases and Scan; deep-link target for D7 push.
@@ -86,6 +94,10 @@ import '../features/legal/screens/sensitive_consent_manage_screen.dart';
 // "Learn more" CTA and a single ghost-text link at the bottom of the
 // Subscription screen. NOT linked from the main pricing carousel.
 import '../features/b2b/screens/for_firms_screen.dart';
+// EU corpus phase 2 — Landmark Explorer (CJEU + ECHR + EFTA browser).
+// Self-contained mockup widget mounted as a standalone /landmarks route
+// so it's reachable directly without disturbing existing screens.
+import '../widgets/landmark_explorer.dart';
 
 /// Named route constants to avoid magic strings.
 abstract final class AppRoutes {
@@ -104,6 +116,32 @@ abstract final class AppRoutes {
   static const String settings = '/settings';
   static const String subscription = '/subscription';
   static const String email = '/email';
+  /// Phase 2a (2026-05-27) — Google OAuth redirect target for the Gmail
+  /// side-channel flow. Configured in Google Cloud Console as a valid
+  /// redirect URI for the OAuth client backing GOOGLE_CLIENT_ID.
+  static const String gmailOAuthReturn = '/oauth/gmail/return';
+
+  // ── B2B Org stack (2026-05-27 wiring) ──────────────────────────────
+  /// Onboarding flow for a new firm (org name, owner profile, plan).
+  static const String firmOnboarding = '/firm/onboarding';
+  /// Home dashboard for a connected firm — KPIs, recent cases. Slug-scoped
+  /// so users with multiple firms can switch.
+  static const String firmDashboard = '/firm/:slug';
+  /// Member roster + invite flow. Slug-scoped — supports multi-org owners.
+  static const String firmMembers = '/firm/:slug/members';
+  /// Stripe-backed seat billing + plan management.
+  static const String firmBilling = '/firm/:slug/billing';
+  /// API keys CRUD for integrations.
+  static const String firmApiKeys = '/firm/:slug/api-keys';
+  /// Custom branding (logo, colors).
+  static const String firmBranding = '/firm/:slug/branding';
+  /// Token / case / member usage telemetry. Slug-scoped.
+  static const String firmUsage = '/firm/:slug/usage';
+  // Note: `/firm/:slug` must come AFTER the more specific paths above so
+  // GoRouter does not match it greedily. GoRouter resolves in declared order
+  // — routes are added below in onboarding → dashboard → members → ...
+  // → usage order; the more-specific ones are listed FIRST in the routes
+  // array so /firm/x/members hits firmMembers, not firmDashboard.
   // Email Agent D6 — Inbox tab. /inbox lands at the top of the list;
   // /inbox/thread/:id is the deep-link target for D7 push notifications;
   // /inbox/draft/:triageId opens the draft editor wrapper around the
@@ -170,6 +208,11 @@ abstract final class AppRoutes {
   /// "Learn more" CTA and the bottom of the Subscription screen — NOT from
   /// the main pricing carousel (that's the point of "silent signals").
   static const String forFirms = '/for-firms';
+
+  /// EU corpus phase 2 — Landmark Explorer (CJEU + ECHR + EFTA decisions).
+  /// Self-contained mockup widget; no params, no auth side-effects.
+  /// Mounted inside the main shell so the bottom nav remains visible.
+  static const String landmarks = '/landmarks';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -281,6 +324,24 @@ final routerProvider = Provider<GoRouter>((ref) {
               child: DeadlinesScreen(),
             ),
           ),
+          // EU corpus phase 2 — Landmark Explorer route. Standalone screen
+          // wrapping the self-contained LandmarkExplorer widget. No params,
+          // no providers, no network: the widget renders inline mock data
+          // and degrades to "no results" when filters exclude everything.
+          GoRoute(
+            path: AppRoutes.landmarks,
+            name: 'landmarks',
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Landmark cases'),
+                ),
+                body: const SingleChildScrollView(
+                  child: LandmarkExplorer(),
+                ),
+              ),
+            ),
+          ),
           GoRoute(
             path: AppRoutes.settings,
             name: 'settings',
@@ -327,6 +388,69 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.scan,
         name: 'scan',
         builder: (context, state) => const DocumentScanScreen(),
+      ),
+
+      // Phase 2a (2026-05-27) — Gmail OAuth side-channel return route.
+      // Google's redirect lands here with ?code=&state=. The screen
+      // exchanges the code via the gmail-oauth-exchange edge fn, then
+      // bounces back to /email with a status banner.
+      GoRoute(
+        path: AppRoutes.gmailOAuthReturn,
+        name: 'gmailOAuthReturn',
+        builder: (context, state) {
+          final qp = state.uri.queryParameters;
+          return GmailOAuthReturnScreen(
+            code: qp['code'],
+            state: qp['state'],
+            error: qp['error'],
+          );
+        },
+      ),
+
+      // ── B2B Org stack routes (2026-05-27 wiring) ──────────────────
+      // Closes the "screens written but never reachable" gap from the
+      // 2026-05-27 feature inventory. All 7 screens already exist in
+      // lib/features/organization/screens/.
+      GoRoute(
+        path: AppRoutes.firmOnboarding,
+        name: 'firmOnboarding',
+        builder: (context, state) => const OrgOnboardingScreen(),
+      ),
+      GoRoute(
+        path: AppRoutes.firmDashboard,
+        name: 'firmDashboard',
+        builder: (context, state) =>
+            FirmDashboardHomeScreen(slug: state.pathParameters['slug']!),
+      ),
+      GoRoute(
+        path: AppRoutes.firmMembers,
+        name: 'firmMembers',
+        builder: (context, state) =>
+            OrgMembersScreen(slug: state.pathParameters['slug']!),
+      ),
+      GoRoute(
+        path: AppRoutes.firmBilling,
+        name: 'firmBilling',
+        builder: (context, state) =>
+            OrgBillingScreen(slug: state.pathParameters['slug']!),
+      ),
+      GoRoute(
+        path: AppRoutes.firmApiKeys,
+        name: 'firmApiKeys',
+        builder: (context, state) =>
+            OrgApiKeysScreen(slug: state.pathParameters['slug']!),
+      ),
+      GoRoute(
+        path: AppRoutes.firmBranding,
+        name: 'firmBranding',
+        builder: (context, state) =>
+            OrgBrandingScreen(slug: state.pathParameters['slug']!),
+      ),
+      GoRoute(
+        path: AppRoutes.firmUsage,
+        name: 'firmUsage',
+        builder: (context, state) =>
+            OrgUsageStatsScreen(slug: state.pathParameters['slug']!),
       ),
 
       // ── Pkg 1.D — Case Memory routes (/cases-v2) ──────────────────

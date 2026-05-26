@@ -55,9 +55,17 @@ class _InboxDraftEditScreenState extends ConsumerState<InboxDraftEditScreen> {
     });
     if (!res.success) return null;
     final data = res.data ?? const <String, dynamic>{};
+    // P0 (2026-05-27): the edit screen MUST display the outbound draft
+    // body (the text that send-email will actually dispatch) — not the
+    // user_brief 2-4-sentence summary. Fall back to user_brief only when
+    // draft_body is absent (severity=LOW path or pre-2026-05-27 rows).
+    final draftBody = data['draft_body'] as String?;
+    final brief = data['user_brief'] as String?;
+    final draftSubject = data['draft_subject'] as String?;
+    final subject = data['subject'] as String?;
     return _DraftPayload(
-      title: (data['subject'] as String?) ?? '',
-      content: (data['user_brief'] as String?) ?? '',
+      title: (draftSubject?.isNotEmpty == true ? draftSubject! : subject) ?? '',
+      content: (draftBody?.isNotEmpty == true ? draftBody! : brief) ?? '',
     );
   }
 

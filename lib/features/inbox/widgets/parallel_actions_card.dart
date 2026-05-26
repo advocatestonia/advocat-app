@@ -67,27 +67,43 @@ import '../providers/inbox_provider.dart';
 
 // ─── Hardcoded fallback strings ──────────────────────────────────────────────
 // The .arb files in lib/l10n/ already carry the localised strings for EN,
-// ET, RU, FI. They land in the generated AppLocalizations on the next
-// `flutter gen-l10n` build. Until that codegen pass runs, the widget uses
-// these in-source English fallbacks so the build does not block on the
-// codegen step. When the localised methods exist on AppLocalizations the
-// caller can swap these for `l.parallelActionsXxx(...)` without changing
-// any other code.
-String _kHeadline(int count) => 'Consilium recommends $count parallel actions';
-String _kApproveAll() => 'Approve All & Send';
-String _kApproveSelected(int count, int total) => 'Approve $count of $total';
-String _kConfirmTitle(int count) => 'Send $count emails?';
-String _kConfirmBody(int count) =>
-    'Advocat will dispatch $count prepared replies via your connected Gmail. '
-    'Each one is sent independently — if any one fails, the others still go.';
-String _kSentToast(int count) => '$count sent.';
-String _kPartialFailureToast(int sent, int failed) =>
-    '$sent sent, $failed failed.';
-String _kKindReply() => 'reply';
-String _kKindNew() => 'new';
-String _kCheckboxSelected() => 'Action selected';
-String _kCheckboxUnselected() => 'Action not selected';
-String _kCitationCount(int count) => '$count cit';
+// P0 (2026-05-27) — switched to AppLocalizations now that the codegen pass
+// has produced parallelActionsXxx methods. Falls back to English when the
+// locale resolution fails (l == null in unit-test contexts).
+String _kHeadline(BuildContext ctx, int count) =>
+    AppLocalizations.of(ctx)?.parallelActionsHeadline(count) ??
+        'Consilium recommends $count parallel actions';
+String _kApproveAll(BuildContext ctx) =>
+    AppLocalizations.of(ctx)?.parallelActionsApproveAll ??
+        'Approve All & Send';
+String _kApproveSelected(BuildContext ctx, int count, int total) =>
+    AppLocalizations.of(ctx)?.parallelActionsApproveSelected(count, total) ??
+        'Approve $count of $total';
+String _kConfirmTitle(BuildContext ctx, int count) =>
+    AppLocalizations.of(ctx)?.parallelActionsConfirmTitle(count) ??
+        'Send $count emails?';
+String _kConfirmBody(BuildContext ctx, int count) =>
+    AppLocalizations.of(ctx)?.parallelActionsConfirmBody(count) ??
+        'Advocat will dispatch $count prepared replies via your connected Gmail. '
+            'Each one is sent independently — if any one fails, the others still go.';
+String _kSentToast(BuildContext ctx, int count) =>
+    AppLocalizations.of(ctx)?.parallelActionsSentToast(count) ??
+        '$count sent.';
+String _kPartialFailureToast(BuildContext ctx, int sent, int failed) =>
+    AppLocalizations.of(ctx)?.parallelActionsPartialFailureToast(sent, failed) ??
+        '$sent sent, $failed failed.';
+String _kKindReply(BuildContext ctx) =>
+    AppLocalizations.of(ctx)?.parallelActionsKindReply ?? 'reply';
+String _kKindNew(BuildContext ctx) =>
+    AppLocalizations.of(ctx)?.parallelActionsKindNew ?? 'new';
+String _kCheckboxSelected(BuildContext ctx) =>
+    AppLocalizations.of(ctx)?.parallelActionsCheckboxSelected ??
+        'Action selected';
+String _kCheckboxUnselected(BuildContext ctx) =>
+    AppLocalizations.of(ctx)?.parallelActionsCheckboxUnselected ??
+        'Action not selected';
+String _kCitationCount(BuildContext ctx, int count) =>
+    AppLocalizations.of(ctx)?.parallelActionsCitationCount(count) ?? '$count cit';
 
 class ParallelActionsCard extends ConsumerStatefulWidget {
   const ParallelActionsCard({super.key, required this.thread});
@@ -134,8 +150,8 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
     final confirmed = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text(_kConfirmTitle(selectedIdxs.length)),
-            content: Text(_kConfirmBody(selectedIdxs.length)),
+            title: Text(_kConfirmTitle(context, selectedIdxs.length)),
+            content: Text(_kConfirmBody(context, selectedIdxs.length)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx).pop(false),
@@ -164,7 +180,7 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
       if (result.failed == 0) {
         messenger.showSnackBar(
           SnackBar(
-            content: Text(_kSentToast(result.sent)),
+            content: Text(_kSentToast(context, result.sent)),
             backgroundColor: AppColors.success,
             duration: const Duration(seconds: 2),
           ),
@@ -174,7 +190,7 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
         messenger.showSnackBar(
           SnackBar(
             content: Text(
-              _kPartialFailureToast(result.sent, result.failed),
+              _kPartialFailureToast(context, result.sent, result.failed),
             ),
             backgroundColor: AppColors.warning,
             duration: const Duration(seconds: 4),
@@ -271,7 +287,7 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
             _Header(thread: t, total: actions.length),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              _kHeadline(actions.length),
+              _kHeadline(context, actions.length),
               style: const TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 13,
@@ -293,8 +309,8 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
               children: [
                 _PrimaryButton(
                   label: _allSelected
-                      ? _kApproveAll()
-                      : _kApproveSelected(_selectedCount, _totalCount),
+                      ? _kApproveAll(context)
+                      : _kApproveSelected(context, _selectedCount, _totalCount),
                   busy: _busy,
                   enabled: _hasSelection && !_busy,
                   onPressed: _onApprove,
@@ -402,8 +418,8 @@ class _ActionRow extends StatelessWidget {
   IconData get _kindIcon =>
       action.kind == 'email_new' ? Icons.mail_outline : Icons.reply_rounded;
 
-  String _kindLabel() =>
-      action.kind == 'email_new' ? _kKindNew() : _kKindReply();
+  String _kindLabel(BuildContext context) =>
+      action.kind == 'email_new' ? _kKindNew(context) : _kKindReply(context);
 
   @override
   Widget build(BuildContext context) {
@@ -420,8 +436,8 @@ class _ActionRow extends StatelessWidget {
               padding: const EdgeInsets.only(top: 2),
               child: Semantics(
                 label: selected
-                    ? _kCheckboxSelected()
-                    : _kCheckboxUnselected(),
+                    ? _kCheckboxSelected(context)
+                    : _kCheckboxUnselected(context),
                 child: Checkbox(
                   value: selected,
                   onChanged: (_) => onToggle(),
@@ -444,7 +460,7 @@ class _ActionRow extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       _Chip(
-                        label: _kindLabel(),
+                        label: _kindLabel(context),
                         color: AppColors.textSecondary,
                       ),
                       const SizedBox(width: 6),
@@ -471,7 +487,7 @@ class _ActionRow extends StatelessWidget {
                       if (action.citations.isNotEmpty) ...[
                         const SizedBox(width: 6),
                         _Chip(
-                          label: _kCitationCount(action.citations.length),
+                          label: _kCitationCount(context, action.citations.length),
                           color: AppColors.primary,
                         ),
                       ],

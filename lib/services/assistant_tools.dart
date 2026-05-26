@@ -2125,6 +2125,15 @@ Review the email carefully. It will only be sent after you tap **Send**.
     final subject = row['subject'] as String? ?? '(no subject)';
     final brief = row['user_brief'] as String? ?? '';
     final severity = row['severity'] as String? ?? 'LOW';
+    // P0 (2026-05-27) — surface the actual outbound draft fields so the
+    // Inbox edit screen can load the body the user is sending (not the
+    // 2-4-sentence user_brief summary). Without this, the edit textarea
+    // displayed brief text but send-email shipped the unedited draft_body.
+    final draftBody = row['draft_body'] as String?;
+    final draftSubject = row['draft_subject'] as String?;
+    final draftLanguage = row['draft_language'] as String?;
+    final draftTo = row['draft_to'];
+    final draftCc = row['draft_cc'];
 
     return ToolResult(
       success: true,
@@ -2142,6 +2151,11 @@ $brief
         'severity_rank':
             _severityRank[severity] ?? _severityRank['LOW']!,
         'user_brief': brief,
+        if (draftBody != null) 'draft_body': draftBody,
+        if (draftSubject != null) 'draft_subject': draftSubject,
+        if (draftLanguage != null) 'draft_language': draftLanguage,
+        if (draftTo != null) 'draft_to': draftTo,
+        if (draftCc != null) 'draft_cc': draftCc,
         if (row['send_recommendation'] != null)
           'send_recommendation': row['send_recommendation'],
         if (row['has_draft'] != null) 'has_draft': row['has_draft'],

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+import 'package:url_launcher/url_launcher.dart' as url_launcher;
 // Re-import Supabase's AuthState under an alias so we can type-annotate the
 // auth-stream subscription. The bare import above hides AuthState because a
 // future merge with auth_provider.dart's own AuthState would otherwise
@@ -237,27 +238,42 @@ class _EmailConnectionNotifier extends StateNotifier<_EmailConnectionState> {
     }
   }
 
-  /// Connect Gmail via Google OAuth through Supabase.
+  /// Connect Gmail via direct Google OAuth (side-channel — bypasses
+  /// Supabase Auth's signInWithOAuth which silently drops
+  /// access_type=offline + prompt=consent and yields a refresh_token-less
+  /// session).
+  ///
+  /// Phase 2a (2026-05-27): calls our `gmail-oauth-init` edge fn to get a
+  /// signed authorize URL, then launches the system browser. Google
+  /// redirects to `/oauth/gmail/return` which hosts a Flutter screen that
+  /// finishes the exchange via `gmail-oauth-exchange`.
   Future<void> connectGmail() async {
     state = state.copyWith(isConnecting: true, errorKind: null);
     try {
-      // Link Google identity to existing session, or sign in with Google.
-      // Scope MUST include gmail.send so send-email can dispatch via the
-      // Gmail API instead of falling back to Resend.
-      await Supabase.instance.client.auth.signInWithOAuth(
-        OAuthProvider.google,
-        scopes: kGmailScopesActive,
-        // access_type=offline + prompt=consent are required to receive a
-        // refresh_token. Without prompt=consent, Google omits the refresh
-        // token on subsequent sign-ins for the same user.
-        queryParams: const {
-          'access_type': 'offline',
-          'prompt': 'consent',
-        },
+      final init = await _oauthStorage.initGmailOAuth();
+      final ok = await url_launcher.launchUrl(
+        Uri.parse(init.authUrl),
+        mode: url_launcher.LaunchMode.externalApplication,
       );
-      // On web, this redirects the browser. When the user comes back,
-      // _handleAuthStateChange will pick up session.providerToken and POST
-      // it to oauth-callback.
+      if (!ok) {
+        // url_launcher returned false — fall back to the legacy Supabase
+        // signInWithOAuth path so the user still has *some* way to link.
+        // The fallback yields a refresh-token-less session (the bug we're
+        // trying to avoid), but it's better than a hard dead-end.
+        debugPrint(
+          '[email_screen] launchUrl=false, falling back to signInWithOAuth',
+        );
+        await Supabase.instance.client.auth.signInWithOAuth(
+          OAuthProvider.google,
+          scopes: kGmailScopesActive,
+          queryParams: const {
+            'access_type': 'offline',
+            'prompt': 'consent',
+          },
+        );
+      }
+      // Either path: state.isConnecting stays true until the redirect
+      // lands. The return route or _handleAuthStateChange flips it.
     } catch (e, st) {
       debugPrint('[email_screen] connectGmail failed: $e\n$st');
       state = const _EmailConnectionState(

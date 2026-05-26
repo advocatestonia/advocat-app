@@ -193,4 +193,113 @@ class OAuthStorageService {
       throw OAuthStorageException('Failed to persist OAuth token', e);
     }
   }
+
+  /// Phase 2a (2026-05-27) — direct Google OAuth side-channel.
+  ///
+  /// Bypasses Supabase Auth's signInWithOAuth (which silently drops
+  /// access_type=offline + prompt=consent and yields a refresh_token-less
+  /// session). Instead we call our own `gmail-oauth-init` edge fn, which
+  /// builds the Google authorize URL with the right params + a signed
+  /// state JWT, and returns it.
+  ///
+  /// Caller (`email_screen.dart::connectGmail`) then opens the URL in a
+  /// browser. Google redirects to `https://advocat.ee/oauth/gmail/return`
+  /// which is a Flutter route that reads `?code=&state=` and calls
+  /// [exchangeGmailCode] below.
+  Future<GmailOAuthInitResult> initGmailOAuth() async {
+    try {
+      final response = await _client.functions.invoke(
+        'gmail-oauth-init',
+        body: const <String, dynamic>{},
+      );
+      if (response.status >= 400) {
+        final data = response.data;
+        final errMsg = data is Map ? (data['error']?.toString()) : null;
+        throw OAuthStorageException(
+          errMsg ?? 'gmail-oauth-init returned ${response.status}',
+        );
+      }
+      final data = response.data;
+      if (data is! Map<String, dynamic>) {
+        throw OAuthStorageException(
+          'Unexpected init response shape: ${data.runtimeType}',
+        );
+      }
+      final authUrl = data['auth_url'] as String?;
+      final state = data['state'] as String?;
+      if (authUrl == null || state == null) {
+        throw const OAuthStorageException(
+          'gmail-oauth-init missing auth_url or state',
+        );
+      }
+      return GmailOAuthInitResult(authUrl: authUrl, state: state);
+    } on OAuthStorageException {
+      rethrow;
+    } catch (e) {
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print('gmail-oauth-init invoke failed: $e');
+      }
+      throw OAuthStorageException('Failed to init Gmail OAuth', e);
+    }
+  }
+
+  /// Phase 2a (2026-05-27) — finish the side-channel OAuth flow.
+  ///
+  /// After Google redirects with `?code=` + `?state=`, the Flutter return
+  /// route calls this. The edge fn `gmail-oauth-exchange` verifies the
+  /// state JWT (we never trust the body's user_id), exchanges the code at
+  /// Google's token endpoint, and upserts `user_oauth_tokens` with a real
+  /// refresh_token.
+  ///
+  /// Returns the same [OAuthCallbackResult] shape so the UI doesn't need
+  /// to branch on which flow produced it.
+  Future<OAuthCallbackResult> exchangeGmailCode({
+    required String code,
+    required String state,
+  }) async {
+    if (code.isEmpty) {
+      throw const OAuthStorageException('code must not be empty');
+    }
+    if (state.isEmpty) {
+      throw const OAuthStorageException('state must not be empty');
+    }
+    try {
+      final response = await _client.functions.invoke(
+        'gmail-oauth-exchange',
+        body: <String, dynamic>{'code': code, 'state': state},
+      );
+      if (response.status >= 400) {
+        final data = response.data;
+        final errMsg = data is Map ? (data['error']?.toString()) : null;
+        throw OAuthStorageException(
+          errMsg ?? 'gmail-oauth-exchange returned ${response.status}',
+        );
+      }
+      final data = response.data;
+      if (data is! Map<String, dynamic>) {
+        throw OAuthStorageException(
+          'Unexpected exchange response shape: ${data.runtimeType}',
+        );
+      }
+      return OAuthCallbackResult.fromJson(data);
+    } on OAuthStorageException {
+      rethrow;
+    } catch (e) {
+      if (kDebugMode) {
+        // ignore: avoid_print
+        print('gmail-oauth-exchange invoke failed: $e');
+      }
+      throw OAuthStorageException('Failed to exchange Gmail OAuth code', e);
+    }
+  }
+}
+
+/// Result of `gmail-oauth-init`. The UI opens [authUrl] in a browser; the
+/// server bound [state] inside a signed JWT so a malicious redirect cannot
+/// inject another user's identity.
+class GmailOAuthInitResult {
+  const GmailOAuthInitResult({required this.authUrl, required this.state});
+  final String authUrl;
+  final String state;
 }
