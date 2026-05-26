@@ -28,7 +28,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
 import { ensureFreshToken, loadGmailToken } from "../_shared/gmail_token.ts";
 import { checkCronSecret } from "../agent-intentions-cron/auth_gate.ts";
-import { getThreadFull, listThreads } from "./gmail_api.ts";
+import { downloadAttachment, getThreadFull, listThreads } from "./gmail_api.ts";
 import {
   type MessageUpsertRow,
   type MinimalSyncDeps,
@@ -232,17 +232,118 @@ function makeProdDeps(
       return { id, isNewOrAdvanced };
     },
 
-    async upsertMessages(rows: MessageUpsertRow[]): Promise<number> {
-      if (rows.length === 0) return 0;
-      // ON CONFLICT (gmail_message_id) DO NOTHING via upsert with ignoreDuplicates.
-      const { data, error } = await sb
+    async upsertMessages(rows: MessageUpsertRow[]) {
+      if (rows.length === 0) return { count: 0, idByGmailId: {} };
+      // Insert new rows (ignoreDuplicates keeps prior PK on conflict).
+      const { data: inserted, error } = await sb
         .from("email_messages")
         .upsert(rows, { onConflict: "gmail_message_id", ignoreDuplicates: true })
-        .select("id");
-      if (error) {
-        throw new Error(`upsertMessages: ${error.message}`);
+        .select("id, gmail_message_id");
+      if (error) throw new Error(`upsertMessages: ${error.message}`);
+
+      const idByGmailId: Record<string, string> = {};
+      for (const r of (inserted ?? []) as Array<
+        { id: string; gmail_message_id: string }
+      >) {
+        idByGmailId[r.gmail_message_id] = r.id;
       }
-      return (data?.length ?? 0) as number;
+
+      // For PRE-EXISTING rows we still need the uuid PK — attachment
+      // downloads keyed by gmail_message_id need to FK back. Fetch any
+      // missing ids in one round-trip.
+      const missing = rows
+        .map((r) => r.gmail_message_id)
+        .filter((gid) => !(gid in idByGmailId));
+      if (missing.length > 0) {
+        const { data: existing, error: e2 } = await sb
+          .from("email_messages")
+          .select("id, gmail_message_id")
+          .in("gmail_message_id", missing);
+        if (e2) throw new Error(`upsertMessages select: ${e2.message}`);
+        for (const r of (existing ?? []) as Array<
+          { id: string; gmail_message_id: string }
+        >) {
+          idByGmailId[r.gmail_message_id] = r.id;
+        }
+      }
+
+      return { count: inserted?.length ?? 0, idByGmailId };
+    },
+
+    /**
+     * Fix #1 (2026-05-26) — download one Gmail attachment + upload to
+     * Storage + insert email_attachments row. Idempotent on
+     * (message_id, gmail_attachment_id) per the unique constraint. On
+     * any error or duplicate we return `inserted=false` rather than
+     * throwing — the caller treats it as a "skipped" not "errored" so
+     * one bad attachment does not poison the whole thread.
+     */
+    async downloadAndStoreAttachment(args) {
+      const att = args.attachment;
+      // Cheap idempotency probe — if a row already exists, skip the fetch.
+      const probe = await sb
+        .from("email_attachments")
+        .select("id")
+        .eq("message_id", args.messageDbId)
+        .eq("gmail_attachment_id", att.gmail_attachment_id)
+        .maybeSingle();
+      if (probe.data) return { inserted: false, skipped_reason: "duplicate" };
+
+      // Pull bytes. downloadAttachment enforces 50 MB cap + base64url decode.
+      let payload: { data: Uint8Array; size: number };
+      try {
+        payload = await downloadAttachment({
+          accessToken: args.accessToken,
+          messageId: args.gmailMessageId,
+          attachmentId: att.gmail_attachment_id,
+        });
+      } catch (e) {
+        console.warn(
+          `email-inbox-sync: downloadAttachment ${att.gmail_attachment_id} failed: ${
+            String(e).slice(0, 200)
+          }`,
+        );
+        return { inserted: false, skipped_reason: "fetch_failed" };
+      }
+
+      // Storage path: case-documents/{user_id}/email_attachments/{rand}/{filename}.
+      const rand = crypto.randomUUID();
+      const storagePath =
+        `${args.userId}/email_attachments/${rand}/${att.filename}`;
+      const { error: upErr } = await sb.storage
+        .from("case-documents")
+        .upload(storagePath, payload.data, {
+          contentType: att.mime || "application/octet-stream",
+          upsert: false,
+        });
+      if (upErr) {
+        console.warn(
+          `email-inbox-sync: storage upload failed for ${att.filename}: ${upErr.message}`,
+        );
+        return { inserted: false, skipped_reason: "storage_failed" };
+      }
+
+      const { error: insErr } = await sb.from("email_attachments").insert({
+        message_id: args.messageDbId,
+        thread_id: args.threadDbId,
+        user_id: args.userId,
+        filename: att.filename,
+        mime: att.mime || "application/octet-stream",
+        size_bytes: payload.size,
+        storage_path: storagePath,
+        gmail_attachment_id: att.gmail_attachment_id,
+      });
+      if (insErr) {
+        console.warn(
+          `email-inbox-sync: email_attachments insert failed: ${insErr.message}`,
+        );
+        // Best-effort cleanup of the orphaned blob.
+        try {
+          await sb.storage.from("case-documents").remove([storagePath]);
+        } catch (_e) { /* swallow */ }
+        return { inserted: false, skipped_reason: "insert_failed" };
+      }
+      return { inserted: true };
     },
 
     async enqueueTriage(args) {

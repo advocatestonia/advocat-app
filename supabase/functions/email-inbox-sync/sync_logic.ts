@@ -25,6 +25,27 @@ export const DEFAULT_LOOKBACK_MS = 7 * 24 * 3600 * 1000;
 /** Max threads fetched per tick — bounded so a backlogged inbox cannot DoS the model. */
 export const MAX_THREADS_PER_TICK = 50;
 
+/** Max attachments downloaded per thread per tick — Fix #1 (2026-05-26). */
+export const MAX_ATTACHMENTS_PER_THREAD = 10;
+
+/** MIME prefixes we will download. Other binaries (zip, exe, …) are ignored. */
+export const DOWNLOADABLE_MIME_PREFIXES = [
+  "application/pdf",
+  "image/",
+];
+
+/**
+ * Decide whether an attachment is one we know how to deal with downstream
+ * (pdf-parser handles PDFs; images route through Vision OCR). Other types
+ * are intentionally skipped — D4 triage cannot make use of them and the
+ * 50 MB cap is per-attachment, so an unused 50 MB zip would just burn
+ * Storage quota.
+ */
+export function isDownloadableMime(mime: string): boolean {
+  const m = (mime || "").toLowerCase();
+  return DOWNLOADABLE_MIME_PREFIXES.some((p) => m === p || m.startsWith(p));
+}
+
 // =============================================================================
 // Types
 // =============================================================================
@@ -43,6 +64,19 @@ export interface GmailMessage {
   sentAt: string; // ISO
   hasAttachments: boolean;
   attachmentsMeta: Array<{ filename: string; mime: string; size_bytes: number }>;
+  /**
+   * Attachment metadata WITH Gmail attachment ids — populated by
+   * parseGmailMessage. D3 sync uses this to fan out
+   * [MinimalSyncDeps.downloadAndStoreAttachment] calls. Stays separate from
+   * `attachmentsMeta` (which is persisted on the message row as a stable
+   * JSONB shape, no id leakage).
+   */
+  attachmentsWithIds?: Array<{
+    filename: string;
+    mime: string;
+    size_bytes: number;
+    gmail_attachment_id: string;
+  }>;
   headersMeta: Record<string, string>;
 }
 
@@ -111,8 +145,16 @@ export interface MinimalSyncDeps {
    * last_message_at advanced.
    */
   upsertThread(row: ThreadUpsertRow): Promise<{ id: string; isNewOrAdvanced: boolean }>;
-  /** Bulk upsert messages by gmail_message_id. */
-  upsertMessages(rows: MessageUpsertRow[]): Promise<number>;
+  /**
+   * Bulk upsert messages by gmail_message_id. Returns the count of rows
+   * upserted AND a lookup map from gmail_message_id → uuid PK (needed by
+   * the attachment-download fan-out in Fix #1). Existing tests that only
+   * inspect `.count` keep working; new code reads `.idByGmailId`.
+   */
+  upsertMessages(rows: MessageUpsertRow[]): Promise<{
+    count: number;
+    idByGmailId: Record<string, string>;
+  }>;
   /**
    * Best-effort: enqueue the thread for triage (D4). In tests this is a
    * no-op spy. In prod this calls the email-triage edge fn (or writes a
@@ -132,6 +174,28 @@ export interface MinimalSyncDeps {
     snippet: string | null;
     lastMessageAt: string;
   }): Promise<void>;
+  /**
+   * Fix #1 (2026-05-26): download one attachment binary + persist to Storage
+   * + insert email_attachments row. Implementations call
+   * [downloadAttachment], upload to `case-documents/{userId}/email_attachments/`,
+   * then insert. Test fakes can leave this undefined (sync skips the
+   * download leg entirely). The impl SHOULD be idempotent on
+   * (message_db_id, gmail_attachment_id) — the unique constraint enforces
+   * it at the DB layer too.
+   */
+  downloadAndStoreAttachment?(args: {
+    userId: string;
+    threadDbId: string;
+    messageDbId: string;
+    gmailMessageId: string;
+    attachment: {
+      filename: string;
+      mime: string;
+      size_bytes: number;
+      gmail_attachment_id: string;
+    };
+    accessToken: string;
+  }): Promise<{ inserted: boolean; skipped_reason?: string }>;
 }
 
 // =============================================================================
@@ -322,6 +386,8 @@ export interface SyncResult {
   messages_upserted: number;
   triages_enqueued: number;
   errors: number;
+  attachments_downloaded: number;
+  attachments_skipped: number;
 }
 
 /**
@@ -362,6 +428,8 @@ export async function runSyncTick(
     messages_upserted: 0,
     triages_enqueued: 0,
     errors: 0,
+    attachments_downloaded: 0,
+    attachments_skipped: 0,
   };
 
   const threads = await deps.listThreads({
@@ -401,8 +469,53 @@ export async function runSyncTick(
         })
       );
       const inserted = await deps.upsertMessages(msgRows);
-      result.messages_upserted += inserted;
+      result.messages_upserted += inserted.count;
       result.threads_synced++;
+
+      // Fix #1 (2026-05-26): fan out attachment downloads. Per-thread cap
+      // [MAX_ATTACHMENTS_PER_THREAD] = 10 — overflow logged + skipped.
+      // Per-attachment cap [MAX_ATTACHMENT_BYTES] = 50 MB enforced by
+      // [downloadAttachment] itself. Only PDFs + images flow through (rest
+      // would be dead Storage weight). Failures here NEVER abort the rest
+      // of the tick — D4 triage will still run on bytes-less metadata.
+      if (deps.downloadAndStoreAttachment) {
+        let threadAttCount = 0;
+        for (const msg of lastFive) {
+          const messageDbId = inserted.idByGmailId[msg.id];
+          if (!messageDbId) continue; // message wasn't upserted (rare)
+          for (const att of (msg.attachmentsWithIds ?? [])) {
+            if (threadAttCount >= MAX_ATTACHMENTS_PER_THREAD) {
+              result.attachments_skipped++;
+              continue;
+            }
+            if (!isDownloadableMime(att.mime)) {
+              result.attachments_skipped++;
+              continue;
+            }
+            try {
+              const res = await deps.downloadAndStoreAttachment({
+                userId: args.userId,
+                threadDbId: upsert.id,
+                messageDbId,
+                gmailMessageId: msg.id,
+                attachment: att,
+                accessToken: args.accessToken,
+              });
+              if (res.inserted) {
+                result.attachments_downloaded++;
+                threadAttCount++;
+              } else {
+                result.attachments_skipped++;
+              }
+            } catch (e) {
+              console.warn(
+                `email-inbox-sync: attachment ${att.gmail_attachment_id} failed: ${String(e).slice(0, 200)}`,
+              );
+              result.attachments_skipped++;
+            }
+          }
+        }
+      }
 
       // Sidecar: timeline event when the thread is linked to a case.
       // toThreadRow above always sets case_id=null in D3 (we do not

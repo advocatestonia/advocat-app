@@ -95,13 +95,15 @@ function makeFakeDeps(state: FakeState): MinimalSyncDeps {
       return { id: prior.id, isNewOrAdvanced: advanced };
     },
     async upsertMessages(rows: MessageUpsertRow[]) {
-      let inserted = 0;
+      let count = 0;
+      const idByGmailId: Record<string, string> = {};
       for (const r of rows) {
+        idByGmailId[r.gmail_message_id] = `msg-uuid-${r.gmail_message_id}`;
         if (state.storedMsgIds.has(r.gmail_message_id)) continue;
         state.storedMsgIds.add(r.gmail_message_id);
-        inserted++;
+        count++;
       }
-      return inserted;
+      return { count, idByGmailId };
     },
     async enqueueTriage(args) {
       state.enqueued.push(args);

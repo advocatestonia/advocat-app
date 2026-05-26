@@ -175,13 +175,17 @@ function makeFakeDeps(state: FakeDepsState): MinimalSyncDeps {
       return { id: prior.id, isNewOrAdvanced: advanced };
     },
     async upsertMessages(rows: MessageUpsertRow[]) {
-      let inserted = 0;
+      let count = 0;
+      const idByGmailId: Record<string, string> = {};
       for (const r of rows) {
+        // Stable synthetic uuid by gmail id so tests can predict it.
+        const dbId = `msg-uuid-${r.gmail_message_id}`;
+        idByGmailId[r.gmail_message_id] = dbId;
         if (state.storedMsgIds.has(r.gmail_message_id)) continue;
         state.storedMsgIds.add(r.gmail_message_id);
-        inserted++;
+        count++;
       }
-      return inserted;
+      return { count, idByGmailId };
     },
     async enqueueTriage(args) {
       state.enqueued.push(args);
@@ -267,8 +271,12 @@ Deno.test("runSyncTick — body capped to 50 KB on insert", async () => {
   const deps: MinimalSyncDeps = {
     ...makeFakeDeps(state),
     async upsertMessages(rows) {
-      for (const r of rows) captured.push(r);
-      return rows.length;
+      const idByGmailId: Record<string, string> = {};
+      for (const r of rows) {
+        captured.push(r);
+        idByGmailId[r.gmail_message_id] = `msg-uuid-${r.gmail_message_id}`;
+      }
+      return { count: rows.length, idByGmailId };
     },
   };
   await runSyncTick(deps, {
@@ -356,4 +364,222 @@ Deno.test("toMessageRow — drops old quote chain + caps body", () => {
 
 Deno.test("QUOTE_CHAIN_CUTOFF_DAYS constant locked at 30", () => {
   assertEquals(QUOTE_CHAIN_CUTOFF_DAYS, 30);
+});
+
+// =============================================================================
+// Fix #1 (2026-05-26) — attachment fan-out
+// =============================================================================
+
+import {
+  DOWNLOADABLE_MIME_PREFIXES,
+  isDownloadableMime,
+  MAX_ATTACHMENTS_PER_THREAD,
+} from "../sync_logic.ts";
+
+Deno.test("isDownloadableMime — accepts PDFs + images, rejects rest", () => {
+  assert(isDownloadableMime("application/pdf"));
+  assert(isDownloadableMime("image/png"));
+  assert(isDownloadableMime("image/jpeg"));
+  assert(isDownloadableMime("IMAGE/HEIC"));
+  assert(!isDownloadableMime("application/zip"));
+  assert(!isDownloadableMime("text/html"));
+  assert(!isDownloadableMime(""));
+});
+
+Deno.test("MAX_ATTACHMENTS_PER_THREAD constant locked at 10", () => {
+  assertEquals(MAX_ATTACHMENTS_PER_THREAD, 10);
+});
+
+Deno.test("DOWNLOADABLE_MIME_PREFIXES is the documented set", () => {
+  assertEquals(DOWNLOADABLE_MIME_PREFIXES, ["application/pdf", "image/"]);
+});
+
+Deno.test("runSyncTick — fans out attachment downloads for PDF + skips non-PDF", async () => {
+  const state: FakeDepsState = {
+    storedThreads: new Map(),
+    storedMsgIds: new Set(),
+    enqueued: [],
+    fetchSequence: [],
+  };
+  // Thread with 1 message containing 1 PDF + 1 zip (zip must be skipped).
+  const thread: GmailThreadFull = {
+    threadId: "t-poliisi",
+    historyId: "h1",
+    snippet: "Liitteenä asiakirjat",
+    subject: "Asiakirjat",
+    participants: ["ulkomaalaisasiat.helsinki@poliisi.fi", "me@advocat.ee"],
+    labelIds: ["INBOX"],
+    lastMessageAt: "2026-05-26T07:49:00Z",
+    messages: [
+      {
+        id: "msg-1",
+        threadId: "t-poliisi",
+        rfcMessageId: "<m1@poliisi.fi>",
+        senderEmail: "ulkomaalaisasiat.helsinki@poliisi.fi",
+        senderName: null,
+        toRecipients: ["me@advocat.ee"],
+        ccRecipients: [],
+        subject: "Asiakirjat",
+        bodyPlaintext: "Liitteenä asiakirjat.",
+        snippet: null,
+        sentAt: "2026-05-26T07:49:00Z",
+        hasAttachments: true,
+        attachmentsMeta: [
+          { filename: "SULGA päätös.pdf", mime: "application/pdf", size_bytes: 1489357 },
+          { filename: "archive.zip", mime: "application/zip", size_bytes: 200 },
+        ],
+        attachmentsWithIds: [
+          {
+            filename: "SULGA päätös.pdf",
+            mime: "application/pdf",
+            size_bytes: 1489357,
+            gmail_attachment_id: "att-pdf-1",
+          },
+          {
+            filename: "archive.zip",
+            mime: "application/zip",
+            size_bytes: 200,
+            gmail_attachment_id: "att-zip-1",
+          },
+        ],
+        headersMeta: {},
+      },
+    ],
+  };
+  state.fetchSequence = [thread];
+  const downloadCalls: Array<
+    { gmail_attachment_id: string; filename: string }
+  > = [];
+  const deps: MinimalSyncDeps = {
+    ...makeFakeDeps(state),
+    async downloadAndStoreAttachment(args) {
+      downloadCalls.push({
+        gmail_attachment_id: args.attachment.gmail_attachment_id,
+        filename: args.attachment.filename,
+      });
+      return { inserted: true };
+    },
+  };
+  const res = await runSyncTick(deps, {
+    userId: "u1",
+    accessToken: "tok",
+    now: new Date("2026-05-26T08:00:00Z"),
+  });
+  assertEquals(res.attachments_downloaded, 1, "only PDF should download");
+  assertEquals(res.attachments_skipped, 1, "zip should be skipped");
+  assertEquals(downloadCalls.length, 1, "downloadAndStoreAttachment called once");
+  assertEquals(downloadCalls[0].gmail_attachment_id, "att-pdf-1");
+  assertEquals(downloadCalls[0].filename, "SULGA päätös.pdf");
+});
+
+Deno.test("runSyncTick — enforces MAX_ATTACHMENTS_PER_THREAD cap", async () => {
+  const state: FakeDepsState = {
+    storedThreads: new Map(),
+    storedMsgIds: new Set(),
+    enqueued: [],
+    fetchSequence: [],
+  };
+  // 15 PDFs — only 10 should download, 5 skipped.
+  const pdfs = Array.from({ length: 15 }, (_, i) => ({
+    filename: `f${i}.pdf`,
+    mime: "application/pdf",
+    size_bytes: 1000,
+    gmail_attachment_id: `att-${i}`,
+  }));
+  const thread: GmailThreadFull = {
+    threadId: "t-big",
+    historyId: "h1",
+    snippet: "many",
+    subject: "Many",
+    participants: ["a@x"],
+    labelIds: [],
+    lastMessageAt: "2026-05-26T08:00:00Z",
+    messages: [
+      {
+        id: "msg-big",
+        threadId: "t-big",
+        senderEmail: "a@x",
+        toRecipients: ["me@advocat.ee"],
+        ccRecipients: [],
+        bodyPlaintext: "",
+        sentAt: "2026-05-26T08:00:00Z",
+        hasAttachments: true,
+        attachmentsMeta: pdfs.map((p) => ({
+          filename: p.filename, mime: p.mime, size_bytes: p.size_bytes,
+        })),
+        attachmentsWithIds: pdfs,
+        headersMeta: {},
+      },
+    ],
+  };
+  state.fetchSequence = [thread];
+  let calls = 0;
+  const deps: MinimalSyncDeps = {
+    ...makeFakeDeps(state),
+    async downloadAndStoreAttachment() {
+      calls++;
+      return { inserted: true };
+    },
+  };
+  const res = await runSyncTick(deps, {
+    userId: "u1",
+    accessToken: "tok",
+    now: new Date("2026-05-26T08:30:00Z"),
+  });
+  assertEquals(res.attachments_downloaded, 10);
+  assertEquals(res.attachments_skipped, 5);
+  assertEquals(calls, 10);
+});
+
+Deno.test("runSyncTick — attachment download failure is swallowed (sync continues)", async () => {
+  const state: FakeDepsState = {
+    storedThreads: new Map(),
+    storedMsgIds: new Set(),
+    enqueued: [],
+    fetchSequence: [],
+  };
+  const thread: GmailThreadFull = {
+    threadId: "t-fail",
+    historyId: "h1",
+    snippet: "x",
+    subject: "X",
+    participants: ["a@x"],
+    labelIds: [],
+    lastMessageAt: "2026-05-26T09:00:00Z",
+    messages: [
+      {
+        id: "msg-fail",
+        threadId: "t-fail",
+        senderEmail: "a@x",
+        toRecipients: ["me@advocat.ee"],
+        ccRecipients: [],
+        bodyPlaintext: "",
+        sentAt: "2026-05-26T09:00:00Z",
+        hasAttachments: true,
+        attachmentsMeta: [{ filename: "x.pdf", mime: "application/pdf", size_bytes: 100 }],
+        attachmentsWithIds: [{
+          filename: "x.pdf", mime: "application/pdf", size_bytes: 100,
+          gmail_attachment_id: "att-bad",
+        }],
+        headersMeta: {},
+      },
+    ],
+  };
+  state.fetchSequence = [thread];
+  const deps: MinimalSyncDeps = {
+    ...makeFakeDeps(state),
+    async downloadAndStoreAttachment() {
+      throw new Error("network blew up");
+    },
+  };
+  const res = await runSyncTick(deps, {
+    userId: "u1",
+    accessToken: "tok",
+    now: new Date("2026-05-26T09:30:00Z"),
+  });
+  // Thread sync still succeeds, attachment counted as skipped not errored.
+  assertEquals(res.threads_synced, 1);
+  assertEquals(res.attachments_downloaded, 0);
+  assertEquals(res.attachments_skipped, 1);
+  assertEquals(res.errors, 0);
 });

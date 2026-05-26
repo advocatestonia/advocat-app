@@ -160,6 +160,7 @@ export function parseGmailMessage(raw: GmailRawMessage): GmailMessage {
   const rfcMessageId = h("Message-ID") ?? h("Message-Id") ?? null;
   const bodyPlaintext = extractPlaintextBody(raw.payload);
   const attachmentsMeta = extractAttachmentsMeta(raw.payload);
+  const attachmentsWithIds = extractAttachmentsWithIds(raw.payload);
   const headersMeta: Record<string, string> = {};
   // Persist a small whitelist of headers used downstream (auto-reply
   // detection per Rule 23).
@@ -184,6 +185,7 @@ export function parseGmailMessage(raw: GmailRawMessage): GmailMessage {
     sentAt,
     hasAttachments: attachmentsMeta.length > 0,
     attachmentsMeta,
+    attachmentsWithIds,
     headersMeta,
   };
 }
@@ -289,6 +291,102 @@ export function extractAttachmentsMeta(
     for (const sub of p.parts ?? []) walk(sub);
   };
   walk(payload);
+  return out;
+}
+
+/**
+ * Pull out attachment metadata WITH the Gmail attachment id. Used by D3 sync
+ * to download attachment bytes via [downloadAttachment]. Distinct from
+ * [extractAttachmentsMeta] (which feeds the email_messages.attachments_meta
+ * JSONB column — kept stable shape for back-compat).
+ */
+export function extractAttachmentsWithIds(
+  payload?: GmailPayload,
+): Array<{
+  filename: string;
+  mime: string;
+  size_bytes: number;
+  gmail_attachment_id: string;
+}> {
+  const out: Array<{
+    filename: string;
+    mime: string;
+    size_bytes: number;
+    gmail_attachment_id: string;
+  }> = [];
+  if (!payload) return out;
+  const walk = (p: GmailPayload) => {
+    if (p.filename && p.filename.length > 0 && p.body?.attachmentId) {
+      out.push({
+        filename: p.filename,
+        mime: p.mimeType ?? "application/octet-stream",
+        size_bytes: p.body.size ?? 0,
+        gmail_attachment_id: p.body.attachmentId,
+      });
+    }
+    for (const sub of p.parts ?? []) walk(sub);
+  };
+  walk(payload);
+  return out;
+}
+
+/** Max bytes we will fetch for a single attachment (50 MB — mirrors pdf-parser). */
+export const MAX_ATTACHMENT_BYTES = 50 * 1024 * 1024;
+
+/**
+ * Fetch one attachment's binary payload from Gmail. Returns the raw bytes
+ * + the actual server-reported size. Throws on HTTP error and on payloads
+ * exceeding [MAX_ATTACHMENT_BYTES]. Caller is responsible for skipping
+ * unsupported MIME types and enforcing per-thread caps.
+ */
+export async function downloadAttachment(args: {
+  accessToken: string;
+  messageId: string;
+  attachmentId: string;
+}): Promise<{ data: Uint8Array; size: number }> {
+  const url = new URL(
+    `${GMAIL_API_BASE}/users/me/messages/${encodeURIComponent(args.messageId)}/attachments/${encodeURIComponent(args.attachmentId)}`,
+  );
+  const resp = await fetch(url.toString(), {
+    headers: { "Authorization": `Bearer ${args.accessToken}` },
+  });
+  if (!resp.ok) {
+    throw new Error(
+      `Gmail get attachment ${resp.status}: ${await resp.text().catch(() => "")}`.slice(0, 300),
+    );
+  }
+  const raw = await resp.json() as { data?: string; size?: number };
+  if (!raw.data) {
+    throw new Error("Gmail attachment payload missing 'data'");
+  }
+  // Gmail's `size` is the unencoded byte count. Trust it as a soft check
+  // before we even decode (saves CPU + memory on huge payloads). Hard cap
+  // is enforced post-decode in case Gmail lies.
+  if (raw.size != null && raw.size > MAX_ATTACHMENT_BYTES) {
+    throw new Error(
+      `attachment ${raw.size} > MAX_ATTACHMENT_BYTES ${MAX_ATTACHMENT_BYTES}`,
+    );
+  }
+  const bytes = decodeBase64UrlBytes(raw.data);
+  if (bytes.length > MAX_ATTACHMENT_BYTES) {
+    throw new Error(
+      `attachment ${bytes.length} > MAX_ATTACHMENT_BYTES ${MAX_ATTACHMENT_BYTES}`,
+    );
+  }
+  return { data: bytes, size: bytes.length };
+}
+
+/**
+ * Decode Gmail base64url into a Uint8Array. Pure — exported for tests. Pads
+ * the string + restores standard base64 alphabet before decoding. Throws
+ * on malformed input.
+ */
+export function decodeBase64UrlBytes(data: string): Uint8Array {
+  const padded = data + "=".repeat((4 - data.length % 4) % 4);
+  const std = padded.replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(std);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
   return out;
 }
 
