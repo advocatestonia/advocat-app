@@ -30,10 +30,24 @@ import '../models/inbox_thread.dart';
 /// (sent, failed) drives the success-vs-partial-failure toast in
 /// ParallelActionsCard. `failed == 0` ⇒ all OK; otherwise the UI keeps the
 /// card visible so the user can retry the failed actions individually.
+///
+/// P1-5 (2026-05-27): also expose the list of `failedIdxes` so the
+/// partial-failure snackbar can offer a "Retry failed (N)" action that
+/// re-dispatches only the rows that did not go out. Without this list
+/// the user would have to guess which row failed and re-tick boxes by
+/// hand.
 class ParallelApproveResult {
-  const ParallelApproveResult({required this.sent, required this.failed});
+  const ParallelApproveResult({
+    required this.sent,
+    required this.failed,
+    this.failedIdxes = const <int>[],
+  });
   final int sent;
   final int failed;
+
+  /// Action `idx` values that did NOT succeed, preserved in the same
+  /// order they were dispatched. Empty when `failed == 0`.
+  final List<int> failedIdxes;
 }
 
 /// Inbox UI state. Immutable — copyWith for changes.
@@ -250,10 +264,15 @@ class InboxNotifier extends StateNotifier<InboxState> {
     if (supabase == null) {
       // No service wired — defence-in-depth, mirrors approveAndSend's
       // service_unavailable branch but for the parallel case.
-      return ParallelApproveResult(sent: 0, failed: selectedIdxes.length);
+      return ParallelApproveResult(
+        sent: 0,
+        failed: selectedIdxes.length,
+        failedIdxes: List<int>.unmodifiable(selectedIdxes),
+      );
     }
     int sent = 0;
     int failed = 0;
+    final failedIdxes = <int>[];
     // Fan out in parallel via Future.wait so the user doesn't pay
     // serial-latency for N round-trips. Each request body carries the
     // same triage_id but a unique action_idx so the edge fn can pick
@@ -277,14 +296,31 @@ class InboxNotifier extends StateNotifier<InboxState> {
       }
     }).toList(growable: false);
     final results = await Future.wait(futures);
-    for (final ok in results) {
-      if (ok) {
+    for (var i = 0; i < results.length; i++) {
+      if (results[i]) {
         sent += 1;
       } else {
         failed += 1;
+        failedIdxes.add(selectedIdxes[i]);
       }
     }
-    return ParallelApproveResult(sent: sent, failed: failed);
+    return ParallelApproveResult(
+      sent: sent,
+      failed: failed,
+      failedIdxes: List<int>.unmodifiable(failedIdxes),
+    );
+  }
+
+  /// P1-5 (2026-05-27): convenience wrapper around [approveSelectedActions]
+  /// for the partial-failure "Retry failed" snackbar action. Re-dispatches
+  /// only the actions that did NOT succeed on the previous attempt, so the
+  /// user does not have to manually re-tick the boxes for the rows that
+  /// already sent.
+  Future<ParallelApproveResult> retryFailedActions(
+    String triageId,
+    List<int> failedIdxes,
+  ) async {
+    return approveSelectedActions(triageId, failedIdxes);
   }
 }
 

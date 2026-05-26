@@ -60,23 +60,50 @@ class _TriageCardState extends ConsumerState<TriageCard>
     with SingleTickerProviderStateMixin {
   AnimationController? _pulseController;
   Animation<double>? _pulseAnim;
+  Timer? _pulseStopTimer;
+  bool _pulseStarted = false;
+
+  /// P1-2 (2026-05-27): cap the CRITICAL pulse at ~10s so it doesn't
+  /// burn the GPU forever on a screen the user may leave open. After
+  /// the cap the badge stays at 1.0 opacity (most-attention state).
+  static const Duration _pulseMaxDuration = Duration(seconds: 10);
 
   @override
-  void initState() {
-    super.initState();
-    if (widget.thread.severity.pulses) {
-      _pulseController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 1500),
-      )..repeat(reverse: true);
-      _pulseAnim = Tween<double>(begin: 0.85, end: 1.0).animate(
-        CurvedAnimation(parent: _pulseController!, curve: Curves.easeInOut),
-      );
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Defer pulse setup to didChangeDependencies so we can read
+    // MediaQuery.disableAnimations (WCAG 2.3.3 / prefers-reduced-motion).
+    // initState has no inherited-widget context yet.
+    if (_pulseStarted || !widget.thread.severity.pulses) return;
+    final disabled = MediaQuery.of(context).disableAnimations;
+    if (disabled) {
+      // Honour the user's reduced-motion preference — no animation at all.
+      // The static badge colour still encodes severity (CRITICAL red), so
+      // information is not lost.
+      _pulseStarted = true;
+      return;
     }
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    )..repeat(reverse: true);
+    _pulseAnim = Tween<double>(begin: 0.85, end: 1.0).animate(
+      CurvedAnimation(parent: _pulseController!, curve: Curves.easeInOut),
+    );
+    _pulseStopTimer = Timer(_pulseMaxDuration, () {
+      if (!mounted) return;
+      _pulseController?.stop();
+      // Settle at full opacity rather than wherever the curve happens to
+      // be when the timer fires. AnimationController.value mutation
+      // forces a final rebuild via the AnimatedBuilder listener.
+      _pulseController?.value = 1.0;
+    });
+    _pulseStarted = true;
   }
 
   @override
   void dispose() {
+    _pulseStopTimer?.cancel();
     _pulseController?.dispose();
     super.dispose();
   }

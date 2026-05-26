@@ -1359,6 +1359,15 @@
     "@parallelActionsCitationCount": {
         "placeholders": { "count": { "type": "int" } }
     },
+    "parallelActionsRetryFailed": "Proovi ebaõnnestunuid uuesti ({count})",
+    "@parallelActionsRetryFailed": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "inboxErrorTitle": "Postkasti ei õnnestunud laadida",
+    "inboxEditDiscardTitle": "Kas tühistada salvestamata muudatused?",
+    "inboxEditDiscardBody": "Sellel mustandil on salvestamata muudatusi. Tagasi minnes need kaovad.",
+    "inboxEditKeepEditing": "Jätka muutmist",
+    "inboxEditDiscard": "Tühista",
     "workspaceTabOverview": "Ülevaade",
     "workspaceTabChat": "Vestlus",
     "workspaceTabDrafts": "Mustandid",

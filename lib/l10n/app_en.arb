@@ -1388,6 +1388,31 @@
         "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
         "placeholders": { "count": { "type": "int" } }
     },
+    "parallelActionsRetryFailed": "Retry failed ({count})",
+    "@parallelActionsRetryFailed": {
+        "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "inboxErrorTitle": "Could not load inbox",
+    "@inboxErrorTitle": {
+        "description": "P1-6 (2026-05-27): title shown above the retry button when the inbox failed to load."
+    },
+    "inboxEditDiscardTitle": "Discard unsaved edits?",
+    "@inboxEditDiscardTitle": {
+        "description": "P1-3 (2026-05-27): WillPopScope dialog title when the user back-navigates with unsaved draft edits."
+    },
+    "inboxEditDiscardBody": "You have unsaved changes to this draft. Going back will discard them.",
+    "@inboxEditDiscardBody": {
+        "description": "P1-3 (2026-05-27): body of the discard-edits dialog."
+    },
+    "inboxEditKeepEditing": "Keep editing",
+    "@inboxEditKeepEditing": {
+        "description": "P1-3 (2026-05-27): keep-editing button on the discard-edits dialog."
+    },
+    "inboxEditDiscard": "Discard",
+    "@inboxEditDiscard": {
+        "description": "P1-3 (2026-05-27): destructive confirm button on the discard-edits dialog."
+    },
     "workspaceTabOverview": "Overview",
     "workspaceTabChat": "Chat",
     "workspaceTabDrafts": "Drafts",

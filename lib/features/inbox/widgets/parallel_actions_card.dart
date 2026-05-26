@@ -105,6 +105,13 @@ String _kCheckboxUnselected(BuildContext ctx) =>
 String _kCitationCount(BuildContext ctx, int count) =>
     AppLocalizations.of(ctx)?.parallelActionsCitationCount(count) ?? '$count cit';
 
+/// P1-5 (2026-05-27): "Retry failed (N)" snackbar action label for the
+/// partial-failure path. Falls back to English when locale resolution
+/// returns null (unit-test context).
+String _kRetryFailed(BuildContext ctx, int count) =>
+    AppLocalizations.of(ctx)?.parallelActionsRetryFailed(count) ??
+        'Retry failed ($count)';
+
 class ParallelActionsCard extends ConsumerStatefulWidget {
   const ParallelActionsCard({super.key, required this.thread});
 
@@ -138,20 +145,24 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
 
   Future<void> _onApprove() async {
     if (!_hasSelection || _busy) return;
-    final l = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    final notifier = ref.read(inboxProvider.notifier);
-
     final selectedIdxs = widget.thread.proposedActions
         .where((a) => _selected[a.idx] == true)
         .map((a) => a.idx)
         .toList(growable: false);
+    final confirmed = await _confirmSend(selectedIdxs.length);
+    if (!confirmed) return;
+    await _dispatch(selectedIdxs);
+  }
 
+  /// Pulled out so [_dispatch] can be reused by the partial-failure
+  /// "Retry failed (N)" snackbar action (P1-5, 2026-05-27).
+  Future<bool> _confirmSend(int count) async {
+    final l = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: Text(_kConfirmTitle(context, selectedIdxs.length)),
-            content: Text(_kConfirmBody(context, selectedIdxs.length)),
+            title: Text(_kConfirmTitle(context, count)),
+            content: Text(_kConfirmBody(context, count)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(ctx).pop(false),
@@ -165,13 +176,23 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
           ),
         ) ??
         false;
-    if (!confirmed) return;
+    return confirmed;
+  }
 
+  /// Dispatches the given action indexes via the inbox provider and
+  /// renders the success / partial-failure snackbar. Pulled out of
+  /// [_onApprove] so the retry snackbar action can call into it without
+  /// re-showing the confirm modal (the user has already confirmed once
+  /// for the original batch).
+  Future<void> _dispatch(List<int> idxes) async {
+    if (idxes.isEmpty) return;
+    final messenger = ScaffoldMessenger.of(context);
+    final notifier = ref.read(inboxProvider.notifier);
     setState(() => _busy = true);
     try {
       final result = await notifier.approveSelectedActions(
         widget.thread.triageId,
-        selectedIdxs,
+        idxes,
       );
       if (!mounted) return;
       // Haptic is best-effort — in widget tests the platform channel has no
@@ -187,13 +208,24 @@ class _ParallelActionsCardState extends ConsumerState<ParallelActionsCard> {
         );
         notifier.hideAfterAction(widget.thread.threadId);
       } else {
+        // P1-5 (2026-05-27): bump dwell time to 6s and add an explicit
+        // "Retry failed (N)" action that re-dispatches only the rows
+        // that did not go out. Without it the user was stranded with a
+        // disappearing toast and no obvious next step.
         messenger.showSnackBar(
           SnackBar(
             content: Text(
               _kPartialFailureToast(context, result.sent, result.failed),
             ),
             backgroundColor: AppColors.warning,
-            duration: const Duration(seconds: 4),
+            duration: const Duration(seconds: 6),
+            action: result.failedIdxes.isEmpty
+                ? null
+                : SnackBarAction(
+                    label: _kRetryFailed(context, result.failed),
+                    textColor: AppColors.textOnPrimary,
+                    onPressed: () => _dispatch(result.failedIdxes),
+                  ),
           ),
         );
       }

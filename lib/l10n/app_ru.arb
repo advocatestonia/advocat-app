@@ -1359,6 +1359,15 @@
     "@parallelActionsCitationCount": {
         "placeholders": { "count": { "type": "int" } }
     },
+    "parallelActionsRetryFailed": "Повторить неудачные ({count})",
+    "@parallelActionsRetryFailed": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "inboxErrorTitle": "Не удалось загрузить почтовый ящик",
+    "inboxEditDiscardTitle": "Отменить несохранённые правки?",
+    "inboxEditDiscardBody": "В этом черновике есть несохранённые изменения. Если вернуться назад, они будут потеряны.",
+    "inboxEditKeepEditing": "Продолжить редактирование",
+    "inboxEditDiscard": "Отменить",
     "workspaceTabOverview": "Обзор",
     "workspaceTabChat": "Чат",
     "workspaceTabDrafts": "Черновики",
