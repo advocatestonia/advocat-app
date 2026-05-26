@@ -3378,6 +3378,27 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String parallelActionsRetryFailed(int count) {
+    return 'Retry failed ($count)';
+  }
+
+  @override
+  String get inboxErrorTitle => 'Could not load inbox';
+
+  @override
+  String get inboxEditDiscardTitle => 'Discard unsaved edits?';
+
+  @override
+  String get inboxEditDiscardBody =>
+      'You have unsaved changes to this draft. Going back will discard them.';
+
+  @override
+  String get inboxEditKeepEditing => 'Keep editing';
+
+  @override
+  String get inboxEditDiscard => 'Discard';
+
+  @override
   String get workspaceTabOverview => 'Overview';
 
   @override

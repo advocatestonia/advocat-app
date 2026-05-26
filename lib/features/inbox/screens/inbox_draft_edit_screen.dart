@@ -332,8 +332,9 @@ class _InboxDraftEditScreenState extends ConsumerState<InboxDraftEditScreen> {
             ),
           );
         }
-        return WillPopScope(
-          onWillPop: _onWillPop,
+        return PopScope(
+          canPop: _canPop,
+          onPopInvokedWithResult: _onPopInvoked,
           child: _EditScaffold(
             payload: payload,
             controller: _controller,
@@ -408,11 +409,11 @@ class _EditScaffold extends StatelessWidget {
                     height: 1.5,
                     color: AppColors.textPrimary,
                   ),
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     isCollapsed: true,
-                    contentPadding: const EdgeInsets.all(AppSpacing.sm),
-                    counter: const SizedBox.shrink(),
+                    contentPadding: EdgeInsets.all(AppSpacing.sm),
+                    counter: SizedBox.shrink(),
                   ),
                 ),
               ),

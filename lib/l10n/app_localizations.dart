@@ -6086,6 +6086,42 @@ abstract class AppLocalizations {
   /// **'{count} cit'**
   String parallelActionsCitationCount(int count);
 
+  /// P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry failed ({count})'**
+  String parallelActionsRetryFailed(int count);
+
+  /// P1-6 (2026-05-27): title shown above the retry button when the inbox failed to load.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load inbox'**
+  String get inboxErrorTitle;
+
+  /// P1-3 (2026-05-27): WillPopScope dialog title when the user back-navigates with unsaved draft edits.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard unsaved edits?'**
+  String get inboxEditDiscardTitle;
+
+  /// P1-3 (2026-05-27): body of the discard-edits dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes to this draft. Going back will discard them.'**
+  String get inboxEditDiscardBody;
+
+  /// P1-3 (2026-05-27): keep-editing button on the discard-edits dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep editing'**
+  String get inboxEditKeepEditing;
+
+  /// P1-3 (2026-05-27): destructive confirm button on the discard-edits dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get inboxEditDiscard;
+
   /// No description provided for @workspaceTabOverview.
   ///
   /// In en, this message translates to:

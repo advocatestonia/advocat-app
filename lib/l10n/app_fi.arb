@@ -1359,6 +1359,15 @@
     "@parallelActionsCitationCount": {
         "placeholders": { "count": { "type": "int" } }
     },
+    "parallelActionsRetryFailed": "Yritä epäonnistuneita uudelleen ({count})",
+    "@parallelActionsRetryFailed": {
+        "placeholders": { "count": { "type": "int" } }
+    },
+    "inboxErrorTitle": "Postilaatikon lataaminen epäonnistui",
+    "inboxEditDiscardTitle": "Hylätäänkö tallentamattomat muutokset?",
+    "inboxEditDiscardBody": "Tässä luonnoksessa on tallentamattomia muutoksia. Takaisin meneminen hylkää ne.",
+    "inboxEditKeepEditing": "Jatka muokkausta",
+    "inboxEditDiscard": "Hylkää",
     "workspaceTabOverview": "Yleiskatsaus",
     "workspaceTabChat": "Keskustelu",
     "workspaceTabDrafts": "Luonnokset",

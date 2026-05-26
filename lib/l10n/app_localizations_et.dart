@@ -3342,6 +3342,27 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
+  String parallelActionsRetryFailed(int count) {
+    return 'Proovi ebaõnnestunuid uuesti ($count)';
+  }
+
+  @override
+  String get inboxErrorTitle => 'Postkasti ei õnnestunud laadida';
+
+  @override
+  String get inboxEditDiscardTitle => 'Kas tühistada salvestamata muudatused?';
+
+  @override
+  String get inboxEditDiscardBody =>
+      'Sellel mustandil on salvestamata muudatusi. Tagasi minnes need kaovad.';
+
+  @override
+  String get inboxEditKeepEditing => 'Jätka muutmist';
+
+  @override
+  String get inboxEditDiscard => 'Tühista';
+
+  @override
   String get workspaceTabOverview => 'Ülevaade';
 
   @override

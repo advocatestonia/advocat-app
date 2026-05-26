@@ -3346,6 +3346,27 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String parallelActionsRetryFailed(int count) {
+    return 'Yritä epäonnistuneita uudelleen ($count)';
+  }
+
+  @override
+  String get inboxErrorTitle => 'Postilaatikon lataaminen epäonnistui';
+
+  @override
+  String get inboxEditDiscardTitle => 'Hylätäänkö tallentamattomat muutokset?';
+
+  @override
+  String get inboxEditDiscardBody =>
+      'Tässä luonnoksessa on tallentamattomia muutoksia. Takaisin meneminen hylkää ne.';
+
+  @override
+  String get inboxEditKeepEditing => 'Jatka muokkausta';
+
+  @override
+  String get inboxEditDiscard => 'Hylkää';
+
+  @override
   String get workspaceTabOverview => 'Yleiskatsaus';
 
   @override

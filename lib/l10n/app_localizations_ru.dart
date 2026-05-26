@@ -3357,6 +3357,27 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
+  String parallelActionsRetryFailed(int count) {
+    return 'Повторить неудачные ($count)';
+  }
+
+  @override
+  String get inboxErrorTitle => 'Не удалось загрузить почтовый ящик';
+
+  @override
+  String get inboxEditDiscardTitle => 'Отменить несохранённые правки?';
+
+  @override
+  String get inboxEditDiscardBody =>
+      'В этом черновике есть несохранённые изменения. Если вернуться назад, они будут потеряны.';
+
+  @override
+  String get inboxEditKeepEditing => 'Продолжить редактирование';
+
+  @override
+  String get inboxEditDiscard => 'Отменить';
+
+  @override
   String get workspaceTabOverview => 'Обзор';
 
   @override

@@ -277,7 +277,7 @@ class _InboxLoadingSkeletonState extends State<_InboxLoadingSkeleton>
   @override
   Widget build(BuildContext context) {
     final anim = _opacity;
-    final tile = _SkeletonCard();
+    const tile = _SkeletonCard();
     return ListView(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
       children: [
@@ -313,9 +313,9 @@ class _SkeletonCard extends StatelessWidget {
         border: Border.all(color: AppColors.border),
       ),
       padding: const EdgeInsets.all(AppSpacing.md),
-      child: Column(
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           // Severity badge + subject row.
           Row(
             children: [
