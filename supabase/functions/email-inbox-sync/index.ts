@@ -86,6 +86,7 @@ async function handleCronTick(): Promise<Response> {
     .from("user_oauth_tokens")
     .select("user_id")
     .eq("provider", "gmail")
+    .not("refresh_token", "is", null)
     .limit(50);
   if (error) {
     return jsonError("Token table read failed", 500, {
