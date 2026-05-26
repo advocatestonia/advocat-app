@@ -165,6 +165,261 @@ async function loadRecentOwnerFeedback(
   }
 }
 
+// =============================================================================
+// Fix #2 (2026-05-26) — email_attachments → pdf-parser → triage context bridge
+// =============================================================================
+// Pipeline: D3 sync drops every inbound PDF / image attachment into
+// case-documents Storage and inserts an `email_attachments` row (Fix #1).
+// At triage time we:
+//   1. SELECT every email_attachments row for the thread (PDFs only — image
+//      OCR is handled by the chat upload path, not yet by triage).
+//   2. For any row with `parsed_text IS NULL`, call pdf-parser (or the
+//      injected `parsePdf` stub in tests) with the storage_path, then
+//      cache the result back to the row.
+//   3. Return `{ filename, mime, parsed_text, parsed_meta }[]` — the
+//      orchestrator pours these into the `<inbound_attachments>` block
+//      of the system prompt's `<context>` suffix, capped at 5 000 chars
+//      per attachment so one giant scan cannot blow the 80 KB context
+//      budget.
+//
+// Soft-fail contract: ANY error (DB outage, pdf-parser fault, row update
+// race) → return `[]` and log a console.warn. Identical to
+// `loadLawSearchReal` — triage must never block on an attachment-parse
+// outage.
+
+/** Shape returned per attachment. `parsed_text` is already capped at 5 000
+ *  chars; `parsed_meta` is whatever the parser surfaced (page_count,
+ *  doc_type, lang_detected — small JSON sidecar). */
+export interface InboundAttachment {
+  filename: string;
+  mime: string;
+  parsed_text: string;
+  parsed_meta: Record<string, unknown> | null;
+}
+
+/** Per-attachment cap on returned `parsed_text`. One scanned PDF can be
+ *  100 KB of OCR'd noise; we want a digest, not the full corpus.
+ *  Coordinates with INBOUND_ATTACHMENTS_BLOCK_BUDGET_BYTES — 4 attachments
+ *  × 5 000 chars stays comfortably inside the 20 KB block budget. */
+const INBOUND_ATTACHMENT_TEXT_CAP = 5_000;
+
+/** Callable used by `loadInboundAttachmentTexts` to convert a stored
+ *  PDF/image into text. Default impl calls the pdf-parser edge fn via
+ *  HTTP fetch (service-role bearer + `x-internal-call: email-triage`
+ *  header — mirrors the email-inbox-sync → email-triage pattern). Tests
+ *  inject a stub so the unit suite stays Deno-only. */
+export type ParsePdfFn = (args: {
+  storage_path: string;
+  mime: string;
+  filename: string;
+  user_id: string;
+}) => Promise<{
+  parsed_text: string;
+  parsed_meta: Record<string, unknown> | null;
+}>;
+
+interface EmailAttachmentRow {
+  id: string;
+  user_id: string;
+  filename: string;
+  mime: string;
+  storage_path: string;
+  parsed_text: string | null;
+  parsed_meta: Record<string, unknown> | null;
+}
+
+/** Load + (lazily) parse every PDF attachment on a thread. Returns the
+ *  per-attachment excerpt the orchestrator pours into the system prompt
+ *  `<inbound_attachments>` block.
+ *
+ *  Soft-fails to `[]` on any error — graceful degradation contract.
+ *
+ *  @param opts.parsePdf — test injection. Production callers leave
+ *    undefined to use the default pdf-parser HTTP impl.
+ */
+export async function loadInboundAttachmentTexts(
+  // deno-lint-ignore no-explicit-any
+  sb: any,
+  threadId: string,
+  opts: { parsePdf?: ParsePdfFn } = {},
+): Promise<InboundAttachment[]> {
+  if (!threadId) return [];
+
+  // 1. Read every PDF row for this thread. We do NOT filter on
+  //    `parsed_text IS NULL` in the query — we WANT already-parsed rows
+  //    surfaced so the triage prompt sees them too. The lazy-parse pass
+  //    below skips the rows that already have text.
+  let rows: EmailAttachmentRow[] = [];
+  try {
+    const { data, error } = await sb
+      .from("email_attachments")
+      .select(
+        "id, user_id, filename, mime, storage_path, parsed_text, parsed_meta",
+      )
+      .eq("thread_id", threadId)
+      .eq("mime", "application/pdf");
+    if (error) {
+      console.warn(
+        `email-triage: load email_attachments err: ${
+          String(error.message ?? error).slice(0, 200)
+        }`,
+      );
+      return [];
+    }
+    if (!Array.isArray(data)) return [];
+    rows = data as EmailAttachmentRow[];
+  } catch (e) {
+    console.warn(
+      `email-triage: load email_attachments threw: ${String(e).slice(0, 200)}`,
+    );
+    return [];
+  }
+
+  if (rows.length === 0) return [];
+
+  const parser: ParsePdfFn = opts.parsePdf ?? defaultParsePdf;
+  const out: InboundAttachment[] = [];
+
+  for (const row of rows) {
+    try {
+      // Hot path — text already cached. Use the stored copy verbatim, no
+      // pdf-parser round-trip. Cap-on-return so callers always see a
+      // bounded blob even if the cache was populated before the cap
+      // existed.
+      if (row.parsed_text && row.parsed_text.length > 0) {
+        out.push({
+          filename: row.filename,
+          mime: row.mime,
+          parsed_text: row.parsed_text.slice(0, INBOUND_ATTACHMENT_TEXT_CAP),
+          parsed_meta: row.parsed_meta ?? null,
+        });
+        continue;
+      }
+
+      // Cold path — call pdf-parser and cache the result.
+      const parsed = await parser({
+        storage_path: row.storage_path,
+        mime: row.mime,
+        filename: row.filename,
+        user_id: row.user_id,
+      });
+      if (!parsed || typeof parsed.parsed_text !== "string") {
+        // Parser returned no text — skip silently. Triage continues
+        // without this attachment in context.
+        continue;
+      }
+
+      // Cache write-back. Best-effort: a missed update only means the
+      // next triage run re-parses; never block the current run.
+      try {
+        await sb
+          .from("email_attachments")
+          .update({
+            parsed_text: parsed.parsed_text,
+            parsed_meta: parsed.parsed_meta ?? null,
+            parsed_at: new Date().toISOString(),
+          })
+          .eq("id", row.id);
+      } catch (e) {
+        console.warn(
+          `email-triage: email_attachments cache update failed (${row.id}): ${
+            String(e).slice(0, 200)
+          }`,
+        );
+      }
+
+      out.push({
+        filename: row.filename,
+        mime: row.mime,
+        parsed_text: parsed.parsed_text.slice(0, INBOUND_ATTACHMENT_TEXT_CAP),
+        parsed_meta: parsed.parsed_meta ?? null,
+      });
+    } catch (e) {
+      // Per directive: ANY error → return [], never throw. A single bad
+      // attachment poisons the whole batch — we'd rather triage on the
+      // thread text alone than half-parsed attachments. The console.warn
+      // surfaces the failure in the edge fn log stream.
+      console.warn(
+        `email-triage: inbound attachment parse failed (${row.id}): ${
+          String(e).slice(0, 200)
+        }`,
+      );
+      return [];
+    }
+  }
+
+  return out;
+}
+
+/** Production `ParsePdfFn` — calls the pdf-parser edge fn via HTTP.
+ *  Mirrors the email-inbox-sync → email-triage internal-call pattern
+ *  (service-role bearer + `x-internal-call` header). Returns whatever
+ *  text the parser surfaces; on any HTTP error throws so the
+ *  per-attachment try/catch above can swallow it. */
+async function defaultParsePdf(args: {
+  storage_path: string;
+  mime: string;
+  filename: string;
+  user_id: string;
+}): Promise<{
+  parsed_text: string;
+  parsed_meta: Record<string, unknown> | null;
+}> {
+  // deno-lint-ignore no-explicit-any
+  const envGet = (globalThis as any).Deno?.env?.get?.bind(
+    // deno-lint-ignore no-explicit-any
+    (globalThis as any).Deno.env,
+  );
+  const supabaseUrl = envGet?.("SUPABASE_URL");
+  const serviceKey = envGet?.("SUPABASE_SERVICE_ROLE_KEY");
+  if (!supabaseUrl || !serviceKey) {
+    throw new Error("SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY missing");
+  }
+  const url = `${String(supabaseUrl).replace(/\/$/, "")}/functions/v1/pdf-parser`;
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${serviceKey}`,
+      "Content-Type": "application/json",
+      "x-internal-call": "email-triage",
+    },
+    body: JSON.stringify({
+      storage_path: args.storage_path,
+      mime_type: args.mime,
+      filename: args.filename,
+      case_id: null,
+    }),
+  });
+  if (!resp.ok) {
+    throw new Error(`pdf-parser ${resp.status}`);
+  }
+  const json = await resp.json() as Record<string, unknown>;
+  if (json && typeof json.error === "string") {
+    // pdf-parser returns 200 + {error:...} for too_long / scan_too_long /
+    // unreadable. Treat as a parse miss — we don't want to pour an error
+    // message into the triage context.
+    throw new Error(`pdf-parser soft-error: ${json.error}`);
+  }
+  // The pdf-parser response carries `parsed_summary` (model digest) +
+  // `document_id` (FK into case_documents.parsed_text). For our context
+  // bridge we prefer the digest — it's compact and the orchestrator's
+  // budget is already tight. Full text is available via case_documents
+  // when the user clicks through to "view document".
+  const summary = typeof json.parsed_summary === "string"
+    ? json.parsed_summary
+    : "";
+  const meta: Record<string, unknown> = {};
+  if (typeof json.doc_type === "string") meta.doc_type = json.doc_type;
+  if (typeof json.page_count === "number") meta.page_count = json.page_count;
+  if (Array.isArray(json.lang_detected)) {
+    meta.lang_detected = json.lang_detected;
+  }
+  if (typeof json.document_id === "string") {
+    meta.document_id = json.document_id;
+  }
+  return { parsed_text: summary, parsed_meta: meta };
+}
+
 /**
  * Carry-over Task 2: invoke the existing `law-search` edge fn.
  *

@@ -18,16 +18,20 @@
 import {
   assert,
   assertEquals,
+  assertExists,
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
 import {
   type AnthropicCallArgs,
   type AnthropicResponse,
+  buildContextSuffix,
+  formatInboundAttachments,
   type MinimalTriageDeps,
   runTriage,
   type ThreadRecord,
   type TriageInsertRow,
 } from "../triage_logic.ts";
+import type { InboundAttachment } from "../wiring.ts";
 
 const FIXTURE_B = `<privilege_check>passed</privilege_check>
 <conflict_check>passed</conflict_check>
@@ -281,3 +285,185 @@ Deno.test("runTriage — wrong-user thread rejected", async () => {
   if (out.ok) return;
   assertEquals(out.error_code, "thread_user_mismatch");
 });
+
+// =============================================================================
+// Fix #2 (2026-05-26) — inbound_attachments block in system prompt
+// =============================================================================
+// When the deps wire `loadInboundAttachments` and it returns a non-empty
+// list, the rendered `<context>` suffix must include an
+// `<inbound_attachments>` block with the per-attachment text. The block
+// is what lets Sonnet reason about the PDF an inbound email actually
+// carried (käännytys decisions, court orders, Migri letters) instead of
+// guessing from the subject line alone.
+
+Deno.test(
+  "formatInboundAttachments — empty list emits no block",
+  () => {
+    assertEquals(formatInboundAttachments([]), "");
+  },
+);
+
+Deno.test(
+  "formatInboundAttachments — renders attachment text inside XML tags",
+  () => {
+    const block = formatInboundAttachments([
+      {
+        filename: "kaennytys.pdf",
+        mime: "application/pdf",
+        parsed_text: "Neuvostoliitto — käännytyspäätös",
+        parsed_meta: { page_count: 4 },
+      },
+    ]);
+    assert(block.startsWith("<inbound_attachments>"));
+    assert(block.endsWith("</inbound_attachments>"));
+    assert(block.includes(`filename="kaennytys.pdf"`));
+    assert(block.includes(`mime="application/pdf"`));
+    assert(block.includes("Neuvostoliitto — käännytyspäätös"));
+  },
+);
+
+Deno.test(
+  "formatInboundAttachments — >3 attachments truncates with overflow sentinel",
+  () => {
+    const make = (i: number): InboundAttachment => ({
+      filename: `doc-${i}.pdf`,
+      mime: "application/pdf",
+      parsed_text: `body-${i}`,
+      parsed_meta: null,
+    });
+    const block = formatInboundAttachments([1, 2, 3, 4, 5].map(make));
+    assert(block.includes("doc-1.pdf"));
+    assert(block.includes("doc-2.pdf"));
+    assert(block.includes("doc-3.pdf"));
+    assert(!block.includes("doc-4.pdf"));
+    assert(!block.includes("doc-5.pdf"));
+    assert(block.includes("[…overflow truncated]"));
+  },
+);
+
+Deno.test(
+  "buildContextSuffix — inbound_attachments appears AFTER <thread> section",
+  () => {
+    const suffix = buildContextSuffix({
+      currentDate: "2026-05-26",
+      userEmail: "owner@example.com",
+      userLang: "fi",
+      userPrefs: {
+        preferred_language: "fi",
+        signature: { fi: "Dmitri Sulga", en: "", et: "", ru: "" },
+      },
+      userLastTz: "Europe/Helsinki",
+      memoryBlock: {
+        identity_markers: {},
+        dead_addresses: [],
+        own_counsel_emails: [],
+        known_privileged_individuals: [],
+      },
+      activeCase: null,
+      lawCtx: [],
+      thread: {
+        id: "thread-1",
+        user_id: "user-1",
+        case_id: null,
+        subject: "Käännytyspäätös",
+        participants: ["migri@migri.fi"],
+        messages: [
+          {
+            id: "m-1",
+            gmail_message_id: "g-1",
+            sender_email: "migri@migri.fi",
+            sender_name: "Migri",
+            to_recipients: ["owner@example.com"],
+            cc_recipients: [],
+            subject: "Käännytys",
+            body_plaintext: "Liitteenä päätös.",
+            sent_at: "2026-05-26T08:00:00Z",
+            has_attachments: true,
+            attachments_meta: [{ filename: "kaennytys.pdf" }],
+            headers_meta: {},
+          },
+        ],
+      },
+      ownCounselFlag: false,
+      inboundAttachments: [
+        {
+          filename: "kaennytys.pdf",
+          mime: "application/pdf",
+          parsed_text: "MIGRI-DECISION-2026-05-26 Neuvostoliitto kansalaisuus",
+          parsed_meta: { page_count: 4, doc_type: "decision" },
+        },
+      ],
+    });
+
+    // Block is present + carries the attachment text.
+    assert(suffix.includes("<inbound_attachments>"));
+    assert(suffix.includes("</inbound_attachments>"));
+    assert(suffix.includes(`filename="kaennytys.pdf"`));
+    assert(suffix.includes("MIGRI-DECISION-2026-05-26"));
+
+    // Ordering — thread section appears BEFORE the inbound_attachments
+    // block (the spec puts attachments AFTER the thread so the model
+    // reads the message first, then the structured payload).
+    const threadIdx = suffix.indexOf("Email thread (oldest → newest):");
+    const attachIdx = suffix.indexOf("<inbound_attachments>");
+    assert(threadIdx >= 0);
+    assert(attachIdx >= 0);
+    assert(threadIdx < attachIdx);
+  },
+);
+
+Deno.test(
+  "runTriage — inbound_attachments surface in the rendered system prompt",
+  async () => {
+    // Capture the systemBlocks that runTriage hands to callSonnet so we
+    // can assert the attachment text actually made it into the prompt.
+    const captured: { systemPrompt: string | null } = { systemPrompt: null };
+    const baseDeps = makeFakeDeps({ responses: [FIXTURE_B] });
+    const deps: MinimalTriageDeps = {
+      ...baseDeps,
+      async loadInboundAttachments(_threadId: string) {
+        return [
+          {
+            filename: "kaennytys.pdf",
+            mime: "application/pdf",
+            parsed_text:
+              "MIGRI-FIX2-MARKER kansalaisuusyksikkö 26.5.2026 päätös",
+            parsed_meta: { page_count: 4 },
+          },
+        ];
+      },
+      async callSonnet(args: AnthropicCallArgs): Promise<AnthropicResponse> {
+        // Stitch the system blocks the same way Anthropic would consume
+        // them — a single concatenated prompt string for assertion.
+        captured.systemPrompt = args.systemBlocks.map((b) => b.text).join("\n");
+        return {
+          content: FIXTURE_B,
+          input_tokens: 1000,
+          output_tokens: 500,
+        };
+      },
+    };
+
+    const out = await runTriage(deps, {
+      thread_id: "thread-1",
+      user_id: "user-1",
+      auto_send_enabled: false,
+      gate_secret: "test-secret",
+    });
+    assert(out.ok);
+    if (!out.ok) return;
+    assertExists(captured.systemPrompt);
+    assert(
+      captured.systemPrompt!.includes("<inbound_attachments>"),
+      "system prompt must carry the <inbound_attachments> block",
+    );
+    assert(
+      captured.systemPrompt!.includes("MIGRI-FIX2-MARKER"),
+      "system prompt must carry the parsed attachment text",
+    );
+    assert(
+      captured.systemPrompt!.includes(`filename="kaennytys.pdf"`),
+      "system prompt must carry the attachment filename attribute",
+    );
+  },
+);

@@ -32,6 +32,8 @@ import {
 import {
   appendCaseEventReal,
   applyMemoryUpdatesReal,
+  type InboundAttachment,
+  loadInboundAttachmentTexts,
   loadLawSearchReal,
   loadMemoryBlockReal,
   maybeTransitionWaitToStrategyOnInbound,
@@ -1029,3 +1031,296 @@ Deno.test("Pkg5/CPS-T-EMAIL-15 — RPC reports noop, helper returns changed:fals
   assertExists(out);
   assertEquals(out!.changed, false);
 });
+
+// =============================================================================
+// Fix #2 (2026-05-26) — loadInboundAttachmentTexts
+// =============================================================================
+// Bridges email-triage → pdf-parser → context. The loader queries
+// `email_attachments` for the thread (Fix #1's storage), parses any
+// unparsed PDF via the injected `parsePdf` fn, caches results back to
+// the row, and returns the per-attachment text excerpts the orchestrator
+// pours into the <inbound_attachments> context block.
+//
+// On any error (DB read, pdf-parser fault, row update) the loader must
+// return `[]` and never throw — same graceful-degradation contract as
+// `loadLawSearchReal`.
+
+interface AttachmentRow {
+  id: string;
+  thread_id: string;
+  user_id: string;
+  filename: string;
+  mime: string;
+  storage_path: string;
+  parsed_text: string | null;
+  parsed_meta: Record<string, unknown> | null;
+}
+
+interface AttachmentFakeShape {
+  rows: AttachmentRow[];
+  selectThrow?: Error;
+  updateThrow?: Error;
+}
+
+interface AttachmentFakeCaptures {
+  updates: Array<{ id: string; row: Record<string, unknown> }>;
+}
+
+// deno-lint-ignore no-explicit-any
+function makeAttachmentFakeSb(
+  shape: AttachmentFakeShape,
+  captures: AttachmentFakeCaptures,
+): any {
+  return {
+    from(table: string) {
+      if (table !== "email_attachments") {
+        throw new Error(`unexpected table in attachment fake: ${table}`);
+      }
+      // deno-lint-ignore no-explicit-any
+      const filters: Array<{ kind: string; key: string; value: any }> = [];
+      let mode: "select" | "update" = "select";
+      let updateRow: Record<string, unknown> | null = null;
+
+      const builder = {
+        select(_cols: string) {
+          mode = "select";
+          return builder;
+        },
+        update(row: Record<string, unknown>) {
+          mode = "update";
+          updateRow = row;
+          return builder;
+        },
+        // deno-lint-ignore no-explicit-any
+        eq(key: string, value: any) {
+          filters.push({ kind: "eq", key, value });
+          return builder;
+        },
+        is(key: string, value: unknown) {
+          filters.push({ kind: "is", key, value });
+          return builder;
+        },
+        limit(_n: number) {
+          return builder;
+        },
+        // deno-lint-ignore no-explicit-any
+        then(onFulfilled: (v: any) => any, onRejected?: (e: unknown) => any) {
+          try {
+            return Promise.resolve(_exec()).then(onFulfilled, onRejected);
+          } catch (e) {
+            return Promise.reject(e).then(onFulfilled, onRejected);
+          }
+        },
+      };
+
+      function _exec(): { data: unknown; error: unknown } {
+        if (mode === "update") {
+          if (shape.updateThrow) throw shape.updateThrow;
+          const id = filters.find((f) => f.kind === "eq" && f.key === "id")?.value;
+          if (typeof id === "string") {
+            captures.updates.push({ id, row: updateRow! });
+            const r = shape.rows.find((r) => r.id === id);
+            if (r) {
+              if (typeof updateRow!.parsed_text === "string") {
+                r.parsed_text = updateRow!.parsed_text as string;
+              }
+              if (updateRow!.parsed_meta !== undefined) {
+                r.parsed_meta =
+                  updateRow!.parsed_meta as Record<string, unknown> | null;
+              }
+            }
+          }
+          return { data: null, error: null };
+        }
+        // select
+        if (shape.selectThrow) throw shape.selectThrow;
+        const matched = shape.rows.filter((row) =>
+          filters.every((f) => {
+            if (f.kind === "eq") {
+              return (row as unknown as Record<string, unknown>)[f.key] ===
+                f.value;
+            }
+            if (f.kind === "is") {
+              return (row as unknown as Record<string, unknown>)[f.key] ===
+                f.value;
+            }
+            return true;
+          })
+        );
+        return { data: matched, error: null };
+      }
+
+      return builder;
+    },
+  };
+}
+
+Deno.test(
+  "loadInboundAttachmentTexts — already-parsed PDF returns existing without re-parsing",
+  async () => {
+    const captures: AttachmentFakeCaptures = { updates: [] };
+    const sb = makeAttachmentFakeSb({
+      rows: [
+        {
+          id: "att-1",
+          thread_id: "thread-1",
+          user_id: "user-1",
+          filename: "kaennytys.pdf",
+          mime: "application/pdf",
+          storage_path: "user-1/email_attachments/att-1/kaennytys.pdf",
+          parsed_text: "Käännytyspäätös — Migri",
+          parsed_meta: { page_count: 4, doc_type: "decision" },
+        },
+      ],
+    }, captures);
+
+    let parseCalled = false;
+    const out = await loadInboundAttachmentTexts(sb, "thread-1", {
+      parsePdf: () => {
+        parseCalled = true;
+        return Promise.resolve({ parsed_text: "should-not-run", parsed_meta: {} });
+      },
+    });
+
+    assertEquals(parseCalled, false);
+    assertEquals(out.length, 1);
+    assertEquals(out[0].filename, "kaennytys.pdf");
+    assertEquals(out[0].mime, "application/pdf");
+    assertEquals(out[0].parsed_text, "Käännytyspäätös — Migri");
+    assertEquals(
+      (out[0].parsed_meta as Record<string, unknown>).page_count,
+      4,
+    );
+    assertEquals(captures.updates.length, 0);
+  },
+);
+
+Deno.test(
+  "loadInboundAttachmentTexts — unparsed PDF gets parsed + cached to DB",
+  async () => {
+    const captures: AttachmentFakeCaptures = { updates: [] };
+    const sb = makeAttachmentFakeSb({
+      rows: [
+        {
+          id: "att-2",
+          thread_id: "thread-1",
+          user_id: "user-1",
+          filename: "poliisi.pdf",
+          mime: "application/pdf",
+          storage_path: "user-1/email_attachments/att-2/poliisi.pdf",
+          parsed_text: null,
+          parsed_meta: null,
+        },
+      ],
+    }, captures);
+
+    type ParseArgs = {
+      storage_path: string;
+      mime: string;
+      filename: string;
+      user_id: string;
+    };
+    const parseArgsCapture: ParseArgs[] = [];
+    const out = await loadInboundAttachmentTexts(sb, "thread-1", {
+      parsePdf: (args: ParseArgs) => {
+        parseArgsCapture.push(args);
+        return Promise.resolve({
+          parsed_text: "Neuvostoliitto",
+          parsed_meta: { page_count: 1, doc_type: "other" },
+        });
+      },
+    });
+
+    assertEquals(out.length, 1);
+    assertEquals(out[0].filename, "poliisi.pdf");
+    assertEquals(out[0].parsed_text, "Neuvostoliitto");
+
+    // Verify the parsePdf injection saw the right storage_path + mime.
+    assertEquals(parseArgsCapture.length, 1);
+    const parseArgs = parseArgsCapture[0];
+    assertEquals(parseArgs.storage_path, "user-1/email_attachments/att-2/poliisi.pdf");
+    assertEquals(parseArgs.mime, "application/pdf");
+    assertEquals(parseArgs.user_id, "user-1");
+
+    // Cache write-back: one UPDATE on email_attachments with parsed_text +
+    // parsed_meta + parsed_at.
+    assertEquals(captures.updates.length, 1);
+    assertEquals(captures.updates[0].id, "att-2");
+    assertEquals(captures.updates[0].row.parsed_text, "Neuvostoliitto");
+    assertExists(captures.updates[0].row.parsed_at);
+    assertExists(captures.updates[0].row.parsed_meta);
+  },
+);
+
+Deno.test(
+  "loadInboundAttachmentTexts — parsePdf throws, loader returns [] (soft-fail)",
+  async () => {
+    const captures: AttachmentFakeCaptures = { updates: [] };
+    const sb = makeAttachmentFakeSb({
+      rows: [
+        {
+          id: "att-3",
+          thread_id: "thread-1",
+          user_id: "user-1",
+          filename: "scan.pdf",
+          mime: "application/pdf",
+          storage_path: "user-1/email_attachments/att-3/scan.pdf",
+          parsed_text: null,
+          parsed_meta: null,
+        },
+      ],
+    }, captures);
+
+    const out = await loadInboundAttachmentTexts(sb, "thread-1", {
+      parsePdf: () => Promise.reject(new Error("pdf-parser 502")),
+    });
+
+    // Per directive: ANY error → return [], never throw.
+    assertEquals(out, [] as InboundAttachment[]);
+    // No cache write happened (we never had a parsed_text to persist).
+    assertEquals(captures.updates.length, 0);
+  },
+);
+
+Deno.test(
+  "loadInboundAttachmentTexts — DB select throw soft-fails to []",
+  async () => {
+    const captures: AttachmentFakeCaptures = { updates: [] };
+    const sb = makeAttachmentFakeSb({
+      rows: [],
+      selectThrow: new Error("simulated DB outage"),
+    }, captures);
+
+    const out = await loadInboundAttachmentTexts(sb, "thread-1", {
+      parsePdf: () => Promise.resolve({ parsed_text: "x", parsed_meta: {} }),
+    });
+    assertEquals(out, [] as InboundAttachment[]);
+  },
+);
+
+Deno.test(
+  "loadInboundAttachmentTexts — parsed_text is capped to 5_000 chars",
+  async () => {
+    const captures: AttachmentFakeCaptures = { updates: [] };
+    const huge = "A".repeat(50_000);
+    const sb = makeAttachmentFakeSb({
+      rows: [
+        {
+          id: "att-4",
+          thread_id: "thread-1",
+          user_id: "user-1",
+          filename: "big.pdf",
+          mime: "application/pdf",
+          storage_path: "user-1/email_attachments/att-4/big.pdf",
+          parsed_text: huge,
+          parsed_meta: { page_count: 80 },
+        },
+      ],
+    }, captures);
+
+    const out = await loadInboundAttachmentTexts(sb, "thread-1");
+    assertEquals(out.length, 1);
+    // Returned text is capped, even though DB has the full blob.
+    assertEquals(out[0].parsed_text.length, 5_000);
+  },
+);

@@ -24,6 +24,7 @@ import {
   type Severity,
   computeSeverity,
 } from "./parse_blocks.ts";
+import type { InboundAttachment } from "./wiring.ts";
 import { runReviewerLocal, type ReviewerResult } from "./reviewer.ts";
 import { classifyPrivilege, type PrivilegePreClass } from "./privilege.ts";
 import {
@@ -186,6 +187,18 @@ export interface MinimalTriageDeps {
   loadMemoryBlock(userId: string): Promise<MemoryBlock>;
   loadUserPrefs(userId: string): Promise<UserPrefs>;
   loadLawSearch(query: string): Promise<unknown>;
+  /**
+   * Fix #2 (2026-05-26) — load parsed text for every PDF attachment on
+   * this thread. Returns `[]` when the thread has no attachments OR on
+   * any error (DB outage, pdf-parser fault). Triage continues without
+   * attachment context in either case — graceful degradation contract
+   * identical to `loadLawSearch`.
+   *
+   * Optional dep — when undefined (e.g. legacy callers / older fixtures)
+   * the orchestrator skips the attachment-load entirely. Production
+   * `index.ts` wires this via `loadInboundAttachmentTexts` in wiring.ts.
+   */
+  loadInboundAttachments?(threadId: string): Promise<InboundAttachment[]>;
   /** Returns whether the user may run a triage call. */
   checkQuota(userId: string): Promise<QuotaResult>;
   /** Calls Anthropic. Cache headers handled inside the impl. */
@@ -325,6 +338,18 @@ export type TriageOutcome =
 
 const CONTEXT_BUDGET_BYTES = 80_000;
 
+/** Fix #2 (2026-05-26) — total byte budget for the `<inbound_attachments>`
+ *  block. 20 KB ≈ 4 attachments × 5 000 chars. Beyond this we truncate to
+ *  the first 3 and append an overflow sentinel so the model knows it's
+ *  seeing a slice. Coordinates with `loadInboundAttachmentTexts`'
+ *  per-attachment cap (5 000 chars) — together they ensure no single
+ *  email thread can blow the 80 KB CONTEXT_BUDGET_BYTES ceiling via
+ *  scanned PDFs. */
+const INBOUND_ATTACHMENTS_BLOCK_BUDGET_BYTES = 20_000;
+
+/** Visible truncation marker when total attachments exceed budget. */
+const INBOUND_ATTACHMENTS_OVERFLOW_SENTINEL = "[…overflow truncated]";
+
 export function buildContextSuffix(args: {
   currentDate: string;
   userEmail: string;
@@ -336,6 +361,9 @@ export function buildContextSuffix(args: {
   lawCtx: unknown;
   thread: ThreadRecord;
   ownCounselFlag: boolean;
+  /** Fix #2 — text excerpts from `email_attachments` for this thread.
+   *  Already capped per-attachment by `loadInboundAttachmentTexts`. */
+  inboundAttachments?: InboundAttachment[];
 }): string {
   const lines: string[] = [];
   lines.push(`Today: ${args.currentDate}`);
@@ -356,7 +384,70 @@ export function buildContextSuffix(args: {
   lines.push(``);
   lines.push(`Email thread (oldest → newest):`);
   lines.push(formatThread(args.thread));
+  // Fix #2 — inbound_attachments block lands AFTER <thread> so the model
+  // reads the thread context first, then the structured attachment
+  // excerpts. Pure additive — when no attachments are surfaced, no block
+  // is emitted (zero overhead on the legacy path).
+  const attachmentsBlock = formatInboundAttachments(
+    args.inboundAttachments ?? [],
+  );
+  if (attachmentsBlock.length > 0) {
+    lines.push(``);
+    lines.push(attachmentsBlock);
+  }
   return lines.join("\n");
+}
+
+/** Render the `<inbound_attachments>` block. Caps total block size to
+ *  INBOUND_ATTACHMENTS_BLOCK_BUDGET_BYTES. On overflow → keep first 3
+ *  attachments only and append the overflow sentinel. Pure function. */
+export function formatInboundAttachments(
+  attachments: InboundAttachment[],
+): string {
+  if (attachments.length === 0) return "";
+
+  const enc = new TextEncoder();
+  let pool = attachments;
+  let truncated = false;
+  if (pool.length > 3) {
+    // First-line defence: keep the first three — the rest are appended
+    // as a single overflow sentinel below.
+    pool = pool.slice(0, 3);
+    truncated = true;
+  }
+
+  const renderOne = (a: InboundAttachment): string => {
+    const safeName = (a.filename ?? "").replace(/"/g, "'");
+    const safeMime = (a.mime ?? "application/octet-stream").replace(/"/g, "'");
+    return `<attachment filename="${safeName}" mime="${safeMime}">\n${
+      a.parsed_text ?? ""
+    }\n</attachment>`;
+  };
+
+  let body = pool.map(renderOne).join("\n");
+  let block = `<inbound_attachments>\n${body}${
+    truncated ? `\n${INBOUND_ATTACHMENTS_OVERFLOW_SENTINEL}` : ""
+  }\n</inbound_attachments>`;
+
+  // Byte-budget defence — even after dropping to first-3, a single 5KB
+  // attachment × 3 + wrappers can land around 15 KB. The 20 KB ceiling
+  // gives us room for 4-page legal scans; if we're STILL over (e.g.
+  // attachments were not pre-capped because the cache held stale large
+  // blobs), drop one attachment at a time until we fit and re-emit the
+  // overflow sentinel.
+  while (
+    enc.encode(block).length > INBOUND_ATTACHMENTS_BLOCK_BUDGET_BYTES &&
+    pool.length > 0
+  ) {
+    pool = pool.slice(0, pool.length - 1);
+    truncated = true;
+    body = pool.map(renderOne).join("\n");
+    block = `<inbound_attachments>\n${body}${
+      truncated ? `\n${INBOUND_ATTACHMENTS_OVERFLOW_SENTINEL}` : ""
+    }\n</inbound_attachments>`;
+  }
+
+  return block;
 }
 
 function formatThread(t: ThreadRecord): string {
@@ -473,12 +564,21 @@ export async function runTriage(
     return { ok: false, error_code: "quota_exhausted" };
   }
 
-  const [activeCase, memBlock, prefs, lawCtx] = await Promise.all([
-    deps.loadActiveCase(thread.case_id),
-    deps.loadMemoryBlock(args.user_id),
-    deps.loadUserPrefs(args.user_id),
-    deps.loadLawSearch(extractLegalKeywords(thread)),
-  ]);
+  const [activeCase, memBlock, prefs, lawCtx, inboundAttachments] =
+    await Promise.all([
+      deps.loadActiveCase(thread.case_id),
+      deps.loadMemoryBlock(args.user_id),
+      deps.loadUserPrefs(args.user_id),
+      deps.loadLawSearch(extractLegalKeywords(thread)),
+      // Fix #2 — bridge email_attachments → pdf-parser → triage context.
+      // Optional dep: when undefined (older fixtures / tests) the loader
+      // is skipped and the attachments block is omitted from the prompt.
+      deps.loadInboundAttachments
+        ? deps.loadInboundAttachments(args.thread_id).catch(() =>
+          [] as InboundAttachment[]
+        )
+        : Promise.resolve([] as InboundAttachment[]),
+    ]);
 
   // Latest inbound message — what we actually triage (per <definitions>).
   const inbound = pickLatestInbound(thread, prefs);
@@ -502,6 +602,7 @@ export async function runTriage(
     lawCtx,
     thread,
     ownCounselFlag: privClass.is_own_counsel,
+    inboundAttachments,
   });
 
   if (

@@ -41,6 +41,8 @@ import {
 import {
   appendCaseEventReal,
   applyMemoryUpdatesReal,
+  type InboundAttachment,
+  loadInboundAttachmentTexts,
   loadLawSearchReal,
   loadMemoryBlockReal,
   maybeTransitionWaitToStrategyOnInbound,
@@ -267,6 +269,15 @@ function makeProdDeps(
       // the network call defensively in case Supabase Functions are
       // unreachable).
       return await loadLawSearchReal(sb, query);
+    },
+
+    async loadInboundAttachments(
+      threadId: string,
+    ): Promise<InboundAttachment[]> {
+      // Fix #2 (2026-05-26) — bridge email_attachments → pdf-parser →
+      // triage context. Returns `[]` on any error so triage critical
+      // path is never blocked by a parser outage.
+      return await loadInboundAttachmentTexts(sb, threadId);
     },
 
     async checkQuota(userId: string): Promise<QuotaResult> {
