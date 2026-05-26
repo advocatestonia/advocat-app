@@ -49,6 +49,7 @@ import {
   findAnchorsByTrigger,
   type StatutoryAnchor,
 } from "../_shared/statutory_anchors.ts";
+import { recordSpend } from "../_shared/spend_tracker.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -600,6 +601,30 @@ async function callSonnet(userPayload: string): Promise<string | null> {
       return null;
     }
     const json = await res.json();
+    // Cost-audit gap 2026-05-27: record extractor spend. Note that
+    // DEADLINE_EXTRACTOR_MODEL is Sonnet (consilium 2026-05 — Haiku too
+    // junior for jurisdictional nuance), so we tag as anthropic_sonnet
+    // for accurate pricing. Best-effort.
+    try {
+      const u = (json && typeof json === "object" && json.usage &&
+        typeof json.usage === "object")
+        ? (json.usage as Record<string, unknown>)
+        : null;
+      if (u) {
+        const inputTokens = Number(u.input_tokens ?? 0) +
+          Number(u.cache_creation_input_tokens ?? 0) +
+          Number(u.cache_read_input_tokens ?? 0);
+        const outputTokens = Number(u.output_tokens ?? 0);
+        if (inputTokens > 0 || outputTokens > 0) {
+          recordSpend(
+            inputTokens,
+            outputTokens,
+            DEADLINE_EXTRACTOR_MODEL,
+            "anthropic_sonnet",
+          ).catch(() => {});
+        }
+      }
+    } catch (_e) { /* never bubble */ }
     const blocks = Array.isArray(json?.content) ? json.content : [];
     const textBlock = blocks.find((b: unknown) =>
       b && typeof b === "object" && (b as Record<string, unknown>).type === "text"

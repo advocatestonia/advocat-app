@@ -36,6 +36,7 @@ import {
   jsonOk,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { recordSpend } from "../_shared/spend_tracker.ts";
 import {
   buildParsedSummary,
   detectPageLang,
@@ -739,6 +740,12 @@ async function runVisionOcrOnPage(
     }
     const json = await res.json() as {
       content?: Array<{ type?: string; text?: string }>;
+      usage?: {
+        input_tokens?: number;
+        output_tokens?: number;
+        cache_creation_input_tokens?: number;
+        cache_read_input_tokens?: number;
+      };
     };
     if (!Array.isArray(json.content)) return "";
     let out = "";
@@ -747,6 +754,20 @@ async function runVisionOcrOnPage(
         out += block.text;
       }
     }
+    // Cost-audit gap 2026-05-27: Vision OCR (Haiku) spend was previously
+    // invisible. Record the call so anthropic_daily_spend reflects reality.
+    // Best-effort: never await blocking, never throw on failure.
+    try {
+      const u = json.usage ?? {};
+      const inputTokens = (u.input_tokens ?? 0) +
+        (u.cache_creation_input_tokens ?? 0) +
+        (u.cache_read_input_tokens ?? 0);
+      const outputTokens = u.output_tokens ?? 0;
+      if (inputTokens > 0 || outputTokens > 0) {
+        recordSpend(inputTokens, outputTokens, VISION_MODEL, "anthropic_haiku")
+          .catch(() => {});
+      }
+    } catch (_e) { /* never bubble */ }
     return out;
   } finally {
     clearTimeout(timeout);

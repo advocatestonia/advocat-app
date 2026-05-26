@@ -21,6 +21,7 @@
 // ----------------------------------------------------------------------------
 
 import { embedText } from "./corrections_retriever.ts";
+import { recordSpend } from "./spend_tracker.ts";
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL_HAIKU = "claude-haiku-4-5-20251001";
@@ -110,7 +111,29 @@ const defaultCaller: HaikuCaller = async (req) => {
     const err = await res.text();
     throw new Error(`Anthropic ${res.status}: ${err.slice(0, 200)}`);
   }
-  const json = await res.json() as { content?: Array<{ text?: string }> };
+  const json = await res.json() as {
+    content?: Array<{ text?: string }>;
+    usage?: {
+      input_tokens?: number;
+      output_tokens?: number;
+      cache_creation_input_tokens?: number;
+      cache_read_input_tokens?: number;
+    };
+  };
+  // Cost-audit gap 2026-05-27: record Haiku spend on the detector. Runs on
+  // every plausible-correction user turn — invisible spend before this fix.
+  // Best-effort.
+  try {
+    const u = json.usage ?? {};
+    const inputTokens = (u.input_tokens ?? 0) +
+      (u.cache_creation_input_tokens ?? 0) +
+      (u.cache_read_input_tokens ?? 0);
+    const outputTokens = u.output_tokens ?? 0;
+    if (inputTokens > 0 || outputTokens > 0) {
+      recordSpend(inputTokens, outputTokens, MODEL_HAIKU, "anthropic_haiku")
+        .catch(() => {});
+    }
+  } catch (_e) { /* never bubble */ }
   return json.content?.[0]?.text?.trim() ?? "";
 };
 

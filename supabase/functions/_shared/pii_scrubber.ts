@@ -18,6 +18,8 @@
 // R-/H- prefixed numbers) and Haiku is instructed to keep them.
 // ----------------------------------------------------------------------------
 
+import { recordSpend } from "./spend_tracker.ts";
+
 export interface ScrubResult {
   text: string;
   replacements: Record<string, number>;   // {"[NAME]": 2, "[PHONE]": 1}
@@ -134,7 +136,26 @@ export async function haikuScrub(opts: HaikuScrubOpts): Promise<string> {
     }
     const json = await res.json() as {
       content?: Array<{ type?: string; text?: string }>;
+      usage?: {
+        input_tokens?: number;
+        output_tokens?: number;
+        cache_creation_input_tokens?: number;
+        cache_read_input_tokens?: number;
+      };
     };
+    // Cost-audit gap 2026-05-27: record Haiku spend for the scrubber.
+    // Best-effort — never block scrub output, never throw on failure.
+    try {
+      const u = json.usage ?? {};
+      const inputTokens = (u.input_tokens ?? 0) +
+        (u.cache_creation_input_tokens ?? 0) +
+        (u.cache_read_input_tokens ?? 0);
+      const outputTokens = u.output_tokens ?? 0;
+      if (inputTokens > 0 || outputTokens > 0) {
+        recordSpend(inputTokens, outputTokens, HAIKU_MODEL, "anthropic_haiku")
+          .catch(() => {});
+      }
+    } catch (_e) { /* never bubble */ }
     const blocks = (json.content ?? [])
       .filter((b) => b.type === "text" && typeof b.text === "string")
       .map((b) => b.text as string);

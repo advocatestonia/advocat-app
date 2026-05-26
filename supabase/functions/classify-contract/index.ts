@@ -34,6 +34,7 @@ import {
   contractReviewDisabledResponse,
   flagOn,
 } from "../_shared/kill_switches.ts";
+import { recordSpend } from "../_shared/spend_tracker.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -192,7 +193,26 @@ function buildHaikuCaller(): HaikuCaller {
     }
     const json = await res.json() as {
       content?: Array<{ type: string; text?: string }>;
+      usage?: {
+        input_tokens?: number;
+        output_tokens?: number;
+        cache_creation_input_tokens?: number;
+        cache_read_input_tokens?: number;
+      };
     };
+    // Cost-audit gap 2026-05-27: record Haiku spend for the classifier.
+    // Best-effort — never block classify output, never throw.
+    try {
+      const u = json.usage ?? {};
+      const inputTokens = (u.input_tokens ?? 0) +
+        (u.cache_creation_input_tokens ?? 0) +
+        (u.cache_read_input_tokens ?? 0);
+      const outputTokens = u.output_tokens ?? 0;
+      if (inputTokens > 0 || outputTokens > 0) {
+        recordSpend(inputTokens, outputTokens, HAIKU_MODEL, "anthropic_haiku")
+          .catch(() => {});
+      }
+    } catch (_e) { /* never bubble */ }
     const text = (json.content ?? [])
       .filter((b) => b.type === "text" && typeof b.text === "string")
       .map((b) => b.text!)

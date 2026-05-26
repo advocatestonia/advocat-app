@@ -47,6 +47,7 @@ import {
   jsonOk,
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
+import { recordSpend } from "../_shared/spend_tracker.ts";
 import {
   ALLOWED_KEYS,
   buildHaikuRequest,
@@ -171,6 +172,28 @@ serve(async (req: Request) => {
   }
 
   const haikuJson = await haikuResponse.json().catch(() => null);
+
+  // Cost-audit gap 2026-05-27: record Haiku spend on extract-memory. The
+  // shape is the standard Anthropic usage block. Best-effort — never block
+  // the extract response, never throw.
+  try {
+    const u = (haikuJson && typeof haikuJson === "object" &&
+      (haikuJson as Record<string, unknown>).usage &&
+      typeof (haikuJson as Record<string, unknown>).usage === "object")
+      ? ((haikuJson as Record<string, unknown>).usage as Record<string, unknown>)
+      : null;
+    if (u) {
+      const inputTokens = Number(u.input_tokens ?? 0) +
+        Number(u.cache_creation_input_tokens ?? 0) +
+        Number(u.cache_read_input_tokens ?? 0);
+      const outputTokens = Number(u.output_tokens ?? 0);
+      if (inputTokens > 0 || outputTokens > 0) {
+        recordSpend(inputTokens, outputTokens, HAIKU_MODEL, "anthropic_haiku")
+          .catch(() => {});
+      }
+    }
+  } catch (_e) { /* never bubble */ }
+
   const facts = parseHaikuFacts(haikuJson).slice(0, MAX_FACTS_PER_SESSION);
 
   if (facts.length === 0) {

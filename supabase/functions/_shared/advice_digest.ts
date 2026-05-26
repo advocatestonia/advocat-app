@@ -2,6 +2,8 @@
 // Fire-and-forget write after each planner/consilium response.
 // Injected as <prior_advice> block in subsequent sessions.
 
+import { recordSpend } from "./spend_tracker.ts";
+
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const MODEL_HAIKU = "claude-haiku-4-5-20251001"; // Haiku OK here — just summarizing
 
@@ -39,7 +41,28 @@ export async function appendAdviceDigest(opts: {
     }),
   });
   if (!res.ok) return;
-  const json = await res.json() as { content?: Array<{ text?: string }> };
+  const json = await res.json() as {
+    content?: Array<{ text?: string }>;
+    usage?: {
+      input_tokens?: number;
+      output_tokens?: number;
+      cache_creation_input_tokens?: number;
+      cache_read_input_tokens?: number;
+    };
+  };
+  // Cost-audit gap 2026-05-27: record Haiku spend so the digest summarizer
+  // contributes to anthropic_daily_spend. Best-effort.
+  try {
+    const u = json.usage ?? {};
+    const inputTokens = (u.input_tokens ?? 0) +
+      (u.cache_creation_input_tokens ?? 0) +
+      (u.cache_read_input_tokens ?? 0);
+    const outputTokens = u.output_tokens ?? 0;
+    if (inputTokens > 0 || outputTokens > 0) {
+      recordSpend(inputTokens, outputTokens, MODEL_HAIKU, "anthropic_haiku")
+        .catch(() => {});
+    }
+  } catch (_e) { /* never bubble */ }
   const conclusion = json.content?.[0]?.text?.trim() ?? "";
   if (!conclusion || conclusion === "SKIP") return;
 

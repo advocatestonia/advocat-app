@@ -69,6 +69,7 @@ import {
   parseCasePhase,
 } from "../_shared/case_phase.ts";
 import { isValidCaseId } from "../claude-proxy/active_case_injection.ts";
+import { recordSpend } from "../_shared/spend_tracker.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -457,7 +458,15 @@ async function runHaiku(args: {
       return null;
     }
     const json = await res.json().catch(() => null) as
-      | { content?: Array<{ type?: string; text?: string }> }
+      | {
+          content?: Array<{ type?: string; text?: string }>;
+          usage?: {
+            input_tokens?: number;
+            output_tokens?: number;
+            cache_creation_input_tokens?: number;
+            cache_read_input_tokens?: number;
+          };
+        }
       | null;
     if (!json || !Array.isArray(json.content)) return null;
     // Concatenate text blocks. Haiku may chunk a long JSON across blocks.
@@ -467,6 +476,23 @@ async function runHaiku(args: {
         raw += block.text;
       }
     }
+    // Cost-audit gap 2026-05-27: record Haiku spend so anthropic_daily_spend
+    // sees the auto-patch traffic. Best-effort.
+    try {
+      const u = json.usage ?? {};
+      const inputTokens = (u.input_tokens ?? 0) +
+        (u.cache_creation_input_tokens ?? 0) +
+        (u.cache_read_input_tokens ?? 0);
+      const outputTokens = u.output_tokens ?? 0;
+      if (inputTokens > 0 || outputTokens > 0) {
+        recordSpend(
+          inputTokens,
+          outputTokens,
+          CASE_PATCH_HAIKU_MODEL,
+          "anthropic_haiku",
+        ).catch(() => {});
+      }
+    } catch (_e) { /* never bubble */ }
     return raw.length > 0 ? raw : null;
   } catch (e) {
     clearTimeout(timeout);
