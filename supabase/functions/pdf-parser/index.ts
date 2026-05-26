@@ -263,7 +263,7 @@ serve(async (req: Request) => {
   //       client banner asks user to attach later). ──────────────────────
   const docRow = await upsertDocumentRow({
     admin,
-    userId: gate.user.id,
+    userId: resolvedUserId,
     caseId: body.case_id,
     filename: body.filename,
     storagePath: body.storage_path,
@@ -295,7 +295,7 @@ serve(async (req: Request) => {
       const prof = await admin
         .from("profiles")
         .select("email")
-        .eq("id", gate.user.id)
+        .eq("id", resolvedUserId)
         .maybeSingle();
       const e = (prof.data as { email?: string } | null)?.email;
       if (typeof e === "string" && e.length > 0) userEmail = e;
@@ -304,7 +304,7 @@ serve(async (req: Request) => {
     }
     await recordPdfParserB2bSignals({
       admin,
-      userId: gate.user.id,
+      userId: resolvedUserId,
       userEmail,
       extracted,
     });

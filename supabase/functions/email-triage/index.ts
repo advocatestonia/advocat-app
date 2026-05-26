@@ -51,8 +51,14 @@ import {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
+// SECURITY (2026-05-27): plaintext fallback "dev-gate-secret" removed.
+// email-send already hard-fails 503 when EMAIL_AGENT_GATE_SECRET is unset
+// in prod; this fn now mirrors that posture so HMAC tokens cannot be
+// forged by anyone reading the repo. The optional CRON_SECRET reuse stays
+// because cron paths require a high-entropy shared secret, but no public
+// fallback ever ships.
 const GATE_SECRET = Deno.env.get("EMAIL_AGENT_GATE_SECRET") ??
-  Deno.env.get("CRON_SECRET") ?? "dev-gate-secret";
+  Deno.env.get("CRON_SECRET") ?? "";
 
 const QUOTA_TIERS: Record<string, number> = {
   free: 0,
@@ -79,10 +85,19 @@ serve(async (req) => {
     return jsonError("thread_id is required", 400);
   }
 
-  // Cron path
+  // Cron / internal-call path — SECURITY (2026-05-27): the x-internal-call
+  // header alone is NOT sufficient; the caller MUST also present the
+  // service-role bearer (matches the pattern in pdf-parser/index.ts:130).
+  // Otherwise any user with a valid Supabase JWT could forge
+  // `x-internal-call: email-inbox-sync` + body.user_id and run paid
+  // Sonnet triage on behalf of an arbitrary user.
   const cronHeader = req.headers.get("x-cron-secret");
-  const internalCall = req.headers.get("x-internal-call");
-  if (cronHeader || internalCall === "email-inbox-sync") {
+  const internalCallHeader = req.headers.get("x-internal-call");
+  const authHeaderRaw = req.headers.get("authorization") ??
+    req.headers.get("Authorization") ?? "";
+  const isInternalCall = internalCallHeader === "email-inbox-sync" &&
+    authHeaderRaw === `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
+  if (cronHeader || isInternalCall) {
     if (cronHeader) {
       const gate = checkCronSecret(cronHeader, Deno.env.get("CRON_SECRET"));
       if (gate.kind === "deny") {
@@ -92,6 +107,12 @@ serve(async (req) => {
     const userId = body.user_id;
     if (!userId) return jsonError("user_id required for cron", 400);
     return await dispatchTriage(body.thread_id!, userId);
+  }
+  // If the caller TRIED to use x-internal-call but didn't present the
+  // service-role bearer, fail loud — never fall through to the per-user
+  // JWT path (would let them forge `body.user_id`).
+  if (internalCallHeader) {
+    return jsonError("internal-call requires service-role bearer", 401);
   }
 
   // Per-user JWT path
