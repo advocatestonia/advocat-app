@@ -427,21 +427,51 @@ export function buildAnthropicHeaders(apiKey: string): Record<string, string> {
   };
 }
 
-/** Call Anthropic non-streaming and return the full text response. */
+/** Call Anthropic non-streaming and return the full text response.
+ *
+ * COST OPTIMISATION (2026-05-27) — when `cacheSystem` is true, the `system`
+ * block is sent as a content array with `cache_control: ephemeral` so the
+ * Anthropic prompt-cache covers all parallel lawyer roles that share the
+ * same base prompt + RAG context. Cost audit found this was the single
+ * biggest leak: 7 lawyers × 15 KB context = 105 KB re-billed per consilium
+ * run; with caching, only the first call inside the 5-min TTL window pays
+ * full price, the rest get the 90% discount on cache hits.
+ *
+ * Default is `cacheSystem=true` because every current caller benefits
+ * (consilium parallel fan-out is the dominant cost path). Callers passing
+ * a unique system prompt per-call should pass `cacheSystem=false` so we
+ * don't churn the cache.
+ */
 export async function callAnthropicBlocking(opts: {
   model: string;
   system: string;
   userMessage: string;
   maxTokens: number;
   apiKey: string;
+  cacheSystem?: boolean;
 }): Promise<string> {
+  const cacheSystem = opts.cacheSystem ?? true;
+  // Only worth caching when the system block is ≥ 1024 tokens (Anthropic
+  // requires a minimum prefix for cache eligibility). Use 4_000 chars as
+  // a conservative proxy for the 1024-token floor.
+  const eligibleForCache = cacheSystem && opts.system.length >= 4_000;
+
+  const systemPayload: string | Array<Record<string, unknown>> =
+    eligibleForCache
+      ? [{
+        type: "text",
+        text: opts.system,
+        cache_control: { type: "ephemeral" },
+      }]
+      : opts.system;
+
   const res = await fetch(ANTHROPIC_URL, {
     method: "POST",
     headers: buildAnthropicHeaders(opts.apiKey),
     body: JSON.stringify({
       model: opts.model,
       max_tokens: opts.maxTokens,
-      system: opts.system,
+      system: systemPayload,
       messages: [{ role: "user", content: opts.userMessage }],
     }),
   });
