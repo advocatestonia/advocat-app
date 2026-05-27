@@ -44,7 +44,8 @@ export interface SupabaseLike {
 
 export interface Deps {
   /** Supabase service-role client used to insert encrypted rows + invoke
-   *  the vault.encrypt_text / vault.decrypt_text RPCs. */
+   *  the public.vault_encrypt_text / public.vault_decrypt_text PostgREST
+   *  wrappers (which delegate to app_vault.encrypt_text/decrypt_text). */
   supabase: SupabaseLike;
   /** Caller's user id (post-JWT auth). */
   userId: string;

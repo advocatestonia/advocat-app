@@ -1,6 +1,12 @@
 -- =============================================================================
--- 20260527090000_vault_encryption.sql — Vault encryption-at-rest helpers.
+-- 20260527090000_vault_encryption.sql — app_vault encryption-at-rest helpers.
 -- =============================================================================
+-- NOTE on schema name: Supabase managed Postgres RESERVES the `vault` schema
+-- for its built-in secrets feature (vault.create_secret / vault.decrypted_secrets).
+-- Creating our own `vault` schema fails with "permission denied for schema vault".
+-- We use `app_vault` for our helpers and READ FROM `vault.decrypted_secrets`
+-- to fetch the master key (see app_vault.get_master_key() below).
+--
 -- Ordering note: timestamp sorts AFTER 20260527080200_drafts_vault_link.sql
 -- (the bridge migration that soft-adds vault_tags.is_system + seeds "Draft").
 -- However EVERY statement here is wrapped in IF EXISTS / IF NOT EXISTS /
@@ -14,18 +20,32 @@
 --   ... bridge replays cleanly once vault_tags exists.
 --
 -- =============================================================================
+-- OWNER SETUP (run ONCE per project, before first vault write)
+-- -----------------------------------------------------------------------------
+--   1. Generate a 32-byte key locally:
+--        openssl rand -base64 32
+--
+--   2. Store it in Supabase Vault (via dashboard Settings → Vault, OR SQL):
+--        SELECT vault.create_secret(
+--          '<base64-32-bytes-from-step-1>',
+--          'app_vault_master_key',
+--          'Advocat app_vault master key'
+--        );
+--
+--   3. Verify the helper can read it:
+--        SELECT app_vault.get_master_key();   -- should return the key, not error
+--
+-- Rotation: provision a new secret, re-wrap every row in user_encryption_keys
+-- against the new key, then update the secret. NOT in scope for this MR.
+-- =============================================================================
 -- ENCRYPTION MODEL
 -- -----------------------------------------------------------------------------
 -- Three-tier envelope encryption:
 --
---   1. MASTER KEY (server-side, never in DB)
---      Lives in `current_setting('app.vault_master_key', true)`. Set once per
---      cluster with:
---
---        ALTER DATABASE postgres SET app.vault_master_key = '<base64-32-bytes>';
---
---      Rotation: provision a new key, re-wrap every row in
---      user_encryption_keys, then flip the setting. NOT in scope for this MR.
+--   1. MASTER KEY (server-side, never in app DB)
+--      Lives in Supabase Vault (`vault.decrypted_secrets` view, name =
+--      'app_vault_master_key'). Read at runtime by the SECURITY DEFINER
+--      function app_vault.get_master_key().
 --
 --   2. USER KEY (per-user, stored encrypted)
 --      Random 32-byte key generated lazily on first encrypt. Stored in
@@ -39,15 +59,15 @@
 --      only encrypted PII at the documents level — file bytes themselves are
 --      not yet encrypted; that's bucket-level + RLS.
 --
--- Threat model: a read-only DB leak (pg_dump, replica snapshot) cannot
--- decrypt any user data without the master key, which lives only in
--- GUC settings. A full server compromise still loses everything — this
--- is encryption-at-rest, not end-to-end.
+-- Threat model: a read-only app DB leak (pg_dump, replica snapshot) cannot
+-- decrypt user data without ALSO compromising Supabase Vault's wrapping key
+-- (held by Supabase infra). A full project compromise still loses everything
+-- — this is encryption-at-rest, not end-to-end.
 -- =============================================================================
 
 -- ─── 0. Prereqs ─────────────────────────────────────────────────────────────
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
-CREATE SCHEMA IF NOT EXISTS vault;
+CREATE SCHEMA IF NOT EXISTS app_vault;
 
 -- ─── 1. documents — additive nullable columns ──────────────────────────────
 -- Old rows keep plain file_name/storage_path. New rows (via vault-upload
@@ -104,7 +124,7 @@ CREATE TABLE IF NOT EXISTS public.user_encryption_keys (
 COMMENT ON TABLE public.user_encryption_keys IS
   'Per-user data-encryption keys, wrapped with the cluster master key. '
   'Rows are never read by application code directly — only by the '
-  'SECURITY DEFINER helpers in the vault schema.';
+  'SECURITY DEFINER helpers in the app_vault schema.';
 
 ALTER TABLE public.user_encryption_keys ENABLE ROW LEVEL SECURITY;
 
@@ -118,7 +138,7 @@ CREATE POLICY user_encryption_keys_select_own
   USING (auth.uid() = user_id);
 
 -- No INSERT / UPDATE / DELETE policies for authenticated users — all writes
--- must go through vault.get_or_create_user_key() (SECURITY DEFINER).
+-- must go through app_vault.get_or_create_user_key() (SECURITY DEFINER).
 -- Service role bypasses RLS, so the edge fn can still operate.
 
 REVOKE INSERT, UPDATE, DELETE ON public.user_encryption_keys FROM authenticated;
@@ -126,37 +146,50 @@ REVOKE INSERT, UPDATE, DELETE ON public.user_encryption_keys FROM anon;
 
 -- ─── 3. Helpers ────────────────────────────────────────────────────────────
 
--- 3a. Resolve master key from GUC. Raises if not set.
-CREATE OR REPLACE FUNCTION vault.master_key()
+-- 3a. Resolve master key from Supabase Vault. Raises if not set.
+--     SECURITY DEFINER + search_path including `vault` lets us read
+--     vault.decrypted_secrets even though authenticated callers cannot.
+--     The function itself is never granted to anon/authenticated; only
+--     SECURITY DEFINER callers in app_vault use it.
+CREATE OR REPLACE FUNCTION app_vault.get_master_key()
 RETURNS TEXT
 LANGUAGE plpgsql
+SECURITY DEFINER
 STABLE
+SET search_path = vault, app_vault, extensions, pg_temp
 AS $$
 DECLARE
-  k TEXT;
+  v_key TEXT;
 BEGIN
-  k := current_setting('app.vault_master_key', true);
-  IF k IS NULL OR length(k) = 0 THEN
-    RAISE EXCEPTION 'vault: app.vault_master_key is not set. '
-                    'Run: ALTER DATABASE postgres SET app.vault_master_key = ''<base64-32-bytes>'';';
+  -- vault.decrypted_secrets is the Supabase Vault view that exposes
+  -- decrypted secret values to SECURITY DEFINER callers. The secret name
+  -- is fixed at 'app_vault_master_key' (set once via vault.create_secret).
+  SELECT decrypted_secret INTO v_key
+    FROM vault.decrypted_secrets
+   WHERE name = 'app_vault_master_key'
+   LIMIT 1;
+
+  IF v_key IS NULL OR length(v_key) = 0 THEN
+    RAISE EXCEPTION 'app_vault: master key not set. '
+                    'Run: SELECT vault.create_secret(''<base64-32-bytes>'', ''app_vault_master_key'', ''Advocat app_vault master key'');';
   END IF;
-  RETURN k;
+  RETURN v_key;
 END;
 $$;
 
 -- 3b. Get-or-create the user's wrapped DEK. Returns the key id.
-CREATE OR REPLACE FUNCTION vault.get_or_create_user_key(p_user_id UUID)
+CREATE OR REPLACE FUNCTION app_vault.get_or_create_user_key(p_user_id UUID)
 RETURNS UUID
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 AS $$
 DECLARE
   v_id   UUID;
   v_dek  BYTEA;
 BEGIN
   IF p_user_id IS NULL THEN
-    RAISE EXCEPTION 'vault.get_or_create_user_key: p_user_id required';
+    RAISE EXCEPTION 'app_vault.get_or_create_user_key: p_user_id required';
   END IF;
 
   SELECT id INTO v_id
@@ -175,7 +208,7 @@ BEGIN
   INSERT INTO public.user_encryption_keys (user_id, encrypted_key)
   VALUES (
     p_user_id,
-    pgp_sym_encrypt(encode(v_dek, 'base64'), vault.master_key())::bytea
+    pgp_sym_encrypt(encode(v_dek, 'base64'), app_vault.get_master_key())::bytea
   )
   ON CONFLICT (user_id) DO NOTHING
   RETURNING id INTO v_id;
@@ -192,11 +225,11 @@ END;
 $$;
 
 -- 3c. Unwrap the user's DEK. Internal helper — never grant to authenticated.
-CREATE OR REPLACE FUNCTION vault._unwrap_user_key(p_user_id UUID)
+CREATE OR REPLACE FUNCTION app_vault._unwrap_user_key(p_user_id UUID)
 RETURNS TEXT
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 AS $$
 DECLARE
   v_wrapped BYTEA;
@@ -205,21 +238,21 @@ BEGIN
     FROM public.user_encryption_keys
    WHERE user_id = p_user_id;
   IF v_wrapped IS NULL THEN
-    RAISE EXCEPTION 'vault: no encryption key for user %', p_user_id;
+    RAISE EXCEPTION 'app_vault: no encryption key for user %', p_user_id;
   END IF;
-  RETURN pgp_sym_decrypt(v_wrapped, vault.master_key());
+  RETURN pgp_sym_decrypt(v_wrapped, app_vault.get_master_key());
 END;
 $$;
 
 -- 3d. Public encrypt — owner-scoped.
-CREATE OR REPLACE FUNCTION vault.encrypt_text(
+CREATE OR REPLACE FUNCTION app_vault.encrypt_text(
   plaintext TEXT,
   p_user_id UUID
 )
 RETURNS TEXT
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 AS $$
 DECLARE
   v_key TEXT;
@@ -230,23 +263,23 @@ BEGIN
   -- Owner guard: callers (via JWT) may only encrypt under their own key.
   -- Service role (no auth.uid()) is allowed for edge-fn writes.
   IF auth.uid() IS NOT NULL AND auth.uid() <> p_user_id THEN
-    RAISE EXCEPTION 'vault.encrypt_text: cross-user encryption forbidden';
+    RAISE EXCEPTION 'app_vault.encrypt_text: cross-user encryption forbidden';
   END IF;
-  PERFORM vault.get_or_create_user_key(p_user_id);
-  v_key := vault._unwrap_user_key(p_user_id);
+  PERFORM app_vault.get_or_create_user_key(p_user_id);
+  v_key := app_vault._unwrap_user_key(p_user_id);
   RETURN pgp_sym_encrypt(plaintext, v_key);
 END;
 $$;
 
 -- 3e. Public decrypt — owner-scoped.
-CREATE OR REPLACE FUNCTION vault.decrypt_text(
+CREATE OR REPLACE FUNCTION app_vault.decrypt_text(
   ciphertext TEXT,
   p_user_id UUID
 )
 RETURNS TEXT
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 AS $$
 DECLARE
   v_key TEXT;
@@ -255,9 +288,9 @@ BEGIN
     RETURN NULL;
   END IF;
   IF auth.uid() IS NOT NULL AND auth.uid() <> p_user_id THEN
-    RAISE EXCEPTION 'vault.decrypt_text: cross-user decryption forbidden';
+    RAISE EXCEPTION 'app_vault.decrypt_text: cross-user decryption forbidden';
   END IF;
-  v_key := vault._unwrap_user_key(p_user_id);
+  v_key := app_vault._unwrap_user_key(p_user_id);
   RETURN pgp_sym_decrypt(ciphertext::bytea, v_key);
 EXCEPTION
   WHEN OTHERS THEN
@@ -270,7 +303,11 @@ $$;
 -- ─── 4. Public-schema wrappers (PostgREST-callable) ────────────────────────
 -- PostgREST only exposes `public` (and `graphql`) by default. Edge fns +
 -- the Flutter client can both call these wrappers; the wrappers delegate
--- to vault.* helpers which enforce owner-scope.
+-- to app_vault.* helpers which enforce owner-scope.
+--
+-- IMPORTANT: wrapper NAMES (vault_encrypt_text / vault_decrypt_text) are
+-- the external API contract — Flutter and the vault-upload edge fn already
+-- call client.rpc('vault_encrypt_text', ...). Do NOT rename.
 CREATE OR REPLACE FUNCTION public.vault_encrypt_text(
   p_plaintext TEXT,
   p_user_id   UUID
@@ -278,9 +315,9 @@ CREATE OR REPLACE FUNCTION public.vault_encrypt_text(
 RETURNS TEXT
 LANGUAGE sql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 AS $$
-  SELECT vault.encrypt_text(p_plaintext, p_user_id);
+  SELECT app_vault.encrypt_text(p_plaintext, p_user_id);
 $$;
 
 CREATE OR REPLACE FUNCTION public.vault_decrypt_text(
@@ -290,22 +327,22 @@ CREATE OR REPLACE FUNCTION public.vault_decrypt_text(
 RETURNS TEXT
 LANGUAGE sql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 AS $$
-  SELECT vault.decrypt_text(p_ciphertext, p_user_id);
+  SELECT app_vault.decrypt_text(p_ciphertext, p_user_id);
 $$;
 
 -- ─── 5. Grants ──────────────────────────────────────────────────────────────
-GRANT USAGE ON SCHEMA vault TO authenticated, service_role;
+GRANT USAGE ON SCHEMA app_vault TO authenticated, service_role;
 
 -- Authenticated users can call encrypt/decrypt (the fn itself enforces
 -- owner-scope via auth.uid() check). They MUST NOT see internal helpers.
-GRANT EXECUTE ON FUNCTION vault.encrypt_text(TEXT, UUID) TO authenticated, service_role;
-GRANT EXECUTE ON FUNCTION vault.decrypt_text(TEXT, UUID) TO authenticated, service_role;
-GRANT EXECUTE ON FUNCTION vault.get_or_create_user_key(UUID) TO service_role;
-REVOKE EXECUTE ON FUNCTION vault.get_or_create_user_key(UUID) FROM authenticated, anon, public;
-REVOKE EXECUTE ON FUNCTION vault._unwrap_user_key(UUID) FROM authenticated, anon, public;
-REVOKE EXECUTE ON FUNCTION vault.master_key() FROM authenticated, anon, public;
+GRANT EXECUTE ON FUNCTION app_vault.encrypt_text(TEXT, UUID) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app_vault.decrypt_text(TEXT, UUID) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app_vault.get_or_create_user_key(UUID) TO service_role;
+REVOKE EXECUTE ON FUNCTION app_vault.get_or_create_user_key(UUID) FROM authenticated, anon, public;
+REVOKE EXECUTE ON FUNCTION app_vault._unwrap_user_key(UUID) FROM authenticated, anon, public;
+REVOKE EXECUTE ON FUNCTION app_vault.get_master_key() FROM authenticated, anon, public;
 
 GRANT EXECUTE ON FUNCTION public.vault_encrypt_text(TEXT, UUID) TO authenticated, service_role;
 GRANT EXECUTE ON FUNCTION public.vault_decrypt_text(TEXT, UUID) TO authenticated, service_role;

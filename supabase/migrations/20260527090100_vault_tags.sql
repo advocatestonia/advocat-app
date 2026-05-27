@@ -13,7 +13,7 @@
 --   3. Defines vault_search_documents(query) — owner-scoped, decrypts
 --      file_name server-side, joins primary tag. Returns the shape the UI
 --      already calls (note: PUBLIC schema, underscore-named — PostgREST
---      does not expose vault.* RPCs to anon/auth clients).
+--      does not expose app_vault.* RPCs to anon/auth clients).
 --
 -- Idempotent throughout. Safe to replay before or after the bridge.
 -- =============================================================================
@@ -175,7 +175,7 @@ RETURNS TABLE (
 )
 LANGUAGE plpgsql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 STABLE
 AS $$
 DECLARE
@@ -196,11 +196,11 @@ BEGIN
       -- Decrypt at read time if encrypted; else fall back to plain. UI is
       -- tolerant of either via vault_document.dart.
       COALESCE(
-        vault.decrypt_text(d.encrypted_file_name, d.user_id),
+        app_vault.decrypt_text(d.encrypted_file_name, d.user_id),
         d.file_name
       ) AS file_name_plain,
       COALESCE(
-        vault.decrypt_text(d.encrypted_storage_path, d.user_id),
+        app_vault.decrypt_text(d.encrypted_storage_path, d.user_id),
         d.storage_path
       ) AS storage_path_plain,
       d.mime_type,
@@ -256,7 +256,8 @@ COMMENT ON FUNCTION public.vault_search_documents(TEXT) IS
 
 -- 6.1 Schema-qualified alias for direct DB callers (e.g. psql, BI tools).
 --     PostgREST clients should keep using public.vault_search_documents.
-CREATE OR REPLACE FUNCTION vault.search_documents(query TEXT)
+--     Lives in app_vault (not `vault`, which is reserved for Supabase secrets).
+CREATE OR REPLACE FUNCTION app_vault.search_documents(query TEXT)
 RETURNS TABLE (
   id              UUID,
   file_name       TEXT,
@@ -272,10 +273,10 @@ RETURNS TABLE (
 )
 LANGUAGE sql
 SECURITY DEFINER
-SET search_path = public, vault, pg_temp
+SET search_path = public, app_vault, extensions, pg_temp
 STABLE
 AS $$
   SELECT * FROM public.vault_search_documents(query);
 $$;
 
-GRANT EXECUTE ON FUNCTION vault.search_documents(TEXT) TO authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app_vault.search_documents(TEXT) TO authenticated, service_role;

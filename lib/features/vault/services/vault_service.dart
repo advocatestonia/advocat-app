@@ -6,8 +6,10 @@
 //   * `documents` table — owner-scoped via RLS, holds storage_path metadata.
 //   * `vault_tags` table — id, slug, label, owner_id (nullable for defaults).
 //   * `vault_document_tags` table — (document_id, tag_id) join.
-//   * `vault.search_documents(query)` RPC — owner-scoped full-text search,
-//     returns the same row shape as `documents` plus joined tag columns.
+//   * `public.vault_search_documents(query)` RPC — owner-scoped full-text
+//     search, returns the same row shape as `documents` plus joined tag
+//     columns. (Internal helpers live in the `app_vault` schema; the
+//     `vault` schema name itself is reserved by Supabase.)
 //   * `vault-upload` edge fn — handles client-side encryption hand-off (not
 //     wired here yet — uploads still go through SupabaseService directly).
 //

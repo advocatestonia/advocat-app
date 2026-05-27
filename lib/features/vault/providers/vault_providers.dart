@@ -17,7 +17,7 @@ final vaultTagFilterProvider = StateProvider<String?>((_) => null);
 final vaultSearchQueryProvider = StateProvider<String>((_) => '');
 
 /// Documents shown in the list, combining tag filter + search query.
-/// Backend agents own the actual filtering once `vault.search_documents`
+/// Backend agents own the actual filtering once `public.vault_search_documents`
 /// exists; until then the service performs client-side fallbacks.
 final vaultDocumentsListProvider =
     FutureProvider.autoDispose<List<VaultDocument>>((ref) async {
