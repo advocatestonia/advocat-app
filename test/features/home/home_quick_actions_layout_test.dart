@@ -74,21 +74,25 @@ void main() {
     test('row2#3 is the shield-pulsing AI Assistant tile (moved from row1#2)',
         () {
       // The single _ShieldPulsingButton invocation must point at /chat/general
-      // and sit between email and callAI tiles.
+      // and sit between email and the Drafts tile (formerly callAI placeholder).
+      // 2026-05-27: the "callAI / coming soon" tile was replaced with a real
+      // Drafts entry (Pkg 7 Drafting Studio); the shield tile's neighbour to
+      // the right is now `l.draftsTab`, not `l.callAI`.
       final pulsingIdx = source.indexOf('_ShieldPulsingButton(');
       expect(pulsingIdx, greaterThan(0),
           reason: 'Shield-pulsing AI tile must still exist');
 
-      // It must come after the email tile and before the callAI tile.
+      // It must come after the email tile and before the Drafts tile.
       final emailIdx = source.indexOf('label: l.email');
-      final callAIIdx = source.indexOf('label: l.callAI');
+      final draftsIdx = source.indexOf('label: l.draftsTab');
       expect(emailIdx, greaterThan(0));
-      expect(callAIIdx, greaterThan(emailIdx));
+      expect(draftsIdx, greaterThan(emailIdx),
+          reason: 'Drafts tile must exist and come after email');
       expect(pulsingIdx, greaterThan(emailIdx),
           reason: 'Shield-pulsing AI tile must come after email tile');
-      expect(pulsingIdx, lessThan(callAIIdx),
+      expect(pulsingIdx, lessThan(draftsIdx),
           reason:
-              'Shield-pulsing AI tile must come before callAI tile (row2#3)');
+              'Shield-pulsing AI tile must come before Drafts tile (row2#3)');
 
       // It must still route to /chat/general and use aiAssistant label.
       final pulsingEnd = source.indexOf('),', pulsingIdx);
@@ -98,6 +102,32 @@ void main() {
               'Shield-pulsing AI tile must keep its /chat/general route');
       expect(pulsingBlock, contains('l.aiAssistant'),
           reason: 'Shield-pulsing AI tile must keep aiAssistant label');
+    });
+
+    test('Drafts tile replaces former callAI/coming-soon placeholder', () {
+      // 2026-05-27: the "Coming soon" tile (formerly using Icons.phone_in_talk
+      // and snackbar-only behaviour) was replaced with a real Drafts entry
+      // that routes to AppRoutes.drafts. Vault remains its own tile earlier
+      // in the grid (lock icon → AppRoutes.vault).
+      final draftsLabelIdx = source.indexOf('label: l.draftsTab');
+      expect(draftsLabelIdx, greaterThan(0),
+          reason: 'Drafts tile (l.draftsTab) must exist in _QuickActions');
+
+      // The tile must navigate to AppRoutes.drafts.
+      final tileStart =
+          source.lastIndexOf('_QuickActionButton(', draftsLabelIdx);
+      expect(tileStart, greaterThan(0),
+          reason: 'Drafts tile constructor not found');
+      // Closing paren of constructor.
+      final tileEnd = source.indexOf('),', draftsLabelIdx);
+      final block = source.substring(tileStart, tileEnd + 2);
+      expect(block, contains('AppRoutes.drafts'),
+          reason: 'Drafts tile must navigate to AppRoutes.drafts');
+
+      // Vault tile still exists (lock icon → AppRoutes.vault) — both Drafts
+      // and Vault are reachable in ≤2 taps from Home.
+      expect(source, contains('AppRoutes.vault'),
+          reason: 'Vault tile must remain wired to AppRoutes.vault');
     });
 
     test('shield-pulsing tile uses shield_pro.png artwork', () {

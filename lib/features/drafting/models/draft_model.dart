@@ -7,13 +7,23 @@
 import 'package:flutter/foundation.dart' show immutable;
 
 /// Where a draft came from. Mirrors the CHECK constraint in
-/// `migration 20260514130000_drafting_studio.sql`.
+/// `migration 20260514130000_drafting_studio.sql` (extended 2026-05-27 by
+/// `20260527080200_drafts_vault_link.sql` to add `vault_note` and
+/// `vault_import` for the Drafting × Vault integration).
 enum DraftSourceType {
   blank,
   contractReviewReply,
   letter,
   appeal,
-  memo;
+  memo,
+  // ─── Drafting × Vault bridge ───
+  /// Created from the Vault "Create Note" CTA. On first save we also call
+  /// `DraftService.saveToVault` so the note lives in the encrypted vault.
+  vaultNote,
+  /// Created from "Edit in Studio" on an existing Vault doc — the body was
+  /// imported from a `.md` / `.txt` Vault file. The Vault copy is tracked via
+  /// the draft's `vault_copy_id` so subsequent saves overwrite the same row.
+  vaultImport;
 
   /// Postgres wire value (snake_case).
   String get wire {
@@ -28,6 +38,10 @@ enum DraftSourceType {
         return 'appeal';
       case DraftSourceType.memo:
         return 'memo';
+      case DraftSourceType.vaultNote:
+        return 'vault_note';
+      case DraftSourceType.vaultImport:
+        return 'vault_import';
     }
   }
 
@@ -41,6 +55,10 @@ enum DraftSourceType {
         return DraftSourceType.appeal;
       case 'memo':
         return DraftSourceType.memo;
+      case 'vault_note':
+        return DraftSourceType.vaultNote;
+      case 'vault_import':
+        return DraftSourceType.vaultImport;
       case 'blank':
       default:
         return DraftSourceType.blank;
@@ -101,6 +119,7 @@ class Draft {
     required this.createdAt,
     required this.updatedAt,
     this.metadata = const <String, dynamic>{},
+    this.vaultCopyId,
   });
 
   final String id;
@@ -117,6 +136,10 @@ class Draft {
   final DateTime createdAt;
   final DateTime updatedAt;
   final Map<String, dynamic> metadata;
+
+  /// Link to the Vault document created by `DraftService.saveToVault`.
+  /// NULL when the draft has never been filed to the Vault.
+  final String? vaultCopyId;
 
   /// True iff the draft has no body text. Drives the "Empty state" CTA on
   /// the editor screen.
@@ -145,6 +168,7 @@ class Draft {
     DateTime? createdAt,
     DateTime? updatedAt,
     Map<String, dynamic>? metadata,
+    String? vaultCopyId,
   }) {
     return Draft(
       id: id ?? this.id,
@@ -161,6 +185,7 @@ class Draft {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       metadata: metadata ?? this.metadata,
+      vaultCopyId: vaultCopyId ?? this.vaultCopyId,
     );
   }
 
@@ -179,6 +204,7 @@ class Draft {
         'created_at': createdAt.toUtc().toIso8601String(),
         'updated_at': updatedAt.toUtc().toIso8601String(),
         'metadata': metadata,
+        if (vaultCopyId != null) 'vault_copy_id': vaultCopyId,
       };
 
   factory Draft.fromJson(Map<String, dynamic> json) {
@@ -199,6 +225,7 @@ class Draft {
       metadata:
           ((json['metadata'] as Map?)?.cast<String, dynamic>()) ??
               const <String, dynamic>{},
+      vaultCopyId: json['vault_copy_id'] as String?,
     );
   }
 }
@@ -227,6 +254,51 @@ String markdownToPlaintext(String md) {
     (m) => m.group(1) ?? '',
   );
   return out.trim();
+}
+
+/// A historical snapshot of a draft's `content_markdown`. Stored in
+/// `draft_versions` and capped to 10 rows per draft by an after-insert trigger.
+@immutable
+class DraftVersion {
+  const DraftVersion({
+    required this.id,
+    required this.draftId,
+    required this.contentSnapshot,
+    required this.isAiRevision,
+    required this.createdAt,
+    this.metadata = const <String, dynamic>{},
+  });
+
+  final String id;
+  final String draftId;
+  final String contentSnapshot;
+  final bool isAiRevision;
+  final DateTime createdAt;
+  final Map<String, dynamic> metadata;
+
+  /// Cheap preview snippet used by the version-history list. Returns at
+  /// most [maxChars] of the plaintext-stripped snapshot, single-spaced.
+  String previewSnippet({int maxChars = 100}) {
+    final plain = markdownToPlaintext(contentSnapshot)
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
+    if (plain.isEmpty) return '';
+    if (plain.length <= maxChars) return plain;
+    return '${plain.substring(0, maxChars)}…';
+  }
+
+  factory DraftVersion.fromJson(Map<String, dynamic> json) {
+    return DraftVersion(
+      id: json['id'] as String,
+      draftId: json['draft_id'] as String,
+      contentSnapshot: (json['content_snapshot'] as String?) ?? '',
+      isAiRevision: (json['ai_revision'] as bool?) ?? false,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      metadata:
+          ((json['metadata'] as Map?)?.cast<String, dynamic>()) ??
+              const <String, dynamic>{},
+    );
+  }
 }
 
 /// Result of an AI revision call. Plain data so the dialog can render

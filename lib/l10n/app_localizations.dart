@@ -7285,6 +7285,300 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rename'**
   String get softCaseShellBannerCta;
+
+  /// Home quick-action tile label that opens the Drafts list (Pkg 7 Drafting Studio). Short noun, 1-2 words.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafts'**
+  String get draftsTab;
+
+  /// No description provided for @draftingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drafting Studio'**
+  String get draftingTitle;
+
+  /// No description provided for @draftingEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Empty draft'**
+  String get draftingEmpty;
+
+  /// No description provided for @draftingPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Start typing your draft…'**
+  String get draftingPlaceholder;
+
+  /// No description provided for @draftingDraftsList.
+  ///
+  /// In en, this message translates to:
+  /// **'My drafts'**
+  String get draftingDraftsList;
+
+  /// No description provided for @draftingSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get draftingSave;
+
+  /// No description provided for @draftingSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved'**
+  String get draftingSaved;
+
+  /// No description provided for @draftingSavedJustNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved just now'**
+  String get draftingSavedJustNow;
+
+  /// No description provided for @draftingAiRevise.
+  ///
+  /// In en, this message translates to:
+  /// **'Revise with AI'**
+  String get draftingAiRevise;
+
+  /// No description provided for @draftingExportPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Export PDF'**
+  String get draftingExportPdf;
+
+  /// No description provided for @draftingExportDocx.
+  ///
+  /// In en, this message translates to:
+  /// **'Export DOCX'**
+  String get draftingExportDocx;
+
+  /// No description provided for @draftingExportMd.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Markdown'**
+  String get draftingExportMd;
+
+  /// No description provided for @draftingDeleteDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete draft'**
+  String get draftingDeleteDraft;
+
+  /// No description provided for @draftingConfirmDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this draft?'**
+  String get draftingConfirmDelete;
+
+  /// No description provided for @draftingConfirmDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone.'**
+  String get draftingConfirmDeleteMessage;
+
+  /// No description provided for @draftingConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get draftingConfirm;
+
+  /// No description provided for @draftingCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get draftingCancel;
+
+  /// No description provided for @draftingDraftReplyTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reply to {name}'**
+  String draftingDraftReplyTo(String name);
+
+  /// No description provided for @draftingUntitled.
+  ///
+  /// In en, this message translates to:
+  /// **'Untitled'**
+  String get draftingUntitled;
+
+  /// No description provided for @draftingTitleHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Title (optional)'**
+  String get draftingTitleHint;
+
+  /// No description provided for @draftingAiReviseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Revise with AI'**
+  String get draftingAiReviseTitle;
+
+  /// No description provided for @draftingAiReviseSelectionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected text:'**
+  String get draftingAiReviseSelectionLabel;
+
+  /// No description provided for @draftingAiReviseInstructionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Instruction (optional)'**
+  String get draftingAiReviseInstructionLabel;
+
+  /// No description provided for @draftingAiReviseInstructionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. \"make it more formal\" or \"shorten\"'**
+  String get draftingAiReviseInstructionHint;
+
+  /// No description provided for @draftingAiReviseRunButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate revision'**
+  String get draftingAiReviseRunButton;
+
+  /// No description provided for @draftingAiReviseSuggestionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested revision:'**
+  String get draftingAiReviseSuggestionLabel;
+
+  /// No description provided for @draftingAiReviseChangesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes:'**
+  String get draftingAiReviseChangesLabel;
+
+  /// No description provided for @draftingAiReviseAccept.
+  ///
+  /// In en, this message translates to:
+  /// **'Accept'**
+  String get draftingAiReviseAccept;
+
+  /// No description provided for @draftingAiReviseReject.
+  ///
+  /// In en, this message translates to:
+  /// **'Reject'**
+  String get draftingAiReviseReject;
+
+  /// No description provided for @draftingFormatBold.
+  ///
+  /// In en, this message translates to:
+  /// **'Bold'**
+  String get draftingFormatBold;
+
+  /// No description provided for @draftingFormatItalic.
+  ///
+  /// In en, this message translates to:
+  /// **'Italic'**
+  String get draftingFormatItalic;
+
+  /// No description provided for @draftingFormatHeading.
+  ///
+  /// In en, this message translates to:
+  /// **'Heading'**
+  String get draftingFormatHeading;
+
+  /// No description provided for @draftingFormatBullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Bullet list'**
+  String get draftingFormatBullet;
+
+  /// No description provided for @draftingFormatNumbered.
+  ///
+  /// In en, this message translates to:
+  /// **'Numbered list'**
+  String get draftingFormatNumbered;
+
+  /// No description provided for @draftingEmptyListMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have no drafts yet.'**
+  String get draftingEmptyListMessage;
+
+  /// No description provided for @draftingEmptyListAction.
+  ///
+  /// In en, this message translates to:
+  /// **'New draft'**
+  String get draftingEmptyListAction;
+
+  /// No description provided for @draftingExporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Exporting…'**
+  String get draftingExporting;
+
+  /// No description provided for @draftingExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed'**
+  String get draftingExportFailed;
+
+  /// No description provided for @draftingSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save failed'**
+  String get draftingSaveFailed;
+
+  /// No description provided for @draftingNewDraft.
+  ///
+  /// In en, this message translates to:
+  /// **'New draft'**
+  String get draftingNewDraft;
+
+  /// Pkg 7 Track 1A — small chip in the drafting toolbar that signals the next save will round-trip into the encrypted Vault.
+  ///
+  /// In en, this message translates to:
+  /// **'Vault note'**
+  String get vaultNoteChip;
+
+  /// No description provided for @saveToVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Vault'**
+  String get saveToVault;
+
+  /// No description provided for @savingToVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving to Vault…'**
+  String get savingToVault;
+
+  /// No description provided for @savedToVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to Vault'**
+  String get savedToVault;
+
+  /// No description provided for @vaultNoteTitlePrefix.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: '**
+  String get vaultNoteTitlePrefix;
+
+  /// No description provided for @openInVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Vault'**
+  String get openInVault;
+
+  /// No description provided for @saveToVaultFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Vault failed'**
+  String get saveToVaultFailed;
+
+  /// No description provided for @pdfWorkerUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'PDF export is temporarily unavailable. Please try DOCX or Markdown.'**
+  String get pdfWorkerUnavailable;
+
+  /// No description provided for @draftingVersionHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Version history'**
+  String get draftingVersionHistory;
 }
 
 class _AppLocalizationsDelegate

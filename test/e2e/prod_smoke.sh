@@ -337,6 +337,35 @@ check "payment-cancel.html is 200" \
 #  assets are not filtered; we just probe main.dart.js which IS served).
 # Already covered by main.dart.js 200 above; kept as invariant note.
 
+# ---------------------------------------------------------------------------
+# Pkg 7 Drafting Studio + Vault route reachability (2026-05-27)
+# Flutter is a SPA — every app route serves the same /app.html shell, so a
+# deep-link to /drafts or /vault must return 200 with the shell payload.
+# These five entries raise the production smoke total from 47 → 52.
+# Route-level widget mounting is covered separately by
+# test/smoke/drafting_vault_smoke_test.dart, which exercises each screen
+# offline (no Supabase) and asserts no crash on render.
+# ---------------------------------------------------------------------------
+check "/drafts deep-link serves app shell (200)" \
+  "curl_code $BASE_URL/drafts" \
+  "200"
+
+check "/drafts/new deep-link serves app shell (200)" \
+  "curl_code $BASE_URL/drafts/new" \
+  "200"
+
+check "/drafts/00000000-0000-0000-0000-000000000000 deep-link serves app shell (200)" \
+  "curl_code $BASE_URL/drafts/00000000-0000-0000-0000-000000000000" \
+  "200"
+
+check "/vault deep-link serves app shell (200)" \
+  "curl_code $BASE_URL/vault" \
+  "200"
+
+check "/vault/add deep-link serves app shell (200)" \
+  "curl_code $BASE_URL/vault/add" \
+  "200"
+
 echo ""
 echo "[5] Contract tests — known-seam regressions (anti-regression sprint)"
 # These three probes defend against silent chat breakages we already shipped

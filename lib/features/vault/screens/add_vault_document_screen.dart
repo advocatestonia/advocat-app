@@ -2,12 +2,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
 import '../../legal/utils/sensitive_consent_gate.dart';
+import '../models/vault_document.dart';
+import '../providers/vault_providers.dart';
+import '../services/vault_service.dart';
+import '../widgets/vault_strings.dart';
 import 'document_vault_screen.dart';
 
 /// Detect MIME type from file extension.
@@ -47,6 +52,9 @@ class _AddVaultDocumentScreenState
   late final AnimationController _entranceController;
   bool _uploading = false;
 
+  /// Selected tag slug for the next upload. Defaults to "other" per spec.
+  String _selectedTagSlug = 'other';
+
   @override
   void initState() {
     super.initState();
@@ -60,6 +68,15 @@ class _AddVaultDocumentScreenState
   void dispose() {
     _entranceController.dispose();
     super.dispose();
+  }
+
+  /// Looks up the tag id for [_selectedTagSlug] inside the loaded tag
+  /// list, falling back to the slug itself (which the backend treats as
+  /// a stable default-tag id) when the AsyncValue hasn't resolved.
+  String _selectedTagId(List<VaultTag> tags) {
+    final hit = tags.where((t) => t.slug == _selectedTagSlug);
+    if (hit.isNotEmpty) return hit.first.id;
+    return _selectedTagSlug;
   }
 
   /// Pick any file (PDF, DOC, DOCX, TXT, images) using FilePicker.
@@ -87,14 +104,20 @@ class _AddVaultDocumentScreenState
       final mimeType = _mimeFromExt(file.name);
       final svc = ref.read(supabaseServiceProvider);
       final caseId = 'vault-${DateTime.now().millisecondsSinceEpoch}';
-      await svc.uploadDocument(
+      final docId = await svc.uploadDocument(
         caseId: caseId,
         fileName: file.name,
         fileBytes: file.bytes!,
         mimeType: mimeType,
       );
 
+      // Best-effort tag attach. Failure is non-fatal — the doc still lands
+      // in the vault, just untagged. See VaultService.tagDocument for the
+      // fallback logic while the backend tables are being built.
+      await _tryTagDocument(docId);
+
       ref.invalidate(vaultDocumentsProvider);
+      ref.invalidate(vaultDocumentsListProvider);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -141,14 +164,17 @@ class _AddVaultDocumentScreenState
       final mimeType = _mimeFromExt(fileName);
       final svc = ref.read(supabaseServiceProvider);
       final caseId = 'vault-${DateTime.now().millisecondsSinceEpoch}';
-      await svc.uploadDocument(
+      final docId = await svc.uploadDocument(
         caseId: caseId,
         fileName: fileName,
         fileBytes: bytes,
         mimeType: mimeType,
       );
 
+      await _tryTagDocument(docId);
+
       ref.invalidate(vaultDocumentsProvider);
+      ref.invalidate(vaultDocumentsListProvider);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -174,9 +200,35 @@ class _AddVaultDocumentScreenState
     }
   }
 
+  /// Best-effort tag attach. Reads the resolved tag list synchronously so
+  /// we don't block the upload UI on the providers.
+  Future<void> _tryTagDocument(String docId) async {
+    if (_selectedTagSlug.isEmpty) return;
+    final tagsAsync = ref.read(vaultTagsProvider);
+    final tags = tagsAsync.maybeWhen(
+      data: (t) => t,
+      orElse: () => VaultTag.defaults,
+    );
+    final tagId = _selectedTagId(tags);
+    try {
+      await ref.read(vaultServiceProvider).tagDocument(docId, tagId);
+    } catch (e) {
+      if (kDebugMode) debugPrint('[vault] tag attach failed: $e');
+    }
+  }
+
+  /// Spec #1 — route the "Create Note" tile to the Drafting Studio with a
+  /// `source=vault_note` marker. The Drafting Studio agent will pick up
+  /// that query param and stamp the resulting draft into the vault on save.
+  void _openCreateNote() {
+    context.push('/drafts/new?source=vault_note');
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final vs = VaultStrings.of(context);
+    final tagsAsync = ref.watch(vaultTagsProvider);
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -193,7 +245,7 @@ class _AddVaultDocumentScreenState
       body: SafeArea(
         child: _uploading
             ? const Center(child: CircularProgressIndicator())
-            : Padding(
+            : SingleChildScrollView(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -216,7 +268,19 @@ class _AddVaultDocumentScreenState
                         ],
                       ),
                     ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Tag picker — single-select horizontal chip row.
+                    _TagPicker(
+                      title: vs.tagPickerTitle,
+                      tagsAsync: tagsAsync,
+                      selectedSlug: _selectedTagSlug,
+                      onTap: (slug) => setState(() {
+                        _selectedTagSlug = slug;
+                      }),
+                    ),
                     const SizedBox(height: AppSpacing.xl),
+
                     _AnimatedOptionCard(
                       index: 0,
                       controller: _entranceController,
@@ -244,11 +308,125 @@ class _AddVaultDocumentScreenState
                       title: l10n.createNote,
                       subtitle: l10n.createNoteDesc,
                       color: AppColors.warning,
-                      onTap: () => Navigator.pop(context),
+                      onTap: _openCreateNote,
                     ),
                   ],
                 ),
               ),
+      ),
+    );
+  }
+}
+
+/// Single-select horizontal chip row for tagging a fresh upload. Renders
+/// the localized label from [VaultStrings.labelForSlug] regardless of what
+/// the backend returned, so the picker reads cleanly in any locale.
+class _TagPicker extends StatelessWidget {
+  const _TagPicker({
+    required this.title,
+    required this.tagsAsync,
+    required this.selectedSlug,
+    required this.onTap,
+  });
+
+  final String title;
+  final AsyncValue<List<VaultTag>> tagsAsync;
+  final String selectedSlug;
+  final ValueChanged<String> onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final vs = VaultStrings.of(context);
+    final tags = tagsAsync.maybeWhen(
+      data: (t) => t,
+      orElse: () => VaultTag.defaults,
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textSecondary,
+            letterSpacing: -0.2,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        SizedBox(
+          height: 36,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: tags.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 8),
+            itemBuilder: (context, i) {
+              final tag = tags[i];
+              final active = tag.slug == selectedSlug;
+              return _Chip(
+                label: vs.labelForSlug(tag.slug, fallback: tag.label),
+                active: active,
+                onTap: () => onTap(tag.slug),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Pill-shaped chip used in both the upload tag picker and the vault list
+/// filter row. Active state pulls from the accent palette to match the
+/// "Add Document" CTA and the encryption badge.
+class _Chip extends StatelessWidget {
+  const _Chip({
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: active
+              ? AppColors.accent
+              : AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.full),
+          border: Border.all(
+            color: active
+                ? AppColors.accent
+                : AppColors.border,
+          ),
+          boxShadow: active
+              ? [
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: active
+                ? AppColors.textOnPrimary
+                : AppColors.textPrimary,
+          ),
+        ),
       ),
     );
   }

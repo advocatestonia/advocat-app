@@ -29,7 +29,8 @@ class _FakeSvc implements DraftService {
       String? language,
       String? jurisdiction,
       DraftStatus? status,
-      Map<String, dynamic>? metadata}) async {
+      Map<String, dynamic>? metadata,
+      String? vaultCopyId}) async {
     if (gate != null) await gate!.future;
     updates++;
     if (failNext) {
@@ -82,6 +83,18 @@ class _FakeSvc implements DraftService {
   Future<DocxExport> exportToDocx(
           {required String contentMarkdown, String? title}) async =>
       const DocxExport(base64: '', filename: '', byteLength: 0);
+  @override
+  Future<PdfExport> exportToPdf(
+          {required String contentMarkdown, String? title}) async =>
+      const PdfExport(base64: '', filename: '', byteLength: 0);
+  @override
+  Future<String> saveToVault(String draftId) async => 'fake-vault-doc-id';
+  @override
+  Future<List<DraftVersion>> getVersions(String draftId) async =>
+      <DraftVersion>[];
+  @override
+  Future<Draft> restoreVersion(String draftId, String versionId) async =>
+      throw UnimplementedError();
 }
 
 void main() {

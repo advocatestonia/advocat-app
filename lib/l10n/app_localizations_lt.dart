@@ -4052,4 +4052,155 @@ class AppLocalizationsLt extends AppLocalizations {
 
   @override
   String get softCaseShellBannerCta => 'Rename';
+
+  @override
+  String get draftsTab => 'Drafts';
+
+  @override
+  String get draftingTitle => 'Drafting Studio';
+
+  @override
+  String get draftingEmpty => 'Empty draft';
+
+  @override
+  String get draftingPlaceholder => 'Start typing your draft…';
+
+  @override
+  String get draftingDraftsList => 'My drafts';
+
+  @override
+  String get draftingSave => 'Save';
+
+  @override
+  String get draftingSaved => 'Saved';
+
+  @override
+  String get draftingSavedJustNow => 'Saved just now';
+
+  @override
+  String get draftingAiRevise => 'Revise with AI';
+
+  @override
+  String get draftingExportPdf => 'Export PDF';
+
+  @override
+  String get draftingExportDocx => 'Export DOCX';
+
+  @override
+  String get draftingExportMd => 'Export Markdown';
+
+  @override
+  String get draftingDeleteDraft => 'Delete draft';
+
+  @override
+  String get draftingConfirmDelete => 'Delete this draft?';
+
+  @override
+  String get draftingConfirmDeleteMessage => 'This action cannot be undone.';
+
+  @override
+  String get draftingConfirm => 'Delete';
+
+  @override
+  String get draftingCancel => 'Cancel';
+
+  @override
+  String draftingDraftReplyTo(String name) {
+    return 'Reply to $name';
+  }
+
+  @override
+  String get draftingUntitled => 'Untitled';
+
+  @override
+  String get draftingTitleHint => 'Title (optional)';
+
+  @override
+  String get draftingAiReviseTitle => 'Revise with AI';
+
+  @override
+  String get draftingAiReviseSelectionLabel => 'Selected text:';
+
+  @override
+  String get draftingAiReviseInstructionLabel => 'Instruction (optional)';
+
+  @override
+  String get draftingAiReviseInstructionHint =>
+      'e.g. \"make it more formal\" or \"shorten\"';
+
+  @override
+  String get draftingAiReviseRunButton => 'Generate revision';
+
+  @override
+  String get draftingAiReviseSuggestionLabel => 'Suggested revision:';
+
+  @override
+  String get draftingAiReviseChangesLabel => 'Changes:';
+
+  @override
+  String get draftingAiReviseAccept => 'Accept';
+
+  @override
+  String get draftingAiReviseReject => 'Reject';
+
+  @override
+  String get draftingFormatBold => 'Bold';
+
+  @override
+  String get draftingFormatItalic => 'Italic';
+
+  @override
+  String get draftingFormatHeading => 'Heading';
+
+  @override
+  String get draftingFormatBullet => 'Bullet list';
+
+  @override
+  String get draftingFormatNumbered => 'Numbered list';
+
+  @override
+  String get draftingEmptyListMessage => 'You have no drafts yet.';
+
+  @override
+  String get draftingEmptyListAction => 'New draft';
+
+  @override
+  String get draftingExporting => 'Exporting…';
+
+  @override
+  String get draftingExportFailed => 'Export failed';
+
+  @override
+  String get draftingSaveFailed => 'Save failed';
+
+  @override
+  String get draftingNewDraft => 'New draft';
+
+  @override
+  String get vaultNoteChip => 'Vault note';
+
+  @override
+  String get saveToVault => 'Save to Vault';
+
+  @override
+  String get savingToVault => 'Saving to Vault…';
+
+  @override
+  String get savedToVault => 'Saved to Vault';
+
+  @override
+  String get vaultNoteTitlePrefix => 'Note: ';
+
+  @override
+  String get openInVault => 'Open in Vault';
+
+  @override
+  String get saveToVaultFailed => 'Save to Vault failed';
+
+  @override
+  String get pdfWorkerUnavailable =>
+      'PDF export is temporarily unavailable. Please try DOCX or Markdown.';
+
+  @override
+  String get draftingVersionHistory => 'Version history';
 }

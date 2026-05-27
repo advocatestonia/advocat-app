@@ -905,15 +905,15 @@ class _QuickActions extends StatelessWidget {
                 label: l.aiAssistant,
                 onTap: () => context.push('/chat/general'),
               ),
+              // Pkg 7 Drafting Studio — replaces the previous "callAI / coming
+              // soon" placeholder (2026-05-27). Drafts + Vault are now both
+              // reachable in ≤2 taps from Home: Drafts via this tile and Vault
+              // via the lock-icon tile two slots earlier in the same grid.
               _QuickActionButton(
-                icon: Icons.phone_in_talk_outlined,
-                label: l.callAI,
+                icon: Icons.edit_note_outlined,
+                label: l.draftsTab,
                 color: AppColors.success,
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(l.comingSoon)),
-                  );
-                },
+                onTap: () => context.push(AppRoutes.drafts),
               ),
               _QuickActionButton(
                 icon: Icons.add_circle_outline,

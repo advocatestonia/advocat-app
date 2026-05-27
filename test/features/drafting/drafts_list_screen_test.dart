@@ -7,12 +7,14 @@ library;
 // -----------------------------------------------------------------------------
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:advocat/features/drafting/models/draft_model.dart';
 import 'package:advocat/features/drafting/screens/drafts_list_screen.dart';
 import 'package:advocat/features/drafting/services/draft_service.dart';
+import 'package:advocat/l10n/app_localizations.dart';
 
 class _FakeDraftService implements DraftService {
   _FakeDraftService(this._drafts);
@@ -47,7 +49,8 @@ class _FakeDraftService implements DraftService {
           String? language,
           String? jurisdiction,
           DraftStatus? status,
-          Map<String, dynamic>? metadata}) async =>
+          Map<String, dynamic>? metadata,
+          String? vaultCopyId}) async =>
       throw UnimplementedError();
 
   @override
@@ -71,6 +74,18 @@ class _FakeDraftService implements DraftService {
   @override
   Future<DocxExport> exportToDocx(
           {required String contentMarkdown, String? title}) async =>
+      throw UnimplementedError();
+  @override
+  Future<PdfExport> exportToPdf(
+          {required String contentMarkdown, String? title}) async =>
+      throw UnimplementedError();
+  @override
+  Future<String> saveToVault(String draftId) async => 'fake-vault-doc-id';
+  @override
+  Future<List<DraftVersion>> getVersions(String draftId) async =>
+      <DraftVersion>[];
+  @override
+  Future<Draft> restoreVersion(String draftId, String versionId) async =>
       throw UnimplementedError();
 }
 
@@ -98,7 +113,17 @@ Widget _wrap(Widget child, {required List<Draft> drafts}) {
     overrides: <Override>[
       draftServiceProvider.overrideWithValue(_FakeDraftService(drafts)),
     ],
-    child: MaterialApp(home: child),
+    child: MaterialApp(
+      locale: const Locale('en'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: child,
+    ),
   );
 }
 
@@ -136,7 +161,7 @@ void main() {
         drafts: <Draft>[_draft(id: 'a1', body: 'something')],
       ));
       await tester.pumpAndSettle();
-      // English default fallback (we don't pump localisations here).
+      // English locale pumped via _wrap; matches draftingUntitled from app_en.arb.
       expect(find.text('Untitled'), findsOneWidget);
     });
 

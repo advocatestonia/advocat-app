@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'drafting_strings.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Markdown formatting operation requested by the toolbar.
 enum DraftFormatOp { bold, italic, heading, bullet, numbered }
@@ -22,20 +22,42 @@ class DraftToolbar extends StatelessWidget {
     required this.onAiRevise,
     required this.onSave,
     required this.onExport,
+    this.onSaveToVault,
     this.savedLabel,
     this.busy = false,
+    this.savingToVault = false,
+    this.savedToVault = false,
+    this.vaultNoteMode = false,
   });
 
   final ValueChanged<DraftFormatOp> onFormat;
   final VoidCallback onAiRevise;
   final VoidCallback onSave;
   final ValueChanged<DraftExportKind> onExport;
+
+  /// Track 1A — optional "Save to Vault" affordance. When null the button
+  /// is hidden so existing callers (and the toolbar widget tests written
+  /// before 1A) don't see a phantom button.
+  final VoidCallback? onSaveToVault;
   final String? savedLabel;
   final bool busy;
 
+  /// While true, swap the lock icon for a spinner and disable the button
+  /// — surfaces "saving to vault…" without a separate snackbar.
+  final bool savingToVault;
+
+  /// One-shot success cue: shows a green check on the button. The host
+  /// resets this back to false after a short delay.
+  final bool savedToVault;
+
+  /// True when the editor was opened from the Vault "Create Note" CTA. We
+  /// render a small chip in the toolbar header so the user knows their
+  /// next save will round-trip into the encrypted Vault automatically.
+  final bool vaultNoteMode;
+
   @override
   Widget build(BuildContext context) {
-    final l10n = DraftingStrings.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return Material(
@@ -55,31 +77,31 @@ class DraftToolbar extends StatelessWidget {
                     _toolbarBtn(
                       keyName: 'draft_format_bold',
                       icon: Icons.format_bold,
-                      tooltip: l10n.formatBold,
+                      tooltip: l10n.draftingFormatBold,
                       onTap: () => onFormat(DraftFormatOp.bold),
                     ),
                     _toolbarBtn(
                       keyName: 'draft_format_italic',
                       icon: Icons.format_italic,
-                      tooltip: l10n.formatItalic,
+                      tooltip: l10n.draftingFormatItalic,
                       onTap: () => onFormat(DraftFormatOp.italic),
                     ),
                     _toolbarBtn(
                       keyName: 'draft_format_heading',
                       icon: Icons.title,
-                      tooltip: l10n.formatHeading,
+                      tooltip: l10n.draftingFormatHeading,
                       onTap: () => onFormat(DraftFormatOp.heading),
                     ),
                     _toolbarBtn(
                       keyName: 'draft_format_bullet',
                       icon: Icons.format_list_bulleted,
-                      tooltip: l10n.formatBullet,
+                      tooltip: l10n.draftingFormatBullet,
                       onTap: () => onFormat(DraftFormatOp.bullet),
                     ),
                     _toolbarBtn(
                       keyName: 'draft_format_numbered',
                       icon: Icons.format_list_numbered,
-                      tooltip: l10n.formatNumbered,
+                      tooltip: l10n.draftingFormatNumbered,
                       onTap: () => onFormat(DraftFormatOp.numbered),
                     ),
                     const SizedBox(width: 12),
@@ -87,7 +109,7 @@ class DraftToolbar extends StatelessWidget {
                       key: const Key('draft_toolbar_ai_revise'),
                       onPressed: busy ? null : onAiRevise,
                       icon: const Icon(Icons.auto_awesome, size: 16),
-                      label: Text(l10n.aiRevise),
+                      label: Text(l10n.draftingAiRevise),
                     ),
                   ],
                 ),
@@ -109,29 +131,69 @@ class DraftToolbar extends StatelessWidget {
               key: const Key('draft_toolbar_save'),
               onPressed: busy ? null : onSave,
               icon: const Icon(Icons.save_outlined, size: 16),
-              label: Text(l10n.save),
+              label: Text(l10n.draftingSave),
             ),
+            // Drafting × Vault — "Save to Vault" affordance. The icon flips
+            // through three states: idle (lock_outline), saving (spinner),
+            // and one-shot success (check). The button is also disabled
+            // while the host is busy with another operation.
+            if (onSaveToVault != null) ...<Widget>[
+              const SizedBox(width: 6),
+              if (vaultNoteMode)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Chip(
+                    key: const Key('draft_toolbar_vault_note_chip'),
+                    avatar: const Icon(Icons.lock_outline, size: 14),
+                    label: Text(
+                      l10n.vaultNoteChip,
+                      style: const TextStyle(fontSize: 11),
+                    ),
+                    visualDensity: VisualDensity.compact,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                ),
+              IconButton(
+                key: const Key('draft_toolbar_save_to_vault'),
+                tooltip: savingToVault
+                    ? l10n.savingToVault
+                    : (savedToVault ? l10n.savedToVault : l10n.saveToVault),
+                icon: savingToVault
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Icon(
+                        savedToVault
+                            ? Icons.check_circle_outline
+                            : Icons.lock_outline,
+                      ),
+                onPressed: (busy || savingToVault) ? null : onSaveToVault,
+                visualDensity: VisualDensity.compact,
+              ),
+            ],
             const SizedBox(width: 6),
             PopupMenuButton<DraftExportKind>(
               key: const Key('draft_toolbar_export_menu'),
-              tooltip: l10n.exportPdf,
+              tooltip: l10n.draftingExportPdf,
               onSelected: onExport,
               icon: const Icon(Icons.download),
               itemBuilder: (ctx) => <PopupMenuEntry<DraftExportKind>>[
                 PopupMenuItem<DraftExportKind>(
                   key: const Key('draft_toolbar_export_pdf'),
                   value: DraftExportKind.pdf,
-                  child: Text(l10n.exportPdf),
+                  child: Text(l10n.draftingExportPdf),
                 ),
                 PopupMenuItem<DraftExportKind>(
                   key: const Key('draft_toolbar_export_docx'),
                   value: DraftExportKind.docx,
-                  child: Text(l10n.exportDocx),
+                  child: Text(l10n.draftingExportDocx),
                 ),
                 PopupMenuItem<DraftExportKind>(
                   key: const Key('draft_toolbar_export_md'),
                   value: DraftExportKind.markdown,
-                  child: Text(l10n.exportMd),
+                  child: Text(l10n.draftingExportMd),
                 ),
               ],
             ),

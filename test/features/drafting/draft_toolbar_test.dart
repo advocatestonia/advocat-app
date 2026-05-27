@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:advocat/features/drafting/widgets/draft_toolbar.dart';
+import 'package:advocat/l10n/app_localizations.dart';
 
 void main() {
   group('applyFormat — bold', () {
@@ -93,7 +94,16 @@ void main() {
 
   group('DraftToolbar widget', () {
     Widget wrap(Widget child) {
-      return MaterialApp(home: Scaffold(body: child));
+      // DraftToolbar now reads AppLocalizations (the auto-generated arb-
+      // backed table) for its tooltips and labels. Tests must register
+      // the delegate + supported locales so AppLocalizations.of(context)
+      // doesn't return null.
+      return MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: Scaffold(body: child),
+      );
     }
 
     testWidgets('emits onFormat callback with right op', (tester) async {
@@ -167,6 +177,56 @@ void main() {
       await tester.tap(find.byKey(const Key('draft_toolbar_export_docx')));
       await tester.pumpAndSettle();
       expect(captured, DraftExportKind.docx);
+    });
+
+    // Track 1A — Save to Vault. Button is hidden when onSaveToVault is
+    // null (so legacy callers keep their button row unchanged) and emits
+    // the callback when supplied.
+    testWidgets('Save to Vault button hidden when callback is null',
+        (tester) async {
+      await tester.pumpWidget(wrap(DraftToolbar(
+        onFormat: (_) {},
+        onAiRevise: () {},
+        onSave: () {},
+        onExport: (_) {},
+      )));
+      expect(
+        find.byKey(const Key('draft_toolbar_save_to_vault')),
+        findsNothing,
+      );
+    });
+
+    testWidgets('Save to Vault button fires callback when provided',
+        (tester) async {
+      var vaultPressed = false;
+      await tester.pumpWidget(wrap(DraftToolbar(
+        onFormat: (_) {},
+        onAiRevise: () {},
+        onSave: () {},
+        onExport: (_) {},
+        onSaveToVault: () => vaultPressed = true,
+      )));
+      expect(
+        find.byKey(const Key('draft_toolbar_save_to_vault')),
+        findsOneWidget,
+      );
+      await tester.tap(find.byKey(const Key('draft_toolbar_save_to_vault')));
+      expect(vaultPressed, isTrue);
+    });
+
+    testWidgets('Save to Vault button disabled when busy=true', (tester) async {
+      await tester.pumpWidget(wrap(DraftToolbar(
+        onFormat: (_) {},
+        onAiRevise: () {},
+        onSave: () {},
+        onExport: (_) {},
+        onSaveToVault: () {},
+        busy: true,
+      )));
+      final btn = tester.widget<IconButton>(
+        find.byKey(const Key('draft_toolbar_save_to_vault')),
+      );
+      expect(btn.onPressed, isNull);
     });
   });
 }

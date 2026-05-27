@@ -4048,4 +4048,155 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get softCaseShellBannerCta => 'Nimeä uudelleen';
+
+  @override
+  String get draftsTab => 'Luonnokset';
+
+  @override
+  String get draftingTitle => 'Luonnosstudio';
+
+  @override
+  String get draftingEmpty => 'Tyhjä luonnos';
+
+  @override
+  String get draftingPlaceholder => 'Aloita luonnoksen kirjoittaminen…';
+
+  @override
+  String get draftingDraftsList => 'Omat luonnokset';
+
+  @override
+  String get draftingSave => 'Tallenna';
+
+  @override
+  String get draftingSaved => 'Tallennettu';
+
+  @override
+  String get draftingSavedJustNow => 'Tallennettu juuri nyt';
+
+  @override
+  String get draftingAiRevise => 'AI-uudelleenmuotoilu';
+
+  @override
+  String get draftingExportPdf => 'Vie PDF';
+
+  @override
+  String get draftingExportDocx => 'Vie DOCX';
+
+  @override
+  String get draftingExportMd => 'Vie Markdown';
+
+  @override
+  String get draftingDeleteDraft => 'Poista luonnos';
+
+  @override
+  String get draftingConfirmDelete => 'Poistetaanko tämä luonnos?';
+
+  @override
+  String get draftingConfirmDeleteMessage => 'Tätä toimintoa ei voi peruuttaa.';
+
+  @override
+  String get draftingConfirm => 'Poista';
+
+  @override
+  String get draftingCancel => 'Peruuta';
+
+  @override
+  String draftingDraftReplyTo(String name) {
+    return 'Vastaus: $name';
+  }
+
+  @override
+  String get draftingUntitled => 'Nimetön';
+
+  @override
+  String get draftingTitleHint => 'Otsikko (valinnainen)';
+
+  @override
+  String get draftingAiReviseTitle => 'AI-uudelleenmuotoilu';
+
+  @override
+  String get draftingAiReviseSelectionLabel => 'Valittu teksti:';
+
+  @override
+  String get draftingAiReviseInstructionLabel => 'Ohje (valinnainen)';
+
+  @override
+  String get draftingAiReviseInstructionHint =>
+      'esim. \"muotoile virallisemmaksi\" tai \"lyhennä\"';
+
+  @override
+  String get draftingAiReviseRunButton => 'Tuota uudelleenmuotoilu';
+
+  @override
+  String get draftingAiReviseSuggestionLabel => 'Ehdotettu uudelleenmuotoilu:';
+
+  @override
+  String get draftingAiReviseChangesLabel => 'Muutokset:';
+
+  @override
+  String get draftingAiReviseAccept => 'Hyväksy';
+
+  @override
+  String get draftingAiReviseReject => 'Hylkää';
+
+  @override
+  String get draftingFormatBold => 'Lihavointi';
+
+  @override
+  String get draftingFormatItalic => 'Kursivointi';
+
+  @override
+  String get draftingFormatHeading => 'Otsikko';
+
+  @override
+  String get draftingFormatBullet => 'Luettelo';
+
+  @override
+  String get draftingFormatNumbered => 'Numeroitu luettelo';
+
+  @override
+  String get draftingEmptyListMessage => 'Sinulla ei ole vielä luonnoksia.';
+
+  @override
+  String get draftingEmptyListAction => 'Uusi luonnos';
+
+  @override
+  String get draftingExporting => 'Viedään…';
+
+  @override
+  String get draftingExportFailed => 'Vienti epäonnistui';
+
+  @override
+  String get draftingSaveFailed => 'Tallennus epäonnistui';
+
+  @override
+  String get draftingNewDraft => 'Uusi luonnos';
+
+  @override
+  String get vaultNoteChip => 'Holvi-muistiinpano';
+
+  @override
+  String get saveToVault => 'Tallenna holviin';
+
+  @override
+  String get savingToVault => 'Tallennetaan holviin…';
+
+  @override
+  String get savedToVault => 'Tallennettu holviin';
+
+  @override
+  String get vaultNoteTitlePrefix => 'Muistio: ';
+
+  @override
+  String get openInVault => 'Avaa holvissa';
+
+  @override
+  String get saveToVaultFailed => 'Tallennus holviin epäonnistui';
+
+  @override
+  String get pdfWorkerUnavailable =>
+      'PDF-vienti ei ole tällä hetkellä käytettävissä. Kokeile DOCX:ää tai Markdownia.';
+
+  @override
+  String get draftingVersionHistory => 'Versiohistoria';
 }

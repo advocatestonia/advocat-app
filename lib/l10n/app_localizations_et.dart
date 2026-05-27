@@ -4039,4 +4039,156 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get softCaseShellBannerCta => 'Nimeta ümber';
+
+  @override
+  String get draftsTab => 'Mustandid';
+
+  @override
+  String get draftingTitle => 'Mustandite stuudio';
+
+  @override
+  String get draftingEmpty => 'Tühi mustand';
+
+  @override
+  String get draftingPlaceholder => 'Alusta mustandi kirjutamist…';
+
+  @override
+  String get draftingDraftsList => 'Minu mustandid';
+
+  @override
+  String get draftingSave => 'Salvesta';
+
+  @override
+  String get draftingSaved => 'Salvestatud';
+
+  @override
+  String get draftingSavedJustNow => 'Salvestatud just nüüd';
+
+  @override
+  String get draftingAiRevise => 'AI ümbersõnastus';
+
+  @override
+  String get draftingExportPdf => 'Ekspordi PDF';
+
+  @override
+  String get draftingExportDocx => 'Ekspordi DOCX';
+
+  @override
+  String get draftingExportMd => 'Ekspordi Markdown';
+
+  @override
+  String get draftingDeleteDraft => 'Kustuta mustand';
+
+  @override
+  String get draftingConfirmDelete => 'Kas kustutada see mustand?';
+
+  @override
+  String get draftingConfirmDeleteMessage =>
+      'Seda toimingut ei saa tagasi võtta.';
+
+  @override
+  String get draftingConfirm => 'Kustuta';
+
+  @override
+  String get draftingCancel => 'Tühista';
+
+  @override
+  String draftingDraftReplyTo(String name) {
+    return 'Vastus: $name';
+  }
+
+  @override
+  String get draftingUntitled => 'Pealkirjata';
+
+  @override
+  String get draftingTitleHint => 'Pealkiri (valikuline)';
+
+  @override
+  String get draftingAiReviseTitle => 'AI ümbersõnastus';
+
+  @override
+  String get draftingAiReviseSelectionLabel => 'Valitud tekst:';
+
+  @override
+  String get draftingAiReviseInstructionLabel => 'Juhend (valikuline)';
+
+  @override
+  String get draftingAiReviseInstructionHint =>
+      'nt „sõnasta ametlikumalt\" või „tee lühemaks\"';
+
+  @override
+  String get draftingAiReviseRunButton => 'Genereeri ümbersõnastus';
+
+  @override
+  String get draftingAiReviseSuggestionLabel => 'Soovitatud ümbersõnastus:';
+
+  @override
+  String get draftingAiReviseChangesLabel => 'Muudatused:';
+
+  @override
+  String get draftingAiReviseAccept => 'Kinnita';
+
+  @override
+  String get draftingAiReviseReject => 'Lükka tagasi';
+
+  @override
+  String get draftingFormatBold => 'Rasvane';
+
+  @override
+  String get draftingFormatItalic => 'Kursiiv';
+
+  @override
+  String get draftingFormatHeading => 'Pealkiri';
+
+  @override
+  String get draftingFormatBullet => 'Loend';
+
+  @override
+  String get draftingFormatNumbered => 'Nummerdatud loend';
+
+  @override
+  String get draftingEmptyListMessage => 'Sul pole veel mustandeid.';
+
+  @override
+  String get draftingEmptyListAction => 'Uus mustand';
+
+  @override
+  String get draftingExporting => 'Ekspordin…';
+
+  @override
+  String get draftingExportFailed => 'Eksport ebaõnnestus';
+
+  @override
+  String get draftingSaveFailed => 'Salvestamine ebaõnnestus';
+
+  @override
+  String get draftingNewDraft => 'Uus mustand';
+
+  @override
+  String get vaultNoteChip => 'Hoidla märkus';
+
+  @override
+  String get saveToVault => 'Salvesta hoidlasse';
+
+  @override
+  String get savingToVault => 'Salvestan hoidlasse…';
+
+  @override
+  String get savedToVault => 'Salvestatud hoidlasse';
+
+  @override
+  String get vaultNoteTitlePrefix => 'Märkus: ';
+
+  @override
+  String get openInVault => 'Ava hoidlas';
+
+  @override
+  String get saveToVaultFailed => 'Hoidlasse salvestamine ebaõnnestus';
+
+  @override
+  String get pdfWorkerUnavailable =>
+      'PDF-eksport ei ole hetkel saadaval. Proovi DOCX-i või Markdowni.';
+
+  @override
+  String get draftingVersionHistory => 'Versioonide ajalugu';
 }

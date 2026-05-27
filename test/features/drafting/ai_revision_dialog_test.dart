@@ -18,9 +18,15 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:advocat/features/drafting/models/draft_model.dart';
 import 'package:advocat/features/drafting/widgets/ai_revision_dialog.dart';
+import 'package:advocat/l10n/app_localizations.dart';
 
 Widget _wrap(Widget child) {
+  // AiRevisionDialog reads AppLocalizations.of(context)! — bootstrap the
+  // delegate so the dialog renders without a null-check crash.
   return MaterialApp(
+    locale: const Locale('en'),
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    supportedLocales: AppLocalizations.supportedLocales,
     home: Scaffold(body: Builder(builder: (ctx) => child)),
   );
 }
@@ -74,6 +80,9 @@ void main() {
       final result = ValueNotifier<AiRevisionDecision?>(null);
       late BuildContext capturedCtx;
       await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
         home: Scaffold(
           body: Builder(builder: (ctx) {
             capturedCtx = ctx;
@@ -106,6 +115,9 @@ void main() {
       final result = ValueNotifier<AiRevisionDecision?>(null);
       late BuildContext capturedCtx;
       await tester.pumpWidget(MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
         home: Scaffold(
           body: Builder(builder: (ctx) {
             capturedCtx = ctx;

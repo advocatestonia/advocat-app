@@ -11,8 +11,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../models/draft_model.dart';
-import 'drafting_strings.dart';
 
 /// Outcome returned to the caller when the user closes the dialog.
 class AiRevisionDecision {
@@ -87,7 +87,7 @@ class _AiRevisionDialogState extends State<AiRevisionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = DraftingStrings.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     return AlertDialog(

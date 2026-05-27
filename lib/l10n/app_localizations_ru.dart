@@ -4058,4 +4058,155 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get softCaseShellBannerCta => 'Переименовать';
+
+  @override
+  String get draftsTab => 'Черновики';
+
+  @override
+  String get draftingTitle => 'Студия черновиков';
+
+  @override
+  String get draftingEmpty => 'Пустой черновик';
+
+  @override
+  String get draftingPlaceholder => 'Начните писать черновик…';
+
+  @override
+  String get draftingDraftsList => 'Мои черновики';
+
+  @override
+  String get draftingSave => 'Сохранить';
+
+  @override
+  String get draftingSaved => 'Сохранено';
+
+  @override
+  String get draftingSavedJustNow => 'Сохранено только что';
+
+  @override
+  String get draftingAiRevise => 'Переработать с ИИ';
+
+  @override
+  String get draftingExportPdf => 'Экспорт PDF';
+
+  @override
+  String get draftingExportDocx => 'Экспорт DOCX';
+
+  @override
+  String get draftingExportMd => 'Экспорт Markdown';
+
+  @override
+  String get draftingDeleteDraft => 'Удалить черновик';
+
+  @override
+  String get draftingConfirmDelete => 'Удалить этот черновик?';
+
+  @override
+  String get draftingConfirmDeleteMessage => 'Это действие необратимо.';
+
+  @override
+  String get draftingConfirm => 'Удалить';
+
+  @override
+  String get draftingCancel => 'Отмена';
+
+  @override
+  String draftingDraftReplyTo(String name) {
+    return 'Ответ: $name';
+  }
+
+  @override
+  String get draftingUntitled => 'Без названия';
+
+  @override
+  String get draftingTitleHint => 'Заголовок (необязательно)';
+
+  @override
+  String get draftingAiReviseTitle => 'Переработать с ИИ';
+
+  @override
+  String get draftingAiReviseSelectionLabel => 'Выделенный текст:';
+
+  @override
+  String get draftingAiReviseInstructionLabel => 'Инструкция (необязательно)';
+
+  @override
+  String get draftingAiReviseInstructionHint =>
+      'например \"сделать более формальным\" или \"сократить\"';
+
+  @override
+  String get draftingAiReviseRunButton => 'Создать переработку';
+
+  @override
+  String get draftingAiReviseSuggestionLabel => 'Предлагаемая переработка:';
+
+  @override
+  String get draftingAiReviseChangesLabel => 'Изменения:';
+
+  @override
+  String get draftingAiReviseAccept => 'Принять';
+
+  @override
+  String get draftingAiReviseReject => 'Отклонить';
+
+  @override
+  String get draftingFormatBold => 'Жирный';
+
+  @override
+  String get draftingFormatItalic => 'Курсив';
+
+  @override
+  String get draftingFormatHeading => 'Заголовок';
+
+  @override
+  String get draftingFormatBullet => 'Маркированный список';
+
+  @override
+  String get draftingFormatNumbered => 'Нумерованный список';
+
+  @override
+  String get draftingEmptyListMessage => 'Черновиков пока нет.';
+
+  @override
+  String get draftingEmptyListAction => 'Новый черновик';
+
+  @override
+  String get draftingExporting => 'Экспортирую…';
+
+  @override
+  String get draftingExportFailed => 'Экспорт не удался';
+
+  @override
+  String get draftingSaveFailed => 'Не удалось сохранить';
+
+  @override
+  String get draftingNewDraft => 'Новый черновик';
+
+  @override
+  String get vaultNoteChip => 'Заметка хранилища';
+
+  @override
+  String get saveToVault => 'Сохранить в хранилище';
+
+  @override
+  String get savingToVault => 'Сохранение в хранилище…';
+
+  @override
+  String get savedToVault => 'Сохранено в хранилище';
+
+  @override
+  String get vaultNoteTitlePrefix => 'Заметка: ';
+
+  @override
+  String get openInVault => 'Открыть в хранилище';
+
+  @override
+  String get saveToVaultFailed => 'Не удалось сохранить в хранилище';
+
+  @override
+  String get pdfWorkerUnavailable =>
+      'Экспорт PDF временно недоступен. Попробуйте DOCX или Markdown.';
+
+  @override
+  String get draftingVersionHistory => 'История версий';
 }

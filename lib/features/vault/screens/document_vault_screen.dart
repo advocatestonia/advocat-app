@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,9 +10,18 @@ import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
+import '../../drafting/models/draft_model.dart';
+import '../../drafting/screens/drafting_studio_screen.dart';
+import '../../drafting/widgets/drafting_strings.dart';
+import '../models/vault_document.dart';
+import '../providers/vault_providers.dart';
+import '../services/vault_service.dart';
+import '../widgets/vault_strings.dart';
 
 // ---------------------------------------------------------------------------
-// Vault documents provider
+// Legacy provider (kept for backwards-compat with callers that still pull
+// the raw `Map<String, dynamic>` shape, e.g. case-workspace document picker).
+// New vault UI consumes `vaultDocumentsListProvider` from providers/.
 // ---------------------------------------------------------------------------
 
 final vaultDocumentsProvider =
@@ -39,6 +51,12 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
   late final Animation<Offset> _slideUp;
   late final Animation<double> _lockGlow;
   late final Animation<double> _pulse;
+
+  // Debounced search controller. The provider key is bumped on each
+  // keystroke after a 300ms quiet period so we don't issue an RPC per
+  // character.
+  final TextEditingController _searchCtrl = TextEditingController();
+  Timer? _searchDebounce;
 
   @override
   void initState() {
@@ -83,13 +101,24 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
     _entranceController.dispose();
     _lockGlowController.dispose();
     _pulseController.dispose();
+    _searchDebounce?.cancel();
+    _searchCtrl.dispose();
     super.dispose();
+  }
+
+  void _onSearchChanged(String value) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(const Duration(milliseconds: 300), () {
+      if (!mounted) return;
+      ref.read(vaultSearchQueryProvider.notifier).state = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final docsAsync = ref.watch(vaultDocumentsProvider);
+    final vs = VaultStrings.of(context);
+    final docsAsync = ref.watch(vaultDocumentsListProvider);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -104,31 +133,143 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
         backgroundColor: AppColors.surface,
         elevation: 0,
       ),
-      body: docsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, st) {
-          debugPrint('[document_vault] docs provider failed: $e\n$st');
-          return Center(
-            child: Text(
-              l10n.genericError,
+      body: Column(
+        children: [
+          // Search bar — Cupertino style so iOS gets the familiar UI; on
+          // Android it falls back to the material-themed Cupertino widget.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.md,
+              AppSpacing.md,
+              AppSpacing.md,
+              AppSpacing.sm,
             ),
-          );
-        },
-        data: (docs) {
-          if (docs.isNotEmpty) {
-            return _buildDocumentList(context, l10n, docs);
-          }
-          return _buildEmptyState(context, l10n);
-        },
+            child: CupertinoSearchTextField(
+              key: const ValueKey('vault_search_field'),
+              controller: _searchCtrl,
+              placeholder: vs.searchHint,
+              onChanged: _onSearchChanged,
+              onSuffixTap: () {
+                _searchCtrl.clear();
+                _onSearchChanged('');
+              },
+            ),
+          ),
+
+          // Tag chip row — single-select with "All" prepended.
+          const _TagFilterRow(),
+
+          const SizedBox(height: AppSpacing.sm),
+
+          Expanded(
+            child: docsAsync.when(
+              loading: () =>
+                  const Center(child: CircularProgressIndicator()),
+              error: (e, st) {
+                debugPrint(
+                    '[document_vault] docs provider failed: $e\n$st');
+                return Center(
+                  child: Text(l10n.genericError),
+                );
+              },
+              data: (docs) {
+                if (docs.isNotEmpty) {
+                  return _buildDocumentList(context, l10n, docs);
+                }
+                return _buildEmptyState(context, l10n, vs);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
   // -- Open document --------------------------------------------------------
 
-  Future<void> _openVaultDocument(Map<String, dynamic> doc) async {
-    final storagePath = doc['storage_path'] as String?;
-    if (storagePath == null || storagePath.isEmpty) {
+  /// Drafting × Vault — true for vault docs we can round-trip back into the
+  /// Drafting Studio editor (.md / .txt / text/* mimes). PDFs and binary
+  /// formats stay external-view-only.
+  bool _isEditableInStudio(VaultDocument doc) {
+    final n = doc.fileName.toLowerCase();
+    return doc.mimeType.startsWith('text/') ||
+        n.endsWith('.md') ||
+        n.endsWith('.txt') ||
+        n.endsWith('.markdown');
+  }
+
+  /// Drafting × Vault — fetch the vault doc's decrypted body, create a new
+  /// draft seeded with that content, and navigate to the editor.
+  Future<void> _editInStudio(VaultDocument doc) async {
+    final draftingL10n = DraftingStrings.of(context);
+    try {
+      final vault = ref.read(vaultServiceProvider);
+      final content = await vault.fetchDecryptedContent(doc.id);
+      if (content == null || !content.isEditableInStudio) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(draftingL10n.saveToVaultFailed)),
+        );
+        return;
+      }
+      if (!mounted) return;
+      await Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => DraftingStudioScreen(
+            prefill: DraftPrefill(
+              title: content.fileName,
+              contentMarkdown: content.contentText,
+              sourceType: DraftSourceType.vaultImport,
+              sourceId: content.documentId,
+            ),
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('${draftingL10n.saveToVaultFailed}: $e')),
+      );
+    }
+  }
+
+  Future<void> _openVaultDocument(VaultDocument doc) async {
+    // If the doc is editable in the Studio, offer a choice: external view
+    // (signed URL) vs Edit in Studio. Non-editable types just open the
+    // signed URL straight away.
+    if (_isEditableInStudio(doc) && mounted) {
+      final draftingL10n = DraftingStrings.of(context);
+      final action = await showModalBottomSheet<String>(
+        context: context,
+        builder: (ctx) => SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                key: const Key('vault_doc_action_view'),
+                leading: const Icon(Icons.open_in_new),
+                title: const Text('View'),
+                onTap: () => Navigator.of(ctx).pop('view'),
+              ),
+              ListTile(
+                key: const Key('vault_doc_action_edit_in_studio'),
+                leading: const Icon(Icons.edit_note_outlined),
+                title: Text(draftingL10n.editInStudio),
+                onTap: () => Navigator.of(ctx).pop('edit'),
+              ),
+            ],
+          ),
+        ),
+      );
+      if (action == 'edit') {
+        await _editInStudio(doc);
+        return;
+      }
+      if (action != 'view') return; // user dismissed
+    }
+
+    final storagePath = doc.storagePath;
+    if (storagePath.isEmpty) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -176,72 +317,84 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
     }
   }
 
+  // -- Delete confirmation --------------------------------------------------
+
+  /// Tap-and-hold or swipe-left handler. Spec #2.
+  Future<void> _confirmAndDelete(VaultDocument doc) async {
+    final vs = VaultStrings.of(context);
+    final result = await showCupertinoModalPopup<bool>(
+      context: context,
+      builder: (ctx) => CupertinoActionSheet(
+        title: Text(vs.deleteFromVaultTitle),
+        message: Text(
+          '${doc.fileName}\n\n${vs.deleteFromVaultMessage}',
+        ),
+        actions: [
+          CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(vs.delete),
+          ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.of(ctx).pop(false),
+          isDefaultAction: true,
+          child: Text(vs.cancel),
+        ),
+      ),
+    );
+
+    if (result != true) return;
+    await _performDelete(doc);
+  }
+
+  Future<void> _performDelete(VaultDocument doc) async {
+    final vs = VaultStrings.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await ref.read(vaultServiceProvider).deleteDocument(doc.id);
+      ref.invalidate(vaultDocumentsProvider);
+      ref.invalidate(vaultDocumentsListProvider);
+      if (mounted) {
+        messenger.showSnackBar(
+          SnackBar(content: Text(vs.documentDeleted)),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text('${vs.deleteFailed}: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
   // -- Document list --------------------------------------------------------
 
   Widget _buildDocumentList(
     BuildContext context,
     AppLocalizations l10n,
-    List<Map<String, dynamic>> docs,
+    List<VaultDocument> docs,
   ) {
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.xs,
+            ),
             itemCount: docs.length,
             itemBuilder: (context, index) {
               final doc = docs[index];
-              final fileName = doc['file_name'] as String? ?? 'Document';
-              final mimeType = doc['mime_type'] as String? ?? '';
-              final createdAt = doc['created_at'] as String?;
-              final dateStr = createdAt != null
-                  ? DateTime.tryParse(createdAt)
-                          ?.toLocal()
-                          .toString()
-                          .substring(0, 16) ??
-                      ''
-                  : '';
-
-              IconData icon;
-              if (mimeType.contains('pdf')) {
-                icon = Icons.picture_as_pdf;
-              } else if (mimeType.contains('image')) {
-                icon = Icons.image;
-              } else {
-                icon = Icons.insert_drive_file;
-              }
-
-              return Card(
-                color: AppColors.surface,
-                margin: const EdgeInsets.only(bottom: AppSpacing.sm),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.md),
-                  side: const BorderSide(
-                    color: AppColors.border,
-                  ),
-                ),
-                child: ListTile(
-                  leading: Icon(icon, color: AppColors.accent),
-                  title: Text(
-                    fileName,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                  subtitle: Text(
-                    dateStr,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                  trailing: const Icon(
-                    Icons.chevron_right,
-                    color: AppColors.textTertiary,
-                  ),
-                  onTap: () => _openVaultDocument(doc),
-                ),
+              return _VaultDocumentTile(
+                doc: doc,
+                onTap: () => _openVaultDocument(doc),
+                onLongPress: () => _confirmAndDelete(doc),
+                onSwipeDelete: () => _confirmAndDelete(doc),
               );
             },
           ),
@@ -252,6 +405,7 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
             onPressed: () async {
               await context.push(AppRoutes.vaultAdd);
               ref.invalidate(vaultDocumentsProvider);
+              ref.invalidate(vaultDocumentsListProvider);
             },
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -269,7 +423,11 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
 
   // -- Empty state ----------------------------------------------------------
 
-  Widget _buildEmptyState(BuildContext context, AppLocalizations l10n) {
+  Widget _buildEmptyState(
+    BuildContext context,
+    AppLocalizations l10n,
+    VaultStrings vs,
+  ) {
     return Center(
       child: FadeTransition(
         opacity: _fadeIn,
@@ -366,6 +524,23 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
                       height: 1.5,
                     ),
                   ),
+
+                  const SizedBox(height: AppSpacing.sm),
+
+                  // NEW (Spec #5) — encryption reassurance line. Backend now
+                  // encrypts at rest with the user's per-account key; this
+                  // line is shown only in the empty state to set expectations.
+                  Text(
+                    vs.encryptedWithYourKey,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 12.5,
+                      color: AppColors.textSecondary.withValues(alpha: 0.85),
+                      height: 1.45,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+
                   const SizedBox(height: AppSpacing.xl),
 
                   // Glow button with tap animation
@@ -373,6 +548,7 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
                     onPressed: () async {
                       await context.push(AppRoutes.vaultAdd);
                       ref.invalidate(vaultDocumentsProvider);
+                      ref.invalidate(vaultDocumentsListProvider);
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -433,6 +609,236 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Horizontal tag filter chip row. "All" is synthesized on the client.
+// ---------------------------------------------------------------------------
+
+class _TagFilterRow extends ConsumerWidget {
+  const _TagFilterRow();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vs = VaultStrings.of(context);
+    final tagsAsync = ref.watch(vaultTagsProvider);
+    final selected = ref.watch(vaultTagFilterProvider);
+    final tags = tagsAsync.maybeWhen(
+      data: (t) => t,
+      orElse: () => VaultTag.defaults,
+    );
+
+    return SizedBox(
+      height: 36,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+        itemCount: tags.length + 1,
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        itemBuilder: (context, i) {
+          if (i == 0) {
+            return _FilterChip(
+              key: const ValueKey('vault_chip_all'),
+              label: vs.tagAll,
+              active: selected == null,
+              onTap: () =>
+                  ref.read(vaultTagFilterProvider.notifier).state = null,
+            );
+          }
+          final tag = tags[i - 1];
+          return _FilterChip(
+            key: ValueKey('vault_chip_${tag.slug}'),
+            label: vs.labelForSlug(tag.slug, fallback: tag.label),
+            active: selected == tag.slug,
+            onTap: () =>
+                ref.read(vaultTagFilterProvider.notifier).state = tag.slug,
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _FilterChip extends StatelessWidget {
+  const _FilterChip({
+    super.key,
+    required this.label,
+    required this.active,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool active;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: active ? AppColors.accent : AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.full),
+          border: Border.all(
+            color: active ? AppColors.accent : AppColors.border,
+          ),
+          boxShadow: active
+              ? [
+                  BoxShadow(
+                    color: AppColors.accent.withValues(alpha: 0.25),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: active ? AppColors.textOnPrimary : AppColors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// One row of the vault list. Wraps the existing ListTile look in a Dismissible
+// so the user can swipe left to delete (matches iOS Mail / Notes behaviour),
+// and adds onLongPress for the same action via tap-and-hold.
+// ---------------------------------------------------------------------------
+
+class _VaultDocumentTile extends StatelessWidget {
+  const _VaultDocumentTile({
+    required this.doc,
+    required this.onTap,
+    required this.onLongPress,
+    required this.onSwipeDelete,
+  });
+
+  final VaultDocument doc;
+  final VoidCallback onTap;
+  final VoidCallback onLongPress;
+  final VoidCallback onSwipeDelete;
+
+  IconData get _icon {
+    final mime = doc.mimeType;
+    if (mime.contains('pdf')) return Icons.picture_as_pdf;
+    if (mime.contains('image')) return Icons.image;
+    return Icons.insert_drive_file;
+  }
+
+  String get _dateStr {
+    final d = doc.createdAt.toLocal();
+    final iso = d.toIso8601String();
+    if (iso.length >= 16) return iso.substring(0, 16);
+    return iso;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final vs = VaultStrings.of(context);
+    return Dismissible(
+      key: ValueKey('vault_doc_${doc.id}'),
+      direction: DismissDirection.endToStart,
+      // Don't auto-remove from the list — we surface a confirmation sheet
+      // first. Returning false leaves the tile in place; the actual delete
+      // happens via `onSwipeDelete` which invalidates the provider on
+      // success.
+      confirmDismiss: (_) async {
+        onSwipeDelete();
+        return false;
+      },
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        decoration: BoxDecoration(
+          color: AppColors.error,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+        margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.delete_outline,
+                color: AppColors.textOnPrimary, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              vs.delete,
+              style: const TextStyle(
+                color: AppColors.textOnPrimary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ),
+      child: Card(
+        color: AppColors.surface,
+        margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          side: const BorderSide(color: AppColors.border),
+        ),
+        child: ListTile(
+          leading: Icon(_icon, color: AppColors.accent),
+          title: Text(
+            doc.fileName,
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          subtitle: Row(
+            children: [
+              if (doc.tagSlug != null && doc.tagSlug != 'other') ...[
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.accent.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
+                  child: Text(
+                    vs.labelForSlug(doc.tagSlug!, fallback: doc.tagLabel),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: AppColors.accent,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+              ],
+              Expanded(
+                child: Text(
+                  _dateStr,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          trailing: const Icon(
+            Icons.chevron_right,
+            color: AppColors.textTertiary,
+          ),
+          onTap: onTap,
+          onLongPress: onLongPress,
         ),
       ),
     );

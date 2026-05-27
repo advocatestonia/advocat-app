@@ -39,6 +39,12 @@ import '../features/checker/screens/vehicle_checker_screen.dart';
 import '../shared/widgets/main_shell.dart';
 import '../features/vault/screens/document_vault_screen.dart';
 import '../features/vault/screens/add_vault_document_screen.dart';
+import '../features/drafting/screens/drafts_list_screen.dart';
+import '../features/drafting/screens/drafting_studio_screen.dart';
+// Pkg 7 — DraftSourceType enum, aliased so the router can stamp a
+// vault-note source on `/drafts/new?source=vault_note`. Used in only one
+// place (the draftNew route below); aliased to make the intent obvious.
+import '../features/drafting/models/draft_model.dart' as draft_model;
 import '../features/rights/screens/rights_guide_screen.dart';
 import '../features/rights/screens/rights_detail_screen.dart';
 import '../features/legal_aid/screens/legal_aid_calculator_screen.dart';
@@ -213,6 +219,15 @@ abstract final class AppRoutes {
   /// Self-contained mockup widget; no params, no auth side-effects.
   /// Mounted inside the main shell so the bottom nav remains visible.
   static const String landmarks = '/landmarks';
+
+  /// Pkg 7 Drafting Studio — Track 1A wiring (2026-05-27).
+  /// `/drafts` lists the user's saved drafts inside the main shell.
+  /// `/drafts/new` opens the editor with no prefill — the DB row is
+  /// created lazily on the first save.
+  /// `/drafts/:id` opens the editor for an existing draft, loaded by id.
+  static const String drafts = '/drafts';
+  static const String draftNew = '/drafts/new';
+  static const String draftEdit = '/drafts/:id';
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -342,6 +357,16 @@ final routerProvider = Provider<GoRouter>((ref) {
               ),
             ),
           ),
+          // Pkg 7 — Drafting Studio list (Track 1A). The empty-state CTA in
+          // the list opens `/drafts/new` which renders the editor; the row
+          // is created lazily on first save.
+          GoRoute(
+            path: AppRoutes.drafts,
+            name: 'drafts',
+            pageBuilder: (context, state) => const NoTransitionPage(
+              child: DraftsListScreen(),
+            ),
+          ),
           GoRoute(
             path: AppRoutes.settings,
             name: 'settings',
@@ -388,6 +413,43 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.scan,
         name: 'scan',
         builder: (context, state) => const DocumentScanScreen(),
+      ),
+
+      // Pkg 7 Drafting Studio (Track 1A) — editor routes. Sit outside the
+      // shell so the on-screen keyboard doesn't compete with the bottom
+      // nav. `/drafts/new` opens with no draftId (row is created on first
+      // save); `/drafts/:id` loads by id and supports deep-linking.
+      //
+      // Vault integration (2026-05-27): when the Vault "Create Note" tile
+      // routes here it appends `?source=vault_note`. We translate that into
+      // a `DraftPrefill` so the resulting draft is stamped with the
+      // `vault_note` source type — Drafting Studio's first-save hook then
+      // files the draft into the vault automatically.
+      GoRoute(
+        path: AppRoutes.draftNew,
+        name: 'draftNew',
+        builder: (context, state) {
+          final source = state.uri.queryParameters['source'];
+          if (source == 'vault_note') {
+            return const DraftingStudioScreen(
+              source: 'vault_note',
+              prefill: DraftPrefill(
+                title: '',
+                contentMarkdown: '',
+                sourceType: draft_model.DraftSourceType.vaultNote,
+              ),
+            );
+          }
+          return DraftingStudioScreen(source: source);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.draftEdit,
+        name: 'draftEdit',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return DraftingStudioScreen(draftId: id);
+        },
       ),
 
       // Phase 2a (2026-05-27) — Gmail OAuth side-channel return route.
