@@ -1349,5 +1349,9 @@
     "iapRestorePurchases": "Restaurează achizițiile",
     "iapPurchaseFailed": "Achiziția a eșuat. Încearcă din nou sau contactează asistența.",
     "iapRestoreSuccess": "Abonamentul tău a fost restaurat.",
-    "iapRestoreNoActive": "Nu există abonament activ de restaurat."
+    "iapRestoreNoActive": "Nu există abonament activ de restaurat.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to ro"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to ro"}
 }

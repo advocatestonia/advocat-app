@@ -1998,5 +1998,9 @@
     "iapRestorePurchases": "Käufe wiederherstellen",
     "iapPurchaseFailed": "Kauf fehlgeschlagen. Bitte erneut versuchen oder Support kontaktieren.",
     "iapRestoreSuccess": "Dein Abonnement wurde wiederhergestellt.",
-    "iapRestoreNoActive": "Kein aktives Abonnement zum Wiederherstellen gefunden."
+    "iapRestoreNoActive": "Kein aktives Abonnement zum Wiederherstellen gefunden.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to de"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to de"}
 }

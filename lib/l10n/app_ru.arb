@@ -1610,7 +1610,7 @@
     },
     "referralActivityPending": "ещё не активировал",
     "@referralActivityPending": {},
-    "referralStatsInvitedCount": "Ты пригласил {count, plural, =0{никого} =1{1 друга} few{{count} друзей} many{{count} друзей} other{{count} друзей}}",
+    "referralStatsInvitedCount": "{count, plural, =0{Ты пока никого не пригласил.} =1{Ты пригласил 1 друга.} few{Ты пригласил {count} друзей.} many{Ты пригласил {count} друзей.} other{Ты пригласил {count} друзей.}}",
     "@referralStatsInvitedCount": {
         "placeholders": {
             "count": {
@@ -1618,7 +1618,7 @@
             }
         }
     },
-    "referralStatsConvertedCount": "{count, plural, =0{никто пока не активировал} =1{1 активировал} few{{count} активировали} many{{count} активировали} other{{count} активировали}}",
+    "referralStatsConvertedCount": "{count, plural, =0{Никто пока не активировал.} =1{1 человек активировал.} few{{count} человека активировали.} many{{count} человек активировали.} other{{count} человек активировали.}}",
     "@referralStatsConvertedCount": {
         "placeholders": {
             "count": {
@@ -1626,7 +1626,7 @@
             }
         }
     },
-    "referralStatsEarnedCount": "Твой бонус: {months, plural, =0{пока ничего} =1{1 бесплатный месяц} few{{months} бесплатных месяца} many{{months} бесплатных месяцев} other{{months} бесплатных месяцев}}",
+    "referralStatsEarnedCount": "{months, plural, =0{Бонусы: пока ничего.} =1{Твой бонус: 1 бесплатный месяц.} few{Твой бонус: {months} бесплатных месяца.} many{Твой бонус: {months} бесплатных месяцев.} other{Твой бонус: {months} бесплатных месяцев.}}",
     "@referralStatsEarnedCount": {
         "placeholders": {
             "months": {
@@ -1971,5 +1971,9 @@
     "iapRestorePurchases": "Восстановить покупки",
     "iapPurchaseFailed": "Покупка не удалась. Попробуйте снова или обратитесь в поддержку.",
     "iapRestoreSuccess": "Ваша подписка восстановлена.",
-    "iapRestoreNoActive": "Активной подписки для восстановления не найдено."
+    "iapRestoreNoActive": "Активной подписки для восстановления не найдено.",
+    "deadlineEuRadarTitle": "Радар сроков ЕС (превью)",
+    "@deadlineEuRadarTitle": {},
+    "deadlineEuRadarSubtitle": "Гипотетические процессуальные сроки ЕС — тестовые данные",
+    "@deadlineEuRadarSubtitle": {}
 }

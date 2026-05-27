@@ -3474,40 +3474,40 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle => 'Advocat tarvitsee hyväksyntäsi';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'Toimenpide ratkaistu';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'vaihetta';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'Hyväksy & lähetä';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'Hylkää';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'Liitteet';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'Lähetetty puolestasi.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary => 'Hylätty — mitään ei lähetetty.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'Lähetä sähköposti liitteineen';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'Lähetä sähköposti';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'Luo PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'Lähetä valmis vastaus';
 
   @override
   String get inboxErrorTitle => 'Postilaatikon lataaminen epäonnistui';
@@ -4588,4 +4588,11 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get iapRestoreNoActive =>
       'Aktiivista palautettavaa tilausta ei löytynyt.';
+
+  @override
+  String get deadlineEuRadarTitle => 'EU-määräaikatutka (esikatselu)';
+
+  @override
+  String get deadlineEuRadarSubtitle =>
+      'Hypoteettiset EU-prosessuaaliset määräajat — testidata';
 }

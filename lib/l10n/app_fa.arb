@@ -1349,5 +1349,9 @@
     "iapRestorePurchases": "بازیابی خریدها",
     "iapPurchaseFailed": "خرید ناموفق بود. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.",
     "iapRestoreSuccess": "اشتراک شما بازیابی شد.",
-    "iapRestoreNoActive": "هیچ اشتراک فعالی برای بازیابی یافت نشد."
+    "iapRestoreNoActive": "هیچ اشتراک فعالی برای بازیابی یافت نشد.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to fa"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to fa"}
 }

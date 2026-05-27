@@ -122,11 +122,14 @@ class _HeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // NOTE: We deliberately keep this hero compact — the AppBar gradient header
+    // already renders the screen title (referralTitle). Rendering another
+    // headline-styled string here read as a duplicate headline in manual E2E.
+    // Style is intentionally tagline-weight, not display-weight.
     return Semantics(
       label: subtitle,
-      header: true,
       child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
+        padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [AppColors.primary, AppColors.accent],
@@ -135,18 +138,20 @@ class _HeroCard extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(Icons.card_giftcard, color: Colors.white, size: 28),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              subtitle,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                height: 1.3,
+            const Icon(Icons.card_giftcard, color: Colors.white, size: 22),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Text(
+                subtitle,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  height: 1.3,
+                ),
               ),
             ),
           ],

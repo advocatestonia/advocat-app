@@ -1349,5 +1349,9 @@
     "iapRestorePurchases": "Satın alımları geri yükle",
     "iapPurchaseFailed": "Satın alma başarısız. Lütfen tekrar deneyin veya destek ile iletişime geçin.",
     "iapRestoreSuccess": "Aboneliğiniz geri yüklendi.",
-    "iapRestoreNoActive": "Geri yüklenecek aktif abonelik bulunamadı."
+    "iapRestoreNoActive": "Geri yüklenecek aktif abonelik bulunamadı.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to tr"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to tr"}
 }

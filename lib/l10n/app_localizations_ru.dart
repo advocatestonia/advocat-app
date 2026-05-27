@@ -3513,40 +3513,41 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle => 'Advocat ждёт вашего одобрения';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'Действие выполнено';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'шагов';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'Одобрить и отправить';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'Отклонить';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'Вложения';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'Отправлено от вашего имени.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary =>
+      'Отклонено — ничего не отправлено.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'Отправить письмо с вложениями';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'Отправить письмо';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'Создать PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'Отправить готовый ответ';
 
   @override
   String get inboxErrorTitle => 'Не удалось загрузить почтовый ящик';
@@ -3867,13 +3868,13 @@ class AppLocalizationsRu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count друзей',
-      many: '$count друзей',
-      few: '$count друзей',
-      one: '1 друга',
-      zero: 'никого',
+      other: 'Ты пригласил $count друзей.',
+      many: 'Ты пригласил $count друзей.',
+      few: 'Ты пригласил $count друзей.',
+      one: 'Ты пригласил 1 друга.',
+      zero: 'Ты пока никого не пригласил.',
     );
-    return 'Ты пригласил $_temp0';
+    return '$_temp0';
   }
 
   @override
@@ -3881,11 +3882,11 @@ class AppLocalizationsRu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count активировали',
-      many: '$count активировали',
-      few: '$count активировали',
-      one: '1 активировал',
-      zero: 'никто пока не активировал',
+      other: '$count человек активировали.',
+      many: '$count человек активировали.',
+      few: '$count человека активировали.',
+      one: '1 человек активировал.',
+      zero: 'Никто пока не активировал.',
     );
     return '$_temp0';
   }
@@ -3895,13 +3896,13 @@ class AppLocalizationsRu extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       months,
       locale: localeName,
-      other: '$months бесплатных месяцев',
-      many: '$months бесплатных месяцев',
-      few: '$months бесплатных месяца',
-      one: '1 бесплатный месяц',
-      zero: 'пока ничего',
+      other: 'Твой бонус: $months бесплатных месяцев.',
+      many: 'Твой бонус: $months бесплатных месяцев.',
+      few: 'Твой бонус: $months бесплатных месяца.',
+      one: 'Твой бонус: 1 бесплатный месяц.',
+      zero: 'Бонусы: пока ничего.',
     );
-    return 'Твой бонус: $_temp0';
+    return '$_temp0';
   }
 
   @override
@@ -4636,4 +4637,11 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get iapRestoreNoActive =>
       'Активной подписки для восстановления не найдено.';
+
+  @override
+  String get deadlineEuRadarTitle => 'Радар сроков ЕС (превью)';
+
+  @override
+  String get deadlineEuRadarSubtitle =>
+      'Гипотетические процессуальные сроки ЕС — тестовые данные';
 }

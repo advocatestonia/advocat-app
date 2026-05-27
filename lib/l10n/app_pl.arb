@@ -1950,5 +1950,9 @@
     "iapRestorePurchases": "Przywróć zakupy",
     "iapPurchaseFailed": "Zakup nie powiódł się. Spróbuj ponownie lub skontaktuj się z pomocą.",
     "iapRestoreSuccess": "Twoja subskrypcja została przywrócona.",
-    "iapRestoreNoActive": "Nie znaleziono aktywnej subskrypcji do przywrócenia."
+    "iapRestoreNoActive": "Nie znaleziono aktywnej subskrypcji do przywrócenia.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to pl"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to pl"}
 }

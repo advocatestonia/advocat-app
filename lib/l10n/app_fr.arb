@@ -1349,5 +1349,9 @@
     "iapRestorePurchases": "Restaurer les achats",
     "iapPurchaseFailed": "L’achat a échoué. Veuillez réessayer ou contacter le support.",
     "iapRestoreSuccess": "Votre abonnement a été restauré.",
-    "iapRestoreNoActive": "Aucun abonnement actif à restaurer."
+    "iapRestoreNoActive": "Aucun abonnement actif à restaurer.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to fr"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to fr"}
 }

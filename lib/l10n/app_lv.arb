@@ -1950,5 +1950,9 @@
     "iapRestorePurchases": "Atjaunot pirkumus",
     "iapPurchaseFailed": "Pirkums neizdevās. Lūdzu, mēģiniet vēlreiz vai sazinieties ar atbalstu.",
     "iapRestoreSuccess": "Jūsu abonements ir atjaunots.",
-    "iapRestoreNoActive": "Nav atrasts aktīvs abonements atjaunošanai."
+    "iapRestoreNoActive": "Nav atrasts aktīvs abonements atjaunošanai.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to lv"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to lv"}
 }

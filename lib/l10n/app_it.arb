@@ -1349,5 +1349,9 @@
     "iapRestorePurchases": "Ripristina acquisti",
     "iapPurchaseFailed": "Acquisto non riuscito. Riprova o contatta l’assistenza.",
     "iapRestoreSuccess": "Il tuo abbonamento è stato ripristinato.",
-    "iapRestoreNoActive": "Nessun abbonamento attivo da ripristinare."
+    "iapRestoreNoActive": "Nessun abbonamento attivo da ripristinare.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to it"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to it"}
 }

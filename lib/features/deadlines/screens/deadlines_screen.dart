@@ -868,6 +868,7 @@ class _EuRadarSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
@@ -882,19 +883,19 @@ class _EuRadarSection extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Theme(
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-          child: const ExpansionTile(
-            key: Key('eu-deadline-radar-section'),
-            leading: Icon(Icons.radar, color: AppColors.accent),
+          child: ExpansionTile(
+            key: const Key('eu-deadline-radar-section'),
+            leading: const Icon(Icons.radar, color: AppColors.accent),
             title: Text(
-              'EU deadline radar (preview)',
-              style: TextStyle(fontWeight: FontWeight.w700),
+              l.deadlineEuRadarTitle,
+              style: const TextStyle(fontWeight: FontWeight.w700),
             ),
             subtitle: Text(
-              'Hypothetical EU procedural deadlines — mock data',
-              style: TextStyle(fontSize: 11),
+              l.deadlineEuRadarSubtitle,
+              style: const TextStyle(fontSize: 11),
             ),
             childrenPadding: EdgeInsets.zero,
-            children: [DeadlineRadarEu()],
+            children: const [DeadlineRadarEu()],
           ),
         ),
       ),

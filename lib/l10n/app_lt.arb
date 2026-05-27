@@ -1950,5 +1950,9 @@
     "iapRestorePurchases": "Atkurti pirkinius",
     "iapPurchaseFailed": "Pirkimas nepavyko. Bandykite dar kartą arba susisiekite su pagalba.",
     "iapRestoreSuccess": "Jūsų prenumerata atkurta.",
-    "iapRestoreNoActive": "Atkurtinos aktyvios prenumeratos nerasta."
+    "iapRestoreNoActive": "Atkurtinos aktyvios prenumeratos nerasta.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to lt"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to lt"}
 }

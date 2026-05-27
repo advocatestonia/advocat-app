@@ -8077,6 +8077,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No active subscription found to restore.'**
   String get iapRestoreNoActive;
+
+  /// No description provided for @deadlineEuRadarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'EU deadline radar (preview)'**
+  String get deadlineEuRadarTitle;
+
+  /// No description provided for @deadlineEuRadarSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hypothetical EU procedural deadlines — mock data'**
+  String get deadlineEuRadarSubtitle;
 }
 
 class _AppLocalizationsDelegate

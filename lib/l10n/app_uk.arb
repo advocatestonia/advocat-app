@@ -1398,5 +1398,9 @@
     "iapRestorePurchases": "Відновити покупки",
     "iapPurchaseFailed": "Не вдалося здійснити покупку. Спробуйте ще раз або зверніться до підтримки.",
     "iapRestoreSuccess": "Вашу підписку відновлено.",
-    "iapRestoreNoActive": "Активну підписку для відновлення не знайдено."
+    "iapRestoreNoActive": "Активну підписку для відновлення не знайдено.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to uk"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to uk"}
 }

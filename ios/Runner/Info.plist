@@ -74,5 +74,16 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!--
+	  Background modes required for Firebase Cloud Messaging (Pkg 9
+	  Deadline Radar push channel). Without `remote-notification` iOS
+	  silently drops background pushes when the app is suspended.
+	  `fetch` enables periodic background data refresh.
+	-->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+		<string>fetch</string>
+	</array>
 </dict>
 </plist>

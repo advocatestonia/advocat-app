@@ -586,15 +586,9 @@ class _IdleBlock extends StatelessWidget {
                 color: AppColors.accent,
               ),
               const SizedBox(height: AppSpacing.sm),
-              Text(
-                l10n?.contractReviewTitle ?? 'Contract Review',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: -0.3,
-                ),
-              ),
-              const SizedBox(height: 4),
+              // NOTE: AppBar already renders contractReviewTitle — keep this
+              // block to a single description line so the screen does not show
+              // the title twice (visible RU/ET regression caught in manual E2E).
               Text(
                 l10n?.contractReviewQuotaRemaining ??
                     'Upload a contract (PDF, DOC, DOCX, or TXT) for an AI '

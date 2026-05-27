@@ -4597,4 +4597,11 @@ class AppLocalizationsRo extends AppLocalizations {
 
   @override
   String get iapRestoreNoActive => 'Nu există abonament activ de restaurat.';
+
+  @override
+  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+
+  @override
+  String get deadlineEuRadarSubtitle =>
+      'Hypothetical EU procedural deadlines — mock data';
 }

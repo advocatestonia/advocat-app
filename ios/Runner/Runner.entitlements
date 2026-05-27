@@ -21,6 +21,14 @@
 	       Runner.entitlements with the project (it's already on disk —
 	       the IDE just wires it into CODE_SIGN_ENTITLEMENTS).
 	-->
+	<!--
+	  TODO(owner): Before App Store submission, change `development` →
+	  `production` here (or create a separate Release.entitlements via
+	  Xcode build configuration). TestFlight builds also need
+	  `production` if they are distributed externally — internal
+	  testers can use `development`. APNs tokens minted under
+	  `development` will NOT deliver via the production APNs gateway.
+	-->
 	<key>aps-environment</key>
 	<string>development</string>
 </dict>

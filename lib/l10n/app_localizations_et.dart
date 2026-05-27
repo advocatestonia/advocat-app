@@ -4579,4 +4579,11 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get iapRestoreNoActive => 'Aktiivset taastatavat tellimust ei leitud.';
+
+  @override
+  String get deadlineEuRadarTitle => 'ELi tähtaegade radar (eelvaade)';
+
+  @override
+  String get deadlineEuRadarSubtitle =>
+      'Hüpoteetilised ELi menetlustähtajad — testandmed';
 }

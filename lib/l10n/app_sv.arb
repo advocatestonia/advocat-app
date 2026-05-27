@@ -1950,5 +1950,9 @@
     "iapRestorePurchases": "Återställ köp",
     "iapPurchaseFailed": "Köpet misslyckades. Försök igen eller kontakta supporten.",
     "iapRestoreSuccess": "Din prenumeration har återställts.",
-    "iapRestoreNoActive": "Inget aktivt abonnemang att återställa."
+    "iapRestoreNoActive": "Inget aktivt abonnemang att återställa.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to sv"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to sv"}
 }

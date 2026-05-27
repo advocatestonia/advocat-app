@@ -1971,5 +1971,9 @@
     "iapRestorePurchases": "Palauta ostokset",
     "iapPurchaseFailed": "Ostos epäonnistui. Yritä uudelleen tai ota yhteyttä tukeen.",
     "iapRestoreSuccess": "Tilauksesi on palautettu.",
-    "iapRestoreNoActive": "Aktiivista palautettavaa tilausta ei löytynyt."
+    "iapRestoreNoActive": "Aktiivista palautettavaa tilausta ei löytynyt.",
+    "deadlineEuRadarTitle": "EU-määräaikatutka (esikatselu)",
+    "@deadlineEuRadarTitle": {},
+    "deadlineEuRadarSubtitle": "Hypoteettiset EU-prosessuaaliset määräajat — testidata",
+    "@deadlineEuRadarSubtitle": {}
 }

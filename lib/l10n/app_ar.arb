@@ -1349,5 +1349,9 @@
     "iapRestorePurchases": "استعادة المشتريات",
     "iapPurchaseFailed": "فشلت عملية الشراء. يرجى المحاولة مرة أخرى أو التواصل مع الدعم.",
     "iapRestoreSuccess": "تمت استعادة اشتراكك.",
-    "iapRestoreNoActive": "لم يتم العثور على اشتراك نشط للاستعادة."
+    "iapRestoreNoActive": "لم يتم العثور على اشتراك نشط للاستعادة.",
+    "deadlineEuRadarTitle": "EU deadline radar (preview)",
+    "@deadlineEuRadarTitle": {"x-todo": "translate to ar"},
+    "deadlineEuRadarSubtitle": "Hypothetical EU procedural deadlines — mock data",
+    "@deadlineEuRadarSubtitle": {"x-todo": "translate to ar"}
 }

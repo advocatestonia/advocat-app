@@ -4597,4 +4597,11 @@ class AppLocalizationsLv extends AppLocalizations {
   @override
   String get iapRestoreNoActive =>
       'Nav atrasts aktīvs abonements atjaunošanai.';
+
+  @override
+  String get deadlineEuRadarTitle => 'EU deadline radar (preview)';
+
+  @override
+  String get deadlineEuRadarSubtitle =>
+      'Hypothetical EU procedural deadlines — mock data';
 }
