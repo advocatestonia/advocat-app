@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
+import '../../../core/icons/app_icons.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/supabase_service.dart';
 import '../../drafting/models/draft_model.dart';
@@ -734,10 +735,12 @@ class _VaultDocumentTile extends StatelessWidget {
   final VoidCallback onSwipeDelete;
 
   IconData get _icon {
+    // Brand: doc-type tags use AppIcons (Phosphor) — keeps vault tile glyphs
+    // visually consistent with the rest of the case-document surface.
     final mime = doc.mimeType;
-    if (mime.contains('pdf')) return Icons.picture_as_pdf;
-    if (mime.contains('image')) return Icons.image;
-    return Icons.insert_drive_file;
+    if (mime.contains('pdf')) return AppIcons.documentPdf;
+    if (mime.contains('image')) return AppIcons.documentImage;
+    return AppIcons.document;
   }
 
   String get _dateStr {

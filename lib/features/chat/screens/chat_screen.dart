@@ -14,6 +14,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException,
 import 'package:url_launcher/url_launcher.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
+import '../../../core/icons/app_icons.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
@@ -23,6 +24,7 @@ import '../../../services/chat_stream_event.dart';
 import '../../../services/claude_service.dart'
     show ClaudeService, ClaudeServiceException;
 import '../../../services/legal_planner.dart';
+import '../widgets/consilium_indicator.dart';
 import '../widgets/consilium_panel.dart';
 import '../widgets/contract_detected_chip.dart';
 import '../widgets/contract_upsell_card.dart';
@@ -46,6 +48,8 @@ import '../widgets/contract_review_upgrade_dialog.dart';
 import '../widgets/quota_error_snackbar.dart';
 import '../widgets/reasoning_trail.dart';
 import '../widgets/share_result_button.dart';
+import '../widgets/streaming_cursor.dart';
+import '../widgets/token_shimmer.dart';
 import '../widgets/agent_approval_card.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
@@ -2381,7 +2385,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.attach_file_rounded),
+          // Brand: AppIcons.attach (Phosphor paperclip) replaces Material
+          // `attach_file_rounded`.
+          icon: const Icon(AppIcons.attach),
           tooltip: AppLocalizations.of(context)?.tooltipAttachDoc ??
               'Attach document',
           onPressed: _showAttachOptions,
@@ -3566,7 +3572,58 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     }
 
     if (!isUser) {
-      return _buildRichAIContent(message.content, textColor);
+      // Signature streaming animation (2026-05-27):
+      //   - StreamingCursor: pulsing teal dot trailing the text while the
+      //     SSE stream is still delivering tokens (id starts with
+      //     `ai_stream_`).
+      //   - TokenShimmer: subtle one-shot horizontal sweep applied to the
+      //     content of a streaming message (fires once on first mount of
+      //     this bubble — does NOT couple to per-chunk SSE events, so the
+      //     stream handler stays untouched).
+      //   - ConsiliumIndicator: 4px navy dot rendered to the leading edge
+      //     of the bubble when the message carries consilium events.
+      final isStreaming = _isStreamingMessage(message);
+      final consiliumFired = message.consiliumEvents.isNotEmpty;
+      final richContent = _buildRichAIContent(message.content, textColor);
+      final body = isStreaming
+          ? TokenShimmer(
+              key: ValueKey('shimmer_${message.id}'),
+              child: richContent,
+            )
+          : richContent;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (consiliumFired) ...[
+                Padding(
+                  padding: const EdgeInsets.only(top: 7, right: 8),
+                  child: ConsiliumIndicator(
+                    key: ValueKey('consilium_dot_${message.id}'),
+                    fired: true,
+                    // i18n follow-up: AppLocalizations.consiliumReviewed once
+                    // the key is added to .arb files. Until then we ship the
+                    // English fallback (the dot has a Tooltip so users can
+                    // still read it).
+                  ),
+                ),
+              ],
+              Expanded(child: body),
+            ],
+          ),
+          if (isStreaming)
+            Padding(
+              padding: const EdgeInsets.only(top: 2),
+              child: StreamingCursor(
+                key: ValueKey('cursor_${message.id}'),
+                active: true,
+              ),
+            ),
+        ],
+      );
     }
 
     return SelectableText(
@@ -4800,7 +4857,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   onPressed: _isSending ? null : _onVoiceTap,
                   tooltip: AppLocalizations.of(context)?.voiceInput ?? 'Voice input',
                   icon: Icon(
-                    isListening ? Icons.stop_rounded : Icons.mic_rounded,
+                    // Brand: AppIcons.mic (Phosphor microphone) for idle
+                    // state; Material `stop_rounded` stays for the active
+                    // listening state (universal UX convention).
+                    isListening ? Icons.stop_rounded : AppIcons.mic,
                     color: isListening ? AppColors.error : AppColors.textSecondary,
                     size: 22,
                   ),

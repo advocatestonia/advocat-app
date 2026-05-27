@@ -67,6 +67,9 @@ dependencies:
   cached_network_image: ^3.3.1
   shimmer: ^3.0.0
   flutter_animate: ^4.5.0
+  # Phosphor icons — Advocat brand icon vocabulary (regular variant for body, thin for empty states).
+  # MIT licensed. See lib/core/icons/app_icons.dart for the single source of truth.
+  phosphor_flutter: ^2.1.0
 
   # Voice
   speech_to_text: ^6.6.0
@@ -104,6 +107,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/illustrations/
     - assets/l10n/
     - assets/legal/estonia/
     - assets/legal/finland/

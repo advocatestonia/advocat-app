@@ -28,9 +28,14 @@ class EmptyState extends StatelessWidget {
     this.iconColor,
     this.iconSize = 64,
     this.compact = false,
+    this.illustration,
+    this.illustrationSize = 180,
   });
 
   /// The large icon displayed at the top.
+  ///
+  /// Used as a fallback when [illustration] is null, ensuring callers that
+  /// pre-date the illustration system still render correctly.
   final IconData icon;
 
   /// The primary title text.
@@ -54,6 +59,17 @@ class EmptyState extends StatelessWidget {
   /// Whether to use compact spacing (e.g. inside a list section).
   final bool compact;
 
+  /// Optional path to a brand illustration asset (PNG) that takes precedence
+  /// over [icon] when provided. Example:
+  /// `'assets/illustrations/empty_inbox.png'`.
+  ///
+  /// When null, the widget falls back to rendering [icon] for backward
+  /// compatibility with existing call sites.
+  final String? illustration;
+
+  /// Rendered size (width & height) of the [illustration] in logical pixels.
+  final double illustrationSize;
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -65,11 +81,26 @@ class EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              icon,
-              size: iconSize,
-              color: iconColor ?? AppColors.textTertiary.withValues(alpha: 0.5),
-            ),
+            if (illustration != null)
+              Image.asset(
+                illustration!,
+                width: illustrationSize,
+                height: illustrationSize,
+                fit: BoxFit.contain,
+                semanticLabel: title,
+                errorBuilder: (context, error, stackTrace) => Icon(
+                  icon,
+                  size: iconSize,
+                  color: iconColor ??
+                      AppColors.textTertiary.withValues(alpha: 0.5),
+                ),
+              )
+            else
+              Icon(
+                icon,
+                size: iconSize,
+                color: iconColor ?? AppColors.textTertiary.withValues(alpha: 0.5),
+              ),
             SizedBox(height: compact ? AppSpacing.md : AppSpacing.lg),
             Text(
               title,

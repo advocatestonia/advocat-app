@@ -67,8 +67,11 @@ void main() {
           source.substring(checkerStart, legalSectionLabelIdx);
       expect(checkerBlock, contains('AppRoutes.checker'),
           reason: 'Checker tile must navigate to AppRoutes.checker');
-      expect(checkerBlock, contains('Icons.verified_user_rounded'),
-          reason: 'Checker tile should use verified_user_rounded icon');
+      // 2026-05-27 brand migration: tile glyph swapped from Material
+      // `Icons.verified_user_rounded` to `AppIcons.ai` (Phosphor brain) so
+      // the Checker reads as "AI-reviewed", not "verified-user account".
+      expect(checkerBlock, contains('AppIcons.ai'),
+          reason: 'Checker tile should use AppIcons.ai (brain glyph)');
     });
 
     test('row2#3 is the shield-pulsing AI Assistant tile (moved from row1#2)',

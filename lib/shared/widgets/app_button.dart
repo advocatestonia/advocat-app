@@ -3,22 +3,89 @@ import 'package:flutter/material.dart';
 import '../../config/theme.dart';
 
 /// The visual variant of an [AppButton].
-enum AppButtonVariant { primary, secondary, danger, ghost }
+///
+/// CTA hierarchy rule: **ONE [primary] per screen.** Use [secondary] for
+/// adjacent supporting actions, [tertiary] for low-emphasis text actions
+/// (e.g. Cancel), and [destructive] only for irreversible operations.
+///
+/// Deprecated aliases [danger] (use [destructive]) and [ghost] (use
+/// [tertiary]) are retained for backward compatibility during migration
+/// and will be removed in a future major version.
+enum AppButtonVariant {
+  /// Navy filled — the single dominant CTA per screen.
+  primary,
+
+  /// Outlined navy — adjacent action of equal logical weight but lower
+  /// visual weight than [primary].
+  secondary,
+
+  /// Text-only — low emphasis, used for Cancel / dismiss / nav.
+  tertiary,
+
+  /// Outlined red — irreversible destructive actions (delete, cancel
+  /// subscription, etc.).
+  destructive,
+
+  /// @Deprecated Use [destructive] instead.
+  @Deprecated('Use AppButtonVariant.destructive instead. Will be removed.')
+  danger,
+
+  /// @Deprecated Use [tertiary] instead.
+  @Deprecated('Use AppButtonVariant.tertiary instead. Will be removed.')
+  ghost,
+}
 
 /// The size of an [AppButton].
-enum AppButtonSize { small, medium, large }
+enum AppButtonSize {
+  /// Small (sm) — compact rows, dense lists.
+  sm,
 
-/// A reusable, brand-consistent button component.
+  /// Medium (md) — default for most screens.
+  md,
+
+  /// Large (lg) — hero CTAs, onboarding, paywalls.
+  lg,
+
+  /// @Deprecated Use [sm] instead.
+  @Deprecated('Use AppButtonSize.sm instead. Will be removed.')
+  small,
+
+  /// @Deprecated Use [md] instead.
+  @Deprecated('Use AppButtonSize.md instead. Will be removed.')
+  medium,
+
+  /// @Deprecated Use [lg] instead.
+  @Deprecated('Use AppButtonSize.lg instead. Will be removed.')
+  large,
+}
+
+/// The single canonical button primitive for Advocat.
 ///
-/// Supports four visual variants, three sizes, loading/disabled states,
-/// full-width mode, and optional leading or trailing icons.
-/// Includes press scale animation and variant-appropriate glow.
+/// **CTA hierarchy rule:** ONE [AppButtonVariant.primary] per screen. Use
+/// [AppButtonVariant.secondary] for adjacent actions of equal logical
+/// weight, [AppButtonVariant.tertiary] for cancel/dismiss text actions,
+/// and [AppButtonVariant.destructive] only for irreversible operations.
+///
+/// Replaces the legacy `GlowButton` primitive. Glow / pulse effects are
+/// intentionally NOT supported — use elevation, color weight, and size
+/// to express hierarchy instead.
 ///
 /// ```dart
+/// // Primary action
+/// AppButton(label: 'Save', onPressed: _save)
+///
+/// // Adjacent secondary
 /// AppButton(
-///   label: 'Save',
-///   variant: AppButtonVariant.primary,
-///   onPressed: () {},
+///   label: 'Cancel',
+///   variant: AppButtonVariant.tertiary,
+///   onPressed: _cancel,
+/// )
+///
+/// // Destructive
+/// AppButton(
+///   label: 'Delete account',
+///   variant: AppButtonVariant.destructive,
+///   onPressed: _delete,
 /// )
 /// ```
 class AppButton extends StatefulWidget {
@@ -27,7 +94,7 @@ class AppButton extends StatefulWidget {
     required this.label,
     this.onPressed,
     this.variant = AppButtonVariant.primary,
-    this.size = AppButtonSize.medium,
+    this.size = AppButtonSize.md,
     this.isLoading = false,
     this.isFullWidth = false,
     this.leadingIcon,
@@ -69,6 +136,46 @@ class _AppButtonState extends State<AppButton>
 
   bool get _isDisabled => widget.onPressed == null || widget.isLoading;
 
+  // ── Variant normalisation ────────────────────────────────────────────
+  //
+  // Map deprecated aliases (`danger`, `ghost`) to their canonical
+  // replacements so the rest of the widget switches on a closed set of
+  // four cases without `// ignore: deprecated_member_use`.
+
+  AppButtonVariant get _variant {
+    switch (widget.variant) {
+      // ignore: deprecated_member_use_from_same_package
+      case AppButtonVariant.danger:
+        return AppButtonVariant.destructive;
+      // ignore: deprecated_member_use_from_same_package
+      case AppButtonVariant.ghost:
+        return AppButtonVariant.tertiary;
+      case AppButtonVariant.primary:
+      case AppButtonVariant.secondary:
+      case AppButtonVariant.tertiary:
+      case AppButtonVariant.destructive:
+        return widget.variant;
+    }
+  }
+
+  AppButtonSize get _size {
+    switch (widget.size) {
+      // ignore: deprecated_member_use_from_same_package
+      case AppButtonSize.small:
+        return AppButtonSize.sm;
+      // ignore: deprecated_member_use_from_same_package
+      case AppButtonSize.medium:
+        return AppButtonSize.md;
+      // ignore: deprecated_member_use_from_same_package
+      case AppButtonSize.large:
+        return AppButtonSize.lg;
+      case AppButtonSize.sm:
+      case AppButtonSize.md:
+      case AppButtonSize.lg:
+        return widget.size;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -102,104 +209,127 @@ class _AppButtonState extends State<AppButton>
 
   // ── Sizing ───────────────────────────────────────────────────────────
 
-  EdgeInsets get _padding => switch (widget.size) {
-        AppButtonSize.small =>
+  EdgeInsets get _padding => switch (_size) {
+        AppButtonSize.sm =>
           const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        AppButtonSize.medium =>
+        AppButtonSize.md =>
           const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        AppButtonSize.large =>
+        AppButtonSize.lg =>
           const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+        // Deprecated aliases unreachable after _size normalisation, but
+        // exhaustiveness check requires them.
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.small ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.medium ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.large =>
+          const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       };
 
-  double get _fontSize => switch (widget.size) {
-        AppButtonSize.small => 13,
-        AppButtonSize.medium => 15,
-        AppButtonSize.large => 17,
+  double get _fontSize => switch (_size) {
+        AppButtonSize.sm => 13,
+        AppButtonSize.md => 15,
+        AppButtonSize.lg => 17,
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.small ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.medium ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.large =>
+          15,
       };
 
-  double get _iconSize => switch (widget.size) {
-        AppButtonSize.small => 16,
-        AppButtonSize.medium => 18,
-        AppButtonSize.large => 20,
+  double get _iconSize => switch (_size) {
+        AppButtonSize.sm => 16,
+        AppButtonSize.md => 18,
+        AppButtonSize.lg => 20,
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.small ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.medium ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.large =>
+          18,
       };
 
-  double get _spinnerSize => switch (widget.size) {
-        AppButtonSize.small => 14,
-        AppButtonSize.medium => 18,
-        AppButtonSize.large => 20,
+  double get _spinnerSize => switch (_size) {
+        AppButtonSize.sm => 14,
+        AppButtonSize.md => 18,
+        AppButtonSize.lg => 20,
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.small ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.medium ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.large =>
+          18,
       };
 
-  double get _borderRadius => switch (widget.size) {
-        AppButtonSize.small => AppRadius.sm,
-        AppButtonSize.medium => AppRadius.sm,
-        AppButtonSize.large => AppRadius.md,
+  double get _borderRadius => switch (_size) {
+        AppButtonSize.sm => AppRadius.sm,
+        AppButtonSize.md => AppRadius.sm,
+        AppButtonSize.lg => AppRadius.md,
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.small ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.medium ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonSize.large =>
+          AppRadius.sm,
       };
 
   // ── Colors ───────────────────────────────────────────────────────────
+  //
+  // Navy primary (#1A365D) per design system audit — replaces the
+  // previous teal accent so the dominant CTA reads as the brand primary,
+  // not the accent. Secondary/tertiary/destructive remain transparent
+  // with their respective foreground colors.
 
-  Color get _backgroundColor => switch (widget.variant) {
-        AppButtonVariant.primary => AppColors.accent,
+  Color get _backgroundColor => switch (_variant) {
+        AppButtonVariant.primary => AppColors.primary,
         AppButtonVariant.secondary => Colors.transparent,
-        AppButtonVariant.danger => Colors.transparent,
-        AppButtonVariant.ghost => Colors.transparent,
+        AppButtonVariant.tertiary => Colors.transparent,
+        AppButtonVariant.destructive => Colors.transparent,
+        // Unreachable after _variant normalisation.
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonVariant.danger ||
+        // ignore: deprecated_member_use_from_same_package
+        AppButtonVariant.ghost =>
+          Colors.transparent,
       };
 
-  Color get _foregroundColor => switch (widget.variant) {
+  Color get _foregroundColor => switch (_variant) {
         AppButtonVariant.primary => Colors.white,
         AppButtonVariant.secondary => AppColors.primary,
+        AppButtonVariant.tertiary => AppColors.textSecondary,
+        AppButtonVariant.destructive => AppColors.error,
+        // ignore: deprecated_member_use_from_same_package
         AppButtonVariant.danger => AppColors.error,
+        // ignore: deprecated_member_use_from_same_package
         AppButtonVariant.ghost => AppColors.textSecondary,
       };
 
-  Color get _disabledBackgroundColor => switch (widget.variant) {
-        AppButtonVariant.primary => AppColors.accent.withValues(alpha: 0.4),
+  Color get _disabledBackgroundColor => switch (_variant) {
+        AppButtonVariant.primary => AppColors.primary.withValues(alpha: 0.4),
         _ => Colors.transparent,
       };
 
-  Color get _disabledForegroundColor => switch (widget.variant) {
+  Color get _disabledForegroundColor => switch (_variant) {
         AppButtonVariant.primary => Colors.white.withValues(alpha: 0.7),
         _ => AppColors.textTertiary,
       };
 
-  BorderSide? get _borderSide => switch (widget.variant) {
+  BorderSide? get _borderSide => switch (_variant) {
         AppButtonVariant.secondary =>
           const BorderSide(color: AppColors.primary, width: 1.5),
+        AppButtonVariant.destructive =>
+          const BorderSide(color: AppColors.error, width: 1.5),
+        // ignore: deprecated_member_use_from_same_package
         AppButtonVariant.danger =>
           const BorderSide(color: AppColors.error, width: 1.5),
         _ => null,
       };
-
-  /// Returns glow shadow based on variant.
-  List<BoxShadow> get _glowShadow {
-    if (_isDisabled) return const [];
-    return switch (widget.variant) {
-      AppButtonVariant.primary => [
-          BoxShadow(
-            color: AppColors.accent.withValues(alpha: 0.30),
-            blurRadius: 12,
-            spreadRadius: 0,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      AppButtonVariant.danger => [
-          BoxShadow(
-            color: AppColors.error.withValues(alpha: 0.25),
-            blurRadius: 10,
-            spreadRadius: 0,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      AppButtonVariant.secondary => [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.12),
-            blurRadius: 8,
-            spreadRadius: 0,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      AppButtonVariant.ghost => const [],
-    };
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +348,7 @@ class _AppButtonState extends State<AppButton>
       }),
       overlayColor: WidgetStateProperty.all(
         _foregroundColor.withValues(
-            alpha: widget.variant == AppButtonVariant.primary ? 0.1 : 0.06),
+            alpha: _variant == AppButtonVariant.primary ? 0.1 : 0.06),
       ),
       padding: WidgetStateProperty.all(_padding),
       elevation: WidgetStateProperty.all(0),
@@ -257,13 +387,11 @@ class _AppButtonState extends State<AppButton>
           scale: _scaleAnimation.value,
           child: child,
         ),
-        child: Container(
+        child: SizedBox(
           width: widget.isFullWidth ? double.infinity : null,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(_borderRadius),
-            boxShadow: _glowShadow,
-          ),
-          child: widget.variant == AppButtonVariant.ghost
+          // Glow effect intentionally removed — hierarchy is conveyed
+          // through fill color, border weight, and label color only.
+          child: _variant == AppButtonVariant.tertiary
               ? TextButton(
                   onPressed: _isDisabled ? null : widget.onPressed,
                   style: buttonStyle,
@@ -303,11 +431,11 @@ class _AppButtonState extends State<AppButton>
       children: [
         if (widget.leadingIcon != null) ...[
           Icon(widget.leadingIcon, size: _iconSize),
-          SizedBox(width: widget.size == AppButtonSize.small ? 4 : 8),
+          SizedBox(width: _size == AppButtonSize.sm ? 4 : 8),
         ],
         textWidget,
         if (widget.trailingIcon != null) ...[
-          SizedBox(width: widget.size == AppButtonSize.small ? 4 : 8),
+          SizedBox(width: _size == AppButtonSize.sm ? 4 : 8),
           Icon(widget.trailingIcon, size: _iconSize),
         ],
       ],

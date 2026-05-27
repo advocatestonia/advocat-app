@@ -11,6 +11,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import '../../../config/feature_flags.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
+import '../../../core/icons/app_icons.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../main.dart';
 import '../../../models/case_model.dart';
@@ -29,6 +30,8 @@ import '../../deadlines/providers/deadlines_provider.dart';
 import '../../onboarding/data/sample_case_messages.dart';
 import '../../onboarding/widgets/welcome_modal.dart';
 import '../../b2b/providers/b2b_detection_provider.dart';
+import '../bootstrap/home_bootstrap.dart';
+import '../../referral/referral_nudge.dart';
 
 // ---------------------------------------------------------------------------
 // Home Dashboard
@@ -42,15 +45,69 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  /// Test hook: set to false to suppress the bootstrap modal queue when
+  /// pumping HomeScreen in a widget test that only cares about layout.
+  @visibleForTesting
+  static bool runBootstrapInTests = true;
+
   @override
   void initState() {
     super.initState();
+
+    // FIX 2026-05-27: cold-start used to fire six modal triggers
+    // simultaneously, which stacked 3+ dialogs on the user within 2s.
+    // We now route every modal through a serial priority queue (see
+    // `bootstrap/home_bootstrap.dart` for the order + cool-downs).
+    //
+    // Payment-return polling is the one exception: it lives outside the
+    // queue because it's a navigation effect, not a modal — it inspects
+    // the URL fragment synchronously and only kicks the post-frame
+    // callback when `payment-success` is present.
     _checkPaymentReturn();
-    _checkFirstTimeOnboarding();
-    _checkGdprConsent();
-    _checkPendingCheckout();
-    _maybeShowReferralNudge();
-    _maybeShowB2BLeadModal();
+
+    // The onboarding bootstrap (no UI) and the priority modal queue both
+    // run on the next frame so providers + layout are settled. The queue
+    // is awaited end-to-end so each modal blocks the next.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      if (!runBootstrapInTests) return;
+      unawaited(_runBootstrapQueue());
+    });
+  }
+
+  /// Serial priority queue for cold-start modals. Each step awaits the
+  /// previous modal's dismissal before checking the next, so the user
+  /// never sees two surfaces racing on the same frame.
+  ///
+  /// Order (mirrors `kBootstrapPriorityOrder`):
+  ///
+  ///   1. GDPR consent     (legal — blocking)
+  ///   2. Pending checkout (user just paid)
+  ///   3. Welcome modal    (first-time onboarding)
+  ///   4. B2B nudge        (opportunistic, cool-down gated)
+  ///
+  /// The referral snackbar is intentionally NOT here — it's surfaced from
+  /// the chat screen after the user sends their first successful message
+  /// (see `markFirstChatTimestamp` + the chat-screen integration point).
+  /// On subsequent home visits we just no-op; the snackbar already fired
+  /// in the natural success flow.
+  Future<void> _runBootstrapQueue() async {
+    // 1. GDPR — blocking. If declined the user is signed out by
+    //    `_checkGdprConsent` itself and the rest of the queue becomes moot.
+    await _checkGdprConsent();
+    if (!mounted) return;
+
+    // 2. Pending checkout — `?plan=...&billing=...` arrived via the
+    //    landing CTA. Drive the Stripe redirect before any onboarding.
+    await _checkPendingCheckout();
+    if (!mounted) return;
+
+    // 3. Welcome modal — first-time users only. Shared-prefs gated.
+    await _checkFirstTimeOnboarding();
+    if (!mounted) return;
+
+    // 4. B2B silent-signal modal — opportunistic, 7-day cool-down.
+    await _maybeShowB2BLeadModal();
   }
 
   /// B2B silent-signal detection. After login the backend may have flagged
@@ -68,16 +125,29 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       final isDemo = ref.read(isDemoModeProvider);
       if (isDemo) return;
 
-      // Settle 1.2s so the welcome modal (if any) has time to either show
-      // or skip itself first. This keeps the two surfaces from racing on
-      // a brand-new account's first login.
-      await Future.delayed(const Duration(milliseconds: 1200));
+      // Cool-down check: even if the backend re-flags pending=true, don't
+      // re-show within 7 days of the last impression. Prevents bursty
+      // re-triggering when an operator manually toggles
+      // `profiles.b2b_modal_pending` or when our detector is over-eager.
+      final cooldownPassed = await shouldShowB2bModal();
+      if (!cooldownPassed) return;
+
+      // The serial bootstrap queue (see `_runBootstrapQueue`) already
+      // guarantees GDPR + checkout + welcome have rendered/dismissed
+      // before we reach this step. No `Future.delayed` race-guard needed.
       if (!mounted) return;
 
       final locale = Localizations.localeOf(context).languageCode;
-      await ref
+      final action = await ref
           .read(b2bDetectionControllerProvider.notifier)
           .maybeTrigger(context, locale: locale);
+
+      // Only stamp the cool-down if the modal actually rendered (action
+      // non-null means the controller didn't short-circuit on
+      // `b2b_modal_pending=false`).
+      if (action != null) {
+        unawaited(markB2bModalShown());
+      }
     } catch (_) {
       // Swallow — never block the home-screen render path on B2B detection.
     }
@@ -95,6 +165,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   ///   * `referral_seen` is false — they haven't opened the invite screen.
   ///   * `referral_nudge_shown` is false — the snackbar fired ≥ once
   ///     already in a prior session; don't pester.
+  ///
+  /// 2026-05-27: this method is intentionally NOT called from
+  /// `initState` anymore — it stacked with GDPR + welcome + B2B and
+  /// turned cold-start into a modal-pile. The snackbar now belongs in
+  /// the chat-screen success path (after `markFirstChatTimestamp`).
+  /// Kept here so a future test or feature flag can re-enable the
+  /// post-cold-start variant without re-implementing the gates.
+  // ignore: unused_element
   Future<void> _maybeShowReferralNudge() async {
     try {
       // Soft-launch gate (consilium 2026-05-15) — referral surfaces are
@@ -156,8 +234,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         ),
       );
       // Fire-and-forget the persistence flip — don't block on the await
-      // result since the snackbar is already on screen.
-      unawaited(prefs.setBool('referral_nudge_shown', true));
+      // result since the snackbar is already on screen. Use the shared
+      // helper so the 14-day cool-down timestamp stays in sync with the
+      // legacy boolean.
+      unawaited(markReferralNudgeShown());
     } catch (_) {
       // Any failure here is silent; the nudge is a nice-to-have.
     }
@@ -222,21 +302,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
+  /// App major version used to key GDPR re-prompts. Bumped when ToS or
+  /// Privacy Policy changes materially. Kept inline (not in pubspec at
+  /// runtime) so a release can rev consent independently of the build
+  /// version number.
+  static const String _gdprMajorVersion = '1';
+
   Future<void> _checkGdprConsent() async {
     try {
       final isDemo = ref.read(isDemoModeProvider);
       if (isDemo) return; // Skip GDPR dialog in demo mode
 
+      // Server-side authoritative check (Supabase `profiles.gdpr_consent_at`)
+      // + local fallback. This already returns true if EITHER source has
+      // a stored consent — see gdpr_consent_dialog.dart.
       final hasConsent = await hasGdprConsent();
-      if (!hasConsent && mounted) {
-        // Small delay so the screen renders first
-        await Future.delayed(const Duration(milliseconds: 800));
-        if (mounted) {
-          final accepted = await showGdprConsentDialog(context);
-          if (!accepted && mounted) {
-            // User declined — sign them out
-            unawaited(ref.read(authControllerProvider.notifier).logout());
-          }
+
+      // Major-version gate: if the user accepted under an OLDER major
+      // version, re-prompt even when `hasConsent` is true. This is how
+      // we re-collect consent after a ToS rev without breaking the
+      // existing "already accepted" Supabase row.
+      final majorVersionNeedsPrompt =
+          await shouldShowGdprConsentForMajorVersion(
+              currentMajorVersion: _gdprMajorVersion);
+
+      if ((!hasConsent || majorVersionNeedsPrompt) && mounted) {
+        // The bootstrap queue already settled providers + layout; no
+        // additional `Future.delayed` warm-up needed here.
+        final accepted = await showGdprConsentDialog(context);
+        if (accepted) {
+          unawaited(markGdprAcceptedForMajorVersion(
+              currentMajorVersion: _gdprMajorVersion));
+        } else if (mounted) {
+          // User declined — sign them out
+          unawaited(ref.read(authControllerProvider.notifier).logout());
         }
       }
     } catch (_) {
@@ -883,24 +982,34 @@ class _QuickActions extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _QuickActionButton(
-                icon: Icons.document_scanner_outlined,
+                // Brand: AppIcons.scan (Phosphor) replaces Material
+                // `document_scanner_outlined`. Maps to the same /scan route.
+                icon: AppIcons.scan,
                 label: l.scanDocument,
                 color: AppColors.accent,
                 onTap: () => context.push(AppRoutes.scan),
               ),
               _QuickActionButton(
-                icon: Icons.verified_user_rounded,
+                // Checker = "this contract is safe" — `ai` (brain) reads as
+                // "AI-reviewed" better than `verified_user`.
+                icon: AppIcons.ai,
                 label: l.checkerTitle,
                 color: AppColors.primary,
                 onTap: () => context.push(AppRoutes.checker),
               ),
               _QuickActionButton(
-                icon: Icons.gavel_outlined,
+                // Legal-rights section: kept thematically with `consilium`
+                // (users / panel) instead of Material gavel — gavel reads as
+                // "court", and this tile opens rights, not courts.
+                icon: AppIcons.consilium,
                 label: l.legalSection,
                 color: AppColors.primary,
                 onTap: () => context.push(AppRoutes.rights),
               ),
               _QuickActionButton(
+                // Legal-aid calculator stays on Material `calculate_outlined`
+                // until AppIcons gains a dedicated calculator/coins glyph —
+                // brand consistency isn't worth a wrong-semantics swap here.
                 icon: Icons.calculate_outlined,
                 label: l.legalAidCalculator,
                 color: AppColors.warning,
@@ -913,13 +1022,15 @@ class _QuickActions extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _QuickActionButton(
-                icon: Icons.lock_outlined,
+                // Vault entry — `AppIcons.vault` (Phosphor safe) reads as
+                // "encrypted storage" much more clearly than a bare padlock.
+                icon: AppIcons.vault,
                 label: l.documents,
                 color: AppColors.accent,
                 onTap: () => context.push(AppRoutes.vault),
               ),
               _QuickActionButton(
-                icon: Icons.email_outlined,
+                icon: AppIcons.inbox,
                 label: l.email,
                 color: AppColors.info,
                 onTap: () => context.push(AppRoutes.email),
@@ -933,13 +1044,15 @@ class _QuickActions extends StatelessWidget {
               // reachable in ≤2 taps from Home: Drafts via this tile and Vault
               // via the lock-icon tile two slots earlier in the same grid.
               _QuickActionButton(
-                icon: Icons.edit_note_outlined,
+                icon: AppIcons.draft,
                 label: l.draftsTab,
                 color: AppColors.success,
                 onTap: () => context.push(AppRoutes.drafts),
               ),
               _QuickActionButton(
-                icon: Icons.add_circle_outline,
+                // "New case" — folder (caseFolder) is the canonical case glyph
+                // in AppIcons; Material `add_circle_outline` was generic.
+                icon: AppIcons.caseFolder,
                 label: l.newCase,
                 color: AppColors.primary,
                 onTap: () => context.push(AppRoutes.caseCreate),
@@ -957,7 +1070,11 @@ class _QuickActions extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _QuickActionButton(
-                icon: Icons.description_outlined,
+                // Contract Review uses `contract` (certificate glyph), the
+                // brand-consistent signal for "executed legal document"
+                // — distinct from `document` (generic file) and `draft`
+                // (work-in-progress composition).
+                icon: AppIcons.contract,
                 label: l.contractReviewTitle,
                 color: AppColors.accent,
                 onTap: () => context.push(AppRoutes.contractReview),
