@@ -518,3 +518,121 @@ Deno.test("recordHaltRailTrigger: swallows network failure", async () => {
   );
   // No assertion needed — the test passes iff the call resolves.
 });
+
+// =============================================================================
+// 2026-05-27 — extended language detection (17 locales)
+// =============================================================================
+
+Deno.test("detectLangFromMessage: detects DE", () => {
+  assertEquals(
+    detectLangFromMessage("ich werde aus Deutschland abgeschoben"),
+    "de",
+  );
+});
+
+Deno.test("detectLangFromMessage: detects ES (¿/¡/ñ)", () => {
+  assertEquals(
+    detectLangFromMessage("¿me están deportando de España?"),
+    "es",
+  );
+});
+
+Deno.test("detectLangFromMessage: detects FR", () => {
+  assertEquals(detectLangFromMessage("je suis expulsé de France"), "fr");
+});
+
+Deno.test("detectLangFromMessage: detects IT", () => {
+  assertEquals(detectLangFromMessage("sono deportato dall'Italia"), "it");
+});
+
+Deno.test("detectLangFromMessage: detects PL (ą/ę/ł)", () => {
+  assertEquals(detectLangFromMessage("jestem deportowany z Polski"), "pl");
+});
+
+Deno.test("detectLangFromMessage: detects RO", () => {
+  assertEquals(detectLangFromMessage("sunt deportat din România"), "ro");
+});
+
+Deno.test("detectLangFromMessage: detects SV", () => {
+  assertEquals(detectLangFromMessage("jag deporteras från Sverige"), "sv");
+});
+
+Deno.test("detectLangFromMessage: detects TR (ş/ğ)", () => {
+  assertEquals(
+    detectLangFromMessage("İsveç'ten sınır dışı ediliyorum"),
+    "tr",
+  );
+});
+
+Deno.test("detectLangFromMessage: detects LT", () => {
+  assertEquals(
+    detectLangFromMessage("aš esu deportuojamas iš Lietuvos"),
+    "lt",
+  );
+});
+
+Deno.test("detectLangFromMessage: detects LV", () => {
+  assertEquals(detectLangFromMessage("mani izraida no Latvijas"), "lv");
+});
+
+Deno.test("detectLangFromMessage: detects UK (i/ї/є/ґ)", () => {
+  assertEquals(detectLangFromMessage("мене депортують з України"), "uk");
+});
+
+Deno.test("detectLangFromMessage: detects AR", () => {
+  assertEquals(
+    detectLangFromMessage("سيتم ترحيلي من ألمانيا"),
+    "ar",
+  );
+});
+
+Deno.test("detectLangFromMessage: detects FA (می‌ / هستم)", () => {
+  assertEquals(
+    detectLangFromMessage("من از ایران اخراج می‌شوم"),
+    "fa",
+  );
+});
+
+Deno.test("detectLangFromMessage: empty string defaults to en (not ru)", () => {
+  assertEquals(detectLangFromMessage(""), "en");
+});
+
+Deno.test("detectLangFromMessage: FI still detected after extension", () => {
+  assertEquals(
+    detectLangFromMessage("minua ollaan käännyttämässä Suomesta"),
+    "fi",
+  );
+});
+
+Deno.test("detectLangFromMessage: ET still detected after extension", () => {
+  assertEquals(
+    detectLangFromMessage("mind saadetakse Soomest välja"),
+    "et",
+  );
+});
+
+Deno.test("detectLangFromMessage: RU still detected (Cyrillic)", () => {
+  assertEquals(detectLangFromMessage("меня хотят депортировать"), "ru");
+});
+
+Deno.test("BANNER: has all 17 locales (no missing key fallback)", async () => {
+  // Read source and grep-assert each locale code appears as a key.
+  const src = await Deno.readTextFile(
+    new URL("../halt_rail.ts", import.meta.url),
+  );
+  const locales = [
+    "ar", "de", "en", "es", "et", "fa", "fi", "fr", "it",
+    "lt", "lv", "pl", "ro", "ru", "sv", "tr", "uk",
+  ];
+  // Locate the BANNER const block and check each key appears.
+  const bannerStart = src.indexOf("const BANNER");
+  assert(bannerStart > 0, "BANNER const not found");
+  const bannerEnd = src.indexOf("\n};", bannerStart);
+  const block = src.slice(bannerStart, bannerEnd);
+  for (const l of locales) {
+    assert(
+      new RegExp(`\\b${l}:\\s*\\n? *"`).test(block),
+      `BANNER missing key for ${l}`,
+    );
+  }
+});

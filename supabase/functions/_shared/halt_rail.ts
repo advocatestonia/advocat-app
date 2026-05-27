@@ -489,12 +489,18 @@ export function appendHaltRailToSystem(
 }
 
 /**
- * Localised banner blocks. We keep them short, neutral in tone, and language-
- * matched to the most likely user language. Selection is heuristic: scan the
- * user's message for language signal; default to Russian (largest user
- * segment per 2026-05-13 analytics).
+ * Localised banner blocks. We keep them short, neutral in tone, and
+ * language-matched to the user's language. Selection is heuristic via
+ * `detectLangFromMessage` (Day 1-3 of MVP overnight; extended 2026-05-27
+ * to 17 locales matching `lib/l10n/*.arb`).
+ *
+ * The 4 anchor banners (ru/fi/et/en) carry the legal-specific text with
+ * the "asianajaja/vandeadvokaat" namedrops. The other 13 are shorter
+ * universal disclaimers — same message, same "consult a licensed lawyer"
+ * spirit, just in the user's UI language. The Sentinel detector below
+ * scans for any of the 4 anchor phrases.
  */
-const BANNER: Record<"ru" | "fi" | "et" | "en", string> = {
+const BANNER: Record<DetectedLang, string> = {
   ru:
     "\n\n---\n\n" +
     "⚠️ **Это серьёзная правовая ситуация.** " +
@@ -527,47 +533,136 @@ const BANNER: Record<"ru" | "fi" | "et" | "en", string> = {
     "**vandeadvokaat** (Estonia). Advocat helps you understand the law and prepare " +
     "drafts — but AI cannot represent you in court, negotiate on your behalf, or " +
     "extend attorney-client privilege (Advokatuuriseadus, Asianajajalaki).",
+  // ── 2026-05-27: 13 additional locales (matches lib/l10n/*.arb) ───────
+  ar:
+    "\n\n---\n\n⚠️ **هذا وضع قانوني خطير.** " +
+    "للتقاضي أو التفاوض الرسمي مع الطرف الآخر، يرجى استشارة محامٍ مرخّص. " +
+    "Advocat يساعدك على فهم القانون وإعداد المسودّات — لكن الذكاء الاصطناعي " +
+    "لا يمكنه تمثيلك في المحكمة أو التفاوض نيابةً عنك.",
+  de:
+    "\n\n---\n\n⚠️ **Dies ist eine ernste rechtliche Situation.** " +
+    "Für ein Gerichtsverfahren oder förmliche Schritte wenden Sie sich an einen " +
+    "lizenzierten Rechtsanwalt. Advocat hilft beim Verstehen des Rechts und beim " +
+    "Vorbereiten von Entwürfen — KI kann Sie aber nicht vor Gericht vertreten.",
+  es:
+    "\n\n---\n\n⚠️ **Esta es una situación legal seria.** " +
+    "Para acudir a los tribunales u otro procedimiento formal, consulte a un " +
+    "abogado colegiado. Advocat le ayuda a entender la ley y preparar borradores " +
+    "— pero la IA no puede representarle en los tribunales.",
+  fa:
+    "\n\n---\n\n⚠️ **این یک وضعیت حقوقی جدی است.** " +
+    "برای طرح دعوی در دادگاه یا مذاکره رسمی، با یک وکیل دارای پروانه مشورت " +
+    "کنید. Advocat به شما کمک می‌کند قانون را بفهمید و پیش‌نویس‌ها را آماده " +
+    "کنید — اما هوش مصنوعی نمی‌تواند شما را در دادگاه نمایندگی کند.",
+  fr:
+    "\n\n---\n\n⚠️ **Cette situation juridique est sérieuse.** " +
+    "Pour saisir un tribunal ou toute procédure formelle, consultez un avocat " +
+    "agréé. Advocat vous aide à comprendre le droit et à rédiger des projets " +
+    "— mais l'IA ne peut pas vous représenter au tribunal.",
+  it:
+    "\n\n---\n\n⚠️ **Questa è una situazione legale seria.** " +
+    "Per il deposito in tribunale o procedure formali, consulti un avvocato " +
+    "abilitato. Advocat l'aiuta a comprendere la legge e a preparare bozze — " +
+    "ma l'IA non può rappresentarla in tribunale.",
+  lt:
+    "\n\n---\n\n⚠️ **Tai rimta teisinė situacija.** " +
+    "Norėdami kreiptis į teismą ar imtis oficialių veiksmų, kreipkitės į " +
+    "licencijuotą advokatą. Advocat padeda suprasti įstatymą ir rengti " +
+    "juodraščius — bet DI negali jūsų atstovauti teisme.",
+  lv:
+    "\n\n---\n\n⚠️ **Šī ir nopietna juridiska situācija.** " +
+    "Lai vērstos tiesā vai veiktu oficiālas darbības, konsultējieties ar " +
+    "licencētu zvērinātu advokātu. Advocat palīdz izprast likumu un sagatavot " +
+    "melnrakstus — bet MI nevar jūs pārstāvēt tiesā.",
+  pl:
+    "\n\n---\n\n⚠️ **To poważna sytuacja prawna.** " +
+    "W sprawach sądowych lub formalnych czynnościach skonsultuj się z " +
+    "licencjonowanym adwokatem lub radcą prawnym. Advocat pomaga zrozumieć " +
+    "prawo i przygotować szkice — ale SI nie może reprezentować cię w sądzie.",
+  ro:
+    "\n\n---\n\n⚠️ **Aceasta este o situație juridică serioasă.** " +
+    "Pentru o cerere în instanță sau alte proceduri formale, consultați un " +
+    "avocat autorizat. Advocat vă ajută să înțelegeți legea și să pregătiți " +
+    "schițe — dar IA nu vă poate reprezenta în instanță.",
+  sv:
+    "\n\n---\n\n⚠️ **Detta är en allvarlig rättslig situation.** " +
+    "För domstolsförfaranden eller formella åtgärder, kontakta en licensierad " +
+    "advokat. Advocat hjälper dig att förstå lagen och förbereda utkast — men " +
+    "AI kan inte företräda dig i domstol.",
+  tr:
+    "\n\n---\n\n⚠️ **Bu ciddi bir hukuki durumdur.** " +
+    "Mahkemeye başvuru veya resmi işlemler için lisanslı bir avukata danışın. " +
+    "Advocat yasayı anlamanıza ve taslak hazırlamanıza yardımcı olur — ancak " +
+    "yapay zeka sizi mahkemede temsil edemez.",
+  uk:
+    "\n\n---\n\n⚠️ **Це серйозна правова ситуація.** " +
+    "Для подання до суду або інших офіційних дій зверніться до ліцензованого " +
+    "адвоката. Advocat допомагає зрозуміти закон і скласти чернетки — але ШІ " +
+    "не може представляти вас у суді.",
 };
 
-/** Heuristic language detection from a free-text message. */
-export function detectLangFromMessage(
-  message: string,
-): "ru" | "fi" | "et" | "en" {
-  if (!message) return "ru";
-  // Cyrillic anywhere → Russian.
-  if (/[\u0400-\u04FF]/.test(message)) return "ru";
-  // Estonian / Finnish vs English: count language-specific signals.
-  // We use whitespace + start/end boundaries rather than \b because the ASCII
-  // \b does not treat letters like ä/ö/õ/š/ž as word characters, so it
-  // misclassifies words ending in those letters. Replacing the message with
-  // ` ${text} ` and matching " word " is robust.
-  const padded = ` ${message.toLowerCase().slice(0, 1024)} `;
+/**
+ * Detected-language union — the 17 locales the Flutter app ships ARB
+ * translations for. Extended 2026-05-27 from the original 4 (ru/fi/et/en)
+ * to match `lib/l10n/*.arb`: ar, de, en, es, et, fa, fi, fr, it, lt, lv,
+ * pl, ro, ru, sv, tr, uk.
+ *
+ * Detection strategy:
+ *   1. Script-only languages (Arabic, Cyrillic non-RU, Persian, Ukrainian) —
+ *      pick the dominant Unicode block.
+ *   2. Latin-script languages — diacritic hard signals + per-language
+ *      stopword scoring, same pattern as the legacy FI/ET/EN detector.
+ *   3. Fall back to "en" when nothing scores (was "ru" — changed to "en"
+ *      so the global majority of users see a sensible default; native ru
+ *      users always trigger Cyrillic anyway).
+ */
+export type DetectedLang =
+  | "ru"
+  | "fi"
+  | "et"
+  | "en"
+  | "ar"
+  | "de"
+  | "es"
+  | "fa"
+  | "fr"
+  | "it"
+  | "lt"
+  | "lv"
+  | "pl"
+  | "ro"
+  | "sv"
+  | "tr"
+  | "uk";
 
-  // Hard signals — only valid in ONE of FI/ET, not both. These get heavy weight.
-  // Estonian uses õ, š, ž — none used in standard Finnish.
-  const etHardLetters = (padded.match(/[õšž]/g)?.length ?? 0) * 3;
-  // Finnish-only function words (do not occur in Estonian).
-  const FI_ONLY_WORDS = [
-    "että", "minä", "sinä", "hänen", "onko", "kun", "jos", "tai", "olen",
-    "kanssa", "teen", "tekoäly", "suomi", "suomessa", "suomesta", "saada",
-    "olen", "olla", "hei",
-  ];
-  // Estonian-only function words.
-  const ET_ONLY_WORDS = [
-    "ma", "sa", "ta", "mina", "sina", "tema", "kuid", "kas", "mida", "kus",
-    "kuidas", "see", "teha", "saaks", "saada", "kohtus", "kohtusse",
-    "õigesti", "olen", "ja", "või",
-  ];
-  // Note: "olen" and "saada" overlap between FI and ET grammars. They appear
-  // in both lists; that's fine because the disambiguation rides on the words
-  // that ARE unique (minä/että/hei in FI; ma/sa/ta/mina/kuid in ET) plus the
-  // Estonian hard letters.
+export function detectLangFromMessage(message: string): DetectedLang {
+  if (!message) return "en";
+  const sample = message.slice(0, 1024);
+
+  // ── Script-only short-circuits ─────────────────────────────────────────
+  // Arabic block U+0600-U+06FF. Persian shares this block; disambiguate
+  // via Persian-only letters (پ چ ژ گ) AND common Persian function words.
+  if (/[\u0600-\u06FF]/.test(sample)) {
+    if (/[پچژگ]/.test(sample)) return "fa";
+    // Fallback signal: common Persian verb endings + pronouns that don't
+    // appear in MSA Arabic. می‌ (imperfective prefix), من (I, used in Persian
+    // as a pronoun; in Arabic it means "from" but appears far less commonly
+    // as a standalone short word), از (from), هستم (am).
+    if (/(می‌|هستم|می‌شوم|می‌کنم|می‌توانم| از | که )/.test(sample)) return "fa";
+    return "ar";
+  }
+  // Cyrillic anywhere → Russian or Ukrainian. Disambiguate via Ukrainian-
+  // only letters (і ї є ґ — none in modern Russian alphabet).
+  if (/[\u0400-\u04FF]/.test(sample)) {
+    return /[іїєґ]/i.test(sample) ? "uk" : "ru";
+  }
+
+  // ── Latin-script — per-language stopword + diacritic scoring ──────────
+  const padded = ` ${sample.toLowerCase()} `;
 
   const countWords = (words: readonly string[]) => {
     let n = 0;
     for (const w of words) {
-      // " word " (whitespace-bounded) — matches at any whitespace boundary
-      // including newlines / tabs / punctuation followed by space.
       const re = new RegExp(
         `(^|[^\\p{L}\\p{N}])${
           w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
@@ -580,28 +675,121 @@ export function detectLangFromMessage(
     return n;
   };
 
-  const fiHardWords = countWords(FI_ONLY_WORDS) * 2;
-  const etHardWords = countWords(ET_ONLY_WORDS) * 2;
+  const countChars = (re: RegExp) => (sample.match(re)?.length ?? 0);
 
-  // Find FI words that are NOT in ET list (and vice-versa) for tie-breaking.
-  const fiUnique = FI_ONLY_WORDS.filter((w) => !ET_ONLY_WORDS.includes(w));
-  const etUnique = ET_ONLY_WORDS.filter((w) => !FI_ONLY_WORDS.includes(w));
-  const fiUniqueHits = countWords(fiUnique);
-  const etUniqueHits = countWords(etUnique);
+  // Per-language stopwords (function words that appear in 90%+ of any
+  // typical sentence). Curated to be MUTUALLY EXCLUSIVE where possible so
+  // a single hit is enough to discriminate between near-twins (e.g. lt/lv,
+  // it/es, sv/no).
+  const FI = [
+    "että", "minä", "minua", "sinä", "hänen", "onko", "olen", "olla", "hei",
+    "kanssa", "tekoäly", "suomi", "suomessa", "suomesta",
+    "ollaan", "ovat", "tulla", "tehdä", "haluan", "haluaisin", "voiko",
+    "saa", "saanko", "myös", "vielä", "kuitenkin",
+  ];
+  const ET = [
+    "ma", "sa", "mind", "mina", "sina", "tema", "kuid", "kas", "mida", "kus",
+    "kuidas", "see", "teha", "või", "õigesti", "ja", "ei", "on",
+    "soome", "soomes", "soomest", "eesti", "eestis", "eestist",
+    "saadetakse", "välja", "tahan", "tahaks", "saaks",
+  ];
+  const EN = [
+    "the", "and", "is", "are", "you", "with", "want", "against",
+    "application", "would", "should", "could", "have",
+  ];
+  const DE = [
+    "der", "die", "das", "ist", "und", "ich", "nicht", "mit", "wir",
+    "dass", "haben", "werden", "möchte", "sehr",
+  ];
+  const ES = [
+    "el", "la", "los", "las", "que", "es", "soy", "estoy", "para",
+    "por", "tengo", "quiero", "muy", "español",
+  ];
+  const FR = [
+    "le", "la", "les", "et", "je", "tu", "nous", "vous", "est", "pour",
+    "avec", "n'est", "c'est", "qu'il", "français",
+  ];
+  const IT = [
+    "il", "la", "lo", "gli", "che", "non", "sono", "siamo", "essere",
+    "questo", "questa", "italiano", "perché", "molto",
+  ];
+  const PL = [
+    "jest", "się", "nie", "tak", "to", "co", "jak", "który", "tylko",
+    "polski", "moja", "moje",
+  ];
+  const RO = [
+    "și", "este", "sunt", "nu", "să", "în", "pentru", "cu", "din",
+    "român", "română", "vreau", "trebuie",
+  ];
+  const SV = [
+    "jag", "är", "och", "att", "det", "inte", "har", "med", "för",
+    "men", "som", "vill", "vad", "svenska",
+  ];
+  const TR = [
+    "ben", "sen", "biz", "siz", "değil", "için", "ile", "bir", "bu",
+    "şu", "ve", "ama", "türkçe", "istiyorum",
+  ];
+  const LT = [
+    "aš", "tu", "jis", "ji", "yra", "nėra", "kad", "kaip", "tik",
+    "lietuvių", "noriu", "labai",
+  ];
+  const LV = [
+    "es", "tu", "viņš", "viņa", "ir", "nav", "kas", "ka", "tikai",
+    "latviešu", "gribu", "ļoti", "mani", "tevi", "izraida", "izsūta",
+    "latvija", "latvijā", "latvijas", "no", "uz",
+  ];
 
-  const enHits = countWords([
-    "the", "and", "is", "are", "i", "you", "to", "of", "in", "for", "with",
-    "want", "claim", "against", "finland", "estonia", "application",
-  ]);
+  // Hard-letter signals — each strongly suggests one language.
+  // Heavy weight (×3) so a single rare letter outweighs generic stopwords.
+  const etHardLetters = countChars(/[õšž]/g) * 3;
+  // FI uses ä ö but NOT ü/õ/ą — same for SE/DE.
+  // Polish-only letters.
+  const plHardLetters = countChars(/[ąćęłńóśźż]/gi) * 3;
+  // Romanian-only.
+  const roHardLetters = countChars(/[ăâîșțţş]/gi) * 3;
+  // Turkish-only.
+  const trHardLetters = countChars(/[ğıİş̆ŞĞ]/g) * 3;
+  // Lithuanian-only diacritics (overlaps with PL on ą ę but PL has more).
+  const ltHardLetters = countChars(/[ąčęėįšųūž]/gi) * 2;
+  // Latvian-only diacritics — macrons absent from other Baltic languages.
+  const lvHardLetters = countChars(/[āēīōūģķļņŗ]/gi) * 3;
+  // German-only ß.
+  const deHardLetters = countChars(/ß/gi) * 4;
+  // Spanish-only ¿ ¡ ñ.
+  const esHardLetters = countChars(/[¿¡ñ]/g) * 4;
+  // French-only œ ç (ç also Portuguese, but PT not in our locale set).
+  const frHardLetters = countChars(/[œçÿ]/gi) * 3;
+  // Italian: à è é ì ò ù are common; weight is moderate (overlap with FR).
+  const itHardLetters = countChars(/[àèéìíòóùú]/gi) * 1;
 
-  const fiHits = fiHardWords + fiUniqueHits * 4;
-  const etHits = etHardWords + etHardLetters + etUniqueHits * 4;
+  const scores: Record<string, number> = {
+    fi: countWords(FI) * 4,
+    et: countWords(ET) * 4 + etHardLetters,
+    en: countWords(EN) * 3,
+    de: countWords(DE) * 4 + deHardLetters,
+    es: countWords(ES) * 4 + esHardLetters,
+    fr: countWords(FR) * 4 + frHardLetters,
+    it: countWords(IT) * 4 + itHardLetters,
+    pl: countWords(PL) * 4 + plHardLetters,
+    ro: countWords(RO) * 4 + roHardLetters,
+    sv: countWords(SV) * 4,
+    tr: countWords(TR) * 4 + trHardLetters,
+    lt: countWords(LT) * 4 + ltHardLetters,
+    lv: countWords(LV) * 4 + lvHardLetters,
+  };
 
-  const best = Math.max(fiHits, etHits, enHits);
-  if (best < 1) return "ru";
-  if (best === fiHits && fiHits >= etHits) return "fi";
-  if (best === etHits) return "et";
-  return "en";
+  let bestLang: DetectedLang = "en";
+  let bestScore = 0;
+  for (const [lang, score] of Object.entries(scores)) {
+    if (score > bestScore) {
+      bestScore = score;
+      bestLang = lang as DetectedLang;
+    }
+  }
+  // Floor — when no signal at all, fall back to English (was "ru" in the
+  // legacy detector; English is the safer global default).
+  if (bestScore < 1) return "en";
+  return bestLang;
 }
 
 // ─── Metric write (P5 of Bentley batch, 2026-05-15) ─────────────────────
@@ -616,7 +804,12 @@ export function detectLangFromMessage(
 
 export interface HaltRailMetricInput {
   detection: HaltDetection;
-  language: "ru" | "fi" | "et" | "en" | null;
+  /**
+   * Extended 2026-05-27 to the full 17-locale set the Flutter app supports
+   * (was: ru/fi/et/en only). DB column is TEXT so this is additive — old
+   * rows keep their narrow values, new rows can use any of the 17.
+   */
+  language: DetectedLang | null;
   /** Auth user UUID, or null for anon callers. NEVER pass the anon:<hash> pseudo-id. */
   userId: string | null;
   supabaseUrl: string;
