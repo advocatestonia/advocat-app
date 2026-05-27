@@ -1878,10 +1878,17 @@ serve(async (req) => {
               // type that the client decodes into a tool-card with
               // Approve/Decline buttons.
               const encoder = new TextEncoder();
+              // Emit synthetic SSE message_start + a `data:` line with a
+              // self-describing `type: "agent_awaiting_approval"` field.
+              // The Flutter parser dispatches on parsed['type'] (see
+              // chat_stream_event.dart parseSseEvent), so a custom event
+              // line is unnecessary and would actually be skipped by the
+              // existing client parser.
               const sseLines = [
                 `event: agent_awaiting_approval`,
                 `data: ${
                   JSON.stringify({
+                    type: "agent_awaiting_approval",
                     agent_run_id: agentRunId,
                     tool_name: writeBlock.name,
                     tool_input: writeArgs,

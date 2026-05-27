@@ -433,6 +433,71 @@ final class ConsiliumDone extends ChatStreamEvent {
 }
 
 // ---------------------------------------------------------------------------
+// Agent loop (Day 4 backend, 2026-05-27) — write-tool approval gate
+// ---------------------------------------------------------------------------
+
+/// claude-proxy halted its agent loop on a WRITE tool and is asking the
+/// user to approve (or decline) execution.
+///
+/// Backend persisted an `agent_runs` row with status='awaiting_approval'
+/// and a signed HMAC `actionId`. The chat UI renders an approval card
+/// with the tool name + input preview + Approve/Decline buttons; tapping
+/// Approve POSTs to the `agent-approve` edge fn with `{run_id, action_id,
+/// decision}` which verifies the HMAC and executes the write.
+///
+/// `toolInput` is the raw JSON of the model's tool_use.input — its shape
+/// depends on `toolName`. For `draft_email_with_attachments` it's
+/// `{to, subject, body, cc?, attachment_ids, …}`; the UI should expand
+/// recipients/subject/body in full, NOT truncate, so the user can read
+/// every word they're about to sign off on.
+final class AgentAwaitingApproval extends ChatStreamEvent {
+  const AgentAwaitingApproval({
+    required this.agentRunId,
+    required this.toolName,
+    required this.toolInput,
+    required this.actionId,
+    required this.iterations,
+  });
+
+  /// agent_runs.id — server-side row id. Echoed back to /agent-approve.
+  final String agentRunId;
+
+  /// Tool the model wants to run (e.g. "send_email",
+  /// "draft_email_with_attachments", "generate_pdf").
+  final String toolName;
+
+  /// The exact input the tool will receive on approval. The UI MUST
+  /// display this in full (recipients, subject, body, attachment list)
+  /// so the user can review every word they're authorising.
+  final Map<String, dynamic> toolInput;
+
+  /// HMAC-signed token. Binds the agent_run_id + user_id + tool_name +
+  /// args_sha256. 5-min TTL. Server re-verifies on POST.
+  final String actionId;
+
+  /// How many iterations the agent loop ran before stopping for approval
+  /// (0-5). Useful for the UI to surface "Advocat ran N steps, now needs
+  /// your approval to send".
+  final int iterations;
+
+  @override
+  String toString() =>
+      'AgentAwaitingApproval(tool=$toolName, run=$agentRunId, iter=$iterations)';
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AgentAwaitingApproval &&
+          other.agentRunId == agentRunId &&
+          other.toolName == toolName &&
+          other.actionId == actionId &&
+          other.iterations == iterations;
+
+  @override
+  int get hashCode => Object.hash(agentRunId, toolName, actionId, iterations);
+}
+
+// ---------------------------------------------------------------------------
 // Backwards-compat shim
 // ---------------------------------------------------------------------------
 

@@ -1393,6 +1393,55 @@
         "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
         "placeholders": { "count": { "type": "int" } }
     },
+
+    "agentApprovalNeedsReviewTitle": "Advocat needs your approval",
+    "@agentApprovalNeedsReviewTitle": {
+        "description": "Day 6-7 (2026-05-27): title above the agent-loop approval card."
+    },
+    "agentApprovalResolvedTitle": "Action resolved",
+    "@agentApprovalResolvedTitle": {
+        "description": "Day 6-7 (2026-05-27): title after the user approved or declined the agent's pending action."
+    },
+    "agentApprovalStepsLabel": "steps",
+    "@agentApprovalStepsLabel": {
+        "description": "Day 6-7 (2026-05-27): label after iteration count, e.g. '4 steps'."
+    },
+    "agentApprovalApproveButton": "Approve & Send",
+    "@agentApprovalApproveButton": {
+        "description": "Day 6-7 (2026-05-27): primary action on the approval card."
+    },
+    "agentApprovalDeclineButton": "Decline",
+    "@agentApprovalDeclineButton": {
+        "description": "Day 6-7 (2026-05-27): secondary action on the approval card."
+    },
+    "agentApprovalAttachmentsLabel": "Attachments",
+    "@agentApprovalAttachmentsLabel": {
+        "description": "Day 6-7 (2026-05-27): label above the attachment chip row."
+    },
+    "agentApprovalSentSummary": "Sent on your behalf.",
+    "@agentApprovalSentSummary": {
+        "description": "Day 6-7 (2026-05-27): chat message after the user approved + the write succeeded."
+    },
+    "agentApprovalDeclinedSummary": "Declined — nothing was sent.",
+    "@agentApprovalDeclinedSummary": {
+        "description": "Day 6-7 (2026-05-27): chat message after the user declined the agent's pending action."
+    },
+    "agentToolDraftEmailAtt": "Send email with attachments",
+    "@agentToolDraftEmailAtt": {
+        "description": "Day 6-7 (2026-05-27): friendly name for the draft_email_with_attachments tool on the approval card."
+    },
+    "agentToolSendEmail": "Send email",
+    "@agentToolSendEmail": {
+        "description": "Day 6-7 (2026-05-27): friendly name for send_email tool."
+    },
+    "agentToolGeneratePdf": "Generate PDF",
+    "@agentToolGeneratePdf": {
+        "description": "Day 6-7 (2026-05-27): friendly name for generate_pdf tool."
+    },
+    "agentToolApproveSend": "Send prepared reply",
+    "@agentToolApproveSend": {
+        "description": "Day 6-7 (2026-05-27): friendly name for approve_send_draft tool."
+    },
     "inboxErrorTitle": "Could not load inbox",
     "@inboxErrorTitle": {
         "description": "P1-6 (2026-05-27): title shown above the retry button when the inbox failed to load."

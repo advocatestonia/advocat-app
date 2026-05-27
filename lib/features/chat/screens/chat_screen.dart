@@ -46,6 +46,7 @@ import '../widgets/contract_review_upgrade_dialog.dart';
 import '../widgets/quota_error_snackbar.dart';
 import '../widgets/reasoning_trail.dart';
 import '../widgets/share_result_button.dart';
+import '../widgets/agent_approval_card.dart';
 import '../widgets/tool_result_card.dart';
 import '../widgets/voice_button.dart';
 import '../widgets/example_prompt_cards.dart';
@@ -64,7 +65,7 @@ import '../../case_memory/widgets/deadline_banner.dart';
 
 enum MessageRole { user, assistant, system, toolResult }
 
-enum MessageContentType { text, issueCard, draftCard, toolCard }
+enum MessageContentType { text, issueCard, draftCard, toolCard, agentApproval }
 
 class ChatMessage {
   final String id;
@@ -1350,6 +1351,34 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 // TextDelta: still drives the existing buffer + TTS chunk
                 // feed exactly as before. Non-text events do not touch the
                 // text buffer or the speaker.
+                // ── Day 6-7 (2026-05-27) — agent-loop approval gate ──
+                // When claude-proxy halts on a WRITE tool, it emits
+                // exactly one `agent_awaiting_approval` SSE frame. We
+                // append a special ChatMessage with contentType
+                // .agentApproval so the build loop renders the
+                // approval card. No text buffer or TTS feed is touched.
+                if (event is AgentAwaitingApproval) {
+                  if (mounted) {
+                    setState(() {
+                      _messages.add(ChatMessage(
+                        id: 'agent_apr_${DateTime.now().millisecondsSinceEpoch}',
+                        role: MessageRole.assistant,
+                        content: '',
+                        timestamp: DateTime.now(),
+                        contentType: MessageContentType.agentApproval,
+                        metadata: <String, dynamic>{
+                          'agent_run_id': event.agentRunId,
+                          'tool_name': event.toolName,
+                          'tool_input': event.toolInput,
+                          'action_id': event.actionId,
+                          'iterations': event.iterations,
+                        },
+                      ));
+                    });
+                    _scrollToBottom();
+                  }
+                }
+
                 if (event is TextDelta) {
                   final chunk = event.text;
                   fullText.write(chunk);
@@ -3393,6 +3422,37 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Widget _buildMessageContent(ChatMessage message, bool isUser) {
     final textColor = isUser ? Colors.white : AppColors.textPrimary;
+
+    // Day 6-7 (2026-05-27) — agent-loop approval card.
+    // claude-proxy halted on a write tool. Render AgentApprovalCard with
+    // the full tool_input preview + Approve/Decline buttons. On resolution
+    // (success or decline) we append a small note back into the chat.
+    if (message.contentType == MessageContentType.agentApproval &&
+        message.metadata != null) {
+      final meta = message.metadata!;
+      return AgentApprovalCard(
+        agentRunId: (meta['agent_run_id'] as String?) ?? '',
+        toolName: (meta['tool_name'] as String?) ?? '',
+        toolInput: (meta['tool_input'] as Map?)?.cast<String, dynamic>() ??
+            const <String, dynamic>{},
+        actionId: (meta['action_id'] as String?) ?? '',
+        iterations: (meta['iterations'] is int)
+            ? meta['iterations'] as int
+            : 0,
+        onResolved: (approved, summary) {
+          if (!mounted) return;
+          setState(() {
+            _messages.add(ChatMessage(
+              id: 'agent_done_${DateTime.now().millisecondsSinceEpoch}',
+              role: MessageRole.assistant,
+              content: summary,
+              timestamp: DateTime.now(),
+            ));
+          });
+          _scrollToBottom();
+        },
+      );
+    }
 
     // Tool result messages get a rich card
     if (message.role == MessageRole.toolResult && message.toolResult != null) {

@@ -3350,6 +3350,42 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+
+  @override
+  String get agentApprovalResolvedTitle => 'Action resolved';
+
+  @override
+  String get agentApprovalStepsLabel => 'steps';
+
+  @override
+  String get agentApprovalApproveButton => 'Approve & Send';
+
+  @override
+  String get agentApprovalDeclineButton => 'Decline';
+
+  @override
+  String get agentApprovalAttachmentsLabel => 'Attachments';
+
+  @override
+  String get agentApprovalSentSummary => 'Sent on your behalf.';
+
+  @override
+  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+
+  @override
+  String get agentToolDraftEmailAtt => 'Send email with attachments';
+
+  @override
+  String get agentToolSendEmail => 'Send email';
+
+  @override
+  String get agentToolGeneratePdf => 'Generate PDF';
+
+  @override
+  String get agentToolApproveSend => 'Send prepared reply';
+
+  @override
   String get inboxErrorTitle => 'Could not load inbox';
 
   @override

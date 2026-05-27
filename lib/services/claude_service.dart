@@ -1460,6 +1460,33 @@ List<ChatStreamEvent> parseSseEvent(
       s.consiliumActive = false;
       break;
 
+    // ── Day 4 backend (2026-05-27) — agent-loop write-tool approval ────
+    // claude-proxy halted on a WRITE tool and is asking the user to
+    // approve. The single SSE frame carries everything the UI needs to
+    // render an approval card (run id + tool name + full tool_input +
+    // signed action_id + iter count).
+    case 'agent_awaiting_approval':
+      {
+        final toolInputRaw = parsed['tool_input'];
+        final toolInputMap = toolInputRaw is Map<String, dynamic>
+            ? toolInputRaw
+            : (toolInputRaw is Map
+                ? Map<String, dynamic>.from(toolInputRaw)
+                : <String, dynamic>{});
+        out.add(AgentAwaitingApproval(
+          agentRunId: (parsed['agent_run_id'] as String?) ?? '',
+          toolName: (parsed['tool_name'] as String?) ?? '',
+          toolInput: toolInputMap,
+          actionId: (parsed['action_id'] as String?) ?? '',
+          iterations: parsed['iterations'] is int
+              ? parsed['iterations'] as int
+              : (parsed['iterations'] is num
+                  ? (parsed['iterations'] as num).toInt()
+                  : 0),
+        ));
+      }
+      break;
+
     case 'done':
       // Generic terminator used by some backend variants. Only promote it
       // to ConsiliumDone if we saw a consilium_start and have not yet

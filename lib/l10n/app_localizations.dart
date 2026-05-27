@@ -6092,6 +6092,78 @@ abstract class AppLocalizations {
   /// **'Retry failed ({count})'**
   String parallelActionsRetryFailed(int count);
 
+  /// Day 6-7 (2026-05-27): title above the agent-loop approval card.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat needs your approval'**
+  String get agentApprovalNeedsReviewTitle;
+
+  /// Day 6-7 (2026-05-27): title after the user approved or declined the agent's pending action.
+  ///
+  /// In en, this message translates to:
+  /// **'Action resolved'**
+  String get agentApprovalResolvedTitle;
+
+  /// Day 6-7 (2026-05-27): label after iteration count, e.g. '4 steps'.
+  ///
+  /// In en, this message translates to:
+  /// **'steps'**
+  String get agentApprovalStepsLabel;
+
+  /// Day 6-7 (2026-05-27): primary action on the approval card.
+  ///
+  /// In en, this message translates to:
+  /// **'Approve & Send'**
+  String get agentApprovalApproveButton;
+
+  /// Day 6-7 (2026-05-27): secondary action on the approval card.
+  ///
+  /// In en, this message translates to:
+  /// **'Decline'**
+  String get agentApprovalDeclineButton;
+
+  /// Day 6-7 (2026-05-27): label above the attachment chip row.
+  ///
+  /// In en, this message translates to:
+  /// **'Attachments'**
+  String get agentApprovalAttachmentsLabel;
+
+  /// Day 6-7 (2026-05-27): chat message after the user approved + the write succeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent on your behalf.'**
+  String get agentApprovalSentSummary;
+
+  /// Day 6-7 (2026-05-27): chat message after the user declined the agent's pending action.
+  ///
+  /// In en, this message translates to:
+  /// **'Declined — nothing was sent.'**
+  String get agentApprovalDeclinedSummary;
+
+  /// Day 6-7 (2026-05-27): friendly name for the draft_email_with_attachments tool on the approval card.
+  ///
+  /// In en, this message translates to:
+  /// **'Send email with attachments'**
+  String get agentToolDraftEmailAtt;
+
+  /// Day 6-7 (2026-05-27): friendly name for send_email tool.
+  ///
+  /// In en, this message translates to:
+  /// **'Send email'**
+  String get agentToolSendEmail;
+
+  /// Day 6-7 (2026-05-27): friendly name for generate_pdf tool.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate PDF'**
+  String get agentToolGeneratePdf;
+
+  /// Day 6-7 (2026-05-27): friendly name for approve_send_draft tool.
+  ///
+  /// In en, this message translates to:
+  /// **'Send prepared reply'**
+  String get agentToolApproveSend;
+
   /// P1-6 (2026-05-27): title shown above the retry button when the inbox failed to load.
   ///
   /// In en, this message translates to:
