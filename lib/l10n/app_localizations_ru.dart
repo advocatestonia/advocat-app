@@ -4482,4 +4482,158 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get deletingAccount => 'Удаление аккаунта…';
+
+  @override
+  String get contractReviewTitle => 'Проверить договор';
+
+  @override
+  String get contractReviewUploadCta => 'Загрузить договор';
+
+  @override
+  String get contractReviewQuotaRemaining =>
+      'Загрузите договор в PDF, DOC, DOCX или TXT — AI выдаст список рисков и подсказки для переговоров.';
+
+  @override
+  String get contractReviewRedFlags => 'Красные флаги';
+
+  @override
+  String get contractReviewReviewPoints => 'Пункты для проверки';
+
+  @override
+  String get contractReviewNegotiationTips => 'Советы по переговорам';
+
+  @override
+  String get contractReviewSaveToVault => 'Сохранить в Хранилище';
+
+  @override
+  String get contractReviewContinueChat => 'Продолжить в чате';
+
+  @override
+  String get referralInviteFriends => 'Пригласить друзей';
+
+  @override
+  String get referralYourCode => 'Ваш код';
+
+  @override
+  String get referralCopiedToast => 'Код скопирован';
+
+  @override
+  String get referralReward =>
+      'Получите 1 месяц Counsel бесплатно за каждого друга, который оформит подписку.';
+
+  @override
+  String get referralInvited => 'Приглашено друзей';
+
+  @override
+  String get referralRewardsEarned => 'Бесплатных месяцев получено';
+
+  @override
+  String get deadlineUrgencyToday => 'Сегодня и просрочено';
+
+  @override
+  String get deadlineUrgencyWeek => 'На этой неделе';
+
+  @override
+  String get deadlineUrgencyMonth => 'В этом месяце';
+
+  @override
+  String get deadlineUrgencyLater => 'Позже';
+
+  @override
+  String get deadlineAddManual => 'Добавить срок';
+
+  @override
+  String get deadlineSnoozeBy => 'Отложить';
+
+  @override
+  String get deadlineSnooze1d => '1 день';
+
+  @override
+  String get deadlineSnooze3d => '3 дня';
+
+  @override
+  String get deadlineSnooze7d => '7 дней';
+
+  @override
+  String get deadlineDismiss => 'Удалить';
+
+  @override
+  String get deadlineExportIcs => 'В календарь';
+
+  @override
+  String get deadlineSource => 'Источник';
+
+  @override
+  String get deadlineEmpty =>
+      'Сроков пока нет. Сроки создаются автоматически из писем и документов — или добавьте вручную кнопкой +.';
+
+  @override
+  String get deadlineNewTitle => 'Новый срок';
+
+  @override
+  String get deadlineFieldTitle => 'Название';
+
+  @override
+  String get deadlineFieldDueDate => 'Дата';
+
+  @override
+  String get deadlineFieldNotes => 'Заметки (необязательно)';
+
+  @override
+  String get deadlineSaved => 'Срок сохранён';
+
+  @override
+  String get deadlineSaveFailed => 'Не удалось сохранить срок';
+
+  @override
+  String get deadlineUrgentBannerSingle => '1 срок сегодня или просрочен';
+
+  @override
+  String deadlineUrgentBannerMany(int count) {
+    return '$count сроков сегодня или просрочено';
+  }
+
+  @override
+  String deadlineDaysLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'осталось $count дней',
+      many: 'осталось $count дней',
+      few: 'осталось $count дня',
+      one: 'остался 1 день',
+      zero: 'сегодня',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String deadlineDaysOverdue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count дней просрочки',
+      many: '$count дней просрочки',
+      few: '$count дня просрочки',
+      one: '1 день просрочки',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get iapPayWithApple => 'Оплатить через Apple';
+
+  @override
+  String get iapRestorePurchases => 'Восстановить покупки';
+
+  @override
+  String get iapPurchaseFailed =>
+      'Покупка не удалась. Попробуйте снова или обратитесь в поддержку.';
+
+  @override
+  String get iapRestoreSuccess => 'Ваша подписка восстановлена.';
+
+  @override
+  String get iapRestoreNoActive =>
+      'Активной подписки для восстановления не найдено.';
 }

@@ -217,10 +217,11 @@ void main() {
     await tester.pumpWidget(_wrap(repo: repo, container: container));
     await tester.pumpAndSettle();
 
-    // Tap urgent → confirm dialog → confirm.
+    // Tap urgent — the UX was refactored from a confirm-dialog flow to a
+    // one-tap-and-go flow with an Undo snackbar. The single tap immediately
+    // materializes the case and navigates to chat. (No 'intake-urgent-confirm'
+    // dialog exists anymore — see _onUrgent in intake_wizard_screen.dart.)
     await tester.tap(find.byKey(const Key('intake-urgent-btn')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('intake-urgent-confirm')));
     await tester.pumpAndSettle();
 
     // Case was created even though step 2 was empty (urgent path

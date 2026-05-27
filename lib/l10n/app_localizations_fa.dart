@@ -4424,4 +4424,153 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String get deletingAccount => '[en] Deleting account…';
+
+  @override
+  String get contractReviewTitle => 'Contract Review';
+
+  @override
+  String get contractReviewUploadCta => 'Upload contract';
+
+  @override
+  String get contractReviewQuotaRemaining =>
+      'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.';
+
+  @override
+  String get contractReviewRedFlags => 'Red flags';
+
+  @override
+  String get contractReviewReviewPoints => 'Review points';
+
+  @override
+  String get contractReviewNegotiationTips => 'Negotiation tips';
+
+  @override
+  String get contractReviewSaveToVault => 'Save to Vault';
+
+  @override
+  String get contractReviewContinueChat => 'Continue in chat';
+
+  @override
+  String get referralInviteFriends => 'Invite Friends';
+
+  @override
+  String get referralYourCode => 'Your code';
+
+  @override
+  String get referralCopiedToast => 'Code copied to clipboard';
+
+  @override
+  String get referralReward =>
+      'Get 1 month of Counsel free for every friend who subscribes.';
+
+  @override
+  String get referralInvited => 'Friends invited';
+
+  @override
+  String get referralRewardsEarned => 'Free months earned';
+
+  @override
+  String get deadlineUrgencyToday => 'Today & Overdue';
+
+  @override
+  String get deadlineUrgencyWeek => 'This week';
+
+  @override
+  String get deadlineUrgencyMonth => 'This month';
+
+  @override
+  String get deadlineUrgencyLater => 'Later';
+
+  @override
+  String get deadlineAddManual => 'Add deadline';
+
+  @override
+  String get deadlineSnoozeBy => 'Snooze';
+
+  @override
+  String get deadlineSnooze1d => 'Snooze 1 day';
+
+  @override
+  String get deadlineSnooze3d => 'Snooze 3 days';
+
+  @override
+  String get deadlineSnooze7d => 'Snooze 7 days';
+
+  @override
+  String get deadlineDismiss => 'Dismiss';
+
+  @override
+  String get deadlineExportIcs => 'Add to calendar';
+
+  @override
+  String get deadlineSource => 'Source';
+
+  @override
+  String get deadlineEmpty =>
+      'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.';
+
+  @override
+  String get deadlineNewTitle => 'New deadline';
+
+  @override
+  String get deadlineFieldTitle => 'Title';
+
+  @override
+  String get deadlineFieldDueDate => 'Due date';
+
+  @override
+  String get deadlineFieldNotes => 'Notes (optional)';
+
+  @override
+  String get deadlineSaved => 'Deadline saved';
+
+  @override
+  String get deadlineSaveFailed => 'Could not save deadline';
+
+  @override
+  String get deadlineUrgentBannerSingle => '1 deadline today or overdue';
+
+  @override
+  String deadlineUrgentBannerMany(int count) {
+    return '$count deadlines today or overdue';
+  }
+
+  @override
+  String deadlineDaysLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days left',
+      one: '1 day left',
+      zero: 'today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String deadlineDaysOverdue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days overdue',
+      one: '1 day overdue',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get iapPayWithApple => 'پرداخت با Apple';
+
+  @override
+  String get iapRestorePurchases => 'بازیابی خریدها';
+
+  @override
+  String get iapPurchaseFailed =>
+      'خرید ناموفق بود. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.';
+
+  @override
+  String get iapRestoreSuccess => 'اشتراک شما بازیابی شد.';
+
+  @override
+  String get iapRestoreNoActive => 'هیچ اشتراک فعالی برای بازیابی یافت نشد.';
 }

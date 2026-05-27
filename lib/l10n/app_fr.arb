@@ -1262,5 +1262,92 @@
     "chatExamplePrompt3": "What are my rights at work?",
     "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
     "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-    "deletingAccount": "[en] Deleting account…"
+    "deletingAccount": "[en] Deleting account…",
+    "contractReviewTitle": "Contract Review",
+    "@contractReviewTitle": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "contractReviewUploadCta": "Upload contract",
+    "@contractReviewUploadCta": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+    "@contractReviewQuotaRemaining": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "contractReviewRedFlags": "Red flags",
+    "@contractReviewRedFlags": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "contractReviewReviewPoints": "Review points",
+    "@contractReviewReviewPoints": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "contractReviewNegotiationTips": "Negotiation tips",
+    "@contractReviewNegotiationTips": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "contractReviewSaveToVault": "Save to Vault",
+    "@contractReviewSaveToVault": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "contractReviewContinueChat": "Continue in chat",
+    "@contractReviewContinueChat": {
+        "description": "TODO native translation for locale=fr; currently English fallback — copy lives in contract_review_screen.dart."
+    },
+    "referralInviteFriends": "Invite Friends",
+    "referralYourCode": "Your code",
+    "referralCopiedToast": "Code copied to clipboard",
+    "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
+    "referralInvited": "Friends invited",
+    "referralRewardsEarned": "Free months earned",
+    "deadlineUrgencyToday": "Today & Overdue",
+    "deadlineUrgencyWeek": "This week",
+    "deadlineUrgencyMonth": "This month",
+    "deadlineUrgencyLater": "Later",
+    "deadlineAddManual": "Add deadline",
+    "deadlineSnoozeBy": "Snooze",
+    "deadlineSnooze1d": "Snooze 1 day",
+    "deadlineSnooze3d": "Snooze 3 days",
+    "deadlineSnooze7d": "Snooze 7 days",
+    "deadlineDismiss": "Dismiss",
+    "deadlineExportIcs": "Add to calendar",
+    "deadlineSource": "Source",
+    "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
+    "deadlineNewTitle": "New deadline",
+    "deadlineFieldTitle": "Title",
+    "deadlineFieldDueDate": "Due date",
+    "deadlineFieldNotes": "Notes (optional)",
+    "deadlineSaved": "Deadline saved",
+    "deadlineSaveFailed": "Could not save deadline",
+    "deadlineUrgentBannerSingle": "1 deadline today or overdue",
+    "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
+    "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
+    "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+    "@deadlineUrgentBannerMany": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@deadlineDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "@deadlineDaysOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "iapPayWithApple": "Payer avec Apple",
+    "iapRestorePurchases": "Restaurer les achats",
+    "iapPurchaseFailed": "L’achat a échoué. Veuillez réessayer ou contacter le support.",
+    "iapRestoreSuccess": "Votre abonnement a été restauré.",
+    "iapRestoreNoActive": "Aucun abonnement actif à restaurer."
 }

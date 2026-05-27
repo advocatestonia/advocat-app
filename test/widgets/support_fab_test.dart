@@ -32,16 +32,20 @@ void main() {
     testWidgets('shows the support agent icon', (tester) async {
       await tester.pumpWidget(_wrap(const SupportFab()));
       await tester.pumpAndSettle();
-      expect(find.byIcon(Icons.support_agent), findsOneWidget);
+      // v4 redesign (2026-05-19): switched from Icons.support_agent to
+      // Icons.help_outline (Stripe-style help pill). See support_fab.dart §
+      // "v4 redesign rationale".
+      expect(find.byIcon(Icons.help_outline), findsOneWidget);
     });
 
     testWidgets('exposes Semantics with button label', (tester) async {
       await tester.pumpWidget(_wrap(const SupportFab()));
       await tester.pumpAndSettle();
       final semanticsHandle = tester.ensureSemantics();
-      // Semantics label is the support title from l10n.
+      // Semantics label is the support title from l10n — now 'Help' since
+      // the supportTitle ARB string was shortened from 'Need help?' to 'Help'.
       expect(
-        find.bySemanticsLabel('Need help?'),
+        find.bySemanticsLabel('Help'),
         findsOneWidget,
       );
       semanticsHandle.dispose();
@@ -60,13 +64,14 @@ void main() {
       await tester.pumpWidget(_wrap(const SupportFab()));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byIcon(Icons.support_agent));
+      await tester.tap(find.byIcon(Icons.help_outline));
       await tester.pumpAndSettle();
 
-      // Title appears twice: once in the FAB tooltip, once in the sheet
-      // header. We expect at least one — the sheet must have rendered.
-      expect(find.text('Need help?'), findsWidgets);
-      expect(find.text('We usually reply within 1-2 hours.'), findsOneWidget);
+      // Title appears as the support sheet header. Tooltip may also render.
+      // (subtitle text was dropped from the v4 sheet redesign — see
+      // support_sheet.dart which now uses supportFooterSla "We respond
+      // within 24h" in the footer, not a subtitle at the top.)
+      expect(find.text('Help'), findsWidgets);
     });
   });
 

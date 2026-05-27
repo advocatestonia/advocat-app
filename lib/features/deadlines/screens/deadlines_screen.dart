@@ -1,5 +1,11 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show Clipboard, ClipboardData;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -17,12 +23,25 @@ import '../providers/deadlines_provider.dart';
 // ---------------------------------------------------------------------------
 // Deadlines Screen
 // ---------------------------------------------------------------------------
+//
+// 2026-05-27 rebuild (Sulga-case learning):
+//   * Group by urgency bands (Today/Overdue → This week → This month → Later).
+//   * Inline countdown that refreshes via Riverpod invalidation (pull-to-refresh).
+//   * Per-card menu: snooze 1d/3d/7d, dismiss, add to calendar (.ics export).
+//   * FAB to add a manual deadline (title + date + notes).
+//   * Empty state with explanation copy ("auto-created from emails/docs").
+//   * Source attribution row when a deadline came from a doc/email.
+// ---------------------------------------------------------------------------
 
-/// Segment filter for deadlines.
-enum _DeadlineSegment { upcoming, overdue, completed }
+/// Urgency bucket assignment for a given delta in days.
+enum _UrgencyBucket { todayOverdue, thisWeek, thisMonth, later }
 
-final _deadlineSegmentProvider =
-    StateProvider<_DeadlineSegment>((_) => _DeadlineSegment.upcoming);
+_UrgencyBucket _bucketForDays(int days) {
+  if (days <= 0) return _UrgencyBucket.todayOverdue;
+  if (days <= 7) return _UrgencyBucket.thisWeek;
+  if (days <= 30) return _UrgencyBucket.thisMonth;
+  return _UrgencyBucket.later;
+}
 
 class DeadlinesScreen extends ConsumerStatefulWidget {
   const DeadlinesScreen({super.key});
@@ -36,6 +55,11 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
   late final AnimationController _entranceController;
   late final Animation<double> _fadeAnimation;
   late final Animation<Offset> _slideAnimation;
+
+  // Re-render ticker so "3 days left" refreshes without a manual refresh.
+  // Cheap — one rebuild per minute is acceptable for a screen with at most
+  // a few dozen rows and only paints visible cards.
+  Timer? _minuteTicker;
 
   @override
   void initState() {
@@ -56,11 +80,16 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
       curve: Curves.easeOut,
     ));
     _entranceController.forward();
+
+    _minuteTicker = Timer.periodic(const Duration(minutes: 1), (_) {
+      if (mounted) setState(() {});
+    });
   }
 
   @override
   void dispose() {
     _entranceController.dispose();
+    _minuteTicker?.cancel();
     super.dispose();
   }
 
@@ -68,7 +97,6 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final deadlinesAsync = ref.watch(allDeadlinesProvider);
-    final segment = ref.watch(_deadlineSegmentProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,284 +110,297 @@ class _DeadlinesScreenState extends ConsumerState<DeadlinesScreen>
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _showAddDeadlineSheet(context),
+        icon: const Icon(Icons.add),
+        label: Text(l10n.deadlineAddManual),
+        backgroundColor: AppColors.accent,
+      ),
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: SlideTransition(
           position: _slideAnimation,
-          child: Column(
-            children: [
-              // -- EU deadline radar (collapsed by default) --
-              // Self-contained mockup widget — degrades cleanly when not
-              // touched (renders only the section header until expanded).
-              const _EuRadarSection(),
-
-              // -- Segmented control --
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.md,
-                  vertical: AppSpacing.sm,
-                ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: SegmentedButton<_DeadlineSegment>(
-                    segments: [
-                      ButtonSegment(
-                        value: _DeadlineSegment.upcoming,
-                        label: Text(l10n.upcoming),
-                      ),
-                      ButtonSegment(
-                        value: _DeadlineSegment.overdue,
-                        label: Text(l10n.overdue),
-                      ),
-                      ButtonSegment(
-                        value: _DeadlineSegment.completed,
-                        label: Text(l10n.completed),
-                      ),
-                    ],
-                    selected: {segment},
-                    onSelectionChanged: (sel) =>
-                        ref.read(_deadlineSegmentProvider.notifier).state =
-                            sel.first,
-                    style: const ButtonStyle(
-                      visualDensity: VisualDensity.compact,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
+          child: deadlinesAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (e, _) => Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.error_outline,
+                      size: 48, color: AppColors.error),
+                  const SizedBox(height: AppSpacing.md),
+                  Text(l10n.couldNotLoadDeadlines,
+                      style: Theme.of(context).textTheme.titleMedium),
+                  const SizedBox(height: AppSpacing.sm),
+                  TextButton(
+                    onPressed: () => ref.invalidate(allDeadlinesProvider),
+                    child: Text(l10n.retry),
                   ),
-                ),
+                ],
               ),
+            ),
+            data: (deadlines) {
+              // Filter out completed/cancelled — those live in the historic
+              // archive; this screen is for actionable items.
+              final actionable = deadlines
+                  .where((d) =>
+                      d.status != DeadlineStatus.completed &&
+                      d.status != DeadlineStatus.cancelled)
+                  .toList()
+                ..sort((a, b) => a.dueDate.compareTo(b.dueDate));
 
-              // -- Deadlines list --
-              Expanded(
-                child: deadlinesAsync.when(
-                  loading: () =>
-                      const Center(child: CircularProgressIndicator()),
-                  error: (e, _) => Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.error_outline,
-                            size: 48, color: AppColors.error),
-                        const SizedBox(height: AppSpacing.md),
-                        Text(l10n.couldNotLoadDeadlines,
-                            style: Theme.of(context).textTheme.titleMedium),
-                        const SizedBox(height: AppSpacing.sm),
-                        TextButton(
-                          onPressed: () =>
-                              ref.invalidate(allDeadlinesProvider),
-                          child: Text(l10n.retry),
+              if (actionable.isEmpty) {
+                return RefreshIndicator(
+                  onRefresh: () async => ref.invalidate(allDeadlinesProvider),
+                  child: ListView(
+                    children: const [
+                      _EuRadarSection(),
+                      _DeadlinesEmptyState(),
+                    ],
+                  ),
+                );
+              }
+
+              // Group by urgency bucket.
+              final buckets = <_UrgencyBucket, List<Deadline>>{};
+              for (final d in actionable) {
+                final b = _bucketForDays(AppDateUtils.daysUntil(d.dueDate));
+                (buckets[b] ??= []).add(d);
+              }
+
+              return RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(allDeadlinesProvider);
+                  await ref.read(allDeadlinesProvider.future);
+                },
+                child: CustomScrollView(
+                  key: const Key('deadlines-grouped-list'),
+                  slivers: [
+                    const SliverToBoxAdapter(child: _EuRadarSection()),
+                    for (final bucket in _UrgencyBucket.values)
+                      if ((buckets[bucket] ?? const []).isNotEmpty) ...[
+                        SliverToBoxAdapter(
+                          child: _UrgencyHeader(bucket: bucket),
+                        ),
+                        SliverList.separated(
+                          itemCount: buckets[bucket]!.length,
+                          separatorBuilder: (_, __) =>
+                              const SizedBox(height: AppSpacing.sm),
+                          itemBuilder: (context, i) {
+                            final deadline = buckets[bucket]![i];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.md,
+                              ),
+                              child: _DeadlineCard(
+                                key: ValueKey('deadline-${deadline.id}'),
+                                deadline: deadline,
+                                onMarkComplete: () =>
+                                    _markComplete(deadline),
+                                onSnooze: (days) =>
+                                    _snooze(deadline, days),
+                                onDismiss: () => _dismiss(deadline),
+                                onExportIcs: () =>
+                                    _exportIcs(context, deadline),
+                              ),
+                            );
+                          },
                         ),
                       ],
+                    const SliverToBoxAdapter(
+                      child: SizedBox(height: 96),
                     ),
-                  ),
-                  data: (deadlines) {
-                    final filtered = _filter(deadlines, segment);
-
-                    if (filtered.isEmpty) {
-                      return _EmptyDeadlines(segment: segment);
-                    }
-
-                    return RefreshIndicator(
-                      onRefresh: () async =>
-                          ref.invalidate(allDeadlinesProvider),
-                      child: ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(
-                          AppSpacing.md,
-                          AppSpacing.sm,
-                          AppSpacing.md,
-                          AppSpacing.xxl,
-                        ),
-                        itemCount: filtered.length,
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(height: AppSpacing.sm),
-                        itemBuilder: (context, index) {
-                          final isUrgent =
-                              AppDateUtils.daysUntil(filtered[index].dueDate) <
-                                      3 &&
-                                  filtered[index].status !=
-                                      DeadlineStatus.completed;
-                          return _StaggeredDeadlineCard(
-                            index: index,
-                            isFirstUrgent: index == 0 && isUrgent,
-                            child: _DeadlineCard(
-                              deadline: filtered[index],
-                              onMarkComplete: () async {
-                                final supabase =
-                                    ref.read(supabaseServiceProvider);
-                                await supabase.updateDeadline(
-                                  filtered[index].id,
-                                  {'status': 'completed'},
-                                );
-                                ref.invalidate(allDeadlinesProvider);
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  List<Deadline> _filter(List<Deadline> deadlines, _DeadlineSegment segment) {
-    final now = DateTime.now();
-    return switch (segment) {
-      _DeadlineSegment.upcoming => deadlines
-          .where((d) =>
-              d.status == DeadlineStatus.upcoming &&
-              d.dueDate.isAfter(now))
-          .toList(),
-      _DeadlineSegment.overdue => deadlines
-          .where((d) =>
-              d.status == DeadlineStatus.overdue ||
-              (d.status == DeadlineStatus.upcoming &&
-                  d.dueDate.isBefore(now)))
-          .toList(),
-      _DeadlineSegment.completed => deadlines
-          .where((d) => d.status == DeadlineStatus.completed)
-          .toList(),
-    };
+  Future<void> _markComplete(Deadline d) async {
+    final supabase = ref.read(supabaseServiceProvider);
+    await supabase.updateDeadline(d.id, {'status': 'completed'});
+    ref.invalidate(allDeadlinesProvider);
   }
-}
 
-// ---------------------------------------------------------------------------
-// Staggered entrance animation wrapper
-// ---------------------------------------------------------------------------
-
-class _StaggeredDeadlineCard extends StatefulWidget {
-  const _StaggeredDeadlineCard({
-    required this.index,
-    required this.child,
-    this.isFirstUrgent = false,
-  });
-
-  final int index;
-  final Widget child;
-  final bool isFirstUrgent;
-
-  @override
-  State<_StaggeredDeadlineCard> createState() =>
-      _StaggeredDeadlineCardState();
-}
-
-class _StaggeredDeadlineCardState extends State<_StaggeredDeadlineCard>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _fadeAnimation;
-  late final Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.15),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
-
-    // Stagger delay per index (max 600ms total delay)
-    final delay = Duration(milliseconds: (widget.index * 80).clamp(0, 600));
-    Future.delayed(delay, () {
-      if (mounted) _controller.forward();
+  Future<void> _snooze(Deadline d, int days) async {
+    final supabase = ref.read(supabaseServiceProvider);
+    final newDue = d.dueDate.add(Duration(days: days));
+    await supabase.updateDeadline(d.id, {
+      'due_date': newDue.toIso8601String(),
     });
+    ref.invalidate(allDeadlinesProvider);
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  Future<void> _dismiss(Deadline d) async {
+    final supabase = ref.read(supabaseServiceProvider);
+    await supabase.updateDeadline(d.id, {'status': 'cancelled'});
+    ref.invalidate(allDeadlinesProvider);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget child = FadeTransition(
-      opacity: _fadeAnimation,
-      child: SlideTransition(
-        position: _slideAnimation,
-        child: widget.child,
+  Future<void> _exportIcs(BuildContext context, Deadline d) async {
+    try {
+      final ics = _buildIcs(d);
+      // Web / desktop without path_provider — fall back to clipboard.
+      Directory? dir;
+      try {
+        dir = await getTemporaryDirectory();
+      } catch (_) {
+        // Probably web. Copy to clipboard so the user can paste anywhere.
+        await Clipboard.setData(ClipboardData(text: ics));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('ICS copied to clipboard')),
+          );
+        }
+        return;
+      }
+      final safe = d.title.replaceAll(RegExp(r'[^a-zA-Z0-9_-]'), '_');
+      final file = File('${dir.path}/advocat_$safe.ics');
+      await file.writeAsString(ics);
+      await Share.shareXFiles([XFile(file.path)],
+          subject: 'Advocat deadline: ${d.title}');
+    } catch (_) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not export calendar event')),
+        );
+      }
+    }
+  }
+
+  Future<void> _showAddDeadlineSheet(BuildContext context) async {
+    final created = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => _AddDeadlineSheet(
+        onSave: (title, dueDate, notes) async {
+          final supabase = ref.read(supabaseServiceProvider);
+          await supabase.createDeadline({
+            'title': title,
+            'description': notes,
+            'due_date': dueDate.toIso8601String(),
+            'status': 'upcoming',
+            'priority': 'high',
+            'type': 'other',
+            'source': 'manual',
+            // case_id is nullable in the DB; left out here lets the row
+            // belong to no case (or the trigger fills a default).
+          });
+        },
       ),
     );
-
-    // Add breathing effect for the most urgent item
-    if (widget.isFirstUrgent) {
-      child = _BreathingWrapper(child: child);
+    if (created == true) {
+      ref.invalidate(allDeadlinesProvider);
     }
-
-    return child;
   }
 }
 
 // ---------------------------------------------------------------------------
-// Breathing effect for most urgent item
+// ICS builder — RFC 5545 minimal subset.
 // ---------------------------------------------------------------------------
-
-class _BreathingWrapper extends StatefulWidget {
-  const _BreathingWrapper({required this.child});
-  final Widget child;
-
-  @override
-  State<_BreathingWrapper> createState() => _BreathingWrapperState();
+String _buildIcs(Deadline d) {
+  final dtStamp = _formatIcsUtc(DateTime.now().toUtc());
+  final dtStart = _formatIcsDate(d.dueDate);
+  final summary = _escapeIcs('Advocat: ${d.title}');
+  final description = d.description != null && d.description!.isNotEmpty
+      ? _escapeIcs(d.description!)
+      : '';
+  return 'BEGIN:VCALENDAR\r\n'
+      'VERSION:2.0\r\n'
+      'PRODID:-//Advocat//EN\r\n'
+      'CALSCALE:GREGORIAN\r\n'
+      'BEGIN:VEVENT\r\n'
+      'UID:advocat-${d.id}@advocat.ee\r\n'
+      'DTSTAMP:$dtStamp\r\n'
+      'DTSTART;VALUE=DATE:$dtStart\r\n'
+      'SUMMARY:$summary\r\n'
+      'DESCRIPTION:$description\r\n'
+      'STATUS:CONFIRMED\r\n'
+      'BEGIN:VALARM\r\n'
+      'TRIGGER:-P1D\r\n'
+      'ACTION:DISPLAY\r\n'
+      'DESCRIPTION:Reminder\r\n'
+      'END:VALARM\r\n'
+      'END:VEVENT\r\n'
+      'END:VCALENDAR\r\n';
 }
 
-class _BreathingWrapperState extends State<_BreathingWrapper>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _breathController;
-  late final Animation<double> _breathAnimation;
+String _formatIcsUtc(DateTime dt) {
+  String two(int n) => n.toString().padLeft(2, '0');
+  return '${dt.year}${two(dt.month)}${two(dt.day)}T'
+      '${two(dt.hour)}${two(dt.minute)}${two(dt.second)}Z';
+}
 
-  @override
-  void initState() {
-    super.initState();
-    _breathController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2500),
-    )..repeat(reverse: true);
-    _breathAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _breathController, curve: Curves.easeInOut),
-    );
-  }
+String _formatIcsDate(DateTime dt) {
+  String two(int n) => n.toString().padLeft(2, '0');
+  return '${dt.year}${two(dt.month)}${two(dt.day)}';
+}
 
-  @override
-  void dispose() {
-    _breathController.dispose();
-    super.dispose();
-  }
+String _escapeIcs(String s) =>
+    s.replaceAll('\\', '\\\\').replaceAll(',', '\\,').replaceAll(';', '\\;');
+
+// ---------------------------------------------------------------------------
+// Urgency header
+// ---------------------------------------------------------------------------
+
+class _UrgencyHeader extends StatelessWidget {
+  const _UrgencyHeader({required this.bucket});
+  final _UrgencyBucket bucket;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _breathAnimation,
-      builder: (context, child) {
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.md),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.error
-                    .withValues(alpha: 0.15 + 0.12 * _breathAnimation.value),
-                blurRadius: 12 + 8 * _breathAnimation.value,
-                spreadRadius: 1 * _breathAnimation.value,
-              ),
-            ],
+    final l = AppLocalizations.of(context)!;
+    final (label, color, dot) = switch (bucket) {
+      _UrgencyBucket.todayOverdue => (
+          l.deadlineUrgencyToday,
+          AppColors.error,
+          '🔴',
+        ),
+      _UrgencyBucket.thisWeek => (l.deadlineUrgencyWeek, AppColors.warning, '🟠'),
+      _UrgencyBucket.thisMonth => (l.deadlineUrgencyMonth, AppColors.success, '🟡'),
+      _UrgencyBucket.later => (
+          l.deadlineUrgencyLater,
+          AppColors.textTertiary,
+          '⚪',
+        ),
+    };
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.md,
+        AppSpacing.sm,
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 6,
+            height: 24,
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(3),
+            ),
           ),
-          child: child,
-        );
-      },
-      child: widget.child,
+          const SizedBox(width: AppSpacing.sm),
+          Text(
+            '$dot  $label',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              color: color,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -368,378 +409,450 @@ class _BreathingWrapperState extends State<_BreathingWrapper>
 // Deadline Card
 // ---------------------------------------------------------------------------
 
-class _DeadlineCard extends StatefulWidget {
+class _DeadlineCard extends StatelessWidget {
   const _DeadlineCard({
+    super.key,
     required this.deadline,
     required this.onMarkComplete,
+    required this.onSnooze,
+    required this.onDismiss,
+    required this.onExportIcs,
   });
 
   final Deadline deadline;
   final VoidCallback onMarkComplete;
-
-  @override
-  State<_DeadlineCard> createState() => _DeadlineCardState();
-}
-
-class _DeadlineCardState extends State<_DeadlineCard>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _pressController;
-  late final Animation<double> _pressAnimation;
-
-  // Pulse controller for urgent countdown badge
-  AnimationController? _pulseController;
-  Animation<double>? _pulseAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _pressController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-      reverseDuration: const Duration(milliseconds: 150),
-    );
-    _pressAnimation = Tween<double>(begin: 1.0, end: 0.97).animate(
-      CurvedAnimation(parent: _pressController, curve: Curves.easeInOut),
-    );
-
-    // Setup pulse for urgent deadlines
-    final days = AppDateUtils.daysUntil(widget.deadline.dueDate);
-    final isCompleted = widget.deadline.status == DeadlineStatus.completed;
-    if (!isCompleted && days < 3) {
-      _pulseController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 1200),
-      )..repeat(reverse: true);
-      _pulseAnimation = Tween<double>(begin: 1.0, end: 1.08).animate(
-        CurvedAnimation(parent: _pulseController!, curve: Curves.easeInOut),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _pressController.dispose();
-    _pulseController?.dispose();
-    super.dispose();
-  }
+  final void Function(int days) onSnooze;
+  final VoidCallback onDismiss;
+  final VoidCallback onExportIcs;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final days = AppDateUtils.daysUntil(widget.deadline.dueDate);
+    final days = AppDateUtils.daysUntil(deadline.dueDate);
     final isOverdue = days < 0;
-    final isCompleted = widget.deadline.status == DeadlineStatus.completed;
-    final isUrgent = !isCompleted && (isOverdue || days < 3);
+    final isUrgent = isOverdue || days < 3;
 
-    // Color coding: green >7d, amber 3-7d, red <3d
-    final urgencyColor = isCompleted
-        ? AppColors.textTertiary
-        : isOverdue || days < 3
-            ? AppColors.error
-            : days <= 7
-                ? AppColors.warning
-                : AppColors.success;
+    final urgencyColor = isOverdue || days < 3
+        ? AppColors.error
+        : days <= 7
+            ? AppColors.warning
+            : days <= 30
+                ? AppColors.success
+                : AppColors.textTertiary;
 
-    return GestureDetector(
-      onTapDown: (_) => _pressController.forward(),
-      onTapUp: (_) => _pressController.reverse(),
-      onTapCancel: () => _pressController.reverse(),
-      child: AnimatedBuilder(
-        animation: _pressAnimation,
-        builder: (context, child) => Transform.scale(
-          scale: _pressAnimation.value,
-          child: child,
-        ),
-        child: Semantics(
-          label:
-              'Deadline: ${widget.deadline.title}, ${isCompleted ? "completed" : isOverdue ? "${-days} days overdue" : "$days days remaining"}',
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppRadius.md),
-              border: Border.all(
-                color: isUrgent
-                    ? AppColors.error.withValues(alpha: 0.3)
-                    : AppColors.border,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 3),
-                ),
-                if (isUrgent)
-                  BoxShadow(
-                    color: AppColors.error.withValues(alpha: 0.10),
-                    blurRadius: 12,
-                    spreadRadius: 0,
-                  ),
-              ],
+    final countdownText = isOverdue
+        ? l10n.deadlineDaysOverdue(-days)
+        : l10n.deadlineDaysLeft(days);
+
+    return Semantics(
+      label: 'Deadline: ${deadline.title}, $countdownText',
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+          border: Border.all(
+            color: isUrgent
+                ? AppColors.error.withValues(alpha: 0.3)
+                : AppColors.border,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
             ),
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              child: Row(
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
                   // -- Days remaining (big number) --
-                  _buildCountdownBadge(
-                      days, isOverdue, isCompleted, urgencyColor, l10n),
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      color: urgencyColor.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          isOverdue ? '${-days}' : '$days',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: urgencyColor,
+                            height: 1,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          isOverdue ? l10n.daysLate : l10n.days,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: urgencyColor,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   const SizedBox(width: AppSpacing.md),
 
-                  // -- Deadline info --
+                  // -- Title + date --
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.deadline.title,
-                          style: TextStyle(
+                          deadline.title,
+                          style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: isCompleted
-                                ? AppColors.textTertiary
-                                : AppColors.textPrimary,
-                            decoration: isCompleted
-                                ? TextDecoration.lineThrough
-                                : null,
+                            color: AppColors.textPrimary,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          AppDateUtils.formatDate(widget.deadline.dueDate),
-                          style: const TextStyle(
-                            fontSize: 13,
-                            color: AppColors.textSecondary,
+                          '${AppDateUtils.formatDate(deadline.dueDate)} '
+                          '· $countdownText',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: urgencyColor,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                        if (widget.deadline.sourceDocumentId != null) ...[
-                          const SizedBox(height: 2),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.link,
-                                size: 12,
-                                color: AppColors.textTertiary,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                l10n.fromDocument,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                  color: AppColors.textTertiary,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
                       ],
                     ),
                   ),
 
-                  // -- Mark complete --
-                  if (!isCompleted)
-                    Semantics(
-                      label: 'Mark deadline complete',
-                      button: true,
-                      child: IconButton(
-                        onPressed: widget.onMarkComplete,
-                        tooltip: l10n.markComplete,
-                        constraints: const BoxConstraints(
-                          minWidth: 48,
-                          minHeight: 48,
+                  // -- More menu (snooze / dismiss / export) --
+                  PopupMenuButton<String>(
+                    icon: const Icon(Icons.more_vert,
+                        color: AppColors.textSecondary),
+                    onSelected: (v) {
+                      switch (v) {
+                        case 'snooze_1':
+                          onSnooze(1);
+                          break;
+                        case 'snooze_3':
+                          onSnooze(3);
+                          break;
+                        case 'snooze_7':
+                          onSnooze(7);
+                          break;
+                        case 'dismiss':
+                          onDismiss();
+                          break;
+                        case 'export':
+                          onExportIcs();
+                          break;
+                      }
+                    },
+                    itemBuilder: (_) => [
+                      PopupMenuItem(
+                        value: 'snooze_1',
+                        child: Text(l10n.deadlineSnooze1d),
+                      ),
+                      PopupMenuItem(
+                        value: 'snooze_3',
+                        child: Text(l10n.deadlineSnooze3d),
+                      ),
+                      PopupMenuItem(
+                        value: 'snooze_7',
+                        child: Text(l10n.deadlineSnooze7d),
+                      ),
+                      PopupMenuItem(
+                        value: 'export',
+                        child: Row(
+                          children: [
+                            const Icon(Icons.event_available_outlined, size: 18),
+                            const SizedBox(width: 8),
+                            Text(l10n.deadlineExportIcs),
+                          ],
                         ),
-                        icon: Container(
-                          width: 36,
-                          height: 36,
-                          decoration: BoxDecoration(
-                            color: AppColors.success.withValues(alpha: 0.1),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.success
-                                    .withValues(alpha: 0.15),
-                                blurRadius: 6,
-                              ),
-                            ],
-                          ),
-                          child: const Icon(
-                            Icons.check,
-                            color: AppColors.success,
-                            size: 20,
-                          ),
+                      ),
+                      PopupMenuItem(
+                        value: 'dismiss',
+                        child: Row(
+                          children: [
+                            const Icon(Icons.delete_outline,
+                                size: 18, color: AppColors.error),
+                            const SizedBox(width: 8),
+                            Text(l10n.deadlineDismiss,
+                                style: const TextStyle(color: AppColors.error)),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  // -- Quick complete --
+                  Semantics(
+                    label: 'Mark deadline complete',
+                    button: true,
+                    child: IconButton(
+                      key: const ValueKey('mark-complete'),
+                      onPressed: onMarkComplete,
+                      tooltip: l10n.markComplete,
+                      icon: Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: AppColors.success.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.check,
+                          color: AppColors.success,
+                          size: 18,
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
-            ),
+
+              // -- Source attribution (which document/email generated this) --
+              if (deadline.source != DeadlineSource.manual ||
+                  deadline.sourceDocumentId != null) ...[
+                const SizedBox(height: AppSpacing.sm),
+                Padding(
+                  padding: const EdgeInsets.only(left: 72),
+                  child: Row(
+                    children: [
+                      Icon(_sourceIcon(deadline.source),
+                          size: 12, color: AppColors.textTertiary),
+                      const SizedBox(width: 4),
+                      Text(
+                        '${l10n.deadlineSource}: ${_sourceLabel(deadline.source, l10n)}',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: AppColors.textTertiary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _buildCountdownBadge(int days, bool isOverdue, bool isCompleted,
-      Color urgencyColor, AppLocalizations l10n) {
-    Widget badge = Container(
-      width: 64,
-      height: 64,
-      decoration: BoxDecoration(
-        color: urgencyColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(AppRadius.md),
-      ),
+  static IconData _sourceIcon(DeadlineSource s) {
+    switch (s) {
+      case DeadlineSource.aiExtracted:
+        return Icons.auto_awesome_outlined;
+      case DeadlineSource.emailExtracted:
+        return Icons.mail_outline;
+      case DeadlineSource.manual:
+        return Icons.edit_outlined;
+    }
+  }
+
+  static String _sourceLabel(DeadlineSource s, AppLocalizations l) {
+    switch (s) {
+      case DeadlineSource.aiExtracted:
+        return l.deadlineCardSourceLabelHaikuExtract;
+      case DeadlineSource.emailExtracted:
+        return l.deadlineCardSourceLabelEmail;
+      case DeadlineSource.manual:
+        return l.deadlineCardSourceLabelManual;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Empty state — explains how deadlines get created.
+// ---------------------------------------------------------------------------
+
+class _DeadlinesEmptyState extends StatelessWidget {
+  const _DeadlinesEmptyState();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.all(AppSpacing.xl),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (isCompleted)
-            Icon(Icons.check, color: urgencyColor, size: 28)
-          else ...[
-            Text(
-              isOverdue ? '${-days}' : '$days',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.w800,
-                color: urgencyColor,
-                height: 1,
-              ),
+          const SizedBox(height: 60),
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: AppColors.success.withValues(alpha: 0.08),
+              shape: BoxShape.circle,
             ),
-            const SizedBox(height: 2),
-            Text(
-              isOverdue ? l10n.daysLate : l10n.days,
-              style: TextStyle(
-                fontSize: 11,
-                color: urgencyColor,
-                fontWeight: FontWeight.w500,
-              ),
+            child: const Icon(
+              Icons.event_available_outlined,
+              size: 40,
+              color: AppColors.success,
             ),
-          ],
+          ),
+          const SizedBox(height: AppSpacing.lg),
+          Text(
+            l10n.noUpcomingDeadlines,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            l10n.deadlineEmpty,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                  height: 1.4,
+                ),
+          ),
         ],
       ),
     );
-
-    // Pulse animation for urgent countdown badges
-    if (_pulseAnimation != null) {
-      badge = AnimatedBuilder(
-        animation: _pulseAnimation!,
-        builder: (context, child) => Transform.scale(
-          scale: _pulseAnimation!.value,
-          child: child,
-        ),
-        child: badge,
-      );
-    }
-
-    return badge;
   }
 }
 
 // ---------------------------------------------------------------------------
-// Empty State
+// Add-deadline modal sheet (manual entry)
 // ---------------------------------------------------------------------------
 
-class _EmptyDeadlines extends StatefulWidget {
-  const _EmptyDeadlines({required this.segment});
-
-  final _DeadlineSegment segment;
+class _AddDeadlineSheet extends StatefulWidget {
+  const _AddDeadlineSheet({required this.onSave});
+  final Future<void> Function(String title, DateTime dueDate, String? notes)
+      onSave;
 
   @override
-  State<_EmptyDeadlines> createState() => _EmptyDeadlinesState();
+  State<_AddDeadlineSheet> createState() => _AddDeadlineSheetState();
 }
 
-class _EmptyDeadlinesState extends State<_EmptyDeadlines>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _fadeAnimation;
-  late final Animation<Offset> _slideAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
-    _fadeAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.1),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeOut,
-    ));
-    _controller.forward();
-  }
+class _AddDeadlineSheetState extends State<_AddDeadlineSheet> {
+  final _titleCtl = TextEditingController();
+  final _notesCtl = TextEditingController();
+  DateTime _dueDate = DateTime.now().add(const Duration(days: 7));
+  bool _saving = false;
 
   @override
   void dispose() {
-    _controller.dispose();
+    _titleCtl.dispose();
+    _notesCtl.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    final (icon, title, subtitle) = switch (widget.segment) {
-      _DeadlineSegment.upcoming => (
-          Icons.event_available_outlined,
-          l10n.noUpcomingDeadlines,
-          l10n.allClearDeadlines,
-        ),
-      _DeadlineSegment.overdue => (
-          Icons.check_circle_outline,
-          l10n.nothingOverdue,
-          l10n.greatJobDeadlines,
-        ),
-      _DeadlineSegment.completed => (
-          Icons.history_outlined,
-          l10n.noCompletedDeadlines,
-          l10n.completedDeadlinesDesc,
-        ),
-    };
-
-    return Center(
-      child: FadeTransition(
-        opacity: _fadeAnimation,
-        child: SlideTransition(
-          position: _slideAnimation,
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.xl),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.08),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(icon, size: 40, color: AppColors.success),
-                ),
-                const SizedBox(height: AppSpacing.lg),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                Text(
-                  subtitle,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.4,
-                      ),
-                ),
-              ],
+    final l = AppLocalizations.of(context)!;
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    return Padding(
+      padding: EdgeInsets.only(bottom: bottomInset),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l.deadlineNewTitle,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          ),
+            const SizedBox(height: AppSpacing.lg),
+            TextField(
+              key: const Key('deadline-title-field'),
+              controller: _titleCtl,
+              decoration: InputDecoration(
+                labelText: l.deadlineFieldTitle,
+                border: const OutlineInputBorder(),
+              ),
+              autofocus: true,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            InkWell(
+              onTap: () async {
+                final picked = await showDatePicker(
+                  context: context,
+                  initialDate: _dueDate,
+                  firstDate: DateTime.now().subtract(const Duration(days: 1)),
+                  lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+                );
+                if (picked != null) {
+                  setState(() => _dueDate = picked);
+                }
+              },
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  labelText: l.deadlineFieldDueDate,
+                  border: const OutlineInputBorder(),
+                ),
+                child: Text(AppDateUtils.formatDate(_dueDate)),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            TextField(
+              key: const Key('deadline-notes-field'),
+              controller: _notesCtl,
+              maxLines: 3,
+              decoration: InputDecoration(
+                labelText: l.deadlineFieldNotes,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                key: const Key('deadline-save-button'),
+                onPressed: _saving || _titleCtl.text.trim().isEmpty
+                    ? null
+                    : () async {
+                        setState(() => _saving = true);
+                        try {
+                          await widget.onSave(
+                            _titleCtl.text.trim(),
+                            _dueDate,
+                            _notesCtl.text.trim().isEmpty
+                                ? null
+                                : _notesCtl.text.trim(),
+                          );
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l.deadlineSaved)),
+                            );
+                            Navigator.of(context).pop(true);
+                          }
+                        } catch (_) {
+                          setState(() => _saving = false);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(l.deadlineSaveFailed)),
+                            );
+                          }
+                        }
+                      },
+                child: _saving
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(l.deadlineSaved),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -750,11 +863,6 @@ class _EmptyDeadlinesState extends State<_EmptyDeadlines>
 // EU Deadline Radar section wrapper
 // ---------------------------------------------------------------------------
 
-/// Collapsible host for [DeadlineRadarEu]. The mockup widget is fully
-/// self-contained (no network calls, deterministic mock output) so this
-/// section degrades to a single ListTile-style header when collapsed and
-/// renders the calculator inline when expanded. No risk of breaking the
-/// existing per-user deadlines list below.
 class _EuRadarSection extends StatelessWidget {
   const _EuRadarSection();
 
@@ -773,8 +881,6 @@ class _EuRadarSection extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAlias,
         child: Theme(
-          // Remove the default ExpansionTile divider lines so it blends
-          // with the surrounding deadlines screen chrome.
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: const ExpansionTile(
             key: Key('eu-deadline-radar-section'),

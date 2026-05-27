@@ -75,13 +75,23 @@ bool gmailScopeIncludesReadonly(String? scope) {
 ///   * The referral_service / providers / models stay compiled and
 ///     reachable from code; only the UI entry points are dark.
 ///
-/// Flip via `--dart-define=ADVOCAT_REFERRAL_ENABLED=true` at build time to
-/// re-enable without touching source.
+/// Flip via `--dart-define=ADVOCAT_REFERRAL_ENABLED=false` at build time to
+/// disable as a fast-rollback lever.
 ///
-/// Ref: consilium 2026-05-15 (soft-launch decision).
+/// Re-enabled 2026-05-27 after security audit:
+///   - Self-referral blocked (handler.ts inviterId === userId).
+///   - Idempotency enforced by unique(referred_user_id) + race-loss handling.
+///   - Rate-limited 30/min/user via requireUserWithRateLimit.
+///   - Anon callers rejected (anonymousPerMinute=0 + anon: prefix check).
+///   - Anti-abuse: rolling 12-credit/365-day cap (shouldBlockForAbuse).
+///   - Credit path (creditInviterForReferred) callable only from stripe-webhook,
+///     not from user JWT — a compromised user JWT cannot forge credit events.
+///   - Code format restricted to ^[a-z0-9]{6,16}$.
+///
+/// Ref: consilium 2026-05-15 (soft-launch decision) + 2026-05-27 re-enable audit.
 const bool kReferralEnabled = bool.fromEnvironment(
   'ADVOCAT_REFERRAL_ENABLED',
-  defaultValue: false,
+  defaultValue: true,
 );
 
 // -----------------------------------------------------------------------------

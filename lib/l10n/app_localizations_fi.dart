@@ -4438,4 +4438,154 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get deletingAccount => 'Poistetaan tiliä…';
+
+  @override
+  String get contractReviewTitle => 'Tarkista sopimus';
+
+  @override
+  String get contractReviewUploadCta => 'Lataa sopimus';
+
+  @override
+  String get contractReviewQuotaRemaining =>
+      'Lataa sopimus (PDF, DOC, DOCX tai TXT) — tekoäly listaa riskit ja antaa neuvotteluvinkit.';
+
+  @override
+  String get contractReviewRedFlags => 'Riskit';
+
+  @override
+  String get contractReviewReviewPoints => 'Tarkistuskohteet';
+
+  @override
+  String get contractReviewNegotiationTips => 'Neuvotteluvinkit';
+
+  @override
+  String get contractReviewSaveToVault => 'Tallenna holviin';
+
+  @override
+  String get contractReviewContinueChat => 'Jatka chatissa';
+
+  @override
+  String get referralInviteFriends => 'Kutsu ystäviä';
+
+  @override
+  String get referralYourCode => 'Koodisi';
+
+  @override
+  String get referralCopiedToast => 'Koodi kopioitu';
+
+  @override
+  String get referralReward =>
+      'Saat 1 kuukauden Counsel-tilauksen ilmaiseksi jokaisesta ystävästä, joka tilaa.';
+
+  @override
+  String get referralInvited => 'Kutsuttuja ystäviä';
+
+  @override
+  String get referralRewardsEarned => 'Ansaittuja ilmaisia kuukausia';
+
+  @override
+  String get deadlineUrgencyToday => 'Tänään ja myöhässä';
+
+  @override
+  String get deadlineUrgencyWeek => 'Tällä viikolla';
+
+  @override
+  String get deadlineUrgencyMonth => 'Tässä kuussa';
+
+  @override
+  String get deadlineUrgencyLater => 'Myöhemmin';
+
+  @override
+  String get deadlineAddManual => 'Lisää määräaika';
+
+  @override
+  String get deadlineSnoozeBy => 'Lykkää';
+
+  @override
+  String get deadlineSnooze1d => '1 päivä';
+
+  @override
+  String get deadlineSnooze3d => '3 päivää';
+
+  @override
+  String get deadlineSnooze7d => '7 päivää';
+
+  @override
+  String get deadlineDismiss => 'Poista';
+
+  @override
+  String get deadlineExportIcs => 'Lisää kalenteriin';
+
+  @override
+  String get deadlineSource => 'Lähde';
+
+  @override
+  String get deadlineEmpty =>
+      'Ei vielä määräaikoja. Määräajat luodaan automaattisesti sähköposteista ja asiakirjoista — tai lisää käsin +-painikkeella.';
+
+  @override
+  String get deadlineNewTitle => 'Uusi määräaika';
+
+  @override
+  String get deadlineFieldTitle => 'Otsikko';
+
+  @override
+  String get deadlineFieldDueDate => 'Eräpäivä';
+
+  @override
+  String get deadlineFieldNotes => 'Muistiinpanot (valinnainen)';
+
+  @override
+  String get deadlineSaved => 'Määräaika tallennettu';
+
+  @override
+  String get deadlineSaveFailed => 'Määräajan tallentaminen epäonnistui';
+
+  @override
+  String get deadlineUrgentBannerSingle => '1 määräaika tänään tai myöhässä';
+
+  @override
+  String deadlineUrgentBannerMany(int count) {
+    return '$count määräaikaa tänään tai myöhässä';
+  }
+
+  @override
+  String deadlineDaysLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päivää jäljellä',
+      one: '1 päivä jäljellä',
+      zero: 'tänään',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String deadlineDaysOverdue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päivää myöhässä',
+      one: '1 päivä myöhässä',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get iapPayWithApple => 'Maksa Applella';
+
+  @override
+  String get iapRestorePurchases => 'Palauta ostokset';
+
+  @override
+  String get iapPurchaseFailed =>
+      'Ostos epäonnistui. Yritä uudelleen tai ota yhteyttä tukeen.';
+
+  @override
+  String get iapRestoreSuccess => 'Tilauksesi on palautettu.';
+
+  @override
+  String get iapRestoreNoActive =>
+      'Aktiivista palautettavaa tilausta ei löytynyt.';
 }

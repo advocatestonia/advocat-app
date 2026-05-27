@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart' show visibleForTesting;
@@ -50,6 +51,22 @@ class SupabaseService {
     r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
     caseSensitive: false,
   );
+
+  /// Mint a UUIDv4 string for distributed tracing. Synthesised from 16
+  /// crypto-secure random bytes per RFC 4122 §4.4. Used as the `x-trace-id`
+  /// header so every downstream edge fn / DB audit row joins under one
+  /// trace_id in `app.trace_timeline`.
+  String _newTraceId() {
+    final r = math.Random.secure();
+    final bytes = List<int>.generate(16, (_) => r.nextInt(256));
+    // Set version (4) and variant (10xx) bits per RFC 4122.
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    final hex = bytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    return '${hex.substring(0, 8)}-${hex.substring(8, 12)}-'
+        '${hex.substring(12, 16)}-${hex.substring(16, 20)}-'
+        '${hex.substring(20, 32)}';
+  }
 
   /// Returns true only for real Supabase UUIDs matching the strict
   /// 8-4-4-4-12 hex format. Synthetic ids (e.g. 'general') return false so
@@ -585,15 +602,24 @@ class SupabaseService {
   ///
   /// Only returns `null` in demo mode or when no JSON body could be decoded
   /// (network dead, malformed response). Never swallows errors silently.
+  ///
+  /// [traceId] is propagated as the `x-trace-id` header so every downstream
+  /// audit row (agent_runs, agent_audit_log, email_triage_results, etc.)
+  /// joins to one distributed trace. If null, a fresh UUIDv4 is minted per
+  /// invocation. Pass an existing trace_id (e.g. the chat session's id) when
+  /// you want multiple consecutive calls to be grouped under one trace.
   Future<Map<String, dynamic>?> callEdgeFunction(
     String functionName, {
     Map<String, dynamic>? body,
+    String? traceId,
   }) async {
     if (isDemo) return null;
     try {
+      final effectiveTraceId = traceId ?? _newTraceId();
       final response = await _client.functions.invoke(
         functionName,
         body: body,
+        headers: {'x-trace-id': effectiveTraceId},
       );
       final data = response.data;
       if (data is Map<String, dynamic>) {

@@ -36,6 +36,11 @@ import '../features/inbox/screens/inbox_draft_edit_screen.dart';
 import '../features/checker/screens/checker_home_screen.dart';
 import '../features/checker/screens/company_checker_screen.dart';
 import '../features/checker/screens/vehicle_checker_screen.dart';
+// Standalone Contract Review entry point (Home tile → /contract-review).
+// Closes the discoverability gap: until now the feature was reachable only
+// through chat (PDF upload + auto-detect chip). The chat path is preserved
+// alongside this route — see contract_detected_chip.dart.
+import '../features/contract_review/screens/contract_review_screen.dart';
 import '../shared/widgets/main_shell.dart';
 import '../features/vault/screens/document_vault_screen.dart';
 import '../features/vault/screens/add_vault_document_screen.dart';
@@ -158,6 +163,10 @@ abstract final class AppRoutes {
   static const String checker = '/checker';
   static const String checkerCompany = '/checker/company';
   static const String checkerVehicle = '/checker/vehicle';
+  /// Standalone Contract Review screen. Mirrors the chat-side
+  /// analyze_contract flow but exposes it as a Home-tile entry point so
+  /// users don't have to upload a PDF in chat to discover the feature.
+  static const String contractReview = '/contract-review';
   static const String vault = '/vault';
   static const String vaultAdd = '/vault/add';
   static const String rights = '/rights';
@@ -638,6 +647,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: AppRoutes.checkerVehicle,
         name: 'checkerVehicle',
         builder: (context, state) => const VehicleCheckerScreen(),
+      ),
+      // Standalone Contract Review screen (Home tile entry point).
+      GoRoute(
+        path: AppRoutes.contractReview,
+        name: 'contractReview',
+        builder: (context, state) => const ContractReviewScreen(),
       ),
       GoRoute(
         path: AppRoutes.vault,

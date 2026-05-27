@@ -4430,4 +4430,153 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get deletingAccount => 'Konto kustutamine…';
+
+  @override
+  String get contractReviewTitle => 'Vaata leping üle';
+
+  @override
+  String get contractReviewUploadCta => 'Laadi leping üles';
+
+  @override
+  String get contractReviewQuotaRemaining =>
+      'Laadige üles leping (PDF, DOC, DOCX või TXT) — tehisintellekt toob välja riskid ja läbirääkimiste nipid.';
+
+  @override
+  String get contractReviewRedFlags => 'Riskid';
+
+  @override
+  String get contractReviewReviewPoints => 'Kontrollikohad';
+
+  @override
+  String get contractReviewNegotiationTips => 'Läbirääkimiste nipid';
+
+  @override
+  String get contractReviewSaveToVault => 'Salvesta hoidlasse';
+
+  @override
+  String get contractReviewContinueChat => 'Jätka vestluses';
+
+  @override
+  String get referralInviteFriends => 'Kutsu sõpru';
+
+  @override
+  String get referralYourCode => 'Sinu kood';
+
+  @override
+  String get referralCopiedToast => 'Kood kopeeritud';
+
+  @override
+  String get referralReward =>
+      'Saa iga sõbra eest, kes liitub, 1 kuu Counsel tasuta.';
+
+  @override
+  String get referralInvited => 'Kutsutud sõpru';
+
+  @override
+  String get referralRewardsEarned => 'Tasuta kuid teenitud';
+
+  @override
+  String get deadlineUrgencyToday => 'Täna ja hilinenud';
+
+  @override
+  String get deadlineUrgencyWeek => 'Sel nädalal';
+
+  @override
+  String get deadlineUrgencyMonth => 'Sel kuul';
+
+  @override
+  String get deadlineUrgencyLater => 'Hiljem';
+
+  @override
+  String get deadlineAddManual => 'Lisa tähtaeg';
+
+  @override
+  String get deadlineSnoozeBy => 'Lükka edasi';
+
+  @override
+  String get deadlineSnooze1d => '1 päev';
+
+  @override
+  String get deadlineSnooze3d => '3 päeva';
+
+  @override
+  String get deadlineSnooze7d => '7 päeva';
+
+  @override
+  String get deadlineDismiss => 'Eemalda';
+
+  @override
+  String get deadlineExportIcs => 'Lisa kalendrisse';
+
+  @override
+  String get deadlineSource => 'Allikas';
+
+  @override
+  String get deadlineEmpty =>
+      'Tähtaegu veel pole. Tähtajad tekivad automaatselt e-kirjadest ja dokumentidest — või lisa käsitsi nupuga +.';
+
+  @override
+  String get deadlineNewTitle => 'Uus tähtaeg';
+
+  @override
+  String get deadlineFieldTitle => 'Pealkiri';
+
+  @override
+  String get deadlineFieldDueDate => 'Tähtaeg';
+
+  @override
+  String get deadlineFieldNotes => 'Märkmed (valikuline)';
+
+  @override
+  String get deadlineSaved => 'Tähtaeg salvestatud';
+
+  @override
+  String get deadlineSaveFailed => 'Tähtaja salvestamine ebaõnnestus';
+
+  @override
+  String get deadlineUrgentBannerSingle => '1 tähtaeg täna või hilinenud';
+
+  @override
+  String deadlineUrgentBannerMany(int count) {
+    return '$count tähtaega täna või hilinenud';
+  }
+
+  @override
+  String deadlineDaysLeft(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päeva jäänud',
+      one: '1 päev jäänud',
+      zero: 'täna',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String deadlineDaysOverdue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päeva hilinenud',
+      one: '1 päev hilinenud',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get iapPayWithApple => 'Maksa Apple’iga';
+
+  @override
+  String get iapRestorePurchases => 'Taasta ostud';
+
+  @override
+  String get iapPurchaseFailed =>
+      'Ostmine ebaõnnestus. Proovi uuesti või võta klienditoega ühendust.';
+
+  @override
+  String get iapRestoreSuccess => 'Sinu tellimus on taastatud.';
+
+  @override
+  String get iapRestoreNoActive => 'Aktiivset taastatavat tellimust ei leitud.';
 }

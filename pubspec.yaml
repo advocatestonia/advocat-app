@@ -26,6 +26,10 @@ dependencies:
 
   # Payments
   flutter_stripe: ^10.1.1
+  # Apple StoreKit / Google Play Billing (mobile install funnel).
+  # iOS: fully wired via IapService. Android: stub-only behind kAndroidIapEnabled
+  # flag until Play Console product config is published.
+  in_app_purchase: ^3.2.0
 
   # Firebase
   firebase_core: ^2.30.0

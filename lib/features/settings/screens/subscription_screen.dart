@@ -1,5 +1,8 @@
+import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,11 +19,48 @@ import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/max_width_wrapper.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../../legal/widgets/dpa_checkout_gate.dart';
+import '../services/iap_service.dart';
 
 // ── Providers ────────────────────────────────────────────────────────────
 
 final _isAnnualProvider = StateProvider<bool>((ref) => false);
 final _isLoadingPlanProvider = StateProvider<String?>((ref) => null);
+
+/// Singleton IapService — created lazily on iOS, no-op stub elsewhere.
+/// Disposal hook closes the purchaseStream subscription cleanly when the
+/// provider tree tears down (test harness, sign-out, etc).
+final iapServiceProvider = Provider<IapService>((ref) {
+  final svc = IapService();
+  ref.onDispose(() {
+    // Fire-and-forget — dispose is async but ref.onDispose is sync.
+    unawaited(svc.dispose());
+  });
+  return svc;
+});
+
+/// True when the current device should show the Apple IAP path. Web and
+/// Android (until Play Console config lands) fall back to Stripe.
+bool _shouldShowAppleIap() {
+  if (kIsWeb) return false;
+  try {
+    return Platform.isIOS;
+  } catch (_) {
+    return false;
+  }
+}
+
+/// Map the UI plan id (free/basic/premium) + annual toggle to an Apple
+/// product id. Returns null for `free` since there is no IAP for that.
+IapPlanId? _planIdToIapPlan(String planId, bool isAnnual) {
+  switch (planId) {
+    case 'basic':
+      return isAnnual ? IapPlanId.counselAnnual : IapPlanId.counselMonthly;
+    case 'premium':
+      return isAnnual ? IapPlanId.proAnnual : IapPlanId.proMonthly;
+    default:
+      return null;
+  }
+}
 
 class SubscriptionScreen extends ConsumerStatefulWidget {
   const SubscriptionScreen({super.key});
@@ -341,6 +381,13 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     bool isAnnual,
     String? loadingPlan,
   ) {
+    // When the device is iOS we route purchases through StoreKit instead of
+    // Stripe Checkout. Apple's anti-steering rules also forbid offering a
+    // parallel web payment for the same item once IAP is the chosen path,
+    // so the CTA reads "Pay via Apple" and the Stripe redirect is replaced
+    // by the StoreKit sheet in _handlePlanSelect.
+    final bool appleIapPath = _shouldShowAppleIap();
+
     return [
       // Free tier
       _PlanCard(
@@ -379,6 +426,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         isCurrent: currentTier == SubscriptionTier.basic,
         isLoading: loadingPlan == 'basic',
         isRecommended: true,
+        useAppleIapLabel: appleIapPath,
         cardStyle: _CardStyle.recommended,
 
         features: [
@@ -406,6 +454,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
         isAnnual: isAnnual,
         isCurrent: currentTier == SubscriptionTier.premium,
         isLoading: loadingPlan == 'premium',
+        useAppleIapLabel: appleIapPath,
         cardStyle: _CardStyle.premium,
         features: [
           _Feature(l10n.unlimitedAiMessages, true),
@@ -442,6 +491,14 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     ref.read(_isLoadingPlanProvider.notifier).state = planId;
     final isAnnual = ref.read(_isAnnualProvider);
 
+    // iOS native path → Apple IAP (App Store Guideline 3.1.1 requires IAP
+    // for digital subs purchased inside the iOS app; Stripe-only would be
+    // a rejection risk). Everywhere else → Stripe Checkout (unchanged).
+    if (_shouldShowAppleIap()) {
+      await _handleApplePurchase(context, ref, planId, isAnnual);
+      return;
+    }
+
     try {
       final stripeService = ref.read(stripeCheckoutServiceProvider);
       final userEmail = Supabase.instance.client.auth.currentUser?.email;
@@ -476,13 +533,124 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     }
   }
 
+  /// iOS Apple IAP path. Mirrors the Stripe handler — sets loading state,
+  /// fires the buy, listens once on results stream, then surfaces a
+  /// success / failure snackbar. The server-side activation (profiles +
+  /// subscriptions write) is done by apple-iap-verify so we just need to
+  /// invalidate currentUserProvider on success and the rest of the UI
+  /// updates via Riverpod.
+  Future<void> _handleApplePurchase(
+    BuildContext context,
+    WidgetRef ref,
+    String planId,
+    bool isAnnual,
+  ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final iapPlan = _planIdToIapPlan(planId, isAnnual);
+    if (iapPlan == null) {
+      ref.read(_isLoadingPlanProvider.notifier).state = null;
+      return;
+    }
+
+    final iap = ref.read(iapServiceProvider);
+    final initialized = await iap.initialize();
+    if (!initialized) {
+      // Fall back to Stripe so the user is never stranded on a device
+      // where StoreKit isn't available (jailbroken, parental controls).
+      if (context.mounted) {
+        final stripeService = ref.read(stripeCheckoutServiceProvider);
+        final userEmail = Supabase.instance.client.auth.currentUser?.email;
+        await stripeService.startCheckout(
+          uiPlanId: planId,
+          isAnnual: isAnnual,
+          customerEmail: userEmail,
+        );
+      }
+      ref.read(_isLoadingPlanProvider.notifier).state = null;
+      return;
+    }
+
+    // Single-shot subscription — first emitted result completes this future.
+    final completer = Completer<IapResult>();
+    late StreamSubscription<IapResult> sub;
+    sub = iap.results.listen((res) {
+      if (res.kind == IapResultKind.success ||
+          res.kind == IapResultKind.cancelled ||
+          res.kind == IapResultKind.error ||
+          res.kind == IapResultKind.notSupported) {
+        if (!completer.isCompleted) completer.complete(res);
+      }
+    });
+
+    try {
+      await iap.buy(iapPlan);
+      final result = await completer.future.timeout(
+        const Duration(minutes: 3),
+        onTimeout: () => const IapResult.error('Purchase timed out'),
+      );
+      if (!context.mounted) return;
+      switch (result.kind) {
+        case IapResultKind.success:
+          ref.invalidate(currentUserProvider);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.redirectingToPayment),
+              backgroundColor: AppColors.accent,
+            ),
+          );
+          break;
+        case IapResultKind.cancelled:
+          // User dismissed the StoreKit sheet — silent, no snackbar.
+          break;
+        case IapResultKind.error:
+        case IapResultKind.notSupported:
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(l10n.iapPurchaseFailed),
+              backgroundColor: AppColors.error,
+            ),
+          );
+          break;
+        case IapResultKind.noActive:
+          break;
+      }
+    } finally {
+      await sub.cancel();
+      ref.read(_isLoadingPlanProvider.notifier).state = null;
+    }
+  }
+
   Future<void> _handleRestore(BuildContext context, WidgetRef ref) async {
     final l10n = AppLocalizations.of(context)!;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(l10n.checkingPurchases)),
     );
 
-    // Re-fetch profile from Supabase to check current subscription
+    // On iOS, fire StoreKit restore FIRST — Apple replays past transactions
+    // through purchaseStream, IapService POSTs each to apple-iap-verify,
+    // which writes profiles + subscriptions. We then invalidate the user
+    // provider so the UI picks up the restored tier. (App Store Guideline
+    // 3.1.1 explicitly requires this button in every app with IAP.)
+    if (_shouldShowAppleIap()) {
+      try {
+        final iap = ref.read(iapServiceProvider);
+        if (await iap.initialize()) {
+          await iap.restore();
+          // restorePurchases is async — give Apple a couple of seconds to
+          // replay the transactions through purchaseStream + our server
+          // round-trip.
+          await Future<void>.delayed(const Duration(seconds: 3));
+        }
+      } catch (e) {
+        // Restore is best-effort — if Apple errors we still fall through
+        // to the Supabase re-fetch (Stripe customers also use Restore).
+        debugPrint('[subscription] Apple restore error: $e');
+      }
+    }
+
+    // Re-fetch profile from Supabase to check current subscription. This
+    // also catches Stripe-side activations that the user lost local state
+    // for (browser cookie wipe, fresh device, etc).
     ref.invalidate(currentUserProvider);
 
     // Wait for the profile to reload
@@ -495,13 +663,13 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
       if (user != null && user.isProActive) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Subscription restored: ${user.subscriptionTier.name}'),
+            content: Text(l10n.iapRestoreSuccess),
             backgroundColor: AppColors.accent,
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.noPreviousPurchases)),
+          SnackBar(content: Text(l10n.iapRestoreNoActive)),
         );
       }
     }
@@ -759,6 +927,7 @@ class _PlanCard extends StatefulWidget {
     required this.onSelect,
     required this.cardStyle,
     this.isRecommended = false,
+    this.useAppleIapLabel = false,
   });
 
   final String planId;
@@ -773,6 +942,11 @@ class _PlanCard extends StatefulWidget {
   final _CardStyle cardStyle;
   final List<_Feature> features;
   final VoidCallback? onSelect;
+
+  /// When true, the CTA reads "Pay via Apple" instead of the generic
+  /// "Choose plan". Free tier (planId='free') ignores this flag — the CTA
+  /// stays the standard sign-up label.
+  final bool useAppleIapLabel;
 
   @override
   State<_PlanCard> createState() => _PlanCardState();
@@ -1252,7 +1426,14 @@ class _PlanCardState extends State<_PlanCard>
   }
 
   Widget _buildCta(AppLocalizations l10n) {
-    final label = widget.isCurrent ? l10n.currentPlan : l10n.choosePlan;
+    // On iOS we surface "Pay via Apple" so the user knows the next step
+    // is the StoreKit sheet, not a browser bounce to Stripe. Free tier
+    // and current-plan states keep the generic labels.
+    final String purchaseLabel = (widget.useAppleIapLabel &&
+            widget.planId != 'free')
+        ? l10n.iapPayWithApple
+        : l10n.choosePlan;
+    final label = widget.isCurrent ? l10n.currentPlan : purchaseLabel;
 
     const Widget loader = SizedBox(
       width: 18,

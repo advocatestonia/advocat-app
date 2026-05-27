@@ -7825,6 +7825,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deleting account…'**
   String get deletingAccount;
+
+  /// No description provided for @contractReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract Review'**
+  String get contractReviewTitle;
+
+  /// No description provided for @contractReviewUploadCta.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload contract'**
+  String get contractReviewUploadCta;
+
+  /// No description provided for @contractReviewQuotaRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.'**
+  String get contractReviewQuotaRemaining;
+
+  /// No description provided for @contractReviewRedFlags.
+  ///
+  /// In en, this message translates to:
+  /// **'Red flags'**
+  String get contractReviewRedFlags;
+
+  /// No description provided for @contractReviewReviewPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'Review points'**
+  String get contractReviewReviewPoints;
+
+  /// No description provided for @contractReviewNegotiationTips.
+  ///
+  /// In en, this message translates to:
+  /// **'Negotiation tips'**
+  String get contractReviewNegotiationTips;
+
+  /// No description provided for @contractReviewSaveToVault.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Vault'**
+  String get contractReviewSaveToVault;
+
+  /// No description provided for @contractReviewContinueChat.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue in chat'**
+  String get contractReviewContinueChat;
+
+  /// No description provided for @referralInviteFriends.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite Friends'**
+  String get referralInviteFriends;
+
+  /// No description provided for @referralYourCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your code'**
+  String get referralYourCode;
+
+  /// No description provided for @referralCopiedToast.
+  ///
+  /// In en, this message translates to:
+  /// **'Code copied to clipboard'**
+  String get referralCopiedToast;
+
+  /// No description provided for @referralReward.
+  ///
+  /// In en, this message translates to:
+  /// **'Get 1 month of Counsel free for every friend who subscribes.'**
+  String get referralReward;
+
+  /// No description provided for @referralInvited.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends invited'**
+  String get referralInvited;
+
+  /// No description provided for @referralRewardsEarned.
+  ///
+  /// In en, this message translates to:
+  /// **'Free months earned'**
+  String get referralRewardsEarned;
+
+  /// No description provided for @deadlineUrgencyToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today & Overdue'**
+  String get deadlineUrgencyToday;
+
+  /// No description provided for @deadlineUrgencyWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'This week'**
+  String get deadlineUrgencyWeek;
+
+  /// No description provided for @deadlineUrgencyMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get deadlineUrgencyMonth;
+
+  /// No description provided for @deadlineUrgencyLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get deadlineUrgencyLater;
+
+  /// No description provided for @deadlineAddManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Add deadline'**
+  String get deadlineAddManual;
+
+  /// No description provided for @deadlineSnoozeBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze'**
+  String get deadlineSnoozeBy;
+
+  /// No description provided for @deadlineSnooze1d.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 1 day'**
+  String get deadlineSnooze1d;
+
+  /// No description provided for @deadlineSnooze3d.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 3 days'**
+  String get deadlineSnooze3d;
+
+  /// No description provided for @deadlineSnooze7d.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze 7 days'**
+  String get deadlineSnooze7d;
+
+  /// No description provided for @deadlineDismiss.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get deadlineDismiss;
+
+  /// No description provided for @deadlineExportIcs.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to calendar'**
+  String get deadlineExportIcs;
+
+  /// No description provided for @deadlineSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get deadlineSource;
+
+  /// No description provided for @deadlineEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.'**
+  String get deadlineEmpty;
+
+  /// No description provided for @deadlineNewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'New deadline'**
+  String get deadlineNewTitle;
+
+  /// No description provided for @deadlineFieldTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get deadlineFieldTitle;
+
+  /// No description provided for @deadlineFieldDueDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Due date'**
+  String get deadlineFieldDueDate;
+
+  /// No description provided for @deadlineFieldNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get deadlineFieldNotes;
+
+  /// No description provided for @deadlineSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Deadline saved'**
+  String get deadlineSaved;
+
+  /// No description provided for @deadlineSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save deadline'**
+  String get deadlineSaveFailed;
+
+  /// No description provided for @deadlineUrgentBannerSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'1 deadline today or overdue'**
+  String get deadlineUrgentBannerSingle;
+
+  /// No description provided for @deadlineUrgentBannerMany.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} deadlines today or overdue'**
+  String deadlineUrgentBannerMany(int count);
+
+  /// No description provided for @deadlineDaysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{today} =1{1 day left} other{{count} days left}}'**
+  String deadlineDaysLeft(int count);
+
+  /// No description provided for @deadlineDaysOverdue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day overdue} other{{count} days overdue}}'**
+  String deadlineDaysOverdue(int count);
+
+  /// No description provided for @iapPayWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay with Apple'**
+  String get iapPayWithApple;
+
+  /// No description provided for @iapRestorePurchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get iapRestorePurchases;
+
+  /// No description provided for @iapPurchaseFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed. Please try again or contact support.'**
+  String get iapPurchaseFailed;
+
+  /// No description provided for @iapRestoreSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your subscription has been restored.'**
+  String get iapRestoreSuccess;
+
+  /// No description provided for @iapRestoreNoActive.
+  ///
+  /// In en, this message translates to:
+  /// **'No active subscription found to restore.'**
+  String get iapRestoreNoActive;
 }
 
 class _AppLocalizationsDelegate

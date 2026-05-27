@@ -21,6 +21,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
 import { checkCronSecret } from "../agent-intentions-cron/auth_gate.ts";
 import { buildAnthropicHeaders } from "../claude-proxy/prompt_caching.ts";
+import { getOrCreateTraceId, shortTrace } from "../_shared/tracing.ts";
 import {
   type AnthropicCallArgs,
   type AnthropicResponse,
@@ -67,6 +68,20 @@ const QUOTA_TIERS: Record<string, number> = {
   pro: 1200,
 };
 
+// Retry queue / DLQ — when the triage call fails with a transient error
+// (Anthropic 529 / 5xx / timeout), enqueue a retry row instead of returning
+// 502 and leaving email_threads.triage_status='pending' forever. Default ON
+// — flip EMAIL_TRIAGE_USE_RETRY_QUEUE=false in env to fall back to the old
+// fail-loud behaviour during incident response.
+const USE_RETRY_QUEUE =
+  (Deno.env.get("EMAIL_TRIAGE_USE_RETRY_QUEUE") ?? "true").toLowerCase() !==
+    "false";
+
+// Anthropic errors we treat as transient (re-enqueue). Anything else is a
+// permanent failure (parser bug, missing thread, config error) and bubbles
+// as a 502 to the caller so the retry-tick worker dead-letters it.
+const TRANSIENT_ERROR_RE = /\b(5\d\d|429|529|timeout|ECONNRESET|fetch failed)\b/i;
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
@@ -97,6 +112,10 @@ serve(async (req) => {
     req.headers.get("Authorization") ?? "";
   const isInternalCall = internalCallHeader === "email-inbox-sync" &&
     authHeaderRaw === `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
+  // Trace propagation — pulled once from the request and threaded through
+  // every Anthropic call / queue row / audit insert below.
+  const traceId = getOrCreateTraceId(req);
+
   if (cronHeader || isInternalCall) {
     if (cronHeader) {
       const gate = checkCronSecret(cronHeader, Deno.env.get("CRON_SECRET"));
@@ -106,7 +125,7 @@ serve(async (req) => {
     }
     const userId = body.user_id;
     if (!userId) return jsonError("user_id required for cron", 400);
-    return await dispatchTriage(body.thread_id!, userId);
+    return await dispatchTriage(body.thread_id!, userId, traceId);
   }
   // If the caller TRIED to use x-internal-call but didn't present the
   // service-role bearer, fail loud — never fall through to the per-user
@@ -122,15 +141,19 @@ serve(async (req) => {
   const token = authHeader.replace("Bearer ", "");
   const { data, error } = await sb.auth.getUser(token);
   if (error || !data?.user) return jsonError("Invalid session", 401);
-  return await dispatchTriage(body.thread_id!, data.user.id);
+  return await dispatchTriage(body.thread_id!, data.user.id, traceId);
 });
 
 async function dispatchTriage(
   threadId: string,
   userId: string,
+  traceId: string,
 ): Promise<Response> {
   const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-  const deps = makeProdDeps(sb);
+  const deps = makeProdDeps(sb, traceId);
+  console.log(
+    `email-triage start thread=${threadId} trace=${shortTrace(traceId)}`,
+  );
   try {
     const out = await runTriage(deps, {
       thread_id: threadId,
@@ -139,6 +162,9 @@ async function dispatchTriage(
       gate_secret: GATE_SECRET,
     });
     if (!out.ok) {
+      // Non-transient failure (parser bug, missing thread). Don't enqueue
+      // because retry won't help. Return 500 so the retry-tick worker (if
+      // this was an internal-call) flips the queue row to dead_letter.
       return jsonError(out.error_code, 500, out.detail ? { detail: out.detail } : {});
     }
 
@@ -186,8 +212,37 @@ async function dispatchTriage(
         : {}),
     });
   } catch (e) {
+    const detail = String(e).slice(0, 200);
+    const transient = TRANSIENT_ERROR_RE.test(detail);
+    // Transient failure (Anthropic 529 / 5xx / timeout) + retry queue
+    // enabled: enqueue a durable retry row so triage-retry-tick reruns
+    // this thread with exponential backoff. Best-effort — if enqueue
+    // itself fails we still surface 502 to the caller.
+    if (transient && USE_RETRY_QUEUE) {
+      try {
+        const { error: enqErr } = await sb.rpc("enqueue_triage", {
+          p_thread_id: threadId,
+          p_user_id: userId,
+          p_payload: { source: "email-triage-catch", error: detail },
+          p_trace_id: traceId,
+        });
+        if (enqErr) {
+          console.error("enqueue_triage failed:", enqErr.message);
+        } else {
+          console.log(
+            `triage enqueued for retry thread=${threadId} trace=${
+              shortTrace(traceId)
+            } reason=${detail.slice(0, 60)}`,
+          );
+        }
+      } catch (enqE) {
+        console.error("enqueue_triage threw:", String(enqE).slice(0, 200));
+      }
+    }
     return jsonError("triage_failed", 502, {
-      detail: String(e).slice(0, 200),
+      detail,
+      enqueued_for_retry: transient && USE_RETRY_QUEUE,
+      trace_id: traceId,
     });
   }
 }
@@ -199,6 +254,7 @@ async function dispatchTriage(
 function makeProdDeps(
   // deno-lint-ignore no-explicit-any
   sb: any,
+  traceId: string | null = null,
 ): MinimalTriageDeps {
   return {
     async loadThread(threadId: string): Promise<ThreadRecord | null> {
@@ -475,9 +531,15 @@ function makeProdDeps(
     },
 
     async persistTriageRow(row: TriageInsertRow): Promise<{ id: string }> {
+      // Bind the trace_id onto the triage row so app.trace_timeline can JOIN
+      // the result back to the request that produced it. trace_id column is
+      // nullable, so legacy callers (older edge fns) keep working.
+      const enriched = traceId
+        ? { ...(row as unknown as Record<string, unknown>), trace_id: traceId }
+        : row;
       const { data, error } = await sb
         .from("email_triage_results")
-        .insert(row)
+        .insert(enriched)
         .select("id")
         .single();
       if (error || !data?.id) {

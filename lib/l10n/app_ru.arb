@@ -1409,6 +1409,18 @@
             }
         }
     },
+    "agentApprovalNeedsReviewTitle": "Advocat ждёт вашего одобрения",
+    "agentApprovalResolvedTitle": "Действие выполнено",
+    "agentApprovalStepsLabel": "шагов",
+    "agentApprovalApproveButton": "Одобрить и отправить",
+    "agentApprovalDeclineButton": "Отклонить",
+    "agentApprovalAttachmentsLabel": "Вложения",
+    "agentApprovalSentSummary": "Отправлено от вашего имени.",
+    "agentApprovalDeclinedSummary": "Отклонено — ничего не отправлено.",
+    "agentToolDraftEmailAtt": "Отправить письмо с вложениями",
+    "agentToolSendEmail": "Отправить письмо",
+    "agentToolGeneratePdf": "Создать PDF",
+    "agentToolApproveSend": "Отправить готовый ответ",
     "inboxErrorTitle": "Не удалось загрузить почтовый ящик",
     "inboxEditDiscardTitle": "Отменить несохранённые правки?",
     "inboxEditDiscardBody": "В этом черновике есть несохранённые изменения. Если вернуться назад, они будут потеряны.",
@@ -1888,5 +1900,76 @@
     },
     "deleteAccountSuccess": "Аккаунт удалён. Жаль, что вы уходите.",
     "deleteAccountWarning": "Это безвозвратно удалит ваш аккаунт, все дела, черновики, документы хранилища и историю чата. Отменить это действие нельзя.",
-    "deletingAccount": "Удаление аккаунта…"
+    "deletingAccount": "Удаление аккаунта…",
+    "contractReviewTitle": "Проверить договор",
+    "@contractReviewTitle": {},
+    "contractReviewUploadCta": "Загрузить договор",
+    "@contractReviewUploadCta": {},
+    "contractReviewQuotaRemaining": "Загрузите договор в PDF, DOC, DOCX или TXT — AI выдаст список рисков и подсказки для переговоров.",
+    "@contractReviewQuotaRemaining": {},
+    "contractReviewRedFlags": "Красные флаги",
+    "@contractReviewRedFlags": {},
+    "contractReviewReviewPoints": "Пункты для проверки",
+    "@contractReviewReviewPoints": {},
+    "contractReviewNegotiationTips": "Советы по переговорам",
+    "@contractReviewNegotiationTips": {},
+    "contractReviewSaveToVault": "Сохранить в Хранилище",
+    "@contractReviewSaveToVault": {},
+    "contractReviewContinueChat": "Продолжить в чате",
+    "@contractReviewContinueChat": {},
+    "referralInviteFriends": "Пригласить друзей",
+    "referralYourCode": "Ваш код",
+    "referralCopiedToast": "Код скопирован",
+    "referralReward": "Получите 1 месяц Counsel бесплатно за каждого друга, который оформит подписку.",
+    "referralInvited": "Приглашено друзей",
+    "referralRewardsEarned": "Бесплатных месяцев получено",
+    "deadlineUrgencyToday": "Сегодня и просрочено",
+    "deadlineUrgencyWeek": "На этой неделе",
+    "deadlineUrgencyMonth": "В этом месяце",
+    "deadlineUrgencyLater": "Позже",
+    "deadlineAddManual": "Добавить срок",
+    "deadlineSnoozeBy": "Отложить",
+    "deadlineSnooze1d": "1 день",
+    "deadlineSnooze3d": "3 дня",
+    "deadlineSnooze7d": "7 дней",
+    "deadlineDismiss": "Удалить",
+    "deadlineExportIcs": "В календарь",
+    "deadlineSource": "Источник",
+    "deadlineEmpty": "Сроков пока нет. Сроки создаются автоматически из писем и документов — или добавьте вручную кнопкой +.",
+    "deadlineNewTitle": "Новый срок",
+    "deadlineFieldTitle": "Название",
+    "deadlineFieldDueDate": "Дата",
+    "deadlineFieldNotes": "Заметки (необязательно)",
+    "deadlineSaved": "Срок сохранён",
+    "deadlineSaveFailed": "Не удалось сохранить срок",
+    "deadlineUrgentBannerSingle": "1 срок сегодня или просрочен",
+    "deadlineUrgentBannerMany": "{count} сроков сегодня или просрочено",
+    "@deadlineUrgentBannerMany": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysLeft": "{count, plural, =0{сегодня} =1{остался 1 день} few{осталось {count} дня} many{осталось {count} дней} other{осталось {count} дней}}",
+    "@deadlineDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysOverdue": "{count, plural, =1{1 день просрочки} few{{count} дня просрочки} many{{count} дней просрочки} other{{count} дней просрочки}}",
+    "@deadlineDaysOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "iapPayWithApple": "Оплатить через Apple",
+    "iapRestorePurchases": "Восстановить покупки",
+    "iapPurchaseFailed": "Покупка не удалась. Попробуйте снова или обратитесь в поддержку.",
+    "iapRestoreSuccess": "Ваша подписка восстановлена.",
+    "iapRestoreNoActive": "Активной подписки для восстановления не найдено."
 }

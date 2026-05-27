@@ -16,6 +16,7 @@ import 'config/app_config.dart';
 import 'config/theme.dart';
 import 'config/router.dart';
 import 'l10n/app_localizations.dart';
+import 'services/notification_service.dart';
 import 'shared/error_boundary.dart';
 import 'shared/providers/theme_mode_provider.dart';
 import 'shared/telemetry_sink.dart';
@@ -92,6 +93,26 @@ Future<void> main() async {
       appVersion: AppConfig.appVersion,
       locale: localeCode,
     ));
+
+    // Pkg 9 — Deadline Radar push channel.
+    //
+    // Request FCM permission + register the device token against
+    // `notification_preferences.fcm_token` so the `push-send` edge fn can
+    // route deadline reminders to this device. Fire-and-forget — the
+    // service swallows all errors and never blocks startup.
+    //
+    // We do NOT call this on web (firebase_messaging Web requires a VAPID
+    // key + a service-worker file; mobile MVP only). The kIsWeb branch on
+    // line 196 means web users still get the in-app banner channel.
+    //
+    // We do NOT pre-request before the user signs in either — anonymous
+    // sessions have no `auth.uid()` and the upsert would no-op. The auth
+    // gate inside [NotificationPreferencesService.updateFcmToken] handles
+    // that case, so calling here is safe even pre-auth; the token will
+    // simply be persisted on the next refresh after sign-in.
+    if (!kIsWeb) {
+      unawaited(NotificationService.instance.requestPermission());
+    }
   }
 
   // Firebase.initializeApp() requires firebase_options.dart — run flutterfire configure first

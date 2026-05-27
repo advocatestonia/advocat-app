@@ -53,14 +53,80 @@ export function jsonOk(body: unknown, status = 200) {
 }
 
 /**
- * Sliding-window rate limiter, per bucket + per principal (user ID or IP).
- * O(1) per call — stores `{ count, windowStart }` per key, resets on window
- * expiry. State is in-process memory, so each Edge Function cold-start
- * starts empty; that is acceptable for our abuse-prevention use case
- * (cold-starts are rare compared to the rate-limit window).
+ * Postgres-backed per-minute rate limiter. State lives in
+ * `app.rate_limit_buckets` and is mutated by the SECURITY DEFINER RPC
+ * `consume_rate_limit(bucket_key, max_per_minute)`. The old in-process
+ * `Map` could not coordinate across the N Deno isolates Supabase runs
+ * behind a load balancer, so effective rate was N × maxPerMinute. The
+ * RPC takes an advisory xact lock keyed on bucket_key, so concurrent
+ * isolates serialise against the same principal and the documented cap
+ * holds.
+ *
+ * Failure mode: if the DB RPC errors (network, timeout, schema drift),
+ * the gate FAILS OPEN — we'd rather admit a few extra requests than
+ * 500 every paying user during a postgres outage. The cost-bound on
+ * such an outage is bounded by per-tier quota tables (agent_quota,
+ * voice_usage) which sit on the same DB anyway.
+ *
+ * Backward-compat: the legacy `WINDOW_MS = 60_000` and `__resetRateLimitForTest`
+ * surface are preserved so existing callers + tests keep compiling.
  */
-const rateLimits = new Map<string, { count: number; windowStart: number }>();
 const WINDOW_MS = 60_000;
+
+/**
+ * Build a stable rate-limit bucket key for (function, principal).
+ * Used so call-sites that need to pre-compose a key (telemetry, audit)
+ * stay aligned with what the gate writes to postgres.
+ */
+export function rateLimitKey(principal: string, fnName: string): string {
+  return `${fnName}:${principal}`;
+}
+
+/**
+ * Service-role Supabase client, lazily constructed once per isolate.
+ * Re-use saves ~30-50ms per call vs `createClient` on every request.
+ */
+let _sb: ReturnType<typeof createClient> | null = null;
+function sbClient() {
+  if (!_sb) {
+    _sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+  }
+  return _sb;
+}
+
+/**
+ * Atomic increment-and-check against `app.rate_limit_buckets` via the
+ * `consume_rate_limit` RPC. Returns TRUE if admitted, FALSE if at cap.
+ *
+ * Fails open (returns TRUE + warning log) if the RPC call itself errors.
+ * Exported so individual fns can probe rate-limit state without going
+ * through the full `requireUserWithRateLimit` gate.
+ */
+export async function checkRateLimit(
+  identifier: string,
+  maxPerMinute: number,
+): Promise<boolean> {
+  try {
+    // deno-lint-ignore no-explicit-any
+    const { data, error } = await (sbClient().rpc as any)("consume_rate_limit", {
+      p_bucket_key: identifier,
+      p_max_per_minute: maxPerMinute,
+    });
+    if (error) {
+      console.warn(
+        `[auth] consume_rate_limit RPC error — failing OPEN: ${error.message}`,
+      );
+      return true;
+    }
+    // RPC returns boolean (true=admitted, false=denied)
+    return data === true;
+  } catch (e) {
+    console.warn(`[auth] consume_rate_limit threw — failing OPEN: ${String(e)}`);
+    return true;
+  }
+}
 
 export interface GateOptions {
   /** Bucket name (appears in rate-limit key; keeps function quotas isolated). */
@@ -98,7 +164,7 @@ export async function requireUserWithRateLimit(
 
   if (authHeader) {
     try {
-      const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+      const supabase = sbClient();
       const token = authHeader.replace("Bearer ", "");
       const { data, error } = await supabase.auth.getUser(token);
       if (error || !data?.user) {
@@ -162,29 +228,18 @@ export async function requireUserWithRateLimit(
     "unknown";
   const principal = userId ?? `ip:${clientIp}`;
   const limit = userId ? opts.maxPerMinute : (opts.anonymousPerMinute ?? 0);
-  const key = `${opts.bucket}:${principal}`;
+  const key = rateLimitKey(principal, opts.bucket);
 
-  const now = Date.now();
-  const bucket = rateLimits.get(key);
-  if (bucket) {
-    if (now - bucket.windowStart < WINDOW_MS) {
-      if (bucket.count >= limit) {
-        return {
-          kind: "deny",
-          response: jsonError(
-            "Rate limit exceeded. Try again in a minute.",
-            429,
-            { bucket: opts.bucket, limit, windowMs: WINDOW_MS },
-          ),
-        };
-      }
-      bucket.count++;
-    } else {
-      bucket.count = 1;
-      bucket.windowStart = now;
-    }
-  } else {
-    rateLimits.set(key, { count: 1, windowStart: now });
+  const admitted = await _gateCheckRateLimit(key, limit);
+  if (!admitted) {
+    return {
+      kind: "deny",
+      response: jsonError(
+        "Rate limit exceeded. Try again in a minute.",
+        429,
+        { bucket: opts.bucket, limit, windowMs: WINDOW_MS },
+      ),
+    };
   }
 
   if (!userId) {
@@ -201,7 +256,58 @@ export async function requireUserWithRateLimit(
   };
 }
 
-/** Helper for tests: wipe the in-process counters. */
+/**
+ * Test-only override of the rate-limit transport. Allows unit tests to
+ * stub the postgres RPC without spinning a real DB. When set to null
+ * (the default), the gate calls the real `consume_rate_limit` RPC.
+ *
+ * In production this MUST stay null — call-sites should never override
+ * the limiter at runtime.
+ */
+let _rateLimitOverride:
+  | ((identifier: string, maxPerMinute: number) => Promise<boolean>)
+  | null = null;
+
+/** Tests only — inject a custom rate-limit transport. Pass null to restore. */
+export function __setRateLimitOverrideForTest(
+  fn: ((identifier: string, maxPerMinute: number) => Promise<boolean>) | null,
+) {
+  _rateLimitOverride = fn;
+}
+
+/**
+ * Internal: route a rate-limit check through the test override if one is
+ * installed, otherwise call the real RPC. Used by requireUserWithRateLimit;
+ * `checkRateLimit` itself stays a thin public RPC wrapper so external
+ * call-sites get the production behaviour.
+ */
+async function _gateCheckRateLimit(
+  identifier: string,
+  maxPerMinute: number,
+): Promise<boolean> {
+  if (_rateLimitOverride) return _rateLimitOverride(identifier, maxPerMinute);
+  return checkRateLimit(identifier, maxPerMinute);
+}
+
+/**
+ * Legacy test reset — kept for backward compat with auth.test.ts. Installs
+ * a fresh in-memory Map-based stub so the old test suite (which counts
+ * actual admissions and expects sliding-window behaviour) keeps passing
+ * without spinning up a real postgres for every assertion. Production code
+ * paths still hit the real `consume_rate_limit` RPC; the override only
+ * fires inside Deno test runs after this helper is called.
+ */
 export function __resetRateLimitForTest() {
-  rateLimits.clear();
+  const stub = new Map<string, { count: number; windowStart: number }>();
+  _rateLimitOverride = (identifier: string, maxPerMinute: number) => {
+    const now = Date.now();
+    const cur = stub.get(identifier);
+    if (cur && now - cur.windowStart < WINDOW_MS) {
+      if (cur.count >= maxPerMinute) return Promise.resolve(false);
+      cur.count++;
+    } else {
+      stub.set(identifier, { count: 1, windowStart: now });
+    }
+    return Promise.resolve(true);
+  };
 }

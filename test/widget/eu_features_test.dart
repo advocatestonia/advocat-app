@@ -114,6 +114,12 @@ void main() {
     });
 
     testWidgets('tapping a row opens the detail panel', (tester) async {
+      // Use a taller viewport so the close button (positioned near bottom of the
+      // detail panel) stays in-bounds for hit-testing. Default 800x600 viewport
+      // pushed the IconButton to y=932 which is off-screen.
+      await tester.binding.setSurfaceSize(const Size(800, 1200));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+
       await tester.pumpWidget(_wrap(const LandmarkExplorer()));
       await tester.pumpAndSettle();
 

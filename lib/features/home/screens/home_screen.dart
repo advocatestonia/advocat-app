@@ -946,6 +946,24 @@ class _QuickActions extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: AppSpacing.sm),
+          // Third Quick Actions row — Contract Review entry point. Until
+          // 2026-05-27 Contract Review was reachable only through chat
+          // (PDF upload + classify-contract auto-detect chip). That gave it
+          // ~2/10 discoverability for the highest-value paid feature. This
+          // tile surfaces the standalone screen at /contract-review; the
+          // chat detection path is preserved alongside it.
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _QuickActionButton(
+                icon: Icons.description_outlined,
+                label: l.contractReviewTitle,
+                color: AppColors.accent,
+                onTap: () => context.push(AppRoutes.contractReview),
+              ),
+            ],
+          ),
         ],
       ),
     );

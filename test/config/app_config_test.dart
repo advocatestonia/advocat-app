@@ -40,8 +40,9 @@ void main() {
         expect(AppConfig.appName, 'AI Legal Defense');
       });
 
-      test('appVersion is 1.0.0', () {
-        expect(AppConfig.appVersion, '1.0.0');
+      test('appVersion is 2.2.0', () {
+        // Updated to reflect current production version (was 1.0.0 → 2.2.0).
+        expect(AppConfig.appVersion, '2.2.0');
       });
 
       test('isProduction defaults to false', () {

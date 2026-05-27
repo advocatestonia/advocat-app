@@ -49,6 +49,7 @@ class _FakeSupabaseService implements SupabaseService {
   Future<Map<String, dynamic>?> callEdgeFunction(
     String functionName, {
     Map<String, dynamic>? body,
+    String? traceId,
   }) async {
     callCount++;
     lastFunctionName = functionName;

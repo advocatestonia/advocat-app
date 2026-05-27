@@ -1409,6 +1409,18 @@
             }
         }
     },
+    "agentApprovalNeedsReviewTitle": "Advocat tarvitsee hyväksyntäsi",
+    "agentApprovalResolvedTitle": "Toimenpide ratkaistu",
+    "agentApprovalStepsLabel": "vaihetta",
+    "agentApprovalApproveButton": "Hyväksy & lähetä",
+    "agentApprovalDeclineButton": "Hylkää",
+    "agentApprovalAttachmentsLabel": "Liitteet",
+    "agentApprovalSentSummary": "Lähetetty puolestasi.",
+    "agentApprovalDeclinedSummary": "Hylätty — mitään ei lähetetty.",
+    "agentToolDraftEmailAtt": "Lähetä sähköposti liitteineen",
+    "agentToolSendEmail": "Lähetä sähköposti",
+    "agentToolGeneratePdf": "Luo PDF",
+    "agentToolApproveSend": "Lähetä valmis vastaus",
     "inboxErrorTitle": "Postilaatikon lataaminen epäonnistui",
     "inboxEditDiscardTitle": "Hylätäänkö tallentamattomat muutokset?",
     "inboxEditDiscardBody": "Tässä luonnoksessa on tallentamattomia muutoksia. Takaisin meneminen hylkää ne.",
@@ -1888,5 +1900,76 @@
     },
     "deleteAccountSuccess": "Tili on poistettu. Harmi, että lähdet.",
     "deleteAccountWarning": "Tämä poistaa pysyvästi tilisi, kaikki tapaukset, luonnokset, holvin asiakirjat ja keskusteluhistorian. Tätä ei voi peruuttaa.",
-    "deletingAccount": "Poistetaan tiliä…"
+    "deletingAccount": "Poistetaan tiliä…",
+    "contractReviewTitle": "Tarkista sopimus",
+    "@contractReviewTitle": {},
+    "contractReviewUploadCta": "Lataa sopimus",
+    "@contractReviewUploadCta": {},
+    "contractReviewQuotaRemaining": "Lataa sopimus (PDF, DOC, DOCX tai TXT) — tekoäly listaa riskit ja antaa neuvotteluvinkit.",
+    "@contractReviewQuotaRemaining": {},
+    "contractReviewRedFlags": "Riskit",
+    "@contractReviewRedFlags": {},
+    "contractReviewReviewPoints": "Tarkistuskohteet",
+    "@contractReviewReviewPoints": {},
+    "contractReviewNegotiationTips": "Neuvotteluvinkit",
+    "@contractReviewNegotiationTips": {},
+    "contractReviewSaveToVault": "Tallenna holviin",
+    "@contractReviewSaveToVault": {},
+    "contractReviewContinueChat": "Jatka chatissa",
+    "@contractReviewContinueChat": {},
+    "referralInviteFriends": "Kutsu ystäviä",
+    "referralYourCode": "Koodisi",
+    "referralCopiedToast": "Koodi kopioitu",
+    "referralReward": "Saat 1 kuukauden Counsel-tilauksen ilmaiseksi jokaisesta ystävästä, joka tilaa.",
+    "referralInvited": "Kutsuttuja ystäviä",
+    "referralRewardsEarned": "Ansaittuja ilmaisia kuukausia",
+    "deadlineUrgencyToday": "Tänään ja myöhässä",
+    "deadlineUrgencyWeek": "Tällä viikolla",
+    "deadlineUrgencyMonth": "Tässä kuussa",
+    "deadlineUrgencyLater": "Myöhemmin",
+    "deadlineAddManual": "Lisää määräaika",
+    "deadlineSnoozeBy": "Lykkää",
+    "deadlineSnooze1d": "1 päivä",
+    "deadlineSnooze3d": "3 päivää",
+    "deadlineSnooze7d": "7 päivää",
+    "deadlineDismiss": "Poista",
+    "deadlineExportIcs": "Lisää kalenteriin",
+    "deadlineSource": "Lähde",
+    "deadlineEmpty": "Ei vielä määräaikoja. Määräajat luodaan automaattisesti sähköposteista ja asiakirjoista — tai lisää käsin +-painikkeella.",
+    "deadlineNewTitle": "Uusi määräaika",
+    "deadlineFieldTitle": "Otsikko",
+    "deadlineFieldDueDate": "Eräpäivä",
+    "deadlineFieldNotes": "Muistiinpanot (valinnainen)",
+    "deadlineSaved": "Määräaika tallennettu",
+    "deadlineSaveFailed": "Määräajan tallentaminen epäonnistui",
+    "deadlineUrgentBannerSingle": "1 määräaika tänään tai myöhässä",
+    "deadlineUrgentBannerMany": "{count} määräaikaa tänään tai myöhässä",
+    "@deadlineUrgentBannerMany": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysLeft": "{count, plural, =0{tänään} =1{1 päivä jäljellä} other{{count} päivää jäljellä}}",
+    "@deadlineDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysOverdue": "{count, plural, =1{1 päivä myöhässä} other{{count} päivää myöhässä}}",
+    "@deadlineDaysOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "iapPayWithApple": "Maksa Applella",
+    "iapRestorePurchases": "Palauta ostokset",
+    "iapPurchaseFailed": "Ostos epäonnistui. Yritä uudelleen tai ota yhteyttä tukeen.",
+    "iapRestoreSuccess": "Tilauksesi on palautettu.",
+    "iapRestoreNoActive": "Aktiivista palautettavaa tilausta ei löytynyt."
 }

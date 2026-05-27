@@ -215,22 +215,37 @@ Deno.test("MIG-T16 — every CREATE POLICY is preceded by a DROP POLICY IF EXIST
 
 // ─── Cross-module constants ─────────────────────────────────────────────
 
-Deno.test("CONST-T01 — signals.ts threshold matches migration's hard-coded 100", () => {
-  // The migration uses literal `>= 100` in the modal-flip predicate.
-  // signals.ts exports B2B_MODAL_THRESHOLD. If one moves the other MUST.
-  // Widen the literal type so the comparison survives narrowing if the
-  // constant is bumped — this test then reports the drift at runtime
-  // instead of failing the TS compile.
+Deno.test("CONST-T01 — signals.ts threshold matches v2 migration's hard-coded 110", () => {
+  // v2 calibration (2026-05-25, post 6-expert consilium): the effective
+  // threshold lives in the v2 compound-trigger migration
+  // `20260525234500_b2b_v2_compound_trigger.sql` as `v_threshold := 110`.
+  // The v1 migration's `>= 100` predicate has been superseded by the
+  // CREATE OR REPLACE in the v2 migration. signals.ts MUST mirror v2.
+  // If one moves the other MUST.
+  const V2_MIGRATION_PATH = new URL(
+    "../../migrations/20260525234500_b2b_v2_compound_trigger.sql",
+    import.meta.url,
+  );
+  const v2Sql = Deno.readTextFileSync(V2_MIGRATION_PATH);
+  assertStringIncludes(
+    v2Sql,
+    "v_threshold        constant integer := 110",
+  );
   assert(
-    (B2B_MODAL_THRESHOLD as number) === 100,
-    "B2B_MODAL_THRESHOLD must equal the migration's hard-coded threshold (100)",
+    (B2B_MODAL_THRESHOLD as number) === 110,
+    "B2B_MODAL_THRESHOLD must equal the v2 migration's hard-coded threshold (110)",
   );
 });
 
-Deno.test("CONST-T02 — DEFAULT_SCORES domain entry single-handedly trips threshold", () => {
+Deno.test("CONST-T02 — DEFAULT_SCORES domain entry does NOT single-handedly trip threshold (v2)", () => {
+  // v2 calibration: domain alone (60) must NOT trip the modal — this was
+  // the headline UX bug fix from the 6-expert consilium (signup-time
+  // false positives before the user had done anything in-app). The v2
+  // compound trigger additionally requires ≥1 non-domain signal type,
+  // but at minimum the raw score must not already cross the threshold.
   assert(
-    DEFAULT_SCORES.law_firm_email_domain >= B2B_MODAL_THRESHOLD,
-    "law_firm_email_domain score must >= threshold so signup-time detection works",
+    DEFAULT_SCORES.law_firm_email_domain < B2B_MODAL_THRESHOLD,
+    "law_firm_email_domain score must be < threshold so domain-only signup does NOT flip the modal (v2 design)",
   );
 });
 

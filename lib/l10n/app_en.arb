@@ -2096,5 +2096,102 @@
     },
     "deleteAccountSuccess": "Account deleted. We're sorry to see you go.",
     "deleteAccountWarning": "This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
-    "deletingAccount": "Deleting account…"
+    "deletingAccount": "Deleting account…",
+    "contractReviewTitle": "Contract Review",
+    "@contractReviewTitle": {},
+    "contractReviewUploadCta": "Upload contract",
+    "@contractReviewUploadCta": {},
+    "contractReviewQuotaRemaining": "Upload a PDF, DOC, DOCX, or TXT contract for an AI review with red flags and negotiation tips.",
+    "@contractReviewQuotaRemaining": {},
+    "contractReviewRedFlags": "Red flags",
+    "@contractReviewRedFlags": {},
+    "contractReviewReviewPoints": "Review points",
+    "@contractReviewReviewPoints": {},
+    "contractReviewNegotiationTips": "Negotiation tips",
+    "@contractReviewNegotiationTips": {},
+    "contractReviewSaveToVault": "Save to Vault",
+    "@contractReviewSaveToVault": {},
+    "contractReviewContinueChat": "Continue in chat",
+    "@contractReviewContinueChat": {},
+    "referralInviteFriends": "Invite Friends",
+    "@referralInviteFriends": {},
+    "referralYourCode": "Your code",
+    "@referralYourCode": {},
+    "referralCopiedToast": "Code copied to clipboard",
+    "@referralCopiedToast": {},
+    "referralReward": "Get 1 month of Counsel free for every friend who subscribes.",
+    "@referralReward": {},
+    "referralInvited": "Friends invited",
+    "@referralInvited": {},
+    "referralRewardsEarned": "Free months earned",
+    "@referralRewardsEarned": {},
+    "deadlineUrgencyToday": "Today & Overdue",
+    "@deadlineUrgencyToday": {},
+    "deadlineUrgencyWeek": "This week",
+    "@deadlineUrgencyWeek": {},
+    "deadlineUrgencyMonth": "This month",
+    "@deadlineUrgencyMonth": {},
+    "deadlineUrgencyLater": "Later",
+    "@deadlineUrgencyLater": {},
+    "deadlineAddManual": "Add deadline",
+    "@deadlineAddManual": {},
+    "deadlineSnoozeBy": "Snooze",
+    "@deadlineSnoozeBy": {},
+    "deadlineSnooze1d": "Snooze 1 day",
+    "@deadlineSnooze1d": {},
+    "deadlineSnooze3d": "Snooze 3 days",
+    "@deadlineSnooze3d": {},
+    "deadlineSnooze7d": "Snooze 7 days",
+    "@deadlineSnooze7d": {},
+    "deadlineDismiss": "Dismiss",
+    "@deadlineDismiss": {},
+    "deadlineExportIcs": "Add to calendar",
+    "@deadlineExportIcs": {},
+    "deadlineSource": "Source",
+    "@deadlineSource": {},
+    "deadlineEmpty": "No deadlines yet. Deadlines are auto-created from your emails and documents — or add one manually with the + button.",
+    "@deadlineEmpty": {},
+    "deadlineNewTitle": "New deadline",
+    "@deadlineNewTitle": {},
+    "deadlineFieldTitle": "Title",
+    "@deadlineFieldTitle": {},
+    "deadlineFieldDueDate": "Due date",
+    "@deadlineFieldDueDate": {},
+    "deadlineFieldNotes": "Notes (optional)",
+    "@deadlineFieldNotes": {},
+    "deadlineSaved": "Deadline saved",
+    "@deadlineSaved": {},
+    "deadlineSaveFailed": "Could not save deadline",
+    "@deadlineSaveFailed": {},
+    "deadlineUrgentBannerSingle": "1 deadline today or overdue",
+    "@deadlineUrgentBannerSingle": {},
+    "deadlineUrgentBannerMany": "{count} deadlines today or overdue",
+    "@deadlineUrgentBannerMany": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysLeft": "{count, plural, =0{today} =1{1 day left} other{{count} days left}}",
+    "@deadlineDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
+    "@deadlineDaysOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "iapPayWithApple": "Pay with Apple",
+    "iapRestorePurchases": "Restore Purchases",
+    "iapPurchaseFailed": "Purchase failed. Please try again or contact support.",
+    "iapRestoreSuccess": "Your subscription has been restored.",
+    "iapRestoreNoActive": "No active subscription found to restore."
 }

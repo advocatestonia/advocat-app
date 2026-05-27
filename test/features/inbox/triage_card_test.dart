@@ -46,6 +46,7 @@ class _RecordingSupabaseService extends SupabaseService {
   Future<Map<String, dynamic>?> callEdgeFunction(
     String functionName, {
     Map<String, dynamic>? body,
+    String? traceId,
   }) async {
     calls.add((name: functionName, body: body));
     return nextResponse;

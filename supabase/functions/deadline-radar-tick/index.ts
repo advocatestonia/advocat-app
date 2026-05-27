@@ -124,9 +124,15 @@ serve(async (req: Request) => {
         continue;
       }
 
-      // Push fan-out: FCM topic case_<case_id>. Body itself never contains
-      // PII (per architect §11 + FIX-5 lessons): only the case_id and
-      // threshold are surfaced; the client looks up local title.
+      // Push fan-out: FCM token-based push routed through the `push-send`
+      // edge fn. The Flutter NotificationService persists the device token
+      // to `notification_preferences.fcm_token` on first-run / refresh;
+      // push-send looks it up + applies per-kind opt-outs + writes the
+      // push_events audit row.
+      //
+      // Body never contains PII (per architect §11 + FIX-5): only a
+      // generic "Deadline approaching" title + the threshold/deadline_id
+      // in `data` so the client deep-links to the deadline detail screen.
       try {
         const inserted = await tryInsertLogRow(
           supabase,
@@ -136,22 +142,14 @@ serve(async (req: Request) => {
           "push",
         );
         if (inserted) {
-          // Fire FCM (best-effort). Topic-based push is wired from the
-          // Flutter side via NotificationService.subscribeToCaseUpdates;
-          // the server emits a topic message via FCM HTTP v1.
-          // For now: log delivery attempt; real FCM call slot below.
-          // We mark delivered=true after a successful FCM POST.
-          // FCM v1 requires GOOGLE_APPLICATION_CREDENTIALS service account;
-          // that is configured separately by infra (out of scope for v1
-          // codepath — we mark the row delivered=false with error
-          // 'fcm_not_configured' and the in-app channel takes over).
+          const pushResult = await dispatchPush(row, threshold);
           await markDelivered(
             supabase,
             row.id,
             threshold,
             "push",
-            false,
-            "fcm_not_configured_in_v1",
+            pushResult.delivered,
+            pushResult.error,
           );
           pushed += 1;
         }
@@ -305,4 +303,107 @@ async function insertInAppNotification(
     },
     created_at: new Date().toISOString(),
   });
+}
+
+interface PushDispatchResult {
+  delivered: boolean;
+  error: string | null;
+}
+
+/** Service-to-service call into push-send. Returns the delivery decision
+ * so the caller can stamp the deadline_notification_log row.
+ *
+ * Failure modes (none throw — push is best-effort, the in_app channel
+ * is the user-visible safety net):
+ *   * push-send returns delivered=false with reason in the body
+ *     (no_fcm_token / push_disabled_by_user / deadline_push_disabled /
+ *      fcm_not_configured / fcm_<status>:...). We map that into the
+ *     delivery_error column verbatim so the owner can grep audit log.
+ *   * push-send is unreachable (network / 5xx). Logged as
+ *     `push_send_unreachable:<short>` — the unique constraint on
+ *     deadline_notification_log means we will NOT retry next tick;
+ *     this is intentional (we don't want to spam an unreachable
+ *     endpoint every 15min). Owner sees the error in the log.
+ */
+async function dispatchPush(
+  row: DeadlineRow,
+  threshold: Threshold,
+): Promise<PushDispatchResult> {
+  if (!CRON_SECRET) {
+    return { delivered: false, error: "cron_secret_missing" };
+  }
+
+  // Body title is generic — the client resolves the per-case title locally
+  // from its own cache. This keeps the FCM payload PII-free even if it is
+  // logged by Google's intermediate servers.
+  const title = thresholdTitle(threshold);
+  const body = "Tap to view your deadline.";
+  const data: Record<string, string> = {
+    type: "deadline_reminder",
+    deadline_id: row.id,
+    case_id: row.case_id,
+    threshold,
+    route: `/cases/${row.case_id}/deadlines/${row.id}`,
+  };
+
+  let resp: Response;
+  try {
+    resp = await fetch(`${SUPABASE_URL}/functions/v1/push-send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-cron-secret": CRON_SECRET,
+      },
+      body: JSON.stringify({
+        user_id: row.user_id,
+        kind: "deadline_reminder",
+        title,
+        body,
+        data,
+      }),
+    });
+  } catch (e) {
+    return {
+      delivered: false,
+      error: `push_send_unreachable:${String(e).slice(0, 100)}`,
+    };
+  }
+
+  if (!resp.ok) {
+    const txt = await resp.text().catch(() => "");
+    return {
+      delivered: false,
+      error: `push_send_${resp.status}:${txt.slice(0, 100)}`,
+    };
+  }
+
+  let payload: { delivered?: boolean; reason?: string; error?: string };
+  try {
+    payload = await resp.json();
+  } catch (_e) {
+    return { delivered: false, error: "push_send_invalid_json" };
+  }
+
+  if (payload.delivered === true) {
+    return { delivered: true, error: null };
+  }
+  return {
+    delivered: false,
+    error: payload.reason ?? payload.error ?? "push_not_delivered",
+  };
+}
+
+function thresholdTitle(t: Threshold): string {
+  switch (t) {
+    case "30d":
+      return "Deadline in 30 days";
+    case "7d":
+      return "Deadline in 7 days";
+    case "3d":
+      return "Deadline in 3 days";
+    case "1d":
+      return "Deadline tomorrow";
+    case "morning_of":
+      return "Deadline today";
+  }
 }

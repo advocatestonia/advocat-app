@@ -1858,5 +1858,76 @@
     },
     "deleteAccountSuccess": "Konto on kustutatud. Kahju, et lahkute.",
     "deleteAccountWarning": "See kustutab jäädavalt teie konto, kõik kohtuasjad, mustandid, hoidla dokumendid ja vestlusajaloo. Seda toimingut ei saa tagasi võtta.",
-    "deletingAccount": "Konto kustutamine…"
+    "deletingAccount": "Konto kustutamine…",
+    "contractReviewTitle": "Vaata leping üle",
+    "@contractReviewTitle": {},
+    "contractReviewUploadCta": "Laadi leping üles",
+    "@contractReviewUploadCta": {},
+    "contractReviewQuotaRemaining": "Laadige üles leping (PDF, DOC, DOCX või TXT) — tehisintellekt toob välja riskid ja läbirääkimiste nipid.",
+    "@contractReviewQuotaRemaining": {},
+    "contractReviewRedFlags": "Riskid",
+    "@contractReviewRedFlags": {},
+    "contractReviewReviewPoints": "Kontrollikohad",
+    "@contractReviewReviewPoints": {},
+    "contractReviewNegotiationTips": "Läbirääkimiste nipid",
+    "@contractReviewNegotiationTips": {},
+    "contractReviewSaveToVault": "Salvesta hoidlasse",
+    "@contractReviewSaveToVault": {},
+    "contractReviewContinueChat": "Jätka vestluses",
+    "@contractReviewContinueChat": {},
+    "referralInviteFriends": "Kutsu sõpru",
+    "referralYourCode": "Sinu kood",
+    "referralCopiedToast": "Kood kopeeritud",
+    "referralReward": "Saa iga sõbra eest, kes liitub, 1 kuu Counsel tasuta.",
+    "referralInvited": "Kutsutud sõpru",
+    "referralRewardsEarned": "Tasuta kuid teenitud",
+    "deadlineUrgencyToday": "Täna ja hilinenud",
+    "deadlineUrgencyWeek": "Sel nädalal",
+    "deadlineUrgencyMonth": "Sel kuul",
+    "deadlineUrgencyLater": "Hiljem",
+    "deadlineAddManual": "Lisa tähtaeg",
+    "deadlineSnoozeBy": "Lükka edasi",
+    "deadlineSnooze1d": "1 päev",
+    "deadlineSnooze3d": "3 päeva",
+    "deadlineSnooze7d": "7 päeva",
+    "deadlineDismiss": "Eemalda",
+    "deadlineExportIcs": "Lisa kalendrisse",
+    "deadlineSource": "Allikas",
+    "deadlineEmpty": "Tähtaegu veel pole. Tähtajad tekivad automaatselt e-kirjadest ja dokumentidest — või lisa käsitsi nupuga +.",
+    "deadlineNewTitle": "Uus tähtaeg",
+    "deadlineFieldTitle": "Pealkiri",
+    "deadlineFieldDueDate": "Tähtaeg",
+    "deadlineFieldNotes": "Märkmed (valikuline)",
+    "deadlineSaved": "Tähtaeg salvestatud",
+    "deadlineSaveFailed": "Tähtaja salvestamine ebaõnnestus",
+    "deadlineUrgentBannerSingle": "1 tähtaeg täna või hilinenud",
+    "deadlineUrgentBannerMany": "{count} tähtaega täna või hilinenud",
+    "@deadlineUrgentBannerMany": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysLeft": "{count, plural, =0{täna} =1{1 päev jäänud} other{{count} päeva jäänud}}",
+    "@deadlineDaysLeft": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "deadlineDaysOverdue": "{count, plural, =1{1 päev hilinenud} other{{count} päeva hilinenud}}",
+    "@deadlineDaysOverdue": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "iapPayWithApple": "Maksa Apple’iga",
+    "iapRestorePurchases": "Taasta ostud",
+    "iapPurchaseFailed": "Ostmine ebaõnnestus. Proovi uuesti või võta klienditoega ühendust.",
+    "iapRestoreSuccess": "Sinu tellimus on taastatud.",
+    "iapRestoreNoActive": "Aktiivset taastatavat tellimust ei leitud."
 }
