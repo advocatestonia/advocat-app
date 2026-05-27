@@ -2161,7 +2161,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      // Dark-mode wiring 2026-05-27: was hardcoded AppColors.background which
+      // forced light bg even in dark theme. Theme.scaffoldBackgroundColor
+      // resolves to AppColors.darkBackground (#0F172A) in dark mode.
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: _buildAppBar(),
       body: Column(
         children: [

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart'
+    show CupertinoActionSheet, CupertinoActionSheetAction, showCupertinoModalPopup;
 import 'package:flutter/foundation.dart' show debugPrint, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show Clipboard, ClipboardData;
@@ -19,6 +21,7 @@ import '../../../main.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../../shared/constants/app_icons.dart';
+import '../../../shared/providers/theme_mode_provider.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/status_chip.dart';
@@ -38,7 +41,9 @@ class SettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.background,
+      // Dark-mode wiring 2026-05-27. Theme.scaffoldBackgroundColor resolves
+      // to AppColors.darkBackground in dark mode.
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AdvocatGradientHeader(
         title: l.settings,
       ),
@@ -58,6 +63,19 @@ class SettingsScreen extends ConsumerWidget {
             subtitle: _languageLabelWithFlag(ref.watch(localeProvider).languageCode),
             trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
             onTap: () => _showLanguagePicker(context, ref),
+          ),
+
+          // ── Appearance (light/dark/system) ─────────────────────────────
+          // Wired 2026-05-27 — theme infrastructure (AppTheme.darkTheme) has
+          // existed for months; main.dart used to hard-code ThemeMode.light.
+          // Default = system so the OS preference wins until the user picks
+          // explicitly here. See lib/shared/providers/theme_mode_provider.dart.
+          _SettingsTile(
+            icon: Icons.brightness_6_outlined,
+            title: l.appearance,
+            subtitle: _appearanceLabel(l, ref.watch(themeModeProvider)),
+            trailing: const Icon(AppIcons.chevronRight, color: AppColors.textTertiary),
+            onTap: () => _showAppearancePicker(context, ref),
           ),
 
           // ── Subscription ──────────────────────────────────────────────
@@ -540,6 +558,74 @@ class SettingsScreen extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  // ── Appearance Picker ────────────────────────────────────────────────
+
+  /// Localised label for the current [ThemeMode] (shown as the tile subtitle).
+  String _appearanceLabel(AppLocalizations l, ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.light:
+        return l.appearanceLight;
+      case ThemeMode.dark:
+        return l.appearanceDark;
+      case ThemeMode.system:
+        return l.appearanceSystem;
+    }
+  }
+
+  /// Cupertino-style action sheet — iOS-first per project memory.
+  /// Three options: System (auto) / Light / Dark, all persisted via
+  /// [themeModeProvider]. The active option is marked with a checkmark.
+  void _showAppearancePicker(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
+    final current = ref.read(themeModeProvider);
+
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (ctx) => CupertinoActionSheet(
+        title: Text(l.appearance),
+        message: Text(l.appearanceDescription),
+        actions: [
+          _appearanceAction(ctx, ref, ThemeMode.system, l.appearanceSystem,
+              isActive: current == ThemeMode.system),
+          _appearanceAction(ctx, ref, ThemeMode.light, l.appearanceLight,
+              isActive: current == ThemeMode.light),
+          _appearanceAction(ctx, ref, ThemeMode.dark, l.appearanceDark,
+              isActive: current == ThemeMode.dark),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.of(ctx).pop(),
+          isDefaultAction: true,
+          child: Text(l.cancel),
+        ),
+      ),
+    );
+  }
+
+  CupertinoActionSheetAction _appearanceAction(
+    BuildContext ctx,
+    WidgetRef ref,
+    ThemeMode mode,
+    String label, {
+    required bool isActive,
+  }) {
+    return CupertinoActionSheetAction(
+      onPressed: () {
+        ref.read(themeModeProvider.notifier).setMode(mode);
+        Navigator.of(ctx).pop();
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(label),
+          if (isActive) ...[
+            const SizedBox(width: 8),
+            const Icon(Icons.check_rounded, size: 20, color: AppColors.accent),
+          ],
+        ],
       ),
     );
   }

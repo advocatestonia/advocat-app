@@ -15,6 +15,21 @@ class AppLocalizationsEt extends AppLocalizations {
   String get aboutSection => 'TEAVE';
 
   @override
+  String get appearance => 'Välimus';
+
+  @override
+  String get appearanceSystem => 'Süsteem (automaatne)';
+
+  @override
+  String get appearanceLight => 'Hele';
+
+  @override
+  String get appearanceDark => 'Tume';
+
+  @override
+  String get appearanceDescription => 'Vali, kuidas Advocat välja näeb';
+
+  @override
   String get accidents => 'Õnnetused';
 
   @override

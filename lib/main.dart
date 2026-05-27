@@ -17,6 +17,7 @@ import 'config/theme.dart';
 import 'config/router.dart';
 import 'l10n/app_localizations.dart';
 import 'shared/error_boundary.dart';
+import 'shared/providers/theme_mode_provider.dart';
 import 'shared/telemetry_sink.dart';
 import 'widgets/support/support_fab.dart';
 
@@ -98,8 +99,14 @@ Future<void> main() async {
 
   runWithErrorBoundary(() {
     runApp(
-      const ProviderScope(
-        child: AdvocatApp(),
+      ProviderScope(
+        overrides: [
+          // Surface the already-initialised SharedPreferences singleton so
+          // the themeModeProvider (and any future pref-backed provider) can
+          // resolve synchronously from inside Riverpod.
+          sharedPreferencesProvider.overrideWithValue(_prefs),
+        ],
+        child: const AdvocatApp(),
       ),
     );
   });
@@ -122,6 +129,9 @@ class AdvocatApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     final locale = ref.watch(localeProvider);
+    // Default = ThemeMode.system (OS preference wins until the user picks
+    // Light/Dark in Settings → Appearance). See shared/providers/theme_mode_provider.dart.
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
       title: 'Advocat \u2014 AI Legal Defense',
@@ -129,7 +139,7 @@ class AdvocatApp extends ConsumerWidget {
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: themeMode,
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,

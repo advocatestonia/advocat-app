@@ -15,6 +15,21 @@ class AppLocalizationsLt extends AppLocalizations {
   String get aboutSection => 'APIE';
 
   @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get appearanceSystem => 'System (auto)';
+
+  @override
+  String get appearanceLight => 'Light';
+
+  @override
+  String get appearanceDark => 'Dark';
+
+  @override
+  String get appearanceDescription => 'Choose how Advocat looks';
+
+  @override
   String get accidents => 'Avarijos';
 
   @override

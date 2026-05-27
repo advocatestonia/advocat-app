@@ -37,13 +37,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   // Total pages: 1 language + 4 feature
   static const _pageCount = 5;
 
-  // Gradient colors for each page (shifts between pages)
+  // Gradient colors for each page (shifts between pages). Light mode keeps
+  // the warm #F0EEEB top stop; dark mode uses the AppColors.darkBackground
+  // family (slate-900 → slate-800) so the welcome surface flips cleanly.
   static const _gradientColors = <List<Color>>[
     [Color(0xFFF0EEEB), Color(0xFFE8E6E3)], // Language page
     [Color(0xFFF0EEEB), Color(0xFFE3EBF0)], // Shield - blueish
     [Color(0xFFF0EEEB), Color(0xFFE3F0ED)], // Camera - tealish
     [Color(0xFFF0EEEB), Color(0xFFF0ECE3)], // Search - warmish
     [Color(0xFFF0EEEB), Color(0xFFE3F0ED)], // Send - tealish
+  ];
+
+  // Dark-mode counterparts. Subtle two-stop slate gradients per page to keep
+  // the same "shifts between pages" feel without harsh contrast jumps.
+  static const _gradientColorsDark = <List<Color>>[
+    [Color(0xFF0F172A), Color(0xFF1E293B)], // Language page
+    [Color(0xFF0F172A), Color(0xFF1E2A3F)], // Shield - blue-tinted
+    [Color(0xFF0F172A), Color(0xFF13302C)], // Camera - teal-tinted
+    [Color(0xFF0F172A), Color(0xFF2A2520)], // Search - warm-tinted
+    [Color(0xFF0F172A), Color(0xFF13302C)], // Send - teal-tinted
   ];
 
   late final AnimationController _particleController;
@@ -143,6 +155,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     final subtitles = _subtitles(l);
     final isLanguagePage = _currentPage == 0;
     final isLastPage = _currentPage == _pageCount - 1;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final gradientStops =
+        isDark ? _gradientColorsDark[_currentPage] : _gradientColors[_currentPage];
 
     return Scaffold(
       body: AnimatedContainer(
@@ -152,7 +167,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: _gradientColors[_currentPage],
+            colors: gradientStops,
           ),
         ),
         // Use MaxWidthWrapper's responsive default — onboarding wizard

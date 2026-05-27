@@ -622,7 +622,9 @@ class _GreetingHeader extends ConsumerWidget {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      // Dark-mode aware: in light theme this resolves to AppColors.surface,
+      // in dark theme to AppColors.darkSurface (see config/theme.dart).
+      backgroundColor: Theme.of(context).colorScheme.surface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -1139,7 +1141,8 @@ class _HowToUseButton extends StatelessWidget {
   void _showTutorial(BuildContext context, AppLocalizations l) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.surface,
+      // Dark-mode aware. See _showLanguagePicker above for the rationale.
+      backgroundColor: Theme.of(context).colorScheme.surface,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),

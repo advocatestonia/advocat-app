@@ -15,6 +15,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get aboutSection => 'À PROPOS';
 
   @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get appearanceSystem => 'System (auto)';
+
+  @override
+  String get appearanceLight => 'Light';
+
+  @override
+  String get appearanceDark => 'Dark';
+
+  @override
+  String get appearanceDescription => 'Choose how Advocat looks';
+
+  @override
   String get accidents => 'Accidents';
 
   @override
@@ -3162,8 +3177,8 @@ class AppLocalizationsFr extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count citations',
-      one: '1 citation',
+      other: '$count références',
+      one: '1 référence',
     );
     return '$_temp0';
   }

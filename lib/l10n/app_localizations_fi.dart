@@ -15,6 +15,21 @@ class AppLocalizationsFi extends AppLocalizations {
   String get aboutSection => 'TIETOJA';
 
   @override
+  String get appearance => 'Ulkoasu';
+
+  @override
+  String get appearanceSystem => 'Järjestelmä (automaattinen)';
+
+  @override
+  String get appearanceLight => 'Vaalea';
+
+  @override
+  String get appearanceDark => 'Tumma';
+
+  @override
+  String get appearanceDescription => 'Valitse, miltä Advocat näyttää';
+
+  @override
   String get accidents => 'Onnettomuudet';
 
   @override

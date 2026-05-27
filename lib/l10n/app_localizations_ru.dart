@@ -15,6 +15,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get aboutSection => 'О ПРИЛОЖЕНИИ';
 
   @override
+  String get appearance => 'Внешний вид';
+
+  @override
+  String get appearanceSystem => 'Системное (авто)';
+
+  @override
+  String get appearanceLight => 'Светлая';
+
+  @override
+  String get appearanceDark => 'Тёмная';
+
+  @override
+  String get appearanceDescription => 'Выберите, как выглядит Advocat';
+
+  @override
   String get accidents => 'ДТП';
 
   @override
