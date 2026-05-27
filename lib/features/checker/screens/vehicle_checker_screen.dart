@@ -9,6 +9,7 @@ import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../providers/vehicle_checker_provider.dart';
 import '../widgets/vehicle_report_card.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 
 // ---------------------------------------------------------------------------
 // Vehicle Checker Screen — check any vehicle before buying
@@ -260,6 +261,14 @@ class _VehicleCheckerScreenState extends ConsumerState<VehicleCheckerScreen> {
             // ── Report Results with stagger animation ─────────────────
             if (state.report != null) ...[
               const SizedBox(height: AppSpacing.lg),
+              // EU AI Act Art. 50 — banner above the findings list so users
+              // understand the report is AI-generated information, not legal
+              // advice (the report can trigger fraud-reporting or case-open
+              // actions).
+              const AiDisclaimerBanner.compact(
+                key: Key('vehicle_checker_ai_disclaimer_banner'),
+              ),
+              const SizedBox(height: AppSpacing.sm),
               VehicleReportCard(
                 report: state.report!,
                 onReportFraud: state.report!.mileageFraudSuspected

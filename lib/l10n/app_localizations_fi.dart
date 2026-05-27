@@ -1693,6 +1693,23 @@ class AppLocalizationsFi extends AppLocalizations {
   String get aiDisclaimer => 'Tekoälylauseke';
 
   @override
+  String get aiDisclaimerCompact =>
+      'Advocat antaa tekoälypohjaista oikeudellista tietoa, ei oikeudellista neuvontaa. Varmista asianajajalta ennen toimenpiteitä.';
+
+  @override
+  String get aiDisclaimerFullTitle => 'Tärkeää: miten Advocat toimii';
+
+  @override
+  String get aiDisclaimerFullBody =>
+      'Advocat on tekoälytyökalu, joka tarjoaa oikeudellista tietoa, ei oikeudellista neuvontaa. EU:n tekoälyasetuksen (50 art.) mukaisesti kerromme selvästi: olet vuorovaikutuksessa tekoälyn kanssa, et ihmisjuristin.\n\nAdvocat ei ole asianajotoimisto. Emme ole asianajajalain (496/1958) mukaisia asianajajia, eikä keskusteluihisi tämän työkalun kanssa sovellu asianajajan salassapitovelvollisuus. Ennen kuin luotat mihinkään vastaukseen — valituksen jättämiseen, sopimuksen allekirjoittamiseen tai määräajan noudattamiseen — vahvista asia oman lainkäyttöalueesi lisensoidulta lakimieheltä.';
+
+  @override
+  String get aiDisclaimerExpand => 'Lue lisää';
+
+  @override
+  String get aiDisclaimerDismiss => 'Selvä, ymmärrän';
+
+  @override
   String get dataPrivacyConsent => 'Tietosuojasuostumus';
 
   @override

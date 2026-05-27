@@ -3218,6 +3218,36 @@ abstract class AppLocalizations {
   /// **'AI Disclaimer'**
   String get aiDisclaimer;
 
+  /// Inline 1-line banner shown below chat composer, calculator verdict, and contract findings. Addresses EU AI Act Art. 50(1) transparency and EE/FI attorney-monopoly laws.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.'**
+  String get aiDisclaimerCompact;
+
+  /// Title of the expansion sheet / onboarding modal that explains AI vs lawyer.
+  ///
+  /// In en, this message translates to:
+  /// **'Important: how Advocat works'**
+  String get aiDisclaimerFullTitle;
+
+  /// Long-form body for the AI-disclaimer expansion sheet and onboarding modal.
+  ///
+  /// In en, this message translates to:
+  /// **'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.'**
+  String get aiDisclaimerFullBody;
+
+  /// Inline action label on the compact banner that opens the full-text sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn more'**
+  String get aiDisclaimerExpand;
+
+  /// Dismiss button on the AI-disclaimer modal / expansion sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'OK, I understand'**
+  String get aiDisclaimerDismiss;
+
   /// No description provided for @dataPrivacyConsent.
   ///
   /// In en, this message translates to:
@@ -7061,7 +7091,7 @@ abstract class AppLocalizations {
   /// No description provided for @quotaExhaustedBody.
   ///
   /// In en, this message translates to:
-  /// **'You\'ve used all {count} free messages. Upgrade to Advocat Pro for €19.99/month and get unlimited AI legal consultations.'**
+  /// **'You\'ve used all {count} free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.'**
   String quotaExhaustedBody(int count);
 
   /// No description provided for @quotaExhaustedLater.
@@ -7073,19 +7103,19 @@ abstract class AppLocalizations {
   /// No description provided for @quotaExhaustedUpgrade.
   ///
   /// In en, this message translates to:
-  /// **'Advocat Pro — €19.99/mo'**
+  /// **'Advocat Counsel — €19.99/mo'**
   String get quotaExhaustedUpgrade;
 
   /// No description provided for @quotaCtaMessage.
   ///
   /// In en, this message translates to:
-  /// **'You\'ve used all {count} free messages. Upgrade to Advocat Pro for €19.99/month.'**
+  /// **'You\'ve used all {count} free messages. Upgrade to Advocat Counsel for €19.99/month.'**
   String quotaCtaMessage(int count);
 
   /// No description provided for @quotaCtaButton.
   ///
   /// In en, this message translates to:
-  /// **'Get Advocat Pro — €19.99/mo'**
+  /// **'Get Advocat Counsel — €19.99/mo'**
   String get quotaCtaButton;
 
   /// No description provided for @aiErrorQuota.

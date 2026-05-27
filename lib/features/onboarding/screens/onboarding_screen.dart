@@ -10,6 +10,7 @@ import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../main.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 import '../../../shared/widgets/max_width_wrapper.dart';
 import '../widgets/onboarding_page.dart';
 
@@ -54,6 +55,23 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       vsync: this,
       duration: const Duration(seconds: 8),
     )..repeat();
+    // EU AI Act Art. 50(1) — show the AI-not-a-lawyer modal exactly once,
+    // on first onboarding build, BEFORE the user can interact with the
+    // language picker. First-launch users see EN copy; subsequent screens
+    // honour their language choice. The modal persists its "seen" state in
+    // shared_preferences (`ai_disclaimer_modal_seen_v1`).
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!mounted) return;
+      final shouldShow = await AiDisclaimerBanner.shouldShowModal();
+      if (!shouldShow || !mounted) return;
+      await showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => const AiDisclaimerBanner.modal(
+          key: Key('onboarding_ai_disclaimer_modal'),
+        ),
+      );
+    });
   }
 
   @override

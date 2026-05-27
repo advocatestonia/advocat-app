@@ -246,12 +246,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
           // -- Logo --
           Center(
-            child: Image.asset(
-              'assets/images/logo_shield.png',
+            child: SvgPicture.asset(
+              'assets/images/shield.svg',
               width: logoSize,
               height: logoSize,
               fit: BoxFit.contain,
-              filterQuality: FilterQuality.high,
               excludeFromSemantics: true,
             ),
           ),

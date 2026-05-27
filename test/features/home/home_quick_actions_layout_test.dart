@@ -130,16 +130,17 @@ void main() {
           reason: 'Vault tile must remain wired to AppRoutes.vault');
     });
 
-    test('shield-pulsing tile uses shield_pro.png artwork', () {
+    test('shield-pulsing tile uses shield_pro.svg artwork', () {
       // The _ShieldPulsingButton implementation must render the shield image —
-      // that is the entire point of restoring this visual.
+      // that is the entire point of restoring this visual. Migrated from PNG
+      // to SVG (2026-05-27) for memory + bundle-size efficiency.
       final classStart = source.indexOf('class _ShieldPulsingButton');
       expect(classStart, greaterThan(0),
           reason: '_ShieldPulsingButton class must exist');
       final classBody = source.substring(classStart);
-      expect(classBody, contains("'assets/images/shield_pro.png'"),
+      expect(classBody, contains("'assets/images/shield_pro.svg'"),
           reason:
-              '_ShieldPulsingButton must render shield_pro.png — that is the '
+              '_ShieldPulsingButton must render shield_pro.svg — that is the '
               'whole reason it exists (owner wanted the shield visual back)');
     });
 

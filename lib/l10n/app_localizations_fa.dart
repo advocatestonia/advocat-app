@@ -1686,6 +1686,23 @@ class AppLocalizationsFa extends AppLocalizations {
   String get aiDisclaimer => 'سلب مسئولیت هوش مصنوعی';
 
   @override
+  String get aiDisclaimerCompact =>
+      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+
+  @override
+  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+
+  @override
+  String get aiDisclaimerFullBody =>
+      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+
+  @override
+  String get aiDisclaimerExpand => 'Learn more';
+
+  @override
+  String get aiDisclaimerDismiss => 'OK, I understand';
+
+  @override
   String get dataPrivacyConsent => 'رضایت حریم خصوصی';
 
   @override
@@ -3900,22 +3917,22 @@ class AppLocalizationsFa extends AppLocalizations {
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Pro for €19.99/month and get unlimited AI legal consultations.';
+    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.';
   }
 
   @override
   String get quotaExhaustedLater => 'Later';
 
   @override
-  String get quotaExhaustedUpgrade => 'Advocat Pro — €19.99/mo';
+  String get quotaExhaustedUpgrade => 'Advocat Counsel — €19.99/mo';
 
   @override
   String quotaCtaMessage(int count) {
-    return 'You\'ve used all $count free messages. Upgrade to Advocat Pro for €19.99/month.';
+    return 'You\'ve used all $count free messages. Upgrade to Advocat Counsel for €19.99/month.';
   }
 
   @override
-  String get quotaCtaButton => 'Get Advocat Pro — €19.99/mo';
+  String get quotaCtaButton => 'Get Advocat Counsel — €19.99/mo';
 
   @override
   String get aiErrorQuota =>

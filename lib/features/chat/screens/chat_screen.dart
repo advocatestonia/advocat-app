@@ -58,6 +58,7 @@ import '../quick_profile/quick_profile_intake.dart';
 import '../../../services/user_memory_service.dart';
 import '../../case_memory/widgets/active_case_chip.dart';
 import '../../case_memory/widgets/deadline_banner.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -4578,6 +4579,18 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               ),
             ),
           ],
+
+          // EU AI Act Art. 50 + EE Advokatuuriseadus §47 / FI Asianajajalaki §5 —
+          // persistent AI-not-a-lawyer disclaimer surface. Tap to expand into
+          // a sheet with the full legal text. Re-shows on a 7-day rolling cadence
+          // after dismissal. See [AiDisclaimerBanner] for details.
+          const SizedBox(height: 6),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: AiDisclaimerBanner.compact(
+              key: Key('chat_ai_disclaimer_banner'),
+            ),
+          ),
 
           // UPL / Bar Act §41 — permanent tiny footer beneath the composer.
           // Tiny by design (10pt, muted) so it does not compete with the

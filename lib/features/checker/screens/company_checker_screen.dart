@@ -7,6 +7,7 @@ import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../providers/company_checker_provider.dart';
 import '../widgets/company_report_card.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 
 /// Screen for checking a company's reliability before doing business with them.
 class CompanyCheckerScreen extends ConsumerStatefulWidget {
@@ -198,11 +199,19 @@ class _CompanyCheckerScreenState extends ConsumerState<CompanyCheckerScreen> {
                   .shakeX(hz: 3, amount: 4, duration: 400.ms),
 
             // Results with slide-in animation
-            if (state.status == CheckerStatus.results && state.report != null)
+            if (state.status == CheckerStatus.results && state.report != null) ...[
+              // EU AI Act Art. 50 — banner above the findings list so users
+              // understand the report is AI-generated information, not legal
+              // advice.
+              const AiDisclaimerBanner.compact(
+                key: Key('company_checker_ai_disclaimer_banner'),
+              ),
+              const SizedBox(height: AppSpacing.sm),
               CompanyReportCard(report: state.report!)
                   .animate()
                   .fadeIn(duration: 500.ms, curve: Curves.easeOut)
                   .slideY(begin: 0.1, end: 0, duration: 500.ms, curve: Curves.easeOutCubic),
+            ],
 
             // Idle hint
             if (state.status == CheckerStatus.idle) ...[

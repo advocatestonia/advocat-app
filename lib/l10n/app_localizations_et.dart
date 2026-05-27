@@ -1692,6 +1692,23 @@ class AppLocalizationsEt extends AppLocalizations {
   String get aiDisclaimer => 'AI vastutuse välistamine';
 
   @override
+  String get aiDisclaimerCompact =>
+      'Advocat annab tehisintellekti põhist õigusinfot, mitte õigusabi. Enne tegutsemist pea nõu litsentseeritud advokaadiga.';
+
+  @override
+  String get aiDisclaimerFullTitle => 'Oluline: kuidas Advocat töötab';
+
+  @override
+  String get aiDisclaimerFullBody =>
+      'Advocat on tehisintellekti tööriist, mis annab õigusinfot, mitte õigusnõu. EL tehisintellekti määruse (Art. 50) kohaselt peame sind selgelt teavitama: sa suhtled tehisintellektiga, mitte juristiga.\n\nAdvocat ei ole advokaadibüroo. Me ei ole Advokatuuriseaduse mõttes litsentseeritud advokaadid ning sinu vestlustele meie tööriistaga ei laiene advokaadi-kliendi konfidentsiaalsus. Enne kui tugined mis tahes vastusele — apellatsiooni esitamiseks, lepingu allkirjastamiseks või tähtaja järgimiseks — kontrolli seda litsentseeritud advokaadiga oma jurisdiktsioonis.';
+
+  @override
+  String get aiDisclaimerExpand => 'Loe rohkem';
+
+  @override
+  String get aiDisclaimerDismiss => 'Olgu, sain aru';
+
+  @override
   String get dataPrivacyConsent => 'Andmekaitsenõusolek';
 
   @override

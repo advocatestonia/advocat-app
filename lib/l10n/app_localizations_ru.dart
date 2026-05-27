@@ -1696,6 +1696,23 @@ class AppLocalizationsRu extends AppLocalizations {
   String get aiDisclaimer => 'Оговорка об ответственности ИИ';
 
   @override
+  String get aiDisclaimerCompact =>
+      'Advocat — это юридическая информация от ИИ, а не юридическая консультация. Проверьте с лицензированным юристом перед действиями.';
+
+  @override
+  String get aiDisclaimerFullTitle => 'Важно: как работает Advocat';
+
+  @override
+  String get aiDisclaimerFullBody =>
+      'Advocat — это инструмент на основе искусственного интеллекта, который предоставляет юридическую информацию, а не юридическую консультацию. Согласно Регламенту ЕС об ИИ (ст. 50) мы обязаны прямо сообщить: вы общаетесь с ИИ, а не с живым юристом.\n\nAdvocat не является юридической фирмой. Мы не являемся лицензированными адвокатами по эстонскому Advokatuuriseadus или финскому Asianajajalaki, и адвокатская тайна на ваши беседы с этим инструментом не распространяется. Прежде чем полагаться на любой ответ — для подачи апелляции, подписания договора или соблюдения срока — обязательно проконсультируйтесь с лицензированным юристом в вашей юрисдикции.';
+
+  @override
+  String get aiDisclaimerExpand => 'Подробнее';
+
+  @override
+  String get aiDisclaimerDismiss => 'Понятно';
+
+  @override
   String get dataPrivacyConsent => 'Согласие на обработку данных';
 
   @override

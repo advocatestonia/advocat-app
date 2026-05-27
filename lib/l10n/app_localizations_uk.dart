@@ -1687,6 +1687,23 @@ class AppLocalizationsUk extends AppLocalizations {
   String get aiDisclaimer => 'Застереження щодо ШІ';
 
   @override
+  String get aiDisclaimerCompact =>
+      'Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.';
+
+  @override
+  String get aiDisclaimerFullTitle => 'Important: how Advocat works';
+
+  @override
+  String get aiDisclaimerFullBody =>
+      'Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.';
+
+  @override
+  String get aiDisclaimerExpand => 'Learn more';
+
+  @override
+  String get aiDisclaimerDismiss => 'OK, I understand';
+
+  @override
   String get dataPrivacyConsent => 'Згода на обробку даних';
 
   @override

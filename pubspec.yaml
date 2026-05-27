@@ -106,4 +106,9 @@ flutter:
     - assets/prompts/
     - assets/videos/
 
-  # Fonts loaded via google_fonts package at runtime
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/InterVariable.ttf
+        - asset: assets/fonts/InterVariable-Italic.ttf
+          style: italic

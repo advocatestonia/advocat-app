@@ -722,6 +722,26 @@
     "haveQuestionsAi": "Have questions? Talk to AI",
     "cookiePolicy": "Cookie Policy",
     "aiDisclaimer": "AI Disclaimer",
+    "aiDisclaimerCompact": "Advocat is AI legal information, not legal advice. Verify with a licensed lawyer before acting.",
+    "@aiDisclaimerCompact": {
+        "description": "Inline 1-line banner shown below chat composer, calculator verdict, and contract findings. Addresses EU AI Act Art. 50(1) transparency and EE/FI attorney-monopoly laws."
+    },
+    "aiDisclaimerFullTitle": "Important: how Advocat works",
+    "@aiDisclaimerFullTitle": {
+        "description": "Title of the expansion sheet / onboarding modal that explains AI vs lawyer."
+    },
+    "aiDisclaimerFullBody": "Advocat is an artificial-intelligence tool that provides legal information, not legal advice. Under the EU AI Act (Art. 50), we must tell you clearly: you are interacting with AI, not a human lawyer.\n\nAdvocat is not a law firm. We are not licensed advocates under the Estonian Advokatuuriseadus or the Finnish Asianajajalaki, and attorney-client privilege does not attach to your conversations with this tool. Before relying on any output — to file an appeal, sign a contract, or act on a deadline — verify with a licensed lawyer in your jurisdiction.",
+    "@aiDisclaimerFullBody": {
+        "description": "Long-form body for the AI-disclaimer expansion sheet and onboarding modal."
+    },
+    "aiDisclaimerExpand": "Learn more",
+    "@aiDisclaimerExpand": {
+        "description": "Inline action label on the compact banner that opens the full-text sheet."
+    },
+    "aiDisclaimerDismiss": "OK, I understand",
+    "@aiDisclaimerDismiss": {
+        "description": "Dismiss button on the AI-disclaimer modal / expansion sheet."
+    },
     "dataPrivacyConsent": "Data Privacy Consent",
     "gdprIntro": "To provide AI legal assistance, we process your data in accordance with GDPR (EU 2016/679). By continuing you agree to:",
     "gdprChat": "Processing of your chat messages by AI",
@@ -1797,7 +1817,7 @@
     "exportComplete": "Data export ready — saved to your device.",
     "exportFailed": "Export failed. Please try again or contact support.",
     "quotaExhaustedTitle": "Free message limit reached",
-    "quotaExhaustedBody": "You've used all {count} free messages. Upgrade to Advocat Pro for €19.99/month and get unlimited AI legal consultations.",
+    "quotaExhaustedBody": "You've used all {count} free messages. Upgrade to Advocat Counsel for €19.99/month and get unlimited AI legal consultations.",
     "@quotaExhaustedBody": {
         "placeholders": {
             "count": {
@@ -1806,8 +1826,8 @@
         }
     },
     "quotaExhaustedLater": "Later",
-    "quotaExhaustedUpgrade": "Advocat Pro — €19.99/mo",
-    "quotaCtaMessage": "You've used all {count} free messages. Upgrade to Advocat Pro for €19.99/month.",
+    "quotaExhaustedUpgrade": "Advocat Counsel — €19.99/mo",
+    "quotaCtaMessage": "You've used all {count} free messages. Upgrade to Advocat Counsel for €19.99/month.",
     "@quotaCtaMessage": {
         "placeholders": {
             "count": {
@@ -1815,7 +1835,7 @@
             }
         }
     },
-    "quotaCtaButton": "Get Advocat Pro — €19.99/mo",
+    "quotaCtaButton": "Get Advocat Counsel — €19.99/mo",
     "aiErrorQuota": "Free message limit reached. Subscribe to continue using AI.",
     "aiErrorAuth": "Sign-in required to use the AI. Please register or log in.",
     "aiErrorGeneric": "Temporary AI error. Please try again in a minute. If it persists, contact support.",

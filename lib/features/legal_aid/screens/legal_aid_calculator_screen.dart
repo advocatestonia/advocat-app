@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/ai_disclaimer_banner.dart';
 
 
 /// Data model for a country's legal aid system.
@@ -474,6 +475,14 @@ class _LegalAidCalculatorScreenState extends State<LegalAidCalculatorScreen>
                   scale: _resultScale,
                   child: _ResultCard(result: _result!),
                 ),
+              ),
+              // EU AI Act Art. 50 — the highest-risk surface in the app: an
+              // automated qualify/disqualify verdict. Show the AI-not-a-lawyer
+              // banner directly below the result card on every render so the
+              // user cannot miss it when forming a decision.
+              const SizedBox(height: AppSpacing.md),
+              const AiDisclaimerBanner.compact(
+                key: Key('legal_aid_ai_disclaimer_banner'),
               ),
             ],
           ],

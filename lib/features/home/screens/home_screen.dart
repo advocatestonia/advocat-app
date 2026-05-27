@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -931,7 +932,7 @@ class _QuickActions extends StatelessWidget {
 
 // _ShieldPulsingButton — restored shield-icon pulsing tile (formerly the
 // AdvocatPro quick-action design from commit 2e6b19a~1) with the same
-// scale animation, soft shadow, accent ring, and shield_pro.png artwork —
+// scale animation, soft shadow, accent ring, and shield_pro.svg artwork —
 // but parameterized: caller controls label and onTap. Used on the home grid
 // to make the AI Assistant tile visually pop with the brand shield while
 // still routing to /chat/general.
@@ -1003,11 +1004,10 @@ class _ShieldPulsingButtonState extends State<_ShieldPulsingButton>
                           ],
                         ),
                         child: Center(
-                          child: Image.asset(
-                            'assets/images/shield_pro.png',
+                          child: SvgPicture.asset(
+                            'assets/images/shield_pro.svg',
                             width: 44,
                             height: 44,
-                            filterQuality: FilterQuality.high,
                           ),
                         ),
                       ),
@@ -1342,11 +1342,10 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
               child: Row(
                 children: [
                   // Shield Pro icon
-                  Image.asset(
-                    'assets/images/shield_pro.png',
+                  SvgPicture.asset(
+                    'assets/images/shield_pro.svg',
                     width: 36,
                     height: 36,
-                    filterQuality: FilterQuality.high,
                   ),
                   const SizedBox(width: 12),
                   // Text
@@ -1627,18 +1626,11 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Advocat shield logo — negative margin to cut white space in PNG
-          ClipRect(
-            child: Align(
-              alignment: Alignment.center,
-              heightFactor: 0.65,
-              child: Image.asset(
-                'assets/images/logo_shield.png',
-                width: 200,
-                height: 200,
-                filterQuality: FilterQuality.high,
-              ),
-            ),
+          // Advocat shield logo (vector — no PNG whitespace to clip)
+          SvgPicture.asset(
+            'assets/images/shield.svg',
+            width: 130,
+            height: 130,
           ),
           Text(
             l.noCasesYet,
