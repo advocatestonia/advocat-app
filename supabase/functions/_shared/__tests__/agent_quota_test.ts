@@ -198,7 +198,8 @@ Deno.test("recordAgentAudit: forwards all fields", async () => {
   assertEquals(captured[0].p_tool, "list_inbox");
   assertEquals(captured[0].p_status, "ok");
   assertEquals(captured[0].p_input_tokens, 1000);
-  assertEquals(captured[0].p_cost_microcents, 1000 * 30 + 200 * 150);
+  // 1000 input × 0.3 + 200 output × 1.5 = 300 + 300 = 600 microcents
+  assertEquals(captured[0].p_cost_microcents, 600);
 });
 
 Deno.test("recordAgentAudit: never throws on RPC failure", async () => {
@@ -221,12 +222,12 @@ Deno.test("recordAgentAudit: never throws on RPC failure", async () => {
 // ─── sonnetCostMicrocents ─────────────────────────────────────────────────
 
 Deno.test("sonnetCostMicrocents: input + output at correct rates", () => {
-  // 1M input + 0 output = $3 = 300 cents = 30,000,000 microcents
-  assertEquals(sonnetCostMicrocents(1_000_000, 0), 30_000_000);
-  // 0 input + 1M output = $15 = 1500 cents = 150,000,000 microcents
-  assertEquals(sonnetCostMicrocents(0, 1_000_000), 150_000_000);
-  // 100 input + 50 output = 100*30 + 50*150 = 3000 + 7500 = 10500
-  assertEquals(sonnetCostMicrocents(100, 50), 10_500);
+  // 1M input + 0 output = $3 = 300 cents = 300_000 microcents
+  assertEquals(sonnetCostMicrocents(1_000_000, 0), 300_000);
+  // 0 input + 1M output = $15 = 1500 cents = 1_500_000 microcents
+  assertEquals(sonnetCostMicrocents(0, 1_000_000), 1_500_000);
+  // 100 input + 50 output = round(100*0.3) + round(50*1.5) = 30 + 75 = 105
+  assertEquals(sonnetCostMicrocents(100, 50), 105);
 });
 
 Deno.test("sonnetCostMicrocents: zero", () => {

@@ -158,12 +158,32 @@ export async function recordAgentAudit(args: {
 
 /**
  * Sonnet 4.6 pricing as of 2026-05: $3/M in, $15/M out. Returns cost in
- * micro-cents (1 cent = 100 microcents) to avoid float precision loss.
+ * micro-cents (1 cent = 1000 microcents) to avoid float precision loss.
+ *
+ * Math:
+ *   $3 / 1M tokens = 300 cents / 1M tokens = 300_000 microcents / 1M tokens
+ *                  = 0.3 microcents/token
+ *   $15 / 1M tokens = 1500 cents / 1M tokens = 1_500_000 microcents / 1M
+ *                  = 1.5 microcents/token
+ *
+ * We multiply by ×1000 then divide so the function returns integers
+ * (microcents) — caller divides by 100_000 to get dollars or 1000 to
+ * get cents.
  */
-export function sonnetCostMicrocents(inputTokens: number, outputTokens: number): number {
-  // $3/M = 300 cents per million = 0.0003 cents/token = 30 microcents/token
-  const inMicro = inputTokens * 30;
-  // $15/M = 1500 cents per million = 150 microcents/token
-  const outMicro = outputTokens * 150;
+export function sonnetCostMicrocents(
+  inputTokens: number,
+  outputTokens: number,
+): number {
+  // ($3 per 1M input tokens) × tokens × 1_000_000 microcents/$
+  //   = tokens × 3 × 1_000_000 / 1_000_000
+  //   = tokens × 3
+  // Wait — we want microCENTS not microDOLLARS.
+  //   $3 per 1M tokens = 300 cents per 1M tokens = 300 * 1000 microcents
+  //                    = 300_000 microcents per 1M tokens
+  //                    = 0.3 microcents per token
+  // Use 10× integer arithmetic to avoid float: track as 1/10 microcent
+  // internally is overkill — round to nearest microcent.
+  const inMicro = Math.round(inputTokens * 0.3);
+  const outMicro = Math.round(outputTokens * 1.5);
   return inMicro + outMicro;
 }
