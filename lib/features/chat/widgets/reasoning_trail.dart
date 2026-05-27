@@ -254,9 +254,12 @@ class _ReasoningTrailState extends State<ReasoningTrail>
 
   Widget _buildExpanded(String caption) {
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: AlignmentDirectional.centerStart,
       child: Container(
-        margin: const EdgeInsets.only(bottom: AppSpacing.sm, right: 80),
+        margin: const EdgeInsetsDirectional.only(
+          bottom: AppSpacing.sm,
+          end: 80,
+        ),
         constraints: const BoxConstraints(minHeight: 32),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
@@ -322,7 +325,7 @@ class _ReasoningTrailState extends State<ReasoningTrail>
     final hint = l10n?.reasoningExpandHint ?? 'tap to see steps';
 
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: AlignmentDirectional.centerStart,
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {

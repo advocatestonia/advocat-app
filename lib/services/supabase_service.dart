@@ -524,42 +524,50 @@ class SupabaseService {
 
   // ── Delete all user data ─────────────────────────────────────────────
 
-  /// Deletes all user data from Supabase tables and storage, then signs out.
-  /// Tables are deleted in foreign-key-safe order.
-  /// Throws if not authenticated or if any step fails.
-  Future<void> deleteAllUserData() async {
+  /// Hard-deletes the caller's account.
+  ///
+  /// Calls the `account-delete` edge function under service-role:
+  ///   1. wipes every user-owned application row (RLS scope can't reach all
+  ///      of them from the client)
+  ///   2. removes every storage object under `<uid>/` in `case-documents`
+  ///   3. deletes `auth.users` row via Supabase admin API (the client SDK
+  ///      cannot do this — requires service-role)
+  ///
+  /// Required by App Store Guideline 5.1.1(v) (hard requirement since 2022)
+  /// and GDPR Art. 17 ("right to erasure"). NO soft-delete: the auth row
+  /// is gone, so the email becomes available for re-signup immediately.
+  ///
+  /// Caller must provide the user's own email (`confirmEmail`) — the edge
+  /// fn re-checks it server-side as defence-in-depth against an accidental
+  /// or programmatic firing of the destructive call.
+  ///
+  /// Signs the session out on success. Throws on any failure with a
+  /// user-displayable message.
+  Future<void> deleteAllUserData({required String confirmEmail}) async {
     if (isDemo) return; // Demo data is in-memory; nothing to delete.
 
     final uid = _client.auth.currentUser?.id;
     if (uid == null) throw Exception('Not authenticated');
 
-    // Delete in FK-safe order: children first, then parents.
-    // 1. chat_messages
-    await _client.from('chat_messages').delete().eq('user_id', uid);
-    // 2. documents (rows) + storage files
-    final docRows = await _client
-        .from('documents')
-        .select('storage_path')
-        .eq('user_id', uid);
-    final storagePaths = (docRows as List)
-        .map((r) => r['storage_path'] as String?)
-        .where((p) => p != null && p.isNotEmpty)
-        .cast<String>()
-        .toList();
-    if (storagePaths.isNotEmpty) {
-      await _client.storage.from('case-documents').remove(storagePaths);
+    final result = await callEdgeFunction(
+      'account-delete',
+      body: {'confirm': confirmEmail},
+    );
+    if (result == null) {
+      throw Exception('account-delete returned no body');
     }
-    await _client.from('documents').delete().eq('user_id', uid);
-    // 3. deadlines
-    await _client.from('deadlines').delete().eq('user_id', uid);
-    // 4. correspondence
-    await _client.from('correspondence').delete().eq('user_id', uid);
-    // 5. cases
-    await _client.from('cases').delete().eq('user_id', uid);
-    // 6. profile
-    await _client.from('profiles').delete().eq('id', uid);
+    final err = result['error'];
+    if (err != null) {
+      throw Exception(err.toString());
+    }
+    final deleted = result['deleted'] == true;
+    if (!deleted) {
+      final msg = (result['message'] as String?) ??
+          'Account deletion did not complete. Please retry.';
+      throw Exception(msg);
+    }
 
-    // Sign out after data deletion
+    // Auth row is gone server-side; sign out the local session.
     await _client.auth.signOut();
   }
 

@@ -17,6 +17,7 @@ import '../../../models/case_model.dart';
 import '../../../models/deadline.dart';
 import '../../../shared/utils/date_utils.dart';
 import '../../../shared/widgets/gdpr_consent_dialog.dart';
+import '../../../shared/widgets/skeleton_loader.dart';
 import '../../../shared/pending_checkout.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/stripe_checkout_service.dart';
@@ -485,8 +486,25 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
             // ── Cases or empty state ─────────────────────────────────────
             casesAsync.when(
-              loading: () => const SliverFillRemaining(
-                child: Center(child: CircularProgressIndicator()),
+              // Cold-start skeleton: 2 case-card placeholders. Greeting +
+              // deadline radar render above this sliver from their own
+              // providers (cases is typically the slowest). Honors WCAG
+              // reduce-motion via _ReduceMotionShimmer.
+              loading: () => SliverList(
+                delegate: SliverChildListDelegate(const [
+                  SizedBox(height: AppSpacing.md),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
+                    child: Column(
+                      children: [
+                        CaseCardSkeleton(),
+                        SizedBox(height: AppSpacing.sm),
+                        CaseCardSkeleton(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: AppSpacing.lg),
+                ]),
               ),
               error: (error, _) => SliverFillRemaining(
                 child: _ErrorState(
@@ -829,9 +847,11 @@ class _UrgentBanner extends StatelessWidget {
                 ],
               ),
             ),
+            // chevron_right is auto-mirrored by Flutter in RTL.
             Icon(
               Icons.chevron_right,
               color: fgColor.withValues(alpha: 0.6),
+              textDirection: Directionality.of(context),
             ),
           ],
         ),
@@ -1097,9 +1117,9 @@ class _HowToUseButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.only(left: AppSpacing.md),
+      padding: const EdgeInsetsDirectional.only(start: AppSpacing.md),
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         child: TextButton.icon(
           onPressed: () => _showTutorial(context, l),
           icon: const Icon(Icons.help_outline_rounded, size: 16),
@@ -1400,11 +1420,12 @@ class _PremiumUpgradeCardState extends State<_PremiumUpgradeCard>
                       ],
                     ),
                   ),
-                  // Chevron
-                  const Icon(
+                  // Chevron — auto-mirrored by Flutter in RTL via Directionality.
+                  Icon(
                     Icons.chevron_right_rounded,
-                    color: Color(0xFF8ECAC7),
+                    color: const Color(0xFF8ECAC7),
                     size: 24,
+                    textDirection: Directionality.of(context),
                   ),
                 ],
               ),
@@ -1618,9 +1639,22 @@ class _ActivityRow extends StatelessWidget {
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
 
+  /// CRO recommendation (2026-05-27): on a brand-new account, surface 3
+  /// intent chips that pre-load the chat with a starter prompt. These map
+  /// to the highest-converting intake categories.
+  void _onIntentChip(BuildContext context, String prompt) {
+    context.push('/chat/general?q=${Uri.encodeComponent(prompt)}');
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
+    final title = l.emptyHomeTitle;
+    final body = l.emptyHomeBody;
+    final chip1 = l.intentChip1;
+    final chip2 = l.intentChip2;
+    final chip3 = l.intentChip3;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Column(
@@ -1633,20 +1667,34 @@ class _EmptyState extends StatelessWidget {
             height: 130,
           ),
           Text(
-            l.noCasesYet,
+            title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
                 ),
           ),
+          const SizedBox(height: 4),
           Text(
-            l.startFirstCase,
+            body,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                 ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: AppSpacing.md),
+          // Intent chips (CRO 2026-05-27) — wrap so they reflow on small
+          // viewports. Each chip pushes /chat/general with `?q=` prefilled.
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: [
+              _IntentChip(label: chip1, onTap: () => _onIntentChip(context, chip1)),
+              _IntentChip(label: chip2, onTap: () => _onIntentChip(context, chip2)),
+              _IntentChip(label: chip3, onTap: () => _onIntentChip(context, chip3)),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
           // Create case button
           SizedBox(
             width: double.infinity,
@@ -1688,6 +1736,49 @@ class _EmptyState extends StatelessWidget {
 }
 
 // _TipItem removed — tips block removed from empty state
+
+// ---------------------------------------------------------------------------
+// Intent Chip — used in the brand-new-account empty state to deep-link
+// into /chat/general with `?q=` so the AI can open the conversation with
+// the user's intent pre-filled. Subtle: outlined pill, accent border on
+// tap. Tapping pushes; no async work happens here.
+// ---------------------------------------------------------------------------
+
+class _IntentChip extends StatelessWidget {
+  const _IntentChip({required this.label, required this.onTap});
+
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadius.full),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.accent.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(AppRadius.full),
+            border: Border.all(
+              color: AppColors.accent.withValues(alpha: 0.3),
+            ),
+          ),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: AppColors.accent,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 // ---------------------------------------------------------------------------
 // Error State

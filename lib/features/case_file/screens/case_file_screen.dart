@@ -329,7 +329,7 @@ class _DeadlineRowWithCalendar extends StatelessWidget {
           child: DeadlineCountdownCard(deadline: deadline, today: today),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding: const EdgeInsetsDirectional.only(start: 8),
           child: IconButton(
             key: iconKey,
             icon: const Icon(Icons.calendar_today),

@@ -60,7 +60,7 @@
     "currentPlan": "Mevcut Plan",
     "dataAndPrivacy": "VERİ VE GİZLİLİK",
     "dataExportRequested": "Veri dışa aktarması talep edildi. E-postanızı kontrol edin.",
-    "daysRemaining": "{count} gün",
+    "daysRemaining": "{count, plural, =0{kalan gün yok} other{{count} gün}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -85,7 +85,7 @@
     "discrimination": "Ayrımcılık",
     "doNotBuy": "Satın almayın",
     "documents": "Belgeler",
-    "documentsCount": "{count} belge",
+    "documentsCount": "{count, plural, =0{belge yok} other{{count} belge}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -155,7 +155,7 @@
     "informational": "Bilgilendirici",
     "inspection": "Teknik muayene",
     "insurance": "Sigorta",
-    "issuesFound": "{count} sorun bulundu",
+    "issuesFound": "{count, plural, =0{sorun bulunamadı} other{{count} sorun bulundu}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -463,7 +463,7 @@
     "gdprFooter": "Verileriniz şifrelenir ve üçüncü taraflarla paylaşılmaz. Onayı geri çekebilir ve tüm verileri Ayarlardan silebilirsiniz.",
     "gdprIntro": "YZ hukuki yardım sağlamak için verilerinizi GDPR (AB 2016/679) uyarınca işliyoruz. Devam ederek kabul ediyorsunuz:",
     "gdprStorage": "Dava verilerinin şifreli depolanması",
-    "generateAppealWithIssues": "İtiraz oluştur ({count} sorun)",
+    "generateAppealWithIssues": "{count, plural, other{İtiraz Oluştur ({count} sorun)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -492,7 +492,7 @@
     "immigrationDetentionDesc": "Yetkililer tarafından gözaltına alındığınızda haklar",
     "inCourt": "Mahkemede",
     "issuesFoundHeader": "Bulunan sorunlar",
-    "issuesFoundInDocument": "Belgenizde {count} sorun bulundu",
+    "issuesFoundInDocument": "{count, plural, =0{Belgenizde sorun bulunamadı} other{Belgenizde {count} sorun bulundu}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -553,7 +553,7 @@
     "openCase": "Davayı aç",
     "openSettings": "Ayarları aç",
     "orWord": "veya",
-    "pageCount": "{count} sayfa",
+    "pageCount": "{count, plural, =0{sayfa yok} other{{count} sayfa}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -569,7 +569,7 @@
             }
         }
     },
-    "pagesUploadedSuccess": "{count} sayfa başarıyla yüklendi",
+    "pagesUploadedSuccess": "{count, plural, other{{count} sayfa başarıyla yüklendi}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -793,7 +793,7 @@
     "categoryWork": "Work",
     "categoryHousing": "Housing",
     "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
+    "rightsInsideCount": "{count, plural, =0{hak yok} other{İçinde {count} hak var}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -847,10 +847,10 @@
     "citationSnippetCollapse": "Daha az göster",
     "citationUnverifiedSheetNote": "Yapay zekâ bu paragrafı alıntıladı, ancak bu görüşmede mevzuat külliyatından alınmamıştı. Güvenmeden önce atfı doğrulayın.",
     "citationFooterNoneWarning": "Belgelenmiş atıf yok",
-    "citationFooterSummaryTotal": "{count} atıf",
-    "citationFooterSummaryVerified": "{count} doğrulanmış",
-    "citationFooterSummaryUnverified": "{count} doğrulanmamış",
-    "citationFooterSummaryHistorical": "{count} tarihsel",
+    "citationFooterSummaryTotal": "{count, plural, other{{count} alıntı}}",
+    "citationFooterSummaryVerified": "{count, plural, other{{count} doğrulanmış}}",
+    "citationFooterSummaryUnverified": "{count, plural, other{{count} doğrulanmamış}}",
+    "citationFooterSummaryHistorical": "{count, plural, other{{count} tarihsel}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -882,7 +882,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, =0{bugün} other{{count} gün içinde}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -892,7 +892,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, other{{count} gün gecikme}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1022,7 +1022,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "Ayda 20 sözleşme incelemesi",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "Bu ay {count} sözleşme incelemesi kaldı",
+    "contractReviewsLeft": "{count, plural, =0{Bu ay sözleşme incelemesi kalmadı} other{Bu ay {count} sözleşme incelemesi kaldı}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1139,8 +1139,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Avukatlar davanızı inceliyor…",
@@ -1152,7 +1156,9 @@
     "consiliumDone": "Konsültasyon tamamlandı · {totalRoles} uzman",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "İtiraz et",
@@ -1163,23 +1169,26 @@
     "consiliumKeyCitation": "Temel kaynak",
     "consiliumAdversarialRound": "Çekişmeli tur",
     "consiliumViewFullOpinion": "Tam görüşü gör",
-    "consiliumExpertsAgreed": "{count} uzman aynı fikirde",
+    "consiliumExpertsAgreed": "{count, plural, other{{count} uzman katılıyor}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} uzman karşı çıkıyor",
+    "consiliumExpertsDisagree": "{count, plural, other{{count} uzman katılmıyor}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "YZ ajanları, insan avukatlar değil. Önemli kararları baroya kayıtlı bir avukatla doğrulayın.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
-,
+    },
     "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
@@ -1220,16 +1229,33 @@
     "draftingExporting": "Exporting…",
     "draftingExportFailed": "Export failed",
     "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft"
-,
+    "draftingNewDraft": "New draft",
     "vaultNoteChip": "Vault note",
     "saveToVault": "Save to Vault",
     "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault"
-,
+    "savedToVault": "Saved to Vault",
     "vaultNoteTitlePrefix": "Note: ",
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "dangerZone": "[en] Danger zone",
+    "deleteAccountConfirmButton": "[en] Delete forever",
+    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "intentChip1": "Got a fine",
+    "intentChip2": "Permit denied",
+    "intentChip3": "Contract problem",
+    "emptyCasesTitle": "No cases yet",
+    "emptyCasesCta": "Start a case",
+    "emptyDraftsTitle": "No drafts yet",
+    "emptyDraftsCta": "Create draft",
+    "emptyChatTitle": "Ask Advocat anything",
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "chatExamplePrompt2": "Review my rental contract",
+    "chatExamplePrompt3": "What are my rights at work?",
+    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "[en] Deleting account…"
 }

@@ -218,7 +218,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String daysRemaining(int count) {
-    return '$count gün';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gün',
+      zero: 'kalan gün yok',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -279,7 +285,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String documentsCount(int count) {
-    return '$count belge';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count belge',
+      zero: 'belge yok',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -396,7 +408,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String issuesFound(int count) {
-    return '$count sorun bulundu';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sorun bulundu',
+      zero: 'sorun bulunamadı',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1312,7 +1330,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String issuesFoundInDocument(int count) {
-    return 'Belgenizde $count sorun bulundu';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Belgenizde $count sorun bulundu',
+      zero: 'Belgenizde sorun bulunamadı',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1323,7 +1347,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String generateAppealWithIssues(int count) {
-    return 'İtiraz oluştur ($count sorun)';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'İtiraz Oluştur ($count sorun)',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1350,7 +1379,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String pageCount(int count) {
-    return '$count sayfa';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sayfa',
+      zero: 'sayfa yok',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1386,7 +1421,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String pagesUploadedSuccess(int count) {
-    return '$count sayfa başarıyla yüklendi';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sayfa başarıyla yüklendi',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2346,7 +2386,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String rightsInsideCount(int count) {
-    return '$count rights inside';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'İçinde $count hak var',
+      zero: 'hak yok',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3071,22 +3117,42 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String citationFooterSummaryTotal(int count) {
-    return '$count atıf';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count alıntı',
+    );
+    return '$_temp0';
   }
 
   @override
   String citationFooterSummaryVerified(int count) {
-    return '$count doğrulanmış';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count doğrulanmış',
+    );
+    return '$_temp0';
   }
 
   @override
   String citationFooterSummaryUnverified(int count) {
-    return '$count doğrulanmamış';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count doğrulanmamış',
+    );
+    return '$_temp0';
   }
 
   @override
   String citationFooterSummaryHistorical(int count) {
-    return '$count tarihsel';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tarihsel',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3100,7 +3166,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String deadlineCardDaysLeft(int count) {
-    return 'in $count days';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gün içinde',
+      zero: 'bugün',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3111,7 +3183,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String deadlineCardOverdue(int count) {
-    return '$count days overdue';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count gün gecikme',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3587,7 +3664,13 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String contractReviewsLeft(int count) {
-    return 'Bu ay $count sözleşme incelemesi kaldı';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Bu ay $count sözleşme incelemesi kaldı',
+      zero: 'Bu ay sözleşme incelemesi kalmadı',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -4073,12 +4156,22 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String consiliumExpertsAgreed(int count) {
-    return '$count uzman aynı fikirde';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count uzman katılıyor',
+    );
+    return '$_temp0';
   }
 
   @override
   String consiliumExpertsDisagree(int count) {
-    return '$count uzman karşı çıkıyor';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count uzman katılmıyor',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -4242,4 +4335,66 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get draftingVersionHistory => 'Version history';
+
+  @override
+  String get emptyHomeTitle => 'Welcome to Advocat';
+
+  @override
+  String get emptyHomeBody =>
+      'Pick a starting point — we’ll handle the legal heavy lifting.';
+
+  @override
+  String get intentChip1 => 'Got a fine';
+
+  @override
+  String get intentChip2 => 'Permit denied';
+
+  @override
+  String get intentChip3 => 'Contract problem';
+
+  @override
+  String get emptyCasesTitle => 'No cases yet';
+
+  @override
+  String get emptyCasesCta => 'Start a case';
+
+  @override
+  String get emptyDraftsTitle => 'No drafts yet';
+
+  @override
+  String get emptyDraftsCta => 'Create draft';
+
+  @override
+  String get emptyChatTitle => 'Ask Advocat anything';
+
+  @override
+  String get chatExamplePrompt1 => 'Help me reply to a fine';
+
+  @override
+  String get chatExamplePrompt2 => 'Review my rental contract';
+
+  @override
+  String get chatExamplePrompt3 => 'What are my rights at work?';
+
+  @override
+  String get dangerZone => '[en] Danger zone';
+
+  @override
+  String get deleteAccountConfirmButton => '[en] Delete forever';
+
+  @override
+  String deleteAccountConfirmHint(String email) {
+    return '[en] Type $email to confirm';
+  }
+
+  @override
+  String get deleteAccountSuccess =>
+      '[en] Account deleted. We\'re sorry to see you go.';
+
+  @override
+  String get deleteAccountWarning =>
+      '[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.';
+
+  @override
+  String get deletingAccount => '[en] Deleting account…';
 }

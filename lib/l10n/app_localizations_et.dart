@@ -218,7 +218,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String daysRemaining(int count) {
-    return '$count päeva';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päeva',
+      one: '1 päev',
+      zero: 'päevi pole jäänud',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -278,7 +285,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String documentsCount(int count) {
-    return '$count dokumenti';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count dokumenti',
+      one: '1 dokument',
+      zero: 'dokumente pole',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -395,7 +409,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String issuesFound(int count) {
-    return '$count probleemi leitud';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Leitud $count probleemi',
+      one: 'Leitud 1 probleem',
+      zero: 'probleeme ei leitud',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1315,7 +1336,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String issuesFoundInDocument(int count) {
-    return 'Leiti $count probleem(i) teie dokumendist';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Dokumendist leitud $count probleemi',
+      one: 'Dokumendist leitud 1 probleem',
+      zero: 'Dokumendist probleeme ei leitud',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1326,7 +1354,13 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String generateAppealWithIssues(int count) {
-    return 'Loo kaebus ($count probleemi)';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Loo apellatsioon ($count probleemi)',
+      one: 'Loo apellatsioon (1 probleem)',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1354,7 +1388,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String pageCount(int count) {
-    return '$count lehekülg(e)';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lehekülge',
+      one: '1 lehekülg',
+      zero: 'lehekülgi pole',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1390,7 +1431,13 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String pagesUploadedSuccess(int count) {
-    return '$count lehekülge edukalt üles laetud';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lehekülge laaditud edukalt',
+      one: '1 lehekülg laaditud edukalt',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -2346,7 +2393,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String rightsInsideCount(int count) {
-    return '$count õigust sees';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count õigust sees',
+      one: '1 õigus sees',
+      zero: 'õigusi pole',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3067,22 +3121,46 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String citationFooterSummaryTotal(int count) {
-    return '$count viidet';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count viidet',
+      one: '1 viide',
+    );
+    return '$_temp0';
   }
 
   @override
   String citationFooterSummaryVerified(int count) {
-    return '$count kontrollitud';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kinnitatud',
+      one: '1 kinnitatud',
+    );
+    return '$_temp0';
   }
 
   @override
   String citationFooterSummaryUnverified(int count) {
-    return '$count kontrollimata';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count kinnitamata',
+      one: '1 kinnitamata',
+    );
+    return '$_temp0';
   }
 
   @override
   String citationFooterSummaryHistorical(int count) {
-    return '$count vana';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count vananenud',
+      one: '1 vananenud',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3096,7 +3174,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String deadlineCardDaysLeft(int count) {
-    return '$count päeva pärast';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päeva pärast',
+      one: '1 päeva pärast',
+      zero: 'täna',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3107,7 +3192,13 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String deadlineCardOverdue(int count) {
-    return '$count päeva üle tähtaja';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count päeva hilinenud',
+      one: '1 päev hilinenud',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -3586,7 +3677,14 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String contractReviewsLeft(int count) {
-    return '$count lepingu ülevaatust selles kuus alles';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lepinguülevaatust sel kuul jäänud',
+      one: '1 lepinguülevaatus sel kuul jäänud',
+      zero: 'Sel kuul lepinguülevaatuseid pole jäänud',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -4074,12 +4172,24 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String consiliumExpertsAgreed(int count) {
-    return '$count eksperti nõustusid';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eksperti nõustub',
+      one: '1 ekspert nõustub',
+    );
+    return '$_temp0';
   }
 
   @override
   String consiliumExpertsDisagree(int count) {
-    return '$count eksperti on eriarvamusel';
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count eksperti ei nõustu',
+      one: '1 ekspert ei nõustu',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -4244,4 +4354,65 @@ class AppLocalizationsEt extends AppLocalizations {
 
   @override
   String get draftingVersionHistory => 'Versioonide ajalugu';
+
+  @override
+  String get emptyHomeTitle => 'Tere tulemast Advocati';
+
+  @override
+  String get emptyHomeBody =>
+      'Vali alguspunkt — meie tegeleme juriidilise poolega.';
+
+  @override
+  String get intentChip1 => 'Sain trahvi';
+
+  @override
+  String get intentChip2 => 'Loa taotlust ei rahuldatud';
+
+  @override
+  String get intentChip3 => 'Probleem lepinguga';
+
+  @override
+  String get emptyCasesTitle => 'Veel ühtegi juhtumit pole';
+
+  @override
+  String get emptyCasesCta => 'Alusta juhtumit';
+
+  @override
+  String get emptyDraftsTitle => 'Veel ühtegi mustandit pole';
+
+  @override
+  String get emptyDraftsCta => 'Loo mustand';
+
+  @override
+  String get emptyChatTitle => 'Küsi Advocatilt ükskõik mida';
+
+  @override
+  String get chatExamplePrompt1 => 'Aita mul trahvile vastata';
+
+  @override
+  String get chatExamplePrompt2 => 'Vaata mu üürilepingu üle';
+
+  @override
+  String get chatExamplePrompt3 => 'Millised on mu õigused tööl?';
+
+  @override
+  String get dangerZone => 'Ohuala';
+
+  @override
+  String get deleteAccountConfirmButton => 'Kustuta jäädavalt';
+
+  @override
+  String deleteAccountConfirmHint(String email) {
+    return 'Sisestage kinnitamiseks $email';
+  }
+
+  @override
+  String get deleteAccountSuccess => 'Konto on kustutatud. Kahju, et lahkute.';
+
+  @override
+  String get deleteAccountWarning =>
+      'See kustutab jäädavalt teie konto, kõik kohtuasjad, mustandid, hoidla dokumendid ja vestlusajaloo. Seda toimingut ei saa tagasi võtta.';
+
+  @override
+  String get deletingAccount => 'Konto kustutamine…';
 }

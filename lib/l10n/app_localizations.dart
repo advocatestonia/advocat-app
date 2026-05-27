@@ -533,7 +533,7 @@ abstract class AppLocalizations {
   /// No description provided for @daysRemaining.
   ///
   /// In en, this message translates to:
-  /// **'{count} days'**
+  /// **'{count, plural, =0{no days remaining} =1{1 day} other{{count} days}}'**
   String daysRemaining(int count);
 
   /// No description provided for @deadlineReminders.
@@ -641,7 +641,7 @@ abstract class AppLocalizations {
   /// No description provided for @documentsCount.
   ///
   /// In en, this message translates to:
-  /// **'{count} docs'**
+  /// **'{count, plural, =0{no documents} =1{1 document} other{{count} documents}}'**
   String documentsCount(int count);
 
   /// No description provided for @draftAppeal.
@@ -851,7 +851,7 @@ abstract class AppLocalizations {
   /// No description provided for @issuesFound.
   ///
   /// In en, this message translates to:
-  /// **'{count} issues found'**
+  /// **'{count, plural, =0{no issues found} =1{1 issue found} other{{count} issues found}}'**
   String issuesFound(int count);
 
   /// No description provided for @laborDispute.
@@ -2543,7 +2543,7 @@ abstract class AppLocalizations {
   /// No description provided for @issuesFoundInDocument.
   ///
   /// In en, this message translates to:
-  /// **'Found {count} issue(s) in your document'**
+  /// **'{count, plural, =0{No issues found in your document} =1{Found 1 issue in your document} other{Found {count} issues in your document}}'**
   String issuesFoundInDocument(int count);
 
   /// No description provided for @severityOverview.
@@ -2561,7 +2561,7 @@ abstract class AppLocalizations {
   /// No description provided for @generateAppealWithIssues.
   ///
   /// In en, this message translates to:
-  /// **'Generate Appeal ({count} issues)'**
+  /// **'{count, plural, =1{Generate Appeal (1 issue)} other{Generate Appeal ({count} issues)}}'**
   String generateAppealWithIssues(int count);
 
   /// No description provided for @analyzingContent.
@@ -2609,7 +2609,7 @@ abstract class AppLocalizations {
   /// No description provided for @pageCount.
   ///
   /// In en, this message translates to:
-  /// **'{count} page(s)'**
+  /// **'{count, plural, =0{no pages} =1{1 page} other{{count} pages}}'**
   String pageCount(int count);
 
   /// No description provided for @preview.
@@ -2669,7 +2669,7 @@ abstract class AppLocalizations {
   /// No description provided for @pagesUploadedSuccess.
   ///
   /// In en, this message translates to:
-  /// **'{count} pages uploaded successfully'**
+  /// **'{count, plural, =1{1 page uploaded successfully} other{{count} pages uploaded successfully}}'**
   String pagesUploadedSuccess(int count);
 
   /// No description provided for @uploadFailed.
@@ -4319,7 +4319,7 @@ abstract class AppLocalizations {
   /// No description provided for @rightsInsideCount.
   ///
   /// In en, this message translates to:
-  /// **'{count} rights inside'**
+  /// **'{count, plural, =0{no rights inside} =1{1 right inside} other{{count} rights inside}}'**
   String rightsInsideCount(int count);
 
   /// No description provided for @freeAidThreshold.
@@ -5615,25 +5615,25 @@ abstract class AppLocalizations {
   /// No description provided for @citationFooterSummaryTotal.
   ///
   /// In en, this message translates to:
-  /// **'{count} citations'**
+  /// **'{count, plural, =1{1 citation} other{{count} citations}}'**
   String citationFooterSummaryTotal(int count);
 
   /// No description provided for @citationFooterSummaryVerified.
   ///
   /// In en, this message translates to:
-  /// **'{count} verified'**
+  /// **'{count, plural, =1{1 verified} other{{count} verified}}'**
   String citationFooterSummaryVerified(int count);
 
   /// No description provided for @citationFooterSummaryUnverified.
   ///
   /// In en, this message translates to:
-  /// **'{count} unverified'**
+  /// **'{count, plural, =1{1 unverified} other{{count} unverified}}'**
   String citationFooterSummaryUnverified(int count);
 
   /// No description provided for @citationFooterSummaryHistorical.
   ///
   /// In en, this message translates to:
-  /// **'{count} historical'**
+  /// **'{count, plural, =1{1 historical} other{{count} historical}}'**
   String citationFooterSummaryHistorical(int count);
 
   /// No description provided for @deadlineRadarTitle.
@@ -5657,7 +5657,7 @@ abstract class AppLocalizations {
   /// No description provided for @deadlineCardDaysLeft.
   ///
   /// In en, this message translates to:
-  /// **'in {count} days'**
+  /// **'{count, plural, =0{today} =1{in 1 day} other{in {count} days}}'**
   String deadlineCardDaysLeft(int count);
 
   /// No description provided for @deadlineCardTomorrow.
@@ -5675,7 +5675,7 @@ abstract class AppLocalizations {
   /// No description provided for @deadlineCardOverdue.
   ///
   /// In en, this message translates to:
-  /// **'{count} days overdue'**
+  /// **'{count, plural, =1{1 day overdue} other{{count} days overdue}}'**
   String deadlineCardOverdue(int count);
 
   /// No description provided for @deadlineCardMarkComplete.
@@ -6557,7 +6557,7 @@ abstract class AppLocalizations {
   /// Quota pill shown near chat upload button when remaining > 0.
   ///
   /// In en, this message translates to:
-  /// **'{count} contract reviews left this month'**
+  /// **'{count, plural, =0{No contract reviews left this month} =1{1 contract review left this month} other{{count} contract reviews left this month}}'**
   String contractReviewsLeft(int count);
 
   /// No description provided for @contractReviewsExhausted.
@@ -7361,13 +7361,13 @@ abstract class AppLocalizations {
   /// No description provided for @consiliumExpertsAgreed.
   ///
   /// In en, this message translates to:
-  /// **'{count} experts agreed'**
+  /// **'{count, plural, =1{1 expert agreed} other{{count} experts agreed}}'**
   String consiliumExpertsAgreed(int count);
 
   /// No description provided for @consiliumExpertsDisagree.
   ///
   /// In en, this message translates to:
-  /// **'{count} experts disagree'**
+  /// **'{count, plural, =1{1 expert disagrees} other{{count} experts disagree}}'**
   String consiliumExpertsDisagree(int count);
 
   /// UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)
@@ -7681,6 +7681,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version history'**
   String get draftingVersionHistory;
+
+  /// Home empty-state headline for brand-new accounts (0 cases + 0 drafts + 0 vault docs).
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Advocat'**
+  String get emptyHomeTitle;
+
+  /// Home empty-state subtitle. Keep under 60 chars.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a starting point — we’ll handle the legal heavy lifting.'**
+  String get emptyHomeBody;
+
+  /// Home empty-state intent chip 1 — pre-loads chat with this intent.
+  ///
+  /// In en, this message translates to:
+  /// **'Got a fine'**
+  String get intentChip1;
+
+  /// Home empty-state intent chip 2 — pre-loads chat with this intent.
+  ///
+  /// In en, this message translates to:
+  /// **'Permit denied'**
+  String get intentChip2;
+
+  /// Home empty-state intent chip 3 — pre-loads chat with this intent.
+  ///
+  /// In en, this message translates to:
+  /// **'Contract problem'**
+  String get intentChip3;
+
+  /// Cases list empty-state title.
+  ///
+  /// In en, this message translates to:
+  /// **'No cases yet'**
+  String get emptyCasesTitle;
+
+  /// Cases list empty-state primary CTA button.
+  ///
+  /// In en, this message translates to:
+  /// **'Start a case'**
+  String get emptyCasesCta;
+
+  /// Drafts list empty-state title.
+  ///
+  /// In en, this message translates to:
+  /// **'No drafts yet'**
+  String get emptyDraftsTitle;
+
+  /// Drafts list empty-state primary CTA — opens templates picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Create draft'**
+  String get emptyDraftsCta;
+
+  /// Chat empty-state title shown after sign-in when the thread has 0 messages.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask Advocat anything'**
+  String get emptyChatTitle;
+
+  /// Chat empty-state example prompt 1.
+  ///
+  /// In en, this message translates to:
+  /// **'Help me reply to a fine'**
+  String get chatExamplePrompt1;
+
+  /// Chat empty-state example prompt 2.
+  ///
+  /// In en, this message translates to:
+  /// **'Review my rental contract'**
+  String get chatExamplePrompt2;
+
+  /// Chat empty-state example prompt 3.
+  ///
+  /// In en, this message translates to:
+  /// **'What are my rights at work?'**
+  String get chatExamplePrompt3;
+
+  /// No description provided for @dangerZone.
+  ///
+  /// In en, this message translates to:
+  /// **'Danger zone'**
+  String get dangerZone;
+
+  /// No description provided for @deleteAccountConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete forever'**
+  String get deleteAccountConfirmButton;
+
+  /// No description provided for @deleteAccountConfirmHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type {email} to confirm'**
+  String deleteAccountConfirmHint(String email);
+
+  /// No description provided for @deleteAccountSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted. We\'re sorry to see you go.'**
+  String get deleteAccountSuccess;
+
+  /// No description provided for @deleteAccountWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.'**
+  String get deleteAccountWarning;
+
+  /// No description provided for @deletingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting account…'**
+  String get deletingAccount;
 }
 
 class _AppLocalizationsDelegate

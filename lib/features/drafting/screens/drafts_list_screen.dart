@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../l10n/app_localizations.dart';
+import '../../../shared/widgets/skeleton_loader.dart';
 import '../models/draft_model.dart';
 import '../services/draft_service.dart';
 import 'draft_templates_screen.dart';
@@ -35,7 +36,9 @@ class DraftsListScreen extends ConsumerWidget {
         label: Text(l10n.draftingNewDraft),
       ),
       body: draftsAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
+        // Cold-start: 4 draft-tile skeletons (matches the real ListTile
+        // layout below). Honors WCAG reduce-motion via _ReduceMotionShimmer.
+        loading: () => const DocumentListSkeleton(itemCount: 4),
         error: (e, st) {
           debugPrint('[drafts_list] myDraftsProvider failed: $e\n$st');
           return Center(

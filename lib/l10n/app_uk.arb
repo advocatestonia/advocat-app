@@ -62,7 +62,7 @@
     "currentPlan": "Поточний план",
     "dataAndPrivacy": "ДАНІ ТА КОНФІДЕНЦІЙНІСТЬ",
     "dataExportRequested": "Запит на експорт даних надіслано. Перевірте пошту.",
-    "daysRemaining": "{count} днів",
+    "daysRemaining": "{count, plural, =0{днів не залишилось} one{{count} день} few{{count} дні} many{{count} днів} other{{count} днів}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -87,7 +87,7 @@
     "discrimination": "Дискримінація",
     "doNotBuy": "Не купуйте",
     "documents": "Документи",
-    "documentsCount": "{count} документів",
+    "documentsCount": "{count, plural, =0{немає документів} one{{count} документ} few{{count} документи} many{{count} документів} other{{count} документів}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -157,7 +157,7 @@
     "informational": "Інформаційне",
     "inspection": "Технічний огляд",
     "insurance": "Страхування",
-    "issuesFound": "{count} проблем знайдено",
+    "issuesFound": "{count, plural, =0{проблем не знайдено} one{Знайдено {count} проблему} few{Знайдено {count} проблеми} many{Знайдено {count} проблем} other{Знайдено {count} проблем}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -465,7 +465,7 @@
     "gdprFooter": "Ваші дані зашифровані і ніколи не передаються третім особам. Ви можете відкликати згоду та видалити всі дані в Налаштуваннях.",
     "gdprIntro": "Для надання правової допомоги з ШІ ми обробляємо ваші дані відповідно до GDPR (ЄС 2016/679). Продовжуючи, ви погоджуєтесь з:",
     "gdprStorage": "Зашифроване зберігання даних справ",
-    "generateAppealWithIssues": "Створити оскарження ({count} проблем)",
+    "generateAppealWithIssues": "{count, plural, one{Створити оскарження ({count} проблема)} few{Створити оскарження ({count} проблеми)} many{Створити оскарження ({count} проблем)} other{Створити оскарження ({count} проблем)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -494,7 +494,7 @@
     "immigrationDetentionDesc": "Права при затриманні владою",
     "inCourt": "У суді",
     "issuesFoundHeader": "Знайдені проблеми",
-    "issuesFoundInDocument": "Знайдено {count} проблем(и) у документі",
+    "issuesFoundInDocument": "{count, plural, =0{У документі проблем не знайдено} one{У документі знайдено {count} проблему} few{У документі знайдено {count} проблеми} many{У документі знайдено {count} проблем} other{У документі знайдено {count} проблем}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -555,7 +555,7 @@
     "openCase": "Відкрити справу",
     "openSettings": "Відкрити налаштування",
     "orWord": "або",
-    "pageCount": "{count} сторінок",
+    "pageCount": "{count, plural, =0{немає сторінок} one{{count} сторінка} few{{count} сторінки} many{{count} сторінок} other{{count} сторінок}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -571,7 +571,7 @@
             }
         }
     },
-    "pagesUploadedSuccess": "{count} сторінок успішно завантажено",
+    "pagesUploadedSuccess": "{count, plural, one{{count} сторінка успішно завантажена} few{{count} сторінки успішно завантажено} many{{count} сторінок успішно завантажено} other{{count} сторінок успішно завантажено}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -795,7 +795,7 @@
     "categoryWork": "Робота",
     "categoryHousing": "Житло",
     "categoryConsumer": "Споживач",
-    "rightsInsideCount": "{count} прав всередині",
+    "rightsInsideCount": "{count, plural, =0{немає прав всередині} one{{count} право всередині} few{{count} права всередині} many{{count} прав всередині} other{{count} прав всередині}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -854,10 +854,10 @@
     "citationSnippetCollapse": "Згорнути",
     "citationUnverifiedSheetNote": "ШІ навів цей пункт, проте у цій сесії його не було відновлено з правового корпусу. Перевірте посилання, перш ніж на нього спиратися.",
     "citationFooterNoneWarning": "Немає підтверджених посилань",
-    "citationFooterSummaryTotal": "{count} посилань",
-    "citationFooterSummaryVerified": "{count} перевірено",
-    "citationFooterSummaryUnverified": "{count} не перевірено",
-    "citationFooterSummaryHistorical": "{count} історичних",
+    "citationFooterSummaryTotal": "{count, plural, one{{count} посилання} few{{count} посилання} many{{count} посилань} other{{count} посилань}}",
+    "citationFooterSummaryVerified": "{count, plural, one{{count} перевірено} few{{count} перевірено} many{{count} перевірено} other{{count} перевірено}}",
+    "citationFooterSummaryUnverified": "{count, plural, one{{count} не перевірено} few{{count} не перевірено} many{{count} не перевірено} other{{count} не перевірено}}",
+    "citationFooterSummaryHistorical": "{count, plural, one{{count} історичне} few{{count} історичні} many{{count} історичних} other{{count} історичних}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -889,7 +889,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, =0{сьогодні} one{через {count} день} few{через {count} дні} many{через {count} днів} other{через {count} днів}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -899,7 +899,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, one{прострочено на {count} день} few{прострочено на {count} дні} many{прострочено на {count} днів} other{прострочено на {count} днів}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1029,7 +1029,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 перевірок договорів на місяць",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "Залишилось {count} перевірок договорів цього місяця",
+    "contractReviewsLeft": "{count, plural, =0{Цього місяця перевірок договорів не залишилось} one{Залишилась {count} перевірка договорів цього місяця} few{Залишилось {count} перевірки договорів цього місяця} many{Залишилось {count} перевірок договорів цього місяця} other{Залишилось {count} перевірок договорів цього місяця}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1188,8 +1188,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Юристи вивчають вашу справу…",
@@ -1201,7 +1205,9 @@
     "consiliumDone": "Консиліум завершено · {totalRoles} експертів",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Оскаржити",
@@ -1212,23 +1218,26 @@
     "consiliumKeyCitation": "Ключове посилання",
     "consiliumAdversarialRound": "Змагальний раунд",
     "consiliumViewFullOpinion": "Повний висновок",
-    "consiliumExpertsAgreed": "{count} експертів згодні",
+    "consiliumExpertsAgreed": "{count, plural, one{{count} експерт згоден} few{{count} експерти згодні} many{{count} експертів згодні} other{{count} експертів згодні}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} експертів не згодні",
+    "consiliumExpertsDisagree": "{count, plural, one{{count} експерт не згоден} few{{count} експерти не згодні} many{{count} експертів не згодні} other{{count} експертів не згодні}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "ШІ-агенти, а не люди-юристи. Важливі рішення перевіряйте з ліцензованим адвокатом.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
-,
+    },
     "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
@@ -1269,16 +1278,33 @@
     "draftingExporting": "Exporting…",
     "draftingExportFailed": "Export failed",
     "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft"
-,
+    "draftingNewDraft": "New draft",
     "vaultNoteChip": "Vault note",
     "saveToVault": "Save to Vault",
     "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault"
-,
+    "savedToVault": "Saved to Vault",
     "vaultNoteTitlePrefix": "Note: ",
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "dangerZone": "[en] Danger zone",
+    "deleteAccountConfirmButton": "[en] Delete forever",
+    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "intentChip1": "Got a fine",
+    "intentChip2": "Permit denied",
+    "intentChip3": "Contract problem",
+    "emptyCasesTitle": "No cases yet",
+    "emptyCasesCta": "Start a case",
+    "emptyDraftsTitle": "No drafts yet",
+    "emptyDraftsCta": "Create draft",
+    "emptyChatTitle": "Ask Advocat anything",
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "chatExamplePrompt2": "Review my rental contract",
+    "chatExamplePrompt3": "What are my rights at work?",
+    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "[en] Deleting account…"
 }

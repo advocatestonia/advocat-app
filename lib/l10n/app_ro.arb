@@ -60,7 +60,7 @@
     "currentPlan": "Planul curent",
     "dataAndPrivacy": "DATE ȘI CONFIDENȚIALITATE",
     "dataExportRequested": "Export de date solicitat. Verificați emailul.",
-    "daysRemaining": "{count} zile",
+    "daysRemaining": "{count, plural, =0{nicio zi rămasă} =1{1 zi} other{{count} zile}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -85,7 +85,7 @@
     "discrimination": "Discriminare",
     "doNotBuy": "Nu cumpărați",
     "documents": "Documente",
-    "documentsCount": "{count} doc.",
+    "documentsCount": "{count, plural, =0{niciun document} =1{1 document} other{{count} documente}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -155,7 +155,7 @@
     "informational": "Informativ",
     "inspection": "Inspecție tehnică",
     "insurance": "Asigurare",
-    "issuesFound": "{count} probleme găsite",
+    "issuesFound": "{count, plural, =0{nicio problemă găsită} =1{1 problemă găsită} other{{count} probleme găsite}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -463,7 +463,7 @@
     "gdprFooter": "Datele dvs. sunt criptate și nu sunt partajate cu terți. Puteți retrage consimțământul din Setări.",
     "gdprIntro": "Pentru a oferi asistență juridică cu IA, procesăm datele dvs. conform GDPR (UE 2016/679). Continuând, acceptați:",
     "gdprStorage": "Stocare criptată a datelor cazurilor",
-    "generateAppealWithIssues": "Generează contestație ({count} probleme)",
+    "generateAppealWithIssues": "{count, plural, =1{Generează apel (1 problemă)} other{Generează apel ({count} probleme)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -492,7 +492,7 @@
     "immigrationDetentionDesc": "Drepturi dacă sunteți reținut de autorități",
     "inCourt": "În instanță",
     "issuesFoundHeader": "Probleme găsite",
-    "issuesFoundInDocument": "S-au găsit {count} problemă(e) în document",
+    "issuesFoundInDocument": "{count, plural, =0{Nicio problemă în documentul dvs.} =1{1 problemă găsită în documentul dvs.} other{{count} probleme găsite în documentul dvs.}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -553,7 +553,7 @@
     "openCase": "Deschide cazul",
     "openSettings": "Deschide setările",
     "orWord": "sau",
-    "pageCount": "{count} pagină(i)",
+    "pageCount": "{count, plural, =0{nicio pagină} =1{1 pagină} other{{count} pagini}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -569,7 +569,7 @@
             }
         }
     },
-    "pagesUploadedSuccess": "{count} pagini încărcate cu succes",
+    "pagesUploadedSuccess": "{count, plural, =1{1 pagină încărcată cu succes} other{{count} pagini încărcate cu succes}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -793,7 +793,7 @@
     "categoryWork": "Work",
     "categoryHousing": "Housing",
     "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
+    "rightsInsideCount": "{count, plural, =0{niciun drept înăuntru} =1{1 drept înăuntru} other{{count} drepturi înăuntru}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -847,10 +847,10 @@
     "citationSnippetCollapse": "Afișează mai puțin",
     "citationUnverifiedSheetNote": "IA a citat acest paragraf, însă acesta nu a fost recuperat din corpusul juridic în această sesiune. Verificați referința înainte de a vă baza pe ea.",
     "citationFooterNoneWarning": "Nicio citare documentată",
-    "citationFooterSummaryTotal": "{count} citări",
-    "citationFooterSummaryVerified": "{count} verificate",
-    "citationFooterSummaryUnverified": "{count} neverificate",
-    "citationFooterSummaryHistorical": "{count} istorice",
+    "citationFooterSummaryTotal": "{count, plural, =1{1 citare} other{{count} citări}}",
+    "citationFooterSummaryVerified": "{count, plural, =1{1 verificată} other{{count} verificate}}",
+    "citationFooterSummaryUnverified": "{count, plural, =1{1 neverificată} other{{count} neverificate}}",
+    "citationFooterSummaryHistorical": "{count, plural, =1{1 istorică} other{{count} istorice}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -882,7 +882,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, =0{astăzi} =1{în 1 zi} other{în {count} zile}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -892,7 +892,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, =1{1 zi întârziere} other{{count} zile întârziere}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1022,7 +1022,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 verificări contracte pe lună",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "Au mai rămas {count} verificări contracte luna aceasta",
+    "contractReviewsLeft": "{count, plural, =0{Nicio revizuire de contract rămasă luna aceasta} =1{1 revizuire de contract rămasă luna aceasta} other{{count} revizuiri de contracte rămase luna aceasta}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1139,8 +1139,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Avocații examinează cazul dvs.…",
@@ -1152,7 +1156,9 @@
     "consiliumDone": "Consiliu finalizat · {totalRoles} experți",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Contestă",
@@ -1163,23 +1169,26 @@
     "consiliumKeyCitation": "Referință-cheie",
     "consiliumAdversarialRound": "Rundă contradictorie",
     "consiliumViewFullOpinion": "Vezi avizul complet",
-    "consiliumExpertsAgreed": "{count} experți de acord",
+    "consiliumExpertsAgreed": "{count, plural, =1{1 expert de acord} other{{count} experți de acord}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} experți în dezacord",
+    "consiliumExpertsDisagree": "{count, plural, =1{1 expert dezacord} other{{count} experți dezacord}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "Agenți IA, nu avocați umani. Verificați deciziile importante cu un avocat înscris în barou.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
-,
+    },
     "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
@@ -1220,16 +1229,33 @@
     "draftingExporting": "Exporting…",
     "draftingExportFailed": "Export failed",
     "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft"
-,
+    "draftingNewDraft": "New draft",
     "vaultNoteChip": "Vault note",
     "saveToVault": "Save to Vault",
     "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault"
-,
+    "savedToVault": "Saved to Vault",
     "vaultNoteTitlePrefix": "Note: ",
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "dangerZone": "[en] Danger zone",
+    "deleteAccountConfirmButton": "[en] Delete forever",
+    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "intentChip1": "Got a fine",
+    "intentChip2": "Permit denied",
+    "intentChip3": "Contract problem",
+    "emptyCasesTitle": "No cases yet",
+    "emptyCasesCta": "Start a case",
+    "emptyDraftsTitle": "No drafts yet",
+    "emptyDraftsCta": "Create draft",
+    "emptyChatTitle": "Ask Advocat anything",
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "chatExamplePrompt2": "Review my rental contract",
+    "chatExamplePrompt3": "What are my rights at work?",
+    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "[en] Deleting account…"
 }

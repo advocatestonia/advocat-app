@@ -13,6 +13,7 @@ import '../../../services/supabase_service.dart';
 import '../../drafting/models/draft_model.dart';
 import '../../drafting/screens/drafting_studio_screen.dart';
 import '../../drafting/widgets/drafting_strings.dart';
+import '../../../shared/widgets/skeleton_loader.dart';
 import '../models/vault_document.dart';
 import '../providers/vault_providers.dart';
 import '../services/vault_service.dart';
@@ -163,8 +164,10 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
 
           Expanded(
             child: docsAsync.when(
-              loading: () =>
-                  const Center(child: CircularProgressIndicator()),
+              // Cold-start: 5 document-tile skeletons. Matches real
+              // ListTile dimensions so swap-in is jitter-free. Honors
+              // WCAG 2.3.3 reduce-motion via _ReduceMotionShimmer.
+              loading: () => const DocumentListSkeleton(itemCount: 5),
               error: (e, st) {
                 debugPrint(
                     '[document_vault] docs provider failed: $e\n$st');
@@ -759,7 +762,10 @@ class _VaultDocumentTile extends StatelessWidget {
         return false;
       },
       background: Container(
-        alignment: Alignment.centerRight,
+        // RTL-aware: swipe-to-delete background icon sits at the trailing edge
+        // (end). In LTR this is right; in RTL it is left, matching the
+        // mirrored swipe direction Dismissible adopts under RTL Directionality.
+        alignment: AlignmentDirectional.centerEnd,
         padding: const EdgeInsets.symmetric(horizontal: 24),
         decoration: BoxDecoration(
           color: AppColors.error,
@@ -833,9 +839,12 @@ class _VaultDocumentTile extends StatelessWidget {
               ),
             ],
           ),
-          trailing: const Icon(
+          // chevron_right is auto-mirrored by Flutter in RTL when given the
+          // ambient text direction; ListTile.trailing flips position too.
+          trailing: Icon(
             Icons.chevron_right,
             color: AppColors.textTertiary,
+            textDirection: Directionality.of(context),
           ),
           onTap: onTap,
           onLongPress: onLongPress,

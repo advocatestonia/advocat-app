@@ -220,7 +220,14 @@ class ChatInputBar extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ))
-                      : const Icon(Icons.send_rounded, size: 20),
+                      // The paper-plane icon points right in LTR. In RTL we
+                      // mirror it horizontally so the plane points toward the
+                      // (now leading-edge) message column. Material does not
+                      // auto-mirror Icons.send_rounded.
+                      : _DirectionalSendIcon(
+                          isRtl: Directionality.of(context) ==
+                              TextDirection.rtl,
+                        ),
                   color: Colors.white,
                   padding: EdgeInsets.zero,
                   tooltip: isSending && onStop != null
@@ -254,5 +261,27 @@ class ChatInputBar extends StatelessWidget {
       default:
         return 'Stop';
     }
+  }
+}
+
+/// Send-icon wrapper that horizontally mirrors the paper-plane in RTL.
+///
+/// Flutter does not auto-mirror [Icons.send_rounded]; without this wrapper
+/// the plane points away from the (now-leading) message direction in
+/// Arabic and Farsi.
+class _DirectionalSendIcon extends StatelessWidget {
+  const _DirectionalSendIcon({required this.isRtl});
+
+  final bool isRtl;
+
+  @override
+  Widget build(BuildContext context) {
+    const icon = Icon(Icons.send_rounded, size: 20);
+    if (!isRtl) return icon;
+    return Transform(
+      alignment: Alignment.center,
+      transform: Matrix4.rotationY(3.1415926535897932),
+      child: icon,
+    );
   }
 }

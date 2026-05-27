@@ -10,9 +10,13 @@ import 'package:advocat/services/supabase_service.dart';
 /// in a machine-readable form. GDPR Art. 17 (right to erasure) — delete
 /// must cascade across all child tables + storage files.
 ///
-/// The existing implementation lives in `supabase_service.dart`:
-///   * deleteAllUserData()  — 6-step FK-safe cascade + storage remove
-///   * exportUserData()     — one JSON bundle with 6 collections
+/// The current implementation:
+///   * deleteAllUserData({required confirmEmail}) — calls the
+///     `account-delete` edge fn under service-role; the edge fn does the
+///     cascade across all tables + storage AND deletes auth.users
+///     (App Store 5.1.1(v) hard requirement)
+///   * exportUserData() — one JSON bundle with 6 collections (demo) or
+///     a full dsar-export edge fn call (real)
 ///
 /// These tests validate the *contract* (not the Supabase wire calls) in
 /// demo mode: schema shape, all expected collections present, no field
@@ -63,7 +67,14 @@ void main() {
       // In demo mode no real Supabase client exists. The method must
       // short-circuit gracefully — never leak an auth exception to the
       // UI layer.
-      await expectLater(svc.deleteAllUserData(), completes);
+      // confirmEmail is now a required parameter (App Store 5.1.1(v) — the
+      // Flutter UI requires the user to type their email to confirm; the
+      // edge fn re-checks it server-side). In demo mode the call returns
+      // before reading it.
+      await expectLater(
+        svc.deleteAllUserData(confirmEmail: 'demo@example.com'),
+        completes,
+      );
     });
   });
 }

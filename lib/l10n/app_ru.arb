@@ -74,7 +74,7 @@
     "currentPlan": "Текущий тариф",
     "dataAndPrivacy": "ДАННЫЕ И КОНФИДЕНЦИАЛЬНОСТЬ",
     "dataExportRequested": "Запрос на экспорт данных отправлен. Проверьте почту.",
-    "daysRemaining": "{count} дн.",
+    "daysRemaining": "{count, plural, =0{дней не осталось} one{{count} день} few{{count} дня} many{{count} дней} other{{count} дня}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -99,7 +99,7 @@
     "discrimination": "Дискриминация",
     "doNotBuy": "Не покупать",
     "documents": "Документы",
-    "documentsCount": "{count} док.",
+    "documentsCount": "{count, plural, =0{нет документов} one{{count} документ} few{{count} документа} many{{count} документов} other{{count} документа}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -169,7 +169,7 @@
     "informational": "Информационное",
     "inspection": "Техосмотр",
     "insurance": "Страховка",
-    "issuesFound": "Найдено проблем: {count}",
+    "issuesFound": "{count, plural, =0{проблем не найдено} one{Найдена {count} проблема} few{Найдено {count} проблемы} many{Найдено {count} проблем} other{Найдено {count} проблем}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -503,19 +503,25 @@
     "timelineMinutesAgo": "{count, plural, =1{1 минуту назад} few{{count} минуты назад} many{{count} минут назад} other{{count} минут назад}}",
     "@timelineMinutesAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineHoursAgo": "{count, plural, =1{1 час назад} few{{count} часа назад} many{{count} часов назад} other{{count} часов назад}}",
     "@timelineHoursAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineDaysAgo": "{count, plural, =1{1 день назад} few{{count} дня назад} many{{count} дней назад} other{{count} дней назад}}",
     "@timelineDaysAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "documentAnalysis": "Анализ документа",
@@ -525,7 +531,7 @@
     "somethingWentWrong": "Что-то пошло не так",
     "genericError": "Что-то пошло не так. Попробуйте ещё раз.",
     "retryAnalysis": "Повторить анализ",
-    "issuesFoundInDocument": "Найдено проблем в документе: {count}",
+    "issuesFoundInDocument": "{count, plural, =0{В документе проблем не найдено} one{В документе найдена {count} проблема} few{В документе найдено {count} проблемы} many{В документе найдено {count} проблем} other{В документе найдено {count} проблем}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -535,7 +541,7 @@
     },
     "severityOverview": "Обзор критичности",
     "issuesFoundHeader": "Найденные проблемы",
-    "generateAppealWithIssues": "Сформировать жалобу ({count} проблем)",
+    "generateAppealWithIssues": "{count, plural, one{Сформировать жалобу ({count} проблема)} few{Сформировать жалобу ({count} проблемы)} many{Сформировать жалобу ({count} проблем)} other{Сформировать жалобу ({count} проблем)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -550,7 +556,7 @@
     "cameraPermissionDesc": "Предоставьте доступ к камере для сканирования документов или используйте галерею.",
     "openSettings": "Открыть настройки",
     "alignDocument": "Расположите документ в рамке",
-    "pageCount": "{count} стр.",
+    "pageCount": "{count, plural, =0{нет страниц} one{{count} страница} few{{count} страницы} many{{count} страниц} other{{count} страницы}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -581,7 +587,7 @@
     },
     "preparingUpload": "Подготовка загрузки…",
     "documentUploadedSuccess": "Документ успешно загружен",
-    "pagesUploadedSuccess": "Загружено страниц: {count}",
+    "pagesUploadedSuccess": "{count, plural, one{Загружена {count} страница} few{Загружено {count} страницы} many{Загружено {count} страниц} other{Загружено {count} страниц}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -881,7 +887,7 @@
     "categoryWork": "Работа",
     "categoryHousing": "Жильё",
     "categoryConsumer": "Потребитель",
-    "rightsInsideCount": "{count} прав внутри",
+    "rightsInsideCount": "{count, plural, =0{нет прав внутри} one{{count} право внутри} few{{count} права внутри} many{{count} прав внутри} other{{count} прав внутри}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -1165,10 +1171,10 @@
     "citationSnippetCollapse": "Свернуть",
     "citationUnverifiedSheetNote": "ИИ сослался на этот параграф, но он не был найден в корпусе закона на этом ходу. Проверьте ссылку перед использованием.",
     "citationFooterNoneWarning": "Нет подтверждённых ссылок",
-    "citationFooterSummaryTotal": "{count} ссылок",
-    "citationFooterSummaryVerified": "{count} проверено",
-    "citationFooterSummaryUnverified": "{count} непроверенных",
-    "citationFooterSummaryHistorical": "{count} устаревших",
+    "citationFooterSummaryTotal": "{count, plural, one{{count} ссылка} few{{count} ссылки} many{{count} ссылок} other{{count} ссылок}}",
+    "citationFooterSummaryVerified": "{count, plural, one{{count} проверена} few{{count} проверены} many{{count} проверено} other{{count} проверено}}",
+    "citationFooterSummaryUnverified": "{count, plural, one{{count} непроверенная} few{{count} непроверенные} many{{count} непроверенных} other{{count} непроверенных}}",
+    "citationFooterSummaryHistorical": "{count, plural, one{{count} устаревшая} few{{count} устаревшие} many{{count} устаревших} other{{count} устаревших}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -1200,7 +1206,7 @@
     "deadlineRadarTitle": "Ближайшие сроки",
     "deadlineRadarEmpty": "Нет ближайших сроков",
     "deadlineRadarViewAll": "Все сроки",
-    "deadlineCardDaysLeft": "через {count} дн.",
+    "deadlineCardDaysLeft": "{count, plural, =0{сегодня} one{через {count} день} few{через {count} дня} many{через {count} дней} other{через {count} дня}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -1210,7 +1216,7 @@
     },
     "deadlineCardTomorrow": "завтра",
     "deadlineCardToday": "сегодня",
-    "deadlineCardOverdue": "просрочено на {count} дн.",
+    "deadlineCardOverdue": "{count, plural, one{просрочено на {count} день} few{просрочено на {count} дня} many{просрочено на {count} дней} other{просрочено на {count} дня}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1326,34 +1332,56 @@
     "parallelActionsHeadline": "Консилиум рекомендует {count} параллельных действия",
     "@parallelActionsHeadline": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsApproveAll": "Подтвердить все и отправить",
     "parallelActionsApproveSelected": "Подтвердить {count} из {total}",
     "@parallelActionsApproveSelected": {
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsConfirmTitle": "Отправить {count} писем?",
     "@parallelActionsConfirmTitle": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsConfirmBody": "Advocat отправит {count} подготовленных ответов через ваш подключённый Gmail. Каждое письмо отправляется независимо — если одно не пройдёт, остальные всё равно уйдут.",
     "@parallelActionsConfirmBody": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsSentToast": "Отправлено: {count}.",
     "@parallelActionsSentToast": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsPartialFailureToast": "Отправлено: {sent}, не удалось: {failed}.",
     "@parallelActionsPartialFailureToast": {
         "placeholders": {
-            "sent": { "type": "int" },
-            "failed": { "type": "int" }
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsKindReply": "ответ",
@@ -1362,11 +1390,19 @@
     "parallelActionsCheckboxUnselected": "Действие не выбрано",
     "parallelActionsCitationCount": "{count} цит.",
     "@parallelActionsCitationCount": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsRetryFailed": "Повторить неудачные ({count})",
     "@parallelActionsRetryFailed": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "inboxErrorTitle": "Не удалось загрузить почтовый ящик",
     "inboxEditDiscardTitle": "Отменить несохранённые правки?",
@@ -1402,7 +1438,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 проверок договоров в месяц",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "Осталось {count} проверок договоров в этом месяце",
+    "contractReviewsLeft": "{count, plural, =0{В этом месяце проверок договоров не осталось} one{Осталась {count} проверка договоров в этом месяце} few{Осталось {count} проверки договоров в этом месяце} many{Осталось {count} проверок договоров в этом месяце} other{Осталось {count} проверок договоров в этом месяце}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1718,8 +1754,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Юристы изучают ваше дело…",
@@ -1731,7 +1771,9 @@
     "consiliumDone": "Консилиум завершён · {totalRoles} экспертов",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Оспаривать",
@@ -1742,16 +1784,20 @@
     "consiliumKeyCitation": "Ключевая ссылка",
     "consiliumAdversarialRound": "Спорный раунд",
     "consiliumViewFullOpinion": "Полное заключение",
-    "consiliumExpertsAgreed": "{count} экспертов согласны",
+    "consiliumExpertsAgreed": "{count, plural, one{{count} эксперт согласен} few{{count} эксперта согласны} many{{count} экспертов согласны} other{{count} экспертов согласны}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} экспертов не согласны",
+    "consiliumExpertsDisagree": "{count, plural, one{{count} эксперт не согласен} few{{count} эксперта не согласны} many{{count} экспертов не согласны} other{{count} экспертов не согласны}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "ИИ-агенты, не люди-юристы. Проверьте важные решения с лицензированным адвокатом.",
@@ -1802,16 +1848,40 @@
     "draftingExporting": "Экспортирую…",
     "draftingExportFailed": "Экспорт не удался",
     "draftingSaveFailed": "Не удалось сохранить",
-    "draftingNewDraft": "Новый черновик"
-,
+    "draftingNewDraft": "Новый черновик",
     "vaultNoteChip": "Заметка хранилища",
     "saveToVault": "Сохранить в хранилище",
     "savingToVault": "Сохранение в хранилище…",
-    "savedToVault": "Сохранено в хранилище"
-,
+    "savedToVault": "Сохранено в хранилище",
     "vaultNoteTitlePrefix": "Заметка: ",
     "openInVault": "Открыть в хранилище",
     "saveToVaultFailed": "Не удалось сохранить в хранилище",
     "pdfWorkerUnavailable": "Экспорт PDF временно недоступен. Попробуйте DOCX или Markdown.",
-    "draftingVersionHistory": "История версий"
+    "draftingVersionHistory": "История версий",
+    "emptyHomeTitle": "Добро пожаловать в Advocat",
+    "emptyHomeBody": "Выберите, с чего начать — юридическую часть берём на себя.",
+    "intentChip1": "Получил штраф",
+    "intentChip2": "Отказали в разрешении",
+    "intentChip3": "Проблема с договором",
+    "emptyCasesTitle": "Пока нет дел",
+    "emptyCasesCta": "Создать дело",
+    "emptyDraftsTitle": "Пока нет черновиков",
+    "emptyDraftsCta": "Создать черновик",
+    "emptyChatTitle": "Спросите Advocat о чём угодно",
+    "chatExamplePrompt1": "Помоги ответить на штраф",
+    "chatExamplePrompt2": "Проверь договор аренды",
+    "chatExamplePrompt3": "Какие у меня права на работе?",
+    "dangerZone": "Опасная зона",
+    "deleteAccountConfirmButton": "Удалить навсегда",
+    "deleteAccountConfirmHint": "Введите {email} для подтверждения",
+    "@deleteAccountConfirmHint": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
+    "deleteAccountSuccess": "Аккаунт удалён. Жаль, что вы уходите.",
+    "deleteAccountWarning": "Это безвозвратно удалит ваш аккаунт, все дела, черновики, документы хранилища и историю чата. Отменить это действие нельзя.",
+    "deletingAccount": "Удаление аккаунта…"
 }

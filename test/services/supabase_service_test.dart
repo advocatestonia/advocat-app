@@ -189,7 +189,9 @@ void main() {
 
   group('SupabaseService — demo mode data deletion', () {
     test('deleteAllUserData does nothing in demo mode', () async {
-      await service.deleteAllUserData();
+      // confirmEmail is required for the live path; in demo mode the call
+      // short-circuits before reading it so any non-empty placeholder works.
+      await service.deleteAllUserData(confirmEmail: 'demo@example.com');
     });
   });
 

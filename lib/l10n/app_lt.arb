@@ -60,7 +60,7 @@
     "currentPlan": "Dabartinis planas",
     "dataAndPrivacy": "DUOMENYS IR PRIVATUMAS",
     "dataExportRequested": "Duomenų eksportas užsakytas. Patikrinkite savo el. paštą.",
-    "daysRemaining": "{count} dienų",
+    "daysRemaining": "{count, plural, =0{dienų nebeliko} one{{count} diena} few{{count} dienos} many{{count} dienos} other{{count} dienų}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -85,7 +85,7 @@
     "discrimination": "Diskriminacija",
     "doNotBuy": "Nepirkite",
     "documents": "Dokumentai",
-    "documentsCount": "{count} dok.",
+    "documentsCount": "{count, plural, =0{dokumentų nėra} one{{count} dokumentas} few{{count} dokumentai} many{{count} dokumento} other{{count} dokumentų}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -155,7 +155,7 @@
     "informational": "Informacinis",
     "inspection": "Techninė apžiūra",
     "insurance": "Draudimas",
-    "issuesFound": "Rasta problemų: {count}",
+    "issuesFound": "{count, plural, =0{problemų nerasta} one{Rasta {count} problema} few{Rasta {count} problemos} many{Rasta {count} problemos} other{Rasta {count} problemų}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -469,7 +469,7 @@
     "somethingWentWrong": "Kažkas nutiko ne taip",
     "genericError": "Kažkas nepavyko. Bandykite dar kartą.",
     "retryAnalysis": "Pakartoti analizę",
-    "issuesFoundInDocument": "Jūsų dokumente rasta {count} problema(-ų)",
+    "issuesFoundInDocument": "{count, plural, =0{Dokumente problemų nerasta} one{Dokumente rasta {count} problema} few{Dokumente rasta {count} problemos} many{Dokumente rasta {count} problemos} other{Dokumente rasta {count} problemų}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -479,7 +479,7 @@
     },
     "severityOverview": "Rimtumo apžvalga",
     "issuesFoundHeader": "Rastos problemos",
-    "generateAppealWithIssues": "Generuoti apeliaciją ({count} problemų)",
+    "generateAppealWithIssues": "{count, plural, one{Generuoti apeliaciją ({count} problema)} few{Generuoti apeliaciją ({count} problemos)} many{Generuoti apeliaciją ({count} problemos)} other{Generuoti apeliaciją ({count} problemų)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -494,7 +494,7 @@
     "cameraPermissionDesc": "Suteikite prieigą prie kameros, kad galėtumėte nuskaityti dokumentus, arba naudokite galeriją.",
     "openSettings": "Atidaryti nustatymus",
     "alignDocument": "Sulygiuokite dokumentą rėmelyje",
-    "pageCount": "{count} puslapis(-iai)",
+    "pageCount": "{count, plural, =0{puslapių nėra} one{{count} puslapis} few{{count} puslapiai} many{{count} puslapio} other{{count} puslapių}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -525,7 +525,7 @@
     },
     "preparingUpload": "Ruošiamas įkėlimas…",
     "documentUploadedSuccess": "Dokumentas sėkmingai įkeltas",
-    "pagesUploadedSuccess": "{count} puslapiai sėkmingai įkelti",
+    "pagesUploadedSuccess": "{count, plural, one{Sėkmingai įkeltas {count} puslapis} few{Sėkmingai įkelti {count} puslapiai} many{Sėkmingai įkelti {count} puslapio} other{Sėkmingai įkelta {count} puslapių}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -793,7 +793,7 @@
     "categoryWork": "Work",
     "categoryHousing": "Housing",
     "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
+    "rightsInsideCount": "{count, plural, =0{teisių nėra} one{{count} teisė viduje} few{{count} teisės viduje} many{{count} teisės viduje} other{{count} teisių viduje}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -1448,10 +1448,10 @@
     "citationSnippetCollapse": "Rodyti mažiau",
     "citationUnverifiedSheetNote": "DI pacitavo šį paragrafą, tačiau šioje sesijoje jis nebuvo atgautas iš teisės akto korpuso. Patikrinkite nuorodą prieš ja remdamiesi.",
     "citationFooterNoneWarning": "Nėra pagrįstų citatų",
-    "citationFooterSummaryTotal": "{count} citatos (-ų)",
-    "citationFooterSummaryVerified": "{count} patvirtintos (-ų)",
-    "citationFooterSummaryUnverified": "{count} nepatvirtintos (-ų)",
-    "citationFooterSummaryHistorical": "{count} senosios redakcijos",
+    "citationFooterSummaryTotal": "{count, plural, one{{count} citata} few{{count} citatos} many{{count} citatos} other{{count} citatų}}",
+    "citationFooterSummaryVerified": "{count, plural, one{{count} patvirtinta} few{{count} patvirtintos} many{{count} patvirtintos} other{{count} patvirtintų}}",
+    "citationFooterSummaryUnverified": "{count, plural, one{{count} nepatvirtinta} few{{count} nepatvirtintos} many{{count} nepatvirtintos} other{{count} nepatvirtintų}}",
+    "citationFooterSummaryHistorical": "{count, plural, one{{count} senoji redakcija} few{{count} senosios redakcijos} many{{count} senosios redakcijos} other{{count} senųjų redakcijų}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -1483,7 +1483,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, =0{šiandien} one{po {count} dienos} few{po {count} dienų} many{po {count} dienos} other{po {count} dienų}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -1493,7 +1493,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, one{vėluoja {count} dieną} few{vėluoja {count} dienas} many{vėluoja {count} dienos} other{vėluoja {count} dienų}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1623,7 +1623,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 sutarčių peržiūrų per mėnesį",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "Šį mėnesį liko {count} sutarčių peržiūrų",
+    "contractReviewsLeft": "{count, plural, =0{Šį mėnesį sutarčių peržiūrų nebeliko} one{Šį mėnesį liko {count} sutarties peržiūra} few{Šį mėnesį liko {count} sutarčių peržiūros} many{Šį mėnesį liko {count} sutarčių peržiūros} other{Šį mėnesį liko {count} sutarčių peržiūrų}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1740,8 +1740,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Teisininkai analizuoja jūsų bylą…",
@@ -1753,7 +1757,9 @@
     "consiliumDone": "Konsiliumas baigtas · {totalRoles} ekspertai",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Ginčyti",
@@ -1764,23 +1770,26 @@
     "consiliumKeyCitation": "Pagrindinė nuoroda",
     "consiliumAdversarialRound": "Prieštaringas turas",
     "consiliumViewFullOpinion": "Žiūrėti visą išvadą",
-    "consiliumExpertsAgreed": "{count} ekspertai sutinka",
+    "consiliumExpertsAgreed": "{count, plural, one{{count} ekspertas sutinka} few{{count} ekspertai sutinka} many{{count} eksperto sutinka} other{{count} ekspertų sutinka}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} ekspertai nesutinka",
+    "consiliumExpertsDisagree": "{count, plural, one{{count} ekspertas nesutinka} few{{count} ekspertai nesutinka} many{{count} eksperto nesutinka} other{{count} ekspertų nesutinka}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "DI agentai, ne žmonės teisininkai. Svarbius sprendimus patikrinkite su licencijuotu advokatu.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
-,
+    },
     "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
@@ -1821,16 +1830,33 @@
     "draftingExporting": "Exporting…",
     "draftingExportFailed": "Export failed",
     "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft"
-,
+    "draftingNewDraft": "New draft",
     "vaultNoteChip": "Vault note",
     "saveToVault": "Save to Vault",
     "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault"
-,
+    "savedToVault": "Saved to Vault",
     "vaultNoteTitlePrefix": "Note: ",
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "dangerZone": "[en] Danger zone",
+    "deleteAccountConfirmButton": "[en] Delete forever",
+    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "intentChip1": "Got a fine",
+    "intentChip2": "Permit denied",
+    "intentChip3": "Contract problem",
+    "emptyCasesTitle": "No cases yet",
+    "emptyCasesCta": "Start a case",
+    "emptyDraftsTitle": "No drafts yet",
+    "emptyDraftsCta": "Create draft",
+    "emptyChatTitle": "Ask Advocat anything",
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "chatExamplePrompt2": "Review my rental contract",
+    "chatExamplePrompt3": "What are my rights at work?",
+    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "[en] Deleting account…"
 }

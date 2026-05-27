@@ -62,7 +62,7 @@
     "currentPlan": "Nykyinen paketti",
     "dataAndPrivacy": "TIEDOT JA YKSITYISYYS",
     "dataExportRequested": "Tietojen vienti pyydetty. Tarkista sähköpostisi.",
-    "daysRemaining": "{count} päivää",
+    "daysRemaining": "{count, plural, =0{ei jäljellä päiviä} =1{1 päivä} other{{count} päivää}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -87,7 +87,7 @@
     "discrimination": "Syrjintä",
     "doNotBuy": "Älä osta",
     "documents": "Asiakirjat",
-    "documentsCount": "{count} asiakirjaa",
+    "documentsCount": "{count, plural, =0{ei asiakirjoja} =1{1 asiakirja} other{{count} asiakirjaa}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -157,7 +157,7 @@
     "informational": "Tiedoksi",
     "inspection": "Katsastus",
     "insurance": "Vakuutus",
-    "issuesFound": "{count} ongelmaa löydetty",
+    "issuesFound": "{count, plural, =0{ei löytynyt ongelmia} =1{1 ongelma löytyi} other{{count} ongelmaa löytyi}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -491,19 +491,25 @@
     "timelineMinutesAgo": "{count, plural, =1{1 minuutti sitten} other{{count} minuuttia sitten}}",
     "@timelineMinutesAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineHoursAgo": "{count, plural, =1{1 tunti sitten} other{{count} tuntia sitten}}",
     "@timelineHoursAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineDaysAgo": "{count, plural, =1{1 päivä sitten} other{{count} päivää sitten}}",
     "@timelineDaysAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "documentAnalysis": "Asiakirja-analyysi",
@@ -513,7 +519,7 @@
     "somethingWentWrong": "Jokin meni pieleen",
     "genericError": "Jotain meni pieleen. Yritä uudelleen.",
     "retryAnalysis": "Yritä analyysia uudelleen",
-    "issuesFoundInDocument": "Löydettiin {count} ongelmaa asiakirjasta",
+    "issuesFoundInDocument": "{count, plural, =0{Asiakirjasta ei löytynyt ongelmia} =1{Asiakirjasta löytyi 1 ongelma} other{Asiakirjasta löytyi {count} ongelmaa}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -523,7 +529,7 @@
     },
     "severityOverview": "Vakavuusyhteenveto",
     "issuesFoundHeader": "Löydetyt ongelmat",
-    "generateAppealWithIssues": "Luo valitus ({count} ongelmaa)",
+    "generateAppealWithIssues": "{count, plural, =1{Luo valitus (1 ongelma)} other{Luo valitus ({count} ongelmaa)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -538,7 +544,7 @@
     "cameraPermissionDesc": "Myönnä kameran käyttöoikeus asiakirjojen skannaamiseen tai käytä galleriaa.",
     "openSettings": "Avaa asetukset",
     "alignDocument": "Kohdista asiakirja kehykseen",
-    "pageCount": "{count} sivua",
+    "pageCount": "{count, plural, =0{ei sivuja} =1{1 sivu} other{{count} sivua}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -569,7 +575,7 @@
     },
     "preparingUpload": "Valmistellaan latausta…",
     "documentUploadedSuccess": "Asiakirja ladattu onnistuneesti",
-    "pagesUploadedSuccess": "{count} sivua ladattu onnistuneesti",
+    "pagesUploadedSuccess": "{count, plural, =1{1 sivu ladattu onnistuneesti} other{{count} sivua ladattu onnistuneesti}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -850,7 +856,7 @@
     "categoryWork": "Työ",
     "categoryHousing": "Asuminen",
     "categoryConsumer": "Kuluttaja",
-    "rightsInsideCount": "{count} oikeutta sisällä",
+    "rightsInsideCount": "{count, plural, =0{ei oikeuksia} =1{1 oikeus sisällä} other{{count} oikeutta sisällä}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -1165,10 +1171,10 @@
     "citationSnippetCollapse": "Näytä vähemmän",
     "citationUnverifiedSheetNote": "AI lainasi tämän kohdan, mutta sitä ei haettu lakikorpuksesta tällä vuorolla. Tarkista viittaus ennen käyttöä.",
     "citationFooterNoneWarning": "Ei vahvistettuja viittauksia",
-    "citationFooterSummaryTotal": "{count} viittausta",
-    "citationFooterSummaryVerified": "{count} vahvistettu",
-    "citationFooterSummaryUnverified": "{count} vahvistamatta",
-    "citationFooterSummaryHistorical": "{count} vanhaa",
+    "citationFooterSummaryTotal": "{count, plural, =1{1 viittaus} other{{count} viittausta}}",
+    "citationFooterSummaryVerified": "{count, plural, =1{1 vahvistettu} other{{count} vahvistettua}}",
+    "citationFooterSummaryUnverified": "{count, plural, =1{1 vahvistamaton} other{{count} vahvistamatonta}}",
+    "citationFooterSummaryHistorical": "{count, plural, =1{1 vanhentunut} other{{count} vanhentunutta}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -1200,7 +1206,7 @@
     "deadlineRadarTitle": "Tulevat määräajat",
     "deadlineRadarEmpty": "Ei tulevia määräaikoja",
     "deadlineRadarViewAll": "Näytä kaikki",
-    "deadlineCardDaysLeft": "{count} päivän päästä",
+    "deadlineCardDaysLeft": "{count, plural, =0{tänään} =1{1 päivän kuluttua} other{{count} päivän kuluttua}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -1210,7 +1216,7 @@
     },
     "deadlineCardTomorrow": "huomenna",
     "deadlineCardToday": "tänään",
-    "deadlineCardOverdue": "{count} päivää myöhässä",
+    "deadlineCardOverdue": "{count, plural, =1{1 päivä myöhässä} other{{count} päivää myöhässä}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1326,34 +1332,56 @@
     "parallelActionsHeadline": "Konsiilio suosittelee {count} rinnakkaista toimenpidettä",
     "@parallelActionsHeadline": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsApproveAll": "Hyväksy kaikki ja lähetä",
     "parallelActionsApproveSelected": "Hyväksy {count} / {total}",
     "@parallelActionsApproveSelected": {
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsConfirmTitle": "Lähetetäänkö {count} sähköpostia?",
     "@parallelActionsConfirmTitle": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsConfirmBody": "Advocat lähettää {count} valmista vastausta yhdistetyn Gmailisi kautta. Jokainen lähetetään itsenäisesti — jos yksi epäonnistuu, muut menevät silti.",
     "@parallelActionsConfirmBody": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsSentToast": "Lähetetty: {count}.",
     "@parallelActionsSentToast": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsPartialFailureToast": "Lähetetty: {sent}, epäonnistui: {failed}.",
     "@parallelActionsPartialFailureToast": {
         "placeholders": {
-            "sent": { "type": "int" },
-            "failed": { "type": "int" }
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsKindReply": "vastaus",
@@ -1362,11 +1390,19 @@
     "parallelActionsCheckboxUnselected": "Toimintoa ei ole valittu",
     "parallelActionsCitationCount": "{count} viitettä",
     "@parallelActionsCitationCount": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsRetryFailed": "Yritä epäonnistuneita uudelleen ({count})",
     "@parallelActionsRetryFailed": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "inboxErrorTitle": "Postilaatikon lataaminen epäonnistui",
     "inboxEditDiscardTitle": "Hylätäänkö tallentamattomat muutokset?",
@@ -1402,7 +1438,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 sopimustarkistusta kuukaudessa",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count} sopimustarkistusta jäljellä tässä kuussa",
+    "contractReviewsLeft": "{count, plural, =0{Sopimustarkastuksia ei ole tässä kuussa jäljellä} =1{1 sopimustarkastus jäljellä tässä kuussa} other{{count} sopimustarkastusta jäljellä tässä kuussa}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1718,8 +1754,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Juristit perehtyvät asiaasi…",
@@ -1731,7 +1771,9 @@
     "consiliumDone": "Konsultaatio valmis · {totalRoles} asiantuntijaa",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Riitauta",
@@ -1742,16 +1784,20 @@
     "consiliumKeyCitation": "Keskeinen lähde",
     "consiliumAdversarialRound": "Vastakkainasettelukierros",
     "consiliumViewFullOpinion": "Näytä koko lausunto",
-    "consiliumExpertsAgreed": "{count} asiantuntijaa samaa mieltä",
+    "consiliumExpertsAgreed": "{count, plural, =1{1 asiantuntija samaa mieltä} other{{count} asiantuntijaa samaa mieltä}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} asiantuntijaa eri mieltä",
+    "consiliumExpertsDisagree": "{count, plural, =1{1 asiantuntija eri mieltä} other{{count} asiantuntijaa eri mieltä}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "Tekoälyagentteja, ei ihmislakimiehiä. Tarkista olennaiset päätökset lisensoidulla asianajajalla.",
@@ -1802,16 +1848,40 @@
     "draftingExporting": "Viedään…",
     "draftingExportFailed": "Vienti epäonnistui",
     "draftingSaveFailed": "Tallennus epäonnistui",
-    "draftingNewDraft": "Uusi luonnos"
-,
+    "draftingNewDraft": "Uusi luonnos",
     "vaultNoteChip": "Holvi-muistiinpano",
     "saveToVault": "Tallenna holviin",
     "savingToVault": "Tallennetaan holviin…",
-    "savedToVault": "Tallennettu holviin"
-,
+    "savedToVault": "Tallennettu holviin",
     "vaultNoteTitlePrefix": "Muistio: ",
     "openInVault": "Avaa holvissa",
     "saveToVaultFailed": "Tallennus holviin epäonnistui",
     "pdfWorkerUnavailable": "PDF-vienti ei ole tällä hetkellä käytettävissä. Kokeile DOCX:ää tai Markdownia.",
-    "draftingVersionHistory": "Versiohistoria"
+    "draftingVersionHistory": "Versiohistoria",
+    "emptyHomeTitle": "Tervetuloa Advocatiin",
+    "emptyHomeBody": "Valitse aloituskohta — hoidamme juridisen puolen.",
+    "intentChip1": "Sain sakon",
+    "intentChip2": "Lupahakemus hylätty",
+    "intentChip3": "Sopimusongelma",
+    "emptyCasesTitle": "Ei vielä asioita",
+    "emptyCasesCta": "Aloita asia",
+    "emptyDraftsTitle": "Ei vielä luonnoksia",
+    "emptyDraftsCta": "Luo luonnos",
+    "emptyChatTitle": "Kysy Advocatilta mitä tahansa",
+    "chatExamplePrompt1": "Auta vastaamaan sakkoon",
+    "chatExamplePrompt2": "Tarkasta vuokrasopimukseni",
+    "chatExamplePrompt3": "Mitkä ovat oikeuteni työssä?",
+    "dangerZone": "Vaaravyöhyke",
+    "deleteAccountConfirmButton": "Poista pysyvästi",
+    "deleteAccountConfirmHint": "Kirjoita {email} vahvistaaksesi",
+    "@deleteAccountConfirmHint": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
+    "deleteAccountSuccess": "Tili on poistettu. Harmi, että lähdet.",
+    "deleteAccountWarning": "Tämä poistaa pysyvästi tilisi, kaikki tapaukset, luonnokset, holvin asiakirjat ja keskusteluhistorian. Tätä ei voi peruuttaa.",
+    "deletingAccount": "Poistetaan tiliä…"
 }

@@ -59,6 +59,7 @@ import '../../../services/user_memory_service.dart';
 import '../../case_memory/widgets/active_case_chip.dart';
 import '../../case_memory/widgets/deadline_banner.dart';
 import '../../../shared/widgets/ai_disclaimer_banner.dart';
+import '../../../shared/widgets/skeleton_loader.dart';
 
 // ---------------------------------------------------------------------------
 // Chat message model (local, UI-only)
@@ -2384,7 +2385,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         ),
         // User profile avatar
         Padding(
-          padding: const EdgeInsets.only(right: 4),
+          padding: const EdgeInsetsDirectional.only(end: 4),
           child: GestureDetector(
             onTap: () => context.push('/settings'),
             child: _buildUserAvatar(),
@@ -2951,7 +2952,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Widget _buildMessageList() {
     if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      // 3 alternating message-bubble skeletons during thread hydration.
+      // Honors prefers-reduced-motion via _ReduceMotionShimmer inside
+      // ChatThreadSkeleton (skeleton_loader.dart).
+      return const ChatThreadSkeleton(itemCount: 3);
     }
 
     if (_messages.isEmpty && !_isTyping) {
@@ -3209,12 +3213,16 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final bubbleMargin = screenWidth < 380 ? 32.0 : 48.0;
 
     return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      // RTL-aware: in RTL, centerStart maps to the right edge automatically,
+      // mirroring user-bubble-right-aligned + ai-bubble-left-aligned semantics.
+      alignment: isUser
+          ? AlignmentDirectional.centerEnd
+          : AlignmentDirectional.centerStart,
       child: Container(
-        margin: EdgeInsets.only(
+        margin: EdgeInsetsDirectional.only(
           bottom: AppSpacing.sm,
-          left: isUser ? bubbleMargin : 0,
-          right: isUser ? 0 : (isToolResult ? 16 : bubbleMargin),
+          start: isUser ? bubbleMargin : 0,
+          end: isUser ? 0 : (isToolResult ? 16 : bubbleMargin),
         ),
         child: Column(
           crossAxisAlignment:
@@ -3842,6 +3850,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   }
 
   Widget _buildActionButton(String actionText) {
+    // arrow_forward is auto-mirrored by Flutter in RTL (no manual flip needed).
     IconData icon = Icons.arrow_forward_rounded;
     if (actionText.contains('Сканировать') ||
         actionText.contains('сканировать')) {
@@ -3893,9 +3902,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   Widget _buildTypingIndicator() {
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: AlignmentDirectional.centerStart,
       child: Container(
-        margin: const EdgeInsets.only(bottom: AppSpacing.sm, right: 80),
+        margin: const EdgeInsetsDirectional.only(
+          bottom: AppSpacing.sm,
+          end: 80,
+        ),
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.md,
           vertical: AppSpacing.sm + 6,
@@ -4025,7 +4037,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         child: Row(
           children: actions.map((action) {
             return Padding(
-              padding: const EdgeInsets.only(right: AppSpacing.sm),
+              padding: const EdgeInsetsDirectional.only(end: AppSpacing.sm),
               child: ActionChip(
                 avatar:
                     Icon(action.$2, size: 16, color: AppColors.accent),
@@ -4407,7 +4419,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Align(
-        alignment: Alignment.centerLeft,
+        alignment: AlignmentDirectional.centerStart,
         child: ContractReviewQuotaPill(
           quota: quota,
           onUpgrade: () => _onContractReviewUpgrade(quota),

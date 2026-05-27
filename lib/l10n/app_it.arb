@@ -60,7 +60,7 @@
     "currentPlan": "Piano attuale",
     "dataAndPrivacy": "DATI E PRIVACY",
     "dataExportRequested": "Esportazione dati richiesta. Controlla la tua email.",
-    "daysRemaining": "{count} giorni",
+    "daysRemaining": "{count, plural, =0{nessun giorno rimanente} =1{1 giorno} other{{count} giorni}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -85,7 +85,7 @@
     "discrimination": "Discriminazione",
     "doNotBuy": "Non acquistare",
     "documents": "Documenti",
-    "documentsCount": "{count} doc.",
+    "documentsCount": "{count, plural, =0{nessun documento} =1{1 documento} other{{count} documenti}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -155,7 +155,7 @@
     "informational": "Informativo",
     "inspection": "Revisione tecnica",
     "insurance": "Assicurazione",
-    "issuesFound": "{count} problemi trovati",
+    "issuesFound": "{count, plural, =0{nessun problema trovato} =1{1 problema trovato} other{{count} problemi trovati}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -463,7 +463,7 @@
     "gdprFooter": "I tuoi dati sono crittografati e non vengono mai condivisi con terzi. Puoi revocare il consenso e cancellare tutti i dati dalle Impostazioni.",
     "gdprIntro": "Per fornire assistenza legale tramite IA, elaboriamo i tuoi dati in conformità al GDPR (UE 2016/679). Continuando accetti:",
     "gdprStorage": "Archiviazione crittografata dei dati dei casi",
-    "generateAppealWithIssues": "Genera ricorso ({count} problemi)",
+    "generateAppealWithIssues": "{count, plural, =1{Genera ricorso (1 problema)} other{Genera ricorso ({count} problemi)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -492,7 +492,7 @@
     "immigrationDetentionDesc": "Diritti se trattenuto dalle autorità",
     "inCourt": "In tribunale",
     "issuesFoundHeader": "Problemi trovati",
-    "issuesFoundInDocument": "Trovati {count} problema/i nel tuo documento",
+    "issuesFoundInDocument": "{count, plural, =0{Nessun problema nel documento} =1{Trovato 1 problema nel documento} other{Trovati {count} problemi nel documento}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -553,7 +553,7 @@
     "openCase": "Apri caso",
     "openSettings": "Apri impostazioni",
     "orWord": "o",
-    "pageCount": "{count} pagina/e",
+    "pageCount": "{count, plural, =0{nessuna pagina} =1{1 pagina} other{{count} pagine}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -569,7 +569,7 @@
             }
         }
     },
-    "pagesUploadedSuccess": "{count} pagine caricate con successo",
+    "pagesUploadedSuccess": "{count, plural, =1{1 pagina caricata con successo} other{{count} pagine caricate con successo}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -793,7 +793,7 @@
     "categoryWork": "Work",
     "categoryHousing": "Housing",
     "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
+    "rightsInsideCount": "{count, plural, =0{nessun diritto incluso} =1{1 diritto incluso} other{{count} diritti inclusi}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -847,10 +847,10 @@
     "citationSnippetCollapse": "Mostra meno",
     "citationUnverifiedSheetNote": "L'IA ha citato questo paragrafo, ma non è stato recuperato dal corpus normativo in questa interazione. Verificare il riferimento prima di farvi affidamento.",
     "citationFooterNoneWarning": "Nessuna citazione documentata",
-    "citationFooterSummaryTotal": "{count} citazioni",
-    "citationFooterSummaryVerified": "{count} verificate",
-    "citationFooterSummaryUnverified": "{count} non verificate",
-    "citationFooterSummaryHistorical": "{count} storiche",
+    "citationFooterSummaryTotal": "{count, plural, =1{1 citazione} other{{count} citazioni}}",
+    "citationFooterSummaryVerified": "{count, plural, =1{1 verificata} other{{count} verificate}}",
+    "citationFooterSummaryUnverified": "{count, plural, =1{1 non verificata} other{{count} non verificate}}",
+    "citationFooterSummaryHistorical": "{count, plural, =1{1 storica} other{{count} storiche}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -882,7 +882,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, =0{oggi} =1{tra 1 giorno} other{tra {count} giorni}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -892,7 +892,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, =1{1 giorno di ritardo} other{{count} giorni di ritardo}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1022,7 +1022,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 revisioni contrattuali al mese",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count} revisioni contrattuali rimaste questo mese",
+    "contractReviewsLeft": "{count, plural, =0{Nessuna revisione di contratto rimasta questo mese} =1{1 revisione contratto rimasta questo mese} other{{count} revisioni contratti rimaste questo mese}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1139,8 +1139,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Gli avvocati stanno esaminando il tuo caso…",
@@ -1152,7 +1156,9 @@
     "consiliumDone": "Consilio concluso · {totalRoles} esperti",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Impugna",
@@ -1163,23 +1169,26 @@
     "consiliumKeyCitation": "Riferimento chiave",
     "consiliumAdversarialRound": "Turno contraddittorio",
     "consiliumViewFullOpinion": "Visualizza parere completo",
-    "consiliumExpertsAgreed": "{count} esperti concordi",
+    "consiliumExpertsAgreed": "{count, plural, =1{1 esperto d'accordo} other{{count} esperti d'accordo}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} esperti in disaccordo",
+    "consiliumExpertsDisagree": "{count, plural, =1{1 esperto in disaccordo} other{{count} esperti in disaccordo}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "Agenti IA, non avvocati umani. Verifica le decisioni rilevanti con un avvocato iscritto all'albo.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
-,
+    },
     "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
@@ -1220,16 +1229,33 @@
     "draftingExporting": "Exporting…",
     "draftingExportFailed": "Export failed",
     "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft"
-,
+    "draftingNewDraft": "New draft",
     "vaultNoteChip": "Vault note",
     "saveToVault": "Save to Vault",
     "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault"
-,
+    "savedToVault": "Saved to Vault",
     "vaultNoteTitlePrefix": "Note: ",
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "dangerZone": "[en] Danger zone",
+    "deleteAccountConfirmButton": "[en] Delete forever",
+    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "intentChip1": "Got a fine",
+    "intentChip2": "Permit denied",
+    "intentChip3": "Contract problem",
+    "emptyCasesTitle": "No cases yet",
+    "emptyCasesCta": "Start a case",
+    "emptyDraftsTitle": "No drafts yet",
+    "emptyDraftsCta": "Create draft",
+    "emptyChatTitle": "Ask Advocat anything",
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "chatExamplePrompt2": "Review my rental contract",
+    "chatExamplePrompt3": "What are my rights at work?",
+    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "[en] Deleting account…"
 }

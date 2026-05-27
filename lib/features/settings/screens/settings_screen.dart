@@ -608,77 +608,135 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
+  /// Second confirmation dialog — requires the user to type their own email
+  /// before the destructive button enables.
+  ///
+  /// App Store Guideline 5.1.1(v) requires a clear, in-app deletion path
+  /// that is hard to fire accidentally. The typed-email confirmation
+  /// matches the industry pattern (GitHub, Cloudflare, Stripe) and gates
+  /// the destructive button until the typed value matches the user's own
+  /// email exactly (case-insensitive, trim-tolerant). The edge fn re-checks
+  /// the value server-side for defence-in-depth.
   void _showFinalDeleteConfirmation(BuildContext context, WidgetRef ref) {
     final l = AppLocalizations.of(context)!;
-    showDialog(
+    final user = ref.read(currentUserProvider).valueOrNull;
+    final expectedEmail = (user?.email ?? '').trim();
+    final hint = l.deleteAccountConfirmHint(
+      expectedEmail.isEmpty ? 'your email' : expectedEmail,
+    );
+
+    showDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppRadius.md),
-        ),
-        title: Text(l.areYouAbsolutelySure),
-        content: Text(l.typeDeleteToConfirm),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(l.cancel),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(ctx);
-              await _performAccountDeletion(context, ref);
-            },
-            child: Text(
-              l.permanentlyDelete,
-              style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w700),
-            ),
-          ),
-        ],
-      ),
+      builder: (ctx) {
+        final controller = TextEditingController();
+        return StatefulBuilder(
+          builder: (ctx, setState) {
+            final typed = controller.text.trim();
+            final matches = expectedEmail.isNotEmpty &&
+                typed.toLowerCase() == expectedEmail.toLowerCase();
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+              ),
+              title: Text(l.areYouAbsolutelySure),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l.deleteAccountWarning),
+                  const SizedBox(height: AppSpacing.md),
+                  TextField(
+                    controller: controller,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    keyboardType: TextInputType.emailAddress,
+                    autofocus: true,
+                    onChanged: (_) => setState(() {}),
+                    decoration: InputDecoration(
+                      labelText: hint,
+                      border: const OutlineInputBorder(),
+                    ),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: Text(l.cancel),
+                ),
+                TextButton(
+                  // Disabled until the typed email matches exactly.
+                  onPressed: matches
+                      ? () async {
+                          Navigator.pop(ctx);
+                          await _performAccountDeletion(
+                              context, ref, expectedEmail);
+                        }
+                      : null,
+                  child: Text(
+                    l.deleteAccountConfirmButton,
+                    style: TextStyle(
+                      color: matches ? AppColors.error : AppColors.textTertiary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
+  /// Calls the account-delete edge fn (App Store 5.1.1(v) + GDPR Art. 17).
+  /// On success: sign out + navigate to /onboarding with a success banner.
   Future<void> _performAccountDeletion(
-      BuildContext context, WidgetRef ref) async {
+    BuildContext context,
+    WidgetRef ref,
+    String confirmEmail,
+  ) async {
+    final l = AppLocalizations.of(context)!;
     final isDemo = ref.read(isDemoModeProvider);
     final supabase = ref.read(supabaseServiceProvider);
 
-    // Show a loading indicator
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 18,
                 height: 18,
                 child: CircularProgressIndicator(
                     strokeWidth: 2, color: Colors.white),
               ),
-              SizedBox(width: 12),
-              Text('Deleting account data...'),
+              const SizedBox(width: 12),
+              Text(l.deletingAccount),
             ],
           ),
-          duration: Duration(seconds: 30),
+          duration: const Duration(seconds: 60),
         ),
       );
     }
 
     try {
       if (!isDemo) {
-        // Real Supabase account: delete all data then sign out
-        await supabase.deleteAllUserData();
+        // Real Supabase account: hard-delete via edge fn (cascade across
+        // every app row + storage + auth.users). Server re-checks the
+        // confirm email — UX guard must match it exactly.
+        await supabase.deleteAllUserData(confirmEmail: confirmEmail);
       }
 
-      // Log out (clears demo mode flag + auth state)
+      // Log out (clears demo mode flag + auth state).
       await ref.read(authControllerProvider.notifier).logout();
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Account deleted successfully.'),
-            backgroundColor: Colors.green,
+          SnackBar(
+            content: Text(l.deleteAccountSuccess),
+            backgroundColor: AppColors.success,
           ),
         );
         context.go(AppRoutes.onboarding);
@@ -686,13 +744,10 @@ class SettingsScreen extends ConsumerWidget {
     } catch (e) {
       debugPrint('delete account failed: $e');
       if (context.mounted) {
-        final l = AppLocalizations.of(context);
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              l?.genericError ?? 'Something went wrong. Please try again.',
-            ),
+            content: Text(l.genericError),
             backgroundColor: AppColors.error,
           ),
         );

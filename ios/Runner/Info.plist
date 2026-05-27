@@ -47,8 +47,12 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Advocat uses your camera to scan legal documents (contracts, letters from authorities, ID papers) for AI review. Your photos stay encrypted in your private vault.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Advocat needs microphone access to transcribe your voice into text for legal assistance.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Advocat needs photo library access so you can upload legal documents you've already photographed for AI review.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Advocat uses speech recognition to convert your voice into text.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

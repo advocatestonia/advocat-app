@@ -60,7 +60,7 @@
     "currentPlan": "Pašreizējais plāns",
     "dataAndPrivacy": "DATI UN PRIVĀTUMS",
     "dataExportRequested": "Datu eksports pieprasīts. Pārbaudiet savu e-pastu.",
-    "daysRemaining": "{count} dienas",
+    "daysRemaining": "{count, plural, zero{{count} dienu} one{{count} diena} other{{count} dienas}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -85,7 +85,7 @@
     "discrimination": "Diskriminācija",
     "doNotBuy": "Nepērciet",
     "documents": "Dokumenti",
-    "documentsCount": "{count} dok.",
+    "documentsCount": "{count, plural, zero{{count} dokumentu} one{{count} dokuments} other{{count} dokumenti}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -155,7 +155,7 @@
     "informational": "Informatīvs",
     "inspection": "Tehniskā apskate",
     "insurance": "Apdrošināšana",
-    "issuesFound": "Atrastas {count} problēmas",
+    "issuesFound": "{count, plural, zero{Atrastas {count} problēmas} one{Atrasta {count} problēma} other{Atrastas {count} problēmas}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -469,7 +469,7 @@
     "somethingWentWrong": "Kaut kas nogāja greizi",
     "genericError": "Kaut kas nogāja greizi. Mēģiniet vēlreiz.",
     "retryAnalysis": "Atkārtot analīzi",
-    "issuesFoundInDocument": "Jūsu dokumentā atrastas {count} problēma(s)",
+    "issuesFoundInDocument": "{count, plural, zero{Dokumentā atrastas {count} problēmas} one{Dokumentā atrasta {count} problēma} other{Dokumentā atrastas {count} problēmas}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -479,7 +479,7 @@
     },
     "severityOverview": "Nopietnības pārskats",
     "issuesFoundHeader": "Atrastās problēmas",
-    "generateAppealWithIssues": "Ģenerēt apelāciju ({count} problēmas)",
+    "generateAppealWithIssues": "{count, plural, zero{Ģenerēt apelāciju ({count} problēmas)} one{Ģenerēt apelāciju ({count} problēma)} other{Ģenerēt apelāciju ({count} problēmas)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -494,7 +494,7 @@
     "cameraPermissionDesc": "Piešķiriet kameras piekļuvi, lai skenētu dokumentus, vai izmantojiet galeriju.",
     "openSettings": "Atvērt iestatījumus",
     "alignDocument": "Novietojiet dokumentu rāmī",
-    "pageCount": "{count} lapa(s)",
+    "pageCount": "{count, plural, zero{{count} lapu} one{{count} lapa} other{{count} lapas}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -525,7 +525,7 @@
     },
     "preparingUpload": "Gatavo augšupielādi…",
     "documentUploadedSuccess": "Dokuments veiksmīgi augšupielādēts",
-    "pagesUploadedSuccess": "{count} lapas veiksmīgi augšupielādētas",
+    "pagesUploadedSuccess": "{count, plural, zero{{count} lapas veiksmīgi augšupielādētas} one{{count} lapa veiksmīgi augšupielādēta} other{{count} lapas veiksmīgi augšupielādētas}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -793,7 +793,7 @@
     "categoryWork": "Work",
     "categoryHousing": "Housing",
     "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
+    "rightsInsideCount": "{count, plural, zero{{count} tiesību iekšā} one{{count} tiesība iekšā} other{{count} tiesības iekšā}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -1448,10 +1448,10 @@
     "citationSnippetCollapse": "Rādīt mazāk",
     "citationUnverifiedSheetNote": "MI citēja šo paragrāfu, taču šajā sarunā tas netika iegūts no tiesību aktu korpusa. Pārbaudiet atsauci, pirms uz tās paļaujaties.",
     "citationFooterNoneWarning": "Nav pamatotu atsauču",
-    "citationFooterSummaryTotal": "{count} atsauces",
-    "citationFooterSummaryVerified": "{count} pārbaudītas",
-    "citationFooterSummaryUnverified": "{count} nepārbaudītas",
-    "citationFooterSummaryHistorical": "{count} vēsturiskas",
+    "citationFooterSummaryTotal": "{count, plural, zero{{count} citātu} one{{count} citāts} other{{count} citāti}}",
+    "citationFooterSummaryVerified": "{count, plural, zero{{count} pārbaudītu} one{{count} pārbaudīts} other{{count} pārbaudīti}}",
+    "citationFooterSummaryUnverified": "{count, plural, zero{{count} nepārbaudītu} one{{count} nepārbaudīts} other{{count} nepārbaudīti}}",
+    "citationFooterSummaryHistorical": "{count, plural, zero{{count} vēsturisku} one{{count} vēsturisks} other{{count} vēsturiski}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -1483,7 +1483,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, zero{pēc {count} dienām} one{pēc {count} dienas} other{pēc {count} dienām}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -1493,7 +1493,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, zero{kavējas {count} dienas} one{kavējas {count} dienu} other{kavējas {count} dienas}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1623,7 +1623,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 līgumu pārbaudes mēnesī",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "Šomēnes palikušas {count} līgumu pārbaudes",
+    "contractReviewsLeft": "{count, plural, zero{Šomēnes palikušas {count} līgumu pārbaudes} one{Šomēnes palikusi {count} līgumu pārbaude} other{Šomēnes palikušas {count} līgumu pārbaudes}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1740,8 +1740,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Juristi izvērtē jūsu lietu…",
@@ -1753,7 +1757,9 @@
     "consiliumDone": "Konsīlijs pabeigts · {totalRoles} eksperti",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Apstrīdēt",
@@ -1764,23 +1770,26 @@
     "consiliumKeyCitation": "Galvenā atsauce",
     "consiliumAdversarialRound": "Sacīkstes kārta",
     "consiliumViewFullOpinion": "Skatīt pilnu atzinumu",
-    "consiliumExpertsAgreed": "{count} eksperti piekrīt",
+    "consiliumExpertsAgreed": "{count, plural, zero{{count} eksperti piekrīt} one{{count} eksperts piekrīt} other{{count} eksperti piekrīt}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} eksperti nepiekrīt",
+    "consiliumExpertsDisagree": "{count, plural, zero{{count} eksperti nepiekrīt} one{{count} eksperts nepiekrīt} other{{count} eksperti nepiekrīt}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "MI aģenti, nevis cilvēki juristi. Būtiskus lēmumus pārbaudiet pie licencēta zvērināta advokāta.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
-,
+    },
     "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
@@ -1821,16 +1830,33 @@
     "draftingExporting": "Exporting…",
     "draftingExportFailed": "Export failed",
     "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft"
-,
+    "draftingNewDraft": "New draft",
     "vaultNoteChip": "Vault note",
     "saveToVault": "Save to Vault",
     "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault"
-,
+    "savedToVault": "Saved to Vault",
     "vaultNoteTitlePrefix": "Note: ",
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "dangerZone": "[en] Danger zone",
+    "deleteAccountConfirmButton": "[en] Delete forever",
+    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "intentChip1": "Got a fine",
+    "intentChip2": "Permit denied",
+    "intentChip3": "Contract problem",
+    "emptyCasesTitle": "No cases yet",
+    "emptyCasesCta": "Start a case",
+    "emptyDraftsTitle": "No drafts yet",
+    "emptyDraftsCta": "Create draft",
+    "emptyChatTitle": "Ask Advocat anything",
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "chatExamplePrompt2": "Review my rental contract",
+    "chatExamplePrompt3": "What are my rights at work?",
+    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "[en] Deleting account…"
 }

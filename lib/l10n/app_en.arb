@@ -74,7 +74,7 @@
     "currentPlan": "Current Plan",
     "dataAndPrivacy": "DATA & PRIVACY",
     "dataExportRequested": "Data export requested. Check your email.",
-    "daysRemaining": "{count} days",
+    "daysRemaining": "{count, plural, =0{no days remaining} =1{1 day} other{{count} days}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -99,7 +99,7 @@
     "discrimination": "Discrimination",
     "doNotBuy": "Do not buy",
     "documents": "Documents",
-    "documentsCount": "{count} docs",
+    "documentsCount": "{count, plural, =0{no documents} =1{1 document} other{{count} documents}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -169,7 +169,7 @@
     "informational": "Informational",
     "inspection": "Technical inspection",
     "insurance": "Insurance",
-    "issuesFound": "{count} issues found",
+    "issuesFound": "{count, plural, =0{no issues found} =1{1 issue found} other{{count} issues found}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -510,19 +510,25 @@
     "timelineMinutesAgo": "{count, plural, =1{1 minute ago} other{{count} minutes ago}}",
     "@timelineMinutesAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineHoursAgo": "{count, plural, =1{1 hour ago} other{{count} hours ago}}",
     "@timelineHoursAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
     "@timelineDaysAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "documentAnalysis": "Document Analysis",
@@ -532,7 +538,7 @@
     "somethingWentWrong": "Something went wrong",
     "genericError": "Something went wrong. Please try again.",
     "retryAnalysis": "Retry Analysis",
-    "issuesFoundInDocument": "Found {count} issue(s) in your document",
+    "issuesFoundInDocument": "{count, plural, =0{No issues found in your document} =1{Found 1 issue in your document} other{Found {count} issues in your document}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -542,7 +548,7 @@
     },
     "severityOverview": "Severity Overview",
     "issuesFoundHeader": "Issues Found",
-    "generateAppealWithIssues": "Generate Appeal ({count} issues)",
+    "generateAppealWithIssues": "{count, plural, =1{Generate Appeal (1 issue)} other{Generate Appeal ({count} issues)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -557,7 +563,7 @@
     "cameraPermissionDesc": "Grant camera access to scan documents, or use the gallery.",
     "openSettings": "Open Settings",
     "alignDocument": "Align document within the frame",
-    "pageCount": "{count} page(s)",
+    "pageCount": "{count, plural, =0{no pages} =1{1 page} other{{count} pages}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -588,7 +594,7 @@
     },
     "preparingUpload": "Preparing upload…",
     "documentUploadedSuccess": "Document uploaded successfully",
-    "pagesUploadedSuccess": "{count} pages uploaded successfully",
+    "pagesUploadedSuccess": "{count, plural, =1{1 page uploaded successfully} other{{count} pages uploaded successfully}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -934,7 +940,7 @@
     "categoryWork": "Work",
     "categoryHousing": "Housing",
     "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
+    "rightsInsideCount": "{count, plural, =0{no rights inside} =1{1 right inside} other{{count} rights inside}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -1201,10 +1207,10 @@
     "citationSnippetCollapse": "Show less",
     "citationUnverifiedSheetNote": "AI cited this paragraph but it was not retrieved from the law corpus this turn. Verify the reference before relying on it.",
     "citationFooterNoneWarning": "No grounded citations",
-    "citationFooterSummaryTotal": "{count} citations",
-    "citationFooterSummaryVerified": "{count} verified",
-    "citationFooterSummaryUnverified": "{count} unverified",
-    "citationFooterSummaryHistorical": "{count} historical",
+    "citationFooterSummaryTotal": "{count, plural, =1{1 citation} other{{count} citations}}",
+    "citationFooterSummaryVerified": "{count, plural, =1{1 verified} other{{count} verified}}",
+    "citationFooterSummaryUnverified": "{count, plural, =1{1 unverified} other{{count} unverified}}",
+    "citationFooterSummaryHistorical": "{count, plural, =1{1 historical} other{{count} historical}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -1236,7 +1242,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, =0{today} =1{in 1 day} other{in {count} days}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -1246,7 +1252,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, =1{1 day overdue} other{{count} days overdue}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1376,27 +1382,47 @@
     "@parallelActionsApproveSelected": {
         "description": "Primary button when only a subset of actions is checked.",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsConfirmTitle": "Send {count} emails?",
     "@parallelActionsConfirmTitle": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsConfirmBody": "Advocat will dispatch {count} prepared replies via your connected Gmail. Each one is sent independently — if any one fails, the others still go.",
     "@parallelActionsConfirmBody": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsSentToast": "{count} sent.",
     "@parallelActionsSentToast": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsPartialFailureToast": "{sent} sent, {failed} failed.",
     "@parallelActionsPartialFailureToast": {
         "placeholders": {
-            "sent": { "type": "int" },
-            "failed": { "type": "int" }
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsKindReply": "reply",
@@ -1406,14 +1432,21 @@
     "parallelActionsCitationCount": "{count} cit",
     "@parallelActionsCitationCount": {
         "description": "Short chip showing the number of [[ref:slug:para]] citations attached to an action.",
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsRetryFailed": "Retry failed ({count})",
     "@parallelActionsRetryFailed": {
         "description": "P1-5 (2026-05-27): snackbar action button shown when a parallel-actions batch partly failed. Tapping it re-dispatches only the rows that did not go out.",
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
-
     "agentApprovalNeedsReviewTitle": "Advocat needs your approval",
     "@agentApprovalNeedsReviewTitle": {
         "description": "Day 6-7 (2026-05-27): title above the agent-loop approval card."
@@ -1620,7 +1653,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 contract reviews per month",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count} contract reviews left this month",
+    "contractReviewsLeft": "{count, plural, =0{No contract reviews left this month} =1{1 contract review left this month} other{{count} contract reviews left this month}}",
     "@contractReviewsLeft": {
         "description": "Quota pill shown near chat upload button when remaining > 0.",
         "placeholders": {
@@ -1877,8 +1910,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Lawyers reviewing your case…",
@@ -1890,7 +1927,9 @@
     "consiliumDone": "Consilium complete · {totalRoles} experts",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Push",
@@ -1901,16 +1940,20 @@
     "consiliumKeyCitation": "Key citation",
     "consiliumAdversarialRound": "Adversarial round",
     "consiliumViewFullOpinion": "View full opinion",
-    "consiliumExpertsAgreed": "{count} experts agreed",
+    "consiliumExpertsAgreed": "{count, plural, =1{1 expert agreed} other{{count} experts agreed}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} experts disagree",
+    "consiliumExpertsDisagree": "{count, plural, =1{1 expert disagrees} other{{count} experts disagree}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "AI agents, not human lawyers. Verify material decisions with a licensed attorney.",
@@ -1945,7 +1988,9 @@
     "draftingDraftReplyTo": "Reply to {name}",
     "@draftingDraftReplyTo": {
         "placeholders": {
-            "name": { "type": "String" }
+            "name": {
+                "type": "String"
+            }
         }
     },
     "draftingUntitled": "Untitled",
@@ -1981,5 +2026,70 @@
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "@emptyHomeTitle": {
+        "description": "Home empty-state headline for brand-new accounts (0 cases + 0 drafts + 0 vault docs)."
+    },
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "@emptyHomeBody": {
+        "description": "Home empty-state subtitle. Keep under 60 chars."
+    },
+    "intentChip1": "Got a fine",
+    "@intentChip1": {
+        "description": "Home empty-state intent chip 1 — pre-loads chat with this intent."
+    },
+    "intentChip2": "Permit denied",
+    "@intentChip2": {
+        "description": "Home empty-state intent chip 2 — pre-loads chat with this intent."
+    },
+    "intentChip3": "Contract problem",
+    "@intentChip3": {
+        "description": "Home empty-state intent chip 3 — pre-loads chat with this intent."
+    },
+    "emptyCasesTitle": "No cases yet",
+    "@emptyCasesTitle": {
+        "description": "Cases list empty-state title."
+    },
+    "emptyCasesCta": "Start a case",
+    "@emptyCasesCta": {
+        "description": "Cases list empty-state primary CTA button."
+    },
+    "emptyDraftsTitle": "No drafts yet",
+    "@emptyDraftsTitle": {
+        "description": "Drafts list empty-state title."
+    },
+    "emptyDraftsCta": "Create draft",
+    "@emptyDraftsCta": {
+        "description": "Drafts list empty-state primary CTA — opens templates picker."
+    },
+    "emptyChatTitle": "Ask Advocat anything",
+    "@emptyChatTitle": {
+        "description": "Chat empty-state title shown after sign-in when the thread has 0 messages."
+    },
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "@chatExamplePrompt1": {
+        "description": "Chat empty-state example prompt 1."
+    },
+    "chatExamplePrompt2": "Review my rental contract",
+    "@chatExamplePrompt2": {
+        "description": "Chat empty-state example prompt 2."
+    },
+    "chatExamplePrompt3": "What are my rights at work?",
+    "@chatExamplePrompt3": {
+        "description": "Chat empty-state example prompt 3."
+    },
+    "dangerZone": "Danger zone",
+    "deleteAccountConfirmButton": "Delete forever",
+    "deleteAccountConfirmHint": "Type {email} to confirm",
+    "@deleteAccountConfirmHint": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
+    "deleteAccountSuccess": "Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "Deleting account…"
 }

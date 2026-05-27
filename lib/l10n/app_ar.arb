@@ -60,7 +60,7 @@
     "currentPlan": "خطتك الحالية",
     "dataAndPrivacy": "البيانات والخصوصية",
     "dataExportRequested": "تم طلب تصدير البيانات. تحقق من بريدك الإلكتروني.",
-    "daysRemaining": "{count} أيام",
+    "daysRemaining": "{count, plural, =0{لا توجد أيام متبقية} =1{يوم واحد} other{{count} أيام}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -85,7 +85,7 @@
     "discrimination": "تمييز",
     "doNotBuy": "لا تشتري",
     "documents": "المستندات",
-    "documentsCount": "{count} مستندات",
+    "documentsCount": "{count, plural, =0{لا توجد مستندات} =1{مستند واحد} other{{count} مستندات}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -155,7 +155,7 @@
     "informational": "معلوماتي",
     "inspection": "الفحص الفني",
     "insurance": "التأمين",
-    "issuesFound": "{count} مشكلات مكتشفة",
+    "issuesFound": "{count, plural, =0{لم يتم العثور على مشاكل} =1{تم العثور على مشكلة واحدة} other{تم العثور على {count} مشاكل}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -469,7 +469,7 @@
     "somethingWentWrong": "حدث خطأ ما",
     "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
     "retryAnalysis": "إعادة التحليل",
-    "issuesFoundInDocument": "تم العثور على {count} مشكلة في مستندك",
+    "issuesFoundInDocument": "{count, plural, =0{لم يتم العثور على مشاكل في المستند} =1{تم العثور على مشكلة واحدة في المستند} other{تم العثور على {count} مشاكل في المستند}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -479,7 +479,7 @@
     },
     "severityOverview": "نظرة عامة على الخطورة",
     "issuesFoundHeader": "المشكلات المكتشفة",
-    "generateAppealWithIssues": "إنشاء استئناف ({count} مشكلة)",
+    "generateAppealWithIssues": "{count, plural, =1{إنشاء طعن (مشكلة واحدة)} other{إنشاء طعن ({count} مشاكل)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -494,7 +494,7 @@
     "cameraPermissionDesc": "امنح إذن الوصول إلى الكاميرا لمسح المستندات ضوئياً، أو استخدم المعرض.",
     "openSettings": "فتح الإعدادات",
     "alignDocument": "قم بمحاذاة المستند داخل الإطار",
-    "pageCount": "{count} صفحة",
+    "pageCount": "{count, plural, =0{لا توجد صفحات} =1{صفحة واحدة} other{{count} صفحات}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -525,7 +525,7 @@
     },
     "preparingUpload": "جارٍ تحضير الرفع…",
     "documentUploadedSuccess": "تم رفع المستند بنجاح",
-    "pagesUploadedSuccess": "تم رفع {count} صفحة بنجاح",
+    "pagesUploadedSuccess": "{count, plural, =1{تم تحميل صفحة واحدة بنجاح} other{تم تحميل {count} صفحات بنجاح}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -793,7 +793,7 @@
     "categoryWork": "Work",
     "categoryHousing": "Housing",
     "categoryConsumer": "Consumer",
-    "rightsInsideCount": "{count} rights inside",
+    "rightsInsideCount": "{count, plural, =0{لا توجد حقوق} =1{حق واحد بالداخل} other{{count} حقوق بالداخل}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -847,10 +847,10 @@
     "citationSnippetCollapse": "عرض أقل",
     "citationUnverifiedSheetNote": "اقتبس الذكاء الاصطناعي هذه الفقرة، غير أنه لم يتم استرجاعها من المتن القانوني في هذه الجلسة. تحقَّق من المرجع قبل الاعتماد عليه.",
     "citationFooterNoneWarning": "لا توجد اقتباسات موثَّقة",
-    "citationFooterSummaryTotal": "{count} اقتباس",
-    "citationFooterSummaryVerified": "{count} موثَّق",
-    "citationFooterSummaryUnverified": "{count} غير موثَّق",
-    "citationFooterSummaryHistorical": "{count} نسخة سابقة",
+    "citationFooterSummaryTotal": "{count, plural, =1{اقتباس واحد} other{{count} اقتباسات}}",
+    "citationFooterSummaryVerified": "{count, plural, =1{تم التحقق من واحد} other{تم التحقق من {count}}}",
+    "citationFooterSummaryUnverified": "{count, plural, =1{غير مُتحقق منه واحد} other{{count} غير مُتحقق منها}}",
+    "citationFooterSummaryHistorical": "{count, plural, =1{تاريخي واحد} other{{count} تاريخية}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -882,7 +882,7 @@
     "deadlineRadarTitle": "Upcoming deadlines",
     "deadlineRadarEmpty": "No upcoming deadlines",
     "deadlineRadarViewAll": "View all",
-    "deadlineCardDaysLeft": "in {count} days",
+    "deadlineCardDaysLeft": "{count, plural, =0{اليوم} =1{خلال يوم واحد} other{خلال {count} أيام}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -892,7 +892,7 @@
     },
     "deadlineCardTomorrow": "tomorrow",
     "deadlineCardToday": "today",
-    "deadlineCardOverdue": "{count} days overdue",
+    "deadlineCardOverdue": "{count, plural, =1{متأخر يوم واحد} other{متأخر {count} أيام}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1022,7 +1022,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 contract reviews per month",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count} contract reviews left this month",
+    "contractReviewsLeft": "{count, plural, =0{لا توجد مراجعات عقود متبقية هذا الشهر} =1{تبقت مراجعة عقد واحدة هذا الشهر} other{تبقت {count} مراجعات عقود هذا الشهر}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1139,8 +1139,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "يقوم المحامون بمراجعة قضيتك…",
@@ -1152,7 +1156,9 @@
     "consiliumDone": "اكتمل المجلس · {totalRoles} خبراء",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "اعترض",
@@ -1163,23 +1169,26 @@
     "consiliumKeyCitation": "المرجع الأساسي",
     "consiliumAdversarialRound": "جولة جدلية",
     "consiliumViewFullOpinion": "عرض الرأي كاملاً",
-    "consiliumExpertsAgreed": "{count} خبراء متفقون",
+    "consiliumExpertsAgreed": "{count, plural, =1{خبير واحد موافق} other{{count} خبراء موافقون}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} خبراء غير متفقين",
+    "consiliumExpertsDisagree": "{count, plural, =1{خبير واحد غير موافق} other{{count} خبراء غير موافقين}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "وكلاء ذكاء اصطناعي، وليسوا محامين بشريين. تحقق من القرارات الجوهرية مع محامٍ مرخَّص.",
     "@consiliumDisclaimer": {
         "description": "UPL compliance disclaimer shown as footer of consilium responses (EU AI Act Art 50, GDPR Art 22, EE Advokatuuriseadus, FI Asianajajalaki)"
-    }
-,
+    },
     "_draftingTodoNote": "TODO native review — Pkg 7 Drafting Studio keys below (draftsTab + drafting*) ship as English defaults until reviewed by a native speaker (2026-05-27).",
     "draftsTab": "Drafts",
     "draftingTitle": "Drafting Studio",
@@ -1220,16 +1229,33 @@
     "draftingExporting": "Exporting…",
     "draftingExportFailed": "Export failed",
     "draftingSaveFailed": "Save failed",
-    "draftingNewDraft": "New draft"
-,
+    "draftingNewDraft": "New draft",
     "vaultNoteChip": "Vault note",
     "saveToVault": "Save to Vault",
     "savingToVault": "Saving to Vault…",
-    "savedToVault": "Saved to Vault"
-,
+    "savedToVault": "Saved to Vault",
     "vaultNoteTitlePrefix": "Note: ",
     "openInVault": "Open in Vault",
     "saveToVaultFailed": "Save to Vault failed",
     "pdfWorkerUnavailable": "PDF export is temporarily unavailable. Please try DOCX or Markdown.",
-    "draftingVersionHistory": "Version history"
+    "draftingVersionHistory": "Version history",
+    "dangerZone": "[en] Danger zone",
+    "deleteAccountConfirmButton": "[en] Delete forever",
+    "deleteAccountConfirmHint": "[en] Type {email} to confirm",
+    "emptyHomeTitle": "Welcome to Advocat",
+    "emptyHomeBody": "Pick a starting point — we’ll handle the legal heavy lifting.",
+    "intentChip1": "Got a fine",
+    "intentChip2": "Permit denied",
+    "intentChip3": "Contract problem",
+    "emptyCasesTitle": "No cases yet",
+    "emptyCasesCta": "Start a case",
+    "emptyDraftsTitle": "No drafts yet",
+    "emptyDraftsCta": "Create draft",
+    "emptyChatTitle": "Ask Advocat anything",
+    "chatExamplePrompt1": "Help me reply to a fine",
+    "chatExamplePrompt2": "Review my rental contract",
+    "chatExamplePrompt3": "What are my rights at work?",
+    "deleteAccountSuccess": "[en] Account deleted. We're sorry to see you go.",
+    "deleteAccountWarning": "[en] This permanently deletes your account, all cases, drafts, vault documents, and chat history. This cannot be undone.",
+    "deletingAccount": "[en] Deleting account…"
 }

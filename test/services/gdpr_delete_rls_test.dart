@@ -112,23 +112,46 @@ void main() {
   });
 
   group('FIX-2 — supabase_service.dart delete flow sanity', () {
-    // The actual source code must still attempt the deletes in the order
-    // the migration enables. This is a smoke test that the helper function
-    // deleteAllUserData continues to exist and covers the tables the new
-    // RLS policies protect. It only verifies the method is callable;
-    // behavior is tested by existing supabase_service_test.dart + live
-    // Supabase integration.
+    // The Flutter client must invoke the account-delete edge function;
+    // direct table deletes from the client were removed because they
+    // cannot wipe auth.users (App Store 5.1.1(v) requires hard delete +
+    // the email must become available for re-signup — only service-role
+    // can call auth.admin.deleteUser).
     final svcFile = File('lib/services/supabase_service.dart');
+    final handlerFile =
+        File('supabase/functions/account-delete/handler.ts');
 
-    test('deleteAllUserData still deletes chat_messages', () {
+    test('deleteAllUserData routes through the account-delete edge fn', () {
       final src = svcFile.readAsStringSync();
       expect(
         src,
-        contains("from('chat_messages').delete()"),
+        contains("callEdgeFunction(\n      'account-delete'"),
         reason:
-            'supabase_service.dart must still delete chat_messages for the '
-            'new RLS policy to take effect on account purge. If this call '
-            'is removed, the delete_own policy is dead code.',
+            'supabase_service.dart must call the account-delete edge fn so '
+            'auth.users gets deleted (client SDK cannot do this).',
+      );
+      expect(
+        src,
+        contains('confirmEmail'),
+        reason:
+            'Client must pass the typed-email confirmation through to the '
+            'edge fn for defence-in-depth.',
+      );
+    });
+
+    test('account-delete handler covers chat_messages (and other tables)',
+        () {
+      expect(handlerFile.existsSync(), isTrue,
+          reason: 'edge fn handler must exist');
+      final src = handlerFile.readAsStringSync();
+      // Same regression guard as before, just on the server side now.
+      expect(
+        src,
+        contains('"chat_messages"'),
+        reason:
+            'account-delete handler must list chat_messages in '
+            'USER_DATA_TABLES (otherwise the delete_own RLS policy is '
+            'dead code for the chat history table).',
       );
     });
   });

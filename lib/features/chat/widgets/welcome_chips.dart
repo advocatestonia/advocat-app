@@ -337,7 +337,7 @@ class ChatWelcomeChips extends StatelessWidget {
           ],
           const SizedBox(height: AppSpacing.sm),
           Align(
-            alignment: Alignment.centerLeft,
+            alignment: AlignmentDirectional.centerStart,
             child: TextButton(
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

@@ -182,7 +182,11 @@ class ChatMessageBubble extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Align(
-        alignment: _isUser ? Alignment.centerRight : Alignment.centerLeft,
+        // RTL-aware: user bubbles sit at the trailing edge, AI at leading.
+        // Under Directionality(rtl) these flip automatically.
+        alignment: _isUser
+            ? AlignmentDirectional.centerEnd
+            : AlignmentDirectional.centerStart,
         child: _isUser
             ? bubble
             : Row(
@@ -193,7 +197,7 @@ class ChatMessageBubble extends StatelessWidget {
                   Container(
                     width: 24,
                     height: 24,
-                    margin: const EdgeInsets.only(right: 8),
+                    margin: const EdgeInsetsDirectional.only(end: 8),
                     decoration: BoxDecoration(
                       color: _kAvatarTeal.withValues(alpha: 0.10),
                       shape: BoxShape.circle,

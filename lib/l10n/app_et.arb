@@ -74,7 +74,7 @@
     "currentPlan": "Praegune pakett",
     "dataAndPrivacy": "ANDMED JA PRIVAATSUS",
     "dataExportRequested": "Andmete eksport taotletud. Kontrollige oma e-posti.",
-    "daysRemaining": "{count} päeva",
+    "daysRemaining": "{count, plural, =0{päevi pole jäänud} =1{1 päev} other{{count} päeva}}",
     "@daysRemaining": {
         "placeholders": {
             "count": {
@@ -99,7 +99,7 @@
     "discrimination": "Diskrimineerimine",
     "doNotBuy": "Ära osta",
     "documents": "Dokumendid",
-    "documentsCount": "{count} dokumenti",
+    "documentsCount": "{count, plural, =0{dokumente pole} =1{1 dokument} other{{count} dokumenti}}",
     "@documentsCount": {
         "placeholders": {
             "count": {
@@ -172,7 +172,7 @@
     "informational": "Informatiivne",
     "inspection": "Tehniline ülevaatus",
     "insurance": "Kindlustus",
-    "issuesFound": "{count} probleemi leitud",
+    "issuesFound": "{count, plural, =0{probleeme ei leitud} =1{Leitud 1 probleem} other{Leitud {count} probleemi}}",
     "@issuesFound": {
         "placeholders": {
             "count": {
@@ -408,19 +408,25 @@
     "timelineMinutesAgo": "{count, plural, =1{1 minut tagasi} other{{count} minutit tagasi}}",
     "@timelineMinutesAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineHoursAgo": "{count, plural, =1{1 tund tagasi} other{{count} tundi tagasi}}",
     "@timelineHoursAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "timelineDaysAgo": "{count, plural, =1{1 päev tagasi} other{{count} päeva tagasi}}",
     "@timelineDaysAgo": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "caseSummaryCopied": "Juhtumi kokkuvõte kopeeritud",
@@ -530,7 +536,7 @@
     "gdprConsentLegalData": "Nõustun oma kohtuasja andmete, kodakondsuse ja immigratsiooniseisundi töötlemisega AI poolt (kohustuslik)",
     "gdprConsentVoice": "Nõustun häälsalvestuse töötlemisega (valikuline)",
     "gdprViewPrivacyPolicy": "Vaata privaatsuspoliitikat",
-    "generateAppealWithIssues": "Loo kaebus ({count} probleemi)",
+    "generateAppealWithIssues": "{count, plural, =1{Loo apellatsioon (1 probleem)} other{Loo apellatsioon ({count} probleemi)}}",
     "@generateAppealWithIssues": {
         "placeholders": {
             "count": {
@@ -559,7 +565,7 @@
     "immigrationDetentionDesc": "Õigused, kui olete ametiasutuste poolt kinni peetud",
     "inCourt": "Kohtus",
     "issuesFoundHeader": "Leitud probleemid",
-    "issuesFoundInDocument": "Leiti {count} probleem(i) teie dokumendist",
+    "issuesFoundInDocument": "{count, plural, =0{Dokumendist probleeme ei leitud} =1{Dokumendist leitud 1 probleem} other{Dokumendist leitud {count} probleemi}}",
     "@issuesFoundInDocument": {
         "placeholders": {
             "count": {
@@ -626,7 +632,7 @@
     "openCase": "Ava juhtum",
     "openSettings": "Ava seaded",
     "orWord": "või",
-    "pageCount": "{count} lehekülg(e)",
+    "pageCount": "{count, plural, =0{lehekülgi pole} =1{1 lehekülg} other{{count} lehekülge}}",
     "@pageCount": {
         "placeholders": {
             "count": {
@@ -642,7 +648,7 @@
             }
         }
     },
-    "pagesUploadedSuccess": "{count} lehekülge edukalt üles laetud",
+    "pagesUploadedSuccess": "{count, plural, =1{1 lehekülg laaditud edukalt} other{{count} lehekülge laaditud edukalt}}",
     "@pagesUploadedSuccess": {
         "placeholders": {
             "count": {
@@ -912,7 +918,7 @@
     "categoryWork": "Töö",
     "categoryHousing": "Eluase",
     "categoryConsumer": "Tarbija",
-    "rightsInsideCount": "{count} õigust sees",
+    "rightsInsideCount": "{count, plural, =0{õigusi pole} =1{1 õigus sees} other{{count} õigust sees}}",
     "@rightsInsideCount": {
         "placeholders": {
             "count": {
@@ -1165,10 +1171,10 @@
     "citationSnippetCollapse": "Peida",
     "citationUnverifiedSheetNote": "AI tsiteeris seda paragrahvi, kuid seda ei leitud praegusest seaduskorpusest. Kontrolli viidet enne tuginemist.",
     "citationFooterNoneWarning": "Allikaviiteid pole",
-    "citationFooterSummaryTotal": "{count} viidet",
-    "citationFooterSummaryVerified": "{count} kontrollitud",
-    "citationFooterSummaryUnverified": "{count} kontrollimata",
-    "citationFooterSummaryHistorical": "{count} vana",
+    "citationFooterSummaryTotal": "{count, plural, =1{1 viide} other{{count} viidet}}",
+    "citationFooterSummaryVerified": "{count, plural, =1{1 kinnitatud} other{{count} kinnitatud}}",
+    "citationFooterSummaryUnverified": "{count, plural, =1{1 kinnitamata} other{{count} kinnitamata}}",
+    "citationFooterSummaryHistorical": "{count, plural, =1{1 vananenud} other{{count} vananenud}}",
     "@citationFooterSummaryTotal": {
         "placeholders": {
             "count": {
@@ -1200,7 +1206,7 @@
     "deadlineRadarTitle": "Eesseisvad tähtajad",
     "deadlineRadarEmpty": "Eesseisvaid tähtaegasid pole",
     "deadlineRadarViewAll": "Vaata kõiki",
-    "deadlineCardDaysLeft": "{count} päeva pärast",
+    "deadlineCardDaysLeft": "{count, plural, =0{täna} =1{1 päeva pärast} other{{count} päeva pärast}}",
     "@deadlineCardDaysLeft": {
         "placeholders": {
             "count": {
@@ -1210,7 +1216,7 @@
     },
     "deadlineCardTomorrow": "homme",
     "deadlineCardToday": "täna",
-    "deadlineCardOverdue": "{count} päeva üle tähtaja",
+    "deadlineCardOverdue": "{count, plural, =1{1 päev hilinenud} other{{count} päeva hilinenud}}",
     "@deadlineCardOverdue": {
         "placeholders": {
             "count": {
@@ -1326,34 +1332,56 @@
     "parallelActionsHeadline": "Konsiilium soovitab {count} paralleelset tegevust",
     "@parallelActionsHeadline": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsApproveAll": "Kinnita kõik ja saada",
     "parallelActionsApproveSelected": "Kinnita {count} / {total}",
     "@parallelActionsApproveSelected": {
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsConfirmTitle": "Saada {count} e-kirja?",
     "@parallelActionsConfirmTitle": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsConfirmBody": "Advocat saadab {count} valmis vastust teie ühendatud Gmaili kaudu. Iga kiri saadetakse iseseisvalt — kui üks ebaõnnestub, teised lähevad ikka teele.",
     "@parallelActionsConfirmBody": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsSentToast": "Saadetud: {count}.",
     "@parallelActionsSentToast": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsPartialFailureToast": "Saadetud: {sent}, ebaõnnestus: {failed}.",
     "@parallelActionsPartialFailureToast": {
         "placeholders": {
-            "sent": { "type": "int" },
-            "failed": { "type": "int" }
+            "sent": {
+                "type": "int"
+            },
+            "failed": {
+                "type": "int"
+            }
         }
     },
     "parallelActionsKindReply": "vastus",
@@ -1362,11 +1390,19 @@
     "parallelActionsCheckboxUnselected": "Tegevus pole valitud",
     "parallelActionsCitationCount": "{count} viidet",
     "@parallelActionsCitationCount": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "parallelActionsRetryFailed": "Proovi ebaõnnestunuid uuesti ({count})",
     "@parallelActionsRetryFailed": {
-        "placeholders": { "count": { "type": "int" } }
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
     },
     "inboxErrorTitle": "Postkasti ei õnnestunud laadida",
     "inboxEditDiscardTitle": "Kas tühistada salvestamata muudatused?",
@@ -1432,7 +1468,7 @@
     "@contractReviewsCounselFeature": {},
     "contractReviewsProFeature": "20 lepingu ülevaatust kuus",
     "@contractReviewsProFeature": {},
-    "contractReviewsLeft": "{count} lepingu ülevaatust selles kuus alles",
+    "contractReviewsLeft": "{count, plural, =0{Sel kuul lepinguülevaatuseid pole jäänud} =1{1 lepinguülevaatus sel kuul jäänud} other{{count} lepinguülevaatust sel kuul jäänud}}",
     "@contractReviewsLeft": {
         "placeholders": {
             "count": {
@@ -1688,8 +1724,12 @@
     "@consiliumProgress": {
         "description": "Progress indicator while consilium experts produce opinions",
         "placeholders": {
-            "count": { "type": "int" },
-            "total": { "type": "int" }
+            "count": {
+                "type": "int"
+            },
+            "total": {
+                "type": "int"
+            }
         }
     },
     "consiliumStarting": "Juristid vaatavad teie juhtumi üle…",
@@ -1701,7 +1741,9 @@
     "consiliumDone": "Konsiilium lõpetatud · {totalRoles} eksperti",
     "@consiliumDone": {
         "placeholders": {
-            "totalRoles": { "type": "int" }
+            "totalRoles": {
+                "type": "int"
+            }
         }
     },
     "consiliumPositionPush": "Vaidle vastu",
@@ -1712,16 +1754,20 @@
     "consiliumKeyCitation": "Peamine viide",
     "consiliumAdversarialRound": "Vastandlik voor",
     "consiliumViewFullOpinion": "Vaata täielikku arvamust",
-    "consiliumExpertsAgreed": "{count} eksperti nõustusid",
+    "consiliumExpertsAgreed": "{count, plural, =1{1 ekspert nõustub} other{{count} eksperti nõustub}}",
     "@consiliumExpertsAgreed": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
-    "consiliumExpertsDisagree": "{count} eksperti on eriarvamusel",
+    "consiliumExpertsDisagree": "{count, plural, =1{1 ekspert ei nõustu} other{{count} eksperti ei nõustu}}",
     "@consiliumExpertsDisagree": {
         "placeholders": {
-            "count": { "type": "int" }
+            "count": {
+                "type": "int"
+            }
         }
     },
     "consiliumDisclaimer": "AI-agendid, mitte inimjuristid. Olulised otsused kontrolli litsentseeritud advokaadiga.",
@@ -1772,16 +1818,40 @@
     "draftingExporting": "Ekspordin…",
     "draftingExportFailed": "Eksport ebaõnnestus",
     "draftingSaveFailed": "Salvestamine ebaõnnestus",
-    "draftingNewDraft": "Uus mustand"
-,
+    "draftingNewDraft": "Uus mustand",
     "vaultNoteChip": "Hoidla märkus",
     "saveToVault": "Salvesta hoidlasse",
     "savingToVault": "Salvestan hoidlasse…",
-    "savedToVault": "Salvestatud hoidlasse"
-,
+    "savedToVault": "Salvestatud hoidlasse",
     "vaultNoteTitlePrefix": "Märkus: ",
     "openInVault": "Ava hoidlas",
     "saveToVaultFailed": "Hoidlasse salvestamine ebaõnnestus",
     "pdfWorkerUnavailable": "PDF-eksport ei ole hetkel saadaval. Proovi DOCX-i või Markdowni.",
-    "draftingVersionHistory": "Versioonide ajalugu"
+    "draftingVersionHistory": "Versioonide ajalugu",
+    "emptyHomeTitle": "Tere tulemast Advocati",
+    "emptyHomeBody": "Vali alguspunkt — meie tegeleme juriidilise poolega.",
+    "intentChip1": "Sain trahvi",
+    "intentChip2": "Loa taotlust ei rahuldatud",
+    "intentChip3": "Probleem lepinguga",
+    "emptyCasesTitle": "Veel ühtegi juhtumit pole",
+    "emptyCasesCta": "Alusta juhtumit",
+    "emptyDraftsTitle": "Veel ühtegi mustandit pole",
+    "emptyDraftsCta": "Loo mustand",
+    "emptyChatTitle": "Küsi Advocatilt ükskõik mida",
+    "chatExamplePrompt1": "Aita mul trahvile vastata",
+    "chatExamplePrompt2": "Vaata mu üürilepingu üle",
+    "chatExamplePrompt3": "Millised on mu õigused tööl?",
+    "dangerZone": "Ohuala",
+    "deleteAccountConfirmButton": "Kustuta jäädavalt",
+    "deleteAccountConfirmHint": "Sisestage kinnitamiseks {email}",
+    "@deleteAccountConfirmHint": {
+        "placeholders": {
+            "email": {
+                "type": "String"
+            }
+        }
+    },
+    "deleteAccountSuccess": "Konto on kustutatud. Kahju, et lahkute.",
+    "deleteAccountWarning": "See kustutab jäädavalt teie konto, kõik kohtuasjad, mustandid, hoidla dokumendid ja vestlusajaloo. Seda toimingut ei saa tagasi võtta.",
+    "deletingAccount": "Konto kustutamine…"
 }
