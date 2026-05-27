@@ -5,7 +5,7 @@
 // External fetches are intercepted via globalThis.fetch mocking.
 // -----------------------------------------------------------------------------
 
-import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
+import { assert, assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 import {
   ASSISTANT_TOOLS,
   adaptV2RowToLegacy,
@@ -469,4 +469,77 @@ Deno.test("adaptV2RowToLegacy: missing optional fields default safely", () => {
   assertEquals(legacy.source_url, null);
   assertEquals(legacy.license, null);
   assertEquals(legacy.display_policy, null);
+});
+
+// =============================================================================
+// Day 1-2 (2026-05-27) — agent-loop READ tools schema integrity
+// =============================================================================
+
+Deno.test("ASSISTANT_TOOLS: includes 4 new READ tools for agent loop", () => {
+  const names = ASSISTANT_TOOLS.map((t) => t.name);
+  // All 4 day-1-2 tools present
+  assert(names.includes("list_inbox"), "list_inbox missing");
+  assert(names.includes("read_thread_full"), "read_thread_full missing");
+  assert(names.includes("run_pdf_parser"), "run_pdf_parser missing");
+  assert(names.includes("run_consilium"), "run_consilium missing");
+  // Pre-existing tools still there
+  assert(names.includes("send_email"), "send_email regression");
+  assert(names.includes("generate_pdf"), "generate_pdf regression");
+  assert(names.includes("legal_lookup"), "legal_lookup regression");
+});
+
+Deno.test("ASSISTANT_TOOLS: list_inbox has expected optional fields", () => {
+  const tool = ASSISTANT_TOOLS.find((t) => t.name === "list_inbox")!;
+  // No required fields — all params optional with sensible defaults
+  assertEquals(tool.input_schema.required, []);
+  const props = tool.input_schema.properties as Record<
+    string,
+    Record<string, unknown>
+  >;
+  assert("limit" in props, "limit param missing");
+  assert("only_unread" in props, "only_unread param missing");
+  assert("severity_min" in props, "severity_min param missing");
+  // Severity enum locked
+  assertEquals(
+    props.severity_min.enum,
+    ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+  );
+});
+
+Deno.test("ASSISTANT_TOOLS: read_thread_full requires thread_id", () => {
+  const tool = ASSISTANT_TOOLS.find((t) => t.name === "read_thread_full")!;
+  assertEquals(tool.input_schema.required, ["thread_id"]);
+});
+
+Deno.test("ASSISTANT_TOOLS: run_pdf_parser requires attachment_id", () => {
+  const tool = ASSISTANT_TOOLS.find((t) => t.name === "run_pdf_parser")!;
+  assertEquals(tool.input_schema.required, ["attachment_id"]);
+});
+
+Deno.test("ASSISTANT_TOOLS: run_consilium requires question only", () => {
+  const tool = ASSISTANT_TOOLS.find((t) => t.name === "run_consilium")!;
+  assertEquals(tool.input_schema.required, ["question"]);
+  const props = tool.input_schema.properties as Record<
+    string,
+    Record<string, unknown>
+  >;
+  assert("case_context" in props, "case_context should be optional param");
+});
+
+Deno.test("executeToolCalls: unknown tool returns is_error", async () => {
+  const results = await executeToolCalls(
+    [
+      {
+        type: "tool_use",
+        id: "tu-x",
+        name: "nonexistent_tool",
+        input: {},
+      },
+    ],
+    "Bearer test",
+    "user-x",
+  );
+  assertEquals(results.length, 1);
+  assertEquals(results[0].is_error, true);
+  assert((results[0].content as string).startsWith("Unknown tool:"));
 });

@@ -70,6 +70,113 @@ const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 // =============================================================================
 
 export const ASSISTANT_TOOLS = [
+  // ── READ TOOLS for agent loop (Day 1-2, 2026-05-27) ──────────────────────
+  // These are server-side wrappers around existing infra (email-inbox-sync,
+  // pdf-parser, consilium pipeline, email_attachments table). They let the
+  // agent loop chain calls inside ONE claude-proxy invocation: list_inbox →
+  // get_thread → run_pdf_parser × N → run_consilium → draft.
+  //
+  // All four are READ tools — no side effects, no approval required.
+  // Approval gate kicks in only on the WRITE tools (send_email,
+  // generate_pdf, approve_send_draft) per Day 4.
+  {
+    name: "list_inbox",
+    description:
+      "List the user's recent email threads with triage status. " +
+      "Returns up to 20 threads sorted by last_message_at desc, " +
+      "with severity, subject, sender, unread flag, and triage summary " +
+      "when available. Use this to discover what new mail the user has " +
+      "before drilling into a specific thread.",
+    input_schema: {
+      type: "object",
+      properties: {
+        limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 20,
+          description: "Max threads to return. Default 10.",
+        },
+        only_unread: {
+          type: "boolean",
+          description: "When true, only threads with unread messages.",
+        },
+        severity_min: {
+          type: "string",
+          enum: ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+          description: "Only return threads at or above this severity.",
+        },
+      },
+      required: [],
+    },
+  },
+  {
+    name: "read_thread_full",
+    description:
+      "Read full content of one email thread: subject, all messages " +
+      "(sender, sent_at, plaintext body), participants, attachment " +
+      "metadata, and the triage row if one exists (severity, user_brief, " +
+      "draft_body, proposed_actions). Use this AFTER list_inbox to drill " +
+      "into a specific thread the user asked about.",
+    input_schema: {
+      type: "object",
+      properties: {
+        thread_id: {
+          type: "string",
+          description:
+            "Thread id (the email_threads.id uuid OR the gmail_thread_id " +
+            "string returned by list_inbox).",
+        },
+      },
+      required: ["thread_id"],
+    },
+  },
+  {
+    name: "run_pdf_parser",
+    description:
+      "Parse a PDF attachment via Vision OCR + Sonnet structured " +
+      "extraction. Use this AFTER read_thread_full when the thread has " +
+      "PDF attachments the user wants you to read. Returns parsed_text, " +
+      "parsed_summary, key_extractions (dates, parties, paragraphs cited). " +
+      "Pass the email_attachments.id (returned in read_thread_full's " +
+      "attachments array).",
+    input_schema: {
+      type: "object",
+      properties: {
+        attachment_id: {
+          type: "string",
+          description: "email_attachments.id uuid",
+        },
+      },
+      required: ["attachment_id"],
+    },
+  },
+  {
+    name: "run_consilium",
+    description:
+      "Run the 15-lawyer consilium on a question. Returns each lawyer's " +
+      "opinion + a final synthesised verdict. Use this for high-stakes " +
+      "legal questions where multiple jurisdictions / specialisations " +
+      "matter (immigration + EU rights + ECHR + procedure). Takes " +
+      "~15-25s — only call when the user's question warrants it.",
+    input_schema: {
+      type: "object",
+      properties: {
+        question: {
+          type: "string",
+          description:
+            "The question to consult the consilium on. " +
+            "Be specific — include the case facts and the legal issue.",
+        },
+        case_context: {
+          type: "string",
+          description:
+            "Optional 1-2 paragraph case context (parties, deadlines, " +
+            "what's at stake). The lawyers cite this in their opinions.",
+        },
+      },
+      required: ["question"],
+    },
+  },
   {
     name: "send_email",
     description:
@@ -199,6 +306,25 @@ export const ASSISTANT_TOOLS = [
 // Tool input types
 // =============================================================================
 
+interface ListInboxInput {
+  limit?: number;
+  only_unread?: boolean;
+  severity_min?: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+}
+
+interface ReadThreadFullInput {
+  thread_id: string;
+}
+
+interface RunPdfParserInput {
+  attachment_id: string;
+}
+
+interface RunConsiliumInput {
+  question: string;
+  case_context?: string;
+}
+
 interface SendEmailInput {
   to: string;
   subject: string;
@@ -224,7 +350,14 @@ interface LegalLookupInput {
   valid_at?: string;
 }
 
-type ToolInput = SendEmailInput | GeneratePdfInput | LegalLookupInput;
+type ToolInput =
+  | SendEmailInput
+  | GeneratePdfInput
+  | LegalLookupInput
+  | ListInboxInput
+  | ReadThreadFullInput
+  | RunPdfParserInput
+  | RunConsiliumInput;
 
 // Anthropic tool_use block shape
 interface ToolUseBlock {
@@ -330,6 +463,30 @@ async function executeSingleTool(
 ): Promise<ToolResultBlock> {
   try {
     switch (block.name) {
+      case "list_inbox":
+        return await handleListInbox(
+          block.id,
+          block.input as unknown as ListInboxInput,
+          userId,
+        );
+      case "read_thread_full":
+        return await handleReadThreadFull(
+          block.id,
+          block.input as unknown as ReadThreadFullInput,
+          userId,
+        );
+      case "run_pdf_parser":
+        return await handleRunPdfParser(
+          block.id,
+          block.input as unknown as RunPdfParserInput,
+          userId,
+        );
+      case "run_consilium":
+        return await handleRunConsilium(
+          block.id,
+          block.input as unknown as RunConsiliumInput,
+          userId,
+        );
       case "send_email":
         return await handleSendEmail(
           block.id,
@@ -1147,6 +1304,452 @@ async function handleLegalLookup(
       type: "tool_result",
       tool_use_id: toolUseId,
       content: `legal_lookup failed: ${String(e).slice(0, 300)}`,
+      is_error: true,
+    };
+  }
+}
+
+// =============================================================================
+// Day 1-2 (2026-05-27) — READ tools for agent loop
+// =============================================================================
+//
+// Pattern: each handler instantiates a service-role Supabase client, queries
+// public tables (RLS bypassed — caller's user_id pinned via the userId arg),
+// formats a model-friendly content string. Same try/catch surface as the
+// other tools.
+//
+// These tools NEVER trigger side-effects: list_inbox is a SELECT, read_thread
+// is a SELECT, run_pdf_parser delegates to an existing edge fn (which does
+// write but inside its own RLS-pinned scope — we're not creating new data
+// here, only fetching), run_consilium reads memory blocks + calls Anthropic.
+
+function adminClient() {
+  return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
+async function handleListInbox(
+  toolUseId: string,
+  input: ListInboxInput,
+  userId: string,
+): Promise<ToolResultBlock> {
+  const limit = Math.min(Math.max(input.limit ?? 10, 1), 20);
+  const onlyUnread = input.only_unread === true;
+  const sevMin = input.severity_min;
+  const SEV_RANK: Record<string, number> = {
+    LOW: 1,
+    MEDIUM: 2,
+    HIGH: 3,
+    CRITICAL: 4,
+  };
+  const minRank = sevMin ? (SEV_RANK[sevMin] ?? 0) : 0;
+  const sb = adminClient();
+  let q = sb
+    .from("email_threads")
+    .select(
+      "id, gmail_thread_id, subject, snippet, participants, last_message_at, " +
+        "label_ids, triage_status",
+    )
+    .eq("user_id", userId)
+    .order("last_message_at", { ascending: false })
+    .limit(limit);
+  if (onlyUnread) q = q.contains("label_ids", ["UNREAD"]);
+  const { data: threads, error } = await q;
+  if (error) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `list_inbox failed: ${error.message}`,
+      is_error: true,
+    };
+  }
+  if (!threads || threads.length === 0) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "Inbox is empty (no synced threads for this user yet).",
+    };
+  }
+  // Join with latest triage_results for severity+brief.
+  const threadRows = threads as unknown as Array<Record<string, unknown>>;
+  const threadIds = threadRows.map((t) => t.id as string);
+  const { data: triage } = await sb
+    .from("email_triage_results")
+    .select(
+      "thread_id, severity, user_brief, draft_body, draft_subject, " +
+        "send_recommendation, sent_at",
+    )
+    .in("thread_id", threadIds);
+  const triageByThread: Record<string, Record<string, unknown>> = {};
+  for (
+    const r of ((triage ?? []) as unknown as Array<Record<string, unknown>>)
+  ) {
+    triageByThread[r.thread_id as string] = r;
+  }
+  const rows: Array<Record<string, unknown>> = [];
+  for (const t of threadRows) {
+    const tr = triageByThread[t.id as string];
+    const sev = (tr?.severity as string) ?? "LOW";
+    if (minRank > 0 && (SEV_RANK[sev] ?? 0) < minRank) continue;
+    rows.push({
+      thread_id: t.id,
+      gmail_thread_id: t.gmail_thread_id,
+      subject: t.subject,
+      snippet: t.snippet,
+      participants: t.participants,
+      last_message_at: t.last_message_at,
+      unread: Array.isArray(t.label_ids) &&
+        (t.label_ids as string[]).includes("UNREAD"),
+      severity: sev,
+      user_brief: tr?.user_brief ?? null,
+      has_draft: !!tr?.draft_body,
+      already_sent: !!tr?.sent_at,
+    });
+  }
+  return {
+    type: "tool_result",
+    tool_use_id: toolUseId,
+    content: JSON.stringify({ threads: rows, count: rows.length }, null, 2),
+  };
+}
+
+async function handleReadThreadFull(
+  toolUseId: string,
+  input: ReadThreadFullInput,
+  userId: string,
+): Promise<ToolResultBlock> {
+  const tid = (input.thread_id ?? "").trim();
+  if (!tid) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "read_thread_full requires thread_id",
+      is_error: true,
+    };
+  }
+  const sb = adminClient();
+  // Accept either uuid PK or gmail_thread_id string.
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    .test(tid);
+  const threadQ = sb
+    .from("email_threads")
+    .select(
+      "id, gmail_thread_id, subject, participants, last_message_at, label_ids",
+    )
+    .eq("user_id", userId);
+  const { data: thread, error: tErr } = await (isUuid
+    ? threadQ.eq("id", tid)
+    : threadQ.eq("gmail_thread_id", tid)).maybeSingle();
+  if (tErr || !thread) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `read_thread_full: thread not found (${tid})`,
+      is_error: true,
+    };
+  }
+  const threadDbId = (thread as Record<string, unknown>).id as string;
+  const [msgRes, attRes, triageRes] = await Promise.all([
+    sb
+      .from("email_messages")
+      .select(
+        "id, gmail_message_id, sender_email, sender_name, to_recipients, " +
+          "cc_recipients, subject, body_plaintext, sent_at, has_attachments, " +
+          "attachments_meta",
+      )
+      .eq("thread_id", threadDbId)
+      .order("sent_at", { ascending: true }),
+    sb
+      .from("email_attachments")
+      .select("id, filename, mime, size_bytes, parsed_text, parsed_at")
+      .eq("thread_id", threadDbId)
+      .order("downloaded_at", { ascending: true }),
+    sb
+      .from("email_triage_results")
+      .select(
+        "id, severity, user_brief, draft_body, draft_subject, draft_to, " +
+          "draft_cc, draft_language, send_recommendation, proposed_actions, " +
+          "lawyer_opinions, sent_at",
+      )
+      .eq("thread_id", threadDbId)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+  ]);
+  const msgRows = (msgRes.data ?? []) as unknown as Array<
+    Record<string, unknown>
+  >;
+  const messages = msgRows.map((m) => ({
+    sender: m.sender_name
+      ? `${m.sender_name} <${m.sender_email}>`
+      : m.sender_email,
+    to: m.to_recipients,
+    cc: m.cc_recipients,
+    subject: m.subject,
+    sent_at: m.sent_at,
+    body: (m.body_plaintext as string | null)?.slice(0, 8000) ?? null,
+    body_truncated:
+      typeof m.body_plaintext === "string" && m.body_plaintext.length > 8000,
+    has_attachments: m.has_attachments,
+  }));
+  const attRows = (attRes.data ?? []) as unknown as Array<
+    Record<string, unknown>
+  >;
+  const attachments = attRows.map(
+    (a) => ({
+      attachment_id: a.id,
+      filename: a.filename,
+      mime: a.mime,
+      size_bytes: a.size_bytes,
+      already_parsed: !!a.parsed_text,
+    }),
+  );
+  const triage = triageRes.data ?? null;
+  return {
+    type: "tool_result",
+    tool_use_id: toolUseId,
+    content: JSON.stringify(
+      {
+        thread: {
+          id: threadDbId,
+          gmail_thread_id: (thread as Record<string, unknown>).gmail_thread_id,
+          subject: (thread as Record<string, unknown>).subject,
+          participants: (thread as Record<string, unknown>).participants,
+          last_message_at: (thread as Record<string, unknown>).last_message_at,
+        },
+        messages,
+        attachments,
+        triage,
+      },
+      null,
+      2,
+    ),
+  };
+}
+
+async function handleRunPdfParser(
+  toolUseId: string,
+  input: RunPdfParserInput,
+  userId: string,
+): Promise<ToolResultBlock> {
+  const attId = (input.attachment_id ?? "").trim();
+  if (!attId) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "run_pdf_parser requires attachment_id",
+      is_error: true,
+    };
+  }
+  const sb = adminClient();
+  const { data: att, error: attErr } = await sb
+    .from("email_attachments")
+    .select(
+      "id, user_id, thread_id, message_id, filename, mime, storage_path, " +
+        "parsed_text, parsed_meta, parsed_at",
+    )
+    .eq("id", attId)
+    .maybeSingle();
+  if (attErr || !att) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `run_pdf_parser: attachment not found (${attId})`,
+      is_error: true,
+    };
+  }
+  const a = att as unknown as Record<string, unknown>;
+  if (a.user_id !== userId) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "run_pdf_parser: attachment does not belong to caller",
+      is_error: true,
+    };
+  }
+  // If already parsed, return cached result (we don't re-bill OCR).
+  if (a.parsed_text) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: JSON.stringify(
+        {
+          attachment_id: attId,
+          filename: a.filename,
+          cached: true,
+          parsed_text: (a.parsed_text as string).slice(0, 5000),
+          parsed_meta: a.parsed_meta,
+          parsed_at: a.parsed_at,
+        },
+        null,
+        2,
+      ),
+    };
+  }
+  // Otherwise, delegate to pdf-parser edge fn via internal-call bypass.
+  try {
+    const resp = await fetch(`${SUPABASE_URL}/functions/v1/pdf-parser`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        "Content-Type": "application/json",
+        "x-internal-call": "claude-proxy",
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        storage_path: a.storage_path,
+        filename: a.filename,
+        mime_type: a.mime,
+      }),
+    });
+    if (!resp.ok) {
+      const errText = await resp.text();
+      return {
+        type: "tool_result",
+        tool_use_id: toolUseId,
+        content:
+          `run_pdf_parser: pdf-parser HTTP ${resp.status}: ${
+            errText.slice(0, 200)
+          }`,
+        is_error: true,
+      };
+    }
+    const data = await resp.json() as {
+      document_id?: string;
+      doc_type?: string;
+      parsed_summary?: string;
+      key_extractions?: unknown;
+      page_count?: number;
+      lang_detected?: string;
+    };
+    // Cache the parsed text back into email_attachments so subsequent
+    // tool calls on the same attachment hit the fast path.
+    await sb
+      .from("email_attachments")
+      .update({
+        parsed_text: (data.parsed_summary ?? "").slice(0, 50000),
+        parsed_meta: {
+          document_id: data.document_id,
+          doc_type: data.doc_type,
+          key_extractions: data.key_extractions,
+          page_count: data.page_count,
+          lang_detected: data.lang_detected,
+        },
+        parsed_at: new Date().toISOString(),
+      })
+      .eq("id", attId);
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: JSON.stringify(
+        {
+          attachment_id: attId,
+          filename: a.filename,
+          cached: false,
+          doc_type: data.doc_type,
+          parsed_summary: (data.parsed_summary ?? "").slice(0, 5000),
+          key_extractions: data.key_extractions,
+          page_count: data.page_count,
+          lang_detected: data.lang_detected,
+        },
+        null,
+        2,
+      ),
+    };
+  } catch (e) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `run_pdf_parser failed: ${String(e).slice(0, 300)}`,
+      is_error: true,
+    };
+  }
+}
+
+async function handleRunConsilium(
+  toolUseId: string,
+  input: RunConsiliumInput,
+  _userId: string,
+): Promise<ToolResultBlock> {
+  const question = (input.question ?? "").trim();
+  if (!question) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "run_consilium requires question",
+      is_error: true,
+    };
+  }
+  const apiKey = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
+  if (!apiKey) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "run_consilium: ANTHROPIC_API_KEY not configured",
+      is_error: true,
+    };
+  }
+  // The existing runConsilium streams events via onEvent. We capture them
+  // into a structured array so the tool result returns each lawyer's
+  // opinion + the final synthesis text. The function itself returns the
+  // synthesis string when successful.
+  try {
+    const { runConsilium } = await import("../_shared/consilium.ts");
+    const opinions: Array<{ name: string; opinion: string }> = [];
+    let synthesisText = "";
+    const synthesis = await runConsilium({
+      userMessage: question,
+      systemPrompt:
+        "You are a senior legal consilium of specialised lawyers (FI immigration, " +
+        "EU citizenship, ECHR, KHO procedure, criminal defence, EE admin, " +
+        "cross-border, evidence, procedural strategy, identity errors, CJEU, " +
+        "risk, communication, devil's advocate). Each role gives a structured " +
+        "opinion. Reply in the user's language.",
+      ragContext: "",
+      caseContext: input.case_context ?? "",
+      anthropicApiKey: apiKey,
+      onEvent: (ev) => {
+        // Capture per-role opinion events. The consilium SSE contract is
+        // documented in consilium.ts:ConsiliumSSEEvent. We only care about
+        // role_complete (one per lawyer) and synthesis_text (final).
+        // deno-lint-ignore no-explicit-any
+        const e = ev as any;
+        if (e?.type === "role_complete" && typeof e?.opinion === "string") {
+          opinions.push({
+            name: typeof e?.role === "string"
+              ? e.role
+              : (typeof e?.name === "string" ? e.name : "lawyer"),
+            opinion: e.opinion.slice(0, 2000),
+          });
+        } else if (
+          e?.type === "synthesis_delta" && typeof e?.text === "string"
+        ) {
+          synthesisText += e.text;
+        }
+      },
+    });
+    // runConsilium returns the final synthesis text — prefer the explicit
+    // captured text, fall back to the return value.
+    const finalText = synthesisText.length > 0 ? synthesisText : synthesis;
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: JSON.stringify(
+        {
+          synthesis: finalText.slice(0, 8000),
+          lawyer_count: opinions.length,
+          opinions: opinions.slice(0, 15),
+        },
+        null,
+        2,
+      ),
+    };
+  } catch (e) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `run_consilium failed: ${String(e).slice(0, 300)}`,
       is_error: true,
     };
   }
