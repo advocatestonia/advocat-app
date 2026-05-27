@@ -98,6 +98,11 @@ import { extractAndPatchFacts } from "../_shared/fact_extractor.ts";
 import { appendAdviceDigest } from "../_shared/advice_digest.ts";
 import { LEGAL_LOOKUP_TOOL_USE_INSTRUCTION } from "../_shared/legal_lookup.ts";
 import {
+  hashToolInput,
+  issueActionId,
+  isWriteTool,
+} from "../_shared/agent_action.ts";
+import {
   ASSISTANT_TOOLS,
   consumeLegalLookupLog,
   executeToolCalls,
@@ -1780,6 +1785,123 @@ serve(async (req) => {
           while (iter < MAX_AGENT_ITERATIONS) {
             iter++;
             const isFinalIteration = iter >= MAX_AGENT_ITERATIONS;
+
+            // ── Day 4 (2026-05-27) — write-tool interception ─────────────
+            // BEFORE executing any tool in this batch, check whether ANY
+            // of them is a WRITE tool (send_email, generate_pdf, …). If
+            // so we MUST stop the loop, persist an agent_runs row with
+            // status='awaiting_approval' + a signed action_id, emit an
+            // awaiting_approval SSE event, and return — the user has to
+            // tap Approve before the write fires.
+            //
+            // Mixed batches (1 write + N reads): the safe behaviour is
+            // to halt on the FIRST write seen and not execute any of
+            // the reads either. This matches the GDPR Art 22 "human in
+            // the loop" posture: every write requires explicit consent,
+            // and we don't want a read side-effect to slip through
+            // because it shared a batch with a write the user might
+            // reject. The model can re-issue the reads on the next call.
+            const writeBlock = toolBlocks.find(
+              (b) => isWriteTool(b.name),
+            );
+            if (writeBlock) {
+              const writeArgs = (writeBlock.input ?? {}) as Record<
+                string,
+                unknown
+              >;
+              const argsSha = await hashToolInput(writeArgs);
+              // Insert agent_runs row pre-approval. We use the service
+              // role client (the user's JWT has no INSERT policy by
+              // design — see migration 20260527010000).
+              const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+                auth: { persistSession: false, autoRefreshToken: false },
+              });
+              const userMsgRaw = Array.isArray(body.messages) &&
+                  body.messages.length > 0
+                ? body.messages[body.messages.length - 1]
+                : null;
+              const userMessage = typeof userMsgRaw?.content === "string"
+                ? (userMsgRaw.content as string).slice(0, 1000)
+                : Array.isArray(userMsgRaw?.content)
+                ? JSON.stringify(userMsgRaw.content).slice(0, 1000)
+                : null;
+              const { data: runRow, error: insErr } = await sb
+                .from("agent_runs")
+                .insert({
+                  user_id: gate.user.id,
+                  status: "awaiting_approval",
+                  iterations: iter,
+                  user_message: userMessage,
+                  audit_trail: allToolBlocks.map((b, i) => ({
+                    iter: i + 1,
+                    tool: b.name,
+                  })),
+                })
+                .select("id")
+                .single();
+              if (insErr || !runRow) {
+                lastError = `agent_runs insert failed: ${
+                  String(insErr?.message ?? "no row")
+                }`;
+                console.warn(`claude-proxy: ${lastError}`);
+                break;
+              }
+              const agentRunId = (runRow as { id: string }).id;
+              // Issue HMAC action_id.
+              const gateSecret = Deno.env.get("EMAIL_AGENT_GATE_SECRET") ?? "";
+              const actionId = await issueActionId({
+                agent_run_id: agentRunId,
+                user_id: gate.user.id,
+                tool_name: writeBlock.name,
+                args_sha256: argsSha,
+                secret: gateSecret,
+              });
+              // Persist the pending action envelope on the same row.
+              await sb
+                .from("agent_runs")
+                .update({
+                  write_pending: {
+                    tool_use_id: writeBlock.id,
+                    tool_name: writeBlock.name,
+                    tool_input: writeArgs,
+                    args_sha256: argsSha,
+                    action_id: actionId,
+                  },
+                  updated_at: new Date().toISOString(),
+                })
+                .eq("id", agentRunId);
+
+              // Emit synthetic SSE awaiting_approval event so the Flutter
+              // chat UI can render an approval card. The shape mirrors
+              // existing message_start/delta/stop blocks Flutter already
+              // parses — we add a custom `event: agent_awaiting_approval`
+              // type that the client decodes into a tool-card with
+              // Approve/Decline buttons.
+              const encoder = new TextEncoder();
+              const sseLines = [
+                `event: agent_awaiting_approval`,
+                `data: ${
+                  JSON.stringify({
+                    agent_run_id: agentRunId,
+                    tool_name: writeBlock.name,
+                    tool_input: writeArgs,
+                    action_id: actionId,
+                    iterations: iter,
+                  })
+                }`,
+                ``,
+                ``,
+              ];
+              return new Response(encoder.encode(sseLines.join("\n")), {
+                status: 200,
+                headers: {
+                  ...corsHeaders,
+                  "Content-Type": "text/event-stream",
+                  "Cache-Control": "no-cache",
+                },
+              });
+            }
+
             // Execute the tool_use blocks from the latest assistant turn.
             const toolResults = await executeToolCalls(
               toolBlocks,
