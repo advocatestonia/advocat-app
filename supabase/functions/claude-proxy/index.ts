@@ -103,6 +103,11 @@ import {
   isWriteTool,
 } from "../_shared/agent_action.ts";
 import {
+  checkAndConsumeAgentQuota,
+  recordAgentAudit,
+  sonnetCostMicrocents,
+} from "../_shared/agent_quota.ts";
+import {
   ASSISTANT_TOOLS,
   consumeLegalLookupLog,
   executeToolCalls,
@@ -1765,6 +1770,55 @@ serve(async (req) => {
       ) {
         let toolBlocks = extractToolUseBlocks(result.content);
         if (toolBlocks.length > 0) {
+          // ── Day 9 (2026-05-27) — per-user daily quota gate ──────────
+          // Atomic check + increment on agent_quota (Pro=50, Counsel=20,
+          // Free=0). Free-tier gets a clear "agent mode requires Pro"
+          // message; over-cap gets a 429-style block. Both paths use
+          // the synthetic SSE envelope so Flutter renders the message
+          // as a regular assistant reply.
+          const sbQuota = createClient(
+            SUPABASE_URL,
+            SUPABASE_SERVICE_ROLE_KEY,
+            { auth: { persistSession: false, autoRefreshToken: false } },
+          );
+          const quota = await checkAndConsumeAgentQuota({
+            sb: sbQuota,
+            userId: gate.user.id,
+          });
+          if (!quota.ok) {
+            const msg = quota.reason === "agent_mode_requires_pro"
+              ? "Agent mode is available on Advocat Pro. Upgrade in /subscription to use it."
+              : quota.reason === "daily_cap_reached"
+              ? `You've used your ${quota.tier_cap} agent turns for today. Resets at 00:00 UTC.`
+              : "Agent quota check failed. Try again in a minute.";
+            await recordAgentAudit({
+              sb: sbQuota,
+              userId: gate.user.id,
+              iter: 0,
+              tool: "quota_gate",
+              status: "rate_limited",
+              summary: quota.reason ?? null,
+            });
+            const encoder = new TextEncoder();
+            const blockedSse = buildSseFromAnthropicResult(
+              {
+                content: [{ type: "text", text: msg }],
+                stop_reason: "end_turn",
+              },
+              [],
+              persistMessageId,
+              [],
+            );
+            return new Response(encoder.encode(blockedSse), {
+              status: 200,
+              headers: {
+                ...corsHeaders,
+                "Content-Type": "text/event-stream",
+                "Cache-Control": "no-cache",
+              },
+            });
+          }
+
           // Collect every tool_use across iterations so the citation
           // verifier (Day 1 design) can cross-reference legal_lookup
           // calls regardless of which iteration they happened on.
@@ -1956,6 +2010,28 @@ serve(async (req) => {
             };
             recordAnthropicSpendFromResult(iterResult, iterationBody);
             followUpResult = iterResult;
+
+            // Day 9 audit log: one row per iteration with token + cost
+            // accounting. Fire-and-forget — failure never breaks the loop.
+            const usage = (iterResult.usage as Record<string, unknown> | null) ??
+              null;
+            const inputTokens = Number(usage?.["input_tokens"] ?? 0) +
+              Number(usage?.["cache_creation_input_tokens"] ?? 0) +
+              Number(usage?.["cache_read_input_tokens"] ?? 0);
+            const outputTokens = Number(usage?.["output_tokens"] ?? 0);
+            const toolNamesThisIter = toolBlocks.map((b) => b.name).join(",") ||
+              "no_tool";
+            void recordAgentAudit({
+              sb: sbQuota,
+              userId: gate.user.id,
+              iter,
+              tool: toolNamesThisIter,
+              status: iterResult.stop_reason === "tool_use" ? "ok" : "ok",
+              inputTokens,
+              outputTokens,
+              costMicrocents: sonnetCostMicrocents(inputTokens, outputTokens),
+              summary: `iter ${iter} stop=${iterResult.stop_reason ?? "?"}`,
+            });
 
             // If model says end_turn, we have our final answer — exit loop.
             if (iterResult.stop_reason !== "tool_use") {
