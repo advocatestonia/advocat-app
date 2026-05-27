@@ -543,3 +543,25 @@ Deno.test("executeToolCalls: unknown tool returns is_error", async () => {
   assertEquals(results[0].is_error, true);
   assert((results[0].content as string).startsWith("Unknown tool:"));
 });
+
+// =============================================================================
+// Day 3 (2026-05-27) — agent loop iteration cap regression lock
+// =============================================================================
+
+Deno.test("agent loop: MAX_AGENT_ITERATIONS constant is 5", async () => {
+  // The cap is hardcoded in claude-proxy/index.ts inside the while loop
+  // body. We grep-assert it stays at 5 — bumping it has cost implications
+  // (each iteration is one full Sonnet call), so a deliberate change
+  // should require updating this test as a "look at me" gate.
+  const src = await Deno.readTextFile(
+    new URL("../index.ts", import.meta.url),
+  );
+  assert(
+    src.includes("MAX_AGENT_ITERATIONS = 5"),
+    "MAX_AGENT_ITERATIONS must be 5 — bumping cost needs deliberate review",
+  );
+  assert(
+    src.includes("iter < MAX_AGENT_ITERATIONS"),
+    "while-loop bound must reference MAX_AGENT_ITERATIONS",
+  );
+});

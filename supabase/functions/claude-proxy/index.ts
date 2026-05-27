@@ -1730,70 +1730,136 @@ serve(async (req) => {
       // usage.input/output_tokens, so this is the most accurate path.
       recordAnthropicSpendFromResult(result, body);
 
-      // ── Tool-use execution (2026-05-07) ───────────────────────────────
+      // ── Tool-use execution (2026-05-07, while-loop 2026-05-27) ────────
       // When Anthropic returns stop_reason="tool_use", extract the
-      // tool_use blocks, execute them (send_email / generate_pdf), and
-      // send ONE follow-up call to Anthropic so the model can produce a
-      // final user-facing text reply incorporating the tool results.
+      // tool_use blocks, execute them, send back as a user turn, and
+      // loop until the model returns stop_reason="end_turn" OR we hit
+      // MAX_AGENT_ITERATIONS.
+      //
+      // Day 3 (2026-05-27) — replaced the single-iteration design with
+      // a while loop capped at 5 iterations so the agent can chain
+      // list_inbox → read_thread_full → run_pdf_parser × N →
+      // run_consilium → draft (Sulga gold-standard workflow).
       //
       // Design constraints:
-      //   - Max ONE tool loop iteration (avoids runaway chains).
-      //   - Tool execution errors are surfaced as tool_result.is_error=true;
-      //     the follow-up call lets the model explain the failure gracefully.
+      //   - MAX_AGENT_ITERATIONS = 5 (covers the Sulga gold workflow
+      //     and the 60 s edge-fn ceiling; each iteration ~5-10 s).
+      //   - Tools array stays in the body across iterations EXCEPT on
+      //     the final iteration where we strip it so the model commits
+      //     to a text reply. The model decides when to stop by emitting
+      //     stop_reason=end_turn before iter 5.
+      //   - Tool execution errors are surfaced as tool_result.is_error;
+      //     the next iteration lets the model recover or apologise.
       //   - Only authenticated callers (isAnon=false) reach this branch
       //     because tools are never injected for anon.
-      //   - We skip the loop if the body had stream=true (shouldn't happen
-      //     in the non-streaming branch, but belt+suspenders).
+      const MAX_AGENT_ITERATIONS = 5;
       if (
         !isAnon &&
         result.stop_reason === "tool_use" &&
         Array.isArray(result.content)
       ) {
-        const toolBlocks = extractToolUseBlocks(result.content);
+        let toolBlocks = extractToolUseBlocks(result.content);
         if (toolBlocks.length > 0) {
-          const toolResults = await executeToolCalls(
-            toolBlocks,
-            authHeader,
-            gate.user.id,
-          );
-
-          // Build follow-up messages: existing messages + assistant turn +
-          // tool results as a "user" turn (Anthropic's tool_result protocol).
-          const followUpMessages = [
+          // Collect every tool_use across iterations so the citation
+          // verifier (Day 1 design) can cross-reference legal_lookup
+          // calls regardless of which iteration they happened on.
+          const allToolBlocks = [...toolBlocks];
+          let workingMessages = [
             ...(Array.isArray(body.messages) ? body.messages : []),
             { role: "assistant", content: result.content },
-            { role: "user", content: toolResults },
           ];
+          let workingAssistantContent: unknown = result.content;
+          let followUpResult: {
+            content?: unknown;
+            stop_reason?: string;
+            [key: string]: unknown;
+          } | null = null;
+          let iter = 0;
+          let lastError: string | null = null;
 
-          // Strip tools from the follow-up so the model produces a text reply.
-          const followUpBody = {
-            ...body,
-            messages: followUpMessages,
-            tools: undefined,
-            // Allow the full token budget for the final answer.
-            max_tokens: isAnon ? ANON_MAX_TOKENS : MAX_TOKENS_LIMIT,
-          };
-          delete followUpBody.tools;
+          while (iter < MAX_AGENT_ITERATIONS) {
+            iter++;
+            const isFinalIteration = iter >= MAX_AGENT_ITERATIONS;
+            // Execute the tool_use blocks from the latest assistant turn.
+            const toolResults = await executeToolCalls(
+              toolBlocks,
+              authHeader,
+              gate.user.id,
+            );
 
-          const followUpResponse = await fetch(
-            "https://api.anthropic.com/v1/messages",
-            {
-              method: "POST",
-              headers: buildAnthropicHeaders(CLAUDE_API_KEY),
-              body: JSON.stringify(followUpBody),
-            },
-          );
+            // Append the tool_results as a "user" turn (Anthropic protocol).
+            workingMessages = [
+              ...workingMessages,
+              { role: "user", content: toolResults },
+            ];
 
-          if (followUpResponse.ok) {
-            const followUpResult = await followUpResponse.json() as {
+            // On final iteration strip tools so the model commits to a
+            // text reply (matches the legacy single-iteration behaviour).
+            const iterationBody = {
+              ...body,
+              messages: workingMessages,
+              tools: isFinalIteration ? undefined : body.tools,
+              max_tokens: isAnon ? ANON_MAX_TOKENS : MAX_TOKENS_LIMIT,
+            };
+            if (isFinalIteration) delete iterationBody.tools;
+
+            const iterResponse = await fetch(
+              "https://api.anthropic.com/v1/messages",
+              {
+                method: "POST",
+                headers: buildAnthropicHeaders(CLAUDE_API_KEY),
+                body: JSON.stringify(iterationBody),
+              },
+            );
+
+            if (!iterResponse.ok) {
+              lastError =
+                `iter ${iter} HTTP ${iterResponse.status}: ${
+                  (await iterResponse.text()).slice(0, 200)
+                }`;
+              console.warn(`claude-proxy: agent loop ${lastError}`);
+              break;
+            }
+            const iterResult = await iterResponse.json() as {
               content?: unknown;
+              stop_reason?: string;
               [key: string]: unknown;
             };
-            // P3 anti-abuse — book the follow-up's spend too. Tool follow-ups
-            // can be expensive (full max_tokens budget for the final answer),
-            // so missing this would underreport the per-turn cost ~2x.
-            recordAnthropicSpendFromResult(followUpResult, followUpBody);
-            // Run citations on the follow-up text.
+            recordAnthropicSpendFromResult(iterResult, iterationBody);
+            followUpResult = iterResult;
+
+            // If model says end_turn, we have our final answer — exit loop.
+            if (iterResult.stop_reason !== "tool_use") {
+              break;
+            }
+            // Otherwise, the model wants more tools. Append THIS assistant
+            // turn to history and prepare next iteration.
+            workingAssistantContent = iterResult.content;
+            workingMessages = [
+              ...workingMessages,
+              { role: "assistant", content: workingAssistantContent },
+            ];
+            toolBlocks = extractToolUseBlocks(iterResult.content);
+            for (const tb of toolBlocks) allToolBlocks.push(tb);
+            if (toolBlocks.length === 0) {
+              // stop_reason=tool_use but no actual tool blocks — defensive
+              // bail-out so we don't infinite-loop on a malformed response.
+              break;
+            }
+          }
+
+          if (followUpResult) {
+            const _unused = workingAssistantContent;
+            void _unused;
+            // From this point on the existing code path operates on
+            // `followUpResult` (citation enforcement, verifier, SSE wrap).
+            // The rebound `toolBlocks` is replaced with `allToolBlocks`
+            // so the verifier sees the full turn history across all
+            // iterations.
+            toolBlocks = allToolBlocks;
+            // Per-iteration spend was booked inside the loop; no
+            // duplicate accounting needed here. Run citations on the
+            // follow-up text.
             const followUpText = concatAnthropicTextBlocks(
               followUpResult.content,
             );
@@ -1890,11 +1956,13 @@ serve(async (req) => {
               },
             });
           }
-          // Follow-up call failed — fall through to return the raw tool_use
-          // response so the client isn't left with a total failure.
-          console.warn(
-            `claude-proxy: tool follow-up call failed HTTP ${followUpResponse.status}`,
-          );
+          // Agent loop exited without a final result (followUpResult was
+          // never set — every iteration HTTP-errored, or first iteration
+          // bailed). Fall through to return the raw tool_use response so
+          // the client isn't left with a total failure.
+          if (lastError) {
+            console.warn(`claude-proxy: agent loop ${lastError}`);
+          }
         }
       }
       // ── End tool-use execution ─────────────────────────────────────────
