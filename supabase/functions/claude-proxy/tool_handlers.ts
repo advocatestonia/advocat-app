@@ -178,6 +178,62 @@ export const ASSISTANT_TOOLS = [
     },
   },
   {
+    name: "draft_email_with_attachments",
+    description:
+      "Send an email reply that RE-ATTACHES inbound attachments as " +
+      "evidence (mirrors the Sulga gold-standard workflow: 4 poliisi PDFs " +
+      "downloaded by Inbox sync, OCR'd via run_pdf_parser, then attached " +
+      "to the Jokela vastine reply via this tool).\n\n" +
+      "ALWAYS show the user the draft (recipients, subject, body, " +
+      "attachment filenames + sizes) and ask for explicit confirmation. " +
+      "Set confirmed=true only after the user has agreed.\n\n" +
+      "The tool resolves attachment_ids against email_attachments — only " +
+      "rows owned by the calling user can be attached. Maximum 10 " +
+      "attachments per send, total ≤ 25 MB combined (Gmail limit).",
+    input_schema: {
+      type: "object",
+      properties: {
+        to: {
+          type: "string",
+          description: "Primary recipient email address",
+        },
+        subject: {
+          type: "string",
+          description: "Email subject line",
+        },
+        body: {
+          type: "string",
+          description: "Plain-text body. Use \\n for line breaks.",
+        },
+        cc: {
+          type: "string",
+          description: "Optional CC recipient",
+        },
+        in_reply_to_thread_id: {
+          type: "string",
+          description:
+            "Optional email_threads.id (uuid) OR gmail_thread_id. When " +
+            "set, the send is threaded under that conversation in the " +
+            "recipient's Gmail.",
+        },
+        attachment_ids: {
+          type: "array",
+          items: { type: "string" },
+          description:
+            "Array of email_attachments.id uuids to re-attach. Must be " +
+            "rows owned by the calling user. Max 10 entries.",
+        },
+        confirmed: {
+          type: "boolean",
+          description:
+            "Must be true — indicates user explicitly confirmed sending. " +
+            "Never pass true without showing the full draft to the user.",
+        },
+      },
+      required: ["to", "subject", "body", "attachment_ids", "confirmed"],
+    },
+  },
+  {
     name: "send_email",
     description:
       "Send an email on behalf of the user. " +
@@ -333,6 +389,16 @@ interface SendEmailInput {
   confirmed: boolean;
 }
 
+interface DraftEmailWithAttachmentsInput {
+  to: string;
+  subject: string;
+  body: string;
+  cc?: string;
+  in_reply_to_thread_id?: string;
+  attachment_ids: string[];
+  confirmed: boolean;
+}
+
 interface GeneratePdfInput {
   title: string;
   content: string;
@@ -357,7 +423,8 @@ type ToolInput =
   | ListInboxInput
   | ReadThreadFullInput
   | RunPdfParserInput
-  | RunConsiliumInput;
+  | RunConsiliumInput
+  | DraftEmailWithAttachmentsInput;
 
 // Anthropic tool_use block shape
 interface ToolUseBlock {
@@ -492,6 +559,13 @@ async function executeSingleTool(
           block.id,
           block.input as unknown as SendEmailInput,
           authHeader,
+        );
+      case "draft_email_with_attachments":
+        return await handleDraftEmailWithAttachments(
+          block.id,
+          block.input as unknown as DraftEmailWithAttachmentsInput,
+          authHeader,
+          userId,
         );
       case "generate_pdf":
         return await handleGeneratePdf(
@@ -1753,6 +1827,339 @@ async function handleRunConsilium(
       is_error: true,
     };
   }
+}
+
+// =============================================================================
+// Day 5 (2026-05-27) — draft_email_with_attachments
+// =============================================================================
+//
+// Resolves attachment_ids → loads storage bytes → builds multipart/mixed
+// RFC-2822 message → sends via Gmail API. Mirrors the hand workflow I
+// shipped for Sulga 2026-05-26: 4 poliisi PDFs re-attached to Jokela
+// vastine reply.
+//
+// Auth: this handler is called server-side from claude-proxy AFTER the
+// Day-4 write-tool interception path resolves an approval. At that point
+// the user has tap-approved the exact tool_input — we re-validate
+// attachment ownership defensively (a malicious DB UPDATE on
+// email_attachments wouldn't pass the args_sha256 binding, but the
+// per-row owner check is belt+suspenders).
+
+const STORAGE_BUCKET_CASE_DOCS = "case-documents";
+const MAX_OUTBOUND_ATTACHMENTS = 10;
+const MAX_OUTBOUND_TOTAL_BYTES = 25 * 1024 * 1024;
+
+async function handleDraftEmailWithAttachments(
+  toolUseId: string,
+  input: DraftEmailWithAttachmentsInput,
+  authHeader: string,
+  userId: string,
+): Promise<ToolResultBlock> {
+  // Defence-in-depth — agent loop should have stopped here for approval,
+  // but if it didn't (caller bug), refuse without confirmed=true.
+  if (input.confirmed !== true) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        "Error: draft_email_with_attachments requires user confirmation. " +
+        "Show the user the recipients, subject, body, and attachment " +
+        "filenames+sizes, then call again with confirmed=true.",
+      is_error: true,
+    };
+  }
+  const to = (input.to ?? "").trim();
+  const subject = (input.subject ?? "").trim();
+  const body = (input.body ?? "").trim();
+  const cc = input.cc?.trim();
+  const attIds = Array.isArray(input.attachment_ids) ? input.attachment_ids : [];
+  if (!to || !subject || !body) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: "to, subject and body are required",
+      is_error: true,
+    };
+  }
+  if (attIds.length === 0) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        "attachment_ids must be a non-empty array. If you don't need to " +
+        "attach anything, call send_email instead.",
+      is_error: true,
+    };
+  }
+  if (attIds.length > MAX_OUTBOUND_ATTACHMENTS) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        `attachment_ids exceeds ${MAX_OUTBOUND_ATTACHMENTS} entries (got ${attIds.length})`,
+      is_error: true,
+    };
+  }
+  const sb = adminClient();
+
+  // ── 1. Fetch all attachments by id, enforce owner equality. ───────────
+  const { data: attRows, error: attErr } = await sb
+    .from("email_attachments")
+    .select("id, user_id, filename, mime, size_bytes, storage_path")
+    .in("id", attIds);
+  if (attErr) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `attachment lookup failed: ${attErr.message}`,
+      is_error: true,
+    };
+  }
+  const atts = (attRows ?? []) as unknown as Array<{
+    id: string;
+    user_id: string;
+    filename: string;
+    mime: string;
+    size_bytes: number;
+    storage_path: string;
+  }>;
+  if (atts.length !== attIds.length) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        `Some attachment_ids did not resolve (asked ${attIds.length}, got ${atts.length})`,
+      is_error: true,
+    };
+  }
+  for (const a of atts) {
+    if (a.user_id !== userId) {
+      return {
+        type: "tool_result",
+        tool_use_id: toolUseId,
+        content: `attachment ${a.id} does not belong to caller`,
+        is_error: true,
+      };
+    }
+  }
+  let totalBytes = 0;
+  for (const a of atts) totalBytes += a.size_bytes;
+  if (totalBytes > MAX_OUTBOUND_TOTAL_BYTES) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        `attachment_size_exceeded: total ${totalBytes} bytes > 25 MB cap`,
+      is_error: true,
+    };
+  }
+
+  // ── 2. Resolve threading. If in_reply_to_thread_id is set, look up
+  //       the latest message's RFC Message-ID + gmail_thread_id for
+  //       In-Reply-To + References. ───────────────────────────────────
+  let inReplyTo: string | null = null;
+  let referencesHeader: string | null = null;
+  let gmailThreadId: string | null = null;
+  if (input.in_reply_to_thread_id) {
+    const tid = input.in_reply_to_thread_id.trim();
+    const isUuid =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+        .test(tid);
+    const threadQ = sb
+      .from("email_threads")
+      .select("id, gmail_thread_id")
+      .eq("user_id", userId);
+    const { data: thread } = await (isUuid
+      ? threadQ.eq("id", tid)
+      : threadQ.eq("gmail_thread_id", tid)).maybeSingle();
+    if (thread) {
+      const t = thread as unknown as {
+        id: string;
+        gmail_thread_id: string | null;
+      };
+      gmailThreadId = t.gmail_thread_id;
+      const { data: lastMsg } = await sb
+        .from("email_messages")
+        .select("rfc_message_id, headers_meta")
+        .eq("thread_id", t.id)
+        .order("sent_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (lastMsg) {
+        const m = lastMsg as unknown as {
+          rfc_message_id: string | null;
+          headers_meta: Record<string, unknown> | null;
+        };
+        inReplyTo = m.rfc_message_id ?? null;
+        const refsRaw = (m.headers_meta?.["References"] ?? "") as string;
+        referencesHeader = inReplyTo
+          ? `${refsRaw} ${inReplyTo}`.trim()
+          : refsRaw.trim() || null;
+      }
+    }
+  }
+
+  // ── 3. Download bytes for each attachment from Storage. ───────────────
+  const outboundAttachments: Array<{
+    filename: string;
+    mime: string;
+    data: Uint8Array;
+  }> = [];
+  for (const a of atts) {
+    const { data: blob, error: dErr } = await sb.storage
+      .from(STORAGE_BUCKET_CASE_DOCS)
+      .download(a.storage_path);
+    if (dErr || !blob) {
+      return {
+        type: "tool_result",
+        tool_use_id: toolUseId,
+        content: `failed to download attachment ${a.filename}: ${
+          dErr?.message ?? "no data"
+        }`,
+        is_error: true,
+      };
+    }
+    const buf = new Uint8Array(await blob.arrayBuffer());
+    outboundAttachments.push({
+      filename: a.filename,
+      mime: a.mime || "application/octet-stream",
+      data: buf,
+    });
+  }
+
+  // ── 4. Resolve Gmail OAuth token for the caller via _shared helper.
+  //       The agent loop runs server-side; we can't proxy the user's
+  //       Gmail send via send-email (it requires triage_id). Instead
+  //       call the Gmail API directly with the user's stored token. ──
+  let accessToken: string;
+  try {
+    const { ensureFreshToken, loadGmailToken } = await import(
+      "../_shared/gmail_token.ts"
+    );
+    const tok = await loadGmailToken(sb, userId);
+    if (!tok) {
+      return {
+        type: "tool_result",
+        tool_use_id: toolUseId,
+        content:
+          "Gmail not connected for this user. Ask them to reconnect via " +
+          "/email screen and try again.",
+        is_error: true,
+      };
+    }
+    const fresh = await ensureFreshToken(sb, userId, tok);
+    if (!fresh) {
+      return {
+        type: "tool_result",
+        tool_use_id: toolUseId,
+        content:
+          "Gmail token refresh failed — user must reconnect via /email.",
+        is_error: true,
+      };
+    }
+    accessToken = fresh;
+  } catch (e) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `Gmail token resolve failed: ${String(e).slice(0, 200)}`,
+      is_error: true,
+    };
+  }
+
+  // ── 5. Build multipart/mixed wire form using email-send's helper. ─────
+  let wire: string;
+  try {
+    const { rfc2822Reply } = await import("../email-send/index.ts");
+    // Pick a stable "From" — we let Gmail set it to the user's own
+    // address. Header "From: me" is rejected by Gmail; the empty default
+    // resolves to the OAuth-authenticated account.
+    // Resolve "From" — pull from user_oauth_tokens.email if available.
+    // Empty string falls through to Gmail's authenticated identity default.
+    const { data: oauthRow } = await sb
+      .from("user_oauth_tokens")
+      .select("email")
+      .eq("user_id", userId)
+      .eq("provider", "gmail")
+      .maybeSingle();
+    const fromAddr = (oauthRow as { email?: string } | null)?.email ?? "";
+    wire = rfc2822Reply({
+      from: fromAddr,
+      to,
+      cc,
+      subject,
+      body,
+      inReplyTo,
+      references: referencesHeader,
+      attachments: outboundAttachments,
+    });
+  } catch (e) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `multipart build failed: ${String(e).slice(0, 200)}`,
+      is_error: true,
+    };
+  }
+  // base64url the entire RFC-2822 wire for Gmail API.
+  const wireBytes = new TextEncoder().encode(wire);
+  let bin = "";
+  const STEP = 8192;
+  for (let i = 0; i < wireBytes.length; i += STEP) {
+    bin += String.fromCharCode(
+      ...wireBytes.subarray(i, Math.min(i + STEP, wireBytes.length)),
+    );
+  }
+  const raw = btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(
+    /=+$/,
+    "",
+  );
+
+  // ── 6. POST to Gmail send. ───────────────────────────────────────────
+  const sendBody: Record<string, unknown> = { raw };
+  if (gmailThreadId) sendBody.threadId = gmailThreadId;
+  const resp = await fetch(
+    "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+    {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(sendBody),
+      signal: AbortSignal.timeout(15_000),
+    },
+  );
+  if (!resp.ok) {
+    const err = await resp.text();
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content: `Gmail send failed HTTP ${resp.status}: ${err.slice(0, 200)}`,
+      is_error: true,
+    };
+  }
+  const result = (await resp.json()) as { id?: string; threadId?: string };
+
+  // Unused authHeader — handler does NOT forward the user's JWT to Gmail
+  // (we authenticate via the stored OAuth token instead). Lint silencer:
+  void authHeader;
+
+  return {
+    type: "tool_result",
+    tool_use_id: toolUseId,
+    content: JSON.stringify(
+      {
+        ok: true,
+        gmail_message_id: result.id,
+        gmail_thread_id: result.threadId,
+        attachments_sent: outboundAttachments.length,
+        total_bytes: totalBytes,
+      },
+      null,
+      2,
+    ),
+  };
 }
 
 // =============================================================================

@@ -565,3 +565,100 @@ Deno.test("agent loop: MAX_AGENT_ITERATIONS constant is 5", async () => {
     "while-loop bound must reference MAX_AGENT_ITERATIONS",
   );
 });
+
+// =============================================================================
+// Day 5 (2026-05-27) — draft_email_with_attachments schema + WRITE_TOOLS
+// =============================================================================
+
+Deno.test("ASSISTANT_TOOLS: draft_email_with_attachments schema valid", () => {
+  const tool = ASSISTANT_TOOLS.find(
+    (t) => t.name === "draft_email_with_attachments",
+  )!;
+  assert(tool != null, "draft_email_with_attachments missing");
+  assertEquals(
+    tool.input_schema.required,
+    ["to", "subject", "body", "attachment_ids", "confirmed"],
+  );
+  const props = tool.input_schema.properties as Record<
+    string,
+    Record<string, unknown>
+  >;
+  assertEquals(props.attachment_ids.type, "array");
+  assert("in_reply_to_thread_id" in props, "threading param missing");
+});
+
+Deno.test("draft_email_with_attachments: rejects confirmed=false", async () => {
+  const results = await executeToolCalls(
+    [
+      {
+        type: "tool_use",
+        id: "tu-d1",
+        name: "draft_email_with_attachments",
+        input: {
+          to: "a@b.com",
+          subject: "S",
+          body: "B",
+          attachment_ids: ["x"],
+          confirmed: false,
+        },
+      },
+    ],
+    "Bearer test",
+    "user-1",
+  );
+  assertEquals(results[0].is_error, true);
+  assertEquals(
+    results[0].content.includes("requires user confirmation"),
+    true,
+  );
+});
+
+Deno.test("draft_email_with_attachments: rejects empty attachment_ids", async () => {
+  const results = await executeToolCalls(
+    [
+      {
+        type: "tool_use",
+        id: "tu-d2",
+        name: "draft_email_with_attachments",
+        input: {
+          to: "a@b.com",
+          subject: "S",
+          body: "B",
+          attachment_ids: [],
+          confirmed: true,
+        },
+      },
+    ],
+    "Bearer test",
+    "user-1",
+  );
+  assertEquals(results[0].is_error, true);
+  assertEquals(
+    results[0].content.includes("attachment_ids must be a non-empty array"),
+    true,
+  );
+});
+
+Deno.test("draft_email_with_attachments: rejects > 10 attachments", async () => {
+  const tooMany = Array.from({ length: 11 }, (_, i) => `att-${i}`);
+  const results = await executeToolCalls(
+    [
+      {
+        type: "tool_use",
+        id: "tu-d3",
+        name: "draft_email_with_attachments",
+        input: {
+          to: "a@b.com",
+          subject: "S",
+          body: "B",
+          attachment_ids: tooMany,
+          confirmed: true,
+        },
+      },
+    ],
+    "Bearer test",
+    "user-1",
+  );
+  assertEquals(results[0].is_error, true);
+  assertEquals(results[0].content.includes("exceeds 10 entries"), true);
+});
