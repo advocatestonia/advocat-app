@@ -199,6 +199,47 @@ run "git worktree add \"$WORKTREE\" github/gh-pages"
 mkdir -p "$WORKTREE/staging"
 run "rsync -av --delete build/web/ \"$WORKTREE/staging/\""
 
+# ----- SPA deep-link stubs (2026-05-27) ------------------------------------
+# GitHub Pages serves static files only — a request to /drafts returns 404
+# unless we ship a real HTML file at that path. We copy the persistent
+# Flutter shell (app.html, kept at gh-pages root and never overwritten by
+# rsync) to every SPA deep-link the prod_smoke.sh probes.
+#
+# Files ending in `.html` are preferred over `<route>/index.html` because
+# GitHub Pages issues a 301 from `/drafts` → `/drafts/` when only the
+# directory form exists. The smoke uses plain curl without -L, so a 301
+# fails the 200 check. With `drafts.html` GH Pages serves `/drafts` → 200
+# directly (same trick as `/landing` → `landing.html`).
+#
+# Keep the route list in sync with web/404.html SPA_ROUTES and
+# lib/config/router.dart. Smoke-critical paths must appear here verbatim.
+# ---------------------------------------------------------------------------
+spa_stub_target() {
+  local target="$1"
+  local shell="$target/app.html"
+  # If the staging dir didn't get an app.html via rsync (build doesn't emit
+  # one — it's a persistent gh-pages file), source it from the worktree root.
+  if [[ ! -f "$shell" && -f "$WORKTREE/app.html" ]]; then
+    cp "$WORKTREE/app.html" "$shell"
+  fi
+  if [[ ! -f "$shell" ]]; then
+    warn "No app.html found in $target or $WORKTREE — skipping SPA stubs"
+    return
+  fi
+  # Smoke-probed deep-links (5 paths) + nested directories so /drafts/new
+  # and /vault/add resolve via the .html extension fallback.
+  mkdir -p "$target/drafts" "$target/vault"
+  cp "$shell" "$target/drafts.html"
+  cp "$shell" "$target/vault.html"
+  cp "$shell" "$target/contract-review.html"
+  cp "$shell" "$target/drafts/new.html"
+  cp "$shell" "$target/drafts/00000000-0000-0000-0000-000000000000.html"
+  cp "$shell" "$target/vault/add.html"
+  ok "SPA stubs written under $target"
+}
+
+spa_stub_target "$WORKTREE/staging"
+
 cd "$WORKTREE"
 git add -A staging/
 if git diff --cached --quiet; then
@@ -266,6 +307,11 @@ for f in "${LANDING_FILES[@]}"; do
   RSYNC_EXCLUDE+=(--exclude="$f")
 done
 run "rsync -av ${RSYNC_EXCLUDE[*]} build/web/ \"$WORKTREE/\""
+
+# SPA deep-link stubs at prod root. Same logic as staging — copies of
+# app.html under stable per-route file names so the smoke's curl_code probe
+# returns 200 without following redirects.
+spa_stub_target "$WORKTREE"
 
 # Guard: required gh-pages files must exist and be non-empty before commit.
 if [[ $DRY_RUN -eq 0 ]]; then
