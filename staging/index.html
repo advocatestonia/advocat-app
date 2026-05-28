@@ -6,13 +6,9 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Advocat — AI õigusabi · Defend Your Rights</title>
+<title>Advocat - AI Legal Assistant for Estonia and EU</title>
 <meta name="description" content="AI-powered legal assistant for Estonia and the EU. Get instant legal answers in 17 languages with real Estonian law citations. Free to start. €19.99/mo Pro. 24/7 — no waiting for a lawyer.">
 <meta name="robots" content="index,follow">
-<!-- TODO: Owner — add Google Search Console verification meta tag here after registering at https://search.google.com/search-console -->
-<!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE"> -->
-<!-- TODO: Owner — add Bing Webmaster Tools verification at https://www.bing.com/webmasters -->
-<!-- <meta name="msvalidate.01" content="YOUR_VERIFICATION_CODE"> -->
   <link rel="canonical" href="https://advocat.ee/">
   <link rel="alternate" hreflang="et" href="https://advocat.ee/">
   <link rel="alternate" hreflang="en" href="https://advocat.ee/?lang=en">
@@ -134,9 +130,21 @@
 <link rel="icon" type="image/x-icon" href="favicon.ico?v=premium">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon.png?v=premium">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=premium">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Self-hosted Inter Variable (was Google Fonts × 6 weights = ~120KB + 2 RTTs).
+     Single 344KB woff2 covers wght 100-900. font-display: swap prevents FOIT. -->
+<link rel="preload" href="/assets/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="dns-prefetch" href="//okgnkucgwsytsondrjye.supabase.co">
+<link rel="preconnect" href="https://okgnkucgwsytsondrjye.supabase.co" crossorigin>
+<style>
+  @font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/InterVariable.woff2') format('woff2-variations'),
+         url('/assets/fonts/InterVariable.woff2') format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
 <!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
      All vendor scripts are loaded conditionally inside _analytics.js
      after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
@@ -262,17 +270,26 @@ img, svg { display: block; max-width: 100%; }
 .btn-outline:hover { border-color: var(--teal); color: var(--teal); }
 /* .btn-hero / .btn-hero-out — defined inside hero block below */
 
-/* Language dropdown */
-.lang-wrap { position: relative; }
-.lang-btn { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 40px; transition: all .15s; background: #fff; display: inline-flex; align-items: center; gap: 6px; }
+/* Language dropdown (a.k.a. lang-switcher) */
+.lang-switcher, .lang-wrap { position: relative; }
+.lang-btn { font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-height: 40px; transition: all .15s; background: #fff; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .lang-btn:hover { border-color: var(--teal); color: var(--teal); }
-.lang-btn .caret { font-size: 9px; opacity: .55; }
-.lang-menu { position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 180px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; }
-.lang-menu.open { display: block; }
-.lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 6px; font-size: 13.5px; color: var(--text); font-weight: 500; transition: background .15s; }
-.lang-menu button:hover { background: var(--bg2); }
+.lang-btn:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.lang-btn .lang-globe { width: 14px; height: 14px; opacity: .7; }
+.lang-btn .lang-flag { font-size: 14px; line-height: 1; }
+.lang-btn .caret { font-size: 9px; opacity: .55; transition: transform .2s ease-out; }
+.lang-btn[aria-expanded="true"] .caret { transform: rotate(180deg); }
+.lang-menu { position: absolute; top: calc(100% + 6px); right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 12px 32px -8px rgba(15,27,53,.18); padding: 6px; min-width: 200px; max-height: 360px; overflow-y: auto; z-index: 200; display: none; opacity: 0; transform: translateY(-4px); transition: opacity .2s ease-out, transform .2s ease-out; }
+.lang-menu.open { display: block; opacity: 1; transform: translateY(0); }
+.lang-menu button { display: flex; width: 100%; align-items: center; justify-content: space-between; padding: 8px 12px; border-radius: 6px; font-size: 13.5px; color: var(--text); font-weight: 500; transition: background .15s; cursor: pointer; gap: 10px; }
+.lang-menu button:hover, .lang-menu button:focus-visible { background: var(--bg2); outline: none; }
 .lang-menu button.active { background: rgba(13,148,136,.08); color: var(--teal); }
+.lang-menu button .lang-flag { font-size: 16px; line-height: 1; flex-shrink: 0; }
+.lang-menu button .lang-label { flex: 1; text-align: left; }
 .lang-menu .lang-code { font-size: 10px; font-weight: 800; letter-spacing: .1em; color: var(--faint); }
+@media (max-width: 480px) {
+  .lang-menu { position: fixed; left: 12px; right: 12px; top: 64px; min-width: 0; }
+}
 
 /* ── PROMO BANNER ── */
 .promo-banner { background: linear-gradient(135deg, var(--navy), #1a3a6e); color: #fff; padding: 9px 16px; text-align: center; font-size: 13px; font-weight: 500; }
@@ -342,6 +359,156 @@ img, svg { display: block; max-width: 100%; }
   100% { transform: translate(-50%, 14px); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .hero-scroll-hint .hero-scroll-dot { animation: none; } }
+
+/* Hero secondary CTA — text-only "See pricing" */
+.hero-cta-text {
+  display: inline-flex; align-items: center;
+  height: 44px; padding: 0 6px;
+  font-size: 14.5px; font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .15s ease;
+}
+.hero-cta-text:hover { color: var(--teal); }
+.hero-cta-text::after { content: ' →'; opacity: .6; }
+
+/* ── FOUNDER STORY (navy bg, cream text) ── */
+.founder-section {
+  background: linear-gradient(180deg, #0F1B35 0%, #1A2B4A 100%);
+  color: #F0EEEB;
+  padding: 88px 0;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.founder-card {
+  max-width: 880px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 36px;
+  align-items: start;
+}
+.founder-avatar {
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.35), 0 0 0 4px rgba(13,148,136,.18);
+  flex-shrink: 0;
+}
+.founder-avatar svg, .founder-avatar img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.founder-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(13,148,136,.16);
+  color: #14B8A6;
+  border: 1px solid rgba(13,148,136,.32);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 11.5px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.founder-text h2 {
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: #F0EEEB;
+  margin: 0 0 18px;
+}
+.founder-quote {
+  font-size: 17px;
+  line-height: 1.65;
+  color: rgba(240,238,235,.9);
+  font-style: italic;
+  margin: 0 0 20px;
+  padding: 0;
+  border: none;
+  max-width: 640px;
+}
+.founder-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #F0EEEB;
+  line-height: 1.55;
+}
+.founder-name small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(240,238,235,.6);
+  margin-top: 4px;
+}
+@media (max-width: 720px) {
+  .founder-section { padding: 56px 0; }
+  .founder-card { grid-template-columns: 1fr; gap: 20px; text-align: left; }
+  .founder-avatar { width: 88px; height: 88px; }
+  .founder-avatar svg { width: 88px; height: 88px; }
+  .founder-quote { font-size: 15.5px; }
+}
+
+/* ── TESTIMONIALS (cream cards) ── */
+.testimonials-trust {
+  background: #F0EEEB;
+  padding: 72px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.testimonials-trust .section-label {
+  font-size: 11.5px; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--teal2);
+  margin-bottom: 12px;
+  text-align: center;
+}
+.testimonials-trust h2 {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  text-align: center;
+  margin: 0 0 36px;
+}
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.testimonial {
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 24px 22px;
+  margin: 0;
+  box-shadow: 0 2px 12px rgba(15,27,53,.04);
+  display: flex; flex-direction: column;
+  gap: 14px;
+}
+.testimonial blockquote {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+  font-style: italic;
+}
+.testimonial figcaption {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-top: auto;
+}
+.trust-note {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 32px auto 0;
+  max-width: 640px;
+  line-height: 1.55;
+}
+@media (max-width: 900px) {
+  .testimonial-grid { grid-template-columns: 1fr; max-width: 520px; }
+  .testimonials-trust { padding: 56px 0; }
+}
 
 /* ── CHAT CARD ── */
 .chat-card { background: #fff; border-radius: 16px; box-shadow: 0 24px 64px -16px rgba(15,27,53,.16), 0 4px 16px -4px rgba(15,27,53,.08); overflow: hidden; border: 1px solid var(--line); max-height: 440px; display: flex; flex-direction: column; }
@@ -934,6 +1101,38 @@ img, svg { display: block; max-width: 100%; }
 
 /* ── PRICING ── */
 .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 56px; }
+
+/* ── PRICING COMPARE TABLE (feature parity) ── */
+.pricing-compare-section { background: var(--bg2); }
+.pricing-compare-wrap { margin-top: 32px; border: 1px solid rgba(15, 27, 53, .08); border-radius: 18px; overflow: hidden; background: #fff; box-shadow: 0 1px 3px rgba(15, 27, 53, .04); }
+.pricing-compare-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.pricing-compare-table { width: 100%; border-collapse: collapse; font-size: 14.5px; color: var(--navy); min-width: 640px; }
+.pricing-compare-table thead th { padding: 22px 18px 18px; background: #FAFBFC; border-bottom: 1.5px solid rgba(15, 27, 53, .08); text-align: center; font-weight: 600; color: var(--navy); vertical-align: top; }
+.pricing-compare-table thead th:first-child { text-align: left; background: #fff; }
+.pricing-compare-table thead .pcmp-plan-name { font-size: 18px; letter-spacing: -.01em; }
+.pricing-compare-table thead .pcmp-plan-price { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 4px; }
+.pricing-compare-table thead .pcmp-plan-price strong { color: var(--navy); font-weight: 700; font-size: 15px; }
+.pricing-compare-table thead .pcmp-col-featured { position: relative; background: linear-gradient(180deg, rgba(13, 148, 136, .06) 0%, rgba(13, 148, 136, .02) 100%); }
+.pricing-compare-table thead .pcmp-col-featured::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 3px; background: var(--teal); }
+.pricing-compare-table thead .pcmp-badge { display: inline-block; background: var(--teal); color: #fff; font-size: 10.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; margin-bottom: 8px; }
+.pricing-compare-table tbody td { padding: 14px 18px; border-bottom: 1px solid rgba(15, 27, 53, .05); text-align: center; vertical-align: middle; }
+.pricing-compare-table tbody td:first-child { text-align: left; font-weight: 500; color: var(--navy); }
+.pricing-compare-table tbody tr:last-child td { border-bottom: none; }
+.pricing-compare-table tbody tr:nth-child(even) td { background: rgba(15, 27, 53, .015); }
+.pricing-compare-table tbody tr:nth-child(even) td.pcmp-cell-featured { background: rgba(13, 148, 136, .045); }
+.pricing-compare-table tbody td.pcmp-cell-featured { background: rgba(13, 148, 136, .025); }
+.pricing-compare-table .pcmp-check { color: var(--teal); font-weight: 700; font-size: 16px; }
+.pricing-compare-table .pcmp-dash { color: #C7CBD3; font-weight: 600; }
+.pricing-compare-table .pcmp-strong { font-weight: 600; color: var(--navy); }
+.pricing-compare-table .pcmp-section-row td { background: #F8F9FA !important; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; padding: 14px 18px 10px; text-align: left; }
+.pricing-compare-foot { padding: 18px 22px; background: #FAFBFC; border-top: 1px solid rgba(15, 27, 53, .06); font-size: 12.5px; color: var(--muted); text-align: center; line-height: 1.55; }
+.pricing-compare-foot strong { color: var(--navy); }
+@media (max-width: 768px) {
+  .pricing-compare-table { font-size: 13px; min-width: 560px; }
+  .pricing-compare-table thead th { padding: 16px 12px 14px; }
+  .pricing-compare-table tbody td { padding: 12px 12px; }
+}
+
 .plan {
   --plan-ease: cubic-bezier(.2,.8,.3,1);
   border-radius: 20px; padding: 30px 28px 28px; border: 1.5px solid var(--line);
@@ -1727,11 +1926,13 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
       </ul>
       <div class="nav-actions">
-        <div class="lang-wrap">
-          <button class="lang-btn" id="lang-toggle" aria-haspopup="true" aria-expanded="false">
-            <span id="lang-current">EN</span><span class="caret">▾</span>
+        <div class="lang-wrap lang-switcher" id="langSwitcher">
+          <button class="lang-btn" id="lang-toggle" aria-haspopup="listbox" aria-expanded="false" aria-label="Change language" aria-controls="lang-menu">
+            <svg class="lang-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <span class="lang-flag" id="lang-flag" aria-hidden="true"></span>
+            <span id="lang-current">EN</span><span class="caret" aria-hidden="true">▾</span>
           </button>
-          <div class="lang-menu" id="lang-menu" role="menu"></div>
+          <ul class="lang-menu" id="lang-menu" role="listbox" aria-label="Languages"></ul>
         </div>
         <a class="btn btn-ghost nav-action-desktop" href="/app.html" data-i18n="nav.login">Sign in</a>
         <a class="btn btn-primary nav-action-desktop" href="/app.html" data-i18n="nav.cta">Try free</a>
@@ -1763,11 +1964,11 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="hero-grid">
       <div>
         <div class="hero-eyebrow" data-i18n="hero.eyebrow">AI LEGAL ASSISTANT · 2026</div>
-        <h1 data-i18n-html="hero.title">Legal <em>AI</em> built for Estonia and the EU.</h1>
-        <p class="hero-sub" data-i18n="hero.sub">Citations to statutes and case law, draft correspondence ready for your review, and case material organization — with multilingual support.</p>
+        <h1 data-i18n-html="hero.title" data-i18n-key="heroH1Ru">Facing deportation, a fine, or wrongful termination?<br>Advocat fights for you — 24/7.</h1>
+        <p class="hero-sub" data-i18n="hero.sub">Legal AI that understands immigrant pain — because we have been through it ourselves.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary btn-hero" href="/app.html" data-i18n="hero.primary">Try free →</a>
-          <a class="btn btn-hero-out" href="#how" data-i18n="hero.secondary">See an example</a>
+          <a class="btn btn-primary btn-hero" href="/app.html" data-i18n="hero.primary" data-cta="hero-primary-free">Try Advocat free →</a>
+          <a class="hero-cta-text" href="#pricing" data-i18n="hero.secondary">See pricing</a>
         </div>
         <p class="hero-disclaimer" data-i18n="hero.disclaimer">Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.</p>
         <div class="hero-trust">
@@ -1782,7 +1983,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <div class="chat-header">
           <div class="chat-header-l">
             <div class="chat-avatar">
-              <img src="/blog/logo_shield.png" alt="">
+              <img src="/blog/logo_shield.png" alt="" loading="lazy" decoding="async">
             </div>
             <div>
               <div class="chat-name">Advocat</div>
@@ -1803,6 +2004,58 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     </div>
   </div>
   <div class="hero-scroll-hint" id="hero-scroll-hint" aria-hidden="true"><span class="hero-scroll-dot"></span></div>
+</section>
+
+<!-- ── FOUNDER STORY ── -->
+<!-- TODO(owner): replace founder-avatar placeholder with real /web/founder-sulga.jpg portrait when available -->
+<section class="founder-section" id="why" aria-labelledby="founder-heading">
+  <div class="container">
+    <div class="founder-card">
+      <div class="founder-avatar" aria-hidden="true">
+        <!-- Placeholder: navy circle with DS initials. Owner: replace this <div> with <img src="founder-sulga.jpg" alt="Dmitri Sulga, Advocat founder"> -->
+        <svg viewBox="0 0 200 200" width="120" height="120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dmitri Sulga portrait placeholder">
+          <circle cx="100" cy="100" r="100" fill="#0B7A70"/>
+          <text x="100" y="118" font-family="Inter, system-ui, sans-serif" font-size="72" font-weight="800" fill="#F0EEEB" text-anchor="middle" letter-spacing="-2">DS</text>
+        </svg>
+      </div>
+      <div class="founder-text">
+        <div class="founder-eyebrow" data-i18n="founder.eyebrow">WHY ADVOCAT EXISTS</div>
+        <h2 id="founder-heading" data-i18n="founder.heading">Built by people who lived this.</h2>
+        <blockquote class="founder-quote" data-i18n-html="founder.quote">
+          “December 2025. Helsinki. Police escorted my wife to the Eckerö Line ferry. Migri called it ‘voluntary return.’ We had paid €300 for a hotel that night.<br><br>
+          Six months later, our case is at the Supreme Administrative Court of Finland (KHO, application 200/2026). I built Advocat so other immigrants don't have to learn FI law from a Migri letter at 6&nbsp;pm on a Friday.”
+        </blockquote>
+        <div class="founder-name" data-i18n-html="founder.name">
+          — Dmitri Sulga, founder<br>
+          <small>Founder case: Sulga v. Finland · ECHR Application №200</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<!-- TODO(owner): replace 3 testimonials with real user quotes after first 10 paying users -->
+<section class="testimonials-trust" id="trust" aria-labelledby="trust-heading">
+  <div class="container">
+    <div class="section-label" data-i18n="testimonials.label">FROM REAL USERS</div>
+    <h2 id="trust-heading" data-i18n="testimonials.heading">From people who used Advocat</h2>
+    <div class="testimonial-grid">
+      <figure class="testimonial">
+        <blockquote data-i18n="testimonial.q1">“PLACEHOLDER — owner will insert real testimonial when the first paying user shares one.”</blockquote>
+        <figcaption data-i18n="testimonial.a1">— Name, RU-speaker, Tallinn</figcaption>
+      </figure>
+      <figure class="testimonial">
+        <blockquote data-i18n="testimonial.q2">“PLACEHOLDER — owner will insert real testimonial after first 10 paying users.”</blockquote>
+        <figcaption data-i18n="testimonial.a2">— Name, ET-speaker, Tartu</figcaption>
+      </figure>
+      <figure class="testimonial">
+        <blockquote data-i18n="testimonial.q3">“PLACEHOLDER — owner will insert real testimonial from a Finnish user.”</blockquote>
+        <figcaption data-i18n="testimonial.a3">— Name, FI-speaker, Helsinki</figcaption>
+      </figure>
+    </div>
+    <p class="trust-note" data-i18n="testimonials.disclaimer">Independent disclaimer: Advocat is an information service, not a substitute for sworn legal counsel.</p>
+  </div>
 </section>
 
 <!-- ── LIVE DEMO TEASER ── -->
@@ -1913,7 +2166,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
                 <circle class="r2" cx="130" cy="130" r="110"/>
                 <circle class="r3" cx="130" cy="130" r="110"/>
               </svg>
-              <img src="/logo.png" alt="Advocat — AI Legal Assistant">
+              <img src="/logo.png" alt="Advocat — AI Legal Assistant" loading="lazy" decoding="async">
             </div>
             <div class="cmp-eyebrow" data-i18n="compare.us_tag">AI LEGAL ASSISTANT</div>
           </div>
@@ -2157,6 +2410,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f4">Full document drafting (letters, complaints)</li>
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
+          <li data-i18n="plan2.f7">15-lawyer AI consilium debate per query</li>
           <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="pro" id="plan2-cta" href="/app.html?plan=counsel&amp;billing=monthly" data-i18n="plan2.cta">Start now</a>
@@ -2170,7 +2424,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
             <circle class="r2" cx="50" cy="50" r="38"/>
             <circle class="r3" cx="50" cy="50" r="38"/>
           </svg>
-          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true">
+          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </div>
         <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
         <div class="plan-name" data-i18n="plan3.name">Premium</div>
@@ -2189,7 +2443,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f3">Unlimited document scans</li>
           <li data-i18n="plan3.f4">Priority processing</li>
           <li data-i18n="plan3.f5">Everything in Pro</li>
-          <li data-i18n="plan3.f6">Email & document export</li>
+          <li data-i18n="plan3.f6">Email Agent — AI drafts replies in your Gmail inbox</li>
+          <li data-i18n="plan3.f7">Case timeline — auto-tracked from every email + deadline</li>
           <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta" data-variant="v1" data-plan="premium" href="/app.html?plan=representation&amp;billing=monthly" data-i18n="plan3.cta">Choose Premium</a>
@@ -2295,6 +2550,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan2.f4">Full document drafting (letters, complaints)</li>
           <li data-i18n="plan2.f5">Voice input</li>
           <li data-i18n="plan2.f6">Web search for fresh law</li>
+          <li data-i18n="plan2.f7">15-lawyer AI consilium debate per query</li>
           <li data-i18n="pricing.pro.contract_review">5 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="pro" data-href-monthly="/app.html?plan=counsel&amp;billing=monthly" data-href-annual="/app.html?plan=counsel&amp;billing=annual" href="/app.html?plan=counsel&amp;billing=annual" data-i18n="plan2.cta">Start now</a>
@@ -2308,7 +2564,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
             <circle class="r2" cx="50" cy="50" r="38"/>
             <circle class="r3" cx="50" cy="50" r="38"/>
           </svg>
-          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true">
+          <img class="plan-pulse-shield" src="/blog/logo_shield.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
         </div>
         <span class="plan-name-eyebrow" data-i18n="plan3.eyebrow">Full defense</span>
         <div class="plan-name" data-i18n="plan3.name">Premium</div>
@@ -2335,7 +2591,8 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
           <li data-i18n="plan3.f3">Unlimited document scans</li>
           <li data-i18n="plan3.f4">Priority processing</li>
           <li data-i18n="plan3.f5">Everything in Pro</li>
-          <li data-i18n="plan3.f6">Email & document export</li>
+          <li data-i18n="plan3.f6">Email Agent — AI drafts replies in your Gmail inbox</li>
+          <li data-i18n="plan3.f7">Case timeline — auto-tracked from every email + deadline</li>
           <li data-i18n="pricing.premium.contract_review">20 contract reviews / month</li>
         </ul>
         <a class="btn btn-primary ab-cta plan-cta-billing" data-variant="v2" data-plan="premium" data-href-monthly="/app.html?plan=representation&amp;billing=monthly" data-href-annual="/app.html?plan=representation&amp;billing=annual" href="/app.html?plan=representation&amp;billing=annual" data-i18n="plan3.cta">Choose Premium</a>
@@ -2399,6 +2656,144 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
   </div>
 </section>
 
+<!-- ── PRICING COMPARE TABLE — feature parity across Free / Pro / Premium ── -->
+<section class="section pricing-compare-section" id="pricing-compare" aria-label="Plan feature comparison">
+  <div class="container">
+    <div style="text-align:center">
+      <div class="section-label" style="justify-content:center" data-i18n="pricing.compare.label">COMPARE PLANS</div>
+      <h2 data-i18n-html="pricing.compare.title">Every feature, side <em>by side</em>.</h2>
+      <p class="section-sub" style="margin:0 auto" data-i18n="pricing.compare.sub">Pick what fits. Upgrade or cancel anytime — one click, no calls.</p>
+    </div>
+
+    <div class="pricing-compare-wrap">
+      <div class="pricing-compare-scroll">
+        <table class="pricing-compare-table">
+          <thead>
+            <tr>
+              <th scope="col"><span data-i18n="pricing.compare.feature_col">Feature</span></th>
+              <th scope="col">
+                <div class="pcmp-plan-name" data-i18n="plan1.name">Free</div>
+                <div class="pcmp-plan-price"><strong>€0</strong> <span data-i18n="pricing.compare.forever">/ forever</span></div>
+              </th>
+              <th scope="col" class="pcmp-col-featured">
+                <span class="pcmp-badge" data-i18n="plan2.badge">Most popular</span>
+                <div class="pcmp-plan-name" data-i18n="plan2.name">Pro</div>
+                <div class="pcmp-plan-price"><strong>€19.99</strong> <span data-i18n="pricing.compare.per_mo">/ mo</span> · <span data-i18n="pricing.compare.or_yr_pro">€159.99/yr</span></div>
+              </th>
+              <th scope="col">
+                <div class="pcmp-plan-name" data-i18n="plan3.name">Premium</div>
+                <div class="pcmp-plan-price"><strong>€29.99</strong> <span data-i18n="pricing.compare.per_mo">/ mo</span> · <span data-i18n="pricing.compare.or_yr_premium">€249.99/yr</span></div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.core">Core AI</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.chat">AI legal chat</td>
+              <td><span data-i18n="pricing.compare.val.chat.free">10 messages</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-strong" data-i18n="pricing.compare.val.chat.pro">100 / day</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.chat.premium">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.cases">Active cases</td>
+              <td><span data-i18n="pricing.compare.val.cases.free">1 case</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.cases.pro">3 cases</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.cases.premium">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.langs">Languages</td>
+              <td><span data-i18n="pricing.compare.val.langs.all">17 langs</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.langs.all">17 langs</span></td>
+              <td><span data-i18n="pricing.compare.val.langs.all">17 langs</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.citations">Cited EU & EE law</td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.docs">Documents</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.doc_upload">Document scanning</td>
+              <td><span data-i18n="pricing.compare.val.doc.free">3 docs</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.doc.pro">20 / mo</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.doc.premium">Unlimited</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.contract_review">Contract review</td>
+              <td><span data-i18n="pricing.compare.val.contract.free">1 (trial)</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.contract.pro">5 / mo</span></td>
+              <td><span data-i18n="pricing.compare.val.contract.premium">20 / mo</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.drafting">Drafting Studio (letters, complaints)</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.voice">Voice input</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.pro">Pro tools</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.consilium">15-lawyer AI consilium</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.consilium.premium">✓ priority</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.deadline">Deadline radar</td>
+              <td><span data-i18n="pricing.compare.val.deadline.free">View only</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.deadline.pro">View + alerts</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.deadline.premium">Auto-track + alerts</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.web_search">Web search for fresh law</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.email_agent">Email Agent (drafts in Gmail)</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.timeline">Case timeline auto-tracking</td>
+              <td><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-dash" aria-label="Not included">—</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr class="pcmp-section-row"><td colspan="4" data-i18n="pricing.compare.row.section.support">Support & privacy</td></tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.support">Support response</td>
+              <td><span data-i18n="pricing.compare.val.support.free">Community</span></td>
+              <td class="pcmp-cell-featured"><span data-i18n="pricing.compare.val.support.pro">Email · &lt;24h</span></td>
+              <td><span class="pcmp-strong" data-i18n="pricing.compare.val.support.premium">Email · &lt;4h</span></td>
+            </tr>
+            <tr>
+              <td data-i18n="pricing.compare.row.gdpr">GDPR · EU servers (Frankfurt)</td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td class="pcmp-cell-featured"><span class="pcmp-check" aria-label="Included">✓</span></td>
+              <td><span class="pcmp-check" aria-label="Included">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pricing-compare-foot">
+        <span data-i18n-html="pricing.compare.foot"><strong>Annual saves 30–33%.</strong> 14-day refund before your first AI message. Prices include 22% VAT for EU consumers — business customers see VAT-exclusive prices at checkout.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section class="section" id="faq">
   <div class="container-sm">
@@ -2413,9 +2808,28 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 <!-- ── FINAL CTA ── -->
 <section class="final-cta">
   <!-- Layer 0.5 — AI-generated cinematic video background (Replicate minimax/video-01) -->
-  <video class="cta-video-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-    <source src="/cta-bg.mp4" type="video/mp4">
+  <!-- Hero video: 395KB H.264 (compressed 93% from 5.7MB). Poster renders instantly.
+       Mobile (<768px) skips video entirely via JS below to save bandwidth + battery. -->
+  <video class="cta-video-bg" muted loop playsinline preload="none"
+         poster="/cta-bg-poster.jpg" aria-hidden="true">
+    <source data-src="/cta-bg.mp4" type="video/mp4">
   </video>
+  <script>
+    (function(){
+      var v = document.currentScript.previousElementSibling;
+      if (!v || v.tagName !== 'VIDEO') return;
+      var saveData = navigator.connection && navigator.connection.saveData;
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Only fetch + autoplay video on desktop (>=768px) without save-data/reduced-motion.
+      if (window.innerWidth >= 768 && !saveData && !reduceMotion) {
+        var srcEl = v.querySelector('source');
+        if (srcEl) srcEl.src = srcEl.getAttribute('data-src');
+        v.preload = 'metadata';
+        v.load();
+        v.play().catch(function(){ /* autoplay blocked — poster remains visible */ });
+      }
+    })();
+  </script>
   <div class="container" style="position:relative;z-index:10;text-align:center">
     <h2 data-i18n-html="cta.title">Don't face your rights <em>alone</em>.</h2>
     <p data-i18n="cta.sub">Ask the first question. Cited answer in 30 seconds. No card required.</p>
@@ -2435,7 +2849,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     <div class="foot-grid">
       <div>
         <a href="#top" class="foot-brand">
-          <img src="/logo.png" alt="Advocat">
+          <img src="/logo.png" alt="Advocat" loading="lazy" decoding="async">
         </a>
         <p style="font-size:13.5px;color:var(--muted);line-height:1.55;max-width:280px;margin-top:4px" data-i18n="foot.about">
           AI-powered legal assistant for Estonia and the EU. Built in Tallinn by Vorantis OÜ.
@@ -2455,6 +2869,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
         <h5 data-i18n="foot.company">Company</h5>
         <a href="mailto:support@advocat.ee">support@advocat.ee</a>
         <a href="/blog/" data-i18n="foot.news">News</a>
+        <a href="/for-firms.html" data-i18n="foot.forFirms">For Law Firms</a>
       </div>
       <div class="foot-col">
         <h5 data-i18n="foot.legal">Legal</h5>
@@ -2466,7 +2881,7 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
     </div>
     <div class="foot-bot">
       <div class="foot-bot-l">
-        <span class="cert-badge"><img src="/blog/logo_shield.png" alt="" class="cert-shield"><span data-i18n="foot.gdpr_badge">GDPR · EU servers (Frankfurt)</span></span>
+        <span class="cert-badge"><img src="/blog/logo_shield.png" alt="" class="cert-shield" loading="lazy" decoding="async"><span data-i18n="foot.gdpr_badge">GDPR · EU servers (Frankfurt)</span></span>
         <span class="cert-badge">Vorantis OÜ · Reg 17098992</span>
         <span class="cert-badge">Tallinn, Estonia</span>
       </div>
@@ -2578,23 +2993,23 @@ html[dir="rtl"] .chat-msg.bot { align-self: flex-end; border-bottom-left-radius:
 <!-- ── i18n + chat demo ── -->
 <script>
 const LANGS = [
-  { code: 'en', label: 'English' },
-  { code: 'et', label: 'Eesti' },
-  { code: 'ru', label: 'Русский' },
-  { code: 'uk', label: 'Українська' },
-  { code: 'fi', label: 'Suomi' },
-  { code: 'sv', label: 'Svenska' },
-  { code: 'de', label: 'Deutsch' },
-  { code: 'fr', label: 'Français' },
-  { code: 'es', label: 'Español' },
-  { code: 'it', label: 'Italiano' },
-  { code: 'pl', label: 'Polski' },
-  { code: 'lv', label: 'Latviešu' },
-  { code: 'lt', label: 'Lietuvių' },
-  { code: 'ro', label: 'Română' },
-  { code: 'tr', label: 'Türkçe' },
-  { code: 'ar', label: 'العربية' },
-  { code: 'fa', label: 'فارسی' },
+  { code: 'en', label: 'English',    flag: '🇬🇧' },
+  { code: 'et', label: 'Eesti',      flag: '🇪🇪' },
+  { code: 'ru', label: 'Русский',    flag: '🇷🇺' },
+  { code: 'uk', label: 'Українська', flag: '🇺🇦' },
+  { code: 'fi', label: 'Suomi',      flag: '🇫🇮' },
+  { code: 'sv', label: 'Svenska',    flag: '🇸🇪' },
+  { code: 'de', label: 'Deutsch',    flag: '🇩🇪' },
+  { code: 'fr', label: 'Français',   flag: '🇫🇷' },
+  { code: 'es', label: 'Español',    flag: '🇪🇸' },
+  { code: 'it', label: 'Italiano',   flag: '🇮🇹' },
+  { code: 'pl', label: 'Polski',     flag: '🇵🇱' },
+  { code: 'lv', label: 'Latviešu',   flag: '🇱🇻' },
+  { code: 'lt', label: 'Lietuvių',   flag: '🇱🇹' },
+  { code: 'ro', label: 'Română',     flag: '🇷🇴' },
+  { code: 'tr', label: 'Türkçe',     flag: '🇹🇷' },
+  { code: 'ar', label: 'العربية',    flag: '🇸🇦' },
+  { code: 'fa', label: 'فارسی',      flag: '🇮🇷' },
 ];
 
 const RTL = { ar: true, fa: true };
@@ -2611,11 +3026,24 @@ const I18N = {
     'nav.login': 'Sign in', 'nav.cta': 'Try free',
     'meta.title': 'Advocat — AI Legal Assistant · Defend Your Rights',
     'hero.eyebrow': 'AI LEGAL ASSISTANT · 2026',
-    'hero.title': 'Legal <em>AI</em> built for Estonia and the EU.',
-    'hero.sub': 'Citations to statutes and case law, draft correspondence ready for your review, and case material organization — with multilingual support.',
+    'hero.title': 'Facing deportation, a fine, or wrongful termination?<br>Advocat fights for you — 24/7.',
+    'hero.sub': 'Legal AI that understands immigrant pain — because we have been through it ourselves.',
     'hero.disclaimer': "Information service. Not legal advice and not a substitute for a sworn advocate (vandeadvokaat) regulated under the Estonian Bar Association Act.",
-    'hero.primary': 'Try free →', 'hero.secondary': 'See an example',
+    'hero.primary': 'Try Advocat free →', 'hero.secondary': 'See pricing',
     'hero.trust1': '10 free messages — no card', 'hero.trust2': 'Cited sources', 'hero.trust3': 'EU GDPR · servers in Frankfurt',
+    'founder.eyebrow': 'WHY ADVOCAT EXISTS',
+    'founder.heading': 'Built by people who lived this.',
+    'founder.quote': '“December 2025. Helsinki. Police escorted my wife to the Eckerö Line ferry. Migri called it ‘voluntary return.’ We had paid €300 for a hotel that night.<br><br>Six months later, our case is at the Supreme Administrative Court of Finland (KHO, application 200/2026). I built Advocat so other immigrants don\'t have to learn FI law from a Migri letter at 6&nbsp;pm on a Friday.”',
+    'founder.name': '— Dmitri Sulga, founder<br><small>Founder case: Sulga v. Finland · ECHR Application №200</small>',
+    'testimonials.label': 'FROM REAL USERS',
+    'testimonials.heading': 'From people who used Advocat',
+    'testimonials.disclaimer': 'Independent disclaimer: Advocat is an information service, not a substitute for sworn legal counsel.',
+    'testimonial.q1': '“PLACEHOLDER — owner will insert real testimonial when the first paying user shares one.”',
+    'testimonial.a1': '— Name, RU-speaker, Tallinn',
+    'testimonial.q2': '“PLACEHOLDER — owner will insert real testimonial after first 10 paying users.”',
+    'testimonial.a2': '— Name, ET-speaker, Tartu',
+    'testimonial.q3': '“PLACEHOLDER — owner will insert real testimonial from a Finnish user.”',
+    'testimonial.a3': '— Name, FI-speaker, Helsinki',
     'how.label': 'THREE STEPS', 'how.title': 'Legal help that actually <em>works</em>.',
     'how.sub': 'No seven-page sign-up. Speak naturally, attach the docs, get a clear next step.',
     'contracts.heading': 'Drop a contract. Get a reply in 90 seconds.',
@@ -2625,6 +3053,55 @@ const I18N = {
     'pricing.free.contract_review': '1 contract review (lifetime trial)',
     'pricing.pro.contract_review': '5 contract reviews / month',
     'pricing.premium.contract_review': '20 contract reviews / month',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'COMPARE PLANS',
+    'pricing.compare.title': 'Every feature, side <em>by side</em>.',
+    'pricing.compare.sub': 'Pick what fits. Upgrade or cancel anytime — one click, no calls.',
+    'pricing.compare.feature_col': 'Feature',
+    'pricing.compare.forever': '/ forever',
+    'pricing.compare.per_mo': '/ mo',
+    'pricing.compare.or_yr_pro': 'or €159.99/yr',
+    'pricing.compare.or_yr_premium': 'or €249.99/yr',
+    'pricing.compare.row.section.core': 'Core AI',
+    'pricing.compare.row.section.docs': 'Documents',
+    'pricing.compare.row.section.pro': 'Pro tools',
+    'pricing.compare.row.section.support': 'Support & privacy',
+    'pricing.compare.row.chat': 'AI legal chat',
+    'pricing.compare.row.cases': 'Active cases',
+    'pricing.compare.row.langs': 'Languages',
+    'pricing.compare.row.citations': 'Cited EU & EE law',
+    'pricing.compare.row.doc_upload': 'Document scanning',
+    'pricing.compare.row.contract_review': 'Contract review',
+    'pricing.compare.row.drafting': 'Drafting Studio (letters, complaints)',
+    'pricing.compare.row.voice': 'Voice input',
+    'pricing.compare.row.consilium': '15-lawyer AI consilium',
+    'pricing.compare.row.deadline': 'Deadline radar',
+    'pricing.compare.row.web_search': 'Web search for fresh law',
+    'pricing.compare.row.email_agent': 'Email Agent (drafts in Gmail)',
+    'pricing.compare.row.timeline': 'Case timeline auto-tracking',
+    'pricing.compare.row.support': 'Support response',
+    'pricing.compare.row.gdpr': 'GDPR · EU servers (Frankfurt)',
+    'pricing.compare.val.chat.free': '10 messages',
+    'pricing.compare.val.chat.pro': '100 / day',
+    'pricing.compare.val.chat.premium': 'Unlimited',
+    'pricing.compare.val.cases.free': '1 case',
+    'pricing.compare.val.cases.pro': '3 cases',
+    'pricing.compare.val.cases.premium': 'Unlimited',
+    'pricing.compare.val.langs.all': '17 langs',
+    'pricing.compare.val.doc.free': '3 docs',
+    'pricing.compare.val.doc.pro': '20 / mo',
+    'pricing.compare.val.doc.premium': 'Unlimited',
+    'pricing.compare.val.contract.free': '1 (trial)',
+    'pricing.compare.val.contract.pro': '5 / mo',
+    'pricing.compare.val.contract.premium': '20 / mo',
+    'pricing.compare.val.consilium.premium': '✓ priority',
+    'pricing.compare.val.deadline.free': 'View only',
+    'pricing.compare.val.deadline.pro': 'View + alerts',
+    'pricing.compare.val.deadline.premium': 'Auto-track + alerts',
+    'pricing.compare.val.support.free': 'Community',
+    'pricing.compare.val.support.pro': 'Email · <24h',
+    'pricing.compare.val.support.premium': 'Email · <4h',
+    'pricing.compare.foot': '<strong>Annual saves 30–33%.</strong> 14-day refund before your first AI message. Prices include 22% VAT for EU consumers — business customers see VAT-exclusive prices at checkout.',
     'how.s1h': 'Ask your question', 'how.s1p': 'Talk like you would to a friend — in any of 17 languages. Advocat asks follow-ups like a good lawyer would.', 'how.s1m': '~ 90 seconds',
     'how.s2h': 'AI cites the law', 'how.s2p': 'Every answer cites the exact statute (e.g. VÕS § 308 lg 3). You can verify it in Riigi Teataja yourself.', 'how.s2m': 'PDF · DOCX · images',
     'how.s3h': 'Send the letter from your email', 'how.s3p': 'AI drafts the letter — you send it from your own email in one click.', 'how.s3m': 'Ready to send',
@@ -2682,11 +3159,13 @@ const I18N = {
     'plan2.desc': 'Daily legal help for you and your family. 100 AI messages/day, full document drafting.',
     'plan2.f1': '100 AI messages / day', 'plan2.f2': '3 active cases', 'plan2.f3': 'Document scanning (20 docs)',
     'plan2.f4': 'Full document drafting (letters, complaints)', 'plan2.f5': 'Voice input', 'plan2.f6': 'Web search for fresh law',
+    'plan2.f7': '15-lawyer AI consilium debate per query',
     'plan2.cta': 'Start now',
     'plan3.eyebrow': 'Full defense', 'plan3.name': 'Premium', 'plan3.per': '/ month', 'plan3.per_eff_month': '/ month, billed yearly', 'plan3.annual': 'or €249.99/year — save 30%', 'plan3.annual_full': '€249.99 per year — save €109.89 (30% off)', 'plan3.annual_hint': 'Switch to annual to save €109.89/year (30%)',
     'plan3.desc': 'Full defense — unlimited everything, priority response, all features.',
     'plan3.f1': 'Unlimited AI messages', 'plan3.f2': 'Unlimited cases', 'plan3.f3': 'Unlimited document scans',
-    'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email & document export',
+    'plan3.f4': 'Priority processing', 'plan3.f5': 'Everything in Pro', 'plan3.f6': 'Email Agent — AI drafts replies in your Gmail inbox',
+    'plan3.f7': 'Case timeline — auto-tracked from every email + deadline',
     'plan3.cta': 'Choose Premium',
     'pricing.vat_included': 'incl. 22% VAT',
     'pricing.note': 'Cancel anytime. Save 30-33% with annual billing.',
@@ -2711,7 +3190,7 @@ const I18N = {
     'foot.about': 'AI-powered legal assistant for Estonia and the EU. Built in Tallinn by Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Product', 'foot.how': 'How it works', 'foot.pricing': 'Pricing', 'foot.app': 'Open the app', 'foot.blog': 'Blog',
-    'foot.company': 'Company', 'foot.news': 'News',
+    'foot.company': 'Company', 'foot.news': 'News', 'foot.forFirms': 'For Law Firms',
     'foot.legal': 'Legal', 'foot.terms': 'Terms', 'foot.privacy': 'Privacy', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EU servers (Frankfurt)',
     'chat.status': 'Online · avg. response 12s',
@@ -2737,11 +3216,24 @@ const I18N = {
     'nav.login': 'Logi sisse', 'nav.cta': 'Proovi tasuta',
     'meta.title': 'Advocat — AI õigusabi · Kaitse oma õigusi',
     'hero.eyebrow': 'AI-ÕIGUSABI · 2026',
-    'hero.title': '<em>AI-assistent</em> Eesti ja EL õiguses.',
-    'hero.sub': 'Struktureeritud vastused õigusküsimustele, kirjade mustandid sinu ülevaatuseks ja juhtumi materjalide korraldus — kõik ühes vestluses.',
+    'hero.title': 'Sind ähvardab väljasaatmine, trahv või vallandamine?<br>Advocat on sinu poolel — 24/7.',
+    'hero.sub': 'Õigus-AI, mis mõistab immigrandi valu — sest me ise oleme selle läbi elanud.',
     'hero.disclaimer': 'Infoteenus. Ei ole õigusabi Advokatuuriseaduse tähenduses ega asenda vandeadvokaati.',
-    'hero.primary': 'Proovi tasuta →', 'hero.secondary': 'Vaata näidet',
+    'hero.primary': 'Proovi Advocat tasuta →', 'hero.secondary': 'Vaata hindu',
     'hero.trust1': '10 sõnumit tasuta — kaarti pole vaja', 'hero.trust2': 'Viited Riigi Teatajale', 'hero.trust3': 'EL GDPR · serverid Frankfurdis',
+    'founder.eyebrow': 'MIKS ADVOCAT EKSISTEERIB',
+    'founder.heading': 'Loodud inimeste poolt, kes on selle ise läbi elanud.',
+    'founder.quote': '„Detsember 2025. Helsingi. Politsei saatis mu naise Eckerö Line praamile. Migri nimetas seda „vabatahtlikuks tagasipöördumiseks“. Olime maksnud 300 € hotelli eest selleks ööks.<br><br>Kuus kuud hiljem on meie asi Soome Riigikohtu halduskolleegiumis (KHO, hagi 200/2026). Tegin Advocati, et teised immigrandid ei peaks Soome seadust õppima Migri kirjast reede õhtul kell 18.“',
+    'founder.name': '— Dmitri Sulga, asutaja<br><small>Asutaja kaasus: Sulga vs. Soome · EIK avaldus nr 200</small>',
+    'testimonials.label': 'PÄRIS KASUTAJATELT',
+    'testimonials.heading': 'Inimestelt, kes on Advocati kasutanud',
+    'testimonials.disclaimer': 'Sõltumatu vastutus: Advocat on infoteenus, mitte vandeadvokaadi asendaja.',
+    'testimonial.q1': '„KOHATÄIDE — omanik lisab päris tagasiside, kui esimene maksev kasutaja selle jagab.“',
+    'testimonial.a1': '— Nimi, vene keelt rääkiv, Tallinn',
+    'testimonial.q2': '„KOHATÄIDE — omanik lisab päris tagasiside pärast esimest 10 maksvat kasutajat.“',
+    'testimonial.a2': '— Nimi, eestikeelne, Tartu',
+    'testimonial.q3': '„KOHATÄIDE — omanik lisab päris tagasiside Soome kasutajalt.“',
+    'testimonial.a3': '— Nimi, soomekeelne, Helsingi',
     'how.label': 'KOLM SAMMU', 'how.title': 'Õigusabi, mis <em>päriselt aitab</em>.',
     'how.sub': 'Ei mingit seitsmeleheküljelist registreerimist. Kirjelda olukorda oma sõnadega, lisa dokumendid, saa selge järgmine samm.',
     'contracts.heading': 'Lisa leping. Saa vastus 90 sekundiga.',
@@ -2751,6 +3243,55 @@ const I18N = {
     'pricing.free.contract_review': '1 lepingu ülevaatus (eluaegne proov)',
     'pricing.pro.contract_review': '5 lepingu ülevaatust / kuus',
     'pricing.premium.contract_review': '20 lepingu ülevaatust / kuus',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'VÕRDLE PAKETTE',
+    'pricing.compare.title': 'Iga funktsioon, <em>kõrvuti</em>.',
+    'pricing.compare.sub': 'Vali, mis sobib. Uuenda või lõpeta millal tahad — üks klõps, helistama ei pea.',
+    'pricing.compare.feature_col': 'Funktsioon',
+    'pricing.compare.forever': '/ igavesti',
+    'pricing.compare.per_mo': '/ kuus',
+    'pricing.compare.or_yr_pro': 'või €159.99/aastas',
+    'pricing.compare.or_yr_premium': 'või €249.99/aastas',
+    'pricing.compare.row.section.core': 'Põhi-AI',
+    'pricing.compare.row.section.docs': 'Dokumendid',
+    'pricing.compare.row.section.pro': 'Pro-tööriistad',
+    'pricing.compare.row.section.support': 'Tugi ja privaatsus',
+    'pricing.compare.row.chat': 'AI õigusvestlus',
+    'pricing.compare.row.cases': 'Aktiivsed juhtumid',
+    'pricing.compare.row.langs': 'Keeled',
+    'pricing.compare.row.citations': 'Viited EL ja EE seadustele',
+    'pricing.compare.row.doc_upload': 'Dokumentide skaneerimine',
+    'pricing.compare.row.contract_review': 'Lepingu ülevaatus',
+    'pricing.compare.row.drafting': 'Mustandi-stuudio (kirjad, kaebused)',
+    'pricing.compare.row.voice': 'Häälsisestus',
+    'pricing.compare.row.consilium': '15-juristi AI-konsiilium',
+    'pricing.compare.row.deadline': 'Tähtaja-radar',
+    'pricing.compare.row.web_search': 'Veebiotsing värske õiguse järele',
+    'pricing.compare.row.email_agent': 'E-posti agent (mustandid Gmaili)',
+    'pricing.compare.row.timeline': 'Juhtumi ajajoone autotäide',
+    'pricing.compare.row.support': 'Toe vastus',
+    'pricing.compare.row.gdpr': 'GDPR · EL-i serverid (Frankfurt)',
+    'pricing.compare.val.chat.free': '10 sõnumit',
+    'pricing.compare.val.chat.pro': '100 / päevas',
+    'pricing.compare.val.chat.premium': 'Piiramatu',
+    'pricing.compare.val.cases.free': '1 juhtum',
+    'pricing.compare.val.cases.pro': '3 juhtumit',
+    'pricing.compare.val.cases.premium': 'Piiramatu',
+    'pricing.compare.val.langs.all': '17 keelt',
+    'pricing.compare.val.doc.free': '3 dok.',
+    'pricing.compare.val.doc.pro': '20 / kuus',
+    'pricing.compare.val.doc.premium': 'Piiramatu',
+    'pricing.compare.val.contract.free': '1 (proov)',
+    'pricing.compare.val.contract.pro': '5 / kuus',
+    'pricing.compare.val.contract.premium': '20 / kuus',
+    'pricing.compare.val.consilium.premium': '✓ eelistatud',
+    'pricing.compare.val.deadline.free': 'Ainult vaatamine',
+    'pricing.compare.val.deadline.pro': 'Vaatamine + märguanded',
+    'pricing.compare.val.deadline.premium': 'Autom. + märguanded',
+    'pricing.compare.val.support.free': 'Kogukond',
+    'pricing.compare.val.support.pro': 'E-post · <24h',
+    'pricing.compare.val.support.premium': 'E-post · <4h',
+    'pricing.compare.foot': '<strong>Aastamaksuga säästad 30–33%.</strong> 14-päevane tagasimakse enne esimese AI-sõnumi saatmist. Hinnad sisaldavad 22% käibemaksu EL-i tarbijatele — ärikliendid näevad maksudeta hindu kassas.',
     'how.s1h': 'Kirjelda olukorda', 'how.s1p': 'Räägi nii, nagu räägiksid sõbrale — eesti, vene, ukraina või mõnes 17 muus keeles. Advocat küsib täpsustusi nagu hea jurist.', 'how.s1m': '~ 90 sekundit',
     'how.s2h': 'AI viitab seadusele', 'how.s2p': 'Iga vastus toob välja konkreetse sätte (nt VÕS § 308 lg 3). Saad selle Riigi Teatajast ise kontrollida.', 'how.s2m': 'PDF · DOCX · pildid',
     'how.s3h': 'Saada kiri oma postkastist', 'how.s3p': 'AI koostab kirja mustandi — saadad oma postkastist ühe klõpsuga.', 'how.s3m': 'Valmis saatmiseks',
@@ -2788,11 +3329,13 @@ const I18N = {
     'plan2.desc': 'Igapäevane õigustugi sulle ja perele. 100 AI-sõnumit päevas, dokumentide koostamine algusest lõpuni.',
     'plan2.f1': '100 AI-sõnumit päevas', 'plan2.f2': '3 aktiivset juhtumit', 'plan2.f3': 'Dokumendiskann (20 faili)',
     'plan2.f4': 'Kirjade ja kaebuste täisvormistus', 'plan2.f5': 'Häälsisestus', 'plan2.f6': 'Veebiotsing värske kohtupraktika jaoks',
+    'plan2.f7': '15 AI-juristi konsiilium iga küsimuse kohta',
     'plan2.cta': 'Alusta kohe',
     'plan3.eyebrow': 'Täiskaitse', 'plan3.name': 'Premium', 'plan3.per': '/ kuus', 'plan3.annual': 'või €249.99 aastas — säästad 30%',
     'plan3.desc': 'Täiskaitse — kõik piiranguteta, prioriteetne järjekord, kõik funktsioonid avatud.',
     'plan3.f1': 'AI-sõnumid piiranguteta', 'plan3.f2': 'Juhtumeid piiranguteta', 'plan3.f3': 'Dokumendiskannid piiranguteta',
-    'plan3.f4': 'Prioriteetne järjekord', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirjade ja dokumentide eksport',
+    'plan3.f4': 'Prioriteetne järjekord', 'plan3.f5': 'Kõik Pro funktsioonid', 'plan3.f6': 'E-kirja agent — AI koostab vastused sinu Gmaili postkastis',
+    'plan3.f7': 'Juhtumi ajaskaala — koostatakse automaatselt e-kirjadest ja tähtaegadest',
     'plan3.cta': 'Vali Premium',
     'pricing.vat_included': 'Sis. käibemaks 22%',
     'pricing.note': 'Lõpeta millal tahad. Aastamaksuga säästad 30-33%.',
@@ -2837,7 +3380,7 @@ const I18N = {
     'foot.about': 'AI-õigusabi Eesti ja EL-i jaoks. Tehtud Tallinnas, Vorantis OÜ.',
     'foot.powered': 'Toetab Claude (Anthropic)',
     'foot.product': 'Toode', 'foot.how': 'Kuidas töötab', 'foot.pricing': 'Hinnad', 'foot.app': 'Ava rakendus', 'foot.blog': 'Blogi',
-    'foot.company': 'Ettevõte', 'foot.news': 'Uudised',
+    'foot.company': 'Ettevõte', 'foot.news': 'Uudised', 'foot.forFirms': 'Õigusbüroodele',
     'foot.legal': 'Juriidika', 'foot.terms': 'Kasutustingimused', 'foot.privacy': 'Privaatsus', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EL-i serverid (Frankfurt)',
     'chat.status': 'Võrgus · vastame keskmiselt 12 sekundiga',
@@ -2863,8 +3406,21 @@ const I18N = {
     'nav.login': 'Войти', 'nav.cta': 'Попробовать',
     'meta.title': 'Advocat — AI юрист · Защитите свои права',
     'hero.eyebrow': 'AI-ЮРИСТ · 2026',
-    'hero.title': '<em>AI-ассистент</em> по эстонскому и европейскому праву.',
-    'hero.sub': 'Отвечает на юридические вопросы, готовит черновики писем для вашей проверки и помогает систематизировать материалы дела.',
+    'hero.title': 'Депортация, штраф или незаконное увольнение?<br>Advocat на твоей стороне — 24/7.',
+    'hero.sub': 'Юридический AI, который понимает immigrant pain — потому что мы сами через это прошли.',
+    'founder.eyebrow': 'ЗАЧЕМ МЫ СДЕЛАЛИ ADVOCAT',
+    'founder.heading': 'Создан теми, кто сам через это прошёл.',
+    'founder.quote': '«Декабрь 2025. Хельсинки. Полиция сопроводила мою жену на паром Eckerö Line. Migri назвала это «добровольным возвращением». Мы заплатили 300 € за отель на ту ночь.<br><br>Шесть месяцев спустя наше дело в Верховном административном суде Финляндии (KHO, заявление 200/2026). Я сделал Advocat, чтобы другие иммигранты не учили финское право по письму Migri в 18:00 в пятницу.»',
+    'founder.name': '— Дмитрий Шульга, основатель<br><small>Дело основателя: Sulga v. Finland · ЕСПЧ заявление №200</small>',
+    'testimonials.label': 'ОТ РЕАЛЬНЫХ ПОЛЬЗОВАТЕЛЕЙ',
+    'testimonials.heading': 'От людей, которые пользовались Advocat',
+    'testimonials.disclaimer': 'Независимое уведомление: Advocat — информационный сервис, а не замена присяжного адвоката.',
+    'testimonial.q1': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв, когда первый платный пользователь его оставит.»',
+    'testimonial.a1': '— Имя, русскоязычный, Таллинн',
+    'testimonial.q2': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв после первых 10 платных пользователей.»',
+    'testimonial.a2': '— Имя, эстоноязычный, Тарту',
+    'testimonial.q3': '«ПЛЕЙСХОЛДЕР — владелец вставит реальный отзыв от пользователя из Финляндии.»',
+    'testimonial.a3': '— Имя, финноязычный, Хельсинки',
     'hero.disclaimer': 'Информационный сервис. Не заменяет присяжного адвоката (vandeadvokaat) и не оказывает юридическую помощь в смысле Advokatuuriseadus.',
     'hero.primary': 'Попробовать →', 'hero.secondary': 'Посмотреть пример',
     'hero.trust1': '10 бесплатных сообщений — без карты', 'hero.trust2': 'Со ссылками на закон', 'hero.trust3': 'EU GDPR · серверы во Франкфурте',
@@ -2877,6 +3433,55 @@ const I18N = {
     'pricing.free.contract_review': '1 анализ контракта (пожизненный пробный)',
     'pricing.pro.contract_review': '5 анализов контрактов / месяц',
     'pricing.premium.contract_review': '20 анализов контрактов / месяц',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'СРАВНИТЬ ТАРИФЫ',
+    'pricing.compare.title': 'Каждая функция, <em>рядом</em>.',
+    'pricing.compare.sub': 'Выбери, что подходит. Обнови или отмени в любой момент — один клик, без звонков.',
+    'pricing.compare.feature_col': 'Функция',
+    'pricing.compare.forever': '/ навсегда',
+    'pricing.compare.per_mo': '/ мес',
+    'pricing.compare.or_yr_pro': 'или €159.99/год',
+    'pricing.compare.or_yr_premium': 'или €249.99/год',
+    'pricing.compare.row.section.core': 'Базовый ИИ',
+    'pricing.compare.row.section.docs': 'Документы',
+    'pricing.compare.row.section.pro': 'Pro-инструменты',
+    'pricing.compare.row.section.support': 'Поддержка и приватность',
+    'pricing.compare.row.chat': 'Юридический чат с ИИ',
+    'pricing.compare.row.cases': 'Активные дела',
+    'pricing.compare.row.langs': 'Языки',
+    'pricing.compare.row.citations': 'Ссылки на ЕС и ЭР право',
+    'pricing.compare.row.doc_upload': 'Сканирование документов',
+    'pricing.compare.row.contract_review': 'Анализ контракта',
+    'pricing.compare.row.drafting': 'Студия черновиков (письма, жалобы)',
+    'pricing.compare.row.voice': 'Голосовой ввод',
+    'pricing.compare.row.consilium': 'AI-консилиум из 15 юристов',
+    'pricing.compare.row.deadline': 'Радар сроков',
+    'pricing.compare.row.web_search': 'Веб-поиск свежего права',
+    'pricing.compare.row.email_agent': 'Email-агент (черновики в Gmail)',
+    'pricing.compare.row.timeline': 'Авто-таймлайн дела',
+    'pricing.compare.row.support': 'Ответ поддержки',
+    'pricing.compare.row.gdpr': 'GDPR · серверы ЕС (Франкфурт)',
+    'pricing.compare.val.chat.free': '10 сообщ.',
+    'pricing.compare.val.chat.pro': '100 / день',
+    'pricing.compare.val.chat.premium': 'Без лимита',
+    'pricing.compare.val.cases.free': '1 дело',
+    'pricing.compare.val.cases.pro': '3 дела',
+    'pricing.compare.val.cases.premium': 'Без лимита',
+    'pricing.compare.val.langs.all': '17 языков',
+    'pricing.compare.val.doc.free': '3 док.',
+    'pricing.compare.val.doc.pro': '20 / мес',
+    'pricing.compare.val.doc.premium': 'Без лимита',
+    'pricing.compare.val.contract.free': '1 (проба)',
+    'pricing.compare.val.contract.pro': '5 / мес',
+    'pricing.compare.val.contract.premium': '20 / мес',
+    'pricing.compare.val.consilium.premium': '✓ приоритет',
+    'pricing.compare.val.deadline.free': 'Только просмотр',
+    'pricing.compare.val.deadline.pro': 'Просмотр + уведомл.',
+    'pricing.compare.val.deadline.premium': 'Авто-отслеж. + уведомл.',
+    'pricing.compare.val.support.free': 'Сообщество',
+    'pricing.compare.val.support.pro': 'Email · <24ч',
+    'pricing.compare.val.support.premium': 'Email · <4ч',
+    'pricing.compare.foot': '<strong>Годовая оплата экономит 30–33%.</strong> Возврат за 14 дней до отправки первого AI-сообщения. Цены включают 22% НДС для потребителей ЕС — бизнес-клиенты видят цены без НДС при оформлении.',
     'how.s1h': 'Задай вопрос', 'how.s1p': 'Говори как с другом — на русском, эстонском, украинском или любом из 17 языков. Advocat задаёт уточняющие вопросы как хороший юрист.', 'how.s1m': '~ 90 сек',
     'how.s2h': 'ИИ цитирует закон', 'how.s2p': 'Каждый ответ ссылается на конкретную статью (например, VÕS § 308 ч. 3). Можно проверить в Riigi Teataja самостоятельно.', 'how.s2m': 'PDF · DOCX · фото',
     'how.s3h': 'Отправь письмо со своей почты', 'how.s3p': 'AI готовит письмо — отправляете со своей почты в один клик.', 'how.s3m': 'Готово к отправке',
@@ -2914,11 +3519,13 @@ const I18N = {
     'plan2.desc': 'Ежедневная юридическая помощь тебе и семье. 100 сообщений ИИ в день, полное составление документов.',
     'plan2.f1': '100 AI-сообщений в день', 'plan2.f2': '3 активных дела', 'plan2.f3': 'Сканирование документов (20 шт)',
     'plan2.f4': 'Полное составление документов (письма, жалобы)', 'plan2.f5': 'Голосовой ввод', 'plan2.f6': 'Веб-поиск свежего права',
+    'plan2.f7': 'Консилиум из 15 AI-юристов на каждый запрос',
     'plan2.cta': 'Начать сейчас',
     'plan3.eyebrow': 'Полная защита', 'plan3.name': 'Premium', 'plan3.per': '/ месяц', 'plan3.annual': 'или €249.99/год — экономия 30%',
     'plan3.desc': 'Полная защита — безлимит во всём, приоритетный ответ, все функции.',
     'plan3.f1': 'Безлимит AI-сообщений', 'plan3.f2': 'Безлимит дел', 'plan3.f3': 'Безлимит сканирований',
-    'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Экспорт писем и документов',
+    'plan3.f4': 'Приоритетная обработка', 'plan3.f5': 'Всё из Pro', 'plan3.f6': 'Email-агент — AI пишет ответы в вашем Gmail',
+    'plan3.f7': 'Хронология дела — собирается автоматически из писем и сроков',
     'plan3.cta': 'Выбрать Premium',
     'pricing.vat_included': 'Включая НДС 22%',
     'pricing.note': 'Отмена в любой момент. Экономия 30-33% с годовой оплатой.',
@@ -2963,7 +3570,7 @@ const I18N = {
     'foot.about': 'Юридический ассистент на ИИ для Эстонии и ЕС. Сделано в Таллинне, Vorantis OÜ.',
     'foot.powered': 'На основе Claude (Anthropic)',
     'foot.product': 'Продукт', 'foot.how': 'Как работает', 'foot.pricing': 'Тарифы', 'foot.app': 'Открыть приложение', 'foot.blog': 'Блог',
-    'foot.company': 'Компания', 'foot.news': 'Новости',
+    'foot.company': 'Компания', 'foot.news': 'Новости', 'foot.forFirms': 'Юр. фирмам',
     'foot.legal': 'Право', 'foot.terms': 'Условия', 'foot.privacy': 'Конфиденциальность', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · серверы ЕС (Франкфурт)',
     'chat.status': 'Онлайн · ответ за 12 сек',
@@ -3033,11 +3640,13 @@ const I18N = {
     'plan2.desc': 'Щоденна юридична допомога тобі та родині. 100 повідомлень ШІ на день, повне складання документів.',
     'plan2.f1': '100 AI-повідомлень на день', 'plan2.f2': '3 активні справи', 'plan2.f3': 'Сканування документів (20 шт)',
     'plan2.f4': 'Повне складання документів', 'plan2.f5': 'Голосовий ввід', 'plan2.f6': 'Веб-пошук свіжого права',
+    'plan2.f7': 'Консиліум із 15 AI-юристів на кожен запит',
     'plan2.cta': 'Почати зараз',
     'plan3.eyebrow': 'Повний захист', 'plan3.name': 'Premium', 'plan3.per': '/ місяць', 'plan3.annual': 'або €249.99/рік — економія 30%',
     'plan3.desc': 'Повний захист — безліміт у всьому, пріоритетна відповідь, усі функції.',
     'plan3.f1': 'Безліміт AI-повідомлень', 'plan3.f2': 'Безліміт справ', 'plan3.f3': 'Безліміт сканувань',
-    'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Експорт листів і документів',
+    'plan3.f4': 'Пріоритетна обробка', 'plan3.f5': 'Усе з Pro', 'plan3.f6': 'Email-агент — AI пише відповіді у вашому Gmail',
+    'plan3.f7': 'Хронологія справи — автоматично з листів і термінів',
     'plan3.cta': 'Обрати Premium',
     'pricing.vat_included': 'З ПДВ 22%',
     'pricing.note': 'Скасування будь-коли. Економія 30-33% з річною оплатою.',
@@ -3059,7 +3668,7 @@ const I18N = {
     'foot.about': 'Юридичний асистент на ШІ для Естонії та ЄС. Створено в Таллінні, Vorantis OÜ.',
     'foot.powered': 'На основі Claude (Anthropic)',
     'foot.product': 'Продукт', 'foot.how': 'Як працює', 'foot.pricing': 'Тарифи', 'foot.app': 'Відкрити застосунок', 'foot.blog': 'Блог',
-    'foot.company': 'Компанія', 'foot.news': 'Новини',
+    'foot.company': 'Компанія', 'foot.news': 'Новини', 'foot.forFirms': 'Юр. фірмам',
     'foot.legal': 'Право', 'foot.terms': 'Умови', 'foot.privacy': 'Конфіденційність', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · сервери ЄС (Франкфурт)',
     'chat.status': 'Онлайн · відповідь за 12 сек',
@@ -3085,8 +3694,21 @@ const I18N = {
     'nav.login': 'Kirjaudu', 'nav.cta': 'Kokeile',
     'meta.title': 'Advocat — Tekoälyjuristi · Puolusta oikeuksiasi',
     'hero.eyebrow': 'AI-LAKIASSISTENTTI · 2026',
-    'hero.title': '<em>Tekoälyavustaja</em> Viron ja EU:n oikeuteen.',
-    'hero.sub': 'Vastaa juridisiin kysymyksiin, laatii kirjeluonnoksia tarkastettavaksesi ja auttaa järjestämään asiakirja-aineistoa.',
+    'hero.title': 'Uhkaako sinua karkotus, sakko tai irtisanominen?<br>Advocat on puolellasi — 24/7.',
+    'hero.sub': 'Oikeudellinen tekoäly, joka ymmärtää maahanmuuttajan tuskaa — koska olemme itse käyneet sen läpi.',
+    'founder.eyebrow': 'MIKSI ADVOCAT ON OLEMASSA',
+    'founder.heading': 'Rakennettu ihmisten toimesta, jotka ovat itse eläneet tämän.',
+    'founder.quote': '»Joulukuu 2025. Helsinki. Poliisi saattoi vaimoni Eckerö Linen laivaan. Migri kutsui sitä »vapaaehtoiseksi paluuksi«. Olimme maksaneet 300 € hotellista sille yölle.<br><br>Kuusi kuukautta myöhemmin asiamme on korkeimmassa hallinto-oikeudessa (KHO, hakemus 200/2026). Rakensin Advocatin, jotta muut maahanmuuttajat eivät joudu opettelemaan Suomen lakia Migri-kirjeestä perjantai-iltana klo 18.«',
+    'founder.name': '— Dmitri Sulga, perustaja<br><small>Perustajan asia: Sulga v. Finland · EIT-hakemus N:o 200</small>',
+    'testimonials.label': 'AIDOILTA KÄYTTÄJILTÄ',
+    'testimonials.heading': 'Ihmisiltä, jotka ovat käyttäneet Advocatia',
+    'testimonials.disclaimer': 'Riippumaton vastuuvapauslauseke: Advocat on tietopalvelu, ei korvaa valantehnyttä asianajajaa.',
+    'testimonial.q1': '»PAIKKAMERKKI — omistaja lisää aidon palautteen, kun ensimmäinen maksava käyttäjä jakaa sen.«',
+    'testimonial.a1': '— Nimi, venäjänkielinen, Tallinna',
+    'testimonial.q2': '»PAIKKAMERKKI — omistaja lisää aidon palautteen ensimmäisen 10 maksavan käyttäjän jälkeen.«',
+    'testimonial.a2': '— Nimi, vironkielinen, Tartto',
+    'testimonial.q3': '»PAIKKAMERKKI — omistaja lisää aidon palautteen suomenkieliseltä käyttäjältä.«',
+    'testimonial.a3': '— Nimi, suomenkielinen, Helsinki',
     'hero.disclaimer': 'Tietopalvelu. Ei ole oikeudellista neuvontaa eikä korvaa asianajajaa (vandeadvokaat), jonka toimintaa säätelee Viron asianajajalaki (Advokatuuriseadus).',
     'hero.primary': 'Kokeile ilmaiseksi →', 'hero.secondary': 'Katso esimerkki',
     'hero.trust1': '10 ilmaista viestiä — ei korttia', 'hero.trust2': 'Lähdeviitteet mukana', 'hero.trust3': 'EU GDPR · palvelimet Frankfurtissa',
@@ -3099,6 +3721,55 @@ const I18N = {
     'pricing.free.contract_review': '1 sopimuksen tarkastus (elinikäinen kokeilu)',
     'pricing.pro.contract_review': '5 sopimustarkastusta / kuukausi',
     'pricing.premium.contract_review': '20 sopimustarkastusta / kuukausi',
+    // ── Pricing compare table ──
+    'pricing.compare.label': 'VERTAA PAKETTEJA',
+    'pricing.compare.title': 'Jokainen ominaisuus, <em>rinnakkain</em>.',
+    'pricing.compare.sub': 'Valitse sopiva. Päivitä tai peruuta milloin tahansa — yksi klikkaus, ei puheluita.',
+    'pricing.compare.feature_col': 'Ominaisuus',
+    'pricing.compare.forever': '/ ikuisesti',
+    'pricing.compare.per_mo': '/ kk',
+    'pricing.compare.or_yr_pro': 'tai €159.99/vuosi',
+    'pricing.compare.or_yr_premium': 'tai €249.99/vuosi',
+    'pricing.compare.row.section.core': 'Ydin-AI',
+    'pricing.compare.row.section.docs': 'Asiakirjat',
+    'pricing.compare.row.section.pro': 'Pro-työkalut',
+    'pricing.compare.row.section.support': 'Tuki ja yksityisyys',
+    'pricing.compare.row.chat': 'AI-lakichat',
+    'pricing.compare.row.cases': 'Aktiiviset asiat',
+    'pricing.compare.row.langs': 'Kielet',
+    'pricing.compare.row.citations': 'Viittaukset EU- ja EE-lakiin',
+    'pricing.compare.row.doc_upload': 'Asiakirjojen skannaus',
+    'pricing.compare.row.contract_review': 'Sopimustarkastus',
+    'pricing.compare.row.drafting': 'Luonnos-studio (kirjeet, valitukset)',
+    'pricing.compare.row.voice': 'Äänisyöttö',
+    'pricing.compare.row.consilium': '15-juristin AI-konsilium',
+    'pricing.compare.row.deadline': 'Määräaika-tutka',
+    'pricing.compare.row.web_search': 'Verkkohaku tuoreesta laista',
+    'pricing.compare.row.email_agent': 'Sähköposti-agentti (luonnokset Gmailiin)',
+    'pricing.compare.row.timeline': 'Asian aikajanan automaatti',
+    'pricing.compare.row.support': 'Tuen vastaus',
+    'pricing.compare.row.gdpr': 'GDPR · EU-palvelimet (Frankfurt)',
+    'pricing.compare.val.chat.free': '10 viestiä',
+    'pricing.compare.val.chat.pro': '100 / päivä',
+    'pricing.compare.val.chat.premium': 'Rajaton',
+    'pricing.compare.val.cases.free': '1 asia',
+    'pricing.compare.val.cases.pro': '3 asiaa',
+    'pricing.compare.val.cases.premium': 'Rajaton',
+    'pricing.compare.val.langs.all': '17 kieltä',
+    'pricing.compare.val.doc.free': '3 asiak.',
+    'pricing.compare.val.doc.pro': '20 / kk',
+    'pricing.compare.val.doc.premium': 'Rajaton',
+    'pricing.compare.val.contract.free': '1 (kokeilu)',
+    'pricing.compare.val.contract.pro': '5 / kk',
+    'pricing.compare.val.contract.premium': '20 / kk',
+    'pricing.compare.val.consilium.premium': '✓ etusija',
+    'pricing.compare.val.deadline.free': 'Vain katselu',
+    'pricing.compare.val.deadline.pro': 'Katselu + hälytykset',
+    'pricing.compare.val.deadline.premium': 'Auto-seuranta + hälytykset',
+    'pricing.compare.val.support.free': 'Yhteisö',
+    'pricing.compare.val.support.pro': 'Sähköposti · <24h',
+    'pricing.compare.val.support.premium': 'Sähköposti · <4h',
+    'pricing.compare.foot': '<strong>Vuosimaksu säästää 30–33%.</strong> 14 päivän palautus ennen ensimmäistä AI-viestiä. Hinnat sisältävät 22% ALV:n EU-kuluttajille — yritysasiakkaat näkevät ALV:ttömät hinnat kassalla.',
     'how.s1h': 'Esitä kysymyksesi', 'how.s1p': 'Puhu kuin ystävälle — millä tahansa 17 kielellä. Advocat esittää tarkentavia kysymyksiä kuten hyvä juristi.', 'how.s1m': '~ 90 sek',
     'how.s2h': 'Tekoäly siteeraa lakia', 'how.s2p': 'Jokainen vastaus viittaa tarkkaan pykälään (esim. VÕS § 308). Voit tarkistaa sen Riigi Teatajasta itse.', 'how.s2m': 'PDF · DOCX · kuvat',
     'how.s3h': 'Lähetä kirje omasta postistasi', 'how.s3p': 'Tekoäly laatii kirjeen luonnoksen — lähetät sen omasta sähköpostistasi yhdellä klikkauksella.', 'how.s3m': 'Valmis lähetettäväksi',
@@ -3136,11 +3807,13 @@ const I18N = {
     'plan2.desc': 'Päivittäinen lakiapu sinulle ja perheellesi. 100 AI-viestiä päivässä, täysi asiakirjojen laadinta.',
     'plan2.f1': '100 AI-viestiä päivässä', 'plan2.f2': '3 aktiivista tapausta', 'plan2.f3': 'Asiakirjojen skannaus (20 kpl)',
     'plan2.f4': 'Täysi asiakirjojen laadinta', 'plan2.f5': 'Äänisyöte', 'plan2.f6': 'Verkkohaku tuoreesta laista',
+    'plan2.f7': '15 AI-lakimiehen konsilium jokaista kysymystä kohden',
     'plan2.cta': 'Aloita nyt',
     'plan3.eyebrow': 'Täysi puolustus', 'plan3.name': 'Premium', 'plan3.per': '/ kuukausi', 'plan3.annual': 'tai €249.99/vuosi — säästä 30%',
     'plan3.desc': 'Täysi puolustus — rajaton kaikki, prioriteetti, kaikki ominaisuudet.',
     'plan3.f1': 'Rajattomat AI-viestit', 'plan3.f2': 'Rajattomat tapaukset', 'plan3.f3': 'Rajattomat skannaukset',
-    'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköposti- ja asiakirjavienti',
+    'plan3.f4': 'Prioriteettikäsittely', 'plan3.f5': 'Kaikki Pro:sta', 'plan3.f6': 'Sähköpostiagentti — AI laatii vastaukset Gmail-postilaatikossasi',
+    'plan3.f7': 'Tapauksen aikajana — koostetaan automaattisesti sähköposteista ja määräajoista',
     'plan3.cta': 'Valitse Premium',
     'pricing.vat_included': 'Sis. ALV 22%',
     'pricing.note': 'Peruuta milloin tahansa. Säästä 30-33% vuosilaskutuksella.',
@@ -3162,7 +3835,7 @@ const I18N = {
     'foot.about': 'Tekoälyyn perustuva lakiapu Virolle ja EU:lle. Tehty Tallinnassa, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Tuote', 'foot.how': 'Miten toimii', 'foot.pricing': 'Hinnat', 'foot.app': 'Avaa sovellus', 'foot.blog': 'Blogi',
-    'foot.company': 'Yritys', 'foot.news': 'Uutiset',
+    'foot.company': 'Yritys', 'foot.news': 'Uutiset', 'foot.forFirms': 'Asianajotoimistoille',
     'foot.legal': 'Juridinen', 'foot.terms': 'Ehdot', 'foot.privacy': 'Tietosuoja', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EU-palvelimet (Frankfurt)',
     'chat.status': 'Online · keskim. vastausaika 12 s',
@@ -3232,11 +3905,13 @@ const I18N = {
     'plan2.desc': 'Tägliche Rechtshilfe für Sie und Ihre Familie. 100 KI-Nachrichten pro Tag, vollständige Dokumentenerstellung.',
     'plan2.f1': '100 KI-Nachrichten / Tag', 'plan2.f2': '3 aktive Fälle', 'plan2.f3': 'Dokumentenscan (20 Stück)',
     'plan2.f4': 'Vollständige Dokumentenerstellung (Schreiben, Beschwerden)', 'plan2.f5': 'Spracheingabe', 'plan2.f6': 'Websuche nach aktueller Rechtsprechung',
+    'plan2.f7': 'KI-Konsilium aus 15 Juristen pro Anfrage',
     'plan2.cta': 'Jetzt starten',
     'plan3.eyebrow': 'Volle Verteidigung', 'plan3.name': 'Premium', 'plan3.per': '/ Monat', 'plan3.annual': 'oder 249,99 €/Jahr — 30 % sparen',
     'plan3.desc': 'Volle Verteidigung — alles unbegrenzt, vorrangige Bearbeitung, alle Funktionen.',
     'plan3.f1': 'Unbegrenzte KI-Nachrichten', 'plan3.f2': 'Unbegrenzte Fälle', 'plan3.f3': 'Unbegrenzte Dokumentenscans',
-    'plan3.f4': 'Vorrangige Bearbeitung', 'plan3.f5': 'Alles aus Pro', 'plan3.f6': 'E-Mail- und Dokumentenexport',
+    'plan3.f4': 'Vorrangige Bearbeitung', 'plan3.f5': 'Alles aus Pro', 'plan3.f6': 'E-Mail-Agent — KI verfasst Antworten in Ihrem Gmail-Postfach',
+    'plan3.f7': 'Fall-Zeitleiste — automatisch aus jeder E-Mail und Frist',
     'plan3.cta': 'Premium wählen',
     'pricing.vat_included': 'inkl. 22 % MwSt.',
     'pricing.note': 'Jederzeit kündbar. Mit Jahresabrechnung 30-33 % sparen.',
@@ -3258,7 +3933,7 @@ const I18N = {
     'foot.about': 'KI-gestützte Rechtshilfe für Estland und die EU. Entwickelt in Tallinn von Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Produkt', 'foot.how': 'So funktioniert\'s', 'foot.pricing': 'Preise', 'foot.app': 'App öffnen', 'foot.blog': 'Blog',
-    'foot.company': 'Unternehmen', 'foot.news': 'News',
+    'foot.company': 'Unternehmen', 'foot.news': 'News', 'foot.forFirms': 'Für Kanzleien',
     'foot.legal': 'Rechtliches', 'foot.terms': 'AGB', 'foot.privacy': 'Datenschutz', 'foot.gdpr': 'DSGVO',
     'foot.gdpr_badge': 'DSGVO · EU-Server (Frankfurt)',
     'chat.status': 'Online · Antwort im Schnitt in 12 s',
@@ -3328,11 +4003,13 @@ const I18N = {
     'plan2.desc': 'Aide juridique quotidienne pour vous et votre famille. 100 messages IA/jour, rédaction complète des documents.',
     'plan2.f1': '100 messages IA / jour', 'plan2.f2': '3 dossiers actifs', 'plan2.f3': 'Lecture de documents (20 fichiers)',
     'plan2.f4': 'Rédaction complète (courriers, plaintes)', 'plan2.f5': 'Saisie vocale', 'plan2.f6': 'Recherche web sur la jurisprudence à jour',
+    'plan2.f7': 'Consilium de 15 juristes IA pour chaque question',
     'plan2.cta': 'Commencer',
     'plan3.eyebrow': 'Défense complète', 'plan3.name': 'Premium', 'plan3.per': '/ mois', 'plan3.annual': 'ou 249,99 €/an — économisez 30 %',
     'plan3.desc': 'Défense complète — tout illimité, traitement prioritaire, toutes les fonctionnalités.',
     'plan3.f1': 'Messages IA illimités', 'plan3.f2': 'Dossiers illimités', 'plan3.f3': 'Lectures illimitées',
-    'plan3.f4': 'Traitement prioritaire', 'plan3.f5': 'Tout Pro inclus', 'plan3.f6': 'Export e-mail et documents',
+    'plan3.f4': 'Traitement prioritaire', 'plan3.f5': 'Tout Pro inclus', 'plan3.f6': 'Agent e-mail — l\'IA rédige les réponses dans votre boîte Gmail',
+    'plan3.f7': 'Chronologie du dossier — générée automatiquement à partir des e-mails et échéances',
     'plan3.cta': 'Choisir Premium',
     'pricing.vat_included': 'TVA 22 % incluse',
     'pricing.note': 'Résiliable à tout moment. Avec la facturation annuelle, économisez 30 à 33 %.',
@@ -3354,7 +4031,7 @@ const I18N = {
     'foot.about': 'Assistant juridique IA pour l\'Estonie et l\'UE. Conçu à Tallinn par Vorantis OÜ.',
     'foot.powered': 'Propulsé par Claude (Anthropic)',
     'foot.product': 'Produit', 'foot.how': 'Comment ça marche', 'foot.pricing': 'Tarifs', 'foot.app': 'Ouvrir l\'application', 'foot.blog': 'Blog',
-    'foot.company': 'Société', 'foot.news': 'Actualités',
+    'foot.company': 'Société', 'foot.news': 'Actualités', 'foot.forFirms': 'Pour les cabinets',
     'foot.legal': 'Mentions légales', 'foot.terms': 'CGU', 'foot.privacy': 'Confidentialité', 'foot.gdpr': 'RGPD',
     'foot.gdpr_badge': 'RGPD · serveurs UE (Francfort)',
     'chat.status': 'En ligne · réponse en 12 s en moyenne',
@@ -3424,11 +4101,13 @@ const I18N = {
     'plan2.desc': 'Asistencia jurídica diaria para usted y su familia. 100 mensajes IA/día, redacción completa de documentos.',
     'plan2.f1': '100 mensajes IA / día', 'plan2.f2': '3 casos activos', 'plan2.f3': 'Escaneo de documentos (20)',
     'plan2.f4': 'Redacción completa (cartas, reclamaciones)', 'plan2.f5': 'Entrada por voz', 'plan2.f6': 'Búsqueda web de jurisprudencia reciente',
+    'plan2.f7': 'Consilium de 15 juristas IA por cada consulta',
     'plan2.cta': 'Empezar ahora',
     'plan3.eyebrow': 'Defensa completa', 'plan3.name': 'Premium', 'plan3.per': '/ mes', 'plan3.annual': 'o 249,99 €/año — ahorre 30 %',
     'plan3.desc': 'Defensa completa — todo ilimitado, prioridad de respuesta, todas las funciones.',
     'plan3.f1': 'Mensajes IA ilimitados', 'plan3.f2': 'Casos ilimitados', 'plan3.f3': 'Escaneos ilimitados',
-    'plan3.f4': 'Procesamiento prioritario', 'plan3.f5': 'Todo lo de Pro', 'plan3.f6': 'Exportación de correo y documentos',
+    'plan3.f4': 'Procesamiento prioritario', 'plan3.f5': 'Todo lo de Pro', 'plan3.f6': 'Agente de correo — la IA redacta respuestas en tu bandeja de Gmail',
+    'plan3.f7': 'Cronología del caso — generada automáticamente desde correos y plazos',
     'plan3.cta': 'Elegir Premium',
     'pricing.vat_included': 'IVA 22 % incl.',
     'pricing.note': 'Cancela en cualquier momento. Con facturación anual ahorra 30-33 %.',
@@ -3450,7 +4129,7 @@ const I18N = {
     'foot.about': 'Asistente jurídico con IA para Estonia y la UE. Hecho en Tallin por Vorantis OÜ.',
     'foot.powered': 'Con tecnología de Claude (Anthropic)',
     'foot.product': 'Producto', 'foot.how': 'Cómo funciona', 'foot.pricing': 'Precios', 'foot.app': 'Abrir la app', 'foot.blog': 'Blog',
-    'foot.company': 'Empresa', 'foot.news': 'Noticias',
+    'foot.company': 'Empresa', 'foot.news': 'Noticias', 'foot.forFirms': 'Para bufetes',
     'foot.legal': 'Legal', 'foot.terms': 'Condiciones', 'foot.privacy': 'Privacidad', 'foot.gdpr': 'RGPD',
     'foot.gdpr_badge': 'RGPD · servidores UE (Fráncfort)',
     'chat.status': 'En línea · respuesta media 12 s',
@@ -3520,11 +4199,13 @@ const I18N = {
     'plan2.desc': 'Assistenza legale quotidiana per Lei e la Sua famiglia. 100 messaggi IA/giorno, redazione completa dei documenti.',
     'plan2.f1': '100 messaggi IA / giorno', 'plan2.f2': '3 casi attivi', 'plan2.f3': 'Scansione documenti (20)',
     'plan2.f4': 'Redazione completa (lettere, reclami)', 'plan2.f5': 'Dettatura vocale', 'plan2.f6': 'Ricerca web della giurisprudenza più recente',
+    'plan2.f7': 'Consilium di 15 giuristi IA per ogni richiesta',
     'plan2.cta': 'Inizia ora',
     'plan3.eyebrow': 'Difesa totale', 'plan3.name': 'Premium', 'plan3.per': '/ mese', 'plan3.annual': 'oppure 249,99 €/anno — risparmio 30 %',
     'plan3.desc': 'Difesa totale — tutto illimitato, corsia prioritaria, tutte le funzioni.',
     'plan3.f1': 'Messaggi IA illimitati', 'plan3.f2': 'Casi illimitati', 'plan3.f3': 'Scansioni illimitate',
-    'plan3.f4': 'Elaborazione prioritaria', 'plan3.f5': 'Tutto Pro incluso', 'plan3.f6': 'Esportazione email e documenti',
+    'plan3.f4': 'Elaborazione prioritaria', 'plan3.f5': 'Tutto Pro incluso', 'plan3.f6': 'Agente Email — l\'IA redige risposte nella tua casella Gmail',
+    'plan3.f7': 'Cronologia del caso — generata automaticamente da email e scadenze',
     'plan3.cta': 'Scegli Premium',
     'pricing.vat_included': 'IVA 22 % inclusa',
     'pricing.note': 'Disdici in qualsiasi momento. Con la fatturazione annuale risparmia il 30-33 %.',
@@ -3546,7 +4227,7 @@ const I18N = {
     'foot.about': 'Assistente legale IA per Estonia e UE. Realizzato a Tallinn da Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Prodotto', 'foot.how': 'Come funziona', 'foot.pricing': 'Prezzi', 'foot.app': 'Apri l\'app', 'foot.blog': 'Blog',
-    'foot.company': 'Azienda', 'foot.news': 'News',
+    'foot.company': 'Azienda', 'foot.news': 'News', 'foot.forFirms': 'Per studi legali',
     'foot.legal': 'Note legali', 'foot.terms': 'Termini', 'foot.privacy': 'Privacy', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · server UE (Francoforte)',
     'chat.status': 'Online · risposta media 12 s',
@@ -3616,11 +4297,13 @@ const I18N = {
     'plan2.desc': 'Codzienna pomoc prawna dla Pana/Pani i rodziny. 100 wiadomości AI dziennie, pełne pisanie dokumentów.',
     'plan2.f1': '100 wiadomości AI / dzień', 'plan2.f2': '3 aktywne sprawy', 'plan2.f3': 'Skanowanie dokumentów (20)',
     'plan2.f4': 'Pełne pisma (wezwania, skargi)', 'plan2.f5': 'Dyktowanie głosem', 'plan2.f6': 'Wyszukiwanie aktualnego orzecznictwa',
+    'plan2.f7': 'Konsylium 15 prawników AI przy każdym zapytaniu',
     'plan2.cta': 'Zacznij teraz',
     'plan3.eyebrow': 'Pełna obrona', 'plan3.name': 'Premium', 'plan3.per': '/ mies.', 'plan3.annual': 'lub 249,99 €/rok — oszczędność 30 %',
     'plan3.desc': 'Pełna obrona — wszystko bez limitu, priorytetowa kolejka, wszystkie funkcje.',
     'plan3.f1': 'Wiadomości AI bez limitu', 'plan3.f2': 'Sprawy bez limitu', 'plan3.f3': 'Skany bez limitu',
-    'plan3.f4': 'Priorytetowe przetwarzanie', 'plan3.f5': 'Wszystko z Pro', 'plan3.f6': 'Eksport e-mail i dokumentów',
+    'plan3.f4': 'Priorytetowe przetwarzanie', 'plan3.f5': 'Wszystko z Pro', 'plan3.f6': 'Agent e-mail — AI pisze odpowiedzi w Twojej skrzynce Gmail',
+    'plan3.f7': 'Oś czasu sprawy — automatycznie z e-maili i terminów',
     'plan3.cta': 'Wybierz Premium',
     'pricing.vat_included': 'zawiera 22% VAT',
     'pricing.note': 'Anuluj w dowolnym momencie. Przy rocznym rozliczeniu oszczędzasz 30-33 %.',
@@ -3642,7 +4325,7 @@ const I18N = {
     'foot.about': 'Asystent prawny oparty na AI dla Estonii i UE. Stworzony w Tallinie przez Vorantis OÜ.',
     'foot.powered': 'Napędzany przez Claude (Anthropic)',
     'foot.product': 'Produkt', 'foot.how': 'Jak działa', 'foot.pricing': 'Cennik', 'foot.app': 'Otwórz aplikację', 'foot.blog': 'Blog',
-    'foot.company': 'Firma', 'foot.news': 'Aktualności',
+    'foot.company': 'Firma', 'foot.news': 'Aktualności', 'foot.forFirms': 'Dla kancelarii',
     'foot.legal': 'Informacje prawne', 'foot.terms': 'Regulamin', 'foot.privacy': 'Prywatność', 'foot.gdpr': 'RODO',
     'foot.gdpr_badge': 'RODO · serwery UE (Frankfurt)',
     'chat.status': 'Online · średnia odpowiedź 12 s',
@@ -3712,11 +4395,13 @@ const I18N = {
     'plan2.desc': 'Daglig juridisk hjälp för dig och familjen. 100 AI-meddelanden/dag, full dokumentskrivning.',
     'plan2.f1': '100 AI-meddelanden / dag', 'plan2.f2': '3 aktiva ärenden', 'plan2.f3': 'Dokumentskanning (20 st)',
     'plan2.f4': 'Full skrivning (brev, klagomål)', 'plan2.f5': 'Röstinmatning', 'plan2.f6': 'Webbsökning efter färsk rättspraxis',
+    'plan2.f7': '15-juristers AI-konsilium för varje fråga',
     'plan2.cta': 'Börja nu',
     'plan3.eyebrow': 'Fullt försvar', 'plan3.name': 'Premium', 'plan3.per': '/ månad', 'plan3.annual': 'eller 249,99 €/år — spara 30 %',
     'plan3.desc': 'Fullt försvar — allt obegränsat, prioriterad hantering, alla funktioner.',
     'plan3.f1': 'Obegränsade AI-meddelanden', 'plan3.f2': 'Obegränsade ärenden', 'plan3.f3': 'Obegränsade skanningar',
-    'plan3.f4': 'Prioriterad hantering', 'plan3.f5': 'Allt från Pro', 'plan3.f6': 'E-post- och dokumentexport',
+    'plan3.f4': 'Prioriterad hantering', 'plan3.f5': 'Allt från Pro', 'plan3.f6': 'E-postagent — AI skriver svar i din Gmail-inkorg',
+    'plan3.f7': 'Ärendetidslinje — byggs automatiskt från e-post och frister',
     'plan3.cta': 'Välj Premium',
     'pricing.vat_included': 'inkl. 22 % moms',
     'pricing.note': 'Avsluta när som helst. Med årsbetalning sparar du 30-33 %.',
@@ -3738,7 +4423,7 @@ const I18N = {
     'foot.about': 'AI-driven juridisk assistent för Estland och EU. Byggd i Tallinn av Vorantis OÜ.',
     'foot.powered': 'Drivs av Claude (Anthropic)',
     'foot.product': 'Produkt', 'foot.how': 'Så funkar det', 'foot.pricing': 'Priser', 'foot.app': 'Öppna appen', 'foot.blog': 'Blogg',
-    'foot.company': 'Företag', 'foot.news': 'Nyheter',
+    'foot.company': 'Företag', 'foot.news': 'Nyheter', 'foot.forFirms': 'För advokatbyråer',
     'foot.legal': 'Juridiskt', 'foot.terms': 'Villkor', 'foot.privacy': 'Integritet', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · EU-servrar (Frankfurt)',
     'chat.status': 'Online · svar i snitt 12 s',
@@ -3808,11 +4493,13 @@ const I18N = {
     'plan2.desc': 'Ikdienas juridiskā palīdzība jums un ģimenei. 100 MI ziņas dienā, pilna dokumentu sagatavošana.',
     'plan2.f1': '100 MI ziņu dienā', 'plan2.f2': '3 aktīvas lietas', 'plan2.f3': 'Dokumentu skenēšana (20)',
     'plan2.f4': 'Pilna sagatavošana (vēstules, sūdzības)', 'plan2.f5': 'Balss ievade', 'plan2.f6': 'Tīmekļa meklēšana aktuālajai praksei',
+    'plan2.f7': '15 MI juristu konsīlijs katram jautājumam',
     'plan2.cta': 'Sākt tagad',
     'plan3.eyebrow': 'Pilna aizsardzība', 'plan3.name': 'Premium', 'plan3.per': '/ mēnesī', 'plan3.annual': 'vai 249,99 €/gadā — ietaupiet 30 %',
     'plan3.desc': 'Pilna aizsardzība — viss bez ierobežojumiem, prioritāte, visas funkcijas.',
     'plan3.f1': 'Neierobežotas MI ziņas', 'plan3.f2': 'Neierobežotas lietas', 'plan3.f3': 'Neierobežoti skenējumi',
-    'plan3.f4': 'Prioritāra apstrāde', 'plan3.f5': 'Viss no Pro', 'plan3.f6': 'E-pasta un dokumentu eksports',
+    'plan3.f4': 'Prioritāra apstrāde', 'plan3.f5': 'Viss no Pro', 'plan3.f6': 'E-pasta aģents — MI raksta atbildes jūsu Gmail iesūtnē',
+    'plan3.f7': 'Lietas hronoloģija — automātiski no e-pastiem un termiņiem',
     'plan3.cta': 'Izvēlēties Premium',
     'pricing.vat_included': 'ar 22 % PVN',
     'pricing.note': 'Atcelt jebkurā laikā. Ar gada apmaksu ietaupiet 30-33 %.',
@@ -3834,7 +4521,7 @@ const I18N = {
     'foot.about': 'MI juridiskais asistents Igaunijai un ES. Veidots Tallinā, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Produkts', 'foot.how': 'Kā strādā', 'foot.pricing': 'Cenas', 'foot.app': 'Atvērt lietotni', 'foot.blog': 'Blogs',
-    'foot.company': 'Uzņēmums', 'foot.news': 'Jaunumi',
+    'foot.company': 'Uzņēmums', 'foot.news': 'Jaunumi', 'foot.forFirms': 'Advokātu birojiem',
     'foot.legal': 'Juridiska info', 'foot.terms': 'Noteikumi', 'foot.privacy': 'Privātums', 'foot.gdpr': 'VDAR',
     'foot.gdpr_badge': 'VDAR · ES serveri (Frankfurte)',
     'chat.status': 'Tiešsaistē · vidēja atbilde 12 s',
@@ -3904,11 +4591,13 @@ const I18N = {
     'plan2.desc': 'Kasdienė teisinė pagalba jums ir šeimai. 100 DI žinučių per dieną, pilnas dokumentų rengimas.',
     'plan2.f1': '100 DI žinučių per dieną', 'plan2.f2': '3 aktyvios bylos', 'plan2.f3': 'Dokumentų skenavimas (20)',
     'plan2.f4': 'Pilnas dokumentų rengimas (raštai, skundai)', 'plan2.f5': 'Balso įvestis', 'plan2.f6': 'Žiniatinklio paieška šviežiai praktikai',
+    'plan2.f7': '15 DI teisininkų konsiliumas kiekvienam klausimui',
     'plan2.cta': 'Pradėti dabar',
     'plan3.eyebrow': 'Pilna gynyba', 'plan3.name': 'Premium', 'plan3.per': '/ mėn.', 'plan3.annual': 'arba 249,99 €/metus — sutaupote 30 %',
     'plan3.desc': 'Pilna gynyba — viskas neribotai, prioritetas, visos funkcijos.',
     'plan3.f1': 'Neribotos DI žinutės', 'plan3.f2': 'Neribotos bylos', 'plan3.f3': 'Neriboti skenavimai',
-    'plan3.f4': 'Prioritetinis apdorojimas', 'plan3.f5': 'Viskas iš Pro', 'plan3.f6': 'El. pašto ir dokumentų eksportas',
+    'plan3.f4': 'Prioritetinis apdorojimas', 'plan3.f5': 'Viskas iš Pro', 'plan3.f6': 'El. pašto agentas — DI rašo atsakymus jūsų Gmail dėžutėje',
+    'plan3.f7': 'Bylos chronologija — automatiškai iš laiškų ir terminų',
     'plan3.cta': 'Pasirinkti Premium',
     'pricing.vat_included': 'su 22 % PVM',
     'pricing.note': 'Atšaukite bet kada. Su metiniu mokėjimu sutaupote 30-33 %.',
@@ -3930,7 +4619,7 @@ const I18N = {
     'foot.about': 'DI teisės asistentas Estijai ir ES. Sukurta Taline, Vorantis OÜ.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Produktas', 'foot.how': 'Kaip veikia', 'foot.pricing': 'Kainos', 'foot.app': 'Atidaryti programą', 'foot.blog': 'Tinklaraštis',
-    'foot.company': 'Įmonė', 'foot.news': 'Naujienos',
+    'foot.company': 'Įmonė', 'foot.news': 'Naujienos', 'foot.forFirms': 'Advokatų kontoroms',
     'foot.legal': 'Teisinė info', 'foot.terms': 'Sąlygos', 'foot.privacy': 'Privatumas', 'foot.gdpr': 'BDAR',
     'foot.gdpr_badge': 'BDAR · ES serveriai (Frankfurte)',
     'chat.status': 'Prisijungę · vidutinis atsakymo laikas 12 s',
@@ -4000,11 +4689,13 @@ const I18N = {
     'plan2.desc': 'Asistență juridică zilnică pentru dumneavoastră și familie. 100 mesaje AI/zi, redactare completă a documentelor.',
     'plan2.f1': '100 mesaje AI / zi', 'plan2.f2': '3 cazuri active', 'plan2.f3': 'Scanare documente (20)',
     'plan2.f4': 'Redactare completă (somații, plângeri)', 'plan2.f5': 'Dictare vocală', 'plan2.f6': 'Căutare web pentru jurisprudență recentă',
+    'plan2.f7': 'Consilium de 15 juriști AI pentru fiecare întrebare',
     'plan2.cta': 'Începe acum',
     'plan3.eyebrow': 'Apărare totală', 'plan3.name': 'Premium', 'plan3.per': '/ lună', 'plan3.annual': 'sau 249,99 €/an — economisiți 30 %',
     'plan3.desc': 'Apărare totală — totul nelimitat, prioritate, toate funcțiile.',
     'plan3.f1': 'Mesaje AI nelimitate', 'plan3.f2': 'Cazuri nelimitate', 'plan3.f3': 'Scanări nelimitate',
-    'plan3.f4': 'Procesare prioritară', 'plan3.f5': 'Tot ce este în Pro', 'plan3.f6': 'Export e-mail și documente',
+    'plan3.f4': 'Procesare prioritară', 'plan3.f5': 'Tot ce este în Pro', 'plan3.f6': 'Agent email — AI redactează răspunsuri în căsuța ta Gmail',
+    'plan3.f7': 'Cronologia cazului — generată automat din e-mailuri și termene',
     'plan3.cta': 'Alege Premium',
     'pricing.vat_included': 'TVA 22 % inclus',
     'pricing.note': 'Anulați oricând. Cu plata anuală economisiți 30-33 %.',
@@ -4026,7 +4717,7 @@ const I18N = {
     'foot.about': 'Asistent juridic AI pentru Estonia și UE. Construit la Tallinn de Vorantis OÜ.',
     'foot.powered': 'Pus în funcțiune de Claude (Anthropic)',
     'foot.product': 'Produs', 'foot.how': 'Cum funcționează', 'foot.pricing': 'Prețuri', 'foot.app': 'Deschide aplicația', 'foot.blog': 'Blog',
-    'foot.company': 'Companie', 'foot.news': 'Noutăți',
+    'foot.company': 'Companie', 'foot.news': 'Noutăți', 'foot.forFirms': 'Pentru cabinete',
     'foot.legal': 'Juridic', 'foot.terms': 'Termeni', 'foot.privacy': 'Confidențialitate', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · servere UE (Frankfurt)',
     'chat.status': 'Online · răspuns mediu 12 s',
@@ -4096,11 +4787,13 @@ const I18N = {
     'plan2.desc': 'Sizin ve aileniz için günlük hukuki destek. Günde 100 YZ mesajı, eksiksiz belge yazımı.',
     'plan2.f1': 'Günde 100 YZ mesajı', 'plan2.f2': '3 aktif dosya', 'plan2.f3': 'Belge tarama (20 adet)',
     'plan2.f4': 'Eksiksiz belge yazımı (mektup, şikâyet)', 'plan2.f5': 'Sesli giriş', 'plan2.f6': 'Güncel içtihat için web araması',
+    'plan2.f7': 'Her soruda 15 YZ avukatlık konsültasyonu',
     'plan2.cta': 'Hemen başla',
     'plan3.eyebrow': 'Tam savunma', 'plan3.name': 'Premium', 'plan3.per': '/ ay', 'plan3.annual': 'veya 249,99 €/yıl — %30 tasarruf',
     'plan3.desc': 'Tam savunma — her şey sınırsız, öncelikli işlem, tüm özellikler açık.',
     'plan3.f1': 'Sınırsız YZ mesajı', 'plan3.f2': 'Sınırsız dosya', 'plan3.f3': 'Sınırsız belge tarama',
-    'plan3.f4': 'Öncelikli işlem', 'plan3.f5': 'Pro\'daki her şey', 'plan3.f6': 'E-posta ve belge dışa aktarımı',
+    'plan3.f4': 'Öncelikli işlem', 'plan3.f5': 'Pro\'daki her şey', 'plan3.f6': 'E-posta Asistanı — YZ, Gmail kutunuzda yanıt taslakları hazırlar',
+    'plan3.f7': 'Dosya zaman çizelgesi — her e-posta ve süreden otomatik oluşturulur',
     'plan3.cta': 'Premium\'u seç',
     'pricing.vat_included': 'KDV %22 dahil',
     'pricing.note': 'İstediğiniz zaman iptal edin. Yıllık ödemeyle %30-33 tasarruf edersiniz.',
@@ -4122,7 +4815,7 @@ const I18N = {
     'foot.about': 'Estonya ve AB için yapay zekâ destekli hukuk asistanı. Tallinn\'de, Vorantis OÜ tarafından geliştirildi.',
     'foot.powered': 'Powered by Claude (Anthropic)',
     'foot.product': 'Ürün', 'foot.how': 'Nasıl çalışır', 'foot.pricing': 'Fiyatlar', 'foot.app': 'Uygulamayı aç', 'foot.blog': 'Blog',
-    'foot.company': 'Şirket', 'foot.news': 'Haberler',
+    'foot.company': 'Şirket', 'foot.news': 'Haberler', 'foot.forFirms': 'Hukuk büroları için',
     'foot.legal': 'Hukuki', 'foot.terms': 'Koşullar', 'foot.privacy': 'Gizlilik', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · AB sunucuları (Frankfurt)',
     'chat.status': 'Çevrimiçi · ortalama yanıt 12 sn',
@@ -4192,11 +4885,13 @@ const I18N = {
     'plan2.desc': 'دعم قانوني يومي لك ولعائلتك. 100 رسالة ذكاء اصطناعي يومياً، صياغة مستندات كاملة.',
     'plan2.f1': '100 رسالة ذكاء اصطناعي / يوم', 'plan2.f2': '3 قضايا فعّالة', 'plan2.f3': 'مسح المستندات (20)',
     'plan2.f4': 'صياغة كاملة (خطابات، شكاوى)', 'plan2.f5': 'إدخال صوتي', 'plan2.f6': 'بحث على الويب عن السوابق الحديثة',
+    'plan2.f7': 'مجلس استشاري من 15 محامياً بالذكاء الاصطناعي لكل سؤال',
     'plan2.cta': 'ابدأ الآن',
     'plan3.eyebrow': 'الدفاع الكامل', 'plan3.name': 'Premium', 'plan3.per': '/ شهر', 'plan3.annual': 'أو 249٫99 €/سنة — وفّر 30%',
     'plan3.desc': 'دفاع كامل — كل شيء بلا حدود، أولوية في الخدمة، جميع الميزات.',
     'plan3.f1': 'رسائل ذكاء اصطناعي بلا حدود', 'plan3.f2': 'قضايا بلا حدود', 'plan3.f3': 'مسح بلا حدود',
-    'plan3.f4': 'معالجة ذات أولوية', 'plan3.f5': 'كل ما في Pro', 'plan3.f6': 'تصدير البريد الإلكتروني والمستندات',
+    'plan3.f4': 'معالجة ذات أولوية', 'plan3.f5': 'كل ما في Pro', 'plan3.f6': 'وكيل البريد — الذكاء الاصطناعي يصيغ الردود في صندوق Gmail الخاص بك',
+    'plan3.f7': 'الخط الزمني للقضية — يُبنى تلقائياً من كل بريد ومهلة',
     'plan3.cta': 'اختر Premium',
     'pricing.vat_included': 'شامل ضريبة القيمة المضافة 22%',
     'pricing.note': 'إلغاء في أي وقت. وفّر 30-33% مع الفوترة السنوية.',
@@ -4218,7 +4913,7 @@ const I18N = {
     'foot.about': 'مساعد قانوني بالذكاء الاصطناعي لإستونيا والاتحاد الأوروبي. صُنع في تالين بواسطة Vorantis OÜ.',
     'foot.powered': 'مدعوم بـ Claude (Anthropic)',
     'foot.product': 'المنتج', 'foot.how': 'كيف يعمل', 'foot.pricing': 'الأسعار', 'foot.app': 'افتح التطبيق', 'foot.blog': 'المدوّنة',
-    'foot.company': 'الشركة', 'foot.news': 'الأخبار',
+    'foot.company': 'الشركة', 'foot.news': 'الأخبار', 'foot.forFirms': 'لمكاتب المحاماة',
     'foot.legal': 'قانوني', 'foot.terms': 'الشروط', 'foot.privacy': 'الخصوصية', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · خوادم الاتحاد الأوروبي (فرانكفورت)',
     'chat.status': 'متصل · متوسط الردّ 12 ث',
@@ -4288,11 +4983,13 @@ const I18N = {
     'plan2.desc': 'پشتیبانی حقوقی روزانه برای شما و خانواده. ۱۰۰ پیام هوش مصنوعی در روز، تنظیم کامل اسناد.',
     'plan2.f1': 'روزانه ۱۰۰ پیام هوش مصنوعی', 'plan2.f2': 'سه پرونده فعّال', 'plan2.f3': 'اسکن سند (۲۰ مورد)',
     'plan2.f4': 'تنظیم کامل (نامه، شکایت)', 'plan2.f5': 'ورودی صوتی', 'plan2.f6': 'جستجوی وب برای رویه‌ی روز',
+    'plan2.f7': 'شورای ۱۵ حقوق‌دان هوش مصنوعی برای هر پرسش',
     'plan2.cta': 'اکنون شروع کنید',
     'plan3.eyebrow': 'دفاع کامل', 'plan3.name': 'Premium', 'plan3.per': '/ ماه', 'plan3.annual': 'یا ۲۴۹٫۹۹ €/سال — ۳۰٪ صرفه‌جویی',
     'plan3.desc': 'دفاع کامل — همه چیز نامحدود، اولویت در پاسخ، تمامی امکانات.',
     'plan3.f1': 'پیام‌های هوش مصنوعی نامحدود', 'plan3.f2': 'پرونده‌های نامحدود', 'plan3.f3': 'اسکن نامحدود',
-    'plan3.f4': 'پردازش با اولویت', 'plan3.f5': 'همه‌ی امکانات Pro', 'plan3.f6': 'خروجی ایمیل و سند',
+    'plan3.f4': 'پردازش با اولویت', 'plan3.f5': 'همه‌ی امکانات Pro', 'plan3.f6': 'دستیار ایمیل — هوش مصنوعی پاسخ‌ها را در صندوق Gmail شما می‌نویسد',
+    'plan3.f7': 'خط زمانی پرونده — به‌صورت خودکار از هر ایمیل و مهلت ساخته می‌شود',
     'plan3.cta': 'انتخاب Premium',
     'pricing.vat_included': 'شامل ۲۲٪ مالیات بر ارزش افزوده',
     'faq.label': 'سؤالات متداول', 'faq.title': 'پاسخ‌های <em>صادقانه</em> به پرسش‌های رایج.',
@@ -4313,7 +5010,7 @@ const I18N = {
     'foot.about': 'دستیار حقوقی هوش مصنوعی برای استونی و اتحادیه اروپا. ساخت تالین، Vorantis OÜ.',
     'foot.powered': 'با نیروی Claude (Anthropic)',
     'foot.product': 'محصول', 'foot.how': 'چگونه کار می‌کند', 'foot.pricing': 'قیمت‌ها', 'foot.app': 'باز کردن برنامه', 'foot.blog': 'وبلاگ',
-    'foot.company': 'شرکت', 'foot.news': 'اخبار',
+    'foot.company': 'شرکت', 'foot.news': 'اخبار', 'foot.forFirms': 'برای دفاتر حقوقی',
     'foot.legal': 'حقوقی', 'foot.terms': 'شرایط', 'foot.privacy': 'حریم خصوصی', 'foot.gdpr': 'GDPR',
     'foot.gdpr_badge': 'GDPR · سرورهای اتحادیه اروپا (فرانکفورت)',
     'chat.status': 'برخط · میانگین پاسخ ۱۲ ثانیه',
@@ -4334,25 +5031,59 @@ function tr(key) { return (TR[key] !== undefined) ? TR[key] : (I18N.en[key] !== 
 
 let CUR_LANG = 'en';
 
-// Build lang dropdown
+// Build lang dropdown (lang-switcher widget — uses localStorage advocat_lang)
 (function buildLangs(){
   const menu = document.getElementById('lang-menu');
+  const tog = document.getElementById('lang-toggle');
+  function openLangMenu(){ menu.classList.add('open'); tog.setAttribute('aria-expanded', 'true'); }
+  function closeLangMenu(){ menu.classList.remove('open'); tog.setAttribute('aria-expanded', 'false'); }
+  window.__closeLangMenu = closeLangMenu;
   LANGS.forEach(function(l){
+    const li = document.createElement('li');
+    li.setAttribute('role', 'none');
+    li.style.listStyle = 'none';
     const b = document.createElement('button');
     b.type = 'button';
     b.dataset.lang = l.code;
-    b.innerHTML = '<span>' + l.label + '</span><span class="lang-code">' + l.code.toUpperCase() + '</span>';
-    b.onclick = function(){ setLang(l.code); document.getElementById('lang-menu').classList.remove('open'); };
-    menu.appendChild(b);
+    b.setAttribute('role', 'option');
+    b.setAttribute('aria-selected', 'false');
+    b.lang = l.code;
+    var safeLabel = (l.label || '').replace(/[&<>"']/g, function(c){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]; });
+    b.innerHTML = '<span class="lang-flag" aria-hidden="true">' + (l.flag || '') + '</span>'
+                + '<span class="lang-label">' + safeLabel + '</span>'
+                + '<span class="lang-code">' + l.code.toUpperCase() + '</span>';
+    b.onclick = function(){ setLang(l.code); closeLangMenu(); tog.focus(); };
+    li.appendChild(b);
+    menu.appendChild(li);
   });
-  const tog = document.getElementById('lang-toggle');
   tog.addEventListener('click', function(e){
     e.stopPropagation();
-    const m = document.getElementById('lang-menu');
-    m.classList.toggle('open');
-    tog.setAttribute('aria-expanded', m.classList.contains('open') ? 'true' : 'false');
+    if (menu.classList.contains('open')) { closeLangMenu(); }
+    else {
+      openLangMenu();
+      var active = menu.querySelector('button.active') || menu.querySelector('button');
+      if (active) setTimeout(function(){ active.focus(); }, 0);
+    }
   });
-  document.addEventListener('click', function(){ document.getElementById('lang-menu').classList.remove('open'); });
+  tog.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openLangMenu();
+      var first = menu.querySelector('button.active') || menu.querySelector('button');
+      if (first) first.focus();
+    }
+  });
+  menu.addEventListener('keydown', function(e){
+    const buttons = Array.prototype.slice.call(menu.querySelectorAll('button'));
+    const idx = buttons.indexOf(document.activeElement);
+    if (e.key === 'Escape') { e.preventDefault(); closeLangMenu(); tog.focus(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); (buttons[idx + 1] || buttons[0]).focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); (buttons[idx - 1] || buttons[buttons.length - 1]).focus(); }
+    else if (e.key === 'Home') { e.preventDefault(); buttons[0].focus(); }
+    else if (e.key === 'End') { e.preventDefault(); buttons[buttons.length - 1].focus(); }
+  });
+  document.addEventListener('click', function(){ closeLangMenu(); });
+  menu.addEventListener('click', function(e){ e.stopPropagation(); });
 })();
 
 function applyTranslations() {
@@ -4379,10 +5110,17 @@ function applyTranslations() {
   const promoSpan = document.querySelector('#promo-banner [data-i18n="promo"]');
   if (promoSpan) promoSpan.innerHTML = tr('promo');
 
-  // Top label
+  // Top label + flag
   document.getElementById('lang-current').textContent = CUR_LANG.toUpperCase();
+  var flagEl = document.getElementById('lang-flag');
+  if (flagEl) {
+    var curMeta = LANGS.find(function(l){ return l.code === CUR_LANG; });
+    flagEl.textContent = (curMeta && curMeta.flag) ? curMeta.flag : '';
+  }
   document.querySelectorAll('#lang-menu button').forEach(function(b){
-    b.classList.toggle('active', b.dataset.lang === CUR_LANG);
+    var isActive = (b.dataset.lang === CUR_LANG);
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
 
   // FAQ items
@@ -4410,7 +5148,31 @@ function setLang(code) {
       (I18N.en && I18N.en['meta.title']);
     if (localisedTitle) document.title = localisedTitle;
   } catch (e) {}
+  // Persist to both keys: spec-compliant 'advocat_lang' and legacy 'advocat-landing-lang'
   try { localStorage.setItem('advocat-landing-lang', code); } catch(e){}
+  try { localStorage.setItem('advocat_lang', code); } catch(e){}
+  // Sync ?lang=XX URL so shared links round-trip (no reload).
+  try {
+    var url = new URL(window.location.href);
+    if (url.searchParams.get('lang') !== code) {
+      url.searchParams.set('lang', code);
+      window.history.replaceState(null, '', url);
+    }
+  } catch(e){}
+  // Screen reader announcement
+  try {
+    var live = document.getElementById('lang-live');
+    if (!live) {
+      live = document.createElement('div');
+      live.id = 'lang-live';
+      live.setAttribute('aria-live', 'polite');
+      live.setAttribute('aria-atomic', 'true');
+      live.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);';
+      document.body.appendChild(live);
+    }
+    var meta = LANGS.find(function(l){ return l.code === code; });
+    live.textContent = 'Language: ' + (meta ? meta.label : code.toUpperCase());
+  } catch(e){}
   applyTranslations();
 }
 
@@ -4593,21 +5355,30 @@ document.getElementById('chat-input').addEventListener('keydown', function(e){
 
 // ── INIT ──
 (function init(){
-  let lang = 'en';
+  // Priority: ?lang=XX URL param  >  localStorage  >  navigator.language  >  'en'
+  // The URL-param branch lets hreflang links from Google land on the right locale.
+  function isSupported(code) {
+    return !!(code && (I18N[code] || LANGS.find(function(l){ return l.code === code; })));
+  }
+  let lang = null;
   try {
-    const saved = localStorage.getItem('advocat-landing-lang');
-    if (saved && (I18N[saved] || LANGS.find(function(l){ return l.code === saved; }))) {
-      lang = saved;
-    }
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
+    if (urlLang && isSupported(urlLang)) lang = urlLang;
   } catch(e){}
-  if (!I18N[lang]) {
+  if (!lang) {
+    try {
+      const saved = localStorage.getItem('advocat_lang') || localStorage.getItem('advocat-landing-lang');
+      if (saved && isSupported(saved)) lang = saved;
+    } catch(e){}
+  }
+  if (!lang || !I18N[lang]) {
     // Browser auto-detect for languages we have full strings for
     const nav = (navigator.language || '').toLowerCase();
     if (nav.startsWith('et')) lang = 'et';
     else if (nav.startsWith('ru')) lang = 'ru';
     else if (nav.startsWith('uk')) lang = 'uk';
     else if (nav.startsWith('fi')) lang = 'fi';
-    else lang = 'en';
+    else lang = lang || 'en';
   }
   setLang(lang);
 })();

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privaatsuspoliitika — Privacy Policy | Advocat</title>
-    <meta name="description" content="Advocat privaatsuspoliitika — GDPR-aligned Privacy Policy. How Vorantis OÜ processes your data: Supabase EU, Stripe, Anthropic Claude, OpenAI Whisper, Google Cloud, ElevenLabs, Replicate, GitHub Pages, Firebase.">
+    <meta name="description" content="Advocat privaatsuspoliitika — GDPR-aligned Privacy Policy. How Vorantis OÜ processes your data: Supabase EU, Stripe, Anthropic Claude (primary AI), OpenAI Whisper + gpt-4o-mini (AI failover), Google Cloud, ElevenLabs, Replicate, GitHub Pages, Firebase.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://advocat.ee/privacy.html">
     <link rel="icon" type="image/png" href="/favicon.png">
@@ -152,13 +152,13 @@
 <!-- ============================================================== -->
 <main class="container" data-lang="et">
     <div class="doc-meta">
-        <p><strong>Jõustub:</strong> 6. mai 2026</p>
-        <p><strong>Viimati uuendatud:</strong> 6. mai 2026</p>
-        <p><strong>Versioon:</strong> 3.1</p>
+        <p><strong>Jõustub:</strong> 20. mai 2026</p>
+        <p><strong>Viimati uuendatud:</strong> 20. mai 2026</p>
+        <p><strong>Versioon:</strong> 3.2</p>
     </div>
 
     <div class="callout-key">
-        <strong>Lühidalt:</strong> Teie andmed asuvad EL-i serverites (Supabase EU-West-2). AI-vestluste sisu edastatakse Anthropicule (Claude API) Euroopa Komisjoni standardsete lepingusätete alusel. Teil on kõik GDPR-i õigused — kustutamine, ülekandmine, juurdepääs. Reklaamiküpsiseid ega kolmandate osapoolte jälgimist me ei kasuta.
+        <strong>Lühidalt:</strong> Teie andmed asuvad EL-i serverites (Supabase EU-West-2). AI-vestluste sisu edastatakse Anthropicule (Claude API) ja varuteenusena OpenAI'le (gpt-4o-mini, ainult Anthropic'i katkestuse ajal) Euroopa Komisjoni standardsete lepingusätete alusel. Teil on kõik GDPR-i õigused — kustutamine, ülekandmine, juurdepääs. Reklaamiküpsiseid ega kolmandate osapoolte jälgimist me ei kasuta.
     </div>
 
     <h2>1. Vastutav töötleja</h2>
@@ -208,8 +208,8 @@
     <table>
         <thead><tr><th>Töötleja</th><th>Riik</th><th>Eesmärk</th><th>DPA</th><th>Ei treenita</th></tr></thead>
         <tbody>
-        <tr><td><strong>Anthropic</strong></td><td>USA</td><td>AI vestlus (Claude Haiku/Sonnet)</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Jah (SCC + opt-out)</td></tr>
-        <tr><td><strong>OpenAI</strong></td><td>USA</td><td>Whisper STT, text-embedding-3-small</td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Jah (vaikimisi opt-out API kaudu)</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>USA</td><td>AI vestlus (Claude Haiku/Sonnet) — esmane teenusepakkuja</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Jah (SCC + opt-out)</td></tr>
+        <tr><td><strong>OpenAI</strong></td><td>USA</td><td>Whisper STT, text-embedding-3-small, <strong>gpt-4o-mini (AI vestluse varuteenusena)</strong></td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Jah (vaikimisi opt-out API kaudu)</td></tr>
         <tr><td><strong>Supabase</strong></td><td>EL (Frankfurt)</td><td>Andmebaas, salvestus, autentimine</td><td><a href="https://supabase.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (andmed jäävad EL-i)</td></tr>
         <tr><td><strong>ElevenLabs</strong></td><td>USA</td><td>Kõnesüntees video VO jaoks</td><td><a href="https://elevenlabs.io/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
         <tr><td><strong>Brave Search</strong></td><td>USA</td><td>Veebiotsing</td><td>N/A</td><td>N/A</td></tr>
@@ -224,6 +224,10 @@
     </table>
     </div>
     <p>Kõik alamtöötlejad on lepingu alusel kohustatud andmeid kaitsma vähemalt samal tasemel kui meie ise.</p>
+
+    <div class="callout">
+        <strong>AI varuteenuse pakkuja (OpenAI failover):</strong> Vastutava töötlejana kasutame täiendava AI teenuse pakkujana OpenAI, L.L.C. (USA) — konkreetselt mudelit <code>gpt-4o-mini</code> — ainult juhtudel, kui Anthropic'i teenus on ajutiselt kättesaamatu (failover). Sel juhul edastatakse Teie sõnumid OpenAI'le sama põhimõtte alusel: ilma Teie isikuandmetega seostamata, ilma mudeli treenimise eesmärgil ja krüpteeritud kanalite kaudu. Andmete USA'sse edastamine põhineb Standard Contractual Clauses'idel ja OpenAI sertifikaadil EU-US Data Privacy Framework alusel.
+    </div>
 
     <h2>5. Säilitusajad</h2>
     <div class="table-wrap">
@@ -298,13 +302,13 @@
 <!-- ============================================================== -->
 <main class="container" data-lang="en">
     <div class="doc-meta">
-        <p><strong>Effective:</strong> 6 May 2026</p>
-        <p><strong>Last updated:</strong> 6 May 2026</p>
-        <p><strong>Version:</strong> 3.1</p>
+        <p><strong>Effective:</strong> 20 May 2026</p>
+        <p><strong>Last updated:</strong> 20 May 2026</p>
+        <p><strong>Version:</strong> 3.2</p>
     </div>
 
     <div class="callout-key">
-        <strong>In short:</strong> Your data is hosted in the EU (Supabase EU-West-2). AI chat content is sent to Anthropic's Claude API under EU Standard Contractual Clauses. You have full GDPR rights — deletion, portability, access. No advertising cookies, no third-party tracking.
+        <strong>In short:</strong> Your data is hosted in the EU (Supabase EU-West-2). AI chat content is sent to Anthropic's Claude API and, as a failover, to OpenAI (gpt-4o-mini, only when Anthropic is unavailable) under EU Standard Contractual Clauses. You have full GDPR rights — deletion, portability, access. No advertising cookies, no third-party tracking.
     </div>
 
     <h2>1. Data controller</h2>
@@ -354,8 +358,8 @@
     <table>
         <thead><tr><th>Processor</th><th>Country</th><th>Purpose</th><th>DPA</th><th>No-train</th></tr></thead>
         <tbody>
-        <tr><td><strong>Anthropic</strong></td><td>USA</td><td>AI chat (Claude Haiku/Sonnet)</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Yes (SCC + opt-out)</td></tr>
-        <tr><td><strong>OpenAI</strong></td><td>USA</td><td>Whisper STT, text-embedding-3-small</td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Yes (default opt-out via API)</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>USA</td><td>AI chat (Claude Haiku/Sonnet) — primary provider</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Yes (SCC + opt-out)</td></tr>
+        <tr><td><strong>OpenAI</strong></td><td>USA</td><td>Whisper STT, text-embedding-3-small, <strong>gpt-4o-mini (AI chat failover)</strong></td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Yes (default opt-out via API)</td></tr>
         <tr><td><strong>Supabase</strong></td><td>EU (Frankfurt)</td><td>Database, storage, auth</td><td><a href="https://supabase.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (data stays in EU)</td></tr>
         <tr><td><strong>ElevenLabs</strong></td><td>USA</td><td>TTS for video VO</td><td><a href="https://elevenlabs.io/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
         <tr><td><strong>Brave Search</strong></td><td>USA</td><td>Web search</td><td>N/A</td><td>N/A</td></tr>
@@ -370,6 +374,10 @@
     </table>
     </div>
     <p>All sub-processors are contractually bound to protect data at least to the same level as we do.</p>
+
+    <div class="callout">
+        <strong>AI failover provider (OpenAI):</strong> As data controller we additionally use OpenAI, L.L.C. (USA) — specifically the <code>gpt-4o-mini</code> model — only as a failover when the primary Anthropic service is temporarily unavailable. In those cases your messages are transmitted to OpenAI under the same principles: not linked to your personal identifiers, not used for model training, and over encrypted channels. The US transfer is governed by Standard Contractual Clauses and OpenAI's certification under the EU-US Data Privacy Framework.
+    </div>
 
     <h2>5. Retention</h2>
     <div class="table-wrap">
@@ -444,13 +452,13 @@
 <!-- ============================================================== -->
 <main class="container" data-lang="ru">
     <div class="doc-meta">
-        <p><strong>Вступает в силу:</strong> 6 мая 2026</p>
-        <p><strong>Последнее обновление:</strong> 6 мая 2026</p>
-        <p><strong>Версия:</strong> 3.1</p>
+        <p><strong>Вступает в силу:</strong> 20 мая 2026</p>
+        <p><strong>Последнее обновление:</strong> 20 мая 2026</p>
+        <p><strong>Версия:</strong> 3.2</p>
     </div>
 
     <div class="callout-key">
-        <strong>Коротко:</strong> Ваши данные хранятся в ЕС (Supabase EU-West-2). Содержание AI-чата отправляется в Anthropic (Claude API) на основании стандартных договорных условий ЕС. У вас есть все права GDPR — удаление, переносимость, доступ. Никакой рекламы, никакой сторонней аналитики.
+        <strong>Коротко:</strong> Ваши данные хранятся в ЕС (Supabase EU-West-2). Содержание AI-чата отправляется в Anthropic (Claude API) и, как резервный канал, в OpenAI (gpt-4o-mini, только когда Anthropic недоступен) на основании стандартных договорных условий ЕС. У вас есть все права GDPR — удаление, переносимость, доступ. Никакой рекламы, никакой сторонней аналитики.
     </div>
 
     <h2>1. Контролёр данных</h2>
@@ -500,8 +508,8 @@
     <table>
         <thead><tr><th>Обработчик</th><th>Страна</th><th>Цель</th><th>DPA</th><th>Без обучения</th></tr></thead>
         <tbody>
-        <tr><td><strong>Anthropic</strong></td><td>США</td><td>AI-чат (Claude Haiku/Sonnet)</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Да (SCC + opt-out)</td></tr>
-        <tr><td><strong>OpenAI</strong></td><td>США</td><td>Whisper STT, text-embedding-3-small</td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Да (по умолчанию opt-out через API)</td></tr>
+        <tr><td><strong>Anthropic</strong></td><td>США</td><td>AI-чат (Claude Haiku/Sonnet) — основной провайдер</td><td><a href="https://www.anthropic.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>Да (SCC + opt-out)</td></tr>
+        <tr><td><strong>OpenAI</strong></td><td>США</td><td>Whisper STT, text-embedding-3-small, <strong>gpt-4o-mini (резервный провайдер AI-чата)</strong></td><td><a href="https://openai.com/policies/data-processing-addendum" target="_blank" rel="noopener">DPA</a></td><td>Да (по умолчанию opt-out через API)</td></tr>
         <tr><td><strong>Supabase</strong></td><td>ЕС (Франкфурт)</td><td>База данных, хранилище, аутентификация</td><td><a href="https://supabase.com/legal/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A (данные остаются в ЕС)</td></tr>
         <tr><td><strong>ElevenLabs</strong></td><td>США</td><td>TTS для видео-озвучки</td><td><a href="https://elevenlabs.io/dpa" target="_blank" rel="noopener">DPA</a></td><td>N/A</td></tr>
         <tr><td><strong>Brave Search</strong></td><td>США</td><td>Поиск в интернете</td><td>N/A</td><td>N/A</td></tr>
@@ -516,6 +524,10 @@
     </table>
     </div>
     <p>Все субобработчики договорно обязаны защищать данные не ниже нашего собственного уровня.</p>
+
+    <div class="callout">
+        <strong>Резервный AI-провайдер (OpenAI failover):</strong> Как контроллер данных мы дополнительно используем OpenAI, L.L.C. (США) — конкретно модель <code>gpt-4o-mini</code> — только в случае, когда основной сервис Anthropic временно недоступен (failover). В таких случаях ваши сообщения передаются в OpenAI по тем же принципам: не связаны с вашими идентификаторами, не используются для обучения модели, передаются по зашифрованным каналам. Передача данных в США осуществляется на основании Standard Contractual Clauses и сертификации OpenAI по EU-US Data Privacy Framework.
+    </div>
 
     <h2>5. Сроки хранения</h2>
     <div class="table-wrap">
