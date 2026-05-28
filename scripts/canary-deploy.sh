@@ -256,7 +256,18 @@ cd "$REPO_ROOT"
 # 3. smoke staging
 # ---------------------------------------------------------------------------
 log "Running smoke against staging ($STAGING_URL)"
-sleep 10  # let GitHub Pages flush
+# Wait for GH Pages CDN edges to flush the new staging push. Poll the
+# main shell file (staging/app.html) up to 90s before bailing, matching
+# the prod-promote CDN poll below.
+log "Waiting for GitHub Pages CDN to flush staging (max 90s)..."
+for i in $(seq 1 18); do
+  PROBE_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$STAGING_URL/drafts.html" 2>/dev/null || echo "000")
+  if [[ "$PROBE_CODE" == "200" ]]; then
+    ok "CDN ready after ${i}x5s (staging/drafts.html → 200)"
+    break
+  fi
+  sleep 5
+done
 
 if SMOKE_BASE_URL="$STAGING_URL" ./test/e2e/prod_smoke.sh; then
   ok "staging smoke green"
@@ -334,7 +345,21 @@ cd "$REPO_ROOT"
 # 5. verify prod smoke + auto-rollback on failure
 # ---------------------------------------------------------------------------
 log "Running smoke against prod ($PROD_URL)"
-sleep 10
+# GH Pages can take 30-60s to flush new files to its CDN edges. The
+# previous 10s caused false-negative prod smokes (and a spurious auto-
+# rollback) on 2026-05-27 when the 5 new SPA stubs hadn't propagated yet.
+# Poll /drafts.html (a smoke-critical new file) until it's served, capped
+# at 90s, then run the smoke. Falls back to the original sleep if the
+# poll itself errors.
+log "Waiting for GitHub Pages CDN to flush new build (max 90s)..."
+for i in $(seq 1 18); do
+  PROBE_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$PROD_URL/drafts.html" 2>/dev/null || echo "000")
+  if [[ "$PROBE_CODE" == "200" ]]; then
+    ok "CDN ready after ${i}x5s (drafts.html → 200)"
+    break
+  fi
+  sleep 5
+done
 
 if SMOKE_BASE_URL="$PROD_URL" ./test/e2e/prod_smoke.sh; then
   ok "prod smoke green"
