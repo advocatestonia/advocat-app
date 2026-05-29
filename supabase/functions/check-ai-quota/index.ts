@@ -51,7 +51,7 @@ const corsHeaders = {
 // promise to paying users and stays at 7.
 const FREE_LIMIT = 25;
 
-serve(async (req) => {
+export async function handler(req: Request): Promise<Response> {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -201,10 +201,19 @@ serve(async (req) => {
     console.error("check-ai-quota failed:", msg.slice(0, 200));
     return json({ error: "Internal error" }, 500);
   }
-});
+}
 
+// Only bind the HTTP server when run as the entrypoint. Importing this module
+// from a test must NOT start a listener.
+if (import.meta.main) {
+  serve(handler);
+}
+
+// Exported for unit tests (see __tests__/check_ai_quota_test.ts). The serve()
+// handler is an integration surface that needs a live JWT + DB, so the
+// testable logic is factored into these pure/injectable helpers.
 // deno-lint-ignore no-explicit-any
-async function detectPlan(
+export async function detectPlan(
   // Widened from `ReturnType<typeof createClient>` (which generic-resolves to
   // `SupabaseClient<unknown, never, GenericSchema>`) to the call-site shape
   // `SupabaseClient<any, "public", any>` after the supabase-js@2.39 typing
@@ -269,14 +278,14 @@ async function detectPlan(
   return "free";
 }
 
-interface Payload {
+export interface Payload {
   plan: "free" | "pro";
   used: number;
   limit: number;
   allowed: boolean;
 }
 
-function buildPayload(p: Payload): Record<string, unknown> {
+export function buildPayload(p: Payload): Record<string, unknown> {
   const remaining = p.limit < 0
     ? Number.POSITIVE_INFINITY
     : Math.max(0, p.limit - p.used);
