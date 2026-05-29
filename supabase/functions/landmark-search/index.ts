@@ -159,11 +159,12 @@ serve(async (req: Request) => {
         "case_name, court, ecli, celex, year, area, significance, articles_violated, articles_engaged, importance_level, source_url",
         { count: "exact" },
       )
-      .ilike("case_name", `%${q}%`)
+      .ilike("case_name", `%${q.replace(/[\\%_]/g, "\\$&")}%`)
       .order("year", { ascending: false, nullsFirst: false })
       .range(offset, offset + limit - 1);
     if (fbErr) {
-      return jsonError("internal: query failed", 500, { details: fbErr.message });
+      console.error("landmark-search fallback query error:", fbErr.message);
+      return jsonError("internal: query failed", 500);
     }
     const results: LandmarkResult[] = (fallbackData ?? []).map((row) => ({
       case_name: row.case_name,
