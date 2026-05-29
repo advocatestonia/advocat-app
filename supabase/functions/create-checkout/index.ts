@@ -284,6 +284,11 @@ serve(async (req: Request) => {
     // Do NOT include user email or full message in the log — Stripe errors
     // sometimes surface the customer object which contains PII.
     console.error("create-checkout failed:", message.slice(0, 200));
-    return jsonError(message, 500);
+    // ...and do NOT return the raw message to the client either: the same
+    // Stripe error string (customer object, internal ids, API hints) would
+    // otherwise leak verbatim in the response body. Keep the detail in the
+    // server log above; hand the client a generic message. (Matches the
+    // internal-error-leak hardening done in claude-proxy/check-ai-quota.)
+    return jsonError("checkout failed", 500);
   }
 });

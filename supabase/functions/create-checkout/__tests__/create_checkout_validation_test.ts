@@ -249,3 +249,18 @@ Deno.test("CCV-T25 — error responses use jsonError (consistent {error,...} sha
       `Use jsonError() helper for consistency.`,
   );
 });
+
+Deno.test("CCV-T26 — catch-all 500 returns a generic message, never the raw "
+  + "Stripe error (PII / internal-detail leak guard)", () => {
+  // A Stripe error string can carry the customer object (email), internal
+  // ids, and API hints. The 500 catch must keep that in the server log only
+  // and hand the client a generic message. Guard: the 500 jsonError must NOT
+  // be `jsonError(message, 500)`.
+  assert(
+    !/jsonError\(\s*message\s*,\s*500\s*\)/.test(stripped),
+    "create-checkout catch returns jsonError(message, 500), leaking the raw "
+      + "error string to the client. Return a generic message instead.",
+  );
+  // And it must still log the (truncated) detail server-side for debugging.
+  assertStringIncludes(stripped, 'console.error("create-checkout failed:"');
+});
