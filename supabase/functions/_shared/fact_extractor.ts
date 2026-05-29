@@ -128,9 +128,14 @@ export async function extractAndPatchFacts(
   // ── Step 1: call Anthropic to extract facts ───────────────────────────────
   let rawJson: string;
   try {
+    // Escape closing-tag breakout in the untrusted turn/reply framing so a
+    // crafted </user_turn> / </assistant_reply> cannot reshape the structure
+    // the extractor reads.
+    const sealTags = (s: string) =>
+      s.replace(/<\s*\/\s*(user_turn|assistant_reply)\s*>/gi, "&lt;/$1&gt;");
     const userTurn =
-      `<user_turn>${opts.userMessage.slice(0, 1000)}</user_turn>\n` +
-      `<assistant_reply>${opts.conversationText.slice(0, 6000)}</assistant_reply>`;
+      `<user_turn>${sealTags(opts.userMessage.slice(0, 1000))}</user_turn>\n` +
+      `<assistant_reply>${sealTags(opts.conversationText.slice(0, 6000))}</assistant_reply>`;
 
     rawJson = await callAnthropicBlocking({
       model: MODEL_SONNET,

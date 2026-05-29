@@ -165,6 +165,23 @@ export function summariseOpinion(text: string, maxLen = 400): string {
   return `${truncated}…`;
 }
 
+/**
+ * Neutralize a closing-tag breakout inside untrusted context text before it is
+ * embedded in a trusted system-prompt block. caseContext is derived from
+ * user-supplied case facts / uploaded-document text, so a crafted
+ * `</case_context>` could otherwise close the block and inject forged trusted
+ * instructions. NFKC folds Unicode look-alikes into ASCII first so the regex
+ * catches compatibility-equivalent closers too (mirrors wrapUntrusted).
+ */
+function sealContext(tag: string, text: string): string {
+  const normalised = typeof (text as { normalize?: unknown }).normalize ===
+      "function"
+    ? text.normalize("NFKC")
+    : text;
+  const re = new RegExp(`<\\s*/\\s*${tag}\\s*>`, "gi");
+  return normalised.replace(re, `&lt;/${tag}&gt;`);
+}
+
 /** Heuristic position label from raw opinion text. Pure / deterministic. */
 export function classifyRolePosition(text: string): ConsiliumRolePosition {
   const t = text.toLowerCase();
@@ -512,11 +529,15 @@ export async function runRole(
   const contextParts: string[] = [baseSystemPrompt];
 
   if (caseContext.trim()) {
-    contextParts.push(`\n\n<case_context>\n${caseContext}\n</case_context>`);
+    contextParts.push(
+      `\n\n<case_context>\n${sealContext("case_context", caseContext)}\n</case_context>`,
+    );
   }
 
   if (ragContext.trim()) {
-    contextParts.push(`\n\n<law_context>\n${ragContext}\n</law_context>`);
+    contextParts.push(
+      `\n\n<law_context>\n${sealContext("law_context", ragContext)}\n</law_context>`,
+    );
   }
 
   if (role.isCompiled) {
@@ -797,12 +818,12 @@ export async function runConsilium(params: {
   const synthesisContextParts: string[] = [SYNTHESIS_SYSTEM_PROMPT];
   if (caseContext.trim()) {
     synthesisContextParts.push(
-      `\n\n<case_context>\n${caseContext}\n</case_context>`,
+      `\n\n<case_context>\n${sealContext("case_context", caseContext)}\n</case_context>`,
     );
   }
   if (ragContext.trim()) {
     synthesisContextParts.push(
-      `\n\n<law_context>\n${ragContext}\n</law_context>`,
+      `\n\n<law_context>\n${sealContext("law_context", ragContext)}\n</law_context>`,
     );
   }
   const synthesisSystem = synthesisContextParts.join("");

@@ -216,9 +216,15 @@ export async function detectAndRecordCorrection(
 
   // ── 1. Call Haiku to classify + extract triple ──────────────────────────
   const call = opts.caller ?? defaultCaller;
+  // Escape closing-tag breakout in the untrusted framing.
+  const sealTags = (s: string) =>
+    s.replace(
+      /<\s*\/\s*(previous_assistant|user_new_turn)\s*>/gi,
+      "&lt;/$1&gt;",
+    );
   const userPayload =
-    `<previous_assistant>\n${opts.previousAssistantMessage.slice(0, 3000)}\n</previous_assistant>\n\n` +
-    `<user_new_turn>\n${opts.userMessage.slice(0, 2000)}\n</user_new_turn>`;
+    `<previous_assistant>\n${sealTags(opts.previousAssistantMessage.slice(0, 3000))}\n</previous_assistant>\n\n` +
+    `<user_new_turn>\n${sealTags(opts.userMessage.slice(0, 2000))}\n</user_new_turn>`;
   let raw: string;
   try {
     raw = await call({
