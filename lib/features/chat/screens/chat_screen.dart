@@ -1118,6 +1118,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       return;
     }
 
+    // Capture everything we need from `context` synchronously, BEFORE the
+    // first await below. Reading context after an await is unsafe — the
+    // widget can unmount mid-send (user navigates away) and the reads throw
+    // / return stale values (use_build_context_synchronously).
+    final String capturedLangCode = Localizations.localeOf(context).languageCode;
+    final String? capturedFreeLimitMessage =
+        AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit);
+
     // UPL / Bar Act §41 first-send disclaimer. Awaited so the banner is
     // in the list BEFORE the user-message bubble is inserted below, which
     // keeps it at the top of the visible region.
@@ -1319,7 +1327,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             final voice = ref.read(voiceServiceProvider);
             _messageSpeaker = MessageSpeaker(
               speaker: VoiceServiceSpeaker(voice),
-              langCode: Localizations.localeOf(context).languageCode,
+              langCode: capturedLangCode,
               enabled: _ttsEnabled,
             );
 
@@ -1340,13 +1348,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 .sendChatMessageStreamingEvents(
               caseId: widget.caseId,
               message: text,
-              userLanguage: Localizations.localeOf(context).languageCode,
+              userLanguage: capturedLangCode,
               userName: userName,
               clientContext: ctx,
               caseType: _currentCase?.type,
               country: 'estonia',
               nationality: _currentCase?.nationality,
-              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit),
+              freeLimitMessage: capturedFreeLimitMessage,
             )
                 .listen(
               (event) {
@@ -1513,13 +1521,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             final response = await ai.sendChatMessage(
               caseId: widget.caseId,
               message: text,
-              userLanguage: Localizations.localeOf(context).languageCode,
+              userLanguage: capturedLangCode,
               userName: userName,
               clientContext: ctx,
               caseType: _currentCase?.type,
               country: 'estonia',
               nationality: _currentCase?.nationality,
-              freeLimitMessage: AppLocalizations.of(context)?.freeLimitReached(AIService.freeTotalLimit),
+              freeLimitMessage: capturedFreeLimitMessage,
               imageAttachment: imageAttachment,
             );
             _knowledgeService.notifyMessageSent();

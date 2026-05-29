@@ -82,10 +82,7 @@ class _AgentApprovalCardState extends ConsumerState<AgentApprovalCard> {
       if (!mounted) return;
       final ok = resp != null && resp['ok'] == true;
       final executed = resp != null && resp['executed'] == true;
-      final errMsg = (resp != null && resp is Map
-              ? (resp as Map)['error']?.toString()
-              : null) ??
-          'unknown error';
+      final errMsg = resp?['error']?.toString() ?? 'unknown error';
       final l = AppLocalizations.of(context);
       if (approve && ok && executed) {
         setState(() {
