@@ -13,7 +13,12 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import {
+  corsHeaders,
+  jsonError,
+  jsonOk,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -92,10 +97,16 @@ serve(async (req: Request) => {
     return jsonError("Method not allowed", 405);
   }
 
-  const authHeader = req.headers.get("Authorization");
-  if (!authHeader) {
-    return jsonError("Unauthorized", 401);
-  }
+  // Auth: require a VALID end-user session (not merely a present header).
+  // The previous check accepted any non-empty Authorization value, so
+  // `Bearer garbage` passed and then ran a service-role DB query below —
+  // effectively unauthenticated. requireUserWithRateLimit validates the
+  // JWT via auth.getUser and also caps abuse at 20 req/min/user.
+  const gate = await requireUserWithRateLimit(req, {
+    bucket: "deadline-radar-eu",
+    maxPerMinute: 20,
+  });
+  if (gate.kind === "deny") return gate.response;
 
   let body: DeadlineRadarRequest;
   try {
@@ -140,7 +151,10 @@ serve(async (req: Request) => {
     .limit(5);
 
   if (ruleErr) {
-    return jsonError("internal: rule lookup failed", 500, { details: ruleErr.message });
+    // Do NOT echo the raw Postgres error to the client (leaks schema/internal
+    // detail). Log it server-side; return a generic message.
+    console.error("deadline-radar-eu: rule lookup failed:", ruleErr.message);
+    return jsonError("internal: rule lookup failed", 500);
   }
 
   if (!ruleRows || ruleRows.length === 0) {
