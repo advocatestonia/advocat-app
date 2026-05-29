@@ -1,0 +1,38 @@
+-- 20260530130000_user_quotas_revoke_client_writes.sql
+-- ---------------------------------------------------------------------------
+-- CRITICAL SECURITY (quota-reset / free-tier bypass) — LIVE & EXPLOITABLE.
+--
+-- public.user_quotas meters the Contract Review feature. The column
+-- `contract_reviews_used` is the AUTHORITATIVE entitlement gate read by
+-- contract-review/handler.ts:isQuotaExceeded (free = 1 lifetime, basic = 5,
+-- premium = 20 per window). The row is loaded at handler.ts:306 and the gate
+-- at :308 returns HTTP 402 when used >= limit.
+--
+-- The RLS policy `own quota row` is FOR ALL USING (auth.uid() = user_id) WITH
+-- CHECK (auth.uid() = user_id) — the WITH CHECK only pins user_id, NOT the
+-- counter column. Both client roles (authenticated, anon) hold blanket
+-- table-level INSERT/UPDATE/DELETE grants. RLS cannot gate per column, so the
+-- row owner can freely rewrite contract_reviews_used. Verified live 2026-05-30
+-- (policy + grants). No protective trigger exists on the table.
+--
+-- Exploit: a free user who has spent their 1 lifetime review sends
+--   PATCH /rest/v1/user_quotas?user_id=eq.<own-uid>
+--        {"contract_reviews_used":0,"contract_reviews_period_start":"<now>"}
+-- -> gate resets -> unlimited contract reviews, each ~$0.13 Anthropic + PDF
+-- generation. Same class as the profiles (20260530110000) and ai_usage
+-- (20260530120000) bypasses.
+--
+-- FIX: all legitimate writes go through the contract-review edge function
+-- using the SERVICE_ROLE client (index.ts:101 createClient(SERVICE_ROLE);
+-- loadQuota/incrementQuota at :149/:174 all use that admin client), which
+-- bypasses grants entirely. The Flutter client only READS this table
+-- (contract_review_quota_service.dart — a reader, no .update/.insert).
+-- Revoking client INSERT/UPDATE/DELETE removes the exploit with zero
+-- functional impact. SELECT stays granted (RLS scopes it to the own row) so
+-- the client quota-badge reader keeps working.
+--
+-- The `own quota row` RLS policy stays as-is. Idempotent.
+-- ---------------------------------------------------------------------------
+
+revoke insert, update, delete on public.user_quotas from authenticated;
+revoke insert, update, delete on public.user_quotas from anon;
