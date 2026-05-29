@@ -1694,7 +1694,13 @@ async function handleReadThreadFull(
         : m.sender_email,
       to: m.to_recipients,
       cc: m.cc_recipients,
-      subject: m.subject,
+      // Subject is sender-controlled free text — fence it like the body.
+      subject: m.subject == null
+        ? null
+        : wrapUntrusted(
+          `Email subject from ${(m.sender_email as string) ?? "unknown"}`,
+          String(m.subject),
+        ),
       sent_at: m.sent_at,
       body: wrappedBody,
       body_truncated: typeof m.body_plaintext === "string" &&
@@ -1723,8 +1729,19 @@ async function handleReadThreadFull(
         thread: {
           id: threadDbId,
           gmail_thread_id: (thread as Record<string, unknown>).gmail_thread_id,
-          subject: (thread as Record<string, unknown>).subject,
-          participants: (thread as Record<string, unknown>).participants,
+          // subject + participants are attacker-controlled email headers —
+          // a sender can put "ignore prior instructions" in a Subject line.
+          // Fence them like message bodies (which are already wrapped above).
+          subject: wrapUntrusted(
+            "Email subject",
+            String((thread as Record<string, unknown>).subject ?? ""),
+          ),
+          participants: wrapUntrusted(
+            "Email participants",
+            JSON.stringify(
+              (thread as Record<string, unknown>).participants ?? null,
+            ),
+          ),
           last_message_at: (thread as Record<string, unknown>).last_message_at,
         },
         messages,
@@ -1796,7 +1813,16 @@ async function handleRunPdfParser(
             `PDF ${a.filename}`,
             (a.parsed_text as string).slice(0, 5000),
           ),
-          parsed_meta: a.parsed_meta,
+          // parsed_meta holds key_extractions (parties, key_facts,
+          // deadlines, …) — all derived verbatim from the same
+          // attacker-controlled PDF, so it carries the same injection
+          // surface as parsed_text and MUST be fenced too. Without this
+          // a malicious PDF can smuggle "ignore prior instructions"
+          // through key_facts, which sat OUTSIDE the untrusted_data block.
+          parsed_meta: wrapUntrusted(
+            `PDF ${a.filename} metadata`,
+            JSON.stringify(a.parsed_meta ?? null),
+          ),
           parsed_at: a.parsed_at,
         },
         null,
@@ -1871,7 +1897,14 @@ async function handleRunPdfParser(
             `PDF ${a.filename}`,
             (data.parsed_summary ?? "").slice(0, 5000),
           ),
-          key_extractions: data.key_extractions,
+          // key_extractions (parties, key_facts, deadlines, …) is derived
+          // verbatim from the attacker-controlled PDF — same injection
+          // surface as parsed_summary. Fence it; an unwrapped key_facts
+          // would otherwise carry injection text outside the block.
+          key_extractions: wrapUntrusted(
+            `PDF ${a.filename} extractions`,
+            JSON.stringify(data.key_extractions ?? null),
+          ),
           page_count: data.page_count,
           lang_detected: data.lang_detected,
         },

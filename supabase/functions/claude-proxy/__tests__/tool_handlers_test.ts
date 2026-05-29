@@ -705,3 +705,42 @@ Deno.test("draft_email_with_attachments: rejects > 10 attachments", async () => 
   assertEquals(results[0].is_error, true);
   assertEquals(results[0].content.includes("exceeds 10 entries"), true);
 });
+
+// =============================================================================
+// 2026-05-30 — prompt-injection fence completeness (source-contract).
+// handleRunPdfParser / handleGetEmailThread use the module-level adminClient()
+// and aren't exported, so we assert at the source level that every
+// attacker-controlled field reaching the model is wrapped. The bug these
+// guard: parsed_summary/body were fenced but the sibling fields derived from
+// the SAME malicious PDF/email (key_extractions, parsed_meta, subject,
+// participants) were returned RAW — outside the <untrusted_data> block — so a
+// crafted PDF could smuggle "ignore prior instructions" via key_facts/subject.
+// =============================================================================
+
+Deno.test("injection fence: run_pdf_parser wraps key_extractions + parsed_meta", async () => {
+  const src = await Deno.readTextFile(
+    new URL("../tool_handlers.ts", import.meta.url),
+  );
+  assert(
+    /key_extractions:\s*wrapUntrusted\(/.test(src),
+    "key_extractions must be wrapped — same injection surface as parsed_summary",
+  );
+  assert(
+    /parsed_meta:\s*wrapUntrusted\(/.test(src),
+    "parsed_meta (holds key_extractions on cached path) must be wrapped",
+  );
+});
+
+Deno.test("injection fence: get_thread wraps subject + participants", async () => {
+  const src = await Deno.readTextFile(
+    new URL("../tool_handlers.ts", import.meta.url),
+  );
+  assert(
+    /subject:\s*wrapUntrusted\(/.test(src),
+    "thread/message subject is sender-controlled — must be fenced",
+  );
+  assert(
+    /participants:\s*wrapUntrusted\(/.test(src),
+    "thread participants are attacker-controlled headers — must be fenced",
+  );
+});
