@@ -794,15 +794,21 @@ serve(withSentry("claude-proxy", async (req) => {
     }
 
     // ── 2. Server-side quota check (SECURITY U3) ──────────────────────────
-    // Even an authenticated free-tier user cannot bypass the 7-message cap
+    // Even an authenticated free-tier user cannot bypass the monthly free cap
     // by calling this endpoint directly. We forward the caller's JWT so
-    // check-ai-quota's RLS-aware `auth.uid()` resolves correctly.
+    // check-ai-quota's RLS-aware `auth.uid()` resolves correctly; an exhausted
+    // user gets HTTP 200 + { allowed: false } and is blocked below.
     //
-    // For anon callers, check-ai-quota returns a synthetic
-    // { allowed: true, plan: "free" } payload (see check-ai-quota/index.ts
-    // lines 75-84) — no real per-IP counter is persisted server-side. The
-    // bound on anon abuse is the rate-limit (1/min/IP, see ANON_RATE_LIMIT_PER_MINUTE)
-    // + ANON_MAX_TOKENS clamp below.
+    // Anon callers are NOT gated by check-ai-quota: since its P0-Q4 hardening
+    // (2026-05-28) that function rejects any non-authenticated JWT with 401
+    // — there is no synthetic free-tier payload anymore. A 401 here lands in
+    // checkQuota's fail-open branch, so anon abuse is bounded ELSEWHERE:
+    // the per-IP rate-limit (ANON_RATE_LIMIT_PER_MINUTE), the anon Anthropic
+    // spend cap (ANON_DAILY_CAP_CENTS, checked above), and the ANON_MAX_TOKENS
+    // clamp below — not by this call. checkQuota fails open only on a non-2xx
+    // (401/500/503), none of which an authenticated free user can trigger on
+    // demand (over-quota is 200+allowed:false), so fail-open is an
+    // availability tradeoff for real backend incidents, not a bypass.
     const authHeader = req.headers.get("Authorization") ?? "";
     const quotaAllowed = await checkQuota(authHeader);
     if (!quotaAllowed.ok) {
