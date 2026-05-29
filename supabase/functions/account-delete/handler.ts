@@ -336,7 +336,9 @@ export interface SupabaseAdminLike {
         prefix: string,
         opts?: { limit?: number; offset?: number },
       ): Promise<{
-        data: Array<{ name: string }> | null;
+        // `id` is null/absent for synthetic folder rows, set for real
+        // objects — that's how the recursive sweep tells them apart.
+        data: Array<{ name: string; id?: string | null }> | null;
         error: { message: string } | null;
       }>;
       remove(paths: string[]): Promise<{
@@ -446,31 +448,63 @@ async function sweepStorageBucket(
   bucket: string,
   userId: string,
 ): Promise<{ bucket: string; removed: number; error?: string }> {
+  // ⚠️ Supabase Storage `.list(prefix)` is NON-RECURSIVE: it returns the
+  // immediate children of `prefix` only. A folder child comes back as a row
+  // with `id === null` (no `id`/`metadata` = a synthetic folder, not an
+  // object), and `.remove(["<folder>"])` does NOT delete the files inside it.
+  // Our objects are nested several levels deep:
+  //   case-documents:  <userId>/<caseId>/<file>
+  //                    <userId>/email_attachments/<rand>/<file>
+  //   contract-reviews:<userId>/<ts>_<file>.pdf
+  // A flat `.list(userId)` + remove therefore erased ONLY files sitting
+  // directly at `<userId>/<file>` and silently left every nested object
+  // behind — an Art.17 erasure gap (legal docs, medical PDFs, inbox
+  // attachments survived deletion). We now walk the tree: BFS over folders,
+  // removing real objects at each level.
   try {
     let removed = 0;
     const pageSize = 1000;
-    // Cap total iterations to defeat a runaway list (defence in depth).
-    // NOTE: offset is always 0 because the just-listed items are removed
-    // before the next list() call — the bucket's <userId>/ prefix shrinks
-    // each iteration. Passing a non-zero offset against a shrinking list
-    // would skip remaining items.
-    for (let iter = 0; iter < 1000; iter++) {
-      const { data, error } = await sb.storage
-        .from(bucket)
-        .list(userId, { limit: pageSize, offset: 0 });
-      if (error) {
-        console.error(`[account-delete] storage list failed on ${bucket}: ${error.message}`);
-        return { bucket, removed, error: "storage_list_failed" };
+    const folders: string[] = [userId]; // prefixes still to visit
+    let guard = 0;
+    while (folders.length > 0) {
+      if (guard++ > 100_000) {
+        console.error(`[account-delete] storage sweep guard tripped on ${bucket}`);
+        return { bucket, removed, error: "storage_sweep_guard" };
       }
-      if (!data || data.length === 0) break;
-      const paths = data.map((obj) => `${userId}/${obj.name}`);
-      const { error: rmErr } = await sb.storage.from(bucket).remove(paths);
-      if (rmErr) {
-        console.error(`[account-delete] storage remove failed on ${bucket}: ${rmErr.message}`);
-        return { bucket, removed, error: "storage_remove_failed" };
+      const prefix = folders.shift()!;
+      // Page through this prefix. offset advances because we do NOT remove
+      // folder rows (they aren't objects) — the listing for a given prefix is
+      // stable across pages here, so a moving offset is correct.
+      for (let offset = 0; offset < 1_000_000; offset += pageSize) {
+        const { data, error } = await sb.storage
+          .from(bucket)
+          .list(prefix, { limit: pageSize, offset });
+        if (error) {
+          console.error(`[account-delete] storage list failed on ${bucket}/${prefix}: ${error.message}`);
+          return { bucket, removed, error: "storage_list_failed" };
+        }
+        if (!data || data.length === 0) break;
+        const objectPaths: string[] = [];
+        for (const entry of data) {
+          const e = entry as { name: string; id?: string | null };
+          const childPath = `${prefix}/${e.name}`;
+          // A null/absent `id` marks a synthetic folder, not a real object.
+          if (e.id == null) {
+            folders.push(childPath); // descend
+          } else {
+            objectPaths.push(childPath);
+          }
+        }
+        if (objectPaths.length > 0) {
+          const { error: rmErr } = await sb.storage.from(bucket).remove(objectPaths);
+          if (rmErr) {
+            console.error(`[account-delete] storage remove failed on ${bucket}: ${rmErr.message}`);
+            return { bucket, removed, error: "storage_remove_failed" };
+          }
+          removed += objectPaths.length;
+        }
+        if (data.length < pageSize) break;
       }
-      removed += paths.length;
-      if (data.length < pageSize) break;
     }
     return { bucket, removed };
   } catch (e) {
