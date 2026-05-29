@@ -22,7 +22,7 @@ import { runVaultList, runVaultUpload, type SupabaseLike } from "./handler.ts";
 import { withSentry } from "../_shared/sentry.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 
 // CORS for GET as well as POST (the shared header only allows POST,OPTIONS).
 const vaultCors: Record<string, string> = {
@@ -66,15 +66,26 @@ serve(withSentry("vault-upload", async (req: Request) => {
 
   const userId = gate.user.id;
 
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     return vaultJsonError("Vault backend not configured", 503);
   }
 
-  // Service-role client bypasses RLS — fn enforces owner via userId in
-  // every write. We pass userId into the encrypt RPC, and the RPC itself
-  // checks auth.uid() (NULL for service-role → allowed because edge fn
-  // already authenticated the JWT above).
-  const client = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY) as unknown as SupabaseLike;
+  // SECURITY/CORRECTNESS: forward the caller's JWT so `auth.uid()` resolves
+  // inside the SECURITY DEFINER RPCs and RLS policies, instead of a bare
+  // service-role client (auth.uid() = NULL).
+  //   * The list path calls vault_search_documents, which scopes solely by
+  //     `auth.uid()` (it takes NO user param). Under service-role that is
+  //     NULL → the fn early-returns empty → the Vault list was DEAD in prod.
+  //   * The upload path's documents INSERT is gated by RLS
+  //     `WITH CHECK (user_id = auth.uid())`, and vault_encrypt_text's owner
+  //     guard requires `auth.uid() = p_user_id`. A JWT client (auth.uid() ==
+  //     userId) satisfies both, and now RLS is enforced on the tag insert
+  //     too instead of bypassed.
+  const authHeader = req.headers.get("Authorization") ?? "";
+  const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    global: { headers: { Authorization: authHeader } },
+    auth: { persistSession: false, autoRefreshToken: false },
+  }) as unknown as SupabaseLike;
 
   if (isUpload) {
     let body: unknown;
