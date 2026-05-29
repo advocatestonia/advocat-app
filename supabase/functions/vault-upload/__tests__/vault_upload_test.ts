@@ -296,7 +296,11 @@ Deno.test("runVaultUpload 500 when insert fails (RLS denial simulated)", async (
   assertEquals(r.kind, "error");
   assertEquals(r.status, 500);
   if (r.kind === "error") {
-    assert(r.body.error.includes("documents.insert"));
+    // Leak guard: client gets a stable generic code, never the raw DB error
+    // (which here would disclose the RLS-policy violation text).
+    assertEquals(r.body.error, "insert_failed");
+    assert(!r.body.error.includes("row-level security"));
+    assert(!r.body.error.includes("documents.insert"));
   }
 });
 

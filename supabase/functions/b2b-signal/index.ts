@@ -173,10 +173,11 @@ serve(async (req: Request): Promise<Response> => {
       p_payload: payload,
     });
     if (rpc.error) {
+      // Log raw DB error server-side; return only a stable generic reason.
+      // Echoing rpc.error.message would disclose table/constraint internals.
       console.error(`[b2b-signal] rpc failed: ${rpc.error.message}`);
       return jsonError("Could not record signal", 500, {
         reason: "rpc_failed",
-        details: rpc.error.message,
       });
     }
   } catch (e) {

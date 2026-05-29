@@ -169,10 +169,12 @@ export async function runVaultUpload(
     p_user_id: deps.userId,
   });
   if (encName.error) {
+    // Log raw DB/RPC error server-side; return a stable generic code only.
+    console.error(`vault-upload: encrypt(file_name) failed: ${encName.error.message}`);
     return {
       kind: "error",
       status: 500,
-      body: { error: `encrypt(file_name) failed: ${encName.error.message}` },
+      body: { error: "encrypt_failed" },
     };
   }
   const encPath = await deps.supabase.rpc("vault_encrypt_text", {
@@ -180,10 +182,11 @@ export async function runVaultUpload(
     p_user_id: deps.userId,
   });
   if (encPath.error) {
+    console.error(`vault-upload: encrypt(storage_path) failed: ${encPath.error.message}`);
     return {
       kind: "error",
       status: 500,
-      body: { error: `encrypt(storage_path) failed: ${encPath.error.message}` },
+      body: { error: "encrypt_failed" },
     };
   }
 
@@ -207,10 +210,13 @@ export async function runVaultUpload(
     .select("id")
     .single();
   if (inserted.error || !inserted.data) {
+    console.error(
+      `vault-upload: documents.insert failed: ${inserted.error?.message ?? "no row"}`,
+    );
     return {
       kind: "error",
       status: 500,
-      body: { error: `documents.insert failed: ${inserted.error?.message ?? "no row"}` },
+      body: { error: "insert_failed" },
     };
   }
 
@@ -251,10 +257,11 @@ export async function runVaultList(
   // owner scoping, decryption, primary-tag join and 100 LIMIT.
   const r = await deps.supabase.rpc("vault_search_documents", { query: "" });
   if (r.error) {
+    console.error(`vault-upload: vault_search_documents failed: ${r.error.message}`);
     return {
       kind: "error",
       status: 500,
-      body: { error: `vault_search_documents failed: ${r.error.message}` },
+      body: { error: "list_failed" },
     };
   }
   const rows = (r.data as Array<Record<string, unknown>> | null) ?? [];

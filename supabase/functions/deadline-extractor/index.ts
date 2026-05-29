@@ -202,8 +202,10 @@ serve(async (req: Request) => {
   });
 
   if (error) {
+    // Log the raw DB error server-side; return a stable generic code to the
+    // client. Echoing error.message would disclose RPC/table/constraint names.
     console.error(`deadline-extractor: rpc failed: ${error.message}`);
-    return jsonError("rpc failed", 500, { detail: error.message });
+    return jsonError("rpc failed", 500, { code: "rpc_failed" });
   }
 
   const insertedOrUpdated = (data && typeof data === "object" &&

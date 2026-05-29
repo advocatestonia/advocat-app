@@ -78,9 +78,12 @@ export async function handleCode(
     p_user_id: userId,
   });
   if (error) {
+    // Log raw DB error server-side; return a stable generic code only.
+    // Echoing error.message would disclose RPC/table/constraint internals.
+    console.error(`referral: get_or_create_referral_code failed: ${error.message}`);
     return {
       status: 500,
-      body: { error: "code_generation_failed", details: String(error.message) },
+      body: { error: "code_generation_failed" },
     };
   }
   if (typeof data !== "string" || data.length === 0) {
