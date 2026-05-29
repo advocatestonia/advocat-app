@@ -2427,6 +2427,9 @@ serve(withSentry("claude-proxy", async (req) => {
                 method: "POST",
                 headers: buildAnthropicHeaders(CLAUDE_API_KEY),
                 body: JSON.stringify(iterationBody),
+                // Cap each agent iteration so a hung upstream can't freeze the
+                // isolate. 90s > chat's 30s since tool-use turns are heavier.
+                signal: AbortSignal.timeout(90_000),
               },
             );
 

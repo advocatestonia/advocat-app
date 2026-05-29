@@ -44,6 +44,11 @@ import {
 
 export const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 
+// Upstream timeout for Anthropic calls. Without it a hung upstream connection
+// keeps the isolate (and any holding request) alive indefinitely. 120s is well
+// above p99 latency for the Sonnet calls used here.
+export const ANTHROPIC_FETCH_TIMEOUT_MS = 120_000;
+
 // Model IDs — pinned; update here if rotated.
 export const MODEL_SONNET = "claude-sonnet-4-6";
 export const MODEL_HAIKU = "claude-haiku-4-5-20251001";
@@ -474,6 +479,7 @@ export async function callAnthropicBlocking(opts: {
       system: systemPayload,
       messages: [{ role: "user", content: opts.userMessage }],
     }),
+    signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
   });
 
   if (!res.ok) {
@@ -814,6 +820,7 @@ export async function runConsilium(params: {
         system: synthesisSystem,
         messages: [{ role: "user", content: synthesisUserMessage }],
       }),
+      signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
     });
 
     if (!streamRes.ok || streamRes.body === null) {

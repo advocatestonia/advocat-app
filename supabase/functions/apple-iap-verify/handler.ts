@@ -9,6 +9,10 @@ export const APPLE_VERIFY_PROD = "https://buy.itunes.apple.com/verifyReceipt";
 export const APPLE_VERIFY_SANDBOX =
   "https://sandbox.itunes.apple.com/verifyReceipt";
 
+// Apple's verifyReceipt is normally sub-second; cap it so a hung Apple
+// endpoint can't freeze the isolate (and stall the user's purchase flow).
+export const APPLE_FETCH_TIMEOUT_MS = 15_000;
+
 /** Map StoreKit product_id → internal tier label used by check-ai-quota. */
 export const PRODUCT_ID_TO_TIER: Record<string, "basic" | "premium"> = {
   counsel_monthly: "basic",
@@ -73,6 +77,7 @@ export async function verifyAppleReceipt(
   const prodResp = await fetchImpl(APPLE_VERIFY_PROD, {
     method: "POST",
     body: payload,
+    signal: AbortSignal.timeout(APPLE_FETCH_TIMEOUT_MS),
   });
   if (!prodResp.ok) {
     return {
@@ -95,6 +100,7 @@ export async function verifyAppleReceipt(
     const sandboxResp = await fetchImpl(APPLE_VERIFY_SANDBOX, {
       method: "POST",
       body: payload,
+      signal: AbortSignal.timeout(APPLE_FETCH_TIMEOUT_MS),
     });
     if (!sandboxResp.ok) {
       return {
