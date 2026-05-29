@@ -95,6 +95,14 @@ function err(message: string, status: number): Response {
   );
 }
 
+/** Constant-time string compare — avoids a timing oracle on the corpus secret. */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 interface SampleQuery {
   id: string;
   query: string;
@@ -473,7 +481,7 @@ serve(async (req) => {
   if (req.method !== "POST") return err("Method not allowed", 405);
 
   const secret = req.headers.get("x-corpus-secret") ?? "";
-  if (!CORPUS_SECRET || secret !== CORPUS_SECRET) {
+  if (!CORPUS_SECRET || !timingSafeEqualStr(secret, CORPUS_SECRET)) {
     return err("Unauthorized", 401);
   }
   if (!CLAUDE_API_KEY) return err("CLAUDE_API_KEY not configured", 500);

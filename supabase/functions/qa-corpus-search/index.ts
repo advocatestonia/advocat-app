@@ -58,6 +58,14 @@ function err(message: string, status: number): Response {
   );
 }
 
+/** Constant-time string compare — avoids a timing oracle on the QA secret. */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 async function embed(query: string): Promise<{ embedding: number[]; tokens: number } | null> {
   const t0 = performance.now();
   const resp = await fetch(OPENAI_EMBED_URL, {
@@ -96,7 +104,7 @@ serve(async (req) => {
 
   // Auth: shared secret.
   const secret = req.headers.get("x-qa-secret") ?? "";
-  if (!QA_SECRET || secret !== QA_SECRET) {
+  if (!QA_SECRET || !timingSafeEqualStr(secret, QA_SECRET)) {
     return err("Unauthorized", 401);
   }
 
