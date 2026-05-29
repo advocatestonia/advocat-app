@@ -104,6 +104,10 @@ class _DraftingStudioScreenState extends ConsumerState<DraftingStudioScreen> {
 
   @override
   void dispose() {
+    // Dispatch any pending debounced edit before teardown so navigating away
+    // mid-edit doesn't silently drop the draft. Fire-and-forget; the
+    // DraftService is app-scoped so the write outlives this widget.
+    _autosave?.flushBestEffort();
     _autosave?.dispose();
     _bodyCtrl.dispose();
     _titleCtrl.dispose();

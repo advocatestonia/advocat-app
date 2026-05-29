@@ -564,10 +564,17 @@ class AutosaveController {
 
   /// Force-flushes the buffer immediately (e.g. on screen exit, AI revise,
   /// manual Save button).
+  ///
+  /// Throws if the underlying write fails, so callers (manual Save, Save to
+  /// Vault) can surface a "save failed" message instead of falsely showing
+  /// "Saved". On failure the buffer is re-marked dirty so the next autosave
+  /// tick retries.
   Future<void> flush() async {
     if (!_dirty) return;
     if (_inFlight != null) {
-      // Coalesce — wait for in-flight save then re-check.
+      // Coalesce — wait for in-flight save then re-check. If that save failed
+      // it rethrows here, which is correct: this caller's edits aren't saved
+      // either.
       await _inFlight;
       if (!_dirty) return;
     }
@@ -580,15 +587,42 @@ class AutosaveController {
       contentMarkdown: mdSnapshot,
       title: titleSnapshot,
     );
-    _inFlight = fut.then((_) {}).catchError((Object e, StackTrace st) {
-      // On failure, mark dirty again so the next tick retries.
+    _inFlight = fut.then((_) {});
+    try {
+      await _inFlight;
+    } catch (_) {
+      // On failure, mark dirty again so the next tick retries, then rethrow
+      // so the caller knows the save did not land.
       _dirty = true;
-    });
-    await _inFlight;
-    _inFlight = null;
+      rethrow;
+    } finally {
+      _inFlight = null;
+    }
     // _clock is not yet consumed in MVP — placeholder for fixed-interval
     // pulse-based saves once the editor supports collaborative drafts.
     _clock?.listen((_) {});
+  }
+
+  /// Fire-and-forget final save for teardown (widget dispose), where we cannot
+  /// await. Dispatches the pending write so an edit made inside the debounce
+  /// window isn't silently lost on navigate-away. Errors are swallowed — the
+  /// screen is already gone, so there's no UI to surface them to, and the next
+  /// open re-loads from server. The DraftService is app-scoped, so the write
+  /// outlives this controller.
+  void flushBestEffort() {
+    if (!_dirty) return;
+    final mdSnapshot = _pendingMarkdown;
+    final titleSnapshot = _pendingTitle;
+    _dirty = false;
+    _timer?.cancel();
+    unawaited(() async {
+      try {
+        await service.updateDraft(draftId,
+            contentMarkdown: mdSnapshot, title: titleSnapshot);
+      } catch (_) {
+        _dirty = true; // best-effort; nothing to surface, screen is gone
+      }
+    }());
   }
 
   void dispose() {

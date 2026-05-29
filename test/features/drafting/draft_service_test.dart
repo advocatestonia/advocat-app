@@ -127,12 +127,14 @@ void main() {
       c.dispose();
     });
 
-    test('failure leaves buffer dirty for retry', () async {
+    test('failure rethrows and leaves buffer dirty for retry', () async {
       final svc = _FakeSvc()..failNext = true;
       final c = AutosaveController(service: svc, draftId: 'd1');
       c.markDirty(markdown: 'oops');
-      await c.flush(); // throws caught internally; dirty stays true
-      await c.flush(); // retry
+      // flush() must rethrow so the caller can show "save failed" instead of
+      // falsely showing "Saved"; the buffer stays dirty for the next retry.
+      await expectLater(c.flush(), throwsA(isA<Exception>()));
+      await c.flush(); // retry now succeeds
       expect(svc.updates, 2);
       c.dispose();
     });
@@ -151,6 +153,22 @@ void main() {
       // Now run the second flush, which should send the new 'b' content.
       await c.flush();
       expect(svc.updates, 2);
+      c.dispose();
+    });
+
+    test('flushBestEffort dispatches a pending save (no-op when clean)',
+        () async {
+      final svc = _FakeSvc();
+      final c = AutosaveController(service: svc, draftId: 'd1');
+      // Clean buffer → nothing dispatched.
+      c.flushBestEffort();
+      await Future<void>.delayed(Duration.zero);
+      expect(svc.updates, 0);
+      // Dirty buffer → save dispatched without awaiting flush().
+      c.markDirty(markdown: 'final edit');
+      c.flushBestEffort();
+      await Future<void>.delayed(Duration.zero);
+      expect(svc.updates, 1);
       c.dispose();
     });
 
