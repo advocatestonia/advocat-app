@@ -308,9 +308,18 @@ function makeProdDeps(
       }
 
       // Storage path: case-documents/{user_id}/email_attachments/{rand}/{filename}.
+      // SECURITY: att.filename is the attacker-controllable Gmail MIME part
+      // name. Sanitize it before it enters a service-role storage path — an
+      // unsanitized `../` could traverse out of the caller's `{userId}/`
+      // prefix. The original (display) name is still kept verbatim in the
+      // email_attachments.filename column below (parameterized write).
+      const safeName = att.filename
+        .replace(/[^a-zA-Z0-9._-]/g, "_")
+        .replace(/\.{2,}/g, "_")
+        .slice(0, 120) || "attachment";
       const rand = crypto.randomUUID();
       const storagePath =
-        `${args.userId}/email_attachments/${rand}/${att.filename}`;
+        `${args.userId}/email_attachments/${rand}/${safeName}`;
       const { error: upErr } = await sb.storage
         .from("case-documents")
         .upload(storagePath, payload.data, {
