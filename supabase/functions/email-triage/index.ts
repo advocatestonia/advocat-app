@@ -58,6 +58,10 @@ import {
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANTHROPIC_API_KEY = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
+// Upstream timeout — a hung Anthropic connection would otherwise pin the
+// isolate and stall the triage queue. The resulting TimeoutError matches
+// TRANSIENT_ERROR_RE below, so it's retried rather than dropped.
+const ANTHROPIC_FETCH_TIMEOUT_MS = 120_000;
 // SECURITY (2026-05-27): plaintext fallback "dev-gate-secret" removed.
 // email-send already hard-fails 503 when EMAIL_AGENT_GATE_SECRET is unset
 // in prod; this fn now mirrors that posture so HMAC tokens cannot be
@@ -408,6 +412,7 @@ function makeProdDeps(
             { role: "user", content: args.userMessage },
           ],
         }),
+        signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
       });
       if (!resp.ok) {
         const errBody = await resp.text();
@@ -516,6 +521,7 @@ function makeProdDeps(
             { role: "user", content: args.userMessage },
           ],
         }),
+        signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
       });
       if (!resp.ok) {
         const errBody = await resp.text();

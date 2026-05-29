@@ -71,6 +71,12 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY") ?? "";
 
+// Internal edge-fn / storage call timeouts. A hung internal call would block
+// the (bounded) agent loop and pin the isolate. Storage + send-email are fast;
+// pdf-parser can run OCR so it gets a larger budget.
+const INTERNAL_FETCH_TIMEOUT_MS = 30_000;
+const PDF_PARSER_FETCH_TIMEOUT_MS = 120_000;
+
 // =============================================================================
 // Tool schema definitions — passed to Anthropic in the `tools` array.
 // =============================================================================
@@ -759,6 +765,7 @@ async function handleSendEmail(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ to, subject, body, cc }),
+      signal: AbortSignal.timeout(INTERNAL_FETCH_TIMEOUT_MS),
     },
   );
 
@@ -864,6 +871,7 @@ async function handleGeneratePdf(
       "x-upsert": "true",
     },
     body: htmlBytes,
+    signal: AbortSignal.timeout(INTERNAL_FETCH_TIMEOUT_MS),
   });
 
   if (!uploadResp.ok) {
@@ -889,6 +897,7 @@ async function handleGeneratePdf(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ expiresIn: 3600 }),
+    signal: AbortSignal.timeout(INTERNAL_FETCH_TIMEOUT_MS),
   });
 
   if (!signResp.ok) {
@@ -1810,6 +1819,7 @@ async function handleRunPdfParser(
         filename: a.filename,
         mime_type: a.mime,
       }),
+      signal: AbortSignal.timeout(PDF_PARSER_FETCH_TIMEOUT_MS),
     });
     if (!resp.ok) {
       const errText = await resp.text();

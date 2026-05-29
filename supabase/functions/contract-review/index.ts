@@ -53,6 +53,12 @@ const PDF_WORKER_SECRET = Deno.env.get("CONTRACT_PDF_WORKER_SECRET") ?? "";
 
 const STORAGE_BUCKET = "contract-reviews";
 
+// Upstream timeouts — without an AbortSignal a hung upstream pins the isolate
+// while the (paying) user waits. Anthropic gets a generous budget for the long
+// review generation; the Typst PDF worker is fast.
+const ANTHROPIC_FETCH_TIMEOUT_MS = 120_000;
+const PDF_WORKER_FETCH_TIMEOUT_MS = 30_000;
+
 serve(async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
@@ -316,6 +322,7 @@ function buildPlannerCaller(): PlannerCaller {
         system: req.systemPrompt,
         messages: [{ role: "user", content: req.userPrompt }],
       }),
+      signal: AbortSignal.timeout(ANTHROPIC_FETCH_TIMEOUT_MS),
     });
     if (!res.ok) {
       const err = await res.text();
@@ -354,6 +361,7 @@ function buildPdfWorkerCaller(): PdfWorkerCaller {
         "Authorization": `Bearer ${PDF_WORKER_SECRET}`,
       },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(PDF_WORKER_FETCH_TIMEOUT_MS),
     });
     if (!res.ok) {
       const err = await res.text();
