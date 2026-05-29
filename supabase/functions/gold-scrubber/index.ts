@@ -19,7 +19,7 @@
 // ----------------------------------------------------------------------------
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import { constantTimeEqual, corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
 import { twoStageScrub } from "../_shared/pii_scrubber.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -47,7 +47,7 @@ serve(async (req) => {
   // ── Auth: service-role only ───────────────────────────────────────────────
   const auth = req.headers.get("authorization") ?? "";
   const expected = `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
-  if (!SUPABASE_SERVICE_ROLE_KEY || auth !== expected) {
+  if (!SUPABASE_SERVICE_ROLE_KEY || !constantTimeEqual(auth, expected)) {
     return jsonError("service-role required", 401);
   }
 

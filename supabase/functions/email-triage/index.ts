@@ -19,6 +19,7 @@ import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "@supabase/supabase-js";
 
 import {
+  constantTimeEqual,
   corsHeaders,
   jsonError,
   jsonOk,
@@ -121,7 +122,7 @@ serve(withSentry("email-triage", async (req) => {
   const authHeaderRaw = req.headers.get("authorization") ??
     req.headers.get("Authorization") ?? "";
   const isInternalCall = internalCallHeader === "email-inbox-sync" &&
-    authHeaderRaw === `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
+    constantTimeEqual(authHeaderRaw, `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`);
   // Trace propagation — pulled once from the request and threaded through
   // every Anthropic call / queue row / audit insert below.
   const traceId = getOrCreateTraceId(req);

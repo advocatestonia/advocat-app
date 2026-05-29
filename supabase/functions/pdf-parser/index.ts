@@ -31,6 +31,7 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
+  constantTimeEqual,
   corsHeaders,
   jsonError,
   jsonOk,
@@ -135,7 +136,7 @@ serve(async (req: Request) => {
   const internalCallHeader = req.headers.get("x-internal-call");
   const authHeader = req.headers.get("authorization") ?? req.headers.get("Authorization") ?? "";
   const isInternalCall = !!internalCallHeader &&
-    authHeader === `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
+    constantTimeEqual(authHeader, `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`);
   if (isInternalCall) {
     // Pre-parse the body once to extract the user_id for path validation.
     // The full parseAndValidateBody re-runs below; this is just for auth.

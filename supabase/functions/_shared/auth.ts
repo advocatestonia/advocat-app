@@ -44,6 +44,26 @@ export function jsonError(msg: string, status: number, extra: Record<string, unk
   });
 }
 
+/**
+ * Constant-time string equality — mitigates timing attacks when comparing a
+ * caller-supplied value against a secret (service-role key, cron secret, bearer
+ * token). A plain `a === b` short-circuits on the first differing byte, leaking
+ * how many leading bytes matched; over many requests that recovers the secret.
+ *
+ * Length is intentionally NOT secret-dependent: returning early on a length
+ * mismatch only reveals the secret's length, which for fixed-length secrets
+ * (JWTs, hex/base64 tokens) is already public. The byte loop runs over the
+ * full expected length regardless, so equal-length inputs take the same time.
+ */
+export function constantTimeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
+}
+
 /** JSON ok response with standard CORS headers. */
 export function jsonOk(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {

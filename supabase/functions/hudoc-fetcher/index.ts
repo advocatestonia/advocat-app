@@ -368,6 +368,16 @@ export type GateResult =
   | { kind: "allow" }
   | { kind: "deny"; status: number; body: { error: string } };
 
+/** Constant-time string comparison (prevents a timing oracle on the secret). */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let r = 0;
+  for (let i = 0; i < a.length; i++) {
+    r |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return r === 0;
+}
+
 export function checkCronSecret(
   header: string | null,
   envSecret: string | undefined,
@@ -378,7 +388,7 @@ export function checkCronSecret(
   if (!header) {
     return { kind: "deny", status: 401, body: { error: "Missing cron secret" } };
   }
-  if (header !== envSecret) {
+  if (!timingSafeEqualStr(header, envSecret)) {
     return { kind: "deny", status: 401, body: { error: "Invalid cron secret" } };
   }
   return { kind: "allow" };
