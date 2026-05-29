@@ -14,6 +14,7 @@ import {
   checkEmailQuality,
   type EmailQualityReport,
 } from "../_shared/email_quality_check.ts";
+import { wrapUntrusted } from "../_shared/untrusted_data.ts";
 
 // ─── Tunables ───────────────────────────────────────────────────────────────
 
@@ -557,14 +558,33 @@ async function runEmailQualityGate(opts: {
   return { output: opts.plannerOutput, report: first };
 }
 
-/** Compose the user-message payload for the planner. */
+/** Compose the user-message payload for the planner.
+ *
+ * SECURITY: both `filename` and `parsed_text` come from attacker-uploaded
+ * contract files. Interpolating them raw let a malicious file forge a
+ * `</contract></contracts>` breakout (or a poisoned filename attribute) and
+ * inject instructions into the planner prompt — the same prompt-injection
+ * class fixed for email-triage (F-002/F-003). We now XML-escape the filename
+ * attribute and wrap the document body in <untrusted_data> (which also
+ * escapes any nested closing sentinel) so the model can never confuse
+ * document content with instructions. */
 export function buildUserPrompt(docs: CaseDocumentRow[]): string {
+  const escapeAttr = (s: string): string =>
+    s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   const parts: string[] = [
     "<contracts>",
   ];
   docs.forEach((d, i) => {
-    parts.push(`<contract index="${i + 1}" filename="${d.filename}">`);
-    parts.push(d.parsed_text ?? "");
+    const safeName = escapeAttr(d.filename ?? "").slice(0, 200);
+    parts.push(`<contract index="${i + 1}" filename="${safeName}">`);
+    parts.push(
+      wrapUntrusted(`contract ${i + 1}: ${safeName}`, d.parsed_text ?? ""),
+    );
     parts.push("</contract>");
   });
   parts.push("</contracts>");

@@ -133,8 +133,15 @@ export function markdownToHtml(md: string): string {
 
 /** Apply inline markdown (bold, italic) to a single text run. */
 function inlineMarkdown(text: string): string {
+  // SECURITY: body_markdown is user/LLM-controlled and the rendered output is
+  // stored as text/html and served via a signed URL — raw `<script>` / event
+  // handlers would execute on open (stored XSS). Escape HTML entities FIRST,
+  // then apply our own markdown→tag transforms. Because escapeHtml turns any
+  // user `<`/`>`/`&` into entities, the only literal `<…>` tags in the result
+  // are the <strong>/<em> we emit ourselves below.
+  const escaped = escapeHtml(text);
   // Bold before italic so **bold** is processed first.
-  return text
+  return escaped
     .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
     .replace(/\*([^*]+)\*/g, "<em>$1</em>");
 }
