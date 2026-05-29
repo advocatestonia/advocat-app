@@ -152,33 +152,49 @@ serve(async (req) => {
     );
   }
 
-  const { error } = await supabase
+  // Base row (always-present columns). The encrypted shadow columns are
+  // added separately so we can degrade gracefully if the P0-5 migration
+  // (20260528120000) that introduces *_enc has not been applied yet —
+  // otherwise the upsert would 42703 and OAuth token persistence (and thus
+  // Gmail send) would break 100% for any deploy where the edge fn ships
+  // before the migration. This makes the two deployable in EITHER order.
+  const baseRow: Record<string, unknown> = {
+    user_id: userId,
+    provider: row.provider,
+    // DEPRECATED 2026-05-28: plain-text columns retained for the dual-write
+    // window. Wave 2 will drop these after readers migrate to *_enc columns.
+    access_token: row.access_token,
+    refresh_token: row.refresh_token,
+    email: row.email,
+    expires_at: row.expires_at,
+    scope: row.scope,
+    updated_at: new Date().toISOString(),
+  };
+
+  // Wave-1 P0-5: encrypted shadow columns. Readers may opt in via
+  // vault_decrypt_text(<col>, user_id).
+  const encRow: Record<string, unknown> = {
+    ...baseRow,
+    access_token_enc: accessTokenEnc,
+    refresh_token_enc: refreshTokenEnc,
+  };
+
+  let { error } = await supabase
     .from("user_oauth_tokens")
-    .upsert(
-      {
-        user_id: userId,
-        provider: row.provider,
-        // DEPRECATED 2026-05-28: plain-text columns retained for the
-        // dual-write window. Wave 2 will drop these after readers migrate
-        // to *_enc columns.
-        access_token: row.access_token,
-        refresh_token: row.refresh_token,
-        // Wave-1 P0-5: encrypted shadow columns. Readers may opt in via
-        // vault_decrypt_text(<col>, user_id).
-        access_token_enc: accessTokenEnc,
-        refresh_token_enc: refreshTokenEnc,
-        email: row.email,
-        expires_at: row.expires_at,
-        // `scope` is persisted as NULL when the client did not send it
-        // (backward-compat with pre-2026-05-20 callers). Going forward, the
-        // Flutter client sends the requested scope set so we can detect
-        // missing-permission states (`gmail.readonly` vs send-only) without
-        // a probing API call.
-        scope: row.scope,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "user_id,provider" },
+    .upsert(encRow, { onConflict: "user_id,provider" });
+
+  // 42703 = undefined_column: the *_enc columns are not in this deploy yet.
+  // Retry plain-only so the token still persists (dual-write degrades to
+  // single-write until the migration lands).
+  if (error && (error as { code?: string }).code === "42703") {
+    console.warn(
+      "oauth-callback: *_enc columns absent — retrying plain-only " +
+        "(apply migration 20260528120000 to enable encryption-at-rest)",
     );
+    ({ error } = await supabase
+      .from("user_oauth_tokens")
+      .upsert(baseRow, { onConflict: "user_id,provider" }));
+  }
 
   if (error) {
     // Log raw DB error server-side; do not echo to client (leak-class fix).

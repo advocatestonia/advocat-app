@@ -259,26 +259,49 @@ export async function handleExchange(
     );
   }
 
-  const row = {
+  // Base row (always-present columns). The *_enc shadow columns are added
+  // separately so this is deploy-order-independent with migration
+  // 20260528120000 (which introduces access_token_enc/refresh_token_enc).
+  // If the edge fn ships BEFORE the migration, the *_enc upsert 42703s and we
+  // retry plain-only — otherwise OAuth token persistence (and Gmail send)
+  // would break 100% on any deploy where the fn leads the migration.
+  const baseRow: Record<string, unknown> = {
     user_id: userId,
     provider: "gmail",
     // DEPRECATED 2026-05-28: plain-text columns retained for the dual-write
     // window. Wave 2 will drop these after readers migrate to *_enc.
     access_token: token.access_token,
     refresh_token: token.refresh_token,
-    // Wave-1 P0-5: encrypted shadow columns. Readers may opt in via
-    // vault_decrypt_text(<col>, user_id).
-    access_token_enc: accessTokenEnc,
-    refresh_token_enc: refreshTokenEnc,
     email,
     expires_at: expiresAt,
     scope: typeof token.scope === "string" ? token.scope : null,
     updated_at: updatedAt,
   };
 
-  const { error } = await args.supabase
+  // Wave-1 P0-5: encrypted shadow columns. Readers may opt in via
+  // vault_decrypt_text(<col>, user_id).
+  const encRow: Record<string, unknown> = {
+    ...baseRow,
+    access_token_enc: accessTokenEnc,
+    refresh_token_enc: refreshTokenEnc,
+  };
+
+  let { error } = await args.supabase
     .from("user_oauth_tokens")
-    .upsert(row, { onConflict: "user_id,provider" });
+    .upsert(encRow, { onConflict: "user_id,provider" });
+
+  // 42703 = undefined_column: the *_enc columns are not in this deploy yet.
+  // Retry plain-only so the token still persists (dual-write degrades to
+  // single-write until migration 20260528120000 lands).
+  if (error && (error as { code?: string }).code === "42703") {
+    console.warn(
+      "gmail-oauth-exchange: *_enc columns absent — retrying plain-only " +
+        "(apply migration 20260528120000 to enable encryption-at-rest)",
+    );
+    ({ error } = await args.supabase
+      .from("user_oauth_tokens")
+      .upsert(baseRow, { onConflict: "user_id,provider" }));
+  }
 
   if (error) {
     // Log the raw DB error server-side; do NOT echo it to the client (it can
