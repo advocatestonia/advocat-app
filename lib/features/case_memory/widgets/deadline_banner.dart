@@ -99,11 +99,37 @@ class _DeadlineBannerState extends ConsumerState<DeadlineBanner> {
             _bandOrdinal(CaseDeadlineUrgency.high)) {
           return const SizedBox.shrink();
         }
+        // If we've already resolved the dismissed band for this deadline,
+        // decide synchronously — avoids the FutureBuilder one-frame "flash"
+        // (a fresh Future starts in waiting state on every rebuild, briefly
+        // showing a banner the user already dismissed). Only fall back to the
+        // async read on the very first build before the cache is populated.
+        if (_dismissedCache.containsKey(deadline.id)) {
+          final dismissedAt = _dismissedCache[deadline.id];
+          if (dismissedAt != null &&
+              _bandOrdinal(currentBand) <= _bandOrdinal(dismissedAt)) {
+            return const SizedBox.shrink();
+          }
+          return _BannerBody(
+            l10n: l10n,
+            deadline: deadline,
+            currentBand: currentBand,
+            now: widget.now,
+            onDismiss: () async {
+              await _writeDismissedBand(deadline.id, currentBand);
+              setState(() {
+                _dismissedCache[deadline.id] = currentBand;
+              });
+            },
+            onOpen: () => context.push('/cases-v2/${deadline.caseId}/deadlines'),
+          );
+        }
         return FutureBuilder<CaseDeadlineUrgency?>(
           future: _loadFor(deadline.id),
           builder: (context, snapshot) {
-            // While loading, render — better to flash the banner
-            // briefly than miss a critical reminder.
+            // First load only. While loading, render — better to flash the
+            // banner briefly than miss a critical reminder. After this completes,
+            // _dismissedCache is populated and the synchronous path above wins.
             final dismissedAt = snapshot.data;
             if (dismissedAt != null &&
                 _bandOrdinal(currentBand) <= _bandOrdinal(dismissedAt)) {

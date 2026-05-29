@@ -482,20 +482,35 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
   ) async {
     if (planId == 'free') return;
 
+    // Re-entrancy / double-tap guard. Set the loading flag SYNCHRONOUSLY
+    // before the first await below. Without this, a fast double-tap fires
+    // _handlePlanSelect twice; both pass the DPA gate (which resolves
+    // instantly when already accepted) and both start a checkout → the user
+    // can be charged twice. Bail if a checkout for ANY plan is already in
+    // flight. The finally-style resets at lines below clear the flag.
+    final notifier = ref.read(_isLoadingPlanProvider.notifier);
+    if (notifier.state != null) return;
+    notifier.state = planId;
+
     // GDPR Art. 28 — clickwrap DPA gate. Blocks paid checkout until the
     // user has accepted the current DPA version (cached row in
     // public.dpa_acceptances skips the dialog on re-upgrade).
     final dpaOk = await ensureDpaAccepted(context);
-    if (!dpaOk) return;
+    if (!dpaOk) {
+      notifier.state = null;
+      return;
+    }
 
-    ref.read(_isLoadingPlanProvider.notifier).state = planId;
     final isAnnual = ref.read(_isAnnualProvider);
 
     // iOS native path → Apple IAP (App Store Guideline 3.1.1 requires IAP
     // for digital subs purchased inside the iOS app; Stripe-only would be
     // a rejection risk). Everywhere else → Stripe Checkout (unchanged).
     if (_shouldShowAppleIap()) {
-      if (!context.mounted) return;
+      if (!context.mounted) {
+        notifier.state = null;
+        return;
+      }
       await _handleApplePurchase(context, ref, planId, isAnnual);
       return;
     }
