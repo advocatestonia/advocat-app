@@ -132,15 +132,24 @@ command -v supabase >/dev/null || die "supabase CLI not installed"
 log "Checking for changed Edge Functions"
 PROJECT_REF="${SUPABASE_PROJECT_REF:-okgnkucgwsytsondrjye}"
 LAST_PROD=$(git rev-parse github/gh-pages 2>/dev/null || echo "")
+# gh-pages is an ORPHAN branch (built web assets, no shared history with main),
+# so `git merge-base github/gh-pages HEAD` is empty and a three-dot diff
+# (LAST_PROD...HEAD) aborts with "no merge base" — silently yielding zero
+# changed functions and skipping every edge-fn deploy. Treat "branch missing"
+# AND "no merge base" identically: over-deploy ALL functions (safe).
+MERGE_BASE=""
+if [[ -n "$LAST_PROD" ]]; then
+  MERGE_BASE=$(git merge-base github/gh-pages HEAD 2>/dev/null || echo "")
+fi
 CHANGED_FNS=()
-if [[ -z "$LAST_PROD" ]]; then
-  warn "No merge base with github/gh-pages — deploying ALL edge functions (safe over-deploy)"
+if [[ -z "$LAST_PROD" || -z "$MERGE_BASE" ]]; then
+  warn "No merge base with github/gh-pages (orphan branch) — deploying ALL edge functions (safe over-deploy)"
   while IFS= read -r fn; do
     # Only deploy directories (real edge fns). Skip _shared, _tests, import_map.json, IMPORT_MAP_README.md, etc.
     [[ -n "$fn" && -d "supabase/functions/$fn" ]] && CHANGED_FNS+=("$fn")
   done < <(ls supabase/functions/ | grep -v '^_' | sort -u)
 else
-  CHANGED_FILES=$(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null || true)
+  CHANGED_FILES=$(git diff --name-only "$MERGE_BASE"..HEAD -- 'supabase/functions/' 2>/dev/null || true)
   # If any _shared module changed, redeploy all functions that import it.
   # _shared changes are invisible to the per-function diff but affect all dependents.
   if echo "$CHANGED_FILES" | grep -q 'supabase/functions/_shared/'; then
