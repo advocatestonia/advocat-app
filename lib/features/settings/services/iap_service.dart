@@ -249,14 +249,27 @@ class IapService {
                 transactionId: p.purchaseID,
               ),
             );
+            // Only acknowledge to StoreKit AFTER our server has durably
+            // recorded the subscription. completePurchase finishes the
+            // transaction and removes it from the queue, so it would never
+            // be re-delivered via purchaseStream. If we completed on a
+            // FAILED verify (transient edge-fn 5xx, expired JWT, network
+            // blip), the user would be charged by Apple but never become
+            // Pro, with no automatic retry. By withholding completion the
+            // transaction stays pending and StoreKit re-delivers it on the
+            // next initialize() so _verifyWithServer retries — and the edge
+            // fn is idempotent on (original_transaction_id, user_id), so a
+            // re-verify is safe.
+            await _completeIfNeeded(p);
           } else {
             _resultController.add(
               const IapResult.error(
                 'Receipt verification failed — please contact support',
               ),
             );
+            // Deliberately DO NOT complete here: leave the transaction in the
+            // queue for retry on next launch.
           }
-          await _completeIfNeeded(p);
           break;
       }
     }

@@ -168,4 +168,50 @@ void main() {
     expect(fnDir.existsSync(), isTrue,
         reason: 'apple-iap-verify edge fn directory must exist');
   });
+
+  // ── T08 ───────────────────────────────────────────────────────────────
+  test(
+      'T08 a purchased/restored transaction is only completed on a VERIFIED '
+      'server result (charged-not-Pro guard)', () {
+    // The in_app_purchase plugin can only be exercised by overriding the
+    // platform interface, which the header explains is brittle. Instead we
+    // lock the critical invariant at the source level: completePurchase
+    // (which finishes a StoreKit transaction and removes it from the queue
+    // so purchaseStream never re-delivers it) must be GATED on a successful
+    // server verify. Completing on a FAILED verify would leave the user
+    // charged by Apple but never activated, with no automatic retry.
+    final src = File(
+      'lib/features/settings/services/iap_service.dart',
+    ).readAsStringSync();
+
+    // Isolate the purchased/restored arm of the status switch: from those
+    // case labels up to the next `break;`.
+    final arm = RegExp(
+      r'case PurchaseStatus\.purchased:\s*'
+      r'case PurchaseStatus\.restored:([\s\S]*?)break;',
+    ).firstMatch(src);
+    expect(arm, isNotNull,
+        reason: 'purchased/restored switch arm must exist');
+    final body = arm!.group(1)!;
+
+    // The completion call must live INSIDE the `if (verified)` block, i.e.
+    // appear before the `} else {`. If a refactor moves it after the else
+    // (or back to an unconditional call after the if/else), this fails.
+    final completeIdx = body.indexOf('_completeIfNeeded(p)');
+    final elseIdx = body.indexOf('} else {');
+    expect(completeIdx, greaterThan(-1),
+        reason: 'verified branch must complete the purchase');
+    expect(elseIdx, greaterThan(-1),
+        reason: 'verify-failure branch must exist');
+    expect(completeIdx, lessThan(elseIdx),
+        reason: 'completePurchase must be gated inside the verified branch, '
+            'never reached on a failed verify');
+
+    // And there must be exactly one completion call in this arm (no stray
+    // unconditional completion after the else).
+    final occurrences =
+        '_completeIfNeeded(p)'.allMatches(body).length;
+    expect(occurrences, 1,
+        reason: 'exactly one gated completion in the purchased/restored arm');
+  });
 }
