@@ -239,8 +239,15 @@ serve(async (req) => {
     0,
     500,
   );
-  const ipAddress = (req.headers.get("x-forwarded-for") ?? "").split(",")[0]
-    .trim() || null;
+  // SECURITY: use the gate's HARDENED client IP (x-real-ip preferred; XFF
+  // honoured only under TRUST_XFF), NOT the raw spoofable x-forwarded-for
+  // leftmost. The anon 5/24h cap below COUNTs by `anonIp` (this same hardened
+  // value), so the stored ip_address MUST match it. If we wrote the spoofable
+  // XFF here while counting by the hardened IP, an attacker could rotate the
+  // XFF header to store every row under a different ip_address than the one
+  // the cap query matches — defeating the daily cap entirely.
+  const ipAddress = anonIp ??
+    ((req.headers.get("x-real-ip") ?? "").trim() || null);
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
     auth: { persistSession: false },
@@ -264,7 +271,9 @@ serve(async (req) => {
   } else if (anonIp) {
     // Anon daily cap: 5 tickets / 24h / IP.  Counted against the
     // ip_address column, NULL-safe — anon rows always have user_id=NULL
-    // and ip_address set from x-forwarded-for.
+    // and ip_address set from the HARDENED client IP (anonIp), which is the
+    // same value this query matches on, so the cap cannot be sidestepped by
+    // spoofing x-forwarded-for.
     const since = new Date(Date.now() - 24 * 60 * 60_000).toISOString();
     const { count } = await supabase
       .from("support_tickets")
