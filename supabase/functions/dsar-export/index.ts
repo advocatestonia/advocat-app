@@ -365,8 +365,12 @@ serve(async (req) => {
         "encrypted_refresh_token",
       ],
     });
+    // SECURITY (Art. 15(4)): the wrapped data-encryption key is credential
+    // material — never disclose it. The real column is `encrypted_key`; the
+    // previous list ("wrapped_dek"/"wrap_iv"/"wrap_tag") matched NO actual
+    // column, so the wrapped DEK was leaking into the export in cleartext.
     const encryptionKeys = await safeSelect(sb, "user_encryption_keys", "user_id", userId, {
-      redactColumns: ["wrapped_dek", "wrap_iv", "wrap_tag"],
+      redactColumns: ["encrypted_key"],
     });
 
     // ── Consents ─────────────────────────────────────────────────────────
