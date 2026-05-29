@@ -166,8 +166,35 @@ serve(withSentry("agent-approve", async (req) => {
     return jsonOk({ ok: true, executed: false, decision: "declined" });
   }
 
-  // Approve path — verify HMAC + execute.
+  // Approve path — atomically CLAIM the run, then verify HMAC + execute.
   //
+  // TOCTOU / double-send guard (2026-05-30): the status check at line ~129
+  // is a read; the terminal UPDATE below has no status precondition. Two
+  // concurrent approve requests for the same run (double-click, retry,
+  // replayed request) would BOTH read status='awaiting_approval', BOTH
+  // pass the HMAC verify (same valid action_id), and BOTH call
+  // executeToolCalls — sending the email TWICE. The rate limiter (30/min)
+  // does not serialise near-simultaneous requests. We claim the run with a
+  // compare-and-swap: flip awaiting_approval → in_progress gated on the
+  // current status, and only the request whose UPDATE actually mutated a
+  // row is allowed to fire the write. `select("id")` returns the affected
+  // rows so we can detect a lost race (empty => someone else claimed it).
+  // We reuse the existing 'in_progress' status (already in the agent_runs
+  // CHECK constraint, semantically "mid-operation") as the transient claim
+  // state so no schema migration is needed — the terminal UPDATE below
+  // overwrites it to completed/errored.
+  const { data: claimed, error: claimErr } = await sb
+    .from("agent_runs")
+    .update({ status: "in_progress", updated_at: new Date().toISOString() })
+    .eq("id", runId)
+    .eq("status", "awaiting_approval")
+    .select("id");
+  if (claimErr) return jsonError(`claim failed: ${claimErr.message}`, 500);
+  if (!claimed || claimed.length === 0) {
+    // Lost the race — another request already claimed/executed this run.
+    return jsonError("run already being processed", 409);
+  }
+
   // hashToolInput uses canonical-JSON serialisation (W2-09 fix) so the
   // hash survives the JSONB round-trip Postgres did when persisting
   // pending.tool_input. It also projects user-visible fields (to,
@@ -176,10 +203,37 @@ serve(withSentry("agent-approve", async (req) => {
     pending.tool_input,
     pending.tool_name,
   );
+  // Release the claim back to a terminal state if a post-claim check
+  // fails — otherwise the run would be wedged in 'in_progress' forever
+  // (no write fired, but it can never be re-approved either, since the
+  // CAS above only matches status='awaiting_approval').
+  const releaseClaim = async (reason: string) => {
+    await sb
+      .from("agent_runs")
+      .update({
+        status: "errored",
+        write_pending: null,
+        completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        audit_trail: [
+          ...(r.audit_trail ?? []),
+          {
+            iter: (r.audit_trail?.length ?? 0) + 1,
+            tool: pending.tool_name,
+            decision: "approve_aborted",
+            reason,
+            at: new Date().toISOString(),
+          },
+        ],
+      })
+      .eq("id", runId);
+  };
+
   if (recomputedArgsSha !== pending.args_sha256) {
     // Persisted args differ from what was originally signed — defence
     // against a malicious update to the DB row. Should not happen via
     // RLS, but belt+suspenders.
+    await releaseClaim("args_drift");
     return jsonError("persisted args drift detected", 409);
   }
   const verify = await verifyActionId({
@@ -191,6 +245,7 @@ serve(withSentry("agent-approve", async (req) => {
     secret: EMAIL_AGENT_GATE_SECRET,
   });
   if (!verify.ok) {
+    await releaseClaim("action_id_verify_failed");
     return jsonError(`action_id verify: ${verify.reason}`, 409);
   }
 
