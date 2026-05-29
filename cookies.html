@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy / Küpsiste poliitika / Evästekäytäntö | Advocat</title>
+    <meta name="description" content="Advocat cookie policy — categories, per-cookie details, retention, withdrawal. Compliant with ePrivacy Directive, EE ESS §103¹, FI §200 sähköisen viestinnän palveluista, DE TTDSG §25.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://advocat.ee/cookies.html">
+    <link rel="alternate" hreflang="et" href="https://advocat.ee/cookies.html">
+    <link rel="alternate" hreflang="fi" href="https://advocat.ee/cookies.html">
+    <link rel="alternate" hreflang="en" href="https://advocat.ee/cookies.html">
+    <link rel="alternate" hreflang="de" href="https://advocat.ee/cookies.html">
+    <link rel="alternate" hreflang="ru" href="https://advocat.ee/cookies.html">
+    <link rel="alternate" hreflang="x-default" href="https://advocat.ee/cookies.html">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #F7F8FA; color: #1A2B4A; line-height: 1.6; }
+        a { color: #0A8F6C; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .header { background: #1A2B4A; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 900px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: inline-flex; align-items: center; gap: 2px; text-decoration: none; }
+        .logo img { height: 80px; width: auto; }
+        .logo-text {
+            font-size: 28px; font-weight: 700; letter-spacing: -0.3px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #B8E6D9 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; color: transparent;
+            line-height: 1; margin-left: -4px; transform: translateY(2px);
+        }
+        .header-nav a { color: rgba(255,255,255,0.85); margin-left: 24px; font-size: 14px; font-weight: 500; }
+        .header-nav a:hover { color: #fff; text-decoration: none; }
+
+        .hero { background: linear-gradient(135deg, #1A2B4A 0%, #0A8F6C 100%); padding: 56px 20px 48px; text-align: center; color: #fff; }
+        .hero h1, .hero .hero-title { font-size: 32px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; line-height: 1.2; }
+        .hero p { font-size: 15px; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+
+        .lang-switch { background: #fff; border-bottom: 1px solid #E5E8EE; padding: 14px 20px; text-align: center; position: sticky; top: 112px; z-index: 50; }
+        .lang-switch button {
+            display: inline-block; margin: 0 4px; padding: 7px 18px; border-radius: 999px;
+            font-family: inherit; font-size: 13px; font-weight: 600;
+            background: transparent; color: #1A2B4A; border: 1.5px solid #E5E8EE;
+            cursor: pointer; transition: all .15s;
+        }
+        .lang-switch button:hover { border-color: #0A8F6C; color: #0A8F6C; }
+        .lang-switch button.active { background: #1A2B4A; color: #fff; border-color: #1A2B4A; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 36px 20px 60px; }
+        .doc-meta { font-size: 13px; color: #5A6A7A; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid #E5E8EE; }
+        .doc-meta strong { color: #1A2B4A; }
+
+        h2 { font-size: 22px; font-weight: 700; color: #1A2B4A; margin: 36px 0 14px; letter-spacing: -0.2px; }
+        h2:first-of-type { margin-top: 8px; }
+        h3 { font-size: 17px; font-weight: 600; color: #1A2B4A; margin: 22px 0 10px; }
+        p { font-size: 15px; color: #2C3E50; margin-bottom: 12px; }
+        ul, ol { padding-left: 22px; margin-bottom: 14px; }
+        li { font-size: 15px; color: #2C3E50; margin-bottom: 6px; }
+        strong { color: #1A2B4A; }
+        code { background: #EEF2F7; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+
+        .callout {
+            background: #E8F5E9; border-left: 4px solid #0A8F6C;
+            padding: 16px 18px; border-radius: 0 8px 8px 0; margin: 18px 0;
+        }
+        .callout strong { color: #0A6E54; }
+        .callout-warn {
+            background: #FFF4E5; border-left: 4px solid #E07B00;
+            padding: 16px 18px; border-radius: 0 8px 8px 0; margin: 18px 0;
+        }
+        .callout-warn strong { color: #B25E00; }
+        .callout-key {
+            background: #1A2B4A; color: #fff;
+            padding: 18px 20px; border-radius: 10px; margin: 18px 0;
+        }
+        .callout-key strong { color: #B8E6D9; }
+
+        .manage-btn-wrap { text-align: center; margin: 28px 0; }
+        .manage-btn {
+            display: inline-block; padding: 14px 32px; border-radius: 999px;
+            background: #0A8F6C; color: #fff; font-weight: 600; font-size: 15px;
+            border: none; cursor: pointer; transition: all .15s;
+            font-family: inherit;
+        }
+        .manage-btn:hover { background: #086F54; text-decoration: none; }
+        .manage-btn:focus-visible { outline: 3px solid #B8E6D9; outline-offset: 2px; }
+
+        .cat-badge {
+            display: inline-block; padding: 3px 10px; border-radius: 999px;
+            font-size: 12px; font-weight: 600; margin-left: 8px;
+        }
+        .cat-badge.essential { background: #C8E6C9; color: #1B5E20; }
+        .cat-badge.functional { background: #BBDEFB; color: #0D47A1; }
+        .cat-badge.analytics { background: #FFE082; color: #6D4C00; }
+        .cat-badge.marketing { background: #FFCDD2; color: #B71C1C; }
+
+        .table-wrap { overflow-x: auto; margin: 14px 0; border-radius: 10px; border: 1px solid #E5E8EE; }
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; background: #fff; }
+        th, td { padding: 11px 13px; border-bottom: 1px solid #E5E8EE; text-align: left; vertical-align: top; }
+        th { background: #F2F4F7; font-weight: 600; color: #1A2B4A; }
+        tr:last-child td { border-bottom: 0; }
+        td code { font-size: 12px; }
+
+        [data-lang]:not(.active-lang) { display: none; }
+
+        .footer { background: #111E33; padding: 32px 20px; text-align: center; color: rgba(255,255,255,0.55); font-size: 13px; }
+        .footer a { color: rgba(255,255,255,0.85); margin: 0 10px; }
+        .footer a:hover { color: #B8E6D9; text-decoration: none; }
+        .footer-links { margin-bottom: 10px; }
+
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 24px; }
+            .hero { padding: 44px 20px 36px; }
+            .lang-switch { top: 96px; padding: 10px 12px; }
+            .lang-switch button { font-size: 12px; padding: 6px 12px; margin: 0 2px; }
+            h2 { font-size: 19px; }
+            .container { padding: 28px 18px 48px; }
+            th, td { padding: 9px 9px; font-size: 12.5px; }
+        }
+        @media (max-width: 600px) {
+            .logo img { height: 56px; }
+            .logo-text { font-size: 22px; }
+            .header-nav a { margin-left: 14px; font-size: 13px; }
+        }
+    </style>
+<script src="/_utm_capture.js"></script>
+<script src="/_analytics.js" defer></script>
+</head>
+<body>
+
+<header class="header">
+    <div class="header-inner">
+        <a href="/" class="logo" aria-label="Advocat home">
+            <img src="/blog/logo_shield.png" alt="Advocat shield" width="80" height="80">
+            <span class="logo-text">Advocat</span>
+        </a>
+        <nav class="header-nav">
+            <a href="/">Home</a>
+            <a href="/blog/">Blog</a>
+        </nav>
+    </div>
+</header>
+
+<section class="hero">
+    <h1 data-lang="et" class="active-lang">Küpsiste poliitika</h1>
+    <div class="hero-title" data-lang="fi" role="heading" aria-level="1">Evästekäytäntö</div>
+    <div class="hero-title" data-lang="en" role="heading" aria-level="1">Cookie Policy</div>
+    <div class="hero-title" data-lang="de" role="heading" aria-level="1">Cookie-Richtlinie</div>
+    <div class="hero-title" data-lang="ru" role="heading" aria-level="1">Политика использования файлов cookie</div>
+    <p data-lang="et" class="active-lang">Kuidas me kasutame küpsiseid ja sarnaseid tehnoloogiaid (ePrivacy / ESS §103¹)</p>
+    <p data-lang="fi">Miten käytämme evästeitä ja vastaavia tekniikoita (§ 200 sähköisen viestinnän palveluista)</p>
+    <p data-lang="en">How we use cookies and similar technologies (ePrivacy Directive)</p>
+    <p data-lang="de">Wie wir Cookies und ähnliche Technologien nutzen (TTDSG § 25)</p>
+    <p data-lang="ru">Как мы используем файлы cookie и аналогичные технологии</p>
+</section>
+
+<div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" class="active" data-lang-btn="et" onclick="switchLang('et')">Eesti</button>
+    <button type="button" data-lang-btn="fi" onclick="switchLang('fi')">Suomi</button>
+    <button type="button" data-lang-btn="en" onclick="switchLang('en')">English</button>
+    <button type="button" data-lang-btn="de" onclick="switchLang('de')">Deutsch</button>
+    <button type="button" data-lang-btn="ru" onclick="switchLang('ru')">Русский</button>
+</div>
+
+<!-- ============================================================== -->
+<!-- ESTONIAN                                                        -->
+<!-- ============================================================== -->
+<main class="container" data-lang="et">
+    <div class="doc-meta">
+        <p><strong>Jõustub:</strong> 28. mai 2026 · <strong>Versioon:</strong> 1.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Lühidalt:</strong> Kasutame ainult tehniliselt vajalikke küpsiseid vaikimisi. Analüütika- ja turundusküpsised laaditakse alles pärast teie sõnaselget nõusolekut küpsisebänneris. Saate oma valiku igal ajal muuta.
+    </div>
+
+    <div class="manage-btn-wrap">
+        <button type="button" class="manage-btn" onclick="openCookiePreferences()">Halda küpsisevalikuid</button>
+    </div>
+
+    <h2>1. Mis on küpsised</h2>
+    <p>Küpsised on väikesed tekstifailid, mida veebileht salvestab teie seadmesse, et meeles pidada teie eelistusi, autentimist või kasutuskäitumist. Sarnaste tehnoloogiate hulka kuuluvad localStorage, sessionStorage, pikslid ja sõrmejälje (fingerprinting) tehnikad — me ei kasuta sõrmejälgi.</p>
+
+    <h2>2. Küpsiste kategooriad</h2>
+
+    <h3>Rangelt vajalikud <span class="cat-badge essential">Alati aktiivne</span></h3>
+    <p>Need on hädavajalikud teenuse toimimiseks (autentimine, sessiooni säilitamine, turvalisus). Neid ei saa keelata.</p>
+
+    <h3>Funktsionaalsed <span class="cat-badge functional">Nõusolekuga</span></h3>
+    <p>Säilitavad teie eelistusi (keel, kuvarežiim). Mugavus, mitte hädavajalik.</p>
+
+    <h3>Analüütika <span class="cat-badge analytics">Nõusolekuga</span></h3>
+    <p>Aitavad meil mõista, kuidas teenust kasutatakse (anonümiseeritud agregaadid). Laaditakse alles pärast nõusolekut.</p>
+
+    <h3>Turundus <span class="cat-badge marketing">Nõusolekuga</span></h3>
+    <p>Aitavad mõõta reklaamide tõhusust (konversioonide jälgimine). Laaditakse alles pärast nõusolekut.</p>
+
+    <h2>3. Kasutatavad küpsised (täielik loetelu)</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Nimi</th><th>Tüüp</th><th>Pakkuja</th><th>Eesmärk</th><th>Säilitusaeg</th></tr></thead>
+        <tbody>
+        <tr><td><code>advocat_cookie_consent_v1</code></td><td><span class="cat-badge essential">Vajalik</span></td><td>Advocat (esimene osapool)</td><td>Salvestab teie nõusoleku valiku</td><td>12 kuud</td></tr>
+        <tr><td><code>sb-access-token</code>, <code>sb-refresh-token</code></td><td><span class="cat-badge essential">Vajalik</span></td><td>Supabase</td><td>Autentimine, sessiooni säilitamine</td><td>Sessioon / 7 päeva</td></tr>
+        <tr><td><code>advocat-legal-lang</code></td><td><span class="cat-badge functional">Funktsionaalne</span></td><td>Advocat</td><td>Õigusdokumentide keele eelistus</td><td>12 kuud</td></tr>
+        <tr><td><code>advocat_utm_*</code></td><td><span class="cat-badge functional">Funktsionaalne</span></td><td>Advocat</td><td>UTM-i salvestamine atributsiooni jaoks</td><td>30 päeva</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_*</code></td><td><span class="cat-badge analytics">Analüütika</span></td><td>Google Analytics (GA4)</td><td>Anonüümne kasutusstatistika</td><td>24 kuud</td></tr>
+        <tr><td><code>_fbp</code></td><td><span class="cat-badge marketing">Turundus</span></td><td>Meta (Facebook)</td><td>Konversiooni jälgimine reklaami jaoks</td><td>3 kuud</td></tr>
+        <tr><td><code>_ttp</code>, <code>_tt_enable_cookie</code></td><td><span class="cat-badge marketing">Turundus</span></td><td>TikTok</td><td>Konversiooni jälgimine reklaami jaoks</td><td>13 kuud</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h2>4. Nõusoleku haldamine</h2>
+    <p>Esmasel külastusel kuvame nõusoleku banneri, kus saate valida:</p>
+    <ul>
+        <li><strong>Nõustun</strong> — luban kõik kategooriad</li>
+        <li><strong>Keeldun mittevajalikest</strong> — kasutame ainult rangelt vajalikke küpsiseid</li>
+        <li><strong>Halda eelistusi</strong> — granulaarne valik kategooriate kaupa</li>
+    </ul>
+    <p>Saate oma valiku igal ajal muuta, vajutades ülal "Halda küpsisevalikuid" nuppu, või jaluse lingilt "Manage cookies".</p>
+
+    <h2>5. Õiguslik alus</h2>
+    <ul>
+        <li><strong>Rangelt vajalikud küpsised:</strong> õigustatud huvi (GDPR art 6(1)(f)) — teenuse osutamine</li>
+        <li><strong>Kõik muud kategooriad:</strong> teie nõusolek (GDPR art 6(1)(a) + ESS § 103¹)</li>
+    </ul>
+
+    <h2>6. Brauseri kontroll</h2>
+    <p>Saate küpsised oma brauseri seadetes ka tervikuna keelata. Kahjuks võib see kahjustada teenuse toimimist (eelkõige sisselogimist). Brauseri abi: <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a> · <a href="https://support.mozilla.org/kb/cookies-information-websites-store-on-your-computer" target="_blank" rel="noopener">Firefox</a> · <a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" target="_blank" rel="noopener">Safari</a></p>
+
+    <h2>7. Kontakt</h2>
+    <p>Küsimuste korral: <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a></p>
+</main>
+
+<!-- ============================================================== -->
+<!-- FINNISH                                                         -->
+<!-- ============================================================== -->
+<main class="container" data-lang="fi">
+    <div class="doc-meta">
+        <p><strong>Voimassa:</strong> 28. toukokuuta 2026 · <strong>Versio:</strong> 1.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Lyhyesti:</strong> Käytämme oletuksena vain teknisesti välttämättömiä evästeitä. Analytiikka- ja markkinointievästeet ladataan vasta nimenomaisen suostumuksesi jälkeen. Voit muuttaa valintaasi milloin tahansa.
+    </div>
+
+    <div class="manage-btn-wrap">
+        <button type="button" class="manage-btn" onclick="openCookiePreferences()">Hallinnoi evästeasetuksia</button>
+    </div>
+
+    <h2>1. Mitä evästeet ovat</h2>
+    <p>Evästeet ovat pieniä tekstitiedostoja, jotka tallennetaan laitteellesi. Vastaaviin tekniikoihin kuuluvat localStorage, sessionStorage, pikselit ja sormenjälkitekniikat — emme käytä sormenjälkitekniikoita.</p>
+
+    <h2>2. Evästekategoriat</h2>
+
+    <h3>Ehdottoman välttämättömät <span class="cat-badge essential">Aina käytössä</span></h3>
+    <p>Välttämättömiä palvelun toiminnan kannalta. Niitä ei voi poistaa käytöstä.</p>
+
+    <h3>Toiminnalliset <span class="cat-badge functional">Suostumuksella</span></h3>
+    <p>Mukavuus, ei välttämätön (kielivalinta, näkymäasetukset).</p>
+
+    <h3>Analytiikka <span class="cat-badge analytics">Suostumuksella</span></h3>
+    <p>Auttavat ymmärtämään palvelun käyttöä (anonymisoituina). Ladataan vasta suostumuksen jälkeen.</p>
+
+    <h3>Markkinointi <span class="cat-badge marketing">Suostumuksella</span></h3>
+    <p>Mainonnan konversioiden mittaaminen. Ladataan vasta suostumuksen jälkeen.</p>
+
+    <h2>3. Käytössä olevat evästeet</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Nimi</th><th>Tyyppi</th><th>Tarjoaja</th><th>Tarkoitus</th><th>Voimassaolo</th></tr></thead>
+        <tbody>
+        <tr><td><code>advocat_cookie_consent_v1</code></td><td><span class="cat-badge essential">Välttämätön</span></td><td>Advocat (ensimmäinen osapuoli)</td><td>Tallentaa suostumusvalintasi</td><td>12 kk</td></tr>
+        <tr><td><code>sb-access-token</code>, <code>sb-refresh-token</code></td><td><span class="cat-badge essential">Välttämätön</span></td><td>Supabase</td><td>Kirjautuminen, istunto</td><td>Istunto / 7 pv</td></tr>
+        <tr><td><code>advocat-legal-lang</code></td><td><span class="cat-badge functional">Toiminnallinen</span></td><td>Advocat</td><td>Kielivalinta oikeudellisille sivuille</td><td>12 kk</td></tr>
+        <tr><td><code>advocat_utm_*</code></td><td><span class="cat-badge functional">Toiminnallinen</span></td><td>Advocat</td><td>UTM-attribuutio</td><td>30 pv</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_*</code></td><td><span class="cat-badge analytics">Analytiikka</span></td><td>Google Analytics (GA4)</td><td>Anonyymi käyttötilasto</td><td>24 kk</td></tr>
+        <tr><td><code>_fbp</code></td><td><span class="cat-badge marketing">Markkinointi</span></td><td>Meta (Facebook)</td><td>Mainoskonversion seuranta</td><td>3 kk</td></tr>
+        <tr><td><code>_ttp</code>, <code>_tt_enable_cookie</code></td><td><span class="cat-badge marketing">Markkinointi</span></td><td>TikTok</td><td>Mainoskonversion seuranta</td><td>13 kk</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h2>4. Suostumuksen hallinta</h2>
+    <p>Ensikäynnillä näytämme suostumuspalkin, jossa voit valita: <strong>Hyväksy</strong> · <strong>Hylkää ei-välttämättömät</strong> · <strong>Hallinnoi asetuksia</strong>. Voit muuttaa valintaasi milloin tahansa "Hallinnoi evästeasetuksia"-painikkeesta tai alatunnisteen "Manage cookies" -linkistä.</p>
+
+    <h2>5. Oikeusperusta</h2>
+    <ul>
+        <li><strong>Välttämättömät:</strong> oikeutettu etu (GDPR 6(1)(f)) — palvelun toiminta</li>
+        <li><strong>Muut kategoriat:</strong> suostumuksesi (GDPR 6(1)(a) + § 200 sähköisen viestinnän palveluista)</li>
+    </ul>
+
+    <h2>6. Selainasetukset</h2>
+    <p>Voit estää evästeet kokonaan selaimesi asetuksista. Tämä voi vaikuttaa palvelun toimivuuteen (erityisesti sisäänkirjautumiseen).</p>
+
+    <h2>7. Yhteystiedot</h2>
+    <p>Kysymykset: <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a></p>
+</main>
+
+<!-- ============================================================== -->
+<!-- ENGLISH                                                         -->
+<!-- ============================================================== -->
+<main class="container" data-lang="en">
+    <div class="doc-meta">
+        <p><strong>Effective:</strong> 28 May 2026 · <strong>Version:</strong> 1.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>In short:</strong> We only use strictly necessary cookies by default. Analytics and marketing cookies load only after your explicit consent through the cookie banner. You can change your choice at any time.
+    </div>
+
+    <div class="manage-btn-wrap">
+        <button type="button" class="manage-btn" onclick="openCookiePreferences()">Manage Cookie Preferences</button>
+    </div>
+
+    <h2>1. What cookies are</h2>
+    <p>Cookies are small text files stored on your device to remember preferences, authentication, or usage behavior. Similar technologies include localStorage, sessionStorage, tracking pixels, and fingerprinting techniques — we do not use fingerprinting.</p>
+
+    <h2>2. Cookie categories</h2>
+
+    <h3>Strictly necessary <span class="cat-badge essential">Always active</span></h3>
+    <p>Essential for the Service to function (authentication, session, security). Cannot be disabled.</p>
+
+    <h3>Functional <span class="cat-badge functional">Consent-based</span></h3>
+    <p>Remember your preferences (language, view mode). Convenience, not essential.</p>
+
+    <h3>Analytics <span class="cat-badge analytics">Consent-based</span></h3>
+    <p>Help us understand how the service is used (anonymized aggregates). Load only after consent.</p>
+
+    <h3>Marketing <span class="cat-badge marketing">Consent-based</span></h3>
+    <p>Measure advertising effectiveness (conversion tracking). Load only after consent.</p>
+
+    <h2>3. Cookies in use (full list)</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Name</th><th>Type</th><th>Provider</th><th>Purpose</th><th>Duration</th></tr></thead>
+        <tbody>
+        <tr><td><code>advocat_cookie_consent_v1</code></td><td><span class="cat-badge essential">Necessary</span></td><td>Advocat (first-party)</td><td>Stores your consent choice</td><td>12 months</td></tr>
+        <tr><td><code>sb-access-token</code>, <code>sb-refresh-token</code></td><td><span class="cat-badge essential">Necessary</span></td><td>Supabase</td><td>Authentication, session</td><td>Session / 7 days</td></tr>
+        <tr><td><code>advocat-legal-lang</code></td><td><span class="cat-badge functional">Functional</span></td><td>Advocat</td><td>Legal-doc language preference</td><td>12 months</td></tr>
+        <tr><td><code>advocat_utm_*</code></td><td><span class="cat-badge functional">Functional</span></td><td>Advocat</td><td>UTM attribution capture</td><td>30 days</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_*</code></td><td><span class="cat-badge analytics">Analytics</span></td><td>Google Analytics (GA4)</td><td>Anonymous usage statistics</td><td>24 months</td></tr>
+        <tr><td><code>_fbp</code></td><td><span class="cat-badge marketing">Marketing</span></td><td>Meta (Facebook)</td><td>Ad conversion tracking</td><td>3 months</td></tr>
+        <tr><td><code>_ttp</code>, <code>_tt_enable_cookie</code></td><td><span class="cat-badge marketing">Marketing</span></td><td>TikTok</td><td>Ad conversion tracking</td><td>13 months</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h2>4. Managing consent</h2>
+    <p>On first visit, our consent banner shows three options:</p>
+    <ul>
+        <li><strong>Accept</strong> — allow all categories</li>
+        <li><strong>Reject non-essential</strong> — only strictly necessary cookies</li>
+        <li><strong>Manage preferences</strong> — granular per-category choice</li>
+    </ul>
+    <p>You can change your choice at any time via the "Manage Cookie Preferences" button above, or the "Manage cookies" link in the footer.</p>
+
+    <h2>5. Legal basis</h2>
+    <ul>
+        <li><strong>Strictly necessary:</strong> legitimate interest (GDPR art 6(1)(f)) — providing the service</li>
+        <li><strong>All other categories:</strong> your consent (GDPR art 6(1)(a) + ePrivacy Directive, EE ESS §103¹, FI §200 sähköisen viestinnän palveluista, DE TTDSG §25)</li>
+    </ul>
+
+    <h2>6. Browser controls</h2>
+    <p>You can also block cookies entirely via your browser settings. This may break service functionality (especially sign-in). Help: <a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener">Chrome</a> · <a href="https://support.mozilla.org/kb/cookies-information-websites-store-on-your-computer" target="_blank" rel="noopener">Firefox</a> · <a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" target="_blank" rel="noopener">Safari</a></p>
+
+    <h2>7. Contact</h2>
+    <p>Questions: <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a></p>
+</main>
+
+<!-- ============================================================== -->
+<!-- GERMAN                                                          -->
+<!-- ============================================================== -->
+<main class="container" data-lang="de">
+    <div class="doc-meta">
+        <p><strong>Stand:</strong> 28. Mai 2026 · <strong>Version:</strong> 1.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Kurzfassung:</strong> Standardmäßig setzen wir nur technisch notwendige Cookies. Analyse- und Marketing-Cookies werden erst nach Ihrer ausdrücklichen Einwilligung über das Cookie-Banner geladen (§ 25 TTDSG). Sie können Ihre Wahl jederzeit ändern.
+    </div>
+
+    <div class="manage-btn-wrap">
+        <button type="button" class="manage-btn" onclick="openCookiePreferences()">Cookie-Einstellungen verwalten</button>
+    </div>
+
+    <h2>1. Was sind Cookies</h2>
+    <p>Cookies sind kleine Textdateien, die auf Ihrem Gerät gespeichert werden. Zu ähnlichen Technologien zählen localStorage, sessionStorage, Tracking-Pixel und Fingerprinting — wir nutzen kein Fingerprinting.</p>
+
+    <h2>2. Cookie-Kategorien</h2>
+
+    <h3>Technisch notwendig <span class="cat-badge essential">Immer aktiv</span></h3>
+    <p>Erforderlich für den Betrieb des Dienstes (Authentifizierung, Sitzung, Sicherheit). Können nicht deaktiviert werden.</p>
+
+    <h3>Funktional <span class="cat-badge functional">Mit Einwilligung</span></h3>
+    <p>Speichern Ihre Präferenzen (Sprache, Ansicht).</p>
+
+    <h3>Analyse <span class="cat-badge analytics">Mit Einwilligung</span></h3>
+    <p>Anonymisierte Nutzungsstatistiken. Wird erst nach Einwilligung geladen.</p>
+
+    <h3>Marketing <span class="cat-badge marketing">Mit Einwilligung</span></h3>
+    <p>Konversionsmessung für Werbung. Wird erst nach Einwilligung geladen.</p>
+
+    <h2>3. Eingesetzte Cookies (vollständige Liste)</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Name</th><th>Kategorie</th><th>Anbieter</th><th>Zweck</th><th>Speicherdauer</th></tr></thead>
+        <tbody>
+        <tr><td><code>advocat_cookie_consent_v1</code></td><td><span class="cat-badge essential">Notwendig</span></td><td>Advocat (Erstanbieter)</td><td>Speichert Ihre Einwilligungsauswahl</td><td>12 Monate</td></tr>
+        <tr><td><code>sb-access-token</code>, <code>sb-refresh-token</code></td><td><span class="cat-badge essential">Notwendig</span></td><td>Supabase</td><td>Authentifizierung, Sitzung</td><td>Sitzung / 7 Tage</td></tr>
+        <tr><td><code>advocat-legal-lang</code></td><td><span class="cat-badge functional">Funktional</span></td><td>Advocat</td><td>Spracheinstellung Rechtsdokumente</td><td>12 Monate</td></tr>
+        <tr><td><code>advocat_utm_*</code></td><td><span class="cat-badge functional">Funktional</span></td><td>Advocat</td><td>UTM-Attribution</td><td>30 Tage</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_*</code></td><td><span class="cat-badge analytics">Analyse</span></td><td>Google Analytics (GA4)</td><td>Anonyme Nutzungsstatistik</td><td>24 Monate</td></tr>
+        <tr><td><code>_fbp</code></td><td><span class="cat-badge marketing">Marketing</span></td><td>Meta (Facebook)</td><td>Werbe-Konversions-Tracking</td><td>3 Monate</td></tr>
+        <tr><td><code>_ttp</code>, <code>_tt_enable_cookie</code></td><td><span class="cat-badge marketing">Marketing</span></td><td>TikTok</td><td>Werbe-Konversions-Tracking</td><td>13 Monate</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h2>4. Einwilligungsverwaltung</h2>
+    <p>Beim ersten Besuch zeigen wir ein Banner mit den Optionen <strong>Alle akzeptieren</strong>, <strong>Alle ablehnen</strong> und <strong>Einstellungen</strong>. Beide Hauptoptionen sind gleich prominent gestaltet (gemäß BGH und LfDI-Leitlinien zu Dark Patterns). Sie können Ihre Auswahl jederzeit ändern.</p>
+
+    <h2>5. Rechtsgrundlage</h2>
+    <ul>
+        <li><strong>Technisch notwendig:</strong> berechtigtes Interesse (Art 6(1)(f) DSGVO) i.V.m. § 25 Abs. 2 Nr. 2 TTDSG</li>
+        <li><strong>Alle übrigen:</strong> Ihre Einwilligung (Art 6(1)(a) DSGVO + § 25 Abs. 1 TTDSG)</li>
+    </ul>
+
+    <h2>6. Browser-Einstellungen</h2>
+    <p>Sie können Cookies auch über Ihren Browser blockieren. Dies kann die Funktion des Dienstes beeinträchtigen.</p>
+
+    <h2>7. Kontakt</h2>
+    <p>Fragen: <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a></p>
+</main>
+
+<!-- ============================================================== -->
+<!-- RUSSIAN                                                         -->
+<!-- ============================================================== -->
+<main class="container" data-lang="ru">
+    <div class="doc-meta">
+        <p><strong>Вступает в силу:</strong> 28 мая 2026 · <strong>Версия:</strong> 1.0</p>
+    </div>
+
+    <div class="callout-key">
+        <strong>Коротко:</strong> По умолчанию мы используем только строго необходимые cookies. Cookies аналитики и маркетинга загружаются только после вашего явного согласия в баннере. Вы можете изменить свой выбор в любой момент.
+    </div>
+
+    <div class="manage-btn-wrap">
+        <button type="button" class="manage-btn" onclick="openCookiePreferences()">Управление cookies</button>
+    </div>
+
+    <h2>1. Что такое cookies</h2>
+    <p>Cookies — небольшие текстовые файлы, сохраняемые на вашем устройстве. К аналогичным технологиям относятся localStorage, sessionStorage, пиксели отслеживания. Технологии цифрового отпечатка (fingerprinting) мы не используем.</p>
+
+    <h2>2. Категории cookies</h2>
+
+    <h3>Строго необходимые <span class="cat-badge essential">Всегда активно</span></h3>
+    <p>Необходимы для работы сервиса. Отключить нельзя.</p>
+
+    <h3>Функциональные <span class="cat-badge functional">По согласию</span></h3>
+    <p>Сохраняют ваши предпочтения (язык, режим отображения).</p>
+
+    <h3>Аналитика <span class="cat-badge analytics">По согласию</span></h3>
+    <p>Анонимизированная статистика использования. Загружаются только после согласия.</p>
+
+    <h3>Маркетинг <span class="cat-badge marketing">По согласию</span></h3>
+    <p>Измерение эффективности рекламы. Загружаются только после согласия.</p>
+
+    <h2>3. Используемые cookies (полный список)</h2>
+    <div class="table-wrap">
+    <table>
+        <thead><tr><th>Имя</th><th>Тип</th><th>Поставщик</th><th>Назначение</th><th>Срок хранения</th></tr></thead>
+        <tbody>
+        <tr><td><code>advocat_cookie_consent_v1</code></td><td><span class="cat-badge essential">Необх.</span></td><td>Advocat</td><td>Сохраняет ваш выбор</td><td>12 мес</td></tr>
+        <tr><td><code>sb-access-token</code>, <code>sb-refresh-token</code></td><td><span class="cat-badge essential">Необх.</span></td><td>Supabase</td><td>Аутентификация</td><td>Сессия / 7 дн</td></tr>
+        <tr><td><code>advocat-legal-lang</code></td><td><span class="cat-badge functional">Функц.</span></td><td>Advocat</td><td>Предпочтение языка</td><td>12 мес</td></tr>
+        <tr><td><code>advocat_utm_*</code></td><td><span class="cat-badge functional">Функц.</span></td><td>Advocat</td><td>UTM-атрибуция</td><td>30 дн</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_*</code></td><td><span class="cat-badge analytics">Аналит.</span></td><td>Google Analytics</td><td>Анонимная статистика</td><td>24 мес</td></tr>
+        <tr><td><code>_fbp</code></td><td><span class="cat-badge marketing">Маркет.</span></td><td>Meta</td><td>Конверсии рекламы</td><td>3 мес</td></tr>
+        <tr><td><code>_ttp</code></td><td><span class="cat-badge marketing">Маркет.</span></td><td>TikTok</td><td>Конверсии рекламы</td><td>13 мес</td></tr>
+        </tbody>
+    </table>
+    </div>
+
+    <h2>4. Управление согласием</h2>
+    <p>При первом визите мы показываем баннер с тремя опциями: <strong>Принять</strong>, <strong>Отклонить необязательные</strong>, <strong>Настройки</strong>. Вы можете изменить выбор в любой момент через кнопку выше или ссылку «Manage cookies» в подвале.</p>
+
+    <h2>5. Правовое основание</h2>
+    <ul>
+        <li><strong>Строго необходимые:</strong> законный интерес (GDPR ст. 6(1)(f))</li>
+        <li><strong>Остальные:</strong> ваше согласие (GDPR ст. 6(1)(a))</li>
+    </ul>
+
+    <h2>6. Настройки браузера</h2>
+    <p>Вы также можете полностью заблокировать cookies через настройки браузера. Это может нарушить работу сервиса.</p>
+
+    <h2>7. Контакт</h2>
+    <p>Вопросы: <a href="mailto:dpo@advocat.ee">dpo@advocat.ee</a></p>
+</main>
+
+<footer class="footer">
+    <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+        <a href="/cookies.html">Cookies</a>
+        <a href="/impressum.html">Impressum</a>
+        <a href="/withdrawal-form.html">Withdrawal</a>
+        <a href="/dispute-resolution.html">Disputes</a>
+    </div>
+    <div>&copy; 2026 Vorantis OÜ. Reg 17098992. Tornimäe tn 5, 15010 Tallinn, Estonia.</div>
+</footer>
+
+<script>
+function switchLang(lang) {
+    document.querySelectorAll('[data-lang]').forEach(function(el) {
+        el.classList.toggle('active-lang', el.getAttribute('data-lang') === lang);
+    });
+    document.querySelectorAll('[data-lang-btn]').forEach(function(btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-lang-btn') === lang);
+    });
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('advocat-legal-lang', lang); } catch (e) {}
+}
+
+function openCookiePreferences() {
+    // Try the global consent API first
+    if (window.advocatConsent && typeof window.advocatConsent.openBanner === 'function') {
+        window.advocatConsent.openBanner();
+        return;
+    }
+    // Fallback: clear consent so the banner re-appears on next page load
+    try {
+        localStorage.removeItem('advocat_cookie_consent_v1');
+    } catch (e) {}
+    // Redirect to home so the banner shows
+    window.location.href = '/?reopen-consent=1';
+}
+
+(function() {
+    var lang = 'et';
+    try {
+        var saved = localStorage.getItem('advocat-legal-lang');
+        if (saved && ['et', 'fi', 'en', 'de', 'ru'].indexOf(saved) !== -1) {
+            lang = saved;
+        } else {
+            var nav = (navigator.language || '').toLowerCase();
+            if (nav.startsWith('et')) lang = 'et';
+            else if (nav.startsWith('fi')) lang = 'fi';
+            else if (nav.startsWith('de')) lang = 'de';
+            else if (nav.startsWith('ru')) lang = 'ru';
+            else lang = 'en';
+        }
+    } catch (e) {}
+    if (lang !== 'et') switchLang(lang);
+})();
+</script>
+
+</body>
+</html>

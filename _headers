@@ -1,0 +1,129 @@
+# ==============================================================================
+# Advocat — HTTP Response Headers
+# ==============================================================================
+#
+# Created: 2026-05-28 (Security Audit Wave 2, fix W2-02)
+# Scope: applies to all paths on advocat.ee (root, /app.html, /assets/*, ...)
+#
+# IMPORTANT: this `_headers` file is the Netlify / Cloudflare Pages convention.
+# GitHub Pages — which is the CURRENT host for advocat.ee — IGNORES this file.
+#
+# It is committed for TWO reasons:
+#   1) It documents the intended header policy for the auditor + future devs.
+#   2) The moment hosting migrates to Cloudflare Pages or Netlify (see
+#      docs/security_audit_2026-05-28/fixes/wave2_hosting_migration_options.md),
+#      these headers go live with zero additional config.
+#
+# Headers added in Wave 1 (CSP Phase 1, Referrer-Policy, X-Frame-Options,
+# X-Content-Type-Options) are already shipped via <meta http-equiv="..."> in
+# `web/index.html` and the repo-root `app.html`. The headers below are the ones
+# that CANNOT be set via <meta> (Strict-Transport-Security is the canonical
+# example — browsers ignore meta-tag HSTS for security reasons) plus the
+# Cross-Origin-* family which is HTTP-only.
+#
+# Maps to findings F2 ("CSP Recommendation — Headers to also send from the
+# static host") and F10 in docs/security_audit_2026-05-28/findings/03_client_security.md.
+#
+# Reference: https://developers.cloudflare.com/pages/configuration/headers/
+# Reference: https://docs.netlify.com/routing/headers/
+# ==============================================================================
+
+/*
+  # --- Transport security ---
+  # Forces HTTPS for 2 years on advocat.ee + every subdomain. The "preload"
+  # token signals intent to be on the Chromium HSTS preload list. After
+  # at least 12 months stable, owner can submit to https://hstspreload.org
+  # so that even a first-ever visit to advocat.ee is HTTPS-only.
+  # Cannot be delivered via <meta> — browsers ignore meta HSTS by spec.
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+
+  # --- Browser-feature attack surface reduction ---
+  # geolocation:  () — never, no Advocat feature needs it.
+  # microphone:   (self) — voice service (lib/services/voice_service.dart) records
+  #               on the same origin. No third-party may prompt for mic.
+  # camera:       () — never, no scan-document-via-camera feature on web.
+  # payment:      (self) — Stripe popup runs as same-origin; checkout deep-link
+  #               opens https://checkout.stripe.com (top-level navigation,
+  #               not a Payment Request API call, so 'self' suffices).
+  # usb:          () — never.
+  # interest-cohort: () — legacy FLoC opt-out, harmless to keep.
+  # accelerometer, gyroscope, magnetometer: () — never.
+  # autoplay:     (self) — landing page hero video (cta-bg.mp4) is muted-autoplay.
+  # fullscreen:   (self) — no third-party may go fullscreen.
+  # encrypted-media, midi, payment-handler: () — never.
+  Permissions-Policy: geolocation=(), microphone=(self), camera=(), payment=(self), usb=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(self), fullscreen=(self), encrypted-media=(), midi=(), payment-handler=()
+
+  # --- Cross-origin isolation policy ---
+  # same-origin-allow-popups: needed because Stripe Checkout opens its hosted
+  # checkout in a popup window (window.open). A strict 'same-origin' would
+  # break the redirect-back flow. 'unsafe-none' would weaken the protection.
+  # 'same-origin-allow-popups' is the documented Stripe-compatible setting.
+  # Reference: https://docs.stripe.com/security/guide#csp
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
+  # --- Cross-origin embedder policy ---
+  # unsafe-none (the default) is REQUIRED for Flutter Web. Setting
+  # require-corp would break:
+  #   - CanvasKit WASM fetched from gstatic.com (no CORP header)
+  #   - Google Fonts (no CORP header)
+  #   - Supabase storage signed URLs (no CORP header)
+  #   - GA4 / Meta Pixel / TikTok analytics endpoints
+  # We declare unsafe-none explicitly so a future Flutter SDK that turns
+  # COEP on by default does not silently break the site.
+  Cross-Origin-Embedder-Policy: unsafe-none
+
+  # --- Defence-in-depth backup of meta-tag headers ---
+  # These ARE set via <meta> in index.html and app.html (Wave 1). Repeating
+  # them here gives a belt-and-braces guarantee in case a deploy script ever
+  # strips meta tags or an older browser ignores meta versions.
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+  # --- Cache hygiene for sensitive endpoints ---
+  # General static assets get the default CDN cache; app.html and the auth
+  # entry points are overridden below.
+
+# --- App shell: never cache, since it bootstraps an authenticated session ---
+/app.html
+  Cache-Control: no-store, max-age=0
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Permissions-Policy: geolocation=(), microphone=(self), camera=(), payment=(self), usb=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), autoplay=(self), fullscreen=(self), encrypted-media=(), midi=(), payment-handler=()
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Cross-Origin-Embedder-Policy: unsafe-none
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# --- OAuth callback paths: extra-strict referrer to avoid leaking auth codes ---
+/auth/*
+  Cache-Control: no-store, max-age=0
+  Referrer-Policy: no-referrer
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+
+# --- Marketing pages: longer cache OK, but transport hardening still applies ---
+/index.html
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(self), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# --- Public landing variants ---
+/b2b-only.html
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+
+/for-firms.html
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+
+# --- Long-lived hashed assets: immutable cache ---
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
