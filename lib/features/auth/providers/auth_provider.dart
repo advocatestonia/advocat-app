@@ -9,9 +9,13 @@ import '../../../models/user.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
 import '../../case_memory/state/active_case_provider.dart'
-    show kActiveCaseIdPrefKey;
+    show activeCaseProvider, kActiveCaseIdPrefKey;
+import '../../case_memory/state/cases_list_provider.dart'
+    show casesListProvider, caseByIdProvider, caseDocumentsProvider;
 import '../../case_memory/state/intake_wizard_state.dart'
     show kIntakeDraftPrefKey;
+import '../../chat/providers/chat_provider.dart'
+    show chatMessagesProvider, chatNotifierProvider;
 
 // ---------------------------------------------------------------------------
 // Auth state
@@ -384,6 +388,22 @@ class AuthController extends StateNotifier<AuthState> {
       await purgeLegalPrefs();
     } catch (_) {
       // Non-fatal — the auth state transition below is the priority.
+    }
+
+    // Security: purge in-memory case state too. On web, `context.go()` does
+    // not reload the page, so non-autoDispose StateNotifier/cache providers
+    // survive logout and would otherwise leak the previous user's case +
+    // chat content to the next user on a shared device. Invalidating forces
+    // a clean rebuild (RLS-scoped to the new user) on next read.
+    try {
+      _ref.invalidate(activeCaseProvider);
+      _ref.invalidate(chatNotifierProvider);
+      _ref.invalidate(chatMessagesProvider);
+      _ref.invalidate(casesListProvider);
+      _ref.invalidate(caseByIdProvider);
+      _ref.invalidate(caseDocumentsProvider);
+    } catch (_) {
+      // Non-fatal — never block the unauth transition on a cache reset.
     }
 
     _ref.read(isDemoModeProvider.notifier).state = false;

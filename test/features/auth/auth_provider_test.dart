@@ -1,9 +1,12 @@
 import 'package:advocat/features/auth/providers/auth_provider.dart';
+import 'package:advocat/features/case_memory/models/user_case.dart';
+import 'package:advocat/features/case_memory/state/active_case_provider.dart';
 import 'package:advocat/models/user.dart';
 import 'package:advocat/services/demo_data.dart';
 import 'package:advocat/services/supabase_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../test_helpers.dart';
@@ -514,6 +517,38 @@ void main() {
       await controller.logout();
 
       expect(fake.signOutCallCount, 1);
+    });
+
+    test('purges in-memory active-case state (shared-device leak fix)',
+        () async {
+      // On web context.go() does not reload the page, so the non-autoDispose
+      // activeCaseProvider would otherwise carry the previous user's case into
+      // the next session. logout() must invalidate it.
+      SharedPreferences.setMockInitialValues(<String, Object>{});
+      final fake = FakeSupabaseService();
+      final container = _createContainer(fakeSupabase: fake);
+      final controller = container.read(authControllerProvider.notifier);
+      fake.signOutHandler = () async {};
+
+      final now = DateTime.utc(2026, 5, 30);
+      await container.read(activeCaseProvider.notifier).setActiveCase(
+            UserCase(
+              id: 'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+              userId: 'user-A',
+              title: 'Privileged: Sulga v. Finland',
+              jurisdiction: 'FI',
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
+      expect(container.read(activeCaseProvider).activeCaseId,
+          'aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee',
+          reason: 'precondition: a case is active before logout');
+
+      await controller.logout();
+
+      expect(container.read(activeCaseProvider).activeCaseId, isNull,
+          reason: 'active case must not survive logout into the next session');
     });
   });
 
