@@ -281,10 +281,12 @@ export async function handleExchange(
     .upsert(row, { onConflict: "user_id,provider" });
 
   if (error) {
+    // Log the raw DB error server-side; do NOT echo it to the client (it can
+    // carry internal column/constraint detail). Same leak-class fix as
+    // create-checkout / whisper-stt / landmark-search.
     console.error("gmail-oauth-exchange: upsert failed", error);
     return jsonError("Failed to persist OAuth token", 502, {
       error_code: "db_upsert_failed",
-      details: (error as { message?: string }).message ?? String(error),
     });
   }
 

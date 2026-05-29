@@ -181,10 +181,9 @@ serve(async (req) => {
     );
 
   if (error) {
+    // Log raw DB error server-side; do not echo to client (leak-class fix).
     console.error("oauth-callback: upsert failed", error);
-    return jsonError("Failed to persist OAuth token", 502, {
-      details: error.message,
-    });
+    return jsonError("Failed to persist OAuth token", 502);
   }
 
   return jsonOk({
