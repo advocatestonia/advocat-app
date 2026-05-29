@@ -134,14 +134,31 @@ export function makeFakeSb(state: Tables, opts: FakeOpts = {}) {
         };
       },
       update(patch: Record<string, unknown>) {
-        return {
+        // Chainable: supports .eq().eq()… then either an awaited terminal
+        // (then) or .select(). The patch is applied to rows matching ALL
+        // filters — mirrors PostgREST conditional-update (CAS) semantics.
+        const upFilters: Array<(r: Record<string, unknown>) => boolean> = [];
+        function apply() {
+          const rows = (state[tableName] as Array<Record<string, unknown>>)
+            .filter((r) => upFilters.every((f) => f(r)));
+          for (const r of rows) Object.assign(r, patch);
+          return rows;
+        }
+        const updateChain = {
           eq(col: string, val: unknown) {
-            const rows = (state[tableName] as Array<Record<string, unknown>>)
-              .filter((r) => r[col] === val);
-            for (const r of rows) Object.assign(r, patch);
+            upFilters.push((r) => r[col] === val);
+            return updateChain;
+          },
+          select(_cols: string) {
+            const rows = apply();
             return Promise.resolve({ data: rows, error: null });
           },
+          then(resolve: (v: unknown) => void) {
+            const rows = apply();
+            resolve({ data: rows, error: null });
+          },
         };
+        return updateChain;
       },
     };
   }
@@ -182,12 +199,14 @@ export function makeFakeSb(state: Tables, opts: FakeOpts = {}) {
 export function fakeStripe(): StripeAdapter & {
   coupons: Array<{ id: string }>;
   attached: Array<{ customer: string; coupon: string }>;
-  credits: Array<{ customer: string; amount: number; description: string }>;
+  credits: Array<
+    { customer: string; amount: number; description: string; token?: string }
+  >;
 } {
   const coupons: Array<{ id: string }> = [];
   const attached: Array<{ customer: string; coupon: string }> = [];
   const credits: Array<
-    { customer: string; amount: number; description: string }
+    { customer: string; amount: number; description: string; token?: string }
   > = [];
   return {
     coupons,
@@ -201,9 +220,9 @@ export function fakeStripe(): StripeAdapter & {
     async attachCouponToCustomer(customer, coupon) {
       attached.push({ customer, coupon });
     },
-    async creditCustomerBalance(customer, amount, description) {
+    async creditCustomerBalance(customer, amount, description, token) {
       const id = `btxn_${credits.length}`;
-      credits.push({ customer, amount, description });
+      credits.push({ customer, amount, description, token });
       return { id };
     },
   };

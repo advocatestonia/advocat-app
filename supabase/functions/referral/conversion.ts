@@ -35,11 +35,14 @@ export interface StripeAdapter {
   createReferredFriendCoupon(): Promise<{ id: string }>;
   /** Attach a coupon to a customer (applied to next invoice). */
   attachCouponToCustomer(customerId: string, couponId: string): Promise<void>;
-  /** Credit a customer balance (negative amount cents → discount). */
+  /** Credit a customer balance (negative amount cents → discount).
+   *  idempotencyToken MUST be unique per logical credit (the attribution id)
+   *  so Stripe rejects retries without colliding distinct referrals. */
   creditCustomerBalance(
     customerId: string,
     amountCents: number,
     description: string,
+    idempotencyToken?: string,
   ): Promise<{ id: string }>;
 }
 
@@ -236,20 +239,59 @@ export async function creditInviterForReferred(
     };
   }
 
-  // Issue the credit. Negative amount on Stripe customer balance applies
-  // as a discount on the NEXT invoice.
-  const txn = await stripe.creditCustomerBalance(
-    inviterCustomerId,
-    -planPrice.amountCents,
-    `Advocat referral credit: friend ${referredUserId} converted to paid`,
-  );
-
+  // Claim the row BEFORE issuing the credit: a conditional compare-and-swap
+  // (converted → credited) gated on the CURRENT status. Two concurrent
+  // conversion webhooks for the same referred user would both pass the
+  // line-174 read check; only the one whose UPDATE flips status here gets a
+  // non-empty `claimed` set and proceeds to issue the (real-money) credit.
+  // The loser sees 0 rows and aborts. The Stripe idempotency token (attrib.id)
+  // is a second backstop.
   const creditedAt = new Date().toISOString();
-  await sb
+  const { data: claimed } = await sb
     .from("referral_attributions")
     .update({
       status: "credited",
       free_month_credited_at: creditedAt,
+      metadata: {
+        ...(attrib.metadata ?? {}),
+        inviter_credit_amount_cents: planPrice.amountCents,
+        inviter_credit_currency: planPrice.currency,
+        credited_at: creditedAt,
+      },
+    })
+    .eq("id", attrib.id)
+    .eq("status", "converted")
+    .select("id");
+  if (!Array.isArray(claimed) || claimed.length === 0) {
+    // Another writer already claimed it between our read and this update.
+    return { kind: "noop", reason: "already_credited" };
+  }
+
+  // Issue the credit. Negative amount on Stripe customer balance applies
+  // as a discount on the NEXT invoice. Idempotency token = attribution id.
+  let txn: { id: string };
+  try {
+    txn = await stripe.creditCustomerBalance(
+      inviterCustomerId,
+      -planPrice.amountCents,
+      `Advocat referral credit: friend ${referredUserId} converted to paid`,
+      attrib.id,
+    );
+  } catch (e) {
+    // Stripe failed AFTER we claimed the row. Revert to 'converted' so a
+    // retry (webhook or reconcile cron) can credit again — otherwise the
+    // inviter would be silently denied their earned credit.
+    await sb
+      .from("referral_attributions")
+      .update({ status: "converted", free_month_credited_at: null })
+      .eq("id", attrib.id)
+      .eq("status", "credited");
+    throw e;
+  }
+
+  await sb
+    .from("referral_attributions")
+    .update({
       metadata: {
         ...(attrib.metadata ?? {}),
         inviter_balance_txn_id: txn.id,

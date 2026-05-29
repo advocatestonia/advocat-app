@@ -258,3 +258,88 @@ Deno.test("CREDIT-T05 — already-credited is a noop (idempotent)", async () => 
   }
   assertEquals(stripe.credits.length, 0);
 });
+
+Deno.test("CREDIT-T06 — Stripe credit uses the attribution id as idempotency token", async () => {
+  const state = emptyState();
+  state.referral_codes.push({
+    user_id: "inv-1",
+    code: "abc12345",
+    total_invites_sent: 1,
+    total_conversions: 1,
+    total_free_months_earned: 0,
+  });
+  state.referral_attributions.push({
+    id: "attrib-xyz",
+    inviter_user_id: "inv-1",
+    referred_user_id: "ref-1",
+    referral_code: "abc12345",
+    attributed_at: "2026-05-01",
+    converted_at: "2026-05-02",
+    free_month_credited_at: null,
+    status: "converted",
+    metadata: {},
+  });
+  state.profiles.push({ id: "inv-1", stripe_customer_id: "cus_inv1" });
+  const sb = makeFakeSb(state);
+  const stripe = fakeStripe();
+  await creditInviterForReferred(sb, stripe, "ref-1", {
+    currency: "eur",
+    amountCents: 1999,
+  });
+  assertEquals(stripe.credits.length, 1);
+  // The per-attribution token is what lets Stripe dedupe a webhook retry
+  // WITHOUT colliding two distinct referrals by the same inviter.
+  assertEquals(stripe.credits[0].token, "attrib-xyz");
+});
+
+Deno.test("CREDIT-T07 — CAS race: a lost claim issues NO Stripe credit", async () => {
+  // Simulate the race: between our read (status='converted') and the
+  // conditional UPDATE, a concurrent writer already flipped the row to
+  // 'credited'. The .eq('status','converted') guard then matches 0 rows.
+  const state = emptyState();
+  state.referral_attributions.push({
+    id: "a1",
+    inviter_user_id: "inv-1",
+    referred_user_id: "ref-1",
+    referral_code: "abc12345",
+    attributed_at: "2026-05-01",
+    converted_at: "2026-05-02",
+    free_month_credited_at: null,
+    status: "converted",
+    metadata: {},
+  });
+  state.profiles.push({ id: "inv-1", stripe_customer_id: "cus_inv1" });
+
+  const realSb = makeFakeSb(state);
+  const stripe = fakeStripe();
+  // Wrap from() so the FIRST conditional update (the CAS claim) sees the row
+  // as already-credited (the concurrent winner got there first).
+  let flipped = false;
+  const sb = {
+    ...realSb,
+    from(name: string) {
+      const q = realSb.from(name as never);
+      if (name !== "referral_attributions") return q;
+      return {
+        ...q,
+        update(patch: Record<string, unknown>) {
+          if (!flipped && patch.status === "credited") {
+            flipped = true;
+            // Concurrent winner already moved it out of 'converted'.
+            state.referral_attributions[0].status = "credited";
+          }
+          return q.update(patch);
+        },
+      };
+    },
+  };
+
+  const out = await creditInviterForReferred(sb as never, stripe, "ref-1", {
+    currency: "eur",
+    amountCents: 1999,
+  });
+  assertEquals(out.kind, "noop");
+  if (out.kind === "noop") assertStringIncludes(out.reason, "already_credited");
+  // The critical assertion: the loser of the race must NOT issue real money.
+  assertEquals(stripe.credits.length, 0);
+});

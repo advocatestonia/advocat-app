@@ -80,9 +80,26 @@ export function makeStripeAdapter(apiKey: string): StripeAdapter {
       }
     },
 
-    async creditCustomerBalance(customerId, amountCents, description) {
+    async creditCustomerBalance(
+      customerId,
+      amountCents,
+      description,
+      idempotencyToken,
+    ) {
       // Stripe expects amount in MINOR units. Negative = credit toward
       // the next invoice. We also pass currency=eur to scope it.
+      // Idempotency-Key: prefer the caller's per-attribution token so a
+      // webhook retry is deduped but two DISTINCT referrals by the same
+      // inviter (same customer + amount + day) are NOT collapsed. Fall back
+      // to the legacy customer+amount+day key only if no token is supplied.
+      const idempotencyKey = idempotencyToken
+        ? idempKey("ref-credit", idempotencyToken)
+        : idempKey(
+          "ref-credit",
+          customerId,
+          String(amountCents),
+          new Date().toISOString().slice(0, 10),
+        );
       const res = await fetch(
         `${STRIPE_API}/customers/${customerId}/balance_transactions`,
         {
@@ -90,12 +107,7 @@ export function makeStripeAdapter(apiKey: string): StripeAdapter {
           headers: {
             ...authHeader(apiKey),
             "Content-Type": "application/x-www-form-urlencoded",
-            "Idempotency-Key": idempKey(
-              "ref-credit",
-              customerId,
-              String(amountCents),
-              new Date().toISOString().slice(0, 10), // 1 credit/day max
-            ),
+            "Idempotency-Key": idempotencyKey,
           },
           body: form({
             amount: amountCents,
