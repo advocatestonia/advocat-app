@@ -7,7 +7,8 @@
 // hard delete across:
 //
 //   1. all user-owned application rows (RLS-scoped, service-role cascade)
-//   2. all storage objects in case-documents/<userId>/...
+//   2. all storage objects under <userId>/ in every user-scoped bucket
+//      (case-documents, contract-reviews — see STORAGE_BUCKETS)
 //   3. the auth.users row itself (Supabase admin API)
 //
 // Order matters: rows + storage FIRST, auth.users LAST. If we deleted the
@@ -303,6 +304,14 @@ export const EXCLUDED_TABLES: ReadonlyArray<
 /** Storage buckets to sweep. Objects are listed by prefix `<userId>/`. */
 export const STORAGE_BUCKETS: ReadonlyArray<string> = [
   "case-documents",
+  // GDPR Art.17: holds user-uploaded contracts + generated review PDFs
+  // (migration 20260514190000), path `{user_id}/{ts}_{name}.pdf` — same
+  // `<userId>/` prefix sweepStorageBucket lists by. Was missing → a deleted
+  // user's contracts survived erasure.
+  "contract-reviews",
+  // NOTE: `org-branding` is intentionally NOT swept here — it is org-scoped
+  // (path `<org_id>/...`), not user-scoped, so individual account deletion
+  // must not touch it. Org-asset erasure belongs to org-delete.
 ];
 
 /**

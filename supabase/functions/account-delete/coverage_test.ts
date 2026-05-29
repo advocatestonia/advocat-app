@@ -27,7 +27,11 @@
 
 import { assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { EXCLUDED_TABLES, USER_DATA_TABLES } from "./handler.ts";
+import {
+  EXCLUDED_TABLES,
+  STORAGE_BUCKETS,
+  USER_DATA_TABLES,
+} from "./handler.ts";
 
 /**
  * Query information_schema for every public.* base table that carries a
@@ -281,6 +285,35 @@ Deno.test("USER_DATA_TABLES covers every public.* table with a PII column", asyn
       `Sanity check: USER_DATA_TABLES must include "${t}"`,
     );
   }
+});
+
+// Storage-bucket erasure canary (GDPR Art. 17). There is no information_schema
+// equivalent for buckets, so we pin the set of PRIVATE, USER-SCOPED buckets
+// (path prefix `<userId>/`) that MUST be swept. Org-scoped buckets (path
+// `<orgId>/...`, e.g. org-branding) are deliberately excluded — they are
+// erased by org-delete, not individual account-delete. The contract-reviews
+// bucket was silently missing here, so a deleted user's uploaded contracts +
+// generated review PDFs survived erasure. This test fails if any required
+// user-scoped bucket falls out of STORAGE_BUCKETS again.
+Deno.test("STORAGE_BUCKETS sweeps every private user-scoped bucket", () => {
+  const required = ["case-documents", "contract-reviews"];
+  const covered = new Set(STORAGE_BUCKETS.map((b) => b.toLowerCase()));
+  for (const b of required) {
+    assertEquals(
+      covered.has(b),
+      true,
+      `GDPR Art.17: STORAGE_BUCKETS must sweep user-scoped bucket "${b}". ` +
+        `Objects there live under "<userId>/" and survive account deletion ` +
+        `unless this bucket is listed.`,
+    );
+  }
+  // org-branding is org-scoped, NOT user-scoped — it must NOT be swept by
+  // individual account deletion.
+  assertEquals(
+    covered.has("org-branding"),
+    false,
+    "org-branding is org-scoped; individual account-delete must not sweep it.",
+  );
 });
 
 Deno.test("EXCLUDED_TABLES entries all have a non-empty reason", () => {
