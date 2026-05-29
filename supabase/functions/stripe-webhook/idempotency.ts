@@ -24,9 +24,14 @@ export type IdempotencyDecision =
   | { kind: "process" }; // first time or retry of failed event
 
 /**
- * Look up the event in webhook_events. If status='ok', return skip — the
- * caller short-circuits with a 200. Otherwise upsert a processing row and
- * return process.
+ * Atomically claim the event via the claim_webhook_event RPC. If it returns
+ * 'skip' (already processed OK, or a concurrent delivery is actively
+ * processing it), the caller short-circuits with a 200. If 'process', this
+ * caller won the claim and must do the work.
+ *
+ * The RPC takes the event_id PK row lock so two concurrent deliveries of the
+ * same Stripe event.id serialize — exactly one gets 'process'. (The old
+ * SELECT-then-UPSERT here was non-atomic and could double-fire side effects.)
  *
  * Throws on DB error so the outer catch can mark error+return 500.
  */
@@ -35,41 +40,18 @@ export async function checkAndMarkProcessing(
   eventId: string,
   eventType: string,
 ): Promise<IdempotencyDecision> {
-  const { data: existing, error: selErr } = await supabase
-    .from("webhook_events")
-    .select("status")
-    .eq("event_id", eventId)
-    .maybeSingle();
+  const { data, error } = await supabase.rpc("claim_webhook_event", {
+    p_event_id: eventId,
+    p_event_type: eventType,
+  });
 
-  if (selErr) {
+  if (error) {
     // Surface DB errors loudly — better to 500 and retry than to silently
     // double-process or drop the event.
-    throw new Error(`webhook_events lookup failed: ${selErr.message}`);
+    throw new Error(`webhook_events claim failed: ${error.message}`);
   }
 
-  if (existing?.status === "ok") {
-    return { kind: "skip" };
-  }
-
-  // Upsert keeps retry_count if a prior attempt existed (status='error' or
-  // 'processing') — we only overwrite status back to 'processing'.
-  const { error: upErr } = await supabase
-    .from("webhook_events")
-    .upsert(
-      {
-        event_id: eventId,
-        event_type: eventType,
-        status: "processing",
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "event_id" },
-    );
-
-  if (upErr) {
-    throw new Error(`webhook_events upsert failed: ${upErr.message}`);
-  }
-
-  return { kind: "process" };
+  return data === "process" ? { kind: "process" } : { kind: "skip" };
 }
 
 /**

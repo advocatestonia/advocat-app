@@ -136,8 +136,41 @@ function makeMock(initial: Partial<RowStore> = {}, opts: MockOpts = {}) {
 
   const supabase: SupabaseLike & { calls: typeof calls; store: RowStore } = {
     from: from as unknown as SupabaseLike["from"],
-    rpc(_name: string, _args?: Record<string, unknown>) {
-      calls.push({ op: "rpc", table: _name, payload: _args });
+    rpc(name: string, args?: Record<string, unknown>) {
+      calls.push({ op: "rpc", table: name, payload: args });
+
+      // Emulate the atomic claim_webhook_event RPC against the store, mirroring
+      // the migration's claim rules: no row → insert+process; ok → skip;
+      // error/stale-processing → reclaim+process; fresh processing → skip.
+      if (name === "claim_webhook_event") {
+        if (opts.writeError && opts.writeError.table === "webhook_events") {
+          return Promise.resolve({
+            data: null,
+            error: { message: opts.writeError.message },
+          });
+        }
+        const eventId = String(args?.p_event_id);
+        const eventType = String(args?.p_event_type);
+        const existing = store.webhook_events.get(eventId);
+        if (!existing) {
+          store.webhook_events.set(eventId, {
+            event_id: eventId,
+            event_type: eventType,
+            status: "processing",
+          });
+          return Promise.resolve({ data: "process", error: null });
+        }
+        if (existing.status === "ok") {
+          return Promise.resolve({ data: "skip", error: null });
+        }
+        if (existing.status === "error") {
+          store.webhook_events.set(eventId, { ...existing, status: "processing" });
+          return Promise.resolve({ data: "process", error: null });
+        }
+        // status === 'processing' (fresh sibling, not stale in test) → skip.
+        return Promise.resolve({ data: "skip", error: null });
+      }
+
       return Promise.resolve({ data: null, error: null });
     },
     calls,
@@ -173,9 +206,8 @@ Deno.test("idem-T02 — duplicate ok event: returns skip, does not write", async
     "checkout.session.completed",
   );
   assertEquals(decision.kind, "skip");
-  // No upsert call should have been recorded.
-  const upserts = sb.calls.filter((c) => c.op === "upsert");
-  assertEquals(upserts.length, 0);
+  // The ok row must be left untouched (no status flip back to processing).
+  assertEquals(sb.store.webhook_events.get("evt_dup")?.status, "ok");
 });
 
 Deno.test("idem-T03 — prior status=error: re-processes (status flips back to processing)", async () => {
@@ -193,15 +225,32 @@ Deno.test("idem-T03 — prior status=error: re-processes (status flips back to p
   assertEquals(sb.store.webhook_events.get("evt_retry")?.status, "processing");
 });
 
-Deno.test("idem-T04 — DB select error: throws (caller will 500 → Stripe retries)", async () => {
+Deno.test("idem-T04 — DB claim error: throws (caller will 500 → Stripe retries)", async () => {
   const sb = makeMock({}, {
-    selectError: { table: "webhook_events", message: "connection refused" },
+    writeError: { table: "webhook_events", message: "connection refused" },
   });
   await assertRejects(
     () => checkAndMarkProcessing(sb, "evt_x", "test.event"),
     Error,
-    "webhook_events lookup failed",
+    "webhook_events claim failed",
   );
+});
+
+Deno.test("idem-T03b — concurrent sibling already 'processing': returns skip (no double-fire)", async () => {
+  // This is the race the atomic claim closes: a second delivery of the same
+  // event arrives while the first is still processing. It must NOT also
+  // 'process' (which would double-fire referral credit + confirmation email).
+  const sb = makeMock({
+    webhook_events: new Map([
+      ["evt_race", { event_id: "evt_race", status: "processing" }],
+    ]),
+  });
+  const decision = await checkAndMarkProcessing(
+    sb,
+    "evt_race",
+    "checkout.session.completed",
+  );
+  assertEquals(decision.kind, "skip");
 });
 
 // ---- markOk / markError -----------------------------------------------------
