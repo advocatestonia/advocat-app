@@ -202,9 +202,12 @@ serve(async (req) => {
     }
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error("Google TTS error:", error);
-      return jsonError(error, response.status);
+      // Do NOT echo the raw Google API error body to the client — it can
+      // carry project IDs, quota detail, and other internal hints. Log it
+      // server-side (truncated) and return a generic message.
+      const detail = await response.text();
+      console.error("Google TTS error:", response.status, detail.slice(0, 200));
+      return jsonError("Speech synthesis failed", 502);
     }
 
     const data = await response.json();

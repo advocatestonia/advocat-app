@@ -247,3 +247,20 @@ Deno.test("contract — index.ts returns 402 for free tier and quota-exceeded", 
   // distinguish them from generic 4xx and prompt an upgrade.
   assertStringIncludes(src, "402");
 });
+
+Deno.test("contract — raw OpenAI error body is NOT echoed to the client", async () => {
+  // Leak guard: a failed Whisper call must log the upstream detail
+  // server-side (truncated) and hand the client a generic message. The
+  // OpenAI error body can carry request IDs and org/quota hints.
+  const src = await Deno.readTextFile(new URL("../index.ts", import.meta.url));
+  const stripped = src
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*\/\/.*$/gm, "");
+  // The pre-fix bug was `jsonError(error, response.status)` where `error`
+  // was `await response.text()` of the OpenAI failure.
+  assert(
+    !/jsonError\(\s*error\s*,/.test(stripped),
+    "raw upstream error text must not be passed to jsonError — leak guard",
+  );
+  assertStringIncludes(src, '"Transcription failed"');
+});

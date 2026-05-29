@@ -182,8 +182,16 @@ serve(async (req) => {
     );
 
     if (!response.ok) {
-      const error = await response.text();
-      return jsonError(error, response.status);
+      // Do NOT echo the raw OpenAI error body to the client — it can carry
+      // request IDs, org/quota hints, and other internal detail. Log it
+      // server-side (truncated) and return a generic message.
+      const detail = await response.text();
+      console.error(
+        "whisper-stt: OpenAI transcription failed:",
+        response.status,
+        detail.slice(0, 200),
+      );
+      return jsonError("Transcription failed", 502);
     }
 
     const result = await response.json() as {
