@@ -106,6 +106,7 @@
     "https://esm.sh/@supabase/storage-js@2.103.3/denonext/storage-js.mjs": "593705d072aacb29d8b328cf1eaadf0639e0b7000564a571142b16b3b7344345",
     "https://esm.sh/@supabase/supabase-js@2.103.3": "f6efbe62d34ae9d50f3cf7eb51496246ec9378f422c38ff2b637a38157d4fc6b",
     "https://esm.sh/@supabase/supabase-js@2.103.3/denonext/supabase-js.mjs": "845c8b56bcda848f8a84aaba8dff7e5115d3c81342821474701704c39f8b7ead",
+    "https://esm.sh/@supabase/supabase-js@2.39.8": "5cb81f5217dda9564abd7d7d6211484d30441d41a113954d5904bcd0ef1007e0",
     "https://esm.sh/fflate@0.8.2": "e0cdd268850b4eac9ef9f188a3b4c5c9dd3ebd0f66c4006a13911b2a0c0512bb",
     "https://esm.sh/fflate@0.8.2/denonext/fflate.mjs": "84afaa7491d754b566dd8608dcc784e7fdd4f0342e2c5b0bd1442e77782ec1a2",
     "https://esm.sh/iceberg-js@0.8.1/denonext/iceberg-js.mjs": "d839d81a2e3966500ca2cdd0c1cb458e9608bacfc91f7bb67a69b2e878dcdb4f",
@@ -117,6 +118,7 @@
     "https://esm.sh/pdf-lib@1.17.1/denonext/es/utils.mjs": "cf96c5836fdd5f60eeccd53603c87b52c43c11c8b99e85f79f586be58a59f4d1",
     "https://esm.sh/pdf-lib@1.17.1/denonext/es/utils/index.mjs": "34773d399ffdacd2972f527377d293aa3bff9d3a0d31d48d956a00c9c0c32329",
     "https://esm.sh/pdf-lib@1.17.1/denonext/pdf-lib.mjs": "3be07aa3466e0e9eee79730a775211d6bb8547c0cb9d203c09dde6feca1dc559",
+    "https://esm.sh/stripe@14.14.0?target=deno": "648b1148e2dfc476d6e5b9144785e9e8c14fafe077f85e4f4e45744b01e63a77",
     "https://esm.sh/tslib@1.14.1/denonext/tslib.mjs": "748739307d67fbaa8ae634eed70715714dd1f54f04fe8635bcb7f72cb0aaed62",
     "https://esm.sh/tslib@1.14.1?target=denonext": "2982231d9e09e6f007540c7a24c12a7cccb0e84ca98df2ad86ff2bdca1c0fa35",
     "https://esm.sh/tslib@2.8.1/denonext/tslib.mjs": "c38da5dd6da6281964435002ce204cd586634fe3bdfb24a0ee116f48cf3292e9"
