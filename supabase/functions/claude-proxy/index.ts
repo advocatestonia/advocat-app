@@ -2662,7 +2662,10 @@ serve(withSentry("claude-proxy", async (req) => {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Internal error", details: String(error) }), {
+    // Log the detail server-side; do NOT echo raw exception text to the
+    // client (it can leak internal runtime/dependency details).
+    console.error("[claude-proxy] unhandled error:", String(error));
+    return new Response(JSON.stringify({ error: "Internal error" }), {
       status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }

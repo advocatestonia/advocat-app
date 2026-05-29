@@ -134,7 +134,8 @@ serve(async (req) => {
       // Free — read current usage via RPC (does not mutate).
       const { data, error } = await sb.rpc("get_ai_usage");
       if (error) {
-        return json({ error: error.message }, 500);
+        console.error("[check-ai-quota] get_ai_usage failed:", error.message);
+        return json({ error: "quota check failed" }, 500);
       }
       const used = (data as number) ?? 0;
       return json(buildPayload({
@@ -167,7 +168,8 @@ serve(async (req) => {
       const current = await sb.rpc("get_ai_usage");
       const currentCount = (current.data as number) ?? 0;
       if (current.error) {
-        return json({ error: current.error.message }, 500);
+        console.error("[check-ai-quota] get_ai_usage failed:", current.error.message);
+        return json({ error: "quota check failed" }, 500);
       }
       if (currentCount >= FREE_LIMIT) {
         // Exhausted — do NOT increment further.
@@ -181,7 +183,8 @@ serve(async (req) => {
       // 2. Atomic increment.
       const inc = await sb.rpc("increment_ai_usage");
       if (inc.error) {
-        return json({ error: inc.error.message }, 500);
+        console.error("[check-ai-quota] increment_ai_usage failed:", inc.error.message);
+        return json({ error: "quota check failed" }, 500);
       }
       const newCount = (inc.data as number) ?? currentCount + 1;
       return json(buildPayload({
