@@ -220,7 +220,7 @@ export function formatActiveCaseBlock(
 
   if (c.summary && c.summary.trim().length > 0) {
     lines.push("Summary:");
-    lines.push(`  ${c.summary.trim()}`);
+    lines.push(`  ${neutralize(c.summary.trim())}`);
   }
 
   const openQs = asStringArray(c.open_questions);
@@ -253,9 +253,9 @@ export function formatActiveCaseBlock(
       let docSectionBytes = 0;
       for (const d of docs) {
         const head = [
-          d.filename || "(unnamed)",
-          d.doc_type ? `[${d.doc_type}]` : "",
-          d.doc_date ? `(${d.doc_date})` : "",
+          neutralize(d.filename || "(unnamed)"),
+          d.doc_type ? `[${neutralize(d.doc_type)}]` : "",
+          d.doc_date ? `(${neutralize(d.doc_date)})` : "",
         ]
           .filter((s) => s.length > 0)
           .join(" ");
@@ -268,7 +268,7 @@ export function formatActiveCaseBlock(
         ) {
           const truncated = truncateToBytes(summary, MAX_DOC_SUMMARY_BYTES);
           for (const summaryLine of truncated.split(/\r?\n/)) {
-            const trimmedLine = summaryLine.trim();
+            const trimmedLine = neutralize(summaryLine.trim());
             if (trimmedLine.length > 0) {
               lines.push(`      ${trimmedLine}`);
             }
@@ -541,12 +541,25 @@ function utf8Bytes(s: string): number {
   return new TextEncoder().encode(s).length;
 }
 
+/**
+ * Neutralize untrusted text before it is interpolated into the <active_case>
+ * block. The block is folded RAW into the system prompt (it is trusted
+ * context, NOT wrapped in <untrusted_data>), so a value containing
+ * `</active_case>` — most reachably a document's parsed_summary from an
+ * uploaded/inbound PDF — could close the block early and inject attacker
+ * instructions into the trusted prompt. We strip the angle brackets that make
+ * tag breakout possible; the model still reads the text fine without them.
+ */
+function neutralize(s: string): string {
+  return s.replace(/[<>]/g, " ");
+}
+
 function asStringArray(v: unknown): string[] {
   if (!Array.isArray(v)) return [];
   const out: string[] = [];
   for (const item of v) {
     if (typeof item === "string") {
-      const trimmed = item.trim();
+      const trimmed = neutralize(item.trim());
       if (trimmed.length > 0) out.push(trimmed);
     } else if (item && typeof item === "object") {
       // Common JSON shapes: { date, event } / { name, role } / { number, type }.
@@ -554,7 +567,7 @@ function asStringArray(v: unknown): string[] {
       const rec = item as Record<string, unknown>;
       const parts = Object.entries(rec)
         .filter(([_, v]) => v != null && String(v).length > 0)
-        .map(([k, v]) => `${k}: ${String(v)}`);
+        .map(([k, v]) => `${neutralize(k)}: ${neutralize(String(v))}`);
       if (parts.length > 0) out.push(parts.join(", "));
     }
   }
@@ -562,6 +575,6 @@ function asStringArray(v: unknown): string[] {
 }
 
 function stringOr(v: unknown, fallback: string): string {
-  if (typeof v === "string" && v.trim().length > 0) return v.trim();
+  if (typeof v === "string" && v.trim().length > 0) return neutralize(v.trim());
   return fallback;
 }
