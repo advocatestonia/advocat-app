@@ -127,9 +127,7 @@ async function handlePost(req: Request): Promise<Response> {
     });
   } catch (e) {
     console.error("[share-result] unhandled:", e);
-    return jsonError("Internal error", 500, {
-      details: String(e).slice(0, 300),
-    });
+    return jsonError("Internal error", 500);
   }
 }
 

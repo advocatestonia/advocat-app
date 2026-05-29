@@ -209,7 +209,6 @@ serve(async (req) => {
       console.error("[create-organization] RPC failed:", rpcErr);
       return jsonError("Org creation failed", 500, {
         reason: "rpc_failed",
-        details: rpcErr.message?.slice(0, 200),
       });
     }
   } catch (e) {

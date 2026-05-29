@@ -355,11 +355,12 @@ export async function requireUserWithRateLimit(
         }
       }
     } catch (e) {
+      // Log internals server-side only; never leak the auth-client exception
+      // text to the (possibly anonymous) caller.
+      console.error("auth: getUser backend error:", String(e));
       return {
         kind: "deny",
-        response: jsonError("Auth backend error", 503, {
-          details: String(e),
-        }),
+        response: jsonError("Auth backend error", 503),
       };
     }
   }

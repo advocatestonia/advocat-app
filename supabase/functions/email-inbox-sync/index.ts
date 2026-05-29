@@ -139,9 +139,8 @@ async function syncUser(userId: string): Promise<Response> {
       accessToken,
     });
   } catch (e) {
-    return jsonError("sync_failed", 502, {
-      details: String(e).slice(0, 200),
-    });
+    console.error("email-inbox-sync: syncUser failed:", String(e).slice(0, 200));
+    return jsonError("sync_failed", 502);
   }
   return jsonOk({ ok: true, ...result });
 }

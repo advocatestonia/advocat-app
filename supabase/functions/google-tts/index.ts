@@ -227,6 +227,6 @@ serve(async (req) => {
     });
   } catch (error) {
     console.error("google-tts error:", error);
-    return jsonError("Internal error", 500, { details: String(error) });
+    return jsonError("Internal error", 500);
   }
 });

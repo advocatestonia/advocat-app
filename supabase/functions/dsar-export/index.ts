@@ -604,9 +604,8 @@ serve(async (req) => {
         })
         .eq("id", dsarId);
     }
-    return jsonError("Export failed while reading data", 500, {
-      details: String(e),
-    });
+    console.error("dsar-export: read failure:", String(e));
+    return jsonError("Export failed while reading data", 500);
   }
 
   const json = JSON.stringify(payload, null, 2);

@@ -394,12 +394,12 @@ export async function runContractReview(
     }
     plannerOutput = v.value;
   } catch (e) {
+    console.error("contract-review: planner call failed:", String(e).slice(0, 500));
     return {
       kind: "error",
       status: 502,
       body: {
         error: "planner_call_failed",
-        details: String(e).slice(0, 500),
       },
     };
   }
@@ -470,12 +470,12 @@ export async function runContractReview(
       raw_output: plannerOutput,
     });
   } catch (e) {
+    console.error("contract-review: persistence failed:", String(e).slice(0, 500));
     return {
       kind: "error",
       status: 500,
       body: {
         error: "persistence_failed",
-        details: String(e).slice(0, 500),
       },
     };
   }

@@ -584,7 +584,6 @@ serve(async (req) => {
             "No email provider configured. Set RESEND_API_KEY in Supabase " +
             "secrets or connect the user's Gmail OAuth (user_oauth_tokens " +
             "table with provider='gmail').",
-          details: dispatchError,
         },
         503,
       );

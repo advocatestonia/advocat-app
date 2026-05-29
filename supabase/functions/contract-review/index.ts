@@ -128,9 +128,7 @@ serve(async (req: Request) => {
     });
   } catch (e) {
     console.error("[contract-review] unhandled:", e);
-    return jsonError("Internal error", 500, {
-      details: String(e).slice(0, 300),
-    });
+    return jsonError("Internal error", 500);
   }
 });
 

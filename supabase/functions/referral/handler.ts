@@ -132,9 +132,10 @@ export async function handleAttribute(
     .eq("code", code)
     .maybeSingle();
   if (codeErr) {
+    console.error("referral: code lookup failed:", String(codeErr.message));
     return {
       status: 500,
-      body: { error: "code_lookup_failed", details: String(codeErr.message) },
+      body: { error: "code_lookup_failed" },
     };
   }
   if (!codeRow) {
@@ -200,11 +201,11 @@ export async function handleAttribute(
         };
       }
     }
+    console.error("referral: attribution insert failed:", String(insErr.message));
     return {
       status: 500,
       body: {
         error: "attribution_insert_failed",
-        details: String(insErr.message),
       },
     };
   }

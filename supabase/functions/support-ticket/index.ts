@@ -309,10 +309,10 @@ serve(async (req) => {
     .single();
 
   if (insErr || !inserted) {
+    // Log internals server-side only; do not leak DB error text to the client.
     console.error("[support-ticket] insert failed:", insErr);
     return jsonError("Could not save ticket", 500, {
       reason: "db_failed",
-      details: String(insErr?.message ?? insErr ?? "unknown"),
     });
   }
   const ticketId = inserted.id as string;

@@ -135,10 +135,10 @@ serve(async (req) => {
     );
     if (usageErr) {
       // RPC missing or DB error — fail closed: do not call OpenAI without
-      // knowing the user's current usage.
-      return jsonError("Quota check failed", 503, {
-        details: usageErr.message,
-      });
+      // knowing the user's current usage. Log internals server-side only;
+      // never leak DB error text to the client.
+      console.error("whisper-stt: get_voice_usage failed:", usageErr.message);
+      return jsonError("Quota check failed", 503);
     }
     const usedSeconds = (usedSecondsRaw as number) ?? 0;
 
@@ -255,6 +255,7 @@ serve(async (req) => {
       },
     );
   } catch (error) {
-    return jsonError("Internal error", 500, { details: String(error) });
+    console.error("whisper-stt: unhandled error:", String(error));
+    return jsonError("Internal error", 500);
   }
 });
