@@ -247,7 +247,7 @@ async function handleCreate(
     : true;
   if (within2h) {
     try {
-      const caseFacts = await loadCaseFactsIfAny(supabase, body.caseId);
+      const caseFacts = await loadCaseFactsIfAny(supabase, body.caseId, userId);
       const result = await generateBrief({
         topic: body.topic,
         language: body.language,
@@ -462,17 +462,29 @@ async function loadCaseFactsIfAny(
   // deno-lint-ignore no-explicit-any
   supabase: any,
   caseId: string | null,
+  ownerId: string,
 ): Promise<Record<string, unknown> | null> {
   if (!caseId) return null;
   try {
+    // Case facts live as structured columns on public.user_cases (there is
+    // no `case_facts` column on `cases` — the prior query silently errored
+    // and always returned null). Read the real fact fields here.
+    //
+    // IDOR guard: this runs under the service-role client (RLS bypassed),
+    // and caseId is caller-supplied. The owner filter pins the read to the
+    // caller's own case so a user can't pass someone else's caseId and pull
+    // their private facts into the generated brief.
     const { data, error } = await supabase
-      .from("cases")
-      .select("case_facts")
+      .from("user_cases")
+      .select(
+        "title, jurisdiction, case_type, status, case_numbers, parties, " +
+          "key_dates, authorities, timeline, open_questions, next_actions, summary",
+      )
       .eq("id", caseId)
+      .eq("user_id", ownerId)
       .maybeSingle();
     if (error || !data) return null;
-    const cf = data.case_facts as Record<string, unknown> | null;
-    return cf ?? null;
+    return data as Record<string, unknown>;
   } catch (e) {
     console.warn("[lawyer-booking] case_facts read failed:", e);
     return null;
