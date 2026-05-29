@@ -1,0 +1,40 @@
+-- 20260530120000_ai_usage_revoke_client_writes.sql
+-- ---------------------------------------------------------------------------
+-- CRITICAL SECURITY (quota-reset / free-tier bypass) — LIVE & EXPLOITABLE.
+--
+-- public.ai_usage tracks each user's metered AI consumption (the `count`
+-- column = monthly free-message tally; per-row inserts = per-turn ledger used
+-- for the 24h rollup). It is the value the entitlement path enforces:
+--   check-ai-quota/index.ts:135  get_ai_usage()        -> free-tier gate
+--   check-ai-quota/index.ts:341  REST count of rows    -> b2b pressure signal
+--   claude-proxy/index.ts:3492   REST count of rows     -> per-day turn count
+--
+-- The RLS policy `ai_usage_own` is FOR ALL USING (auth.uid() = user_id) with
+-- NO `WITH CHECK`, and BOTH client roles (authenticated, anon) hold blanket
+-- table-level INSERT / UPDATE / DELETE grants. RLS cannot compare OLD vs NEW
+-- per column and a bare ALL/USING policy lets a user freely write their own
+-- rows. Three live exploits, all zero-payment unlimited AI (same blast radius
+-- as the historic anon-JWT Anthropic-burn incident):
+--   * UPDATE: PATCH /rest/v1/ai_usage?user_id=eq.<own-uid> {"count":0}
+--             -> resets the monthly free tally, get_ai_usage() reads 0.
+--   * DELETE: DELETE /rest/v1/ai_usage?user_id=eq.<own-uid>
+--             -> wipes the per-turn ledger, the row-count rollups read 0.
+--   * INSERT: no WITH CHECK -> a row with an arbitrary user_id can be planted.
+--
+-- FIX: all legitimate writes go through SECURITY DEFINER RPCs that bypass
+-- grants entirely (verified live 2026-05-30: get_ai_usage.prosecdef = t,
+-- increment_ai_usage.prosecdef = t). No Flutter code and no edge function
+-- writes ai_usage directly (grep of lib/ + functions/ = zero direct writes;
+-- the only REST touches are SELECT-by-count under the SERVICE-ROLE key, which
+-- also bypasses grants). So revoking client INSERT/UPDATE/DELETE removes the
+-- exploit with zero functional impact.
+--
+-- SELECT is intentionally LEFT granted (RLS still scopes it to own rows); the
+-- client does not currently read ai_usage, but a read leaks nothing sensitive
+-- and keeps the door open for a future "your usage this month" UI.
+--
+-- The `ai_usage_own` RLS policy stays as-is. Idempotent.
+-- ---------------------------------------------------------------------------
+
+revoke insert, update, delete on public.ai_usage from authenticated;
+revoke insert, update, delete on public.ai_usage from anon;
