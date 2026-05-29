@@ -215,7 +215,8 @@ serve(async (req: Request) => {
       .from(STORAGE_BUCKET)
       .download(body.storage_path);
     if (error || !data) {
-      return jsonError(`Storage download failed: ${error?.message ?? "no data"}`, 404);
+      console.error("[pdf-parser] storage download failed:", error);
+      return jsonError("Storage download failed", 404);
     }
     const buf = await data.arrayBuffer();
     if (buf.byteLength > maxBytes) {
@@ -982,7 +983,11 @@ async function upsertDocumentRow(args: UpsertArgs): Promise<UpsertResult> {
       .eq("filename", args.filename)
       .limit(1);
     if (existing.error) {
-      return { kind: "error", message: `select failed: ${existing.error.message}` };
+      // Log raw DB error server-side; return a stable generic code to the
+      // client (leak-class fix — the raw PostgREST message can disclose table
+      // / column / constraint names). Mirrors oauth-callback / create-checkout.
+      console.error("[pdf-parser] case_documents select failed:", existing.error);
+      return { kind: "error", message: "document_persist_failed" };
     }
     const found = (existing.data as Array<{ id: string }> | null)?.[0];
     if (found?.id) {
@@ -993,7 +998,8 @@ async function upsertDocumentRow(args: UpsertArgs): Promise<UpsertResult> {
         .select("id")
         .single();
       if (upd.error) {
-        return { kind: "error", message: `update failed: ${upd.error.message}` };
+        console.error("[pdf-parser] case_documents update failed:", upd.error);
+        return { kind: "error", message: "document_persist_failed" };
       }
       return { kind: "ok", id: (upd.data as { id: string }).id };
     }
@@ -1003,11 +1009,13 @@ async function upsertDocumentRow(args: UpsertArgs): Promise<UpsertResult> {
       .select("id")
       .single();
     if (ins.error) {
-      return { kind: "error", message: `insert failed: ${ins.error.message}` };
+      console.error("[pdf-parser] case_documents insert failed:", ins.error);
+      return { kind: "error", message: "document_persist_failed" };
     }
     return { kind: "ok", id: (ins.data as { id: string }).id };
   } catch (e) {
-    return { kind: "error", message: `upsert threw: ${String(e).slice(0, 200)}` };
+    console.error("[pdf-parser] case_documents upsert threw:", e);
+    return { kind: "error", message: "document_persist_failed" };
   }
 }
 
