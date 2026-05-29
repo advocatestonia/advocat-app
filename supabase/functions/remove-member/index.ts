@@ -170,22 +170,24 @@ serve(async (req) => {
   }
 
   if (newSeatCount === null) {
-    // Fallback (dev): two sequenced operations.
+    // Fallback: mark member removed, then decrement seats atomically.
     await supabase
       .from("org_members")
       .update({ removed_at: new Date().toISOString() })
       .eq("id", target.id);
 
-    const { data: org } = await supabase
-      .from("organizations")
-      .select("seat_count, stripe_subscription_id")
-      .eq("id", ctx.org_id)
-      .maybeSingle();
-    newSeatCount = Math.max(0, (org?.seat_count ?? 1) - 1);
-    await supabase
-      .from("organizations")
-      .update({ seat_count: newSeatCount })
-      .eq("id", ctx.org_id);
+    // org_increment_seats locks the org row FOR UPDATE, clamps at >= 0
+    // (raises seats_negative otherwise), and writes org_seat_change_log.
+    // A read-modify-write here would race a concurrent accept/remove.
+    const { data: seatAfter, error: seatErr } = await (supabase as any).rpc(
+      "org_increment_seats",
+      { p_org: ctx.org_id, p_delta: -1 },
+    );
+    if (seatErr) {
+      console.error("[remove-member] seat decrement failed:", seatErr);
+      return jsonError("Remove failed", 500, { reason: "seat_decrement_failed" });
+    }
+    newSeatCount = typeof seatAfter === "number" ? seatAfter : null;
   }
 
   // ── Stripe quantity sync (best-effort) ────────────────────────────────
@@ -195,7 +197,10 @@ serve(async (req) => {
     .eq("id", ctx.org_id)
     .maybeSingle();
 
-  if (orgForStripe?.stripe_subscription_id && STRIPE_SECRET_KEY) {
+  if (
+    orgForStripe?.stripe_subscription_id && STRIPE_SECRET_KEY &&
+    newSeatCount !== null
+  ) {
     try {
       const subRes = await fetch(
         `https://api.stripe.com/v1/subscriptions/${orgForStripe.stripe_subscription_id}`,

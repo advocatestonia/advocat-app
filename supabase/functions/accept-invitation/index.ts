@@ -189,13 +189,25 @@ serve(async (req) => {
       })
       .eq("id", invite.id);
 
-    // 3. Increment seat count.
-    const newSeatCount = (org.seat_count ?? 0) + 1;
-    await supabase
-      .from("organizations")
-      .update({ seat_count: newSeatCount })
-      .eq("id", org.id);
-    seatCountAfter = newSeatCount;
+    // 3. Increment seat count atomically. org_increment_seats locks the org
+    //    row FOR UPDATE (serializes concurrent accepts), enforces seat_limit,
+    //    and writes the forensic org_seat_change_log — a plain read-modify-write
+    //    here would race two concurrent accepts and let the org exceed its cap.
+    const { data: seatAfter, error: seatErr } = await (supabase as any).rpc(
+      "org_increment_seats",
+      { p_org: org.id, p_delta: 1 },
+    );
+    if (seatErr) {
+      // 23514 (check_violation) is raised for seat_limit_exceeded.
+      if (`${seatErr.message}`.includes("seat_limit_exceeded")) {
+        return jsonError("Seat limit exceeded", 402, {
+          reason: "seat_limit_exceeded",
+        });
+      }
+      console.error("[accept-invitation] seat increment failed:", seatErr);
+      return jsonError("Accept failed", 500, { reason: "seat_increment_failed" });
+    }
+    seatCountAfter = typeof seatAfter === "number" ? seatAfter : null;
   }
 
   // ── Stripe quantity sync (best-effort) ────────────────────────────────
