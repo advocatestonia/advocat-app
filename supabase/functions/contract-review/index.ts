@@ -27,6 +27,7 @@ import {
   type CaseDocumentRow,
   type ContractReviewRequest,
   type DbClient,
+  detectTier,
   type PdfWorkerCaller,
   type PlannerCaller,
   type QuotaState,
@@ -271,32 +272,6 @@ function buildDbClient(sb: AdminClient): DbClient {
       return data.id as string;
     },
   };
-}
-
-async function detectTier(
-  sb: AdminClient,
-  userId: string,
-): Promise<SubscriptionTier> {
-  // Premium = plan === 'premium' && active/trialing.
-  // Basic   = plan === 'basic'   && active/trialing.
-  // Otherwise free.
-  try {
-    const sub = await sb
-      .from("subscriptions")
-      .select("status, plan")
-      .eq("user_id", userId)
-      .in("status", ["active", "trialing"])
-      .limit(1)
-      .maybeSingle();
-    const plan = (sub.data as { plan?: string } | null)?.plan;
-    if (plan === "premium") return "premium";
-    if (plan === "basic") return "basic";
-    // Some legacy rows: any active subscription without plan => basic.
-    if (sub.data) return "basic";
-  } catch (_) {
-    /* fall through */
-  }
-  return "free";
 }
 
 // ─── Anthropic planner binding ──────────────────────────────────────────────

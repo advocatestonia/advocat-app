@@ -38,6 +38,54 @@ const UPGRADE_URL = "/app.html?plan=premium&billing=monthly";
 
 export type SubscriptionTier = "free" | "basic" | "premium";
 
+/**
+ * Resolve the user's Contract Review tier from `subscriptions`.
+ *
+ * Premium → 20/30d, Basic → 5/30d, Free → 1 lifetime (see QUOTA_LIMITS).
+ *
+ * NOTE: `subscriptions` stores the plan in column `tier` ("free" | "basic" |
+ * "premium") — there is NO `plan` column. An earlier `.select("plan")` always
+ * read undefined, so a premium (Pro) subscriber silently fell through to the
+ * "any active row => basic" branch and got the 5/30d basic cap instead of
+ * 20/30d. Read `tier`.
+ *
+ * Expiry guard: a row can read status='active' long after the period ended
+ * when no renewal/cancel/refund webhook arrived (Apple IAP has no
+ * server-notification handler in prod). A lapsed period resolves to "free".
+ */
+export async function detectTier(
+  // deno-lint-ignore no-explicit-any
+  sb: any,
+  userId: string,
+): Promise<SubscriptionTier> {
+  try {
+    const sub = await sb
+      .from("subscriptions")
+      .select("status, tier, current_period_end")
+      .eq("user_id", userId)
+      .in("status", ["active", "trialing"])
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (sub.data) {
+      const periodEnd = (sub.data as { current_period_end?: string | null })
+        .current_period_end;
+      if (periodEnd && new Date(periodEnd).getTime() < Date.now()) {
+        return "free";
+      }
+      const tier = (sub.data as { tier?: string }).tier;
+      if (tier === "premium") return "premium";
+      if (tier === "basic") return "basic";
+      // Legacy rows: any active subscription without a recognised tier =>
+      // basic (the lowest paid floor, never free).
+      return "basic";
+    }
+  } catch (_) {
+    /* fall through */
+  }
+  return "free";
+}
+
 export interface ContractReviewRequest {
   case_document_ids: string[];
   output_language: string;
