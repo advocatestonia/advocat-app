@@ -59,47 +59,48 @@ const DELETE_STRICT = (Deno?.env?.get?.("DELETE_STRICT") ?? "0") === "1";
  */
 export const USER_DATA_TABLES: ReadonlyArray<readonly [string, string]> = [
   // ── Chat history (children before parents). ──────────────────────────────
+  //   chat_planner_traces is NOT listed: it has no user_id column and is
+  //   erased via FK message_id → chat_messages(id) ON DELETE CASCADE. See
+  //   EXCLUDED_TABLES. (Listing it with a non-existent user_id column produced
+  //   a false strictFailure under DELETE_STRICT=1.)
   ["chat_message_citations", "user_id"],
   ["message_feedback", "user_id"],
-  ["chat_planner_traces", "user_id"],
   ["chat_messages", "user_id"],
   ["case_chat_sessions", "user_id"],
 
   // ── Email agent (children before parents). ───────────────────────────────
-  ["email_triage_lawyer_opinions", "user_id"],
-  ["triage_proposed_actions", "user_id"],
+  //   Removed dead entries that do not exist in the live schema and only
+  //   produced false strictFailures: email_triage_lawyer_opinions,
+  //   triage_proposed_actions, email_retry_queue, email_connections,
+  //   email_user_settings.
   ["email_triage_results", "user_id"],
   ["email_attachments", "user_id"],
   ["email_messages", "user_id"],
   ["email_threads", "user_id"],
-  ["email_retry_queue", "user_id"],
-  ["email_connections", "user_id"],
-  ["email_user_settings", "user_id"],
 
   // ── Case workspace (children before parents). ────────────────────────────
+  //   Removed dead entries (no such table in live schema): case_file,
+  //   case_facts, case_phase, checker_reports.
   ["case_timeline_events", "user_id"],
   ["case_file_deadlines", "user_id"],
   ["case_file_parties", "user_id"],
   ["case_file_events", "user_id"],
-  ["case_file", "user_id"],
-  ["case_facts", "user_id"],
-  ["case_phase", "user_id"],
   ["case_deadlines", "user_id"],
   ["case_documents", "user_id"],
-  ["checker_reports", "user_id"],
   ["user_cases", "user_id"],
   ["cases", "user_id"],
 
   // ── Legacy single-doc store + correspondence. ────────────────────────────
+  //   Removed dead entry: correspondence_audit (no such table).
   ["deadlines", "user_id"],
-  ["correspondence_audit", "user_id"],
   ["correspondence", "user_id"],
   ["documents", "user_id"],
 
   // ── Drafting Studio + Vault. ─────────────────────────────────────────────
-  ["draft_versions", "user_id"],
+  //   draft_versions (FK draft_id → user_drafts CASCADE) and
+  //   vault_document_tags (FK document_id → documents CASCADE) are erased by
+  //   cascade and have no user_id column — see EXCLUDED_TABLES.
   ["user_drafts", "user_id"],
-  ["vault_document_tags", "user_id"],
   ["vault_tags", "user_id"],
 
   // ── B2B silent signals. ──────────────────────────────────────────────────
@@ -136,17 +137,22 @@ export const USER_DATA_TABLES: ReadonlyArray<readonly [string, string]> = [
   ["voice_usage", "user_id"],
   ["ai_usage", "user_id"],
 
-  // ── Lawyer marketplace. ──────────────────────────────────────────────────
-  ["lawyer_bookings", "user_id"],
-
   // ── Consilium + contract review. ─────────────────────────────────────────
+  //   Removed dead entry: lawyer_bookings (no such table in live schema).
   ["consilium_runs", "user_id"],
   ["contract_analysis_jobs", "user_id"],
   ["contract_reviews", "user_id"],
 
   // ── Adversarial corpus. ──────────────────────────────────────────────────
+  //   Removed dead entry: advice_digest (no such table in live schema).
   ["advice_corrections", "user_id"],
-  ["advice_digest", "user_id"],
+
+  // ── Gold-corpus training queue. Raw, possibly-unscrubbed user question +
+  //    AI answer keyed on source_user_id, with NO FK cascade to auth.users.
+  //    Must be wiped on erasure (Art. 17). Curated `gold_corpus_pairs` rows
+  //    derived from this queue keep only source_queue_id (SET NULL on delete);
+  //    see EXCLUDED_TABLES for that derived-corpus rationale.
+  ["gold_corpus_queue", "source_user_id"],
 
   // ── Sharing / referrals. ─────────────────────────────────────────────────
   ["shared_results", "user_id"],
@@ -266,6 +272,32 @@ export const EXCLUDED_TABLES: ReadonlyArray<
 
   // Refund tracking (subscriptions cascade handles user link).
   { table: "refund_consents", reason: "Cascades via subscriptions delete; row retained for refund audit if any" },
+
+  // ── FK-cascade children with NO user_id column. Listing these with a
+  //    "user_id" column produced false strictFailures (42703) under
+  //    DELETE_STRICT=1. The actual data IS erased via ON DELETE CASCADE when
+  //    the parent row is deleted in USER_DATA_TABLES above.
+  { table: "chat_planner_traces", reason: "Cascades from chat_messages via FK message_id ON DELETE CASCADE (no user_id column)" },
+  { table: "draft_versions", reason: "Cascades from user_drafts via FK draft_id ON DELETE CASCADE (no user_id column)" },
+  { table: "vault_document_tags", reason: "Cascades from documents via FK document_id ON DELETE CASCADE (no user_id column)" },
+
+  // Derived training corpus. Promoted from gold_corpus_queue (which IS wiped).
+  // source_queue_id FK is SET NULL on delete, severing the user link; rows hold
+  // only a PII-scrubbed question/answer pair used as curated eval/training data.
+  // Retained under Art. 17(3)(d) scientific-research / Art. 89 safeguards
+  // (pseudonymised). If unscrubbed PII is ever found here, treat as a P0.
+  { table: "gold_corpus_pairs", reason: "Art. 17(3)(d)/Art. 89 pseudonymised training corpus; user link SET NULL via source_queue_id" },
+
+  // ── Declared in migration SQL but NOT present in the live prod schema
+  //    (verified absent in information_schema 2026-05-29). They hold no data
+  //    because they do not exist. The coverage_test migrations-fallback parser
+  //    still sees their CREATE TABLE statements, so they are listed here to
+  //    keep the canary honest. ⚠️ OWNER GATE: if the lawyer-partnership /
+  //    legacy-baseline migrations are ever applied to prod, MOVE these into
+  //    USER_DATA_TABLES — they carry user_id and would then retain PII.
+  { table: "lawyer_bookings", reason: "Declared in migration 20260516200000 but NOT deployed to prod (no live table). Re-classify into USER_DATA_TABLES if the partner-booking feature is migrated." },
+  { table: "checker_reports", reason: "Declared in baseline 001 but NOT in live prod schema. Re-classify into USER_DATA_TABLES if ever deployed." },
+  { table: "email_connections", reason: "Declared in baseline 001 but NOT in live prod schema (superseded by email_threads/email_messages). Re-classify if ever deployed." },
 ];
 
 /** Storage buckets to sweep. Objects are listed by prefix `<userId>/`. */
@@ -367,20 +399,31 @@ async function safeDelete(
       const code = error.code;
       if (code === "42P01" || code === "42703") {
         if (DELETE_STRICT) {
+          // Log the raw schema error server-side; the client-facing struct
+          // gets a stable code (no relation/column name disclosure).
+          console.error(
+            `[account-delete] DELETE_STRICT missing table/column on ${table} (${code}): ${error.message}`,
+          );
           return {
             table,
             ok: false,
             strictFailure: true,
-            error: `DELETE_STRICT=1: missing table/column (${code}): ${error.message}`,
+            error: `delete_strict_missing_schema:${code}`,
           };
         }
         return { table, ok: true, skipped: true };
       }
-      return { table, ok: false, error: error.message };
+      // Log the raw DB error server-side; surface only a stable code so we
+      // don't disclose constraint/permission internals to the client.
+      console.error(
+        `[account-delete] delete failed on ${table} (${error.code ?? "?"}): ${error.message}`,
+      );
+      return { table, ok: false, error: "delete_failed" };
     }
     return { table, ok: true };
   } catch (e) {
-    return { table, ok: false, error: String(e) };
+    console.error(`[account-delete] delete threw on ${table}: ${String(e)}`);
+    return { table, ok: false, error: "delete_failed" };
   }
 }
 
@@ -406,17 +449,24 @@ async function sweepStorageBucket(
       const { data, error } = await sb.storage
         .from(bucket)
         .list(userId, { limit: pageSize, offset: 0 });
-      if (error) return { bucket, removed, error: error.message };
+      if (error) {
+        console.error(`[account-delete] storage list failed on ${bucket}: ${error.message}`);
+        return { bucket, removed, error: "storage_list_failed" };
+      }
       if (!data || data.length === 0) break;
       const paths = data.map((obj) => `${userId}/${obj.name}`);
       const { error: rmErr } = await sb.storage.from(bucket).remove(paths);
-      if (rmErr) return { bucket, removed, error: rmErr.message };
+      if (rmErr) {
+        console.error(`[account-delete] storage remove failed on ${bucket}: ${rmErr.message}`);
+        return { bucket, removed, error: "storage_remove_failed" };
+      }
       removed += paths.length;
       if (data.length < pageSize) break;
     }
     return { bucket, removed };
   } catch (e) {
-    return { bucket, removed: 0, error: String(e) };
+    console.error(`[account-delete] storage sweep threw on ${bucket}: ${String(e)}`);
+    return { bucket, removed: 0, error: "storage_sweep_failed" };
   }
 }
 

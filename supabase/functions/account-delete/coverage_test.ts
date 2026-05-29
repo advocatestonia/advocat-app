@@ -40,7 +40,16 @@ import { EXCLUDED_TABLES, USER_DATA_TABLES } from "./handler.ts";
  * Tables with NO column in this set are out of scope (e.g. law_chunks,
  * holiday_calendars, statute_aliases — public-readable corpora).
  */
-const PII_COLUMNS = ["user_id", "owner_id", "created_by"] as const;
+// `source_user_id` added after an audit found gold_corpus_queue (raw,
+// possibly-unscrubbed user question + AI answer) escaped this canary because
+// it used source_user_id, not user_id. Keep aligned with every per-user FK
+// column name in the schema.
+const PII_COLUMNS = [
+  "user_id",
+  "owner_id",
+  "created_by",
+  "source_user_id",
+] as const;
 
 interface InfoSchemaRow {
   table_name: string;

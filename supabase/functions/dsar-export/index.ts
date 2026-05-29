@@ -82,6 +82,45 @@ async function safeSelect(
   }
 }
 
+/**
+ * Read child rows whose user link is INDIRECT (no user_id column) — i.e. a FK
+ * to a parent row we already fetched for this user. Used for tables like
+ * chat_planner_traces (message_id → chat_messages), draft_versions
+ * (draft_id → user_drafts) and vault_document_tags (document_id → documents),
+ * which previously returned [] from safeSelect("...","user_id",...) because
+ * the user_id column does not exist — silently dropping them from the Art. 15
+ * export. Returns [] when there are no parent IDs.
+ */
+async function safeSelectByParentIds(
+  sb: SbClient,
+  table: string,
+  fkColumn: string,
+  parentIds: string[],
+): Promise<unknown[]> {
+  if (!parentIds.length) return [];
+  try {
+    const { data, error } = await sb.from(table).select("*").in(fkColumn, parentIds);
+    if (error) {
+      const code = (error as { code?: string }).code;
+      if (code !== "42P01" && code !== "42703") {
+        console.warn(`[dsar-export] ${table} (by ${fkColumn}) read failed: ${error.message}`);
+      }
+      return [];
+    }
+    return (data ?? []) as unknown[];
+  } catch (e) {
+    console.warn(`[dsar-export] ${table} (by ${fkColumn}) threw: ${String(e)}`);
+    return [];
+  }
+}
+
+/** Extract the `id` values from a row array (for parent→child FK reads). */
+function idsOf(rows: unknown[]): string[] {
+  return (rows as Array<{ id?: string }>)
+    .map((r) => r?.id)
+    .filter((v): v is string => typeof v === "string");
+}
+
 interface ExportPayload {
   exported_at: string;
   user_id: string;
@@ -149,6 +188,12 @@ interface ExportPayload {
     corrections: unknown[];
     digest: unknown[];
   };
+  /**
+   * Raw gold-corpus training queue (Art. 15): the user's question + AI answer
+   * captured for eval/training, keyed on source_user_id. Possibly unscrubbed
+   * — disclosed so the user knows it exists and is wiped on Art. 17 erasure.
+   */
+  gold_corpus_queue: unknown[];
   notifications: {
     notifications: unknown[];
     preferences: unknown[];
@@ -279,7 +324,11 @@ serve(async (req) => {
     const chatMessages = await safeSelect(sb, "chat_messages", "user_id", userId);
     const chatCitations = await safeSelect(sb, "chat_message_citations", "user_id", userId);
     const chatFeedback = await safeSelect(sb, "message_feedback", "user_id", userId);
-    const chatPlannerTraces = await safeSelect(sb, "chat_planner_traces", "user_id", userId);
+    // chat_planner_traces has no user_id column — link is message_id →
+    // chat_messages(id). Read by the user's own message IDs (Art. 15).
+    const chatPlannerTraces = await safeSelectByParentIds(
+      sb, "chat_planner_traces", "message_id", idsOf(chatMessages),
+    );
     const caseChatSessions = await safeSelect(sb, "case_chat_sessions", "user_id", userId);
 
     // ── Cases ─────────────────────────────────────────────────────────────
@@ -303,7 +352,8 @@ serve(async (req) => {
     const correspondenceAudit = await safeSelect(sb, "correspondence_audit", "user_id", userId);
 
     // ── Vault ────────────────────────────────────────────────────────────
-    const vaultDocumentTags = await safeSelect(sb, "vault_document_tags", "user_id", userId);
+    // vault_document_tags has no user_id column — link is document_id →
+    // documents(id). Read by the user's own document IDs (Art. 15).
     const vaultTags = await safeSelect(sb, "vault_tags", "user_id", userId);
 
     // ── Email agent ──────────────────────────────────────────────────────
@@ -319,7 +369,17 @@ serve(async (req) => {
 
     // ── Drafting ─────────────────────────────────────────────────────────
     const userDrafts = await safeSelect(sb, "user_drafts", "user_id", userId);
-    const draftVersions = await safeSelect(sb, "draft_versions", "user_id", userId);
+    // draft_versions has no user_id column — link is draft_id → user_drafts(id).
+    const draftVersions = await safeSelectByParentIds(
+      sb, "draft_versions", "draft_id", idsOf(userDrafts),
+    );
+    // vault_document_tags has no user_id column — link is document_id →
+    // documents(id). legacyDocuments is fetched above.
+    const vaultDocumentTags = await safeSelectByParentIds(
+      sb, "vault_document_tags", "document_id", idsOf(legacyDocuments),
+    );
+    // gold_corpus_queue holds the user's raw question keyed on source_user_id.
+    const goldCorpusQueue = await safeSelect(sb, "gold_corpus_queue", "source_user_id", userId);
 
     // ── AI memory + agent loop ───────────────────────────────────────────
     const aiMemory = await safeSelect(sb, "user_ai_memory", "user_id", userId);
@@ -482,6 +542,7 @@ serve(async (req) => {
         corrections: adviceCorrections,
         digest: adviceDigest,
       },
+      gold_corpus_queue: goldCorpusQueue,
       notifications: {
         notifications,
         preferences: notificationPreferences,
