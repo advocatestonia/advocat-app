@@ -350,15 +350,26 @@ Deno.test("HS-T52 — addMonths handles month-end correctly (Jan 31 + 1mo = Feb 
 // 7. Year coverage
 // =============================================================================
 
-Deno.test("HS-T60 — holiday list covers 2026 AND 2027 (drift guard)", () => {
-  // The CI must catch a stale holiday list before the new year. We assert
-  // a known 2027 holiday is present; if the list is only 2026, this fails.
-  assert(
-    isFinnishHoliday(new Date("2027-01-01T12:00:00Z")),
-    "FI holiday list must include 2027-01-01",
-  );
-  assert(
-    isEstonianHoliday(new Date("2027-02-24T12:00:00Z")),
-    "EE holiday list must include 2027-02-24",
-  );
+Deno.test("HS-T60 — holiday list covers current year AND next year (drift guard)", () => {
+  // The CI must catch a stale holiday list BEFORE the table goes stale.
+  // A static assertion on a fixed year (e.g. 2027) passes forever and never
+  // fires when the calendar rolls past the table's coverage — at which point
+  // deadlines that land on an uncovered-year holiday silently fail to shift
+  // and a user gets a deadline a day or more early. So the guard is
+  // year-RELATIVE: it always demands coverage of the current year and the
+  // next year. New Year's Day (FI uudenvuodenpäivä / EE uusaasta) and EE
+  // iseseisvuspäev (24 Feb) are fixed annual holidays, ideal anchors.
+  const thisYear = new Date().getUTCFullYear();
+  for (const year of [thisYear, thisYear + 1]) {
+    assert(
+      isFinnishHoliday(new Date(`${year}-01-01T12:00:00Z`)),
+      `FI holiday list must include ${year}-01-01 — table is stale, ` +
+        `add ${year} holidays to FI_HOLIDAYS in holidays_fi_ee.ts`,
+    );
+    assert(
+      isEstonianHoliday(new Date(`${year}-02-24T12:00:00Z`)),
+      `EE holiday list must include ${year}-02-24 — table is stale, ` +
+        `add ${year} holidays to EE_HOLIDAYS in holidays_fi_ee.ts`,
+    );
+  }
 });
