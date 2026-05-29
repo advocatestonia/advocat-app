@@ -51,6 +51,51 @@ function isoDurationToDays(iso: string): number | null {
   return years * 365 + months * 30 + days;
 }
 
+/** Parse an ISO 8601 duration into its Y/M/D components (no day flattening). */
+export function parseIsoDuration(
+  iso: string,
+): { years: number; months: number; days: number } | null {
+  if (!iso) return null;
+  const m = iso.match(/^P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?$/);
+  if (!m) return null;
+  const years = parseInt(m[1] || "0", 10);
+  const months = parseInt(m[2] || "0", 10);
+  const days = parseInt(m[3] || "0", 10);
+  if (years === 0 && months === 0 && days === 0) return null;
+  return { years, months, days };
+}
+
+/** Add an ISO duration to a date with CALENDAR-CORRECT month/year arithmetic.
+ *  Months/years are added via setUTCMonth/setUTCFullYear (so "1 month" from
+ *  Jan 31 lands on the last day of Feb, not Jan 31 + 30 days), then literal
+ *  days are added. This avoids the 30-day-month / 365-day-year approximation
+ *  that could mis-state a statutory filing deadline by 1-3 days. JS clamps an
+ *  overflowing day-of-month to the last valid day of the target month, which
+ *  matches the civil-law convention for monthly periods.
+ */
+export function addIsoDuration(
+  date: Date,
+  d: { years: number; months: number; days: number },
+): Date {
+  const out = new Date(date);
+  // Fold years into months so a single clamping path handles the day-overflow
+  // case for BOTH "+1 year from Feb 29" and "+1 month from Jan 31".
+  const totalMonths = d.years * 12 + d.months;
+  if (totalMonths) {
+    const anchorDay = out.getUTCDate();
+    const targetMonth = out.getUTCMonth() + totalMonths;
+    out.setUTCDate(1);
+    out.setUTCMonth(targetMonth);
+    // Clamp day-of-month to the last valid day of the resulting month.
+    const lastDay = new Date(
+      Date.UTC(out.getUTCFullYear(), out.getUTCMonth() + 1, 0),
+    ).getUTCDate();
+    out.setUTCDate(Math.min(anchorDay, lastDay));
+  }
+  if (d.days) out.setUTCDate(out.getUTCDate() + d.days);
+  return out;
+}
+
 function addDays(date: Date, days: number): Date {
   const out = new Date(date);
   out.setUTCDate(out.getUTCDate() + days);
@@ -173,6 +218,9 @@ serve(async (req: Request) => {
 
   const rule = ruleRows[0];
   const periodIso: string | null = rule.period_iso;
+  const periodParts = periodIso ? parseIsoDuration(periodIso) : null;
+  // Kept as the null/unparseable gate + a rough display fallback; the actual
+  // due date uses calendar-correct arithmetic via addIsoDuration below.
   const periodDays = periodIso ? isoDurationToDays(periodIso) : null;
 
   // Try to use the holiday_calendar_id from the rule; else infer 'XX-bundesweit'
@@ -225,14 +273,27 @@ serve(async (req: Request) => {
       `period_iso null or unparseable (${periodIso ?? "null"}) — this category uses tiered or descriptive periods; consult ${rule.statute_ref}`,
     );
   }
+  if (body.interruption_events && body.interruption_events.length > 0) {
+    // We compute the base statutory period only; tolling/interruption is not
+    // applied. Surface this so the caller does not assume the due date already
+    // accounts for the supplied events.
+    warnings.push(
+      "interruption_events were provided but are NOT applied to the computed " +
+        "due_date — tolling must be assessed manually against statute_ref",
+    );
+  }
 
   // Compute deadline. If no periodDays, return statute info only.
   let dueDate: Date | null = null;
   let skipped: HolidayEntry[] = [];
   let calendarDaysUsed = 0;
-  if (periodDays !== null) {
-    dueDate = addDays(startDate, periodDays);
-    calendarDaysUsed = periodDays;
+  if (periodParts !== null) {
+    dueDate = addIsoDuration(startDate, periodParts);
+    // True calendar-day span between start and the computed due date (before
+    // any weekend/holiday roll-forward) — replaces the 30-day-month estimate.
+    calendarDaysUsed = Math.round(
+      (dueDate.getTime() - startDate.getTime()) / 86_400_000,
+    );
     // Roll forward over weekends + holidays
     if (calendar) {
       const holidaySet = new Set<string>();
