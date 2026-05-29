@@ -31,19 +31,23 @@ void main() {
   late Map<String, dynamic> enArb;
   late Map<String, dynamic> fiArb;
   late Map<String, dynamic> ruArb;
+  late Map<String, dynamic> etArb;
 
   late Set<String> enKeys;
   late Set<String> fiKeys;
   late Set<String> ruKeys;
+  late Set<String> etKeys;
 
   setUpAll(() {
     enArb = _loadArb('$basePath/app_en.arb');
     fiArb = _loadArb('$basePath/app_fi.arb');
     ruArb = _loadArb('$basePath/app_ru.arb');
+    etArb = _loadArb('$basePath/app_et.arb');
 
     enKeys = _translationKeys(enArb);
     fiKeys = _translationKeys(fiArb);
     ruKeys = _translationKeys(ruArb);
+    etKeys = _translationKeys(etArb);
   });
 
   group('ARB file existence', () {
@@ -58,6 +62,10 @@ void main() {
     test('Russian ARB exists', () {
       expect(File('$basePath/app_ru.arb').existsSync(), isTrue);
     });
+
+    test('Estonian ARB exists', () {
+      expect(File('$basePath/app_et.arb').existsSync(), isTrue);
+    });
   });
 
   group('Locale identifiers', () {
@@ -71,6 +79,10 @@ void main() {
 
     test('Russian ARB has correct locale', () {
       expect(ruArb['@@locale'], 'ru');
+    });
+
+    test('Estonian ARB has correct locale', () {
+      expect(etArb['@@locale'], 'et');
     });
   });
 
@@ -103,11 +115,27 @@ void main() {
               'English is missing ${missingInEn.length} keys from Russian: ${missingInEn.take(10).join(", ")}');
     });
 
-    test('All three locales have the same key set', () {
+    test('Estonian has all English keys', () {
+      final missingInEt = enKeys.difference(etKeys);
+      expect(missingInEt, isEmpty,
+          reason:
+              'Estonian is missing ${missingInEt.length} keys: ${missingInEt.take(10).join(", ")}');
+    });
+
+    test('English has all Estonian keys', () {
+      final missingInEn = etKeys.difference(enKeys);
+      expect(missingInEn, isEmpty,
+          reason:
+              'English is missing ${missingInEn.length} keys from Estonian: ${missingInEn.take(10).join(", ")}');
+    });
+
+    test('All four primary locales have the same key set', () {
       expect(enKeys, equals(fiKeys),
           reason: 'English and Finnish key sets differ');
       expect(enKeys, equals(ruKeys),
           reason: 'English and Russian key sets differ');
+      expect(enKeys, equals(etKeys),
+          reason: 'English and Estonian key sets differ');
     });
   });
 
@@ -138,6 +166,16 @@ void main() {
         if (value is String) {
           expect(value.isNotEmpty, isTrue,
               reason: 'Russian key "$key" has an empty value');
+        }
+      }
+    });
+
+    test('Estonian has no empty values', () {
+      for (final key in etKeys) {
+        final value = etArb[key];
+        if (value is String) {
+          expect(value.isNotEmpty, isTrue,
+              reason: 'Estonian key "$key" has an empty value');
         }
       }
     });

@@ -3470,40 +3470,40 @@ class AppLocalizationsEt extends AppLocalizations {
   }
 
   @override
-  String get agentApprovalNeedsReviewTitle => 'Advocat needs your approval';
+  String get agentApprovalNeedsReviewTitle => 'Advocat vajab sinu kinnitust';
 
   @override
-  String get agentApprovalResolvedTitle => 'Action resolved';
+  String get agentApprovalResolvedTitle => 'Toiming lahendatud';
 
   @override
-  String get agentApprovalStepsLabel => 'steps';
+  String get agentApprovalStepsLabel => 'sammu';
 
   @override
-  String get agentApprovalApproveButton => 'Approve & Send';
+  String get agentApprovalApproveButton => 'Kinnita ja saada';
 
   @override
-  String get agentApprovalDeclineButton => 'Decline';
+  String get agentApprovalDeclineButton => 'Keeldu';
 
   @override
-  String get agentApprovalAttachmentsLabel => 'Attachments';
+  String get agentApprovalAttachmentsLabel => 'Manused';
 
   @override
-  String get agentApprovalSentSummary => 'Sent on your behalf.';
+  String get agentApprovalSentSummary => 'Saadetud sinu nimel.';
 
   @override
-  String get agentApprovalDeclinedSummary => 'Declined — nothing was sent.';
+  String get agentApprovalDeclinedSummary => 'Keeldutud — midagi ei saadetud.';
 
   @override
-  String get agentToolDraftEmailAtt => 'Send email with attachments';
+  String get agentToolDraftEmailAtt => 'Saada e-kiri manustega';
 
   @override
-  String get agentToolSendEmail => 'Send email';
+  String get agentToolSendEmail => 'Saada e-kiri';
 
   @override
-  String get agentToolGeneratePdf => 'Generate PDF';
+  String get agentToolGeneratePdf => 'Loo PDF';
 
   @override
-  String get agentToolApproveSend => 'Send prepared reply';
+  String get agentToolApproveSend => 'Saada ettevalmistatud vastus';
 
   @override
   String get inboxErrorTitle => 'Postkasti ei õnnestunud laadida';
