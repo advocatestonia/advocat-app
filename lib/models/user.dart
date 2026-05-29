@@ -103,10 +103,31 @@ class AppUser {
     // not include `is_pro`. For those, infer Pro from a non-free tier so
     // existing fixtures and cached profiles keep working until they are
     // refreshed from the server.
+    //
+    // is_pro is a DEFAULTED, non-identity field (unlike id/created_at, which
+    // fail-fast by design). It must therefore tolerate a present-but-wrong
+    // type as gracefully as it tolerates absence: a stray int (0/1) or string
+    // ("true"/"false") from an older serialization or a cache must NOT throw
+    // and crash profile parsing — which would silently drop a paying user to
+    // non-Pro via the auth_provider catch. We coerce common encodings and
+    // fall back to the tier inference for anything unrecognised.
     final bool isPro;
-    if (json.containsKey('is_pro') && json['is_pro'] != null) {
-      isPro = json['is_pro'] as bool;
+    final rawIsPro = json['is_pro'];
+    if (rawIsPro is bool) {
+      isPro = rawIsPro;
+    } else if (rawIsPro is num) {
+      isPro = rawIsPro != 0;
+    } else if (rawIsPro is String) {
+      final v = rawIsPro.trim().toLowerCase();
+      if (v == 'true' || v == 't' || v == '1') {
+        isPro = true;
+      } else if (v == 'false' || v == 'f' || v == '0' || v.isEmpty) {
+        isPro = false;
+      } else {
+        isPro = tier != SubscriptionTier.free;
+      }
     } else {
+      // null or absent → infer from tier (original backwards-compat path).
       isPro = tier != SubscriptionTier.free;
     }
 

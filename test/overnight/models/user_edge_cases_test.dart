@@ -79,6 +79,55 @@ void main() {
       );
     });
 
+    // is_pro is a DEFAULTED field, NOT a required identity field, so unlike
+    // id/created_at it must tolerate a present-but-wrong type rather than
+    // crash profile parsing (which would silently drop a Pro user). These
+    // lock the lenient coercion in AppUser.fromJson.
+    AppUser parseWithIsPro(Object? raw, {String tier = 'premium'}) =>
+        AppUser.fromJson({
+          'id': 'u1',
+          'email': 'a@b.c',
+          'full_name': 'T',
+          'subscription_tier': tier,
+          'is_pro': raw,
+          'created_at': '2024-01-01T00:00:00.000Z',
+        });
+
+    test('fromJson coerces int is_pro (1/0) without throwing', () {
+      expect(parseWithIsPro(1).isPro, isTrue);
+      expect(parseWithIsPro(0).isPro, isFalse);
+    });
+
+    test('fromJson coerces string is_pro ("true"/"false"/"t"/"f")', () {
+      expect(parseWithIsPro('true').isPro, isTrue);
+      expect(parseWithIsPro('TRUE').isPro, isTrue);
+      expect(parseWithIsPro('t').isPro, isTrue);
+      expect(parseWithIsPro('false').isPro, isFalse);
+      expect(parseWithIsPro('f').isPro, isFalse);
+      expect(parseWithIsPro('0').isPro, isFalse);
+    });
+
+    test('fromJson falls back to tier inference for unrecognised is_pro', () {
+      // Garbage string on a premium tier → infer Pro from the tier (true),
+      // never throw.
+      expect(parseWithIsPro('garbage', tier: 'premium').isPro, isTrue);
+      expect(parseWithIsPro('garbage', tier: 'free').isPro, isFalse);
+    });
+
+    test('fromJson still infers from tier when is_pro is null/absent', () {
+      expect(parseWithIsPro(null, tier: 'premium').isPro, isTrue);
+      expect(
+        AppUser.fromJson({
+          'id': 'u1',
+          'email': 'a@b.c',
+          'full_name': 'T',
+          'subscription_tier': 'basic',
+          'created_at': '2024-01-01T00:00:00.000Z',
+        }).isPro,
+        isTrue,
+      );
+    });
+
     test('toJson omits optional nulls where expected, keeps keys otherwise',
         () {
       final user = AppUser(
