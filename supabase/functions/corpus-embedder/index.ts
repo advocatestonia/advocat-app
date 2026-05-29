@@ -121,6 +121,16 @@ function jsonOk(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), { status, headers: RESP_HEADERS });
 }
 
+/** Constant-time string comparison (prevents a timing oracle on the secret). */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let r = 0;
+  for (let i = 0; i < a.length; i++) {
+    r |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return r === 0;
+}
+
 // ---------- OpenAI batch embed ----------
 
 /**
@@ -635,7 +645,7 @@ serve(async (req: Request) => {
     ?? url.searchParams.get("secret")
     ?? body.secret
     ?? "";
-  if (providedSecret !== CORPUS_EMBEDDER_SECRET) {
+  if (!timingSafeEqualStr(providedSecret, CORPUS_EMBEDDER_SECRET)) {
     return jsonError("unauthorized", 401);
   }
 

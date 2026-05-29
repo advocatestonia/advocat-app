@@ -38,8 +38,11 @@ Deno.test("index.ts — CRON_SECRET auth (x-cron-secret OR Bearer)", () => {
   assertStringIncludes(indexSrc, "CRON_SECRET");
   // Project convention: x-cron-secret header (sister fetchers use this)
   assertStringIncludes(indexSrc, 'x-cron-secret');
-  // Spec also allows Authorization: Bearer
-  assertStringIncludes(indexSrc, "bearer !== CRON_SECRET");
+  // Spec also allows Authorization: Bearer. Both header + bearer paths are
+  // compared in constant time (timing-oracle fix) — assert the gate uses the
+  // constant-time helper rather than a plain `!==`.
+  assertStringIncludes(indexSrc, "timingSafeEqualStr(bearer, CRON_SECRET)");
+  assertStringIncludes(indexSrc, "timingSafeEqualStr(headerSecret, CRON_SECRET)");
 });
 
 Deno.test("index.ts — idempotent insert (delete-then-insert per act_slug)", () => {

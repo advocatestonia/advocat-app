@@ -107,6 +107,16 @@ function err(msg: string, status: number, extra: Record<string, unknown> = {}) {
   return json({ error: msg, ...extra }, status);
 }
 
+/** Constant-time string comparison (prevents a timing oracle on the secret). */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let r = 0;
+  for (let i = 0; i < a.length; i++) {
+    r |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return r === 0;
+}
+
 // Citation utilities + AKN-LD3 parser live in ./parser.ts so the test suite
 // can import them as pure ESM without source-text reflection. See parser.ts
 // for the canonical `HOL 114 §` citation format and the six-variant alias
@@ -761,7 +771,10 @@ serve(async (req) => {
   const headerSecret = req.headers.get("x-cron-secret") ?? "";
   const authHdr = req.headers.get("authorization") ?? "";
   const bearer = authHdr.replace(/^bearer\s+/i, "").trim();
-  if (headerSecret !== CRON_SECRET && bearer !== CRON_SECRET) {
+  if (
+    !timingSafeEqualStr(headerSecret, CRON_SECRET) &&
+    !timingSafeEqualStr(bearer, CRON_SECRET)
+  ) {
     return err("Unauthorized", 401);
   }
 

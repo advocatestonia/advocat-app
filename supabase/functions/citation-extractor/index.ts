@@ -19,7 +19,7 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient, SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import { constantTimeEqual, corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -96,7 +96,7 @@ serve(async (req: Request) => {
     console.error("citation-extractor: CRON_SECRET not configured");
     return jsonError("Cron secret not configured", 500);
   }
-  if (cronHeader !== CRON_SECRET) {
+  if (!cronHeader || !constantTimeEqual(cronHeader, CRON_SECRET)) {
     return jsonError("Invalid cron secret", 401);
   }
 

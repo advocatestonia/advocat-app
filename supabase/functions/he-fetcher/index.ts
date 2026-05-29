@@ -43,7 +43,7 @@
 // -----------------------------------------------------------------------------
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import { constantTimeEqual, corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
 import {
   ExtractedTravauxChunk,
   HE_FETCHER_MAX_INPUT_CHARS,
@@ -132,8 +132,8 @@ serve(async (req) => {
   const auth = req.headers.get("authorization") ?? "";
   const cronHdr = req.headers.get("x-cron-secret") ?? "";
   const okServiceRole = !!SUPABASE_SERVICE_ROLE_KEY &&
-    auth === `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`;
-  const okCron = !!CRON_SECRET && cronHdr === CRON_SECRET;
+    constantTimeEqual(auth, `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`);
+  const okCron = !!CRON_SECRET && constantTimeEqual(cronHdr, CRON_SECRET);
   if (!okServiceRole && !okCron) {
     return jsonError("service-role or x-cron-secret required", 401);
   }

@@ -39,7 +39,9 @@ Deno.test("index.ts — POST body shape (worker_id + max_jobs)", () => {
 Deno.test("index.ts — CRON_SECRET auth (x-cron-secret OR Bearer)", () => {
   assertStringIncludes(indexSrc, "CRON_SECRET");
   assertStringIncludes(indexSrc, "x-cron-secret");
-  assertStringIncludes(indexSrc, "bearer !== CRON_SECRET");
+  // Header + bearer paths are compared in constant time (timing-oracle fix).
+  assertStringIncludes(indexSrc, "timingSafeEqualStr(bearer, CRON_SECRET)");
+  assertStringIncludes(indexSrc, "timingSafeEqualStr(headerSecret, CRON_SECRET)");
 });
 
 Deno.test("index.ts — idempotent insert (delete-then-insert per act_slug)", () => {
