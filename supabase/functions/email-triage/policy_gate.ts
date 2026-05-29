@@ -361,7 +361,11 @@ export async function verifyGateToken(
   const payload =
     `${t.draft_id}|${t.body_sha256}|${t.recipient_set}|${tokenShas}|${t.issued_at}|${t.ttl_ms}`;
   const expected = await hmacSha256(input.secret, payload);
-  if (expected !== t.hmac) {
+  // Constant-time compare. `t.hmac` is attacker-supplied (it travels inside
+  // the action token); a plain `!==` short-circuits on the first differing
+  // hex char, leaking a timing oracle that could let an attacker iteratively
+  // forge a valid HMAC and send an email the gate should have blocked.
+  if (!constantTimeEqHex(expected, t.hmac)) {
     return { ok: false, reason: "hmac_mismatch" };
   }
   return { ok: true };
@@ -442,6 +446,21 @@ async function hmacSha256(secret: string, payload: string): Promise<string> {
     TEXT_ENC.encode(payload),
   );
   return bufToHex(sig);
+}
+
+/**
+ * Constant-time equality on two hex strings (HMAC timing-attack mitigation).
+ * Length mismatch returns false immediately (lengths are not secret — both
+ * are fixed-width SHA-256 hex in practice). Otherwise every char is compared
+ * with no early exit. Mirrors `constantTimeEqHex` in _shared/agent_action.ts.
+ */
+function constantTimeEqHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) {
+    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return diff === 0;
 }
 
 function bufToHex(buf: ArrayBuffer): string {

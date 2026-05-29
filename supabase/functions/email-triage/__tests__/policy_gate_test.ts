@@ -379,3 +379,42 @@ Deno.test("verifyGateToken — backwards compat: token without shas + send witho
   });
   assertEquals(r.ok, true, "legacy token + legacy send still works");
 });
+
+// ---- HMAC timing-safety + tamper rejection ---------------------------------
+
+Deno.test("verifyGateToken — a tampered hmac is rejected (hmac_mismatch)", async () => {
+  const t = await issueGateToken({
+    draft_id: "d", body_sha256: "b", recipients: ["a@b"],
+    secret: "s", now: 1, ttl_ms: 60_000,
+  });
+  // Flip the last hex char of a valid HMAC — must NOT verify.
+  const last = t.hmac.slice(-1);
+  const flipped = t.hmac.slice(0, -1) + (last === "0" ? "1" : "0");
+  const r = await verifyGateToken({
+    token: { ...t, hmac: flipped },
+    expected_draft_id: "d",
+    expected_body_sha256: "b",
+    expected_recipients: ["a@b"],
+    secret: "s",
+    now: 1,
+  });
+  assertEquals(r.ok, false);
+  if (!r.ok) assertEquals(r.reason, "hmac_mismatch");
+});
+
+Deno.test("contract — HMAC compared in constant time (no plain !== on t.hmac)", async () => {
+  // Timing-attack guard: the verify path must use constantTimeEqHex, not a
+  // short-circuiting `expected !== t.hmac`. `t.hmac` is attacker-supplied.
+  const src = await Deno.readTextFile(new URL("../policy_gate.ts", import.meta.url));
+  const stripped = src
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*\/\/.*$/gm, "");
+  assert(
+    /constantTimeEqHex\(\s*expected\s*,\s*t\.hmac\s*\)/.test(stripped),
+    "HMAC verify must use constantTimeEqHex(expected, t.hmac)",
+  );
+  assert(
+    !/\bexpected\s*!==\s*t\.hmac\b/.test(stripped),
+    "plain `expected !== t.hmac` is timing-unsafe — use constantTimeEqHex",
+  );
+});
