@@ -158,8 +158,37 @@ serve(async (req) => {
   }
 
   if (!acceptOk) {
-    // Fallback path: sequenced operations (non-atomic, dev-only).
-    // 1. Upsert member.
+    // Fallback path (runs when org_accept_invitation RPC is absent — which
+    // is the case in prod today). The steps are sequenced, NOT in one txn,
+    // so the order is load-bearing for idempotency:
+    //
+    // 1. CLAIM the invitation FIRST via a conditional UPDATE guarded on
+    //    `accepted_at IS NULL`. This is the single-use gate. The line-88
+    //    accepted_at read is a TOCTOU check — two concurrent accepts of the
+    //    same token both pass it. Only the request whose conditional UPDATE
+    //    actually returns a row "won" the claim; the loser gets 0 rows and
+    //    must NOT increment the seat (else seat_count is double-charged for
+    //    one membership: idempotent member row but +2 seats → over-billing).
+    const { data: claimed, error: claimErr } = await supabase
+      .from("org_invitations")
+      .update({
+        accepted_at: new Date().toISOString(),
+        accepted_by: userId,
+      })
+      .eq("id", invite.id)
+      .is("accepted_at", null)
+      .select("id")
+      .maybeSingle();
+    if (claimErr) {
+      console.error("[accept-invitation] invite claim failed:", claimErr);
+      return jsonError("Accept failed", 500, { reason: "claim_failed" });
+    }
+    if (!claimed) {
+      // Lost the race (or replayed) — someone already claimed this token.
+      return jsonError("Already accepted", 409, { reason: "already_accepted" });
+    }
+
+    // 2. Upsert member (idempotent via onConflict — safe to run after claim).
     const { error: memErr } = await supabase
       .from("org_members")
       .upsert(
@@ -180,19 +209,12 @@ serve(async (req) => {
       });
     }
 
-    // 2. Mark invitation accepted.
-    await supabase
-      .from("org_invitations")
-      .update({
-        accepted_at: new Date().toISOString(),
-        accepted_by: userId,
-      })
-      .eq("id", invite.id);
-
     // 3. Increment seat count atomically. org_increment_seats locks the org
     //    row FOR UPDATE (serializes concurrent accepts), enforces seat_limit,
     //    and writes the forensic org_seat_change_log — a plain read-modify-write
     //    here would race two concurrent accepts and let the org exceed its cap.
+    //    Only the request that won the claim above reaches this line, so each
+    //    membership increments the seat exactly once.
     const { data: seatAfter, error: seatErr } = await (supabase as any).rpc(
       "org_increment_seats",
       { p_org: org.id, p_delta: 1 },
