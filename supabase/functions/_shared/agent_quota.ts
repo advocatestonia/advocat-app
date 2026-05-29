@@ -37,16 +37,26 @@ export async function detectAgentTier(sb: any, userId: string): Promise<AgentTie
   try {
     const { data } = await sb
       .from("subscriptions")
-      .select("plan")
+      .select("tier, current_period_end")
       .eq("user_id", userId)
       .in("status", ["active", "trialing"])
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    const plan = (data?.plan as string | null)?.toLowerCase() ?? "";
-    if (plan.includes("pro")) return "pro";
-    if (plan.includes("premium")) return "premium";
-    if (plan.includes("counsel")) return "counsel";
+    if (!data) return "free";
+
+    // Expiry guard: the row can read status='active' long after the period
+    // ended when no renewal/cancel webhook arrived (e.g. Apple IAP has no
+    // server-notification handler in prod). A lapsed period is "free".
+    const periodEnd = data.current_period_end as string | null;
+    if (periodEnd && new Date(periodEnd).getTime() < Date.now()) return "free";
+
+    // `subscriptions.tier` stores the Stripe/IAP tier: "basic" | "premium"
+    // | "free" (NOT "plan" — that column does not exist). basic == Counsel,
+    // premium == Pro for agent-cap purposes.
+    const tier = (data.tier as string | null)?.toLowerCase() ?? "";
+    if (tier === "premium" || tier.includes("pro")) return "pro";
+    if (tier === "basic" || tier.includes("counsel")) return "counsel";
     return "free";
   } catch (_) {
     return "free";

@@ -15,12 +15,18 @@ import {
 // ─── Fake supabase client ─────────────────────────────────────────────────
 // deno-lint-ignore no-explicit-any
 function fakeSb(opts: {
-  plan?: string | null;
+  // `subscriptions.tier` stores "basic" | "premium" | "free" (NOT "plan").
+  tier?: string | null;
+  // ISO string for current_period_end. Defaults to a far-future date so the
+  // expiry guard passes; pass a past date to exercise the lapse-to-free path.
+  periodEnd?: string | null;
   rpcResult?: { turns_used: number; tier_cap: number; exhausted: boolean };
   rpcError?: { message: string };
   rpcThrow?: Error;
   auditCapture?: Array<Record<string, unknown>>;
 }): any {
+  const farFuture = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+    .toISOString();
   return {
     from(table: string) {
       if (table === "subscriptions") {
@@ -32,9 +38,14 @@ function fakeSb(opts: {
                   limit: () => ({
                     maybeSingle: () =>
                       Promise.resolve({
-                        data: opts.plan === undefined
+                        data: opts.tier === undefined
                           ? null
-                          : { plan: opts.plan },
+                          : {
+                            tier: opts.tier,
+                            current_period_end: opts.periodEnd === undefined
+                              ? farFuture
+                              : opts.periodEnd,
+                          },
                       }),
                   }),
                 }),
@@ -71,19 +82,16 @@ function fakeSb(opts: {
 
 // ─── detectAgentTier ──────────────────────────────────────────────────────
 
-Deno.test("detectAgentTier: pro plan", async () => {
-  const sb = fakeSb({ plan: "pro_monthly" });
+Deno.test("detectAgentTier: premium tier → pro cap", async () => {
+  // subscriptions.tier='premium' is the Pro plan.
+  const sb = fakeSb({ tier: "premium" });
   assertEquals(await detectAgentTier(sb, "u1"), "pro");
 });
 
-Deno.test("detectAgentTier: counsel plan", async () => {
-  const sb = fakeSb({ plan: "counsel_annual" });
+Deno.test("detectAgentTier: basic tier → counsel cap", async () => {
+  // subscriptions.tier='basic' is the Counsel plan.
+  const sb = fakeSb({ tier: "basic" });
   assertEquals(await detectAgentTier(sb, "u1"), "counsel");
-});
-
-Deno.test("detectAgentTier: premium plan", async () => {
-  const sb = fakeSb({ plan: "premium_monthly" });
-  assertEquals(await detectAgentTier(sb, "u1"), "premium");
 });
 
 Deno.test("detectAgentTier: no row → free", async () => {
@@ -91,9 +99,27 @@ Deno.test("detectAgentTier: no row → free", async () => {
   assertEquals(await detectAgentTier(sb, "u1"), "free");
 });
 
-Deno.test("detectAgentTier: unknown plan → free", async () => {
-  const sb = fakeSb({ plan: "weird_legacy" });
+Deno.test("detectAgentTier: unknown tier → free", async () => {
+  const sb = fakeSb({ tier: "weird_legacy" });
   assertEquals(await detectAgentTier(sb, "u1"), "free");
+});
+
+Deno.test("detectAgentTier: lapsed period (status active, expired) → free", async () => {
+  // Regression: Apple IAP has no expiry webhook in prod, so a cancelled/
+  // refunded sub can read status='active' with a past period end. Must read
+  // as free, not perpetual Pro.
+  const sb = fakeSb({
+    tier: "premium",
+    periodEnd: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+  });
+  assertEquals(await detectAgentTier(sb, "u1"), "free");
+});
+
+Deno.test("detectAgentTier: null period end → still grants tier", async () => {
+  // A null current_period_end (legacy/lifetime row) is not treated as
+  // expired — only an explicitly-past date downgrades.
+  const sb = fakeSb({ tier: "premium", periodEnd: null });
+  assertEquals(await detectAgentTier(sb, "u1"), "pro");
 });
 
 // ─── AGENT_TIER_CAP ───────────────────────────────────────────────────────
@@ -108,7 +134,7 @@ Deno.test("AGENT_TIER_CAP constants", () => {
 // ─── checkAndConsumeAgentQuota ────────────────────────────────────────────
 
 Deno.test("checkAndConsumeAgentQuota: free tier denied", async () => {
-  const sb = fakeSb({ plan: null });
+  const sb = fakeSb({ tier: null });
   const r = await checkAndConsumeAgentQuota({ sb, userId: "u1" });
   assertEquals(r.ok, false);
   assertEquals(r.tier, "free");
@@ -117,7 +143,7 @@ Deno.test("checkAndConsumeAgentQuota: free tier denied", async () => {
 
 Deno.test("checkAndConsumeAgentQuota: pro under cap → ok", async () => {
   const sb = fakeSb({
-    plan: "pro_monthly",
+    tier: "premium",
     rpcResult: { turns_used: 5, tier_cap: 50, exhausted: false },
   });
   const r = await checkAndConsumeAgentQuota({ sb, userId: "u1" });
@@ -129,7 +155,7 @@ Deno.test("checkAndConsumeAgentQuota: pro under cap → ok", async () => {
 
 Deno.test("checkAndConsumeAgentQuota: pro exhausted → denied", async () => {
   const sb = fakeSb({
-    plan: "pro_monthly",
+    tier: "premium",
     rpcResult: { turns_used: 51, tier_cap: 50, exhausted: true },
   });
   const r = await checkAndConsumeAgentQuota({ sb, userId: "u1" });
@@ -140,7 +166,7 @@ Deno.test("checkAndConsumeAgentQuota: pro exhausted → denied", async () => {
 
 Deno.test("checkAndConsumeAgentQuota: RPC error → fail closed", async () => {
   const sb = fakeSb({
-    plan: "pro_monthly",
+    tier: "premium",
     rpcError: { message: "db down" },
   });
   const r = await checkAndConsumeAgentQuota({ sb, userId: "u1" });
@@ -150,7 +176,7 @@ Deno.test("checkAndConsumeAgentQuota: RPC error → fail closed", async () => {
 
 Deno.test("checkAndConsumeAgentQuota: RPC throws → fail closed", async () => {
   const sb = fakeSb({
-    plan: "pro_monthly",
+    tier: "premium",
     rpcThrow: new Error("network"),
   });
   const r = await checkAndConsumeAgentQuota({ sb, userId: "u1" });

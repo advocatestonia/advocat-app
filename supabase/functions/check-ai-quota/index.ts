@@ -226,7 +226,7 @@ async function detectPlan(
   // the historical behaviour of returning "free" in that case.
   const sub = await sb
     .from("subscriptions")
-    .select("status")
+    .select("status, current_period_end")
     .eq("user_id", uid)
     .in("status", ["active", "trialing"])
     .limit(1)
@@ -239,7 +239,19 @@ async function detectPlan(
       throw new Error(`subscriptions lookup: ${sub.error.message}`);
     }
   }
-  if (sub.data) return "pro";
+  if (sub.data) {
+    // Expiry guard: a row can read status='active' long after the period
+    // ended if no renewal/cancel/refund webhook arrived. Apple IAP in
+    // particular has no server-notification handler in prod, so a cancelled
+    // or refunded sub would otherwise grant Pro forever. A lapsed period is
+    // treated as free regardless of the stored status.
+    const periodEnd = (sub.data as { current_period_end?: string | null })
+      .current_period_end;
+    if (!periodEnd || new Date(periodEnd).getTime() >= Date.now()) {
+      return "pro";
+    }
+    // else fall through to the profiles.is_pro check below.
+  }
 
   const prof = await sb
     .from("profiles")
