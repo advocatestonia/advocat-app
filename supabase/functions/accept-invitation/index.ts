@@ -188,48 +188,71 @@ serve(async (req) => {
       return jsonError("Already accepted", 409, { reason: "already_accepted" });
     }
 
-    // 2. Upsert member (idempotent via onConflict — safe to run after claim).
-    const { error: memErr } = await supabase
+    // 1b. Is this user ALREADY an active member? invite-member blocks
+    //     inviting an existing member, but there is a TOCTOU window: the
+    //     invite is created while the user is not a member, then the user
+    //     joins via another path before accepting this still-pending token.
+    //     If we blindly upsert + increment we would (a) overwrite their
+    //     existing role with this invite's (possibly lower) role and
+    //     (b) charge a SECOND seat for one person → over-billing.
+    //     So: detect the existing membership and skip both the role write
+    //     and the seat increment in that case.
+    const { data: existingMember } = await supabase
       .from("org_members")
-      .upsert(
-        {
-          org_id: invite.org_id,
-          user_id: userId,
-          role: invite.role,
-          invited_by: null,
-          joined_at: new Date().toISOString(),
-          removed_at: null,
-        },
-        { onConflict: "org_id,user_id" },
-      );
-    if (memErr) {
-      console.error("[accept-invitation] member upsert failed:", memErr);
-      return jsonError("Member install failed", 500, {
-        reason: "member_upsert_failed",
-      });
-    }
+      .select("id, role")
+      .eq("org_id", invite.org_id)
+      .eq("user_id", userId)
+      .is("removed_at", null)
+      .maybeSingle();
 
-    // 3. Increment seat count atomically. org_increment_seats locks the org
-    //    row FOR UPDATE (serializes concurrent accepts), enforces seat_limit,
-    //    and writes the forensic org_seat_change_log — a plain read-modify-write
-    //    here would race two concurrent accepts and let the org exceed its cap.
-    //    Only the request that won the claim above reaches this line, so each
-    //    membership increments the seat exactly once.
-    const { data: seatAfter, error: seatErr } = await (supabase as any).rpc(
-      "org_increment_seats",
-      { p_org: org.id, p_delta: 1 },
-    );
-    if (seatErr) {
-      // 23514 (check_violation) is raised for seat_limit_exceeded.
-      if (`${seatErr.message}`.includes("seat_limit_exceeded")) {
-        return jsonError("Seat limit exceeded", 402, {
-          reason: "seat_limit_exceeded",
+    if (existingMember) {
+      // Already seated. The token is now consumed (claimed above); do not
+      // touch their role or the seat count. Treat as a successful no-op join.
+      seatCountAfter = org.seat_count ?? null;
+    } else {
+      // 2. Upsert member (idempotent via onConflict — safe to run after claim).
+      const { error: memErr } = await supabase
+        .from("org_members")
+        .upsert(
+          {
+            org_id: invite.org_id,
+            user_id: userId,
+            role: invite.role,
+            invited_by: null,
+            joined_at: new Date().toISOString(),
+            removed_at: null,
+          },
+          { onConflict: "org_id,user_id" },
+        );
+      if (memErr) {
+        console.error("[accept-invitation] member upsert failed:", memErr);
+        return jsonError("Member install failed", 500, {
+          reason: "member_upsert_failed",
         });
       }
-      console.error("[accept-invitation] seat increment failed:", seatErr);
-      return jsonError("Accept failed", 500, { reason: "seat_increment_failed" });
+
+      // 3. Increment seat count atomically. org_increment_seats locks the org
+      //    row FOR UPDATE (serializes concurrent accepts), enforces seat_limit,
+      //    and writes the forensic org_seat_change_log — a plain read-modify-write
+      //    here would race two concurrent accepts and let the org exceed its cap.
+      //    Only the request that won the claim above reaches this line, so each
+      //    membership increments the seat exactly once.
+      const { data: seatAfter, error: seatErr } = await (supabase as any).rpc(
+        "org_increment_seats",
+        { p_org: org.id, p_delta: 1 },
+      );
+      if (seatErr) {
+        // 23514 (check_violation) is raised for seat_limit_exceeded.
+        if (`${seatErr.message}`.includes("seat_limit_exceeded")) {
+          return jsonError("Seat limit exceeded", 402, {
+            reason: "seat_limit_exceeded",
+          });
+        }
+        console.error("[accept-invitation] seat increment failed:", seatErr);
+        return jsonError("Accept failed", 500, { reason: "seat_increment_failed" });
+      }
+      seatCountAfter = typeof seatAfter === "number" ? seatAfter : null;
     }
-    seatCountAfter = typeof seatAfter === "number" ? seatAfter : null;
   }
 
   // ── Stripe quantity sync (best-effort) ────────────────────────────────
