@@ -61,6 +61,19 @@ const CRON_SECRET = Deno.env.get("CRON_SECRET");
  * payloads. */
 const MAX_PAYLOAD_BYTES = 32 * 1024;
 
+/** Constant-time string comparison (prevents a timing oracle on the cron
+ * secret — this endpoint is public, so the compare is attacker-triggerable
+ * by sending an x-cron-secret header). Mirrors timingSafeEqualStr in the
+ * cron auth_gate.ts helpers. */
+function timingSafeEqualStr(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  let r = 0;
+  for (let i = 0; i < a.length; i++) {
+    r |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  }
+  return r === 0;
+}
+
 /** Source variants accepted on the wire. */
 type ExtractorSource = "pdf" | "intake" | "haiku_extract" | "manual";
 
@@ -92,7 +105,7 @@ serve(async (req: Request) => {
       console.error("deadline-extractor: CRON_SECRET not configured");
       return jsonError("Cron secret not configured", 500);
     }
-    if (cronHeader !== CRON_SECRET) {
+    if (!timingSafeEqualStr(cronHeader, CRON_SECRET)) {
       return jsonError("Invalid cron secret", 401);
     }
     // Service-role mode: caller must supply user_id explicitly via case_id
