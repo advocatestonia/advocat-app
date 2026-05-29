@@ -495,6 +495,7 @@ class _SubscriptionScreenState extends ConsumerState<SubscriptionScreen>
     // for digital subs purchased inside the iOS app; Stripe-only would be
     // a rejection risk). Everywhere else → Stripe Checkout (unchanged).
     if (_shouldShowAppleIap()) {
+      if (!context.mounted) return;
       await _handleApplePurchase(context, ref, planId, isAnnual);
       return;
     }

@@ -386,11 +386,11 @@ Deno.test("parseStatuteXml — skips paragrahv whose <paragrahvNr> is not numeri
 
 // ── Seed correctness ────────────────────────────────────────────────────────
 
-Deno.test("seed_jobs.sql — exactly 25 RT statute jobs", async () => {
+Deno.test("seed_jobs.sql — exactly 37 RT statute jobs", async () => {
   const sql = await Deno.readTextFile(new URL("../seed_jobs.sql", import.meta.url));
   // Count INSERT VALUES rows — each starts with "('rt',"
   const matches = sql.match(/^\s*\('rt',/gm) ?? [];
-  assertEquals(matches.length, 25, "seed must contain 25 RT statute rows");
+  assertEquals(matches.length, 37, "seed must contain 37 RT statute rows");
 });
 
 Deno.test("seed_jobs.sql — uses correct RT abbreviations (PankrS not PankS, PKS not PerekS)", async () => {

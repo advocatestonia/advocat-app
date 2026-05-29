@@ -113,8 +113,16 @@ async function fetchPiiTablesFromMigrations(): Promise<InfoSchemaRow[]> {
     return [];
   }
   const byTable = new Map<string, Set<string>>();
+  // Capture an OPTIONAL schema qualifier so we can SKIP non-`public` schemas.
+  // The Art. 17 sweep only erases `public.*` rows; helper schemas like
+  // `app_vault.*` (encryption-key infra) and `app.*` (internal queues /
+  // rate-limit buckets) are NOT user-data tables. The previous regex stripped
+  // only a literal `public.` prefix and then captured the FIRST \w+ token,
+  // so `CREATE TABLE app_vault.admin_users (...)` mis-captured the SCHEMA name
+  // `app_vault` as if it were a public table — producing phantom orphans
+  // (app_vault, app, ...) that no account-delete sweep could ever cover.
   const createRe =
-    /create\s+table\s+(?:if\s+not\s+exists\s+)?(?:public\.)?["`]?(\w+)["`]?[\s\S]*?\(([\s\S]*?)\);/gi;
+    /create\s+table\s+(?:if\s+not\s+exists\s+)?(?:["`]?(\w+)["`]?\.)?["`]?(\w+)["`]?[\s\S]*?\(([\s\S]*?)\);/gi;
   for (const entry of entries) {
     if (!entry.isFile || !entry.name.endsWith(".sql")) continue;
     let sql: string;
@@ -125,8 +133,11 @@ async function fetchPiiTablesFromMigrations(): Promise<InfoSchemaRow[]> {
     }
     let m: RegExpExecArray | null;
     while ((m = createRe.exec(sql))) {
-      const table = m[1].toLowerCase();
-      const body = m[2].toLowerCase();
+      const schema = (m[1] ?? "public").toLowerCase();
+      // Only public.* tables are in scope for the Art. 17 erasure sweep.
+      if (schema !== "public") continue;
+      const table = m[2].toLowerCase();
+      const body = m[3].toLowerCase();
       const cols = new Set<string>();
       for (const col of PII_COLUMNS) {
         // crude but reliable: look for "<col> " or "<col>\n" at column-start
@@ -149,10 +160,23 @@ Deno.test("USER_DATA_TABLES covers every public.* table with a PII column", asyn
   const url = Deno.env.get("SUPABASE_URL");
   const key = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
+  // Distinguish a REAL prod credential from the placeholder env that other
+  // test files in the same batch run set (e.g. https://example.supabase.co +
+  // "fake-service-key"). Pointing the live-schema reader at a fake URL yields
+  // a partial/empty table list, and the strict phantom-check below would then
+  // false-fail every legitimately-listed table. Only treat creds as live when
+  // they are not the well-known test placeholders.
+  const looksLikeRealCreds = !!url && !!key &&
+    !url.includes("example.supabase.co") &&
+    !url.includes("localhost") &&
+    key !== "fake-service-key";
+
   let piiTables: InfoSchemaRow[];
-  if (url && key) {
+  let usedLiveSchema = false;
+  if (looksLikeRealCreds) {
     try {
-      piiTables = await fetchPiiTables(url, key);
+      piiTables = await fetchPiiTables(url!, key!);
+      usedLiveSchema = true;
     } catch (e) {
       // Live query failed → fall back to migrations parse, but flag it.
       console.warn(
@@ -164,7 +188,7 @@ Deno.test("USER_DATA_TABLES covers every public.* table with a PII column", asyn
     }
   } else {
     console.warn(
-      "[coverage_test] SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set — " +
+      "[coverage_test] no REAL SUPABASE creds (placeholder/test env or unset) — " +
         "running migrations-directory fallback. NOT a substitute for the " +
         "live-schema check; owner must run this with creds before prod deploy.",
     );
@@ -221,7 +245,7 @@ Deno.test("USER_DATA_TABLES covers every public.* table with a PII column", asyn
   // In migrations-fallback mode we may not see every table (e.g. tables
   // created via SQL Studio or earlier migration files we couldn't parse).
   // Only fail-hard when we have a live schema read.
-  if (url && key && phantom.length > 0) {
+  if (usedLiveSchema && phantom.length > 0) {
     throw new Error(
       `USER_DATA_TABLES lists ${phantom.length} table(s) that do NOT ` +
         `exist in the live schema (typo / renamed / dropped):\n` +

@@ -156,22 +156,26 @@ Deno.test("T05 — buckets isolate rate limits (bucketA exhausted, bucketB fine)
 
 Deno.test("T06 — different IPs isolate rate limits", async () => {
   __resetRateLimitForTest();
+  // Wave-1 security fix (2026-05-28, audit P0-06): x-forwarded-for is
+  // client-controlled and is IGNORED unless TRUST_XFF=true. The canonical,
+  // non-echoable client IP on Supabase Edge is x-real-ip — that is what the
+  // limiter buckets on, so the isolation test must drive it via x-real-ip.
   // IP 1.1.1.1 exhausted
   for (let i = 0; i < 2; i++) {
     await requireUserWithRateLimit(
-      mockReq({ "x-forwarded-for": "1.1.1.1" }),
+      mockReq({ "x-real-ip": "1.1.1.1" }),
       { bucket: "t06", maxPerMinute: 10, anonymousPerMinute: 2 },
     );
   }
   const ip1Denied = await requireUserWithRateLimit(
-    mockReq({ "x-forwarded-for": "1.1.1.1" }),
+    mockReq({ "x-real-ip": "1.1.1.1" }),
     { bucket: "t06", maxPerMinute: 10, anonymousPerMinute: 2 },
   );
   assertEquals(ip1Denied.kind, "deny");
 
   // Different IP — fine
   const ip2 = await requireUserWithRateLimit(
-    mockReq({ "x-forwarded-for": "2.2.2.2" }),
+    mockReq({ "x-real-ip": "2.2.2.2" }),
     { bucket: "t06", maxPerMinute: 10, anonymousPerMinute: 2 },
   );
   assertEquals(ip2.kind, "allow");

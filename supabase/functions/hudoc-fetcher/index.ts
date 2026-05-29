@@ -96,7 +96,9 @@ const httpHandler = async (req: Request) => {
   }
 
   const workerId = `${WORKER_ID_PREFIX}-${crypto.randomUUID().slice(0, 8)}`;
-  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 
   const results = {
     worker_id: workerId,

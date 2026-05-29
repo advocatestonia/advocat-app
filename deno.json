@@ -1,0 +1,4 @@
+{
+  "//": "Root Deno config for LOCAL TESTING ONLY. Supabase deploys use the per-function [functions.<name>] import_map blocks in supabase/config.toml (INFRA-02 supply-chain lock) — NOT this file. Auto-discovered by `deno test`, this wires the shared import map so bare specifiers like `@sentry/deno` resolve without an explicit --import-map flag in batch runs (e.g. `deno test supabase/functions/`).",
+  "importMap": "supabase/functions/import_map.json"
+}

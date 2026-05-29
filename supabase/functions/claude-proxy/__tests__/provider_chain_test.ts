@@ -155,8 +155,9 @@ if (chainMod === null) {
     const r = await callWithFallback(baseSignals(), PARAMS, RAG_TEXT, {
       anthropic: ((args: { model: string }) => {
         anthropicCalls++;
-        // First call should be Sonnet
-        assertStringIncludes(args.model, "sonnet");
+        // First (high-quality) tier is now Opus 4.8 (2026-05-29 upgrade).
+        // The fallback_chain step label stays "sonnet:*" for wire stability.
+        assertStringIncludes(args.model, "opus");
         return okResp("sonnet-text");
         // deno-lint-ignore no-explicit-any
       }) as any,
@@ -180,7 +181,7 @@ if (chainMod === null) {
       anthropic: ((args: { model: string }) => {
         i++;
         if (i === 1) {
-          assertStringIncludes(args.model, "sonnet");
+          assertStringIncludes(args.model, "opus");
           return rejectWith(new Provider429Error("rate limited"));
         }
         assertStringIncludes(args.model, "haiku");
@@ -308,13 +309,17 @@ if (chainMod === null) {
     assertEquals(r.fallback_chain[r.fallback_chain.length - 1], "rag_only:exhausted");
   });
 
-  Deno.test("chain: anon caller never tries Sonnet (cost protection)", async () => {
+  Deno.test("chain: anon caller never tries the expensive tier (cost protection)", async () => {
     let sonnetSeen = false;
     const anonSignals = baseSignals({ isAnon: true });
     anonSignals.isAnon = true;
     const r = await callWithFallback(anonSignals, PARAMS, RAG_TEXT, {
       anthropic: ((args: { model: string }) => {
-        if (args.model.includes("sonnet")) sonnetSeen = true;
+        // High-quality tier is Opus 4.8 since 2026-05-29; keep the old
+        // "sonnet" check too so a regression to either is caught.
+        if (args.model.includes("sonnet") || args.model.includes("opus")) {
+          sonnetSeen = true;
+        }
         return okResp("haiku-anon");
         // deno-lint-ignore no-explicit-any
       }) as any,

@@ -173,17 +173,21 @@ Deno.test("P05 — different bucket_keys keep independent counters", async () =>
     return Promise.resolve(cur <= max);
   });
 
+  // Wave-1 security fix (2026-05-28, audit P0-06): x-forwarded-for is
+  // client-controlled and IGNORED unless TRUST_XFF=true. The non-echoable
+  // canonical client IP on Supabase Edge is x-real-ip — drive isolation via
+  // that header so the principal actually varies by IP.
   // User A on bucket "fn-a" — fill to cap (max=2)
   const a1 = await requireUserWithRateLimit(
-    mockReq({ "x-forwarded-for": "1.1.1.1" }),
+    mockReq({ "x-real-ip": "1.1.1.1" }),
     { bucket: "fn-a", maxPerMinute: 99, anonymousPerMinute: 2 },
   );
   const a2 = await requireUserWithRateLimit(
-    mockReq({ "x-forwarded-for": "1.1.1.1" }),
+    mockReq({ "x-real-ip": "1.1.1.1" }),
     { bucket: "fn-a", maxPerMinute: 99, anonymousPerMinute: 2 },
   );
   const a3 = await requireUserWithRateLimit(
-    mockReq({ "x-forwarded-for": "1.1.1.1" }),
+    mockReq({ "x-real-ip": "1.1.1.1" }),
     { bucket: "fn-a", maxPerMinute: 99, anonymousPerMinute: 2 },
   );
   assertEquals(a1.kind, "allow");
@@ -192,14 +196,14 @@ Deno.test("P05 — different bucket_keys keep independent counters", async () =>
 
   // Same IP on a DIFFERENT bucket — fresh counter, fine
   const b1 = await requireUserWithRateLimit(
-    mockReq({ "x-forwarded-for": "1.1.1.1" }),
+    mockReq({ "x-real-ip": "1.1.1.1" }),
     { bucket: "fn-b", maxPerMinute: 99, anonymousPerMinute: 2 },
   );
   assertEquals(b1.kind, "allow");
 
   // Different IP on fn-a — fresh counter (key differs by IP)
   const a4 = await requireUserWithRateLimit(
-    mockReq({ "x-forwarded-for": "2.2.2.2" }),
+    mockReq({ "x-real-ip": "2.2.2.2" }),
     { bucket: "fn-a", maxPerMinute: 99, anonymousPerMinute: 2 },
   );
   assertEquals(a4.kind, "allow");

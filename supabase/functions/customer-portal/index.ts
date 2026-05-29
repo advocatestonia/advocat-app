@@ -33,7 +33,9 @@ serve(async (req) => {
   if (gate.kind === "deny") return gate.response;
 
   try {
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
     const user = gate.user;
 
     // Get the user's Stripe customer ID from profiles

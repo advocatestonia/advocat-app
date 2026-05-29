@@ -156,7 +156,7 @@ Deno.test("A01 — USER_DATA_TABLES covers core personal-data surfaces", () => {
       "documents",
       "cases",
       "deadlines",
-      "drafts",
+      "user_drafts",
       "email_threads",
       "user_oauth_tokens",
       "user_encryption_keys",
@@ -264,8 +264,9 @@ Deno.test(
     assert(!chat!.skipped);
     // Auth delete still ran (so the locked-out problem is avoided).
     assert(result.auth_user_deleted);
-    // Overall ok because auth succeeded — `partial` flags the data gap.
-    assert(result.ok);
+    // `ok` now means "fully clean" — a table failure makes it false so the
+    // client retries; `partial` flags that auth succeeded but data lingers.
+    assert(!result.ok, "ok=false when any table failed (retry semantics)");
     assertEquals(result.partial, true);
   },
 );

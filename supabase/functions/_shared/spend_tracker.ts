@@ -75,7 +75,14 @@ export const WARN_RATIO = (() => {
 // open until the first request) and the Edge Function runtime keeps
 // the underlying fetch pool warm.
 function client() {
-  return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  // persistSession/autoRefreshToken OFF: this is a service-role client that
+  // never carries a user session, so token auto-refresh is pointless. Leaving
+  // autoRefreshToken on also starts a setInterval the client never clears,
+  // which trips Deno's leak sanitizer in batch test runs (and needlessly
+  // ticks a timer in the edge runtime).
+  return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }
 
 export interface SpendCheckResult {

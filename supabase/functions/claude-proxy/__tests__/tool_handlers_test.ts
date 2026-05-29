@@ -6,14 +6,24 @@
 // -----------------------------------------------------------------------------
 
 import { assert, assertEquals } from "https://deno.land/std@0.177.0/testing/asserts.ts";
-import {
+
+// tool_handlers.ts reads SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY into module
+// constants at import time; adminClient() throws "supabaseUrl is required"
+// without them, which would abort the F-006 recipient-allowlist gate before
+// any fetch is reached. Static `import` statements are hoisted above sibling
+// top-level statements, so a plain Deno.env.set() before the import runs too
+// late. Set env first, THEN dynamic-import so the constants capture the values.
+Deno.env.set("SUPABASE_URL", "https://example.supabase.co");
+Deno.env.set("SUPABASE_SERVICE_ROLE_KEY", "fake-service-key");
+
+const {
   ASSISTANT_TOOLS,
   adaptV2RowToLegacy,
   executeToolCalls,
   extractToolUseBlocks,
   isToolUseBlock,
   paragraphFromSectionLabel,
-} from "../tool_handlers.ts";
+} = await import("../tool_handlers.ts");
 
 // =============================================================================
 // Helpers
@@ -42,6 +52,39 @@ function okJson(body: unknown, status = 200): Response {
     status,
     headers: { "Content-Type": "application/json" },
   });
+}
+
+/**
+ * Wave-1 (F-006) hardening made send_email run a recipient-allowlist gate
+ * BEFORE the send-email fetch. The gate queries `email_messages` (via the
+ * Supabase REST client, i.e. globalThis.fetch) for the user's recent inbound
+ * correspondence and denies any recipient who has not emailed the user.
+ *
+ * For the send-success / send-error path tests we want to exercise the actual
+ * send, so this wrapper answers any `email_messages` allowlist query with a
+ * single row whose sender_email == the recipient under test (making the gate
+ * pass), and delegates every other request to the test's own `send` handler.
+ */
+function allowlistThenSend(
+  recipient: string,
+  send: FetchHandler,
+): FetchHandler {
+  return (url: string, init?: RequestInit) => {
+    if (url.includes("/rest/v1/email_messages")) {
+      return Promise.resolve(okJson([
+        {
+          sender_email: recipient,
+          to_recipients: [],
+          cc_recipients: [],
+          sent_at: new Date().toISOString(),
+        },
+      ]));
+    }
+    if (url.includes("/rest/v1/email_threads")) {
+      return Promise.resolve(okJson([]));
+    }
+    return send(url, init);
+  };
 }
 
 // =============================================================================
@@ -162,11 +205,11 @@ Deno.test("executeToolCalls/send_email: calls send-email function and returns su
   let capturedUrl = "";
   let capturedBody: unknown = null;
 
-  await withFetch(async (url, init) => {
+  await withFetch(allowlistThenSend("lawyer@example.com", async (url, init) => {
     capturedUrl = url;
     capturedBody = JSON.parse(init?.body as string);
     return okJson({ ok: true, provider: "gmail_user", provider_message_id: "msg_999" });
-  }, async () => {
+  }), async () => {
     const results = await executeToolCalls(
       [
         {
@@ -197,12 +240,12 @@ Deno.test("executeToolCalls/send_email: calls send-email function and returns su
 });
 
 Deno.test("executeToolCalls/send_email: propagates send-email HTTP error", async () => {
-  await withFetch(async (_url, _init) => {
+  await withFetch(allowlistThenSend("x@y.com", async (_url, _init) => {
     return new Response(
       JSON.stringify({ error: "Rate limit exceeded." }),
       { status: 429, headers: { "Content-Type": "application/json" } },
     );
-  }, async () => {
+  }), async () => {
     const results = await executeToolCalls(
       [
         {
@@ -340,7 +383,7 @@ Deno.test("executeToolCalls: returns error for unknown tool name", async () => {
 Deno.test("executeToolCalls: executes multiple tool blocks and returns all results", async () => {
   const fetchOrder: string[] = [];
 
-  await withFetch(async (url, init) => {
+  await withFetch(allowlistThenSend("a@b.com", async (url, _init) => {
     if (url.includes("/functions/v1/send-email")) {
       fetchOrder.push("send-email");
       return okJson({ ok: true, provider: "resend_fallback", provider_message_id: "r1" });
@@ -354,7 +397,7 @@ Deno.test("executeToolCalls: executes multiple tool blocks and returns all resul
       return okJson({ signedURL: "https://example.com/signed" });
     }
     return okJson({});
-  }, async () => {
+  }), async () => {
     const results = await executeToolCalls(
       [
         {

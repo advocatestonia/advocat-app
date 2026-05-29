@@ -50,7 +50,12 @@ export interface RateLimitResult {
 // parameter on `ReturnType<typeof createClient>` makes `.rpc()` reject
 // typed argument bags.  Per-call construction is cheap.
 function client() {
-  return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+  // persistSession/autoRefreshToken OFF: service-role client with no user
+  // session — token auto-refresh is pointless and its uncleared setInterval
+  // trips Deno's leak sanitizer in batch test runs. See spend_tracker.ts.
+  return createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
 }
 
 /**

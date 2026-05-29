@@ -215,6 +215,14 @@ export const EXCLUDED_TABLES: ReadonlyArray<
   // table whose rows are about to be cascade-deleted by auth.users delete).
   { table: "apple_iap_transactions", reason: "Cascades from auth.users via FK ON DELETE CASCADE" },
 
+  // Retention/lifecycle email log (weekly digest, win-back, insight alerts).
+  // `email_events.user_id REFERENCES auth.users(id) ON DELETE CASCADE`
+  // (migration 20260514160000_retention_infra.sql) — the auth.users delete in
+  // step 3 of this handler wipes it automatically. Listing it in
+  // USER_DATA_TABLES would only attempt a redundant delete that races the
+  // cascade. Same rationale as apple_iap_transactions above.
+  { table: "email_events", reason: "Cascades from auth.users via FK ON DELETE CASCADE (retention email log)" },
+
   // Stripe payload archive. RLS deny-all to clients. Retained for fraud
   // investigation under Art. 6(1)(f) legitimate interest; user_id appears
   // only inside the embedded Stripe JSON, not as a column.
