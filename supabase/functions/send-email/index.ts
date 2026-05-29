@@ -216,6 +216,7 @@ async function sendViaResend(params: {
   cc?: string;
   subject: string;
   body: string;
+  replyTo?: string;
 }): Promise<{ id: string }> {
   if (!RESEND_API_KEY) {
     throw new Error("RESEND_API_KEY is not configured");
@@ -232,6 +233,7 @@ async function sendViaResend(params: {
       cc: params.cc ? [params.cc] : undefined,
       subject: params.subject,
       text: params.body,
+      reply_to: params.replyTo || undefined,
     }),
     signal: AbortSignal.timeout(PROVIDER_FETCH_TIMEOUT_MS),
   });
@@ -272,6 +274,12 @@ serve(async (req) => {
     body?: string;
     case_id?: string;
     force_fallback?: boolean;
+    // When true, omit the "Sent via Advocat.ee on behalf of …" footer on the
+    // Resend fallback path. Used for case correspondence where the footer
+    // wrongly signals to a recipient (e.g. the user's own lawyer) that a third
+    // party is operating the mailbox. The user's real address still rides in
+    // Reply-To, so the disclosure is preserved without the footer noise.
+    suppress_footer?: boolean;
   };
   try {
     payload = await req.json();
@@ -582,16 +590,26 @@ serve(async (req) => {
       );
     }
     try {
+      // Reply-To carries the user's real address so the recipient's reply
+      // reaches the sender directly, not Advocat's no-reply mailbox. This is
+      // the disclosure mechanism that lets us suppress the visible footer for
+      // case correspondence without losing "who to reply to".
+      const replyTo = userFromAddress !== DEFAULT_FROM
+        ? userFromAddress
+        : (user.email ?? undefined);
+      const footer = payload.suppress_footer
+        ? ""
+        : `\n\n---\n` +
+          `Sent via Advocat.ee on behalf of ` +
+          `${userFromName ?? user.email ?? "client"}.\n` +
+          `Reply directly to this email to reach the sender.`;
       const r = await sendViaResend({
         from: `Advocat <${DEFAULT_FROM}>`,
         to,
         cc,
         subject,
-        body:
-          `${composedBody}\n\n---\n` +
-          `Sent via Advocat.ee on behalf of ` +
-          `${userFromName ?? user.email ?? "client"}.\n` +
-          `Reply directly to this email to reach the sender.`,
+        body: `${composedBody}${footer}`,
+        replyTo,
       });
       providerId = r.id;
       provider = "resend_fallback";

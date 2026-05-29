@@ -184,3 +184,22 @@ Deno.test("contract — index.ts reads refresh_token + expires_at from oauth tok
   assertStringIncludes(src, "refresh_token");
   assertStringIncludes(src, "expires_at");
 });
+
+Deno.test("contract — Resend fallback footer is suppressible via payload flag", async () => {
+  const src = await Deno.readTextFile(new URL("../index.ts", import.meta.url));
+  // Case correspondence (e.g. a client emailing their own lawyer) must be able
+  // to omit the "on behalf of" footer, which otherwise signals to the
+  // recipient that a third party operates the mailbox. The disclosure is
+  // preserved via Reply-To instead.
+  assertStringIncludes(src, "suppress_footer");
+  assertStringIncludes(src, "payload.suppress_footer");
+});
+
+Deno.test("contract — Resend fallback sets Reply-To to the user's address", async () => {
+  const src = await Deno.readTextFile(new URL("../index.ts", import.meta.url));
+  // Without reply_to, recipients reply into the no-reply mailbox and the
+  // sender never sees the answer. The fallback MUST route replies back to the
+  // user — this is also the disclosure that lets us drop the visible footer.
+  assertStringIncludes(src, "replyTo");
+  assertStringIncludes(src, "reply_to: params.replyTo");
+});
