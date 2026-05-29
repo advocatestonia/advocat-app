@@ -176,6 +176,19 @@ serve(async (req) => {
   // concurrent race that beats this SELECT crashes on the index, never
   // silently re-binds.
   const originalTxId = entry.original_transaction_id ?? transactionId;
+  // Defence-in-depth: both ids are interpolated into a PostgREST `.or()`
+  // filter below. They are gated by pickMatchingEntry's strict `===` against
+  // the Apple-signed receipt (so a `,`/`)` payload can't reach here today),
+  // but Apple transaction ids are decimal strings — pin that shape so the
+  // filter stays injection-proof even if the upstream match ever loosens.
+  if (!/^[0-9]{1,32}$/.test(transactionId) || !/^[0-9]{1,32}$/.test(originalTxId)) {
+    console.warn(
+      `[apple-iap-verify] non-numeric tx id rejected tx=${transactionId} original=${originalTxId}`,
+    );
+    return jsonError("Malformed transaction id", 409, {
+      reason: "malformed_transaction_id",
+    });
+  }
   const { data: existingTx, error: existingErr } = await sb
     .from("apple_iap_transactions")
     .select("user_id, transaction_id, original_transaction_id")
