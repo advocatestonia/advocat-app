@@ -35,7 +35,10 @@
 // =============================================================================
 
 export const ROUTER_MODEL = "claude-haiku-4-5-20251001";
-export const SONNET_MODEL = "claude-sonnet-4-20250514";
+// 2026-05-29: high-quality tier upgraded Sonnet 4 → Opus 4.8
+// (claude-opus-4-8), Anthropic's most capable model. The `SONNET_MODEL`
+// name is kept for call-site compatibility; it now carries the Opus ID.
+export const SONNET_MODEL = "claude-opus-4-8";
 export const HAIKU_MODEL = "claude-haiku-4-5-20251001";
 
 /** Hard cap on time the router gets to respond. Exceeding it = fall back. */
@@ -545,7 +548,8 @@ export interface RoutingSignals {
  *  ALLOWED_MODELS in index.ts and the long-standing HAIKU_MODEL/SONNET_MODEL
  *  constants above (which the classifier path already uses). */
 export const HAIKU_MODEL_ID = "claude-haiku-4-5-20251001";
-export const SONNET_MODEL_ID = "claude-sonnet-4-20250514";
+// 2026-05-29: high-quality tier ID upgraded Sonnet 4 → Opus 4.8.
+export const SONNET_MODEL_ID = "claude-opus-4-8";
 
 /** Long-context threshold (input tokens). Above this we always prefer Sonnet
  *  for fidelity on document-heavy turns. */

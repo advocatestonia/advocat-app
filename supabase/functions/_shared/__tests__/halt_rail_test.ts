@@ -7,12 +7,93 @@ import { assert, assertEquals } from "https://deno.land/std@0.177.0/testing/asse
 import {
   appendHaltRailToResponse,
   appendHaltRailToSystem,
+  detectCrisis,
   detectLangFromMessage,
   detectSeriousCase,
   extractLargestEuroAmount,
   type HaltDetection,
+  prependCrisisBanner,
   recordHaltRailTrigger,
 } from "../halt_rail.ts";
+
+// ─── detectCrisis (suicide / self-harm) ──────────────────────────────────────
+
+Deno.test("crisis: English suicidal ideation fires", () => {
+  const d = detectCrisis("i want to kill myself, nothing matters");
+  assertEquals(d.isCrisis, true);
+});
+
+Deno.test("crisis: Finnish itsemurha fires", () => {
+  assertEquals(detectCrisis("ajattelen itsemurhaa").isCrisis, true);
+});
+
+Deno.test("crisis: Estonian enesetapp fires", () => {
+  assertEquals(detectCrisis("mõtlen enesetapule, ei jaksa enam").isCrisis, true);
+});
+
+Deno.test("crisis: Russian не хочу жить fires", () => {
+  assertEquals(detectCrisis("я больше не хочу жить").isCrisis, true);
+});
+
+Deno.test("crisis: benign legal query does NOT fire", () => {
+  assertEquals(
+    detectCrisis("how do I appeal my deportation order").isCrisis,
+    false,
+  );
+});
+
+Deno.test("crisis: bare word 'suicide' in news context does NOT fire", () => {
+  // Single-word mention without first-person distress phrasing.
+  assertEquals(detectCrisis("the suicide rate statistics in 2024").isCrisis, false);
+});
+
+Deno.test("crisis: non-string input is safe (no throw, false)", () => {
+  assertEquals(detectCrisis(null).isCrisis, false);
+  assertEquals(detectCrisis(undefined).isCrisis, false);
+  assertEquals(detectCrisis(123 as unknown).isCrisis, false);
+});
+
+Deno.test("prependCrisisBanner: prepends helpline + 🆘 when in crisis", () => {
+  const out = prependCrisisBanner(
+    "Here is some legal info.",
+    { isCrisis: true, reason: "crisis:test" },
+    "i want to die",
+  );
+  assert(out.startsWith("🆘"), "crisis banner must lead the reply");
+  assert(out.includes("Here is some legal info."), "original text preserved");
+  // English-anchored helpline numbers present.
+  assert(out.includes("112"), "EU emergency number present");
+});
+
+Deno.test("prependCrisisBanner: Finnish message gets FI helpline", () => {
+  const out = prependCrisisBanner(
+    "Vastaus.",
+    { isCrisis: true, reason: "crisis:test" },
+    "en jaksa enää elää, haluan kuolla",
+  );
+  assert(out.includes("09 2525 0111"), "MIELI crisis line present");
+});
+
+Deno.test("prependCrisisBanner: idempotent (no double 🆘)", () => {
+  const once = prependCrisisBanner(
+    "x",
+    { isCrisis: true, reason: "r" },
+    "want to die",
+  );
+  const twice = prependCrisisBanner(
+    once,
+    { isCrisis: true, reason: "r" },
+    "want to die",
+  );
+  assertEquals(once, twice);
+});
+
+Deno.test("prependCrisisBanner: no-op when not in crisis", () => {
+  assertEquals(
+    prependCrisisBanner("reply", { isCrisis: false, reason: "" }),
+    "reply",
+  );
+});
 
 // ─── detectSeriousCase ──────────────────────────────────────────────────────
 

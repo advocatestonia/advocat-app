@@ -1,15 +1,250 @@
 # Supabase project configuration
 # Project ref: okgnkucgwsytsondrjye
 # Created: 2026-05-28 — security audit INFRA-02 (dep pinning)
+# Updated: 2026-05-29 — migrated to per-function schema for Supabase CLI v2.84+
 #
-# This file is consumed by the Supabase CLI. The [functions] section
-# applies the import_map to every edge function deploy, locking the
-# supply chain. See supabase/functions/IMPORT_MAP_README.md.
+# This file is consumed by the Supabase CLI. CLI v2.84+ dropped the global
+# [functions] block; import_map / verify_jwt must now be set per function as
+# [functions.<name>]. We keep INFRA-02's supply-chain lock by pinning the
+# shared import_map on EVERY function below. See functions/IMPORT_MAP_README.md.
+#
+# verify_jwt is intentionally NOT set here: each function's gateway JWT setting
+# is managed in the Supabase dashboard (public webhooks like stripe-webhook /
+# apple-iap-verify / oauth-callback must stay verify_jwt=false and verify their
+# own signatures). Re-asserting verify_jwt=true globally would break them.
+#
+# NOTE: when adding a NEW edge function, add a [functions.<name>] block here so
+# it inherits the pinned import_map. canary-deploy.sh does not pass --import-map.
 
 project_id = "okgnkucgwsytsondrjye"
 
-[functions]
-# Apply the import map to ALL edge function deploys.
-# The path is relative to this config.toml.
+[functions.accept-invitation]
 import_map = "./functions/import_map.json"
-verify_jwt = true
+
+[functions.account-delete]
+import_map = "./functions/import_map.json"
+
+[functions.admin-add-correction]
+import_map = "./functions/import_map.json"
+
+[functions.agent-approve]
+import_map = "./functions/import_map.json"
+
+[functions.agent-intentions-cron]
+import_map = "./functions/import_map.json"
+
+[functions.alert-tick]
+import_map = "./functions/import_map.json"
+
+[functions.apple-iap-verify]
+import_map = "./functions/import_map.json"
+
+[functions.b2b-signal]
+import_map = "./functions/import_map.json"
+
+[functions.case-auto-patch]
+import_map = "./functions/import_map.json"
+
+[functions.cases-coordinator]
+import_map = "./functions/import_map.json"
+
+[functions.check-ai-quota]
+import_map = "./functions/import_map.json"
+
+[functions.check-company]
+import_map = "./functions/import_map.json"
+
+[functions.check-refund-eligibility]
+import_map = "./functions/import_map.json"
+
+[functions.check-vehicle]
+import_map = "./functions/import_map.json"
+
+[functions.citation-extractor]
+import_map = "./functions/import_map.json"
+
+[functions.classify-contract]
+import_map = "./functions/import_map.json"
+
+[functions.claude-proxy]
+import_map = "./functions/import_map.json"
+
+[functions.contract-review]
+import_map = "./functions/import_map.json"
+
+[functions.corpus-embedder]
+import_map = "./functions/import_map.json"
+
+[functions.create-checkout]
+import_map = "./functions/import_map.json"
+
+[functions.create-org-checkout]
+import_map = "./functions/import_map.json"
+
+[functions.create-organization]
+import_map = "./functions/import_map.json"
+
+[functions.customer-portal]
+import_map = "./functions/import_map.json"
+
+[functions.deadline-extractor]
+import_map = "./functions/import_map.json"
+
+[functions.deadline-radar-eu]
+import_map = "./functions/import_map.json"
+
+[functions.deadline-radar-tick]
+import_map = "./functions/import_map.json"
+
+[functions.deadline-reminder]
+import_map = "./functions/import_map.json"
+
+[functions.draft-ai-revise]
+import_map = "./functions/import_map.json"
+
+[functions.draft-export-docx]
+import_map = "./functions/import_map.json"
+
+[functions.draft-export-pdf]
+import_map = "./functions/import_map.json"
+
+[functions.dsar-export]
+import_map = "./functions/import_map.json"
+
+[functions.email-inbox-sync]
+import_map = "./functions/import_map.json"
+
+[functions.email-send]
+import_map = "./functions/import_map.json"
+
+[functions.email-triage]
+import_map = "./functions/import_map.json"
+
+[functions.eur-lex-fetcher]
+import_map = "./functions/import_map.json"
+
+[functions.extract-memory]
+import_map = "./functions/import_map.json"
+
+[functions.finlex-fetcher]
+import_map = "./functions/import_map.json"
+
+[functions.generate-api-key]
+import_map = "./functions/import_map.json"
+
+[functions.gmail-label]
+import_map = "./functions/import_map.json"
+
+[functions.gmail-oauth-exchange]
+import_map = "./functions/import_map.json"
+
+[functions.gmail-oauth-init]
+import_map = "./functions/import_map.json"
+
+[functions.gold-review]
+import_map = "./functions/import_map.json"
+
+[functions.gold-scrubber]
+import_map = "./functions/import_map.json"
+
+[functions.google-tts]
+import_map = "./functions/import_map.json"
+
+[functions.hallucination-eval-runner]
+import_map = "./functions/import_map.json"
+
+[functions.he-fetcher]
+import_map = "./functions/import_map.json"
+
+[functions.hudoc-fetcher]
+import_map = "./functions/import_map.json"
+
+[functions.invite-member]
+import_map = "./functions/import_map.json"
+
+[functions.landmark-search]
+import_map = "./functions/import_map.json"
+
+[functions.law-lookup]
+import_map = "./functions/import_map.json"
+
+[functions.law-search]
+import_map = "./functions/import_map.json"
+
+[functions.lawyer-booking]
+import_map = "./functions/import_map.json"
+
+[functions.oauth-callback]
+import_map = "./functions/import_map.json"
+
+[functions.org-billing-portal]
+import_map = "./functions/import_map.json"
+
+[functions.org-usage-stats]
+import_map = "./functions/import_map.json"
+
+[functions.pdf-generator]
+import_map = "./functions/import_map.json"
+
+[functions.pdf-parser]
+import_map = "./functions/import_map.json"
+
+[functions.push-send]
+import_map = "./functions/import_map.json"
+
+[functions.qa-corpus-search]
+import_map = "./functions/import_map.json"
+
+[functions.reconcile-subscriptions]
+import_map = "./functions/import_map.json"
+
+[functions.referral]
+import_map = "./functions/import_map.json"
+
+[functions.remove-member]
+import_map = "./functions/import_map.json"
+
+[functions.revoke-api-key]
+import_map = "./functions/import_map.json"
+
+[functions.rt-fetcher]
+import_map = "./functions/import_map.json"
+
+[functions.send-email]
+import_map = "./functions/import_map.json"
+
+[functions.share-result]
+import_map = "./functions/import_map.json"
+
+[functions.stripe-webhook]
+import_map = "./functions/import_map.json"
+
+[functions.support-ticket]
+import_map = "./functions/import_map.json"
+
+[functions.triage-retry-tick]
+import_map = "./functions/import_map.json"
+
+[functions.tts-proxy]
+import_map = "./functions/import_map.json"
+
+[functions.update-member-role]
+import_map = "./functions/import_map.json"
+
+[functions.vault-rotate-master]
+import_map = "./functions/import_map.json"
+
+[functions.vault-upload]
+import_map = "./functions/import_map.json"
+
+[functions.verify-lawyer]
+import_map = "./functions/import_map.json"
+
+[functions.weekly-digest-send]
+import_map = "./functions/import_map.json"
+
+[functions.whisper-stt]
+import_map = "./functions/import_map.json"
+
+[functions.winback-send]
+import_map = "./functions/import_map.json"

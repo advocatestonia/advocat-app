@@ -100,6 +100,13 @@ const KEYWORDS: Record<HaltCategory, readonly string[]> = {
     "karkott",        // karkottaminen / karkottamista / karkotetaan / karkottaa
     "käännyttäm",     // käännyttäminen / käännyttämistä / käännyttämisestä
     "käännytet",      // käännytetään / käännytettiin
+    // 2026-05-29: the NOUN "käännytys" (deportation decision) and its
+    // compound "käännytyspäätös" share the stem "käännyty-", which is NOT a
+    // prefix of "käännyttäm"/"käännytet". This is the exact word used in real
+    // FI deportation decisions (incl. Sulga's own case docs), so a bare
+    // "Sain käännytyspäätöksen…" previously slipped past detection. Closes
+    // HALT-T06.
+    "käännyty",       // käännytys / käännytyspäätös / käännytyspäätöksen / käännytystä
     "maastapoist",    // maastapoistaminen / maastapoistoa
     "maahantulokielt", // maahantulokielto
     // Production-gap closer (P5 smoke 2026-05-15): live Finnish callers
@@ -406,6 +413,155 @@ export function detectSeriousCase(
   return EMPTY;
 }
 
+// ─── Crisis detection (suicide / self-harm) ──────────────────────────────────
+//
+// SEPARATE from the litigation halt-rail. When a user expresses suicidal
+// ideation or intent to self-harm, the correct response is NOT a "consult a
+// lawyer" advisory — it is an immediate, empathetic hand-off to a crisis
+// helpline, surfaced at the TOP of the reply. A legal product must never
+// answer a person in crisis with a deadline calculation and nothing else.
+//
+// Design rules:
+//   • Detection errs toward firing (false positive = an extra helpline block,
+//     which is harmless). But we are stricter than the legal halt-rail: bare
+//     mentions like "suicide" inside a news/legal discussion must NOT fire, so
+//     each keyword is a first-person distress phrase, not a single word.
+//   • The crisis banner is PREPENDED (helpline first), unlike the legal banner
+//     which is appended.
+//   • Crisis takes priority: when both crisis and a legal category fire, the
+//     crisis block leads and the legal advisory still follows.
+//
+// Helplines are region-spanning (FI + EE + EU + intl) because we cannot know
+// the caller's country reliably; 112 covers the EU, the others are 24/7.
+
+const CRISIS_KEYWORDS: readonly string[] = [
+  // English — first-person distress / intent.
+  "kill myself",
+  "want to die",
+  "end my life",
+  "ending my life",
+  "take my own life",
+  "suicidal",
+  "suicide thoughts",
+  "thinking about suicide",
+  "harm myself",
+  "hurt myself",
+  "self-harm",
+  "self harm",
+  "no reason to live",
+  "can't go on",
+  "cant go on",
+  // Finnish.
+  "tappaa itseni",
+  "tehdä itsemurha",
+  "itsemurha",
+  "en halua elää",
+  "en jaksa enää",
+  "vahingoittaa itseäni",
+  "satuttaa itseäni",
+  // Estonian.
+  "tappa ennast",
+  "enesetapp",
+  "ei taha elada",
+  "ei jaksa enam",
+  "endale haiget teha",
+  "vigastada ennast",
+  // Russian.
+  "покончить с собой",
+  "убить себя",
+  "суицид",
+  "не хочу жить",
+  "не хочу больше жить",
+  "не могу больше",
+  "причинить себе вред",
+  "покончить жизнь самоубийством",
+];
+
+export interface CrisisDetection {
+  isCrisis: boolean;
+  /** Matched phrase, for telemetry only. Empty when isCrisis=false. */
+  reason: string;
+}
+
+const NO_CRISIS: CrisisDetection = { isCrisis: false, reason: "" };
+
+/**
+ * Detect suicidal ideation / self-harm intent in a user message.
+ * Pure, total, no I/O. Multi-word phrases are matched as substrings so
+ * everyday legal/news mentions of the word "suicide" alone don't fire.
+ */
+export function detectCrisis(message: unknown): CrisisDetection {
+  if (typeof message !== "string" || message.length === 0) return NO_CRISIS;
+  const text = message.length > 8192 ? message.slice(0, 8192) : message;
+  const lower = text.toLowerCase();
+  for (const kw of CRISIS_KEYWORDS) {
+    if (lower.includes(kw)) {
+      return { isCrisis: true, reason: `crisis:${kw}` };
+    }
+  }
+  return NO_CRISIS;
+}
+
+// Crisis helpline banners. Prepended (helpline first). Anchored in the 4 core
+// languages; all other detected languages fall back to the English block,
+// which lists region-spanning 24/7 lines + the EU emergency number.
+const CRISIS_BANNER: Partial<Record<DetectedLang, string>> = {
+  en:
+    "🆘 **If you are in danger right now, call 112 (EU emergency).**\n\n" +
+    "It sounds like you may be going through something very painful. You are not " +
+    "alone, and help is available right now from people trained to listen:\n\n" +
+    "• **Finland** — MIELI Crisis Line: **09 2525 0111** (24/7), or Sekasin chat (sekasin.fi)\n" +
+    "• **Estonia** — Emotional support: **116 123** (24/7); for under-18s: **116 111**\n" +
+    "• **EU-wide emergency** — **112**\n\n" +
+    "Please reach out to one of these now. I'm an AI legal assistant and cannot " +
+    "provide the support you deserve, but a trained person can.\n\n---\n\n",
+  fi:
+    "🆘 **Jos olet välittömässä vaarassa, soita 112.**\n\n" +
+    "Kuulostaa siltä, että sinulla on todella raskasta. Et ole yksin, ja apua on " +
+    "saatavilla juuri nyt koulutetuilta auttajilta:\n\n" +
+    "• **MIELI Kriisipuhelin**: **09 2525 0111** (24/7)\n" +
+    "• **Sekasin-chat**: sekasin.fi\n" +
+    "• **Hätänumero**: **112**\n\n" +
+    "Ota yhteyttä johonkin näistä nyt. Olen tekoälyavustaja enkä voi antaa sitä " +
+    "tukea jonka ansaitset — mutta koulutettu ihminen voi.\n\n---\n\n",
+  et:
+    "🆘 **Kui oled vahetus ohus, helista 112.**\n\n" +
+    "Tundub, et sul on praegu väga raske. Sa ei ole üksi ja abi on saadaval " +
+    "kohe, väljaõppinud inimestelt:\n\n" +
+    "• **Hingehoiu / emotsionaalne tugi**: **116 123** (24/7)\n" +
+    "• **Lasteabi (alla 18)**: **116 111**\n" +
+    "• **Hädaabi**: **112**\n\n" +
+    "Palun võta kohe ühendust ühega neist. Olen tehisintellektist õigusabiline " +
+    "ega saa pakkuda tuge, mida sa väärid — kuid väljaõppinud inimene saab.\n\n---\n\n",
+  ru:
+    "🆘 **Если вы в непосредственной опасности — звоните 112.**\n\n" +
+    "Похоже, вам сейчас очень тяжело. Вы не одни, и помощь доступна прямо сейчас " +
+    "от людей, обученных слушать и поддержать:\n\n" +
+    "• **Финляндия** — кризисная линия MIELI: **09 2525 0111** (круглосуточно)\n" +
+    "• **Эстония** — эмоциональная поддержка: **116 123** (круглосуточно); до 18 лет: **116 111**\n" +
+    "• **Экстренная помощь в ЕС**: **112**\n\n" +
+    "Пожалуйста, обратитесь к одному из этих контактов прямо сейчас. Я — ИИ-" +
+    "юрист и не могу дать поддержку, которую вы заслуживаете, но обученный " +
+    "человек — может.\n\n---\n\n",
+};
+
+/**
+ * Prepend the crisis helpline block to the AI's response. Idempotent: if the
+ * block sentinel ("🆘") is already present we skip. Safe with non-string input.
+ */
+export function prependCrisisBanner(
+  response: unknown,
+  detection: CrisisDetection,
+  userMessage?: string,
+): string {
+  const base = typeof response === "string" ? response : "";
+  if (!detection.isCrisis) return base;
+  if (base.includes("🆘")) return base;
+  const lang = detectLangFromMessage(userMessage ?? base);
+  const banner = CRISIS_BANNER[lang] ?? CRISIS_BANNER.en!;
+  return banner + base;
+}
+
 // ─── Prompt + response appenders ─────────────────────────────────────────────
 
 /**
@@ -686,6 +842,14 @@ export function detectLangFromMessage(message: string): DetectedLang {
     "kanssa", "tekoäly", "suomi", "suomessa", "suomesta",
     "ollaan", "ovat", "tulla", "tehdä", "haluan", "haluaisin", "voiko",
     "saa", "saanko", "myös", "vielä", "kuitenkin",
+    // 2026-05-29: real FI legal queries often carry NONE of the generic
+    // function words above (e.g. "Sain käännytyspäätöksen … Pitäisikö
+    // valittaa hallinto-oikeuteen?"). Add high-frequency legal/procedural
+    // and conditional tokens so such messages detect as FI, not the "en"
+    // floor — otherwise the safety banner renders in the wrong language.
+    "sain", "pitäisikö", "pitäisi", "valittaa", "valitus", "oikeuteen",
+    "oikeus", "poliisi", "poliisilaitokselta", "päätös", "päätöksen",
+    "hakemus", "hallinto-oikeuteen", "tuomioistuin", "asianajaja",
   ];
   const ET = [
     "ma", "sa", "mind", "mina", "sina", "tema", "kuid", "kas", "mida", "kus",

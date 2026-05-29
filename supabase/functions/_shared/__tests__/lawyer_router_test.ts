@@ -78,7 +78,7 @@ Deno.test("every agent has at least 4 trigger keywords + 1 expertise tag", () =>
 Deno.test("resolveModelId maps each LawyerModel correctly", () => {
   assertEquals(resolveModelId("sonnet"), "claude-sonnet-4-6");
   assertEquals(resolveModelId("haiku"), "claude-haiku-4-5-20251001");
-  assertEquals(resolveModelId("opus"), "claude-opus-4-1-20250805");
+  assertEquals(resolveModelId("opus"), "claude-opus-4-8");
 });
 
 Deno.test("getLawyerById finds and returns null on miss", () => {

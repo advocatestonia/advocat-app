@@ -642,7 +642,9 @@ class AIService {
   //
 
   /// Maximum free AI responses per user per month.
-  static const int _freeTotalLimit = 10;
+  /// Must match the server `FREE_LIMIT` in
+  /// `supabase/functions/check-ai-quota/index.ts` (25 as of 2026-05-29).
+  static const int _freeTotalLimit = 25;
 
   /// Public accessor for [_freeTotalLimit] so UI layers can render the
   /// current limit without duplicating the constant. Matches the server

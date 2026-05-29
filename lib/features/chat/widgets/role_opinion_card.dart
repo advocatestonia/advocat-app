@@ -84,8 +84,12 @@ class RoleOpinionCard extends StatelessWidget {
   final bool isLoading;
 
   String get _initials {
-    final parts = roleName.trim().split(RegExp(r'\s+'));
-    if (parts.isEmpty || parts.first.isEmpty) return '?';
+    final parts = roleName
+        .trim()
+        .split(RegExp(r'\s+'))
+        .where((p) => p.isNotEmpty)
+        .toList();
+    if (parts.isEmpty) return '?';
     if (parts.length == 1) {
       final p = parts.first;
       return p.substring(0, p.length >= 2 ? 2 : 1).toUpperCase();

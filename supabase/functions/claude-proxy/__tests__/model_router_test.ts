@@ -745,10 +745,13 @@ Deno.test("constants: HAIKU_MODEL_ID matches Haiku 4.5", () => {
   assertEquals(HAIKU_MODEL_ID, "claude-haiku-4-5-20251001");
 });
 
-Deno.test("constants: SONNET_MODEL_ID matches Sonnet 4 (current prod ID)", () => {
+Deno.test("constants: SONNET_MODEL_ID is Opus 4.8 (high-quality tier, 2026-05-29)", () => {
   // Must stay in lockstep with ALLOWED_MODELS in claude-proxy/index.ts.
   // Drift here = body.model rejected → request 400s.
-  assertEquals(SONNET_MODEL_ID, "claude-sonnet-4-20250514");
+  // 2026-05-29: high-quality tier upgraded Sonnet 4 → Opus 4.8. The
+  // SONNET_MODEL_ID name is kept for call-site compatibility; it now
+  // carries the Opus ID.
+  assertEquals(SONNET_MODEL_ID, "claude-opus-4-8");
 });
 
 Deno.test("modelIdFor: haiku → HAIKU_MODEL_ID, sonnet → SONNET_MODEL_ID", () => {

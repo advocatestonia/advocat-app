@@ -115,7 +115,7 @@ export interface LawyerAgent {
 export function resolveModelId(m: LawyerModel): string {
   switch (m) {
     case "opus":
-      return "claude-opus-4-1-20250805";
+      return "claude-opus-4-8";
     case "haiku":
       return "claude-haiku-4-5-20251001";
     case "sonnet":

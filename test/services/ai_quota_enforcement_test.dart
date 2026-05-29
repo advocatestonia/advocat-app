@@ -212,18 +212,17 @@ void main() {
           reason: 'Pro shortcut must not hit the quota client at all');
     });
 
-    test('FREE_LIMIT matches launch pricing refund policy (10)', () {
+    test('FREE_LIMIT matches server-side check-ai-quota (25)', () {
       // If someone bumps this without coordinating with the server-side
       // FREE_LIMIT in supabase/functions/check-ai-quota/index.ts, the
       // server will still block at the old value and the counter UI will
       // desync. This test is the canary.
       //
-      // Bumped 7 → 10 in commit 7afda4b "fix(launch): DM copy refresh —
-      // 10 msg/month (post-Day2-B)". Migration:
-      // supabase/migrations/20260516120000_free_tier_quota_bump_10.sql.
-      expect(AIService.freeTotalLimit, 10,
-          reason: 'Launch pricing (Bentley P8 2026-05-16): 10 free '
-              'AI messages / month. Mirrors FREE_LIMIT in '
+      // History: 7 → 10 (commit 7afda4b) → 25 (2026-05-29 launch — a single
+      // legal matter spans many turns; 10 cut users off mid-matter).
+      expect(AIService.freeTotalLimit, 25,
+          reason: '2026-05-29 launch: 25 free AI messages / month. '
+              'Mirrors FREE_LIMIT in '
               'supabase/functions/check-ai-quota/index.ts.');
     });
 

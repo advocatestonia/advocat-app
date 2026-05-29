@@ -133,9 +133,12 @@ import {
 import {
   appendHaltRailToResponse,
   appendHaltRailToSystem,
+  type CrisisDetection,
+  detectCrisis,
   detectLangFromMessage,
   detectSeriousCase,
   type HaltDetection,
+  prependCrisisBanner,
   recordHaltRailTrigger,
 } from "../_shared/halt_rail.ts";
 // P3 anti-abuse (Bentley batch, 2026-05-15):
@@ -220,9 +223,14 @@ const USER_HARD_CAP_PER_MINUTE = 30;
 const DEMO_IP_HARD_CAP_PER_MINUTE = 60;
 
 // 2026-05-19: dropped legacy claude-3-5-sonnet-20241022 and
-// claude-3-haiku-20240307. Allowlist now only carries current
-// Sonnet 4.6 / Haiku 4.5 IDs to prevent regression via body override.
+// claude-3-haiku-20240307. Allowlist carries current model IDs only to
+// prevent regression via body override.
+// 2026-05-29: added claude-opus-4-8 — the high-quality tier was upgraded
+// Sonnet 4 → Opus 4.8 in model_router.ts (SONNET_MODEL/SONNET_MODEL_ID now
+// carry the Opus ID). The legacy Sonnet 4 ID is kept so in-flight clients
+// pinning it don't 400 during rollout.
 const ALLOWED_MODELS = new Set([
+  "claude-opus-4-8",
   "claude-sonnet-4-20250514",
   "claude-haiku-4-5-20251001",
 ]);
@@ -451,6 +459,9 @@ interface FinaliseContext {
   toolBlocks: Array<{ id: string; name: string }>;
   /** Serious-case detection result from `detectSeriousCase(userMessage)`. */
   haltDetection: HaltDetection;
+  /** Crisis (suicide / self-harm) detection. When isCrisis, a helpline block
+   *  is PREPENDED to the reply ahead of any legal advisory. */
+  crisisDetection: CrisisDetection;
   /** Raw user message text — passed to `appendHaltRailToResponse` so the
    *  banner is rendered in the user's language. */
   userMessage: string;
@@ -586,6 +597,24 @@ async function finaliseResponse(
     if (railedText !== cleanedText) {
       ctx.result.content = [{ type: "text", text: railedText }];
       haltRailApplied = true;
+    }
+  }
+
+  // 4b. Crisis helpline — PREPEND (helpline first). Runs independently of the
+  //     legal halt-rail; a person in crisis must see the helpline before any
+  //     legal content.
+  if (ctx.crisisDetection.isCrisis) {
+    const block = Array.isArray(ctx.result.content)
+      ? (ctx.result.content[0] as { text?: string } | undefined)
+      : undefined;
+    const currentText = block?.text ?? replyText;
+    const withCrisis = prependCrisisBanner(
+      currentText,
+      ctx.crisisDetection,
+      ctx.userMessage,
+    );
+    if (withCrisis !== currentText) {
+      ctx.result.content = [{ type: "text", text: withCrisis }];
     }
   }
 
@@ -1102,6 +1131,36 @@ serve(withSentry("claude-proxy", async (req) => {
         serviceRoleKey: SUPABASE_SERVICE_ROLE_KEY,
       }).catch(() => {/* already swallowed inside */});
     }
+
+    // ── Crisis-rail: suicide / self-harm detection ─────────────────────────
+    // SEPARATE from the legal halt-rail. When the user expresses suicidal
+    // ideation or self-harm intent, we inject a system directive telling the
+    // model to LEAD with empathy + a crisis helpline, and we belt-and-suspenders
+    // PREPEND a helpline block in the finaliser regardless of model compliance.
+    const crisisDetection: CrisisDetection = detectCrisis(globalUserMessage);
+    if (crisisDetection.isCrisis) {
+      const directive = [
+        "## CRISIS — USER MAY BE IN DISTRESS",
+        "",
+        "The user's message suggests possible suicidal ideation or intent to",
+        "self-harm. Your reply MUST begin — before any legal content — with a",
+        "brief, warm, non-judgemental acknowledgement and an urgent suggestion",
+        "to contact a crisis helpline (a helpline block will also be prepended",
+        "automatically). Do NOT lead with legal analysis, deadlines, or",
+        "procedure. Do NOT moralise or diagnose. Keep it short and human, then",
+        "you may address any legal question afterwards. Match the user's",
+        "language (FI / EE / RU / EN).",
+      ].join("\n");
+      if (typeof body.system === "string") {
+        body.system = body.system.includes("## CRISIS — USER MAY BE IN DISTRESS")
+          ? body.system
+          : `${body.system}\n\n${directive}`;
+      } else if (body.system == null) {
+        body.system = directive;
+      }
+      console.log(`claude-proxy: crisis-rail fired (${crisisDetection.reason})`);
+    }
+
     let globalCorrectionsRows: CorrectionRow[] = [];
     let globalCorrectionsBlock = "";
     if (globalUserMessage && OPENAI_API_KEY) {
@@ -1368,13 +1427,33 @@ serve(withSentry("claude-proxy", async (req) => {
               // SSE pipe still serialises events in order.
               if (
                 (event as { type?: string }).type === "done" &&
-                haltDetection.isSerious
+                (haltDetection.isSerious || crisisDetection.isCrisis)
               ) {
-                const banner = appendHaltRailToResponse(
-                  consiliumSynthesisAccumulator,
-                  haltDetection,
-                  userMessage,
-                ).slice(consiliumSynthesisAccumulator.length); // banner-only
+                let banner = haltDetection.isSerious
+                  ? appendHaltRailToResponse(
+                    consiliumSynthesisAccumulator,
+                    haltDetection,
+                    userMessage,
+                  ).slice(consiliumSynthesisAccumulator.length) // banner-only
+                  : "";
+                // Crisis helpline: model leads with it via the system directive;
+                // append the helpline block as a trailing safeguard so contact
+                // numbers are guaranteed present. (Streaming cannot prepend.)
+                if (
+                  crisisDetection.isCrisis &&
+                  !consiliumSynthesisAccumulator.includes("🆘")
+                ) {
+                  const withCrisis = prependCrisisBanner(
+                    consiliumSynthesisAccumulator,
+                    crisisDetection,
+                    userMessage,
+                  );
+                  const prefix = withCrisis.slice(
+                    0,
+                    withCrisis.length - consiliumSynthesisAccumulator.length,
+                  );
+                  banner = banner + "\n\n" + prefix;
+                }
                 if (banner.length > 0) {
                   const bannerFrame =
                     `data: ${JSON.stringify({ type: "delta", text: banner })}\n\n`;
@@ -1673,9 +1752,13 @@ serve(withSentry("claude-proxy", async (req) => {
         // we append the visible "consult licensed advocate" banner to the
         // planner's final reply. Idempotent — if the model already wove in
         // the advisory phrase, the appender no-ops.
-        const finalPlannerText = appendHaltRailToResponse(
-          enforcedReplyText,
-          haltDetection,
+        const finalPlannerText = prependCrisisBanner(
+          appendHaltRailToResponse(
+            enforcedReplyText,
+            haltDetection,
+            globalUserMessage,
+          ),
+          crisisDetection,
           globalUserMessage,
         );
         const augmented = {
@@ -1991,16 +2074,37 @@ serve(withSentry("claude-proxy", async (req) => {
           // is what the stream already emitted). The wrapper enqueues it as
           // one final content_block_delta frame so the Flutter SSE parser
           // appends it to the visible reply.
-          onAssembledText: haltDetection.isSerious
+          onAssembledText: (haltDetection.isSerious || crisisDetection.isCrisis)
             ? (assembled) => {
-              const full = appendHaltRailToResponse(
+              // Legal advisory (trailing). The crisis helpline is LED by the
+              // model via the injected system directive; on the streaming path
+              // the prefix cannot be retrofitted (text is already on the wire),
+              // so we ALSO append the helpline block as a trailing safeguard so
+              // the contact numbers are guaranteed present regardless of model
+              // wording. Idempotent: prependCrisisBanner no-ops if "🆘" exists.
+              const railed = appendHaltRailToResponse(
                 assembled,
                 haltDetection,
                 globalUserMessage,
               );
-              return full.length > assembled.length
-                ? full.slice(assembled.length)
+              let suffix = railed.length > assembled.length
+                ? railed.slice(assembled.length)
                 : "";
+              if (crisisDetection.isCrisis && !assembled.includes("🆘")) {
+                const withCrisis = prependCrisisBanner(
+                  assembled,
+                  crisisDetection,
+                  globalUserMessage,
+                );
+                // prependCrisisBanner prepends; extract the banner prefix and
+                // move it to the trailing suffix for the streaming surface.
+                const prefix = withCrisis.slice(
+                  0,
+                  withCrisis.length - assembled.length,
+                );
+                suffix = suffix + "\n\n" + prefix;
+              }
+              return suffix;
             }
             : undefined,
         });
@@ -2402,6 +2506,7 @@ serve(withSentry("claude-proxy", async (req) => {
               ragChunks,
               toolBlocks,
               haltDetection,
+              crisisDetection,
               userMessage: globalUserMessage,
               surface: "tool_followup",
               isAgentLoop: true,
@@ -2459,6 +2564,7 @@ serve(withSentry("claude-proxy", async (req) => {
         // orphaned legal_lookup records and flags raw-from-memory cites.
         toolBlocks: [],
         haltDetection,
+        crisisDetection,
         userMessage: globalUserMessage,
         surface: "single_pass",
         isAgentLoop: false,
