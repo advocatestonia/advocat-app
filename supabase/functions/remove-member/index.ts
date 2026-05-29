@@ -170,15 +170,35 @@ serve(async (req) => {
   }
 
   if (newSeatCount === null) {
-    // Fallback: mark member removed, then decrement seats atomically.
-    await supabase
+    // Fallback (runs when org_remove_member RPC is absent — the case in prod
+    // today). CLAIM the removal via a conditional UPDATE guarded on
+    // `removed_at IS NULL` FIRST. The line-88 target lookup is TOCTOU: two
+    // concurrent removes of the same member both see it active and both pass.
+    // Only the request whose conditional UPDATE returns a row "won" the
+    // removal; the loser must NOT decrement the seat (else seat_count is
+    // double-decremented for one removal — under-counting a seat the org is
+    // still paying for, and drifting below the real member count).
+    const { data: removed, error: remErr } = await supabase
       .from("org_members")
       .update({ removed_at: new Date().toISOString() })
-      .eq("id", target.id);
+      .eq("id", target.id)
+      .is("removed_at", null)
+      .select("id")
+      .maybeSingle();
+    if (remErr) {
+      console.error("[remove-member] soft-remove failed:", remErr);
+      return jsonError("Remove failed", 500, { reason: "soft_remove_failed" });
+    }
+    if (!removed) {
+      // Lost the race (or replayed) — already removed by a concurrent call.
+      return jsonError("Member not found", 404, { reason: "not_a_member" });
+    }
 
     // org_increment_seats locks the org row FOR UPDATE, clamps at >= 0
     // (raises seats_negative otherwise), and writes org_seat_change_log.
-    // A read-modify-write here would race a concurrent accept/remove.
+    // A read-modify-write here would race a concurrent accept/remove. Only
+    // the request that won the claim above reaches this line, so each removal
+    // decrements the seat exactly once.
     const { data: seatAfter, error: seatErr } = await (supabase as any).rpc(
       "org_increment_seats",
       { p_org: ctx.org_id, p_delta: -1 },
