@@ -116,6 +116,7 @@ export const USER_DATA_TABLES: ReadonlyArray<readonly [string, string]> = [
   ["consent_log", "user_id"],
 
   // ── AI memory + agent loop state. ────────────────────────────────────────
+  ["conversation_summaries", "user_id"],
   ["user_ai_memory", "user_id"],
   ["agent_audit_log", "user_id"],
   ["agent_intentions", "user_id"],

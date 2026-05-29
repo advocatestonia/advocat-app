@@ -133,6 +133,7 @@ interface ExportPayload {
     draft_versions: unknown[];
   };
   ai_memory: unknown[];
+  conversation_summaries: unknown[];
   agent: {
     runs: unknown[];
     quota: unknown[];
@@ -322,6 +323,7 @@ serve(async (req) => {
 
     // ── AI memory + agent loop ───────────────────────────────────────────
     const aiMemory = await safeSelect(sb, "user_ai_memory", "user_id", userId);
+    const conversationSummaries = await safeSelect(sb, "conversation_summaries", "user_id", userId);
     const agentRuns = await safeSelect(sb, "agent_runs", "user_id", userId);
     const agentQuota = await safeSelect(sb, "agent_quota", "user_id", userId);
     const agentAuditLog = await safeSelect(sb, "agent_audit_log", "user_id", userId);
@@ -460,6 +462,7 @@ serve(async (req) => {
         draft_versions: draftVersions,
       },
       ai_memory: aiMemory,
+      conversation_summaries: conversationSummaries,
       agent: {
         runs: agentRuns,
         quota: agentQuota,
