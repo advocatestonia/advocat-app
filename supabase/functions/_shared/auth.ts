@@ -96,35 +96,156 @@ function sbClient() {
   return _sb;
 }
 
+// -----------------------------------------------------------------------------
+// Emergency in-process backstop (Wave-2 fix W2-01, audit P1-07)
+// -----------------------------------------------------------------------------
+// The Postgres `consume_rate_limit` RPC is the PRIMARY rate-limit defence and
+// is the only one that coordinates across the N Deno isolates Supabase runs
+// behind a load balancer. When the RPC errors (network blip, pgbouncer
+// saturation, schema drift), we used to fail OPEN — log a warning and admit
+// the request — on the theory that 500ing every paying user during a Postgres
+// outage was worse than admitting a burst. The audit (2026-05-28 P1-07)
+// pointed out this is exploitable: an attacker who can independently exhaust
+// the Postgres pool (e.g. via heavy unauthenticated `landmark-search` reads
+// against the same pgbouncer) can force every rate-limiter into fail-open
+// mode and then burst `claude-proxy` until Anthropic's account-level cap
+// fires.
+//
+// The backstop is a per-isolate Map-based token bucket that activates ONLY
+// when the RPC fails. It is intentionally NOT the primary limiter:
+//
+//   - LIMITATION: A cold-start farm bypasses it. Supabase scales isolates
+//     dynamically; under sustained traffic an attacker may hit N fresh
+//     isolates and get N × backstopCap admissions before reuse. This is
+//     acceptable because the backstop is degraded-mode-only — once the RPC
+//     recovers, the per-principal cap snaps back to the documented value.
+//
+//   - The backstop sits in front of the same response surface as the normal
+//     limiter, so denials still return 429 with the right metadata.
+//
+//   - The `X-RateLimit-Degraded: 1` header on allow/deny lets ops dashboards
+//     count how often we drop into emergency mode (alert if non-zero for
+//     more than a couple of minutes — that means the RPC layer is sick).
+//
+// Caps (hardcoded so they cannot be disabled by env-var attack surface):
+//   - 100 admissions / 60s / principal for authenticated users (10x the
+//     typical per-fn cap; tolerates a brief Postgres blip without paging).
+//   - 10 admissions / 60s / principal for anonymous users (matches the
+//     conservative anon envelope across billable fns).
+// -----------------------------------------------------------------------------
+
+const EMERGENCY_AUTHED_CAP = 100;
+const EMERGENCY_ANON_CAP = 10;
+
+interface EmergencyBucketEntry {
+  count: number;
+  resetAt: number;
+}
+
+const _emergencyBucket = new Map<string, EmergencyBucketEntry>();
+
+/**
+ * Per-isolate token bucket used only when the Postgres RPC fails. Returns
+ * TRUE if admitted under the degraded-mode cap, FALSE if the principal has
+ * already hit the cap within the current 60s window.
+ *
+ * Exported for test access only.
+ */
+export function _emergencyAllow(key: string, max: number): boolean {
+  const now = Date.now();
+  const cur = _emergencyBucket.get(key);
+  if (!cur || now >= cur.resetAt) {
+    _emergencyBucket.set(key, { count: 1, resetAt: now + WINDOW_MS });
+    return true;
+  }
+  if (cur.count >= max) return false;
+  cur.count++;
+  return true;
+}
+
+/** Test-only: wipe the emergency bucket between tests. */
+export function _resetEmergencyBucketForTest() {
+  _emergencyBucket.clear();
+}
+
+/**
+ * Test-only RPC injector. When set, `checkRateLimit` calls this instead of
+ * the real Supabase RPC. Returning a `throws` value or `{ error: ... }`
+ * exercises the emergency-backstop branch in tests.
+ */
+let _rpcOverrideForTest:
+  | ((identifier: string, maxPerMinute: number) =>
+      Promise<{ data?: boolean; error?: { message: string } } | never>)
+  | null = null;
+
+export function __setRpcOverrideForTest(
+  fn:
+    | ((identifier: string, maxPerMinute: number) =>
+        Promise<{ data?: boolean; error?: { message: string } } | never>)
+    | null,
+) {
+  _rpcOverrideForTest = fn;
+}
+
+/** Result of the rate-limit check, including whether we fell through to the backstop. */
+export interface RateLimitCheckResult {
+  admitted: boolean;
+  /** True when the Postgres RPC failed and we fell through to `_emergencyAllow`. */
+  degraded: boolean;
+}
+
 /**
  * Atomic increment-and-check against `app.rate_limit_buckets` via the
- * `consume_rate_limit` RPC. Returns TRUE if admitted, FALSE if at cap.
+ * `consume_rate_limit` RPC. Returns admission decision plus a `degraded`
+ * flag indicating whether the in-process emergency backstop kicked in.
  *
- * Fails open (returns TRUE + warning log) if the RPC call itself errors.
+ * When the RPC errors (returns `{ error }` or throws), the gate falls
+ * through to `_emergencyAllow`, applying a hardcoded backstop cap. See the
+ * Emergency backstop block above for the threat model and cap rationale.
+ *
  * Exported so individual fns can probe rate-limit state without going
  * through the full `requireUserWithRateLimit` gate.
  */
 export async function checkRateLimit(
   identifier: string,
   maxPerMinute: number,
-): Promise<boolean> {
+  opts: { emergencyCap?: number } = {},
+): Promise<RateLimitCheckResult> {
+  const backstopCap = opts.emergencyCap ?? EMERGENCY_AUTHED_CAP;
   try {
-    // deno-lint-ignore no-explicit-any
-    const { data, error } = await (sbClient().rpc as any)("consume_rate_limit", {
-      p_bucket_key: identifier,
-      p_max_per_minute: maxPerMinute,
-    });
+    const rpcCall = _rpcOverrideForTest
+      ? _rpcOverrideForTest(identifier, maxPerMinute)
+      // deno-lint-ignore no-explicit-any
+      : (sbClient().rpc as any)("consume_rate_limit", {
+        p_bucket_key: identifier,
+        p_max_per_minute: maxPerMinute,
+      });
+    const { data, error } = await rpcCall;
     if (error) {
-      console.warn(
-        `[auth] consume_rate_limit RPC error — failing OPEN: ${error.message}`,
+      // RPC reachable but returned an error — fall through to backstop.
+      // We cannot rely on the RPC-backed `log_incident` table either (it
+      // sits on the same DB), so emit to stderr only.
+      console.error(
+        `[auth] consume_rate_limit RPC error — falling through to ` +
+          `in-process backstop (cap=${backstopCap}/min): ${error.message}`,
       );
-      return true;
+      return {
+        admitted: _emergencyAllow(identifier, backstopCap),
+        degraded: true,
+      };
     }
     // RPC returns boolean (true=admitted, false=denied)
-    return data === true;
+    return { admitted: data === true, degraded: false };
   } catch (e) {
-    console.warn(`[auth] consume_rate_limit threw — failing OPEN: ${String(e)}`);
-    return true;
+    // RPC unreachable (network, timeout, schema drift) — fall through.
+    console.error(
+      `[auth] consume_rate_limit threw — falling through to ` +
+        `in-process backstop (cap=${backstopCap}/min): ${String(e)}`,
+    );
+    return {
+      admitted: _emergencyAllow(identifier, backstopCap),
+      degraded: true,
+    };
   }
 }
 
@@ -138,7 +259,16 @@ export interface GateOptions {
 }
 
 export type GateResult =
-  | { kind: "allow"; user: { id: string; email?: string } }
+  | {
+      kind: "allow";
+      user: { id: string; email?: string };
+      /**
+       * True when the Postgres rate limiter was unreachable and we admitted
+       * the request via the in-process emergency backstop. Callers may add
+       * `X-RateLimit-Degraded: 1` to their final Response for observability.
+       */
+      degraded?: boolean;
+    }
   | { kind: "deny"; response: Response };
 
 /**
@@ -214,30 +344,67 @@ export async function requireUserWithRateLimit(
     }
   }
 
-  // Rate limit
-  // x-forwarded-for is a comma-separated chain (`client, proxy1, proxy2`)
-  // where the LAST hop rotates per request (Supabase LB IPs like
-  // 13.248.100.49/.51/.53/.72/.77).  If we key the bucket on the whole
-  // chain, every request gets a fresh bucket and the limiter never trips.
-  // Take ONLY the leftmost entry — that's the real client IP.
-  // (cf-connecting-ip is preferred when present; some deploys carry it.)
-  const xff = req.headers.get("x-forwarded-for") ?? "";
-  const cfip = req.headers.get("cf-connecting-ip");
-  const clientIp = (cfip && cfip.trim()) ||
-    xff.split(",")[0]?.trim() ||
+  // Rate limit — IP resolver.
+  //
+  // SECURITY REGRESSION CLASS (Wave-1 fix 2026-05-28, audit P0-06):
+  // The previous implementation read the LEFTMOST entry of `x-forwarded-for`
+  // as the "real client IP". x-forwarded-for is a comma-separated chain
+  // (`client, proxy1, proxy2, …`) supplied by intermediaries — but the
+  // LEFTMOST entry is *client-controlled*. Any attacker could set
+  // `x-forwarded-for: 1.2.3.<random>` and get a fresh rate-limit bucket on
+  // every request, defeating the anon limiter entirely (audit exploit:
+  // 10,000 anon claude-proxy calls/day from a single host by rotating XFF).
+  //
+  // The same primitive surfaced as the `anon_jwt_bypass` regression in
+  // f8f6a58 (see lesson_anon_jwt_bypass.md): trusting client-supplied auth
+  // material without an explicit allowlist. We close it the same way —
+  // refuse to trust client headers in production unless TRUST_XFF=true is
+  // set in env (for deployments fronted by a trusted reverse proxy that
+  // strips client-set XFF on ingress).
+  //
+  // Canonical source on Supabase Edge is `x-real-ip`, which is set by the
+  // deno-relay infrastructure and is NOT echoable by the caller. Read
+  // that first; only fall back to XFF (leftmost) when TRUST_XFF=true.
+  const TRUST_XFF = (Deno.env.get("TRUST_XFF") ?? "false") === "true";
+  const realIp = req.headers.get("x-real-ip");
+  const cfip = TRUST_XFF ? req.headers.get("cf-connecting-ip") : null;
+  const xff = TRUST_XFF ? (req.headers.get("x-forwarded-for") ?? "") : "";
+  const clientIp = (realIp && realIp.trim()) ||
+    (cfip && cfip.trim()) ||
+    (xff ? xff.split(",")[0]?.trim() : "") ||
     "unknown";
   const principal = userId ?? `ip:${clientIp}`;
   const limit = userId ? opts.maxPerMinute : (opts.anonymousPerMinute ?? 0);
   const key = rateLimitKey(principal, opts.bucket);
+  // Tighter backstop for anon — 10/min/principal — so that a degraded-mode
+  // burst from a single forged-IP attacker cannot still wipe out the
+  // Anthropic budget while the RPC layer recovers.
+  const emergencyCap = userId ? EMERGENCY_AUTHED_CAP : EMERGENCY_ANON_CAP;
 
-  const admitted = await _gateCheckRateLimit(key, limit);
+  const { admitted, degraded } = await _gateCheckRateLimit(
+    key,
+    limit,
+    { emergencyCap },
+  );
   if (!admitted) {
+    // Build the deny response. If we landed here via the backstop,
+    // surface the degraded flag in the response so ops can dashboard it.
+    const denyHeaders: Record<string, string> = {
+      ...corsHeaders,
+      "Content-Type": "application/json",
+    };
+    if (degraded) denyHeaders["X-RateLimit-Degraded"] = "1";
     return {
       kind: "deny",
-      response: jsonError(
-        "Rate limit exceeded. Try again in a minute.",
-        429,
-        { bucket: opts.bucket, limit, windowMs: WINDOW_MS },
+      response: new Response(
+        JSON.stringify({
+          error: "Rate limit exceeded. Try again in a minute.",
+          bucket: opts.bucket,
+          limit,
+          windowMs: WINDOW_MS,
+          ...(degraded ? { degraded: true } : {}),
+        }),
+        { status: 429, headers: denyHeaders },
       ),
     };
   }
@@ -247,12 +414,14 @@ export async function requireUserWithRateLimit(
     return {
       kind: "allow",
       user: { id: `anon:${clientIp}` },
+      degraded,
     };
   }
 
   return {
     kind: "allow",
     user: { id: userId, email: userEmail },
+    degraded,
   };
 }
 
@@ -260,6 +429,11 @@ export async function requireUserWithRateLimit(
  * Test-only override of the rate-limit transport. Allows unit tests to
  * stub the postgres RPC without spinning a real DB. When set to null
  * (the default), the gate calls the real `consume_rate_limit` RPC.
+ *
+ * The override bypasses the emergency-backstop branch — use it to model
+ * normal (non-degraded) traffic. To test the backstop itself, use
+ * `__setRpcOverrideForTest` instead, which simulates an RPC error and
+ * lets `checkRateLimit` fall through to `_emergencyAllow`.
  *
  * In production this MUST stay null — call-sites should never override
  * the limiter at runtime.
@@ -278,15 +452,23 @@ export function __setRateLimitOverrideForTest(
 /**
  * Internal: route a rate-limit check through the test override if one is
  * installed, otherwise call the real RPC. Used by requireUserWithRateLimit;
- * `checkRateLimit` itself stays a thin public RPC wrapper so external
- * call-sites get the production behaviour.
+ * `checkRateLimit` itself stays the public surface for external probes.
+ *
+ * Returns the same `{ admitted, degraded }` shape as `checkRateLimit` so
+ * the gate can propagate the degraded flag to its caller. When the legacy
+ * gate-level override is installed, `degraded` is always false (the
+ * override models a healthy DB).
  */
 async function _gateCheckRateLimit(
   identifier: string,
   maxPerMinute: number,
-): Promise<boolean> {
-  if (_rateLimitOverride) return _rateLimitOverride(identifier, maxPerMinute);
-  return checkRateLimit(identifier, maxPerMinute);
+  opts: { emergencyCap?: number } = {},
+): Promise<RateLimitCheckResult> {
+  if (_rateLimitOverride) {
+    const admitted = await _rateLimitOverride(identifier, maxPerMinute);
+    return { admitted, degraded: false };
+  }
+  return checkRateLimit(identifier, maxPerMinute, opts);
 }
 
 /**

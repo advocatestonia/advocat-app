@@ -129,33 +129,37 @@ Deno.test("P03 — RPC throws → fail OPEN (admit + warn)", async () => {
 });
 
 // -----------------------------------------------------------------------------
-// P04 — DB outage via async RPC error → fail OPEN
+// P04 — DB outage via async RPC error → degraded mode (in-process backstop)
 //
-// This is the production failure mode (network/timeout returns
-// `{ data: null, error: {...} }` from supabase-js). checkRateLimit catches
-// this and returns true. We verify by overriding with an async error.
+// Production failure mode (network/timeout) returns
+// `{ data: null, error: {...} }` from supabase-js. After Wave-2 W2-01
+// (2026-05-28), checkRateLimit no longer fails OPEN — it falls through to
+// the in-process emergency bucket. The first hit in the new window still
+// admits (degraded=true), but a burst beyond the backstop cap denies.
 // -----------------------------------------------------------------------------
-Deno.test("P04 — async RPC rejection → fail OPEN (gate admits)", async () => {
-  // The override sits BEFORE the real RPC, so to verify checkRateLimit's
-  // catch path, we override with a Promise.reject. The override caller
-  // (`_gateCheckRateLimit`) awaits the result — if it rejects, the gate
-  // would 503. We want the production code path (checkRateLimit) to
-  // swallow the error. So we exercise checkRateLimit directly here.
-  const { checkRateLimit } = await import("../_shared/auth.ts");
+Deno.test("P04 — async RPC rejection → backstop admits with degraded=true", async () => {
+  const { checkRateLimit, _resetEmergencyBucketForTest } = await import(
+    "../_shared/auth.ts"
+  );
+  _resetEmergencyBucketForTest();
 
   // checkRateLimit calls sbClient().rpc(...) — that's an internal RPC that
-  // won't reach postgres in this test env. supabase-js will likely return
-  // `{ data: null, error: { message: ... } }` because fake creds. Either
-  // way, the function MUST return true (fail open).
+  // won't reach postgres in this test env. supabase-js will return
+  // `{ data: null, error: { message: ... } }` because fake creds. The new
+  // contract: returns `{ admitted, degraded }`; first hit admits via the
+  // emergency bucket and surfaces `degraded: true`.
   const result = await checkRateLimit("p04:test", 1);
   assertEquals(
     typeof result,
-    "boolean",
-    "checkRateLimit must return boolean even when DB unreachable",
+    "object",
+    "checkRateLimit must return RateLimitCheckResult shape",
   );
-  // With fake creds + no network → either true (fail-open warn path) OR
-  // true (error path). Both branches return true; failure would be `false`.
-  assertEquals(result, true, "checkRateLimit must fail OPEN on DB error");
+  assertEquals(result.admitted, true, "first hit must admit via backstop");
+  assertEquals(
+    result.degraded,
+    true,
+    "checkRateLimit must mark degraded when RPC fails",
+  );
 });
 
 // -----------------------------------------------------------------------------
@@ -293,21 +297,24 @@ Deno.test("P08 — migration uses pg_advisory_xact_lock + RLS deny-all", () => {
 });
 
 // -----------------------------------------------------------------------------
-// P09 — _shared/auth.ts no longer references in-process Map<>; gate routes
-// through consume_rate_limit RPC.
+// P09 — _shared/auth.ts gate routes through consume_rate_limit RPC and
+//       carries the W2-01 emergency backstop (Wave-2, 2026-05-28).
 // -----------------------------------------------------------------------------
-Deno.test("P09 — auth.ts gate calls consume_rate_limit RPC (no in-process Map)", () => {
+Deno.test("P09 — auth.ts gate calls consume_rate_limit RPC + emergency backstop", () => {
   const src = Deno.readTextFileSync(
     new URL("../_shared/auth.ts", import.meta.url),
   );
   assertStringIncludes(src, "consume_rate_limit");
   assertStringIncludes(src, "checkRateLimit");
-  // Explicit fail-open contract MUST be present in source (so a reviewer
-  // can grep for it instead of inferring from behaviour).
-  assertStringIncludes(src, "failing OPEN");
-  // No production `new Map<` that stores rate-limit state should be left
-  // behind in the gate file. (The test-stub Map inside __resetRateLimitForTest
-  // is fine — it's behind a test-only export.)
+  // Wave-2 (W2-01): the legacy fail-OPEN contract was replaced by an
+  // in-process emergency backstop. We assert the new contract is in
+  // source so a reviewer can grep for it.
+  assertStringIncludes(src, "_emergencyBucket");
+  assertStringIncludes(src, "X-RateLimit-Degraded");
+  // No production `const rateLimits = new Map<` storing rate-limit state
+  // should be left behind in the gate file. (The test-stub Map inside
+  // __resetRateLimitForTest is fine — it's behind a test-only export.
+  // The _emergencyBucket Map is the W2-01 backstop, not a primary store.)
   const productionMapMatches = src.match(/const rateLimits\s*=\s*new Map/);
   assertEquals(
     productionMapMatches,

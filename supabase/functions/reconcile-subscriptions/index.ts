@@ -99,8 +99,13 @@ serve(async (req) => {
     //    set of columns we need, and rely on local matching rather than a
     //    per-sub round-trip. This keeps the function under the Edge Function
     //    timeout even with hundreds of subs.
+    //
+    // Wave 1 fix P0-RC5 (2026-05-28): the `emails` lookup branch was
+    // REMOVED — matchProfile no longer falls back to email match (free-Pro
+    // exploit if a paying Stripe customer's email matched a B2C profile
+    // by coincidence). Only stripe_customer_id and metadata.user_id are
+    // canonical. Unmatched customers get logged to reconcile_unmatched.
     const customerIds = new Set<string>();
-    const emailsLower = new Set<string>();
     const userIds = new Set<string>();
     for (const sub of allSubs) {
       const cRef = sub.customer;
@@ -108,18 +113,15 @@ serve(async (req) => {
         customerIds.add(cRef);
       } else if (cRef && typeof cRef === "object") {
         if (cRef.id) customerIds.add(cRef.id);
-        if (cRef.email) emailsLower.add(cRef.email.toLowerCase().trim());
         if (cRef.metadata?.user_id) userIds.add(cRef.metadata.user_id);
       }
       if (sub.metadata?.user_id) userIds.add(sub.metadata.user_id);
     }
 
-    // OR-fetch profiles matching any of the three lookup keys.
+    // OR-fetch profiles matching either canonical lookup key.
     const profileMap = new Map<string, ProfileRow>();
-    if (
-      customerIds.size > 0 || emailsLower.size > 0 || userIds.size > 0
-    ) {
-      // Three queries; UNIONing in SQL is not exposed via supabase-js.
+    if (customerIds.size > 0 || userIds.size > 0) {
+      // Two queries; UNIONing in SQL is not exposed via supabase-js.
       // Each builder is a thenable, so awaiting it is the documented pattern.
       const PROFILE_COLS =
         "id,email,is_pro,subscription_tier,subscription_expires_at,stripe_customer_id";
@@ -131,16 +133,6 @@ serve(async (req) => {
           supabase.from("profiles").select(PROFILE_COLS).in(
             "stripe_customer_id",
             Array.from(customerIds),
-          ) as unknown as PromiseLike<
-            { data: ProfileRow[] | null; error: unknown }
-          >,
-        );
-      }
-      if (emailsLower.size > 0) {
-        queries.push(
-          supabase.from("profiles").select(PROFILE_COLS).in(
-            "email",
-            Array.from(emailsLower),
           ) as unknown as PromiseLike<
             { data: ProfileRow[] | null; error: unknown }
           >,
@@ -199,16 +191,46 @@ serve(async (req) => {
       // Orphan: paying customer in Stripe, no profile in our DB. We can't
       // fix this from here (no auth user to link to) but we LOG so the
       // ops dashboard can flag it. Don't fail the whole run — log only.
+      //
+      // Wave 1 fix P0-RC5 (2026-05-28): we now also INSERT into
+      // reconcile_unmatched so ops can triage from Supabase Studio without
+      // grepping logs. Previously, the email-fallback in matchProfile would
+      // silently grant Pro to whoever's email happened to match (free-Pro
+      // exploit). With email match removed, every unmatched customer surfaces
+      // here for human review.
       if (!matched) {
+        const reason = `no profile for stripe sub status=${sub.status}`;
         const action: DriftAction = {
           kind: "orphan",
           stripe_sub_id: sub.id,
           customer_id: customer.id,
-          customer_email: null, // never log emails — see FIX-6
-          reason: `no profile for stripe sub status=${sub.status}`,
+          customer_email: null, // never log emails to console — see FIX-6
+          reason,
         };
         actions.push(action);
         console.warn(formatFixLog(action));
+        // Persist for ops triage. Best-effort: failure here must not abort
+        // the whole reconcile run.
+        try {
+          await supabase.from("reconcile_unmatched").insert({
+            stripe_subscription_id: sub.id,
+            stripe_customer_id: customer.id,
+            // We store the email here because the row is RLS-locked to
+            // service-role and the ops human needs it to reconcile.
+            customer_email: customer.email ?? null,
+            stripe_status: sub.status,
+            metadata_user_id: sub.metadata?.user_id ??
+              customer.metadata?.user_id ?? null,
+            reason,
+          });
+        } catch (insertErr) {
+          const m = insertErr instanceof Error
+            ? insertErr.message
+            : String(insertErr);
+          errors.push(
+            `reconcile_unmatched insert failed: ${m.slice(0, 120)}`,
+          );
+        }
         continue;
       }
 

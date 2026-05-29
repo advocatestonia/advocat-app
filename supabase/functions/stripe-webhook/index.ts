@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "@supabase/supabase-js";
 import {
   PLAN_MAPPING,
   routeSubscriptionUpdate,
@@ -25,6 +25,7 @@ import {
   type PlanPrice,
 } from "../referral/conversion.ts";
 import { makeStripeAdapter } from "../referral/stripe_adapter.ts";
+import { withSentry } from "../_shared/sentry.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
@@ -89,6 +90,132 @@ async function maybeResetContractReviewQuota(
       `[stripe-webhook] contract-review quota reset user=${userId} ${prev}->${next}`,
     );
   }
+}
+
+// ─── Wave 1 fix P0-W2 (2026-05-28) — B2B / B2C routing helpers ────────────
+//
+// Pre-fix the webhook had a single path: resolve user via metadata.user_id
+// OR email → upsert profiles.is_pro=true. For org checkouts (which set
+// metadata.org_id and metadata.actor_user_id, NOT metadata.user_id), the
+// email fallback would match the org's billing_email against ANY profile
+// row with the same email and corrupt the wrong B2C account. Exploit:
+// Mallory creates an org whose billing_email matches a B2C profile, pays
+// €29 once, refunds within 14 days, reconcile-subscriptions re-asserts
+// is_pro=true forever via the leaked link. Fix: route by metadata.org_id
+// BEFORE the B2C path. Org subs land in `org_subscriptions`, not in the
+// B2C `profiles` table.
+
+/** Find the org_id either from event metadata or by resolving via stripe_customer_id. */
+// deno-lint-ignore no-explicit-any
+async function resolveOrgIdForCustomer(
+  sb: any,
+  metadataOrgId: string | undefined | null,
+  stripeCustomerId: string | null | undefined,
+): Promise<string | null> {
+  if (metadataOrgId && typeof metadataOrgId === "string" && metadataOrgId.length > 0) {
+    return metadataOrgId;
+  }
+  if (!stripeCustomerId) return null;
+  try {
+    const { data } = await sb
+      .from("organizations")
+      .select("id")
+      .eq("stripe_customer_id", stripeCustomerId)
+      .limit(1)
+      .maybeSingle();
+    return (data?.id as string | undefined) ?? null;
+  } catch (_e) {
+    return null;
+  }
+}
+
+/** Activation write for an org subscription — touches org_subscriptions + organizations, NEVER profiles. */
+// deno-lint-ignore no-explicit-any
+async function activateOrgSubscription(
+  sb: any,
+  orgId: string,
+  session: {
+    customer?: string;
+    subscription?: string;
+    amount_total?: number;
+    currency?: string;
+    metadata?: Record<string, string | undefined>;
+  },
+  periodEndIso: string | null,
+): Promise<void> {
+  const stripeCustomerId = session.customer ?? null;
+  const stripeSubId = session.subscription ?? null;
+  const meta = session.metadata ?? {};
+  const plan = meta.plan ?? "starter";
+  const billingPeriod = meta.billing_period ?? "monthly";
+  const seats = Number(meta.seats ?? 1) || 1;
+
+  // Update the org row's status + link the Stripe customer/sub. We do NOT
+  // touch any profiles row here — that's the whole point of the routing fix.
+  if (stripeCustomerId) {
+    const orgUpdate: Record<string, unknown> = {
+      status: "active",
+      stripe_customer_id: stripeCustomerId,
+    };
+    if (stripeSubId) orgUpdate.stripe_subscription_id = stripeSubId;
+    const { error: orgErr } = await sb
+      .from("organizations")
+      .update(orgUpdate)
+      .eq("id", orgId);
+    if (orgErr) {
+      throw new Error(`organizations update failed: ${orgErr.message}`);
+    }
+  }
+
+  // Upsert the org_subscriptions row. Schema lives in
+  // 20260523010000_create_organizations.sql (unique on org_id + stripe_subscription_id).
+  if (stripeSubId && stripeCustomerId) {
+    const unitAmountCents = Math.max(
+      1,
+      Math.floor((session.amount_total ?? 0) / Math.max(1, seats)),
+    );
+    const { error: subErr } = await sb.from("org_subscriptions").upsert({
+      org_id: orgId,
+      stripe_subscription_id: stripeSubId,
+      stripe_customer_id: stripeCustomerId,
+      plan,
+      billing_period: billingPeriod,
+      seats_paid: seats,
+      unit_amount_cents: unitAmountCents,
+      currency: (session.currency ?? "eur").toLowerCase(),
+      status: "active",
+      current_period_end: periodEndIso,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "org_id" });
+    if (subErr) {
+      throw new Error(`org_subscriptions upsert failed: ${subErr.message}`);
+    }
+  }
+  console.log(
+    `[stripe-webhook] B2B activated org=${orgId} sub=${stripeSubId ?? "?"} ` +
+      `plan=${plan} seats=${seats}`,
+  );
+}
+
+/** Apply a status change (mark_past_due / canceled / refunded) to an org subscription. */
+// deno-lint-ignore no-explicit-any
+async function updateOrgSubscriptionStatus(
+  sb: any,
+  orgId: string,
+  newStatus: string,
+  orgRowStatus?: string,
+): Promise<void> {
+  if (orgRowStatus) {
+    await sb
+      .from("organizations")
+      .update({ status: orgRowStatus })
+      .eq("id", orgId);
+  }
+  await sb
+    .from("org_subscriptions")
+    .update({ status: newStatus, updated_at: new Date().toISOString() })
+    .eq("org_id", orgId);
+  console.log(`[stripe-webhook] B2B status org=${orgId} -> ${newStatus}`);
 }
 
 /**
@@ -165,7 +292,7 @@ async function applyReferralHooks(
   }
 }
 
-serve(async (req) => {
+serve(withSentry("stripe-webhook", async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204 });
   }
@@ -291,23 +418,63 @@ serve(async (req) => {
           expiresAt.setMonth(expiresAt.getMonth() + 1);
         }
 
-        // Resolve user. Prefer the authenticated user_id from create-checkout
-        // metadata; fall back to email lookup for legacy sessions.
+        // ── Wave 1 fix P0-W2 (2026-05-28) — B2B routing FIRST ────────────
+        //
+        // Org checkouts set metadata.org_id (see create-org-checkout/index.ts).
+        // If present we MUST route to the org activation path. Falling through
+        // to the B2C path corrupts random profiles whose email happens to
+        // match the org's billing_email. resolveOrgIdForCustomer also handles
+        // legacy sessions that have only stripe_customer_id (org row linked
+        // by stripe_customer_id during create-org-checkout's customer create).
+        const orgId = await resolveOrgIdForCustomer(
+          supabase,
+          metadata.org_id,
+          session.customer as string | undefined,
+        );
+        if (orgId) {
+          await activateOrgSubscription(
+            supabase,
+            orgId,
+            session,
+            expiresAt.toISOString(),
+          );
+          // Mark the actor (the human owner who clicked Subscribe) as the
+          // resolved subject of this event for webhook_events stamping.
+          // Note: actor's B2C is_pro is NOT touched — they get Pro by being
+          // an active member of the org via the seat-grant flow, not by
+          // this webhook.
+          const actorId = metadata.actor_user_id;
+          if (actorId && typeof actorId === "string") {
+            resolvedUserId = actorId;
+          }
+          break;
+        }
+
+        // ── B2C path: resolve user. Wave 1 fix P0-W2 removes the
+        // customer_email fallback — only canonical metadata.user_id or
+        // session.client_reference_id (set by create-checkout for some flows)
+        // are accepted. Without this guard, a Stripe customer whose email
+        // matches an unrelated B2C user could overwrite that user's Pro
+        // flag.
         let userId: string | null = null;
-        if (metaUserId) {
+        if (metaUserId && typeof metaUserId === "string") {
           userId = metaUserId;
-        } else if (customerEmail) {
-          const { data: users } = await supabase
-            .from("profiles")
-            .select("id")
-            .eq("email", customerEmail)
-            .limit(1);
-          if (users && users.length > 0) userId = users[0].id;
+        } else if (
+          session.client_reference_id &&
+          typeof session.client_reference_id === "string"
+        ) {
+          userId = session.client_reference_id;
         }
 
         if (!userId) {
+          // Loud log so missing canonical metadata is alertable. The
+          // outer markOk still fires (Stripe should not retry) but ops
+          // gets a paper trail. P1-W1 will convert this to a throw once
+          // we're confident the create-checkout always sets metadata.user_id.
           console.error(
-            `checkout.completed: no user_id in metadata and no profile for customer=${session.customer}`,
+            `checkout.completed: no canonical user_id (metadata.user_id / ` +
+              `client_reference_id) for customer=${session.customer}; ` +
+              `customer_email fallback removed (P0-W2). Manual reconcile required.`,
           );
           break;
         }
@@ -441,6 +608,25 @@ serve(async (req) => {
         const subscription = event.data.object;
         const stripeCustomerId = subscription.customer;
 
+        // ── Wave 1 fix P0-W2 (2026-05-28) — B2B routing FIRST ────────────
+        const orgIdUpd = await resolveOrgIdForCustomer(
+          supabase,
+          subscription.metadata?.org_id,
+          stripeCustomerId as string | null,
+        );
+        if (orgIdUpd) {
+          const actionUpd = routeSubscriptionUpdate(subscription);
+          if (actionUpd.kind === "extend") {
+            await updateOrgSubscriptionStatus(supabase, orgIdUpd, "active", "active");
+          } else if (actionUpd.kind === "mark_past_due") {
+            await updateOrgSubscriptionStatus(supabase, orgIdUpd, "past_due", "past_due");
+          } else if (actionUpd.kind === "downgrade") {
+            await updateOrgSubscriptionStatus(supabase, orgIdUpd, "canceled", "canceled");
+          }
+          // ignore: nothing to do
+          break;
+        }
+
         // FIX-6 (Sprint 0): route by status.
         //   active/trialing -> extend (FIXES the 30-day-lockout bug)
         //   past_due        -> flag, do not downgrade yet (grace period)
@@ -566,6 +752,17 @@ serve(async (req) => {
       case "customer.subscription.deleted": {
         const subscription = event.data.object;
         const stripeCustomerId = subscription.customer;
+
+        // ── Wave 1 fix P0-W2 (2026-05-28) — B2B routing FIRST ────────────
+        const orgIdDel = await resolveOrgIdForCustomer(
+          supabase,
+          subscription.metadata?.org_id,
+          stripeCustomerId as string | null,
+        );
+        if (orgIdDel) {
+          await updateOrgSubscriptionStatus(supabase, orgIdDel, "canceled", "canceled");
+          break;
+        }
 
         const { data: users } = await supabase
           .from("profiles")
@@ -695,6 +892,39 @@ serve(async (req) => {
           break;
         }
 
+        // ── Wave 1 fix P0-W2 (2026-05-28) — B2B routing FIRST ────────────
+        // If the refunded subscription belongs to an org, downgrade the org,
+        // not a random B2C profile that happens to match by email/customer.
+        {
+          const { data: orgSubRow } = await supabase
+            .from("org_subscriptions")
+            .select("org_id")
+            .eq("stripe_subscription_id", subscriptionId)
+            .limit(1)
+            .maybeSingle();
+          let orgIdRef: string | null = orgSubRow?.org_id ?? null;
+          if (!orgIdRef && stripeCustomerId) {
+            orgIdRef = await resolveOrgIdForCustomer(
+              supabase,
+              null,
+              stripeCustomerId,
+            );
+          }
+          if (orgIdRef) {
+            await updateOrgSubscriptionStatus(
+              supabase,
+              orgIdRef,
+              "refunded",
+              "canceled",
+            );
+            console.log(
+              `charge.refunded (B2B): org=${orgIdRef} sub=${subscriptionId} ` +
+                `amount_refunded=${charge.amount_refunded ?? 0}`,
+            );
+            break;
+          }
+        }
+
         // Find the user via subscriptions.stripe_subscription_id. Fall back
         // to profiles.stripe_customer_id if the subscriptions row is gone
         // (defensive — shouldn't happen but refunds can lag deletes).
@@ -808,4 +1038,4 @@ serve(async (req) => {
       headers: responseHeaders,
     });
   }
-});
+}));

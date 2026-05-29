@@ -67,9 +67,12 @@ Deno.test("R-T03 — matchProfile: prefers stripe_customer_id link", () => {
   assertEquals(m!.via, "customer_id");
 });
 
-Deno.test("R-T04 — matchProfile: falls back to email when no customer link", () => {
-  // Sofia's case: paid via Stripe, but profiles.stripe_customer_id never set
-  // because the webhook missed.
+Deno.test("R-T04 — matchProfile: email-only match returns null (P0-RC5 fix)", () => {
+  // Wave 1 fix P0-RC5 (2026-05-28): email fallback removed. A paying Stripe
+  // customer whose email matches a B2C profile is NO LONGER auto-linked —
+  // ops triages via reconcile_unmatched instead. This closes the free-Pro
+  // exploit where Mallory could set profiles.email = victim@example to
+  // inherit Victim's active Stripe sub.
   const sub: StripeSubscription = {
     id: "sub_2",
     status: "active",
@@ -80,9 +83,8 @@ Deno.test("R-T04 — matchProfile: falls back to email when no customer link", (
     { id: "u-sofia", email: "sofia@example.com", stripe_customer_id: null },
   ];
   const m = matchProfile(sub, cust, profiles);
-  assert(m !== null);
-  assertEquals(m!.profile.id, "u-sofia");
-  assertEquals(m!.via, "email");
+  // Pre-fix: matched via=email. Post-fix: no canonical link, returns null.
+  assertEquals(m, null);
 });
 
 Deno.test("R-T05 — matchProfile: falls back to metadata.user_id", () => {

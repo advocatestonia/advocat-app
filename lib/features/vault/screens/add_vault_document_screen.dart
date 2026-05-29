@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
+// WAVE 2 FIX W2-03 (F3): privileged client material on upload.
+import '../../../shared/secure_screen.dart';
 import '../../../services/supabase_service.dart';
 import '../../legal/utils/sensitive_consent_gate.dart';
 import '../models/vault_document.dart';
@@ -229,7 +231,8 @@ class _AddVaultDocumentScreenState
     final l10n = AppLocalizations.of(context)!;
     final vs = VaultStrings.of(context);
     final tagsAsync = ref.watch(vaultTagsProvider);
-    return Scaffold(
+    return SecureScreenScope(
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(
@@ -313,6 +316,7 @@ class _AddVaultDocumentScreenState
                   ],
                 ),
               ),
+      ),
       ),
     );
   }

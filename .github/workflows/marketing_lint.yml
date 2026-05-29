@@ -1,0 +1,82 @@
+name: Marketing copy lint
+
+# ============================================================================
+# Runs scripts/lint_marketing_copy.sh on every push/PR to catch UPL-triggering
+# marketing copy (Anwalt/avvocato/abogado claims, "AI lawyer", etc.) before it
+# reaches production.
+#
+# Audit refs:
+#   docs/security_audit_2026-05-28/findings/10_dach_legal.md  §7.5 DE/AT
+#   docs/security_audit_2026-05-28/findings/11_romance_eu_legal.md §7 FR/IT/ES/PT
+#   docs/security_audit_2026-05-28/findings/08_finland_legal.md §1.7 FI
+#   docs/security_audit_2026-05-28/findings/09_estonia_legal.md §6  EE
+#
+# CURRENT MODE: warn-only (`continue-on-error: true`) until the 8 baseline
+# violations from wave1_marketing_violations.txt are cleared. Then flip the
+# step to BLOCKING by removing continue-on-error.
+# ============================================================================
+
+on:
+  pull_request:
+    paths:
+      - 'web/**/*.html'
+      - 'lib/l10n/**/*.arb'
+      - '../../business/competitive/**'
+      - '../../business/PRICING_DECISION_*.md'
+      - 'scripts/lint_marketing_copy.sh'
+  push:
+    branches: [main]
+    paths:
+      - 'web/**/*.html'
+      - 'lib/l10n/**/*.arb'
+      - 'scripts/lint_marketing_copy.sh'
+  workflow_dispatch: {}
+
+# -----------------------------------------------------------------------------
+# Wave 2 INFRA-08 hardening — explicit least-privilege permissions.
+# Workflow-level + job-level both set to read-only on contents. Linter only
+# reads files and uploads an artifact (artifact upload uses workflow runtime
+# token, not contents:write).
+# -----------------------------------------------------------------------------
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint marketing copy
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout (outer workspace via submodule init)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Make linter executable
+        run: chmod +x app/advocat_project/scripts/lint_marketing_copy.sh
+
+      - name: Run marketing copy linter
+        id: lint
+        continue-on-error: true # WARN MODE — flip to false after Wave 1 cleanup
+        run: |
+          bash app/advocat_project/scripts/lint_marketing_copy.sh \
+            --report marketing_violations.txt
+
+      - name: Upload violations report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: marketing_violations
+          path: marketing_violations.txt
+          retention-days: 14
+
+      - name: Annotate PR with violation count
+        if: steps.lint.outcome == 'failure'
+        run: |
+          if [[ -f marketing_violations.txt ]]; then
+            count=$(grep -c '^/' marketing_violations.txt || echo 0)
+            echo "::warning::Marketing copy linter found ${count} violation(s). See uploaded artifact."
+          fi

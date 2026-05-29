@@ -158,13 +158,59 @@ serve(async (req) => {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
+  // ── Wave 1 fix P0-A1 (2026-05-28) — Apple IAP receipt re-binding ─────────
+  //
+  // BEFORE the upsert we check whether this transaction chain is already
+  // bound to a DIFFERENT user_id. Apple's receipts are collectable (jailbreak,
+  // leaked iCloud backups, support-call screen-share, receipt-trading
+  // marketplaces), so an attacker can present Alice's real, Apple-signed
+  // receipt with their own JWT. The old code happily overwrote the row's
+  // user_id from Alice → Bob and granted Bob Pro for free.
+  //
+  // The lookup checks BOTH transaction_id (single-purchase replays) and
+  // original_transaction_id (auto-renewal chain replays — Apple emits a new
+  // transaction_id every renewal but original_transaction_id stays stable).
+  //
+  // Belt-and-braces: migration 20260528100000_wave1_payments_hardening.sql
+  // adds a UNIQUE INDEX on (original_transaction_id, user_id) so even a
+  // concurrent race that beats this SELECT crashes on the index, never
+  // silently re-binds.
+  const originalTxId = entry.original_transaction_id ?? transactionId;
+  const { data: existingTx, error: existingErr } = await sb
+    .from("apple_iap_transactions")
+    .select("user_id, transaction_id, original_transaction_id")
+    .or(
+      `transaction_id.eq.${transactionId},original_transaction_id.eq.${originalTxId}`,
+    )
+    .limit(1)
+    .maybeSingle();
+  if (existingErr) {
+    return jsonError(
+      `apple_iap_transactions lookup: ${existingErr.message}`,
+      500,
+    );
+  }
+  if (existingTx && existingTx.user_id !== gate.user.id) {
+    // PII discipline: do NOT echo the other user's id in the response. The
+    // caller (potentially Bob) does not need to know who legitimately owns
+    // the receipt. We log the conflict server-side for audit.
+    console.warn(
+      `[apple-iap-verify] receipt_user_mismatch ` +
+        `caller=${gate.user.id} tx=${transactionId} ` +
+        `original=${originalTxId} bound_to=${existingTx.user_id}`,
+    );
+    return jsonError("receipt already bound to a different account", 409, {
+      reason: "receipt_user_mismatch",
+    });
+  }
+
   // 4. Upsert the ledger row (idempotent on transaction_id PK).
   const { error: ledgerErr } = await sb.from("apple_iap_transactions").upsert(
     {
       transaction_id: transactionId,
       user_id: gate.user.id,
       product_id: productId,
-      original_transaction_id: entry.original_transaction_id ?? transactionId,
+      original_transaction_id: originalTxId,
       expires_at: expiresAt.toISOString(),
       environment: verifyResult.env,
       raw_receipt: entry as unknown as Record<string, unknown>,
@@ -172,6 +218,23 @@ serve(async (req) => {
     { onConflict: "transaction_id" },
   );
   if (ledgerErr) {
+    // The unique index (original_transaction_id, user_id) raises a 23505
+    // when a concurrent restore from a different user_id beats our SELECT.
+    // Surface it as the same 409 the caller would have got from the
+    // SELECT-before-upsert path, so the client sees one stable code.
+    const msg = ledgerErr.message || "";
+    const isUniqViolation = msg.includes("apple_iap_transactions_original_user_uniq") ||
+      msg.includes("duplicate key") ||
+      (ledgerErr as { code?: string }).code === "23505";
+    if (isUniqViolation) {
+      console.warn(
+        `[apple-iap-verify] receipt_user_mismatch (race) ` +
+          `caller=${gate.user.id} tx=${transactionId} original=${originalTxId}`,
+      );
+      return jsonError("receipt already bound to a different account", 409, {
+        reason: "receipt_user_mismatch",
+      });
+    }
     return jsonError(
       `apple_iap_transactions upsert: ${ledgerErr.message}`,
       500,
@@ -186,7 +249,7 @@ serve(async (req) => {
     expiresAt,
     {
       transaction_id: transactionId,
-      original_transaction_id: entry.original_transaction_id ?? transactionId,
+      original_transaction_id: originalTxId,
     },
   );
   if (!activation.ok) {

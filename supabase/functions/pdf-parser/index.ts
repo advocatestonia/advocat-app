@@ -181,6 +181,30 @@ serve(async (req: Request) => {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 
+  // SECURITY (Wave-1 2026-05-28, audit P0-05 — IDOR on case_documents):
+  // `parseAndValidateBody` already pins `storage_path` to the caller's uid
+  // prefix, but `case_id` was previously accepted as any UUID-shaped
+  // string with no ownership check. An attacker who enumerated a victim's
+  // `case_id` could upload an OCR'd attack PDF and persist a
+  // `case_documents` row into the victim's case — prompt-injection-
+  // through-case-graph (loadActiveCase reads the victim's case context
+  // including the attacker's poisoned `parsed_text` on the next turn).
+  //
+  // The check applies to BOTH the per-user JWT path AND the internal-call
+  // (email-triage attachment hop) path — in both cases the eventual owner
+  // is `resolvedUserId`, and the case must belong to that user.
+  if (body.case_id) {
+    const { data: owns } = await admin
+      .from("user_cases")
+      .select("id")
+      .eq("id", body.case_id)
+      .eq("user_id", resolvedUserId)
+      .maybeSingle();
+    if (!owns) {
+      return jsonError("case_id not owned by caller", 403);
+    }
+  }
+
   const isImagePath = isImageMime(body.mime_type);
   const maxBytes = isImagePath ? MAX_IMAGE_BYTES : MAX_PDF_BYTES;
 

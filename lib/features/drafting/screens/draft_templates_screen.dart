@@ -15,6 +15,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// WAVE 2 FIX W2-03 (F3): template picker prefills include client matter.
+import '../../../shared/secure_screen.dart';
 import '../models/draft_model.dart';
 import '../services/draft_service.dart';
 import '../widgets/drafting_strings.dart';
@@ -133,7 +135,8 @@ class DraftTemplatesScreen extends ConsumerWidget {
     final hasReviewsAsync = ref.watch(hasContractReviewsProvider);
     final templates = buildTemplateCatalogue(l10n);
 
-    return Scaffold(
+    return SecureScreenScope(
+      child: Scaffold(
       appBar: AppBar(title: Text(l10n.templatesTitle)),
       body: ListView(
         key: const Key('draft_templates_list'),
@@ -158,6 +161,7 @@ class DraftTemplatesScreen extends ConsumerWidget {
               ),
             ),
         ],
+      ),
       ),
     );
   }

@@ -2,11 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
 
 import '../../../models/user.dart';
 import '../../../services/demo_data.dart';
 import '../../../services/supabase_service.dart';
+import '../../case_memory/state/active_case_provider.dart'
+    show kActiveCaseIdPrefKey;
+import '../../case_memory/state/intake_wizard_state.dart'
+    show kIntakeDraftPrefKey;
 
 // ---------------------------------------------------------------------------
 // Auth state
@@ -358,12 +363,78 @@ class AuthController extends StateNotifier<AuthState> {
   }
 
   /// Sign out the current user.
+  ///
+  /// Security: F1 (WAVE 1, 2026-05-28) — purge SharedPreferences of all
+  /// legal-content caches before flipping to unauthenticated. Without this
+  /// sweep, a residual `intake_draft`, `contract_review_handoff_v1`, or
+  /// `active_case_id` survives logout and is readable by the next user on
+  /// a shared device (or any XSS on web, where prefs map to `localStorage`).
+  /// Bar-association privilege rules treat such residue as a confidentiality
+  /// breach, so we err on the side of over-purging — anything that smells
+  /// like case content is wiped.
   Future<void> logout() async {
     try {
       await _supabase.signOut();
     } catch (_) {}
+
+    // Purge legal-content caches from SharedPreferences. Best-effort: if
+    // prefs is unavailable (test stub etc.), we still flip to unauth so the
+    // UI doesn't get stuck.
+    try {
+      await purgeLegalPrefs();
+    } catch (_) {
+      // Non-fatal — the auth state transition below is the priority.
+    }
+
     _ref.read(isDemoModeProvider.notifier).state = false;
     state = const AuthState(status: AuthStatus.unauthenticated);
+  }
+
+  /// Visible-for-testing helper that wipes every known legal-content key
+  /// out of SharedPreferences. Called from [logout]; exposed so the
+  /// regression test (`test/auth/logout_purge_test.dart`) can call it
+  /// directly without having to mock the full Supabase signOut path.
+  ///
+  /// Strategy:
+  ///   1. Remove a hard-coded allowlist of known keys (the ones we KNOW
+  ///      hold attorney-client material today).
+  ///   2. Sweep any key starting with `case_`, `draft_`, `vault_`,
+  ///      `intake_`, or `pending_checkout_` — future code can add new
+  ///      keys under those prefixes without having to remember to update
+  ///      this list.
+  @visibleForTesting
+  static Future<void> purgeLegalPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // 1. Explicit keys — fast path.
+    const explicit = <String>[
+      'contract_review_handoff_v1',
+      kIntakeDraftPrefKey,
+      kActiveCaseIdPrefKey,
+      'pending_checkout',
+    ];
+    for (final k in explicit) {
+      await prefs.remove(k);
+    }
+
+    // 2. Prefix sweep — catches any future legal-content key without
+    //    requiring this list to be kept in sync.
+    const purgePrefixes = <String>[
+      'case_',
+      'draft_',
+      'vault_',
+      'intake_',
+      'pending_checkout_',
+    ];
+    final allKeys = prefs.getKeys().toList(growable: false);
+    for (final k in allKeys) {
+      for (final prefix in purgePrefixes) {
+        if (k.startsWith(prefix)) {
+          await prefs.remove(k);
+          break;
+        }
+      }
+    }
   }
 
   /// Send a password reset email.

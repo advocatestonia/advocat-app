@@ -73,23 +73,48 @@ serve(async (req) => {
       auth: { persistSession: false, autoRefreshToken: false },
     });
 
-    // Resolve the user — we need their uid for the plan lookup.
+    // ── Wave 1 fix P0-Q4 (2026-05-28) — reject anon / demo fall-through ──
+    //
+    // The previous handler returned a synthetic free-tier payload (allowed:
+    // true, used: 0) whenever sb.auth.getUser() failed to resolve a user.
+    // That branch fired for ANY caller presenting just the public anon key
+    // (or a forged/expired JWT). A scripted attacker could call check-ai-quota
+    // with the anon key and always get allowed=true, then bombard claude-proxy
+    // for as long as claude-proxy's own auth gate let them through.
+    //
+    // Defence-in-depth (mirrors _shared/auth.ts:189-201): require not only a
+    // resolvable user, but `role === 'authenticated'` AND `aud === 'authenticated'`.
+    // Service-role JWTs (role='service_role') and anonymous JWTs (role='anon')
+    // are rejected. There is NO synthetic demo bypass — demo accounts MUST be
+    // real auth.users rows. If you need to test client-side without auth,
+    // mock the response in the client, not in the server.
     const { data: userData, error: userErr } = await sb.auth.getUser();
     if (userErr || !userData?.user) {
-      // Demo mode: no real Supabase user, but anon key is valid.
-      // Return a synthetic free-tier payload so the client doesn't block.
-      // No usage is persisted; demo users effectively have a local-only counter.
-      return json(buildPayload({
-        plan: "free",
-        used: 0,
-        limit: FREE_LIMIT,
-        allowed: true,
-      }));
+      return json({ error: "missing or invalid session" }, 401);
     }
-    const uid = userData.user.id;
+    const u = userData.user as { id: string; role?: string; aud?: string };
+    const looksAuthenticated =
+      (!u.role || u.role === "authenticated") &&
+      (!u.aud || u.aud === "authenticated");
+    if (!looksAuthenticated) {
+      return json({ error: "missing or invalid session" }, 401);
+    }
+    const uid = u.id;
 
-    // Determine plan by looking at subscriptions.
-    const plan = await detectPlan(sb, uid);
+    // Determine plan by looking at subscriptions. Wave 1 fix P0-Q4:
+    // detectPlan now throws on backend error instead of silently returning
+    // "free". A DB outage or RLS misconfig must NOT silently grant the free
+    // tier (and the surface attack — claiming "pro" from a forged subscriptions
+    // row — is closed by the role/aud check above, but we still want a loud
+    // 503 if subscriptions is unavailable rather than a silent default).
+    let plan: "free" | "pro";
+    try {
+      plan = await detectPlan(sb, uid);
+    } catch (planErr) {
+      const msg = planErr instanceof Error ? planErr.message : String(planErr);
+      console.error(`check-ai-quota: detectPlan failed: ${msg.slice(0, 200)}`);
+      return json({ error: "plan lookup unavailable" }, 503);
+    }
 
     const body = await req.json().catch(() => ({}));
     const action = (body?.action as string | undefined) ?? "check";
@@ -182,31 +207,47 @@ async function detectPlan(
   sb: any,
   uid: string,
 ): Promise<"free" | "pro"> {
-  try {
-    // Two common shapes in the Advocat codebase:
-    //   1. `subscriptions` table with (user_id, status)
-    //   2. `profiles.is_pro` boolean
-    const sub = await sb
-      .from("subscriptions")
-      .select("status")
-      .eq("user_id", uid)
-      .in("status", ["active", "trialing"])
-      .limit(1)
-      .maybeSingle();
-    if (sub.data) return "pro";
-  } catch (_) {
-    // Table may not exist yet — fall through to profiles.
+  // Wave 1 fix P0-Q4 (2026-05-28): both lookups must complete without
+  // throwing. Previously the bare `catch (_)` blocks silently mapped a DB
+  // outage to "free", which is the safe direction *for free-tier capping*
+  // but obscures real backend incidents. We now propagate any non-PostgREST
+  // error so the caller can return a loud 503. Missing-row results (no
+  // active subscription, no profile) are NOT errors — they correctly resolve
+  // to "free".
+  //
+  // We allow `.maybeSingle()` to surface a `PGRST116` (zero rows) as
+  // data=null, error=null — that's the documented contract and we keep
+  // the historical behaviour of returning "free" in that case.
+  const sub = await sb
+    .from("subscriptions")
+    .select("status")
+    .eq("user_id", uid)
+    .in("status", ["active", "trialing"])
+    .limit(1)
+    .maybeSingle();
+  if (sub.error) {
+    // PostgREST returns PGRST116 for "no rows" via maybeSingle(); anything
+    // else is a real backend failure. We accept the absence-of-row case.
+    const code = (sub.error as { code?: string }).code;
+    if (code && code !== "PGRST116") {
+      throw new Error(`subscriptions lookup: ${sub.error.message}`);
+    }
   }
-  try {
-    const prof = await sb
-      .from("profiles")
-      .select("is_pro")
-      .eq("id", uid)
-      .maybeSingle();
-    if (prof.data?.is_pro === true) return "pro";
-  } catch (_) {
-    // ignore
+  if (sub.data) return "pro";
+
+  const prof = await sb
+    .from("profiles")
+    .select("is_pro")
+    .eq("id", uid)
+    .maybeSingle();
+  if (prof.error) {
+    const code = (prof.error as { code?: string }).code;
+    if (code && code !== "PGRST116") {
+      throw new Error(`profiles lookup: ${prof.error.message}`);
+    }
   }
+  if (prof.data?.is_pro === true) return "pro";
+
   return "free";
 }
 

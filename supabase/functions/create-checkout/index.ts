@@ -21,6 +21,7 @@ import {
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
 import { killOn, paymentsPausedResponse } from "../_shared/kill_switches.ts";
+import { validateCheckoutRedirects } from "../_shared/redirect_allowlist.ts";
 
 const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY")!, {
   apiVersion: "2023-10-16",
@@ -149,6 +150,25 @@ serve(async (req: Request) => {
       );
     }
 
+    // ── Wave 1 fix P1-08 (2026-05-28) — open-redirect protection ────────
+    //
+    // Stripe Checkout will 302 the user to success_url / cancel_url AFTER
+    // payment. Previously these came straight from the request body without
+    // host validation, enabling a phishing flow:
+    //   1. attacker crafts a checkout via the JWT-authenticated endpoint
+    //      with success_url=https://attacker.example/fake-receipt
+    //   2. user pays at the real Stripe page
+    //   3. Stripe redirects them to attacker's clone of our receipt page
+    // The validator below restricts to advocat.ee + *.advocat.ee (and
+    // localhost when ALLOW_LOCALHOST_REDIRECT=true on staging).
+    const redirects = validateCheckoutRedirects(success_url, cancel_url, {
+      success: "https://advocat.ee/payment-success.html",
+      cancel: "https://advocat.ee/payment-cancel.html",
+    });
+    if (!redirects.ok) {
+      return jsonError("invalid redirect URL", 400, { reason: redirects.reason });
+    }
+
     // ── GDPR Art. 28 hard-gate ─────────────────────────────────────────
     // Refuse to mint a session if there is no acceptance row for the
     // current DPA version. The client-side dialog should have created
@@ -207,8 +227,8 @@ serve(async (req: Request) => {
           quantity: 1,
         },
       ],
-      success_url: success_url || "https://advocat.ee/payment-success.html",
-      cancel_url: cancel_url || "https://advocat.ee/payment-cancel.html",
+      success_url: redirects.success,
+      cancel_url: redirects.cancel,
       metadata: {
         plan_id,
         billing_period,

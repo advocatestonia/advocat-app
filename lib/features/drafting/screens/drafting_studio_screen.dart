@@ -16,6 +16,8 @@ import 'package:share_plus/share_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../l10n/app_localizations.dart';
+// WAVE 2 FIX W2-03 (F3): privileged drafts in progress.
+import '../../../shared/secure_screen.dart';
 import '../models/draft_model.dart';
 import '../services/draft_service.dart';
 import '../widgets/ai_revision_dialog.dart';
@@ -539,7 +541,8 @@ class _DraftingStudioScreenState extends ConsumerState<DraftingStudioScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
+    return SecureScreenScope(
+      child: Scaffold(
       appBar: AppBar(
         title: Text(_draft?.displayTitle(untitledFallback: l10n.draftingTitle) ?? l10n.draftingTitle),
         actions: <Widget>[
@@ -610,6 +613,7 @@ class _DraftingStudioScreenState extends ConsumerState<DraftingStudioScreen> {
                     ),
                   ],
                 ),
+      ),
     );
   }
 }

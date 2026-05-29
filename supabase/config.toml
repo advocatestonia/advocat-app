@@ -1,0 +1,15 @@
+# Supabase project configuration
+# Project ref: okgnkucgwsytsondrjye
+# Created: 2026-05-28 — security audit INFRA-02 (dep pinning)
+#
+# This file is consumed by the Supabase CLI. The [functions] section
+# applies the import_map to every edge function deploy, locking the
+# supply chain. See supabase/functions/IMPORT_MAP_README.md.
+
+project_id = "okgnkucgwsytsondrjye"
+
+[functions]
+# Apply the import map to ALL edge function deploys.
+# The path is relative to this config.toml.
+import_map = "./functions/import_map.json"
+verify_jwt = true

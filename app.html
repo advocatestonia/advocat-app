@@ -22,6 +22,25 @@
   <meta name="description" content="Advocat — AI-powered legal assistant for Estonia and the EU. Get instant legal answers in 17 languages with real Estonian and EU law citations. Free to start. €19.99/mo Pro. 24/7 — no waiting for a lawyer.">
   <meta name="robots" content="index,follow">
 
+  <!--
+    Security hardening — F2/F4/F10 (WAVE 1, 2026-05-28).
+    Phase 1 CSP per audit `docs/security_audit_2026-05-28/findings/03_client_security.md`:
+      * 'unsafe-inline' is unavoidable today (Flutter CanvasKit emits inline styles;
+        the cookie banner uses inline onclick handlers). Removed in Phase 3 once
+        we extract the banner JS and add per-script nonces.
+      * frame-ancestors 'none' + X-Frame-Options=DENY blocks clickjacking.
+      * connect-src is the tight perimeter — only our Supabase project, our
+        functions sub-domain, Stripe API, and the analytics CDNs we already use.
+    Referrer-Policy uses strict-origin-when-cross-origin (NOT no-referrer):
+      * no-referrer breaks Stripe checkout return — they verify the referrer host.
+      * strict-origin-when-cross-origin sends only the origin (no path/UUID) to
+        third parties, fixing the case-UUID leak in F10 while keeping Stripe happy.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.supabase.co https://www.googletagmanager.com https://www.google-analytics.com https://www.facebook.com https://analytics.tiktok.com; connect-src 'self' https://okgnkucgwsytsondrjye.supabase.co https://*.functions.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com https://api.stripe.com; frame-src https://js.stripe.com https://hooks.stripe.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://checkout.stripe.com; object-src 'none'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+
   <title>Advocat — Õigusabi tehisintellektiga</title>
 
   <!-- Canonical + hreflang (17 locales) -->

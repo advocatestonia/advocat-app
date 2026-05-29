@@ -20,6 +20,7 @@ import {
 import { requireOrgContext } from "../_shared/orgAuth.ts";
 import { writeOrgAudit } from "../_shared/auditLog.ts";
 import { killOn, paymentsPausedResponse } from "../_shared/kill_switches.ts";
+import { validateCheckoutRedirects } from "../_shared/redirect_allowlist.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -214,8 +215,24 @@ serve(async (req) => {
 
   // ── Build checkout session ────────────────────────────────────────────
   const price = SEAT_PRICES[plan][billingPeriod];
-  const successUrl = body.success_url || `${APP_URL}/team/billing/success`;
-  const cancelUrl = body.cancel_url || `${APP_URL}/team/billing/cancel`;
+
+  // ── Wave 1 fix P1-08 (2026-05-28) — open-redirect protection ──────────
+  // Same allowlist policy as create-checkout. APP_URL must itself be
+  // inside ALLOWED_REDIRECT_HOSTS; if it isn't, validateCheckoutRedirects
+  // returns ok=false so we fail loud rather than emit an unsafe default.
+  const redirects = validateCheckoutRedirects(
+    body.success_url,
+    body.cancel_url,
+    {
+      success: `${APP_URL}/team/billing/success`,
+      cancel: `${APP_URL}/team/billing/cancel`,
+    },
+  );
+  if (!redirects.ok) {
+    return jsonError("invalid redirect URL", 400, { reason: redirects.reason });
+  }
+  const successUrl = redirects.success;
+  const cancelUrl = redirects.cancel;
 
   const params = new URLSearchParams();
   params.append("mode", "subscription");

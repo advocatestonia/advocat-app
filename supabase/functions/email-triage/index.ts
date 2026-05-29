@@ -16,12 +16,18 @@
 // -----------------------------------------------------------------------------
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "@supabase/supabase-js";
 
-import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import {
+  corsHeaders,
+  jsonError,
+  jsonOk,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
 import { checkCronSecret } from "../agent-intentions-cron/auth_gate.ts";
 import { buildAnthropicHeaders } from "../claude-proxy/prompt_caching.ts";
 import { getOrCreateTraceId, shortTrace } from "../_shared/tracing.ts";
+import { withSentry } from "../_shared/sentry.ts";
 import {
   type AnthropicCallArgs,
   type AnthropicResponse,
@@ -82,7 +88,7 @@ const USE_RETRY_QUEUE =
 // as a 502 to the caller so the retry-tick worker dead-letters it.
 const TRANSIENT_ERROR_RE = /\b(5\d\d|429|529|timeout|ECONNRESET|fetch failed)\b/i;
 
-serve(async (req) => {
+serve(withSentry("email-triage", async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
   }
@@ -134,15 +140,19 @@ serve(async (req) => {
     return jsonError("internal-call requires service-role bearer", 401);
   }
 
-  // Per-user JWT path
-  const authHeader = req.headers.get("Authorization");
-  if (!authHeader) return jsonError("Unauthorized", 401);
-  const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-  const token = authHeader.replace("Bearer ", "");
-  const { data, error } = await sb.auth.getUser(token);
-  if (error || !data?.user) return jsonError("Invalid session", 401);
-  return await dispatchTriage(body.thread_id!, data.user.id, traceId);
-});
+  // SECURITY (Wave-1 2026-05-28, audit P1-11):
+  // Per-user JWT path previously did bare `sb.auth.getUser(token)` (no U1
+  // role/aud check), so a forged token could trigger paid Sonnet triage
+  // on arbitrary `thread_id`s — ~$0.02/triage burn. Gate now enforces
+  // role/aud + postgres-backed rate limit. Internal-call (cron) path
+  // above already validates the service-role bearer separately.
+  const gate = await requireUserWithRateLimit(req, {
+    bucket: "email-triage",
+    maxPerMinute: 30,
+  });
+  if (gate.kind === "deny") return gate.response;
+  return await dispatchTriage(body.thread_id!, gate.user.id, traceId);
+}));
 
 async function dispatchTriage(
   threadId: string,

@@ -26,6 +26,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../shared/safe_launch.dart';
+
 /// Callback signature for the "Send via Advocat" button. The host widget
 /// owns the actual tool invocation — we just hand back the edited subject
 /// and body when the user is ready.
@@ -352,17 +354,23 @@ class _EmailPreviewCardState extends State<EmailPreviewCard>
   }
 
   Future<void> _openInMailApp() async {
-    final params = <String, String>{
-      'subject': _subjectCtrl.text,
-      'body': _bodyCtrl.text,
-    };
-    final query = params.entries
-        .map((e) =>
-            '${Uri.encodeQueryComponent(e.key)}=${Uri.encodeQueryComponent(e.value)}')
-        .join('&');
-    final uri = Uri.parse('mailto:?$query');
-    final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    if (!ok && mounted) {
+    // F5 (WAVE 1, 2026-05-28) — use Uri() constructor instead of string
+    // concat + Uri.parse('mailto:?$query'). The constructor percent-encodes
+    // queryParameters automatically, eliminating the manual encode dance
+    // (which was correct but brittle). safeLaunchUrl then enforces the
+    // mailto scheme allowlist + the (empty) `to` field guard.
+    final uri = Uri(
+      scheme: 'mailto',
+      queryParameters: <String, String>{
+        'subject': _subjectCtrl.text,
+        'body': _bodyCtrl.text,
+      },
+    );
+    final result = await safeLaunchUrl(
+      uri,
+      mode: LaunchMode.externalApplication,
+    );
+    if (!result.launched && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Could not open email app')),
       );

@@ -13,7 +13,12 @@
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import {
+  corsHeaders,
+  jsonError,
+  jsonOk,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -52,14 +57,20 @@ serve(async (req: Request) => {
     return jsonError("Method not allowed", 405);
   }
 
-  // Require any Bearer (user OR anon) — landmark metadata is non-sensitive
-  // public-law data. We still enforce auth header presence to keep the
-  // surface uniform with other endpoints and to enable per-tier rate caps
-  // later. For v1 we accept any non-empty Authorization header.
-  const authHeader = req.headers.get("Authorization");
-  if (!authHeader) {
-    return jsonError("Unauthorized", 401);
-  }
+  // SECURITY (Wave-1 2026-05-28, audit P1-09):
+  // Previously this fn accepted any non-empty Authorization header —
+  // exactly the primitive that produced the pre-f8f6a58 claude-proxy
+  // bypass. The anon key (bundled in main.dart.js) was a free pass to
+  // ~$0.00002 OpenAI embedding calls per request at unlimited rate.
+  // Gate now enforces U1 role/aud + postgres-backed per-principal limit.
+  // Anon traffic still allowed (landmark metadata is public legal data),
+  // but at a tighter cap.
+  const gate = await requireUserWithRateLimit(req, {
+    bucket: "landmark-search",
+    maxPerMinute: 30,
+    anonymousPerMinute: 10,
+  });
+  if (gate.kind === "deny") return gate.response;
 
   let body: LandmarkSearchRequest;
   try {

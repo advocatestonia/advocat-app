@@ -1,0 +1,71 @@
+# =============================================================================
+# CODEOWNERS — owner review required on CI/CD, secrets, deploy, billing surface
+# =============================================================================
+# Audit ref: docs/security_audit_2026-05-28/findings/06_infra_security.md
+#            INFRA-08 — workflow holds SUPABASE_SERVICE_KEY (full DB bypass-RLS)
+#
+# Rule: a PR touching any path below requires review from @advocatestonia
+#       before merge. Branch protection on `main` MUST enable
+#       "Require review from Code Owners".
+#
+# Owner: @advocatestonia (per memory reference_github_account.md)
+#
+# How to add a new protected path:
+#   1. Verify it touches secrets, deploy, CI, billing, or auth/migration.
+#   2. Add a glob line below grouped by category.
+#   3. Update docs/security_audit_2026-05-28/fixes/wave2_codeowners_runbook.md
+#      with WHY this path is protected.
+#   4. Open a PR; this CODEOWNERS line itself requires owner review.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# CI/CD — every workflow file. INFRA-08 root cause: a malicious PR mutating
+# db_backup.yml could exfiltrate SUPABASE_SERVICE_KEY via one curl line.
+# -----------------------------------------------------------------------------
+.github/**                                @advocatestonia
+
+# -----------------------------------------------------------------------------
+# Deploy & DB scripts — production path. Owner-laptop deploy means these
+# scripts are the only path to prod. canary-deploy / rollback / prod-lock
+# control the time-gate + serialization invariants the audit relies on.
+# -----------------------------------------------------------------------------
+scripts/db_dump.sh                        @advocatestonia
+scripts/db_*.sh                           @advocatestonia
+scripts/restore_drill.sh                  @advocatestonia
+scripts/canary-*                          @advocatestonia
+scripts/rollback*                         @advocatestonia
+scripts/prod-lock*                        @advocatestonia
+scripts/lint_marketing_copy.sh            @advocatestonia
+
+# -----------------------------------------------------------------------------
+# Auth gate — single source of truth for JWT verification across ~70 edge fns.
+# A regression here (e.g. accepting anon JWT as user) recreates the historical
+# anon-JWT-bypass exploit (memory: lesson_anon_jwt_bypass.md).
+# -----------------------------------------------------------------------------
+supabase/functions/_shared/auth.ts        @advocatestonia
+supabase/functions/_shared/rate_limit.ts  @advocatestonia
+supabase/functions/_shared/cors.ts        @advocatestonia
+
+# -----------------------------------------------------------------------------
+# Crown-jewel edge functions — vault rotation, billing, IAP, account delete.
+# Single PR to any of these can compromise the entire encryption surface,
+# move money, grant entitlement, or wipe a user's data.
+# -----------------------------------------------------------------------------
+supabase/functions/vault-rotate-master/** @advocatestonia
+supabase/functions/stripe-webhook/**      @advocatestonia
+supabase/functions/account-delete/**      @advocatestonia
+supabase/functions/apple-iap-verify/**    @advocatestonia
+
+# -----------------------------------------------------------------------------
+# Migrations — DDL is irreversible in practice. Owner review on every change
+# to schema, RLS, roles, grants.
+# -----------------------------------------------------------------------------
+supabase/migrations/**                    @advocatestonia
+
+# -----------------------------------------------------------------------------
+# Env / secrets surface — never want a contributor PR adding a new .env file
+# or expanding env-var footprint without owner review.
+# -----------------------------------------------------------------------------
+.env*                                     @advocatestonia
+**/.env*                                  @advocatestonia
+config/secrets/**                         @advocatestonia

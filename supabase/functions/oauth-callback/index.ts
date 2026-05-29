@@ -109,14 +109,64 @@ serve(async (req) => {
   const userId = gate.user.id;
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+
+  // Wave-1 security audit P0-5 (2026-05-28): dual-write encrypted token
+  // columns alongside the deprecated plain-text columns. See migration
+  // 20260528120000_security_audit_p0_revokes.sql. Failures are LOGGED but
+  // non-fatal during the dual-write window; Wave 2 will drop the plain
+  // columns and make encryption fatal.
+  let accessTokenEnc: string | null = null;
+  let refreshTokenEnc: string | null = null;
+  try {
+    const { data: accEnc, error: accErr } = await supabase.rpc(
+      "vault_encrypt_text",
+      { p_plaintext: row.access_token, p_user_id: userId },
+    );
+    if (accErr) {
+      console.warn(
+        "oauth-callback: vault_encrypt_text(access_token) failed:",
+        accErr,
+      );
+    } else if (typeof accEnc === "string") {
+      accessTokenEnc = accEnc;
+    }
+
+    if (row.refresh_token) {
+      const { data: refEnc, error: refErr } = await supabase.rpc(
+        "vault_encrypt_text",
+        { p_plaintext: row.refresh_token, p_user_id: userId },
+      );
+      if (refErr) {
+        console.warn(
+          "oauth-callback: vault_encrypt_text(refresh_token) failed:",
+          refErr,
+        );
+      } else if (typeof refEnc === "string") {
+        refreshTokenEnc = refEnc;
+      }
+    }
+  } catch (e) {
+    console.warn(
+      "oauth-callback: vault encrypt step threw (non-fatal):",
+      String(e),
+    );
+  }
+
   const { error } = await supabase
     .from("user_oauth_tokens")
     .upsert(
       {
         user_id: userId,
         provider: row.provider,
+        // DEPRECATED 2026-05-28: plain-text columns retained for the
+        // dual-write window. Wave 2 will drop these after readers migrate
+        // to *_enc columns.
         access_token: row.access_token,
         refresh_token: row.refresh_token,
+        // Wave-1 P0-5: encrypted shadow columns. Readers may opt in via
+        // vault_decrypt_text(<col>, user_id).
+        access_token_enc: accessTokenEnc,
+        refresh_token_enc: refreshTokenEnc,
         email: row.email,
         expires_at: row.expires_at,
         // `scope` is persisted as NULL when the client did not send it

@@ -41,6 +41,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../config/app_config.dart';
 import '../../l10n/app_localizations.dart';
+import '../../shared/safe_launch.dart';
 import 'support_fab.dart' show kSupportTeal;
 
 /// Drawer / bottom-sheet content. `asDrawer=true` renders the full-height
@@ -431,21 +432,24 @@ class _ContactChannelsRow extends StatelessWidget {
       path: SupportConfig.supportEmail,
       query: 'subject=Advocat%20support&body=Hi%2C%20',
     );
-    await launchUrl(uri);
+    // F8 (WAVE 1, 2026-05-28) — schema/canLaunch guard via safeLaunchUrl.
+    await safeLaunchUrl(uri);
   }
 
   Future<void> _openTelegram() async {
     const handle = SupportConfig.telegramHandle;
     if (handle.isEmpty) return;
     final uri = Uri.parse('https://t.me/$handle');
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
+    // F8 (WAVE 1, 2026-05-28) — schema/canLaunch guard via safeLaunchUrl.
+    await safeLaunchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   Future<void> _openWhatsApp() async {
     const number = SupportConfig.whatsappNumber;
     if (number.isEmpty) return;
     final uri = Uri.parse('https://wa.me/$number');
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
+    // F8 (WAVE 1, 2026-05-28) — schema/canLaunch guard via safeLaunchUrl.
+    await safeLaunchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   @override

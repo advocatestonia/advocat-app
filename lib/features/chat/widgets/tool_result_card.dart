@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../services/assistant_tools.dart';
+import '../../../shared/safe_launch.dart';
 import 'approval_outcome.dart';
 
 // ---------------------------------------------------------------------------
@@ -1077,9 +1076,13 @@ class _EmailDraftCard extends StatelessWidget {
       },
     );
 
-    try {
-      await launchUrl(uri);
-    } catch (_) {
+    // F5 (WAVE 1, 2026-05-28) — schema/canLaunch guard + mailto
+    // header-injection check via safeLaunchUrl. Tool-result cards render
+    // LLM-produced mailto payloads, which are an active prompt-injection
+    // surface (poisoned attachment can instruct the model to draft a
+    // `to: victim,bcc:attacker` link).
+    final result = await safeLaunchUrl(uri);
+    if (!result.launched) {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

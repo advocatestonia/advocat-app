@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -15,6 +16,7 @@ import 'shared/web_locale_stub.dart'
 import 'config/app_config.dart';
 import 'config/theme.dart';
 import 'config/router.dart';
+import 'core/services/error_reporter.dart';
 import 'l10n/app_localizations.dart';
 import 'services/notification_service.dart';
 import 'shared/error_boundary.dart';
@@ -64,6 +66,39 @@ Future<void> main() async {
   // friendly reload card instead of a permanent grey screen.
   installErrorBoundary();
 
+  // Sentry: only initialise when a DSN is provided via
+  // --dart-define=SENTRY_DSN=... (production builds via canary-deploy.sh).
+  // Local dev / CI without a DSN skips Sentry entirely and falls through
+  // to the existing app runner — see lib/core/services/error_reporter.dart.
+  if (sentryEnabled) {
+    await SentryFlutter.init(
+      (options) {
+        options.dsn = sentryDsn;
+        options.environment = sentryEnv;
+        options.release = sentryRelease;
+        // 10% perf sample — bumpable later via dart-define if needed.
+        options.tracesSampleRate = 0.1;
+        // Profiling is off — third-party CPU cost not yet validated.
+        options.profilesSampleRate = 0.0;
+        // CRITICAL: never let the SDK auto-attach user PII (ip, headers).
+        options.sendDefaultPii = false;
+        options.attachThreads = false;
+        options.maxBreadcrumbs = 50;
+        // STRICT scrubbers — see ErrorReporter for the contract.
+        options.beforeSend = ErrorReporter.beforeSend;
+        options.beforeBreadcrumb = ErrorReporter.beforeBreadcrumb;
+      },
+      appRunner: _bootstrap,
+    );
+    return;
+  }
+
+  await _bootstrap();
+}
+
+/// The original app-runner body, extracted so SentryFlutter.init can wrap
+/// it when a DSN is configured and bypass it cleanly when one isn't.
+Future<void> _bootstrap() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -76,7 +111,17 @@ Future<void> main() async {
   const supabaseUrl = AppConfig.supabaseUrl;
   const supabaseAnonKey = AppConfig.supabaseAnonKey;
   if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
-    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+    // Security: F7 (WAVE 1, 2026-05-28) — pin PKCE flow explicitly so a
+    // future Supabase SDK default change cannot silently fall back to the
+    // implicit grant (which is vulnerable to authorization-code replay).
+    // PKCE has been the SDK default since 2.0, so this is belt-and-braces.
+    await Supabase.initialize(
+      url: supabaseUrl,
+      anonKey: supabaseAnonKey,
+      authOptions: const FlutterAuthClientOptions(
+        authFlowType: AuthFlowType.pkce,
+      ),
+    );
 
     // P5 of Bentley batch (2026-05-15): wire the Sentry-lite telemetry sink
     // to the global error boundary. The sink is a no-op in debug builds

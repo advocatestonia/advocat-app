@@ -216,11 +216,60 @@ export async function handleExchange(
   const expiresAt = new Date(now + expiresInS * 1000).toISOString();
   const updatedAt = new Date(now).toISOString();
 
+  // Wave-1 security audit P0-5 (2026-05-28): dual-write encrypted token
+  // columns alongside the deprecated plain-text columns. Encryption is
+  // performed via the public.vault_encrypt_text RPC which delegates to
+  // app_vault.encrypt_text (SECURITY DEFINER, owner-scoped). Failures here
+  // are LOGGED but non-fatal — we still write the plain row so the OAuth
+  // flow completes; Wave 2 will drop the plain columns and a failure to
+  // encrypt will become fatal. See migration
+  // 20260528120000_security_audit_p0_revokes.sql for column definitions.
+  let accessTokenEnc: string | null = null;
+  let refreshTokenEnc: string | null = null;
+  try {
+    const { data: accEnc, error: accErr } = await args.supabase.rpc(
+      "vault_encrypt_text",
+      { p_plaintext: token.access_token, p_user_id: userId },
+    );
+    if (accErr) {
+      console.warn(
+        "gmail-oauth-exchange: vault_encrypt_text(access_token) failed:",
+        accErr,
+      );
+    } else if (typeof accEnc === "string") {
+      accessTokenEnc = accEnc;
+    }
+
+    const { data: refEnc, error: refErr } = await args.supabase.rpc(
+      "vault_encrypt_text",
+      { p_plaintext: token.refresh_token, p_user_id: userId },
+    );
+    if (refErr) {
+      console.warn(
+        "gmail-oauth-exchange: vault_encrypt_text(refresh_token) failed:",
+        refErr,
+      );
+    } else if (typeof refEnc === "string") {
+      refreshTokenEnc = refEnc;
+    }
+  } catch (e) {
+    console.warn(
+      "gmail-oauth-exchange: vault encrypt step threw (non-fatal):",
+      String(e),
+    );
+  }
+
   const row = {
     user_id: userId,
     provider: "gmail",
+    // DEPRECATED 2026-05-28: plain-text columns retained for the dual-write
+    // window. Wave 2 will drop these after readers migrate to *_enc.
     access_token: token.access_token,
     refresh_token: token.refresh_token,
+    // Wave-1 P0-5: encrypted shadow columns. Readers may opt in via
+    // vault_decrypt_text(<col>, user_id).
+    access_token_enc: accessTokenEnc,
+    refresh_token_enc: refreshTokenEnc,
     email,
     expires_at: expiresAt,
     scope: typeof token.scope === "string" ? token.scope : null,

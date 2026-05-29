@@ -95,7 +95,13 @@ Deno.test("verifyActionId: rejects tool_name mismatch (bait-and-switch)", async 
     now_ms: 1_000_000,
   });
   assertEquals(r.ok, false);
-  assertEquals(r.reason, "tool_name_mismatch");
+  // W2-09: purpose binding fires first (purpose === tool_name on issue).
+  // Either rejection reason is acceptable — both close the bait-and-
+  // switch hole. We assert tolerantly.
+  assert(
+    r.reason === "purpose_mismatch" || r.reason === "tool_name_mismatch",
+    `expected purpose_mismatch or tool_name_mismatch, got ${r.reason}`,
+  );
 });
 
 Deno.test("verifyActionId: rejects args swap", async () => {
@@ -215,12 +221,13 @@ Deno.test("sha256Hex: known vector", async () => {
 });
 
 Deno.test("hashToolInput: stable across reorderings of same keys", async () => {
-  // Two objects with same keys/values in different declaration order
-  // SHOULD produce the same hash because JSON.stringify with literal
-  // declaration order is what we hash. We document the limit: any caller
-  // depending on key-order canonicalisation must sort manually first.
-  const a = await hashToolInput({ to: "x@y", subject: "S" });
-  const b = await hashToolInput({ to: "x@y", subject: "S" });
+  // WAVE 2 FIX W2-09: hashToolInput now uses canonical-JSON
+  // serialisation (deep-sorted keys). Reordering keys MUST produce the
+  // same hash so a JSONB round-trip through Postgres does not break
+  // the approval flow. See agent_action_canonical_test.ts for the full
+  // round-trip regression coverage.
+  const a = await hashToolInput({ to: "x@y", subject: "S" }, "send_email");
+  const b = await hashToolInput({ subject: "S", to: "x@y" }, "send_email");
   assertEquals(a, b);
 });
 

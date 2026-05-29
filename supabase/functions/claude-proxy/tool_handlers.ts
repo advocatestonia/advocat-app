@@ -61,6 +61,11 @@ import {
   type LegalLookupResult,
   type LegalLookupTravaux,
 } from "../_shared/legal_lookup.ts";
+import {
+  ALLOWLIST_RECENCY_DAYS,
+  classifyRecipient,
+  isRecipientAllowed as upliIsRecipientAllowed,
+} from "../_shared/outbound_compliance.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -560,6 +565,7 @@ async function executeSingleTool(
           block.id,
           block.input as unknown as SendEmailInput,
           authHeader,
+          userId,
         );
       case "draft_email_with_attachments":
         return await handleDraftEmailWithAttachments(
@@ -605,6 +611,7 @@ async function handleSendEmail(
   toolUseId: string,
   input: SendEmailInput,
   authHeader: string,
+  userId: string,
 ): Promise<ToolResultBlock> {
   // Defence-in-depth: reject if the model somehow omits confirmation.
   if (input.confirmed !== true) {
@@ -631,6 +638,111 @@ async function handleSendEmail(
       type: "tool_result",
       tool_use_id: toolUseId,
       content: "Error: to, subject, and body are all required.",
+      is_error: true,
+    };
+  }
+
+  // ───────────────────────────────────────────────────────────────────────
+  // WAVE-1 UPL COMPLIANCE GATE (closes audit 05 F-006)
+  // Coordination memory key: swarm/security_audit_2026-05-28/wave1/email_agent
+  //
+  // Mirror handleDraftEmailWithAttachments' allowlist gate on the legacy
+  // send_email tool. The function-level send-email edge will ALSO classify
+  // + footer-append on its own, but enforcing here prevents the agent loop
+  // from even attempting an authority-class send without prior approval
+  // (the action_id HMAC is already required upstream for any WRITE tool,
+  // but we add a structural belt-and-suspenders against attacker-chosen
+  // recipients in injected PDFs / emails — F-001/F-003 attack path).
+  // ───────────────────────────────────────────────────────────────────────
+  const sb = adminClient();
+  const classification = classifyRecipient([to, ...(cc ? [cc] : [])]);
+  if (classification.class === "denied") {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        `recipient_denied_by_compliance: ` +
+        classification.reasons.join("; ").slice(0, 300),
+      is_error: true,
+    };
+  }
+
+  // Pull last 30 days of inbound senders for the recency-windowed
+  // allowlist check (F-004 fix). Cheap query — bounded by date.
+  let inboundHistory: Array<{ from: string; sent_at: Date }> = [];
+  try {
+    const since =
+      new Date(Date.now() - ALLOWLIST_RECENCY_DAYS * 24 * 60 * 60 * 1_000)
+        .toISOString();
+    const { data: msgs } = await sb
+      .from("email_messages")
+      .select("sender_email, sent_at")
+      .eq("user_id", userId)
+      .gte("sent_at", since)
+      .order("sent_at", { ascending: false })
+      .limit(500);
+    inboundHistory = ((msgs ?? []) as Array<Record<string, unknown>>)
+      .filter((m) => typeof m.sender_email === "string")
+      .map((m) => ({
+        from: m.sender_email as string,
+        sent_at: new Date(m.sent_at as string),
+      }));
+  } catch (e) {
+    console.warn(
+      "handleSendEmail: inbound history lookup failed:",
+      String(e).slice(0, 200),
+    );
+  }
+
+  for (const addr of [to, ...(cc ? cc.split(",").map((s) => s.trim()) : [])]) {
+    if (!addr) continue;
+    const allow = upliIsRecipientAllowed({
+      recipient: addr,
+      user_id: userId,
+      inboundHistory,
+    });
+    if (!allow.ok) {
+      return {
+        type: "tool_result",
+        tool_use_id: toolUseId,
+        content:
+          `recipient_not_in_allowlist: ${addr} — ${allow.reason}. ` +
+          `Advocat will only send to addresses that have sent the user an ` +
+          `inbound email in the last ${ALLOWLIST_RECENCY_DAYS} days. To add ` +
+          `${addr} to the allowlist, have them email the user first.`,
+        is_error: true,
+      };
+    }
+  }
+  // End wave-1 compliance gate. ──────────────────────────────────────────
+
+  // Wave-1 security fix (F-006, 2026-05-28). Mirror the allowlist gate
+  // that handleDraftEmailWithAttachments already enforces. send_email is
+  // in WRITE_TOOLS and is callable from the agent loop today, but until
+  // now it bypassed isRecipientAllowed — meaning a prompt-injection that
+  // succeeded at the model level could ship case data to an arbitrary
+  // model-chosen address (subject only to the post-allowlist approval
+  // card, which a tired user might tap through). The fix runs the same
+  // sender-history / thread-participant check used by the attachments
+  // variant. The legacy comment at lines 2232-2235 calling out this gap
+  // is removed in the same change.
+  const sbAllowlist = adminClient();
+  const allow = await isRecipientAllowed(
+    sbAllowlist,
+    userId,
+    to,
+    cc,
+    null, // send_email has no in-reply-to thread id; use sender-history only
+  );
+  if (!allow.ok) {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        `Error: recipient_not_in_allowlist: ${allow.reason}. ` +
+        `To add this address, first correspond with them via your normal ` +
+        `email client — Advocat's inbox sync will then pick the address ` +
+        `up automatically and the agent loop will be allowed to email them.`,
       is_error: true,
     };
   }
@@ -1988,6 +2100,73 @@ async function handleDraftEmailWithAttachments(
   // suspenders against the model picking a fabricated address that
   // looks plausible (typosquatted Jokela / similar Cyrillic-Latin
   // homograph attacks).
+  //
+  // WAVE-1 2026-05-28 (audit 05 F-004): the legacy isRecipientAllowed
+  // call below pulls the last 500 messages with no recency window
+  // (a single inbound 11 months ago kept the sender allowlisted
+  // forever). We now layer the new compliance gate IN FRONT OF the
+  // legacy check — recipient must (a) not be hard-deny-classified
+  // (.onion / disposable / etc.) AND (b) have inbound mail within
+  // ALLOWLIST_RECENCY_DAYS — before the legacy thread-or-history
+  // check gets a chance.
+  // Coordination memory key: swarm/security_audit_2026-05-28/wave1/email_agent
+  const classification = classifyRecipient([to, ...(cc ? [cc] : [])]);
+  if (classification.class === "denied") {
+    return {
+      type: "tool_result",
+      tool_use_id: toolUseId,
+      content:
+        `recipient_denied_by_compliance: ` +
+        classification.reasons.join("; ").slice(0, 300),
+      is_error: true,
+    };
+  }
+  let inboundHistory: Array<{ from: string; sent_at: Date }> = [];
+  try {
+    const since =
+      new Date(Date.now() - ALLOWLIST_RECENCY_DAYS * 24 * 60 * 60 * 1_000)
+        .toISOString();
+    const { data: msgs } = await sb
+      .from("email_messages")
+      .select("sender_email, sent_at")
+      .eq("user_id", userId)
+      .gte("sent_at", since)
+      .order("sent_at", { ascending: false })
+      .limit(500);
+    inboundHistory = ((msgs ?? []) as Array<Record<string, unknown>>)
+      .filter((m) => typeof m.sender_email === "string")
+      .map((m) => ({
+        from: m.sender_email as string,
+        sent_at: new Date(m.sent_at as string),
+      }));
+  } catch (e) {
+    console.warn(
+      "handleDraftEmailWithAttachments: inbound history lookup failed:",
+      String(e).slice(0, 200),
+    );
+  }
+  for (
+    const addr of [to, ...(cc ? cc.split(",").map((s) => s.trim()) : [])]
+  ) {
+    if (!addr) continue;
+    const upliAllow = upliIsRecipientAllowed({
+      recipient: addr,
+      user_id: userId,
+      inboundHistory,
+    });
+    if (!upliAllow.ok) {
+      return {
+        type: "tool_result",
+        tool_use_id: toolUseId,
+        content:
+          `recipient_not_in_allowlist: ${addr} — ${upliAllow.reason}. ` +
+          `Advocat will only send to addresses that have sent inbound mail ` +
+          `in the last ${ALLOWLIST_RECENCY_DAYS} days.`,
+        is_error: true,
+      };
+    }
+  }
+
   const allowCheck = await isRecipientAllowed(sb, userId, to, cc, input.in_reply_to_thread_id ?? null);
   if (!allowCheck.ok) {
     return {
@@ -2229,10 +2408,10 @@ async function handleDraftEmailWithAttachments(
 //     (correspond with them via the normal email client first — the
 //     sync cron will pick the address up automatically).
 //
-// We do NOT enforce the allowlist for send_email (legacy 3-tool path)
-// because that tool was never agent-loop-callable in this MVP — the
-// approval gate didn't exist when it shipped. If you wire send_email
-// into the loop later, mirror this gate in handleSendEmail.
+// Wave-1 fix (F-006, 2026-05-28): the allowlist gate is now ALSO
+// enforced inside handleSendEmail (see that handler for the mirrored
+// call). send_email is in WRITE_TOOLS and is callable from the agent
+// loop, so the same defense-in-depth check applies to both paths.
 
 const RECIPIENT_ALLOWLIST_MAX_HISTORY = 500;
 

@@ -5,6 +5,22 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
+
+<!--
+  Security hardening — F2/F4/F10 (WAVE 1, 2026-05-28).
+  Phase 1 CSP per audit `docs/security_audit_2026-05-28/findings/03_client_security.md`.
+  'unsafe-inline' is unavoidable today (Flutter CanvasKit emits inline styles,
+  cookie banner uses inline onclick handlers, landing has inline GA loader).
+  Phases 2-3 (extract inline JS + nonces) tracked separately.
+  Referrer-Policy = strict-origin-when-cross-origin (NOT no-referrer) so
+  Stripe checkout return validation still works while case UUIDs no longer
+  leak to Riigi Teataja / Finlex / ECHR via the Referer header.
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com https://browser.sentry-cdn.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.supabase.co https://www.googletagmanager.com https://www.google-analytics.com https://www.facebook.com https://analytics.tiktok.com; connect-src 'self' https://okgnkucgwsytsondrjye.supabase.co https://*.functions.supabase.co wss://*.supabase.co https://www.google-analytics.com https://*.googletagmanager.com https://connect.facebook.net https://analytics.tiktok.com https://api.stripe.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://*.ingest.de.sentry.io; worker-src 'self' blob:; frame-src https://js.stripe.com https://hooks.stripe.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://checkout.stripe.com; object-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Advocat - AI Legal Assistant for Estonia and EU</title>
 <meta name="description" content="AI-powered legal assistant for Estonia and the EU. Get instant legal answers in 17 languages with real Estonian law citations. Free to start. €19.99/mo Pro. 24/7 — no waiting for a lawyer.">
@@ -145,11 +161,42 @@
     font-display: swap;
   }
 </style>
-<!-- Analytics: GA4 + Meta + TikTok pixels (consent-gated) + UTM capture.
-     All vendor scripts are loaded conditionally inside _analytics.js
-     after the cookie banner records "accept" in advocat_cookie_consent_v1. -->
+<!-- Geofence: redirects DACH/FR/BE/IT/PT/LU/ES B2C traffic to /b2b-only.html.
+     MUST load before _utm_capture.js and _analytics.js (and before signup CTAs)
+     so the redirect happens before any pixel fires or any sign-up form binds.
+     Audit ref: docs/security_audit_2026-05-28/findings/{10_dach,11_romance_eu}_legal.md -->
+<script src="/_geofence.js"></script>
+<!-- WAVE 2 W2-13 (2026-05-28): per-jurisdiction cookie consent. Selects a
+     CNIL / AEPD / Garante / TTDSG / EDPB profile from window.advocatGeo,
+     renders a granular banner (Necessary / Analytics / Marketing /
+     Functional) with equal-weight Accept-all + Reject-all + Manage buttons,
+     persists choice in localStorage "advocat_cookie_consent_v2", and
+     dispatches per-purpose events (advocat:consent:analytics / :marketing /
+     :functional) plus a v1-compat "advocat:cookie-consent" event.
+     Audit refs: docs/security_audit_2026-05-28/findings/{10_dach,11_romance_eu}_legal.md
+     Migration: hides legacy inline #advCookieBanner via body.advCcV2Active.
+     Smoke: docs/security_audit_2026-05-28/fixes/wave2_cookie_consent_smoke.html -->
+<script src="/_cookie_consent.js" defer></script>
+<!-- Analytics: GA4 + Meta + TikTok pixels (granular consent-gated) + UTM capture.
+     _analytics.js listens for advocat:consent:analytics (loads GA4) and
+     advocat:consent:marketing (loads Meta + TikTok pixels) — separate
+     purposes per CNIL/AEPD/Garante. v1 fallback still honoured. -->
 <script src="/_utm_capture.js"></script>
 <script src="/_analytics.js" defer></script>
+<!-- Sentry browser SDK: JS error monitoring + Web Vitals.
+     _sentry_config.js sets window.__SENTRY_DSN__ (placeholder is sed-replaced
+     by scripts/canary-deploy.sh at deploy time). The CDN bundle is pinned
+     to 8.42.0 with SRI to prevent CDN tampering. _sentry_init.js attaches
+     a PII-scrubbing beforeSend + beforeBreadcrumb pair (drops emails,
+     case numbers, OAuth tokens, HETU/isikukood, request bodies, cookies).
+     Replay only fires on errors (replaysSessionSampleRate=0) and masks
+     all text/inputs/media. Falls back to a no-op if DSN unset. -->
+<script src="/_sentry_config.js"></script>
+<script src="https://browser.sentry-cdn.com/8.42.0/bundle.tracing.replay.min.js"
+        integrity="sha384-1iMWRnx+u4Ya0s0sszeZUlZe15phFiYR+oG3VwP4dnVbyRNKmXTy1oA2EMnohM1F"
+        crossorigin="anonymous"
+        defer></script>
+<script src="/_sentry_init.js" defer></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {

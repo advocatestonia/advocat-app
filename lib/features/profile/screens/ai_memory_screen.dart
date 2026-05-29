@@ -20,6 +20,8 @@ import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../models/user_memory.dart';
 import '../../../services/user_memory_service.dart';
+// WAVE 2 FIX W2-03 (F3): cross-case memory state is PII-sensitive.
+import '../../../shared/secure_screen.dart';
 import '../../../shared/widgets/advocat_gradient_header.dart';
 
 /// Riverpod-managed list of memories — refetched on demand.
@@ -37,7 +39,8 @@ class AiMemoryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final memoriesAsync = ref.watch(aiMemoriesProvider);
 
-    return Scaffold(
+    return SecureScreenScope(
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: const AdvocatGradientHeader(
         title: 'What we remember',
@@ -84,6 +87,7 @@ class AiMemoryScreen extends ConsumerWidget {
             ),
           );
         },
+      ),
       ),
     );
   }

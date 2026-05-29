@@ -38,5 +38,23 @@ if [[ ${EXIT_CODE} -ne 0 ]]; then
   exit 1
 fi
 
+# -----------------------------------------------------------------------------
+# Marketing copy linter (Wave 1 — INFRA/legal). Currently WARN-only.
+# Promote to BLOCKING once the 8 baseline violations from wave1_marketing_violations.txt
+# are remediated (see docs/security_audit_2026-05-28/fixes/).
+# -----------------------------------------------------------------------------
+LINTER="$(git rev-parse --show-toplevel)/scripts/lint_marketing_copy.sh"
+if [[ -x "${LINTER}" ]]; then
+  echo "▶ pre-commit: marketing copy linter (warn-only)…"
+  if ! "${LINTER}" >/dev/null 2>&1; then
+    echo "⚠ Marketing copy linter found violations."
+    echo "   Run: bash scripts/lint_marketing_copy.sh"
+    echo "   Refs: docs/security_audit_2026-05-28/findings/{08_finland,09_estonia,10_dach,11_romance_eu}_legal.md"
+    echo "   (not blocking the commit yet — will become blocking after Wave 1 cleanup)"
+  else
+    echo "✓ Marketing copy linter clean."
+  fi
+fi
+
 echo "✓ Pre-commit: fast tests passed (elapsed ${ELAPSED}s)."
 exit 0

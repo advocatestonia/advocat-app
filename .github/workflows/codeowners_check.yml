@@ -1,0 +1,126 @@
+name: CODEOWNERS review check
+
+# =============================================================================
+# Wave 2 INFRA-08 remediation — gate PRs that touch protected paths.
+#
+# What it does:
+#   On every PR, compute which CODEOWNERS-protected paths it touches. If any
+#   are touched, assert that the configured code owner has actually reviewed
+#   the PR (review state = APPROVED). Fails the check otherwise.
+#
+# Why we need it (defence in depth):
+#   GitHub's "Require review from Code Owners" branch protection rule is the
+#   primary control. This workflow is a belt — if branch protection is ever
+#   loosened or misconfigured, the workflow check still catches it before
+#   merge.
+#
+# Audit ref:
+#   docs/security_audit_2026-05-28/findings/06_infra_security.md INFRA-08
+#   docs/security_audit_2026-05-28/fixes/wave2_codeowners_runbook.md
+# =============================================================================
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, review_requested]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  enforce-codeowners:
+    name: Require owner review on protected paths
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    # Skip on draft PRs — owner review is required only at "ready for review".
+    if: ${{ github.event.pull_request.draft == false }}
+
+    steps:
+      - name: Checkout (PR head)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List files changed vs base
+        id: diff
+        run: |
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          head_sha="${{ github.event.pull_request.head.sha }}"
+          git fetch --no-tags --depth=1 origin "$base_sha" || true
+          git diff --name-only "$base_sha" "$head_sha" > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt
+          # Stash as multi-line output for later steps
+          echo "count=$(wc -l < changed_files.txt | tr -d ' ')" >> "$GITHUB_OUTPUT"
+
+      - name: Check if any protected path is touched
+        id: scan
+        run: |
+          # Mirror of .github/CODEOWNERS path patterns. Keep in sync.
+          protected_patterns=(
+            '^\.github/'
+            '^scripts/db_dump\.sh$'
+            '^scripts/db_.*\.sh$'
+            '^scripts/restore_drill\.sh$'
+            '^scripts/canary-'
+            '^scripts/rollback'
+            '^scripts/prod-lock'
+            '^scripts/lint_marketing_copy\.sh$'
+            '^supabase/functions/_shared/(auth|rate_limit|cors)\.ts$'
+            '^supabase/functions/vault-rotate-master/'
+            '^supabase/functions/stripe-webhook/'
+            '^supabase/functions/account-delete/'
+            '^supabase/functions/apple-iap-verify/'
+            '^supabase/migrations/'
+            '(^|/)\.env'
+            '^config/secrets/'
+          )
+          touched=0
+          while IFS= read -r f; do
+            for p in "${protected_patterns[@]}"; do
+              if [[ "$f" =~ $p ]]; then
+                echo "PROTECTED: $f  (matches $p)"
+                touched=1
+              fi
+            done
+          done < changed_files.txt
+          echo "touched=$touched" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch PR reviews + requested reviewers
+        if: steps.scan.outputs.touched == '1'
+        id: reviews
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          pr_number="${{ github.event.pull_request.number }}"
+          repo="${{ github.repository }}"
+
+          # Approved reviewers
+          approvals=$(gh api "repos/$repo/pulls/$pr_number/reviews" \
+            --jq '[.[] | select(.state=="APPROVED") | .user.login] | unique | join(",")')
+          echo "approvals=$approvals"
+          echo "approvals=$approvals" >> "$GITHUB_OUTPUT"
+
+          # Requested reviewers (string of logins) — informational
+          requested=$(gh api "repos/$repo/pulls/$pr_number/requested_reviewers" \
+            --jq '[.users[].login] | join(",")' 2>/dev/null || echo "")
+          echo "requested=$requested"
+          echo "requested=$requested" >> "$GITHUB_OUTPUT"
+
+      - name: Assert owner approval
+        if: steps.scan.outputs.touched == '1'
+        env:
+          APPROVALS: ${{ steps.reviews.outputs.approvals }}
+        run: |
+          owner="advocatestonia"   # mirror of @advocatestonia in CODEOWNERS
+          if [[ ",${APPROVALS}," == *",${owner},"* ]]; then
+            echo "OK — protected paths touched and @${owner} approved."
+            exit 0
+          fi
+          echo "::error::Protected paths touched. Required reviewer @${owner} has NOT approved."
+          echo "::error::See .github/CODEOWNERS + docs/security_audit_2026-05-28/fixes/wave2_codeowners_runbook.md"
+          exit 1
+
+      - name: No protected paths touched
+        if: steps.scan.outputs.touched != '1'
+        run: echo "OK — no CODEOWNERS-protected paths touched in this PR."

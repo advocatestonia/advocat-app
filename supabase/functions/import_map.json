@@ -1,0 +1,12 @@
+{
+  "imports": {
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.8",
+    "stripe": "https://esm.sh/stripe@14.14.0?target=deno",
+    "pdf-lib": "https://esm.sh/pdf-lib@1.17.1",
+    "fflate": "https://esm.sh/fflate@0.8.2",
+    "@sentry/deno": "https://deno.land/x/sentry@8.47.0/index.mjs",
+    "std/http/server": "https://deno.land/std@0.224.0/http/server.ts",
+    "std/assert": "https://deno.land/std@0.224.0/assert/mod.ts",
+    "std/testing/asserts": "https://deno.land/std@0.224.0/assert/mod.ts"
+  }
+}

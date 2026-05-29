@@ -14,6 +14,9 @@ import '../../../services/supabase_service.dart';
 import '../../drafting/models/draft_model.dart';
 import '../../drafting/screens/drafting_studio_screen.dart';
 import '../../drafting/widgets/drafting_strings.dart';
+// WAVE 2 FIX W2-03 (F3): SecureScreenScope protects the Vault from
+// screenshots / screen recorders / iOS App-Switcher snapshot leak.
+import '../../../shared/secure_screen.dart';
 import '../../../shared/widgets/skeleton_loader.dart';
 import '../models/vault_document.dart';
 import '../providers/vault_providers.dart';
@@ -122,7 +125,8 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
     final vs = VaultStrings.of(context);
     final docsAsync = ref.watch(vaultDocumentsListProvider);
 
-    return Scaffold(
+    return SecureScreenScope(
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(
@@ -185,6 +189,7 @@ class _DocumentVaultScreenState extends ConsumerState<DocumentVaultScreen>
             ),
           ),
         ],
+      ),
       ),
     );
   }

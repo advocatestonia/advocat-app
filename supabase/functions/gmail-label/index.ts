@@ -47,7 +47,12 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import {
+  corsHeaders,
+  jsonError,
+  jsonOk,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
 import {
   ensureFreshToken,
   loadGmailToken,
@@ -91,14 +96,19 @@ serve(async (req) => {
     return jsonError("at least one of add_labels/remove_labels required", 400);
   }
 
-  // Auth — user JWT only.
-  const authHeader = req.headers.get("Authorization");
-  if (!authHeader) return jsonError("Unauthorized", 401);
+  // SECURITY (Wave-1 2026-05-28, audit P1-10):
+  // Previously this fn did `sb.auth.getUser(token)` without the U1 role/aud
+  // check AND had no rate limit, so a forged JWT or anon-key-shaped token
+  // could call Gmail users.threads.modify at unlimited rate, locking the
+  // legitimate user out of Gmail until Google's per-day quota window
+  // reset. `requireUserWithRateLimit` closes both holes in one call.
+  const gate = await requireUserWithRateLimit(req, {
+    bucket: "gmail-label",
+    maxPerMinute: 20,
+  });
+  if (gate.kind === "deny") return gate.response;
+  const userId = gate.user.id;
   const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-  const token = authHeader.replace("Bearer ", "");
-  const { data: userData, error: userError } = await sb.auth.getUser(token);
-  if (userError || !userData?.user) return jsonError("Invalid session", 401);
-  const userId = userData.user.id;
 
   // Resolve email_threads.id → gmail_thread_id with ownership check in
   // one query. RLS would also enforce this; we use service role for the

@@ -19,6 +19,7 @@ import {
   requireUserWithRateLimit,
 } from "../_shared/auth.ts";
 import { runVaultList, runVaultUpload, type SupabaseLike } from "./handler.ts";
+import { withSentry } from "../_shared/sentry.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -42,7 +43,7 @@ function vaultJsonOk(body: unknown, status = 200) {
   });
 }
 
-serve(async (req: Request) => {
+serve(withSentry("vault-upload", async (req: Request) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: vaultCors });
   }
@@ -95,7 +96,7 @@ serve(async (req: Request) => {
   return result.kind === "success"
     ? vaultJsonOk(result.body, result.status)
     : vaultJsonError(result.body.error, result.status);
-});
+}));
 
 // Avoid unused-import flagging when tests import handler directly:
 export { runVaultList, runVaultUpload } from "./handler.ts";

@@ -92,30 +92,88 @@ interface ExportPayload {
     messages: unknown[];
     citations: unknown[];
     feedback: unknown[];
+    planner_traces: unknown[];
+    case_chat_sessions: unknown[];
   };
   cases: {
     cases: unknown[];
-    cases_v2: unknown[];
-    documents: unknown[];
-    deadlines: unknown[];
-    correspondence_per_case: unknown[];
+    user_cases: unknown[];
+    case_documents: unknown[];
+    case_deadlines: unknown[];
+    case_timeline_events: unknown[];
+    case_phase: unknown[];
+    case_facts: unknown[];
+    case_file: unknown[];
+    case_file_events: unknown[];
+    case_file_parties: unknown[];
+    case_file_deadlines: unknown[];
+    checker_reports: unknown[];
   };
   documents: unknown[];
+  deadlines: unknown[];
+  vault: {
+    document_tags: unknown[];
+    tags: unknown[];
+  };
   emails: {
     threads: unknown[];
     messages: unknown[];
+    attachments: unknown[];
     triage_results: unknown[];
+    triage_lawyer_opinions: unknown[];
+    triage_proposed_actions: unknown[];
+    retry_queue: unknown[];
+    connections: unknown[];
+    user_settings: unknown[];
   };
   correspondence: unknown[];
+  correspondence_audit: unknown[];
+  drafting: {
+    user_drafts: unknown[];
+    draft_versions: unknown[];
+  };
+  ai_memory: unknown[];
+  agent: {
+    runs: unknown[];
+    quota: unknown[];
+    audit_log: unknown[];
+    intentions: unknown[];
+  };
+  consilium_runs: unknown[];
+  contract: {
+    reviews: unknown[];
+    analysis_jobs: unknown[];
+  };
+  advice: {
+    corrections: unknown[];
+    digest: unknown[];
+  };
+  notifications: {
+    notifications: unknown[];
+    preferences: unknown[];
+    push_events: unknown[];
+    deadline_log: unknown[];
+  };
+  account_settings: {
+    user_settings: unknown[];
+    user_engagement: unknown[];
+    user_quotas: unknown[];
+    voice_usage: unknown[];
+    ai_usage: unknown[];
+  };
+  lawyer_bookings: unknown[];
   oauth_providers: unknown[];
+  encryption_keys: unknown[];
   consents: {
     dpa_acceptances: unknown[];
     sensitive_consents: unknown[];
     disclaimer_acknowledgments: unknown[];
+    consent_log: unknown[];
+    attorney_privilege_acceptance: unknown[];
   };
   payments: {
-    payments: unknown[];
     subscriptions: unknown[];
+    apple_iap_transactions: unknown[];
   };
   feedback: unknown[];
   /**
@@ -125,8 +183,27 @@ interface ExportPayload {
    * 15(1). Includes `signal_type`, `score`, `payload`, `occurred_at`.
    */
   b2b_signals: unknown[];
+  sharing: {
+    shared_results: unknown[];
+    referral_codes: unknown[];
+    referral_attributions_as_invitee: unknown[];
+    referral_attributions_as_inviter: unknown[];
+  };
+  support: {
+    tickets: unknown[];
+  };
+  experimentation: {
+    ab_assignments: unknown[];
+    ab_events: unknown[];
+  };
   audit_log: {
     dsar_requests: unknown[];
+    /**
+     * Generic platform audit log. Disclosed under Art. 15(1) even though
+     * this row is retained post-deletion under Art. 17(3)(b) (accountability
+     * legal obligation); the user is entitled to KNOW it exists.
+     */
+    audit_log: unknown[];
   };
 }
 
@@ -186,120 +263,265 @@ serve(async (req) => {
   //      intentionally because the auth gate above already proved identity.
   let payload: ExportPayload;
   try {
-    const [
-      account,
-      chatMessages,
-      chatCitations,
-      chatFeedback,
-      cases,
-      casesV2,
-      caseDocuments,
-      caseDeadlines,
-      caseCorrespondence,
-      legacyDocuments,
-      legacyDeadlines,
-      emailThreads,
-      emailMessages,
-      emailTriage,
-      correspondence,
-      oauthTokens,
-      dpaAcceptances,
-      sensitiveConsents,
-      disclaimerAcks,
-      payments,
-      subscriptions,
-      messageFeedback,
-      dsarHistory,
-      b2bSignals,
-    ] = await Promise.all([
-      sb.from("profiles").select("*").eq("id", userId).maybeSingle()
-        .then((r: { data: unknown }) => r.data ?? null),
-      safeSelect(sb, "chat_messages", "user_id", userId),
-      safeSelect(sb, "chat_message_citations", "user_id", userId),
-      safeSelect(sb, "message_feedback", "user_id", userId),
-      safeSelect(sb, "cases", "user_id", userId),
-      safeSelect(sb, "cases_v2", "user_id", userId),
-      safeSelect(sb, "case_documents", "user_id", userId),
-      safeSelect(sb, "case_deadlines", "user_id", userId),
-      safeSelect(sb, "case_correspondence", "user_id", userId),
-      safeSelect(sb, "documents", "user_id", userId),
-      safeSelect(sb, "deadlines", "user_id", userId),
-      safeSelect(sb, "email_threads", "user_id", userId),
-      safeSelect(sb, "email_messages", "user_id", userId),
-      safeSelect(sb, "email_triage_results", "user_id", userId),
-      safeSelect(sb, "correspondence", "user_id", userId),
-      // user_oauth_tokens: PRESENCE is part of the DSAR, but the live
-      // access/refresh tokens are credentials — never disclose under
-      // Art. 15(4) (rights of third parties / security).
-      safeSelect(sb, "user_oauth_tokens", "user_id", userId, {
-        redactColumns: [
-          "access_token",
-          "refresh_token",
-          "id_token",
-          "encrypted_access_token",
-          "encrypted_refresh_token",
-        ],
-      }),
-      safeSelect(sb, "dpa_acceptances", "user_id", userId),
-      safeSelect(sb, "sensitive_consents", "user_id", userId),
-      safeSelect(sb, "disclaimer_acknowledgments", "user_id", userId),
-      // payments / subscriptions carry Stripe customer + product IDs,
-      // never raw PAN — Stripe SDK never returns it. Safe to include.
-      safeSelect(sb, "payments", "user_id", userId),
-      safeSelect(sb, "subscriptions", "user_id", userId),
-      safeSelect(sb, "feedback_buttons", "user_id", userId),
-      safeSelect(sb, "dsar_requests", "user_id", userId),
-      // v2 (2026-05-25): include B2B silent-signal log. Read-own via RLS;
-      // service-role read here is identical to what the user could see in
-      // theory (Art. 15(1)) but the table itself is not exposed to the
-      // Flutter client today.
-      safeSelect(sb, "b2b_signals", "user_id", userId),
-    ]);
+    // ── 2026-05-28 WAVE 1 GDPR FIX ─────────────────────────────────────────
+    // Mirror of USER_DATA_TABLES in account-delete/handler.ts. Art. 15 must
+    // disclose every table that Art. 17 would wipe (plus the Art. 17(3)
+    // retained tables that the user has a right to know exist).
+    //
+    // Sequential await blocks keep the function under the Promise.all limit
+    // and make it trivial to grep for "what does the DSAR include?". The
+    // perf cost is negligible — each query is a single indexed lookup.
+    const account = await sb.from("profiles").select("*").eq("id", userId)
+      .maybeSingle().then((r: { data: unknown }) => r.data ?? null);
+
+    // ── Chat history ─────────────────────────────────────────────────────
+    const chatMessages = await safeSelect(sb, "chat_messages", "user_id", userId);
+    const chatCitations = await safeSelect(sb, "chat_message_citations", "user_id", userId);
+    const chatFeedback = await safeSelect(sb, "message_feedback", "user_id", userId);
+    const chatPlannerTraces = await safeSelect(sb, "chat_planner_traces", "user_id", userId);
+    const caseChatSessions = await safeSelect(sb, "case_chat_sessions", "user_id", userId);
+
+    // ── Cases ─────────────────────────────────────────────────────────────
+    const cases = await safeSelect(sb, "cases", "user_id", userId);
+    const userCases = await safeSelect(sb, "user_cases", "user_id", userId);
+    const caseDocuments = await safeSelect(sb, "case_documents", "user_id", userId);
+    const caseDeadlines = await safeSelect(sb, "case_deadlines", "user_id", userId);
+    const caseTimelineEvents = await safeSelect(sb, "case_timeline_events", "user_id", userId);
+    const casePhase = await safeSelect(sb, "case_phase", "user_id", userId);
+    const caseFacts = await safeSelect(sb, "case_facts", "user_id", userId);
+    const caseFile = await safeSelect(sb, "case_file", "user_id", userId);
+    const caseFileEvents = await safeSelect(sb, "case_file_events", "user_id", userId);
+    const caseFileParties = await safeSelect(sb, "case_file_parties", "user_id", userId);
+    const caseFileDeadlines = await safeSelect(sb, "case_file_deadlines", "user_id", userId);
+    const checkerReports = await safeSelect(sb, "checker_reports", "user_id", userId);
+
+    // ── Legacy docs + correspondence ─────────────────────────────────────
+    const legacyDocuments = await safeSelect(sb, "documents", "user_id", userId);
+    const legacyDeadlines = await safeSelect(sb, "deadlines", "user_id", userId);
+    const correspondence = await safeSelect(sb, "correspondence", "user_id", userId);
+    const correspondenceAudit = await safeSelect(sb, "correspondence_audit", "user_id", userId);
+
+    // ── Vault ────────────────────────────────────────────────────────────
+    const vaultDocumentTags = await safeSelect(sb, "vault_document_tags", "user_id", userId);
+    const vaultTags = await safeSelect(sb, "vault_tags", "user_id", userId);
+
+    // ── Email agent ──────────────────────────────────────────────────────
+    const emailThreads = await safeSelect(sb, "email_threads", "user_id", userId);
+    const emailMessages = await safeSelect(sb, "email_messages", "user_id", userId);
+    const emailAttachments = await safeSelect(sb, "email_attachments", "user_id", userId);
+    const emailTriage = await safeSelect(sb, "email_triage_results", "user_id", userId);
+    const emailTriageLawyerOpinions = await safeSelect(sb, "email_triage_lawyer_opinions", "user_id", userId);
+    const triageProposedActions = await safeSelect(sb, "triage_proposed_actions", "user_id", userId);
+    const emailRetryQueue = await safeSelect(sb, "email_retry_queue", "user_id", userId);
+    const emailConnections = await safeSelect(sb, "email_connections", "user_id", userId);
+    const emailUserSettings = await safeSelect(sb, "email_user_settings", "user_id", userId);
+
+    // ── Drafting ─────────────────────────────────────────────────────────
+    const userDrafts = await safeSelect(sb, "user_drafts", "user_id", userId);
+    const draftVersions = await safeSelect(sb, "draft_versions", "user_id", userId);
+
+    // ── AI memory + agent loop ───────────────────────────────────────────
+    const aiMemory = await safeSelect(sb, "user_ai_memory", "user_id", userId);
+    const agentRuns = await safeSelect(sb, "agent_runs", "user_id", userId);
+    const agentQuota = await safeSelect(sb, "agent_quota", "user_id", userId);
+    const agentAuditLog = await safeSelect(sb, "agent_audit_log", "user_id", userId);
+    const agentIntentions = await safeSelect(sb, "agent_intentions", "user_id", userId);
+
+    // ── Consilium + contract review + advice corrections ─────────────────
+    const consiliumRuns = await safeSelect(sb, "consilium_runs", "user_id", userId);
+    const contractReviews = await safeSelect(sb, "contract_reviews", "user_id", userId);
+    const contractAnalysisJobs = await safeSelect(sb, "contract_analysis_jobs", "user_id", userId);
+    const adviceCorrections = await safeSelect(sb, "advice_corrections", "user_id", userId);
+    const adviceDigest = await safeSelect(sb, "advice_digest", "user_id", userId);
+
+    // ── Notifications ────────────────────────────────────────────────────
+    const notifications = await safeSelect(sb, "notifications", "user_id", userId);
+    const notificationPreferences = await safeSelect(sb, "notification_preferences", "user_id", userId);
+    const pushEvents = await safeSelect(sb, "push_events", "user_id", userId);
+    const deadlineNotificationLog = await safeSelect(sb, "deadline_notification_log", "user_id", userId);
+
+    // ── Account settings + usage telemetry ───────────────────────────────
+    const userSettings = await safeSelect(sb, "user_settings", "user_id", userId);
+    const userEngagement = await safeSelect(sb, "user_engagement", "user_id", userId);
+    const userQuotas = await safeSelect(sb, "user_quotas", "user_id", userId);
+    const voiceUsage = await safeSelect(sb, "voice_usage", "user_id", userId);
+    const aiUsage = await safeSelect(sb, "ai_usage", "user_id", userId);
+
+    // ── Lawyer bookings ──────────────────────────────────────────────────
+    const lawyerBookings = await safeSelect(sb, "lawyer_bookings", "user_id", userId);
+
+    // ── Identity / OAuth ─────────────────────────────────────────────────
+    // user_oauth_tokens: PRESENCE is part of the DSAR, but the live
+    // access/refresh tokens are credentials — never disclose under
+    // Art. 15(4) (rights of third parties / security).
+    const oauthTokens = await safeSelect(sb, "user_oauth_tokens", "user_id", userId, {
+      redactColumns: [
+        "access_token",
+        "refresh_token",
+        "id_token",
+        "encrypted_access_token",
+        "encrypted_refresh_token",
+      ],
+    });
+    const encryptionKeys = await safeSelect(sb, "user_encryption_keys", "user_id", userId, {
+      redactColumns: ["wrapped_dek", "wrap_iv", "wrap_tag"],
+    });
+
+    // ── Consents ─────────────────────────────────────────────────────────
+    const dpaAcceptances = await safeSelect(sb, "dpa_acceptances", "user_id", userId);
+    const sensitiveConsents = await safeSelect(sb, "sensitive_consents", "user_id", userId);
+    const disclaimerAcks = await safeSelect(sb, "disclaimer_acknowledgments", "user_id", userId);
+    const consentLog = await safeSelect(sb, "consent_log", "user_id", userId);
+    // Retained post-deletion under Art. 17(3)(e). Disclosed under Art. 15(1).
+    const attorneyPrivilegeAcceptance = await safeSelect(sb, "attorney_privilege_acceptance", "user_id", userId);
+
+    // ── Payments. subscriptions carries Stripe customer + product IDs,
+    //    never raw PAN — Stripe SDK never returns it. Safe to include.
+    //    `payments` table doesn't actually exist (audit P0-7); replaced
+    //    with `subscriptions` + `apple_iap_transactions`.
+    const subscriptions = await safeSelect(sb, "subscriptions", "user_id", userId);
+    const appleIapTransactions = await safeSelect(sb, "apple_iap_transactions", "user_id", userId);
+
+    // ── B2B signals ──────────────────────────────────────────────────────
+    const b2bSignals = await safeSelect(sb, "b2b_signals", "user_id", userId);
+
+    // ── Sharing + referrals. `referral_attributions` has TWO user-id
+    //    columns: read both perspectives so the DSAR is complete.
+    const sharedResults = await safeSelect(sb, "shared_results", "user_id", userId);
+    const referralCodes = await safeSelect(sb, "referral_codes", "user_id", userId);
+    const referralAsInvitee = await safeSelect(sb, "referral_attributions", "referred_user_id", userId);
+    const referralAsInviter = await safeSelect(sb, "referral_attributions", "inviter_user_id", userId);
+
+    // ── Support + experimentation ────────────────────────────────────────
+    const supportTickets = await safeSelect(sb, "support_tickets", "user_id", userId);
+    const abAssignments = await safeSelect(sb, "ab_assignments", "user_id", userId);
+    const abEvents = await safeSelect(sb, "ab_events", "user_id", userId);
+
+    // ── Audit logs ───────────────────────────────────────────────────────
+    const dsarHistory = await safeSelect(sb, "dsar_requests", "user_id", userId);
+    // Generic platform audit log is retained post-deletion but the user has
+    // an Art. 15 right to know it exists (with their entries).
+    const auditLog = await safeSelect(sb, "audit_log", "user_id", userId);
 
     payload = {
       exported_at: new Date().toISOString(),
       user_id: userId,
-      schema_version: "1.0",
+      schema_version: "2.0",
       notice:
-        "GDPR Art. 15 data export. OAuth access/refresh tokens are redacted " +
-        "for security (Art. 15(4)). Stripe records contain customer + " +
-        "product references only, no card numbers (PCI/DSS).",
+        "GDPR Art. 15 data export. OAuth access/refresh tokens and " +
+        "wrapped DEK material are redacted for security (Art. 15(4)). " +
+        "Subscriptions / Apple IAP records contain customer + product IDs " +
+        "only, no card numbers (PCI/DSS). `audit_log` and `attorney_privilege_acceptance` " +
+        "entries are retained after account deletion under Art. 17(3)(b)/(e) " +
+        "and are included here for transparency.",
       account,
       chat_history: {
         messages: chatMessages,
         citations: chatCitations,
         feedback: chatFeedback,
+        planner_traces: chatPlannerTraces,
+        case_chat_sessions: caseChatSessions,
       },
       cases: {
         cases,
-        cases_v2: casesV2,
-        documents: caseDocuments,
-        deadlines: caseDeadlines,
-        correspondence_per_case: caseCorrespondence,
+        user_cases: userCases,
+        case_documents: caseDocuments,
+        case_deadlines: caseDeadlines,
+        case_timeline_events: caseTimelineEvents,
+        case_phase: casePhase,
+        case_facts: caseFacts,
+        case_file: caseFile,
+        case_file_events: caseFileEvents,
+        case_file_parties: caseFileParties,
+        case_file_deadlines: caseFileDeadlines,
+        checker_reports: checkerReports,
       },
       documents: legacyDocuments,
+      deadlines: legacyDeadlines,
+      vault: {
+        document_tags: vaultDocumentTags,
+        tags: vaultTags,
+      },
       emails: {
         threads: emailThreads,
         messages: emailMessages,
+        attachments: emailAttachments,
         triage_results: emailTriage,
+        triage_lawyer_opinions: emailTriageLawyerOpinions,
+        triage_proposed_actions: triageProposedActions,
+        retry_queue: emailRetryQueue,
+        connections: emailConnections,
+        user_settings: emailUserSettings,
       },
       correspondence,
+      correspondence_audit: correspondenceAudit,
+      drafting: {
+        user_drafts: userDrafts,
+        draft_versions: draftVersions,
+      },
+      ai_memory: aiMemory,
+      agent: {
+        runs: agentRuns,
+        quota: agentQuota,
+        audit_log: agentAuditLog,
+        intentions: agentIntentions,
+      },
+      consilium_runs: consiliumRuns,
+      contract: {
+        reviews: contractReviews,
+        analysis_jobs: contractAnalysisJobs,
+      },
+      advice: {
+        corrections: adviceCorrections,
+        digest: adviceDigest,
+      },
+      notifications: {
+        notifications,
+        preferences: notificationPreferences,
+        push_events: pushEvents,
+        deadline_log: deadlineNotificationLog,
+      },
+      account_settings: {
+        user_settings: userSettings,
+        user_engagement: userEngagement,
+        user_quotas: userQuotas,
+        voice_usage: voiceUsage,
+        ai_usage: aiUsage,
+      },
+      lawyer_bookings: lawyerBookings,
       oauth_providers: oauthTokens,
+      encryption_keys: encryptionKeys,
       consents: {
         dpa_acceptances: dpaAcceptances,
         sensitive_consents: sensitiveConsents,
         disclaimer_acknowledgments: disclaimerAcks,
+        consent_log: consentLog,
+        attorney_privilege_acceptance: attorneyPrivilegeAcceptance,
       },
       payments: {
-        payments,
         subscriptions,
+        apple_iap_transactions: appleIapTransactions,
       },
-      feedback: messageFeedback,
+      feedback: chatFeedback,
       b2b_signals: b2bSignals,
+      sharing: {
+        shared_results: sharedResults,
+        referral_codes: referralCodes,
+        referral_attributions_as_invitee: referralAsInvitee,
+        referral_attributions_as_inviter: referralAsInviter,
+      },
+      support: {
+        tickets: supportTickets,
+      },
+      experimentation: {
+        ab_assignments: abAssignments,
+        ab_events: abEvents,
+      },
       audit_log: {
         // Include the in-flight row too (Art. 15(1)(c): inform of recipients
         // and storage period — the request itself is also personal data).
         dsar_requests: [...(dsarHistory as unknown[])],
+        audit_log: auditLog,
       },
     };
   } catch (e) {

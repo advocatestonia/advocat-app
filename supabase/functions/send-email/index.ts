@@ -19,7 +19,11 @@
 // -----------------------------------------------------------------------------
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient } from "@supabase/supabase-js";
+import {
+  corsHeaders,
+  requireUserWithRateLimit,
+} from "../_shared/auth.ts";
 import {
   buildRefreshRequestBody,
   computeNewExpiry,
@@ -27,6 +31,13 @@ import {
   shouldRefresh,
   type TokenRow,
 } from "./token_refresh.ts";
+import {
+  APPROXIMATE_FOOTER_BYTES,
+  AUTHORITY_RATE_LIMIT_24H,
+  classifyRecipient,
+  composeDisclosureFooter,
+  type UserLocale,
+} from "../_shared/outbound_compliance.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -37,17 +48,17 @@ const DEFAULT_FROM =
 const GOOGLE_CLIENT_ID = Deno.env.get("GOOGLE_CLIENT_ID");
 const GOOGLE_CLIENT_SECRET = Deno.env.get("GOOGLE_CLIENT_SECRET");
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "https://advocat.ee",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers":
-    "Authorization, Content-Type, apikey, x-client-info",
-};
-
-// Simple per-user rate limit: max 5 outgoing emails per 10 minutes.
-const rateLimits = new Map<string, { count: number; windowStart: number }>();
-const RATE_LIMIT_WINDOW_MS = 10 * 60_000;
-const RATE_LIMIT_MAX = 5;
+// SECURITY (Wave-1 2026-05-28, audit P0-01/P0-02):
+// The previous in-isolate `Map<string, ...>` rate limiter was reset on every
+// Deno cold start, so an attacker who hit the function across N isolates
+// got 5×N effective sends per 10-min window — Resend / Gmail abuse vector.
+// The bare `supabase.auth.getUser(token)` also accepted any non-error
+// response, missing the U1 role/aud check that catches forged JWTs.
+//
+// Both holes are now closed by `requireUserWithRateLimit` (postgres-backed
+// limiter + role/aud check in _shared/auth.ts).  Cap of 1/min preserves the
+// 5-per-10-min envelope of the legacy limiter.
+const RATE_LIMIT_MAX_PER_MINUTE = 1;
 
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -240,37 +251,19 @@ serve(async (req) => {
     return jsonResponse({ error: "Method not allowed" }, 405);
   }
 
-  const authHeader = req.headers.get("Authorization");
-  if (!authHeader) {
-    return jsonResponse({ error: "Unauthorized" }, 401);
-  }
+  // SECURITY (Wave-1 2026-05-28, audit P0-01 + P0-02):
+  // Single gate replaces the previous inline `getUser` (no role/aud check —
+  // U1 regression class) AND the per-isolate `Map` rate limiter (cold-start
+  // bypass).  `requireUserWithRateLimit` calls the postgres-backed
+  // `consume_rate_limit` RPC + enforces `role/aud === "authenticated"`.
+  const gate = await requireUserWithRateLimit(req, {
+    bucket: "send-email",
+    maxPerMinute: RATE_LIMIT_MAX_PER_MINUTE,
+  });
+  if (gate.kind === "deny") return gate.response;
+  const user = { id: gate.user.id, email: gate.user.email };
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-  const token = authHeader.replace("Bearer ", "");
-  const { data: userData, error: authError } =
-    await supabase.auth.getUser(token);
-  if (authError || !userData?.user) {
-    return jsonResponse({ error: "Invalid session" }, 401);
-  }
-  const user = userData.user;
-
-  // Per-user rate limit
-  const now = Date.now();
-  const bucket = rateLimits.get(user.id);
-  if (bucket && now - bucket.windowStart < RATE_LIMIT_WINDOW_MS) {
-    if (bucket.count >= RATE_LIMIT_MAX) {
-      return jsonResponse(
-        {
-          error:
-            "Rate limit exceeded. Maximum 5 emails per 10 minutes per user.",
-        },
-        429,
-      );
-    }
-    bucket.count++;
-  } else {
-    rateLimits.set(user.id, { count: 1, windowStart: now });
-  }
 
   let payload: {
     to?: string;
@@ -296,6 +289,53 @@ serve(async (req) => {
       { error: "Fields to, subject, body are required." },
       400,
     );
+  }
+
+  // SECURITY (Wave-1 2026-05-28, audit P0-04 — IDOR on correspondence):
+  // The previous handler accepted caller-supplied `case_id` and wrote it
+  // straight into `correspondence.case_id` + passed it to
+  // `record_case_event` with no ownership check. Free-tier attacker could
+  // pollute another user's case timeline with fake outbound email events
+  // — evidence-tampering on a legal platform.
+  //
+  // The case_id column references `public.cases` for `correspondence`, and
+  // `record_case_event` (case_timeline_events) joins against
+  // `public.user_cases`. We accept ownership in EITHER table since the
+  // chat client / agent loop write to whichever is the active case for
+  // the user.  Both lookups are scoped to `user_id = caller`.
+  if (payload.case_id) {
+    if (typeof payload.case_id !== "string") {
+      return jsonResponse({ error: "case_id must be a string" }, 400);
+    }
+    let ownsCase = false;
+    try {
+      const [b2c, pkg2] = await Promise.all([
+        supabase
+          .from("cases")
+          .select("id")
+          .eq("id", payload.case_id)
+          .eq("user_id", user.id)
+          .maybeSingle(),
+        supabase
+          .from("user_cases")
+          .select("id")
+          .eq("id", payload.case_id)
+          .eq("user_id", user.id)
+          .maybeSingle(),
+      ]);
+      ownsCase = !!(b2c.data?.id) || !!(pkg2.data?.id);
+    } catch (e) {
+      console.warn(
+        "send-email: case ownership lookup failed:",
+        String(e).slice(0, 200),
+      );
+    }
+    if (!ownsCase) {
+      return jsonResponse(
+        { error: "case_id not owned by caller" },
+        403,
+      );
+    }
   }
   // Basic email validation
   const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -370,6 +410,127 @@ serve(async (req) => {
     ? `${userFromName} <${userFromAddress}>`
     : userFromAddress;
 
+  // ──────────────────────────────────────────────────────────────────────
+  // WAVE-1 UPL COMPLIANCE (audit 08 §1.6 + 09 §P0-EE-2 + 05 F-004/F-006)
+  // Coordination memory key: swarm/security_audit_2026-05-28/wave1/email_agent
+  //
+  // Classify the recipient. If non-standard, append the disclosure footer
+  // BEFORE dispatch — the footer lives at ingress (here) rather than in
+  // the model's output so prompt injection cannot suppress or rewrite it.
+  // For fi_/ee_authority recipients we also apply:
+  //   - 3 sends / 24h rate cap (audit 08 §9.2)
+  //   - hard-reject if body+footer would exceed 100K body cap
+  // Locale fetched from profiles.preferred_language; English fallback.
+  // ──────────────────────────────────────────────────────────────────────
+  const classification = classifyRecipient([to, ...(cc ? [cc] : [])]);
+  let composedBody = body;
+
+  if (classification.class === "denied") {
+    return jsonResponse(
+      {
+        error: "recipient_denied_by_compliance",
+        reasons: classification.reasons,
+      },
+      400,
+    );
+  }
+
+  if (classification.class !== "standard") {
+    // Resolve user locale for footer wording.
+    let userLocale: UserLocale = "en";
+    try {
+      const { data: prefRow } = await supabase
+        .from("profiles")
+        .select("preferred_language")
+        .eq("id", user.id)
+        .maybeSingle();
+      const raw = (prefRow?.preferred_language as string | null) ?? "en";
+      const norm = raw.toLowerCase().slice(0, 2);
+      if (norm === "fi" || norm === "et" || norm === "ru" || norm === "en") {
+        userLocale = norm;
+      }
+    } catch (_) {
+      /* fallback to en */
+    }
+
+    const footer = composeDisclosureFooter(
+      userLocale,
+      classification.class,
+      userFromName ?? user.email ?? "—",
+    );
+
+    // Hard-reject if body+footer would breach the 100 KB cap (audit 08
+    // §1.6.2 — "reject if disclosure footer would NOT fit"). We refuse
+    // rather than silently truncate the body or the footer.
+    if (body.length + footer.length > 100_000) {
+      return jsonResponse(
+        {
+          error: "body_too_long_for_required_disclosure_footer",
+          footer_bytes: footer.length,
+          body_bytes: body.length,
+          recipient_class: classification.class,
+        },
+        413,
+      );
+    }
+    composedBody = body + footer;
+  }
+
+  if (
+    classification.class === "fi_authority" ||
+    classification.class === "ee_authority"
+  ) {
+    // 3-msg / 24h cap for authority recipients. Counts past outbound to
+    // ANY recipient classified the same way. We query the correspondence
+    // table; failures fail-open by design (one false positive per 24h
+    // is preferable to blocking legitimate KHO-deadline-day traffic if
+    // the DB blips), but log the gap so observability catches it.
+    try {
+      const since = new Date(Date.now() - 24 * 60 * 60 * 1_000).toISOString();
+      const { data: past, error: pastErr } = await supabase
+        .from("correspondence")
+        .select("to_address, sent_at")
+        .eq("user_id", user.id)
+        .eq("direction", "outbound")
+        .gte("sent_at", since)
+        .limit(50);
+      if (!pastErr && Array.isArray(past)) {
+        let authorityCount = 0;
+        for (const row of past) {
+          const addr = (row.to_address as string | null) ?? "";
+          if (!addr) continue;
+          const cls = classifyRecipient([addr]);
+          if (
+            cls.class === "fi_authority" || cls.class === "ee_authority"
+          ) {
+            authorityCount++;
+          }
+        }
+        if (authorityCount >= AUTHORITY_RATE_LIMIT_24H) {
+          return jsonResponse(
+            {
+              error: "authority_rate_limit_24h_exceeded",
+              recipient_class: classification.class,
+              limit: AUTHORITY_RATE_LIMIT_24H,
+              window_hours: 24,
+            },
+            429,
+          );
+        }
+      }
+    } catch (e) {
+      console.warn(
+        "send-email: authority rate-limit lookup failed (fail-open):",
+        String(e).slice(0, 200),
+      );
+    }
+    // Reference for downstream observers — keep APPROXIMATE_FOOTER_BYTES
+    // out of the build-warning path even when unused.
+    void APPROXIMATE_FOOTER_BYTES;
+  }
+  // Hand the composed body to the dispatcher.
+  // ──────────────────────────────────────────────────────────────────────
+
   // Dispatch.
   //
   // The `provider` value below is what we write to the correspondence audit
@@ -397,7 +558,7 @@ serve(async (req) => {
         to,
         cc,
         subject,
-        body,
+        body: composedBody,
       });
       providerId = r.id;
       provider = "gmail_user";
@@ -427,7 +588,7 @@ serve(async (req) => {
         cc,
         subject,
         body:
-          `${body}\n\n---\n` +
+          `${composedBody}\n\n---\n` +
           `Sent via Advocat.ee on behalf of ` +
           `${userFromName ?? user.email ?? "client"}.\n` +
           `Reply directly to this email to reach the sender.`,
@@ -445,6 +606,9 @@ serve(async (req) => {
   }
 
   // Log to correspondence table (best-effort).
+  // We persist the COMPOSED body (incl. disclosure footer) so audit reflects
+  // what was actually sent. The classification class is also stored as
+  // metadata for downstream reporting / compliance dashboards.
   try {
     await supabase.from("correspondence").insert({
       user_id: user.id,
@@ -454,7 +618,7 @@ serve(async (req) => {
       to_address: to,
       cc_address: cc ?? null,
       subject,
-      body,
+      body: composedBody,
       provider,
       provider_message_id: providerId,
       sent_at: new Date().toISOString(),

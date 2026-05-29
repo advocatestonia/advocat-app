@@ -56,6 +56,7 @@ import {
   verifyActionId,
 } from "../_shared/agent_action.ts";
 import { executeToolCalls } from "../claude-proxy/tool_handlers.ts";
+import { withSentry } from "../_shared/sentry.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -74,7 +75,7 @@ function jsonOk(body: unknown, status = 200): Response {
   });
 }
 
-serve(async (req) => {
+serve(withSentry("agent-approve", async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: corsHeaders });
   }
@@ -166,7 +167,15 @@ serve(async (req) => {
   }
 
   // Approve path — verify HMAC + execute.
-  const recomputedArgsSha = await hashToolInput(pending.tool_input);
+  //
+  // hashToolInput uses canonical-JSON serialisation (W2-09 fix) so the
+  // hash survives the JSONB round-trip Postgres did when persisting
+  // pending.tool_input. It also projects user-visible fields (to,
+  // subject, body_length, ...) for known write tools (F-008 binding).
+  const recomputedArgsSha = await hashToolInput(
+    pending.tool_input,
+    pending.tool_name,
+  );
   if (recomputedArgsSha !== pending.args_sha256) {
     // Persisted args differ from what was originally signed — defence
     // against a malicious update to the DB row. Should not happen via
@@ -230,4 +239,4 @@ serve(async (req) => {
     decision: "approved",
     tool_result: toolResult,
   });
-});
+}));

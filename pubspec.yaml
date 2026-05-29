@@ -87,6 +87,13 @@ dependencies:
   timeago: ^3.6.1
   crypto: ^3.0.3
 
+  # Error monitoring (production). Owner-flagged critical priority.
+  # PII scrubbing is STRICT — see lib/core/services/error_reporter.dart.
+  # DSN is wired via --dart-define=SENTRY_DSN=...; absent DSN = no-op
+  # (app runs normally for local dev / CI). Pinned to ^8.14.2: v9 needs
+  # Flutter >=3.24, but pubspec floor is 3.16.0.
+  sentry_flutter: ^8.14.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

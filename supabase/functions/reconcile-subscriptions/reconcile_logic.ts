@@ -97,32 +97,43 @@ export function tierFromSub(sub: StripeSubscription): string {
 
 /**
  * Find a profile to attach a Stripe subscription to.
- *   1. stripe_customer_id match (canonical)
- *   2. email match (the webhook-miss case — customer existed, link missing)
- *   3. metadata.user_id from the original checkout (last resort)
+ *
+ * Wave 1 fix P0-RC5 (2026-05-28): the email-match branch has been REMOVED.
+ * Previously, any Stripe customer whose email matched a profiles.email row
+ * would be linked — exploitable by signing up with a victim's email (or
+ * any leaked Stripe customer email) and waiting for the daily reconcile to
+ * grant is_pro=true on the attacker's profile. Profiles.email is not
+ * cryptographically tied to auth.users.email (it's mirrored at signup,
+ * can drift, and some flows allow PATCH from the client), so the email
+ * fallback was a free-Pro vector.
+ *
+ * The new resolution order is strictly canonical:
+ *   1. profiles.stripe_customer_id linked to the Stripe customer.id
+ *   2. checkout metadata.user_id (set by create-checkout / create-org-checkout)
+ *
+ * If neither matches, the caller logs an unmatched-customer record to
+ * `reconcile_unmatched` (a human triages it manually). This is the right
+ * trade-off: in the steady state every paying customer has either a
+ * canonical link or a recorded checkout, and the rare missed link is
+ * far less harmful than a silent free-Pro for a random email twin.
  */
 export function matchProfile(
   sub: StripeSubscription,
   customer: StripeCustomer,
   profiles: ProfileRow[],
-): { profile: ProfileRow; via: "customer_id" | "email" | "metadata_user_id" } | null {
+): { profile: ProfileRow; via: "customer_id" | "metadata_user_id" } | null {
   const customerId = customer.id;
-  const customerEmail = (customer.email ?? "").toLowerCase().trim();
   const metaUserId = sub.metadata?.user_id ?? customer.metadata?.user_id;
 
   // 1. canonical: stripe_customer_id link
   const byCustomer = profiles.find((p) => p.stripe_customer_id === customerId);
   if (byCustomer) return { profile: byCustomer, via: "customer_id" };
 
-  // 2. email match — most common drift case
-  if (customerEmail) {
-    const byEmail = profiles.find(
-      (p) => (p.email ?? "").toLowerCase().trim() === customerEmail,
-    );
-    if (byEmail) return { profile: byEmail, via: "email" };
-  }
-
-  // 3. checkout metadata user_id
+  // 2. checkout metadata user_id (the create-checkout edge fn embeds the
+  //    authenticated user_id in session.metadata; create-org-checkout uses
+  //    metadata.actor_user_id which we deliberately do NOT match here —
+  //    org subs go through the B2B path in stripe-webhook, never reconcile
+  //    against B2C profiles).
   if (metaUserId) {
     const byMeta = profiles.find((p) => p.id === metaUserId);
     if (byMeta) return { profile: byMeta, via: "metadata_user_id" };

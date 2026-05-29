@@ -46,11 +46,21 @@ export function wrapUntrusted(
   text: string,
 ): string {
   const safeSource = source.replace(/[<>"']/g, " ").slice(0, 200);
+  // Wave-1 fix (P1-13, 2026-05-28): NFKC-normalize before the sentinel
+  // regex check so attacker cannot bypass the escape using Unicode
+  // compatibility equivalents (e.g. fullwidth `</ｕｎｔｒｕｓｔｅｄ_ｄａｔａ>`
+  // or other look-alike sequences that would otherwise tokenize as a
+  // closing tag during model decoding but skip the byte-level regex).
+  // NFKC folds compatibility characters into their canonical ASCII form
+  // so the same regex catches both forms uniformly.
+  const normalised = typeof (text as { normalize?: unknown }).normalize ===
+      "function"
+    ? text.normalize("NFKC")
+    : text;
   // Escape any literal closing tag inside the payload. We replace
   // < with &lt; for any sequence that LOOKS like </untrusted_data>
-  // (case-insensitive, with optional whitespace). Cheap; not foolproof
-  // against unicode tricks but covers 99% of real attack patterns.
-  const safeText = text.replace(
+  // (case-insensitive, with optional whitespace).
+  const safeText = normalised.replace(
     /<\s*\/\s*untrusted_data\s*>/gi,
     "&lt;/untrusted_data&gt;",
   );

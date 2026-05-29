@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:printing/printing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' show PostgrestException, Supabase;
-import 'package:url_launcher/url_launcher.dart';
+import '../../../shared/safe_launch.dart';
 import '../../../config/router.dart';
 import '../../../config/theme.dart';
 import '../../../core/icons/app_icons.dart';
@@ -3551,7 +3551,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       'body': body,
                     },
                   );
-                  unawaited(launchUrl(uri));
+                  // F5 (WAVE 1, 2026-05-28) — schema/canLaunch guard +
+                  // mailto header-injection check. The LLM is the source
+                  // of `to`, so a prompt-injection from a poisoned PDF
+                  // could try to smuggle `bcc:attacker@evil.com` into
+                  // the address. safeLaunchUrl rejects those.
+                  unawaited(safeLaunchUrl(uri));
                 }
               } else if (message.navigation != null) {
                 final executor = ToolExecutor(context: context, ref: ref);

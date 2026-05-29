@@ -9,6 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../../../l10n/app_localizations.dart';
+// WAVE 2 FIX W2-03 (F3): drafts list reveals client-matter titles.
+import '../../../shared/secure_screen.dart';
 import '../../../shared/widgets/skeleton_loader.dart';
 import '../models/draft_model.dart';
 import '../services/draft_service.dart';
@@ -27,7 +29,8 @@ class DraftsListScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final draftsAsync = ref.watch(myDraftsProvider);
 
-    return Scaffold(
+    return SecureScreenScope(
+      child: Scaffold(
       appBar: AppBar(title: Text(l10n.draftingDraftsList)),
       floatingActionButton: FloatingActionButton.extended(
         key: const Key('drafts_list_new_fab'),
@@ -78,6 +81,7 @@ class DraftsListScreen extends ConsumerWidget {
             },
           );
         },
+      ),
       ),
     );
   }

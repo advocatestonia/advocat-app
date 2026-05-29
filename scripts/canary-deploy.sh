@@ -136,7 +136,8 @@ CHANGED_FNS=()
 if [[ -z "$LAST_PROD" ]]; then
   warn "No merge base with github/gh-pages — deploying ALL edge functions (safe over-deploy)"
   while IFS= read -r fn; do
-    [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
+    # Only deploy directories (real edge fns). Skip _shared, _tests, import_map.json, IMPORT_MAP_README.md, etc.
+    [[ -n "$fn" && -d "supabase/functions/$fn" ]] && CHANGED_FNS+=("$fn")
   done < <(ls supabase/functions/ | grep -v '^_' | sort -u)
 else
   CHANGED_FILES=$(git diff --name-only "$LAST_PROD"...HEAD -- 'supabase/functions/' 2>/dev/null || true)
@@ -145,14 +146,15 @@ else
   if echo "$CHANGED_FILES" | grep -q 'supabase/functions/_shared/'; then
     log "_shared module(s) changed — redeploying all dependent functions"
     while IFS= read -r fn; do
-      [[ -n "$fn" ]] && CHANGED_FNS+=("$fn")
+      [[ -n "$fn" && -d "supabase/functions/$fn" ]] && CHANGED_FNS+=("$fn")
     done < <(ls supabase/functions/ | grep -v '^_' | sort -u)
   else
-    # Extract function names: supabase/functions/<name>/... — skip _shared
+    # Extract function names: supabase/functions/<name>/... — skip _shared, top-level files (import_map.json etc).
     if [[ -n "$CHANGED_FILES" ]]; then
       while IFS= read -r line; do
         fn=$(echo "$line" | sed 's|supabase/functions/||' | cut -d/ -f1)
-        [[ -n "$fn" && "$fn" != _* ]] && CHANGED_FNS+=("$fn")
+        # Must be: non-empty, not _-prefixed, AND an actual directory (not a top-level file like import_map.json).
+        [[ -n "$fn" && "$fn" != _* && -d "supabase/functions/$fn" ]] && CHANGED_FNS+=("$fn")
       done < <(echo "$CHANGED_FILES" | grep 'supabase/functions/' | grep -v '_shared' | sort -u || true)
       # Deduplicate
       if [[ ${#CHANGED_FNS[@]} -gt 0 ]]; then
@@ -177,7 +179,25 @@ fi
 log "Building Flutter web (release)"
 run "flutter clean"
 run "flutter pub get"
-run "flutter build web --release --dart-define-from-file=.env.prod"
+
+# Sentry release tracking (owner-flagged P0). DSN comes from the host env
+# so it's never committed; if absent we warn and skip — the app gracefully
+# falls back to its existing error_boundary + telemetry_sink path.
+SENTRY_DEFINES=""
+if [[ -n "${SENTRY_DSN:-}" ]]; then
+  SENTRY_RELEASE="${APP_VERSION:-$(git rev-parse --short HEAD)}"
+  SENTRY_DEFINES="--dart-define=SENTRY_DSN=${SENTRY_DSN}"
+  SENTRY_DEFINES="${SENTRY_DEFINES} --dart-define=SENTRY_ENV=${SENTRY_ENV:-production}"
+  SENTRY_DEFINES="${SENTRY_DEFINES} --dart-define=APP_VERSION=${SENTRY_RELEASE}"
+  ok "Sentry enabled for build (release=${SENTRY_RELEASE})"
+  # TODO(deploy): upload source maps to Sentry post-build for readable
+  # stack traces. Tracked as a separate task; see
+  # lib/core/services/error_reporter.dart docstring.
+else
+  warn "SENTRY_DSN not set — building without Sentry (graceful degradation)"
+fi
+
+run "flutter build web --release --dart-define-from-file=.env.prod ${SENTRY_DEFINES}"
 
 [[ -f build/web/main.dart.js ]] || die "main.dart.js missing after build"
 MAIN_SIZE=$(wc -c < build/web/main.dart.js)
@@ -239,6 +259,47 @@ spa_stub_target() {
 }
 
 spa_stub_target "$WORKTREE/staging"
+
+# ----- Sentry DSN substitution (2026-05-29) --------------------------------
+# web/_sentry_config.js ships with placeholder tokens
+# (__SENTRY_DSN_PLACEHOLDER__ / __APP_VERSION_PLACEHOLDER__). After every
+# rsync into a gh-pages worktree we substitute the placeholders in-place
+# BEFORE the git commit so the file GitHub Pages serves carries the real
+# DSN + release SHA. The source tree under web/ is never touched.
+#
+# Behaviour matrix:
+#   SENTRY_DSN set    → placeholders replaced, Sentry initialises in browser
+#   SENTRY_DSN unset  → placeholders preserved, _sentry_init.js exits silent
+#                       (landing keeps working — graceful degradation)
+#
+# Note: this complements the Flutter-side --dart-define=SENTRY_DSN above.
+# The Flutter app shell (app.html / main.dart.js) reads from dart-defines;
+# the landing HTML pages (index/for-firms/demo) read from the substituted
+# _sentry_config.js. Both must use the same DSN env var.
+# ---------------------------------------------------------------------------
+sentry_substitute() {
+  local target_dir="$1"
+  local cfg="$target_dir/_sentry_config.js"
+  if [[ ! -f "$cfg" ]]; then
+    warn "No _sentry_config.js under $target_dir — skipping landing Sentry substitution"
+    return
+  fi
+  if [[ -z "${SENTRY_DSN:-}" ]]; then
+    warn "SENTRY_DSN unset — leaving landing placeholders (Sentry stays dormant)"
+    return
+  fi
+  local sha
+  sha=$(cd "$REPO_ROOT" && git rev-parse --short HEAD)
+  # Escape any literal | in the DSN before piping it through sed's | delim.
+  local dsn_safe="${SENTRY_DSN//|/\\|}"
+  # macOS sed needs the .bak suffix after -i; GNU sed accepts it too.
+  run "sed -i.bak \"s|__SENTRY_DSN_PLACEHOLDER__|$dsn_safe|g\" \"$cfg\""
+  run "sed -i.bak \"s|__APP_VERSION_PLACEHOLDER__|$sha|g\" \"$cfg\""
+  run "rm -f \"$cfg.bak\""
+  ok "Landing Sentry DSN injected → $cfg (release=$sha)"
+}
+
+sentry_substitute "$WORKTREE/staging"
 
 cd "$WORKTREE"
 git add -A staging/
@@ -323,6 +384,11 @@ run "rsync -av ${RSYNC_EXCLUDE[*]} build/web/ \"$WORKTREE/\""
 # app.html under stable per-route file names so the smoke's curl_code probe
 # returns 200 without following redirects.
 spa_stub_target "$WORKTREE"
+
+# Inject Sentry DSN into the prod-root copy of _sentry_config.js. Same
+# function as staging; safe to skip when SENTRY_DSN is unset (Sentry
+# stays dormant in browser, no events sent).
+sentry_substitute "$WORKTREE"
 
 # Guard: required gh-pages files must exist and be non-empty before commit.
 if [[ $DRY_RUN -eq 0 ]]; then
