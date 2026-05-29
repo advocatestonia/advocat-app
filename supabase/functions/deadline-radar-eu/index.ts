@@ -147,7 +147,7 @@ serve(async (req: Request) => {
     .from("deadline_radar_eu")
     .select("*")
     .eq("jurisdiction", juris)
-    .ilike("category", category)
+    .eq("category", category)
     .limit(5);
 
   if (ruleErr) {
