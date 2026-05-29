@@ -63,6 +63,12 @@ class _TriageCardState extends ConsumerState<TriageCard>
   Timer? _pulseStopTimer;
   bool _pulseStarted = false;
 
+  /// Re-entrancy guard for the async action handlers (approve&send, snooze,
+  /// archive). A fast double-tap would otherwise stack two confirm dialogs and
+  /// fire the mutation twice; the send itself is idempotent server-side, but
+  /// this keeps the UX correct and avoids redundant network work.
+  bool _actionInProgress = false;
+
   /// P1-2 (2026-05-27): cap the CRITICAL pulse at ~10s so it doesn't
   /// burn the GPU forever on a screen the user may leave open. After
   /// the cap the badge stays at 1.0 opacity (most-attention state).
@@ -111,6 +117,16 @@ class _TriageCardState extends ConsumerState<TriageCard>
   // ── Actions ────────────────────────────────────────────────────────────
 
   Future<void> _onApproveSend() async {
+    if (_actionInProgress) return;
+    _actionInProgress = true;
+    try {
+      await _approveSendInner();
+    } finally {
+      _actionInProgress = false;
+    }
+  }
+
+  Future<void> _approveSendInner() async {
     final l = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final notifier = ref.read(inboxProvider.notifier);
@@ -200,9 +216,15 @@ class _TriageCardState extends ConsumerState<TriageCard>
   }
 
   Future<void> _onSnooze() async {
+    if (_actionInProgress) return;
+    _actionInProgress = true;
     final l = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
-    await ref.read(inboxProvider.notifier).snooze(widget.thread.threadId);
+    try {
+      await ref.read(inboxProvider.notifier).snooze(widget.thread.threadId);
+    } finally {
+      _actionInProgress = false;
+    }
     if (!mounted) return;
     await HapticFeedback.lightImpact();
     messenger.showSnackBar(
@@ -215,6 +237,8 @@ class _TriageCardState extends ConsumerState<TriageCard>
   }
 
   Future<void> _onArchive() async {
+    if (_actionInProgress) return;
+    _actionInProgress = true;
     final l = AppLocalizations.of(context);
     final messenger = ScaffoldMessenger.of(context);
     final notifier = ref.read(inboxProvider.notifier);
@@ -232,7 +256,11 @@ class _TriageCardState extends ConsumerState<TriageCard>
     // 200 with `{ok:false, error_code}` on Gmail-side failure — the
     // local archive already succeeded; the 5-second snackbar exposes
     // Undo for rollback in either case.
-    await _mirrorArchiveToGmail(supabase, threadId);
+    try {
+      await _mirrorArchiveToGmail(supabase, threadId);
+    } finally {
+      _actionInProgress = false;
+    }
 
     if (!mounted) return;
     messenger.showSnackBar(

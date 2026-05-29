@@ -20,6 +20,8 @@
 //   - Deadline chip absent when deadlines list is empty.
 // -----------------------------------------------------------------------------
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,6 +104,32 @@ class _SeededInboxNotifier extends InboxNotifier {
       threads:
           state.threads.where((t) => t.threadId != threadId).toList(),
     );
+  }
+}
+
+/// Notifier whose snooze() blocks on a Completer and counts invocations, so a
+/// double-tap test can prove the card's re-entrancy guard prevents a second
+/// dispatch while the first is in flight.
+class _GatedSnoozeNotifier extends InboxNotifier {
+  _GatedSnoozeNotifier(super.tools, List<InboxThread> seed) {
+    state = InboxState(
+      threads: seed,
+      severityFilter: null,
+      isLoading: false,
+      errorMessage: null,
+    );
+  }
+
+  int snoozeCalls = 0;
+  final Completer<void> gate = Completer<void>();
+
+  @override
+  Future<void> refresh() async {}
+
+  @override
+  Future<void> snooze(String threadId) async {
+    snoozeCalls++;
+    await gate.future;
   }
 }
 
@@ -263,6 +291,63 @@ void main() {
         final remaining = container.read(inboxProvider).threads;
         expect(remaining, isEmpty,
             reason: 'Snooze must remove the row from the inbox state.');
+      },
+    );
+
+    testWidgets(
+      'double-tap Snooze while in flight dispatches only once (re-entrancy)',
+      (tester) async {
+        final t = _thread(id: 's2', hasDraft: false);
+        late _GatedSnoozeNotifier notifier;
+        final router = GoRouter(
+          initialLocation: '/inbox',
+          routes: [
+            GoRoute(
+              path: '/inbox',
+              builder: (_, __) => Scaffold(body: TriageCard(thread: t)),
+            ),
+          ],
+        );
+        await tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              inboxProvider.overrideWith((ref) {
+                notifier = _GatedSnoozeNotifier(
+                  ref.read(assistantToolsProvider), [t]);
+                return notifier;
+              }),
+              assistantToolsProvider.overrideWithValue(
+                AssistantTools(supabaseService: SupabaseService()),
+              ),
+            ],
+            child: MaterialApp.router(
+              routerConfig: router,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en'), Locale('et'), Locale('ru'),
+              ],
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Two rapid taps before the in-flight snooze resolves.
+        await tester.tap(find.text('Snooze'));
+        await tester.pump();
+        await tester.tap(find.text('Snooze'));
+        await tester.pump();
+
+        expect(notifier.snoozeCalls, 1,
+            reason: 'Re-entrancy guard must block the second dispatch.');
+
+        // Release the gate so the first call completes cleanly.
+        notifier.gate.complete();
+        await tester.pumpAndSettle();
       },
     );
 
