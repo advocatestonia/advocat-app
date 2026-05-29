@@ -128,7 +128,7 @@ function makeSb(opts: {
   const subBuilder: Record<string, unknown> = {};
   const wireSubChain = () => {
     for (
-      const m of ["select", "eq", "in", "limit"]
+      const m of ["select", "eq", "in", "order", "limit"]
     ) {
       subBuilder[m] = () => subBuilder;
     }
@@ -178,6 +178,35 @@ Deno.test("detectVoiceTier — active sub with no tier set ⇒ basic (paid)", as
     subscription: { data: { tier: null, status: "active" } },
   });
   assertEquals(await detectVoiceTier(sb, "uid-1"), "basic");
+});
+
+Deno.test("detectVoiceTier — lapsed period (status active, expired) ⇒ free", async () => {
+  // Apple IAP has no expiry webhook in prod, so a cancelled/refunded sub can
+  // read status='active' with a past period end. Must not grant paid voice
+  // minutes forever — falls through to profiles (none here) → free.
+  const sb = makeSb({
+    subscription: {
+      data: {
+        tier: "premium",
+        status: "active",
+        current_period_end: new Date(Date.now() - 86_400_000).toISOString(),
+      },
+    },
+  });
+  assertEquals(await detectVoiceTier(sb, "uid-1"), "free");
+});
+
+Deno.test("detectVoiceTier — future period ⇒ tier honoured", async () => {
+  const sb = makeSb({
+    subscription: {
+      data: {
+        tier: "premium",
+        status: "active",
+        current_period_end: new Date(Date.now() + 86_400_000).toISOString(),
+      },
+    },
+  });
+  assertEquals(await detectVoiceTier(sb, "uid-1"), "premium");
 });
 
 Deno.test("detectVoiceTier — no subscription, no profile ⇒ free", async () => {

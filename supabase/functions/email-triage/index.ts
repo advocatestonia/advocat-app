@@ -380,16 +380,24 @@ function makeProdDeps(
       try {
         const sub = await sb
           .from("subscriptions")
-          .select("status, tier")
+          .select("status, tier, current_period_end")
           .eq("user_id", userId)
           .in("status", ["active", "trialing"])
+          .order("created_at", { ascending: false })
           .limit(1)
           .maybeSingle();
         if (sub?.data) {
-          const tier = String(sub.data.tier ?? "premium").toLowerCase();
-          if (tier === "premium" || tier === "pro") plan = "premium";
-          else if (tier === "basic") plan = "basic";
-          else plan = "premium";
+          // Expiry guard: a row can read status='active' long after the
+          // period ended when no renewal/cancel/refund webhook arrived
+          // (Apple IAP has no server-notification handler in prod). A lapsed
+          // period stays free — it must not grant Email Agent access forever.
+          const periodEnd = sub.data.current_period_end as string | null;
+          if (!periodEnd || new Date(periodEnd).getTime() >= Date.now()) {
+            const tier = String(sub.data.tier ?? "premium").toLowerCase();
+            if (tier === "premium" || tier === "pro") plan = "premium";
+            else if (tier === "basic") plan = "basic";
+            else plan = "premium";
+          }
         }
       } catch (_) { /* fall through */ }
       const limit = QUOTA_TIERS[plan] ?? 0;

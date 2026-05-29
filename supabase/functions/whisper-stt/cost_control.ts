@@ -89,16 +89,27 @@ export async function detectVoiceTier(
   try {
     const sub = await sb
       .from("subscriptions")
-      .select("tier, status")
+      .select("tier, status, current_period_end")
       .eq("user_id", _uid)
       .in("status", ["active", "trialing"])
+      .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    const tier = sub?.data?.tier;
-    if (tier === "premium") return "premium";
-    if (tier === "basic") return "basic";
-    // Active subscription with no tier set → treat as basic (paid).
-    if (sub?.data) return "basic";
+    if (sub?.data) {
+      // Expiry guard: a row can read status='active' long after the period
+      // ended when no renewal/cancel/refund webhook arrived (Apple IAP has no
+      // server-notification handler in prod). A lapsed period falls through
+      // to the profiles lookup, then free — it must not grant paid voice
+      // minutes forever.
+      const periodEnd = sub.data.current_period_end as string | null;
+      if (!periodEnd || new Date(periodEnd).getTime() >= Date.now()) {
+        const tier = sub.data.tier;
+        if (tier === "premium") return "premium";
+        if (tier === "basic") return "basic";
+        // Active subscription with no tier set → treat as basic (paid).
+        return "basic";
+      }
+    }
   } catch (_) {
     // Table may be missing or query failed — fall through to profiles lookup.
   }
