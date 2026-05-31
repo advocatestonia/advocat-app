@@ -303,9 +303,19 @@ async function handleOutcome(
       reason: "not_assigned",
     });
   }
+  // Completion is terminal. An already-'completed' booking must NOT accept a
+  // second outcome submission: re-submitting would silently overwrite the
+  // outcome_summary, reset outcome_at, and re-snapshot payout_cents (a changed
+  // partner rate would alter the recorded payout) after the fact. Reject as a
+  // conflict so the form is idempotent — the first submission wins.
+  if (booking.status === "completed") {
+    return jsonError("Outcome already recorded for this booking", 409, {
+      reason: "already_completed",
+      state: booking.status,
+    });
+  }
   if (
-    booking.status !== "confirmed" && booking.status !== "assigned" &&
-    booking.status !== "completed"
+    booking.status !== "confirmed" && booking.status !== "assigned"
   ) {
     return jsonError("Booking cannot be completed in current state", 409, {
       reason: "bad_state",
