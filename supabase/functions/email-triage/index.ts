@@ -285,7 +285,13 @@ function makeProdDeps(
         .eq("id", threadId)
         .maybeSingle();
       if (error || !t) return null;
-      const { data: msgs } = await sb
+      // Fetch the LAST 5 messages, not the first 5. Triage reasons about the
+      // newest reply (pickCounterpartyMessage / messages[length-1] in
+      // triage_logic.ts), so on a thread with >5 messages a `ascending LIMIT 5`
+      // would silently exclude the very message we need to act on. Order
+      // DESCENDING to grab the newest 5, then reverse back to chronological so
+      // the prompt still reads oldest→newest.
+      const { data: msgsDesc } = await sb
         .from("email_messages")
         .select(
           "id, gmail_message_id, sender_email, sender_name, " +
@@ -293,8 +299,9 @@ function makeProdDeps(
             "sent_at, has_attachments, attachments_meta, headers_meta",
         )
         .eq("thread_id", threadId)
-        .order("sent_at", { ascending: true })
+        .order("sent_at", { ascending: false })
         .limit(5);
+      const msgs = Array.isArray(msgsDesc) ? [...msgsDesc].reverse() : msgsDesc;
       return {
         id: t.id as string,
         user_id: t.user_id as string,
