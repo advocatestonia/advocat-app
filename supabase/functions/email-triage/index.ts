@@ -177,10 +177,14 @@ async function dispatchTriage(
       gate_secret: GATE_SECRET,
     });
     if (!out.ok) {
-      // Non-transient failure (parser bug, missing thread). Don't enqueue
-      // because retry won't help. Return 500 so the retry-tick worker (if
-      // this was an internal-call) flips the queue row to dead_letter.
-      return jsonError(out.error_code, 500, out.detail ? { detail: out.detail } : {});
+      // Non-transient failure (parser bug, missing thread, quota_exhausted).
+      // Don't enqueue because retry won't help. Return 422 so the retry-tick
+      // worker (if this was an internal-call) flips the queue row to
+      // dead_letter on the first failure instead of burning 5 backoff
+      // attempts. 422 (not 500) so it is unambiguously in retry-tick's
+      // DEAD_LETTER_STATUSES — a real 500 still means transient/unexpected
+      // and should retry.
+      return jsonError(out.error_code, 422, out.detail ? { detail: out.detail } : {});
     }
 
     // Pkg 5 — wait → strategy auto-transition on HIGH/CRITICAL inbound.

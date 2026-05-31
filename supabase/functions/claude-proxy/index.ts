@@ -1179,18 +1179,15 @@ serve(withSentry("claude-proxy", async (req) => {
         openaiApiKey: OPENAI_API_KEY,
       });
       globalCorrectionsBlock = formatCorrectionsBlock(globalCorrectionsRows);
-      // Only prepend to body.system for paths that don't have their own
-      // prepend logic (legacy single-pass, streaming, anon, etc).
-      // The planner branch does its own prepend inside runLegalPlannerLoop.
-      if (globalCorrectionsBlock && !willEnterPlannerBranch) {
-        if (typeof body.system === "string") {
-          body.system = `${globalCorrectionsBlock}\n\n${body.system}`;
-        } else if (body.system == null) {
-          body.system = globalCorrectionsBlock;
-        }
-        // If body.system is already an array (caller pre-wrapped) we leave it
-        // alone — applyPromptCaching would rewrap our string anyway.
-      }
+      // NOTE: injection is DEFERRED to after applyPromptCaching (below).
+      // The corrections block is volatile — it is semantically re-retrieved
+      // against the user's question on every turn — so prepending it into
+      // body.system here would put changing text at the FRONT of the single
+      // cached prefix block, cache-missing the entire stable ~5k-token corpus
+      // every turn (Anthropic caches the longest matching prefix). Instead we
+      // append it as a separate trailing block with NO cache_control once the
+      // stable prefix has been wrapped, so the corpus stays the cache anchor.
+      // The planner branch does its own injection inside runLegalPlannerLoop.
     }
 
     // ── legal_lookup TOOL USE wiring (Phase 2 fix, 2026-05-13) ──────────────
@@ -1242,6 +1239,33 @@ serve(withSentry("claude-proxy", async (req) => {
     // enough to pay back the 1.25x write cost. Flips unit economics from
     // −€0.11/user to +€2.39/user — see docs/performance/05-cost.md §2.5.
     applyPromptCaching(body);
+
+    // ── Deferred corrections injection (cache-safe) ───────────────────────
+    // Append the volatile, per-turn corrections block AFTER caching so it
+    // lands as a separate trailing content block with NO cache_control. This
+    // keeps the stable corpus prefix as the cache anchor (see the deferral
+    // note where globalCorrectionsBlock is built). Skipped for the planner
+    // branch (handles its own injection) and for anon-array shapes only when
+    // there is nothing to append.
+    if (globalCorrectionsBlock && !willEnterPlannerBranch) {
+      const correctionsTrailing = {
+        type: "text" as const,
+        text: globalCorrectionsBlock,
+        // Intentionally NO cache_control: this text changes every turn.
+      };
+      if (Array.isArray(body.system)) {
+        (body.system as Array<unknown>).push(correctionsTrailing);
+      } else if (typeof body.system === "string") {
+        // applyPromptCaching left it as a string (below CACHE_MIN_CHARS) —
+        // promote to a 2-block array: stable string first, volatile last.
+        body.system = [
+          { type: "text", text: body.system },
+          correctionsTrailing,
+        ] as unknown as typeof body.system;
+      } else if (body.system == null) {
+        body.system = [correctionsTrailing] as unknown as typeof body.system;
+      }
+    }
 
     // ── Legal Planner mode (Pkg 6, 2026-05-07) ───────────────────────────
     // When the client passes `mode: "legal_planner"` we run the three-pass

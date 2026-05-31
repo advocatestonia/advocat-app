@@ -7,8 +7,12 @@
 // internal-call, and reports the outcome via complete_triage:
 //
 //   200 / { ok: true }        → outcome='done'
-//   500 / 502 / 429 / network → outcome='retry' (exponential backoff)
-//   400 / 401 / quota_exhausted → outcome='dead_letter' (config error, no point retrying)
+//   500 / 502 / 503 / 529 / 429 / network → outcome='retry' (exponential backoff)
+//   400 / 401 / 403 / 404 / 410 / 422 → outcome='dead_letter' (config/non-transient, no point retrying)
+//
+// Note: email-triage returns 422 for non-transient failures (parser bug,
+// missing thread, quota_exhausted) and 502 for transient ones — so the
+// 422-in-dead-letter / 5xx-retry split below matches its contract.
 //
 // trace_id is propagated from the queue row into the email-triage call so the
 // retry chain joins to the original request in app.trace_timeline.
@@ -42,7 +46,10 @@ const BATCH_SIZE = Math.max(
 // 401/403 = auth wedge
 // 404 = thread deleted
 // 410 = case archived
-const DEAD_LETTER_STATUSES = new Set([400, 401, 403, 404, 410]);
+// 422 = email-triage non-transient failure (parse_failed_unknown,
+//       thread_user_mismatch, quota_exhausted) — first-fail dead-letter,
+//       no backoff. Distinct from a bare 500 (transient/unexpected → retry).
+const DEAD_LETTER_STATUSES = new Set([400, 401, 403, 404, 410, 422]);
 
 interface QueueRow {
   id: string;
