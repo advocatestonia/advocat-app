@@ -34,13 +34,24 @@ const stripped = source
   .replace(/\/\*[\s\S]*?\*\//g, "")
   .replace(/^\s*\/\/.*$/gm, "");
 
+// Signature verification (HMAC + replay window) was extracted from index.ts
+// into signature.ts so it can be behaviourally unit-tested (see
+// signature_test.ts). The source-grep invariants below now read that module;
+// index.ts only maps the result to HTTP status codes.
+const sigSource = await Deno.readTextFile(
+  new URL("../signature.ts", import.meta.url),
+);
+const sigStripped = sigSource
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replace(/^\s*\/\/.*$/gm, "");
+
 // ---- Replay-attack protection ---------------------------------------------
 
 Deno.test("ERI-T01 — webhook rejects timestamps older than 5 minutes (replay protection)", () => {
   // Stripe recommends rejecting events older than 5 minutes. Without this,
   // an attacker who captures a valid webhook could replay it indefinitely.
-  assertStringIncludes(stripped, "MAX_WEBHOOK_AGE_SEC");
-  assertStringIncludes(stripped, "300");
+  assertStringIncludes(sigStripped, "MAX_WEBHOOK_AGE_SEC");
+  assertStringIncludes(sigStripped, "300");
   assertStringIncludes(stripped, '"Stale webhook"');
 });
 
@@ -57,8 +68,8 @@ Deno.test("ERI-T02 — stale webhook returns 401 (not 200, not 500)", () => {
 Deno.test("ERI-T03 — timestamp parsing rejects non-numeric values", () => {
   // parseInt("abc", 10) returns NaN. The check `!timestampNum` catches NaN
   // (because !NaN === true). Verify this guard is in place.
-  assertStringIncludes(stripped, "parseInt(timestamp, 10)");
-  assertStringIncludes(stripped, "!timestampNum");
+  assertStringIncludes(sigStripped, "parseInt(timestamp, 10)");
+  assertStringIncludes(sigStripped, "!timestampNum");
 });
 
 // ---- Signature verification edge cases ------------------------------------
@@ -70,10 +81,12 @@ Deno.test("ERI-T04 — missing 'stripe-signature' header returns 401", () => {
 Deno.test("ERI-T05 — missing STRIPE_WEBHOOK_SECRET also returns 401", () => {
   // Defence: if the secret env var is unset (mis-deploy), don't silently
   // accept the request. The same Missing-signature error covers both cases.
+  // index.ts must still thread the secret into the verifier...
   assertStringIncludes(stripped, "STRIPE_WEBHOOK_SECRET");
-  // Confirm the guard is `!signature || !STRIPE_WEBHOOK_SECRET`.
+  // ...and the verifier guards on BOTH signature and secret presence,
+  // collapsing to the same "missing" failure → 401.
   assert(
-    /!signature\s*\|\|\s*!STRIPE_WEBHOOK_SECRET/.test(stripped),
+    /!signature\s*\|\|\s*!secret/.test(sigStripped),
     "Both signature and secret-presence must be checked",
   );
 });
@@ -86,10 +99,10 @@ Deno.test("ERI-T06 — invalid signature format returns 401 'Invalid signature f
 Deno.test("ERI-T07 — signature mismatch uses timingSafeEqual (no leak via timing)", () => {
   // Constant-time comparison prevents an attacker from bisecting the HMAC
   // signature byte by byte.
-  assertStringIncludes(stripped, "timingSafeEqual(");
+  assertStringIncludes(sigStripped, "timingSafeEqual(");
   // The function itself must short-circuit on length mismatch (see source)
   // but not leak via index-based break.
-  const fn = stripped.match(/function timingSafeEqual[\s\S]*?\n\}/);
+  const fn = sigStripped.match(/function timingSafeEqual[\s\S]*?\n\}/);
   assert(fn, "timingSafeEqual function not found");
   assert(
     !/break/.test(fn![0]),

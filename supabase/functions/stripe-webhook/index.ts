@@ -26,6 +26,8 @@ import {
 } from "../referral/conversion.ts";
 import { makeStripeAdapter } from "../referral/stripe_adapter.ts";
 import { withSentry } from "../_shared/sentry.ts";
+// Signature verification extracted to a pure, unit-testable module.
+import { verifyStripeSignature } from "./signature.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const STRIPE_WEBHOOK_SECRET = Deno.env.get("STRIPE_WEBHOOK_SECRET");
@@ -36,19 +38,6 @@ const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const responseHeaders = {
   "Content-Type": "application/json",
 };
-
-/** Constant-time equality for hex strings (prevents timing oracle). */
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let r = 0;
-  for (let i = 0; i < a.length; i++) {
-    r |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return r === 0;
-}
-
-// Stripe recommends rejecting events older than 5 minutes to block replays.
-const MAX_WEBHOOK_AGE_SEC = 300;
 
 /**
  * Read the user's prior subscription tier from profiles so the
@@ -300,50 +289,26 @@ serve(withSentry("stripe-webhook", async (req) => {
   try {
     const body = await req.text();
 
-    // Verify Stripe webhook signature
+    // Verify Stripe webhook signature (HMAC + replay window). Behaviour is
+    // identical to the previous inline block; the per-reason error strings are
+    // preserved so any monitoring keyed on them keeps working.
     const signature = req.headers.get("stripe-signature");
-    if (!signature || !STRIPE_WEBHOOK_SECRET) {
-      return new Response(JSON.stringify({ error: "Missing signature" }), {
-        status: 401, headers: responseHeaders,
-      });
-    }
-
-    const encoder = new TextEncoder();
-    const key = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(STRIPE_WEBHOOK_SECRET),
-      { name: "HMAC", hash: "SHA-256" },
-      false,
-      ["sign"]
+    const sigResult = await verifyStripeSignature(
+      body,
+      signature,
+      STRIPE_WEBHOOK_SECRET,
     );
-
-    const parts = signature.split(",");
-    const timestamp = parts.find((p: string) => p.startsWith("t="))?.split("=")[1];
-    const sig = parts.find((p: string) => p.startsWith("v1="))?.split("=")[1];
-
-    if (!timestamp || !sig) {
-      return new Response(JSON.stringify({ error: "Invalid signature format" }), {
-        status: 401, headers: responseHeaders,
-      });
-    }
-
-    // Replay-attack protection: reject stale webhooks
-    const timestampNum = parseInt(timestamp, 10);
-    const nowSec = Math.floor(Date.now() / 1000);
-    if (!timestampNum || Math.abs(nowSec - timestampNum) > MAX_WEBHOOK_AGE_SEC) {
-      return new Response(JSON.stringify({ error: "Stale webhook" }), {
-        status: 401, headers: responseHeaders,
-      });
-    }
-
-    const signedPayload = `${timestamp}.${body}`;
-    const expectedSig = await crypto.subtle.sign("HMAC", key, encoder.encode(signedPayload));
-    const expectedHex = Array.from(new Uint8Array(expectedSig))
-      .map((b: number) => b.toString(16).padStart(2, "0")).join("");
-
-    if (!timingSafeEqual(expectedHex, sig)) {
-      return new Response(JSON.stringify({ error: "Invalid signature" }), {
-        status: 401, headers: responseHeaders,
+    if (!sigResult.ok) {
+      const errMsg = sigResult.reason === "missing"
+        ? "Missing signature"
+        : sigResult.reason === "format"
+        ? "Invalid signature format"
+        : sigResult.reason === "stale"
+        ? "Stale webhook"
+        : "Invalid signature";
+      return new Response(JSON.stringify({ error: errMsg }), {
+        status: 401,
+        headers: responseHeaders,
       });
     }
 
