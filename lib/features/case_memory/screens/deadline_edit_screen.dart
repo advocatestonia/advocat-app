@@ -12,6 +12,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../../config/theme.dart';
 import '../../../l10n/app_localizations.dart';
@@ -172,7 +173,9 @@ class _DeadlineEditScreenState extends ConsumerState<DeadlineEditScreen> {
                   l10n?.deadlineFormDeadlineAt ?? 'Deadline date'),
               subtitle: Text(_deadlineAt == null
                   ? '—'
-                  : _deadlineAt!.toLocal().toString().split('.').first),
+                  : DateFormat.yMMMd(
+                      Localizations.localeOf(context).toString(),
+                    ).add_Hm().format(_deadlineAt!.toLocal())),
               trailing: const Icon(Icons.calendar_today),
               onTap: _pickDate,
             ),
