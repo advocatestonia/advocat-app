@@ -48,11 +48,11 @@ import {
   RawBody,
   validateBody,
   ValidatedCreate,
-  ValidatedOutcome,
   ValidatedRate,
   ValidatedCancel,
 } from "./validate.ts";
 import { generateBrief } from "./brief.ts";
+import { handleOutcome } from "./outcome.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -279,85 +279,8 @@ async function handleCreate(
 }
 
 // ─── op:outcome ─────────────────────────────────────────────────────────────
-
-async function handleOutcome(
-  // deno-lint-ignore no-explicit-any
-  supabase: any,
-  userId: string,
-  body: ValidatedOutcome,
-): Promise<Response> {
-  // The lawyer fills this. Confirm the booking is theirs.
-  const { data: booking, error: readErr } = await supabase
-    .from("lawyer_bookings")
-    .select("id, lawyer_id, status, payout_cents")
-    .eq("id", body.bookingId)
-    .maybeSingle();
-  if (readErr) {
-    return jsonError("Booking read failed", 500, { reason: "read_failed" });
-  }
-  if (!booking) {
-    return jsonError("Booking not found", 404, { reason: "not_found" });
-  }
-  if (booking.lawyer_id !== userId) {
-    return jsonError("Not the assigned lawyer", 403, {
-      reason: "not_assigned",
-    });
-  }
-  // Completion is terminal. An already-'completed' booking must NOT accept a
-  // second outcome submission: re-submitting would silently overwrite the
-  // outcome_summary, reset outcome_at, and re-snapshot payout_cents (a changed
-  // partner rate would alter the recorded payout) after the fact. Reject as a
-  // conflict so the form is idempotent — the first submission wins.
-  if (booking.status === "completed") {
-    return jsonError("Outcome already recorded for this booking", 409, {
-      reason: "already_completed",
-      state: booking.status,
-    });
-  }
-  if (
-    booking.status !== "confirmed" && booking.status !== "assigned"
-  ) {
-    return jsonError("Booking cannot be completed in current state", 409, {
-      reason: "bad_state",
-      state: booking.status,
-    });
-  }
-
-  // Snapshot payout rate from partner row.
-  let payoutCents: number = booking.payout_cents ?? 2500;
-  const { data: partner } = await supabase
-    .from("partner_lawyers")
-    .select("payout_rate_cents")
-    .eq("lawyer_id", userId)
-    .maybeSingle();
-  if (partner?.payout_rate_cents) payoutCents = partner.payout_rate_cents;
-
-  const { error: updErr } = await supabase
-    .from("lawyer_bookings")
-    .update({
-      outcome_summary: body.outcomeSummary,
-      outcome_at: new Date().toISOString(),
-      status: "completed",
-      payout_cents: payoutCents,
-      // paid_out_at left NULL — admin batch-marks payouts monthly.
-    })
-    .eq("id", body.bookingId);
-  if (updErr) {
-    return jsonError("Outcome update failed", 500, {
-      reason: "update_failed",
-      detail: updErr.message,
-    });
-  }
-
-  // Refresh denormalised stats (best-effort).
-  await supabase.rpc("refresh_partner_lawyer_stats", { p_lawyer: userId })
-    .then(() => {})
-    .catch((e: unknown) =>
-      console.warn("[lawyer-booking] stats refresh failed:", e)
-    );
-
-  return jsonOk({ ok: true, status: "completed" });
-}
+// Extracted to ./outcome.ts (pure, injected-client) so it is unit-testable and
+// to add the concurrent double-submit CAS guard. See handleOutcome there.
 
 // ─── op:rate ────────────────────────────────────────────────────────────────
 

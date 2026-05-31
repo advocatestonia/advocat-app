@@ -21,6 +21,11 @@ import { requireOrgContext } from "../_shared/orgAuth.ts";
 import { writeOrgAudit } from "../_shared/auditLog.ts";
 import { killOn, paymentsPausedResponse } from "../_shared/kill_switches.ts";
 import { validateCheckoutRedirects } from "../_shared/redirect_allowlist.ts";
+import {
+  PLAN_SEAT_BOUNDS,
+  SEAT_PRICES,
+  validateOrgCheckout,
+} from "./validation.ts";
 
 const STRIPE_SECRET_KEY = Deno.env.get("STRIPE_SECRET_KEY")!;
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
@@ -36,28 +41,11 @@ const KMKR_REGISTERED =
 // Current DPA version (must match create-checkout / lib/features/legal).
 const CURRENT_DPA_VERSION = "v1.0-2026-05-20";
 
-// Plan/period → unit_amount_cents per seat. Single source of truth for B2B
-// pricing. Annual = 2 months free (16.7% discount).
-const SEAT_PRICES: Record<string, Record<string, { amount: number; interval: "month" | "year" }>> = {
-  starter: {
-    monthly: { amount: 2900, interval: "month" }, // €29
-    yearly:  { amount: 29000, interval: "year" }, // €290 (10 × €29)
-  },
-  firm: {
-    monthly: { amount: 4900, interval: "month" }, // €49
-    yearly:  { amount: 49000, interval: "year" },
-  },
-  enterprise: {
-    monthly: { amount: 9900, interval: "month" }, // €99
-    yearly:  { amount: 99000, interval: "year" },
-  },
-};
-
-const PLAN_SEAT_BOUNDS: Record<string, { min: number; max: number }> = {
-  starter:    { min: 1, max: 5 },
-  firm:       { min: 3, max: 25 },
-  enterprise: { min: 10, max: 1000 },
-};
+// Per-seat pricing (SEAT_PRICES) and seat bounds (PLAN_SEAT_BOUNDS) are the
+// single source of truth for B2B billing and now live in ./validation.ts so
+// the money path can be unit-tested without I/O. They are re-exported here for
+// any importer that relied on the previous inline location.
+export { PLAN_SEAT_BOUNDS, SEAT_PRICES };
 
 interface CheckoutBody {
   plan?: string;
@@ -106,26 +94,11 @@ serve(async (req) => {
     return jsonError("Invalid JSON body", 400, { reason: "invalid_json" });
   }
 
-  const plan = (body.plan ?? "").toLowerCase();
-  const billingPeriod = (body.billing_period ?? "").toLowerCase();
-  const seats = Number(body.seats ?? 0);
-
-  if (!SEAT_PRICES[plan]) {
-    return jsonError("Invalid plan", 400, { reason: "invalid_plan" });
+  const validation = validateOrgCheckout(body);
+  if (!validation.ok) {
+    return jsonError(validation.error, validation.status, validation.detail);
   }
-  if (!SEAT_PRICES[plan][billingPeriod]) {
-    return jsonError("Invalid billing period", 400, {
-      reason: "invalid_billing_period",
-    });
-  }
-  const bounds = PLAN_SEAT_BOUNDS[plan];
-  if (!Number.isInteger(seats) || seats < bounds.min || seats > bounds.max) {
-    return jsonError("Invalid seat count", 400, {
-      reason: "invalid_seats",
-      min: bounds.min,
-      max: bounds.max,
-    });
-  }
+  const { plan, period: billingPeriod, seats } = validation;
 
   // ── Org pre-checks ────────────────────────────────────────────────────
   const { data: org, error: orgErr } = await supabase

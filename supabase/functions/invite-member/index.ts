@@ -19,6 +19,7 @@ import {
 } from "../_shared/auth.ts";
 import { requireOrgContext } from "../_shared/orgAuth.ts";
 import { writeOrgAudit } from "../_shared/auditLog.ts";
+import { wouldExceedSeats } from "./seatCheck.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -152,8 +153,21 @@ serve(async (req) => {
   }
 
   // ── Seat capacity check ───────────────────────────────────────────────
-  // Conservative: count current seats + pending invitations vs limit.
-  if ((org.seat_count ?? 0) + 1 > (org.seat_limit ?? 0)) {
+  // Count current seats + OUTSTANDING pending invitations vs limit, so an
+  // admin can't queue more invites than the plan can ever seat (each would
+  // otherwise 402 only at accept-time — confusing UX). Pending = not yet
+  // accepted, not revoked, not expired. The accept-time re-check and the
+  // org_increment_seats RPC remain the hard ceilings.
+  const { count: pendingCount } = await supabase
+    .from("org_invitations")
+    .select("id", { count: "exact", head: true })
+    .eq("org_id", ctx.org_id)
+    .is("accepted_at", null)
+    .is("revoked_at", null)
+    .gt("expires_at", new Date().toISOString());
+  const pendingInvites = pendingCount ?? 0;
+
+  if (wouldExceedSeats(org.seat_count ?? 0, pendingInvites, org.seat_limit ?? 0)) {
     return jsonError("Seat limit exceeded", 402, {
       reason: "seat_limit_exceeded",
       seat_count: org.seat_count,
