@@ -85,6 +85,7 @@ export function makeStripeAdapter(apiKey: string): StripeAdapter {
       amountCents,
       description,
       idempotencyToken,
+      currency,
     ) {
       // Stripe expects amount in MINOR units. Negative = credit toward
       // the next invoice. We also pass currency=eur to scope it.
@@ -111,7 +112,9 @@ export function makeStripeAdapter(apiKey: string): StripeAdapter {
           },
           body: form({
             amount: amountCents,
-            currency: "eur",
+            // Default to EUR when the caller doesn't thread a currency
+            // (back-compat); normalise to lowercase as Stripe expects.
+            currency: (currency ?? "eur").toLowerCase(),
             description: description.slice(0, 350),
           }),
         },

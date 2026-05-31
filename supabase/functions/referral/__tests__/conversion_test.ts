@@ -125,8 +125,10 @@ Deno.test("CREDIT-T01 — credits inviter and bumps free_months counter", async 
 
   const sb = makeFakeSb(state);
   const stripe = fakeStripe();
+  // Use a non-EUR currency to prove the plan currency is threaded through to
+  // the Stripe balance_transaction instead of the old hardcoded "eur".
   const out = await creditInviterForReferred(sb, stripe, "ref-1", {
-    currency: "eur",
+    currency: "sek",
     amountCents: 1999,
   });
 
@@ -139,6 +141,7 @@ Deno.test("CREDIT-T01 — credits inviter and bumps free_months counter", async 
   assertEquals(state.referral_codes[0].total_free_months_earned, 1);
   assertEquals(stripe.credits.length, 1);
   assertEquals(stripe.credits[0].amount, -1999);
+  assertEquals(stripe.credits[0].currency, "sek");
 });
 
 Deno.test("CREDIT-T02 — inviter without stripe_customer_id deferred", async () => {

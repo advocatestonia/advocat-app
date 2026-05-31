@@ -43,6 +43,11 @@ export interface StripeAdapter {
     amountCents: number,
     description: string,
     idempotencyToken?: string,
+    /** ISO 4217 currency for the balance transaction. MUST match the
+     *  inviter's Stripe customer currency or Stripe rejects the call.
+     *  Defaults to "eur" when omitted (back-compat for callers that don't
+     *  thread a plan price). */
+    currency?: string,
   ): Promise<{ id: string }>;
 }
 
@@ -276,16 +281,32 @@ export async function creditInviterForReferred(
       -planPrice.amountCents,
       `Advocat referral credit: friend ${referredUserId} converted to paid`,
       attrib.id,
+      // Pass the plan's currency (the same value recorded as
+      // inviter_credit_currency above) so a non-EUR Stripe customer is not
+      // silently rejected by a hardcoded "eur". Today all EE/FI plans are
+      // EUR; this closes the latent trap.
+      planPrice.currency,
     );
   } catch (e) {
     // Stripe failed AFTER we claimed the row. Revert to 'converted' so a
     // retry (webhook or reconcile cron) can credit again — otherwise the
     // inviter would be silently denied their earned credit.
-    await sb
+    const { error: revertErr } = await sb
       .from("referral_attributions")
       .update({ status: "converted", free_month_credited_at: null })
       .eq("id", attrib.id)
       .eq("status", "credited");
+    if (revertErr) {
+      // The revert itself failed → the row is stuck 'credited' with no
+      // balance_txn_id, and the next retry short-circuits on already_credited,
+      // silently denying the inviter their earned credit. Log loudly so it is
+      // reconcilable rather than lost.
+      console.error(
+        `referral: FAILED to revert attribution ${attrib.id} after Stripe ` +
+          `credit error — row stuck 'credited' without txn, needs manual ` +
+          `reconcile: ${revertErr.message}`,
+      );
+    }
     throw e;
   }
 

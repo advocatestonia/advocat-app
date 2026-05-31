@@ -200,13 +200,25 @@ export function fakeStripe(): StripeAdapter & {
   coupons: Array<{ id: string }>;
   attached: Array<{ customer: string; coupon: string }>;
   credits: Array<
-    { customer: string; amount: number; description: string; token?: string }
+    {
+      customer: string;
+      amount: number;
+      description: string;
+      token?: string;
+      currency?: string;
+    }
   >;
 } {
   const coupons: Array<{ id: string }> = [];
   const attached: Array<{ customer: string; coupon: string }> = [];
   const credits: Array<
-    { customer: string; amount: number; description: string; token?: string }
+    {
+      customer: string;
+      amount: number;
+      description: string;
+      token?: string;
+      currency?: string;
+    }
   > = [];
   return {
     coupons,
@@ -220,9 +232,9 @@ export function fakeStripe(): StripeAdapter & {
     async attachCouponToCustomer(customer, coupon) {
       attached.push({ customer, coupon });
     },
-    async creditCustomerBalance(customer, amount, description, token) {
+    async creditCustomerBalance(customer, amount, description, token, currency) {
       const id = `btxn_${credits.length}`;
-      credits.push({ customer, amount, description, token });
+      credits.push({ customer, amount, description, token, currency });
       return { id };
     },
   };
