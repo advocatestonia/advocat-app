@@ -209,7 +209,22 @@ class _ContractReviewScreenState extends ConsumerState<ContractReviewScreen> {
       'case_document_ids': [docId],
       'output_language': locale,
     };
-    final resp = await supabase.callEdgeFunction('contract-review', body: body);
+    final Map<String, dynamic>? resp;
+    try {
+      resp = await supabase.callEdgeFunction('contract-review', body: body);
+    } catch (e) {
+      // A network throw (timeout/DNS/socket) here used to propagate uncaught,
+      // leaving the screen stuck in `analyzing` forever (skeleton spins, no
+      // recovery). Mirror the upload block: surface a recoverable error state.
+      if (kDebugMode) debugPrint('[contract-review] analyze error: $e');
+      if (!mounted) return;
+      setState(() {
+        _phase = _ScreenPhase.error;
+        _errorMessage =
+            l10n?.genericError ?? 'Something went wrong. Please try again.';
+      });
+      return;
+    }
     if (!mounted) return;
 
     // 4. Map response.
@@ -237,9 +252,10 @@ class _ContractReviewScreenState extends ConsumerState<ContractReviewScreen> {
       return;
     }
 
+    final parsed = _parseResult(resp);
     setState(() {
       _phase = _ScreenPhase.result;
-      _result = _parseResult(resp);
+      _result = parsed;
     });
     // Refresh quota — server just incremented on success.
     ref.invalidate(contractReviewQuotaProvider);

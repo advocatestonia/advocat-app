@@ -12,7 +12,7 @@ import 'voice_button.dart';
 /// that calls [onStop] when tapped. This lets the user cancel a streaming
 /// reply mid-flight instead of having to wait ~15s for a wrong-direction
 /// generation to finish (and burn a quota slot).
-class ChatInputBar extends StatelessWidget {
+class ChatInputBar extends StatefulWidget {
   const ChatInputBar({
     super.key,
     required this.messageController,
@@ -43,8 +43,26 @@ class ChatInputBar extends StatelessWidget {
   final VoidCallback? onStop;
 
   @override
+  State<ChatInputBar> createState() => _ChatInputBarState();
+}
+
+class _ChatInputBarState extends State<ChatInputBar> {
+  // Owned, disposed FocusNode for the KeyboardListener. Previously this was
+  // `FocusNode()` allocated inline in build() — leaking one undisposed node on
+  // every rebuild (i.e. every keystroke on the hot chat path). The inner
+  // TextField holds the real focus; this node only satisfies KeyboardListener's
+  // non-null requirement to observe hardware Enter.
+  late final FocusNode _keyListenerNode = FocusNode(debugLabel: 'chatEnterKey');
+
+  @override
+  void dispose() {
+    _keyListenerNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isListening = voiceState == VoiceButtonState.listening;
+    final isListening = widget.voiceState == VoiceButtonState.listening;
 
     return Container(
       padding: EdgeInsets.only(
@@ -70,7 +88,7 @@ class ChatInputBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           // Attach button
-          if (onAttach != null)
+          if (widget.onAttach != null)
             SizedBox(
               width: 40,
               height: 44,
@@ -78,12 +96,12 @@ class ChatInputBar extends StatelessWidget {
                 icon: const Icon(Icons.attach_file_rounded, size: 22),
                 color: AppColors.textTertiary,
                 tooltip: AppLocalizations.of(context)?.attachFileTooltip ?? 'Attach file',
-                onPressed: isSending ? null : onAttach,
+                onPressed: widget.isSending ? null : widget.onAttach,
                 padding: EdgeInsets.zero,
               ),
             ),
 
-          if (onAttach != null) const SizedBox(width: 4),
+          if (widget.onAttach != null) const SizedBox(width: 4),
 
           // Text field — takes most width
           Expanded(
@@ -97,7 +115,7 @@ class ChatInputBar extends StatelessWidget {
                 ),
               ),
               child: KeyboardListener(
-                focusNode: FocusNode(),
+                focusNode: _keyListenerNode,
                 onKeyEvent: (event) {
                   // Shift+Enter: let TextField handle newline.
                   // Plain Enter: send. We handle it here because
@@ -105,21 +123,22 @@ class ChatInputBar extends StatelessWidget {
                   if (event is KeyDownEvent &&
                       event.logicalKey == LogicalKeyboardKey.enter &&
                       !HardwareKeyboard.instance.isShiftPressed &&
-                      !isSending &&
-                      messageController.text.trim().isNotEmpty) {
-                    onSend();
+                      !widget.isSending &&
+                      widget.messageController.text.trim().isNotEmpty) {
+                    widget.onSend();
                   }
                 },
                 child: TextField(
-                  controller: messageController,
-                  focusNode: focusNode,
+                  controller: widget.messageController,
+                  focusNode: widget.focusNode,
                   maxLines: 5,
                   minLines: 1,
-                  enabled: !isSending,
+                  enabled: !widget.isSending,
                   textInputAction: TextInputAction.send,
                   onSubmitted: (_) {
-                    if (!isSending && messageController.text.trim().isNotEmpty) {
-                      onSend();
+                    if (!widget.isSending &&
+                        widget.messageController.text.trim().isNotEmpty) {
+                      widget.onSend();
                     }
                   },
                   textCapitalization: TextCapitalization.sentences,
@@ -148,7 +167,7 @@ class ChatInputBar extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Mic button — 44x44, circular
-              if (voiceInitialized)
+              if (widget.voiceInitialized)
                 Container(
                   width: 44,
                   height: 44,
@@ -168,7 +187,7 @@ class ChatInputBar extends StatelessWidget {
                     ],
                   ),
                   child: IconButton(
-                    onPressed: isSending ? null : onVoiceTap,
+                    onPressed: widget.isSending ? null : widget.onVoiceTap,
                     tooltip: AppLocalizations.of(context)?.voiceInput ?? 'Voice input',
                     icon: Icon(
                       isListening ? Icons.stop_rounded : Icons.mic_rounded,
@@ -181,7 +200,7 @@ class ChatInputBar extends StatelessWidget {
                   ),
                 ),
 
-              if (voiceInitialized) const SizedBox(width: 6),
+              if (widget.voiceInitialized) const SizedBox(width: 6),
 
               // Send / Stop button — 44x44, circular, accent color.
               //
@@ -195,7 +214,7 @@ class ChatInputBar extends StatelessWidget {
                 height: 44,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isSending
+                  color: widget.isSending
                       ? AppColors.accent.withValues(alpha: 0.5)
                       : AppColors.accent,
                   boxShadow: [
@@ -208,9 +227,9 @@ class ChatInputBar extends StatelessWidget {
                 ),
                 child: IconButton(
                   onPressed:
-                      isSending ? (onStop) : onSend,
-                  icon: isSending
-                      ? (onStop != null
+                      widget.isSending ? (widget.onStop) : widget.onSend,
+                  icon: widget.isSending
+                      ? (widget.onStop != null
                           ? const Icon(Icons.stop_rounded, size: 20)
                           : const SizedBox(
                               width: 20,
@@ -230,7 +249,7 @@ class ChatInputBar extends StatelessWidget {
                         ),
                   color: Colors.white,
                   padding: EdgeInsets.zero,
-                  tooltip: isSending && onStop != null
+                  tooltip: widget.isSending && widget.onStop != null
                       ? _stopTooltipForLocale(context)
                       : null,
                 ),

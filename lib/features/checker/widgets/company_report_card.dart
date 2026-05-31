@@ -53,7 +53,10 @@ class CompanyReportCard extends StatelessWidget {
             _InfoRow(
               icon: Icons.calendar_today_outlined,
               label: 'Founded',
-              value: DateFormat('dd MMM yyyy').format(report.foundingDate),
+              value: DateFormat(
+                'dd MMM yyyy',
+                Localizations.localeOf(context).toString(),
+              ).format(report.foundingDate),
             ),
           ],
         ),
