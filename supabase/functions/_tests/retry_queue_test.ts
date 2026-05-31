@@ -106,9 +106,18 @@ function makeFakeSb(opts: { now: () => number; maxAttempts?: number }): FakeSb {
       }
       if (name === "claim_next_triage") {
         const batch = (params.p_batch_size as number) ?? 10;
+        // Mirrors migration 20260530160000: reclaim STALE in_progress rows
+        // (updated_at older than the 10-minute reap interval) in addition to
+        // ready pending rows, so a swallowed complete_triage failure cannot
+        // leak a row forever.
+        const REAP_INTERVAL_MS = 10 * 60 * 1000;
         const ready: QueueRow[] = [];
         for (const r of rows.values()) {
-          if (r.status === "pending" && r.next_retry_at <= now) {
+          const isReadyPending = r.status === "pending" &&
+            r.next_retry_at <= now;
+          const isStaleInProgress = r.status === "in_progress" &&
+            r.updated_at < now - REAP_INTERVAL_MS;
+          if (isReadyPending || isStaleInProgress) {
             ready.push(r);
           }
         }
@@ -454,4 +463,70 @@ Deno.test("T10 — concurrent claim — each row claimed exactly once", async ()
   assertEquals(all.length, unique.size, "no row appears in both claim sets");
   // 5 rows total, batch 3+3 → 5 claimed (3 + 2).
   assertEquals(all.length, 5);
+});
+
+// -----------------------------------------------------------------------------
+// T11 — reaper: a STALE in_progress row (swallowed complete_triage) is
+// reclaimed once it ages past the 10-minute reap interval. Regression guard
+// for DEPT-2 #2 / migration 20260530160000.
+// -----------------------------------------------------------------------------
+Deno.test("T11 — stale in_progress row is reclaimed by the reaper", async () => {
+  let clock = 1_700_000_000_000;
+  const sb = makeFakeSb({ now: () => clock });
+  await sb.rpc("enqueue_triage", {
+    p_thread_id: "T",
+    p_user_id: "u",
+    p_payload: {},
+    p_trace_id: null,
+  });
+  // First claim flips it to in_progress (attempts=1). Simulate a worker that
+  // dispatched OK but whose complete_triage RPC was swallowed — the row is
+  // left in_progress and never completed.
+  const { data: first } = await sb.rpc("claim_next_triage", {
+    p_worker_id: "w",
+    p_batch_size: 10,
+  });
+  assertEquals(first.length, 1);
+  assertEquals(sb.rows.get(first[0].id)!.status, "in_progress");
+
+  // Before the reap interval elapses, the row must NOT be re-claimed.
+  clock += 5 * 60 * 1000; // +5 min (< 10 min threshold)
+  const { data: tooEarly } = await sb.rpc("claim_next_triage", {
+    p_worker_id: "w",
+    p_batch_size: 10,
+  });
+  assertEquals(tooEarly.length, 0, "must not reclaim before reap interval");
+
+  // After the threshold, the reaper reclaims it and bumps attempts again.
+  clock += 6 * 60 * 1000; // now +11 min since the in_progress stamp
+  const { data: reaped } = await sb.rpc("claim_next_triage", {
+    p_worker_id: "w",
+    p_batch_size: 10,
+  });
+  assertEquals(reaped.length, 1, "stale in_progress row must be reclaimed");
+  assertEquals(reaped[0].id, first[0].id);
+  assertEquals(reaped[0].attempts, 2, "reclaim bumps attempts");
+});
+
+// -----------------------------------------------------------------------------
+// T12 — reaper does NOT touch a fresh in_progress row that a live worker is
+// still processing (updated_at within the reap interval).
+// -----------------------------------------------------------------------------
+Deno.test("T12 — fresh in_progress row is not reaped", async () => {
+  let clock = 1_700_000_000_000;
+  const sb = makeFakeSb({ now: () => clock });
+  await sb.rpc("enqueue_triage", {
+    p_thread_id: "T",
+    p_user_id: "u",
+    p_payload: {},
+    p_trace_id: null,
+  });
+  await sb.rpc("claim_next_triage", { p_worker_id: "w", p_batch_size: 10 });
+  // A second tick fires only seconds later — the in_progress row is fresh.
+  clock += 30 * 1000; // +30s
+  const { data } = await sb.rpc("claim_next_triage", {
+    p_worker_id: "w",
+    p_batch_size: 10,
+  });
+  assertEquals(data.length, 0, "live in-flight row must not be double-claimed");
 });
