@@ -363,7 +363,15 @@ serve(async (req) => {
     const emailTriage = await safeSelect(sb, "email_triage_results", "user_id", userId);
     const emailTriageLawyerOpinions = await safeSelect(sb, "email_triage_lawyer_opinions", "user_id", userId);
     const triageProposedActions = await safeSelect(sb, "triage_proposed_actions", "user_id", userId);
-    const emailRetryQueue = await safeSelect(sb, "email_retry_queue", "user_id", userId);
+    // The durable triage retry queue lives in the NON-public `app` schema
+    // (app.email_triage_queue, migration 20260528040000). The old read here
+    // targeted a non-existent `public.email_retry_queue` and silently returned
+    // [] — so the user's queue rows (thread_id + payload) were absent from the
+    // Art. 15 export. Read the real table via .schema("app"). Mirror of the
+    // Art. 17 erasure added to account-delete (APP_SCHEMA_USER_DATA_TABLES).
+    const emailRetryQueue = typeof sb.schema === "function"
+      ? await safeSelect(sb.schema("app"), "email_triage_queue", "user_id", userId)
+      : [];
     const emailConnections = await safeSelect(sb, "email_connections", "user_id", userId);
     const emailUserSettings = await safeSelect(sb, "email_user_settings", "user_id", userId);
 

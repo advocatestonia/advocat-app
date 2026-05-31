@@ -191,6 +191,25 @@ export const USER_DATA_TABLES: ReadonlyArray<readonly [string, string]> = [
 ] as const;
 
 /**
+ * User-data tables living in the NON-public `app` schema. These need an
+ * explicit `.schema("app")` on the client — a plain `.from(table)` targets
+ * `public` and would 42P01 (and under DELETE_STRICT=1 would FAIL the run).
+ *
+ * `app.email_triage_queue` (migration 20260528040000) holds user_id +
+ * thread_id + a `payload` jsonb of triage content, with NO FK cascade to
+ * auth.users — so deleting the auth row does NOT erase it. Left unswept, a
+ * deleted user's user_id↔thread_id linkage + payload survived indefinitely
+ * (GDPR Art. 17 erasure gap; also missing from the Art. 15 dsar-export
+ * mirror — fix both together). The `public.*` coverage_test CI guard does
+ * not see `app.*` tables, so this escaped the canary too.
+ */
+export const APP_SCHEMA_USER_DATA_TABLES: ReadonlyArray<
+  readonly [string, string]
+> = [
+  ["email_triage_queue", "user_id"],
+] as const;
+
+/**
  * Tables intentionally EXCLUDED from the Art. 17 sweep. Every entry MUST
  * carry a justification — the CI assertion in `coverage_test.ts` checks
  * that every `user_id`/`owner_id`/`created_by` table in `information_schema`
@@ -319,17 +338,25 @@ export const STORAGE_BUCKETS: ReadonlyArray<string> = [
  * this narrow lets the test mock exactly the surface we use (no live
  * postgres / no live storage / no live auth-admin needed in CI).
  */
-export interface SupabaseAdminLike {
-  from(table: string): {
-    delete(): {
-      eq(col: string, val: unknown): Promise<{
-        // deno-lint-ignore no-explicit-any
-        error: { message: string; code?: string } | null;
-        // deno-lint-ignore no-explicit-any
-        data?: any;
-      }>;
-    };
+interface DeleteFrom {
+  delete(): {
+    eq(col: string, val: unknown): Promise<{
+      // deno-lint-ignore no-explicit-any
+      error: { message: string; code?: string } | null;
+      // deno-lint-ignore no-explicit-any
+      data?: any;
+    }>;
   };
+}
+
+export interface SupabaseAdminLike {
+  from(table: string): DeleteFrom;
+  /**
+   * Scope subsequent `.from()` calls to a non-public schema (supabase-js
+   * `createClient(...).schema("app")`). Optional in the mock surface; the
+   * real client always provides it.
+   */
+  schema?(name: string): { from(table: string): DeleteFrom };
   storage: {
     from(bucket: string): {
       list(
@@ -399,13 +426,13 @@ export interface DeleteAccountResult {
  *   - Success              → ok:true.
  */
 async function safeDelete(
-  sb: SupabaseAdminLike,
+  source: { from(table: string): DeleteFrom },
   table: string,
   userColumn: string,
   userId: string,
 ): Promise<TableResult> {
   try {
-    const { error } = await sb.from(table).delete().eq(userColumn, userId);
+    const { error } = await source.from(table).delete().eq(userColumn, userId);
     if (error) {
       const code = error.code;
       if (code === "42P01" || code === "42703") {
@@ -540,6 +567,18 @@ export async function runAccountDelete(
   const tableResults: TableResult[] = [];
   for (const [table, col] of USER_DATA_TABLES) {
     tableResults.push(await safeDelete(sb, table, col, userId));
+  }
+
+  // Non-public `app` schema sweep. Needs `.schema("app")` so the delete
+  // targets app.* and not public.* (a plain .from would 42P01). When the
+  // mock client omits .schema (CI), fall back to sb.from — the in-memory
+  // fake ignores schema anyway and the real client always has it.
+  const appSource = typeof sb.schema === "function"
+    ? sb.schema("app")
+    : { from: (t: string) => sb.from(t) };
+  for (const [table, col] of APP_SCHEMA_USER_DATA_TABLES) {
+    const r = await safeDelete(appSource, table, col, userId);
+    tableResults.push({ ...r, table: `app.${table}` });
   }
 
   const storageResults: Array<
