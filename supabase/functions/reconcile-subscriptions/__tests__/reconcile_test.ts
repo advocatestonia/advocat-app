@@ -25,9 +25,11 @@ import {
   decideForActiveSub,
   decideForCanceledSub,
   DOWNGRADE_GRACE_DAYS,
+  type DriftAction,
   formatFixLog,
   matchProfile,
   type ProfileRow,
+  resolveActions,
   type StripeCustomer,
   type StripeSubscription,
   type SubscriptionRow,
@@ -319,6 +321,65 @@ Deno.test("R-T15 — orphan log line never includes email", () => {
   assertStringIncludes(log, "[RECONCILE-ORPHAN]");
   assertStringIncludes(log, "stripe_sub=sub_ghost");
   assertEquals(log.includes("ghost@nowhere.co"), false);
+});
+
+// ---- resolveActions: per-user conflict resolution ---------------------------
+
+Deno.test("R-T19 — resolveActions: active sub upgrade beats stale-cancel downgrade for same user", () => {
+  // Plan-change scenario: user cancelled the old sub (now >7d → downgrade) and
+  // subscribed to a new active sub (→ upgrade). Both match the same profile.
+  // The apply loop used to run downgrade LAST (allSubs = active...canceled) and
+  // revoke the Pro the user is actively paying for. resolveActions must keep
+  // only the upgrade.
+  const upgrade: DriftAction = {
+    kind: "upgrade",
+    user_id: "u-planchange",
+    stripe_sub_id: "sub_new_active",
+    tier: "premium",
+    expires_at: "2026-06-01T00:00:00Z",
+    customer_id: "cus_pc",
+    drift: "tier=free",
+  };
+  const downgrade: DriftAction = {
+    kind: "downgrade",
+    user_id: "u-planchange",
+    stripe_sub_id: "sub_old_canceled",
+    customer_id: "cus_pc",
+    drift: "stripe.status=canceled for >=7d",
+  };
+  // Either input order must yield the same result: a single upgrade.
+  for (const input of [[upgrade, downgrade], [downgrade, upgrade]]) {
+    const out = resolveActions(input);
+    assertEquals(out.length, 1);
+    assertEquals(out[0].kind, "upgrade");
+    if (out[0].kind === "upgrade") assertEquals(out[0].user_id, "u-planchange");
+  }
+});
+
+Deno.test("R-T20 — resolveActions: independent users keep their own actions; orphan/noop dropped", () => {
+  const actions: DriftAction[] = [
+    { kind: "upgrade", user_id: "u-a", stripe_sub_id: "s1", tier: "basic", expires_at: "2026-06-01T00:00:00Z", customer_id: "c1", drift: "x" },
+    { kind: "downgrade", user_id: "u-b", stripe_sub_id: "s2", customer_id: "c2", drift: "y" },
+    { kind: "noop", user_id: "u-c", stripe_sub_id: "s3", reason: "in sync" },
+    { kind: "orphan", stripe_sub_id: "s4", customer_id: "c4", customer_email: null, reason: "no profile" },
+  ];
+  const out = resolveActions(actions);
+  // u-a upgrade + u-b downgrade kept; noop + orphan dropped.
+  assertEquals(out.length, 2);
+  const a = out.find((x) => x.kind === "upgrade" && x.user_id === "u-a");
+  const b = out.find((x) => x.kind === "downgrade" && x.user_id === "u-b");
+  assert(a !== undefined);
+  assert(b !== undefined);
+});
+
+Deno.test("R-T21 — resolveActions: lone downgrade survives (genuine cancel, no active sub)", () => {
+  // A user who truly cancelled (no parallel active sub) must still be downgraded.
+  const actions: DriftAction[] = [
+    { kind: "downgrade", user_id: "u-gone", stripe_sub_id: "s9", customer_id: "c9", drift: "stripe.status=canceled for >=7d" },
+  ];
+  const out = resolveActions(actions);
+  assertEquals(out.length, 1);
+  assertEquals(out[0].kind, "downgrade");
 });
 
 // ---- Static contracts on index.ts ------------------------------------------

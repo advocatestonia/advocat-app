@@ -34,6 +34,7 @@ import {
   formatFixLog,
   matchProfile,
   type ProfileRow,
+  resolveActions,
   type StripeCustomer,
   type StripeSubscription,
   type SubscriptionRow,
@@ -267,7 +268,15 @@ serve(async (req) => {
 
     // 4. Apply drift fixes. We run them sequentially to keep error messages
     //    attributable; per-sub volume is small (hundreds, not millions).
-    for (const action of actions) {
+    //
+    //    First collapse per-user so a stale >7d canceled sub cannot clobber a
+    //    user who is actively paying on a parallel active/trialing sub (plan
+    //    change / re-subscribe). resolveActions keeps at most one write per
+    //    user_id with upgrade winning over downgrade — without it the apply
+    //    loop's allSubs order (active first, canceled later) let the downgrade
+    //    land last and revoke a paying customer's Pro.
+    const resolved = resolveActions(actions);
+    for (const action of resolved) {
       if (action.kind === "upgrade") {
         try {
           await supabase.from("profiles").upsert({

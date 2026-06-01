@@ -274,6 +274,46 @@ export function decideForCanceledSub(
   };
 }
 
+/**
+ * Collapse the per-subscription action list so that AT MOST ONE write happens
+ * per user_id, with upgrade winning over downgrade.
+ *
+ * Why this exists: index.ts produces one DriftAction per Stripe subscription,
+ * and a single user can legitimately have MULTIPLE Stripe subscriptions matched
+ * to the same profile — most commonly after a plan change (cancel old sub →
+ * subscribe to a new one) or a re-subscribe. In that case the same profile.id
+ * yields BOTH an `upgrade` (from the live active/trialing sub) AND a `downgrade`
+ * (from the stale >7d canceled sub). The apply phase ran actions sequentially in
+ * allSubs order (active first, canceled later), so the downgrade landed LAST and
+ * clobbered a legitimately-paying user back to free — revoking Pro the customer
+ * is actively paying for. Resolving per-user with upgrade-priority closes that:
+ * if Stripe shows the user paying on ANY sub, they keep Pro regardless of how
+ * many stale canceled subs they also have.
+ *
+ * Priority: upgrade > downgrade > (noop/orphan dropped). Orphans carry no
+ * user_id and are handled (logged) separately in index.ts before this runs.
+ */
+export function resolveActions(actions: DriftAction[]): DriftAction[] {
+  // user_id -> chosen action. First upgrade wins; a later downgrade never
+  // overwrites a chosen upgrade; a downgrade is only kept if no upgrade exists.
+  const byUser = new Map<string, DriftAction>();
+  for (const a of actions) {
+    if (a.kind !== "upgrade" && a.kind !== "downgrade") continue;
+    const uid = a.user_id;
+    const existing = byUser.get(uid);
+    if (!existing) {
+      byUser.set(uid, a);
+      continue;
+    }
+    // An upgrade always wins. If the existing pick is an upgrade, keep it.
+    if (existing.kind === "upgrade") continue;
+    // existing is a downgrade — upgrade supersedes it; another downgrade is a
+    // no-op (idempotent — keep the first).
+    if (a.kind === "upgrade") byUser.set(uid, a);
+  }
+  return Array.from(byUser.values());
+}
+
 /** Format a [RECONCILE-FIX] log line — single shape so log scrapers are stable. */
 export function formatFixLog(action: DriftAction): string {
   if (action.kind === "upgrade") {
