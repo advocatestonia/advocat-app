@@ -438,13 +438,29 @@ export async function runConfirm(
     return { kind: "error", status: 401, body: { error: "invalid confirm_token" } };
   }
 
-  // 6. Mark confirmed_at.
+  // 6. Mark confirmed_at. This is a compare-and-swap: vault_mark_rotation_confirmed
+  //    only flips confirmed_at when it was NULL and returns true iff THIS call
+  //    won. Steps 3-5 above (applied_at check, expiry, hash-match) are all READs,
+  //    so two concurrent /confirm calls carrying the same valid token both reach
+  //    here. We MUST gate on the CAS result — not just the absence of an error —
+  //    or both calls fall through to step 7 and double-execute
+  //    vault_rotate_all_users against the master-key control plane. The loser of
+  //    the race (data === false) is refused 409 BEFORE any rotation runs.
   const confirmRes = await deps.supabase.rpc("vault_mark_rotation_confirmed", {
     p_id: pending.id,
   });
   if (confirmRes.error) {
     return { kind: "error", status: 500,
              body: { error: `confirm update failed: ${confirmRes.error.message}` } };
+  }
+  if (confirmRes.data !== true) {
+    // Lost the CAS — a concurrent /confirm already claimed this ticket.
+    console.warn(
+      `[vault-rotate-master] /confirm lost CAS (concurrent confirm) ticket=${pending.id} ` +
+        `confirmer=${deps.userId}`,
+    );
+    return { kind: "error", status: 409,
+             body: { error: "rotation ticket already confirmed" } };
   }
 
   // 7. Execute the underlying rotation.

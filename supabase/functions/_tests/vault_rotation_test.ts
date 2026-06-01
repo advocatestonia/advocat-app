@@ -522,3 +522,47 @@ Deno.test("V19 — timingSafeStringEqual: equal/unequal/length mismatch", () => 
   assertFalse(timingSafeStringEqual("", "x"));
   assert(timingSafeStringEqual("", ""));
 });
+
+// ─── V20 ───────────────────────────────────────────────────────────────────
+// Regression: a /confirm that LOSES the confirmed_at compare-and-swap (a
+// concurrent /confirm already claimed the same valid ticket) must be refused
+// 409 and must NOT execute vault_rotate_all_users. Steps 3-5 (applied_at,
+// expiry, hash-match) are all READs, so a concurrent racer reaches the CAS;
+// only the winner (data === true) may rotate. Without this guard both racers
+// would double-execute the master-key rotation.
+Deno.test("V20 — runConfirm refuses 409 when it loses the confirmed_at CAS", async () => {
+  const now = 1_700_000_000_000;
+  const ctx = deps({ clock: { now: () => now }, userId: OTHER_UUID });
+  // 1. vault_get_admin (confirmer)
+  ctx.rpcQueue.push({
+    data: [{ user_id: OTHER_UUID, telegram_chat_id: null, email_for_oob: "b@c.d", active: true }],
+    error: null,
+  });
+  // 2. vault_get_pending_rotation — still unapplied/unconfirmed at read time
+  ctx.rpcQueue.push({
+    data: [{
+      id: TICKET_UUID, initiator_user_id: ADMIN_UUID,
+      confirm_token_hash: FIXED_TOKEN_HASH,
+      expires_at: new Date(now + 60_000).toISOString(),
+      confirmed_at: null, applied_at: null,
+      new_version: 7, batch_size: 100, max_batches: 2,
+      allow_outside_window: false, reason: "Quarterly rotation",
+    }],
+    error: null,
+  });
+  // 3. vault_mark_rotation_confirmed — CAS lost (another /confirm won the race)
+  ctx.rpcQueue.push({ data: false, error: null });
+
+  const r = await runConfirm(
+    { rotation_id: TICKET_UUID, confirm_token: FIXED_TOKEN },
+    ctx.d,
+  );
+  assertEquals(r.kind, "error");
+  if (r.kind === "error") {
+    assertEquals(r.status, 409);
+    assertStringIncludes(r.body.error, "already confirmed");
+  }
+  // CRITICAL: rotation must NOT have run.
+  assertFalse(ctx.rpcCalls.some((c) => c.fn === "vault_rotate_all_users"));
+  assertFalse(ctx.rpcCalls.some((c) => c.fn === "vault_mark_rotation_applied"));
+});
