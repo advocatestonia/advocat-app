@@ -9,9 +9,22 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const NAME_MIN = 2;
 const NAME_MAX = 200;
-const BAR_ID_MIN = 1;
+const BAR_ID_MIN = 3;
 const BAR_ID_MAX = 64;
 const URL_MAX = 500;
+
+// Real EE/FI bar registry numbers are numeric (advokatuur.ee uses short
+// numeric member IDs; asianajajaliitto.fi a "Jäsennumero"). A bar_id that
+// carries no digits — or only one — is almost certainly NOT a registry
+// number. We require at least two digits. This is the front-line guard for
+// the auto-approve escalation in index.ts: matchInRegistry does a tolerant
+// substring search over the registry HTML, so a 1-char or all-letters
+// "bar_id" like "a" or "de" trivially occurs on the page within the 800-char
+// proximity window of some unrelated name token and forges a "match" →
+// is_pro=true / premium_lawyer for free. Forcing a multi-digit numeric shape
+// removes that class of input without touching any legitimate enrollment
+// (every known registry ID is numeric, length >= 4).
+const BAR_ID_MIN_DIGITS = 2;
 
 export interface RawBody {
   country?: unknown;
@@ -48,6 +61,13 @@ export function validateBody(raw: RawBody): ValidationResult {
 
   const barId = typeof raw.bar_id === "string" ? raw.bar_id.trim() : "";
   if (barId.length < BAR_ID_MIN || barId.length > BAR_ID_MAX) {
+    return { kind: "error", payload: { reason: "bad_bar_id" } };
+  }
+  // Must look like a registry number (multi-digit). Blocks all-letters /
+  // single-digit inputs that would trivially substring-match the registry
+  // HTML and forge an auto-approve. See BAR_ID_MIN_DIGITS rationale above.
+  const digitCount = (barId.match(/\d/g) ?? []).length;
+  if (digitCount < BAR_ID_MIN_DIGITS) {
     return { kind: "error", payload: { reason: "bad_bar_id" } };
   }
 

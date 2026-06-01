@@ -82,6 +82,56 @@ Deno.test("VAL-FAIL-03 — overlong bar_id (>64) → bad_bar_id", () => {
   if (out.kind === "error") assertEquals(out.payload.reason, "bad_bar_id");
 });
 
+Deno.test("VAL-FAIL-03b — all-letters bar_id (no digits) → bad_bar_id", () => {
+  // Auto-approve escalation guard: an all-letters 'bar_id' like "abc" would
+  // trivially substring-match registry HTML and forge a premium_lawyer grant.
+  const out = validateBody({
+    country: "EE",
+    bar_id: "abc",
+    name: "Dmitri Sulga",
+    email: "a@b.co",
+  });
+  assertEquals(out.kind, "error");
+  if (out.kind === "error") assertEquals(out.payload.reason, "bad_bar_id");
+});
+
+Deno.test("VAL-FAIL-03c — single-digit bar_id (< min length) → bad_bar_id", () => {
+  const out = validateBody({
+    country: "EE",
+    bar_id: "5",
+    name: "Dmitri Sulga",
+    email: "a@b.co",
+  });
+  assertEquals(out.kind, "error");
+  if (out.kind === "error") assertEquals(out.payload.reason, "bad_bar_id");
+});
+
+Deno.test("VAL-FAIL-03d — one-digit-among-letters bar_id → bad_bar_id", () => {
+  // "x1y" passes the length floor (3) but only has one digit — not a
+  // registry-shaped number.
+  const out = validateBody({
+    country: "EE",
+    bar_id: "x1y",
+    name: "Dmitri Sulga",
+    email: "a@b.co",
+  });
+  assertEquals(out.kind, "error");
+  if (out.kind === "error") assertEquals(out.payload.reason, "bad_bar_id");
+});
+
+Deno.test("VAL-OK-04 — alphanumeric bar_id with >=2 digits is accepted", () => {
+  // Some registries prefix the number (e.g. 'EE-1234'); allow it as long as
+  // it carries a real multi-digit number.
+  const out = validateBody({
+    country: "EE",
+    bar_id: "EE-1234",
+    name: "Dmitri Sulga",
+    email: "a@b.co",
+  });
+  assertEquals(out.kind, "ok");
+  if (out.kind === "ok") assertEquals(out.body.barId, "EE-1234");
+});
+
 Deno.test("VAL-FAIL-04 — single short token name → bad_name", () => {
   const out = validateBody({
     country: "EE",
