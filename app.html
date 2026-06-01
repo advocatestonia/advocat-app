@@ -102,6 +102,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link rel="manifest" href="manifest.json">
+
+  <!--
+    Geofence (WAVE 1, 2026-05-28) — app-entry parity with the landing page.
+    Redirects B2C visitors from B2B-only jurisdictions (DE/AT/CH/FR/BE/LU/IT/PT/ES)
+    to /b2b-only.html BEFORE the Flutter app shell boots, so a German consumer who
+    deep-links / bookmarks / clicks an ad straight to /app.html (bypassing index.html)
+    is still routed away from the consumer signup flow.
+    Legal driver: BGH "Smartlaw" (I ZR 222/22) — generative B2C legal processing is
+    Rechtsdienstleistung under the RDG; DACH/Romance B2C is a hard no-go.
+    NOTE: this is a best-effort CLIENT-SIDE signal (Cloudflare /cdn-cgi/trace geo with a
+    navigator.language fallback), NOT a legal guarantee. It is conservative: it only
+    redirects the listed B2B-only countries and never blocks B2B contact or other
+    countries. MUST stay before flutter_bootstrap.js so the redirect wins the race.
+    Loaded synchronously (no async/defer) on purpose. Ref:
+    docs/security_audit_2026-05-28/findings/{10_dach,11_romance_eu}_legal.md
+  -->
+  <script src="/_geofence.js"></script>
 </head>
 <body>
   <!--

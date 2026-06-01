@@ -1797,7 +1797,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get gdprIntro =>
-      'Um KI-Rechtsberatung zu bieten, verarbeiten wir Ihre Daten gemäß DSGVO (EU 2016/679). Durch Fortfahren stimmen Sie zu:';
+      'Um KI-gestützte Rechtsinformationen bereitzustellen, verarbeiten wir Ihre Daten gemäß DSGVO (EU 2016/679). Durch Fortfahren stimmen Sie zu:';
 
   @override
   String get gdprChat => 'Verarbeitung Ihrer Chat-Nachrichten durch KI';
@@ -4079,7 +4079,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String quotaExhaustedBody(int count) {
-    return 'Sie haben alle $count kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat und erhalten Sie unbegrenzten Zugang zur KI-Rechtsberatung.';
+    return 'Sie haben alle $count kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat und erhalten Sie unbegrenzten Zugang zum KI-gestützten Rechtsinformations-Assistenten.';
   }
 
   @override

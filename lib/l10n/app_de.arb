@@ -466,7 +466,7 @@
     "gdprDelete": "Recht, Ihre Daten jederzeit zu löschen",
     "gdprDocs": "Analyse hochgeladener Dokumente",
     "gdprFooter": "Ihre Daten sind verschlüsselt und werden nie an Dritte weitergegeben. Sie können die Einwilligung widerrufen und alle Daten in den Einstellungen löschen.",
-    "gdprIntro": "Um KI-Rechtsberatung zu bieten, verarbeiten wir Ihre Daten gemäß DSGVO (EU 2016/679). Durch Fortfahren stimmen Sie zu:",
+    "gdprIntro": "Um KI-gestützte Rechtsinformationen bereitzustellen, verarbeiten wir Ihre Daten gemäß DSGVO (EU 2016/679). Durch Fortfahren stimmen Sie zu:",
     "gdprStorage": "Verschlüsselte Speicherung von Falldaten",
     "generateAppealWithIssues": "{count, plural, =1{Beschwerde erstellen (1 Problem)} other{Beschwerde erstellen ({count} Probleme)}}",
     "@generateAppealWithIssues": {
@@ -1744,7 +1744,7 @@
     "decreaseDependents": "Verringern",
     "increaseDependents": "Erhöhen",
     "quotaExhaustedTitle": "Limit der kostenlosen Nachrichten erreicht",
-    "quotaExhaustedBody": "Sie haben alle {count} kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat und erhalten Sie unbegrenzten Zugang zur KI-Rechtsberatung.",
+    "quotaExhaustedBody": "Sie haben alle {count} kostenlosen Nachrichten verbraucht. Buchen Sie Advocat Pro für 19,99 €/Monat und erhalten Sie unbegrenzten Zugang zum KI-gestützten Rechtsinformations-Assistenten.",
     "@quotaExhaustedBody": {
         "placeholders": {
             "count": {
