@@ -38,6 +38,12 @@
 // -----------------------------------------------------------------------------
 
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+import {
+  type Cite,
+  citationCovered,
+  extractCites,
+  timingSafeEqualStr,
+} from "./cites.ts";
 
 const CLAUDE_API_KEY = Deno.env.get("CLAUDE_API_KEY") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
@@ -95,14 +101,6 @@ function err(message: string, status: number): Response {
   );
 }
 
-/** Constant-time string compare — avoids a timing oracle on the corpus secret. */
-function timingSafeEqualStr(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
 interface SampleQuery {
   id: string;
   query: string;
@@ -134,12 +132,6 @@ interface ToolLookupResult {
     similarity: number;
   }>;
   error?: string;
-}
-
-interface Cite {
-  raw: string;
-  section: string;
-  context: string;
 }
 
 interface Turn {
@@ -199,58 +191,6 @@ Mandatory pattern:
 
 Answer in 4-8 sentences. Cite statutes inline as "§N" (FI/EE) or "Article N" (EU).
 Always prefer the jurisdiction implied by the question.`;
-
-// ─── Cite extraction (verbatim from eval/hallucination_detector.ts) ────────
-const CITE_PATTERNS: Array<{ re: RegExp; group: number }> = [
-  { re: /§\s*([A-ZÄÖÕÜŠŽ]{2,8}\s+\d+:\d+)/g, group: 1 },
-  { re: /§\s*(\d+(?::\d+)?)/g, group: 1 },
-  { re: /\b(?:Article|art\.?)\s+(\d+(?:\(\d+\))?)/gi, group: 1 },
-];
-
-function extractCites(text: string): Cite[] {
-  const out: Cite[] = [];
-  const seen = new Set<string>();
-  for (const { re, group } of CITE_PATTERNS) {
-    re.lastIndex = 0;
-    let m: RegExpExecArray | null;
-    while ((m = re.exec(text)) !== null) {
-      const raw = m[0];
-      const section = m[group].replace(/\s+/g, " ").trim();
-      const key = section.toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-      const start = Math.max(0, m.index - 30);
-      const end = Math.min(text.length, m.index + raw.length + 30);
-      out.push({ raw, section, context: text.slice(start, end) });
-    }
-  }
-  return out;
-}
-
-function sectionFromChunk(label: string | null): string {
-  if (!label) return "";
-  const stripped = label.replace(/§/g, "").trim();
-  const m = stripped.match(/(\d+:\d+|\d+(?:¹|²|³)?)\s*$/);
-  if (m) return m[1];
-  return stripped;
-}
-
-function citationCovered(c: Cite, lookups: ToolLookupResult[]): boolean {
-  const target = c.section.toLowerCase().replace(/\s+/g, "");
-  const targetNum = target.match(/(\d+(?::\d+)?)/)?.[1] ?? target;
-  for (const lk of lookups) {
-    const ss = (lk.input.specific_statute ?? "").toLowerCase();
-    if (ss && (ss.includes(target) || ss.includes(targetNum))) return true;
-    for (const ch of lk.returned_chunks) {
-      const lab = sectionFromChunk(ch.section_label).toLowerCase();
-      if (!lab) continue;
-      if (lab === target || lab === targetNum) return true;
-      if (lab.endsWith(":" + targetNum)) return true;
-      if (target.endsWith(":" + lab)) return true;
-    }
-  }
-  return false;
-}
 
 // ─── Internal tool exec: qa-corpus-search ──────────────────────────────────
 async function execLegalLookup(
