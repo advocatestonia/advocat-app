@@ -27,18 +27,18 @@
 import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { corsHeaders, jsonError, jsonOk } from "../_shared/auth.ts";
+import {
+  clampInt,
+  editSimilarity,
+  estimateTokens,
+  isUuid,
+  parseReviewerIds,
+  parseTotalFromContentRange,
+} from "./pure.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_ROLE_KEY =
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-
-/** Parse GOLD_REVIEWER_IDS once at module load. Empty set ⇒ no one allowed. */
-export function parseReviewerIds(raw: string | undefined): Set<string> {
-  if (!raw) return new Set();
-  return new Set(
-    raw.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean),
-  );
-}
 
 const REVIEWER_IDS = parseReviewerIds(Deno.env.get("GOLD_REVIEWER_IDS"));
 
@@ -98,41 +98,6 @@ export async function gateReviewer(req: Request): Promise<
       response: jsonError(`auth backend: ${String(e).slice(0, 100)}`, 503),
     };
   }
-}
-
-// ─── Edit similarity (lightweight, no embeddings) ──────────────────────────
-
-/**
- * Token-overlap Jaccard similarity. Cheap, deterministic, good enough for
- * "how much did Sofia rewrite". Embedding-based cosine is reserved for
- * Phase B (few-shot retrieval).
- */
-export function editSimilarity(a: string, b: string): number {
-  if (!a && !b) return 1;
-  if (!a || !b) return 0;
-  const ta = tokenize(a);
-  const tb = tokenize(b);
-  if (ta.size === 0 && tb.size === 0) return 1;
-  if (ta.size === 0 || tb.size === 0) return 0;
-  let inter = 0;
-  for (const t of ta) if (tb.has(t)) inter++;
-  const union = ta.size + tb.size - inter;
-  return union === 0 ? 1 : inter / union;
-}
-
-function tokenize(s: string): Set<string> {
-  return new Set(
-    s.toLowerCase()
-      .replace(/[^\p{L}\p{N}\s]/gu, " ")
-      .split(/\s+/)
-      .filter((t) => t.length >= 2),
-  );
-}
-
-function estimateTokens(s: string): number {
-  // Rough estimate: ~4 chars per token (Anthropic guideline). Good enough
-  // for analytics; we don't pay tokens on this number.
-  return Math.ceil((s ?? "").length / 4);
 }
 
 // ─── Handlers ───────────────────────────────────────────────────────────────
@@ -198,6 +163,7 @@ async function handleDecide(reviewerId: string, body: DecideBody): Promise<Respo
   const queueId = (body.queue_id ?? "").trim();
   const status = (body.status ?? "").trim();
   if (!queueId) return jsonError("queue_id required", 400);
+  if (!isUuid(queueId)) return jsonError("queue_id must be a UUID", 400);
   if (!VALID_STATUS.has(status)) {
     return jsonError(`status must be one of ${[...VALID_STATUS].join(", ")}`, 400);
   }
@@ -381,26 +347,3 @@ serve(async (req) => {
   }
 });
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
-
-function clampInt(
-  raw: string | null,
-  min: number,
-  max: number,
-  fallback: number,
-): number {
-  if (!raw) return fallback;
-  const n = parseInt(raw, 10);
-  if (!Number.isFinite(n)) return fallback;
-  if (n < min) return min;
-  if (n > max) return max;
-  return n;
-}
-
-function parseTotalFromContentRange(cr: string): number | null {
-  // PostgREST Content-Range: "0-19/237" or "*/0"
-  const m = cr.match(/\/(\d+)$/);
-  if (!m) return null;
-  const n = parseInt(m[1], 10);
-  return Number.isFinite(n) ? n : null;
-}
