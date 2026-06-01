@@ -128,6 +128,9 @@ serve(async (req) => {
   }
 
   // ── Reassign data (SECURITY DEFINER RPC encapsulates the bulk UPDATEs) ─
+  // MUST run (and succeed) BEFORE the soft-remove below: if reassignment fails
+  // but we still remove the member, their cases/documents/deadlines are
+  // orphaned (owned by a user who no longer has org access).
   if (reassignTo) {
     // deno-lint-ignore no-explicit-any
     const { error: reassignErr } = await (supabase as any).rpc(
@@ -138,11 +141,23 @@ serve(async (req) => {
         p_to_user: reassignTo,
       },
     );
-    if (reassignErr && !`${reassignErr.message}`.includes("does not exist")) {
+    if (reassignErr) {
+      // A MISSING RPC (not yet defined in a migration) must NOT be swallowed:
+      // the admin explicitly asked to reassign this member's work-product, and
+      // silently skipping it while still removing the member orphans that data
+      // behind a 200 OK. Refuse loudly so the caller can retry without the
+      // reassign flag (or wait until the RPC is deployed) rather than lose the
+      // data pointer. Treated as 501 (capability unavailable) vs 500 for a
+      // genuine reassignment error.
+      const missing = `${reassignErr.message}`.includes("does not exist");
       console.error("[remove-member] reassign RPC failed:", reassignErr);
-      return jsonError("Data reassignment failed", 500, {
-        reason: "reassign_failed",
-      });
+      return jsonError(
+        missing
+          ? "Data reassignment is not available; remove without reassignment or contact support"
+          : "Data reassignment failed",
+        missing ? 501 : 500,
+        { reason: missing ? "reassign_unavailable" : "reassign_failed" },
+      );
     }
   }
 
