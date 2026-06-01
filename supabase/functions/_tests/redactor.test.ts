@@ -379,3 +379,59 @@ Deno.test("R15: redactForSharing with mocked Haiku returns full envelope", async
   assert(!blob.includes("John Smith"));
   assert(!blob.includes("Acme OÜ"));
 });
+
+Deno.test("R16: structured PII Haiku LEAKED is scrubbed by the regex backstop", async () => {
+  // Defence-in-depth: Haiku is the primary redactor, but if it echoes raw
+  // structured PII (email / id-code / case-no / phone) into its output —
+  // because the source text was crafted to confuse it, or it simply missed
+  // them — the deterministic regexScrub backstop must catch them before the
+  // content reaches the PUBLIC /s/<slug> page. This response simulates a
+  // sloppy Haiku that left raw tokens in the bullets + insight_summary.
+  const leakyFetcher: typeof fetch = async () =>
+    new Response(
+      JSON.stringify({
+        content: [{
+          type: "text",
+          text: JSON.stringify({
+            title: "Deportation appeal analysis",
+            insight_summary:
+              "Client mart.tamm@gmail.com flagged a filing-deadline risk.",
+            jurisdiction: "EE",
+            case_type: "deportation_appeal",
+            redacted_content: {
+              bullets: [
+                "Applicant isikukood 38001010000 must be on the form",
+                "Reference court file R-23/0042 in the appeal",
+                "Call the clerk at +372 5123 4567 before Friday",
+              ],
+              risks: ["Statute reference UlkomaalaisL § 196 still applies"],
+              statute_refs: ["UlkomaalaisL § 196", "KHO 2024:25"],
+              monetary_amounts: ["~€2,000"],
+            },
+          }),
+        }],
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+
+  const env = await redactForSharing({
+    rawText: "Some raw analysis with a name suffix Tamm to force the Haiku path",
+    sourceType: "legal_advice",
+    anthropicApiKey: "fake-key",
+    fetcher: leakyFetcher,
+  });
+
+  const blob = JSON.stringify(env);
+  // Every leaked raw token must be gone.
+  assert(!blob.includes("mart.tamm@gmail.com"), "email leaked past backstop");
+  assert(!blob.includes("38001010000"), "EE id-code leaked past backstop");
+  assert(!blob.includes("R-23/0042"), "court case-no leaked past backstop");
+  assert(!blob.includes("5123 4567"), "phone leaked past backstop");
+  // Placeholders prove the backstop fired.
+  assertStringIncludes(blob, "[EMAIL]");
+  assertStringIncludes(blob, "[ID_EE]");
+  assertStringIncludes(blob, "[CASE_NO]");
+  // Public statute / citation markers are PRESERVED (not over-scrubbed).
+  assertStringIncludes(blob, "UlkomaalaisL § 196");
+  assertStringIncludes(blob, "KHO 2024:25");
+});

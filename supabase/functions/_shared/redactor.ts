@@ -245,12 +245,25 @@ export async function haikuRedact(opts: HaikuRedactOpts): Promise<HaikuJson | nu
 
 // ─── Normalisation helpers ──────────────────────────────────────────────────
 
+// DEFENCE-IN-DEPTH: re-apply the deterministic regex scrubber to EVERY string
+// Haiku emits before it is published. Haiku is the primary redactor, but its
+// output is (a) model-generated and (b) derived from attacker-influenceable
+// source text that lands on a PUBLIC /s/<slug> page — so a name Haiku failed
+// to catch, or a structured token it echoed verbatim (email/phone/ID/HETU/
+// case-no), must still be caught by the deterministic pass. Without this, the
+// stage-1 guarantee only held on the FALLBACK path; the Haiku-success path
+// trusted the model alone. Mirrors the F-001 "fence the model output"
+// principle. regexScrub is idempotent so already-clean strings pass through.
+function scrubStr(s: string): string {
+  return regexScrub(s).text;
+}
+
 function asStringArr(x: unknown, max = 10, perLen = 160): string[] {
   if (!Array.isArray(x)) return [];
   const out: string[] = [];
   for (const item of x) {
     if (typeof item === "string" && item.trim().length > 0) {
-      out.push(item.trim().slice(0, perLen));
+      out.push(scrubStr(item.trim()).slice(0, perLen));
     }
     if (out.length >= max) break;
   }
@@ -259,7 +272,7 @@ function asStringArr(x: unknown, max = 10, perLen = 160): string[] {
 
 function asMaybeString(x: unknown, max: number): string | null {
   if (typeof x !== "string") return null;
-  const t = x.trim();
+  const t = scrubStr(x.trim());
   if (!t) return null;
   return t.slice(0, max);
 }
