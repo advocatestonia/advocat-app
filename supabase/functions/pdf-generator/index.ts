@@ -197,8 +197,10 @@ function parseBody(raw: unknown, userId: string): RequestBody {
     ? b.case_id.trim()
     : null;
 
-  // Enforce storage path prefix ownership: case_id must be a UUID if provided.
-  // (We check user ownership implicitly via the {user_id}/... path prefix.)
+  // case_id must be a UUID if provided. NOTE: a valid UUID alone does NOT
+  // authorise writing a case_documents row to that case — ownership is
+  // verified separately via verifyCaseOwnership() before the insert. The
+  // {user_id}/... storage prefix only scopes the FILE, not the DB row.
   if (caseId && !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(caseId)) {
     throw new Error("case_id must be a valid UUID");
   }
@@ -278,6 +280,51 @@ async function createSignedUrl(storagePath: string): Promise<string> {
 // =============================================================================
 
 /**
+ * Verify the authenticated user OWNS the target case before we plant a
+ * case_documents row under it.
+ *
+ * SECURITY (IDOR / document forgery): the case_documents INSERT below runs
+ * under the service-role key, which BYPASSES RLS. parseBody only checks that
+ * case_id is UUID-shaped — so without this gate a caller could pass ANOTHER
+ * user's case_id and have their generated document surface inside the
+ * victim's case (every case_documents reader — pdf-parser, contract-review,
+ * classify-contract, the active-case prompt injection — aggregates by
+ * case_id). Same forgery class fixed in vault-upload (handler.ts ownership
+ * check). We resolve ownership AUTHORITATIVELY: cases.user_id == the verified
+ * JWT user id. Returns true only when the caller owns the case.
+ */
+export async function verifyCaseOwnership(
+  // deno-lint-ignore no-explicit-any
+  fetchImpl: typeof fetch,
+  userId: string,
+  caseId: string,
+): Promise<{ owned: boolean; error: boolean }> {
+  const url =
+    `${SUPABASE_URL}/rest/v1/cases?id=eq.${caseId}&user_id=eq.${userId}&select=id`;
+  try {
+    const res = await fetchImpl(url, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+        "apikey": SUPABASE_SERVICE_ROLE_KEY,
+        "Accept": "application/json",
+      },
+    });
+    if (!res.ok) {
+      console.error(
+        `pdf-generator: case ownership check failed (${res.status})`,
+      );
+      return { owned: false, error: true };
+    }
+    const rows = await res.json() as Array<{ id?: string }>;
+    return { owned: rows.length > 0, error: false };
+  } catch (e) {
+    console.error(`pdf-generator: case ownership check threw: ${String(e).slice(0, 200)}`);
+    return { owned: false, error: true };
+  }
+}
+
+/**
  * Insert a minimal row into case_documents so the generated file appears in
  * the case vault. Returns the new row id or null on failure (non-fatal).
  */
@@ -348,6 +395,20 @@ serve(async (req: Request) => {
     body = parseBody(await req.json(), userId);
   } catch (e) {
     return jsonError(String(e instanceof Error ? e.message : e), 400);
+  }
+
+  // ── 2.5 Authorise case_id ownership BEFORE doing any work. A forged
+  //        (other-user) case_id must never reach the service-role insert.
+  if (body.case_id) {
+    const own = await verifyCaseOwnership(fetch, userId, body.case_id);
+    if (own.error) {
+      return jsonError("Could not verify case ownership", 500);
+    }
+    if (!own.owned) {
+      // Case does not exist OR is not the caller's — same response for both
+      // (no existence oracle for foreign cases).
+      return jsonError("Case not found or not owned", 403);
+    }
   }
 
   // ── 3. Render Markdown → HTML. ────────────────────────────────────────
