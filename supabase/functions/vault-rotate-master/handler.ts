@@ -319,8 +319,9 @@ export async function runInitiate(
     `Confirm token (single-use, expires in 15 minutes):\n` +
     `${token}\n\n` +
     `If you did NOT initiate this rotation, do nothing — the ticket will ` +
-    `expire and become useless. Then rotate ADMIN_USER_IDS, the Supabase ` +
-    `service-role JWT, and review app_vault.rotation_audit immediately.\n`;
+    `expire and become useless. Then deactivate the offending row in ` +
+    `app_vault.admin_users, rotate the Supabase service-role JWT, and review ` +
+    `app_vault.rotation_audit immediately.\n`;
 
   let telegramOk = false;
   if (hasTelegram) {
